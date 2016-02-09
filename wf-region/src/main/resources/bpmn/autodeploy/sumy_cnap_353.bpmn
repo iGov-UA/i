@@ -92,7 +92,7 @@
         <activiti:formProperty id="sNumberCnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDate_registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string"></activiti:formProperty>
         <activiti:formProperty id="aDecision" name="Рішення держслужбовця" type="enum">
-          <activiti:value id="oDoc_ok" name="З документами все гаразд - передати документи в Управління ЖКГ"></activiti:value>
+          <activiti:value id="oDoc_ok" name="З документами все гаразд - передати документи в Департамент інфраструктури"></activiti:value>
           <activiti:value id="oDoc_bad" name="Відмовити за недостатньої кількості документів або даних"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea"></activiti:formProperty>
@@ -189,7 +189,7 @@
         <activiti:formProperty id="sAdminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNumberCnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDate_registrastion" name="Дата реєстрації звернення у ЦНАПі" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateOutput" name="Назначте дату та час виходу комісії (у форматі ДД/ММ/РРРР  ГГ:ММ)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateOutput" name="Назначте дату та час виходу комісії (у форматі ДД/ММ/РРРР  ГГ:ХВ)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDecisionComment2" name="Якщо потребує - залишти коментар замовнику" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/sumy/sumy_cnap_353_print.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -251,7 +251,7 @@
         <activiti:formProperty id="sNumberCnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDate_registrastion" name="Дата реєстрації звернення у ЦНАПі" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDecisionComment3" name="Якщо потребує залиште коментар адміністратору ЦНАП" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="nFileDoc" name="Завантажте акт обстеження зелених насаджень або Ордер на видалення зелених насаджень" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFileDoc" name="Завантажте акт обстеження зелених насаджень або Ордер на видалення зелених насаджень" type="file" required="true"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow12" name="aParticipation == 'oNo'" sourceRef="exclusivegateway2" targetRef="usertask3">

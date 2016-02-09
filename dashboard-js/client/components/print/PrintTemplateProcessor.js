@@ -89,8 +89,8 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
           return item.value;
         }
       }
-      
-      
+
+
         function getLunaValue(id) {
 
           // Number 2187501 must give CRC=3
@@ -113,8 +113,8 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
 
           nCRC = nCRC % 10;
           return nCRC;
-        }      
-      
+        }
+
       var printTemplate = this.processPrintTemplate(task, form, originalPrintTemplate, /(\[(\w+)])/g, fieldGetter);
       // What is this for? // Sergey P
       printTemplate = this.processPrintTemplate(task, form, printTemplate, /(\[label=(\w+)])/g, function (item) {
@@ -125,12 +125,27 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
         return user.lastName + ' ' + user.firstName ;
       });
       printTemplate = this.populateSystemTag(printTemplate, "[sDateCreate]", $filter('date')(task.createTime, 'yyyy-MM-dd HH:mm'));
-      
+
       //№{{task.processInstanceId}}{{lunaService.getLunaValue(task.processInstanceId)}}
       //$scope.lunaService = lunaService;
       //lunaService.getLunaValue(
       printTemplate = this.populateSystemTag(printTemplate, "[sID_Order]", task.processInstanceId+getLunaValue(task.processInstanceId)+"");
-      
+
+      // #998 реализовать поддержку системного тэга [sDateTimeCreateProcess], [sDateCreateProcess] и [sTimeCreateProcess]
+      // в принтформе, вместо которого будет подставляться Дата создания процесса
+      // (в формате "YYYY-MM-DD hh:mm", "YYYY-MM-DD" и "hh:mm")
+      if (angular.isDefined(form.taskData)) {
+        printTemplate = this.populateSystemTag(printTemplate, "[sDateTimeCreateProcess]", function () {
+            return $filter('date')(new Date(form.taskData.sDateCreate), 'yyyy-MM-dd HH:mm');
+        });
+        printTemplate = this.populateSystemTag(printTemplate, "[sDateCreateProcess]", function () {
+            return $filter('date')(new Date(form.taskData.sDateCreate), 'yyyy-MM-dd');
+        });
+        printTemplate = this.populateSystemTag(printTemplate, "[sTimeCreateProcess]", function () {
+            return $filter('date')(new Date(form.taskData.sDateCreate), 'HH:mm');
+        });
+      }
+
       return $sce.trustAsHtml(processMotion(printTemplate, form, fieldGetter));
     }
   }

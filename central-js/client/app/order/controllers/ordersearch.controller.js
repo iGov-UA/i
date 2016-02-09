@@ -1,15 +1,15 @@
-angular.module('order').controller('OrderSearchController', function($rootScope, $scope,$location,$window,$state, $stateParams, ServiceService, MessagesService,BankIDService, order, $http, ErrorsFactory, DatepickerFactory) {
+angular.module('order').controller('OrderSearchController', function($rootScope, $scope,$location,$window,$state, $stateParams, ServiceService, MessagesService,BankIDService, order, $http, ErrorsFactory, DatepickerFactory, ActivitiService) {
 
     $scope.aOrderMessage = [];
     $scope.sServerReturnOnAnswer= '';
-    
+
     $scope.sID_Order = '';
     $scope.sToken = null;
     $scope.oOrder = {};
     $scope.aField = [];
     $scope.sOrderCommentNew = '';
     $scope.sOrderAnswerCommentNew = '';
-    
+
     $scope.bAuth = BankIDService.isLoggedIn().then(function() {
         $scope.bAuth = true;
     }).catch(function() {
@@ -18,17 +18,17 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
     $scope.bOrder = false;
     $scope.bOrderOwner = false;
     $scope.bOrderQuestion = false;
-    
+
     var bExist = function(oValue){
         return oValue && oValue !== null && oValue !== undefined && !!oValue;
     };
-    
+
     var bExistNotSpace = function(oValue){
         return bExist(oValue) && oValue.trim()!=="";
     };
-   
-   
-/*   
+
+
+/*
   $scope.htmldecode = function(encodedhtml)
   {
     var map = {
@@ -53,8 +53,8 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
     return $sce.trustAsHtml(html);
   };
 */
-    
-    
+
+
     $scope.searchOrder = function(sID_Order_New, sToken_New) {//arguments.callee.toString()
         var oFuncNote = {sHead:"Пошук заявки", sFunc:"searchOrder"};
         var sID_Order = bExist(sID_Order_New) ? sID_Order_New : $scope.sID_Order;
@@ -94,7 +94,7 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
                             doMerge(oThis,{sType: "warning", sBody: 'Невірний формат заявки!'});
                         } else if (sMessage.indexOf(['Record not found']) > -1) {
                             doMerge(oThis,{sType: "warning", sBody: 'Заявку не знайдено!'});
-                        }                    
+                        }
                     })){
                         if (oResponse.soData){
                             try{/*sID: item.id,
@@ -139,13 +139,13 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
                     }
                 }, function (sError){
                     ErrorsFactory.logFail({sBody:'Невідома помилка сервісу!', sError: sError, asParam:['$scope.oOrder: '+$scope.oOrder]});
-                });            
+                });
         }else{
             ErrorsFactory.logInfo({sBody:'Не задані параметри!'});
         }
     };
 
-    
+
     $scope.loadMessages = function(sID_Order, sToken){
         var oFuncNote = {sHead:"Завантаженя історії та коментарів", sFunc:"loadMessages"};
         ErrorsFactory.init(oFuncNote,{asParam:['sID_Order: '+sID_Order,'sToken: '+sToken]});
@@ -171,7 +171,7 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
         }).catch(function(sError) {
             $scope.bAuth = false;
             ErrorsFactory.logInfo({sBody:'Невідома помилка авторизації!', sError: sError});
-        });            
+        });
   } ;
 
   $scope.postComment = function(){
@@ -183,7 +183,7 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
         if($scope.bOrderOwner){
             if(bExistNotSpace(sID_Order)){
               try{
-                MessagesService.postServiceMessage(sID_Order, $scope.sOrderCommentNew, sToken);//$scope.orders[0].sID_Order
+                MessagesService.postServiceMessage(sID_Order, $scope.sOrderCommentNew, sToken, $scope.uploadedFile);
                 $scope.sOrderCommentNew = "";
                 $scope.loadMessages(sID_Order, sToken);
               }catch(sError){
@@ -289,5 +289,15 @@ angular.module('order').controller('OrderSearchController', function($rootScope,
              , bExist($stateParams.sToken) ? $stateParams.sToken : $scope.sToken
           );
   }
-  
+
+  $scope.uploadedFile = null;
+
+  $scope.onFileUploadSuccess = function($file){
+    $scope.uploadedFile = $file;
+  };
+
+  $scope.getFileUploadUrl = function() {
+    return ActivitiService.getUploadFileURLByServer(order.nID_Server);
+  }
+
 });

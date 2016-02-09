@@ -147,6 +147,11 @@ module.exports.postServiceMessage = function(req, res){
         oDateNew = _.extend(oDateNew,{'nID_Subject': nID_Subject});
     }
 
+    if (oUtil.bExist(oData.sID_File) && oUtil.bExist(oData.sFileName)) {
+      oDateNew.sID_File = oData.sID_File;
+      oDateNew.sFileName = oData.sFileName;
+    }
+
     return request.post({
       'url': sURL,
       'auth': {
@@ -172,7 +177,7 @@ module.exports.findServiceMessages = function(req, res){
   if (!!req.session.subject.nID || oUtil.bExist(sToken)){
     //var nID_Subject = (req.session && req.session!==null && req.session.hasOwnProperty('subject') && req.session.subject.hasOwnProperty('nID')) ? req.session.subject.nID : null;
     var nID_Subject = (oUtil.bExist(req.session) && req.session.hasOwnProperty('subject') && req.session.subject.hasOwnProperty('nID')) ? req.session.subject.nID : null;
-    
+
     //var nID_Subject = req.session.subject.nID;
 
     var bAdmin=false;
@@ -188,8 +193,8 @@ module.exports.findServiceMessages = function(req, res){
       + '/subject/message/getServiceMessages?'
       + 'sID_Order=' + req.param('sID_Order')
       //+ '&nID_Subject=' + nID_Subject
-      + (oUtil.bExist(nID_Subject)?'&nID_Subject=' + nID_Subject:"") 
-      + (oUtil.bExist(sToken)?'&sToken=' + sToken:"") 
+      + (oUtil.bExist(nID_Subject)?'&nID_Subject=' + nID_Subject:"")
+      + (oUtil.bExist(sToken)?'&sToken=' + sToken:"")
       + '&bAuth='+(!bAdmin)
       ;
 

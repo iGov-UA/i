@@ -99,13 +99,67 @@ public class Mail extends Abstract_Mail {
                 || getTo().contains("svit210@mail.ru")
                 || getTo().contains("vk_gis_6@privatbank.ua")
                 || getTo().contains("Gomelia@i.ua")
+
                 || getTo().contains("aakost@ukr.net")
+                || getTo().contains("Vallentin.belyi@ukr.net")
+                || getTo().contains("novikova198@mail.ua")
                 
+                || getTo().contains("sledovaatel.police@gmail.com")
+                || getTo().contains("b.koliesnik@rt.vl.dvs.gov.ua")
+                || getTo().contains("p100@i.ua")
+
+|| getTo().contains("3020202479@mail.gov.ua")
+|| getTo().contains("aakost@ukr.net")
+|| getTo().contains("advokat.rovenskiy@gmail.com")
+|| getTo().contains("akostyuk@winnerauto.ua")
+|| getTo().contains("anatolii.koziura@gmail.ru")
+|| getTo().contains("bandurovskaya@mai.ua")
+|| getTo().contains("b.koliesnik@rt.vl.dvs.gov.ua")
+|| getTo().contains("decom3@ukr.net")
+|| getTo().contains("email@email.com")
+|| getTo().contains("Gomelia@i.ua")
+|| getTo().contains("gupczn@adm.dp.ua")
+|| getTo().contains("kamyhova_n@mail.ru")
+|| getTo().contains("Lyud84@mail.ru")
+|| getTo().contains("nati27.10@mail.ru")
+|| getTo().contains("nikolay.mazur@gmail.com")
+|| getTo().contains("novikova198@mail.ua")
+|| getTo().contains("p100@i.ua")
+|| getTo().contains("rozikte@i.ua")
+|| getTo().contains("shuradp@mail.ru")
+|| getTo().contains("sledovaatel.police@gmail.com")
+|| getTo().contains("spdvs1981@mail.ru")
+|| getTo().contains("svit210@mail.ru")
+|| getTo().contains("Vallentin.belyi@ukr.net")
+|| getTo().contains("vika2010@ua.fm")
+|| getTo().contains("vira.haman@ideabank.ua")
+|| getTo().contains("vitaliyzhevyu@gmail.com")
+|| getTo().contains("vk_gis_6@privatbank.ua")
+|| getTo().contains("vladimir-dacenko@bk.ru")
+|| getTo().contains("vova-dp@hotmail.com")
+|| getTo().contains("e0600@gmail.com")
+|| getTo().contains("ayhimenko@rambler.ru")
+|| getTo().contains("dolg2014@ukr.ne")
+//|| getTo().contains("zhigan.roman@gmail.com")
+                        
                 ){
             LOG_BIG.warn("SKIPED!(getTo={})", getTo());
         }else{
             if(bUniSender){
-                sendWithUniSender();
+                try{
+                    sendWithUniSender();
+                } catch (Exception oException) {
+                    LOG.warn("Try send via alter channel! (getTo()={})", oException.getMessage(), getTo());
+                    LOG.trace("FAIL:", oException);
+                    try{
+                        sendOld();
+                    } catch (Exception oException1) {
+                        LOG.warn("Final send trying fail: {} (getTo()={})", oException1.getMessage(), getTo());
+                        LOG.trace("FAIL:", oException);
+                        throw oException1;
+                        //sendOld();
+                    }
+                }
             } else {
                 sendOld();
             }
@@ -128,6 +182,8 @@ public class Mail extends Abstract_Mail {
             //oMultiPartEmail.addTo(sTo, "receiver");
             //oMultiPartEmail.addTo(getTo(), "receiver");
             //log.info("getTo()=" + getTo());
+            _From("noreply@mail.igov.org.ua");
+            LOG_BIG.debug("(getFrom()={})", getFrom());            
             oMultiPartEmail.setFrom(getFrom(), getFrom());//"iGov"
             oMultiPartEmail.setSubject(getHead());
 

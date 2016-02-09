@@ -42,6 +42,7 @@ import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.history.HistoricTaskInstanceQuery;
 import org.activiti.engine.identity.Group;
+import org.activiti.engine.impl.persistence.entity.TaskEntity;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.repository.ProcessDefinition;
@@ -57,19 +58,17 @@ import org.igov.io.GeneralConfig;
 import org.igov.io.mail.NotificationPatterns;
 import org.igov.io.web.HttpRequester;
 import org.igov.model.action.event.HistoryEvent_Service_StatusType;
+import org.igov.model.action.task.core.ProcessDTOCover;
 import org.igov.model.action.task.core.ProcessDefinitionCover;
-import org.igov.model.action.task.core.entity.ProcDefinitionI;
+import org.igov.model.action.task.core.entity.*;
 import org.igov.model.action.task.core.entity.Process;
-import org.igov.model.action.task.core.entity.ProcessI;
-import org.igov.model.action.task.core.entity.TaskAssigneeI;
 import org.igov.model.flow.FlowSlotTicket;
 import org.igov.model.flow.FlowSlotTicketDao;
 import org.igov.service.business.action.event.HistoryEventService;
 import org.igov.service.business.action.task.core.ActionTaskService;
-import org.igov.service.exception.CRCInvalidException;
-import org.igov.service.exception.CommonServiceException;
-import org.igov.service.exception.RecordNotFoundException;
-import org.igov.service.exception.TaskAlreadyUnboundException;
+import org.igov.service.business.action.task.systemtask.doc.handler.UkrDocEventHandler;
+import org.igov.service.exception.*;
+import org.igov.util.JSON.JsonDateTimeSerializer;
 import org.igov.util.Tool;
 import org.igov.util.ToolCellSum;
 import org.igov.util.JSON.JsonRestUtils;
@@ -84,6 +83,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -152,6 +152,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     
     @Autowired
     private FlowSlotTicketDao flowSlotTicketDao;
+
+    @Autowired
+    private ActionTaskLinkDao actionTaskLinkDao;
 
     /**
      * Загрузка задач из Activiti:
@@ -496,8 +499,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
      * Cервис получения данных по Таске
      *
      * @param nID_Task  номер-ИД таски (обязательный)
-     * @param nID_Process  номер-ИД процесса (опциональный)
-     * @param sID_Order номер-ИД заявки (опциональный, но обязательный если не задан nID_Task)
+     * @param nID_Process  номер-ИД процесса (опциональный, но обязательный если не задан nID_Task и sID_Order)
+     * @param sID_Order номер-ИД заявки (опциональный, но обязательный если не задан nID_Task и nID_Process)
      * @return сериализованный объект <br> <b>oProcess</b> {<br><kbd>sName</kbd> - название услуги (БП);<br> <kbd>sBP</kbd> - id-бизнес-процесса (БП);<br> <kbd>nID</kbd> - номер-ИД процесса;<br> <kbd>sDateCreate</kbd> - дата создания процесса<br>}
      */
     @ApiOperation(value = "Получение данных по таске", notes = "#####  ActionCommonTaskController: Сервис получения данных по таске #####\n\n"
@@ -516,35 +519,59 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public
     @ResponseBody
     ResponseEntity getTaskData(
-            @ApiParam(value = "номер-ИД таски (обязательный)", required = true) @RequestParam(value = "nID_Task", required = true) Long nID_Task,
-            @ApiParam(value = "номер-ИД процесса (опциональный)", required = false) @RequestParam(value = "nID_Process", required = false) Long nID_Process,
-            @ApiParam(value = "номер-ИД заявки (опциональный, но обязательный если не задан nID_Task)", required = false) @RequestParam(value = "sID_Order", required = false) String sID_Order)
+            @ApiParam(value = "номер-ИД таски (обязательный)", required = true)
+            @RequestParam(value = "nID_Task", required = true) Long nID_Task,
+            @ApiParam(value = "номер-ИД процесса (опциональный, но обязательный если не задан nID_Task и sID_Order)", required = false) @RequestParam(value = "nID_Process", required = false) Long nID_Process,
+            @ApiParam(value = "номер-ИД заявки (опциональный, но обязательный если не задан nID_Task и nID_Process)", required = false) @RequestParam(value = "sID_Order", required = false) String sID_Order,
+            @ApiParam(value = "", required = false) @RequestParam(value = "sLogin", required = false) String sLogin,
+            @ApiParam(value = "", required = false) @RequestParam(value = "bIncludeGroups", required = false) Boolean bIncludeGroups,
+            @ApiParam(value = "", required = false) @RequestParam(value = "bIncludeStartForm", required = false) Boolean bIncludeStartForm,
+            @ApiParam(value = "", required = false) @RequestParam(value = "bIncludeAttachments", required = false) Boolean bIncludeAttachments)
             throws CRCInvalidException, CommonServiceException, RecordNotFoundException {
 
         if (nID_Task == null) {
-            ArrayList<String> taskIDsList = null;
-            if (sID_Order != null) {
-                LOG.info("start process getting Task Data by sID_Order={}", sID_Order);
-                Long ProtectedID = oActionTaskService.getIDProtectedFromIDOrder(sID_Order);
-                taskIDsList = (ArrayList) getTasksByOrder(ProtectedID);
-            } else if (nID_Process != null) {
-                LOG.info("start process getting Task Data by nID_Process={}", nID_Process);
-                taskIDsList = (ArrayList) oActionTaskService.getTaskIdsByProcessInstanceId(nID_Process.toString());
+            nID_Task = oActionTaskService.getTaskIDbyProcess(nID_Process, sID_Order, Boolean.FALSE);
+        }
+        if(sLogin != null){
+            if (oActionTaskService.checkAvailabilityTaskCandidateGroupsForUser(sLogin, nID_Task)){
+                LOG.info("User {} have access to the Task {}", sLogin, nID_Task);
             } else {
-                throw new RecordNotFoundException("All request param is NULL");
+                String taskGroupIDs = oActionTaskService.getCandidateGroupByTaskID(nID_Task).toString();
+                throw new AccessServiceException(AccessServiceException.Error.LOGIN_ERROR, "Access deny " + taskGroupIDs);
             }
-            Task task = oActionTaskService.getTaskByID(taskIDsList.get(0));
-            Task taskOpponent;
-            for (int i = 1; i < taskIDsList.size(); i++) {
-                taskOpponent = oActionTaskService.getTaskByID(taskIDsList.get(i));
-                if (task.getCreateTime().after(taskOpponent.getCreateTime())) {
-                    task = taskOpponent;
-                }
-            }
-            nID_Task = Long.parseLong(task.getId());
+        }
+        if (bIncludeGroups == null) {
+            bIncludeGroups = Boolean.FALSE;
+        }
+        if (bIncludeStartForm == null) {
+            bIncludeStartForm = Boolean.FALSE;
+        }
+        if (bIncludeAttachments == null) {
+            bIncludeAttachments = Boolean.FALSE;
+        }
+        Map<String, Object> response = new HashMap<>();
+
+        response.put("oProcess", oActionTaskService.getProcessInfoByTaskID(nID_Task));
+        response.put("aField", oActionTaskService.getTaskAllFields(nID_Task));
+        if (bIncludeGroups.equals(Boolean.TRUE)){
+            response.put("aGroups", oActionTaskService.getCandidateGroupByTaskID(nID_Task));
+        }
+        if (bIncludeStartForm.equals(Boolean.TRUE)){
+            response.put("aFieldStartForm", oActionTaskService.getStartFormData(nID_Task));
+        }
+        if (bIncludeAttachments.equals(Boolean.TRUE)){
+            response.put("aAttachment", oActionTaskService.getAttachmentsByTaskID(nID_Task));
         }
 
-        return JsonRestUtils.toJsonResponse(oActionTaskService.getProcessInfoByTaskID(nID_Task.toString()));
+        response.put("sStatusName", oActionTaskService.getTaskName(nID_Task));
+        response.put("sID_Status", nID_Task);
+
+        String sDateTimeCreate = JsonDateTimeSerializer.DATETIME_FORMATTER.print(
+                oActionTaskService.getTaskDateTimeCreate(nID_Task).getTime()
+        );
+        response.put("sDateTimeCreate", sDateTimeCreate);
+
+        return JsonRestUtils.toJsonResponse(response);
     }
 
     /*private static class TaskAlreadyUnboundException extends Exception {
@@ -1448,16 +1475,40 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 						groupsIds);
 				
 				totalNumber = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery)taskQuery).count() : getCountOfTasks(groupsIds);
-				
+				LOG.info("Total number of tasks:{}", totalNumber);
 				int nStartBunch = nStart;
 				List<TaskInfo> tasks = new LinkedList<TaskInfo>();
 				
-				while ((tasks.size() < nSize) || (nStartBunch < totalNumber)){
+				// this while is intended to work until we either pass through all the tasks or select needed number of tickets
+				long sizeOfTasksToSelect = nSize;
+				if (bFilterHasTicket){
+					// in case bFilterHasTicket tasks can be shifted. So we have select tasks from 0 and select tasks from nStart after that
+					sizeOfTasksToSelect = totalNumber;
+					nStartBunch = 0;
+				}
+				while ((tasks.size() < sizeOfTasksToSelect) && (nStartBunch < totalNumber)){
 					LOG.info("Populating response with results. nStartFrom:{} nSize:{}", nStartBunch, nSize);
 					List<TaskInfo> currTasks = getTasksWithTicketsFromQuery(taskQuery, nStartBunch, nSize, bFilterHasTicket, mapOfTickets);
 					tasks.addAll(currTasks);
 					
 					nStartBunch += nSize;
+					
+					if (!bFilterHasTicket){
+						break;
+					}
+				}
+				
+				int tasksSize = tasks.size();
+				if (bFilterHasTicket){
+					totalNumber = tasksSize;
+					if (tasksSize > nStart && tasksSize > (nStart + nSize)){
+						tasks = tasks.subList(nStart, nStart + nSize);
+					} else if (tasksSize > nStart) {
+						tasks = tasks.subList(nStart, tasksSize);
+					} else {
+						LOG.info("Number of tasks with FlowSlotTicket is less than starting point to fetch:{}", tasksSize);
+						tasks.clear();
+					}
 				}
 				
 				List<Map<String, Object>> data = new LinkedList<Map<String, Object>>();
@@ -1486,10 +1537,21 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 	
 		List<Long> taskIds = new LinkedList<Long>();
 		for (int i = 0; i < tasks.size(); i++){
-			taskIds.add(Long.valueOf(tasks.get(i).getId()));
+			TaskInfo currTask = tasks.get(i);
+			if (currTask.getProcessInstanceId() != null){
+				taskIds.add(Long.valueOf(currTask.getProcessInstanceId()));
+			}
 		}
-		LOG.info("Preparing to select flow slot tickets");
-		List<FlowSlotTicket> tickets = flowSlotTicketDao.findAllByInValues("nID_Task_Activiti", taskIds);
+		LOG.info("Preparing to select flow slot tickets. taskIds:{}", taskIds.toString());
+		List<FlowSlotTicket> tickets  = new LinkedList<FlowSlotTicket>();
+		if (taskIds.size() == 0){
+			return tasks;
+		}
+		try {
+			tickets = flowSlotTicketDao.findAllByInValues("nID_Task_Activiti", taskIds);
+		} catch (Exception e){
+			LOG.error("Error occured while getting tickets for tasks", e);
+		}
 		LOG.info("Found {} tickets for specified list of tasks IDs", tickets.size());
 		if (tickets != null) {
 			for (FlowSlotTicket ticket : tickets) {
@@ -1501,7 +1563,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 			Iterator<TaskInfo> iter = tasks.iterator();
 			while (iter.hasNext()){
 				TaskInfo curr = iter.next();
-				if (!mapOfTickets.keySet().contains(curr.getId())){
+				if (!mapOfTickets.keySet().contains(curr.getProcessInstanceId())){
 					LOG.info("Removing tasks with ID {}", curr.getId());
 					iter.remove();
 				}
@@ -1524,9 +1586,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "номер-ИД сообщения", required = true) @RequestParam(value = "nID_Message", required = true) String nID_Message ,
             @ApiParam(value = "номер-ИД процесса", required = false) @RequestParam(value = "nID_Process", required = false) Long nID_Process ) throws CommonServiceException{
     	try {
-            String sID_Order = generalConfig.sID_Order_ByProcess(nID_Process);
             Map<String, String> params = new HashMap<>();
-            params.put("sID_Order", sID_Order);
+            if(nID_Process!=null){
+                String sID_Order = generalConfig.sID_Order_ByProcess(nID_Process);
+                params.put("sID_Order", sID_Order);
+            }
             params.put("nID_Message", nID_Message);
             String soResponse = "";
             String sURL = generalConfig.sHostCentral() + "/wf/service/subject/message/getMessageFile";
@@ -1567,7 +1631,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 		for (int i = 0; i < tasks.size(); i++){
 			try {
 				TaskInfo task = (TaskInfo)tasks.get(i);
-				Map<String, Object> taskInfo = populateTaskInfo(task, mapOfTickets.get(task.getId()));
+				Map<String, Object> taskInfo = populateTaskInfo(task, mapOfTickets.get(task.getProcessInstanceId()));
 				
 				data.add(taskInfo);
 			} catch (Exception e){
@@ -1586,7 +1650,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 		Map<String, TaskInfo> tasksMap = new HashMap<String, TaskInfo>();
 		for (int i = 0; i < tasks.size(); i++){
 			TaskInfo task = (TaskInfo)tasks.get(i);
-			tasksMap.put(((TaskInfo)tasks.get(i)).getId(), task);
+			tasksMap.put(((TaskInfo)tasks.get(i)).getProcessInstanceId(), task);
 		}
 		for (int i = 0; i < tickets.size(); i++){
 			try {
@@ -1606,8 +1670,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 			List<String> groupsIds) {
 		Object taskQuery = null; 
 		if ("Closed".equalsIgnoreCase(sFilterStatus)){
-			taskQuery = historyService.createHistoricTaskInstanceQuery().
-					taskCandidateGroupIn(groupsIds).finished();
+			taskQuery = historyService.createHistoricTaskInstanceQuery().taskInvolvedUser(sLogin).finished();
 			if ("taskCreateTime".equalsIgnoreCase(sOrderBy)){
 				 ((TaskInfoQuery)taskQuery).orderByTaskCreateTime();
 			} else {
@@ -1697,5 +1760,33 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 		}
 		return taskInfo;
 	}
+
+
+    @RequestMapping(value = "/getLink", method = { RequestMethod.GET })
+    @ResponseBody
+    public ActionTaskLink getActionTaskLink(@RequestParam(value = "nID_Process", required = false) Long nID_Process,
+                                    @RequestParam(value = "sKey", required = true) String sKey,
+                                    @RequestParam(value = "nID_Subject_Holder", required = true) Long nID_Subject_Holder) throws Exception {
+
+        return actionTaskLinkDao.getByCriteria(nID_Process, sKey, nID_Subject_Holder);
+    }
+
+    @RequestMapping(value = "/setLink", method = { RequestMethod.GET })
+    @ResponseBody
+    public ActionTaskLink setActionTaskLink(@RequestParam(value = "nID_Process", required = true) Long nID_Process,
+                                            @RequestParam(value = "sKey", required = true) String sKey,
+                                            @RequestParam(value = "nID_Subject_Holder", required = true) Long nID_Subject_Holder) throws Exception {
+
+        return actionTaskLinkDao.setActionTaskLink(nID_Process, sKey, nID_Subject_Holder);
+    }
+    
+    @RequestMapping(value = "/callback/ukrdoc", method = {RequestMethod.POST})
+    public void processUkrDocCallBack(@RequestBody String event){
+    	
+    	UkrDocEventHandler eventHandler = new UkrDocEventHandler();
+    	eventHandler.processEvent(event);
+    	
+    	LOG.info("Parsed document ID:{} and status:{} from event", eventHandler.getDocumentId(), eventHandler.getStatus());
+    }
     
 }

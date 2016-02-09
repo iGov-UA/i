@@ -20,6 +20,7 @@ import org.activiti.engine.history.HistoricFormProperty;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.identity.Group;
+import org.activiti.engine.impl.persistence.entity.TaskEntity;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.repository.ProcessDefinition;
@@ -785,9 +786,9 @@ public class ActionTaskService {
 
     private String replaceReportFields(SimpleDateFormat sDateCreateDF, Task curTask, String currentRow) {
         String res = currentRow;
-        for (TaskReportField field : TaskReportField.values()) {
+        for (TaskReportField field : TaskReportField.values()) { 
             if (res.contains(field.getPattern())) {
-                res = field.replaceValue(res, curTask, sDateCreateDF);
+                res = field.replaceValue(res, curTask, sDateCreateDF, oGeneralConfig);//sID_Order
             }
         }
         return res;
@@ -797,7 +798,7 @@ public class ActionTaskService {
         String res = currentRow;
         for (TaskReportField field : TaskReportField.values()) {
             if (res.contains(field.getPattern())) {
-                res = field.replaceValue(res, curTask, sDateCreateDF);
+                res = field.replaceValue(res, curTask, sDateCreateDF, oGeneralConfig);
             }
         }
         return res;
@@ -935,12 +936,17 @@ public class ActionTaskService {
     }
 
     public List<String> getTaskIdsByProcessInstanceId(String processInstanceID) throws RecordNotFoundException {
+
+        /* issue 1131
         List<Task> aTask = getTasksByProcessInstanceId(processInstanceID);
         List<String> res = new ArrayList<>();
         for (Task task : aTask) {
             res.add(task.getId());
         }
         return res;
+        */
+        return findTaskIDsByActiveAndHistoryProcessInstanceID(Long.parseLong(processInstanceID));
+
     }
 
     public void fillTheCSVMap(String sID_BP, Date dateAt, Date dateTo, List<Task> foundResults, SimpleDateFormat sDateCreateDF, List<Map<String, Object>> csvLines, String pattern, String saFieldsCalc, String[] headers) {
@@ -1059,7 +1065,7 @@ public class ActionTaskService {
     public Map<String, String> getTaskFormDataInternal(Long nID_Task) throws CommonServiceException {
         Map<String, String> result = new HashMap<>();
         Task task = oTaskService.createTaskQuery().taskId(nID_Task.toString()).singleResult();
-        LOG.info("Found task with (ID={}, process inctanse ID={})", nID_Task, task.getProcessInstanceId());
+        LOG.info("Found task with (ID={}, process instance ID={})", nID_Task, task.getProcessInstanceId());
         FormData taskFormData = oFormService.getTaskFormData(task.getId());
         Map<String, Object> variables = oRuntimeService.getVariables(task.getProcessInstanceId());
         if (taskFormData != null) {
@@ -1258,14 +1264,15 @@ public class ActionTaskService {
      * @param nID_Task - номер-ИД таски
      * @return DTO-объект ProcessDTOCover
      */
-    public ProcessDTOCover getProcessInfoByTaskID(String nID_Task){
+    public ProcessDTOCover getProcessInfoByTaskID(Long nID_Task){
         LOG.info("start process getting Task Data by nID_Task = {}",  nID_Task);
 
         HistoricTaskInstance historicTaskInstance = oHistoryService.createHistoricTaskInstanceQuery()
-                .taskId(nID_Task).singleResult();
+                .taskId(nID_Task.toString()).singleResult();
 
         String sBP = historicTaskInstance.getProcessDefinitionId();
         LOG.info("id-бизнес-процесса (БП) sBP={}", sBP);
+
 
         ProcessDefinition processDefinition = oRepositoryService.createProcessDefinitionQuery()
                 .processDefinitionId(sBP).singleResult();
@@ -1274,10 +1281,10 @@ public class ActionTaskService {
         LOG.info("название услуги (БП) sName={}", sName);
 
         Date oProcessInstanceStartDate = oHistoryService.createProcessInstanceHistoryLogQuery(getProcessInstanceIDByTaskID(
-                nID_Task)).singleResult().getStartTime();
+                nID_Task.toString())).singleResult().getStartTime();
         DateTimeFormatter formatter = JsonDateTimeSerializer.DATETIME_FORMATTER;
         String sDateCreate = formatter.print(oProcessInstanceStartDate.getTime());
-        LOG.info("дата создания таски sDateCreate={}", sDateCreate);
+        LOG.info("дата создания процесса sDateCreate={}", sDateCreate);
 
         Long nID = Long.valueOf(historicTaskInstance.getProcessInstanceId());
         LOG.info("id процесса (nID={})", nID.toString());
@@ -1509,5 +1516,309 @@ public class ActionTaskService {
             facadeTasks.add(adapter.apply(task));
         }
         return facadeTasks;
+    }
+
+    /**
+     * Поиск nID_Task по nID_Process (process instance id) независимо от того, активный этот процесс либо уже находится в архиве
+     * @param nID_Process
+     */
+    public List<String> findTaskIDsByActiveAndHistoryProcessInstanceID(Long nID_Process) throws RecordNotFoundException {
+        List<String> result = new ArrayList<>();
+        List<Task> aTask = null;
+        List<HistoricTaskInstance> aHistoricTask = null;
+        aTask = oTaskService.createTaskQuery().processInstanceId(nID_Process.toString()).list();
+        if (aTask == null || aTask.isEmpty()) {
+            LOG.info(String.format("Tasks for active Process Instance [id = '%s'] not found", nID_Process));
+            aHistoricTask = oHistoryService.createHistoricTaskInstanceQuery().processInstanceId(nID_Process.toString()).list();
+            if(aHistoricTask == null || aHistoricTask.isEmpty()){
+                LOG.error(String.format("Tasks for Process Instance [id = '%s'] not found", nID_Process));
+                throw new RecordNotFoundException();
+            }
+            for(HistoricTaskInstance historicTask : aHistoricTask){
+                result.add(historicTask.getId());
+                LOG.info(String.format("Historic Task [id = '%s'] is found", historicTask.getId()));
+            }
+            LOG.info("Tasks for historic process instance: " + result.toString());
+        }
+        if(result.isEmpty()){
+            for (Task task : aTask) {
+                result.add(task.getId());
+                LOG.info(String.format("Task [id = '%s'] is found", task.getId()));
+            }
+            LOG.info("Tasks for process instance: " + result.toString());
+        }
+        return result;
+    }
+
+    /**
+     * Поиск nID_Task из активного или завершенного процесса
+     * @param nID_Process - process instance ID
+     * @param sID_Order
+     * @param bIsFirstCreatedTask -- true - для поиска Task с более ранней датой создания
+     *                            false - для поиска Task с более поздней датой создания
+     */
+    public Long getTaskIDbyProcess(Long nID_Process, String sID_Order, Boolean bIsFirstCreatedTask)
+            throws CRCInvalidException, RecordNotFoundException {
+        Long nID_Task;
+        ArrayList<String> taskIDsList = new ArrayList<>();
+        List<String> resultTaskIDs = null;
+        if (sID_Order != null) {
+            LOG.info("start process getting Task Data by sID_Order={}", sID_Order);
+            Long ProtectedID = getIDProtectedFromIDOrder(sID_Order);
+            String snID_Process = getOriginalProcessInstanceId(ProtectedID);
+            nID_Process = Long.parseLong(snID_Process);
+            resultTaskIDs = findTaskIDsByActiveAndHistoryProcessInstanceID(nID_Process);
+        } else if (nID_Process != null) {
+            LOG.info("start process getting Task Data by nID_Process={}", nID_Process);
+            resultTaskIDs = findTaskIDsByActiveAndHistoryProcessInstanceID(nID_Process);
+        } else {
+            String massege = "All request param is NULL";
+            LOG.info(massege);
+            throw new RecordNotFoundException(massege);
+        }
+        for (String taskID : resultTaskIDs){
+            taskIDsList.add(taskID);
+        }
+
+        String task = taskIDsList.get(0);
+
+        if(taskIDsList.size() > 1){
+            LOG.info("Result tasks list size: " + taskIDsList.size());
+            if (bIsFirstCreatedTask){
+                LOG.info("Searching Task with an earlier creation date");
+            } else {
+                LOG.info("Searching Task with an later creation date");
+            }
+
+            Date createDateTask, createDateTaskOpponent;
+
+            createDateTask = getTaskDateTimeCreate(Long.parseLong(task));
+            LOG.info(String.format("Task create date: ['%s']",
+                    JsonDateTimeSerializer.DATETIME_FORMATTER.print(createDateTask.getTime())));
+
+            String taskOpponent;
+            for (String taskID : taskIDsList) {
+                taskOpponent = taskID;
+                LOG.info(String.format("Task [id = '%s'] is detect", taskID));
+
+                createDateTaskOpponent = getTaskDateTimeCreate(Long.parseLong(taskID));
+
+
+                if (bIsFirstCreatedTask){
+                    if (createDateTask.after(createDateTaskOpponent)) {
+                        task = taskOpponent;
+                        LOG.info(String.format("Set new result Task [id = '%s']", task));
+                    }
+                } else {
+                    if (createDateTask.before(createDateTaskOpponent)) {
+                        task = taskOpponent;
+                        LOG.info(String.format("Set new result Task [id = '%s']", task));
+                    }
+                }
+            }
+        }
+        nID_Task = Long.parseLong(task);
+        LOG.info(String.format("Task [id = '%s'] is found", nID_Task));
+        return nID_Task;
+    }
+
+    /**
+     * Ищет таску среди активных и архивных и возвращает дату ее создания (поиск сначала происходит среди активных Тасок, если не удается найти - ищет в архивных)
+     * @param nID_Task - ИД таски
+     * @return - результат метода Таски getCreateTime()
+     * @throws RecordNotFoundException - в случая не возможности найти заданный ИД среди архивных тасок
+     */
+    public Date getTaskDateTimeCreate(Long nID_Task) throws RecordNotFoundException {
+        Date result;
+        String taskID = nID_Task.toString();
+        try{
+            result = oTaskService.createTaskQuery().taskId(taskID).singleResult().getCreateTime();
+        } catch (NullPointerException e){
+            LOG.info(String.format("Must search Task [id = '%s'] in history!!!", taskID));
+            try {
+                result = oHistoryService.createHistoricTaskInstanceQuery().taskId(taskID).singleResult().getCreateTime();
+            } catch (NullPointerException e1){
+                throw new RecordNotFoundException(String.format("Task [id = '%s'] not faund", taskID));
+            }
+        }
+        LOG.info("Task id = "
+                + nID_Task
+                + " is created on: "
+                + JsonDateTimeSerializer.DATETIME_FORMATTER.print(result.getTime()));
+        return result;
+    }
+
+    /**
+     * Ищет таску среди активных и архивных и возвращает ее имя или статус (поиск сначала происходит среди активных Тасок, если не удается найти - ищет в архивных)
+     * @param nID_Task - ИД таски
+     * @return - результат метода Таски getName()
+     * @throws RecordNotFoundException - в случая не возможности найти заданный ИД среди архивных тасок
+     */
+    public String getTaskName(Long nID_Task) throws RecordNotFoundException {
+        String result;
+        String taskID = nID_Task.toString();
+        try{
+            result = oTaskService.createTaskQuery().taskId(taskID).singleResult().getName();
+        } catch (NullPointerException e){
+            LOG.info(String.format("Must search Task [id = '%s'] in history!!!", taskID));
+            try {
+                result = oHistoryService.createHistoricTaskInstanceQuery().taskId(taskID).singleResult().getName();
+            } catch (NullPointerException e1){
+                throw new RecordNotFoundException(String.format("Task [id = '%s'] not faund", taskID));
+            }
+        }
+        LOG.info("Task id = "
+                + nID_Task
+                + "; name is: "
+                + result);
+        return result;
+    }
+
+    /**
+     * Выгрузка всех полей Таски из Activiti. Сначала поиск nID_Task происходит среди активных, потом в архивных данных.
+     * @param nID_Task - ИД номер таски
+     * @return - объект Map(String fieldName, Object fieldValue)
+     * @throws RecordNotFoundException - если не удалось найти nID_Task ни в акстивных, ни в истории
+     */
+    public Map<String, Object> getTaskAllFields(Long nID_Task) throws RecordNotFoundException {
+        Map<String, Object> result = new HashMap<>();
+        String taskID = nID_Task.toString();
+        try{
+            Task oTask = oTaskService.createTaskQuery().taskId(taskID).singleResult();
+            result.putAll(loadActiveTaskFields(oTask));
+        } catch (NullPointerException e){
+            LOG.info(String.format("Must search Task [id = '%s'] in history!!!", taskID));
+            try {
+                HistoricTaskInstance oHistoricTaskInstance = oHistoryService.createHistoricTaskInstanceQuery().taskId(taskID).singleResult();
+                result.putAll(loadHistoricTaskFields(oHistoricTaskInstance));
+            } catch (NullPointerException e1){
+                throw new RecordNotFoundException(String.format("Task [id = '%s'] not faund", taskID));
+            }
+        }
+        return result;
+    }
+
+    private Map<String, Object> loadActiveTaskFields(Task oTask){
+        Map<String, Object> result = new HashMap<>();
+
+        // fields from TaskInfo
+        result.put("Id", oTask.getId());
+        result.put("Name", oTask.getName());
+        result.put("Description", oTask.getDescription());
+        result.put("Priority", oTask.getPriority());
+        result.put("Owner", oTask.getOwner());
+        result.put("Assignee", oTask.getAssignee());
+        result.put("ProcessInstanceId", oTask.getProcessInstanceId());
+        result.put("ExecutionId", oTask.getExecutionId());
+        result.put("ProcessDefinitionId", oTask.getProcessDefinitionId());
+        result.put("CreateTime", oTask.getCreateTime());
+        result.put("TaskDefinitionKey", oTask.getTaskDefinitionKey());
+        result.put("DueDate", oTask.getDueDate());
+        result.put("Category", oTask.getCategory());
+        result.put("ParentTaskId", oTask.getParentTaskId());
+        result.put("TenantId", oTask.getTenantId());
+        result.put("FormKey", oTask.getFormKey());
+        result.put("TaskLocalVariables", oTask.getTaskLocalVariables());
+        result.put("ProcessVariables", oTask.getProcessVariables());
+
+        // fields from Task
+        result.put("DelegationState", oTask.getDelegationState());
+        result.put("Suspended", oTask.isSuspended());
+
+        return result;
+    }
+
+    private Map<String, Object> loadHistoricTaskFields(HistoricTaskInstance oTask){
+        Map<String, Object> result = new HashMap<>();
+
+        // fields from TaskInfo
+        result.put("Id", oTask.getId());
+        result.put("Name", oTask.getName());
+        result.put("Description", oTask.getDescription());
+        result.put("Priority", oTask.getPriority());
+        result.put("Owner", oTask.getOwner());
+        result.put("Assignee", oTask.getAssignee());
+        result.put("ProcessInstanceId", oTask.getProcessInstanceId());
+        result.put("ExecutionId", oTask.getExecutionId());
+        result.put("ProcessDefinitionId", oTask.getProcessDefinitionId());
+        result.put("CreateTime", oTask.getCreateTime());
+        result.put("TaskDefinitionKey", oTask.getTaskDefinitionKey());
+        result.put("DueDate", oTask.getDueDate());
+        result.put("Category", oTask.getCategory());
+        result.put("ParentTaskId", oTask.getParentTaskId());
+        result.put("TenantId", oTask.getTenantId());
+        result.put("FormKey", oTask.getFormKey());
+        result.put("TaskLocalVariables", oTask.getTaskLocalVariables());
+        result.put("ProcessVariables", oTask.getProcessVariables());
+
+        // fields from HistoricData
+        result.put("Time", oTask.getTime());
+
+        // fields from HistoricTaskInstance
+        result.put("DeleteReason", oTask.getDeleteReason());
+        result.put("StartTime", oTask.getStartTime());
+        result.put("EndTime", oTask.getEndTime());
+        result.put("DurationInMillis", oTask.getDurationInMillis());
+        result.put("WorkTimeInMillis", oTask.getWorkTimeInMillis());
+        result.put("ClaimTime", oTask.getClaimTime());
+
+        return result;
+    }
+
+    /**
+     * Получение массива отождествленных групп по Task
+     * @param nID_Task - Task ID
+     * @return - CandidateGroup from ProcessDefinition by Task
+     */
+    public Set<String> getCandidateGroupByTaskID(Long nID_Task){
+        Set<String> aCandidateGroup = new HashSet<>();
+        ProcessDefinition processDefinition = getProcessDefinitionByTaskID(nID_Task.toString());
+        loadCandidateGroupsFromTasks(processDefinition, aCandidateGroup);
+        return aCandidateGroup;
+    }
+
+    /**
+     * Проверяет вхождение пользователя в одну из груп, на которую распространяется тиска
+     * @param sLogin - логгин пользователя
+     * @param nID_Task - ИД-номер таски
+     * @return true - если пользователь входит в одну из групп; false - если совпадений не найдено.
+     */
+    public boolean checkAvailabilityTaskCandidateGroupsForUser(String sLogin, Long nID_Task){
+        Set<String> userGroupIDs = new HashSet<>();
+        Set<String> taskGroupIDs = getCandidateGroupByTaskID(nID_Task);
+
+        List<Group> groups = oIdentityService.createGroupQuery().groupMember(sLogin).list();
+        for (Group group : groups){
+            userGroupIDs.add(group.getId());
+        }
+
+        for (String userGroupID : userGroupIDs){
+            for (String taskGroupID : taskGroupIDs){
+                if (taskGroupID.equals(userGroupID)){
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Возвращает список объектов Attachment, привязанных к таске
+     * @param nID_Task - ИД-номер таски
+     */
+    public List<Attachment> getAttachmentsByTaskID(Long nID_Task){
+        LOG.info(String.format("Start load Attachment object by Task [id = '%s']", nID_Task));
+        List<Attachment> attachments = oTaskService.getTaskAttachments(nID_Task.toString());
+        if (attachments.isEmpty()){
+           LOG.info(String.format("No attachments in the Task [id = '%s']", nID_Task));
+        } else {
+            List<String> attachmetIDs = new ArrayList<>();
+            for (Attachment attachment : attachments){
+                attachmetIDs.add(attachment.getId());
+            }
+            LOG.info("Task attachmets: " + attachmetIDs.toString());
+        }
+        return attachments;
     }
 }

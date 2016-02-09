@@ -70,7 +70,7 @@
                 <tr ng-show="bOrderQuestion">
                   <td colspan="2"> <!-- novalidate -->
                     <div name="oQuestion" ng-show="!sServerReturnOnAnswer">
-                        
+
                       <h2 ng-bind="oOrder.sBody" ng-show="oOrder.sBody"></h2>
 
                       <div class="row" ng-repeat="oField in aField track by oField.sID"
@@ -85,15 +85,15 @@
                                      ng-model="oField.sValueNew"
                                      ng-required="true"
                                      class="form-control">
-                                
+
                                 <!--input ng-switch-when="date"
                                      type="text"
                                      name="{{oField.sID}}"
                                      ng-model="oField.sValueNew"
                                      ng-required="true"
                                      class="form-control"-->
-                                
-                                
+
+
                                 <p ng-switch-when="date" class="input-group ng-scope" style="width:150px;">
                                     <input
                                            type="text"
@@ -111,7 +111,7 @@
                                            dd/MM/yyyy
                                            ng-readonly="true"
                                            DD/MM/YYYY
-                                           
+
                                            ng-if="oField.sType==='date'"
                                            -->
                                     <span class="input-group-btn">
@@ -121,8 +121,8 @@
                                         <i class="glyphicon glyphicon-calendar"></i>
                                       </button>
                                     </span>
-                                </p> 
-                                
+                                </p>
+
                                 <textarea ng-switch-when="textArea"
                                       name="{{oField.sID}}"
                                       ng-hide="oField.sID==='resident' || oField.sID === 'sCountry'"
@@ -130,7 +130,7 @@
                                       ng-required="true"
                                       class="form-control">
                                 </textarea>
-                                      
+
                                 <label style="color: red;">{{oField.sNotify}}</label>
                             </div>
                       </div>
@@ -146,54 +146,57 @@
                     <div ng-if="sServerReturnOnAnswer">
                       <h2 ng-bind="sServerReturnOnAnswer"></h2>
                     </div>
-                      
+
                   </td>
                 </tr>
-                
+
                 <!--tr ng-if="bOrderQuestion">
                   <td colspan="2">
                     <h2 ng-bind="oOrder.sBody" ng-if="oOrder.sBody"></h2>
                   </td>
                 </tr-->
-                
+
               </tbody>
             </table>
           </div>
-          
+
         </div>
       </div>
     </div>
-      
+
     <div ng-show="bOrderOwner">
-        
+
         <div class="col-md-10" ng-show="!bOrderQuestion">
           <div class="row">
             <textarea style="width: 100%" rows="4" ng-model="sOrderCommentNew"></textarea>
           </div>
           <div class="row">
             <div class="btn btn-primary" ng-click="postComment()" >Залишити коментар</div>
+
+            <button-file-upload on-file-upload-success="onFileUploadSuccess($file)"
+                                o-service-data="oOrder">Додати файл</button-file-upload>
           </div>
         </div>
-        
+
       <div class="col-md-10 table-bordered" style="height: 400px; overflow-y: auto; margin-bottom: 10px;">
         <div ng-repeat="oOrderMessage in aOrderMessage">
           <div class="row">
               <span><b>&nbsp;<label style="color: red;">{{oOrderMessage.nID_Subject!==oOrder.nID_Subject_Auth?'>':''}}</label>{{oOrderMessage.sDate}}</b>&nbsp;{{oOrderMessage.sHead}}</span>
           </div>
-          <div class="row" ng-bind-html="oOrderMessage.sBody">
-              <!--
-                ng-bind-html="htmldecode(data.formData.params[property.id].value)"
-                $scope.getHtml = function(html) {
-                <span>{{oOrderMessage.sBody}}</span>
-              -->
+          <div class="row">
+            <div ng-bind-html="oOrderMessage.sBody"></div>
+
+            <div ng-repeat="oFile in oOrderMessage.osData.aFile">
+              Прикріплено файл: "{{::oFile.sFileName}}"
+            </div>
           </div>
         </div>
       </div>
 
     </div>
-      
-      
-      
+
+
+
     <div ng-hide="bAuth">
       <div class="row">
         <div class="list-group-item col-md-10"
