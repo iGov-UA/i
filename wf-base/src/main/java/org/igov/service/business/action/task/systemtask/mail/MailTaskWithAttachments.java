@@ -58,6 +58,7 @@ public class MailTaskWithAttachments extends Abstract_MailTaskCustom {
             String sDescription = "";
             for (Attachment oAttachment : aAttachment) {
                 sFileName = oAttachment.getName();
+                 sFileName = "Attach_"+oAttachment.getId(); //
                 sFileExt = oAttachment.getType().split(";")[0];
                 sDescription = oAttachment.getDescription();
                 if (sDescription == null || "".equals(sDescription.trim())) {

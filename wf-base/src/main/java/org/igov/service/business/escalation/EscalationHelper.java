@@ -48,13 +48,14 @@ public class EscalationHelper implements ApplicationContextAware {
                 if (bConditionAccept) {
                     EscalationHandler oEscalationHandler = getHandlerClass(sBeanHandler);
                     if (oEscalationHandler != null) {
-                        oEscalationHandler.execute(mTaskParam, (String[]) mTaskParam.get("asRecipientMail"), sPatternFile);
+                        String[] asRecipientMail = (String[]) mTaskParam.get("asRecipientMail");
+                        LOG.info("(asRecipientMail={})", (Object) asRecipientMail);
+                        oEscalationHandler.execute(mTaskParam, asRecipientMail, sPatternFile);
                     }
                 }else{
-                    String sHead = String
-                            .format((oGeneralConfig.bTest() ? "(TEST)" : "") + "Заявка № %s:%s!",
+                    String sHead = String.format((oGeneralConfig.bTest() ? "(TEST)" : "") + "Заявка № %s:%s!",
                                     mTaskParam.get("sID_BP"),
-                                    mTaskParam.get("nID_task_activiti").toString());
+                                    mTaskParam.get("nID_task_activiti")+"");
                     LOG.info("Escalation not need! (sBeanHandler={},sHead={},sCondition={})", sBeanHandler, sHead, sCondition);
                 }
             } catch (Exception e) {
