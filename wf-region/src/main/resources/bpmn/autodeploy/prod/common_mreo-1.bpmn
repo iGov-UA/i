@@ -19,9 +19,9 @@
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть сервісний центр, де Ви б бажали отримати послугу" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="sWork_Time" name="Графік прийому громадян" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="visitDate" name="Бажана дата візиту до МРЕВ" type="queueData" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nID_Department_visitDate" name="Департамент" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sMail_Employee" name="Відповідальна особа" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Адреса/графік МРЕВ" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nID_Department_visitDate" name="Департамент" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMail_Employee" name="Відповідальна особа" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса/графік МРЕВ" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Ваш контактний телефон" type="long" default="380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="text" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
@@ -35,7 +35,7 @@
     </boundaryEvent>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow3" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
-    <userTask id="usertask1" name="Перевірка наявності обтяжень" activiti:candidateGroups="sales">
+    <userTask id="usertask1" name="Перевірка наявності обтяжень" activiti:candidateGroups="common_mreo_1_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
@@ -50,7 +50,7 @@
         <activiti:formProperty id="trans_number" name="транзитний номер авто" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="regDocData" name="Серія та номер свідоцтва про реєстрацію авто" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="visitDate" name="Бажана дата тех.огляду авто" type="queueData" writable="false"></activiti:formProperty>
-       <activiti:formProperty id="email" name="e-mail; На цей e-mail  громадянин отримає результат обробки звернення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="e-mail; На цей e-mail  громадянин отримає результат обробки звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="контактний телефон" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Рішення про надання послуги та результат перевірки наявності обтяжень" type="enum" required="true">
           <activiti:value id="accept" name="Обтяження відсутні. Надіслати громадянину дату / час візиту для огляду авто"></activiti:value>
@@ -72,7 +72,7 @@
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'accept'}]]></conditionExpression>
     </sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
-    <userTask id="usertask2" name="Надання послуги: Огляд авто " activiti:candidateGroups="sales">
+    <userTask id="usertask2" name="Надання послуги: Огляд авто " activiti:candidateGroups="common_mreo_1_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
@@ -100,7 +100,7 @@
         </activiti:formProperty>
       </extensionElements>
     </userTask>
-    <userTask id="usertask3" name="Перевірка наданих документів" activiti:candidateGroups="sales">
+    <userTask id="usertask3" name="Перевірка наданих документів" activiti:candidateGroups="common_mreo_1_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
@@ -139,7 +139,7 @@
     </sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow16" sourceRef="usertask3" targetRef="exclusivegateway3"></sequenceFlow>
-    <userTask id="usertask4" name="Друк держ.номерів" activiti:candidateGroups="sales">
+    <userTask id="usertask4" name="Друк держ.номерів" activiti:candidateGroups="common_mreo_1_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
@@ -450,7 +450,7 @@ ${sWork_Time}
         <omgdi:waypoint x="858.0" y="359.0"></omgdi:waypoint>
         <omgdi:waypoint x="859.0" y="467.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="56.0" width="100.0" x="856.0" y="427.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="856.0" y="427.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
