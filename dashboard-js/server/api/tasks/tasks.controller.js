@@ -429,7 +429,7 @@ exports.getMessageFile = function(req, res) {
   var options = {
     path: 'action/task/getMessageFile_Local',
     query: {
-      nID_Process: req.params.taskId,
+      //nID_Process: req.params.taskId,
       nID_Message: req.params.messageId
     },
     json: true
