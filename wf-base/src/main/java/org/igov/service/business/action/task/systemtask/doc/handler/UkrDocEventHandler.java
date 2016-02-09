@@ -1,5 +1,7 @@
 package org.igov.service.business.action.task.systemtask.doc.handler;
 
+import java.util.Map;
+
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +19,15 @@ public class UkrDocEventHandler {
 		Object dataObj = eventJson.get("data");
 
 		LOG.info("data element: " + dataObj);
+		Object mapPk = ((Map)dataObj).get("pk");
+		if (mapPk != null){
+			documentId = ((Map<String,Integer>)mapPk).get("id") + ":" + ((Map<String,Integer>)mapPk).get("year");
+		}
+		Object state = ((Map)dataObj).get("state");
+		if (state != null){
+			documentId = String.valueOf(((Map<String,Integer>)state).get("current"));
+		}
+		LOG.info("Status {} document {}", status, documentId);
 	}
 
 	public String getStatus() {
