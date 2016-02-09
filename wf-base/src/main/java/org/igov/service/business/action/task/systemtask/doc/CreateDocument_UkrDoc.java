@@ -40,6 +40,9 @@ public class CreateDocument_UkrDoc implements JavaDelegate {
 		String sBodyValue = getStringFromFieldExpression(this.sBody, execution);
 		String nID_PatternValue = getStringFromFieldExpression(this.nID_Pattern, execution);
 		
+		LOG.info("Parameters of the task sLogin:{}, sHead:{}, sBody:{}, nId_PatternValue:{}", sLoginAuthorValue, sHeadValue,
+				sBodyValue, nID_PatternValue);
+		
 		String sessionId = UkrDocUtil.getSessionId(generalConfig.getSID_login(), generalConfig.getSID_password(), 
 				generalConfig.sURL_GenerationSID() + "?lang=UA");
 		
