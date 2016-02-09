@@ -1,11 +1,13 @@
 package org.igov.service.business.action.task.systemtask.doc;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
+import org.activiti.engine.RuntimeService;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.delegate.JavaDelegate;
@@ -23,6 +25,8 @@ import org.springframework.stereotype.Component;
 @Component("CreateDocument_UkrDoc")
 public class CreateDocument_UkrDoc implements JavaDelegate {
 
+	private static final String ID_DOCUMENT_VARIABLE_NAME = "sID_Document";
+
 	private final static Logger LOG = LoggerFactory.getLogger(CreateDocument_UkrDoc.class);
 	
 	private Expression sLoginAuthor;
@@ -32,6 +36,9 @@ public class CreateDocument_UkrDoc implements JavaDelegate {
 	
 	 @Autowired
 	 GeneralConfig generalConfig; 
+	 
+	 @Autowired
+	 RuntimeService runtimeService;
 	
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
@@ -60,6 +67,8 @@ public class CreateDocument_UkrDoc implements JavaDelegate {
         
         String response = String.valueOf(resp);
         LOG.info("Ukrdoc response:" + response);
+        
+        runtimeService.setVariable(execution.getProcessInstanceId(), ID_DOCUMENT_VARIABLE_NAME, response + ":" + Calendar.getInstance().get(Calendar.YEAR));
 	}
 
 	private Map<String, Object> makeJsonRequestObject(String sHeadValue, String sBodyValue, String sLoginAuthorValue, 
@@ -69,17 +78,17 @@ public class CreateDocument_UkrDoc implements JavaDelegate {
 		Map<String, Object> content = new HashMap<String, Object>();
 		content.put("name", sHeadValue);
 		content.put("text", sHeadValue);
-		content.put("paragraphs", new JSONArray());
+		content.put("paragraphs", new Object[0]);
 		content.put("extensions", new JSONArray());
 		
 		res.put("content", content);
 		
 		Map<String, Object> actors = new HashMap<String, Object>();
 		actors.put("paragraphs", new JSONArray());
-		actors.put("ratifiers", new JSONArray());
-		actors.put("reconcilers", new JSONArray());
-		actors.put("addresses", new JSONArray());
-		actors.put("readers", new JSONArray());
+		actors.put("ratifiers", new Object[0]);
+		actors.put("reconcilers", new Object[0]);
+		actors.put("addressee", new JSONArray());
+		actors.put("readers", new Object[0]);
 		
 		Map<String, String> author = new HashMap<String, String>();
 		author.put("id", sLoginAuthorValue);
