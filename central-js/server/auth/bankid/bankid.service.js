@@ -133,7 +133,7 @@ module.exports.syncWithSubject = function (accessToken, done) {
         if (error) {
           callback(createError(error, response), null);
         } else {
-          result.subject = JSON.parse(body);
+          result.subject = body;
           callback(null, result);
         }
       });

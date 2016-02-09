@@ -7,6 +7,17 @@ var NodeCache = require("node-cache");
 var aServerCache = new NodeCache();
 
 
+module.exports.httpCallback = function (asyncCallback) {
+  return function (error, response, body) {
+    if (error) {
+      //TODO add code processing
+      asyncCallback(error, null);
+    } else {
+      asyncCallback(null, body);
+    }
+  };
+};
+
 module.exports.asErrorMessages = function (asMessageDefault, oData, onCheckMessage) {
   /*var oData = {"s":"asasas"};
    $.extend(oData,{sDTat:"dddddd"});
@@ -89,12 +100,18 @@ module.exports.getRequestUrl = function (apiURL, sHost) {
 
 module.exports.buildGET = function (apiURL, params, sHost, session) {
   var sURL = this.getRequestUrl(apiURL, sHost);
+  var qs = params;
+
+  if (params && !params.nID_Subject && session && session.subject) {
+    qs = _.extend(params, {nID_Subject: session.subject.nID});
+  }
+
   return {
     'url': sURL,
     'auth': this.getAuth(),
     'json': true,
-    'qs': _.extend(params, {nID_Subject: session && session.subject ? session.subject.nID : null})
-  };
+    'qs': qs
+  }
 };
 
 module.exports.buildRequest = function (req, apiURL, params, sHost) {
@@ -119,7 +136,6 @@ module.exports.getDefaultCallback = function (res) {
       res.statusCode = response.statusCode;
       res.send(body);
     }
-    res.end();
   }
 };
 
