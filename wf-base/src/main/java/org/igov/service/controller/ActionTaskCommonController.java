@@ -569,11 +569,13 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             response.put("aAttachment", oActionTaskService.getAttachmentsByTaskID(nID_Task));
         }
         if (bIncludeMessages.equals(Boolean.TRUE)){
+            if (nID_Process == null) {
+                nID_Process = Long.parseLong(
+                        oActionTaskService.getProcessInstanceIDByTaskID(nID_Task.toString())
+                );
+            }
             try {
-                response.put("aMessage", oMessageService.gerOrderMessagesByProcessInstanceID(
-                        Long.parseLong(
-                                oActionTaskService.getProcessInstanceIDByTaskID(nID_Task.toString())
-                        )));
+                response.put("aMessage", oMessageService.gerOrderMessagesByProcessInstanceID(nID_Process));
             } catch (Exception oException) {
                 LOG.error("Can't get: {}", oException.getMessage());
                 throw new CommonServiceException(
