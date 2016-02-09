@@ -19,13 +19,13 @@ public class UkrDocEventHandler {
 		Object dataObj = eventJson.get("data");
 
 		LOG.info("data element: " + dataObj);
-		Object mapPk = ((Map)dataObj).get("pk");
+		Object mapPk = ((JSONObject)dataObj).get("pk");
 		if (mapPk != null){
-			documentId = ((Map<String,Integer>)mapPk).get("id") + ":" + ((Map<String,Integer>)mapPk).get("year");
+			documentId = ((JSONObject)mapPk).get("id") + ":" + ((JSONObject)mapPk).get("year");
 		}
-		Object state = ((Map)dataObj).get("state");
+		Object state = ((JSONObject)dataObj).get("state");
 		if (state != null){
-			documentId = String.valueOf(((Map<String,Integer>)state).get("current"));
+			documentId = String.valueOf(((JSONObject)state).get("current"));
 		}
 		LOG.info("Status {} document {}", status, documentId);
 	}
