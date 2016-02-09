@@ -42,7 +42,6 @@ import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.history.HistoricTaskInstanceQuery;
 import org.activiti.engine.identity.Group;
-import org.activiti.engine.impl.persistence.entity.TaskEntity;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.repository.ProcessDefinition;
@@ -58,7 +57,6 @@ import org.igov.io.GeneralConfig;
 import org.igov.io.mail.NotificationPatterns;
 import org.igov.io.web.HttpRequester;
 import org.igov.model.action.event.HistoryEvent_Service_StatusType;
-import org.igov.model.action.task.core.ProcessDTOCover;
 import org.igov.model.action.task.core.ProcessDefinitionCover;
 import org.igov.model.action.task.core.entity.*;
 import org.igov.model.action.task.core.entity.Process;
@@ -67,6 +65,7 @@ import org.igov.model.flow.FlowSlotTicketDao;
 import org.igov.service.business.action.event.HistoryEventService;
 import org.igov.service.business.action.task.core.ActionTaskService;
 import org.igov.service.business.action.task.systemtask.doc.handler.UkrDocEventHandler;
+import org.igov.service.business.subject.message.MessageService;
 import org.igov.service.exception.*;
 import org.igov.util.JSON.JsonDateTimeSerializer;
 import org.igov.util.Tool;
@@ -155,6 +154,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
     @Autowired
     private ActionTaskLinkDao actionTaskLinkDao;
+
+    @Autowired
+    private MessageService oMessageService;
 
     /**
      * Загрузка задач из Activiti:
@@ -526,7 +528,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "", required = false) @RequestParam(value = "sLogin", required = false) String sLogin,
             @ApiParam(value = "", required = false) @RequestParam(value = "bIncludeGroups", required = false) Boolean bIncludeGroups,
             @ApiParam(value = "", required = false) @RequestParam(value = "bIncludeStartForm", required = false) Boolean bIncludeStartForm,
-            @ApiParam(value = "", required = false) @RequestParam(value = "bIncludeAttachments", required = false) Boolean bIncludeAttachments)
+            @ApiParam(value = "", required = false) @RequestParam(value = "bIncludeAttachments", required = false) Boolean bIncludeAttachments,
+            @ApiParam(value = "", required = false) @RequestParam(value = "bIncludeMessages", required = false) Boolean bIncludeMessages)
             throws CRCInvalidException, CommonServiceException, RecordNotFoundException {
 
         if (nID_Task == null) {
@@ -549,6 +552,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         if (bIncludeAttachments == null) {
             bIncludeAttachments = Boolean.FALSE;
         }
+        if (bIncludeMessages == null) {
+            bIncludeMessages = Boolean.FALSE;
+        }
         Map<String, Object> response = new HashMap<>();
 
         response.put("oProcess", oActionTaskService.getProcessInfoByTaskID(nID_Task));
@@ -561,6 +567,19 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
         if (bIncludeAttachments.equals(Boolean.TRUE)){
             response.put("aAttachment", oActionTaskService.getAttachmentsByTaskID(nID_Task));
+        }
+        if (bIncludeMessages.equals(Boolean.TRUE)){
+            try {
+                response.put("aMessage", oMessageService.gerOrderMessagesByProcessInstanceID(
+                        Long.parseLong(
+                                oActionTaskService.getProcessInstanceIDByTaskID(nID_Task.toString())
+                        )));
+            } catch (Exception oException) {
+                LOG.error("Can't get: {}", oException.getMessage());
+                throw new CommonServiceException(
+                        ExceptionCommonController.BUSINESS_ERROR_CODE,
+                        "Can't get: " + oException.getMessage(), oException, HttpStatus.FORBIDDEN);
+            }
         }
 
         response.put("sStatusName", oActionTaskService.getTaskName(nID_Task));
@@ -1404,6 +1423,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "номер-ИД процесса", required = true) @RequestParam(value = "nID_Process", required = true) Long nID_Process
         ) throws CommonServiceException {
         try {
+            /* issue #1131
             String sID_Order = generalConfig.sID_Order_ByProcess(nID_Process);
             Map<String, String> params = new HashMap<>();
             params.put("sID_Order", sID_Order);
@@ -1411,9 +1431,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             String sURL = generalConfig.sHostCentral() + "/wf/service/subject/message/getServiceMessages";
             soResponse = httpRequester.getInside(sURL, params);
             LOG.info("(soResponse={})", soResponse);
+            */
             //public static ResponseEntity<String> toJsonResponse(Object res) {
             //return toJsonResponse(HttpStatus.OK, soResponse);
-            return soResponse;
+            //return soResponse; // issue #1131
             /*String historyEventServiceJson = oActionTaskService.updateHistoryEvent_Service(
                     sID_Order,
                     saField,
@@ -1421,6 +1442,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             LOG.info("....ok! successfully update historyEvent_service! event= {}", historyEventServiceJson);*/
             //oActionTaskService.setInfo_ToActiviti("" + nID_Process, saField, sBody);
             //createSetTaskQuestionsMessage(sID_Order, sBody, saField);//issue 1042
+            return oMessageService.gerOrderMessagesByProcessInstanceID(nID_Process); // issue #1131
         } catch (Exception oException) {
             LOG.error("Can't get: {}", oException.getMessage());
             throw new CommonServiceException(
