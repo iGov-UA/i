@@ -129,17 +129,22 @@ public class SubjectMessageService {
 
     //при параметре nID_Subject == null
     private SubjectContact syncMail(String sMail, Subject oSubject) {
+        
+    //ищем SubjectHuman, если sMail дефолтное
         SubjectContact res = null;
         SubjectHuman oSubjectHuman = subjectHumanDao.getSubjectHuman(SubjectHumanIdType.Email, sMail);
        if(oSubjectHuman != null)
         LOG.info("(syncMail without nID_Subject: sINN{} id {})", oSubjectHuman.getsINN(), oSubjectHuman.getoSubject().getId());
        else
            LOG.warn("(syncMail without nID_Subject: oSubjectHuman null)");
+       
        Subject subject = (oSubjectHuman != null) ? oSubjectHuman.getoSubject() : null;
+       
        if(subject != null)
         LOG.info("(syncMail without nID_Subject: subject id{})",subject.getId() );
        else
             LOG.warn("(syncMail without nID_Subject: subject null)");
+       
         if (subject != null) {
             oSubject.setId(subject.getId());
             oSubject.setsID(subject.getsID());
