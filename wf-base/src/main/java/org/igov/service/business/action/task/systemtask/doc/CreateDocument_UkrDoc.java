@@ -40,6 +40,9 @@ public class CreateDocument_UkrDoc implements JavaDelegate {
 		String sBodyValue = getStringFromFieldExpression(this.sBody, execution);
 		String nID_PatternValue = getStringFromFieldExpression(this.nID_Pattern, execution);
 		
+		LOG.info("Parameters of the task sLogin:{}, sHead:{}, sBody:{}, nId_PatternValue:{}", sLoginAuthorValue, sHeadValue,
+				sBodyValue, nID_PatternValue);
+		
 		String sessionId = UkrDocUtil.getSessionId(generalConfig.getSID_login(), generalConfig.getSID_password(), 
 				generalConfig.sURL_GenerationSID() + "?lang=UA");
 		
@@ -53,10 +56,10 @@ public class CreateDocument_UkrDoc implements JavaDelegate {
         headers.set("Authorization", "Bearer " + sessionId);
         
         byte[] resp = new RestRequest().post(generalConfig.getsUkrDocServerAddress(), urkDocRequest.toString(), 
-        		MediaType.ALL, StandardCharsets.UTF_8, byte[].class, headers);
+        		MediaType.APPLICATION_JSON, StandardCharsets.UTF_8, byte[].class, headers);
         
         String response = String.valueOf(resp);
-        LOG.info("Response:" + response);
+        LOG.info("Ukrdoc response:" + response);
 	}
 
 	private Map<String, Object> makeJsonRequestObject(String sHeadValue, String sBodyValue, String sLoginAuthorValue, 
@@ -67,26 +70,26 @@ public class CreateDocument_UkrDoc implements JavaDelegate {
 		content.put("name", sHeadValue);
 		content.put("text", sHeadValue);
 		content.put("paragraphs", new JSONArray());
-		content.put("extensions", new LinkedList<Object>());
+		content.put("extensions", new JSONArray());
 		
 		res.put("content", content);
 		
 		Map<String, Object> actors = new HashMap<String, Object>();
-		actors.put("paragraphs", new LinkedList<Object>());
+		actors.put("paragraphs", new JSONArray());
 		actors.put("ratifiers", new JSONArray());
 		actors.put("reconcilers", new JSONArray());
-		actors.put("addresses", new LinkedList<Object>());
+		actors.put("addresses", new JSONArray());
 		actors.put("readers", new JSONArray());
 		
 		Map<String, String> author = new HashMap<String, String>();
 		author.put("id", sLoginAuthorValue);
 		
-		actors.put("author", author);
+		res.put("author", author);
 		
 		Map<String, String> template = new HashMap<String, String>();
-		author.put("template", nID_PatternValue);
+		template.put("template", nID_PatternValue);
 		
-		actors.put("details", template);
+		res.put("details", template);
 		
 		return res;
 	}

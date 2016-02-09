@@ -92,7 +92,7 @@ public class GeneralConfig {
     }
 
     public String sURL_GenerationSID() {
-        return general_sURL_GenerationSID;
+        return general_sURL_GenerationSID != null ? general_sURL_GenerationSID : "https://auth-id.igov.org.ua/ChameleonServer/sessions/open";
     }
 
     public String sURL_DocumentKvitanciiCallback() {
@@ -100,11 +100,11 @@ public class GeneralConfig {
     }
 
     public String getSID_login() {
-        return SID_login;
+        return SID_login != null ? SID_login : "igov";
     }
 
     public String getSID_password() {
-        return SID_password;
+        return SID_password != null ? SID_password : "igov-sess";
     }
 
     public boolean bTest() {
