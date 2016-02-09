@@ -28,7 +28,7 @@ public class AssignGroupListener implements TaskListener {
     @Override
     public void notify(DelegateTask task) {
         DelegateExecution execution = task.getExecution();
-        String organ = (String) execution.getVariable("act_id_group.id_");
+        String organ = (String) execution.getVariable("organ");
         LOG.info("organ: " + organ);
         if (organ != null && !"".equals(organ)) {
             List<String> groups = Arrays.asList(organ.split(","));
