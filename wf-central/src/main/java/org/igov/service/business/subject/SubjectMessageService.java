@@ -131,8 +131,11 @@ public class SubjectMessageService {
     private SubjectContact syncMail(String sMail, Subject oSubject) {
         SubjectContact res = null;
         SubjectHuman oSubjectHuman = subjectHumanDao.getSubjectHuman(SubjectHumanIdType.Email, sMail);
+       if(oSubjectHuman != null)
         LOG.info("syncMail without nID_Subject: (sINN{} id {})", oSubjectHuman.getsINN(), oSubjectHuman.getoSubject().getId());
-        Subject subject = (oSubjectHuman != null) ? oSubjectHuman.getoSubject() : null;
+       else
+           LOG.warn("(syncMail without nID_Subject: oSubjectHuman null)");
+       Subject subject = (oSubjectHuman != null) ? oSubjectHuman.getoSubject() : null;
         LOG.info("syncMail without nID_Subject: (subject id{})",subject.getId() );
         if (subject != null) {
             oSubject.setId(subject.getId());
