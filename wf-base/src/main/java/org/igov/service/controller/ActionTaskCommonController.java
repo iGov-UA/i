@@ -62,11 +62,11 @@ import org.igov.model.action.task.core.ProcessDTOCover;
 import org.igov.model.action.task.core.ProcessDefinitionCover;
 import org.igov.model.action.task.core.entity.*;
 import org.igov.model.action.task.core.entity.Process;
-import org.igov.model.action.task.core.entity.ActionTaskLinkDao;
 import org.igov.model.flow.FlowSlotTicket;
 import org.igov.model.flow.FlowSlotTicketDao;
 import org.igov.service.business.action.event.HistoryEventService;
 import org.igov.service.business.action.task.core.ActionTaskService;
+import org.igov.service.business.action.task.systemtask.doc.handler.UkrDocEventHandler;
 import org.igov.service.exception.*;
 import org.igov.util.JSON.JsonDateTimeSerializer;
 import org.igov.util.Tool;
@@ -83,6 +83,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -1777,6 +1778,15 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                                             @RequestParam(value = "nID_Subject_Holder", required = true) Long nID_Subject_Holder) throws Exception {
 
         return actionTaskLinkDao.setActionTaskLink(nID_Process, sKey, nID_Subject_Holder);
+    }
+    
+    @RequestMapping(value = "/callback/ukrdoc", method = {RequestMethod.POST})
+    public void processUkrDocCallBack(@RequestBody String event){
+    	
+    	UkrDocEventHandler eventHandler = new UkrDocEventHandler();
+    	eventHandler.processEvent(event);
+    	
+    	LOG.info("Parsed document ID:{} and status:{} from event", eventHandler.getDocumentId(), eventHandler.getStatus());
     }
     
 }
