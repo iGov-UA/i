@@ -390,6 +390,11 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
           .getOrderMessages(oTask.processInstanceId)
           .then(function (result) {
             result = JSON.parse(result);
+            angular.forEach(result, function(message) {
+              if (message.hasOwnProperty('sData') && message.sData.length > 1) {
+                message.osData = JSON.parse(message.sData);
+              }
+            });
             $scope.aOrderMessage = result;
           })
           .catch(defaultErrorHandler);
@@ -955,5 +960,9 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
         }).finally(function () {
           $scope.checkSignState.inProcess = false;
         });
+      }
+
+      $scope.getMessageFileUrl = function (oMessage) {
+        return './api/tasks/' + $scope.nID_Process + '/getMessageFile/' + oMessage.nID;
       }
     }]);

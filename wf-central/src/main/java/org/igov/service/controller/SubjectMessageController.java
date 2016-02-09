@@ -3,6 +3,7 @@ package org.igov.service.controller;
 import com.google.common.base.Optional;
 
 import io.swagger.annotations.*;
+import java.io.IOException;
 
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
@@ -42,9 +43,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import org.activiti.engine.ActivitiException;
+import org.igov.io.db.kv.statical.IBytesDataStorage;
+import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
 import org.igov.service.business.access.AccessDataService;
+import static org.igov.service.business.action.task.core.AbstractModelTask.getByteArrayMultipartFileFromStorageInmemory;
 
 import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
+import org.igov.service.exception.FileServiceIOException;
 @Controller
 @Api(tags = {"SubjectMessageController"}, description = "Сообщения субьектов")
 @RequestMapping(value = "/subject/message")
@@ -63,6 +69,9 @@ public class SubjectMessageController {
 
     @Autowired
     private AccessDataService accessDataDao;
+    
+    @Autowired
+    private IBytesDataStorage durableBytesDataStorage;
     
     @Autowired
     private ActionEventService actionEventService;
@@ -133,7 +142,7 @@ public class SubjectMessageController {
             + "Примеры:\n"
             + "https://test.igov.org.ua/wf/service/subject/message/setMessage?sHead=name&sBody=body&sMail=a@a.a\n"
             + "Ответ: Status 200 если Ok\n")
-    @RequestMapping(value = "/setMessage", method = RequestMethod.POST)
+    @RequestMapping(value = "/setMessage", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
     ResponseEntity setMessage(
@@ -145,7 +154,7 @@ public class SubjectMessageController {
             @ApiParam(value = "Строка дополнительных данных автора", required = false) @RequestParam(value = "sData", required = false) String sData,
             @ApiParam(value = "ИД-номер типа сообщения", required = false) @RequestParam(value = "nID_SubjectMessageType", required = false) Long nID_SubjectMessageType
     ) throws CommonServiceException {
-
+     
         SubjectMessage message
                 = oSubjectMessageService.createSubjectMessage(sHead, sBody, nID_Subject, sMail, sContacts, sData,
                 nID_SubjectMessageType);
@@ -518,14 +527,38 @@ public class SubjectMessageController {
             
             if (StringUtils.isNotBlank(sID_File)){
             	LOG.info("sID_File param is not null", sID_File);
-                byte[] redisByteContentByKey = oBytesDataInmemoryStorage.getBytes(sID_File);
+//                byte[] aByte_FileContent_Redis = oBytesDataInmemoryStorage.getBytes(sID_File);
+                byte[] aByte_FileContent = null;
+                try {
+                    byte[] aByte_FileContent_Redis = oBytesDataInmemoryStorage.getBytes(sID_File);
+                    ByteArrayMultipartFile oByteArrayMultipartFile = null;
+                    oByteArrayMultipartFile = getByteArrayMultipartFileFromStorageInmemory(aByte_FileContent_Redis);
+                    if (oByteArrayMultipartFile != null) {
+                        aByte_FileContent = oByteArrayMultipartFile.getBytes();
+                    } else {
+                        LOG.error("oByteArrayMultipartFile==null! sID_File={}", sID_File);
+                        throw new FileServiceIOException(
+                                FileServiceIOException.Error.REDIS_ERROR, "oByteArrayMultipartFile==null! sID_File="+sID_File);
+                    }
+                } catch (RecordInmemoryException e) {
+                    LOG.warn("Error: {}", e.getMessage(), e);
+                    throw new FileServiceIOException(
+                            FileServiceIOException.Error.REDIS_ERROR, e.getMessage());
+                } catch (ClassNotFoundException | IOException e) {
+                    LOG.error("Error: {}", e.getMessage(), e);
+                    throw new ActivitiException(e.getMessage(), e);
+                }
+                //return redisByteContentByKey;                
                 //AccessDataServiceImpl accessDataService = new AccessDataServiceImpl();
-                String key = accessDataDao.setAccessData(redisByteContentByKey);   //accessDataService
-                LOG.info("New key in mongo", key);
-                JSONArray sDataArray = new JSONArray();
-                sDataArray.put(new JSONObject().put("sFielName", sID_File));
-                sDataArray.put(new JSONObject().put("sKey", key));
-                sData = new JSONObject().put("aFile", sDataArray.toString()).toString();                                
+                String sKey = accessDataDao.setAccessData(aByte_FileContent);   //accessDataService
+                LOG.info("Saved to Mongo! (sKey={},aByte_FileContent.length={})", sKey,aByte_FileContent.length);
+                JSONArray oaFile = new JSONArray();
+                JSONObject o = new JSONObject();
+                o.put("sFileName", sFileName);//sID_File
+                o.put("sKey", sKey);
+                oaFile.put(o);
+                sData = new JSONObject().put("aFile", oaFile).toString();                                
+                LOG.info("sData={}", sData);
             }
             
             historyEventServiceDao.saveOrUpdate(oHistoryEvent_Service);
@@ -791,7 +824,7 @@ public class SubjectMessageController {
             @ApiParam(value = "Номер-ИД сообщения", required = true) @RequestParam(value = "nID_Message", required = true) Long nID_Message) throws CommonServiceException{
     	
     		//content of the message file
-    		byte[] upload = null;
+    		byte[] aByte = null;
     		try{
 	    		SubjectMessage message = subjectMessagesDao.getMessage(nID_Message);
 	    		if(message == null){
@@ -803,13 +836,14 @@ public class SubjectMessageController {
 	    		if (StringUtils.isNotBlank(sID_Order)){
 	    			HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
 	                if (oHistoryEvent_Service != null) {
-	                	if(oHistoryEvent_Service.getId() != message.getnID_HistoryEvent_Service()){
-	                		LOG.info("ID_HIstoryEvent_Service of the message is not equal to ID_HIstoryEvent_Service of the order", nID_Message);
-	        				CommonServiceException newErr = new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, "Alien order");                
-	        				throw newErr;
-	                	}else if (oHistoryEvent_Service.getId() == null){
+                                LOG.info("oHistoryEvent_Service.getId()={},message.getnID_HistoryEvent_Service()={}", oHistoryEvent_Service.getId(),message.getnID_HistoryEvent_Service());    		
+	                	if (oHistoryEvent_Service.getId() == null){
 	                		LOG.info("ID_HIstoryEvent_Service of the order is empty", nID_Message);
 	        				CommonServiceException newErr = new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, "Order not found");                
+	        				throw newErr;
+	                	}else if(!Objects.equals(oHistoryEvent_Service.getId(), message.getnID_HistoryEvent_Service())){
+	                		LOG.info("ID_HIstoryEvent_Service of the message is not equal to ID_HIstoryEvent_Service of the order", nID_Message);
+	        				CommonServiceException newErr = new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, "Alien order");                
 	        				throw newErr;
 	                	}
 	                }
@@ -823,12 +857,8 @@ public class SubjectMessageController {
 	    			LOG.info("sKey value",sKey);
 	    			LOG.info("sFileName value", sFileName);
 	    			    			    		       
-	    		    try {
-						upload = oBytesDataInmemoryStorage.getBytes(sKey);
-					} catch (RecordInmemoryException e) {
-						CommonServiceException newErr = new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, "Content not found", e);		            
-			            throw newErr;
-					}
+                                aByte = durableBytesDataStorage.getData(sKey);
+                                LOG.info("aByte.length=", aByte.length);
 	    		}
     		}catch(Exception e){
     			if(e instanceof CommonServiceException)
@@ -840,7 +870,7 @@ public class SubjectMessageController {
     	            throw new CommonServiceException(500, "Unknown exception: " + e.getMessage());
     			}
     		}
-    	return upload;    	
+    	return aByte;    	
     }
 
 }

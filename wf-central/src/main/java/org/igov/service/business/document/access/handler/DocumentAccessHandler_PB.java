@@ -1,6 +1,7 @@
 package org.igov.service.business.document.access.handler;
 
 import com.google.common.collect.Lists;
+
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,13 +26,16 @@ import javax.mail.internet.ParseException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Collections;
+
 import org.igov.model.document.Document;
+import org.igov.service.business.action.task.systemtask.doc.util.UkrDocUtil;
 import org.igov.service.exception.DocumentNotFoundException;
 import org.igov.model.document.DocumentTypeDao;
 import org.igov.service.exception.DocumentTypeNotSupportedException;
@@ -94,7 +98,8 @@ public class DocumentAccessHandler_PB extends AbstractDocumentAccessHandler {
         //}
 
         try {
-            sessionId = getSessionId();
+            sessionId = UkrDocUtil.getSessionId(generalConfig.getSID_login(), generalConfig.getSID_password(), 
+            		generalConfig.sURL_GenerationSID() + "?lang=UA");
             String authHeader = "sid:" + sessionId;
             byte[] authHeaderBytes = Base64.encode(authHeader.getBytes(StandardCharsets.UTF_8));
             String authHeaderEncoded = new String(authHeaderBytes);
@@ -134,41 +139,6 @@ public class DocumentAccessHandler_PB extends AbstractDocumentAccessHandler {
         }
 
         return doc;
-    }
-
-    private String getSessionId() {
-        String sessionId;
-        String login = generalConfig.getSID_login();
-        String password = generalConfig.getSID_password();
-        String uriSid = generalConfig.sURL_GenerationSID() + "?lang=UA";
-
-        String xml = "<?xml version='1.0' encoding='UTF-8' standalone='yes'?>\n" +
-                "<session><user auth='EXCL' login='" + login + "' password='" + password + "'/></session>";
-
-        String xmlResponse = new RestRequest().post(uriSid, xml, MediaType.TEXT_XML,
-                StandardCharsets.UTF_8, String.class, null);
-        sessionId = getSidFromXml(xmlResponse);
-
-        return sessionId;
-    }
-
-    private String getSidFromXml(String xmlDocument) {
-        //todo simplify parsing
-        String result;
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder;
-        org.w3c.dom.Document doc;
-        try {
-            builder = factory.newDocumentBuilder();
-            InputSource is = new InputSource(new StringReader(xmlDocument));
-            doc = builder.parse(is);
-            Node nodeId = doc.getElementsByTagName("id").item(0);
-            result = nodeId.getAttributes().getNamedItem("value").getNodeValue();
-        } catch (ParserConfigurationException | SAXException | IOException e) {
-            throw new DocumentNotFoundException("Can't parse Session ID.", e);
-        }
-        return result;
-
     }
 
     private MultipartFile getFileFromRespEntity(ResponseEntity<byte[]> documentEntity) throws ParseException {

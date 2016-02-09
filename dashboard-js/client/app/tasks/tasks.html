@@ -223,7 +223,11 @@
           <div class="row">
               <span><b>{{oMessage.sDate}}</b>&nbsp;{{oMessage.sHead}}</span>
           </div>
-          <div class="row" ng-bind-html="oMessage.sBody">
+
+          <div class="row" ng-bind-html="oMessage.sBody"></div>
+
+          <div class="row" ng-repeat="oFile in oMessage.osData.aFile">
+            Прикріплено файл: <a href="{{getMessageFileUrl(oMessage)}}" target="_blank">{{oFile.sFielName}}</a>
           </div>
         </div>
     </div>

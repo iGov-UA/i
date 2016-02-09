@@ -42,6 +42,7 @@ angular.module('documents').controller('DocumentsSearchController',
                 })){                
                     oResponse = [oResponse];
                     $scope.documents = oResponse;
+                    $scope.spinner = false;
                     return oResponse;
                 /*if (data.hasOwnProperty('message')) {
                   var startsWith = function (str) { return data.message.indexOf(str) > -1; };
