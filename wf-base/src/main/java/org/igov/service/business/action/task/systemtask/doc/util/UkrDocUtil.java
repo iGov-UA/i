@@ -16,8 +16,11 @@ import org.w3c.dom.Node;
 import org.springframework.http.MediaType;
 
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.igov.service.exception.DocumentNotFoundException;
+import org.json.simple.JSONArray;
 
 public class UkrDocUtil {
 
@@ -52,5 +55,39 @@ public class UkrDocUtil {
         return result;
 
     }
+	
+	public static Map<String, Object> makeJsonRequestObject(String sHeadValue, String sBodyValue, String sLoginAuthorValue, 
+			String nID_PatternValue) {
+		Map<String, Object> res = new HashMap<String, Object>();
+		
+		Map<String, Object> content = new HashMap<String, Object>();
+		content.put("name", sHeadValue);
+		content.put("text", sHeadValue);
+		content.put("paragraphs", new JSONArray());
+		content.put("extensions", new HashMap<Object,Object>());
+		
+		res.put("content", content);
+		
+		Map<String, Object> actors = new HashMap<String, Object>();
+		actors.put("paragraphs", new HashMap<Object,Object>());
+		actors.put("ratifiers", new JSONArray());
+		actors.put("reconcilers", new JSONArray());
+		actors.put("addressee", new HashMap<Object,Object>());
+		actors.put("readers", new JSONArray());
+		
+		Map<String, String> author = new HashMap<String, String>();
+		author.put("id", sLoginAuthorValue);
+		
+		actors.put("author", author);
+		
+		res.put("actors", actors);
+		
+		Map<String, String> template = new HashMap<String, String>();
+		template.put("template", nID_PatternValue);
+		
+		res.put("details", template);
+		
+		return res;
+	}
 	
 }
