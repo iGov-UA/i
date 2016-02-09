@@ -149,9 +149,9 @@
         <activiti:formProperty id="sBody_1" name="[pattern/print/GAPU1.html]" type="invisible" default="Заява на надання інформаційної довідки" writable="false"></activiti:formProperty>
         <activiti:formProperty id="result" name="Додайте довідку, якщо її виготовлено в електронній формі" type="file"></activiti:formProperty>
         <activiti:formProperty id="vidmova" name="Оберіть причину відмови, якщо у виготовленні відмовлено" type="enum">
-          <activiti:value id="Заява містить недостовірні дані" name="Заява містить недостовірні дані"></activiti:value>
-          <activiti:value id="Інформація за цією ділянкою відсутня" name="Інформація за цією ділянкою відсутня"></activiti:value>
-          <activiti:value id="Ділянка знаходиться за межами міста Дніпропетровськ" name="Ділянка знаходиться за межами міста Дніпропетровськ"></activiti:value>
+          <activiti:value id="sEnum1" name="Заява містить недостовірні дані"></activiti:value>
+          <activiti:value id="sEnum2" name="Інформація за цією ділянкою відсутня"></activiti:value>
+          <activiti:value id="sEnum3" name="Ділянка знаходиться за межами міста Дніпропетровськ"></activiti:value>
         </activiti:formProperty>
       </extensionElements>
     </userTask>
@@ -214,7 +214,7 @@
           <activiti:expression>[pattern/mail/_common_header.html]
 		    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 			&lt;p&gt;На жаль, Ваше звернення відхилене. &lt;/p&gt;
-			&lt;p&gt;${vidmova}&lt;/p&gt;
+			&lt;p&gt;enum{[vidmova]}&lt;/p&gt;
 			&lt;p&gt;За необхідності Ви можете подати ще одне звернення на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;igov.org.ua&lt;/a&gt;&lt;/p&gt;
 			[pattern/mail/_common_signature_start.html]
 			&lt;p&gt;Головне архітектурно-планувальне управління&lt;br /&gt;
