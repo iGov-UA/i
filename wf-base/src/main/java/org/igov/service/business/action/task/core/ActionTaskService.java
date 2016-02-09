@@ -1674,6 +1674,12 @@ public class ActionTaskService {
         return result;
     }
 
+    /**
+     * Выгрузка всех полей Таски из Activiti. Сначала поиск nID_Task происходит среди активных, потом в архивных данных.
+     * @param nID_Task - ИД номер таски
+     * @return - объект Map(String fieldName, Object fieldValue)
+     * @throws RecordNotFoundException - если не удалось найти nID_Task ни в акстивных, ни в истории
+     */
     public Map<String, Object> getTaskAllFields(Long nID_Task) throws RecordNotFoundException {
         Map<String, Object> result = new HashMap<>();
         String taskID = nID_Task.toString();
@@ -1769,5 +1775,31 @@ public class ActionTaskService {
         ProcessDefinition processDefinition = getProcessDefinitionByTaskID(nID_Task.toString());
         loadCandidateGroupsFromTasks(processDefinition, aCandidateGroup);
         return aCandidateGroup;
+    }
+
+    /**
+     * Проверяет вхождение пользователя в одну из груп, на которую распространяется тиска
+     * @param sLogin - логгин пользователя
+     * @param nID_Task - ИД-номер таски
+     * @return true - если пользователь входит в одну из групп; false - если совпадений не найдено.
+     */
+    public boolean checkAvailabilityTaskCandidateGroupsForUser(String sLogin, Long nID_Task){
+        Set<String> userGroupIDs = new HashSet<>();
+        Set<String> taskGroupIDs = getCandidateGroupByTaskID(nID_Task);
+
+        List<Group> groups = oIdentityService.createGroupQuery().groupMember(sLogin).list();
+        for (Group group : groups){
+            userGroupIDs.add(group.getId());
+        }
+
+        for (String userGroupID : userGroupIDs){
+            for (String taskGroupID : taskGroupIDs){
+                if (taskGroupID.equals(userGroupID)){
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }
