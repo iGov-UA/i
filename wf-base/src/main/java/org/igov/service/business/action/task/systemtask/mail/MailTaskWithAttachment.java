@@ -36,8 +36,8 @@ public class MailTaskWithAttachment extends Abstract_MailTaskCustom {
         String sFileName = "document";
         String sFileExt = "txt";
         for (Attachment oAttachment : aAttachment) {
-            sFileName = oAttachment.getName();
-             sFileName = "Attach_"+oAttachment.getId();
+            sFileName = oAttachment.getName(); 
+             sFileName = "Attach_"+oAttachment.getId(); //
             sFileExt = oAttachment.getType();
             oInputStream_Attachment = oExecution.getEngineServices().getTaskService()
                     .getAttachmentContent(oAttachment.getId());
