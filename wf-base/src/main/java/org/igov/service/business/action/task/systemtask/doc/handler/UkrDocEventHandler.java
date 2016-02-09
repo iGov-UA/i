@@ -18,17 +18,18 @@ public class UkrDocEventHandler {
 		JSONObject eventJson = new JSONObject(event);
 		Object dataObj = eventJson.get("data");
 
-		LOG.info("data element: " + dataObj);
-		
 		Object docStateEvent = ((JSONObject)dataObj).get("docStateEvent"); 
 		
-		Object mapPk = ((JSONObject)docStateEvent).get("pk");
-		if (mapPk != null){
-			documentId = ((JSONObject)mapPk).get("id") + ":" + ((JSONObject)mapPk).get("year");
+		Object tables = ((JSONObject)docStateEvent).get("tables");
+		if (tables != null){
+			Object cardsDocument = ((JSONObject)tables).get("CardsDocument");
+			if (cardsDocument != null){
+				documentId = String.valueOf(((JSONObject)cardsDocument).get("CarIdDocument"));
+			}
 		}
 		Object state = ((JSONObject)docStateEvent).get("state");
 		if (state != null){
-			documentId = String.valueOf(((JSONObject)state).get("current"));
+			status = String.valueOf(((JSONObject)state).get("current"));
 		}
 		LOG.info("Status {} document {}", status, documentId);
 	}
