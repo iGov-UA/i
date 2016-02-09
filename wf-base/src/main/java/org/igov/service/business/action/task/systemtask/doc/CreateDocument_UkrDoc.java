@@ -54,7 +54,7 @@ public class CreateDocument_UkrDoc implements JavaDelegate {
 				generalConfig.sURL_GenerationSID() + "?lang=UA");
 		
 		LOG.info("Retrieved session ID:" + sessionId);
-		Map<String, Object> urkDocRequest = makeJsonRequestObject(sHeadValue, sBodyValue, sLoginAuthorValue, nID_PatternValue);
+		Map<String, Object> urkDocRequest = UkrDocUtil.makeJsonRequestObject(sHeadValue, sBodyValue, sLoginAuthorValue, nID_PatternValue);
 
 		LOG.info("Created urk doc request object:" + urkDocRequest.toString());
 
@@ -71,37 +71,7 @@ public class CreateDocument_UkrDoc implements JavaDelegate {
         runtimeService.setVariable(execution.getProcessInstanceId(), ID_DOCUMENT_VARIABLE_NAME, response + ":" + Calendar.getInstance().get(Calendar.YEAR));
 	}
 
-	private Map<String, Object> makeJsonRequestObject(String sHeadValue, String sBodyValue, String sLoginAuthorValue, 
-			String nID_PatternValue) {
-		Map<String, Object> res = new HashMap<String, Object>();
-		
-		Map<String, Object> content = new HashMap<String, Object>();
-		content.put("name", sHeadValue);
-		content.put("text", sHeadValue);
-		content.put("paragraphs", new Object[0]);
-		content.put("extensions", new JSONArray());
-		
-		res.put("content", content);
-		
-		Map<String, Object> actors = new HashMap<String, Object>();
-		actors.put("paragraphs", new JSONArray());
-		actors.put("ratifiers", new Object[0]);
-		actors.put("reconcilers", new Object[0]);
-		actors.put("addressee", new JSONArray());
-		actors.put("readers", new Object[0]);
-		
-		Map<String, String> author = new HashMap<String, String>();
-		author.put("id", sLoginAuthorValue);
-		
-		res.put("author", author);
-		
-		Map<String, String> template = new HashMap<String, String>();
-		template.put("template", nID_PatternValue);
-		
-		res.put("details", template);
-		
-		return res;
-	}
+	
 
 	protected String getStringFromFieldExpression(Expression expression,
 			DelegateExecution execution) {
