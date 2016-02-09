@@ -1803,12 +1803,15 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     }
     
     @RequestMapping(value = "/callback/ukrdoc", method = {RequestMethod.POST})
-    public void processUkrDocCallBack(@RequestBody String event){
+    public @ResponseBody
+    String processUkrDocCallBack(@RequestBody String event){
     	
     	UkrDocEventHandler eventHandler = new UkrDocEventHandler();
     	eventHandler.processEvent(event);
     	
     	LOG.info("Parsed document ID:{} and status:{} from event", eventHandler.getDocumentId(), eventHandler.getStatus());
+    	
+    	return "OK";
     }
     
 }

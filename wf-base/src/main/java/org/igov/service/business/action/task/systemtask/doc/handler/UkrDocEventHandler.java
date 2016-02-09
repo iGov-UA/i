@@ -11,28 +11,50 @@ public class UkrDocEventHandler {
 	
 	private String status;
 	private String documentId;
+	private String year;
+	private String pkDocumentId;
 	
 	public void processEvent(String event){
 		JSONObject eventJson = new JSONObject(event);
 		Object dataObj = eventJson.get("data");
 
-		LOG.info("data element: " + dataObj);
+		Object docStateEvent = ((JSONObject)dataObj).get("docStateEvent"); 
+		
+		Object tables = ((JSONObject)docStateEvent).get("tables");
+		if (tables != null){
+			Object cardsDocument = ((JSONObject)tables).get("CardsDocument");
+			if (cardsDocument != null){
+				documentId = String.valueOf(((JSONObject)cardsDocument).get("CarIdDocument"));
+			}
+		}
+		Object state = ((JSONObject)docStateEvent).get("state");
+		if (state != null){
+			status = String.valueOf(((JSONObject)state).get("current"));
+		}
+		
+		Object pk = ((JSONObject)docStateEvent).get("pk");
+		if (pk != null){
+			year = String.valueOf(((JSONObject)pk).get("year"));
+			pkDocumentId = String.valueOf(((JSONObject)pk).get("id"));
+		}
+		
+		LOG.info("Status {} document {} year {} pkDocumentId {}", status, documentId, year, pkDocumentId);
 	}
 
 	public String getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
 	public String getDocumentId() {
 		return documentId;
 	}
 
-	public void setDocumentId(String documentId) {
-		this.documentId = documentId;
+	public String getYear() {
+		return year;
 	}
-	
+
+	public String getPkDocumentId() {
+		return pkDocumentId;
+	}
+
 }
