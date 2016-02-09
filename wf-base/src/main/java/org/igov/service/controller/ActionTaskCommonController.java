@@ -559,7 +559,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             response.put("aFieldStartForm", oActionTaskService.getStartFormData(nID_Task));
         }
         if (bIncludeAttachments.equals(Boolean.TRUE)){
-            response.put("aAttachment", null);
+            response.put("aAttachment", oActionTaskService.getAttachmentsByTaskID(nID_Task));
         }
 
         response.put("sStatusName", oActionTaskService.getTaskName(nID_Task));
