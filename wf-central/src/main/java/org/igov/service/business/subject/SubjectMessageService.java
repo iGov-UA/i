@@ -82,10 +82,12 @@ public class SubjectMessageService {
                 LOG.info("(createSubjectMessage: nID_subject{}) ", nID_subject);
                 
                 subjectContact = syncMail(sMail, nID_subject);
-                
+                if(subjectContact != null)
                  LOG.info("(syncMail with nID_Subject after calling method: SubjectContact ID{},nID_Subject{}, ContactType{}, Date{}, sValue{})",
                     subjectContact.getId(), subjectContact.getSubject().getId(), subjectContact.getSubjectContactType().getsName_EN(),
                     subjectContact.getsDate(), subjectContact.getsValue());
+                else
+                   LOG.info("(syncMail with nID_Subject after calling method: SubjectContact null)"); 
                
 
             }
@@ -137,46 +139,75 @@ public class SubjectMessageService {
     //при параметре nID_Subject == null
     private SubjectContact syncMail(String sMail, Subject oSubject) {
         
-    //ищем SubjectHuman, если sMail дефолтное
+    
         SubjectContact res = null;
-        SubjectHuman oSubjectHuman = subjectHumanDao.getSubjectHuman(SubjectHumanIdType.Email, sMail);
+        Subject subject = null;
+        SubjectHuman oSubjectHuman = null;
+     //получаем контакт по sMail   
+        res = subjectContactDao.findByExpected("sValue", sMail);
+        if(res != null)
+            LOG.info("(syncMail without nID_Subject after get from database: SubjectContact ID{},nID_Subject{}, ContactType{}, Date{}, sValue{})",
+                    res.getId(), res.getSubject().getId(), res.getSubjectContactType().getsName_EN(), res.getsDate(), res.getsValue());
+     //находим subject связанный с найденным контактом
+        subject = (res != null)? res.getSubject() : null;
+            
+        
+        /*SubjectHuman oSubjectHuman = subjectHumanDao.getSubjectHuman(SubjectHumanIdType.Email, sMail);
+        
        if(oSubjectHuman != null)
         LOG.info("(syncMail without nID_Subject: sINN{} id {})", oSubjectHuman.getsINN(), oSubjectHuman.getoSubject().getId());
        else
-           LOG.warn("(syncMail without nID_Subject: oSubjectHuman null)");
+           LOG.warn("(syncMail without nID_Subject: oSubjectHuman null)");*/
        
-       Subject subject = (oSubjectHuman != null) ? oSubjectHuman.getoSubject() : null;
+       //Subject subject = (oSubjectHuman != null) ? oSubjectHuman.getoSubject() : null;
        
        if(subject != null)
         LOG.info("(syncMail without nID_Subject: subject id{})",subject.getId() );
        else
             LOG.warn("(syncMail without nID_Subject: subject null)");
-       
+       //если subject обнаружен, то обновим данные переданного в метод oSubject, чтобы вернуть его 
+       //в createSubjectMessage; найдем SubjectHuman по subject и запишем в его дефолтный Email найденный по sMail контакт
         if (subject != null) {
+            
             oSubject.setId(subject.getId());
             oSubject.setsID(subject.getsID());
             oSubject.setsLabel(subject.getsLabel());
             oSubject.setsLabelShort(subject.getsLabelShort());
             
+            oSubjectHuman = subjectHumanDao.findByExpected("oSubject", subject);
+            if(oSubjectHuman != null)
+              LOG.info("(syncMail without nID_Subject: sINN{} id {})", oSubjectHuman.getsINN(), oSubjectHuman.getoSubject().getId());
+            else
+              LOG.warn("(syncMail without nID_Subject: oSubjectHuman null)");
+            
+            if(oSubjectHuman != null)
+            {
+                oSubjectHuman.setDefaultEmail(res);
+                subjectHumanDao.saveOrUpdateHuman(oSubjectHuman);
+            }
+       
+            
             LOG.info("(syncMail without nID_Subject: oSubject ID{},sID{}, sLabel{}, sLabaleShort{})", oSubject.getId(), oSubject.getsID(), oSubject.getsLabel(), oSubject.getsLabelShort());
 
-            res = subjectContactDao.findByExpected("sValue", sMail);
-            
+           // res = subjectContactDao.findByExpected("sValue", sMail);
+           
+            //обновим дату для SubjectContact и сохраним в базе найденный контакт с новой датой
             if (res != null) {
                 LOG.info("(syncMail without nID_Subject before: SubjectContact ID{},nID_Subject{}, ContactType{}, Date{}, sValue{})",
                     res.getId(), res.getSubject().getId(), res.getSubjectContactType().getsName_EN(), res.getsDate(), res.getsValue());
 
-                res.setSubject(subject);
+                //res.setSubject(subject);
                 res.setsDate();
                 LOG.info("(syncMail without nID_Subject after: SubjectContact ID{},nID_Subject{}, ContactType{}, Date{}, sValue{})",
                     res.getId(), res.getSubject().getId(), res.getSubjectContactType().getsName_EN(), res.getsDate(), res.getsValue());
 
                 subjectContactDao.saveOrUpdate(res);
                 res = subjectContactDao.findByExpected("sValue", sMail);
-                
+                if(res != null)
                 LOG.info("(syncMail without nID_Subject after get from database: SubjectContact ID{},nID_Subject{}, ContactType{}, Date{}, sValue{})",
                     res.getId(), res.getSubject().getId(), res.getSubjectContactType().getsName_EN(), res.getsDate(), res.getsValue());
-
+                
+                
             }
             else
                 LOG.info("(syncMail without nID_Subject: SubjectContact null) " );
@@ -249,7 +280,8 @@ public class SubjectMessageService {
     //при параметре nID_Subject != null
     private SubjectContact syncMail(String sMail, Long nID_Subject) {
 
-       
+      //находим Subject по nID_Subject
+      
        Subject subject = subjectDao.getSubject(nID_Subject);
        if(subject != null)
        LOG.info("(syncMail with nID_Subject: oSubject ID{},sID{}, sLabel{}, sLabaleShort{})", 
@@ -261,6 +293,8 @@ public class SubjectMessageService {
        SubjectHuman subjectHuman = null;
        try
        {
+         //по subject найдем запись относящуюся к SubjectHuman
+        if(subject != null)
          subjectHuman = subjectHumanDao.findByExpected("oSubject", subject);
          
          LOG.info("(syncMail with nID_Subject: sINN{}, id {}, default_email{})", 
@@ -270,9 +304,19 @@ public class SubjectMessageService {
        {
           LOG.warn("(syncMail with nID_Subject: Exception for getting subjectHuman: {})", e.getMessage());
        }
-
+      //по sMail найдем контакт для subject
+      
+      SubjectContact res = null;
+      try
+      {
+         res = subjectContactDao.findByExpected("sValue", sMail);
+      }
+      catch(Exception e)
+      {
+        LOG.warn("(syncMail with nID_Subject: Exception res SubjectContact {})", e.getMessage());
+      }
        
-        List<SubjectContact> subjectContacts = subjectContactDao.findContacts(subject);
+        /*List<SubjectContact> subjectContacts = subjectContactDao.findContacts(subject);
 
         SubjectContact res = null;
 
@@ -295,8 +339,8 @@ public class SubjectMessageService {
                 }
 
             }
-        }
-
+        }*/
+        //если контактов для subject по sMail не обнаружено, значит создаем новый контакт и сохраняем его
         if (res == null) {
             res = new SubjectContact();
             SubjectContactType subjectContactType = subjectContactTypeDao.getEmailType();
@@ -313,8 +357,9 @@ public class SubjectMessageService {
             
              LOG.info("(syncMail with nID_Subject after get from database with res == null: SubjectContact ID{},nID_Subject{}, ContactType{}, Date{}, sValue{})",
                     res.getId(), res.getSubject().getId(), res.getSubjectContactType().getsName_EN(), res.getsDate(), res.getsValue());
-
-           if(subjectHuman != null)
+           }
+           //сохраняем дефолтный mail у SubjectHuman
+           if(subjectHuman != null && res != null)
            {
             subjectHuman.setDefaultEmail(res);
             //subjectHuman.setSubjectHumanIdType(SubjectHumanIdType.Email);
@@ -322,6 +367,7 @@ public class SubjectMessageService {
            try
            {
             subjectHuman = subjectHumanDao.findByExpected("oSubject", subject);
+            
             LOG.info("(syncMail with nID_Subject:sINN{}, id {}, default_email{})", 
                  subjectHuman.getsINN(), subjectHuman.getoSubject().getId(), subjectHuman.getDefaultEmail());
            }
@@ -330,9 +376,8 @@ public class SubjectMessageService {
               LOG.warn("(syncMail with nID_Subject: Exception subjectHuman {})", e.getMessage());
            }
             
-            
-           }
-        }
+          }
+        
 
         return res;
     }
