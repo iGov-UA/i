@@ -94,13 +94,18 @@ public class SubjectMessageService {
                 LOG.info("(createSubjectMessage: nID_subject{}) ", nID_subject);
                 
                 subjectContact = syncMail(sMail, subject);
-                
+               if(subjectContact != null) 
                 LOG.info("(syncMail without nID_Subject after calling method: SubjectContact ID{},nID_Subject{}, ContactType{}, Date{}, sValue{})",
                     subjectContact.getId(), subjectContact.getSubject().getId(), subjectContact.getSubjectContactType().getsName_EN(),
                     subjectContact.getsDate(), subjectContact.getsValue());
+               else
+                   LOG.info("(syncMail without nID_Subject after calling method: subjectContact null)");
                 
+              if(subject != null)
                 LOG.info("(syncMail without nID_Subject after calling method: oSubject ID{},sID{}, sLabel{}, sLabaleShort{})", 
                         subject.getId(), subject.getsID(), subject.getsLabel(), subject.getsLabelShort());
+              else
+                  LOG.info("(syncMail without nID_Subject after calling method: subject null)");
 
                 
             }
@@ -109,7 +114,9 @@ public class SubjectMessageService {
         SubjectMessage message = new SubjectMessage();
         message.setHead(sHead);
         message.setBody(sBody == null ? "" : sBody);
+     
         LOG.info("(createSubjectMessage: subject Id{})", subject.getId());
+
         message.setId_subject((nID_subject == null) ? ((subject.getId() == null) ? 0 : subject.getId()) : nID_subject);
         LOG.info("(createSubjectMessage: message subject Id{})", message.getId_subject());
         SubjectContact oSubjectContact = (subjectContact == null) ? null : subjectContact;
@@ -244,9 +251,11 @@ public class SubjectMessageService {
 
        
        Subject subject = subjectDao.getSubject(nID_Subject);
-       
+       if(subject != null)
        LOG.info("(syncMail with nID_Subject: oSubject ID{},sID{}, sLabel{}, sLabaleShort{})", 
                         subject.getId(), subject.getsID(), subject.getsLabel(), subject.getsLabelShort());
+       else
+           LOG.info("(syncMail with nID_Subject: subject null)");
 
        
        SubjectHuman subjectHuman = null;
