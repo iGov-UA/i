@@ -1,7 +1,5 @@
 package org.igov.service.business.action.task.systemtask.doc.handler;
 
-import java.util.Map;
-
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
