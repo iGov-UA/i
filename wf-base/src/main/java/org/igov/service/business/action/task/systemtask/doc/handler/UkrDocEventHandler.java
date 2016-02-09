@@ -11,6 +11,7 @@ public class UkrDocEventHandler {
 	
 	private String status;
 	private String documentId;
+	private String year;
 	
 	public void processEvent(String event){
 		JSONObject eventJson = new JSONObject(event);
@@ -29,23 +30,25 @@ public class UkrDocEventHandler {
 		if (state != null){
 			status = String.valueOf(((JSONObject)state).get("current"));
 		}
-		LOG.info("Status {} document {}", status, documentId);
+		
+		Object pk = ((JSONObject)docStateEvent).get("pk");
+		if (pk != null){
+			year = String.valueOf(((JSONObject)pk).get("year"));
+		}
+		
+		LOG.info("Status {} document {} year {}", status, documentId, year);
 	}
 
 	public String getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
 	public String getDocumentId() {
 		return documentId;
 	}
 
-	public void setDocumentId(String documentId) {
-		this.documentId = documentId;
+	public String getYear() {
+		return year;
 	}
-	
+
 }
