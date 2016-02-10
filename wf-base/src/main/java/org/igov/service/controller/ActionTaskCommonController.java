@@ -64,6 +64,7 @@ import org.igov.model.flow.FlowSlotTicket;
 import org.igov.model.flow.FlowSlotTicketDao;
 import org.igov.service.business.action.event.HistoryEventService;
 import org.igov.service.business.action.task.core.ActionTaskService;
+import org.igov.service.business.action.task.systemtask.doc.CreateDocument_UkrDoc;
 import org.igov.service.business.action.task.systemtask.doc.handler.UkrDocEventHandler;
 import org.igov.service.business.subject.message.MessageService;
 import org.igov.service.exception.*;
@@ -1825,6 +1826,105 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         return actionTaskLinkDao.setActionTaskLink(nID_Process, sKey, nID_Subject_Holder);
     }
     
+    @ApiOperation(value = "Обработка изменения статуса документа в УкрДок", notes = "#####  ActionCommonTaskController: Обработка изменения статуса документа в УкрДок #####\n\n"
+            + "Request:\n\n"
+            + "https://test.igov.org.ua/wf/service/action/task/callback/ukrdoc\n\n\n"
+	    + "Метод выполняет следующие действия:\n"
+	    + " - получает текущий статус документа из тега data -> docStateEvent -> state -> current \n"
+	    + " - получает номер документа из тега data -> docStateEvent -> tables -> CardsDocument -> CarIdDocument \n"
+	    + " - ищет процесс, с которым связан данный документ используя сущность ActionTaskLink. Если сущности такой еще нет - то производится поиск "
+	    + " по переменной процесса sID_Document, которая устанавливается при отправке документа в УкрДок, и осуществляется сохранение сущности ActionTaskLink\n"
+	    + " - после нахождения текущей активной задачи статус из УкрДока записывается в переменную sID_Document_UkrDoc задачи\n"
+	    + " - завершает текущую задачу. для следующей активной задачи ответственным назначает пользователя завершенной задачи. Если пользователя не было - то задача остается без активного пользователя\n"	    
+            + "В теле запроса передается объект с информацией об изменении:\n"
+	    + "Образец документа:\n"
+	    + "\n```json\n"
+	    + "\"create_time\": \"2016.02.05 12:51:21\",\n"
+            + "\"change_time\": \"2016.02.05 12:51:21\",\n"
+            + "\"node_prev_id\": \"56b0b33edfb2840b2a5644c2\",\n"
+            + "\"status\": \"processed\",\n"
+            + "\"user_id\": 5850,\n"
+            + "\"data\": {\n"
+            + "    \"docStateEvent\": {\n"
+            + "            \"state\": {\n"
+            + "                    \"current\": \"Не завизирован\",\n"
+            + "                    \"previous\": \"Создан\"\n"
+            + "            },\n"
+            + "            \"pk\": {\n"
+            + "                    \"id\": 6569546,\n"
+            + "                    \"year\": 2016\n"
+            + "            },\n"
+            + "            \"tables\": {\n"
+            + "                    \"Executors\": {\n"
+            + "                            \"body\": [\n"
+            + "                                    [\n"
+            + "                                            \"DD100262LVI\",\n"
+            + "                                            null,\n"
+            + "                                            null,\n"
+            + "                                            \"2\",\n"
+            + "                                            1,\n"
+            + "                                            0,\n"
+            + "                                            null,\n"
+            + "                                            null,\n"
+            + "                                            null,\n"
+            + "                                            null,\n"
+            + "                                            \"0\",\n"
+            + "                                            null\n"
+            + "                                    ]\n"
+            + "                            ],\n"
+            + "                            \"head\": {\n"
+            + "                                    \"IdAddedMethod\": 11,\n"
+            + "                                    \"Lightning\": 10,\n"
+            + "                                    \"ExecutData\": 9,\n"
+            + "                                    \"ControlDate\": 8,\n"
+            + "                                    \"AttentionExecutData\": 7,\n"
+            + "                                    \"InitData\": 6,\n"
+            + "                                    \"KindOrder\": 5,\n"
+            + "                                    \"VisOrder\": 4,\n"
+            + "                                    \"KindExecutor\": 3,\n"
+            + "                                    \"peo_peo_ldap_login\": 2,\n"
+            + "                                    \"io_peo_ldap_login\": 1,\n"
+            + "                                    \"peo_ldap_login\": 0\n"
+            + "                            }\n"
+            + "                    },\n"
+            + "                    \"PunctAttending\": {\n"
+            + "                            \"DataPunctAttending\": \"2016-02-05 12:51:20\",\n"
+            + "                            \"NamePunctAttending\": \"Создание\",\n"
+            + "                            \"peo_ldap_login\": \"DD100262LVI\"\n"
+            + "                    },\n"
+            + "                    \"CardsDocument\": {\n"
+            + "                         \"Invizible\": null,\n"
+            + "                         \"LastCoordDate\": null,\n"
+            + "                         \"DocCreateData\": null,\n"
+            + "                         \"CoordBonDays\": null,\n"
+            + "                         \"Flavor\": null,\n"
+            + "                         \"IdPetm\": null,\n"
+            + "                         \"Lightning\": \"0\",\n"
+            + "                         \"Locale\": \"RU\",\n"
+            + "                         \"DocLastModifData\": \"2016-02-05 12:51:20\",\n"
+            + "                         \"CoordRtrnDate\": \"2016-02-05 12:51:20\",\n"
+            + "                         \"Prioritet\": \"Обычный\",\n"
+            + "                         \"ClassId\": \"a\",\n"
+            + "                         \"IdKindDoc\": 19,\n"
+            + "                         \"IdKindIncomming\": 0,\n"
+            + "                         \"IdGroup\": 1,\n"
+            + "                         \"DocumentName\": \"Акт перерахунку сумки\",\n"
+            + "                         \"NumberDocument\": \"0\",\n"
+            + "                         \"CarIdDocument\": 6569546,\n"
+            + "                         \"IdActivity\": 4842,\n"
+            + "                         \"IdXMLT\": 8223,\n"
+            + "                         \"peo_peo_ldap_login\": \"DD100262LVI\",\n"
+            + "                         \"peo_ldap_login\": \"DD100262LVI\",\n"
+            + "                         \"IdAttending\": 6569544\n"
+            + "                 }\n"
+            + "         },\n"
+            + "         \"uniq\": 5777275,\n"
+            + "         \"dlm\": \"2016-02-05 12:51:20\"\n"
+            + "    },\n"
+            + "    \"__conveyor_copy_task_result__\": \"ok\"\n"
+            + "  }\n"
+            + "}\n"
+            + "\n```\n")
     @RequestMapping(value = "/callback/ukrdoc", method = {RequestMethod.POST})
     public @ResponseBody
     String processUkrDocCallBack(@RequestBody String event){
@@ -1833,6 +1933,59 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     	eventHandler.processEvent(event);
     	
     	LOG.info("Parsed document ID:{} and status:{} from event", eventHandler.getDocumentId(), eventHandler.getStatus());
+    	
+    	String documentId = eventHandler.getDocumentId();
+    	String documentIdFromPkSection = eventHandler.getDocumentId();
+    	String year = eventHandler.getYear();
+    	String status = eventHandler.getStatus();
+    	
+    	String sKey = documentId + ":" + year;
+    	
+    	//subject
+		long ukrDocSubjectId = 1l;
+		ActionTaskLink actionTaskLink = actionTaskLinkDao.getByCriteria(null, sKey, ukrDocSubjectId);
+		ProcessInstance processInstance = null;
+		if (actionTaskLink == null){
+	    	List<ProcessInstance> processes = runtimeService.createProcessInstanceQuery()
+	    			.variableValueEquals(CreateDocument_UkrDoc.UKRDOC_ID_DOCUMENT_VARIABLE_NAME, sKey).active().list();
+	    	LOG.info("Found {} processes with urk doc variable name {}", processes.size(), sKey);
+
+	    	if (processes.size() > 0){
+		    	processInstance = processes.get(0);
+				LOG.info("ActionTaskLink is not found. Creating a new one");
+				
+				actionTaskLinkDao.setActionTaskLink(Long.valueOf(processInstance.getId()), sKey, ukrDocSubjectId);
+	    	}
+		} else {
+			LOG.info("Found ActionTaskLink. Process Id is {}", actionTaskLink.getnIdProcess());
+			processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(actionTaskLink.getnIdProcess().toString()).singleResult();
+		}
+    	
+    	if (processInstance != null){
+			List<Task> tasks =  taskService.createTaskQuery().processInstanceId(processInstance.getId()).active().list();
+			if (tasks != null){
+				LOG.info("Found {} tasks for the process instance {}", tasks.size(), processInstance.getId());
+				String assignee = null;
+				for (Task task : tasks){
+					assignee = task.getAssignee();
+					taskService.complete(task.getId());
+					taskService.setVariable(task.getId(), "sStatusName_UkrDoc", status);
+					LOG.info("Completed task with ID {}", task.getId());
+				}
+				if (assignee != null){
+					LOG.info("Looking for a new task to claim it to the user {}", assignee);
+					tasks = taskService.createTaskQuery().processInstanceId(processInstance.getId()).active().list();
+					for (Task task : tasks){
+						taskService.claim(task.getId(), assignee);
+						LOG.info("Claimed task {} for the user {}", task.getId(), assignee);
+					}
+				} else {
+					LOG.info("Task was not assigned");
+				}
+			} else {
+				LOG.info("Active tasks have not found for the process {}", processInstance.getId());
+			}
+    	}
     	
     	return "OK";
     }
