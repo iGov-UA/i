@@ -8,6 +8,10 @@
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По-Батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Домашня адреса" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sJurOrPhiz" name="Заява подається від імені:" type="enum" required="true">
+          <activiti:value id="enum1" name="фізичної особи"></activiti:value>
+          <activiti:value id="enum2" name="юридичної особи"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sJurName" name="Назва юридичної особи" type="string" required="true"></activiti:formProperty>
@@ -15,16 +19,12 @@
         <activiti:formProperty id="sJurAddress" name="Адреса юридичної особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sJurOrPhiz" name="Заява подається від імені:" type="enum" required="true">
-          <activiti:value id="enum1" name="фізичної особи"></activiti:value>
-          <activiti:value id="enum2" name="юридичної особи"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="warning" name="Заповніть" type="label" default="Адреса приміщення, в якому здійснювалось перепланування:"></activiti:formProperty>
         <activiti:formProperty id="sStriteName" name="вулиця (проспект, провулок, тощо)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sHouseNumder" name="номер будинку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sSectionNumder" name="секція" type="string" default=""></activiti:formProperty>
         <activiti:formProperty id="sRoomNumder" name="номер квартири або нежитлового приміщення" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="doc1" name="Засвідчена в установленому порядку копія правовстановлюючого документа об'єкт нерухомості;згідно з роз`ясненням МінЮсту від 02.2013, на засвідченому документі проставляється прізвище і ініціали того, хто посвідчує, особистий підпис, дата і відмітка &quot;Згідно з оригіналом&quot;" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="doc1" name="Засвідчена в установленому порядку копія правовстановлюючого документа на об'єкт нерухомості;згідно з роз`ясненням МінЮсту від 02.2013, на засвідченому документі проставляється прізвище і ініціали того, хто посвідчує, особистий підпис, дата і відмітка &quot;Згідно з оригіналом&quot;" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="doc2" name="Матеріали технічної інвентаризації;до та після робіт з перепланування" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="doc3" name="Довідка від балансоутримувача об'єкта житлового призначення" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sTehVisnovok" name="Чи маєте ви технічний висновок (звіт) за результатами обстеження конструкцій об'єкту?" type="enum" required="true">
@@ -408,7 +408,7 @@
     var SOJ = execution.getVariable('sID_Public_SubjectOrganJoin');
     if (execution.getVariable('sJurOrPhiz') == enum1){
     rekvizit = 'Паспортні дані: ' + '(execution.getVariable('bankIdPassport')' + 'ІПН: ' + '(execution.getVariable('bankIdinn')';}
-    else {rekvizit = 'Назва юридичної особи: ' + '(execution.getVariable('sJurName')' + 'ЄДРПОУ: ' + '(execution.getVariable('edrpou')' + 'Адреса: ' + '(execution.getVariable('sJurAddress')';}}
+    else {rekvizit = 'Назва юридичної особи: ' + '(execution.getVariable('sJurName')' + 'ЄДРПОУ: ' + '(execution.getVariable('edrpou')' + 'Адреса: ' + '(execution.getVariable('sJurAddress')';}
     execution.setVariable('rekvizit', rekvizit);
     execution.setVariable('SOJ', SOJ);
     </script></scriptTask>
