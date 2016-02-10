@@ -503,6 +503,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
      * @param nID_Task  номер-ИД таски (обязательный)
      * @param nID_Process  номер-ИД процесса (опциональный, но обязательный если не задан nID_Task и sID_Order)
      * @param sID_Order номер-ИД заявки (опциональный, но обязательный если не задан nID_Task и nID_Process)
+     * @param sLogin (опциональный) логин, по которому проверяется вхождение пользователя в одну из групп, на которые распространяется данная задача
+     * @param bIncludeGroups (опциональный) если задано значение true - в отдельном элементе aGroups возвращается массив отождествленных групп, на которые распространяется данная задача
+     * @param bIncludeStartForm (опциональный) если задано значение true - в отдельном элементе aFieldStartForm возвращается массив полей стартовой формы
+     * @param bIncludeAttachments (опциональный) если задано значение true - в отдельном элементе aAttachment возвращается массив элементов-объектов Attachment (без самого контента)
+     * @param bIncludeMessages (опциональный) если задано значение true - в отдельном элементе aMessage возвращается массив сообщений по задаче
+     *
      * @return сериализованный объект <br> <b>oProcess</b> {<br><kbd>sName</kbd> - название услуги (БП);<br> <kbd>sBP</kbd> - id-бизнес-процесса (БП);<br> <kbd>nID</kbd> - номер-ИД процесса;<br> <kbd>sDateCreate</kbd> - дата создания процесса<br>}
      */
     @ApiOperation(value = "Получение данных по таске", notes = "#####  ActionCommonTaskController: Сервис получения данных по таске #####\n\n"
@@ -510,7 +516,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             + "https://test.region.igov.org.ua/wf/service/action/task/getTaskData?nID_Task=nID_Task&sID_Order=sID_Order\n\n\n"
             + "Response:\n"
             + "\n```json\n"
-            + "  {\n"
+            + "  \"oProcess\":{\n"
             + "    \"sName\":\"название услуги (БП)\"\n"
             + "    \"sBP\":\"id-бизнес-процесса (БП)\"\n"
             + "    \"nID\":\"номер-ИД процесса\"\n"
@@ -525,11 +531,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @RequestParam(value = "nID_Task", required = true) Long nID_Task,
             @ApiParam(value = "номер-ИД процесса (опциональный, но обязательный если не задан nID_Task и sID_Order)", required = false) @RequestParam(value = "nID_Process", required = false) Long nID_Process,
             @ApiParam(value = "номер-ИД заявки (опциональный, но обязательный если не задан nID_Task и nID_Process)", required = false) @RequestParam(value = "sID_Order", required = false) String sID_Order,
-            @ApiParam(value = "", required = false) @RequestParam(value = "sLogin", required = false) String sLogin,
-            @ApiParam(value = "", required = false) @RequestParam(value = "bIncludeGroups", required = false) Boolean bIncludeGroups,
-            @ApiParam(value = "", required = false) @RequestParam(value = "bIncludeStartForm", required = false) Boolean bIncludeStartForm,
-            @ApiParam(value = "", required = false) @RequestParam(value = "bIncludeAttachments", required = false) Boolean bIncludeAttachments,
-            @ApiParam(value = "", required = false) @RequestParam(value = "bIncludeMessages", required = false) Boolean bIncludeMessages)
+            @ApiParam(value = "(опциональный) логин, по которому проверяется вхождение пользователя в одну из групп, на которые распространяется данная задача", required = false) @RequestParam(value = "sLogin", required = false) String sLogin,
+            @ApiParam(value = "(опциональный) если задано значение true - в отдельном элементе aGroups возвращается массив отождествленных групп, на которые распространяется данная задача", required = false) @RequestParam(value = "bIncludeGroups", required = false) Boolean bIncludeGroups,
+            @ApiParam(value = "(опциональный) если задано значение true - в отдельном элементе aFieldStartForm возвращается массив полей стартовой формы", required = false) @RequestParam(value = "bIncludeStartForm", required = false) Boolean bIncludeStartForm,
+            @ApiParam(value = "(опциональный) если задано значение true - в отдельном элементе aAttachment возвращается массив элементов-объектов Attachment (без самого контента)", required = false) @RequestParam(value = "bIncludeAttachments", required = false) Boolean bIncludeAttachments,
+            @ApiParam(value = "(опциональный) если задано значение true - в отдельном элементе aMessage возвращается массив сообщений по задаче", required = false) @RequestParam(value = "bIncludeMessages", required = false) Boolean bIncludeMessages)
             throws CRCInvalidException, CommonServiceException, RecordNotFoundException {
 
         if (nID_Task == null) {
