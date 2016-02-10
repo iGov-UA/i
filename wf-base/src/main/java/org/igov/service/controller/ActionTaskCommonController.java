@@ -1557,7 +1557,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
     protected List<TaskInfo> getTasksWithTicketsFromQuery(Object taskQuery, int nStart, int nSize, boolean bFilterHasTicket, Map<String, FlowSlotTicket> mapOfTickets){
 	    List<TaskInfo> tasks = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).listPage(nStart, nSize)
-				: ((NativeTaskQuery) taskQuery).listPage(nStart, nSize);
+				: (List) ((NativeTaskQuery) taskQuery).listPage(nStart, nSize);
 	
 		List<Long> taskIds = new LinkedList<Long>();
 		for (int i = 0; i < tasks.size(); i++){
