@@ -558,7 +558,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         Map<String, Object> response = new HashMap<>();
 
         response.put("oProcess", oActionTaskService.getProcessInfoByTaskID(nID_Task));
-        response.put("aField", oActionTaskService.getTaskAllFields(nID_Task));
+        response.put("aField", oActionTaskService.getFormPropertiesByTaskID(nID_Task));
         if (bIncludeGroups.equals(Boolean.TRUE)){
             response.put("aGroups", oActionTaskService.getCandidateGroupByTaskID(nID_Task));
         }

@@ -1674,6 +1674,10 @@ public class ActionTaskService {
         return result;
     }
 
+    public List<FormProperty> getFormPropertiesByTaskID(Long nID_Task){
+        return oFormService.getTaskFormData(nID_Task.toString()).getFormProperties();
+    }
+
     /**
      * Выгрузка всех полей Таски из Activiti. Сначала поиск nID_Task происходит среди активных, потом в архивных данных.
      * @param nID_Task - ИД номер таски
