@@ -404,13 +404,13 @@
     </userTask>
     <sequenceFlow id="flow32" sourceRef="usertask3" targetRef="exclusivegateway1"></sequenceFlow>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false"><script>
-    var rekvizit = '';
-    var SOJ = execution.getVariable('sID_Public_SubjectOrganJoin');
-    if (execution.getVariable('sJurOrPhiz') == enum1){
-    rekvizit = 'Паспортні дані: ' + '(execution.getVariable('bankIdPassport')' + 'ІПН: ' + '(execution.getVariable('bankIdinn')';}
-    else {rekvizit = 'Назва юридичної особи: ' + '(execution.getVariable('sJurName')' + 'ЄДРПОУ: ' + '(execution.getVariable('edrpou')' + 'Адреса: ' + '(execution.getVariable('sJurAddress')';}
-    execution.setVariable('rekvizit', rekvizit);
-    execution.setVariable('SOJ', SOJ);
+    var rekvizit = ''
+    var SOJ = execution.getVariable('sID_Public_SubjectOrganJoin')
+    if (execution.getVariable('sJurOrPhiz') == 'enum1'){
+    rekvizit = 'Паспортні дані: ' + '(execution.getVariable('bankIdPassport')' + 'ІПН: ' + '(execution.getVariable('bankIdinn')'}
+    else {rekvizit = 'Назва юридичної особи: ' + '(execution.getVariable('sJurName')' + 'ЄДРПОУ: ' + '(execution.getVariable('edrpou')' + 'Адреса: ' + '(execution.getVariable('sJurAddress')'}
+    execution.setVariable('rekvizit', rekvizit)
+    execution.setVariable('SOJ', SOJ)
     </script></scriptTask>
     <sequenceFlow id="flow33" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
   </process>
