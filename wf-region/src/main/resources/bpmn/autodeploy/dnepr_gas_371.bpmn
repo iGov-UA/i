@@ -50,12 +50,12 @@
           <activiti:string><![CDATA[msvidran@gmail.com]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове звернення. Управління житлового господарства міської ради.]]></activiti:string>
+          <activiti:string><![CDATA[Нове звернення. ПАТ Дніпрогаз.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;strong&gt;Шановний(-а) колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-У Вас в черзі на обробку нове звернення громадянина до Управління житлового господарства міської ради.&lt;br /&gt;
+У Вас в черзі на обробку нове звернення громадянина до ПАТ Дніпрогаз.&lt;br /&gt;
 Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
 Відпрацюйте це звернення на &lt;a href="https://region.igov.org.ua" target="_blank"&gt;порталі&lt;/a&gt;
 [pattern/mail/_common_signature.html]
@@ -73,16 +73,16 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення до Управління житлового господарства міської ради.]]></activiti:string>
+          <activiti:string><![CDATA[Звернення до ПАТ Дніпрогаз.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt; Ваше звернення до Управління житлового господарства міської ради було зареєстровано у системі.&lt;br/&gt;
+&lt;p&gt; Ваше звернення до ПАТ Дніпрогаз було зареєстровано у системі.&lt;br/&gt;
 Повідомлення про результат послуги буде спрямоване на Ваш e-mail.&lt;/p&gt;
-Телефон для довідок: (056) 745-10-49&lt;br /&gt;
+Телефон для довідок: &lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-Канцелярія Дніпропетровської міської ради,&lt;br /&gt;
+ПАТ Дніпрогаз,&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -94,7 +94,7 @@
     </boundaryEvent>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow4" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
-    <userTask id="usertask4" name="Обробка звернення переадресація в профільний відділ" activiti:candidateGroups="dnepr_mvk_boss">
+    <userTask id="usertask4" name="Обробка звернення переадресація в профільний відділ" activiti:candidateGroups="dnepr_gas_head">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
@@ -160,18 +160,18 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення до Управління житлового господарства міської ради.]]></activiti:string>
+          <activiti:string><![CDATA[Звернення до ПАТ Дніпрогаз.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-На жаль, Ваше звернення до Управління житлового господарства міської ради - відхилине.&lt;/p&gt;
+На жаль, Ваше звернення до ПАТ Дніпрогаз - відхилине.&lt;/p&gt;
 &lt;p&gt;Причина в наступному:&lt;/p&gt;
 &lt;p&gt;${sDecisionComment}&lt;/p&gt;
 &lt;p&gt;Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/ target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
-Телефон для довідок: (056) 745-10-49&lt;br /&gt;
+Телефон для довідок: &lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-Канцелярія Дніпропетровської міської ради,&lt;br /&gt;
+ПАТ Дніпрогаз,&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -186,24 +186,24 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення до Управління житлового господарства міської ради.]]></activiti:string>
+          <activiti:string><![CDATA[Звернення до ПАТ Дніпрогаз.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;Ваше звернення до Управління житлового господарства міської ради - відправлене в профільний відділ.&lt;br /&gt;
+&lt;p&gt;Ваше звернення до ПАТ Дніпрогаз - відправлене в профільний відділ.&lt;br /&gt;
 Спеціалісти повинні дати відповідь протягом тридцяти робочих днів з дня реєстрації заяви.&lt;br /&gt;
 &lt;/p&gt;
-Телефон для довідок: (056) 745-10-49&lt;br /&gt;
+Телефон для довідок: &lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-Канцелярія Дніпропетровської міської ради,&lt;br /&gt;
+ПАТ Дніпрогаз,&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow9" sourceRef="servicetask4" targetRef="endevent1"></sequenceFlow>
-    <userTask id="usertask2" name="Обробка профільним відділом" activiti:candidateGroups="dnepr_mvk_${asStatus}">
+    <userTask id="usertask2" name="Обробка профільним відділом" activiti:candidateGroups="dnepr_gas_${asStatus}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
@@ -256,19 +256,19 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення до Управління житлового господарства міської ради.]]></activiti:string>
+          <activiti:string><![CDATA[Звернення до ПАТ Дніпрогаз.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 &lt;p&gt;
-Ваш запит до  Управління житлового господарства міської ради оброблений.&lt;br /&gt;
+Ваш запит до ПАТ Дніпрогаз оброблений.&lt;br /&gt;
 Відповідь знаходиться у додатку до цього листа.
 &lt;/p&gt;
 &lt;p&gt;&lt;/p&gt;
 &lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-Управління житлового господарства міської ради,&lt;br /&gt;
+ПАТ Дніпрогаз,&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
@@ -278,7 +278,7 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <userTask id="usertask5" name="Перевірка відповіді " activiti:candidateGroups="dnepr_mvk_boss">
+    <userTask id="usertask5" name="Перевірка відповіді " activiti:candidateGroups="dnepr_gas_head">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
