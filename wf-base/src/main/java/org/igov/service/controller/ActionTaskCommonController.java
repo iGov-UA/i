@@ -1557,7 +1557,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
     protected List<TaskInfo> getTasksWithTicketsFromQuery(Object taskQuery, int nStart, int nSize, boolean bFilterHasTicket, Map<String, FlowSlotTicket> mapOfTickets){
 	    List<TaskInfo> tasks = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).listPage(nStart, nSize)
-				: ((NativeTaskQuery) taskQuery).listPage(nStart, nSize);
+				: (List) ((NativeTaskQuery) taskQuery).listPage(nStart, nSize);
 	
 		List<Long> taskIds = new LinkedList<Long>();
 		for (int i = 0; i < tasks.size(); i++){
@@ -1785,21 +1785,42 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 		return taskInfo;
 	}
 
-
+    @ApiOperation(value = "Получения обьекта-записи линка", notes = "#####  ActionCommonTaskController: Сервис получения обьекта-записи линка #####\n\n"
+            + "Request:\n\n"
+            + "https://test.igov.org.ua/wf/service/action/task/getLink?sKey=sKey&nID_Subject_Holder=nID_Subject_Holder\n\n\n"
+            + "Response:\n"
+            + "\n```json\n"
+            + "  {\"sKey\":\"Cтрока-ключ\"," +
+            "       \"nID\":ИД обьекта," +
+            "       \"nID_Process\":ИД бизнес процесса," +
+            "       \"nID_Subject_Holder\":ИД субьекта-хранителя" +
+            "    }\n"
+            + "\n```\n")
     @RequestMapping(value = "/getLink", method = { RequestMethod.GET })
     @ResponseBody
-    public ActionTaskLink getActionTaskLink(@RequestParam(value = "nID_Process", required = false) Long nID_Process,
-                                    @RequestParam(value = "sKey", required = true) String sKey,
-                                    @RequestParam(value = "nID_Subject_Holder", required = true) Long nID_Subject_Holder) throws Exception {
+    public ActionTaskLink getActionTaskLink(@ApiParam(value = "ИД бизнес процесса", required = false) @RequestParam(value = "nID_Process", required = false) Long nID_Process,
+                                            @ApiParam(value = "Cтрока-ключ", required = true) @RequestParam(value = "sKey", required = true) String sKey,
+                                            @ApiParam(value = "ИД субьекта-хранителя", required = true) @RequestParam(value = "nID_Subject_Holder", required = true) Long nID_Subject_Holder) throws Exception {
 
         return actionTaskLinkDao.getByCriteria(nID_Process, sKey, nID_Subject_Holder);
     }
 
+    @ApiOperation(value = "Создание нового обьекта-записи линка", notes = "#####  ActionCommonTaskController: Сервис создания обьекта-записи линка #####\n\n"
+            + "Request:\n\n"
+            + "https://test.igov.org.ua/wf/service/action/task/setLink?nID_Process=nID_Process&sKey=sKey&nID_Subject_Holder=nID_Subject_Holder\n\n\n"
+            + "Response:\n"
+            + "\n```json\n"
+            + "  {\"sKey\":\"Cтрока-ключ\"," +
+            "       \"nID\":ИД обьекта," +
+            "       \"nID_Process\":ИД бизнес процесса," +
+            "       \"nID_Subject_Holder\":ИД субьекта-хранителя" +
+            "    }\n"
+            + "\n```\n")
     @RequestMapping(value = "/setLink", method = { RequestMethod.GET })
     @ResponseBody
-    public ActionTaskLink setActionTaskLink(@RequestParam(value = "nID_Process", required = true) Long nID_Process,
-                                            @RequestParam(value = "sKey", required = true) String sKey,
-                                            @RequestParam(value = "nID_Subject_Holder", required = true) Long nID_Subject_Holder) throws Exception {
+    public ActionTaskLink setActionTaskLink(@ApiParam(value = "ИД бизнес процесса", required = true) @RequestParam(value = "nID_Process", required = true) Long nID_Process,
+                                            @ApiParam(value = "Cтрока-ключ", required = true) @RequestParam(value = "sKey", required = true) String sKey,
+                                            @ApiParam(value = "ИД субьекта-хранителя", required = true) @RequestParam(value = "nID_Subject_Holder", required = true) Long nID_Subject_Holder) throws Exception {
 
         return actionTaskLinkDao.setActionTaskLink(nID_Process, sKey, nID_Subject_Holder);
     }
