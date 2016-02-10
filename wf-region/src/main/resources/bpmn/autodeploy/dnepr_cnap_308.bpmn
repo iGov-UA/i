@@ -15,7 +15,7 @@
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sJurName" name="Назва юридичної особи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="edrpou" name="ЄДРПОУ юридичної особи; цифр" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="edrpou" name="ЄДРПОУ юридичної особи;8 цифр" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sJurAddress" name="Адреса юридичної особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
@@ -408,7 +408,6 @@
     var SOJ = execution.getVariable('sID_Public_SubjectOrganJoin')
     if (execution.getVariable('sJurOrPhiz') == 'enum1'){
     rekvizit = 'Паспортні дані: ' + '(execution.getVariable('bankIdPassport')' + 'ІПН: ' + '(execution.getVariable('bankIdinn')'}
-    else {rekvizit = 'Назва юридичної особи: ' + '(execution.getVariable('sJurName')' + 'ЄДРПОУ: ' + '(execution.getVariable('edrpou')' + 'Адреса: ' + '(execution.getVariable('sJurAddress')'}
     execution.setVariable('rekvizit', rekvizit)
     execution.setVariable('SOJ', SOJ)
     </script></scriptTask>
