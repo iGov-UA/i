@@ -565,7 +565,14 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         Map<String, Object> response = new HashMap<>();
 
         response.put("oProcess", oActionTaskService.getProcessInfoByTaskID(nID_Task));
-        response.put("aField", oActionTaskService.getFormPropertiesByTaskID(nID_Task));
+
+        try{
+            response.put("aField", oActionTaskService.getFormPropertiesByTaskID(nID_Task));
+        } catch (ActivitiObjectNotFoundException e) {
+            LOG.info(String.format("Must search Task [id = '%s'] in history!!!", nID_Task));
+            response.put("aField", oActionTaskService.getHistoricDetailsByTaskID(nID_Task));
+        }
+
         if (bIncludeGroups.equals(Boolean.TRUE)){
             response.put("aGroups", oActionTaskService.getCandidateGroupByTaskID(nID_Task));
         }

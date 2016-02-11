@@ -1675,34 +1675,12 @@ public class ActionTaskService {
         return result;
     }
 
-    public List<String> getFormPropertiesByTaskID(Long nID_Task) throws RecordNotFoundException {
-        List<String> result = new ArrayList<>();
-        List<FormProperty> aFormProperties = new ArrayList<>();
-        List<HistoricDetail> aHistoricDetails = new ArrayList<>();
-        try {
-            aFormProperties = oFormService.getTaskFormData(nID_Task.toString()).getFormProperties();
-        } catch (NullPointerException e){
-            LOG.info(String.format("Must search Task [id = '%s'] in history!!!", nID_Task));
-            try {
-                aHistoricDetails = oHistoryService.createHistoricDetailQuery().taskId(nID_Task.toString()).formProperties().list();
-            } catch (NullPointerException ex){
-                throw new RecordNotFoundException(String.format("Task [id = '%s'] not faund", nID_Task));
-            }
-        }
-        if (!aFormProperties.isEmpty()){
-            for (FormProperty formProperty : aFormProperties){
-                result.add(JsonRestUtils.toJsonResponse(formProperty).toString());
-            }
-            LOG.info(String.format("Add '%s' items FormProperties", aFormProperties.size()));
-        } else if (!aHistoricDetails.isEmpty()){
-            for (HistoricDetail historicDetail : aHistoricDetails){
-                result.add(JsonRestUtils.toJsonResponse(historicDetail).toString());
-            }
-            LOG.info(String.format("Add '%s' items HistoricDetails", aHistoricDetails.size()));
-        } else {
-            LOG.info("Arrays is empty");
-        }
-        return result;
+    public List<FormProperty> getFormPropertiesByTaskID(Long nID_Task) {
+        return oFormService.getTaskFormData(nID_Task.toString()).getFormProperties();
+    }
+
+    public List<HistoricDetail> getHistoricDetailsByTaskID(Long nID_Task){
+        return oHistoryService.createHistoricDetailQuery().taskId(nID_Task.toString()).formProperties().list();
     }
 
     /**
