@@ -8,10 +8,10 @@
         </a>
       </div>
 
-      <div collapse="iGovNavbarHelper.isCollapsed" class="navbar-collapse collapse" id="navbar-main">
+      <div ng-show="isLoggedIn()" collapse="iGovNavbarHelper.isCollapsed" class="navbar-collapse collapse" id="navbar-main">
 
         <ul class="nav navbar-nav" ng-show="!iGovNavbarHelper.areInstrumentsVisible">
-          <li ng-repeat="menu in menus"
+          <li ng-repeat="menu in iGovNavbarHelper.menus"
               ng-show="isVisible(menu.type)"
               ng-class="{active: isTaskFilterActive(menu.type)}">
               <a ng-attr-id="{{menu.type}}" ng-click="!!tasksLoading || applyTaskFilter(menu.type)">{{menu.title}}
@@ -20,7 +20,7 @@
           </li>
         </ul>
 
-        <ul class="nav navbar-nav" ng-show="isLoggedIn() && iGovNavbarHelper.areInstrumentsVisible">
+        <ul class="nav navbar-nav" ng-show="iGovNavbarHelper.areInstrumentsVisible">
           <li ng-show="iGovNavbarHelper.isTest"><a href="" ng-click="goToUsers()">Користувачі</a></li>
           <li ng-show="iGovNavbarHelper.isTest"><a href="" ng-click="goToGroups()">Групи</a></li>
           <li ng-show="iGovNavbarHelper.isTest"><a href="" ng-click="goToEscalations()">Ескалації</a></li>
@@ -30,7 +30,7 @@
           <li ng-show="iGovNavbarHelper.isTest"><a href="" ng-click="">Розгортання</a></li>
         </ul>
 
-        <ul ng-show="isLoggedIn()" class="nav navbar-nav navbar-right">
+        <ul class="nav navbar-nav navbar-right">
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                aria-expanded="false">{{getCurrentUserName()}} <span class="caret"></span></a>

@@ -14,11 +14,11 @@ angular.module('dashboardJsApp')
             password: $scope.user.password
           })
           .then(function() {
-            // Logged in, redirect to home          
+            // Logged in, redirect to home
             $location.path('/tasks');
           })
           .catch(function(err) {
-            $scope.errors.other = err.message;
+            $scope.errors.other = err ? err.message : 'Невідома помилка';
           });
       }
     };
