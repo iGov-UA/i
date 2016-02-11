@@ -127,14 +127,14 @@
         <activiti:formProperty id="sReason" name="Суть звернення" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration" name="Дата реєстрації звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asStatus" name="Обробка звернення" type="enum" required="true">
-          <activiti:value id="sEnumDep1" name="Відправити у відділ житлової політики"></activiti:value>
-          <activiti:value id="sEnumDep2" name="Відправити у відділ реформування"></activiti:value>
-          <activiti:value id="sEnumDep3" name="Відправити у виробничо-експлуатаційний відділ (виробничий сектор)"></activiti:value>
-          <activiti:value id="sEnumDep4" name="Відправити у виробничо-експлуатаційний відділ (сектор експлуатації)"></activiti:value>
-          <activiti:value id="sEnumDep5" name="Відправити у відділ технічного нагляду за капітальним ремонтом житлового фонду"></activiti:value>
-          <activiti:value id="sEnumDep6" name="Відправити у відділ економіки"></activiti:value>
-          <activiti:value id="sEnumDep7" name="Відправити у відділ бухгалтерського обліку та фінансової звітності"></activiti:value>
-          <activiti:value id="sEnumDep8" name="Відправити у відділ по роботі з кадрами, зверненнями громадян та діловодства"></activiti:value>
+          <activiti:value id="sEnumDep1" name="Виробничо-технічний відділ"></activiti:value>
+          <activiti:value id="sEnumDep2" name="Управління обліку та балансів"></activiti:value>
+          <activiti:value id="sEnumDep3" name="Юридичне управління"></activiti:value>
+          <activiti:value id="sEnumDep4" name="Канцелярія"></activiti:value>
+          <activiti:value id="sEnumDep5" name="ВЕС – 1"></activiti:value>
+          <activiti:value id="sEnumDep6" name="ВЕС – 2"></activiti:value>
+          <activiti:value id="sEnumDep7" name="ВЕС – 3"></activiti:value>
+          <activiti:value id="sEnumDep8" name="ВЕУ – 4"></activiti:value>
           <activiti:value id="sEnumExit" name="Відмовити громадянину"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment" name="Якщо ви відмовляєте заявнику у реєстрації звернення, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
@@ -311,16 +311,16 @@
         <activiti:formProperty id="sReason" name="Суть звернення" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration" name="Дата реєстрації звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDepComment" name="Коментар відділу" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asStatus2" name="Відправити відповідь громадянину або у відділ на доопрацювання" type="enum">
+        <activiti:formProperty id="asStatus" name="Відправити відповідь громадянину або у відділ на доопрацювання" type="enum">
           <activiti:value id="sEnumAnswer" name="Відправити громадянину відповідь"></activiti:value>
-          <activiti:value id="sEnumDep1" name="Відправити у відділ житлової політики"></activiti:value>
-          <activiti:value id="sEnumDep2" name="Відправити у відділ реформування"></activiti:value>
-          <activiti:value id="sEnumDep3" name="Відправити у виробничо-експлуатаційний відділ (виробничий сектор)"></activiti:value>
-          <activiti:value id="sEnumDep4" name="Відправити у виробничо-експлуатаційний відділ (сектор експлуатації)"></activiti:value>
-          <activiti:value id="sEnumDep5" name="Відправити у відділ технічного нагляду за капітальним ремонтом житлового фонду"></activiti:value>
-          <activiti:value id="sEnumDep6" name="Відправити у відділ економіки"></activiti:value>
-          <activiti:value id="sEnumDep7" name="Відправити у відділ бухгалтерського обліку та фінансової звітності"></activiti:value>
-          <activiti:value id="sEnumDep8" name="Відправити у відділ по роботі з кадрами, зверненнями громадян та діловодства"></activiti:value>
+          <activiti:value id="sEnumDep1" name="Виробничо-технічний відділ"></activiti:value>
+          <activiti:value id="sEnumDep2" name="Управління обліку та балансів"></activiti:value>
+          <activiti:value id="sEnumDep3" name="Юридичне управління"></activiti:value>
+          <activiti:value id="sEnumDep4" name="Канцелярія"></activiti:value>
+          <activiti:value id="sEnumDep5" name="ВЕС – 1"></activiti:value>
+          <activiti:value id="sEnumDep6" name="ВЕС – 2"></activiti:value>
+          <activiti:value id="sEnumDep7" name="ВЕС – 3"></activiti:value>
+          <activiti:value id="sEnumDep8" name="ВЕУ – 4"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sAdminComment" name="Коментар, який Ви залишили для відділу" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sDateControl" name="Контрольна дата (у форматі ДД/ММ/РРРР)" type="string"></activiti:formProperty>
@@ -338,10 +338,10 @@
     <sequenceFlow id="flow14" sourceRef="servicetask6" targetRef="endevent3"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow17" name="asStatus2=='sEnumAnswer'" sourceRef="exclusivegateway2" targetRef="servicetask6">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asStatus2=='sEnumAnswer'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asStatus=='sEnumAnswer'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow18" sourceRef="exclusivegateway2" targetRef="usertask2">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asStatus2=='sEnumDep1'||status=='sEnumDep2'||status=='sEnumDep3'||status=='sEnumDep4'||status=='sEnumDep5'||status=='sEnumDep6'||status=='sEnumDep7'||status=='sEnumDep8'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asStatus=='sEnumDep1'||status=='sEnumDep2'||status=='sEnumDep3'||status=='sEnumDep4'||status=='sEnumDep5'||status=='sEnumDep6'||status=='sEnumDep7'||status=='sEnumDep8'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow19" name="asStatus == 'sEnumExit'" sourceRef="exclusivegateway1" targetRef="servicetask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asStatus == 'sEnumExit'}]]></conditionExpression>
