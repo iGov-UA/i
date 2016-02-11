@@ -9,8 +9,8 @@
   function iGovNavbarHelperFactory(Auth, tasks) {
     var service = {
       areInstrumentsVisible: false,
+      auth: Auth,
       isCollapsed: true,
-      isLoggedIn: isLoggedIn,
       isTest: false,
       load: load,
       loadTaskCounters: loadTaskCounters,
@@ -18,31 +18,32 @@
     };
     return service;
 
-    function isLoggedIn() {
-      return Auth.isLoggedIn();
-    }
-
     function load() {
       service.menus = [{
         title: 'Необроблені',
         type: tasks.filterTypes.unassigned,
-        count: 0
+        count: 0,
+        tab: 'unassigned'
       }, {
         title: 'В роботі',
         type: tasks.filterTypes.selfAssigned,
-        count: 0
+        count: 0,
+        tab: 'selfAssigned'
       }, {
         title: 'Мій розклад',
         type: tasks.filterTypes.tickets,
-        count: 0
+        count: 0,
+        tab: 'tickets'
       }, {
         title: 'Усі',
         type: tasks.filterTypes.all,
-        count: 0
+        count: 0,
+        tab: 'all'
       }, {
         title: 'Історія',
         type: tasks.filterTypes.finished,
-        count: 0
+        count: 0,
+        tab: 'finished'
       }];
 
       service.loadTaskCounters();
