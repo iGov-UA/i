@@ -7,11 +7,11 @@
 
   tasksCtrl.$inject = [
     '$scope', '$window', 'tasks', 'processes', 'Modal', 'Auth', 'identityUser', '$localStorage', '$filter', 'lunaService',
-    'PrintTemplateService', 'taskFilterService', 'MarkersFactory', 'iGovNavbarHelper', '$routeParams',
+    'PrintTemplateService', 'taskFilterService', 'MarkersFactory', 'iGovNavbarHelper', '$location',
   ];
   function tasksCtrl(
     $scope, $window, tasks, processes, Modal, Auth, identityUser, $localStorage, $filter, lunaService,
-    PrintTemplateService, taskFilterService, MarkersFactory, iGovNavbarHelper, $routeParams
+    PrintTemplateService, taskFilterService, MarkersFactory, iGovNavbarHelper, $location
   ) {
     $scope.tasks = null;
     $scope.tasksLoading = false;
@@ -599,11 +599,13 @@
     };
 
     $scope.init = function () {
+      var tab = $location.path().substr('/tasks/'.length) || 'tickets';
+
       loadSelfAssignedTasks();
       $scope.taskFormLoaded = false;
 
       _.each(iGovNavbarHelper.menus, function(menu) {
-        if (menu.tab === $routeParams.tab) {
+        if (menu.tab === tab) {
           $scope.applyTaskFilter(menu.type);
         }
       });
