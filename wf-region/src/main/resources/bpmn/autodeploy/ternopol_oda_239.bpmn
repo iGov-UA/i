@@ -52,6 +52,7 @@
         <activiti:formProperty id="obl" name="назва області" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="rekv" name="адреса" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="postV" name="електронна пошта ОДА1" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="golova" name="ПІБ голови ОДА" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="text" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -68,10 +69,12 @@
 var per1 = 'Obl'
 var per2 = 'Rekv'
 var per3 = 'post1'
+var per4 = 'Fio'
 if (execution.getVariable('sID_UA') == '6100000000'){
 per1 = 'Тернопільської обласної державної адміністрації'
 per2 = 'adres'
 per3 = 'Zg2@te.gov.ua'
+per4 = 'Барні С.С.'
 }
 if (execution.getVariable('sID_UA') == '4800000000'){
 per1 = 'Миколаївської обласної державної адміністрації'
@@ -82,6 +85,7 @@ if (execution.getVariable('sID_UA') == '7400000000'){
 per1 = 'Чернігівської обласної державної адміністрації'
 per2 = 'Чернігівська обласна держана адміністрація, м. Чернігів, вул. Шевченка, 7'
 per3 = 'svyrydenko.yulia@gmail.com, skargi@regadm.gov.ua'
+per4 = 'Кулічу В.П.'
 }
 if (execution.getVariable('sID_UA') == '6500000000'){
 per1 = 'Херсонської обласної державної адміністрації'
@@ -93,9 +97,15 @@ per1 = 'Хмельницької обласної державної адмін�
 per2 = 'Хмельницька обласна держана адміністрація, м. Хмельницький, майдан Незалежності, Будинок Рад'
 var per3 = 'zhigan.roman@gmail.com'
 }
+if (execution.getVariable('sID_UA') == '2600000000'){
+per1 = 'Івано-Франківської обласної державної адміністрації'
+per2 = 'Івано-Франківська обласна держана адміністрація, м. Івано-Франківськ, вул. Грушевського, 21'
+var per3 = 'zhigan.roman@gmail.com'
+}
 execution.setVariable('obl', per1)
 execution.setVariable('rekv', per2)
 execution.setVariable('postV', per3)
+execution.setVariable('golova', per4)
 	  </script>
     </scriptTask>
     <sequenceFlow id="flow18" sourceRef="scripttask1" targetRef="servicetask7"></sequenceFlow>
@@ -196,9 +206,10 @@ execution.setVariable('postV', per3)
         <activiti:formProperty id="docID" name="Реєстраційний номер" type="string"></activiti:formProperty>
         <activiti:formProperty id="obl" name="назва області" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="rekv" name="адреса" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody_3" name="[pattern/print/ternopil/mykol_oda_239zaj.html]" type="invisible" default="Заява Миколаївська, Чернігівська, Херсонська, Хмельницька" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/ternopil_oda_239zaj.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="golova" name="ПІБ голови ОДА" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/ternopil_oda_239zaj.html]" type="invisible" default="Заява Тернопільська, Чернігівська" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/ternopil/ternopil_oda_239_rkk.html]" type="invisible" default="Реєстраційно-контрольна карта" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_3" name="[pattern/print/ternopil/mykol_oda_239zaj.html]" type="invisible" default="Заява Миколаївська, Херсонська, Хмельницька" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
