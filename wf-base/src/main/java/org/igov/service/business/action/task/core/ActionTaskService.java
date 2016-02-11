@@ -1738,35 +1738,33 @@ public class ActionTaskService {
         return result;
     }
 
-    public List<HistoricFormProperty> getHistoricDetailsByTaskID(Long nID_Task) throws RecordNotFoundException {
+    public List<HistoricFormProperty> getHistoricDetailsByTaskID_test3(Long nID_Task) throws RecordNotFoundException {
         List<HistoricFormProperty> result = new ArrayList<>();
 
-        HistoricTaskInstance oHistoricTaskInstance = oHistoryService.createHistoricTaskInstanceQuery()
-                .taskId(nID_Task.toString()).singleResult();
-        LOG.info("(oHistoricTaskInstance={})", oHistoricTaskInstance);
-        //if (oHistoricTaskInstance != null) {
-        String snID_Process = oHistoricTaskInstance.getProcessInstanceId();
-        LOG.info("(snID_Process={})", snID_Process);
-        List<HistoricDetail> aHistoricDetail = null;
-        if (snID_Process != null) {
-            aHistoricDetail = oHistoryService.createHistoricDetailQuery().formProperties().taskId(nID_Task.toString()).list();
-        }
+        List<HistoricDetail> aHistoricDetail = oHistoryService.createHistoricDetailQuery().taskId(nID_Task.toString()).formProperties().list();
+
         LOG.info("(aHistoricDetail={})", aHistoricDetail);
         if (aHistoricDetail == null) {
             throw new RecordNotFoundException("aHistoricDetail");
         }
-       // ExecutionEntity executionEntity = (ExecutionEntity) oHistoryService.createHistoricProcessInstanceQuery().processInstanceId(snID_Process).singleResult();
         for (HistoricDetail oHistoricDetail : aHistoricDetail) {
-            Map<String, Object> mReturn = new HashMap();
-            HistoricFormProperty oHistoricFormProperty = (HistoricFormProperty) oHistoricDetail;
-            mReturn.put(oHistoricFormProperty.getPropertyId(), oHistoricFormProperty.getPropertyValue());
-            //result.add(mReturn);
-            HistoricFormProperty historicFormProperty = new HistoricFormPropertyEntity(null,oHistoricFormProperty.getPropertyId(), oHistoricFormProperty.getPropertyValue());
-            result.add(historicFormProperty);
-
+            result.add((HistoricFormProperty) oHistoricDetail);
         }
-        // }
+        return result;
+    }
 
+    public List<HistoricFormProperty> getHistoricDetailsByTaskID(Long nID_Task) throws RecordNotFoundException {
+        List<HistoricFormProperty> result = new ArrayList<>();
+
+        List<HistoricDetail> aHistoricDetail = oHistoryService.createHistoricDetailQuery().formProperties().taskId(nID_Task.toString()).list();
+
+        LOG.info("(aHistoricDetail={})", aHistoricDetail);
+        if (aHistoricDetail == null) {
+            throw new RecordNotFoundException("aHistoricDetail");
+        }
+        for (HistoricDetail oHistoricDetail : aHistoricDetail) {
+            result.add((HistoricFormProperty) oHistoricDetail);
+        }
         return result;
     }
 
