@@ -158,8 +158,10 @@ public class SubjectMessageController {
         SubjectMessage message
                 = oSubjectMessageService.createSubjectMessage(sHead, sBody, nID_Subject, sMail, sContacts, sData,
                 nID_SubjectMessageType);
+       
         subjectMessagesDao.setMessage(message);
         message = subjectMessagesDao.getMessage(message.getId());
+       
         return JsonRestUtils.toJsonResponse(message);
     }
 
