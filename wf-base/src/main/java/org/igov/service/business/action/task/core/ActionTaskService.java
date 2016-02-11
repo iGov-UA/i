@@ -20,6 +20,8 @@ import org.activiti.engine.history.HistoricFormProperty;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.identity.Group;
+import org.activiti.engine.impl.persistence.entity.ExecutionEntity;
+import org.activiti.engine.impl.persistence.entity.HistoricFormPropertyEntity;
 import org.activiti.engine.impl.persistence.entity.TaskEntity;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
@@ -42,6 +44,7 @@ import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.RecordNotFoundException;
 import org.igov.service.exception.TaskAlreadyUnboundException;
+import org.igov.util.JSON.JsonRestUtils;
 import org.igov.util.ToolLuna;
 import org.igov.util.ToolJS;
 import org.igov.util.JSON.JsonDateTimeSerializer;
@@ -1671,6 +1674,36 @@ public class ActionTaskService {
                 + nID_Task
                 + "; name is: "
                 + result);
+        return result;
+    }
+
+    public List<FormProperty> getFormPropertiesByTaskID(Long nID_Task) {
+        return oFormService.getTaskFormData(nID_Task.toString()).getFormProperties();
+    }
+
+    /**
+     * Получение массива полей propertyId и propertyValue из HistoricFormProperty
+     * @param nID_Task - ID-номер таски, которая находится в архиве
+     * @return
+     * @throws RecordNotFoundException
+     */
+    public List<Map<String, String>> getHistoricFormPropertiesByTaskID(Long nID_Task) throws RecordNotFoundException {
+        List<Map<String, String>> result = new ArrayList<>();
+
+        List<HistoricDetail> aHistoricDetail = oHistoryService.createHistoricDetailQuery().taskId(nID_Task.toString()).formProperties().list();
+
+        LOG.info("(aHistoricDetail={})", aHistoricDetail);
+        if (aHistoricDetail == null) {
+            throw new RecordNotFoundException("aHistoricDetail");
+        }
+        for (HistoricDetail oHistoricDetail : aHistoricDetail) {
+            Map<String, String> oHistoricFormPropertyCover = new HashMap<>();
+            HistoricFormProperty historicFormProperty = (HistoricFormProperty) oHistoricDetail;
+            oHistoricFormPropertyCover.put("id", historicFormProperty.getPropertyId());
+            oHistoricFormPropertyCover.put("value", historicFormProperty.getPropertyValue());
+            result.add(oHistoricFormPropertyCover);
+        }
+        LOG.info("(List oHistoricFormPropertyCover = {})", result);
         return result;
     }
 

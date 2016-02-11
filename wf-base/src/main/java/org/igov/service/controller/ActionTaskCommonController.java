@@ -42,7 +42,6 @@ import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.history.HistoricTaskInstanceQuery;
 import org.activiti.engine.identity.Group;
-import org.activiti.engine.impl.persistence.entity.TaskEntity;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.repository.ProcessDefinition;
@@ -58,7 +57,6 @@ import org.igov.io.GeneralConfig;
 import org.igov.io.mail.NotificationPatterns;
 import org.igov.io.web.HttpRequester;
 import org.igov.model.action.event.HistoryEvent_Service_StatusType;
-import org.igov.model.action.task.core.ProcessDTOCover;
 import org.igov.model.action.task.core.ProcessDefinitionCover;
 import org.igov.model.action.task.core.entity.*;
 import org.igov.model.action.task.core.entity.Process;
@@ -66,7 +64,9 @@ import org.igov.model.flow.FlowSlotTicket;
 import org.igov.model.flow.FlowSlotTicketDao;
 import org.igov.service.business.action.event.HistoryEventService;
 import org.igov.service.business.action.task.core.ActionTaskService;
+import org.igov.service.business.action.task.systemtask.doc.CreateDocument_UkrDoc;
 import org.igov.service.business.action.task.systemtask.doc.handler.UkrDocEventHandler;
+import org.igov.service.business.subject.message.MessageService;
 import org.igov.service.exception.*;
 import org.igov.util.JSON.JsonDateTimeSerializer;
 import org.igov.util.Tool;
@@ -155,6 +155,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
     @Autowired
     private ActionTaskLinkDao actionTaskLinkDao;
+
+    @Autowired
+    private MessageService oMessageService;
 
     /**
      * Загрузка задач из Activiti:
@@ -501,6 +504,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
      * @param nID_Task  номер-ИД таски (обязательный)
      * @param nID_Process  номер-ИД процесса (опциональный, но обязательный если не задан nID_Task и sID_Order)
      * @param sID_Order номер-ИД заявки (опциональный, но обязательный если не задан nID_Task и nID_Process)
+     * @param sLogin (опциональный) логин, по которому проверяется вхождение пользователя в одну из групп, на которые распространяется данная задача
+     * @param bIncludeGroups (опциональный) если задано значение true - в отдельном элементе aGroups возвращается массив отождествленных групп, на которые распространяется данная задача
+     * @param bIncludeStartForm (опциональный) если задано значение true - в отдельном элементе aFieldStartForm возвращается массив полей стартовой формы
+     * @param bIncludeAttachments (опциональный) если задано значение true - в отдельном элементе aAttachment возвращается массив элементов-объектов Attachment (без самого контента)
+     * @param bIncludeMessages (опциональный) если задано значение true - в отдельном элементе aMessage возвращается массив сообщений по задаче
+     *
      * @return сериализованный объект <br> <b>oProcess</b> {<br><kbd>sName</kbd> - название услуги (БП);<br> <kbd>sBP</kbd> - id-бизнес-процесса (БП);<br> <kbd>nID</kbd> - номер-ИД процесса;<br> <kbd>sDateCreate</kbd> - дата создания процесса<br>}
      */
     @ApiOperation(value = "Получение данных по таске", notes = "#####  ActionCommonTaskController: Сервис получения данных по таске #####\n\n"
@@ -508,7 +517,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             + "https://test.region.igov.org.ua/wf/service/action/task/getTaskData?nID_Task=nID_Task&sID_Order=sID_Order\n\n\n"
             + "Response:\n"
             + "\n```json\n"
-            + "  {\n"
+            + "  \"oProcess\":{\n"
             + "    \"sName\":\"название услуги (БП)\"\n"
             + "    \"sBP\":\"id-бизнес-процесса (БП)\"\n"
             + "    \"nID\":\"номер-ИД процесса\"\n"
@@ -523,10 +532,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @RequestParam(value = "nID_Task", required = true) Long nID_Task,
             @ApiParam(value = "номер-ИД процесса (опциональный, но обязательный если не задан nID_Task и sID_Order)", required = false) @RequestParam(value = "nID_Process", required = false) Long nID_Process,
             @ApiParam(value = "номер-ИД заявки (опциональный, но обязательный если не задан nID_Task и nID_Process)", required = false) @RequestParam(value = "sID_Order", required = false) String sID_Order,
-            @ApiParam(value = "", required = false) @RequestParam(value = "sLogin", required = false) String sLogin,
-            @ApiParam(value = "", required = false) @RequestParam(value = "bIncludeGroups", required = false) Boolean bIncludeGroups,
-            @ApiParam(value = "", required = false) @RequestParam(value = "bIncludeStartForm", required = false) Boolean bIncludeStartForm,
-            @ApiParam(value = "", required = false) @RequestParam(value = "bIncludeAttachments", required = false) Boolean bIncludeAttachments)
+            @ApiParam(value = "(опциональный) логин, по которому проверяется вхождение пользователя в одну из групп, на которые распространяется данная задача", required = false) @RequestParam(value = "sLogin", required = false) String sLogin,
+            @ApiParam(value = "(опциональный) если задано значение true - в отдельном элементе aGroups возвращается массив отождествленных групп, на которые распространяется данная задача", required = false) @RequestParam(value = "bIncludeGroups", required = false) Boolean bIncludeGroups,
+            @ApiParam(value = "(опциональный) если задано значение true - в отдельном элементе aFieldStartForm возвращается массив полей стартовой формы", required = false) @RequestParam(value = "bIncludeStartForm", required = false) Boolean bIncludeStartForm,
+            @ApiParam(value = "(опциональный) если задано значение true - в отдельном элементе aAttachment возвращается массив элементов-объектов Attachment (без самого контента)", required = false) @RequestParam(value = "bIncludeAttachments", required = false) Boolean bIncludeAttachments,
+            @ApiParam(value = "(опциональный) если задано значение true - в отдельном элементе aMessage возвращается массив сообщений по задаче", required = false) @RequestParam(value = "bIncludeMessages", required = false) Boolean bIncludeMessages)
             throws CRCInvalidException, CommonServiceException, RecordNotFoundException {
 
         if (nID_Task == null) {
@@ -549,10 +559,20 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         if (bIncludeAttachments == null) {
             bIncludeAttachments = Boolean.FALSE;
         }
+        if (bIncludeMessages == null) {
+            bIncludeMessages = Boolean.FALSE;
+        }
         Map<String, Object> response = new HashMap<>();
 
         response.put("oProcess", oActionTaskService.getProcessInfoByTaskID(nID_Task));
-        response.put("aField", oActionTaskService.getTaskAllFields(nID_Task));
+
+        try{
+            response.put("aField", oActionTaskService.getFormPropertiesByTaskID(nID_Task));
+        } catch (ActivitiObjectNotFoundException e) {
+            LOG.info(String.format("Must search Task [id = '%s'] in history!!!", nID_Task));
+            response.put("aField", oActionTaskService.getHistoricFormPropertiesByTaskID(nID_Task));
+        }
+
         if (bIncludeGroups.equals(Boolean.TRUE)){
             response.put("aGroups", oActionTaskService.getCandidateGroupByTaskID(nID_Task));
         }
@@ -561,6 +581,21 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
         if (bIncludeAttachments.equals(Boolean.TRUE)){
             response.put("aAttachment", oActionTaskService.getAttachmentsByTaskID(nID_Task));
+        }
+        if (bIncludeMessages.equals(Boolean.TRUE)){
+            if (nID_Process == null) {
+                nID_Process = Long.parseLong(
+                        oActionTaskService.getProcessInstanceIDByTaskID(nID_Task.toString())
+                );
+            }
+            try {
+                response.put("aMessage", oMessageService.gerOrderMessagesByProcessInstanceID(nID_Process));
+            } catch (Exception oException) {
+                LOG.error("Can't get: {}", oException.getMessage());
+                throw new CommonServiceException(
+                        ExceptionCommonController.BUSINESS_ERROR_CODE,
+                        "Can't get: " + oException.getMessage(), oException, HttpStatus.FORBIDDEN);
+            }
         }
 
         response.put("sStatusName", oActionTaskService.getTaskName(nID_Task));
@@ -1404,6 +1439,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "номер-ИД процесса", required = true) @RequestParam(value = "nID_Process", required = true) Long nID_Process
         ) throws CommonServiceException {
         try {
+            /* issue #1131
             String sID_Order = generalConfig.sID_Order_ByProcess(nID_Process);
             Map<String, String> params = new HashMap<>();
             params.put("sID_Order", sID_Order);
@@ -1411,9 +1447,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             String sURL = generalConfig.sHostCentral() + "/wf/service/subject/message/getServiceMessages";
             soResponse = httpRequester.getInside(sURL, params);
             LOG.info("(soResponse={})", soResponse);
+            */
             //public static ResponseEntity<String> toJsonResponse(Object res) {
             //return toJsonResponse(HttpStatus.OK, soResponse);
-            return soResponse;
+            //return soResponse; // issue #1131
             /*String historyEventServiceJson = oActionTaskService.updateHistoryEvent_Service(
                     sID_Order,
                     saField,
@@ -1421,6 +1458,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             LOG.info("....ok! successfully update historyEvent_service! event= {}", historyEventServiceJson);*/
             //oActionTaskService.setInfo_ToActiviti("" + nID_Process, saField, sBody);
             //createSetTaskQuestionsMessage(sID_Order, sBody, saField);//issue 1042
+            return oMessageService.gerOrderMessagesByProcessInstanceID(nID_Process); // issue #1131
         } catch (Exception oException) {
             LOG.error("Can't get: {}", oException.getMessage());
             throw new CommonServiceException(
@@ -1533,7 +1571,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
     protected List<TaskInfo> getTasksWithTicketsFromQuery(Object taskQuery, int nStart, int nSize, boolean bFilterHasTicket, Map<String, FlowSlotTicket> mapOfTickets){
 	    List<TaskInfo> tasks = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).listPage(nStart, nSize)
-				: ((NativeTaskQuery) taskQuery).listPage(nStart, nSize);
+				: (List) ((NativeTaskQuery) taskQuery).listPage(nStart, nSize);
 	
 		List<Long> taskIds = new LinkedList<Long>();
 		for (int i = 0; i < tasks.size(); i++){
@@ -1761,25 +1799,145 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 		return taskInfo;
 	}
 
-
+    @ApiOperation(value = "Получения обьекта-записи линка", notes = "#####  ActionCommonTaskController: Сервис получения обьекта-записи линка #####\n\n"
+            + "Request:\n\n"
+            + "https://test.igov.org.ua/wf/service/action/task/getLink?sKey=sKey&nID_Subject_Holder=nID_Subject_Holder\n\n\n"
+            + "Response:\n"
+            + "\n```json\n"
+            + "  {\"sKey\":\"Cтрока-ключ\"," +
+            "       \"nID\":ИД обьекта," +
+            "       \"nID_Process\":ИД бизнес процесса," +
+            "       \"nID_Subject_Holder\":ИД субьекта-хранителя" +
+            "    }\n"
+            + "\n```\n")
     @RequestMapping(value = "/getLink", method = { RequestMethod.GET })
     @ResponseBody
-    public ActionTaskLink getActionTaskLink(@RequestParam(value = "nID_Process", required = false) Long nID_Process,
-                                    @RequestParam(value = "sKey", required = true) String sKey,
-                                    @RequestParam(value = "nID_Subject_Holder", required = true) Long nID_Subject_Holder) throws Exception {
+    public ActionTaskLink getActionTaskLink(@ApiParam(value = "ИД бизнес процесса", required = false) @RequestParam(value = "nID_Process", required = false) Long nID_Process,
+                                            @ApiParam(value = "Cтрока-ключ", required = true) @RequestParam(value = "sKey", required = true) String sKey,
+                                            @ApiParam(value = "ИД субьекта-хранителя", required = true) @RequestParam(value = "nID_Subject_Holder", required = true) Long nID_Subject_Holder) throws Exception {
 
         return actionTaskLinkDao.getByCriteria(nID_Process, sKey, nID_Subject_Holder);
     }
 
+    @ApiOperation(value = "Создание нового обьекта-записи линка", notes = "#####  ActionCommonTaskController: Сервис создания обьекта-записи линка #####\n\n"
+            + "Request:\n\n"
+            + "https://test.igov.org.ua/wf/service/action/task/setLink?nID_Process=nID_Process&sKey=sKey&nID_Subject_Holder=nID_Subject_Holder\n\n\n"
+            + "Response:\n"
+            + "\n```json\n"
+            + "  {\"sKey\":\"Cтрока-ключ\"," +
+            "       \"nID\":ИД обьекта," +
+            "       \"nID_Process\":ИД бизнес процесса," +
+            "       \"nID_Subject_Holder\":ИД субьекта-хранителя" +
+            "    }\n"
+            + "\n```\n")
     @RequestMapping(value = "/setLink", method = { RequestMethod.GET })
     @ResponseBody
-    public ActionTaskLink setActionTaskLink(@RequestParam(value = "nID_Process", required = true) Long nID_Process,
-                                            @RequestParam(value = "sKey", required = true) String sKey,
-                                            @RequestParam(value = "nID_Subject_Holder", required = true) Long nID_Subject_Holder) throws Exception {
+    public ActionTaskLink setActionTaskLink(@ApiParam(value = "ИД бизнес процесса", required = true) @RequestParam(value = "nID_Process", required = true) Long nID_Process,
+                                            @ApiParam(value = "Cтрока-ключ", required = true) @RequestParam(value = "sKey", required = true) String sKey,
+                                            @ApiParam(value = "ИД субьекта-хранителя", required = true) @RequestParam(value = "nID_Subject_Holder", required = true) Long nID_Subject_Holder) throws Exception {
 
         return actionTaskLinkDao.setActionTaskLink(nID_Process, sKey, nID_Subject_Holder);
     }
     
+    @ApiOperation(value = "Обработка изменения статуса документа в УкрДок", notes = "#####  ActionCommonTaskController: Обработка изменения статуса документа в УкрДок #####\n\n"
+            + "Request:\n\n"
+            + "https://test.igov.org.ua/wf/service/action/task/callback/ukrdoc\n\n\n"
+	    + "Метод выполняет следующие действия:\n"
+	    + " - получает текущий статус документа из тега data -> docStateEvent -> state -> current \n"
+	    + " - получает номер документа из тега data -> docStateEvent -> tables -> CardsDocument -> CarIdDocument \n"
+	    + " - ищет процесс, с которым связан данный документ используя сущность ActionTaskLink. Если сущности такой еще нет - то производится поиск "
+	    + " по переменной процесса sID_Document, которая устанавливается при отправке документа в УкрДок, и осуществляется сохранение сущности ActionTaskLink\n"
+	    + " - после нахождения текущей активной задачи статус из УкрДока записывается в переменную sID_Document_UkrDoc задачи\n"
+	    + " - завершает текущую задачу. для следующей активной задачи ответственным назначает пользователя завершенной задачи. Если пользователя не было - то задача остается без активного пользователя\n"	    
+            + "В теле запроса передается объект с информацией об изменении:\n"
+	    + "Образец документа:\n"
+	    + "\n```json\n"
+	    + "\"create_time\": \"2016.02.05 12:51:21\",\n"
+            + "\"change_time\": \"2016.02.05 12:51:21\",\n"
+            + "\"node_prev_id\": \"56b0b33edfb2840b2a5644c2\",\n"
+            + "\"status\": \"processed\",\n"
+            + "\"user_id\": 5850,\n"
+            + "\"data\": {\n"
+            + "    \"docStateEvent\": {\n"
+            + "            \"state\": {\n"
+            + "                    \"current\": \"Не завизирован\",\n"
+            + "                    \"previous\": \"Создан\"\n"
+            + "            },\n"
+            + "            \"pk\": {\n"
+            + "                    \"id\": 6569546,\n"
+            + "                    \"year\": 2016\n"
+            + "            },\n"
+            + "            \"tables\": {\n"
+            + "                    \"Executors\": {\n"
+            + "                            \"body\": [\n"
+            + "                                    [\n"
+            + "                                            \"DD100262LVI\",\n"
+            + "                                            null,\n"
+            + "                                            null,\n"
+            + "                                            \"2\",\n"
+            + "                                            1,\n"
+            + "                                            0,\n"
+            + "                                            null,\n"
+            + "                                            null,\n"
+            + "                                            null,\n"
+            + "                                            null,\n"
+            + "                                            \"0\",\n"
+            + "                                            null\n"
+            + "                                    ]\n"
+            + "                            ],\n"
+            + "                            \"head\": {\n"
+            + "                                    \"IdAddedMethod\": 11,\n"
+            + "                                    \"Lightning\": 10,\n"
+            + "                                    \"ExecutData\": 9,\n"
+            + "                                    \"ControlDate\": 8,\n"
+            + "                                    \"AttentionExecutData\": 7,\n"
+            + "                                    \"InitData\": 6,\n"
+            + "                                    \"KindOrder\": 5,\n"
+            + "                                    \"VisOrder\": 4,\n"
+            + "                                    \"KindExecutor\": 3,\n"
+            + "                                    \"peo_peo_ldap_login\": 2,\n"
+            + "                                    \"io_peo_ldap_login\": 1,\n"
+            + "                                    \"peo_ldap_login\": 0\n"
+            + "                            }\n"
+            + "                    },\n"
+            + "                    \"PunctAttending\": {\n"
+            + "                            \"DataPunctAttending\": \"2016-02-05 12:51:20\",\n"
+            + "                            \"NamePunctAttending\": \"Создание\",\n"
+            + "                            \"peo_ldap_login\": \"DD100262LVI\"\n"
+            + "                    },\n"
+            + "                    \"CardsDocument\": {\n"
+            + "                         \"Invizible\": null,\n"
+            + "                         \"LastCoordDate\": null,\n"
+            + "                         \"DocCreateData\": null,\n"
+            + "                         \"CoordBonDays\": null,\n"
+            + "                         \"Flavor\": null,\n"
+            + "                         \"IdPetm\": null,\n"
+            + "                         \"Lightning\": \"0\",\n"
+            + "                         \"Locale\": \"RU\",\n"
+            + "                         \"DocLastModifData\": \"2016-02-05 12:51:20\",\n"
+            + "                         \"CoordRtrnDate\": \"2016-02-05 12:51:20\",\n"
+            + "                         \"Prioritet\": \"Обычный\",\n"
+            + "                         \"ClassId\": \"a\",\n"
+            + "                         \"IdKindDoc\": 19,\n"
+            + "                         \"IdKindIncomming\": 0,\n"
+            + "                         \"IdGroup\": 1,\n"
+            + "                         \"DocumentName\": \"Акт перерахунку сумки\",\n"
+            + "                         \"NumberDocument\": \"0\",\n"
+            + "                         \"CarIdDocument\": 6569546,\n"
+            + "                         \"IdActivity\": 4842,\n"
+            + "                         \"IdXMLT\": 8223,\n"
+            + "                         \"peo_peo_ldap_login\": \"DD100262LVI\",\n"
+            + "                         \"peo_ldap_login\": \"DD100262LVI\",\n"
+            + "                         \"IdAttending\": 6569544\n"
+            + "                 }\n"
+            + "         },\n"
+            + "         \"uniq\": 5777275,\n"
+            + "         \"dlm\": \"2016-02-05 12:51:20\"\n"
+            + "    },\n"
+            + "    \"__conveyor_copy_task_result__\": \"ok\"\n"
+            + "  }\n"
+            + "}\n"
+            + "\n```\n")
     @RequestMapping(value = "/callback/ukrdoc", method = {RequestMethod.POST})
     public @ResponseBody
     String processUkrDocCallBack(@RequestBody String event){
@@ -1788,6 +1946,59 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     	eventHandler.processEvent(event);
     	
     	LOG.info("Parsed document ID:{} and status:{} from event", eventHandler.getDocumentId(), eventHandler.getStatus());
+    	
+    	String documentId = eventHandler.getDocumentId();
+    	String documentIdFromPkSection = eventHandler.getDocumentId();
+    	String year = eventHandler.getYear();
+    	String status = eventHandler.getStatus();
+    	
+    	String sKey = documentId + ":" + year;
+    	
+    	//subject
+		long ukrDocSubjectId = 1l;
+		ActionTaskLink actionTaskLink = actionTaskLinkDao.getByCriteria(null, sKey, ukrDocSubjectId);
+		ProcessInstance processInstance = null;
+		if (actionTaskLink == null){
+	    	List<ProcessInstance> processes = runtimeService.createProcessInstanceQuery()
+	    			.variableValueEquals(CreateDocument_UkrDoc.UKRDOC_ID_DOCUMENT_VARIABLE_NAME, sKey).active().list();
+	    	LOG.info("Found {} processes with urk doc variable name {}", processes.size(), sKey);
+
+	    	if (processes.size() > 0){
+		    	processInstance = processes.get(0);
+				LOG.info("ActionTaskLink is not found. Creating a new one");
+				
+				actionTaskLinkDao.setActionTaskLink(Long.valueOf(processInstance.getId()), sKey, ukrDocSubjectId);
+	    	}
+		} else {
+			LOG.info("Found ActionTaskLink. Process Id is {}", actionTaskLink.getnIdProcess());
+			processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(actionTaskLink.getnIdProcess().toString()).singleResult();
+		}
+    	
+    	if (processInstance != null){
+			List<Task> tasks =  taskService.createTaskQuery().processInstanceId(processInstance.getId()).active().list();
+			if (tasks != null){
+				LOG.info("Found {} tasks for the process instance {}", tasks.size(), processInstance.getId());
+				String assignee = null;
+				for (Task task : tasks){
+					assignee = task.getAssignee();
+					taskService.complete(task.getId());
+					taskService.setVariable(task.getId(), "sStatusName_UkrDoc", status);
+					LOG.info("Completed task with ID {}", task.getId());
+				}
+				if (assignee != null){
+					LOG.info("Looking for a new task to claim it to the user {}", assignee);
+					tasks = taskService.createTaskQuery().processInstanceId(processInstance.getId()).active().list();
+					for (Task task : tasks){
+						taskService.claim(task.getId(), assignee);
+						LOG.info("Claimed task {} for the user {}", task.getId(), assignee);
+					}
+				} else {
+					LOG.info("Task was not assigned");
+				}
+			} else {
+				LOG.info("Active tasks have not found for the process {}", processInstance.getId());
+			}
+    	}
     	
     	return "OK";
     }
