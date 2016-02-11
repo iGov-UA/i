@@ -20,6 +20,8 @@ import org.activiti.engine.history.HistoricFormProperty;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.identity.Group;
+import org.activiti.engine.impl.persistence.entity.ExecutionEntity;
+import org.activiti.engine.impl.persistence.entity.HistoricFormPropertyEntity;
 import org.activiti.engine.impl.persistence.entity.TaskEntity;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
@@ -1719,7 +1721,8 @@ public class ActionTaskService {
         LOG.info("(snID_Process={})", snID_Process);
         List<HistoricDetail> aHistoricDetail = null;
         if (snID_Process != null) {
-            aHistoricDetail = oHistoryService.createHistoricDetailQuery().formProperties().processInstanceId(snID_Process).list();
+            aHistoricDetail = oHistoryService.createHistoricDetailQuery().formProperties().processInstanceId(
+                    snID_Process).list();
         }
         LOG.info("(aHistoricDetail={})", aHistoricDetail);
         if (aHistoricDetail == null) {
@@ -1736,8 +1739,8 @@ public class ActionTaskService {
         return result;
     }
 
-    public List<Map<String, Object>> getHistoricDetailsByTaskID_test3(Long nID_Task) throws RecordNotFoundException {
-        List<Map<String, Object>> result = new ArrayList<>();
+    public List<HistoricFormProperty> getHistoricDetailsByTaskID(Long nID_Task) throws RecordNotFoundException {
+        List<HistoricFormProperty> result = new ArrayList<>();
 
         HistoricTaskInstance oHistoricTaskInstance = oHistoryService.createHistoricTaskInstanceQuery()
                 .taskId(nID_Task.toString()).singleResult();
@@ -1753,11 +1756,15 @@ public class ActionTaskService {
         if (aHistoricDetail == null) {
             throw new RecordNotFoundException("aHistoricDetail");
         }
+        ExecutionEntity executionEntity = (ExecutionEntity) oHistoryService.createHistoricProcessInstanceQuery().processInstanceId(snID_Process).singleResult();
         for (HistoricDetail oHistoricDetail : aHistoricDetail) {
             Map<String, Object> mReturn = new HashMap();
             HistoricFormProperty oHistoricFormProperty = (HistoricFormProperty) oHistoricDetail;
             mReturn.put(oHistoricFormProperty.getPropertyId(), oHistoricFormProperty.getPropertyValue());
-            result.add(mReturn);
+            //result.add(mReturn);
+            HistoricFormProperty historicFormProperty = new HistoricFormPropertyEntity(executionEntity,oHistoricFormProperty.getPropertyId(), oHistoricFormProperty.getPropertyValue());
+            result.add(historicFormProperty);
+
         }
         // }
 
