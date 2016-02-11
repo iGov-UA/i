@@ -45,11 +45,13 @@ public class EscalationHelper implements ApplicationContextAware {
 
             //2 - check beanHandler
             try {
+                LOG.info("(bConditionAccept={})", bConditionAccept);
                 if (bConditionAccept) {
                     EscalationHandler oEscalationHandler = getHandlerClass(sBeanHandler);
                     if (oEscalationHandler != null) {
+                        LOG.info("1(asRecipientMail={})", mTaskParam.get("asRecipientMail"));
                         String[] asRecipientMail = (String[]) mTaskParam.get("asRecipientMail");
-                        LOG.info("(asRecipientMail={})", (Object) asRecipientMail);
+                        LOG.info("2(asRecipientMail={})", (Object) asRecipientMail);
                         oEscalationHandler.execute(mTaskParam, asRecipientMail, sPatternFile);
                     }
                 }else{
@@ -59,7 +61,7 @@ public class EscalationHelper implements ApplicationContextAware {
                     LOG.info("Escalation not need! (sBeanHandler={},sHead={},sCondition={})", sBeanHandler, sHead, sCondition);
                 }
             } catch (Exception e) {
-                LOG.error("Can't execute hendler: {}", e.getMessage());
+                LOG.error("Can't execute hendler: {} (mTaskParam={})", e.getMessage(), mTaskParam);
                 throw e;
             }
         } catch (ClassNotFoundException e) {
