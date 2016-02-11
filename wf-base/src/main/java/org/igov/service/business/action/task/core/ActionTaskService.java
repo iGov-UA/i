@@ -1681,9 +1681,14 @@ public class ActionTaskService {
         return oFormService.getTaskFormData(nID_Task.toString()).getFormProperties();
     }
 
-
-    public List<HistoricFormProperty> getHistoricDetailsByTaskID(Long nID_Task) throws RecordNotFoundException {
-        List<HistoricFormProperty> result = new ArrayList<>();
+    /**
+     * Получение массива полей propertyId и propertyValue из HistoricFormProperty
+     * @param nID_Task - ID-номер таски, которая находится в архиве
+     * @return
+     * @throws RecordNotFoundException
+     */
+    public List<Map<String, String>> getHistoricFormPropertiesByTaskID(Long nID_Task) throws RecordNotFoundException {
+        List<Map<String, String>> result = new ArrayList<>();
 
         List<HistoricDetail> aHistoricDetail = oHistoryService.createHistoricDetailQuery().taskId(nID_Task.toString()).formProperties().list();
 
@@ -1692,8 +1697,13 @@ public class ActionTaskService {
             throw new RecordNotFoundException("aHistoricDetail");
         }
         for (HistoricDetail oHistoricDetail : aHistoricDetail) {
-            result.add((HistoricFormProperty) oHistoricDetail);
+            Map<String, String> oHistoricFormPropertyCover = new HashMap<>();
+            HistoricFormProperty historicFormProperty = (HistoricFormProperty) oHistoricDetail;
+            oHistoricFormPropertyCover.put("id", historicFormProperty.getPropertyId());
+            oHistoricFormPropertyCover.put("value", historicFormProperty.getPropertyValue());
+            result.add(oHistoricFormPropertyCover);
         }
+        LOG.info("(List oHistoricFormPropertyCover = {})", result);
         return result;
     }
 

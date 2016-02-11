@@ -570,7 +570,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             response.put("aField", oActionTaskService.getFormPropertiesByTaskID(nID_Task));
         } catch (ActivitiObjectNotFoundException e) {
             LOG.info(String.format("Must search Task [id = '%s'] in history!!!", nID_Task));
-            response.put("aField", oActionTaskService.getHistoricDetailsByTaskID(nID_Task));
+            response.put("aField", oActionTaskService.getHistoricFormPropertiesByTaskID(nID_Task));
         }
 
         if (bIncludeGroups.equals(Boolean.TRUE)){
