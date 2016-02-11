@@ -599,7 +599,7 @@
     };
 
     $scope.init = function () {
-      var tab = $location.path().substr('/tasks/'.length);
+      var tab = $location.path().substr('/tasks/'.length) || 'tickets';
 
       loadSelfAssignedTasks();
       $scope.taskFormLoaded = false;
