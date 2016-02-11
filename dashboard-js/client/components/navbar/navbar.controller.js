@@ -5,8 +5,8 @@
     .module('dashboardJsApp')
     .controller('NavbarCtrl', navbarCtrl);
 
-  navbarCtrl.$inject = ['$scope', '$location', 'Auth', 'envConfigService', 'iGovNavbarHelper', 'tasks'];
-  function navbarCtrl($scope, $location, Auth, envConfigService, iGovNavbarHelper, tasks) {
+  navbarCtrl.$inject = ['$scope', '$location', 'Auth', 'envConfigService', 'iGovNavbarHelper'];
+  function navbarCtrl($scope, $location, Auth, envConfigService, iGovNavbarHelper) {
     $scope.menu = [{
       'title': 'Задачі',
       'link': '/tasks'
@@ -16,29 +16,6 @@
       iGovNavbarHelper.isTest = config.bTest;
     });
 
-    iGovNavbarHelper.menus = [{
-      title: 'Необроблені',
-      type: tasks.filterTypes.unassigned,
-      count: 0
-    }, {
-      title: 'В роботі',
-      type: tasks.filterTypes.selfAssigned,
-      count: 0
-    }, {
-      title: 'Мій розклад',
-      type: tasks.filterTypes.tickets,
-      count: 0
-    }, {
-      title: 'Усі',
-      type: tasks.filterTypes.all,
-      count: 0
-    }, {
-      title: 'Історія',
-      type: tasks.filterTypes.finished,
-      count: 0
-    }];
-
-    $scope.isLoggedIn = Auth.isLoggedIn;
     $scope.isAdmin = Auth.isAdmin;
     $scope.areInstrumentsVisible = false;
     $scope.iGovNavbarHelper = iGovNavbarHelper;

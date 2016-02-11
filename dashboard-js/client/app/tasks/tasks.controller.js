@@ -1,9 +1,9 @@
 ﻿'use strict';
 angular.module('dashboardJsApp').controller('TasksCtrl',
   ['$scope', '$window', 'tasks', 'processes', 'Modal', 'Auth', 'identityUser', '$localStorage', '$filter', 'lunaService',
-    'PrintTemplateService', 'taskFilterService', 'MarkersFactory',
+    'PrintTemplateService', 'taskFilterService', 'MarkersFactory', 'iGovNavbarHelper',
     function ($scope, $window, tasks, processes, Modal, Auth, identityUser, $localStorage, $filter, lunaService,
-              PrintTemplateService, taskFilterService, MarkersFactory) {
+              PrintTemplateService, taskFilterService, MarkersFactory, iGovNavbarHelper) {
       $scope.tasks = null;
       $scope.tasksLoading = false;
       $scope.selectedTasks = {};
@@ -452,7 +452,7 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
             Modal.assignTask(function (event) {
               //$scope.lightweightRefreshAfterSubmit();
               $scope.selectedTasks['unassigned'] = null;
-              $scope.applyTaskFilter($scope.menus[1].type, $scope.selectedTask.id);
+              $scope.applyTaskFilter(iGovNavbarHelper.menus[1].type, $scope.selectedTask.id);
             }, 'Задача у вас в роботі', $scope.lightweightRefreshAfterSubmit);
 
           })
@@ -478,7 +478,7 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
         //lightweight refresh only deletes the submitted task from the array of current type of tasks
         //so we don't need to refresh the whole page
         $scope.selectedTasks[$scope.$storage.menuType] = null;
-        loadTaskCounters();
+        iGovNavbarHelper.loadTaskCounters();
         $scope.tasks = $.grep($scope.tasks, function (e) {
           return e.id != $scope.selectedTask.id;
         });
@@ -589,7 +589,6 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
       };
 
       $scope.init = function () {
-        loadTaskCounters();
         loadSelfAssignedTasks();
         $scope.taskFormLoaded = false;
       };
@@ -696,20 +695,6 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
             }
           }).catch(mapErrorHandler({'CRC Error': 'Неправильний ID', 'Record not found': 'ID не знайдено'}));
       };
-
-      function loadTaskCounters() {
-        _.forEach($scope.menus, function (menu) {
-          tasks.list(menu.type)
-            .then(function (result) {
-              try {
-                result = JSON.parse(result);
-              } catch (e) {
-                result = result;
-              }
-              menu.count = result.data.length;
-            });
-        });
-      }
 
       function loadSelfAssignedTasks() {
         processes.list().then(function (processesDefinitions) {
