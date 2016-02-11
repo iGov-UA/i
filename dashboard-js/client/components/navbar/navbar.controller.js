@@ -24,10 +24,10 @@
     $scope.isVisible = function(menuType){
       //$scope.menus = [{
       if(menuType === 'all'){
-        return  Auth.isLoggedIn() && Auth.hasOneOfRoles('manager', 'admin', 'kermit');
+        return Auth.isLoggedIn() && Auth.hasOneOfRoles('manager', 'admin', 'kermit');
       }
       if(menuType === 'finished'){
-        return  Auth.isLoggedIn() && Auth.hasOneOfRoles('manager', 'admin', 'kermit', 'supervisor');
+        return Auth.isLoggedIn() && Auth.hasOneOfRoles('manager', 'admin', 'kermit', 'supervisor');
       }
       return Auth.isLoggedIn();
     };
