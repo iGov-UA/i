@@ -714,14 +714,23 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public
     @ResponseBody
     ProcessI startProcessByKey(
-            @ApiParam(value = "Ключ процесса", required = true) @PathVariable("key") String key) {
+            @ApiParam(value = "Ключ процесса", required = true) @PathVariable("key") String key,
+            @ApiParam(value = "Орган", required = false) @RequestParam(required = false) String organ) {
+        
         ProcessInstance pi = runtimeService.startProcessInstanceByKey(key);
+        if(organ != null){
+            Map<String, Object> variables = new HashMap<String, Object>();
+            pi = runtimeService.startProcessInstanceByKey(key, variables); 
+        } else{
+            pi = runtimeService.startProcessInstanceByKey(key); 
+        }
         if (pi == null || pi.getId() == null) {
             throw new IllegalArgumentException(String.format(
                     "process did not started by key:{%s}", key));
         }
         return new Process(pi.getProcessInstanceId());
     }
+    
 
 //    @RequestMapping(value = "/getTasks", method = RequestMethod.GET)
 //    @ResponseBody

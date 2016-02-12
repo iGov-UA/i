@@ -1,5 +1,8 @@
 package org.igov.service.business.action.task.bp;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.igov.service.business.action.task.bp.BpService;
@@ -14,6 +17,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import org.igov.io.web.HttpEntityCover;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 
 /**
  * @author OlgaPrylypko
@@ -25,7 +31,7 @@ public class BpServiceImpl implements BpService {
 
     private static final Logger LOG = LoggerFactory.getLogger(BpServiceImpl.class);
     private String uriWf = "/wf";
-    private String uriStartProcess = "/service/action/task/start-process/%s"; ///wf/service/runtime/
+    private String uriStartProcess = "/service/action/task/start-process/%s?organ=%s";
     private String uriSetProcessVariable = "/service/action/task/setVariable";
     private String uriSetTaskVariable = "/service/action/task/setVariable";
     private String uriGetProcessTasks = "/service/action/task/getTasks";
@@ -40,25 +46,20 @@ public class BpServiceImpl implements BpService {
     @Override
     public String startProcessInstanceByKey(Integer nID_Server, String key, Map<String, Object> variables) {
 
-        String url = getServerUrl(nID_Server) + String.format(uriStartProcess, key);
+        String organ = variables != null && variables.get("organ") != null ? (String)variables.get("organ") : null;
+        String url = getServerUrl(nID_Server) + String.format(uriStartProcess, key, organ);
         LOG.info("Getting URL with parameters: (uri={}, variables={})", url, variables);
-        //Map<String, String> params = new HashMap<>();
+        Map<String, String> params = new HashMap<>();
         String jsonProcessInstance = "";
         try {
-            url = getServerUrl(nID_Server) + "/service/runtime/process-instances";
-            Map<String, Object> requestParams = new HashMap<String, Object>();
-            requestParams.put("processDefinitionKey", key);
-            requestParams.put("variables", variables);
-            jsonProcessInstance = httpRequester.postInside(url, new JSONObject(requestParams).toString());
-            LOG.info("response: " + jsonProcessInstance);
-            /*jsonProcessInstance = httpRequester.getInside(url, params);
+            jsonProcessInstance = httpRequester.getInside(url, params);
             LOG.info("(jsonProcessInstance={})", jsonProcessInstance);
             String instanceId = "" + new JSONObject(jsonProcessInstance).get("id");
             LOG.info("(instanceId={})", instanceId);
             for (String keyValue : variables.keySet()) {
                 Object value = variables.get(keyValue);
                 setVariableToProcessInstance(nID_Server, instanceId, keyValue, value);
-            }*/
+            }
         } catch (Exception oException) {
             LOG.warn("error!: {}", oException.getMessage());
             LOG.debug("FAIL:", oException);
