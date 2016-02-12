@@ -715,7 +715,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @ResponseBody
     ProcessI startProcessByKey(
             @ApiParam(value = "Ключ процесса", required = true) @PathVariable("key") String key,
-            @ApiParam(value = "Орган", required = false) @RequestParam String organ) {
+            @ApiParam(value = "Орган", required = false) @RequestParam(required = false) String organ) {
         
         ProcessInstance pi = runtimeService.startProcessInstanceByKey(key);
         if(organ != null){
