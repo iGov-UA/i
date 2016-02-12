@@ -5,6 +5,7 @@
  */
 package org.igov.service.business.action.task.listener;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -28,32 +29,34 @@ public class AssignGroupListener implements TaskListener {
 
     private static final transient Logger LOG = LoggerFactory.getLogger(AssignGroupListener.class);
 
-    @Autowired
-    private IdentityService identityService;
-
     @Override
     public void notify(DelegateTask task) {
         DelegateExecution execution = task.getExecution();
         String organ = (String) execution.getVariable("organ");
         LOG.info("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!organ: " + organ);
         Group group;
-        if (organ != null && !"".equals(organ)) {
-            List<String> groupsNew = Arrays.asList(organ.split(","));
-            for (String groupNew : groupsNew) {
-                group = identityService.createGroupQuery().groupId(groupNew).singleResult();
-                if (group == null) {
-                    group = identityService.newGroup(organ);
-                    group.setName(organ);
-                    group.setType("assignment");
-                    identityService.saveGroup(group);
-                    LOG.info("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!created group: " + organ);
+        try {
+            if (organ != null && !"".equals(organ)) {
+                List<String> groupsNew = new ArrayList<String>(Arrays.asList(organ.split(",")));
+                IdentityService identityService = execution.getEngineServices().getIdentityService();
+                for (String groupNew : groupsNew) {
+                    group = identityService.createGroupQuery().groupId(groupNew).singleResult();
+                    if (group == null) {
+                        group = identityService.newGroup(organ);
+                        group.setName(organ);
+                        group.setType("assignment");
+                        identityService.saveGroup(group);
+                        LOG.info("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!created group: " + organ);
+                    }
                 }
+                Set<IdentityLink> groupsOld = task.getCandidates();
+                for (IdentityLink groupOld : groupsOld) {
+                    groupsNew.add(groupOld.getGroupId());
+                }
+                task.addCandidateGroups(groupsNew);
             }
-            Set<IdentityLink> groupsOld = task.getCandidates();
-            for (IdentityLink groupOld : groupsOld) {
-                groupsNew.add(groupOld.getGroupId());
-            }
-            task.addCandidateGroups(groupsNew);
+        } catch (Exception ex) {
+            LOG.error("!!!!!!!!!!!!!!!!", ex);
         }
     }
 
