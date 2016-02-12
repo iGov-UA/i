@@ -510,26 +510,74 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
      * @param bIncludeAttachments (опциональный) если задано значение true - в отдельном элементе aAttachment возвращается массив элементов-объектов Attachment (без самого контента)
      * @param bIncludeMessages (опциональный) если задано значение true - в отдельном элементе aMessage возвращается массив сообщений по задаче
      *
-     * @return сериализованный объект <br> <b>oProcess</b> {<br><kbd>sName</kbd> - название услуги (БП);<br> <kbd>sBP</kbd> - id-бизнес-процесса (БП);<br> <kbd>nID</kbd> - номер-ИД процесса;<br> <kbd>sDateCreate</kbd> - дата создания процесса<br>}
+     * @return сериализованный объект Map{String : Object}
+     * <br>{
+     * <br> <kbd>"sStatusName"</kbd> : название юзертаски
+     * <br> <kbd>"sID_Status"</kbd> : ИД юзертаски
+     * <br> <kbd>sDateTimeCreate</kbd> : : дата и время создания юзертаски
+     * <br> <b>"oProcess"</b> : {
+     * <br><kbd>"sName"</kbd> - название услуги (БП);
+     * <br> <kbd>"sBP"</kbd> - id-бизнес-процесса (БП);
+     * <br> <kbd>"nID"</kbd> - номер-ИД процесса;
+     * <br> <kbd>"sDateCreate"</kbd> - дата создания процесса
+     * <br>},
+     * <br> <b>"aField"</b> : [
+     * <br> ... - массив элементов-объектов <kbd>FormProperty</kbd> (или <kbd>HistoricFormProperty для архивных тасок</kbd>)
+     * <br>],
+     * <br> <b>"oData"</b> : {
+     * <br> ... - объекты FormProperty типа queueData
+     * <br>}
+     * <br> ... другие опциональные объекты: aGroups, aFieldStartForm, aAttachment и aMessage
+     * <br>}
      */
     @ApiOperation(value = "Получение данных по таске", notes = "#####  ActionCommonTaskController: Сервис получения данных по таске #####\n\n"
             + "Request:\n\n"
             + "https://test.region.igov.org.ua/wf/service/action/task/getTaskData?nID_Task=nID_Task&sID_Order=sID_Order\n\n\n"
             + "Response:\n"
             + "\n```json\n"
+            + "{\n"
+            + "  \"sStatusName\": название юзертаски\n"
+            + "  \"sID_Status\": ИД юзертаски\n"
+            + "  \"sDateTimeCreate\": дата и время создания юзертаски\n"
             + "  \"oProcess\":{\n"
             + "    \"sName\":\"название услуги (БП)\"\n"
             + "    \"sBP\":\"id-бизнес-процесса (БП)\"\n"
             + "    \"nID\":\"номер-ИД процесса\"\n"
             + "    \"sDateCreate\":\"дата создания процесса\"\n"
-            + "  }\n"
-            + "\n```\n")
+            + "  },\n"
+            + "  \"aField\":[...] - массив объектов полей Таски с их атрибутами\n"
+            + "  \"oData\":{...} - oбъекты электронной очереди Таски либо значение NULL, если элементов электронной очереди в таске нет\n"
+            + " ... другие опциональные объекты: aGroups, aFieldStartForm, aAttachment и aMessage\n"
+            + "}\n"
+            + "\n```\n"
+            + "\n"
+            + "Элементы массива aField обычно имеют следующую структуру:\n"
+            + " - для активных тасок:\n"
+            + "\n```json\n"
+            + "{\n"
+            + "  \"id\": идентификатор, используемый для передачи данных в форму таски\n"
+            + "  \"name\": отображаемое в форме описание поля\n"
+            + "  \"type\": объект типа параметра\n"
+            + "  \"value\": значение параметра\n"
+            + "  \"required\": свойство указывает, что поле параметра обязательно для ввода значения\n"
+            + "  \"writable\": свойство указывает, что от пользователя ожидаются введенные данные в поле при отправке формы\n"
+            + "  \"readable\": свойство указывает на возможность отображения параметра и его обработки методами сервисов\n"
+            + "}\n"
+            + "\n```\n"
+            + " - для архивных тасок:\n"
+            + "\n```json\n"
+            + "{\n"
+            + "  \"id\": идентификатор параметра\n"
+            + "  \"value\": представленное значение\n"
+            + "}\n"
+            + "\n```\n"
+            + "\n"
+    )
     @RequestMapping(value = "/getTaskData", method = RequestMethod.GET)
     public
     @ResponseBody
     ResponseEntity getTaskData(
-            @ApiParam(value = "номер-ИД таски (обязательный)", required = true)
-            @RequestParam(value = "nID_Task", required = true) Long nID_Task,
+            @ApiParam(value = "номер-ИД таски (обязательный)", required = true) @RequestParam(value = "nID_Task", required = true) Long nID_Task,
             @ApiParam(value = "номер-ИД процесса (опциональный, но обязательный если не задан nID_Task и sID_Order)", required = false) @RequestParam(value = "nID_Process", required = false) Long nID_Process,
             @ApiParam(value = "номер-ИД заявки (опциональный, но обязательный если не задан nID_Task и nID_Process)", required = false) @RequestParam(value = "sID_Order", required = false) String sID_Order,
             @ApiParam(value = "(опциональный) логин, по которому проверяется вхождение пользователя в одну из групп, на которые распространяется данная задача", required = false) @RequestParam(value = "sLogin", required = false) String sLogin,
