@@ -1,24 +1,45 @@
 package org.igov.service.controller;
 
 import io.swagger.annotations.*;
+
+import org.igov.model.subject.ServerDao;
 import org.igov.io.GeneralConfig;
+import org.igov.io.web.HttpEntityInsedeCover;
 import org.igov.model.action.event.*;
 import org.igov.service.business.action.ActionEventService;
 import org.igov.service.exception.CommonServiceException;
+import org.igov.service.exception.RecordNotFoundException;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.igov.model.subject.Server;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Optional;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
+
+import liquibase.util.csv.CSVWriter;
 
 
 @Controller
@@ -35,6 +56,10 @@ public class ActionEventController {
     private HistoryEventDao historyEventDao;
     @Autowired
     private ActionEventService oActionEventService;
+    @Autowired
+    private ServerDao serverDao;
+    @Autowired
+    private HttpEntityInsedeCover oHttpEntityInsedeCover;
     
     /**
      * получает объект события по услуге, по одной из следующий комбинаций
@@ -430,6 +455,78 @@ public class ActionEventController {
 
         List<Map<String, Object>> listOfHistoryEventsWithMeaningfulNames = oActionEventService.getListOfHistoryEvents(nID_Service);
         return JSONValue.toJSONString(listOfHistoryEventsWithMeaningfulNames);
+    }
+    
+    @RequestMapping(value = "/getServiceHistoryReport", method = RequestMethod.GET)
+    public void getServiceHistoryReport(
+            @ApiParam(value = "Дата начала выборки данных в формате yyyy-MM-dd HH:mm:ss", required = true) @RequestParam(value = "sDateAt") String sDateAt,
+            @ApiParam(value = "Дата окончания выборки данных в формате yyyy-MM-dd HH:mm:ss", required = true) @RequestParam(value = "sDateTo") String sDateTo,
+            HttpServletResponse httpResponse){
+    	String res = null;
+    	
+    	DateTime dateAt = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss").parseDateTime(sDateAt);
+    	DateTime dateTo = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss").parseDateTime(sDateTo);
+    	
+    	String[] headersMainField = { "sID_Order", "nID_Server",
+                "nID_Service", "sID_Place", "nID_Subject", "nRate", "sTextFeedback", "sUserTaskName", "sHead", 
+                "sBody", "nTimeMinutes", "sPhone" };
+    	List<String> headers = new ArrayList<String>();
+        headers.addAll(Arrays.asList(headersMainField));
+    	
+    	httpResponse.setHeader("Content-disposition", "attachment; filename="
+                + "serviceHistoryReport.csv");
+    	
+    	CSVWriter csvWriter;
+		try {
+			csvWriter = new CSVWriter(httpResponse.getWriter());
+	        csvWriter.writeNext(headers.toArray(new String[headers.size()]));
+	        
+	    	List<HistoryEvent_Service> historyEvents = historyEventServiceDao.getHistoryEventPeriod(dateAt, dateTo);
+	    	List<Map<String, String>> responseLines = new LinkedList<Map<String,String>>();
+	    	
+            List<Long> historyEventServicesIDs = new LinkedList<Long>(); 
+            for (HistoryEvent_Service historyEventService : historyEvents){
+            	historyEventServicesIDs.add(historyEventService.getId());
+            }
+            
+	    	for (HistoryEvent_Service historyEventService : historyEvents){
+	    		Map<String, Object> line = new HashMap<String, Object>();
+	    		line.put("sID_Order", historyEventService.getsID_Order());
+	    		line.put("nID_Server", historyEventService.getnID_Server());
+	    		line.put("nID_Service", historyEventService.getnID_Service());
+	    		line.put("sID_Place", historyEventService.getsID_UA());
+	    		line.put("nID_Subject", historyEventService.getnID_Subject());
+	    		line.put("nRate", historyEventService.getnRate());
+	    		line.put("sTextFeedback", historyEventService.getnRate());
+	    		line.put("sUserTaskName", historyEventService.getsUserTaskName());
+	    		line.put("sHead", historyEventService.getsHead());
+	    		line.put("sBody", historyEventService.getsBody());
+	    		line.put("nTimeMinutes", historyEventService.getnTimeMinutes());
+	    		
+	    		Integer nID_Server = historyEventService.getnID_Server();
+	            nID_Server = nID_Server == null ? 0 : nID_Server;
+
+		    	Optional<Server> oOptionalServer = serverDao.findById(new Long(nID_Server));
+	            if (!oOptionalServer.isPresent()) {
+	                throw new RecordNotFoundException("Server with nID_Server " + nID_Server + " wasn't found.");
+	            }
+	            Server oServer = oOptionalServer.get();
+	            String sHost = oServer.getsURL();
+	            
+	            String sURL = sHost + "/service/action/task/getStartFormData?nID_Task=" + historyEventService.getnID_Task();
+	            ResponseEntity<String> osResponseEntityReturn = oHttpEntityInsedeCover.oReturn_RequestGet_JSON(sURL);
+	            
+	            JSONObject json = (JSONObject) new JSONParser().parse(osResponseEntityReturn.getBody());
+	            
+	            line.put("sPhone", json.get("phone"));
+	    	}
+		} catch (IOException e) {
+			LOG.error("Error occurred while creating CSV file {}", e.getMessage());
+		} catch (RecordNotFoundException e) {
+			e.printStackTrace();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
     }
 
 }
