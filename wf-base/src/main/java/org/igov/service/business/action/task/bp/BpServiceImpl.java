@@ -31,7 +31,7 @@ public class BpServiceImpl implements BpService {
 
     private static final Logger LOG = LoggerFactory.getLogger(BpServiceImpl.class);
     private String uriWf = "/wf";
-    private String uriStartProcess = "/service/action/task/start-process/%s";
+    private String uriStartProcess = "/service/action/task/start-process/%s?organ=%s";
     private String uriSetProcessVariable = "/service/action/task/setVariable";
     private String uriSetTaskVariable = "/service/action/task/setVariable";
     private String uriGetProcessTasks = "/service/action/task/getTasks";
@@ -46,23 +46,20 @@ public class BpServiceImpl implements BpService {
     @Override
     public String startProcessInstanceByKey(Integer nID_Server, String key, Map<String, Object> variables) {
 
-        String url = getServerUrl(nID_Server) + String.format(uriStartProcess, key);
+        String organ = variables != null && variables.get("organ") != null ? (String)variables.get("organ") : null;
+        String url = getServerUrl(nID_Server) + String.format(uriStartProcess, key, organ);
         LOG.info("Getting URL with parameters: (uri={}, variables={})", url, variables);
-        //Map<String, String> params = new HashMap<>();
+        Map<String, String> params = new HashMap<>();
         String jsonProcessInstance = "";
         try {
-            url = "";
-            Map<String, Object> params = new HashMap<String, Object>();
-            params.put("variables", variables);
-            jsonProcessInstance = httpRequester.postInside(url, params);
-            /*jsonProcessInstance = httpRequester.getInside(url, params);
+            jsonProcessInstance = httpRequester.getInside(url, params);
             LOG.info("(jsonProcessInstance={})", jsonProcessInstance);
             String instanceId = "" + new JSONObject(jsonProcessInstance).get("id");
             LOG.info("(instanceId={})", instanceId);
             for (String keyValue : variables.keySet()) {
                 Object value = variables.get(keyValue);
                 setVariableToProcessInstance(nID_Server, instanceId, keyValue, value);
-            }*/
+            }
         } catch (Exception oException) {
             LOG.warn("error!: {}", oException.getMessage());
             LOG.debug("FAIL:", oException);
