@@ -25,12 +25,26 @@
         </ul>
 
         <ul class="nav navbar-nav" ng-show="iGovNavbarHelper.areInstrumentsVisible">
-          <li ng-show="iGovNavbarHelper.isTest"><a href="" ng-click="goToUsers()">Користувачі</a></li>
-          <li ng-show="iGovNavbarHelper.isTest"><a href="" ng-click="goToGroups()">Групи</a></li>
-          <li ng-show="iGovNavbarHelper.isTest"><a href="" ng-click="goToEscalations()">Ескалації</a></li>
-          <li><a ng-attr-id="{{menu.type}}" ng-click="goToReports()">Звіт</a></li>
-          <li ng-show="iGovNavbarHelper.isTest"><a href="" ng-click="goToServices()">Розклад</a></li>
-          <li ng-show="iGovNavbarHelper.isTest"><a href="" ng-click="">Розгортання</a></li>
+          <li ng-show="iGovNavbarHelper.isTest">
+            <a href="" ng-click="goToUsers()">Користувачі</a>
+          </li>
+          <li ng-show="iGovNavbarHelper.isTest">
+            <a href="" ng-click="goToGroups()">Групи</a>
+          </li>
+          <li ng-class="{'active': (iGovNavbarHelper.currentTab === '/escalations')}"
+              ng-show="iGovNavbarHelper.isTest">
+            <a href="" ng-click="goToEscalations()">Ескалації</a>
+          </li>
+          <li ng-class="{'active': (iGovNavbarHelper.currentTab === '/reports')}">
+            <a ng-attr-id="{{menu.type}}" ng-click="goToReports()">Звіт</a>
+          </li>
+          <li ng-class="{'active': (iGovNavbarHelper.currentTab === '/services')}"
+              ng-show="iGovNavbarHelper.isTest">
+            <a href="" ng-click="goToServices()">Розклад</a>
+          </li>
+          <li ng-show="iGovNavbarHelper.isTest">
+            <a href="" ng-click="">Розгортання</a>
+          </li>
         </ul>
 
         <ul class="nav navbar-nav navbar-right">
