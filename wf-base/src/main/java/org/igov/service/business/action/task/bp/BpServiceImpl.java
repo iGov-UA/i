@@ -25,7 +25,7 @@ public class BpServiceImpl implements BpService {
 
     private static final Logger LOG = LoggerFactory.getLogger(BpServiceImpl.class);
     private String uriWf = "/wf";
-    private String uriStartProcess = "/service/action/task/start-process/%s";
+    private String uriStartProcess = "/service/action/task/start-process/%s"; ///wf/service/runtime/
     private String uriSetProcessVariable = "/service/action/task/setVariable";
     private String uriSetTaskVariable = "/service/action/task/setVariable";
     private String uriGetProcessTasks = "/service/action/task/getTasks";
@@ -45,14 +45,20 @@ public class BpServiceImpl implements BpService {
         Map<String, String> params = new HashMap<>();
         String jsonProcessInstance = "";
         try {
-            jsonProcessInstance = httpRequester.getInside(url, params);
+            url = getServerUrl(nID_Server) + "/wf/service/runtime/process-instances";
+            Map<String, Object> requestParams = new HashMap<String, Object>();
+            requestParams.put("processDefinitionKey", key);
+            requestParams.put("variables", variables);
+            jsonProcessInstance = httpRequester.postInside(url, params);
+            LOG.info("response: " + jsonProcessInstance);
+            /*jsonProcessInstance = httpRequester.getInside(url, params);
             LOG.info("(jsonProcessInstance={})", jsonProcessInstance);
             String instanceId = "" + new JSONObject(jsonProcessInstance).get("id");
             LOG.info("(instanceId={})", instanceId);
             for (String keyValue : variables.keySet()) {
                 Object value = variables.get(keyValue);
                 setVariableToProcessInstance(nID_Server, instanceId, keyValue, value);
-            }
+            }*/
         } catch (Exception oException) {
             LOG.warn("error!: {}", oException.getMessage());
             LOG.debug("FAIL:", oException);
