@@ -44,6 +44,12 @@ public class NotificationPatterns {
               "При надходжені Вашої заявки у систему госоргану - Вам буде додатково направлено персональний лист - повідомленя.<br>";
       */
         try{
+            String sHead = String.format("Ваша заявка %s прийнята!", sID_Order);
+
+            String sBody = String.format("Ваша заявка %s прийнята!", sID_Order) +
+                    "<br>Ви завжди зможете переглянути її поточний статус у розділі <a href=\""+generalConfig.sHostCentral() + "/order/search?sID_Order=" + sID_Order+"\">\"Статуси\"</a>. Також на кожному етапі Ви будете отримувати email-повідомлення.	";
+            
+            /*
             Long nID_Task = oActionTaskService.getTaskIDbyProcess(null, sID_Order, Boolean.FALSE);
             Map<String, Object> mContact = oActionTaskService.getStartFormData(nID_Task);
 
@@ -57,15 +63,16 @@ public class NotificationPatterns {
 
             String sHead = String.format("Ваша заявка %s прийнята!", sID_Order);
 
-            /* issue #1151
-            String sBody = String.format("Ваша заявка %s прийнята!", sID_Order) +
-                    "<br>Ви завжди зможете переглянути її поточний статус у розділі <a href=\""+generalConfig.sHostCentral() + "/order/search?sID_Order=" + sID_Order+"\">\"Статуси\"</a>. Також на кожному етапі Ви будете отримувати email-повідомлення.	";
-            */
+            // issue #1151
+            //String sBody = String.format("Ваша заявка %s прийнята!", sID_Order) +
+            //        "<br>Ви завжди зможете переглянути її поточний статус у розділі <a href=\""+generalConfig.sHostCentral() + "/order/search?sID_Order=" + sID_Order+"\">\"Статуси\"</a>. Також на кожному етапі Ви будете отримувати email-повідомлення.	";
+            
 
             String sBody = String.format("Шановний(-а) %s!", sRecipient)
                     + "<br>Ваше звернення <a href=\""+generalConfig.sHostCentral() + "/order/search?sID_Order=" + sID_Order+"\">" + sID_Order + "</a> успішно зареєстровано (номер також відправлено Вам електронною поштою на " + sEmail + "). Результати будуть спрямовані також на email."
                     + "<br>Звертаємо увагу, що іноді листи потрапляють у спам або у розділ \"Реклама\" (для Gmail).";
-
+            */
+                    
             oMail.reset();
 
             oMail._To(sMailTo)._Head(sHead)._Body(sBody);
