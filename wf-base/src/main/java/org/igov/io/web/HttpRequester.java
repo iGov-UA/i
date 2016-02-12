@@ -42,21 +42,10 @@ public class HttpRequester {
             }
         }
 
-        return doPost(sURL, saParam);
+        return postInside(sURL, saParam);
     }
     
-    public String postInside(String sURL, Object body)
-            throws Exception {
-        
-        String saParam = "";
-        if (body != null) {
-            saParam = new JSONObject(body).toString();
-        }
-
-        return doPost(sURL, saParam);
-    }
-    
-    private String doPost(String sURL, String saParam) throws MalformedURLException, Exception{
+    public String postInside(String sURL, String saParam) throws MalformedURLException, Exception{
     URL oURL = new URL(sURL);
         Integer nStatus = null;
         StringBuilder osReturn = new StringBuilder();

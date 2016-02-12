@@ -50,7 +50,8 @@ public class BpServiceImpl implements BpService {
             Map<String, Object> requestParams = new HashMap<String, Object>();
             requestParams.put("processDefinitionKey", key);
             requestParams.put("variables", variables);
-            jsonProcessInstance = httpRequester.postInside(url, JsonRestUtils.toJsonResponse(requestParams));
+            LOG.info("JsonRestUtils.toJsonResponse: " + JsonRestUtils.toJsonResponse(requestParams).getBody());
+            jsonProcessInstance = httpRequester.postInside(url, JsonRestUtils.toJsonResponse(requestParams).getBody());
             LOG.info("response: " + jsonProcessInstance);
             /*jsonProcessInstance = httpRequester.getInside(url, params);
             LOG.info("(jsonProcessInstance={})", jsonProcessInstance);
