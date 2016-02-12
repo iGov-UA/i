@@ -5,6 +5,7 @@
  */
 package org.igov.service.business.action.task.listener;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -36,7 +37,7 @@ public class AssignGroupListener implements TaskListener {
         Group group;
         try {
             if (organ != null && !"".equals(organ)) {
-                List<String> groupsNew = Arrays.asList(organ.split(","));
+                List<String> groupsNew = new ArrayList<String>(Arrays.asList(organ.split(",")));
                 IdentityService identityService = execution.getEngineServices().getIdentityService();
                 for (String groupNew : groupsNew) {
                     group = identityService.createGroupQuery().groupId(groupNew).singleResult();
