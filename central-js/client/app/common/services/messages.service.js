@@ -37,6 +37,7 @@ angular.module('app').service('MessagesService', function($http, $q) {
       oData.sFileName = file.fileName;
     }
     return $http.post('./api/messages/service', oData).then(function(response) {
+      file.value = null;
       return response.data;
     });
   };

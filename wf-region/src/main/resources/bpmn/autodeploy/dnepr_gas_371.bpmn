@@ -135,6 +135,7 @@
           <activiti:value id="sEnumDep6" name="ВЕС – 2"></activiti:value>
           <activiti:value id="sEnumDep7" name="ВЕС – 3"></activiti:value>
           <activiti:value id="sEnumDep8" name="ВЕУ – 4"></activiti:value>
+          <activiti:value id="sEnumDep9" name="Управління інформаційних систем та технологій"></activiti:value>
           <activiti:value id="sEnumExit" name="Відмовити громадянину"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment" name="Якщо ви відмовляєте заявнику у реєстрації звернення, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
@@ -321,6 +322,7 @@
           <activiti:value id="sEnumDep6" name="ВЕС – 2"></activiti:value>
           <activiti:value id="sEnumDep7" name="ВЕС – 3"></activiti:value>
           <activiti:value id="sEnumDep8" name="ВЕУ – 4"></activiti:value>
+          <activiti:value id="sEnumDep9" name="Управління інформаційних систем та технологій"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sAdminComment" name="Коментар, який Ви залишили для відділу" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sDateControl" name="Контрольна дата (у форматі ДД/ММ/РРРР)" type="string"></activiti:formProperty>
@@ -341,13 +343,13 @@
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asStatus=='sEnumAnswer'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow18" sourceRef="exclusivegateway2" targetRef="usertask2">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asStatus=='sEnumDep1'||asStatus=='sEnumDep2'||asStatus=='sEnumDep3'||asStatus=='sEnumDep4'||asStatus=='sEnumDep5'||asStatus=='sEnumDep6'||asStatus=='sEnumDep7'||asStatus=='sEnumDep8'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asStatus=='sEnumDep1'||asStatus=='sEnumDep2'||asStatus=='sEnumDep3'||asStatus=='sEnumDep4'||asStatus=='sEnumDep5'||asStatus=='sEnumDep6'||asStatus=='sEnumDep7'||asStatus=='sEnumDep8'||asStatus=='sEnumDep9'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow19" name="asStatus == 'sEnumExit'" sourceRef="exclusivegateway1" targetRef="servicetask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asStatus == 'sEnumExit'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow20" sourceRef="exclusivegateway1" targetRef="servicetask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asStatus=='sEnumDep1'||asStatus=='sEnumDep2'||asStatus=='sEnumDep3'||asStatus=='sEnumDep4'||asStatus=='sEnumDep5'||asStatus=='sEnumDep6'||asStatus=='sEnumDep7'||asStatus=='sEnumDep8'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asStatus=='sEnumDep1'||asStatus=='sEnumDep2'||asStatus=='sEnumDep3'||asStatus=='sEnumDep4'||asStatus=='sEnumDep5'||asStatus=='sEnumDep6'||asStatus=='sEnumDep7'||asStatus=='sEnumDep8'||asStatus=='sEnumDep9'}]]></conditionExpression>
     </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_gas_371">

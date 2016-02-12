@@ -745,6 +745,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
      *
      * @param key         Ключ процесса
     //     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+     * @param organ
      */
     @RequestMapping(value = "/start-process/{key}", method = RequestMethod.GET)
     @ApiOperation(value = "Запуск процесса Activiti", notes = "#####  ActionCommonTaskController: Запуск процесса Activiti #####\n\n"
@@ -762,14 +763,24 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public
     @ResponseBody
     ProcessI startProcessByKey(
-            @ApiParam(value = "Ключ процесса", required = true) @PathVariable("key") String key) {
-        ProcessInstance pi = runtimeService.startProcessInstanceByKey(key);
+            @ApiParam(value = "Ключ процесса", required = true) @PathVariable("key") String key,
+            @ApiParam(value = "Орган", required = false) @RequestParam(value = "organ", required = false) String organ) {
+        
+        ProcessInstance pi;
+        if(organ != null){
+            Map<String, Object> variables = new HashMap<String, Object>();
+            variables.put("organ", organ);
+            pi = runtimeService.startProcessInstanceByKey(key, variables);
+        } else{
+            pi = runtimeService.startProcessInstanceByKey(key); 
+        }
         if (pi == null || pi.getId() == null) {
             throw new IllegalArgumentException(String.format(
                     "process did not started by key:{%s}", key));
         }
         return new Process(pi.getProcessInstanceId());
     }
+    
 
 //    @RequestMapping(value = "/getTasks", method = RequestMethod.GET)
 //    @ResponseBody
