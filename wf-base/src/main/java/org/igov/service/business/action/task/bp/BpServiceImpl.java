@@ -1,5 +1,8 @@
 package org.igov.service.business.action.task.bp;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.igov.service.business.action.task.bp.BpService;
@@ -14,7 +17,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import org.igov.util.JSON.JsonRestUtils;
+import org.igov.io.web.HttpEntityCover;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 
 /**
  * @author OlgaPrylypko
@@ -26,7 +31,7 @@ public class BpServiceImpl implements BpService {
 
     private static final Logger LOG = LoggerFactory.getLogger(BpServiceImpl.class);
     private String uriWf = "/wf";
-    private String uriStartProcess = "/service/action/task/start-process/%s"; ///wf/service/runtime/
+    private String uriStartProcess = "/service/action/task/start-process/%s";
     private String uriSetProcessVariable = "/service/action/task/setVariable";
     private String uriSetTaskVariable = "/service/action/task/setVariable";
     private String uriGetProcessTasks = "/service/action/task/getTasks";
@@ -46,13 +51,10 @@ public class BpServiceImpl implements BpService {
         //Map<String, String> params = new HashMap<>();
         String jsonProcessInstance = "";
         try {
-            url = getServerUrl(nID_Server) + "/service/runtime/process-instances";
-            Map<String, Object> requestParams = new HashMap<String, Object>();
-            requestParams.put("processDefinitionKey", key);
-            requestParams.put("variables", variables);
-            LOG.info("JsonRestUtils.toJsonResponse: " + JsonRestUtils.toJsonResponse(requestParams).getBody());
-            jsonProcessInstance = httpRequester.postInside(url, JsonRestUtils.toJsonResponse(requestParams).getBody());
-            LOG.info("response: " + jsonProcessInstance);
+            url = "";
+            Map<String, Object> params = new HashMap<String, Object>();
+            params.put("variables", variables);
+            jsonProcessInstance = httpRequester.postInside(url, params);
             /*jsonProcessInstance = httpRequester.getInside(url, params);
             LOG.info("(jsonProcessInstance={})", jsonProcessInstance);
             String instanceId = "" + new JSONObject(jsonProcessInstance).get("id");

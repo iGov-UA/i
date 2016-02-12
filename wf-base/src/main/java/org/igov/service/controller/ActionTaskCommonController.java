@@ -722,6 +722,19 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
         return new Process(pi.getProcessInstanceId());
     }
+    
+    
+    @RequestMapping(value = "/start-process-with-variables/{key}", method = {RequestMethod.POST})
+    public @ResponseBody
+    ProcessI startProcessByKey(@PathVariable("key") String key, 
+            @RequestParam Map<String, Object> variables){
+        ProcessInstance pi = runtimeService.startProcessInstanceByKey(key, variables);
+        if (pi == null || pi.getId() == null) {
+            throw new IllegalArgumentException(String.format(
+                    "process did not started by key:{%s}", key));
+        }
+        return new Process(pi.getProcessInstanceId());
+    }
 
 //    @RequestMapping(value = "/getTasks", method = RequestMethod.GET)
 //    @ResponseBody
