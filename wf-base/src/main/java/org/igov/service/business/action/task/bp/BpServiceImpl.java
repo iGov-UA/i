@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import org.igov.util.JSON.JsonRestUtils;
 
 /**
  * @author OlgaPrylypko
@@ -49,7 +50,7 @@ public class BpServiceImpl implements BpService {
             Map<String, Object> requestParams = new HashMap<String, Object>();
             requestParams.put("processDefinitionKey", key);
             requestParams.put("variables", variables);
-            jsonProcessInstance = httpRequester.postInside(url, new JSONObject(requestParams).toString());
+            jsonProcessInstance = httpRequester.postInside(url, JsonRestUtils.toJsonResponse(requestParams));
             LOG.info("response: " + jsonProcessInstance);
             /*jsonProcessInstance = httpRequester.getInside(url, params);
             LOG.info("(jsonProcessInstance={})", jsonProcessInstance);
