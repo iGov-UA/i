@@ -63,7 +63,7 @@ public class NotificationPatterns {
             */
 
             String sBody = String.format("Шановний(-а) %s!", sRecipient)
-                    + "<br>Ваше звернення " + sID_Order + " успішно зареєстровано (номер також відправлено Вам електронною поштою на " + sEmail + "). Результати будуть спрямовані також на email."
+                    + "<br>Ваше звернення <a href=\""+generalConfig.sHostCentral() + "/order/search?sID_Order=" + sID_Order+"\">" + sID_Order + "</a> успішно зареєстровано (номер також відправлено Вам електронною поштою на " + sEmail + "). Результати будуть спрямовані також на email."
                     + "<br>Звертаємо увагу, що іноді листи потрапляють у спам або у розділ \"Реклама\" (для Gmail).";
 
             oMail.reset();
