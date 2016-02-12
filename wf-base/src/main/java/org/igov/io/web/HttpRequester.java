@@ -14,6 +14,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Map;
+import org.activiti.engine.impl.util.json.JSONObject;
 import org.igov.util.JSON.JsonRestUtils;
 
 import static org.igov.util.Tool.sCut;
@@ -39,7 +40,7 @@ public class HttpRequester {
                     if (entry.getValue() instanceof String) {
                         entryValue = (String) entry.getValue();
                     } else {
-                        entryValue = JsonRestUtils.toJsonResponse(entry.getValue()).getBody();
+                        entryValue = new JSONObject(entry.getValue()).toString();
                     }
                     saParam += URLEncoder.encode(entry.getKey(), "UTF-8") + "="
                             + URLEncoder.encode(entryValue, "UTF-8") + "&";
