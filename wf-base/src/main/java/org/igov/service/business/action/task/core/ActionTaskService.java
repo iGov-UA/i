@@ -785,9 +785,9 @@ public class ActionTaskService {
 
     private String replaceReportFields(SimpleDateFormat sDateCreateDF, Task curTask, String currentRow) {
         String res = currentRow;
-        for (TaskReportField field : TaskReportField.values()) {
+        for (TaskReportField field : TaskReportField.values()) { 
             if (res.contains(field.getPattern())) {
-                res = field.replaceValue(res, curTask, sDateCreateDF);
+                res = field.replaceValue(res, curTask, sDateCreateDF, oGeneralConfig);//sID_Order
             }
         }
         return res;
@@ -797,7 +797,7 @@ public class ActionTaskService {
         String res = currentRow;
         for (TaskReportField field : TaskReportField.values()) {
             if (res.contains(field.getPattern())) {
-                res = field.replaceValue(res, curTask, sDateCreateDF);
+                res = field.replaceValue(res, curTask, sDateCreateDF, oGeneralConfig);
             }
         }
         return res;
