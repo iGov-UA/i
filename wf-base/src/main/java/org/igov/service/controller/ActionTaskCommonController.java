@@ -719,10 +719,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "Орган", required = false) @RequestParam(value = "organ", required = false) String organ) {
         
         ProcessInstance pi;
-        LOG.info("set variable organ: " + organ);
         if(organ != null){
             Map<String, Object> variables = new HashMap<String, Object>();
-            pi = runtimeService.startProcessInstanceByKey(key, variables); 
+            variables.put("organ", organ);
+            pi = runtimeService.startProcessInstanceByKey(key, variables);
         } else{
             pi = runtimeService.startProcessInstanceByKey(key); 
         }
