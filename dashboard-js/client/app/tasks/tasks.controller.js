@@ -962,7 +962,7 @@ angular.module('dashboardJsApp').controller('TasksCtrl',
         });
       }
 
-      $scope.getMessageFileUrl = function (oMessage) {
-        return './api/tasks/' + $scope.nID_Process + '/getMessageFile/' + oMessage.nID;
+      $scope.getMessageFileUrl = function (oMessage, oFile) {
+        return './api/tasks/' + $scope.nID_Process + '/getMessageFile/' + oMessage.nID + '/' + oFile.sFileName;
       }
     }]);
