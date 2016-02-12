@@ -22,9 +22,11 @@
     function getCurrentTab() {
       var path = $location.path();
       if (path.indexOf('/tasks') === 0) {
+        service.areInstrumentsVisible = false;
         service.currentTab = path.substr('/tasks/'.length) || 'tickets';
       }
       else {
+        service.areInstrumentsVisible = true;
         service.currentTab = path;
       }
     }
