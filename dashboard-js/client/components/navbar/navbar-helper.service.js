@@ -5,11 +5,12 @@
     .module('dashboardJsApp')
     .factory('iGovNavbarHelper', iGovNavbarHelperFactory);
 
-  iGovNavbarHelperFactory.$inject = ['Auth', 'tasks'];
-  function iGovNavbarHelperFactory(Auth, tasks) {
+  iGovNavbarHelperFactory.$inject = ['Auth', 'tasks', '$location'];
+  function iGovNavbarHelperFactory(Auth, tasks, $location) {
     var service = {
       areInstrumentsVisible: false,
       auth: Auth,
+      getCurrentTab: getCurrentTab,
       isCollapsed: true,
       isTest: false,
       load: load,
@@ -17,6 +18,16 @@
       menus: [],
     };
     return service;
+
+    function getCurrentTab() {
+      var path = $location.path();
+      if (path.indexOf('/tasks') === 0) {
+        service.currentTab = path.substr('/tasks/'.length) || 'tickets';
+      }
+      else {
+        service.currentTab = path;
+      }
+    }
 
     function load() {
       service.menus = [{
@@ -47,6 +58,8 @@
       }];
 
       service.loadTaskCounters();
+
+      service.getCurrentTab();
     }
 
     function loadTaskCounters() {
