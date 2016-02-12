@@ -42,14 +42,14 @@ public class BpServiceImpl implements BpService {
 
         String url = getServerUrl(nID_Server) + String.format(uriStartProcess, key);
         LOG.info("Getting URL with parameters: (uri={}, variables={})", url, variables);
-        Map<String, String> params = new HashMap<>();
+        //Map<String, String> params = new HashMap<>();
         String jsonProcessInstance = "";
         try {
-            url = getServerUrl(nID_Server) + "/wf/service/runtime/process-instances";
+            url = getServerUrl(nID_Server) + "/service/runtime/process-instances";
             Map<String, Object> requestParams = new HashMap<String, Object>();
             requestParams.put("processDefinitionKey", key);
             requestParams.put("variables", variables);
-            jsonProcessInstance = httpRequester.postInside(url, params);
+            jsonProcessInstance = httpRequester.postInside(url, new JSONObject(requestParams).toString());
             LOG.info("response: " + jsonProcessInstance);
             /*jsonProcessInstance = httpRequester.getInside(url, params);
             LOG.info("(jsonProcessInstance={})", jsonProcessInstance);

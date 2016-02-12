@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.io.*;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Map;
+import org.activiti.engine.impl.util.json.JSONObject;
 
 import static org.igov.util.Tool.sCut;
 
@@ -40,7 +42,22 @@ public class HttpRequester {
             }
         }
 
-        URL oURL = new URL(sURL);
+        return doPost(sURL, saParam);
+    }
+    
+    public String postInside(String sURL, Object body)
+            throws Exception {
+        
+        String saParam = "";
+        if (body != null) {
+            saParam = new JSONObject(body).toString();
+        }
+
+        return doPost(sURL, saParam);
+    }
+    
+    private String doPost(String sURL, String saParam) throws MalformedURLException, Exception{
+    URL oURL = new URL(sURL);
         Integer nStatus = null;
         StringBuilder osReturn = new StringBuilder();
         try{
