@@ -13,7 +13,7 @@ var keypair = require('keypair')
 
 describe('decrypt object fields', function () {
   before(function (done) {
-    config.bankid.enableCipher = true;
+    config.bankid.enableCipher = 'true';
     bankidUtil.initPrivateKey();
     done();
   });

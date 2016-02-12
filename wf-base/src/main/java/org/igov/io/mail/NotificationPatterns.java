@@ -3,11 +3,15 @@ package org.igov.io.mail;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.apache.commons.mail.EmailException;
+import org.igov.service.business.action.task.core.ActionTaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.igov.io.GeneralConfig;
 import static org.igov.service.business.action.task.core.ActionTaskService.createTable_TaskProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * User: goodg_000
@@ -24,6 +28,9 @@ public class NotificationPatterns {
     @Autowired
     Mail oMail;
 
+    @Autowired
+    private ActionTaskService oActionTaskService;
+
     public void sendTaskCreatedInfoEmail(String sMailTo, String sID_Order) throws EmailException {
 
       /*
@@ -37,10 +44,27 @@ public class NotificationPatterns {
               "При надходжені Вашої заявки у систему госоргану - Вам буде додатково направлено персональний лист - повідомленя.<br>";
       */
         try{
+            Long nID_Task = oActionTaskService.getTaskIDbyProcess(null, sID_Order, Boolean.FALSE);
+            Map<String, Object> mContact = oActionTaskService.getStartFormData(nID_Task);
+
+            String sFirstName = (String) mContact.get("bankIdfirstName");
+            LOG.info("sFirstName = {}", sFirstName);
+            String sMiddleName = (String) mContact.get("bankIdmiddleName");
+            LOG.info("sMiddleName = {}", sMiddleName);
+            String sRecipient = sFirstName + " " + sMiddleName;
+            String sEmail = (String) mContact.get("email");
+            LOG.info("sEmail = {}", sEmail);
+
             String sHead = String.format("Ваша заявка %s прийнята!", sID_Order);
 
+            /* issue #1151
             String sBody = String.format("Ваша заявка %s прийнята!", sID_Order) +
                     "<br>Ви завжди зможете переглянути її поточний статус у розділі <a href=\""+generalConfig.sHostCentral() + "/order/search?sID_Order=" + sID_Order+"\">\"Статуси\"</a>. Також на кожному етапі Ви будете отримувати email-повідомлення.	";
+            */
+
+            String sBody = String.format("Шановний(-а) %s!", sRecipient)
+                    + "<br>Ваше звернення <a href=\""+generalConfig.sHostCentral() + "/order/search?sID_Order=" + sID_Order+"\">" + sID_Order + "</a> успішно зареєстровано (номер також відправлено Вам електронною поштою на " + sEmail + "). Результати будуть спрямовані також на email."
+                    + "<br>Звертаємо увагу, що іноді листи потрапляють у спам або у розділ \"Реклама\" (для Gmail).";
 
             oMail.reset();
 

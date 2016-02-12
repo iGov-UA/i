@@ -5,11 +5,8 @@
     .module('dashboardJsApp')
     .controller('EscalationsCtrl', escalationsCtrl);
 
-  escalationsCtrl.$inject = ['$scope', '$modal', 'escalationsService', 'iGovNavbarHelper'];
-  function escalationsCtrl($scope, $modal, escalationsService, iGovNavbarHelper) {
-
-    iGovNavbarHelper.isTest = false;
-
+  escalationsCtrl.$inject = ['$scope', '$modal', 'escalationsService'];
+  function escalationsCtrl($scope, $modal, escalationsService) {
     $scope.dataFunctions = {
       //getFunc: escalationsService.getRule,
       setFunc: escalationsService.setRule,

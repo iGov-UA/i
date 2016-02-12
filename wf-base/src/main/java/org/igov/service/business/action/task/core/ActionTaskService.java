@@ -20,6 +20,8 @@ import org.activiti.engine.history.HistoricFormProperty;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.identity.Group;
+import org.activiti.engine.impl.persistence.entity.ExecutionEntity;
+import org.activiti.engine.impl.persistence.entity.HistoricFormPropertyEntity;
 import org.activiti.engine.impl.persistence.entity.TaskEntity;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
@@ -42,6 +44,7 @@ import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.RecordNotFoundException;
 import org.igov.service.exception.TaskAlreadyUnboundException;
+import org.igov.util.JSON.JsonRestUtils;
 import org.igov.util.ToolLuna;
 import org.igov.util.ToolJS;
 import org.igov.util.JSON.JsonDateTimeSerializer;
@@ -1674,93 +1677,84 @@ public class ActionTaskService {
         return result;
     }
 
+    public List<FormProperty> getFormPropertiesByTaskID(Long nID_Task) {
+        return oFormService.getTaskFormData(nID_Task.toString()).getFormProperties();
+    }
+
     /**
-     * Выгрузка всех полей Таски из Activiti. Сначала поиск nID_Task происходит среди активных, потом в архивных данных.
-     * @param nID_Task - ИД номер таски
-     * @return - объект Map(String fieldName, Object fieldValue)
-     * @throws RecordNotFoundException - если не удалось найти nID_Task ни в акстивных, ни в истории
+     * Получение массива полей propertyId и propertyValue из HistoricFormProperty
+     * @param nID_Task - ID-номер таски, которая находится в архиве
+     * @return
+     * @throws RecordNotFoundException
      */
-    public Map<String, Object> getTaskAllFields(Long nID_Task) throws RecordNotFoundException {
-        Map<String, Object> result = new HashMap<>();
-        String taskID = nID_Task.toString();
-        try{
-            Task oTask = oTaskService.createTaskQuery().taskId(taskID).singleResult();
-            result.putAll(loadActiveTaskFields(oTask));
-        } catch (NullPointerException e){
-            LOG.info(String.format("Must search Task [id = '%s'] in history!!!", taskID));
-            try {
-                HistoricTaskInstance oHistoricTaskInstance = oHistoryService.createHistoricTaskInstanceQuery().taskId(taskID).singleResult();
-                result.putAll(loadHistoricTaskFields(oHistoricTaskInstance));
-            } catch (NullPointerException e1){
-                throw new RecordNotFoundException(String.format("Task [id = '%s'] not faund", taskID));
+    public List<Map<String, String>> getHistoricFormPropertiesByTaskID(Long nID_Task) throws RecordNotFoundException {
+        List<Map<String, String>> result = new ArrayList<>();
+
+        List<HistoricDetail> aHistoricDetail = oHistoryService.createHistoricDetailQuery().taskId(nID_Task.toString()).formProperties().list();
+
+        LOG.info("(aHistoricDetail={})", aHistoricDetail);
+        if (aHistoricDetail == null) {
+            throw new RecordNotFoundException("aHistoricDetail");
+        }
+        for (HistoricDetail oHistoricDetail : aHistoricDetail) {
+            Map<String, String> oHistoricFormPropertyCover = new HashMap<>();
+            HistoricFormProperty historicFormProperty = (HistoricFormProperty) oHistoricDetail;
+            oHistoricFormPropertyCover.put("id", historicFormProperty.getPropertyId());
+            oHistoricFormPropertyCover.put("value", historicFormProperty.getPropertyValue());
+            result.add(oHistoricFormPropertyCover);
+        }
+        LOG.info("(List oHistoricFormPropertyCover = {})", result);
+        return result;
+    }
+
+    /**
+     * Проверка наличия полей электронной очереди и парсинг их контекста
+     * @param aFormProperties
+     * @return
+     */
+    public Map<String, Object> getQueueData(List<FormProperty> aFormProperties){
+        Map<String, Object> result = null;
+        List<FormProperty> aFormPropertiesQueueDataType = new ArrayList<>();
+        if (aFormProperties == null || aFormProperties.isEmpty()){
+            LOG.info("List<FormProperty> is NULL");
+
+        } else {
+            for (FormProperty oFormProperty : aFormProperties) {
+                if (oFormProperty.getType() instanceof QueueDataFormType) {
+                    aFormPropertiesQueueDataType.add(oFormProperty);
+                }
             }
         }
+
+        if (aFormPropertiesQueueDataType.isEmpty()){
+            LOG.info("The array does not contain elements of the QueueData");
+        } else {
+            result = new HashMap<>();
+            for (FormProperty field : aFormPropertiesQueueDataType){
+                result.put(field.getType().getName(), parseQueueDataFromFormProperty(field));
+            }
+        }
+        LOG.info("getQueueData result = {}", result);
         return result;
     }
 
-    private Map<String, Object> loadActiveTaskFields(Task oTask){
+    private Map<String, Object> parseQueueDataFromFormProperty(FormProperty oFormProperty){
         Map<String, Object> result = new HashMap<>();
 
-        // fields from TaskInfo
-        result.put("Id", oTask.getId());
-        result.put("Name", oTask.getName());
-        result.put("Description", oTask.getDescription());
-        result.put("Priority", oTask.getPriority());
-        result.put("Owner", oTask.getOwner());
-        result.put("Assignee", oTask.getAssignee());
-        result.put("ProcessInstanceId", oTask.getProcessInstanceId());
-        result.put("ExecutionId", oTask.getExecutionId());
-        result.put("ProcessDefinitionId", oTask.getProcessDefinitionId());
-        result.put("CreateTime", oTask.getCreateTime());
-        result.put("TaskDefinitionKey", oTask.getTaskDefinitionKey());
-        result.put("DueDate", oTask.getDueDate());
-        result.put("Category", oTask.getCategory());
-        result.put("ParentTaskId", oTask.getParentTaskId());
-        result.put("TenantId", oTask.getTenantId());
-        result.put("FormKey", oTask.getFormKey());
-        result.put("TaskLocalVariables", oTask.getTaskLocalVariables());
-        result.put("ProcessVariables", oTask.getProcessVariables());
+        String sValue = oFormProperty.getValue();
+        LOG.info("sValue = {}", sValue);
 
-        // fields from Task
-        result.put("DelegationState", oTask.getDelegationState());
-        result.put("Suspended", oTask.isSuspended());
+        Map<String, Object> m = QueueDataFormType.parseQueueData(sValue);
+        Long nID_FlowSlotTicket = QueueDataFormType.get_nID_FlowSlotTicket(m);
+        LOG.info("(nID_FlowSlotTicket={})", nID_FlowSlotTicket);
+        String sDate = (String) m.get(QueueDataFormType.sDate);
+        LOG.info("(sDate={})" + sDate);
 
-        return result;
-    }
+        Map<String, Object> element = new HashMap<>();
+        element.put("nID_FlowSlotTicket", nID_FlowSlotTicket);
+        element.put("sDate", sDate);
 
-    private Map<String, Object> loadHistoricTaskFields(HistoricTaskInstance oTask){
-        Map<String, Object> result = new HashMap<>();
-
-        // fields from TaskInfo
-        result.put("Id", oTask.getId());
-        result.put("Name", oTask.getName());
-        result.put("Description", oTask.getDescription());
-        result.put("Priority", oTask.getPriority());
-        result.put("Owner", oTask.getOwner());
-        result.put("Assignee", oTask.getAssignee());
-        result.put("ProcessInstanceId", oTask.getProcessInstanceId());
-        result.put("ExecutionId", oTask.getExecutionId());
-        result.put("ProcessDefinitionId", oTask.getProcessDefinitionId());
-        result.put("CreateTime", oTask.getCreateTime());
-        result.put("TaskDefinitionKey", oTask.getTaskDefinitionKey());
-        result.put("DueDate", oTask.getDueDate());
-        result.put("Category", oTask.getCategory());
-        result.put("ParentTaskId", oTask.getParentTaskId());
-        result.put("TenantId", oTask.getTenantId());
-        result.put("FormKey", oTask.getFormKey());
-        result.put("TaskLocalVariables", oTask.getTaskLocalVariables());
-        result.put("ProcessVariables", oTask.getProcessVariables());
-
-        // fields from HistoricData
-        result.put("Time", oTask.getTime());
-
-        // fields from HistoricTaskInstance
-        result.put("DeleteReason", oTask.getDeleteReason());
-        result.put("StartTime", oTask.getStartTime());
-        result.put("EndTime", oTask.getEndTime());
-        result.put("DurationInMillis", oTask.getDurationInMillis());
-        result.put("WorkTimeInMillis", oTask.getWorkTimeInMillis());
-        result.put("ClaimTime", oTask.getClaimTime());
+        result.put(oFormProperty.getId(), element);
 
         return result;
     }
@@ -1801,5 +1795,24 @@ public class ActionTaskService {
         }
 
         return false;
+    }
+
+    /**
+     * Возвращает список объектов Attachment, привязанных к таске
+     * @param nID_Task - ИД-номер таски
+     */
+    public List<Attachment> getAttachmentsByTaskID(Long nID_Task){
+        LOG.info(String.format("Start load Attachment object by Task [id = '%s']", nID_Task));
+        List<Attachment> attachments = oTaskService.getTaskAttachments(nID_Task.toString());
+        if (attachments.isEmpty()){
+           LOG.info(String.format("No attachments in the Task [id = '%s']", nID_Task));
+        } else {
+            List<String> attachmetIDs = new ArrayList<>();
+            for (Attachment attachment : attachments){
+                attachmetIDs.add(attachment.getId());
+            }
+            LOG.info("Task attachmets: " + attachmetIDs.toString());
+        }
+        return attachments;
     }
 }
