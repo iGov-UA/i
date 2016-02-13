@@ -29,11 +29,64 @@ function verifiedCallback(asyncCallback) {
   });
 }
 
+module.exports.authorize = function (req, res) {
+  activiti.sendGetRequest(req, res, '/access/verifyContactEmail', {
+    sQuestion: req.session.prepare.data.email,
+    sAnswer: req.session.prepare.data.code
+  }, verifiedCallback(function (error, verified) {
+    if (error) {
+      res.status(401).send(error);
+    } else {
+      var prepare = req.session.prepare;
+      delete req.session.prepare;
+
+      req.session = authService.createSessionObjectFromPrepare(prepare);
+      res.redirect(prepare.link);
+    }
+  }));
+};
+
+module.exports.editFio = function (req, res) {
+  var firstName = req.body.firstName;
+  var lastName = req.body.lastName;
+  var middleName = req.body.middleName;
+
+  activiti.sendGetRequest(req, res, '/access/verifyContactEmail', {
+    sQuestion: req.session.prepare.data.email,
+    sAnswer: req.session.prepare.data.code
+  }, verifiedCallback(function (error, verified) {
+    if (error) {
+      res.status(401).send(error);
+    } else {
+      var customer = req.session.prepare.data.user.customer;
+
+      if (firstName) {
+        customer.firstName = firstName;
+      }
+      if (lastName) {
+        customer.lastName = lastName;
+      }
+      if (middleName) {
+        customer.middleName = firstName;
+      }
+
+      res.status(200).send({verified: true, edited: true});
+    }
+  }));
+};
+
 module.exports.verifyContactEmail = function (req, res) {
+  var email = req.body.email;
+  var link = req.body.link;
+
   emailService.verifyContactEmail(req.body.email, httpCallback(function (error, result) {
     if (error) {
       res.status(401).send(error);
     } else {
+      req.session.prepare = authService.createPrepareSessionObject('email', {
+        email: email,
+        link: link
+      });
       res.status(200).send(result);
     }
   }));
@@ -60,9 +113,17 @@ module.exports.verifyContactEmailAndCode = function (req, res) {
       if (error) {
         res.status(401).send(error);
       } else {
-        var access = {};
-        req.session = authService.createSessionObject('email', user, access);
-        res.status(200).send({authorized: true});
+        var customer = user.customer;
+
+        req.session.prepare.data.code = code;
+        req.session.prepare.data.user = user;
+        req.session.prepare.data.access = {};
+        res.status(200).send({
+          verified: true,
+          firstName: customer.firstName,
+          lastName: customer.lastName,
+          middleName: customer.middleName
+        });
       }
     });
 };

@@ -263,4 +263,16 @@ angular.module('app').service('ServiceService', function ($http, $q) {
         return response.data;
       });
   };
+
+  this.editNamesInEmailAuth = function (authEmailData) {
+    var data = {
+      firstName: authEmailData.firstName,
+      middleName: authEmailData.middleName,
+      lastName: authEmailData.lastName
+    };
+    return $http.post('./auth/email/editFio', data)
+      .then(function (response) {
+        return response.data;
+      });
+  };
 });
