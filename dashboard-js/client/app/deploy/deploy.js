@@ -9,7 +9,7 @@
   function deployConfig($routeProvider) {
     $routeProvider
       .when('/deploy', {
-        templateUrl: 'app/todo/todo.html',
+        templateUrl: 'app/deploy/deploy.html',
         access: {
           requiresLogin: true
         }
