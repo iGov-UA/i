@@ -9,7 +9,7 @@
   function groupsConfig($routeProvider) {
     $routeProvider
       .when('/groups', {
-        templateUrl: 'app/todo/todo.html',
+        templateUrl: 'app/groups/groups.html',
         access: {
           requiresLogin: true
         }

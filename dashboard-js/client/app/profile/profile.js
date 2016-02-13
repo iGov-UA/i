@@ -9,7 +9,7 @@
   function profileConfig($routeProvider) {
     $routeProvider
       .when('/profile', {
-        templateUrl: 'app/todo/todo.html',
+        templateUrl: 'app/profile/profile.html',
         access: {
           requiresLogin: true
         }
