@@ -499,9 +499,7 @@ public class ActionEventController {
 	            for (SubjectMessage subjectMessage : subjectMessages){
 	            	if (subjectMessage.getSubjectMessageType().getId() == 2) {
 	            		subjectMessagesMap.put(subjectMessage.getnID_HistoryEvent_Service(), subjectMessage);
-	            	} else {
-	            		LOG.info("Skipping subject message with SubjectMessageType {}", subjectMessage.getSubjectMessageType().getId());
-	            	}
+	            	} 
 	            }
 	            
 		    	for (HistoryEvent_Service historyEventService : historyEvents){
@@ -509,15 +507,15 @@ public class ActionEventController {
 		    		// sID_Order
 		    		line.add(historyEventService.getsID_Order());
 		    		// nID_Server
-		    		line.add(historyEventService.getnID_Server().toString());
+		    		line.add(historyEventService.getnID_Server() != null ? historyEventService.getnID_Server().toString() : "");
 		    		// nID_Service
-		    		line.add(historyEventService.getnID_Service().toString());
+		    		line.add(historyEventService.getnID_Service() != null ? historyEventService.getnID_Service().toString() : "");
 		    		// sID_Place
 		    		line.add(historyEventService.getsID_UA());
 		    		// nID_Subject
-		    		line.add(historyEventService.getnID_Subject().toString());
+		    		line.add(historyEventService.getnID_Subject() != null ? historyEventService.getnID_Subject().toString() : "");
 		    		// nRate
-		    		line.add(historyEventService.getnRate().toString());
+		    		line.add(historyEventService.getnRate() != null ? historyEventService.getnRate().toString() : "");
 		    		String sTextFeedback = "";
 		    		if (subjectMessagesMap.get(historyEventService.getId()) != null){
 		    			sTextFeedback = subjectMessagesMap.get(historyEventService.getId()).getBody();
@@ -533,7 +531,7 @@ public class ActionEventController {
 		    		// sBody
 		    		line.add(historyEventService.getsBody());
 		    		// nTimeMinutes
-		    		line.add(historyEventService.getnTimeMinutes().toString());
+		    		line.add(historyEventService.getnTimeMinutes() != null ? historyEventService.getnTimeMinutes().toString() : "");
 		    		
 		    		Integer nID_Server = historyEventService.getnID_Server();
 		            nID_Server = nID_Server == null ? 0 : nID_Server;
