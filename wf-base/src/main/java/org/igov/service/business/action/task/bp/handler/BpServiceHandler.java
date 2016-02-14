@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import org.igov.model.action.event.HistoryEvent_Service_StatusType;
 import org.igov.service.business.action.task.bp.BpService;
 
 /**
@@ -119,7 +120,8 @@ public class BpServiceHandler {
         params.put(ESCALATION_FIELD_NAME, escalationProcessId);
         LOG.info(" >>Start escalation process. (nID_Proccess_Escalation={})", escalationProcessId);
         try {
-            historyEventService.updateHistoryEvent(snID_Process, taskName, false, params);
+            LOG.info(" updateHistoryEvent: " + snID_Process + " taskName: " + taskName + " params: " + params);
+            historyEventService.updateHistoryEvent(generalConfig.sID_Order_ByProcess(Long.valueOf(snID_Process)), taskName, false, HistoryEvent_Service_StatusType.OPENED_ESCALATION, params);
             EscalationHistory escalationHistory = escalationHistoryService.create(Long.valueOf(snID_Process),
                     Long.valueOf(mTaskParam.get("sTaskId").toString()),
                     Long.valueOf(escalationProcessId), EscalationHistoryService.STATUS_CREATED);
@@ -228,7 +230,8 @@ public class BpServiceHandler {
                 params.put("sBody", "" + processVariables.get("sBody_Indirectly"));
                 params.put("sData", "" + processVariables.get("saField"));
                 params.put("nID_SubjectMessageType", "" + 3L);
-                params.put("sID_Order", new JSONObject(jsonHistoryEvent).getString("sID_Order"));
+                //params.put("sID_Order", new JSONObject(jsonHistoryEvent).getString("sID_Order"));
+                params.put("sID_Order", sID_Order);
                 LOG.info("try to save service message with params: (params={})", params);
                 jsonServiceMessage = historyEventService.addServiceMessage(params);
                 LOG.info("(jsonServiceMessage={})", jsonServiceMessage);
