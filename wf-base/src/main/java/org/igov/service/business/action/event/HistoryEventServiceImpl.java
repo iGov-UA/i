@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.igov.model.action.event.HistoryEvent_Service_StatusType;
 
 @Service
 public class HistoryEventServiceImpl implements HistoryEventService {
@@ -46,7 +47,7 @@ public class HistoryEventServiceImpl implements HistoryEventService {
     }
 
     @Override
-    public String updateHistoryEvent(String sID_Order,String sUserTaskName, boolean addAccessKey,Map<String, String> params) 
+    public String updateHistoryEvent(String sID_Order,String sUserTaskName, boolean addAccessKey, HistoryEvent_Service_StatusType nID_StatusType, Map<String, String> params) 
             throws Exception {
         if (params == null) {
             params = new HashMap<>();
@@ -56,6 +57,7 @@ public class HistoryEventServiceImpl implements HistoryEventService {
                     httpRequester.getFullURL(URI_UPDATE_HISTORY_EVENT, params));
             params.put("sAccessKey", sAccessKey_HistoryEvent);
             params.put("sAccessContract", "Request");
+            params.put("nID_StatusType", String.valueOf(nID_StatusType.getsID()));
             LOG.info("(sAccessKey={})", sAccessKey_HistoryEvent);
         }
         return doRemoteRequest(URI_UPDATE_HISTORY_EVENT, params, sID_Order, sUserTaskName);

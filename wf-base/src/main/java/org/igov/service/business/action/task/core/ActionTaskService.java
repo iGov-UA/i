@@ -1129,7 +1129,7 @@ public class ActionTaskService {
         mParam.put("sBody", sBody);
         mParam.put("sToken", sToken);
         //params.put("sUserTaskName", sUserTaskName);
-        return oHistoryEventService.updateHistoryEvent(sID_Order, sUserTaskName, true, mParam);
+        return oHistoryEventService.updateHistoryEvent(sID_Order, sUserTaskName, true, oHistoryEvent_Service_StatusType, mParam);
     }
     
     public List<Task> getTasksForChecking(String sLogin,
@@ -1490,7 +1490,7 @@ public class ActionTaskService {
         oHistoryEventService.updateHistoryEvent(
                 //processInstanceID,
                 sID_Order,
-                sUserTaskName, false, mParam);
+                sUserTaskName, false, oHistoryEvent_Service_StatusType.REMOVED, mParam);
 
         success = true;
         return success;
