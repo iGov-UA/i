@@ -19,6 +19,7 @@ import org.activiti.engine.history.HistoricDetail;
 import org.activiti.engine.history.HistoricFormProperty;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
+import org.activiti.engine.history.HistoricVariableInstance;
 import org.activiti.engine.identity.Group;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
@@ -55,13 +56,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.script.ScriptException;
+
 import java.io.File;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.igov.io.fs.FileSystemData.getFiles_PatternPrint;
+
 import org.igov.util.ToolFS;
+
 import static org.igov.util.Tool.sO;
 
 /**
@@ -1453,6 +1457,19 @@ public class ActionTaskService {
         return mReturn;
     }
 
+    public Map<String, Object> getProcessVariableValue(String nProcessID, String variableName) throws RecordNotFoundException {
+    	Map<String, Object> res = new HashMap<String, Object>();
+    	
+    	HistoricVariableInstance historicVariableInstance = oHistoryService.createHistoricVariableInstanceQuery().processInstanceId(nProcessID).variableName(variableName).singleResult();
+    	
+    	LOG.info("Retreived HistoricVariableInstance for process {} with value {}", nProcessID, historicVariableInstance);
+    	if (historicVariableInstance != null){
+    		res.put(historicVariableInstance.getVariableName(), historicVariableInstance.getValue());
+    	}
+    	
+    	return res;
+    }
+    
     public boolean deleteProcess(Long nID_Order, String sLogin, String sReason) throws Exception{
         boolean success = false;
         String nID_Process = null;

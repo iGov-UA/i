@@ -2065,5 +2065,15 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     	
     	return "OK";
     }
+ 
     
+    @ApiResponses(value = { @ApiResponse(code = 500, message = "Record not found") })
+    @RequestMapping(value = "/getProcessVariableValue", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    public
+    @ResponseBody
+    String getProcessVariableValue(  @ApiParam(value = "ID процесса", required = true )  @RequestParam(value = "nProcessID") String nProcessID,
+    		@ApiParam(value = "Название переменнной процесса значение которой необходимо найти", required = true )  @RequestParam(value = "sVariableName") String sVariableName) throws RecordNotFoundException {
+
+        return JSONValue.toJSONString(oActionTaskService.getProcessVariableValue(nProcessID, sVariableName));
+    }
 }

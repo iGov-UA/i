@@ -558,7 +558,7 @@ public class ActionEventController {
 		            Server oServer = oOptionalServer.get();
 		            String sHost = oServer.getsURL();
 		            
-		            String sURL = sHost + "/service/action/task/getStartFormData?nID_Task=" + historyEventService.getnID_Task();
+		            String sURL = sHost + "/service/action/task/getProcessVariableValue?nProcessID=" + historyEventService.getnID_Task() + "&sVariableName=phone";
 		            ResponseEntity<String> osResponseEntityReturn = oHttpEntityInsedeCover.oReturn_RequestGet_JSON(sURL);
 		            
 		            JSONObject json = (JSONObject) new JSONParser().parse(osResponseEntityReturn.getBody());
