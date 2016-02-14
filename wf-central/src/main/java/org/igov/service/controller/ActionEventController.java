@@ -546,9 +546,10 @@ public class ActionEventController {
 		            String sURL = sHost + "/service/action/task/getStartFormData?nID_Task=" + historyEventService.getnID_Task();
 		            ResponseEntity<String> osResponseEntityReturn = oHttpEntityInsedeCover.oReturn_RequestGet_JSON(sURL);
 		            
+		            LOG.error("Get response from region service for start from task data: {}", osResponseEntityReturn.getBody());
 		            JSONObject json = (JSONObject) new JSONParser().parse(osResponseEntityReturn.getBody());
 		            // sPhone
-		            line.add(json.get("phone").toString());
+		            line.add(json.get("phone") != null ? json.get("phone").toString() : "");
 		            
 		            csvWriter.writeNext(line.toArray(new String[line.size()]));
 		    	}
