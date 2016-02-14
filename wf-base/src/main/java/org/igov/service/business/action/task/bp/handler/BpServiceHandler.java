@@ -121,7 +121,7 @@ public class BpServiceHandler {
         LOG.info(" >>Start escalation process. (nID_Proccess_Escalation={})", escalationProcessId);
         try {
             LOG.info(" updateHistoryEvent: " + snID_Process + " taskName: " + taskName + " params: " + params);
-            historyEventService.updateHistoryEvent(snID_Process, taskName, false, HistoryEvent_Service_StatusType.OPENED_ESCALATION, params);
+            historyEventService.updateHistoryEvent(generalConfig.sID_Order_ByProcess(Long.valueOf(snID_Process)), taskName, false, HistoryEvent_Service_StatusType.OPENED_ESCALATION, params);
             EscalationHistory escalationHistory = escalationHistoryService.create(Long.valueOf(snID_Process),
                     Long.valueOf(mTaskParam.get("sTaskId").toString()),
                     Long.valueOf(escalationProcessId), EscalationHistoryService.STATUS_CREATED);
