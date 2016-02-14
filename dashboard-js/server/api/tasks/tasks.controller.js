@@ -442,7 +442,8 @@ exports.getMessageFile = function(req, res) {
       return;
     }
 
-    res.setHeader('Content-Disposition', 'attachment;name:' + req.params.fileName);
+    res.setHeader('Content-Type', 'application/octet-stream');
+    res.setHeader('Content-Disposition', 'attachment; filename=' + req.params.fileName);
     res.status(200).send(body);
   });
 };
