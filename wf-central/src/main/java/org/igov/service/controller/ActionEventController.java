@@ -485,71 +485,75 @@ public class ActionEventController {
 	        
 	    	List<HistoryEvent_Service> historyEvents = historyEventServiceDao.getHistoryEventPeriod(dateAt, dateTo);
 	    	
-            List<Long> historyEventServicesIDs = new LinkedList<Long>(); 
-            for (HistoryEvent_Service historyEventService : historyEvents){
-            	historyEventServicesIDs.add(historyEventService.getId());
-            }
-            LOG.info("Looking history event services by IDs " + historyEventServicesIDs);
-            List<SubjectMessage> subjectMessages = subjectMessagesDao.findAllByInValues("nID_HistoryEvent_Service", historyEventServicesIDs);
-            LOG.info("Found {} subject messages by nID_HistoryEvent_Service values", subjectMessages.size());
-            Map<Long, SubjectMessage> subjectMessagesMap = new HashMap<Long, SubjectMessage>();
-            for (SubjectMessage subjectMessage : subjectMessages){
-            	if (subjectMessage.getSubjectMessageType().getId() == 2) {
-            		subjectMessagesMap.put(subjectMessage.getnID_HistoryEvent_Service(), subjectMessage);
-            	} else {
-            		LOG.info("Skipping subject message with SubjectMessageType {}", subjectMessage.getSubjectMessageType().getId());
-            	}
-            }
-            
-	    	for (HistoryEvent_Service historyEventService : historyEvents){
-	    		List<String> line = new LinkedList<String>();
-	    		// sID_Order
-	    		line.add(historyEventService.getsID_Order());
-	    		// nID_Server
-	    		line.add(historyEventService.getnID_Server().toString());
-	    		// nID_Service
-	    		line.add(historyEventService.getnID_Service().toString());
-	    		// sID_Place
-	    		line.add(historyEventService.getsID_UA());
-	    		// nID_Subject
-	    		line.add(historyEventService.getnID_Subject().toString());
-	    		// nRate
-	    		line.add(historyEventService.getnRate().toString());
-	    		String sTextFeedback = "";
-	    		if (subjectMessagesMap.get(historyEventService.getId()) != null){
-	    			sTextFeedback = subjectMessagesMap.get(historyEventService.getId()).getBody();
-	    		} else {
-	    			LOG.error("Unable to find feedabck for history event with ID {}", historyEventService.getId());
-	    		}
-	    		// sTextFeedback
-	    		line.add(sTextFeedback);
-	    		// sUserTaskName
-	    		line.add(historyEventService.getsUserTaskName());
-	    		// sHead
-	    		line.add(historyEventService.getsHead());
-	    		// sBody
-	    		line.add(historyEventService.getsBody());
-	    		// nTimeMinutes
-	    		line.add(historyEventService.getnTimeMinutes().toString());
-	    		
-	    		Integer nID_Server = historyEventService.getnID_Server();
-	            nID_Server = nID_Server == null ? 0 : nID_Server;
-
-		    	Optional<Server> oOptionalServer = serverDao.findById(new Long(nID_Server));
-	            if (!oOptionalServer.isPresent()) {
-	                throw new RecordNotFoundException("Server with nID_Server " + nID_Server + " wasn't found.");
+	    	LOG.info("Found {} history events for the period from {} to {}", historyEvents.size(), sDateAt, sDateTo);
+	    	
+	    	if (historyEvents.size() > 0){
+	            List<Long> historyEventServicesIDs = new LinkedList<Long>(); 
+	            for (HistoryEvent_Service historyEventService : historyEvents){
+	            	historyEventServicesIDs.add(historyEventService.getId());
 	            }
-	            Server oServer = oOptionalServer.get();
-	            String sHost = oServer.getsURL();
+	            LOG.info("Looking history event services by IDs " + historyEventServicesIDs);
+	            List<SubjectMessage> subjectMessages = subjectMessagesDao.findAllByInValues("nID_HistoryEvent_Service", historyEventServicesIDs);
+	            LOG.info("Found {} subject messages by nID_HistoryEvent_Service values", subjectMessages.size());
+	            Map<Long, SubjectMessage> subjectMessagesMap = new HashMap<Long, SubjectMessage>();
+	            for (SubjectMessage subjectMessage : subjectMessages){
+	            	if (subjectMessage.getSubjectMessageType().getId() == 2) {
+	            		subjectMessagesMap.put(subjectMessage.getnID_HistoryEvent_Service(), subjectMessage);
+	            	} else {
+	            		LOG.info("Skipping subject message with SubjectMessageType {}", subjectMessage.getSubjectMessageType().getId());
+	            	}
+	            }
 	            
-	            String sURL = sHost + "/service/action/task/getStartFormData?nID_Task=" + historyEventService.getnID_Task();
-	            ResponseEntity<String> osResponseEntityReturn = oHttpEntityInsedeCover.oReturn_RequestGet_JSON(sURL);
-	            
-	            JSONObject json = (JSONObject) new JSONParser().parse(osResponseEntityReturn.getBody());
-	            // sPhone
-	            line.add(json.get("phone").toString());
-	            
-	            csvWriter.writeNext(line.toArray(new String[line.size()]));
+		    	for (HistoryEvent_Service historyEventService : historyEvents){
+		    		List<String> line = new LinkedList<String>();
+		    		// sID_Order
+		    		line.add(historyEventService.getsID_Order());
+		    		// nID_Server
+		    		line.add(historyEventService.getnID_Server().toString());
+		    		// nID_Service
+		    		line.add(historyEventService.getnID_Service().toString());
+		    		// sID_Place
+		    		line.add(historyEventService.getsID_UA());
+		    		// nID_Subject
+		    		line.add(historyEventService.getnID_Subject().toString());
+		    		// nRate
+		    		line.add(historyEventService.getnRate().toString());
+		    		String sTextFeedback = "";
+		    		if (subjectMessagesMap.get(historyEventService.getId()) != null){
+		    			sTextFeedback = subjectMessagesMap.get(historyEventService.getId()).getBody();
+		    		} else {
+		    			LOG.error("Unable to find feedabck for history event with ID {}", historyEventService.getId());
+		    		}
+		    		// sTextFeedback
+		    		line.add(sTextFeedback);
+		    		// sUserTaskName
+		    		line.add(historyEventService.getsUserTaskName());
+		    		// sHead
+		    		line.add(historyEventService.getsHead());
+		    		// sBody
+		    		line.add(historyEventService.getsBody());
+		    		// nTimeMinutes
+		    		line.add(historyEventService.getnTimeMinutes().toString());
+		    		
+		    		Integer nID_Server = historyEventService.getnID_Server();
+		            nID_Server = nID_Server == null ? 0 : nID_Server;
+	
+			    	Optional<Server> oOptionalServer = serverDao.findById(new Long(nID_Server));
+		            if (!oOptionalServer.isPresent()) {
+		                throw new RecordNotFoundException("Server with nID_Server " + nID_Server + " wasn't found.");
+		            }
+		            Server oServer = oOptionalServer.get();
+		            String sHost = oServer.getsURL();
+		            
+		            String sURL = sHost + "/service/action/task/getStartFormData?nID_Task=" + historyEventService.getnID_Task();
+		            ResponseEntity<String> osResponseEntityReturn = oHttpEntityInsedeCover.oReturn_RequestGet_JSON(sURL);
+		            
+		            JSONObject json = (JSONObject) new JSONParser().parse(osResponseEntityReturn.getBody());
+		            // sPhone
+		            line.add(json.get("phone").toString());
+		            
+		            csvWriter.writeNext(line.toArray(new String[line.size()]));
+		    	}
 	    	}
 		} catch (Exception e) {
 			e.printStackTrace();
