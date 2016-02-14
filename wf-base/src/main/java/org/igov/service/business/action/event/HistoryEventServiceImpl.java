@@ -52,12 +52,12 @@ public class HistoryEventServiceImpl implements HistoryEventService {
         if (params == null) {
             params = new HashMap<>();
         }
+        params.put("nID_StatusType", String.valueOf(nID_StatusType.getnID()));
         if (addAccessKey) {
             String sAccessKey_HistoryEvent = accessDataDao.setAccessData(
                     httpRequester.getFullURL(URI_UPDATE_HISTORY_EVENT, params));
             params.put("sAccessKey", sAccessKey_HistoryEvent);
             params.put("sAccessContract", "Request");
-            params.put("nID_StatusType", String.valueOf(nID_StatusType.getnID()));
             LOG.info("(sAccessKey={})", sAccessKey_HistoryEvent);
         }
         return doRemoteRequest(URI_UPDATE_HISTORY_EVENT, params, sID_Order, sUserTaskName);
