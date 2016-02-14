@@ -49,7 +49,7 @@ public class EscalationHelper implements ApplicationContextAware {
                 if (bConditionAccept) {
                     EscalationHandler oEscalationHandler = getHandlerClass(sBeanHandler);
                     if (oEscalationHandler != null) {
-                        LOG.info("1(asRecipientMail={})", mTaskParam.get("asRecipientMail"));
+                        LOG.info("1(asRecipientMail={})", mTaskParam.get("asRecipientMail") + " type: " +  mTaskParam.get("asRecipientMail").getClass());
                         String[] asRecipientMail = (String[]) mTaskParam.get("asRecipientMail");
                         LOG.info("2(asRecipientMail={})", (Object) asRecipientMail);
                         oEscalationHandler.execute(mTaskParam, asRecipientMail, sPatternFile);
