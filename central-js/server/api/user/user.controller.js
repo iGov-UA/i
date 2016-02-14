@@ -37,6 +37,18 @@ module.exports.index = function (req, res) {
     });
   } else if(type === 'email'){
     emailService.syncWithSubject(req.session.access.email, function (err, result) {
+      if(!result.customer.firstName){
+        result.customer.firstName = req.session.account.firstName;
+      }
+      if(!result.customer.lastName){
+        result.customer.lastName = req.session.account.lastName;
+      }
+      if(!result.customer.middleName){
+        result.customer.middleName = req.session.account.middleName;
+      }
+      if(!result.customer.email){
+        result.customer.email = req.session.access.email;
+      }
       finishRequest(req, res, err, result, type);
     });
   }

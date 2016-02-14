@@ -20,13 +20,19 @@ module.exports.convertToCanonical = function (type, data) {
     delete data.nID;
     delete data.sSB;
     delete data.oSubject;
-    data.middleName = data.sSurname;
-    delete data.sSurname;
-    data.lastName = data.sFamily;
-    delete data.sFamily;
-    data.firstName = data.sName;
-    delete data.sName;
-    if (data.sINN) {
+    if (!data.middleName && data.sSurname) {
+      data.middleName = data.sSurname;
+      delete data.sSurname;
+    }
+    if (!data.lastName && data.sFamily) {
+      data.lastName = data.sFamily;
+      delete data.sFamily;
+    }
+    if (!data.firstName && data.sName) {
+      data.firstName = data.sName;
+      delete data.sName;
+    }
+    if (!data.inn && data.sINN) {
       data.inn = data.sINN;
       delete data.sINN;
     }
