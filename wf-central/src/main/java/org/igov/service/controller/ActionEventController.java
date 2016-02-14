@@ -477,10 +477,12 @@ public class ActionEventController {
     	
     	httpResponse.setHeader("Content-disposition", "attachment; filename="
                 + "serviceHistoryReport.csv");
+    	httpResponse.setHeader("Content-Type", "text/csv; charset=UTF-8");
     	
     	CSVWriter csvWriter;
 		try {
-			csvWriter = new CSVWriter(httpResponse.getWriter());
+			csvWriter = new CSVWriter(httpResponse.getWriter(), ',',
+	                CSVWriter.NO_QUOTE_CHARACTER);
 	        csvWriter.writeNext(headers.toArray(new String[headers.size()]));
 	        
 	    	List<HistoryEvent_Service> historyEvents = historyEventServiceDao.getHistoryEventPeriod(dateAt, dateTo);
@@ -546,7 +548,6 @@ public class ActionEventController {
 		            String sURL = sHost + "/service/action/task/getStartFormData?nID_Task=" + historyEventService.getnID_Task();
 		            ResponseEntity<String> osResponseEntityReturn = oHttpEntityInsedeCover.oReturn_RequestGet_JSON(sURL);
 		            
-		            LOG.error("Get response from region service for start from task data: {}", osResponseEntityReturn.getBody());
 		            JSONObject json = (JSONObject) new JSONParser().parse(osResponseEntityReturn.getBody());
 		            // sPhone
 		            line.add(json.get("phone") != null ? json.get("phone").toString() : "");
@@ -555,7 +556,6 @@ public class ActionEventController {
 		    	}
 	    	}
 		} catch (Exception e) {
-			e.printStackTrace();
 			LOG.error("Error occurred while creating CSV file {}", e.getMessage());
 		} 
     }
