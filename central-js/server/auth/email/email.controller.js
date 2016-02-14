@@ -41,7 +41,7 @@ module.exports.authorize = function (req, res) {
       delete req.session.prepare;
 
       req.session = authService.createSessionObjectFromPrepare(prepare);
-      res.redirect(prepare.link);
+      res.redirect(prepare.data.link);
     }
   }));
 };
@@ -67,7 +67,7 @@ module.exports.editFio = function (req, res) {
         customer.lastName = lastName;
       }
       if (middleName) {
-        customer.middleName = firstName;
+        customer.middleName = middleName;
       }
 
       res.status(200).send({verified: true, edited: true});
@@ -117,7 +117,10 @@ module.exports.verifyContactEmailAndCode = function (req, res) {
 
         req.session.prepare.data.code = code;
         req.session.prepare.data.user = user;
-        req.session.prepare.data.access = {};
+        req.session.prepare.data.access = {
+          email: email,
+          code: code
+        };
         res.status(200).send({
           verified: true,
           firstName: customer.firstName,

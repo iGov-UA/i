@@ -1,5 +1,6 @@
 var accountService = require('../../auth/bankid/bankid.service.js');
 var soccardService = require('../../auth/soccard/soccard.service.js');
+var emailService = require('../../auth/email/email.service.js');
 var userConvert = require('./user.convert');
 
 var finishRequest = function (req, res, err, result, type) {
@@ -32,6 +33,10 @@ module.exports.index = function (req, res) {
     });
   } else if (type === 'soccard') {
     soccardService.syncWithSubject(req.session.access.accessToken, function (err, result) {
+      finishRequest(req, res, err, result, type);
+    });
+  } else if(type === 'email'){
+    emailService.syncWithSubject(req.session.access.email, function (err, result) {
       finishRequest(req, res, err, result, type);
     });
   }

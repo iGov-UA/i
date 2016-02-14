@@ -1,39 +1,32 @@
 angular.module('journal').controller('JournalBankIdController', function ($rootScope, $scope, $location, $state, $window, BankIDService, ErrorsFactory) {
 
-  $scope.loginWithBankId = function () {
-    var stateForRedirect = $state.href('index.journal.bankid', {});
-    var redirectURI = $location.protocol() +
+  function getRedirectURI() {
+    var stateForRedirect = $state.href('index.journal.bankid', {error: ''});
+    return $location.protocol() +
       '://' + $location.host() + ':'
       + $location.port()
       + stateForRedirect;
-    $window.location.href = './auth/bankID?link=' + redirectURI;
+  }
+
+  $scope.loginWithBankId = function () {
+    $window.location.href = './auth/bankID?link=' + getRedirectURI();
   };
 
   $scope.loginWithEds = function () {
-    var stateForRedirect = $state.href('index.journal.bankid', {error: ''});
-    var redirectURI = $location.protocol() +
-      '://' + $location.host() + ':'
-      + $location.port()
-      + stateForRedirect;
-    $window.location.href = './auth/eds?link=' + redirectURI;
+    $window.location.href = './auth/eds?link=' + getRedirectURI();
   };
 
   $scope.loginWithEmail = function () {
-    $state.go('index.auth.email.verify');
+    $state.go('index.auth.email.verify', {link: getRedirectURI()});
   };
 
   $scope.loginWithSoccard = function () {
-    var stateForRedirect = $state.href('index.journal.bankid', {error: ''});
-    var redirectURI = $location.protocol() +
-      '://' + $location.host() + ':'
-      + $location.port()
-      + stateForRedirect;
-    $window.location.href = './auth/soccard?link=' + redirectURI;
+    $window.location.href = './auth/soccard?link=' + getRedirectURI();
   };
 
   if ($state.is('index.journal.bankid')) {
     if ($state.params.error) {
-        
+
         var oFuncNote = {sHead:"Журнал", sFunc:"JournalBankIdController"};
         ErrorsFactory.init(oFuncNote, {asParam:['$state.params.error: '+$state.params.error]});
 
@@ -44,7 +37,7 @@ angular.module('journal').controller('JournalBankIdController', function ($rootS
         } catch (sError) {
           ErrorsFactory.addFail({sBody:'Помилка парсінгу помилки контролера!',sError:sError});
         }
-          
+
         /*var errorText;
         try {
           errorText = JSON.parse($state.params.error).error;

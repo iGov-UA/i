@@ -1,11 +1,12 @@
-angular.module('auth').controller('AuthByEmailController', function ($window, $scope, $location, $state, ServiceService, ErrorsFactory) {
+angular.module('auth').controller('AuthByEmailController', function ($window, $scope, $location, $state,  $stateParams, ServiceService, ErrorsFactory) {
 
   $scope.authByEmail = {
     email: '',
     code: '',
     firstName: '',
     middleName: '',
-    lastName: ''
+    lastName: '',
+    link: $stateParams.link
   };
 
   $scope.authorizeByEmail = function (sAuthEmail) {

@@ -7,7 +7,7 @@ var request = require('request')
   , activiti = require('../../components/activiti')
   , errors = require('../../components/errors');
 
-module.exports.verifyContactEmail = function(email, callback){
+module.exports.verifyContactEmail = function (email, callback) {
   activiti.get('/access/verifyContactEmail', {sQuestion: email}, callback);
 };
 
@@ -18,6 +18,13 @@ module.exports.getUser = function (nID, callback) {
         body.error_description,
         error || body.error);
       callback(errorResult, null);
+    } else if (body.code && body.message) {
+      if (body.message.indexOf('Record not found') === 0) {
+        callback(null, {});
+      } else {
+        var errorResult = errors.createError(errors.codes.EXTERNAL_SERVICE_ERROR, body.message, body);
+        callback(errorResult, null);
+      }
     } else {
       callback(null, body);
     }

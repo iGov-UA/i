@@ -59,7 +59,7 @@ function createPrepareSessionObject(type, data){
 }
 
 function createSessionObjectFromPrepare(prepare){
-  return createSessionObject(prepare.type, prepare.user, prepare.access);
+  return createSessionObject(prepare.type, prepare.data.user, prepare.data.access);
 }
 
 function createSessionObject(type, user, access) {

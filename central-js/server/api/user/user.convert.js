@@ -26,16 +26,20 @@ module.exports.convertToCanonical = function (type, data) {
     delete data.sFamily;
     data.firstName = data.sName;
     delete data.sName;
-    data.inn = data.sINN;
-    delete data.sINN;
-    data.documents = [];
-    data.documents.push({
-      "type": "passport",
-      "series": data.sPassportSeria,
-      "number": data.sPassportNumber
-    });
-    delete data.sPassportSeria;
-    delete data.sPassportNumber;
+    if (data.sINN) {
+      data.inn = data.sINN;
+      delete data.sINN;
+    }
+    if (data.sPassportSeria && data.sPassportNumber) {
+      data.documents = [];
+      data.documents.push({
+        "type": "passport",
+        "series": data.sPassportSeria,
+        "number": data.sPassportNumber
+      });
+      delete data.sPassportSeria;
+      delete data.sPassportNumber;
+    }
   }
   return data;
 };
