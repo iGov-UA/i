@@ -555,6 +555,7 @@ public class ActionEventController {
 		            csvWriter.writeNext(line.toArray(new String[line.size()]));
 		    	}
 	    	}
+	    	csvWriter.close();
 		} catch (Exception e) {
 			LOG.error("Error occurred while creating CSV file {}", e.getMessage());
 		} 
