@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.igov.model.subject.Server;
+import org.igov.model.subject.message.SubjectMessage;
+import org.igov.model.subject.message.SubjectMessagesDao;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Optional;
@@ -60,6 +62,8 @@ public class ActionEventController {
     private ServerDao serverDao;
     @Autowired
     private HttpEntityInsedeCover oHttpEntityInsedeCover;
+    @Autowired
+    private SubjectMessagesDao subjectMessagesDao; 
     
     /**
      * получает объект события по услуге, по одной из следующий комбинаций
@@ -462,8 +466,6 @@ public class ActionEventController {
             @ApiParam(value = "Дата начала выборки данных в формате yyyy-MM-dd HH:mm:ss", required = true) @RequestParam(value = "sDateAt") String sDateAt,
             @ApiParam(value = "Дата окончания выборки данных в формате yyyy-MM-dd HH:mm:ss", required = true) @RequestParam(value = "sDateTo") String sDateTo,
             HttpServletResponse httpResponse){
-    	String res = null;
-    	
     	DateTime dateAt = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss").parseDateTime(sDateAt);
     	DateTime dateTo = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss").parseDateTime(sDateTo);
     	
@@ -482,26 +484,53 @@ public class ActionEventController {
 	        csvWriter.writeNext(headers.toArray(new String[headers.size()]));
 	        
 	    	List<HistoryEvent_Service> historyEvents = historyEventServiceDao.getHistoryEventPeriod(dateAt, dateTo);
-	    	List<Map<String, String>> responseLines = new LinkedList<Map<String,String>>();
 	    	
             List<Long> historyEventServicesIDs = new LinkedList<Long>(); 
             for (HistoryEvent_Service historyEventService : historyEvents){
             	historyEventServicesIDs.add(historyEventService.getId());
             }
             
+            List<SubjectMessage> subjectMessages = subjectMessagesDao.findAllByInValues("nID_HistoryEvent_Service", historyEventServicesIDs);
+            LOG.info("Found {} subject messages by nID_HistoryEvent_Service values", subjectMessages.size());
+            Map<Long, SubjectMessage> subjectMessagesMap = new HashMap<Long, SubjectMessage>();
+            for (SubjectMessage subjectMessage : subjectMessages){
+            	if (subjectMessage.getSubjectMessageType().getId() == 2) {
+            		subjectMessagesMap.put(subjectMessage.getnID_HistoryEvent_Service(), subjectMessage);
+            	} else {
+            		LOG.info("Skipping subject message with SubjectMessageType {}", subjectMessage.getSubjectMessageType().getId());
+            	}
+            }
+            
 	    	for (HistoryEvent_Service historyEventService : historyEvents){
-	    		Map<String, Object> line = new HashMap<String, Object>();
-	    		line.put("sID_Order", historyEventService.getsID_Order());
-	    		line.put("nID_Server", historyEventService.getnID_Server());
-	    		line.put("nID_Service", historyEventService.getnID_Service());
-	    		line.put("sID_Place", historyEventService.getsID_UA());
-	    		line.put("nID_Subject", historyEventService.getnID_Subject());
-	    		line.put("nRate", historyEventService.getnRate());
-	    		line.put("sTextFeedback", historyEventService.getnRate());
-	    		line.put("sUserTaskName", historyEventService.getsUserTaskName());
-	    		line.put("sHead", historyEventService.getsHead());
-	    		line.put("sBody", historyEventService.getsBody());
-	    		line.put("nTimeMinutes", historyEventService.getnTimeMinutes());
+	    		List<String> line = new LinkedList<String>();
+	    		// sID_Order
+	    		line.add(historyEventService.getsID_Order());
+	    		// nID_Server
+	    		line.add(historyEventService.getnID_Server().toString());
+	    		// nID_Service
+	    		line.add(historyEventService.getnID_Service().toString());
+	    		// sID_Place
+	    		line.add(historyEventService.getsID_UA());
+	    		// nID_Subject
+	    		line.add(historyEventService.getnID_Subject().toString());
+	    		// nRate
+	    		line.add(historyEventService.getnRate().toString());
+	    		String sTextFeedback = "";
+	    		if (subjectMessagesMap.get(historyEventService.getId()) != null){
+	    			sTextFeedback = subjectMessagesMap.get(historyEventService.getId()).getBody();
+	    		} else {
+	    			LOG.error("Unable to find feedabck for history event with ID {}", historyEventService.getId());
+	    		}
+	    		// sTextFeedback
+	    		line.add(sTextFeedback);
+	    		// sUserTaskName
+	    		line.add(historyEventService.getsUserTaskName());
+	    		// sHead
+	    		line.add(historyEventService.getsHead());
+	    		// sBody
+	    		line.add(historyEventService.getsBody());
+	    		// nTimeMinutes
+	    		line.add(historyEventService.getnTimeMinutes().toString());
 	    		
 	    		Integer nID_Server = historyEventService.getnID_Server();
 	            nID_Server = nID_Server == null ? 0 : nID_Server;
@@ -517,16 +546,14 @@ public class ActionEventController {
 	            ResponseEntity<String> osResponseEntityReturn = oHttpEntityInsedeCover.oReturn_RequestGet_JSON(sURL);
 	            
 	            JSONObject json = (JSONObject) new JSONParser().parse(osResponseEntityReturn.getBody());
+	            // sPhone
+	            line.add(json.get("phone").toString());
 	            
-	            line.put("sPhone", json.get("phone"));
+	            csvWriter.writeNext(line.toArray(new String[line.size()]));
 	    	}
-		} catch (IOException e) {
+		} catch (Exception e) {
 			LOG.error("Error occurred while creating CSV file {}", e.getMessage());
-		} catch (RecordNotFoundException e) {
-			e.printStackTrace();
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+		} 
     }
 
 }
