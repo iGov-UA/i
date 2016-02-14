@@ -489,7 +489,7 @@ public class ActionEventController {
             for (HistoryEvent_Service historyEventService : historyEvents){
             	historyEventServicesIDs.add(historyEventService.getId());
             }
-            
+            LOG.info("Looking history event services by IDs " + historyEventServicesIDs);
             List<SubjectMessage> subjectMessages = subjectMessagesDao.findAllByInValues("nID_HistoryEvent_Service", historyEventServicesIDs);
             LOG.info("Found {} subject messages by nID_HistoryEvent_Service values", subjectMessages.size());
             Map<Long, SubjectMessage> subjectMessagesMap = new HashMap<Long, SubjectMessage>();
