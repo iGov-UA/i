@@ -9,10 +9,13 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 import org.igov.service.business.escalation.handler.EscalationHandler;
 import org.igov.util.ToolJS;
+import com.mongodb.BasicDBList;
 
 import javax.script.ScriptException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
 import org.igov.io.GeneralConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -45,14 +48,22 @@ public class EscalationHelper implements ApplicationContextAware {
 
             //2 - check beanHandler
             try {
-                LOG.info("(bConditionAccept={})", bConditionAccept);
+                //LOG.info("(bConditionAccept={})", bConditionAccept);
                 if (bConditionAccept) {
                     EscalationHandler oEscalationHandler = getHandlerClass(sBeanHandler);
                     if (oEscalationHandler != null) {
-                        LOG.info("1(asRecipientMail={})", mTaskParam.get("asRecipientMail"));
-                        String[] asRecipientMail = (String[]) mTaskParam.get("asRecipientMail");
-                        LOG.info("2(asRecipientMail={})", (Object) asRecipientMail);
-                        oEscalationHandler.execute(mTaskParam, asRecipientMail, sPatternFile);
+                        //LOG.info("(basicDBList={})", mTaskParam.get("asRecipientMail"));
+                        List<String> asRecipientMail = new ArrayList<String>();
+                        BasicDBList basicDBList = (BasicDBList) mTaskParam.get("asRecipientMail");
+                        for (Object osMail : basicDBList) {
+                            asRecipientMail.add((String) osMail);
+                        }
+                        if(asRecipientMail.size() > 0){
+                            oEscalationHandler.execute(mTaskParam, asRecipientMail.toArray(new String[asRecipientMail.size()]), sPatternFile);
+                        } else{
+                            //LOG.info("(asRecipientMail={})", (Object) asRecipientMail);
+                            LOG.warn("Escalation handler is invalid! There isn't any recipientMail! (asRecipientMail={})", (Object) asRecipientMail);
+                        }
                     }
                 }else{
                     String sHead = String.format((oGeneralConfig.bTest() ? "(TEST)" : "") + "Заявка № %s:%s!",
