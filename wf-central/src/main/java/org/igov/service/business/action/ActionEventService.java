@@ -32,7 +32,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import static org.igov.model.action.event.HistoryEvent_ServiceDaoImpl.DASH;
-import org.igov.model.enums.HistoryEvent_Service_StatusType;
+import org.igov.model.action.event.HistoryEvent_Service_StatusType;
 
 import org.igov.model.subject.message.SubjectMessage;
 import org.igov.model.subject.message.SubjectMessagesDao;
