@@ -32,6 +32,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import static org.igov.model.action.event.HistoryEvent_ServiceDaoImpl.DASH;
+import org.igov.model.enums.HistoryEvent_Service_StatusType;
 
 import org.igov.model.subject.message.SubjectMessage;
 import org.igov.model.subject.message.SubjectMessagesDao;
@@ -245,7 +246,7 @@ public class ActionEventService {
         mParam.put("sToken", sToken);
 //        params.put("sUserTaskName", sUserTaskName);
         return historyEventService.updateHistoryEvent(sID_Order, sUserTaskName,
-                true, mParam);
+                true, HistoryEvent_Service_StatusType.UNKNOWN, mParam);
     }
 
     public List<Map<String, Object>> getListOfHistoryEvents(Long nID_Service) {
