@@ -245,7 +245,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
 			DateTime dateTo) {
 		Criteria oCriteria = getSession().createCriteria(HistoryEvent_Service.class);
         oCriteria.add(Restrictions.gt("sDate", dateAt));
-        oCriteria.add(Restrictions.lt("sDate", dateAt));
+        oCriteria.add(Restrictions.lt("sDate", dateTo));
         
         List<HistoryEvent_Service> aHistoryEvent_Service = (List<HistoryEvent_Service>) oCriteria.list();
         if (aHistoryEvent_Service == null) {
