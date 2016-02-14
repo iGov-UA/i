@@ -2067,7 +2067,16 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     }
  
     
-    @ApiResponses(value = { @ApiResponse(code = 500, message = "Record not found") })
+    @ApiOperation(value = "Сервис получения значения переменной процесса", notes = "#####  ActionCommonTaskController: Сервис получения значения переменной процесса #####\n\n"
+            + "Request:\n\n"
+            + "https://test.region.igov.org.ua/wf/service/action/task/getProcessVariableValue?nProcessID=[nProcessID]&sVariableName=[sVariableName]\n\n\n"
+			+ "nProcessID - ID процесса, в котором искать переменную\n"
+			+ "sVariableName - имя переменной, значение которой необходимо вернуть\n"
+			+ "Пример: https://test.region.igov.org.ua/wf/service/action/task/getProcessVariableValue?nProcessID=8965001&sVariableName=phone\n"
+            + "Response:\n"
+            + "\n```json\n"
+            + "  {\"phone\":\"+380 50 960 0041\"}"
+            + "\n```\n")
     @RequestMapping(value = "/getProcessVariableValue", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public
     @ResponseBody

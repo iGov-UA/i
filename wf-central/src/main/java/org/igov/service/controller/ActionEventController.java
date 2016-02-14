@@ -463,7 +463,8 @@ public class ActionEventController {
     
     @ApiOperation(value = "Получение отчета о поданных заявках", notes = "##### ActionEventController - Получение отчета о поданных заявках #####\n\n"
             + "HTTP Context: https://test.igov.org.ua/wf/service/action/event/getServiceHistoryReport?sDateAt=[sDateAt]&sDateTo=[sDateTo]\n\n\n"
-			+ "Возвращает csv файл с информацией о задачах за указанный период на основании HistoryEventService записей.\n"
+            + "sDateAt, sDateTo - даты начала и конца интервала выборки событий в формате YYYY-MM-DD hh:mm:ss\n"
+            + "Возвращает csv файл с информацией о задачах за указанный период на основании HistoryEventService записей.\n"
             + "В результате возвращаются следующий набор полей - sID_Order, nID_Server, nID_Service, sID_Place, nID_Subject, nRate, sTextFeedback, sUserTaskName, sHead, sBody, nTimeMinutes, sPhone\n"
 			+ "Результат для колонки sTextFeedback возвращается из сущности SubjectMessage, у которой nID_SubjectMessageType = 2\n"
 			+ "Результат для колонки sPhone возвращается из стартовой формы процесса из поля phone соответствующего регионального сервера\n"
