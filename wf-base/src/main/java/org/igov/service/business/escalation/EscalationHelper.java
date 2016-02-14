@@ -48,21 +48,21 @@ public class EscalationHelper implements ApplicationContextAware {
 
             //2 - check beanHandler
             try {
-                LOG.info("(bConditionAccept={})", bConditionAccept);
+                //LOG.info("(bConditionAccept={})", bConditionAccept);
                 if (bConditionAccept) {
                     EscalationHandler oEscalationHandler = getHandlerClass(sBeanHandler);
                     if (oEscalationHandler != null) {
-                        LOG.info("(basicDBList={})", mTaskParam.get("asRecipientMail"));
+                        //LOG.info("(basicDBList={})", mTaskParam.get("asRecipientMail"));
                         List<String> asRecipientMail = new ArrayList<String>();
                         BasicDBList basicDBList = (BasicDBList) mTaskParam.get("asRecipientMail");
-                        for (Object email : basicDBList) {
-                            asRecipientMail.add((String) email);
+                        for (Object osMail : basicDBList) {
+                            asRecipientMail.add((String) osMail);
                         }
-                        LOG.info("(asRecipientMail={})", (Object) asRecipientMail);
                         if(asRecipientMail.size() > 0){
                             oEscalationHandler.execute(mTaskParam, asRecipientMail.toArray(new String[asRecipientMail.size()]), sPatternFile);
                         } else{
-                            LOG.info("Escalation not need! There isn't any recipientMail!");
+                            //LOG.info("(asRecipientMail={})", (Object) asRecipientMail);
+                            LOG.warn("Escalation handler is invalid! There isn't any recipientMail! (asRecipientMail={})", (Object) asRecipientMail);
                         }
                     }
                 }else{
