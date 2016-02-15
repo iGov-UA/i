@@ -54,16 +54,15 @@ public class EscalationHelper implements ApplicationContextAware {
                     EscalationHandler oEscalationHandler = getHandlerClass(sBeanHandler);
                     if (oEscalationHandler != null) {
                         //LOG.info("(basicDBList={})", mTaskParam.get("asRecipientMail"));
-                        List<String> asRecipientMail = new ArrayList<String>();
+                        String[] asRecipientMail = null;
                         BasicDBList basicDBList = (BasicDBList) mTaskParam.get("asRecipientMail");
                         if (basicDBList != null && !basicDBList.isEmpty()) {
-                            for (Object osMail : basicDBList) {
-                                asRecipientMail.add((String) osMail);
+                            asRecipientMail = new String[basicDBList.size()];
+                            for (int i = 0; i < basicDBList.size(); i++) {
+                                asRecipientMail[i] = (String)basicDBList.get(i);
                             }
-                            oEscalationHandler.execute(mTaskParam, asRecipientMail.toArray(new String[asRecipientMail.size()]), sPatternFile);
-                        } else{
-                            LOG.warn("Escalation handler is invalid! There isn't any recipientMail! (asRecipientMail={})", (Object) asRecipientMail);
-                        }
+                        } 
+                        oEscalationHandler.execute(mTaskParam, asRecipientMail, sPatternFile);
                     }
                 } else {
                     String sHead = String.format((oGeneralConfig.bTest() ? "(TEST)" : "") + "Заявка № %s:%s!",
