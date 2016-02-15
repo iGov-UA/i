@@ -64,13 +64,15 @@ public class EscalationHandler_SendMailAlert implements EscalationHandler {
         }
         LOG.info("Sending... (asRecipientMail={}, sHead={})", asRecipientMail, sHead);
         int nFailSend=0;
-        for (String sRecipientMail : asRecipientMail) {
-            try {
-                sendEmail(sHead, sBody, sRecipientMail);
-            } catch (Exception e) {
-                LOG.error("Can't send: {} (sRecipientMail={}, sHead={})", e.getMessage(), sRecipientMail, sHead);
-                LOG.debug("FAIL:", e);
-                nFailSend++;
+        if(asRecipientMail != null){
+            for (String sRecipientMail : asRecipientMail) {
+                try {
+                    sendEmail(sHead, sBody, sRecipientMail);
+                } catch (Exception e) {
+                    LOG.error("Can't send: {} (sRecipientMail={}, sHead={})", e.getMessage(), sRecipientMail, sHead);
+                    LOG.debug("FAIL:", e);
+                    nFailSend++;
+                }
             }
         }
         if(nFailSend>0){
