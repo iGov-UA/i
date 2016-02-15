@@ -73,28 +73,31 @@ public class EscalationHelper implements ApplicationContextAware {
                 }
             } catch (Exception e) {
                 LOG.error("Can't execute hendler: {} (mTaskParam={})", e.getMessage(), mTaskParam);
-                LOG.error("!!!!!!Error: ", e);
                 throw e;
             }
         } catch (ClassNotFoundException e) {
             //LOG.error("Error: {}, wrong parameters!", e.getMessage());
             LOG.error("Can't calculate condition, because wrong parameters: {}", e.getMessage());
+            LOG.error("!!!!!!Error: ", e);
             throw e;
         } catch (ScriptException e) {
             /*LOG.error("Error: {}, wrong sCondition or parameters! (condition={}, params_json={})",
              e.getMessage(), sCondition, soData);*/
             LOG.error("Can't calculate condition, because wrong sCondition or parameters: {} (sCondition={}, soData={}, mTaskParam={})",
                     e.getMessage(), sCondition, soData, mTaskParam);
+            LOG.error("!!!!!!Error: ", e);
             throw e;
         } catch (NoSuchMethodException e) {
             //LOG.error("Error: {}, error in script", e.getMessage());
             LOG.error("Can't calculate condition, because error in script: {} (sCondition={}, soData={}, mTaskParam={})",
                     e.getMessage(), sCondition, soData, mTaskParam);
+            LOG.error("!!!!!!Error: ", e);
             throw e;
         } catch (Exception e) {
             //LOG.error("Error: {}, wrong parameters!", e.getMessage());
             LOG.error("Can't calculate condition, because unknown error: {} (sCondition={}, soData={}, mTaskParam={})",
                     e.getMessage(), sCondition, soData, mTaskParam);
+            LOG.error("!!!!!!Error: ", e);
             throw e;
         }
     }
