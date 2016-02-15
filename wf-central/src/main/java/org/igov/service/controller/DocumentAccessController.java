@@ -95,16 +95,13 @@ public class DocumentAccessController {
             @ApiParam(value = "ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)", required = true) @RequestParam(value = "nID_Subject") Long nID_Subject,
             HttpServletResponse response) throws CommonServiceException {
 
+        //documentAccessService.syncContacts(nID_Subject, sMail, sTelephone);
         Document document = documentDao.getDocument(nID_Document);
 
         if (!nID_Subject.equals(document.getSubject().getId())) {
             throw new CommonServiceException(UNAUTHORIZED_ERROR_CODE, NO_ACCESS_MESSAGE, HttpStatus.UNAUTHORIZED);
         }
-        if((sMail != null && !sMail.isEmpty()) || (sTelephone != null && !sTelephone.isEmpty()))
-        {
-            documentAccessService.syncContacts(nID_Subject, sMail, sTelephone);
-        }
-        
+       
         
         AccessURL oAccessURL = new AccessURL();
         try {
@@ -119,6 +116,9 @@ public class DocumentAccessController {
             response.setHeader(REASON_HEADER, e.getMessage());
             LOG.error(e.getMessage(), e);
         }
+        
+        
+        
         
        
         return oAccessURL;

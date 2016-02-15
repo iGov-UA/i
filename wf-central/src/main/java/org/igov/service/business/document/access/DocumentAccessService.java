@@ -38,14 +38,148 @@ public class DocumentAccessService {
     @Autowired
     SubjectContactTypeDao subjectContactTypeDao;
     
-    
+     private boolean isContact(List<SubjectContact> list, String sContact )
+    {
+        
+         for(SubjectContact contact : list)
+         {
+             if(contact.getsValue().equals(sContact))
+                return true; 
+         }
+         
+         return false;
+    }
     
     public void syncContacts(Long nID_Subject, String sMail, String sTelephone)
     {
         Subject subject = null;
         SubjectHuman subjectHuman = null;
-      
+        String sID_Mail = null;
+        String sID_Phone = null;
+        List<SubjectContact> list_mail = null;
+        List<SubjectContact> list_phone = null;
+       if(sMail != null)
+           sID_Mail = SubjectHuman.getSubjectId(SubjectHumanIdType.Email, sMail);
+       if(sTelephone != null)
+           sID_Phone = SubjectHuman.getSubjectId(SubjectHumanIdType.Phone, sTelephone);
+        
         subject = subjectDao.getSubject(nID_Subject);
+        subjectHuman = subjectHumanDao.findByExpected("oSubject", subject);
+        
+        List<SubjectContact> list_contacts = subjectContactDao.findContacts(subject);
+       if(sMail != null)
+           list_mail = subjectContactDao.findAllBy("sValue", sMail);
+       if(sTelephone != null)
+           list_phone = subjectContactDao.findAllBy("sValue", sTelephone);
+        
+        if(list_mail.size() == 0 && list_phone.size() == 0)
+        {
+           if(sMail != null)
+           {
+              SubjectContact oSubjectContact = new SubjectContact();
+              oSubjectContact.setSubject(subject);
+              oSubjectContact.setSubjectContactType(subjectContactTypeDao.getEmailType());
+              oSubjectContact.setsDate();
+              oSubjectContact.setsValue(sMail);
+              subjectContactDao.saveOrUpdate(oSubjectContact);
+           }
+           if(sTelephone != null)
+           {
+              SubjectContact oSubjectContact = new SubjectContact();
+              oSubjectContact.setSubject(subject);
+              oSubjectContact.setSubjectContactType(subjectContactTypeDao.getPhoneType());
+              oSubjectContact.setsDate();
+              oSubjectContact.setsValue(sTelephone);
+              subjectContactDao.saveOrUpdate(oSubjectContact);
+
+           }
+        }
+        else
+        {
+            boolean isMail = true;
+            boolean isPhone = true;
+            boolean isSubject_Phone = true;
+            boolean isSubject_Mail = true;
+            
+           if(sMail != null)
+             isMail = this.isContact(list_mail, sMail);
+           if(sTelephone != null)
+             isPhone = this.isContact(list_phone, sTelephone);
+             isSubject_Phone = this.isContact(list_contacts, sTelephone);
+             isSubject_Mail = this.isContact(list_contacts, sMail);
+             
+           if((isMail || isPhone) && (isSubject_Mail || isSubject_Phone))
+           {
+               for(SubjectContact contact : list_contacts)
+               {
+                  if(contact.getsValue().equals(sMail) || contact.getsValue().equals(sTelephone))
+                  {
+                   SubjectContact oSubjectContact = contact;
+                   oSubjectContact.setsDate();
+                   subjectContactDao.saveOrUpdate(oSubjectContact);
+                  }
+                  
+               }
+           }
+           if((isMail || isPhone) && (!isSubject_Mail || !isSubject_Phone))
+           {
+               for(SubjectContact contact : list_mail)
+               {
+                  if(contact.getsValue().equals(sMail))
+                  {
+                    if(contact.getSubject().getsLabel() == null && contact.getSubject().getsLabelShort() == null)
+                    {
+                     SubjectContact oSubjectContact = contact;
+                     oSubjectContact.setSubject(subject);
+                     oSubjectContact.setsDate();
+                     subjectContactDao.saveOrUpdate(oSubjectContact);
+                    }
+                  }
+               }
+               for(SubjectContact contact : list_phone)
+               {
+                   if(contact.getsValue().equals(sTelephone))
+                  {
+                    if(contact.getSubject().getsLabel() == null && contact.getSubject().getsLabelShort() == null)
+                    {
+                     SubjectContact oSubjectContact = contact;
+                     oSubjectContact.setSubject(subject);
+                     oSubjectContact.setsDate();
+                     subjectContactDao.saveOrUpdate(oSubjectContact);
+                    }
+                  }
+               }
+           }
+           
+           if((!isMail || !isPhone)&&(!isSubject_Mail || !isSubject_Phone))
+           {
+              if(sMail != null)
+             {
+              SubjectContact oSubjectContact = new SubjectContact();
+              oSubjectContact.setSubject(subject);
+              oSubjectContact.setSubjectContactType(subjectContactTypeDao.getEmailType());
+              oSubjectContact.setsDate();
+              oSubjectContact.setsValue(sMail);
+              subjectContactDao.saveOrUpdate(oSubjectContact);
+             }
+             if(sTelephone != null)
+             {
+              SubjectContact oSubjectContact = new SubjectContact();
+              oSubjectContact.setSubject(subject);
+              oSubjectContact.setSubjectContactType(subjectContactTypeDao.getPhoneType());
+              oSubjectContact.setsDate();
+              oSubjectContact.setsValue(sTelephone);
+              subjectContactDao.saveOrUpdate(oSubjectContact);
+
+             }
+           }
+           
+           
+        }
+        
+        
+        
+        /*
         List<SubjectContact> contacts = subjectContactDao.findContacts(subject);
         
         boolean subjphone = true;
@@ -130,6 +264,7 @@ public class DocumentAccessService {
 
           }
         }
+      */
     }
 
 }
