@@ -2069,8 +2069,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     
     @ApiOperation(value = "Сервис получения значения переменной процесса", notes = "#####  ActionCommonTaskController: Сервис получения значения переменной процесса #####\n\n"
             + "Request:\n\n"
-            + "https://test.region.igov.org.ua/wf/service/action/task/getProcessVariableValue?nProcessID=[nProcessID]&sVariableName=[sVariableName]\n\n\n"
-			+ "nProcessID - ID процесса, в котором искать переменную\n"
+            + "https://test.region.igov.org.ua/wf/service/action/task/getProcessVariableValue?nID_Process=[nID_Process]&sVariableName=[sVariableName]\n\n\n"
+			+ "nID_Process - ID процесса, в котором искать переменную\n"
 			+ "sVariableName - имя переменной, значение которой необходимо вернуть\n"
 			+ "Пример: https://test.region.igov.org.ua/wf/service/action/task/getProcessVariableValue?nProcessID=8965001&sVariableName=phone\n"
             + "Response:\n"
@@ -2080,9 +2080,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @RequestMapping(value = "/getProcessVariableValue", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public
     @ResponseBody
-    String getProcessVariableValue(  @ApiParam(value = "ID процесса", required = true )  @RequestParam(value = "nProcessID") String nProcessID,
+    String getProcessVariableValue(  @ApiParam(value = "ID процесса", required = true )  @RequestParam(value = "nID_Process") String nID_Process,
     		@ApiParam(value = "Название переменнной процесса значение которой необходимо найти", required = true )  @RequestParam(value = "sVariableName") String sVariableName) throws RecordNotFoundException {
 
-        return JSONValue.toJSONString(oActionTaskService.getProcessVariableValue(nProcessID, sVariableName));
+        return JSONValue.toJSONString(oActionTaskService.getProcessVariableValue(nID_Process, sVariableName));
     }
 }
