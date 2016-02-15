@@ -102,8 +102,8 @@ angular.module('app').controller('PlaceController',
     $scope.getRedirectUrl = function () {
       var stateForRedirect = $state.href('index.service.general.place.built-in.bankid', {
         'id': service.nID,
-        'region': getRegionId(),
-        'city': getCityId()
+        'region': $scope.getRegionId(),
+        'city': $scope.getCityId()
       });
       return $location.protocol() +
         '://' + $location.host() + ':'
