@@ -73,6 +73,7 @@ public class EscalationHelper implements ApplicationContextAware {
                 }
             } catch (Exception e) {
                 LOG.error("Can't execute hendler: {} (mTaskParam={})", e.getMessage(), mTaskParam);
+                LOG.error("!!!!!!Error: ", e);
                 throw e;
             }
         } catch (ClassNotFoundException e) {
