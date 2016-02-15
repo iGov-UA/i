@@ -15,11 +15,11 @@
     <i class="icon-badge"></i>
     <span class="btn-text"><div>Сертифікат електронно-</div><div>цифрового підпису</div></span>
   </a>
-  <a class="btn btn-info" target="_self"
-     ng-href="{{$location.protocol()}}://{{$location.host()}}:{{$location.port()}}#/auth/email/verify"
-     ng-if="!authMethods || authMethods.indexOf('email') > -1">
-    <span class="btn-text">Email</span>
-  </a>
+  <button ng-click="loginWithEmail()"
+          ng-if="!authMethods || authMethods.indexOf('email') > -1"
+          class="btn btn-info">
+    <span class="btn-info"><div>Email</div></span>
+  </button>
   <a class="btn btn-info_ btn-success_ icon-auth-kk" target="_self"
      ng-href="{{$location.protocol()}}://{{$location.host()}}:{{$location.port()}}/auth/soccard?link={{$location.protocol()}}://{{$location.host()}}:{{$location.port()}}{{redirectUri}}"
      ng-if="!authMethods || authMethods.indexOf('KK') > -1">

@@ -363,7 +363,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             LOG.error("Can't save service message for escalation: {}",e.getMessage());
             LOG.trace("FAIL:", e);
         }
-        historyEventService.updateHistoryEvent(sID_Order, sUserTaskName, false, mParam);//sID_Process
+        historyEventService.updateHistoryEvent(sID_Order, sUserTaskName, false, HistoryEvent_Service_StatusType.CLOSED, mParam);//sID_Process
     }
 
     private void saveUpdatedTaskInfo(String sResponseBody) throws Exception {
@@ -383,7 +383,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         LOG.info("(sID_Order={})", sID_Order);
 
         //historyEventService.updateHistoryEvent(sID_Order, sUserTaskName, false, null);
-        historyEventService.updateHistoryEvent(sID_Order, sUserTaskName, false, mParam);
+        historyEventService.updateHistoryEvent(sID_Order, sUserTaskName, false, HistoryEvent_Service_StatusType.OPENED_ASSIGNED, mParam);
         
         //
         String sProcessName = oHistoricTaskInstance.getProcessDefinitionId();

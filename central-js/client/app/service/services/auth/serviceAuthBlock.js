@@ -1,8 +1,8 @@
-angular.module('app').directive('serviceAuthBlock', function() {
+angular.module('app').directive('serviceAuthBlock', function ($state) {
   return {
     restrict: 'E',
     templateUrl: 'app/service/auth/serviceAuthBlock.html',
-    link: function(scope, element, attrs) {
+    link: function (scope, element, attrs) {
 
       scope.authMethods = false;
 
@@ -18,6 +18,9 @@ angular.module('app').directive('serviceAuthBlock', function() {
 
       scope.redirectUri = attrs.redirectUri;
       scope.nStep = attrs.nStep;
+      scope.loginWithEmail = function () {
+        $state.go('index.auth.email.verify', {link: scope.redirectUri});
+      }
     }
   };
 });

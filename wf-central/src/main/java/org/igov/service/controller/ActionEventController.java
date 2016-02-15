@@ -1,24 +1,47 @@
 package org.igov.service.controller;
 
 import io.swagger.annotations.*;
+
+import org.igov.model.subject.ServerDao;
 import org.igov.io.GeneralConfig;
+import org.igov.io.web.HttpEntityInsedeCover;
 import org.igov.model.action.event.*;
 import org.igov.service.business.action.ActionEventService;
 import org.igov.service.exception.CommonServiceException;
+import org.igov.service.exception.RecordNotFoundException;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.igov.model.subject.Server;
+import org.igov.model.subject.message.SubjectMessage;
+import org.igov.model.subject.message.SubjectMessagesDao;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Optional;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
+
+import liquibase.util.csv.CSVWriter;
 
 
 @Controller
@@ -35,6 +58,12 @@ public class ActionEventController {
     private HistoryEventDao historyEventDao;
     @Autowired
     private ActionEventService oActionEventService;
+    @Autowired
+    private ServerDao serverDao;
+    @Autowired
+    private HttpEntityInsedeCover oHttpEntityInsedeCover;
+    @Autowired
+    private SubjectMessagesDao subjectMessagesDao; 
     
     /**
      * получает объект события по услуге, по одной из следующий комбинаций
@@ -430,6 +459,120 @@ public class ActionEventController {
 
         List<Map<String, Object>> listOfHistoryEventsWithMeaningfulNames = oActionEventService.getListOfHistoryEvents(nID_Service);
         return JSONValue.toJSONString(listOfHistoryEventsWithMeaningfulNames);
+    }
+    
+    @ApiOperation(value = "Получение отчета о поданных заявках", notes = "##### ActionEventController - Получение отчета о поданных заявках #####\n\n"
+            + "HTTP Context: https://test.igov.org.ua/wf/service/action/event/getServiceHistoryReport?sDateAt=[sDateAt]&sDateTo=[sDateTo]\n\n\n"
+            + "sDateAt, sDateTo - даты начала и конца интервала выборки событий в формате YYYY-MM-DD hh:mm:ss\n"
+            + "Возвращает csv файл с информацией о задачах за указанный период на основании HistoryEventService записей.\n"
+            + "В результате возвращаются следующий набор полей - sID_Order, nID_Server, nID_Service, sID_Place, nID_Subject, nRate, sTextFeedback, sUserTaskName, sHead, sBody, nTimeMinutes, sPhone\n"
+			+ "Результат для колонки sTextFeedback возвращается из сущности SubjectMessage, у которой nID_SubjectMessageType = 2\n"
+			+ "Результат для колонки sPhone возвращается из стартовой формы процесса из поля phone соответствующего регионального сервера\n"
+			+ "Примеры:\n"
+            + "https://test.igov.org.ua/wf/service/action/event/getServiceHistoryReport?sDateAt=2016-02-09 00:00:00&sDateTo=2016-02-11 00:00:00\n\n"
+            + "Результат\n"
+            + "\n```csv\n"
+            + "sID_Order,nID_Server,nID_Service,sID_Place,nID_Subject,nRate,sTextFeedback,sUserTaskName,sHead,sBody,nTimeMinutes,sPhone\n"
+			+ "0-88625055,0,740,6500000000,20045,,,,,Необхідно уточнити дані, за коментарем: не вірно вказані дані членів родини. Син - не відповідні ПІБ, бат - відсутні обов'язкові дані,,+380 97 225 5363\n"
+            + "\n```\n")
+    @RequestMapping(value = "/getServiceHistoryReport", method = RequestMethod.GET)
+    public void getServiceHistoryReport(
+            @ApiParam(value = "Дата начала выборки данных в формате yyyy-MM-dd HH:mm:ss", required = true) @RequestParam(value = "sDateAt") String sDateAt,
+            @ApiParam(value = "Дата окончания выборки данных в формате yyyy-MM-dd HH:mm:ss", required = true) @RequestParam(value = "sDateTo") String sDateTo,
+            HttpServletResponse httpResponse){
+    	DateTime dateAt = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss").parseDateTime(sDateAt);
+    	DateTime dateTo = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss").parseDateTime(sDateTo);
+    	
+    	String[] headersMainField = { "sID_Order", "nID_Server",
+                "nID_Service", "sID_Place", "nID_Subject", "nRate", "sTextFeedback", "sUserTaskName", "sHead", 
+                "sBody", "nTimeMinutes", "sPhone" };
+    	List<String> headers = new ArrayList<String>();
+        headers.addAll(Arrays.asList(headersMainField));
+    	
+    	httpResponse.setHeader("Content-disposition", "attachment; filename="
+                + "serviceHistoryReport.csv");
+    	httpResponse.setHeader("Content-Type", "text/csv; charset=UTF-8");
+    	
+    	CSVWriter csvWriter;
+		try {
+			csvWriter = new CSVWriter(httpResponse.getWriter(), ',',
+	                CSVWriter.NO_QUOTE_CHARACTER);
+	        csvWriter.writeNext(headers.toArray(new String[headers.size()]));
+	        
+	    	List<HistoryEvent_Service> historyEvents = historyEventServiceDao.getHistoryEventPeriod(dateAt, dateTo);
+	    	
+	    	LOG.info("Found {} history events for the period from {} to {}", historyEvents.size(), sDateAt, sDateTo);
+	    	
+	    	if (historyEvents.size() > 0){
+	            List<Long> historyEventServicesIDs = new LinkedList<Long>(); 
+	            for (HistoryEvent_Service historyEventService : historyEvents){
+	            	historyEventServicesIDs.add(historyEventService.getId());
+	            }
+	            LOG.info("Looking history event services by IDs " + historyEventServicesIDs);
+	            List<SubjectMessage> subjectMessages = subjectMessagesDao.findAllByInValues("nID_HistoryEvent_Service", historyEventServicesIDs);
+	            LOG.info("Found {} subject messages by nID_HistoryEvent_Service values", subjectMessages.size());
+	            Map<Long, SubjectMessage> subjectMessagesMap = new HashMap<Long, SubjectMessage>();
+	            for (SubjectMessage subjectMessage : subjectMessages){
+	            	if (subjectMessage.getSubjectMessageType().getId() == 2) {
+	            		subjectMessagesMap.put(subjectMessage.getnID_HistoryEvent_Service(), subjectMessage);
+	            	} 
+	            }
+	            
+		    	for (HistoryEvent_Service historyEventService : historyEvents){
+		    		List<String> line = new LinkedList<String>();
+		    		// sID_Order
+		    		line.add(historyEventService.getsID_Order());
+		    		// nID_Server
+		    		line.add(historyEventService.getnID_Server() != null ? historyEventService.getnID_Server().toString() : "");
+		    		// nID_Service
+		    		line.add(historyEventService.getnID_Service() != null ? historyEventService.getnID_Service().toString() : "");
+		    		// sID_Place
+		    		line.add(historyEventService.getsID_UA());
+		    		// nID_Subject
+		    		line.add(historyEventService.getnID_Subject() != null ? historyEventService.getnID_Subject().toString() : "");
+		    		// nRate
+		    		line.add(historyEventService.getnRate() != null ? historyEventService.getnRate().toString() : "");
+		    		String sTextFeedback = "";
+		    		if (subjectMessagesMap.get(historyEventService.getId()) != null){
+		    			sTextFeedback = subjectMessagesMap.get(historyEventService.getId()).getBody();
+		    		} else {
+		    			LOG.error("Unable to find feedabck for history event with ID {}", historyEventService.getId());
+		    		}
+		    		// sTextFeedback
+		    		line.add(sTextFeedback);
+		    		// sUserTaskName
+		    		line.add(historyEventService.getsUserTaskName());
+		    		// sHead
+		    		line.add(historyEventService.getsHead());
+		    		// sBody
+		    		line.add(historyEventService.getsBody());
+		    		// nTimeMinutes
+		    		line.add(historyEventService.getnTimeMinutes() != null ? historyEventService.getnTimeMinutes().toString() : "");
+		    		
+		    		Integer nID_Server = historyEventService.getnID_Server();
+		            nID_Server = nID_Server == null ? 0 : nID_Server;
+	
+			    	Optional<Server> oOptionalServer = serverDao.findById(new Long(nID_Server));
+		            if (!oOptionalServer.isPresent()) {
+		                throw new RecordNotFoundException("Server with nID_Server " + nID_Server + " wasn't found.");
+		            }
+		            Server oServer = oOptionalServer.get();
+		            String sHost = oServer.getsURL();
+		            
+		            String sURL = sHost + "/service/action/task/getProcessVariableValue?nProcessID=" + historyEventService.getnID_Task() + "&sVariableName=phone";
+		            ResponseEntity<String> osResponseEntityReturn = oHttpEntityInsedeCover.oReturn_RequestGet_JSON(sURL);
+		            
+		            JSONObject json = (JSONObject) new JSONParser().parse(osResponseEntityReturn.getBody());
+		            // sPhone
+		            line.add(json.get("phone") != null ? json.get("phone").toString() : "");
+		            
+		            csvWriter.writeNext(line.toArray(new String[line.size()]));
+		    	}
+	    	}
+	    	csvWriter.close();
+		} catch (Exception e) {
+			LOG.error("Error occurred while creating CSV file {}", e.getMessage());
+		} 
     }
 
 }

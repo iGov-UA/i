@@ -60,5 +60,21 @@
     $scope.isActive = function(route) {
       return route === $location.path();
     };
+
+    $scope.goToUsers = function () {
+      $location.path('/users');
+    };
+
+    $scope.goToGroups = function () {
+      $location.path('/groups');
+    };
+
+    $scope.goToDeploy = function () {
+      $location.path('/deploy');
+    };
+
+    $scope.goToProfile = function () {
+      $location.path('/profile');
+    };
   }
 })();

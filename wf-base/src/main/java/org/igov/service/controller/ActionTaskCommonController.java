@@ -510,26 +510,74 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
      * @param bIncludeAttachments (опциональный) если задано значение true - в отдельном элементе aAttachment возвращается массив элементов-объектов Attachment (без самого контента)
      * @param bIncludeMessages (опциональный) если задано значение true - в отдельном элементе aMessage возвращается массив сообщений по задаче
      *
-     * @return сериализованный объект <br> <b>oProcess</b> {<br><kbd>sName</kbd> - название услуги (БП);<br> <kbd>sBP</kbd> - id-бизнес-процесса (БП);<br> <kbd>nID</kbd> - номер-ИД процесса;<br> <kbd>sDateCreate</kbd> - дата создания процесса<br>}
+     * @return сериализованный объект Map{String : Object}
+     * <br>{
+     * <br> <kbd>"sStatusName"</kbd> : название юзертаски
+     * <br> <kbd>"sID_Status"</kbd> : ИД юзертаски
+     * <br> <kbd>sDateTimeCreate</kbd> : : дата и время создания юзертаски
+     * <br> <b>"oProcess"</b> : {
+     * <br><kbd>"sName"</kbd> - название услуги (БП);
+     * <br> <kbd>"sBP"</kbd> - id-бизнес-процесса (БП);
+     * <br> <kbd>"nID"</kbd> - номер-ИД процесса;
+     * <br> <kbd>"sDateCreate"</kbd> - дата создания процесса
+     * <br>},
+     * <br> <b>"aField"</b> : [
+     * <br> ... - массив элементов-объектов <kbd>FormProperty</kbd> (или <kbd>HistoricFormProperty для архивных тасок</kbd>)
+     * <br>],
+     * <br> <b>"oData"</b> : {
+     * <br> ... - объекты FormProperty типа queueData
+     * <br>}
+     * <br> ... другие опциональные объекты: aGroups, aFieldStartForm, aAttachment и aMessage
+     * <br>}
      */
     @ApiOperation(value = "Получение данных по таске", notes = "#####  ActionCommonTaskController: Сервис получения данных по таске #####\n\n"
             + "Request:\n\n"
             + "https://test.region.igov.org.ua/wf/service/action/task/getTaskData?nID_Task=nID_Task&sID_Order=sID_Order\n\n\n"
             + "Response:\n"
             + "\n```json\n"
+            + "{\n"
+            + "  \"sStatusName\": название юзертаски\n"
+            + "  \"sID_Status\": ИД юзертаски\n"
+            + "  \"sDateTimeCreate\": дата и время создания юзертаски\n"
             + "  \"oProcess\":{\n"
             + "    \"sName\":\"название услуги (БП)\"\n"
             + "    \"sBP\":\"id-бизнес-процесса (БП)\"\n"
             + "    \"nID\":\"номер-ИД процесса\"\n"
             + "    \"sDateCreate\":\"дата создания процесса\"\n"
-            + "  }\n"
-            + "\n```\n")
+            + "  },\n"
+            + "  \"aField\":[...] - массив объектов полей Таски с их атрибутами\n"
+            + "  \"oData\":{...} - oбъекты электронной очереди Таски либо значение NULL, если элементов электронной очереди в таске нет\n"
+            + " ... другие опциональные объекты: aGroups, aFieldStartForm, aAttachment и aMessage\n"
+            + "}\n"
+            + "\n```\n"
+            + "\n"
+            + "Элементы массива aField обычно имеют следующую структуру:\n"
+            + " - для активных тасок:\n"
+            + "\n```json\n"
+            + "{\n"
+            + "  \"id\": идентификатор, используемый для передачи данных в форму таски\n"
+            + "  \"name\": отображаемое в форме описание поля\n"
+            + "  \"type\": объект типа параметра\n"
+            + "  \"value\": значение параметра\n"
+            + "  \"required\": свойство указывает, что поле параметра обязательно для ввода значения\n"
+            + "  \"writable\": свойство указывает, что от пользователя ожидаются введенные данные в поле при отправке формы\n"
+            + "  \"readable\": свойство указывает на возможность отображения параметра и его обработки методами сервисов\n"
+            + "}\n"
+            + "\n```\n"
+            + " - для архивных тасок:\n"
+            + "\n```json\n"
+            + "{\n"
+            + "  \"id\": идентификатор параметра\n"
+            + "  \"value\": представленное значение\n"
+            + "}\n"
+            + "\n```\n"
+            + "\n"
+    )
     @RequestMapping(value = "/getTaskData", method = RequestMethod.GET)
     public
     @ResponseBody
     ResponseEntity getTaskData(
-            @ApiParam(value = "номер-ИД таски (обязательный)", required = true)
-            @RequestParam(value = "nID_Task", required = true) Long nID_Task,
+            @ApiParam(value = "номер-ИД таски (обязательный)", required = true) @RequestParam(value = "nID_Task", required = true) Long nID_Task,
             @ApiParam(value = "номер-ИД процесса (опциональный, но обязательный если не задан nID_Task и sID_Order)", required = false) @RequestParam(value = "nID_Process", required = false) Long nID_Process,
             @ApiParam(value = "номер-ИД заявки (опциональный, но обязательный если не задан nID_Task и nID_Process)", required = false) @RequestParam(value = "sID_Order", required = false) String sID_Order,
             @ApiParam(value = "(опциональный) логин, по которому проверяется вхождение пользователя в одну из групп, на которые распространяется данная задача", required = false) @RequestParam(value = "sLogin", required = false) String sLogin,
@@ -566,12 +614,16 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
         response.put("oProcess", oActionTaskService.getProcessInfoByTaskID(nID_Task));
 
+        List<FormProperty> aField = null;
         try{
-            response.put("aField", oActionTaskService.getFormPropertiesByTaskID(nID_Task));
+            aField = oActionTaskService.getFormPropertiesByTaskID(nID_Task);
+            response.put("aField", aField);
         } catch (ActivitiObjectNotFoundException e) {
             LOG.info(String.format("Must search Task [id = '%s'] in history!!!", nID_Task));
             response.put("aField", oActionTaskService.getHistoricFormPropertiesByTaskID(nID_Task));
         }
+
+        response.put("oData", oActionTaskService.getQueueData(aField));
 
         if (bIncludeGroups.equals(Boolean.TRUE)){
             response.put("aGroups", oActionTaskService.getCandidateGroupByTaskID(nID_Task));
@@ -693,6 +745,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
      *
      * @param key         Ключ процесса
     //     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+     * @param organ
      */
     @RequestMapping(value = "/start-process/{key}", method = RequestMethod.GET)
     @ApiOperation(value = "Запуск процесса Activiti", notes = "#####  ActionCommonTaskController: Запуск процесса Activiti #####\n\n"
@@ -710,14 +763,24 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public
     @ResponseBody
     ProcessI startProcessByKey(
-            @ApiParam(value = "Ключ процесса", required = true) @PathVariable("key") String key) {
-        ProcessInstance pi = runtimeService.startProcessInstanceByKey(key);
+            @ApiParam(value = "Ключ процесса", required = true) @PathVariable("key") String key,
+            @ApiParam(value = "Орган", required = false) @RequestParam(value = "organ", required = false) String organ) {
+        
+        ProcessInstance pi;
+        if(organ != null){
+            Map<String, Object> variables = new HashMap<String, Object>();
+            variables.put("organ", organ);
+            pi = runtimeService.startProcessInstanceByKey(key, variables);
+        } else{
+            pi = runtimeService.startProcessInstanceByKey(key); 
+        }
         if (pi == null || pi.getId() == null) {
             throw new IllegalArgumentException(String.format(
                     "process did not started by key:{%s}", key));
         }
         return new Process(pi.getProcessInstanceId());
     }
+    
 
 //    @RequestMapping(value = "/getTasks", method = RequestMethod.GET)
 //    @ResponseBody
@@ -2002,5 +2065,24 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     	
     	return "OK";
     }
+ 
     
+    @ApiOperation(value = "Сервис получения значения переменной процесса", notes = "#####  ActionCommonTaskController: Сервис получения значения переменной процесса #####\n\n"
+            + "Request:\n\n"
+            + "https://test.region.igov.org.ua/wf/service/action/task/getProcessVariableValue?nProcessID=[nProcessID]&sVariableName=[sVariableName]\n\n\n"
+			+ "nProcessID - ID процесса, в котором искать переменную\n"
+			+ "sVariableName - имя переменной, значение которой необходимо вернуть\n"
+			+ "Пример: https://test.region.igov.org.ua/wf/service/action/task/getProcessVariableValue?nProcessID=8965001&sVariableName=phone\n"
+            + "Response:\n"
+            + "\n```json\n"
+            + "  {\"phone\":\"+380 50 960 0041\"}"
+            + "\n```\n")
+    @RequestMapping(value = "/getProcessVariableValue", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    public
+    @ResponseBody
+    String getProcessVariableValue(  @ApiParam(value = "ID процесса", required = true )  @RequestParam(value = "nProcessID") String nProcessID,
+    		@ApiParam(value = "Название переменнной процесса значение которой необходимо найти", required = true )  @RequestParam(value = "sVariableName") String sVariableName) throws RecordNotFoundException {
+
+        return JSONValue.toJSONString(oActionTaskService.getProcessVariableValue(nProcessID, sVariableName));
+    }
 }

@@ -94,12 +94,7 @@ var bankidMock = nock(baseUrls.access.base)
 
 var centralNock = nock('https://test.igov.org.ua')
   .persist()
-  .log(console.log)
-  .get('/wf/service/subject/syncSubject')
-  .query(true)
-  .reply(200, appData.syncedCustomer, {
-    'content-type': 'application/json;charset=UTF-8'
-  });
+  .log(console.log);
 
 var regionMock = nock('http://test.region.service')
   .persist()
@@ -116,9 +111,9 @@ var regionMock = nock('http://test.region.service')
   });
 
 
-module.exports.loginWithBankID = function(callback){
+module.exports.loginWithBankID = function (callback) {
   testRequest
-    .get('/auth/bankid/callback?code=11223344&?link=' + testAuthResultURL)
+    .get('/auth/email/callback?code=11223344&?link=' + testAuthResultURL)
     .expect(302)
     .then(function (res) {
       loginAgent.saveCookies(res);
@@ -128,10 +123,22 @@ module.exports.loginWithBankID = function(callback){
   });
 };
 
-module.exports.loginWithEds = function(callback){
+module.exports.loginWithEds = function (callback) {
   testRequest
-    .get('/auth/eds/callback?code=11223344&?link=' + testAuthResultURL)
+    .get('/auth/eds/callback?code=11223344&link=' + testAuthResultURL)
     .expect(302)
+    .then(function (res) {
+      loginAgent.saveCookies(res);
+      callback(null, loginAgent);
+    }).catch(function (err) {
+    callback(err)
+  });
+};
+
+module.exports.loginWithEmail = function (callback) {
+  testRequest
+    .get('/auth/email/verifyContactEmailAndCode?email=test@test.com&code=' + testAuthResultURL)
+    .expect(200)
     .then(function (res) {
       loginAgent.saveCookies(res);
       callback(null, loginAgent);
