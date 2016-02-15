@@ -95,7 +95,7 @@ public class DocumentAccessController {
             @ApiParam(value = "ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)", required = true) @RequestParam(value = "nID_Subject") Long nID_Subject,
             HttpServletResponse response) throws CommonServiceException {
 
-        //documentAccessService.syncContacts(nID_Subject, sMail, sTelephone);
+        documentAccessService.syncContacts(nID_Subject, sMail, sTelephone);
         Document document = documentDao.getDocument(nID_Document);
 
         if (!nID_Subject.equals(document.getSubject().getId())) {
