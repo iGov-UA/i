@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_mvk_381" name="Приватизація квартир, що знаходяться у комунальній власності міста. Ізольоване житло" isExecutable="true">
+  <process id="dnepr_mvk_383" name="Приватизація приміщень у гуртожитках, що знаходяться у комунальній власності міста" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
@@ -11,7 +11,7 @@
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Адреса реєстрації заявника;(поштовий індекс, місто, вулиця, номер дому, номер квартири)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="info" name="Зверніть увагу" type="label" default="Детальна покрокова інструкція знаходиться за &lt;a href=&quot;https://docs.google.com/document/d/1UDtJvAJsok7k6OTYmgbwgh2-IYVDkBZdWfZdJPVif-Y/edit&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;"></activiti:formProperty>
+        <activiti:formProperty id="info" name="Зверніть увагу" type="label" default="Детальна покрокова інструкція знаходиться за &lt;a href=&quot;https://docs.google.com/document/d/1K2CcQOrOZziiqVfDqttq3ZuMtuCuur2WrP0M7eNPHCs/edit&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="asMembers" name="Оберіть кількість членів сім'ї" type="enum" required="true">
           <activiti:value id="sEnumOne" name="1"></activiti:value>
           <activiti:value id="sEnumTwo" name="2"></activiti:value>
@@ -37,12 +37,12 @@
           <activiti:expression>ms@igov.org.ua</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове звернення. Приватизація квартир, що знаходяться у комунальній власності міста. Ізольоване житло]]></activiti:string>
+          <activiti:string><![CDATA[Нове звернення. Приватизація приміщень у гуртожитках, що знаходяться у комунальній власності міста]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;strong&gt;Шановний(-а) колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-У Вас в черзі на обробку нове звернення щодо приватизація квартир, що знаходяться у комунальній власності міста. Ізольоване житло.&lt;br /&gt;
+У Вас в черзі на обробку нове звернення щодо приватизація приміщень у гуртожитках, що знаходяться у комунальній власності міста.&lt;br /&gt;
 Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
 Відпрацюйте це звернення на &lt;a href="https://region.igov.org.ua" target="_blank"&gt;порталі&lt;/a&gt;
 [pattern/mail/_common_signature.html]
@@ -71,8 +71,8 @@
         <activiti:formProperty id="sThirdMember" name="3-й член сім'ї" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFourthMember" name="4-й член сім'ї" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFifthMember" name="5-й член сім'ї" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody1" name="[pattern/print/dneprMVK/dnepr_mvk_381_print.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprMVK/dnepr_mvk_381_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/dneprMVK/dnepr_mvk_383_print.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprMVK/dnepr_mvk_383_print.html" type="file"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="usertask1"></sequenceFlow>
@@ -85,14 +85,14 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Приватизація квартир, що знаходяться у комунальній власності міста. Ізольоване житло]]></activiti:string>
+          <activiti:string><![CDATA[Приватизація приміщень у гуртожитках, що знаходяться у комунальній власності міста]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 &lt;p&gt;
-Ви заповнили заяву на приватизацію квартири. Заповнена заява в додатку до цього листа. Роздрукуйте її.&lt;br /&gt;
-З інструкцією та переліком документів Ви можете ознайомитись за &lt;a href="https://docs.google.com/document/d/1UDtJvAJsok7k6OTYmgbwgh2-IYVDkBZdWfZdJPVif-Y/edit" target="_blank"&gt;посиланням&lt;/a&gt;.
+Ви заповнили заяву на приватизацію приміщень у гуртожитках, що знаходяться у комунальній власності міста. Заповнена заява в додатку до цього листа. Роздрукуйте її.&lt;br /&gt;
+З інструкцією та переліком документів Ви можете ознайомитись за &lt;a href="https://docs.google.com/document/d/1K2CcQOrOZziiqVfDqttq3ZuMtuCuur2WrP0M7eNPHCs/edit" target="_blank"&gt;посиланням&lt;/a&gt;.
 &lt;/p&gt;
 Телефон для довідок: (056) 744- 88-08&lt;br /&gt;
 &lt;br /&gt;
@@ -111,8 +111,8 @@
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow4" sourceRef="servicetask2" targetRef="endevent1"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_mvk_381">
-    <bpmndi:BPMNPlane bpmnElement="dnepr_mvk_381" id="BPMNPlane_dnepr_mvk_381">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_mvk_383">
+    <bpmndi:BPMNPlane bpmnElement="dnepr_mvk_383" id="BPMNPlane_dnepr_mvk_383">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="50.0" y="120.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
