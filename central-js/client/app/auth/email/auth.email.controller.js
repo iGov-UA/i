@@ -1,4 +1,18 @@
-angular.module('auth').controller('AuthByEmailController', function ($window, $scope, $location, $state,  $stateParams, ServiceService, ErrorsFactory) {
+angular.module('auth').controller('AuthByEmailController', function ($window, $scope, $location, $state, $stateParams, ServiceService, ErrorsFactory) {
+
+  $scope.isProcessing = false;
+
+  function startProcessing() {
+    $scope.isProcessing = true;
+  }
+
+  function stopProcessing() {
+    $scope.isProcessing = false;
+  }
+
+  $scope.isDisabled = function (form) {
+    return form.$invalid || $scope.isProcessing;
+  };
 
   $scope.authByEmail = {
     email: '',
@@ -12,6 +26,7 @@ angular.module('auth').controller('AuthByEmailController', function ($window, $s
   $scope.authorizeByEmail = function (sAuthEmail) {
     var oFuncNote = {sHead: "Авторизація через елетрону адресу", sFunc: "authorizeByEmail"};
     ErrorsFactory.init(oFuncNote, {asParam: ['sAuthEmail: ' + sAuthEmail]});
+    startProcessing();
     ServiceService.verifyContactEmail(sAuthEmail).then(function (oResponse) {
       if (ErrorsFactory.bSuccessResponse(oResponse)) {
         if (oResponse.bVerified === "true") {
@@ -23,12 +38,15 @@ angular.module('auth').controller('AuthByEmailController', function ($window, $s
           });
         }
       }
+    }).finally(function () {
+      stopProcessing();
     });
   };
 
   $scope.authorizeByEmailAndCode = function (sAuthEmail) {
     var oFuncNote = {sHead: "Авторизація через елетрону адресу(2)", sFunc: "authorizeByEmail(2)"};
     ErrorsFactory.init(oFuncNote, {asParam: ['sAuthEmail: ' + sAuthEmail]});
+    startProcessing();
     ServiceService.verifyContactEmailAndCode(sAuthEmail).then(function (oResponse) {
       if (ErrorsFactory.bSuccessResponse(oResponse)) {
         if (oResponse.verified) {
@@ -50,12 +68,17 @@ angular.module('auth').controller('AuthByEmailController', function ($window, $s
           });
         }
       }
+    }).finally(function () {
+      stopProcessing();
     });
   };
 
   $scope.editNamesInEmailAuth = function (sAuthEmail) {
+    startProcessing();
     ServiceService.editNamesInEmailAuth(sAuthEmail).then(function (result) {
       $window.location.href = './auth/email';
+    }).finally(function () {
+      stopProcessing();
     });
   };
 
