@@ -528,15 +528,16 @@ public class SubjectMessageController {
             }*/
             
             if (StringUtils.isNotBlank(sID_File)){
-            	LOG.info("sID_File param is not null", sID_File);
-//                byte[] aByte_FileContent_Redis = oBytesDataInmemoryStorage.getBytes(sID_File);
+            	LOG.info("sID_File param is not null {}. File name is {}", sID_File, sFileName);
                 byte[] aByte_FileContent = null;
                 try {
                     byte[] aByte_FileContent_Redis = oBytesDataInmemoryStorage.getBytes(sID_File);
+                    LOG.info("Size of bytes: {}", aByte_FileContent_Redis.length);
                     ByteArrayMultipartFile oByteArrayMultipartFile = null;
                     oByteArrayMultipartFile = getByteArrayMultipartFileFromStorageInmemory(aByte_FileContent_Redis);
                     if (oByteArrayMultipartFile != null) {
                         aByte_FileContent = oByteArrayMultipartFile.getBytes();
+                        LOG.info("Size of multi part content: {}", aByte_FileContent_Redis.length);
                     } else {
                         LOG.error("oByteArrayMultipartFile==null! sID_File={}", sID_File);
                         throw new FileServiceIOException(
@@ -550,8 +551,6 @@ public class SubjectMessageController {
                     LOG.error("Error: {}", e.getMessage(), e);
                     throw new ActivitiException(e.getMessage(), e);
                 }
-                //return redisByteContentByKey;                
-                //AccessDataServiceImpl accessDataService = new AccessDataServiceImpl();
                 String sKey = accessDataDao.setAccessData(aByte_FileContent);   //accessDataService
                 LOG.info("Saved to Mongo! (sKey={},aByte_FileContent.length={})", sKey,aByte_FileContent.length);
                 JSONArray oaFile = new JSONArray();
