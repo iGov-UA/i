@@ -228,29 +228,29 @@ p {font-size: 11px;}
 <b>про виявлення технічної помилки фізичною або юридичною особою</b><br>
 </div>
 <br>
-<div class="date_subm ta-l">No _____________&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;м. [city]<br>
+<div class="date_subm ta-l">No _____________&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;м. [sCity]<br>
 Відповідно до Порядку ведення Державного земельного кадастру повідомляємо про виявлення технічної помилки, а саме
 </div>
-<div class="under_field_line ta-l">[theError]<span ></span></div>
+<div class="under_field_line ta-l">[sError]<span ></span></div>
 <div class="under_field_line ta-l"><span>суть виявленої помилки</span></div>
 <br>
-<div><ins>|[per1]|</ins>витязі з Державного земельного кадастру про</div>
-<div class="under_field_line ta-l">[objectZem]<span >(об'єкт Державного земельного кадастру)</span></div>
-<div>(реєстраційний номер [vitiagNo]), виданому___[vitiagDate] р.;</div>
+<div><ins>|[iTemp1]|</ins>витязі з Державного земельного кадастру про</div>
+<div class="under_field_line ta-l">[sKadastrObject]<span >(об'єкт Державного земельного кадастру)</span></div>
+<div>(реєстраційний номер [sVitiagNo]), виданому [sVitiagDate] р.;</div>
 <br>
-<div><ins>|[per2]|</ins>довідці з Державного земельного кадастру</div>
-<div>(реєстраційний номер [dovidkaNo]), виданому___[dovidkaDate] р.;</div>
+<div><ins>|[iTemp2]|</ins>довідці з Державного земельного кадастру</div>
+<div>(реєстраційний номер [sDovidkaNo]), виданому [sDovidkaDate] р.;</div>
 <br>
-<div><ins>|[per3]|</ins>викопіюванні з кадастрової карти (плану) та іншої картографічної документації Державного земельного кадастру</div>
-<div>(реєстраційний номер [vikopiuvanniaNo]), виданому___[vikopiuvanniaDate] р.;</div>
+<div><ins>|[iTemp3]|</ins>викопіюванні з кадастрової карти (плану) та іншої картографічної документації Державного земельного кадастру</div>
+<div>(реєстраційний номер [sCopyNo]), виданому [sCopyDate] р.;</div>
 <br>
 <div class="ta-l xs-font"><b>До заяви додаються:</b></div>
 <div class="ta-l m-t-5 xs-font">
 □ документ, що містить технічні помилки;<br>
 □ документ,   що   підтверджує   факт   існування   технічної   помилки:<br>
-<div class="under_field_line ta-l">[doc1]</div>
+<div class="under_field_line ta-l">[sRealErr]</div>
 □ документ, що підтверджує правильну редакцію зазначення відповідних відомостей:<br>
-<div class="under_field_line ta-l">[doc2]</div>
+<div class="under_field_line ta-l">[sRealData]</div>
 </div>
 <table cellspacing="0" cols="16" border="0" style="margin: 0 auto;width: 714px">
 	<colgroup width="20"></colgroup>
@@ -288,7 +288,7 @@ p {font-size: 11px;}
 	<tr>
 		<td colspan="10" height="30" align="LEFT"></td>
 		<td align="LEFT"></td>
-		<td colspan="5" style="border-bottom:1px solid #000000;border-left:1px solid #000000;border-top:1px solid #000000;border-right:1px solid #000000" align="LEFT" valign="BOTTOM"><font face="Times New Roman" size="4" color="#000000"></font></td>
+		<td colspan="5" style="border-bottom:1px solid #000000;border-left:1px solid #000000;border-top:1px solid #000000;border-right:1px solid #000000" align="LEFT" valign="BOTTOM"><font face="Times New Roman" size="4" color="#000000"></font>[sRegNo]</td>
 		</tr>
 	<tr>
 		<td colspan="11" height="20" align="LEFT"></td>
@@ -301,7 +301,7 @@ p {font-size: 11px;}
 	<tr>
 		<td colspan="10" height="30" align="LEFT"><font face="Times New Roman" size="4" color="#000000">Підпис заявника</font></td>
 		<td align="LEFT"></td>
-		<td colspan="5" style="border-bottom:1px solid #000000;border-left:1px solid #000000;border-top:1px solid #000000;border-right:1px solid #000000" align="LEFT" valign="BOTTOM"><font face="Times New Roman" size="4" color="#000000"></font></td>
+		<td colspan="5" style="border-bottom:1px solid #000000;border-left:1px solid #000000;border-top:1px solid #000000;border-right:1px solid #000000" align="LEFT" valign="BOTTOM"><font face="Times New Roman" size="4" color="#000000"></font>[sRegDate]</td>
 		</tr>	
 	<tr>
 		<td colspan="9" style="border-left:1px solid #000000;border-top:1px solid #000000;border-right:1px solid #000000" height="20" align="LEFT"><font face="Times New Roman" size="4" color="#000000"></font></td>
@@ -309,14 +309,20 @@ p {font-size: 11px;}
 		<td colspan="5" align="LEFT" valign="BOTTOM"><font face="Times New Roman" size="4" color="#000000">Прізвище, ім’я та по батькові Державного</font></td>
 		</tr>
 	<tr>
-		<td colspan="9" style="border-left:1px solid #000000;border-right:1px solid #000000" height="20" align="LEFT"><font face="Times New Roman" size="4" color="#000000"></font></td>
+		<td colspan="9" style="border-left:1px solid #000000;border-right:1px solid #000000" align="LEFT"><font face="Times New Roman" size="4" color="#000000"></font>
+            <table width=100% cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
+   <tr>
+   <td align="center" height="40" bgcolor="#5CA3CB" style="padding: 1px 0px; color: white;">Завірено<b style="font-size: 22px;"> iGov.org.ua</b><br />портал державних послуг</td>
+   </tr>
+ </table>
+        </td>
 		<td colspan="2" align="LEFT"></td>
 		<td colspan="5" align="LEFT" valign="BOTTOM"><font face="Times New Roman" size="4" color="#000000">кадастрового реєстратора</font></td>
 		</tr>
 	<tr>
 		<td colspan="9" style="border-bottom:1px solid #000000;border-left:1px solid #000000;border-right:1px solid #000000" height="30" align="LEFT"><font face="Times New Roman" size="4" color="#000000"></font></td>
 		<td colspan="2" align="LEFT"></td>
-		<td colspan="5" style="border-bottom:1px solid #000000;border-left:1px solid #000000;border-top:1px solid #000000;border-right:1px solid #000000" align="LEFT" valign="BOTTOM"><font face="Times New Roman" size="4" color="#000000"></font></td>
+		<td colspan="5" style="border-bottom:1px solid #000000;border-left:1px solid #000000;border-top:1px solid #000000;border-right:1px solid #000000" align="LEFT" valign="BOTTOM"><font face="Times New Roman" size="4" color="#000000">[sRegPIB]</font></td>
 		</tr>
 	<tr>
 		<td colspan="9" height="20" align="LEFT"><font face="Times New Roman" size="4" color="#000000">МП (за наявності)</font></td>
