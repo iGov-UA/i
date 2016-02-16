@@ -181,7 +181,7 @@ public class HttpRequester {
         return osReturn.toString();
     }
     
-    public InputStream getInsideStream(String sURL, Map<String, String> mParam) throws Exception {
+    public byte[] getInsideBytes(String sURL, Map<String, String> mParam) throws Exception {
         URL oURL = new URL(getFullURL(sURL, mParam));
         InputStream oInputStream;
         byte[] res;
@@ -205,7 +205,11 @@ public class HttpRequester {
             } else {
                 oInputStream = oConnection.getInputStream();
             }
-            
+            res = IOUtils.toByteArray(oInputStream);
+            oInputStream.close();
+
+            LOG.info("FINISHED! (nStatus={},sURL={},mParam={},bytes size={})", nStatus, sURL, sCut(100, mParam.toString()), res.length);
+            LOG.debug("FINISHED! (nStatus={},sURL={},mParam={},bytes size={})", nStatus, sURL, mParam, res.length);
 
         } catch (Exception oException) {
             new Log(this.getClass(), oException)
@@ -229,12 +233,13 @@ public class HttpRequester {
                     ._Param("nStatus", nStatus)
                     ._Param("sURL", sURL)
                     ._Param("mParam", mParam)
+                    ._Param("bytes", res != null ? res.length : "null")
                     ._Send();
             if (bExceptionOnNorSuccess) {
-                throw new Exception("nStatus=" + nStatus + "sURL=" + sURL + "mParam=" + mParam);
+                throw new Exception("nStatus=" + nStatus + "sURL=" + sURL + "mParam=" + mParam + "bytes=" + res.length);
             }
         }
-        return oInputStream;
+        return res;
     }
 
     public String getFullURL(String sURL, Map<String, String> mParam) throws UnsupportedEncodingException {

@@ -9,7 +9,6 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -1686,7 +1685,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @RequestMapping(value = "/getMessageFile_Local", method = { RequestMethod.GET })
     public
     @ResponseBody
-    ResponseEntity<InputStream> getMessageFile(
+    ResponseEntity<byte[]> getMessageFile(
             @ApiParam(value = "номер-ИД сообщения", required = true) @RequestParam(value = "nID_Message", required = true) String nID_Message ,
             @ApiParam(value = "номер-ИД процесса", required = false) @RequestParam(value = "nID_Process", required = false) Long nID_Process ) throws CommonServiceException{
     	try {
@@ -1697,14 +1696,17 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             }
             params.put("nID_Message", nID_Message);
             String sURL = generalConfig.sHostCentral() + "/wf/service/subject/message/getMessageFile";
+            byte[] soResponse = httpRequester.getInsideBytes(sURL, params);
             
+            LOG.info("Size of file {}", soResponse.length);
             final HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+            headers.add("Content-Disposition", "attachment;filename=");
             headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
             headers.add("Pragma", "no-cache");
             headers.add("Expires", "0");
             
-            return new ResponseEntity<InputStream>(httpRequester.getInsideStream(sURL, params), headers, HttpStatus.OK);
+            return new ResponseEntity<byte[]>(soResponse, headers, HttpStatus.OK);
         } catch (Exception oException) {
             LOG.error("Can't get: {}", oException.getMessage());
             throw new CommonServiceException(
