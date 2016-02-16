@@ -1668,10 +1668,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 				sFilterStatus = "OpenedUnassigned";
 			}
 			if (elem.has("bFilterHasTicket")) {
-				bFilterHasTicket = Boolean.valueOf((String)elem.get("bFilterHasTicket"));
+				bFilterHasTicket = (Boolean)elem.get("bFilterHasTicket");
 			}
 			if (elem.has("bIncludeAlienAssignedTasks")) {
-				bIncludeAlienAssignedTasks = Boolean.valueOf((String)elem.get("bIncludeAlienAssignedTasks"));
+				bIncludeAlienAssignedTasks = (Boolean)elem.get("bIncludeAlienAssignedTasks");
 			}
 			
 			Object taskQuery = createQuery(sLogin, bIncludeAlienAssignedTasks, null, sFilterStatus,
