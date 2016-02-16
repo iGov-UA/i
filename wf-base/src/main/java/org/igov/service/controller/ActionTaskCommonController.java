@@ -1700,6 +1700,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             
             final HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+            headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
+            headers.add("Pragma", "no-cache");
+            headers.add("Expires", "0");
             
             return new ResponseEntity<InputStream>(httpRequester.getInsideStream(sURL, params), headers, HttpStatus.OK);
         } catch (Exception oException) {
