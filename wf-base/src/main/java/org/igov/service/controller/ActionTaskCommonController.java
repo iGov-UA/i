@@ -74,6 +74,8 @@ import org.igov.util.ToolCellSum;
 import org.igov.util.JSON.JsonRestUtils;
 import org.joda.time.format.DateTimeFormatter;
 import org.json.simple.JSONValue;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -1634,6 +1636,68 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         return res;
     }
 
+    @RequestMapping(value = "/getCountTask", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    List<Map<String, Object>> getCountTask(@ApiParam(value = "sLogin", required = true) @RequestParam(value = "sLogin") String sLogin,
+    		@ApiParam(value = "amFilter", required = true) @RequestParam(value = "amFilter") String amFilter) throws CommonServiceException {
+    	List<Map<String, Object>> res = new LinkedList<Map<String,Object>>();
+		
+    	List<String> groupsIds = new LinkedList<String>();
+    	List<Group> groups = identityService.createGroupQuery().groupMember(sLogin).list();
+        
+		if (groups != null && !groups.isEmpty()) {
+			for (Group group : groups) {
+				groupsIds.add(group.getId());
+			}
+			LOG.info("Got list of groups for current user {} : {}", sLogin, groupsIds);
+		}
+    	
+    	JSONArray jsonArray = new JSONArray(amFilter);
+    	
+    	for (int i = 0; i < jsonArray.length(); i++){
+    		Object elem = jsonArray.get(i);
+    		try {
+				JSONObject object = (JSONObject) new JSONParser().parse((String) elem);
+				String sFilterStatus = null;
+				boolean bFilterHasTicket = false;
+				boolean bIncludeAlienAssignedTasks = false;
+				
+				if (object.has("sFilterStatus")) {
+					sFilterStatus = (String) object.get("sFilterStatus");
+				} else {
+					sFilterStatus = "OpenedUnassigned";
+				}
+				if (object.has("bFilterHasTicket")) {
+					bFilterHasTicket = Boolean.valueOf((String)object.get("bFilterHasTicket"));
+				}
+				if (object.has("bIncludeAlienAssignedTasks")) {
+					bIncludeAlienAssignedTasks = Boolean.valueOf((String)object.get("bIncludeAlienAssignedTasks"));
+				}
+				
+				Object taskQuery = createQuery(sLogin, bIncludeAlienAssignedTasks, null, sFilterStatus,
+						groupsIds);
+				
+				long totalNumber = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery)taskQuery).count() : getCountOfTasks(groupsIds);
+				
+				if (bFilterHasTicket){
+					Map<String, FlowSlotTicket> mapOfTickets = new HashMap<String, FlowSlotTicket>();
+					List<TaskInfo> tasks = getTasksWithTicketsFromQuery(taskQuery, 0, Long.valueOf(totalNumber).intValue(), bFilterHasTicket, mapOfTickets);
+					totalNumber = tasks.size();
+				}
+				
+				
+				Map<String, Object> currRes = new HashMap<String, Object>();
+				currRes.put("nCount", totalNumber);	 
+				res.add(currRes);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+    	}
+    	
+    	return res;
+    }
+    
     protected List<TaskInfo> getTasksWithTicketsFromQuery(Object taskQuery, int nStart, int nSize, boolean bFilterHasTicket, Map<String, FlowSlotTicket> mapOfTickets){
 	    List<TaskInfo> tasks = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).listPage(nStart, nSize)
 				: (List) ((NativeTaskQuery) taskQuery).listPage(nStart, nSize);
