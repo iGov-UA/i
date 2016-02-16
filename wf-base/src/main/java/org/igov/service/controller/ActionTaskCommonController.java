@@ -78,7 +78,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -1683,7 +1685,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @RequestMapping(value = "/getMessageFile_Local", method = { RequestMethod.GET })
     public
     @ResponseBody
-    byte[] getMessageFile(
+    ResponseEntity<byte[]> getMessageFile(
             @ApiParam(value = "номер-ИД сообщения", required = true) @RequestParam(value = "nID_Message", required = true) String nID_Message ,
             @ApiParam(value = "номер-ИД процесса", required = false) @RequestParam(value = "nID_Process", required = false) Long nID_Process ) throws CommonServiceException{
     	try {
@@ -1693,11 +1695,16 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 params.put("sID_Order", sID_Order);
             }
             params.put("nID_Message", nID_Message);
-            String soResponse = "";
+            byte[] soResponse;
             String sURL = generalConfig.sHostCentral() + "/wf/service/subject/message/getMessageFile";
-            soResponse = httpRequester.getInside(sURL, params);
-            LOG.info("(soResponse={})", soResponse);
-            return soResponse.getBytes();
+            soResponse = httpRequester.getInsideBytes(sURL, params);
+            LOG.info("(soResponse size={})", soResponse.length);
+            
+            final HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+            headers.setContentLength(soResponse.length);
+            
+            return new ResponseEntity<byte[]>(soResponse, headers, HttpStatus.OK);
         } catch (Exception oException) {
             LOG.error("Can't get: {}", oException.getMessage());
             throw new CommonServiceException(

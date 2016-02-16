@@ -136,7 +136,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>"${privateMail}"</activiti:expression>
+          <activiti:expression>${privateMail}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Виготовлення викопіювання в масштабі 1:500, 1:2000]]></activiti:string>
@@ -157,7 +157,7 @@
 		  </activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>"${vlasn}"</activiti:expression>
+          <activiti:expression>${vlasn}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -203,6 +203,7 @@
           <activiti:value id="vikop" name="Викопіювання готове"></activiti:value>
           <activiti:value id="vidm" name="Готова відмова у наданні послуги"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="result" name="Додайте викопіювання, якщо воно виготовлене" type="file"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow9" sourceRef="usertask2" targetRef="exclusivegateway2"></sequenceFlow>
@@ -280,11 +281,14 @@
 										Пт. – 9.00 – 13.00.&lt;br /&gt;
                                     &lt;p&gt;
                                     	телефон для довідок: 40-41-93.&lt;/p&gt;
-                                   За необхідності Ви можете подати ще одну заяву на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;igov.org.ua&lt;/a&gt;&lt;/p&gt;
+                                    За необхідності Ви можете подати ще одну заяву на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;igov.org.ua&lt;/a&gt;&lt;/p&gt;
 									[pattern/mail/_common_signature_start.html]
 									ЦНАП м. Тернопіль,&lt;/p&gt;
 									[pattern/mail/_common_footer.html]
 		  </activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>${result}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
