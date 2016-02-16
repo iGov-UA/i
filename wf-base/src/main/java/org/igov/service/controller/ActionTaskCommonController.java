@@ -1701,7 +1701,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             LOG.info("(soResponse size={})", soResponse.length);
             
             final HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+            headers.setContentLength(soResponse.length);
             
             return new ResponseEntity<byte[]>(soResponse, headers, HttpStatus.OK);
         } catch (Exception oException) {
