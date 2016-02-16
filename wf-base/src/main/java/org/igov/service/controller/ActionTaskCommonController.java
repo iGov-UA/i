@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -78,7 +79,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -1683,7 +1686,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @RequestMapping(value = "/getMessageFile_Local", method = { RequestMethod.GET })
     public
     @ResponseBody
-    byte[] getMessageFile(
+    ResponseEntity<InputStream> getMessageFile(
             @ApiParam(value = "номер-ИД сообщения", required = true) @RequestParam(value = "nID_Message", required = true) String nID_Message ,
             @ApiParam(value = "номер-ИД процесса", required = false) @RequestParam(value = "nID_Process", required = false) Long nID_Process ) throws CommonServiceException{
     	try {
@@ -1693,11 +1696,15 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 params.put("sID_Order", sID_Order);
             }
             params.put("nID_Message", nID_Message);
-            String soResponse = "";
             String sURL = generalConfig.sHostCentral() + "/wf/service/subject/message/getMessageFile";
-            soResponse = httpRequester.getInside(sURL, params);
-            LOG.info("(soResponse={})", soResponse);
-            return soResponse.getBytes();
+            
+            final HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+            headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
+            headers.add("Pragma", "no-cache");
+            headers.add("Expires", "0");
+            
+            return new ResponseEntity<InputStream>(httpRequester.getInsideStream(sURL, params), headers, HttpStatus.OK);
         } catch (Exception oException) {
             LOG.error("Can't get: {}", oException.getMessage());
             throw new CommonServiceException(

@@ -9,7 +9,7 @@
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="place_of_reg" name="Ваша адреса реєстрації" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="place_of_reg" name="Ваша адреса реєстрації;індекс, місто, вулиця, номер будинку та номер квартири" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="vid" name="Вид звернення" type="enum" required="true">
           <activiti:value id="zajava" name="заява (клопотання)"></activiti:value>
           <activiti:value id="propozicia" name="пропозиція"></activiti:value>
@@ -96,6 +96,7 @@ if (execution.getVariable('sID_UA') == '6800000000'){
 per1 = 'Хмельницької обласної державної адміністрації'
 per2 = 'Хмельницька обласна держана адміністрація, м. Хмельницький, майдан Незалежності, Будинок Рад'
 var per3 = 'zhigan.roman@gmail.com'
+per4 = ' '
 }
 if (execution.getVariable('sID_UA') == '2600000000'){
 per1 = 'Івано-Франківської обласної державної адміністрації'
@@ -205,7 +206,7 @@ execution.setVariable('golova', per4)
           <activiti:value id="physcial" name="Отримати поштою"></activiti:value>
           <activiti:value id="digital" name="Електронна версія"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="proverka" name="Рішення про прийняття або відхилення звернення" type="enum">
+        <activiti:formProperty id="proverka" name="Рішення про прийняття або відхилення звернення" type="enum" required="true">
           <activiti:value id="accept" name="Взяти до розгляду"></activiti:value>
           <activiti:value id="reject" name="Відмовити у реєстрації звернення"></activiti:value>
         </activiti:formProperty>
@@ -214,9 +215,9 @@ execution.setVariable('golova', per4)
         <activiti:formProperty id="obl" name="назва області" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="rekv" name="адреса" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="golova" name="ПІБ голови ОДА" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/ternopil_oda_239zaj.html]" type="invisible" default="Заява Тернопільська, Чернігівська, Житомирська" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/ternopil_oda_239zaj.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/ternopil/ternopil_oda_239_rkk.html]" type="invisible" default="Реєстраційно-контрольна карта" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_3" name="[pattern/print/ternopil/mykol_oda_239zaj.html]" type="invisible" default="Заява Миколаївська, Херсонська, Хмельницька" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_3" name="[pattern/print/ternopil/mykol_oda_239zaj.html]" type="invisible" default="Заява Миколаївська, Херсонська" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
