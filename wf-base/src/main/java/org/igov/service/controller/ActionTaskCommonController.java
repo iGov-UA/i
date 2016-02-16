@@ -1693,11 +1693,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 params.put("sID_Order", sID_Order);
             }
             params.put("nID_Message", nID_Message);
-            String soResponse = "";
+            byte[] soResponse;
             String sURL = generalConfig.sHostCentral() + "/wf/service/subject/message/getMessageFile";
-            soResponse = httpRequester.getInside(sURL, params);
-            LOG.info("(soResponse size={})", soResponse.length());
-            return soResponse.getBytes();
+            soResponse = httpRequester.getInsideBytes(sURL, params);
+            LOG.info("(soResponse size={})", soResponse.length);
+            return soResponse;
         } catch (Exception oException) {
             LOG.error("Can't get: {}", oException.getMessage());
             throw new CommonServiceException(
