@@ -525,18 +525,19 @@ public class SubjectMessageController {
                     LOG.warn("nID_Subject is not owner of Order of messages! (nID_Subject={},oHistoryEvent_Service.getnID_Subject()={})", nID_Subject, oHistoryEvent_Service.getnID_Subject());
                     throw new Exception("nID_Subject is not Equal!");
                 }
-            }*/
+//            }*/
             
             if (StringUtils.isNotBlank(sID_File)){
-            	LOG.info("sID_File param is not null", sID_File);
-//                byte[] aByte_FileContent_Redis = oBytesDataInmemoryStorage.getBytes(sID_File);
+            	LOG.info("sID_File param is not null {}. File name is {}", sID_File, sFileName);
                 byte[] aByte_FileContent = null;
                 try {
                     byte[] aByte_FileContent_Redis = oBytesDataInmemoryStorage.getBytes(sID_File);
+                    LOG.info("Size of bytes: {}", aByte_FileContent_Redis.length);
                     ByteArrayMultipartFile oByteArrayMultipartFile = null;
                     oByteArrayMultipartFile = getByteArrayMultipartFileFromStorageInmemory(aByte_FileContent_Redis);
                     if (oByteArrayMultipartFile != null) {
                         aByte_FileContent = oByteArrayMultipartFile.getBytes();
+                        LOG.info("Size of multi part content: {}", aByte_FileContent_Redis.length);
                     } else {
                         LOG.error("oByteArrayMultipartFile==null! sID_File={}", sID_File);
                         throw new FileServiceIOException(
@@ -550,8 +551,6 @@ public class SubjectMessageController {
                     LOG.error("Error: {}", e.getMessage(), e);
                     throw new ActivitiException(e.getMessage(), e);
                 }
-                //return redisByteContentByKey;                
-                //AccessDataServiceImpl accessDataService = new AccessDataServiceImpl();
                 String sKey = accessDataDao.setAccessData(aByte_FileContent);   //accessDataService
                 LOG.info("Saved to Mongo! (sKey={},aByte_FileContent.length={})", sKey,aByte_FileContent.length);
                 JSONArray oaFile = new JSONArray();
@@ -830,37 +829,37 @@ public class SubjectMessageController {
     		try{
 	    		SubjectMessage message = subjectMessagesDao.getMessage(nID_Message);
 	    		if(message == null){
-	        		LOG.info("Message is not found by nID_Message", nID_Message);
+	        		LOG.info("Message is not found by nID_Message {}", nID_Message);
 	    			CommonServiceException newErr = new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, "Record not found");                
 	                throw newErr;
 	    		}    	    	
-	    		LOG.info("Message is recieved by nID_Message", nID_Message);    		
+	    		LOG.info("Message is recieved by nID_Message {}", nID_Message);    		
 	    		if (StringUtils.isNotBlank(sID_Order)){
 	    			HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
 	                if (oHistoryEvent_Service != null) {
                                 LOG.info("oHistoryEvent_Service.getId()={},message.getnID_HistoryEvent_Service()={}", oHistoryEvent_Service.getId(),message.getnID_HistoryEvent_Service());    		
 	                	if (oHistoryEvent_Service.getId() == null){
-	                		LOG.info("ID_HIstoryEvent_Service of the order is empty", nID_Message);
+	                		LOG.info("ID_HIstoryEvent_Service of the order is empty {}", nID_Message);
 	        				CommonServiceException newErr = new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, "Order not found");                
 	        				throw newErr;
 	                	}else if(!Objects.equals(oHistoryEvent_Service.getId(), message.getnID_HistoryEvent_Service())){
-	                		LOG.info("ID_HIstoryEvent_Service of the message is not equal to ID_HIstoryEvent_Service of the order", nID_Message);
+	                		LOG.info("ID_HIstoryEvent_Service of the message is not equal to ID_HIstoryEvent_Service of the order {}", nID_Message);
 	        				CommonServiceException newErr = new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, "Alien order");                
 	        				throw newErr;
 	                	}
 	                }
 	    		}
 	    		if (StringUtils.isNotBlank(message.getData())){
-	    			LOG.info("Field sData in message is not null", message.getData());	    			
+	    			LOG.info("Field sData in message is not null");	    			
 	    	        JSONArray sDataArrayJson = (new JSONObject(message.getData())).getJSONArray("aFile");
 	    			String sFileName = (String) ((JSONObject) sDataArrayJson.getJSONObject(0)).get("sFileName");
 	    			String sKey = (String) ((JSONObject) sDataArrayJson.getJSONObject(0)).get("sKey");
 	    			
-	    			LOG.info("sKey value",sKey);
-	    			LOG.info("sFileName value", sFileName);
+	    			LOG.info("sKey value {}",sKey);
+	    			LOG.info("sFileName value {}", sFileName);
 	    			    			    		       
                                 aByte = durableBytesDataStorage.getData(sKey);
-                                LOG.info("aByte.length=", aByte.length);
+                                LOG.info("aByte.length={}", aByte.length);
 	    		}
     		}catch(Exception e){
     			if(e instanceof CommonServiceException)
