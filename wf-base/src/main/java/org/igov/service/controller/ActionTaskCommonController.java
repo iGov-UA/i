@@ -1696,7 +1696,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             String soResponse = "";
             String sURL = generalConfig.sHostCentral() + "/wf/service/subject/message/getMessageFile";
             soResponse = httpRequester.getInside(sURL, params);
-            LOG.info("(soResponse={})", soResponse);
+            LOG.info("(soResponse size={})", soResponse.length());
             return soResponse.getBytes();
         } catch (Exception oException) {
             LOG.error("Can't get: {}", oException.getMessage());
