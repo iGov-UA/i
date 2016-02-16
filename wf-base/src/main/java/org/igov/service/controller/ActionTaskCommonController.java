@@ -1656,43 +1656,39 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     	JSONArray jsonArray = new JSONArray(amFilter);
     	
     	for (int i = 0; i < jsonArray.length(); i++){
-    		Object elem = jsonArray.get(i);
-    		try {
-				JSONObject object = (JSONObject) new JSONParser().parse((String) elem);
-				String sFilterStatus = null;
-				boolean bFilterHasTicket = false;
-				boolean bIncludeAlienAssignedTasks = false;
-				
-				if (object.has("sFilterStatus")) {
-					sFilterStatus = (String) object.get("sFilterStatus");
-				} else {
-					sFilterStatus = "OpenedUnassigned";
-				}
-				if (object.has("bFilterHasTicket")) {
-					bFilterHasTicket = Boolean.valueOf((String)object.get("bFilterHasTicket"));
-				}
-				if (object.has("bIncludeAlienAssignedTasks")) {
-					bIncludeAlienAssignedTasks = Boolean.valueOf((String)object.get("bIncludeAlienAssignedTasks"));
-				}
-				
-				Object taskQuery = createQuery(sLogin, bIncludeAlienAssignedTasks, null, sFilterStatus,
-						groupsIds);
-				
-				long totalNumber = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery)taskQuery).count() : getCountOfTasks(groupsIds);
-				
-				if (bFilterHasTicket){
-					Map<String, FlowSlotTicket> mapOfTickets = new HashMap<String, FlowSlotTicket>();
-					List<TaskInfo> tasks = getTasksWithTicketsFromQuery(taskQuery, 0, Long.valueOf(totalNumber).intValue(), bFilterHasTicket, mapOfTickets);
-					totalNumber = tasks.size();
-				}
-				
-				
-				Map<String, Object> currRes = new HashMap<String, Object>();
-				currRes.put("nCount", totalNumber);	 
-				res.add(currRes);
-			} catch (ParseException e) {
-				e.printStackTrace();
+    		JSONObject elem = (JSONObject) jsonArray.get(i);
+    		
+			String sFilterStatus = null;
+			boolean bFilterHasTicket = false;
+			boolean bIncludeAlienAssignedTasks = false;
+			
+			if (elem.has("sFilterStatus")) {
+				sFilterStatus = (String) elem.get("sFilterStatus");
+			} else {
+				sFilterStatus = "OpenedUnassigned";
 			}
+			if (elem.has("bFilterHasTicket")) {
+				bFilterHasTicket = Boolean.valueOf((String)elem.get("bFilterHasTicket"));
+			}
+			if (elem.has("bIncludeAlienAssignedTasks")) {
+				bIncludeAlienAssignedTasks = Boolean.valueOf((String)elem.get("bIncludeAlienAssignedTasks"));
+			}
+			
+			Object taskQuery = createQuery(sLogin, bIncludeAlienAssignedTasks, null, sFilterStatus,
+					groupsIds);
+			
+			long totalNumber = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery)taskQuery).count() : getCountOfTasks(groupsIds);
+			
+			if (bFilterHasTicket){
+				Map<String, FlowSlotTicket> mapOfTickets = new HashMap<String, FlowSlotTicket>();
+				List<TaskInfo> tasks = getTasksWithTicketsFromQuery(taskQuery, 0, Long.valueOf(totalNumber).intValue(), bFilterHasTicket, mapOfTickets);
+				totalNumber = tasks.size();
+			}
+			
+			
+			Map<String, Object> currRes = new HashMap<String, Object>();
+			currRes.put("nCount", totalNumber);	 
+			res.add(currRes);
     	}
     	
     	return res;
