@@ -3,8 +3,6 @@ package org.igov.service.business.action.task.systemtask.doc;
 import java.nio.charset.StandardCharsets;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
 
 import org.activiti.engine.RuntimeService;
@@ -14,7 +12,6 @@ import org.activiti.engine.delegate.JavaDelegate;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.RestRequest;
 import org.igov.service.business.action.task.systemtask.doc.util.UkrDocUtil;
-import org.json.simple.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +22,7 @@ import org.springframework.stereotype.Component;
 @Component("CreateDocument_UkrDoc")
 public class CreateDocument_UkrDoc implements JavaDelegate {
 
-	private static final String ID_DOCUMENT_VARIABLE_NAME = "sID_Document";
+	public static final String UKRDOC_ID_DOCUMENT_VARIABLE_NAME = "sID_Document";
 
 	private final static Logger LOG = LoggerFactory.getLogger(CreateDocument_UkrDoc.class);
 	
@@ -68,7 +65,7 @@ public class CreateDocument_UkrDoc implements JavaDelegate {
         String response = String.valueOf(resp);
         LOG.info("Ukrdoc response:" + response);
         
-        runtimeService.setVariable(execution.getProcessInstanceId(), ID_DOCUMENT_VARIABLE_NAME, response + ":" + Calendar.getInstance().get(Calendar.YEAR));
+        runtimeService.setVariable(execution.getProcessInstanceId(), UKRDOC_ID_DOCUMENT_VARIABLE_NAME, response + ":" + Calendar.getInstance().get(Calendar.YEAR));
 	}
 
 	

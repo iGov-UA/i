@@ -19,7 +19,7 @@
           <activiti:value id="another" name="інше"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="assignment" name="Наміри забудови" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="aZmini" name="Чи змінюються габарити об'єкту або функціональне призначення об'єкту?;Якщо ці параметри не змінюються, у наданні містобудівних умов та обмежень немає потреби" type="enum" required="true">
+        <activiti:formProperty id="aZmini" name="Чи змінюються габарити об'єкту або функціональне призначення об'єкту?;Якщо ці параметри не змінюються, у наданні містобудівних умов та обмежень немає потреби" type="enum" default="yes" required="true">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
@@ -67,7 +67,7 @@
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:4]&lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:5]&lt;/p&gt;
 			[pattern/mail/_common_signature_start.html]
-			Державна реєстраційна служба,&lt;br /&gt;
+			[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:2],&lt;br /&gt;
 			[pattern/mail/_common_signature_end.html]
 			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -80,11 +80,10 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>crow79@online.ua</activiti:expression>
+          <activiti:expression>${sClerkPost}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>ТЕСТ!
-Нове звернення на порталі igov.org.ua на тему: Надання містобудівних умов та обмежень забудови земельної ділянки. Заявник ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}</activiti:expression>
+          <activiti:expression>Нове звернення на порталі igov.org.ua на тему: Надання містобудівних умов та обмежень забудови земельної ділянки. Заявник ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
@@ -92,7 +91,7 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow17" sourceRef="servicetask7" targetRef="servicetask10"></sequenceFlow>
-    <userTask id="usertask2" name="Надання умов" activiti:candidateGroups="DneprGAPU">
+    <userTask id="usertask2" name="Надання умов" activiti:candidateGroups="arkh_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
@@ -314,11 +313,10 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>crow79@online.ua</activiti:expression>
+          <activiti:expression>${sArkhPost}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>ТЕСТ!
-Нове звернення на порталі igov.org.ua на тему: Надання містобудівних умов та обмежень забудови земельної ділянки. Заявник ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}</activiti:expression>
+          <activiti:expression>Нове звернення на порталі igov.org.ua на тему: Надання містобудівних умов та обмежень забудови земельної ділянки. Заявник ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
@@ -332,15 +330,13 @@
           <activiti:expression>noreply@igov.org.ua</activiti:expression>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>crow79@online.ua</activiti:expression>
+          <activiti:expression>${sClerkPost}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression>Результат опрацювання ГоловАПУ звернення.</activiti:expression>
         </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression>ТЕСТ! 
-Звернення опрацьоване.
-[pattern/mail/_common_employee_notify.html]</activiti:expression>
+         <activiti:field name="text">
+          <activiti:expression>Звернення на тему "Надання містобудівних умов та обмежень забудови земельної ділянки" від ${bankIdlastName} ${bankIdfirstName} опрацьоване. Закрийте заявку на порталі після того, як отримаєте оригінали документів.</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -463,7 +459,7 @@ execution.setVariable('assignment', per6);
         <omgdc:Bounds height="55.0" width="105.0" x="60.0" y="142.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="60.0" y="141.0"></omgdc:Bounds>
+        <omgdc:Bounds height="30.0" width="30.0" x="70.0" y="141.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
         <omgdc:Bounds height="35.0" width="35.0" x="10.0" y="138.0"></omgdc:Bounds>
@@ -539,7 +535,7 @@ execution.setVariable('assignment', per6);
         <omgdi:waypoint x="112.0" y="197.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
-        <omgdi:waypoint x="60.0" y="156.0"></omgdi:waypoint>
+        <omgdi:waypoint x="70.0" y="156.0"></omgdi:waypoint>
         <omgdi:waypoint x="45.0" y="155.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow29" id="BPMNEdge_flow29">
