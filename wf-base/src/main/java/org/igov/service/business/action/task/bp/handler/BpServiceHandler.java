@@ -96,7 +96,7 @@ public class BpServiceHandler {
 
     public void checkBpAndStartEscalationProcess(final Map<String, Object> mTaskParam) throws Exception {
         String snID_Process = (String) mTaskParam.get("sProcessInstanceId");
-        String processName = (String) mTaskParam.get("sServiceType");
+        String processName = (String) mTaskParam.get("sID_BP_full");
         Integer nID_Server = generalConfig.nID_Server();
         String sID_Order = generalConfig.sID_Order_ByProcess(Long.valueOf(snID_Process));
         try {
