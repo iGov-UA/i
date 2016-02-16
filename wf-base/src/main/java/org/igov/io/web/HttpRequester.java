@@ -14,7 +14,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Map;
+
 import org.activiti.engine.impl.util.json.JSONObject;
+import org.apache.commons.io.IOUtils;
 
 import static org.igov.util.Tool.sCut;
 
@@ -177,6 +179,62 @@ public class HttpRequester {
             }
         }
         return osReturn.toString();
+    }
+    
+    public InputStream getInsideStream(String sURL, Map<String, String> mParam) throws Exception {
+        URL oURL = new URL(getFullURL(sURL, mParam));
+        InputStream oInputStream;
+        byte[] res;
+        HttpURLConnection oConnection;
+        Integer nStatus;
+        try {
+
+            oConnection = (HttpURLConnection) oURL.openConnection();
+
+            String sUser = generalConfig.sAuthLogin();
+            String sPassword = generalConfig.sAuthPassword();
+            String sAuth = ToolWeb.base64_encode(sUser + ":" + sPassword);
+            oConnection.setRequestProperty("authorization", "Basic " + sAuth);
+
+            oConnection.setRequestMethod(RequestMethod.GET.name());
+            oConnection.setDoInput(true);
+            oConnection.setDoOutput(true);
+            nStatus = oConnection.getResponseCode();//???
+            if (oConnection.getResponseCode() >= HttpStatus.BAD_REQUEST.value()) {
+                oInputStream = oConnection.getErrorStream();
+            } else {
+                oInputStream = oConnection.getInputStream();
+            }
+            
+
+        } catch (Exception oException) {
+            new Log(this.getClass(), oException)
+                    ._Head("[get]:BREAKED!")
+                    ._Status(Log.LogStatus.ERROR)
+                    //._StatusHTTP(nStatus)
+                    ._Param("sURL", sURL)
+                    ._Param("mParam", mParam)
+                    ._Send();
+            LOG.error("BREAKED: {} (sURL={},mParam={})", oException.getMessage(), sURL, mParam);
+            //oLogBig_Web.error("BREAKED: {} (sURL={},mParam={})",oException.getMessage(),sURL,mParam);
+            LOG_BIG.error("BREAKED: {} (sURL={},mParam={})", oException.getMessage(), sURL, mParam);
+            LOG_BIG.debug("BREAKED:", oException);
+            throw oException; //return null;
+        }
+        if (nStatus != 200) {
+            new Log(this.getClass())
+                    ._Head("[get]:nStatus!=200")
+                    ._Status(Log.LogStatus.ERROR)
+                    //._StatusHTTP(nStatus)
+                    ._Param("nStatus", nStatus)
+                    ._Param("sURL", sURL)
+                    ._Param("mParam", mParam)
+                    ._Send();
+            if (bExceptionOnNorSuccess) {
+                throw new Exception("nStatus=" + nStatus + "sURL=" + sURL + "mParam=" + mParam);
+            }
+        }
+        return oInputStream;
     }
 
     public String getFullURL(String sURL, Map<String, String> mParam) throws UnsupportedEncodingException {
