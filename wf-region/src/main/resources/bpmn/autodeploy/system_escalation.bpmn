@@ -3,31 +3,37 @@
   <process id="system_escalation" name="Відпрацювання ескалації" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+       <activiti:formProperty id="nID_Protected" name="Важливе поле" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище заявника" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я заявника" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові заявника" type="string"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний телефон" type="string"></activiti:formProperty>
-        <activiti:formProperty id="processID" name="ID бізнес-процесу" type="string"></activiti:formProperty>
-        <activiti:formProperty id="processName" name="Назва послуги" type="string"></activiti:formProperty>
-        <activiti:formProperty id="organ" name="Назва органу, який обробив звернення" type="string"></activiti:formProperty>
-        <activiti:formProperty id="data" name="Дата" type="string"></activiti:formProperty>
         <activiti:formProperty id="saField" name="Данные" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="nID_Protected" name="Важливе поле" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="processID" name="номер" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameProcess" name="Назва послуги" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sOrganName" name="Назва органу, який не обробив звернення" type="string"></activiti:formProperty>
+        <activiti:formProperty id="data" name="Дата подання звернення" type="string"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sEmployeeContacts" name="ПІБ та контактні телефони відповідальних посадовців" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processName" name="ID бізнес-процесу (системна інформація)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="organ" name="група органу (системна інформація)" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="usertask1"></sequenceFlow>
     <userTask id="usertask1" name="Обробка волонтером" activiti:candidateGroups="volont_escalation">
       <extensionElements>
-        <activiti:formProperty id="nID_Protected" name="Важливе поле" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище заявника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я заявника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По батькові заявника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="processID" name="ID бізнес-процесу" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="processName" name="Назва послуги" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="organ" name="Назва органу, який обробив звернення" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="data" name="Дата" type="string"></activiti:formProperty>
-        <activiti:formProperty id="saField" name="Данные" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="nID_Protected" name="Важливе поле" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище заявника" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я заявника" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові заявника" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="saField" name="Данные" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="processID" name="номер" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameProcess" name="Назва послуги" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sOrganName" name="Назва органу, який не обробив звернення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="data" name="Дата подання звернення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sEmployeeContacts" name="ПІБ та контактні телефони відповідальних посадовців" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="processName" name="ID бізнес-процесу (системна інформація)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="organ" name="група органу (системна інформація)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_Indirectly" name="Коментар волонтера" type="textArea"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${assignGroup}"></activiti:taskListener>
       </extensionElements>
