@@ -48,7 +48,7 @@ public class CreateDocument_UkrDoc implements JavaDelegate {
 				sBodyValue, nID_PatternValue);
 		
 		String sessionId = UkrDocUtil.getSessionId(generalConfig.getSID_login(), generalConfig.getSID_password(), 
-				generalConfig.sURL_GenerationSID() + "?lang=UA");
+				generalConfig.sURL_AuthSID_PB() + "?lang=UA");
 		
 		LOG.info("Retrieved session ID:" + sessionId);
 		Map<String, Object> urkDocRequest = UkrDocUtil.makeJsonRequestObject(sHeadValue, sBodyValue, sLoginAuthorValue, nID_PatternValue);
@@ -57,7 +57,9 @@ public class CreateDocument_UkrDoc implements JavaDelegate {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Collections.singletonList(MediaType.ALL));
-        headers.set("Authorization", "Bearer " + sessionId);
+        //headers.set("Authorization", "Bearer " + sessionId);
+        headers.set("Authorization", "promin.privatbank.ua/EXCL " + sessionId);
+        
         
         byte[] resp = new RestRequest().post(generalConfig.getsUkrDocServerAddress(), urkDocRequest.toString(), 
         		MediaType.APPLICATION_JSON, StandardCharsets.UTF_8, byte[].class, headers);
