@@ -236,7 +236,7 @@ public class HttpRequester {
                     ._Param("bytes", res != null ? res.length : "null")
                     ._Send();
             if (bExceptionOnNorSuccess) {
-                throw new Exception("nStatus=" + nStatus + "sURL=" + sURL + "mParam=" + mParam + "bytes=" + res);
+                throw new Exception("nStatus=" + nStatus + "sURL=" + sURL + "mParam=" + mParam + "bytes=" + res.length);
             }
         }
         return res;
