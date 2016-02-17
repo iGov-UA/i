@@ -34,6 +34,7 @@ import org.igov.model.action.event.HistoryEvent_Service_StatusType;
 import org.igov.model.action.task.core.ProcessDTOCover;
 import org.igov.model.action.task.core.TaskAssigneeCover;
 import org.igov.model.action.task.core.entity.TaskAssigneeI;
+import org.igov.model.flow.FlowSlotTicket;
 import org.igov.model.flow.FlowSlotTicketDao;
 import org.igov.service.business.access.BankIDConfig;
 import org.igov.service.business.action.event.HistoryEventService;
@@ -79,6 +80,12 @@ public class ActionTaskService {
     public static final String CANCEL_INFO_FIELD = "sCancelInfo";
     private static final int DEFAULT_REPORT_FIELD_SPLITTER = 59;
     private static final int MILLIS_IN_HOUR = 1000 * 60 * 60;
+    
+    static final Comparator<FlowSlotTicket> FLOW_SLOT_TICKET_ORDER_CREATE_COMPARATOR = new Comparator<FlowSlotTicket>() {
+		public int compare(FlowSlotTicket e1, FlowSlotTicket e2) {
+			return e2.getsDateStart().compareTo(e1.getsDateStart());
+		}
+	};
 
     private static final Logger LOG = LoggerFactory.getLogger(ActionTaskService.class);
     @Autowired
@@ -1828,4 +1835,210 @@ public class ActionTaskService {
         }
         return attachments;
     }
+    
+    /**
+     * 
+     * @param taskQuery
+     * @param nStart
+     * @param nSize
+     * @param bFilterHasTicket
+     * @param mapOfTickets
+     * @return
+     */
+    public List<TaskInfo> getTasksWithTicketsFromQuery(Object taskQuery, int nStart, int nSize, boolean bFilterHasTicket, Map<String, FlowSlotTicket> mapOfTickets){
+	    List<TaskInfo> tasks = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).listPage(nStart, nSize)
+				: (List) ((NativeTaskQuery) taskQuery).listPage(nStart, nSize);
+	
+		List<Long> taskIds = new LinkedList<Long>();
+		for (int i = 0; i < tasks.size(); i++){
+			TaskInfo currTask = tasks.get(i);
+			if (currTask.getProcessInstanceId() != null){
+				taskIds.add(Long.valueOf(currTask.getProcessInstanceId()));
+			}
+		}
+		LOG.info("Preparing to select flow slot tickets. taskIds:{}", taskIds.toString());
+		List<FlowSlotTicket> tickets  = new LinkedList<FlowSlotTicket>();
+		if (taskIds.size() == 0){
+			return tasks;
+		}
+		try {
+			tickets = flowSlotTicketDao.findAllByInValues("nID_Task_Activiti", taskIds);
+		} catch (Exception e){
+			LOG.error("Error occured while getting tickets for tasks", e);
+		}
+		LOG.info("Found {} tickets for specified list of tasks IDs", tickets.size());
+		if (tickets != null) {
+			for (FlowSlotTicket ticket : tickets) {
+				mapOfTickets.put(ticket.getnID_Task_Activiti().toString(), ticket);
+			}
+		}
+		if (bFilterHasTicket) {
+			LOG.info("Removing tasks which don't have flow slot tickets");
+			Iterator<TaskInfo> iter = tasks.iterator();
+			while (iter.hasNext()){
+				TaskInfo curr = iter.next();
+				if (!mapOfTickets.keySet().contains(curr.getProcessInstanceId())){
+					LOG.info("Removing tasks with ID {}", curr.getId());
+					iter.remove();
+				}
+			}
+		}
+		return tasks;
+    }
+    
+    public long getCountOfTasksForGroups(List<String> groupsIds) {
+		StringBuilder groupIdsSB = new StringBuilder();
+		for (int i = 0; i < groupsIds.size(); i++){
+			groupIdsSB.append("'");
+			groupIdsSB.append(groupsIds.get(i));
+			groupIdsSB.append("'");
+			if (i < groupsIds.size() - 1){
+				groupIdsSB.append(",");
+			}
+		}
+		
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT count(task.*) FROM ACT_RU_TASK task, ACT_RU_IDENTITYLINK link WHERE task.ID_ = link.TASK_ID_ AND link.GROUP_ID_ IN(");
+		sql.append(groupIdsSB.toString());
+		sql.append(") ");
+		
+		return oTaskService.createNativeTaskQuery().sql(sql.toString()).count();
+	}
+
+	public void populateResultSortedByTasksOrder(boolean bFilterHasTicket,
+			List<?> tasks, Map<String, FlowSlotTicket> mapOfTickets,
+			List<Map<String, Object>> data) {
+		LOG.info("populateResultSortedByTasksOrder. number of tasks:{} number of tickets:{} ", tasks.size(), mapOfTickets.size());
+		for (int i = 0; i < tasks.size(); i++){
+			try {
+				TaskInfo task = (TaskInfo)tasks.get(i);
+				Map<String, Object> taskInfo = populateTaskInfo(task, mapOfTickets.get(task.getProcessInstanceId()));
+				
+				data.add(taskInfo);
+			} catch (Exception e){
+				LOG.error("error: Error while populatiing task", e);
+			}
+		}
+	}
+
+	public void populateResultSortedByTicketDate(boolean bFilterHasTicket, List<?> tasks,
+			Map<String, FlowSlotTicket> mapOfTickets, List<Map<String, Object>> data) {
+		LOG.info("Sorting result by flow slot ticket create date. Number of tasks:{} number of tickets:{}", tasks.size(), mapOfTickets.size());
+		List<FlowSlotTicket> tickets = new LinkedList<FlowSlotTicket>();
+		tickets.addAll(mapOfTickets.values());
+		Collections.sort(tickets, FLOW_SLOT_TICKET_ORDER_CREATE_COMPARATOR);
+		LOG.info("Sorted tickets by order create date");
+		Map<String, TaskInfo> tasksMap = new HashMap<String, TaskInfo>();
+		for (int i = 0; i < tasks.size(); i++){
+			TaskInfo task = (TaskInfo)tasks.get(i);
+			tasksMap.put(((TaskInfo)tasks.get(i)).getProcessInstanceId(), task);
+		}
+		for (int i = 0; i < tickets.size(); i++){
+			try {
+				FlowSlotTicket ticket = tickets.get(i);
+				TaskInfo task = tasksMap.get(ticket.getnID_Task_Activiti());
+				Map<String, Object> taskInfo = populateTaskInfo(task, ticket);
+				
+				data.add(taskInfo);
+			} catch (Exception e){
+				LOG.error("error: ", e);
+			}
+		}
+	}
+    
+	public Object createQuery(String sLogin,
+			boolean bIncludeAlienAssignedTasks, String sOrderBy, String sFilterStatus,
+			List<String> groupsIds) {
+		Object taskQuery = null; 
+		if ("Closed".equalsIgnoreCase(sFilterStatus)){
+			taskQuery = oHistoryService.createHistoricTaskInstanceQuery().taskInvolvedUser(sLogin).finished();
+			if ("taskCreateTime".equalsIgnoreCase(sOrderBy)){
+				 ((TaskInfoQuery)taskQuery).orderByTaskCreateTime();
+			} else {
+				 ((TaskInfoQuery)taskQuery).orderByTaskId();
+			}
+			 ((TaskInfoQuery)taskQuery).asc();
+		} else {
+			if (bIncludeAlienAssignedTasks){
+				StringBuilder groupIdsSB = new StringBuilder();
+				for (int i = 0; i < groupsIds.size(); i++){
+					groupIdsSB.append("'");
+					groupIdsSB.append(groupsIds.get(i));
+					groupIdsSB.append("'");
+					if (i < groupsIds.size() - 1){
+						groupIdsSB.append(",");
+					}
+				}
+				
+				StringBuilder sql = new StringBuilder();
+				sql.append("SELECT task.* FROM ACT_RU_TASK task, ACT_RU_IDENTITYLINK link WHERE task.ID_ = link.TASK_ID_ AND link.GROUP_ID_ IN(");
+				sql.append(groupIdsSB.toString());
+				sql.append(") ");
+				
+				if ("taskCreateTime".equalsIgnoreCase(sOrderBy)){
+					 sql.append(" order by task.CREATE_TIME_ asc");
+				} else {
+					 sql.append(" order by task.ID_ asc");
+				}
+				LOG.info("Query to execute {}", sql.toString());
+				taskQuery = oTaskService.createNativeTaskQuery().sql(sql.toString());
+			}  else {
+				taskQuery = oTaskService.createTaskQuery();
+				if ("OpenedUnassigned".equalsIgnoreCase(sFilterStatus)){
+					((TaskQuery)taskQuery).taskCandidateUser(sLogin);
+				} else if ("OpenedAssigned".equalsIgnoreCase(sFilterStatus)){
+					taskQuery =  ((TaskQuery)taskQuery).taskAssignee(sLogin);
+				} else if ("Opened".equalsIgnoreCase(sFilterStatus)){
+					taskQuery = ((TaskQuery)taskQuery).taskCandidateOrAssigned(sLogin);
+				}
+				if ("taskCreateTime".equalsIgnoreCase(sOrderBy)){
+					 ((TaskQuery)taskQuery).orderByTaskCreateTime();
+				} else {
+					 ((TaskQuery)taskQuery).orderByTaskId();
+				}
+				 ((TaskQuery)taskQuery).asc();
+			}
+		}
+		return taskQuery;
+	}
+
+	public Map<String, Object> populateTaskInfo(TaskInfo task, FlowSlotTicket flowSlotTicket) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+		Map<String, Object> taskInfo = new HashMap<String, Object>();
+		taskInfo.put("id", task.getId());
+		taskInfo.put("url", oGeneralConfig.sHost() + "/wf/service/runtime/tasks/" + task.getId());
+		taskInfo.put("owner", task.getOwner());
+		taskInfo.put("assignee", task.getAssignee());
+		taskInfo.put("delegationState", (task instanceof Task) ? ((Task)task).getDelegationState() : null);
+		taskInfo.put("name", task.getName());
+		taskInfo.put("description", task.getDescription());
+		taskInfo.put("createTime", sdf.format(task.getCreateTime()));
+		taskInfo.put("dueDate", task.getDueDate() != null ? sdf.format(task.getDueDate()) : null);
+		taskInfo.put("priority", task.getPriority());
+		taskInfo.put("suspended", (task instanceof Task) ? ((Task)task).isSuspended() : null);
+		taskInfo.put("taskDefinitionKey", task.getTaskDefinitionKey());
+		taskInfo.put("tenantId", task.getTenantId());
+		taskInfo.put("category", task.getCategory());
+		taskInfo.put("formKey", task.getFormKey());
+		taskInfo.put("parentTaskId", task.getParentTaskId());
+		taskInfo.put("parentTaskUrl", "");
+		taskInfo.put("executionId", task.getExecutionId());
+		taskInfo.put("executionUrl", oGeneralConfig.sHost() + "/wf/service/runtime/executions/" + task.getExecutionId());
+		taskInfo.put("processInstanceId", task.getProcessInstanceId());
+		taskInfo.put("processInstanceUrl", oGeneralConfig.sHost() + "/wf/service/runtime/process-instances/" + task.getProcessInstanceId());
+		taskInfo.put("processDefinitionId", task.getProcessDefinitionId());
+		taskInfo.put("processDefinitionUrl", oGeneralConfig.sHost() + "/wf/service/repository/process-definitions/" + task.getProcessDefinitionId());
+		taskInfo.put("variables", new LinkedList());
+		if (flowSlotTicket != null){
+			LOG.info("Populating flow slot ticket");
+			DateTimeFormatter dtf = org.joda.time.format.DateTimeFormat.forPattern("yyyy-MM-dd_HH-mm-ss");
+			Map<String, Object> flowSlotTicketData = new HashMap<String, Object>();
+			flowSlotTicketData.put("nID", flowSlotTicket.getId());
+			flowSlotTicketData.put("nID_Subject", flowSlotTicket.getnID_Subject());
+			flowSlotTicketData.put("sDateStart", flowSlotTicket.getsDateStart() != null ? dtf.print(flowSlotTicket.getsDateStart()): null);
+			flowSlotTicketData.put("sDateFinish", flowSlotTicket.getsDateFinish() != null ? dtf.print(flowSlotTicket.getsDateFinish()): null);
+			taskInfo.put("flowSlotTicket", flowSlotTicketData);
+		}
+		return taskInfo;
+	}
 }
