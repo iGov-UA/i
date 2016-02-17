@@ -22,6 +22,12 @@ angular.module('documents').controller('DocumentsBankIdController', function ($s
     $window.location.href = './auth/eds?link=' + getRedirectURI();
   };
 
+  $scope.getRedirectUrl = getRedirectURI;
+
+  $scope.getAuthMethods = function () {
+    return "BankID,EDS,KK"
+  };
+
   $scope.loginWithEmail = function () {
     $state.go('index.auth.email.verify', {link: getRedirectURI()});
   };

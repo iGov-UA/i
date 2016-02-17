@@ -1,4 +1,4 @@
-angular.module('journal', []).controller('JournalController', function($scope, $state, BankIDService) {
+angular.module('journal').controller('JournalController', function($scope, $state, BankIDService) {
 
   BankIDService.isLoggedIn().then(function() {
     if ($state.is('index.journal')) {
@@ -6,7 +6,7 @@ angular.module('journal', []).controller('JournalController', function($scope, $
     }
   }).catch(function() {
     if ($state.is('index.journal')) {
-      return $state.go('index.journal.bankid');
+      return $state.go('index.journal.auth');
     }
   });
 });

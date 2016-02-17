@@ -1,30 +1,20 @@
 angular.module('journal').controller('JournalBankIdController', function ($rootScope, $scope, $location, $state, $window, BankIDService, ErrorsFactory) {
 
   function getRedirectURI() {
-    var stateForRedirect = $state.href('index.journal.bankid', {error: ''});
+    var stateForRedirect = $state.href('index.journal.auth', {error: ''});
     return $location.protocol() +
       '://' + $location.host() + ':'
       + $location.port()
       + stateForRedirect;
   }
 
-  $scope.loginWithBankId = function () {
-    $window.location.href = './auth/bankID?link=' + getRedirectURI();
+  $scope.getRedirectUrl = getRedirectURI;
+
+  $scope.getAuthMethods = function () {
+    return "BankID,EDS,KK"
   };
 
-  $scope.loginWithEds = function () {
-    $window.location.href = './auth/eds?link=' + getRedirectURI();
-  };
-
-  $scope.loginWithEmail = function () {
-    $state.go('index.auth.email.verify', {link: getRedirectURI()});
-  };
-
-  $scope.loginWithSoccard = function () {
-    $window.location.href = './auth/soccard?link=' + getRedirectURI();
-  };
-
-  if ($state.is('index.journal.bankid')) {
+  if ($state.is('index.journal.auth')) {
     if ($state.params.error) {
 
         var oFuncNote = {sHead:"Журнал", sFunc:"JournalBankIdController"};

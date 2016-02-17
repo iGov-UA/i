@@ -99,6 +99,23 @@ angular.module('app').controller('PlaceController',
       return city ? city.nID : 0;
     };
 
+    $scope.getAuthMethods = function(){
+      var authMethods;
+
+      if ($scope.serviceData) {
+        if ($scope.serviceData.asAuth && $scope.serviceData.asAuth.length > 0) {
+          if (typeof($scope.serviceData.asAuth) === 'string') {
+             authMethods = $scope.serviceData.asAuth;
+          } else {
+            //TODO processing of object O_o
+            authMethods = $scope.serviceData.asAuth;
+          }
+        }
+      }
+
+      return authMethods;
+    };
+
     $scope.getRedirectUrl = function () {
       var stateForRedirect = $state.href('index.service.general.place.built-in.bankid', {
         'id': service.nID,
