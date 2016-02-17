@@ -2,14 +2,15 @@ angular.module('auth').config(function ($stateProvider, statesRepositoryProvider
   statesRepositoryProvider.init(window.location.host);
   $stateProvider
     .state('index.auth.email', {
-      url: '/email?link',
+      url: '/email',
       parent: 'index.auth',
       views: {
         'main@': {
           templateUrl: 'app/auth/email/auth.email.html',
           controller: 'AuthByEmailController'
         }
-      }
+      },
+      params: {link: null}
     })
     .state('index.auth.email.verify', {
       parent: 'index.auth.email',

@@ -5,7 +5,9 @@
  */
 package org.igov.service.business.document.access;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.igov.model.subject.Subject;
 import org.igov.model.subject.SubjectContact;
 import org.igov.model.subject.SubjectContactDao;
@@ -54,217 +56,108 @@ public class DocumentAccessService {
     {
         Subject subject = null;
         SubjectHuman subjectHuman = null;
-        String sID_Mail = null;
-        String sID_Phone = null;
         List<SubjectContact> list_mail = null;
         List<SubjectContact> list_phone = null;
-       if(sMail != null)
-           sID_Mail = SubjectHuman.getSubjectId(SubjectHumanIdType.Email, sMail);
-       if(sTelephone != null)
-           sID_Phone = SubjectHuman.getSubjectId(SubjectHumanIdType.Phone, sTelephone);
         
-        subject = subjectDao.getSubject(nID_Subject);
-        subjectHuman = subjectHumanDao.findByExpected("oSubject", subject);
+        subject = getSubject(nID_Subject);
+        subjectHuman = getSubjectHuman(subject);
         
         List<SubjectContact> list_contacts = subjectContactDao.findContacts(subject);
-       if(sMail != null)
+        if(sMail != null)
            list_mail = subjectContactDao.findAllBy("sValue", sMail);
-       if(sTelephone != null)
+        if(sTelephone != null)
            list_phone = subjectContactDao.findAllBy("sValue", sTelephone);
+        Map<String, SubjectContact> mapContacts = contactsSynchronization(list_mail, list_phone,
+                list_contacts, subject, sMail, sTelephone);
+        if(mapContacts.get("mail") != null)
+            subjectHuman.setDefaultEmail(mapContacts.get("mail"));
+       
+        if(mapContacts.get("phone") != null)
+            subjectHuman.setDefaultPhone(mapContacts.get("phone"));
         
-        if(list_mail.size() == 0 && list_phone.size() == 0)
-        {
-           if(sMail != null)
-           {
-              SubjectContact oSubjectContact = new SubjectContact();
-              oSubjectContact.setSubject(subject);
-              oSubjectContact.setSubjectContactType(subjectContactTypeDao.getEmailType());
-              oSubjectContact.setsDate();
-              oSubjectContact.setsValue(sMail);
-              subjectContactDao.saveOrUpdate(oSubjectContact);
-           }
-           if(sTelephone != null)
-           {
-              SubjectContact oSubjectContact = new SubjectContact();
-              oSubjectContact.setSubject(subject);
-              oSubjectContact.setSubjectContactType(subjectContactTypeDao.getPhoneType());
-              oSubjectContact.setsDate();
-              oSubjectContact.setsValue(sTelephone);
-              subjectContactDao.saveOrUpdate(oSubjectContact);
-
-           }
-        }
-        else
-        {
-            boolean isMail = true;
-            boolean isPhone = true;
-            boolean isSubject_Phone = true;
-            boolean isSubject_Mail = true;
-            
-           if(sMail != null)
-             isMail = this.isContact(list_mail, sMail);
-           if(sTelephone != null)
-             isPhone = this.isContact(list_phone, sTelephone);
-             isSubject_Phone = this.isContact(list_contacts, sTelephone);
-             isSubject_Mail = this.isContact(list_contacts, sMail);
-             
-           if((isMail || isPhone) && (isSubject_Mail || isSubject_Phone))
-           {
-               for(SubjectContact contact : list_contacts)
-               {
-                  if(contact.getsValue().equals(sMail) || contact.getsValue().equals(sTelephone))
-                  {
-                   SubjectContact oSubjectContact = contact;
-                   oSubjectContact.setsDate();
-                   subjectContactDao.saveOrUpdate(oSubjectContact);
-                  }
-                  
-               }
-           }
-           if((isMail || isPhone) && (!isSubject_Mail || !isSubject_Phone))
-           {
-               for(SubjectContact contact : list_mail)
-               {
-                  if(contact.getsValue().equals(sMail))
-                  {
-                    if(contact.getSubject().getsLabel() == null && contact.getSubject().getsLabelShort() == null)
-                    {
-                     SubjectContact oSubjectContact = contact;
-                     oSubjectContact.setSubject(subject);
-                     oSubjectContact.setsDate();
-                     subjectContactDao.saveOrUpdate(oSubjectContact);
-                    }
-                  }
-               }
-               for(SubjectContact contact : list_phone)
-               {
-                   if(contact.getsValue().equals(sTelephone))
-                  {
-                    if(contact.getSubject().getsLabel() == null && contact.getSubject().getsLabelShort() == null)
-                    {
-                     SubjectContact oSubjectContact = contact;
-                     oSubjectContact.setSubject(subject);
-                     oSubjectContact.setsDate();
-                     subjectContactDao.saveOrUpdate(oSubjectContact);
-                    }
-                  }
-               }
-           }
-           
-           if((!isMail || !isPhone)&&(!isSubject_Mail || !isSubject_Phone))
-           {
-              if(sMail != null)
-             {
-              SubjectContact oSubjectContact = new SubjectContact();
-              oSubjectContact.setSubject(subject);
-              oSubjectContact.setSubjectContactType(subjectContactTypeDao.getEmailType());
-              oSubjectContact.setsDate();
-              oSubjectContact.setsValue(sMail);
-              subjectContactDao.saveOrUpdate(oSubjectContact);
-             }
-             if(sTelephone != null)
-             {
-              SubjectContact oSubjectContact = new SubjectContact();
-              oSubjectContact.setSubject(subject);
-              oSubjectContact.setSubjectContactType(subjectContactTypeDao.getPhoneType());
-              oSubjectContact.setsDate();
-              oSubjectContact.setsValue(sTelephone);
-              subjectContactDao.saveOrUpdate(oSubjectContact);
-
-             }
-           }
-           
-           
-        }
-        
-        
-        
-        /*
-        List<SubjectContact> contacts = subjectContactDao.findContacts(subject);
-        
-        boolean subjphone = true;
-        boolean subjmail = true;
-        
-        for(SubjectContact subcontact : contacts)
-        {
-           SubjectContactType sct = subcontact.getSubjectContactType();
-           if(sct.getsName_EN().equals("Email") || sct.getsName_EN().equals("Phone"))
-          {
-            if(subcontact.getsValue().equals(sMail))
-            {
-                subjmail = false;
-                subcontact.setsDate();
-                subjectContactDao.saveOrUpdate(subcontact);
-                continue;
-            }
-            if(subcontact.getsValue().equals(sTelephone))
-            {
-                subjphone = false;
-                subcontact.setsDate();
-                subjectContactDao.saveOrUpdate(subcontact);
-                
-            }
-          }
-          
-        }
-        
-        
-        if(subjmail)
-        {
-          if(sMail != null && !sMail.isEmpty())
-          {
-            SubjectContactType subjectContactType = subjectContactTypeDao.getEmailType();
-            SubjectContact subjectContact = new SubjectContact();
-            subjectContact.setSubject(subject);
-            subjectContact.setSubjectContactType(subjectContactType);
-            subjectContact.setsValue(sMail);
-            subjectContact.setsDate();
-            subjectContactDao.saveOrUpdate(subjectContact);
-           try
-           {
-            subjectHuman = subjectHumanDao.findByExpected("oSubject", subject);
-           }
-           catch(Exception e)
-           {
-               LOG.error(e.getMessage(), e);
-           }
-           if(subjectHuman != null)
-           {
-            subjectHuman.setDefaultEmail(subjectContact);
-           // subjectHuman.setSubjectHumanIdType(SubjectHumanIdType.Email);
             subjectHumanDao.saveOrUpdate(subjectHuman);
-           }
-          }
-        }
-        if(subjphone)
-        {
-          if(sTelephone != null && !sTelephone.isEmpty())
-          {
-             SubjectContactType subjectContactType = subjectContactTypeDao.getPhoneType();
-             SubjectContact subjectContact = new SubjectContact();
-             subjectContact.setSubject(subject);
-             subjectContact.setSubjectContactType(subjectContactType);
-             subjectContact.setsValue(sTelephone);
-             subjectContact.setsDate();
-             subjectContactDao.saveOrUpdate(subjectContact);
-            try
-            {
-             subjectHuman = subjectHumanDao.findByExpected("oSubject", subject);
-            }
-            catch(Exception e)
-            {
-                LOG.error(e.getMessage(), e);
-            }
-            if(subjectHuman != null)
-            {
-             subjectHuman.setDefaultPhone(subjectContact);
-             //subjectHuman.setSubjectHumanIdType(SubjectHumanIdType.Email);
-             subjectHumanDao.saveOrUpdate(subjectHuman);
-            }
-
-          }
-        }
-      */
+        
+   }
+    private Subject getSubject(Long nID_Subject)
+    {
+        return subjectDao.getSubject(nID_Subject);
     }
-
+    private SubjectHuman getSubjectHuman(Subject subject)
+    {
+        return subjectHumanDao.findByExpected("oSubject", subject);
+    }
+    private Map<String, SubjectContact> contactsSynchronization(List<SubjectContact> list_mail, List<SubjectContact> list_phone,
+            List<SubjectContact> list_contacts, Subject subject, String sMail, String sPhone)
+    {
+       Map<String, SubjectContact> mapContacts = new HashMap<String, SubjectContact>();
+       SubjectContact mailContact = null;
+       SubjectContact phoneContact = null;
+       
+      if(sMail != null)
+     {
+       boolean bIsContactMail = isContact(list_contacts, sMail);
+       boolean bIsMail = isContact(list_mail, sMail);
+       if(bIsContactMail)
+       {
+          mailContact = updateSubjectContact(sMail, subject);
+       }
+         if(!bIsContactMail)
+       {
+           if(bIsMail)
+           {
+              mailContact = updateSubjectContact(sMail, subject);
+           }
+           else
+           {
+             mailContact = createSubjectContact(sMail, subject, subjectContactTypeDao.getEmailType());
+           }
+       }
+     }
+     if(sPhone != null)
+     {
+       boolean bIsContactPhone = isContact(list_contacts, sPhone);
+       boolean bIsPhone = isContact(list_phone, sPhone);
+       if(bIsContactPhone)
+       {
+          phoneContact = updateSubjectContact(sPhone, subject);
+       }
+       if(!bIsContactPhone)
+       {
+           if(bIsPhone)
+           {
+              phoneContact = updateSubjectContact(sPhone, subject);
+           }
+           else
+           {
+             phoneContact = createSubjectContact(sPhone, subject, subjectContactTypeDao.getPhoneType());
+           }
+       }
+     }
+        mapContacts.put("mail", mailContact);
+        mapContacts.put("phone", phoneContact);
+           
+        return mapContacts;
+    }
+    private SubjectContact updateSubjectContact(String contact, Subject subject)
+    {
+        SubjectContact res = subjectContactDao.findByExpected("sValue", contact);
+        res.setSubject(subject);
+        res.setsDate();
+        subjectContactDao.saveOrUpdate(res);
+        res = subjectContactDao.findByIdExpected(res.getId());
+        
+        return res;
+    }
+    private SubjectContact createSubjectContact(String contact, Subject subject, SubjectContactType typeContact)
+    {
+        SubjectContact res = new SubjectContact();
+        res.setSubject(subject);
+        res.setsValue(contact);
+        res.setSubjectContactType(typeContact);
+        res.setsDate();
+        subjectContactDao.saveOrUpdate(res);
+        res = subjectContactDao.findByExpected("sValue", contact);
+        
+        return res;
+    }
 }

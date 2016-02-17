@@ -434,16 +434,5 @@ exports.getMessageFile = function(req, res) {
     },
     json: true
   };
-
-  activiti.get(options, function (error, statusCode, body) {
-    if (error) {
-      error = errors.createError(errors.codes.EXTERNAL_SERVICE_ERROR, 'Error while loading message file', error);
-      res.status(500).send(error);
-      return;
-    }
-
-    res.setHeader('Content-Type', 'application/octet-stream');
-    res.setHeader('Content-Disposition', 'attachment; filename=' + req.params.fileName);
-    res.status(200).send(body);
-  });
+  activiti.filedownload(req, res, options);
 };
