@@ -60,10 +60,8 @@ public class CreateDocument_UkrDoc implements JavaDelegate {
 		LOG.info("Created urk doc request object:" + json.toString());
 
         HttpHeaders headers = new HttpHeaders();
-        headers.setAccept(Collections.singletonList(MediaType.ALL));
         //headers.set("Authorization", "Bearer " + sessionId);
         headers.set("Authorization", "promin.privatbank.ua/EXCL " + sessionId);
-        
         
         byte[] resp = new RestRequest().post(generalConfig.getsUkrDocServerAddress(), json.toString(), 
         		MediaType.APPLICATION_JSON, StandardCharsets.UTF_8, byte[].class, headers);
