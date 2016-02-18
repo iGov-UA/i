@@ -495,7 +495,7 @@ public class ActionEventController {
     	
     	CSVWriter csvWriter;
 		try {
-			csvWriter = new CSVWriter(httpResponse.getWriter(), ',',
+			csvWriter = new CSVWriter(httpResponse.getWriter(), ';',//','
 	                CSVWriter.NO_QUOTE_CHARACTER);
 	        csvWriter.writeNext(headers.toArray(new String[headers.size()]));
 	        
