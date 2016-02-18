@@ -73,19 +73,14 @@ public class UkrDocUtil {
 		
 		res.put("content", content);
 		
-		Map<String, Object> actors = new HashMap<String, Object>();
-		actors.put("paragraphs", new HashMap<Object,Object>());
-		actors.put("ratifiers", new JSONArray());
-		actors.put("reconcilers", new JSONArray());
-		actors.put("addressee", new HashMap<Object,Object>());
-		actors.put("readers", new JSONArray());
+		Map<String, String> attributes = new HashMap<String, String>();
+		attributes.put("Автор", sLoginAuthorValue);
+		Map<String, Object> extensions = new HashMap<String, Object>();
+		extensions.put("attributes", attributes);
 		
-		Map<String, String> author = new HashMap<String, String>();
-		author.put("id", sLoginAuthorValue);
+		content.put("extensions", extensions);
 		
-		actors.put("author", author);
-		
-		res.put("actors", actors);
+		res.put("actors", new HashMap<String, Object>());
 		
 		Map<String, String> template = new HashMap<String, String>();
 		template.put("template", nID_PatternValue);
