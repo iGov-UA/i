@@ -72,6 +72,8 @@ public class CreateDocument_UkrDoc implements JavaDelegate {
         LOG.info("Ukrdoc response:" + response);
         
         runtimeService.setVariable(execution.getProcessInstanceId(), UKRDOC_ID_DOCUMENT_VARIABLE_NAME, response + ":" + Calendar.getInstance().get(Calendar.YEAR));
+        
+        LOG.info("Set variable to runtime process:" + response);
 	}
 
 	
