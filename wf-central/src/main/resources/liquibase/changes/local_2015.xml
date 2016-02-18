@@ -999,5 +999,43 @@
     <changeSet id="increase-sEventName-Custom" author="bw">
         <modifyDataType columnName="sEventName_Custom" newDataType="varchar(1500)" tableName="HistoryEvent"/>
     </changeSet>
+
+    <changeSet id="issue-1136" author="kr110666kai">
+        <createTable tableName="SubjectAccountType">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="sID" type="varchar(20)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="sNote" type="varchar(20)" defaultValue="">
+            </column>
+        </createTable>
+
+        <createTable tableName="SubjectAccount">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="sLogin" type="varchar(20)">
+                <constraints nullable="false" />
+            </column>
+            <column name="sNote" type="varchar(20)" defaultValue="">                
+            </column>
+            <column name="nID_SubjectAccountType" type="bigint">
+                <constraints nullable="false" referencedTableName="SubjectAccountType" referencedColumnNames="nID"
+                             foreignKeyName="FK_SubjectAccount_SubjectAccountType"
+                             />
+            </column>
+            <column name="nID_Server" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nID_SubjectHuman" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addUniqueConstraint columnNames="sLogin, nID_SubjectAccountType, nID_Server, nID_SubjectHuman" tableName="SubjectAccount"/>
+		<addAutoIncrement tableName="SubjectAccount" columnName="nID" startWith="100" columnDataType="bigint"/>
+                        
+    </changeSet>
                                                                 
 </databaseChangeLog>
