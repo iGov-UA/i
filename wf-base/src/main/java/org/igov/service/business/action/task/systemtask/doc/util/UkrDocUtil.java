@@ -82,8 +82,8 @@ public class UkrDocUtil {
 		
 		res.put("actors", new HashMap<String, Object>());
 		
-		Map<String, String> template = new HashMap<String, String>();
-		template.put("template", nID_PatternValue);
+		Map<String, Object> template = new HashMap<String, Object>();
+		template.put("template", Integer.valueOf(nID_PatternValue));
 		
 		res.put("details", template);
 		
