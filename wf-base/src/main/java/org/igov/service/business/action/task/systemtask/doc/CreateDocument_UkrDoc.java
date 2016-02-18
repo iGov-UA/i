@@ -12,6 +12,7 @@ import org.activiti.engine.delegate.JavaDelegate;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.RestRequest;
 import org.igov.service.business.action.task.systemtask.doc.util.UkrDocUtil;
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +54,10 @@ public class CreateDocument_UkrDoc implements JavaDelegate {
 		LOG.info("Retrieved session ID:" + sessionId);
 		Map<String, Object> urkDocRequest = UkrDocUtil.makeJsonRequestObject(sHeadValue, sBodyValue, sLoginAuthorValue, nID_PatternValue);
 
-		LOG.info("Created urk doc request object:" + urkDocRequest.toString());
+		JSONObject json = new JSONObject();
+		json.putAll( urkDocRequest );
+		
+		LOG.info("Created urk doc request object:" + json.toString());
 
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Collections.singletonList(MediaType.ALL));
@@ -61,13 +65,15 @@ public class CreateDocument_UkrDoc implements JavaDelegate {
         headers.set("Authorization", "promin.privatbank.ua/EXCL " + sessionId);
         
         
-        byte[] resp = new RestRequest().post(generalConfig.getsUkrDocServerAddress(), urkDocRequest.toString(), 
+        byte[] resp = new RestRequest().post(generalConfig.getsUkrDocServerAddress(), json.toString(), 
         		MediaType.APPLICATION_JSON, StandardCharsets.UTF_8, byte[].class, headers);
         
         String response = String.valueOf(resp);
         LOG.info("Ukrdoc response:" + response);
         
         runtimeService.setVariable(execution.getProcessInstanceId(), UKRDOC_ID_DOCUMENT_VARIABLE_NAME, response + ":" + Calendar.getInstance().get(Calendar.YEAR));
+        
+        LOG.info("Set variable to runtime process:" + response);
 	}
 
 	
