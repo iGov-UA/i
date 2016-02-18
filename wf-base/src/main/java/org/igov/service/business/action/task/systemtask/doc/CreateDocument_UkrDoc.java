@@ -57,15 +57,15 @@ public class CreateDocument_UkrDoc implements JavaDelegate {
 		JSONObject json = new JSONObject();
 		json.putAll( urkDocRequest );
 		
-		LOG.info("Created urk doc request object:" + json.toString());
+		String requestMock = "{\"content\":{\"name\":\"sBody\",\"text\":\"sBody\",\"paragraphs\":[],\"extensions\":{\"attributes\":{\"Автор\":\"DN150976SEV\"}}},\"actors\":{},\"details\":{\"template\":10677}}";
+		
+		LOG.info("Created urk doc request object:" + requestMock);
 
         HttpHeaders headers = new HttpHeaders();
-        headers.setAccept(Collections.singletonList(MediaType.ALL));
         //headers.set("Authorization", "Bearer " + sessionId);
         headers.set("Authorization", "promin.privatbank.ua/EXCL " + sessionId);
         
-        
-        byte[] resp = new RestRequest().post(generalConfig.getsUkrDocServerAddress(), json.toString(), 
+        byte[] resp = new RestRequest().post(generalConfig.getsUkrDocServerAddress(), requestMock, 
         		MediaType.APPLICATION_JSON, StandardCharsets.UTF_8, byte[].class, headers);
         
         String response = String.valueOf(resp);
