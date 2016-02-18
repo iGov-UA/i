@@ -1,28 +1,28 @@
 package org.igov.service.business.action.task.systemtask.doc.util;
 
-import org.igov.io.web.RestRequest;
+import java.io.IOException;
+import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.igov.io.web.RestRequest;
+import org.igov.service.exception.DocumentNotFoundException;
+import org.json.simple.JSONArray;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
+import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import java.io.IOException;
-import java.io.StringReader;
-
-import org.w3c.dom.Node;
-import org.springframework.http.MediaType;
-
-import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.igov.service.exception.DocumentNotFoundException;
-import org.json.simple.JSONArray;
-
 public class UkrDocUtil {
+	
+	private final static Logger LOG = LoggerFactory.getLogger(UkrDocUtil.class);
 
 	public static String getSessionId(String login, String password, String uriSid) {
         String sessionId;
@@ -30,8 +30,13 @@ public class UkrDocUtil {
         String xml = "<?xml version='1.0' encoding='UTF-8' standalone='yes'?>\n" +
                 "<session><user auth='EXCL' login='" + login + "' password='" + password + "'/></session>";
 
+        LOG.info("Sending request to SID generator. URL:{}, request:{}", uriSid, xml);
+        
         String xmlResponse = new RestRequest().post(uriSid, xml, MediaType.TEXT_XML,
                 StandardCharsets.UTF_8, String.class, null);
+        
+        LOG.info("Response from SID generator: {}", xmlResponse);
+        
         sessionId = getSidFromXml(xmlResponse);
 
         return sessionId;

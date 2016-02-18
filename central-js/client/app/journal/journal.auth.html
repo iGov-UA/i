@@ -1,0 +1,19 @@
+<div class="row">
+  <div class="col-md-12">
+    <form class="form-signin-bankid_">
+      <h4 class="form-signin-bankid-heading_">Щоб почати користуватись сервісом “Мій журнал”, увійдіть через
+        <button style="display: none;"
+                class="btn btn-info"><i class="icon-door-lock"></i><span class="btn-text">igov.org.ua</span></button>
+      </h4>
+      <service-auth-block
+        ng-if="true"
+        n-step="1"
+        redirect-uri="{{getRedirectUrl()}}"
+        auth-methods="{{getAuthMethods()}}">
+      </service-auth-block>
+    </form>
+  </div>
+  <div class="text-center" ng-show="error">
+    <p>{{error}}</p>
+  </div>
+</div>

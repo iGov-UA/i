@@ -6,17 +6,17 @@ angular.module('journal').config(function ($stateProvider, statesRepositoryProvi
         url: 'journal',
         views: {
           'main@': {
-            templateUrl: 'app/journal/journal.html',
+            templateUrl: 'app/journal/journal.index.html',
             controller: 'JournalController'
           }
         }
       })
-      .state('index.journal.bankid', {
-        url: '/bankid?error',
+      .state('index.journal.auth', {
+        url: '/auth?error',
         parent: 'index.journal',
         views: {
-          'bankid': {
-            templateUrl: 'app/journal/bankid/index.html',
+          'auth': {
+            templateUrl: 'app/journal/journal.auth.html',
             controller: 'JournalBankIdController'
           }
         }
@@ -38,7 +38,7 @@ angular.module('journal').config(function ($stateProvider, statesRepositoryProvi
         },
         views: {
           'content': {
-            templateUrl: 'app/journal/content.html',
+            templateUrl: 'app/journal/journal.content.html',
             controller: 'JournalContentController'
           }
         }

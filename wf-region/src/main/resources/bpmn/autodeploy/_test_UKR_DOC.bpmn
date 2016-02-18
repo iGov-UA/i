@@ -41,20 +41,20 @@
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask0" name="Відправка документу в УкрДок" activiti:delegateExpression="#{CreateDocument_UkrDoc}">
-	     <extensionElements>
-	        <activiti:field name="sLoginAuthor">
-	          <activiti:string><![CDATA[sLoginAuthor]]></activiti:string>
-	        </activiti:field>
-	        <activiti:field name="sHead">
-	          <activiti:expression><![CDATA[sBody]]></activiti:expression>
-	        </activiti:field>
-	        <activiti:field name="sBody">
-	          <activiti:string><![CDATA[Нове звернення. Передача у власність земельної ділянки.]]></activiti:string>
-	        </activiti:field>
-	        <activiti:field name="nID_Pattern">
-	          <activiti:expression><![CDATA[nID_Pattern]]></activiti:expression>
-	        </activiti:field>
-        </extensionElements>
+      <extensionElements>
+        <activiti:field name="sLoginAuthor">
+          <activiti:string><![CDATA[sLoginAuthor]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="sHead">
+          <activiti:expression>sBody</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sBody">
+          <activiti:string><![CDATA[Нове звернення. Передача у власність земельної ділянки.]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="nID_Pattern">
+          <activiti:expression>10677</activiti:expression>
+        </activiti:field>
+      </extensionElements>
     </serviceTask>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <serviceTask id="servicetask2" name="Повідомлення чиновника про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -63,19 +63,19 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[ms@igov.org.ua]]></activiti:expression>
+          <activiti:expression>ms@igov.org.ua</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення. Передача у власність земельної ділянки.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<strong>Шановний(-а) колего!</strong><br /><br />
-У Вас в черзі на обробку нове звернення щодо передачи у власність земельної ділянки.<br />
-Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}<br />
-Відпрацюйте це звернення на <a href="https://region.igov.org.ua" target="_blank">порталі</a>
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;strong&gt;Шановний(-а) колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
+У Вас в черзі на обробку нове звернення щодо передачи у власність земельної ділянки.&lt;br /&gt;
+Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
+Відпрацюйте це звернення на &lt;a href="https://region.igov.org.ua" target="_blank"&gt;порталі&lt;/a&gt;
 [pattern/mail/_common_signature.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -85,22 +85,22 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Передача у власність земельної ділянки.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
-<p> Ваше звернення щодо передачи у власність земельної ділянки було зареєстровано у системі.<br/>
-Повідомлення про результат звернення буде спрямоване на Ваш e-mail.</p>
-<br />
-Телефон для довідок: (056) 744-63-51<br />
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+&lt;p&gt; Ваше звернення щодо передачи у власність земельної ділянки було зареєстровано у системі.&lt;br/&gt;
+Повідомлення про результат звернення буде спрямоване на Ваш e-mail.&lt;/p&gt;
+&lt;br /&gt;
+Телефон для довідок: (056) 744-63-51&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-Департамент корпоративних прав та правового забезпечення Дніпропетровської міської ради,<br />
+Департамент корпоративних прав та правового забезпечення Дніпропетровської міської ради,&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -146,28 +146,28 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Передача у власність земельної ділянки.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
-<p>
-Ваше звернення щодо передачи у власність земельної ділянки - опрацьовано. <br />
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+&lt;p&gt;
+Ваше звернення щодо передачи у власність земельної ділянки - опрацьовано. &lt;br /&gt;
 Рішення в додатку до цього листа.
-</p>
-Телефон для довідок: (056) 744-63-51<br />
-<br />
+&lt;/p&gt;
+Телефон для довідок: (056) 744-63-51&lt;br /&gt;
+&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-Департамент корпоративних прав та правового забезпечення Дніпропетровської міської ради,<br />
+Департамент корпоративних прав та правового забезпечення Дніпропетровської міської ради,&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[${nFileDecision}]]></activiti:expression>
+          <activiti:expression>${nFileDecision}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -188,27 +188,27 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Передача у власність земельної ділянки.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
-<p>
-Ваше звернення щодо передачи у власність земельної ділянки - опрацьовано. <br />
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+&lt;p&gt;
+Ваше звернення щодо передачи у власність земельної ділянки - опрацьовано. &lt;br /&gt;
 Рішення в додатку до цього листа.
-</p>
-Телефон для довідок: (056) 744-63-51<br />
-<br />
+&lt;/p&gt;
+Телефон для довідок: (056) 744-63-51&lt;br /&gt;
+&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-Департамент корпоративних прав та правового забезпечення Дніпропетровської міської ради,<br />
+Департамент корпоративних прав та правового забезпечення Дніпропетровської міської ради,&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[${nFileDecision}]]></activiti:expression>
+          <activiti:expression>${nFileDecision}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -259,9 +259,13 @@
       <bpmndi:BPMNShape bpmnElement="endevent4" id="BPMNShape_endevent4">
         <omgdc:Bounds height="35.0" width="35.0" x="16.0" y="438.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow0" id="BPMNEdge_flow0">
+        <omgdi:waypoint x="97.0" y="170.0"></omgdi:waypoint>
+        <omgdi:waypoint x="192.0" y="141.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="115.0" y="187.0"></omgdi:waypoint>
-        <omgdi:waypoint x="140.0" y="187.0"></omgdi:waypoint>
+        <omgdi:waypoint x="245.0" y="105.0"></omgdi:waypoint>
+        <omgdi:waypoint x="192.0" y="152.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
         <omgdi:waypoint x="245.0" y="187.0"></omgdi:waypoint>

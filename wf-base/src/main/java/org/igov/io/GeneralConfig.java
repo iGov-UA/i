@@ -29,10 +29,16 @@ public class GeneralConfig {
     private String general_sURL_DocumentKvitanciiForIgov;
     @Value("${general.sURL_DocumentKvitanciiForAccounts}")
     private String general_sURL_DocumentKvitanciiForAccounts;
+    
     @Value("${general.sURL_GenerationSID}")
     private String general_sURL_GenerationSID;
+    
     @Value("${general.sURL_DocumentKvitanciiCallback}")
     private String general_sURL_DocumentKvitanciiCallback;
+    
+    @Value("${general.PB.sURL_AuthSID}")
+    private String sURL_AuthSID_PB;
+    
     @Value("${general.SID_login}")
     private String SID_login;
     @Value("${general.SID_password}")
@@ -95,6 +101,10 @@ public class GeneralConfig {
         return general_sURL_GenerationSID != null ? general_sURL_GenerationSID : "https://auth-id.igov.org.ua/ChameleonServer/sessions/open";
     }
 
+    public String sURL_AuthSID_PB() {
+        return sURL_AuthSID_PB != null ? sURL_AuthSID_PB : "https://auth-id.igov.org.ua/Stage/ChameleonServer/sessions/open";
+    }
+    
     public String sURL_DocumentKvitanciiCallback() {
         return general_sURL_DocumentKvitanciiCallback;
     }
