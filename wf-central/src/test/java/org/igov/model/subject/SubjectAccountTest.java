@@ -37,9 +37,11 @@ public class SubjectAccountTest {
     private static final String test_sNote2 = "note string_222";
 
     private static final Long test_nID_Server3 = 3L;
-    private static final Long test_nID_Subject3 = 333L;
+    private static final Long test_nID_Subject3 = 8L;
     private static final String test_sLogin3 = "mylogin_333";
     private static final String test_sNote3 = "note string_333";
+
+    private static final Long test_nID_SubjectError = 777777L;
 
     private static final Long test_nID_SubjectAccountType1 = 1L;
     private static final Long test_nID_SubjectAccountType2 = 2L;
@@ -114,7 +116,7 @@ public class SubjectAccountTest {
     // nID_Server, nID_Subject
     // Такая запись недопуcтима
     @Test(expected = org.hibernate.exception.ConstraintViolationException.class)
-    public void testCheckConstraintViolationExceptionSubjectAccount() {
+    public void checkFK_SubjectAccount_SubjectAccountType() {
 	SubjectAccountType testSubjectAccountType = subjectAccountTypeDao
 		.findByIdExpected(test_nID_SubjectAccountType2);
 
@@ -137,6 +139,22 @@ public class SubjectAccountTest {
 	subjectAccountDao.saveOrUpdate(subjectAccount);
 
 	fail("Expected exception was missing. Ошибка проверки ограничения на уникальность полей sLogin, nID_SubjectAccountType, nID_Server, nID_Subject");
+    }
+
+    @Test(expected = org.hibernate.exception.ConstraintViolationException.class )
+    public void checkFK_AccountContact_Subject() {
+	SubjectAccountType testSubjectAccountType1 = subjectAccountTypeDao
+		.findByIdExpected(test_nID_SubjectAccountType1);
+
+	// Проверяем добавление записи с несуществующим nID_Subject 
+	SubjectAccount subjectAccount = new SubjectAccount();
+	subjectAccount.setnID_Server(test_nID_Server1);
+	subjectAccount.setnID_Subject(test_nID_SubjectError);
+	subjectAccount.setsLogin(test_sLogin1);
+	subjectAccount.setsNote(test_sNote1);
+	subjectAccount.setSubjectAccountType(testSubjectAccountType1);
+	saveAndUpdateSubjectAccount(subjectAccount, " Добавление новой записи");
+
     }
 
     @Test
