@@ -514,7 +514,7 @@ public class SubjectController {
         return JsonRestUtils.toJsonResponse(serverOpt.get());
     }
     
-    /*@RequestMapping(value = "/syncContacts", method = {RequestMethod.POST, RequestMethod.GET})
+      @RequestMapping(value = "/syncContacts", method = RequestMethod.GET)
     public @ResponseBody
     ResponseEntity syncContacts (
         @ApiParam(value="Строка адрес электронной почты", required = true) @RequestParam(value="sMailTo", required=true) String sMailTo,
@@ -522,61 +522,13 @@ public class SubjectController {
          
     ) throws CommonServiceException
     {
-       
-        SubjectContact oSubjectContact = null;
+        LOG.info("Вход в syncContacts (sMailTo {}, snID_Subject {})", sMailTo, snID_Subject);
         SubjectService oSubjectService = new SubjectService();
-        if("".equals(sMailTo) && "".equals(snID_Subject))
-        {
-           throw new CommonServiceException(
-              ExceptionCommonController.BUSINESS_ERROR_CODE,
-              "sMail and snID_Subject are empty",
-              HttpStatus.FORBIDDEN
-           );
-        }
+        SubjectContact oSubjectContact = oSubjectService.syncContactsService(snID_Subject, sMailTo);
         
-        if("".equals(snID_Subject))
-        {
-          try
-          {
-           oSubjectContact = oSubjectService.syncContactMail(sMailTo);
-          }
-          catch(Exception e)
-          {
-              throw new CommonServiceException(
-                 ExceptionCommonController.BUSINESS_ERROR_CODE,
-                 e.getMessage(),
-                 HttpStatus.FORBIDDEN
-             );
-          }
-        }
-        else
-        {
-          try
-          {
-           Long nID_Subject = Long.parseLong(snID_Subject);
-           oSubjectContact = oSubjectService.syncContactMail(sMailTo, nID_Subject);
-          }
-          catch(NumberFormatException e)
-          {
-             throw new CommonServiceException(
-                 ExceptionCommonController.BUSINESS_ERROR_CODE,
-                 "Does not convert snID_Subject to nID_Subject. NumberFormatException \n" + e.getMessage(),
-                 HttpStatus.FORBIDDEN
-             );
-          }
-          catch(Exception e)
-          {
-             throw new CommonServiceException(
-                 ExceptionCommonController.BUSINESS_ERROR_CODE,
-                 e.getMessage(),
-                 HttpStatus.FORBIDDEN
-             );
-          }
-        }
-        
-       
        return JsonRestUtils.toJsonResponse(oSubjectContact);
-    }*/
+    }
+
 
     @ApiOperation(value = "Получение Аккаунтов субъектов", notes = "##### \n"
 	    + "Пример 1:\n"
