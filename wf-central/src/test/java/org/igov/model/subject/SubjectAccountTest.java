@@ -4,12 +4,12 @@ import static org.junit.Assert.fail;
 
 import java.util.List;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.util.Assert;
 
 /**
  * User: kr110666kai
@@ -41,6 +41,16 @@ public class SubjectAccountTest {
     private static final String test_sLogin3 = "mylogin_333";
     private static final String test_sNote3 = "note string_333";
 
+    private static final Long test_nID_Server4 = 4L;
+    private static final Long test_nID_Subject4 = 444L;
+    private static final String test_sLogin4 = "mylogin_444";
+    private static final String test_sNote4 = "note string_444";
+
+    private static final Long test_nID_Server5 = 5L;
+    private static final Long test_nID_Subject5 = 555L;
+    private static final String test_sLogin5 = "mylogin_555";
+    private static final String test_sNote5 = "note string_555";
+
     private static final Long test_nID_SubjectAccountType1 = 1L;
     private static final Long test_nID_SubjectAccountType2 = 2L;
 
@@ -48,11 +58,8 @@ public class SubjectAccountTest {
     public void testSaveAndUpdateSubjectAccount() {
 	// Проверили получение типов Аккаунтов
 	List<SubjectAccountType> subjectAccountTypes = subjectAccountTypeDao.findAll();
-	Assert.notNull(subjectAccountTypes, "Не заданы типы аккаунтов в SubjectAccountType.csv");
-	Assert.notEmpty(subjectAccountTypes, "Не заданы типы аккаунтов в SubjectAccountType.csv");
+	Assert.assertNotNull("Не заданы типы аккаунтов в SubjectAccountType.csv", subjectAccountTypes);
 
-	// SubjectAccountType testSubjectAccountType =
-	// subjectAccountTypes.get(0);
 	SubjectAccountType testSubjectAccountType1 = subjectAccountTypeDao
 		.findByIdExpected(test_nID_SubjectAccountType1);
 
@@ -142,10 +149,37 @@ public class SubjectAccountTest {
 	fail("Expected exception was missing. Ошибка проверки ограничения на уникальность полей sLogin, nID_SubjectAccountType, nID_Server, nID_Subject");
     }
 
+    @Test
+    public void testGetSubjectAccount() {
+	SubjectAccountType testSubjectAccountType2 = subjectAccountTypeDao
+		.findByIdExpected(test_nID_SubjectAccountType2);
+
+	// Проверка выборки на основании данных SubjectAccount.csv
+	getSubjectAccounts(1L, null, null, null, 4);
+	getSubjectAccounts(1L, "Логин01", null, null, 4);
+	getSubjectAccounts(null, "Логин01", null, null, 3);
+	getSubjectAccounts(1L, null, 1L, null, 2);
+	getSubjectAccounts(1L, null, 1L, testSubjectAccountType2, 1);
+    }
+
     private void saveAndUpdateSubjectAccount(SubjectAccount subjectAccount, String msg) {
 	SubjectAccount sbret = subjectAccountDao.saveOrUpdate(subjectAccount);
-	Assert.notNull(sbret, "Ошибка сохраниния записи в таблицу SubjectAccount. " + msg);
-	Assert.notNull(sbret.getId(), "Ошибка сохраниния записи в таблицу SubjectAccount. " + msg);
+	Assert.assertNotNull("Ошибка сохраниния записи в таблицу SubjectAccount. " + msg, sbret);
+	Assert.assertNotNull("Ошибка сохраниния записи в таблицу SubjectAccount. " + msg, sbret.getId());
+    }
+
+    private void getSubjectAccounts(Long nID_Subject, String sLogin, Long nID_Server,
+	    SubjectAccountType nID_SubjectAccountType, int retCount) {
+
+	List<SubjectAccount> subjectAccountRet;
+	subjectAccountRet = subjectAccountDao.findSubjectAccounts(nID_Subject, sLogin, nID_Server,
+		nID_SubjectAccountType);
+
+	String fm = String.format("nID_Subject=%d, sLogin=%s, nID_Server=%d, nID_SubjectAccountType=%s\n", nID_Subject,
+		sLogin, nID_Server, nID_SubjectAccountType);
+	Assert.assertNotNull("Ошибка получения данных из таблицы SubjectAccount, параметры: " + fm, subjectAccountRet);
+	Assert.assertEquals("Ошибка получения данных из таблицы SubjectAccount, параметры: " + fm, retCount,
+		subjectAccountRet.size());
     }
 
     // private void printall(String title) {
@@ -154,8 +188,8 @@ public class SubjectAccountTest {
     // System.out.println(title);
     // for (SubjectAccount s : subjectAccounts) {
     // System.out.printf("id=%d login=%s id_server=%d id_subject=%d
-    // id_subjectType=%d\n", s.getId(), s.getsLogin(), s.getnID_Server(),
-    // s.getnID_Subject(),
+    // id_subjectType=%d\n", s.getId(), s.getsLogin(),
+    // s.getnID_Server(), s.getnID_Subject(),
     // s.getSubjectAccountType().getId());
     // }
     // System.out.println("<--------------------------");
