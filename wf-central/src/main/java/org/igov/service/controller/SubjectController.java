@@ -578,9 +578,11 @@ public class SubjectController {
        return JsonRestUtils.toJsonResponse(oSubjectContact);
     }*/
 
-    @ApiOperation(value = "Получение Аккаунтов субъектов", notes = "##### \n"
-	    + "Пример 1:\n"
-	    + "https://test.region.igov.org.ua/wf/service/subject/getSubjectAccounts?nID_Subject=1&nID_Server=1\n"
+    @ApiOperation(value = "Получение аккаунтов субъектов", notes = "Возвращает список аккаунтов субъектов, согласно заданных параметров. "
+	    + "Обязательно должен быть задан один из параметров: **ID субъекта** или **Логин**. Если заданы оба, **Логин** игнорируется\n"
+	    + "Пример:\n"
+	    + "https://test.igov.org.ua/wf/service/subject/getSubjectAccounts?nID_Subject=1&nID_Server=1\n"
+	    + "Ответ:\n"
 	    + "\n```json\n" 
 	    + "[\n"
 	    + "  {\n"
@@ -611,16 +613,21 @@ public class SubjectController {
 	    + "  }\n"
 	    + "]\n"       
 	    + "\n```\n"
-	    + "Пример 2 ( ошибка: не указаны обязательные параметры):\n"
-	    + "https://test.region.igov.org.ua/wf/service/subject/getSubjectAccounts\n"
+	    + "Пример с ошибкой: не указаны обязательные параметры:\n"
+	    + "https://test.igov.org.ua/wf/service/subject/getSubjectAccounts\n"
+	    + "Ответ:\n"
 	    + "\n```json\n" 
 	    + "{\"code\":\"BUSINESS_ERR\",\"message\":\"Error! Parameters nID_Subject and  sLogin is null\"}\n" 
 	    + "\n```\n"
-	    + "Пример 3 ( ошибка: записи не найдены):\n"
-	    + "https://test.region.igov.org.ua/wf/service/subject/getSubjectAccounts\n"
+	    + "Пример, если записи не найдены:\n"
+	    + "https://test.igov.org.ua/wf/service/subject/getSubjectAccounts?nID_Subject=1&nID_Server=100\n"
+	    + "Ответ:\n"
 	    + "\n```json\n" 
-	    + "{\"code\":\"BUSINESS_ERR\",\"message\":\"Error! Parameters nID_Subject and  sLogin is null\"}\n" 
-	    + "\n```\n"
+	    + "{\n"  
+	    + "  \"code\":\"BUSINESS_ERR\",\n"
+	    + "	 \"message\":\"Record not found\"\n"
+	    + "}\n"
+	    +"\n```\n"
 	    )
     @RequestMapping(value = "/getSubjectAccounts", method = RequestMethod.GET, headers = {JSON_TYPE} )
     @ApiResponses(value = {
