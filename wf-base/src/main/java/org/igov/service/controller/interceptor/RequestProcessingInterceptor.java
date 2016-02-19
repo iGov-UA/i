@@ -51,7 +51,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     private boolean bFinish = false;
     
     private static final Pattern TAG_PATTERN_PREFIX = Pattern.compile("runtime/tasks/[0-9]+$");
-    //private final String URI_SYNC_CONTACTS = "/wf/service/subject/syncContacts";
+    private final String URI_SYNC_CONTACTS = "/wf/service/subject/syncContacts";
     
     @Autowired
     protected RuntimeService runtimeService;
@@ -297,20 +297,31 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 return;
             }
             */
+            
+           try
+           {
+            Map<String, String> mParamSync = new HashMap<String, String>();
+            mParamSync.put("sMailTo", sMailTo);
+            mParamSync.put("snID_Subject", snID_Subject);
+            LOG.info("Вносим параметры в коллекцию (sMailTo {}, snID_Subject {})", sMailTo, snID_Subject);
+            String sURL = generalConfig.sHostCentral() + URI_SYNC_CONTACTS;
+            LOG.info("(Подключаемся к центральному порталу)");
+            String sResponse = httpRequester.getInside(sURL, mParamSync);
+            LOG.info("(Подключение осуществлено)");
+            
+           }
+           catch(Exception ex)
+           {
+             LOG.warn("(isSaveTask exception {})", ex.getMessage());
+           }
+     
             oNotificationPatterns.sendTaskCreatedInfoEmail(sMailTo, sID_Order);
             //LOG.info("Sent Email ok!");
         }
         historyEventService.addHistoryEvent(sID_Order, sUserTaskName, mParam);
         //LOG.info("ok!");
         
-        /*if(sMailTo != null)
-        {
-            Map<String, String> mParamSync = new HashMap<String, String>();
-            mParamSync.put("snID_Subject", snID_Subject);
-            mParamSync.put("sMailTo", sMailTo);
-            String sURL = generalConfig.sHostCentral() + URI_SYNC_CONTACTS;
-            String sResponse = httpRequester.postInside(sURL, mParamSync);
-        }*/
+      
     }
     
     private void saveClosedTaskInfo(String sRequestBody) throws Exception {
