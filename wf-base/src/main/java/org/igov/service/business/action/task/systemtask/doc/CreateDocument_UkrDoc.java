@@ -67,12 +67,17 @@ public class CreateDocument_UkrDoc implements JavaDelegate {
         String resp = new RestRequest().post(generalConfig.getsUkrDocServerAddress(), json.toJSONString(), 
         		null, StandardCharsets.UTF_8, String.class, headers);
 
-        String response = String.valueOf(resp);
-        LOG.info("Ukrdoc response:" + response);
+        LOG.info("Ukrdoc response:" + resp);
+        org.activiti.engine.impl.util.json.JSONObject respJson = new org.activiti.engine.impl.util.json.JSONObject(resp);
+        Object details = respJson.get("details");
         
-        runtimeService.setVariable(execution.getProcessInstanceId(), UKRDOC_ID_DOCUMENT_VARIABLE_NAME, response + ":" + Calendar.getInstance().get(Calendar.YEAR));
+        if (details != null){
+        	String documentId = ((org.activiti.engine.impl.util.json.JSONObject)details).get("id") + ":" + 
+					((org.activiti.engine.impl.util.json.JSONObject)details).get("year");
+        	runtimeService.setVariable(execution.getProcessInstanceId(), UKRDOC_ID_DOCUMENT_VARIABLE_NAME, documentId);
+            LOG.info("Set variable to runtime process:{}" + documentId);
+        }
         
-        LOG.info("Set variable to runtime process:" + response);
 	}
 
 	
