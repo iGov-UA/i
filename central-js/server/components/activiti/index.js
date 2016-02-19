@@ -115,8 +115,8 @@ module.exports.buildGET = function (apiURL, params, sHost, session) {
 };
 
 module.exports.buildRequest = function (req, apiURL, params, sHost) {
-  var nID_Subject = req.session.subject ? req.session.subject.nID : null;
-  return this.buildGET(apiURL, params, sHost, nID_Subject);
+  //var nID_Subject = req.session.subject ? req.session.subject.nID : null;
+  return this.buildGET(apiURL, params, sHost, req.session);//nID_Subject
 };
 
 module.exports.getAuth = function () {
