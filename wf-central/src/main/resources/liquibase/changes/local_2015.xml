@@ -1008,7 +1008,7 @@
             <column name="sID" type="varchar(20)">
                 <constraints nullable="false" unique="true"/>
             </column>
-            <column name="sNote" type="varchar(20)" defaultValue="">
+            <column name="sName" type="varchar(20)" defaultValue="">
             </column>
         </createTable>
 
@@ -1029,11 +1029,11 @@
             <column name="nID_Server" type="bigint">
                 <constraints nullable="false"/>
             </column>
-            <column name="nID_SubjectHuman" type="bigint">
+            <column name="nID_Subject" type="bigint">
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <addUniqueConstraint columnNames="sLogin, nID_SubjectAccountType, nID_Server, nID_SubjectHuman" tableName="SubjectAccount"/>
+        <addUniqueConstraint columnNames="sLogin, nID_SubjectAccountType, nID_Server, nID_Subject" tableName="SubjectAccount"/>
 		<addAutoIncrement tableName="SubjectAccount" columnName="nID" startWith="100" columnDataType="bigint"/>
                         
     </changeSet>

@@ -13,48 +13,55 @@ public class SubjectAccount extends Entity {
     private String sLogin;
 
     @Column
-    private String sNote;    
+    private String sNote;
 
     @ManyToOne
     @JoinColumn(name = "nID_SubjectAccountType")
     private SubjectAccountType subjectAccountType;
-    
+
     @Column
     private Long nID_Server;
 
     @Column
-    private Long nID_SubjectHuman;
-    
+    private Long nID_Subject;
+
     public String getsLogin() {
-        return sLogin;
+	return sLogin;
     }
+
     public void setsLogin(String sLogin) {
-        this.sLogin = sLogin;
+	this.sLogin = sLogin;
     }
+
     public String getsNote() {
-        return sNote;
+	return sNote;
     }
+
     public void setsNote(String sNote) {
-        this.sNote = sNote;
+	this.sNote = sNote;
     }
+
     public Long getnID_Server() {
-        return nID_Server;
+	return nID_Server;
     }
+
     public void setnID_Server(Long nID_Server) {
-        this.nID_Server = nID_Server;
-    }
-    public Long getnID_SubjectHuman() {
-        return nID_SubjectHuman;
-    }
-    public void setnID_SubjectHuman(Long nID_SubjectHuman) {
-        this.nID_SubjectHuman = nID_SubjectHuman;
+	this.nID_Server = nID_Server;
     }
 
     public SubjectAccountType getSubjectAccountType() {
-        return subjectAccountType;
+	return subjectAccountType;
     }
+
     public void setSubjectAccountType(SubjectAccountType subjectAccountType) {
-        this.subjectAccountType = subjectAccountType;
+	this.subjectAccountType = subjectAccountType;
     }
-    
+
+    public Long getnID_Subject() {
+	return nID_Subject;
+    }
+
+    public void setnID_Subject(Long nID_Subject) {
+	this.nID_Subject = nID_Subject;
+    }
 }
