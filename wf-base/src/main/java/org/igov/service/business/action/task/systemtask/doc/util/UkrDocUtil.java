@@ -8,6 +8,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -69,8 +70,8 @@ public class UkrDocUtil {
 		Map<String, Object> res = new LinkedHashMap<String, Object>();
 		
 		Map<String, Object> content = new LinkedHashMap<String, Object>();
-		content.put("name", sHeadValue);
-		content.put("text", sHeadValue);
+		content.put("name", sHeadValue + new Random().nextInt(100));
+		content.put("text", sBodyValue + new Random().nextInt(100));
 		content.put("paragraphs", new JSONArray());
 		content.put("extensions", new HashMap<Object,Object>());
 		
