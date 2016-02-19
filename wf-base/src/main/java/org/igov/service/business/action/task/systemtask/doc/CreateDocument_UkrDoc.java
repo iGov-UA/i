@@ -72,7 +72,7 @@ public class CreateDocument_UkrDoc implements JavaDelegate {
         	String documentId = ((org.activiti.engine.impl.util.json.JSONObject)details).get("id") + ":" + 
 					((org.activiti.engine.impl.util.json.JSONObject)details).get("year");
         	runtimeService.setVariable(execution.getProcessInstanceId(), UKRDOC_ID_DOCUMENT_VARIABLE_NAME, documentId);
-            LOG.info("Set variable to runtime process:{}" + documentId);
+            LOG.info("Set variable to runtime process:{}", documentId);
         }
         
 	}

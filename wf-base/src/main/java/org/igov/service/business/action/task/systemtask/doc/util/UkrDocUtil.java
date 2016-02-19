@@ -70,8 +70,8 @@ public class UkrDocUtil {
 		Map<String, Object> res = new LinkedHashMap<String, Object>();
 		
 		Map<String, Object> content = new LinkedHashMap<String, Object>();
-		content.put("name", sHeadValue + new Random().nextInt(100));
-		content.put("text", sBodyValue + new Random().nextInt(100));
+		content.put("name", sHeadValue);
+		content.put("text", sBodyValue);
 		content.put("paragraphs", new JSONArray());
 		content.put("extensions", new HashMap<Object,Object>());
 		
