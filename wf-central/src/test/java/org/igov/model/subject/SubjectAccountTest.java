@@ -41,16 +41,6 @@ public class SubjectAccountTest {
     private static final String test_sLogin3 = "mylogin_333";
     private static final String test_sNote3 = "note string_333";
 
-    private static final Long test_nID_Server4 = 4L;
-    private static final Long test_nID_Subject4 = 444L;
-    private static final String test_sLogin4 = "mylogin_444";
-    private static final String test_sNote4 = "note string_444";
-
-    private static final Long test_nID_Server5 = 5L;
-    private static final Long test_nID_Subject5 = 555L;
-    private static final String test_sLogin5 = "mylogin_555";
-    private static final String test_sNote5 = "note string_555";
-
     private static final Long test_nID_SubjectAccountType1 = 1L;
     private static final Long test_nID_SubjectAccountType2 = 2L;
 

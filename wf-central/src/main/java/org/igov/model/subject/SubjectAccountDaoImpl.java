@@ -18,6 +18,9 @@ public class SubjectAccountDaoImpl extends GenericEntityDao<SubjectAccount> impl
      * Author: kr110666kai
      * 
      * Возврат списка Аккаунтов согласно кретериям выборки 
+     * Обязательные поля или nID_Subject или sLogin
+     * Если кретерий не участвует в выборке, то ставить null
+     * Например: findSubjectAccounts(1L, null, null, null);
      */
     @SuppressWarnings("unchecked")
     @Override

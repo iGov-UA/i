@@ -11,7 +11,15 @@ public class SubjectAccountType extends Entity {
     private String sID;
     
     @Column
-    private String sName;
+    private String sNote;
+
+    public String getsNote() {
+        return sNote;
+    }
+
+    public void setsNote(String sNote) {
+        this.sNote = sNote;
+    }
 
     public String getsID() {
 	return sID;
@@ -19,14 +27,6 @@ public class SubjectAccountType extends Entity {
 
     public void setsID(String sID) {
 	this.sID = sID;
-    }
-
-    public String getsName() {
-        return sName;
-    }
-
-    public void setsName(String sName) {
-        this.sName = sName;
     }
 
 }
