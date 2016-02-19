@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -63,9 +66,9 @@ public class UkrDocUtil {
 	
 	public static Map<String, Object> makeJsonRequestObject(String sHeadValue, String sBodyValue, String sLoginAuthorValue, 
 			String nID_PatternValue) {
-		Map<String, Object> res = new HashMap<String, Object>();
+		Map<String, Object> res = new LinkedHashMap<String, Object>();
 		
-		Map<String, Object> content = new HashMap<String, Object>();
+		Map<String, Object> content = new LinkedHashMap<String, Object>();
 		content.put("name", sHeadValue);
 		content.put("text", sHeadValue);
 		content.put("paragraphs", new JSONArray());
@@ -82,8 +85,8 @@ public class UkrDocUtil {
 		
 		res.put("actors", new HashMap<String, Object>());
 		
-		Map<String, String> template = new HashMap<String, String>();
-		template.put("template", nID_PatternValue);
+		Map<String, Object> template = new HashMap<String, Object>();
+		template.put("template", Integer.valueOf(nID_PatternValue));
 		
 		res.put("details", template);
 		
