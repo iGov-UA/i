@@ -1,8 +1,6 @@
 package org.igov.service.business.action.task.systemtask.doc;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Calendar;
-import java.util.Collections;
 import java.util.Map;
 
 import org.activiti.engine.RuntimeService;
@@ -17,7 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 
 @Component("CreateDocument_UkrDoc")
@@ -57,26 +54,28 @@ public class CreateDocument_UkrDoc implements JavaDelegate {
 		JSONObject json = new JSONObject();
 		json.putAll( urkDocRequest );
 		
-		String requestMock = "{\"content\":{\"name\":\"sBody\",\"text\":\"sBody\",\"paragraphs\":[],\"extensions\":{\"attributes\":{\"Автор\":\"DN150976SEV\"}}},\"actors\":{},\"details\":{\"template\":10677}}";
-		
-		LOG.info("Created urk doc request object:" + requestMock);
+		LOG.info("Created urk doc request object:" + json.toJSONString());
 
         HttpHeaders headers = new HttpHeaders();
         //headers.set("Authorization", "Bearer " + sessionId);
         headers.set("Authorization", "promin.privatbank.ua/EXCL " + sessionId);
+        headers.set("Content-Type", "application/json; charset=utf-8");
         
-        byte[] resp = new RestRequest().post(generalConfig.getsUkrDocServerAddress(), requestMock, 
-        		MediaType.APPLICATION_JSON, StandardCharsets.UTF_8, byte[].class, headers);
-        
-        String response = String.valueOf(resp);
-        LOG.info("Ukrdoc response:" + response);
-        
-        runtimeService.setVariable(execution.getProcessInstanceId(), UKRDOC_ID_DOCUMENT_VARIABLE_NAME, response + ":" + Calendar.getInstance().get(Calendar.YEAR));
-        
-        LOG.info("Set variable to runtime process:" + response);
-	}
+        String resp = new RestRequest().post(generalConfig.getsUkrDocServerAddress(), json.toJSONString(), 
+        		null, StandardCharsets.UTF_8, String.class, headers);
 
-	
+        LOG.info("Ukrdoc response:" + resp);
+        org.activiti.engine.impl.util.json.JSONObject respJson = new org.activiti.engine.impl.util.json.JSONObject(resp);
+        Object details = respJson.get("details");
+        
+        if (details != null){
+        	String documentId = ((org.activiti.engine.impl.util.json.JSONObject)details).get("id") + ":" + 
+					((org.activiti.engine.impl.util.json.JSONObject)details).get("year");
+        	runtimeService.setVariable(execution.getProcessInstanceId(), UKRDOC_ID_DOCUMENT_VARIABLE_NAME, documentId);
+            LOG.info("Set variable to runtime process:{}", documentId);
+        }
+        
+	}
 
 	protected String getStringFromFieldExpression(Expression expression,
 			DelegateExecution execution) {
