@@ -522,7 +522,7 @@ public class SubjectController {
          
     ) throws CommonServiceException
     {
-        LOG.info("Вход в syncContacts (sMailTo {}, snID_Subject {})", sMailTo, snID_Subject);
+        LOG.info("(Вход в syncContacts sMailTo {}, snID_Subject {})", sMailTo, snID_Subject);
         SubjectService oSubjectService = new SubjectService();
         SubjectContact oSubjectContact = oSubjectService.syncContactsService(snID_Subject, sMailTo);
         

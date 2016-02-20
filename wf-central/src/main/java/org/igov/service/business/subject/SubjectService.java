@@ -50,7 +50,7 @@ public class SubjectService {
     
   public SubjectContact syncContactsService(String snID_Subject, String sMail)
     {
-        LOG.info("Вход в syncContactsService (snID_Subject {}, sMail {})", snID_Subject, sMail);
+        LOG.info("(Вход в syncContactsService snID_Subject {}, sMail {})", snID_Subject, sMail);
         SubjectContact oSubjectContact = new SubjectContact();
         
         Long nID_Subject = convertStringToLong(snID_Subject);
@@ -60,9 +60,9 @@ public class SubjectService {
         oSubjectHuman = getSubjectHuman(subject);
        
        List<SubjectContact> list_contacts = subjectContactDao.findContacts(subject);
-       LOG.info("получаем список контактов субьекта");
+       LOG.info("(получаем список контактов субьекта)");
        List<SubjectContact> list_mail = subjectContactDao.findAllBy("sValue", sMail);
-       LOG.info("получаем список контактов по (sMail {})", sMail);
+       LOG.info("(получаем список контактов по sMail {})", sMail);
        
        oSubjectContact = this.synchronizationContacts(list_contacts, list_mail, subject, sMail);
        
@@ -81,19 +81,19 @@ public class SubjectService {
        if(bIsContact)
        {
             res = this.updateContact(subject, sMail);
-            LOG.info("апдейтим контакт в списке контактов субьекта");
+            LOG.info("(апдейтим контакт в списке контактов субьекта)");
        }
        else
        {
            if(bIsDataBase)
            {
               res = this.updateContact(subject, sMail);
-              LOG.info("апдейтим контакт в списке контактов базы, переопределяя субьекта");
+              LOG.info("(апдейтим контакт в списке контактов базы, переопределяя субьекта)");
            }
            else
            {
               res = this.createSubjectContact(sMail, subject);
-              LOG.info("создаем контакт");
+              LOG.info("(создаем контакт)");
 
            }
        }
@@ -114,7 +114,7 @@ public class SubjectService {
          subjectContactDao.saveOrUpdate(contact);
          SubjectContact res = subjectContactDao.findByExpected("sValue", sMail);
          
-         LOG.info("создаем контакт subject Id {}, subject Label {}, subjectContact sValue {}", subject.getsID(), subject.getsLabel(), contact.getsValue());
+         LOG.info("(создаем контакт subject Id {}, subject Label {}, subjectContact sValue {})", subject.getsID(), subject.getsLabel(), contact.getsValue());
          
          return res;
     }
@@ -130,7 +130,7 @@ public class SubjectService {
          subjectContactDao.saveOrUpdate(contact);
          res = subjectContactDao.findByIdExpected(contact.getId());
          
-         LOG.info("апдейт контакта subject Id {}, subject Label {}, subjectContact sValue {}", subject.getsID(), subject.getsLabel(), contact.getsValue());
+         LOG.info("(апдейт контакта subject Id {}, subject Label {}, subjectContact sValue {})", subject.getsID(), subject.getsLabel(), contact.getsValue());
        }
        catch(Exception ex)
        {
@@ -158,7 +158,7 @@ public class SubjectService {
         {
             String sID = SubjectHuman.getSubjectId(SubjectHumanIdType.Email, sMail);
             
-            LOG.info("sID {}", sID);
+            LOG.info("(sID {})", sID);
             subject = subjectDao.getSubject(sID);
             if(subject == null)
             {
@@ -166,13 +166,13 @@ public class SubjectService {
                subject.setsID(sID);
                subjectDao.saveOrUpdateSubject(subject);
                subject = subjectDao.getSubject(sID);
-               LOG.info("Создаем subject Id {}, sID {} ", subject.getId(), subject.getsID());
+               LOG.info("(Создаем subject Id {}, sID {})", subject.getId(), subject.getsID());
             }
         }
         else
         {
             subject = subjectDao.getSubject(nID_Subject);
-            LOG.info("Извлекаем subject Id {}, sID {}, Label {}, shortLabel {} ", subject.getId(), subject.getsID(), subject.getsLabel(), subject.getsLabelShort());
+            LOG.info("(Извлекаем subject Id {}, sID {}, Label {}, shortLabel {})", subject.getId(), subject.getsID(), subject.getsLabel(), subject.getsLabelShort());
         }
         
         return subject;
@@ -183,7 +183,7 @@ public class SubjectService {
        try
        {
            nID = Long.valueOf(snID);
-           LOG.info("convertStringToLong nID {}, snID {}", nID, snID);
+           LOG.info("(convertStringToLong nID {}, snID {})", nID, snID);
        }
        catch(Exception ex)
        {
