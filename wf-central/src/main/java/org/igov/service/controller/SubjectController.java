@@ -514,7 +514,7 @@ public class SubjectController {
         return JsonRestUtils.toJsonResponse(serverOpt.get());
     }
     
-    @RequestMapping(value = "/syncContacts", method = RequestMethod.GET)
+    @RequestMapping(value = "/contactsService", method = RequestMethod.GET)
     public @ResponseBody
     ResponseEntity contactsService (
         @ApiParam(value="Строка адрес электронной почты", required = true) @RequestParam(value="sMailTo", required=true) String sMailTo,
@@ -522,7 +522,7 @@ public class SubjectController {
          
     ) throws CommonServiceException
     {
-        LOG.info("(Вход в syncContacts sMailTo {}, snID_Subject {})", sMailTo, snID_Subject);
+        LOG.info("(Вход в contactsService sMailTo {}, snID_Subject {})", sMailTo, snID_Subject);
         SubjectService oSubjectService = new SubjectService();
         SubjectContact oSubjectContact = oSubjectService.syncContactsService(snID_Subject, sMailTo);
         
