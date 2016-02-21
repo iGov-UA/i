@@ -307,7 +307,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             mParamSync.put("snID_Subject", snID_Subject);
             mParamSync.put("sMailTo", sMailTo);
             LOG.info("Вносим параметры в коллекцию (sMailTo {}, snID_Subject {})", sMailTo, snID_Subject);
-            String sURL = "https://test.igov.org.ua" + URI_SYNC_CONTACTS;
+            String sURL = generalConfig.sHostCentral() + URI_SYNC_CONTACTS;
             LOG.info("(Подключаемся к центральному порталу)");
             String sResponse = httpRequester.getInside(sURL, mParamSync);
             LOG.info("(Подключение осуществлено)");
