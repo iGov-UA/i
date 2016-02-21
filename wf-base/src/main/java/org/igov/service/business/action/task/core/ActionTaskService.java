@@ -2044,6 +2044,7 @@ public class ActionTaskService {
                     return new SerializableResponseEntity<>(new ResponseEntity<>(res, null, HttpStatus.OK));
                 }
             });
+		LOG.info("Entity {}", entity.toString());
 		return entity.getBody();
 	}
 	
