@@ -2034,13 +2034,13 @@ public class ActionTaskService {
                     GET_ALL_TASK_FOR_USER, sLogin, sFilterStatus, bIncludeAlienAssignedTasks) {
                 @Override
                 public SerializableResponseEntity<ArrayList<TaskInfo>> execute() {
-                	LOG.info("Loading tasks from cache for user {}", sLogin);
+                	LOG.info("Loading tasks from cache for user {} with filterStatus {} and bIncludeAlienAssignedTasks {}", sLogin, sFilterStatus, bIncludeAlienAssignedTasks);
                 	Object taskQuery = createQuery(sLogin, bIncludeAlienAssignedTasks, null, sFilterStatus, groupsIds);
                 	
                 	ArrayList<TaskInfo> res = (ArrayList<TaskInfo>) ((taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).list()
             				: (List) ((NativeTaskQuery) taskQuery).list());
                 	
-                    
+                    LOG.info("Loaded {} tasks", res.size());
                     return new SerializableResponseEntity<>(new ResponseEntity<>(res, null, HttpStatus.OK));
                 }
             });
