@@ -627,7 +627,7 @@ public class SubjectController {
     }
     
     @ApiOperation(value = "Добавление/обновление аккаунта субъекта", notes = "Добавляет или обновляет аккаунт субъекта в зависимости от того задан или нет параметр **nID**. "
-	    + "В случае успешного выполнения возвращается измененная или добавленная сущность\n"
+	    + "В случае успешного выполнения возвращается измененная или добавленная сущность.\n"
 	    + "Пример добавления записи:\n"
 	    + "https://test.igov.org.ua/wf/service/subject/setSubjectAccount?nID_Subject=1&sLogin=mylog&nID_Server=5&nID_SubjectAccountType=2&sNote=Заметка_про_что-то\n"
 	    + "Ответ:\n"
@@ -676,8 +676,8 @@ public class SubjectController {
 	    + "Ответ:\n"
 	    + "\n```json\n" 
 	    + "{\n"
-  	    + "\"code\": \"BUSINESS_ERR\",\n"
-  	    + "\"message\": \"could not execute statement. Нарушение уникальности аккаунта\"\n"
+	    + "	 \"code\": \"SYSTEM_ERR\",\n"
+	    + "  \"message\": \"could not execute statement; SQL [n/a]; constraint [SubjectAccount_sLogin_nID_SubjectAccountType_nID_Server_nID_key]; nested exception is org.hibernate.exception.ConstraintViolationException: could not execute statement\"\n"
 	    + "}\n"
 	    + "\n```\n"
 	    + "Пример ошибочного обновление записи ( не существующий аккаунт ):\n"
