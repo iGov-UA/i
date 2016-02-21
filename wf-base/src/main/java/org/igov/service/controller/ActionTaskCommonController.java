@@ -1674,6 +1674,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 			boolean bFilterHasTicket = false;
 			boolean bIncludeAlienAssignedTasks = false;
 			
+			LOG.info("Current element {}", elem.toString());
 			if (elem.has("sFilterStatus")) {
 				sFilterStatus = (String) elem.get("sFilterStatus");
 			} else {
@@ -1681,6 +1682,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 			}
 			if (elem.has("bFilterHasTicket")) {
 				bFilterHasTicket = (Boolean)elem.get("bFilterHasTicket");
+				LOG.info("set bFilterHasTicket to {}", bFilterHasTicket);
 			}
 			if (elem.has("bIncludeAlienAssignedTasks")) {
 				bIncludeAlienAssignedTasks = (Boolean)elem.get("bIncludeAlienAssignedTasks");
