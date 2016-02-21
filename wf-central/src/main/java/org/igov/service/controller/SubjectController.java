@@ -629,7 +629,7 @@ public class SubjectController {
     @ApiOperation(value = "Добавление/обновление аккаунта субъекта", notes = "Добавляет или обновляет аккаунт субъекта в зависимости от того задан или нет параметр **nID**. "
 	    + "В случае успешного выполнения возвращается измененная или добавленная сущность.\n"
 	    + "Пример добавления записи:\n"
-	    + "(Важно: обязательно измените любой параметр (не sNote), иначе получите ошибку ограничения уникальности записи)\n"
+	    + "**(Важно: обязательно измените любой параметр (не sNote), иначе получите ошибку ограничения уникальности записи)**\n"
 	    + "https://test.igov.org.ua/wf/service/subject/setSubjectAccount?nID_Subject=1&sLogin=mylog&nID_Server=55&nID_SubjectAccountType=2&sNote=Заметка_про_что-то\n"
 	    + "Ответ:\n"
 	    + "\n```json\n" 
@@ -677,7 +677,7 @@ public class SubjectController {
 	    + "Ответ:\n"
 	    + "\n```json\n" 
 	    + "{\n"
-	    + "	 \"code\": \"SYSTEM_ERR\",\n"
+	    + "  \"code\": \"SYSTEM_ERR\",\n"
 	    + "  \"message\": \"could not execute statement; SQL [n/a]; constraint [SubjectAccount_sLogin_nID_SubjectAccountType_nID_Server_nID_key]; nested exception is org.hibernate.exception.ConstraintViolationException: could not execute statement\"\n"
 	    + "}\n"
 	    + "\n```\n"
@@ -686,8 +686,8 @@ public class SubjectController {
 	    + "\n```json\n" 
 	    + "Ответ:\n"
 	    + "{\n"
-  	    + "\"code\": \"BUSINESS_ERR\",\n"
-  	    + "\"message\": \"Entity with id=777 does not exist\"\n"
+  	    + "  \"code\": \"BUSINESS_ERR\",\n"
+  	    + "  \"message\": \"Entity with id=777 does not exist\"\n"
 	    + "}\n"
 	    + "\n```\n")
     @RequestMapping(value = "/setSubjectAccount", method = RequestMethod.GET, headers = {JSON_TYPE} )
