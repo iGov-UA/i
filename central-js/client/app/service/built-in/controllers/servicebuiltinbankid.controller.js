@@ -7,6 +7,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   $location,
   $window,
   $rootScope,
+  $http,
   FormDataFactory,
   ActivitiService,
   ValidationService,
@@ -14,6 +15,9 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   oServiceData,
   BankIDAccount,
   activitiForm,
+  allowOrder,
+  countOrder,
+  selfOrdersCount,
   AdminService,
   PlacesService,
   uiUploader,
@@ -21,15 +25,21 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   MarkersFactory,
   service,
   FieldMotionService,
-  regions) {
+  $modal
+  ,ErrorsFactory
+    ) {
 
   'use strict';
 
   var currentState = $state.$current;
 
+  $scope.paramsBackup = null
+  
   $scope.oServiceData = oServiceData;
   $scope.account = BankIDAccount; // FIXME потенційний хардкод
   $scope.activitiForm = activitiForm;
+  $scope.countOrder = countOrder;
+  $scope.selfOrdersCount = selfOrdersCount;
 
   $scope.data = $scope.data || {};
 
@@ -48,6 +58,28 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     $scope.data.formData.uploadScansFromBankID(oServiceData);
   };
 
+  if (!allowOrder) {
+    var modalInstance = $modal.open({
+      animation: true,
+      size: 'md',
+      templateUrl: 'app/service/allowOrderModal.html',
+      controller: function ($scope, $modalInstance, message) {
+        $scope.message = message;
+
+        $scope.close = function () {
+          $modalInstance.close();
+        }
+      },
+      resolve: {
+        message: function () {
+          return "Уже достигнуто число одновременно поданных и не закрытых заявок " +
+            "Вами по данной услуге для данного места. Вы можете перейти в закладку \"Статусы\" (например, https://igov.org.ua/order/search) " +
+            "где найдя одну из своих заявок - написать комментарий сотруднику по ней, для ее скорейшей отработке " +
+            "или закрытия.(чтоб разблокировать дельнейшую подачу)";
+        }
+      }
+    });
+  }
 
   if ( !$scope.data.formData ) {
     initializeFormData();
@@ -106,9 +138,9 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   };
 
   $scope.isSignNeeded = $scope.data.formData.isSignNeeded();
+  $scope.isSignNeededRequired = $scope.data.formData.isSignNeededRequired();
   //$scope.sign = {checked : false };
   $scope.sign = {checked : $scope.data.formData.isSignNeededRequired() };
-  
 
   $scope.signForm = function () {
     if($scope.data.formData.isSignNeeded){
@@ -127,7 +159,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     }
   };
 
-  $scope.processForm = function (form) {
+  $scope.processForm = function (form, aFormProperties) {
     $scope.isSending = true;
 
     if (!$scope.validateForm(form)) {
@@ -138,7 +170,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     if ($scope.sign.checked) {
       $scope.signForm();
     } else {
-      $scope.submitForm(form);
+      $scope.submitForm(form, aFormProperties);
     }
   };
 
@@ -148,33 +180,52 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     return form.$valid && bValid;
   };
 
-  $scope.submitForm = function(form) {
+  $scope.submitForm = function(form, aFormProperties) {
     if(form){
       form.$setSubmitted();
     }
 
+    if(aFormProperties && aFormProperties!==null){
+        angular.forEach(aFormProperties, function(oProperty){
+            if(oProperty.type === "enum" && oProperty.bVariable && oProperty.bVariable !== null && oProperty.bVariable === true){//oProperty.id === attr.sName &&
+                $scope.data.formData.params[oProperty.id].value=null;
+            }
+        });
+    }
+
     ActivitiService
-      .submitForm(oService, oServiceData, $scope.data.formData)
-      .then(function(result) {
+      .submitForm(oService, oServiceData, $scope.data.formData, aFormProperties)//$scope.activitiForm
+      .then(function(oReturn) {
         $scope.isSending = false;
-
         var state = $state.$current;
-
         var submitted = $state.get(state.name + '.submitted');
-        if (!result.id) {
-          // console.log(result);
-          return;
+
+        var oFuncNote = {sHead:"Сабміт форми послуги", sFunc:"submitForm(UI)"};
+        ErrorsFactory.init(oFuncNote, {asParam: ['nID_Service: '+oService.nID, 'nID_ServiceData: '+oServiceData.nID, 'processDefinitionId: '+oServiceData.oData.processDefinitionId]});
+
+        if(!oReturn){
+            ErrorsFactory.logFail({sBody:"Повернен пустий об'ект!"});
+            return;
         }
-        //TODO: Fix Alhoritm Luna
-        var nCRC = ValidationService.getLunaValue(result.id);
+        if(!oReturn.id){
+            ErrorsFactory.logFail({sBody:"У поверненому об'єкти немае номера створеної заявки!",asParam:["soReturn: "+JSON.stringify(oReturn)]});
+            return;
+        }
+        
+        var nCRC = ValidationService.getLunaValue(oReturn.id);
+        var sID_Order = oServiceData.nID_Server + "-" + oReturn.id + nCRC;
+        submitted.data.id = sID_Order;
 
-        submitted.data.id = result.id + nCRC; //11111111
         submitted.data.formData = $scope.data.formData;
-
         $scope.isSending = false;
-
         $scope.$root.data = $scope.data;
-
+  
+        try{
+//            ErrorsFactory.logInfoSendHide({sType:"success", sBody:"Створена заявка!",asParam:["sID_Order: "+sID_Order]});
+        }catch(sError){
+            console.log('[submitForm.ActivitiService]sID_Order='+sID_Order+',sError='+ sError);
+        }
+        
         return $state.go(submitted, angular.extend($stateParams, {formID: null, signedFileID : null}));
       });
   };
@@ -211,15 +262,25 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     if ($scope.referent){
 
       angular.forEach($scope.activitiForm.formProperties, function (field){
+        //if (field.id.startsWith('bankId') && field.type !== 'file'){
         if (field.id.startsWith('bankId')){
           $scope.data.formData.params[field.id].value="";
+            /*if (field.type === 'file'){
+                $scope.data.formData.params[field.id].upload = true;
+                $scope.data.formData.params[field.id].scan = null;
+            }*/
+        }
+        if (field.type === 'file'){
+            $scope.data.formData.params[field.id].value="";
+            $scope.data.formData.params[field.id].upload = true;
+            $scope.data.formData.params[field.id].scan = null;
         }
       });
 
-      if ($scope.data.formData.params['bankId_scan_passport']){
+      /*if ($scope.data.formData.params['bankId_scan_passport']){
         $scope.data.formData.params['bankId_scan_passport'].upload = true;
         $scope.data.formData.params['bankId_scan_passport'].scan = null;
-      }
+      }*/
 
       $scope.data.formData.initialize($scope.activitiForm);
 
@@ -314,15 +375,85 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     }
   }
 
-  $scope.isActivitiFormEmpty = function(activitiForm) {
-    for (var property in activitiForm.formProperties ) {
-      if (activitiForm.formProperties.hasOwnProperty(property) &&
-          activitiForm.formProperties[property].hasOwnProperty('sFieldNotes') &&
-          activitiForm.formProperties[property]['sFieldNotes'] != null) {
+  $scope.isFormDataEmpty = function() {
+    for (var param in $scope.data.formData.params ) {
+      if ($scope.data.formData.params.hasOwnProperty(param) &&
+          $scope.data.formData.params[param].hasOwnProperty('value') &&
+          $scope.data.formData.params[param]['value'] != null) {
         return false;
       }
     }
     return true;
   };
+
+  $scope.fillSelfPrevious = function () {
+    $http.get('/api/order/getStartFormByTask', {
+      params: {
+        nID_Service: oService.nID,
+        sID_UA: oServiceData.oPlace.sID_UA
+      }
+    }).then(function (response) {
+      var bFilled = $scope.bFilledSelfPrevious();
+      if(!bFilled){
+        $scope.paramsBackup = {};
+      }
+      angular.forEach($scope.activitiForm.formProperties, function (oField){
+        //if (field.type === 'file'){
+        //    $scope.data.formData.params[field.id].value="";
+        try{
+            console.log("SET:oField.id="+oField.id+",oField.type="+oField.type+",oField.value="+oField.value);
+            var key = oField.id;
+            var property = $scope.data.formData.params[key];
+            console.log("SET:property="+property);
+          //angular.forEach($scope.data.formData.params, function (property, key) {
+            if (key && key !== null && key.indexOf("bankId") !== 0 && response.data.hasOwnProperty(key)){
+             //&& property.value && property.value!==null && property.value !== undefined
+                //var oFormProperty = $scope.activitiForm.formProperties[key];
+                if(oField && oField!==null
+                    && oField.type !== "file"
+                    && oField.type !== "label"
+                    && oField.type !== "invisible"
+                    && oField.type !== "markers"
+                    && oField.type !== "queueData"
+                    && oField.type !== "select"
+                    ){
+                    if(!bFilled){
+                          //angular.forEach($scope.activitiForm.formProperties, function(field) {
+                            $scope.paramsBackup[key] = property.value;
+                        //console.log("SET(BACKUP):paramsBackup["+key+"]="+$scope.paramsBackup[key]);
+                    }
+                    property.value = response.data[key];
+                }
+            //console.log("SET:property.value="+property.value);
+            }
+        }catch(_){
+            console.log("[fillSelfPrevious]["+key+"]ERROR:"+_);
+        }
+      });
+    });
+  };
+
+  $scope.bFilledSelfPrevious = function () {
+      return $scope.paramsBackup !== null;
+      
+  };
+  
+  $scope.fillSelfPreviousBack = function () {
+      if($scope.bFilledSelfPrevious()){
+        angular.forEach($scope.data.formData.params, function (property, key) {
+            // && $scope.paramsBackup[key] && $scope.paramsBackup[key]!==null && $scope.paramsBackup[key] !== undefined
+            if (key && key !== null && key.indexOf("bankId") !== 0 && $scope.paramsBackup.hasOwnProperty(key)){
+                //console.log("RESTORE:property.value="+property.value);
+                property.value = $scope.paramsBackup[key];
+                //console.log("RESTORE:paramsBackup["+key+"]="+$scope.paramsBackup[key]);
+            }
+        });
+        $scope.paramsBackup = null;
+      }
+  };
+  
+  if($scope.selfOrdersCount.nOpened > 0){
+    $scope.fillSelfPrevious();
+  }
 
 });

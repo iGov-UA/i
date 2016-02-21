@@ -1,6 +1,6 @@
 package org.igov.service.controller;
 
-import org.joda.time.DateTime;
+import org.igov.service.business.action.ActionEventService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,31 +10,34 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.igov.model.enums.HistoryEventMessage;
-import org.igov.model.enums.HistoryEventType;
-import org.igov.model.DocumentAccessDao;
-import org.igov.model.DocumentDao;
-import org.igov.model.HistoryEventDao;
-import org.igov.model.AccessURL;
-import org.igov.model.Document;
-import org.igov.model.DocumentAccess;
+import org.igov.model.action.event.HistoryEventType;
+import org.igov.model.document.access.DocumentAccessDao;
+import org.igov.model.document.DocumentDao;
+import org.igov.model.document.access.AccessURL;
+import org.igov.model.document.Document;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponses;
-import io.swagger.annotations.ApiResponse;
-
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
-import org.igov.service.interceptor.exception.ActivitiRestException;
+import org.igov.model.subject.Subject;
+import org.igov.model.subject.SubjectContact;
+import org.igov.model.subject.SubjectContactDao;
+import org.igov.model.subject.SubjectContactType;
+import org.igov.model.subject.SubjectContactTypeDao;
+import org.igov.model.subject.SubjectDao;
+import org.igov.model.subject.SubjectHuman;
+import org.igov.model.subject.SubjectHumanDao;
+import org.igov.service.business.document.access.handler.HandlerFactory;
+import org.igov.model.subject.organ.SubjectOrganDao;
+import org.igov.service.business.document.access.DocumentAccessService;
+import org.igov.service.exception.CommonServiceException;
 
-@Api(tags = { "ActivitiDocumentAccessController" }, description = "Предоставление и проверка доступа к документам")
+@Api(tags = {"DocumentAccessController"}, description = "Доступы к документам")
 @Controller
+@RequestMapping(value = "/document/access")
 public class DocumentAccessController {
 
     private static final Logger LOG = LoggerFactory.getLogger(DocumentAccessController.class);
@@ -42,127 +45,63 @@ public class DocumentAccessController {
     private static final String NO_ACCESS_MESSAGE = "You don't have access!";
     private static final String UNAUTHORIZED_ERROR_CODE = "UNAUTHORIZED_ERROR_CODE";
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Подробные описания сервисов для документирования в Swagger
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    private static final String noteCODE= "\n```\n";    
-    private static final String noteCODEJSON= "\n```json\n";    
-    private static final String noteController = "##### Предоставление и проверка доступа к документам. ";
-
-    private static final String noteSetDocumentAccessLink = noteController + "Запись на доступ, с генерацией и получением уникальной ссылки на него #####\n\n"
-		+ "HTTP Context: https://seriver:port/wf/service/setDocumentLink\n\n"
-		+ "- nID_Document - ИД-номер документа\n"
-		+ "- sFIO - ФИО, кому доступ\n"
-		+ "- sTarget - цель получения доступа\n"
-		+ "- sTelephone - телефон того, кому доступ предоставляется\n"
-		+ "- nDays - число милисекунд, на которое предоставляется доступ\n"
-		+ "- sMail - эл. почта того, кому доступ предоставляется\n"
-		+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n"
-		+ "Response\n\n"
-		+ noteCODEJSON
-		+ "[  //[0..N]\n"
-		+ "  {\"name\":\"sURL\",   //[1..1]\n"
-		+ "    \"value\":\"https://e-gov.org.ua/index#nID_Access=4345&sSecret=JHg3987JHg3987JHg3987\" //[1..1]\n"
-		+ "  }\n"
-		+ "]\n"
-		+ noteCODE;
-
-    private static final String noteGetDocumentAccessLink = noteController + "проверка доступа к документу и получения данных о нем, если доступ есть #####\n\n"
-		+ "HTTP Context: https://seriver:port/wf/service/getDocumentLink - \n\n"
-		+ "- nID_Document - ИД-номер документа\n"
-		+ "- sSecret - секретный ключ\n"
-		+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n"
-		+ "Response\n\n"
-		+ "HTTP STATUS 200\n\n"
-		+ noteCODEJSON
-		+ "[  //[0..N]\n"
-		+ "  {\n"
-		+ "    \"nID\":4355\n"
-		+ "    ,\"nID_Document\":53245\n"
-		+ "    ,\"sDateCreate\":\"2015-05-05 22:32:24.425\"\n"
-		+ "    ,\"nMS\":3523\n"
-		+ "    ,\"sFIO\":\"Вася Пупкин\"\n"
-		+ "    ,\"sTarget\":\"По прикколу\"\n"
-		+ "    ,\"sTelephone\":\"001 354 3456\"\n"
-		+ "    ,\"sMail\":\"vasya@i.ua\"\n"
-		+ "  }\n"
-		+ "]\n"
-		+ noteCODE
-		+ "\n"
-		+ "Если доступа нет, возвращается HTTP STATUS 403 Если доступ есть, но секрет не совпадает, возвращается "
-		+ "HTTP STATUS 403 Если доступ просрочен, возвращается HTTP STATUS 403 Если возникла исключительная "
-		+ "ситуация, возвращается HTTP STATUS 400. В заголовок ответа добавляется параметр Reason, в "
-		+ "котором описана причина возникновения ситуации.";
-
-    private static final String noteGetDocumentAccess = noteController + "Получение подтверждения на доступ к документу(с отсылкой СМС ОТП-паролем на телефон)) #####\n\n"
-		+ "HTTP Context: https://seriver:port/wf/service/getDocumentAccess - \n\n"
-		+ "- nID_Document - ИД-номер документа\n"
-		+ "- sSecret - секретный ключ\n"
-		+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n"
-		+ "Response\n\n"
-		+ noteCODEJSON
-		+ "[ //[0..N]\n"
-		+ "  {\"name\":\"sURL\",   //[1..1]\n"
-		+ "    \"value\":\"https://seriver:port/index#nID_Access=4345&sSecret=JHg3987JHg3987JHg3987\" //[1..1]\n"
-		+ "  }\n"
-		+ "]\n"
-		+ noteCODE;
-
-    private static final String noteSetDocumentAccess = noteController + "Установка подтверждения на доступ к документу, по введенному коду, из СМС-ки(ОТП-паролем) #####\n\n"
-		+ "HTTP Context: https://seriver:port/wf/service/setDocumentAccess -\n"
-		+ "Возвращает уникальную разовую ссылку на докуемнт.\n\n"
-		+ "- nID_Access - ид доступа\n"
-		+ "- sSecret - секретный ключ\n"
-		+ "- sAnswer - ответ (введенный пользователем ОТП-пароль из СМС)\n"
-		+ "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n"
-		+ "Response\n\n"
-		+ noteCODEJSON
-		+ "[ //[0..N]\n"
-		+ "  {\"name\":\"sURL\",   //[1..1]\n"
-		+ "    \"value\":\"https://seriver:port/index#nID_Access=4345&sSecret=JHg3987JHg3987JHg3987\" //[1..1]\n"
-		+ "  }\n"
-		+ "]\n"
-		+ noteCODE;
-    
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    
     @Autowired
     private DocumentAccessDao documentAccessDao;
     @Autowired
-    private HistoryEventDao historyEventDao;
-    @Autowired
     private DocumentDao documentDao;
+    @Autowired
+    private HandlerFactory handlerFactory;
+
+    @Autowired
+    private SubjectOrganDao subjectOrganDao;
+
+    @Autowired
+    ActionEventService actionEventService;
+    @Autowired
+    DocumentAccessService documentAccessService;
 
     /**
      * запись на доступ, с генерацией и получением уникальной ссылки на него
+     *
      * @param nID_Document ИД-номер документа
      * @param sFIO ФИО, кому доступ
      * @param sTarget цель получения доступа
      * @param sTelephone телефон того, кому доступ предоставляется
      * @param nMS число милисекунд, на которое предоставляется доступ
      * @param sMail эл. почта того, кому доступ предоставляется
-     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос
+     * автоматически после аутентификации пользователя)
      */
-    @ApiOperation(value = "запись на доступ, с генерацией и получением уникальной ссылки на него", notes = noteSetDocumentAccessLink )
-    @RequestMapping(value = "/setDocumentLink", method = RequestMethod.GET, headers = { "Accept=application/json" })
-    public
-    @ResponseBody
+    @ApiOperation(value = "запись на доступ, с генерацией и получением уникальной ссылки на него", notes = "##### DocumentAccessController - Доступы к документам. Запись на доступ, с генерацией и получением уникальной ссылки на него #####\n\n"
+            + "HTTP Context: https://seriver:port/wf/service/document/access/setDocumentLink\n\n"
+            + "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n"
+            + "Response\n\n"
+            + "\n```json\n"
+            + "[  //[0..N]\n"
+            + "  {\"name\":\"sURL\",   //[1..1]\n"
+            + "    \"value\":\"https://e-gov.org.ua/index#nID_Access=4345&sSecret=JHg3987JHg3987JHg3987\" //[1..1]\n"
+            + "  }\n"
+            + "]\n"
+            + "\n```\n")
+    @RequestMapping(value = "/setDocumentLink", method = RequestMethod.GET, headers = {"Accept=application/json"})
+    public @ResponseBody
     AccessURL setDocumentAccessLink(
-	    @ApiParam(value = "ИД-номер документа", required = true) @RequestParam(value = "nID_Document") Long nID_Document,
-	    @ApiParam(value = "ФИО, кому доступ", required = false) @RequestParam(value = "sFIO", required = false) String sFIO,
-	    @ApiParam(value = "цель получения доступа", required = false) @RequestParam(value = "sTarget", required = false) String sTarget,
-	    @ApiParam(value = "телефон того, кому доступ предоставляется", required = false) @RequestParam(value = "sTelephone", required = false) String sTelephone,
-	    @ApiParam(value = "число милисекунд, на которое предоставляется доступ", required = true) @RequestParam(value = "nMS") Long nMS,
-	    @ApiParam(value = "эл. почта того, кому доступ предоставляется", required = false) @RequestParam(value = "sMail", required = false) String sMail,
+            @ApiParam(value = "ИД-номер документа", required = true) @RequestParam(value = "nID_Document") Long nID_Document,
+            @ApiParam(value = "ФИО, кому доступ", required = false) @RequestParam(value = "sFIO", required = false) String sFIO,
+            @ApiParam(value = "цель получения доступа", required = false) @RequestParam(value = "sTarget", required = false) String sTarget,
+            @ApiParam(value = "телефон того, кому доступ предоставляется", required = false) @RequestParam(value = "sTelephone", required = false) String sTelephone,
+            @ApiParam(value = "число милисекунд, на которое предоставляется доступ", required = true) @RequestParam(value = "nMS") Long nMS,
+            @ApiParam(value = "эл. почта того, кому доступ предоставляется", required = false) @RequestParam(value = "sMail", required = false) String sMail,
             @ApiParam(value = "ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)", required = true) @RequestParam(value = "nID_Subject") Long nID_Subject,
-            HttpServletResponse response) throws ActivitiRestException {
-        
+            HttpServletResponse response) throws CommonServiceException {
+
+        documentAccessService.syncContacts(nID_Subject, sMail, sTelephone);
         Document document = documentDao.getDocument(nID_Document);
-        
-        if(!nID_Subject.equals(document.getSubject().getId()))
-       {
-             throw new ActivitiRestException(UNAUTHORIZED_ERROR_CODE, NO_ACCESS_MESSAGE, HttpStatus.UNAUTHORIZED);
+
+        if (!nID_Subject.equals(document.getSubject().getId())) {
+            throw new CommonServiceException(UNAUTHORIZED_ERROR_CODE, NO_ACCESS_MESSAGE, HttpStatus.UNAUTHORIZED);
         }
+       
         
         AccessURL oAccessURL = new AccessURL();
         try {
@@ -170,156 +109,64 @@ public class DocumentAccessController {
             String sValue = documentAccessDao.setDocumentLink(nID_Document, sFIO, sTarget, sTelephone, nMS, sMail);
             oAccessURL.setValue(sValue);
 
-            createHistoryEvent(HistoryEventType.SET_DOCUMENT_ACCESS_LINK,
+            actionEventService.createHistoryEvent(HistoryEventType.SET_DOCUMENT_ACCESS_LINK,
                     nID_Document, sFIO, sTelephone, nMS, sMail);
         } catch (Exception e) {
             response.setStatus(HttpStatus.BAD_REQUEST.value());
             response.setHeader(REASON_HEADER, e.getMessage());
             LOG.error(e.getMessage(), e);
         }
+        
+        
+        
+        
+       
         return oAccessURL;
     }
-
+   
     /**
-     * проверка доступа к документу и получения данных о нем, если доступ есть
-     * @param nID_Document ИД-номер документа
-     * @param sSecret секретный ключ
-     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
+     * получение контента документа по коду доступа,оператору, типу документа и
+     * паролю
+     *
+     * @param accessCode - строковой код доступа к документу
+     * @param organID - номер-�?Д субьекта-органа оператора документа
+     * @param docTypeID - номер-�?Д типа документа (опционально)
+     * @param password - строка-пароль (опционально)
      */
-    @Deprecated
-    @ApiOperation(value = "проверка доступа к документу и получения данных о нем, если доступ есть", notes = noteGetDocumentAccessLink )
-    @ApiResponses(value = { @ApiResponse(code = 400, message = "Возникла исключительная ситуация"),
-	@ApiResponse(code = 403, message = "Нет доступа / доступ есть, но секрет не совпадает /  доступ просрочен") } )
-    @RequestMapping(value = "/getDocumentLink", method = RequestMethod.GET, headers = { "Accept=application/json" })
-    public
-    @ResponseBody
-    DocumentAccess getDocumentAccessLink(
-	    @ApiParam(value = "уточнить описание", required = true) @RequestParam(value = "nID_Access") Long nID_Access,
-	    @ApiParam(value = "секретный ключ", required = true) @RequestParam(value = "sSecret") String sSecret,
-            HttpServletResponse response) {
-        DocumentAccess da = null;
+    @ApiOperation(value = "Получение контента документа по коду доступа,оператору, типу документа и паролю", notes = "##### DocumentAccessController - Доступы к документам. Получение контента документа по коду доступа,оператору, типу документа и паролю #####\n\n"
+            + "HTTP Context: http://server:port/wf/service/document/access/getDocumentAccessByHandler\n\n\n"
+            + "Пример: https://test.igov.org.ua/wf/service/document/access/getDocumentAccessByHandler?sCode_DocumentAccess=2&nID_DocumentOperator_SubjectOrgan=2&sPass=123&nID_DocumentType=1\n\n"
+            + "Response КОНТЕНТ ДОКУМЕНТА В ВИДЕ СТРОКИ\n")
+    @RequestMapping(value = "/getDocumentAccessByHandler",
+            method = RequestMethod.GET,
+            headers = {"Accept=application/json"})
+    public @ResponseBody
+    Document getDocumentAccessByHandler(
+            @ApiParam(value = "код доступа документа", required = true) @RequestParam(value = "sCode_DocumentAccess") String accessCode,
+            @ApiParam(value = "код органа(оператора)", required = true) @RequestParam(value = "nID_DocumentOperator_SubjectOrgan") Long organID,
+            @ApiParam(value = "типа документа (опциональный)", required = false) @RequestParam(value = "nID_DocumentType", required = false) Long docTypeID,
+            @ApiParam(value = "пароль для доступа к документу (опциональный, пока только для документов у которы sCodeType=SMS)", required = false) @RequestParam(value = "sPass", required = false) String password,
+            @ApiParam(value = "номер-ИД субьекта", required = true) @RequestParam(value = "nID_Subject", defaultValue = "1") Long nID_Subject
+    ) {
+
+        LOG.info("accessCode = {} ", accessCode);
+
+        Document document = handlerFactory
+                .buildHandlerFor(documentDao.getOperator(organID))
+                .setDocumentType(docTypeID)
+                .setAccessCode(accessCode)
+                .setPassword(password)
+                .setWithContent(false)
+                .setIdSubject(nID_Subject)
+                .getDocument();
         try {
-            da = documentAccessDao.getDocumentLink(nID_Access, sSecret);
+            actionEventService.createHistoryEvent(HistoryEventType.GET_DOCUMENT_ACCESS_BY_HANDLER,
+                    document.getSubject().getId(), subjectOrganDao.getSubjectOrgan(organID).getName(), null, document);
         } catch (Exception e) {
-            response.setStatus(HttpStatus.FORBIDDEN.value());
-            response.setHeader(REASON_HEADER, "Access not found\n" + e.getMessage());
-            LOG.error(e.getMessage(), e);
+        	LOG.warn("Error: {}, can`t create history event!", e.getMessage());
+        	LOG.trace("FAIL:", e);
         }
-        if (da == null) {
-            response.setStatus(HttpStatus.FORBIDDEN.value());
-            response.setHeader(REASON_HEADER, "Access not found");
-        } else {
-            DateTime now = new DateTime();
-            boolean isSuccessAccess = true;
-            DateTime d = da.getDateCreate();
-
-            if (d.plusMillis(da.getMS().intValue()).isBefore(now)) {
-                isSuccessAccess = false;
-                response.setStatus(HttpStatus.FORBIDDEN.value());
-                response.setHeader(REASON_HEADER, "Access expired");
-            }
-            if (!sSecret.equals(da.getSecret())) {
-                isSuccessAccess = false;
-                response.setStatus(HttpStatus.FORBIDDEN.value());
-                response.setHeader(REASON_HEADER, "Access to another document");
-            }
-            if (isSuccessAccess) {
-                createHistoryEvent(HistoryEventType.SET_DOCUMENT_ACCESS,
-                        da.getID_Document(), da.getFIO(), da.getTelephone(), da.getMS(), da.getMail());
-            }
-        }
-
-        return da;
+        return document;
     }
 
-    /**
-     * Получение подтверждения на доступ к документу(с отсылкой СМС ОТП-паролем на телефон))
-     * @param nID_Document ИД-номер документа
-     * @param sSecret секретный ключ
-     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
-     */
-    @Deprecated
-    @ApiOperation(value = "Получение подтверждения на доступ к документу(с отсылкой СМС ОТП-паролем на телефон))", notes = noteGetDocumentAccess )
-    @RequestMapping(value = "/getDocumentAccess", method = RequestMethod.GET, headers = { "Accept=application/json" })
-    public
-    @ResponseBody
-    AccessURL getDocumentAccess(
-	    @ApiParam(value = "уточнить описание", required = true) @RequestParam(value = "nID_Access") Long nID_Access,
-	    @ApiParam(value = "секретный ключ", required = true) @RequestParam(value = "sSecret") String sSecret,
-            HttpServletResponse response) {
-        AccessURL oAccessURL = new AccessURL();
-        try {
-            oAccessURL.setName("sURL");
-            //sValue = documentAccessDao.getDocumentAccess(nID_Access,sSecret);
-            documentAccessDao.getDocumentAccess(nID_Access, sSecret);
-            String sValue = String.valueOf(nID_Access);
-            oAccessURL.setValue(sValue);
-        } catch (Exception e) {
-            response.setStatus(HttpStatus.FORBIDDEN.value());
-            response.setHeader(REASON_HEADER, "Access not found");
-            oAccessURL.setValue(e.getMessage());
-            LOG.error(e.getMessage(), e);
-        }
-        return oAccessURL;
-    }
-
-    /**
-     * Установка подтверждения на доступ к документу, по введенному коду, из СМС-ки(ОТП-паролем), и возвратом уникальной разовой ссылки на докуемнт.
-     * @param nID_Access ид доступа
-     * @param sSecret секретный ключ
-     * @param sAnswer ответ (введенный пользователем ОТП-пароль из СМС)
-     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
-     */
-    @Deprecated
-    @ApiOperation(value = "Установка подтверждения на доступ к документу, по введенному коду, из СМС-ки(ОТП-паролем)", notes = noteSetDocumentAccess )
-    @RequestMapping(value = "/setDocumentAccess", method = RequestMethod.GET, headers = { "Accept=application/json" })
-    public
-    @ResponseBody
-    AccessURL setDocumentAccess(
-	    @ApiParam(value = "ид доступа", required = true) @RequestParam(value = "nID_Access") Long nID_Access,
-	    @ApiParam(value = "секретный ключ", required = true) @RequestParam(value = "sSecret") String sSecret,
-	    @ApiParam(value = "ответ (введенный пользователем ОТП-пароль из СМС)", required = true) @RequestParam(value = "sAnswer") String sAnswer,
-            HttpServletResponse response) {
-        AccessURL oAccessURL = new AccessURL();
-        try {
-            String sValue;
-            sValue = documentAccessDao.setDocumentAccess(nID_Access, sSecret, sAnswer);
-            oAccessURL.setValue(sValue);
-            oAccessURL.setName("sURL");
-            if (oAccessURL.getValue().isEmpty() || oAccessURL.getValue() == null) {
-                response.setStatus(HttpStatus.FORBIDDEN.value());
-                response.setHeader(REASON_HEADER, "Access not found");
-            }
-        } catch (Exception e) {
-            response.setStatus(HttpStatus.BAD_REQUEST.value());
-            response.setHeader(REASON_HEADER, e.getMessage());
-            LOG.error(e.getMessage(), e);
-        }
-        return oAccessURL;
-    }
-
-    private void createHistoryEvent(HistoryEventType eventType, Long documentId,
-            String sFIO, String sPhone, Long nMs, String sEmail) {
-        Map<String, String> values = new HashMap<>();
-        try {
-            values.put(HistoryEventMessage.FIO, sFIO);
-            values.put(HistoryEventMessage.TELEPHONE, sPhone);
-            values.put(HistoryEventMessage.EMAIL, sEmail);
-            values.put(HistoryEventMessage.DAYS, "" + TimeUnit.MILLISECONDS.toDays(nMs));
-
-            Document oDocument = documentDao.getDocument(documentId);
-            values.put(HistoryEventMessage.DOCUMENT_NAME, oDocument.getName());
-            values.put(HistoryEventMessage.DOCUMENT_TYPE, oDocument.getDocumentType().getName());
-            documentId = oDocument.getSubject().getId();
-        } catch (Exception e) {
-            LOG.warn("can't get document info!", e);
-        }
-        try {
-            String eventMessage = HistoryEventMessage.createJournalMessage(eventType, values);
-            historyEventDao.setHistoryEvent(documentId, eventType.getnID(),
-                    eventMessage, eventMessage);
-        } catch (IOException e) {
-            LOG.error("error during creating HistoryEvent", e);
-        }
-    }
 }

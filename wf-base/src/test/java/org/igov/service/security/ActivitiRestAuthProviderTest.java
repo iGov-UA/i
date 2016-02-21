@@ -1,7 +1,7 @@
 package org.igov.service.security;
 
 import org.activiti.engine.IdentityService;
-import org.igov.service.security.ActivitiRestAuthProvider;
+import org.igov.service.controller.security.ActivitiRestAuthProvider;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.security.core.Authentication;

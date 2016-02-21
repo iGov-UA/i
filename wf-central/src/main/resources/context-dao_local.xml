@@ -7,52 +7,41 @@
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <context:component-scan base-package="org.igov.model" />
-    <aop:config>
-        <aop:pointcut id="model.core" expression="execution(* org.igov.model.core.*.*(..))"/>
-        <aop:advisor pointcut-ref="model.core" advice-ref="txAdvice"/>
-    </aop:config>
-
-    <bean id="tableDataService" class="org.igov.model.core.TableDataService">
-        <property name="dataSource" ref="dataSource"/>
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-
     <bean id="subjectOrganJoinDao" class="org.igov.model.core.GenericEntityDao">
-        <constructor-arg value="#{T(org.igov.model.SubjectOrganJoin)}"/>
+        <constructor-arg value="#{T(org.igov.model.subject.organ.SubjectOrganJoin)}"/>
     </bean>
 
     <bean id="subjectMessageTypeDao" class="org.igov.model.core.GenericEntityDao">
-        <constructor-arg value="#{T(org.igov.model.SubjectMessageType)}"/>
+        <constructor-arg value="#{T(org.igov.model.subject.message.SubjectMessageType)}"/>
     </bean>
 
     <bean id="serviceDao" class="org.igov.model.core.GenericEntityDao">
-        <constructor-arg value="#{T(org.igov.model.Service)}"/>
+        <constructor-arg value="#{T(org.igov.model.action.item.Service)}"/>
     </bean>
 
     <bean id="serviceDataDao" class="org.igov.model.core.GenericEntityDao">
-        <constructor-arg value="#{T(org.igov.model.ServiceData)}"/>
+        <constructor-arg value="#{T(org.igov.model.action.item.ServiceData)}"/>
     </bean>
 
     <bean id="categoryDao" class="org.igov.model.core.GenericEntityDao">
-        <constructor-arg value="#{T(org.igov.model.Category)}"/>
+        <constructor-arg value="#{T(org.igov.model.action.item.Category)}"/>
     </bean>
 
     <bean id="regionDao" class="org.igov.model.core.GenericEntityDao">
-        <constructor-arg value="#{T(org.igov.model.Region)}"/>
+        <constructor-arg value="#{T(org.igov.model.object.place.Region)}"/>
     </bean>
 
     <bean id="subcategoryDao" class="org.igov.model.core.GenericEntityDao">
-        <constructor-arg value="#{T(org.igov.model.Subcategory)}"/>
+        <constructor-arg value="#{T(org.igov.model.action.item.Subcategory)}"/>
     </bean>
 
     <bean id="documentOperatorDao" class="org.igov.model.core.GenericEntityDao">
-        <constructor-arg value="#{T(org.igov.model.DocumentOperator_SubjectOrgan)}"/>
+        <constructor-arg value="#{T(org.igov.model.document.DocumentOperator_SubjectOrgan)}"/>
     </bean>
 
-    <bean id="placeTypeDao" class="org.igov.model.PlaceTypeDao"/>
-    <bean id="placeDao"     class="org.igov.model.PlaceDaoImpl"/>
-    <bean id="placeQueryResolver"     class="org.igov.model.PlaceQueryResolver"/>
+    <bean id="placeTypeDao" class="org.igov.model.object.place.PlaceTypeDao"/>
+    <bean id="placeDao"     class="org.igov.model.object.place.PlaceDaoImpl"/>
+    <bean id="placeQueryResolver"     class="org.igov.model.object.place.PlaceQueryResolver"/>
     <bean id="sqlStorage"   class="org.igov.util.db.queryloader.QueryLoader"/>
 
 </beans>

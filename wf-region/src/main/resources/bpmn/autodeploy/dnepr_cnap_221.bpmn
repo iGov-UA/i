@@ -38,7 +38,7 @@
         <activiti:formProperty id="country_applicant" name="Країна реєстрації заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="requisites_applicant" name="Реквізити заявника;(місцезнаходження, телефон, факс, E-mail, WWW)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="contract" name="Документ про повноваження заявника представляти виробника (власника);(договір, контракт, доручення)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="doclist" name="Список документів" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="list_documents" name="Список документів" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="file1" name="Документ, що підтверджує внесення плати за комплексне вивчення документів та підготовку проекту висновку державної санітарно-епідеміологічної експертизи" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file2" name="Документ дозвільного характеру, який підлягає переоформленню" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file3" name="Пректні матеріали, у яких обгрунтовується зменшення розмірів санітарно-захисної зони об'єктів IV, V класів небезпеки на паперовому та електронному носіях у відповідності до вимог п.5.7. Державних санітарних правил планування та забудови населених пунктів, затверджених наказом МОЗ України від 19.06.1996 №173 зі змінами" type="file" required="true"></activiti:formProperty>
@@ -120,7 +120,7 @@ execution.setVariable('substance_2', per5)
 execution.setVariable('substance_3', per6)
 execution.setVariable('term', per7)</script>
     </scriptTask>
-    <scriptTask id="scripttask2" name="Script DocList" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask2" name="Script list_documents" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var per1 = ' '
 var per2 = ' '
 var per3 = ' '
@@ -148,7 +148,7 @@ if (execution.getVariable('vibor_service') == 'cansel') {
 per1 = '&lt;li&gt;Документ дозвільного характеру, який підлягає анулюванню.&lt;/li&gt;'
 res = '&lt;ol&gt;'+per1+'&lt;/ol&gt;'
 }
-execution.setVariable('doclist', res)</script>
+execution.setVariable('list_documents', res)</script>
     </scriptTask>
     <userTask id="usertask1" name="Обробка вхідної документації ЦНАПом (1-й крок)" activiti:candidateGroups="cnap_${vibor}">
       <extensionElements>
@@ -193,7 +193,7 @@ execution.setVariable('doclist', res)</script>
         <activiti:formProperty id="substance_3" name="Суть заяви в контексті листа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="document" name="Назва документу" type="invisible" default="висновок державної санітарно-епідеміологічної експертизи матеріалів, у яких обґрунтовується зменшення розмірів санітарно-захисної зони об’єкту IV, V класів небезпеки"></activiti:formProperty>
         <activiti:formProperty id="term" name="Строк віконання" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="doclist" name="Список документів" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="list_documents" name="Список документів" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="status" name="Обробка заяви" type="enum">
           <activiti:value id="attr1_wait" name="Документи передані в держсанепідслужбу"></activiti:value>
           <activiti:value id="attr2_finish" name="Відмова громадянину у разі надання неповного пакету документів"></activiti:value>

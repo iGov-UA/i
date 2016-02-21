@@ -7,14 +7,6 @@
     <import resource="classpath:/context-db.xml" />
     <import resource="classpath:/context-dao.xml" />
     <import resource="classpath:/context-dao_local.xml" />
-    <context:component-scan base-package="org.igov.model" />
-    <context:component-scan base-package="org.igov.io" />
-    <context:component-scan base-package="org.igov.util" />
-    <context:component-scan base-package="org.igov.activiti" />
-    <context:component-scan base-package="org.igov.io.*" />
-    <context:component-scan base-package="org.igov.util.*" />
-    <context:component-scan base-package="org.igov.activiti.*" />
-    <context:component-scan base-package="org.igov.model.*" />
 
     <bean id="dataSource"
           class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
@@ -22,10 +14,6 @@
         <property name="url" value="jdbc:h2:mem:test;DB_CLOSE_DELAY=1000"/>
         <property name="username" value="sa"/>
         <property name="password" value=""/>
-    </bean>
-
-    <bean id="durableBytesDataStorage" class="org.mockito.Mockito" factory-method="mock">
-        <constructor-arg value="ua.org.egov.utils.storage.durable.impl.GridFSBytesDataStorage" />
     </bean>
 
     <bean id="gridTemplate" class="org.mockito.Mockito" factory-method="mock">
@@ -38,6 +26,18 @@
 
     <bean id="mail" class="org.mockito.Mockito" factory-method="mock">
         <constructor-arg value="org.igov.io.mail.Mail" />
+    </bean>
+
+    <bean id="bytesDataStorage" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="org.igov.io.db.kv.statical.IBytesDataStorage" />
+    </bean>
+
+    <bean id="httpRequester" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="org.igov.io.web.HttpRequester" />
+    </bean>
+    
+    <bean id="httpEntityInsedeCover" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="org.igov.io.web.HttpEntityInsedeCover" />
     </bean>
 
     <context:property-placeholder location="classpath:email.properties" ignore-unresolvable="true"/>

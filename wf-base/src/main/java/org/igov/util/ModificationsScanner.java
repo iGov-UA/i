@@ -1,6 +1,6 @@
 package org.igov.util;
 
-import org.igov.service.controller.ActivitiController;
+import org.igov.service.controller.ActionTaskCommonController;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,7 +62,8 @@ public class ModificationsScanner {
                 return false;
             }
         } catch (IOException oException) {
-            LOG.error("Error while checking directory for modifications!", oException);
+            LOG.error("Error: {} while checking directory for modifications!", oException.getMessage());
+            LOG.trace("FAIL:", oException);
             //log.error("Error while checking directory for modifications!");
             //oException.printStackTrace();
             return true;
@@ -73,20 +74,20 @@ public class ModificationsScanner {
 
     private static File getFileHistory(String sPathScan)
             throws IOException {
-        LOG.debug("sPathScan: " + sPathScan);
+        LOG.debug("sPathScan: {}", sPathScan);
         File oFilePathHistory = new File(sPathScan + File.separator + ".." + File.separator + "..");
         //log.debug("Folder to save file with modifications: " + oFilePathHistory.getCanonicalPath());
-        LOG.debug("Folder to save file with modifications: " + oFilePathHistory.getCanonicalPath());
+        LOG.debug("Folder to save file with modifications: {}", oFilePathHistory.getCanonicalPath());
 
         //String sHistoryPathDiff = StringUtils.substringBefore(sPathScan, oFilePathHistory.getCanonicalPath() + File.separator);
         String sHistoryPathDiff = sPathScan.substring(oFilePathHistory.getCanonicalPath().length());
-        LOG.debug("sHistoryPathDiff=" + sHistoryPathDiff);
+        LOG.debug("(sHistoryPathDiff={})",  sHistoryPathDiff);
         String sHistoryFileName = sHistoryPathDiff.replace(File.separator, ".");
-        LOG.debug("sHistoryFileName=" + sHistoryFileName);
+        LOG.debug("(sHistoryFileName={})",  sHistoryFileName);
 
         File oFileHistory = new File(oFilePathHistory, sHistoryFileName + MODIFICAITONS_FILE_EXTENSITON);
         //log.debug("File for saving modified files: " + oFileHistory.getCanonicalPath());
-        LOG.debug("File for saving modified files: " + oFileHistory.getCanonicalPath());
+        LOG.debug("File for saving modified files: {}",  oFileHistory.getCanonicalPath());
         return oFileHistory;
     }
 
@@ -113,11 +114,13 @@ public class ModificationsScanner {
                     oPrintWriter.println(oFileParam.getValue() + DATE_NAME_SEPARATOR + oFileParam.getKey());
                 }
             } catch (FileNotFoundException oException) {
-                LOG.error("Unable to save file with modifications. ", oException);
+                LOG.error("Error: {}. Unable to save file with modifications. ", oException.getMessage());
+                LOG.trace("FAIL:", oException);
                 //log.error("Unable to save file with modifications. " + oException);
                 //oException.printStackTrace();
             } catch (IOException oException) {
-                LOG.error("Unable to save file with modifications. ", oException);            	
+                LOG.error("Error: {}. Unable to save file with modifications. ", oException.getMessage());
+                LOG.trace("FAIL:", oException);
                 //oException.printStackTrace();
             }
             if (oPrintWriter != null)

@@ -103,6 +103,14 @@ angular.module('dashboardJsApp')
         }, callback);
       },
 
+
+      getOrderMessages: function(processId, callback) {
+        return simpleHttpPromise({
+          method: 'GET',
+          url: '/api/tasks/' + processId + '/getOrderMessages'
+        }, callback);
+      },
+
       getTaskAttachments: function(taskId, callback) {
         return simpleHttpPromise({
           method: 'GET',
@@ -249,6 +257,7 @@ angular.module('dashboardJsApp')
             var scope = $rootScope.$new();
             scope.selectedTask = task;
             scope.taskForm = formProperties;
+            //scope.getPrintTemplate = function(){return PrintTemplateProcessor.getPrintTemplate(task, formProperties, templateResult.template, scope.lunaService);},
             scope.getPrintTemplate = function(){return PrintTemplateProcessor.getPrintTemplate(task, formProperties, templateResult.template);},
             scope.containsPrintTemplate = function(){return templateResult.template!='';}
             scope.getProcessName = processes.getProcessName;
@@ -317,10 +326,10 @@ angular.module('dashboardJsApp')
 
         return deferred.promise;
       },
-      getTasksByOrder: function(nID_Protected) {
+      getTasksByOrder: function(nID_Order) {
         return simpleHttpPromise({
             method: 'GET',
-            url: '/api/tasks/search/byOrder/' + nID_Protected
+            url: '/api/tasks/search/byOrder/' + nID_Order
           }
         );
       },
@@ -350,6 +359,21 @@ angular.module('dashboardJsApp')
         return simpleHttpPromise({
             method: 'GET',
             url: '/api/tasks/'+ nID_Task + '/attachments/' + nID_Attach + '/checkAttachmentSign'
+          }
+        );
+      },
+      unassign: function (nID_Task) {
+        return simpleHttpPromise({
+            method: 'PUT',
+            url: '/api/tasks/' + nID_Task + '/unassign'
+          }
+        );
+      },
+      getTaskData: function(nID_Task)
+      {
+        return simpleHttpPromise({
+            method: 'GET',
+            url: '/api/tasks/'+ nID_Task + '/getTaskData'
           }
         );
       }

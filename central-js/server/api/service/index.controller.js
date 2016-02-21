@@ -13,11 +13,11 @@ var buildUrl = function(path){
 };
 
 module.exports.index = function(req, res) {
-  activiti.sendGetRequest(req, res, '/services/getService?nID=' + req.query.nID);
+  activiti.sendGetRequest(req, res, '/action/item/getService?nID=' + req.query.nID);
 };
 
 module.exports.getServiceStatistics = function(req, res) {
-  activiti.sendGetRequest(req, res, '/services/getStatisticServiceCounts?nID_Service=' + req.params.nID);
+  activiti.sendGetRequest(req, res, '/action/event/getStatisticServiceCounts?nID_Service=' + req.params.nID);
 };
 
 module.exports.setService = function(req, res) {
@@ -27,7 +27,7 @@ module.exports.setService = function(req, res) {
     res.end()
   };
 
-  var url = buildUrl('/services/setService');
+  var url = buildUrl('/action/item/setService');
 
   request.post({
     'url': url,
@@ -54,7 +54,7 @@ module.exports.removeServiceData = function(req, res) {
     res.end();
   };
 
-  var url = buildUrl('/services/removeServiceData');
+  var url = buildUrl('/action/item/removeServiceData');
 
   request.del({
     'url': url,

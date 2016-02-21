@@ -3,7 +3,6 @@ angular.module('app').factory('DatepickerFactory', function($filter) {
     this.value = null;
     this.format = 'dd/MM/yyyy';
     this.opened = false;
-    this.options = {};
   };
 
   datepicker.prototype.today = function() {

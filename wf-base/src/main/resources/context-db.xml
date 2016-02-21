@@ -22,9 +22,7 @@
             <property name="packagesToScan">
                 <array>
                     <value>org.igov.model</value>
-                    <value>org.igov.activiti.common</value>
-                    <!--<value>org.wf.dp.dniprorada.base.service</value>-->
-
+                    <value>org.igov.service.business.action.task.core</value>
                 </array>
             </property>
 
@@ -53,29 +51,11 @@
             </tx:attributes>
         </tx:advice>
 
-        <aop:config>
-            <aop:pointcut id="model.core" expression="execution(* org.igov.model.core.*.*(..))"/>
-
-            <aop:advisor pointcut-ref="model.core" advice-ref="txAdvice"/>
-        </aop:config>
-
         <aop:aspectj-autoproxy proxy-target-class="true" />
 
-        <!-- ==============================   DAO   ============================= -->
-
-        <bean id="flowPropertyDao" class="org.igov.model.core.GenericEntityDao">
-            <constructor-arg value="#{T(org.igov.model.flow.FlowProperty)}"/>
-        </bean>
-
-        <bean id="flowPropertyClassDao" class="org.igov.model.core.GenericEntityDao">
-            <constructor-arg value="#{T(org.igov.model.flow.FlowPropertyClass)}"/>
-        </bean>
-
-        <bean id="subjectOrganDepartmentDao" class="org.igov.model.core.GenericEntityDao">
-            <constructor-arg value="#{T(org.igov.model.subject.SubjectOrganDepartment)}"/>
-        </bean>
-
+        
         <!-- ============================ LIQUIBASE ============================= -->
+        
         <bean id="liquibase" class="liquibase.integration.spring.SpringLiquibase">
             <property name="dataSource" ref="dataSource"/>
             <property name="changeLog" value="classpath:liquibase/db.changelog-master.xml"/>

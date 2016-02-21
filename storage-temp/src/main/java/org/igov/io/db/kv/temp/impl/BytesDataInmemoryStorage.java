@@ -42,10 +42,10 @@ public class BytesDataInmemoryStorage implements IBytesDataInmemoryStorage {
             }
             oTemplateByteArray.boundValueOps(sKey).set(aByte);
             oTemplateByteArray.expire(sKey, Long.valueOf(nStorageTimeMinutes), TimeUnit.MINUTES);
-        } catch (Exception e) {
-            LOG.error("FAIL: {} (sKey={},aByte={})", e.getMessage(), sKey, Arrays.toString(aByte));
-            LOG.trace("FAIL", e);
-            throw new RecordInmemoryException(RecordInmemoryException.CODE_UNKNOWN_EXCEPTION, "[putBytes](sKey=" + sKey + ",aByte=" + Arrays.toString(aByte) + "):" + e.getMessage(), e);
+        } catch (Exception oException) {
+            LOG.error("FAIL: {} (sKey={},aByte={})", oException.getMessage(), sKey, Arrays.toString(aByte));
+            LOG.trace("FAIL", oException);
+            throw new RecordInmemoryException(RecordInmemoryException.CODE_UNKNOWN_EXCEPTION, "[putBytes](sKey=" + sKey + ",aByte=" + Arrays.toString(aByte) + "):" + oException.getMessage(), oException);
         }
         return sKey;
 
@@ -56,9 +56,9 @@ public class BytesDataInmemoryStorage implements IBytesDataInmemoryStorage {
         byte[] aByte;
         try {
             aByte = oTemplateByteArray.boundValueOps(sKey).get();
-        } catch (Exception e) {
-            LOG.error("FAIL: {} (sKey={})", e.getMessage(), sKey);
-            throw new RecordInmemoryException(RecordInmemoryException.CODE_UNKNOWN_EXCEPTION, "[getBytes](sKey=" + sKey + "):" + e.getMessage(), e);
+        } catch (Exception oException) {
+            LOG.error("FAIL: {} (sKey={})", oException.getMessage(), sKey);
+            throw new RecordInmemoryException(RecordInmemoryException.CODE_UNKNOWN_EXCEPTION, "[getBytes](sKey=" + sKey + "):" + oException.getMessage(), oException);
         }
         return aByte;
     }
@@ -68,10 +68,10 @@ public class BytesDataInmemoryStorage implements IBytesDataInmemoryStorage {
         try {
             oTemplateString.boundValueOps(sKey).set(sValue);
             oTemplateString.expire(sKey, Long.valueOf(nStorageTimeMinutes), TimeUnit.MINUTES);
-        } catch (Exception e) {
-            LOG.error("FAIL: {} (sKey={},sValue={})", e.getMessage(), sKey, sValue);
-            LOG.trace("FAIL", e);
-            throw new RecordInmemoryException(RecordInmemoryException.CODE_UNKNOWN_EXCEPTION, "[putString](sKey=" + sKey + ",sValue=" + sValue + "):" + e.getMessage(), e);
+        } catch (Exception oException) {
+            LOG.error("FAIL: {} (sKey={},sValue={})", oException.getMessage(), sKey, sValue);
+            LOG.trace("FAIL", oException);
+            throw new RecordInmemoryException(RecordInmemoryException.CODE_UNKNOWN_EXCEPTION, "[putString](sKey=" + sKey + ",sValue=" + sValue + "):" + oException.getMessage(), oException);
         }
         return sKey;
     }
@@ -81,9 +81,9 @@ public class BytesDataInmemoryStorage implements IBytesDataInmemoryStorage {
         String sReturn = null;
         try {
             sReturn = oTemplateString.boundValueOps(sKey).get();
-        } catch (Exception e) {
-            LOG.error("FAIL: {} (sKey={})", e.getMessage(), sKey);
-            throw new RecordInmemoryException(RecordInmemoryException.CODE_UNKNOWN_EXCEPTION, "[getString](sKey=" + sKey + "):" + e.getMessage(), e);
+        } catch (Exception oException) {
+            LOG.error("FAIL: {} (sKey={})", oException.getMessage(), sKey);
+            throw new RecordInmemoryException(RecordInmemoryException.CODE_UNKNOWN_EXCEPTION, "[getString](sKey=" + sKey + "):" + oException.getMessage(), oException);
         }
         return sReturn;
 

@@ -1,0 +1,472 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="sumy_cnap_353" name="Проведення обстежень зелених насаджень, оформлення і надання відповідних документів на їх видалення" isExecutable="true">
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAdress" name="Адреса реєстрації заявника" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAdress2" name="Точна адреса знаходження зелених насаджень" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sReason" name="Об’єктивна причина для видалення зелених насаджень" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="aParticipation" name="Погоджуютесь брати участь у роботі комісії" type="enum" required="true">
+          <activiti:value id="oYes" name="Так"></activiti:value>
+          <activiti:value id="oNo" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="nFile1" name="Документ про сплату відновної вартості;(у разі її сплати)" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFile2" name="Документи, що підтверджують право власності, оренди, користування земельною ділянкою;(у разі необхідності)" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFile3" name="Документи на право проведення будівельних, ремонтних та інших робіт;(у разі необхідності)" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sNotice" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <serviceTask id="servicetask2" name="Повідомлення співробітнику ЦНАПа про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>ms@igov.org.ua</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Нове звернення. Проведення обстежень зелених насаджень, оформлення і надання відповідних документів на їх видалення.]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;strong&gt;Шановний(-а) колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
+У Вас в черзі на обробку нове звернення с приводу проведення обстежень зелених насаджень, оформлення і надання відповідних документів на їх видалення.&lt;br /&gt;
+Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
+Відпрацюйте це звернення на &lt;a href="https://region.igov.org.ua" target="_blank"&gt;порталі&lt;/a&gt;
+[pattern/mail/_common_signature.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
+    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
+    <serviceTask id="servicetask3" name="Повідомлення громадянина про доставку звернення до ЦНАПу" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Проведення обстежень зелених насаджень, оформлення і надання відповідних документів на їх видалення.]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+&lt;p&gt; Ваше звернення с приводу проведення обстежень зелених насаджень, оформлення і надання відповідних документів на їх видалення було зареєстровано у системі.&lt;br/&gt;
+Повідомлення про результат послуги буде спрямоване на Ваш e-mail.&lt;/p&gt;
+&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:425:5]&lt;br /&gt;
+[pattern/mail/_common_signature_start.html]
+[pattern_dictonary:dnepr_reg_cnap.csv:425:2]&lt;br /&gt;
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
+    <userTask id="usertask1" name="Обробка звернення ЦНАПом (1-й крок)" activiti:candidateGroups="cnap_sum_sum">
+      <extensionElements>
+        <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdress" name="Адреса реєстрації заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdress2" name="Адреса знаходження зелених насаджень" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sReason" name="Об’єктивна причина для видалення зелених насаджень" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="aParticipation" name="Погоджуютесь брати участь у роботі комісії" type="enum" writable="false">
+          <activiti:value id="oYes" name="Так"></activiti:value>
+          <activiti:value id="oNo" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sAdminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNumberCnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDate_registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="aDecision" name="Рішення держслужбовця" type="enum">
+          <activiti:value id="oDoc_ok" name="З документами все гаразд - передати документи в Департамент інфраструктури"></activiti:value>
+          <activiti:value id="oDoc_bad" name="Відмовити за недостатньої кількості документів або даних"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDecisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="markers12" name="принтформа якщо згоден" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_12&quot;:{&quot;aElement_ID&quot;:[&quot;participYes_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;aParticipation&quot;},&quot;sCondition&quot;:&quot;[sCond]=='oYes'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers13" name="принтформа якщо не згоден" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;participNo_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;aParticipation&quot;},&quot;sCondition&quot;:&quot;[sCond]=='oNo'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/sumy/sumy_cnap_353_print.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression>${nFile1},${nFile2},${nFile3}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow4" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow5" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
+    <serviceTask id="servicetask4" name="Повідомлення про відмову реєстрації звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Проведення обстежень зелених насаджень, оформлення і надання відповідних документів на їх видалення.]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+На жаль, Ваше звернення щодо проведення обстежень зелених насаджень, оформлення і надання відповідних документів на їх видалення - відхилине.&lt;/p&gt;
+&lt;p&gt;Причина в наступному: 
+&lt;/p&gt;
+&lt;p&gt;${sDecisionComment}&lt;/p&gt;
+&lt;p&gt;Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/ target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
+&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:425:5]&lt;br /&gt;
+[pattern/mail/_common_signature_start.html]
+[pattern_dictonary:dnepr_reg_cnap.csv:425:2],&lt;br /&gt;
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow6" name="aDecision == 'oDoc_bad'" sourceRef="exclusivegateway1" targetRef="servicetask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${aDecision == 'oDoc_bad'}]]></conditionExpression>
+    </sequenceFlow>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <sequenceFlow id="flow7" sourceRef="servicetask4" targetRef="endevent1"></sequenceFlow>
+    <serviceTask id="servicetask5" name="Повідомлення про реєстрацію звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Проведення обстежень зелених насаджень, оформлення і надання відповідних документів на їх видалення.]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+&lt;p&gt;Ваше звернення щодо проведення обстежень зелених насаджень, оформлення і надання відповідних документів на їх видалення - відправлене в департамент інфраструктури міста Сумської міської ради.&lt;br /&gt;
+Спеціалісти повинні дати відповідь протягом 30-ти календарних днів з дня реєстрації заяви.&lt;br /&gt; 
+Номер Вашого замовлення: ${sNumberCnap}&lt;br /&gt;
+&lt;/p&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:425:5]&lt;br /&gt; 
+[pattern/mail/_common_signature_start.html]
+[pattern_dictonary:dnepr_reg_cnap.csv:425:2],&lt;br /&gt;
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow8" name="aDecision == 'oDoc_ok'" sourceRef="exclusivegateway1" targetRef="servicetask5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${aDecision == 'oDoc_ok'}]]></conditionExpression>
+    </sequenceFlow>
+    <userTask id="usertask2" name="Обробка звернення Департаментом інфраструктури міста Сумської міської ради (2-й крок)" activiti:candidateGroups="dep_infr_sum_sum">
+      <extensionElements>
+        <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdress" name="Адреса реєстрації заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdress2" name="Адреса знаходження зелених насаджень" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sReason" name="Об’єктивна причина для видалення зелених насаджень" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="aParticipation" name="Погоджуютесь брати участь у роботі комісії" type="enum" writable="false">
+          <activiti:value id="oYes" name="Так"></activiti:value>
+          <activiti:value id="oNo" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sAdminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNumberCnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDate_registrastion" name="Дата реєстрації звернення у ЦНАПі" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateOutput" name="Назначте дату та час виходу комісії (у форматі ДД/ММ/РРРР  ГГ:ХВ)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDecisionComment2" name="Якщо потребує - залишти коментар замовнику" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/sumy/sumy_cnap_353_print.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression>${nFile1},${nFile2},${nFile3}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow9" sourceRef="servicetask5" targetRef="usertask2"></sequenceFlow>
+    <serviceTask id="servicetask6" name="Повідомлення громадянина про час виїзду комісії" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Проведення обстежень зелених насаджень, оформлення і надання відповідних документів на їх видалення.]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+&lt;p&gt;По Вашому зверненню щодо проведення обстежень зелених насаджень, оформлення і надання відповідних документів на їх видалення - сформована комісія у складі: представників  департаменту інфраструктури міста Сумської міської ради, представника Державної екологічної інспекції.&lt;br /&gt;
+При подачі звернення Ви обрали: "Погоджуюсь брати участь у роботі комісії".&lt;br /&gt; 
+Дата та час обстеження місця розташування зелених насаджень комісією: &lt;b&gt;${sDateOutput}&lt;/b&gt;&lt;br /&gt;
+Адреса проведення обстеження зелених насаджень: &lt;i&gt;${sAdress2}&lt;/i&gt;&lt;br /&gt;
+&lt;/p&gt;
+Телефон для довідок: (0542) 70-05-90&lt;br /&gt; 
+[pattern/mail/_common_signature_start.html]
+Департамент інфраструктури міста Сумської міської ради,&lt;br /&gt;
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow10" sourceRef="usertask2" targetRef="exclusivegateway2"></sequenceFlow>
+    <sequenceFlow id="flow11" name="aParticipation == 'oYes'" sourceRef="exclusivegateway2" targetRef="servicetask6">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${aParticipation == 'oYes'}]]></conditionExpression>
+    </sequenceFlow>
+    <userTask id="usertask3" name="Підготовка документів Департаментом інфраструктури після прийняття рішення (3-й крок)" activiti:candidateGroups="dep_infr_sum_sum">
+      <extensionElements>
+        <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdress" name="Адреса реєстрації заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdress2" name="Адреса знаходження зелених насаджень" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sReason" name="Об’єктивна причина для видалення зелених насаджень" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="aParticipation" name="Погоджуютесь брати участь у роботі комісії" type="enum" writable="false">
+          <activiti:value id="oYes" name="Так"></activiti:value>
+          <activiti:value id="oNo" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sAdminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNumberCnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDate_registrastion" name="Дата реєстрації звернення у ЦНАПі" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDecisionComment3" name="Якщо потребує залиште коментар адміністратору ЦНАП" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="nFileDoc" name="Завантажте акт обстеження зелених насаджень або Ордер на видалення зелених насаджень" type="file" required="true"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow12" name="aParticipation == 'oNo'" sourceRef="exclusivegateway2" targetRef="usertask3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${aParticipation == 'oNo'}]]></conditionExpression>
+    </sequenceFlow>
+    <userTask id="usertask4" name="Кінцева обробка звернення адміністратором ЦНАП (4-й крок)" activiti:candidateGroups="cnap_sum_sum">
+      <extensionElements>
+        <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdress" name="Адреса реєстрації заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdress2" name="Адреса знаходження зелених насаджень" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sReason" name="Об’єктивна причина для видалення зелених насаджень" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="aParticipation" name="Погоджуютесь брати участь у роботі комісії" type="enum" writable="false">
+          <activiti:value id="oYes" name="Так"></activiti:value>
+          <activiti:value id="oNo" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sAdminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNumberCnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDate_registrastion" name="Дата реєстрації звернення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDecisionComment3" name="Коментар департаменту інфраструктури" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression>${nFileDoc}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow13" sourceRef="usertask3" targetRef="usertask4"></sequenceFlow>
+    <sequenceFlow id="flow14" sourceRef="servicetask6" targetRef="usertask3"></sequenceFlow>
+    <serviceTask id="servicetask7" name="Відповідь громадянину з актом" activiti:delegateExpression="#{MailTaskWithAttachments}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Проведення обстежень зелених насаджень, оформлення і надання відповідних документів на їх видалення.]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+&lt;p&gt;
+Ваше звернення щодо проведення обстежень зелених насаджень, оформлення і надання відповідних документів на їх видалення - опрацьовано. &lt;br /&gt;
+Копія акту (ордеру) у додатку до цього листа.&lt;br/&gt;
+Ви можете отримати акт (ордер) особисто за адресою:&lt;br/&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:425:3]&lt;br /&gt;
+При собі треба мати документ, що посвідчує особу.
+&lt;/p&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:425:5]&lt;br /&gt; 
+&lt;br /&gt;
+Графік роботи:&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:425:4]&lt;br /&gt;
+[pattern/mail/_common_signature_start.html]
+[pattern_dictonary:dnepr_reg_cnap.csv:425:2],&lt;br /&gt;
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_feedback.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>${nFileDoc}</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow15" sourceRef="usertask4" targetRef="servicetask7"></sequenceFlow>
+    <endEvent id="endevent2" name="End"></endEvent>
+    <sequenceFlow id="flow16" sourceRef="servicetask7" targetRef="endevent2"></sequenceFlow>
+    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
+      <errorEventDefinition></errorEventDefinition>
+    </boundaryEvent>
+    <endEvent id="endevent3" name="End"></endEvent>
+    <sequenceFlow id="flow17" sourceRef="boundaryerror1" targetRef="endevent3"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_sumy_cnap_353">
+    <bpmndi:BPMNPlane bpmnElement="sumy_cnap_353" id="BPMNPlane_sumy_cnap_353">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="70.0" y="120.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="71.0" width="105.0" x="130.0" y="102.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
+        <omgdc:Bounds height="30.0" width="30.0" x="190.0" y="142.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
+        <omgdc:Bounds height="71.0" width="105.0" x="260.0" y="102.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
+        <omgdc:Bounds height="71.0" width="105.0" x="390.0" y="102.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="71.0" width="105.0" x="520.0" y="102.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="552.0" y="220.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
+        <omgdc:Bounds height="81.0" width="105.0" x="390.0" y="200.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="310.0" y="223.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
+        <omgdc:Bounds height="81.0" width="105.0" x="520.0" y="290.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
+        <omgdc:Bounds height="91.0" width="105.0" x="520.0" y="400.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
+        <omgdc:Bounds height="81.0" width="105.0" x="238.0" y="405.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="400.0" y="425.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
+        <omgdc:Bounds height="71.0" width="105.0" x="368.0" y="495.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask4" id="BPMNShape_usertask4">
+        <omgdc:Bounds height="81.0" width="105.0" x="368.0" y="600.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
+        <omgdc:Bounds height="81.0" width="105.0" x="234.0" y="600.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
+        <omgdc:Bounds height="35.0" width="35.0" x="150.0" y="623.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
+        <omgdc:Bounds height="35.0" width="35.0" x="187.0" y="223.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="105.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="130.0" y="137.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="235.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="260.0" y="137.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="365.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="390.0" y="137.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="495.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="520.0" y="137.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="572.0" y="173.0"></omgdi:waypoint>
+        <omgdi:waypoint x="572.0" y="220.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+        <omgdi:waypoint x="552.0" y="240.0"></omgdi:waypoint>
+        <omgdi:waypoint x="495.0" y="240.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="495.0" y="200.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
+        <omgdi:waypoint x="390.0" y="240.0"></omgdi:waypoint>
+        <omgdi:waypoint x="345.0" y="240.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
+        <omgdi:waypoint x="572.0" y="260.0"></omgdi:waypoint>
+        <omgdi:waypoint x="572.0" y="290.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="581.0" y="248.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
+        <omgdi:waypoint x="572.0" y="371.0"></omgdi:waypoint>
+        <omgdi:waypoint x="572.0" y="400.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
+        <omgdi:waypoint x="520.0" y="445.0"></omgdi:waypoint>
+        <omgdi:waypoint x="440.0" y="445.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
+        <omgdi:waypoint x="400.0" y="445.0"></omgdi:waypoint>
+        <omgdi:waypoint x="343.0" y="445.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="351.0" y="390.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
+        <omgdi:waypoint x="420.0" y="465.0"></omgdi:waypoint>
+        <omgdi:waypoint x="420.0" y="495.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="429.0" y="453.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
+        <omgdi:waypoint x="420.0" y="566.0"></omgdi:waypoint>
+        <omgdi:waypoint x="420.0" y="600.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
+        <omgdi:waypoint x="290.0" y="486.0"></omgdi:waypoint>
+        <omgdi:waypoint x="290.0" y="530.0"></omgdi:waypoint>
+        <omgdi:waypoint x="368.0" y="530.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
+        <omgdi:waypoint x="368.0" y="640.0"></omgdi:waypoint>
+        <omgdi:waypoint x="339.0" y="640.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
+        <omgdi:waypoint x="234.0" y="640.0"></omgdi:waypoint>
+        <omgdi:waypoint x="185.0" y="640.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
+        <omgdi:waypoint x="205.0" y="172.0"></omgdi:waypoint>
+        <omgdi:waypoint x="204.0" y="223.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

@@ -4,9 +4,20 @@ var compose = require('composable-middleware');
 var config = require('../config/environment');
 var documents = require('../api/documents/documents.controller.js');
 
+function isAuthenticationInProgress(type) {
+  return compose().use(function (req, res, next) {
+    if (req.session && req.session.prepare && req.session.prepare.type === type) {
+      next();
+    } else {
+      res.status(401).send({msg: 'you should initiate authentication process at first'});
+      res.end();
+    }
+  });
+}
+
 function isAuthenticated() {
   return compose().use(function (req, res, next) {
-    if (req.session && req.session.access && req.session.subject) {
+    if (req.session && !req.session.prepare && req.session.access && req.session.subject) {
       next();
     } else {
       res.status(401);
@@ -40,6 +51,17 @@ function isDocumentOwner() {
   });
 }
 
+function createPrepareSessionObject(type, data){
+  return {
+    type : type,
+    data : data
+  }
+}
+
+function createSessionObjectFromPrepare(prepare){
+  return createSessionObject(prepare.type, prepare.data.user, prepare.data.access);
+}
+
 function createSessionObject(type, user, access) {
   return {
     type: type,
@@ -54,5 +76,8 @@ function createSessionObject(type, user, access) {
 }
 
 exports.isAuthenticated = isAuthenticated;
+exports.isAuthenticationInProgress = isAuthenticationInProgress;
 exports.isDocumentOwner = isDocumentOwner;
 exports.createSessionObject = createSessionObject;
+exports.createPrepareSessionObject = createPrepareSessionObject;
+exports.createSessionObjectFromPrepare = createSessionObjectFromPrepare;

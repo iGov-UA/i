@@ -23,8 +23,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.context.WebApplicationContext;
-import org.igov.util.convert.JsonRestUtils;
-import org.igov.model.ObjectCustoms;
+import org.igov.util.JSON.JsonRestUtils;
+import org.igov.model.object.ObjectCustoms;
 
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -32,9 +32,9 @@ import org.igov.model.ObjectCustoms;
 @ActiveProfiles("default")
 public class ObjectCustomsControllerTest 
 {
-    public static final String GET_OBJECTCUSTOMS = "/services/getObjectCustoms";
-    public static final String SET_OBJECTCUSTOMS = "/services/setObjectCustoms";
-    public static final String REMOVE_OBJECTCUSTOMS = "/services/removeObjectCustoms";
+    public static final String GET_OBJECTCUSTOMS = "/object/getObjectCustoms";
+    public static final String SET_OBJECTCUSTOMS = "/object/setObjectCustoms";
+    public static final String REMOVE_OBJECTCUSTOMS = "/object/removeObjectCustoms";
     public static final Integer HTTP_OK = 200;
     public static final Integer HTTP_FORBIDDEN = 403;
     public static final Integer HTTP_NOCONTENT = 204;
@@ -141,7 +141,7 @@ public class ObjectCustomsControllerTest
     private MockHttpServletResponse getResponse(String url, Map<String, String> params) throws Exception
     {
          MockHttpServletRequestBuilder request = get(url);
-         if(params != null && params.size() > 0)
+         if(params != null && !params.isEmpty())
          {
              for(String key : params.keySet())
              {

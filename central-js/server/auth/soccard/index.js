@@ -2,7 +2,7 @@
 
 var express = require('express');
 var passport = require('passport');
-var auth = require('../auth.service');
+var authService = require('../auth.service');
 
 var router = express.Router();
 
@@ -39,6 +39,7 @@ router.get('/callback', function (req, res, next) {
       res.redirect(req.query.link + '?error=' + JSON.stringify(error));
     } else {
       req.session = authService.createSessionObject('soccard', user, info);
+      delete req.session.prepare;
       res.redirect(req.query.link);
     }
   })(req, res, next)

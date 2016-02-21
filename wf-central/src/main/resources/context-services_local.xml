@@ -7,23 +7,23 @@
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
 
-    <beans>
+    <!--beans-->
         
         <!-- ===========================   TRANSACTIONS   ========================= -->
 
-        <mvc:interceptors>
+        <!--mvc:interceptors>
             <mvc:interceptor>
                 <mvc:mapping path="/**" />
-                    <bean class="org.igov.service.interceptor.RequestProcessingInterceptor" />
+                    <bean class="org.igov.service.controller.interceptor.RequestProcessingInterceptor" />
                 </mvc:interceptor>
-        </mvc:interceptors>
+        </mvc:interceptors-->
 
-        <aop:config>
+        <!--aop:config>
             <aop:pointcut id="model.core" expression="execution(* org.igov.model.core.*.*(..))"/>
 
             <aop:advisor pointcut-ref="model.core" advice-ref="txAdvice"/>
-        </aop:config>
+        </aop:config-->
 
-    </beans>
+    <!--/beans-->
 
 </beans>

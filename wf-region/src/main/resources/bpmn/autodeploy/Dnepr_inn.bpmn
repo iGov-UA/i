@@ -10,7 +10,7 @@
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string"></activiti:formProperty>
         <activiti:formProperty id="area" name="Виберіть район, в якому ви обслуговуєтесь" type="enum" required="true">
-          <activiti:value id="dnepr_babush" name="Дніпропетровськ - Бабушкінський (вул. Героїв Сталінграду, 25)|0462"></activiti:value>
+          <activiti:value id="dnepr_babush" name="Дніпропетровськ - Кіровський (вул. Горького, 22)|0465"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="adress1" name="Ваша адреса реєстрації; поштовий індекс, країна, область, район, населений пункт, вулиця, номер будинку, корпус, квартира - перерахуйте через кому, будь ласка" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Ваш контактний телефон" type="string" required="true"></activiti:formProperty>
@@ -46,6 +46,7 @@
           <activiti:value id="attr1_ok" name="Заповнені дані вірні, інформація направлена на розгляд, очікується рішення"></activiti:value>
           <activiti:value id="attr2_bad" name="Дані заповнені неправильно, повідомити громадянина (обов'язково впишіть коментар вище)"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dfs_form_5dr.html]" type="invisible" default="Форма 5др" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
@@ -76,6 +77,7 @@
           <activiti:value id="attr2_bad" name="Дані заповнені неправильно, повідомити громадянина (обов'язково впишіть коментар вище)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment2" name="Коментар до заяви на етапі 2" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dfs_form_5dr.html]" type="invisible" default="Форма 5др" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression>${passport_scan},${bankId_scan_passport},${document}</activiti:expression>
@@ -158,9 +160,9 @@
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;
 &lt;p&gt;На жаль, Ваше звернення щодо отримання ІПН у зв'язку зі зміною прізвища відхилене у зв'язку з:&lt;/p&gt;
-&lt;p&gt;${comment}&lt;/p&gt;
+&lt;p&gt;${comment1}&lt;/p&gt;
 
 [pattern/mail/_common_signature_start.html]
 [pattern/mail/_common_signature_end.html]

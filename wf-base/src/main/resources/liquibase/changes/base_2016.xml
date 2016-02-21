@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+
+    <changeSet id="issue-1138-addTableActionTaskLink" author="nickveremeichyk">
+        <createTable tableName="ActionTaskLink">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="nID_Process" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sKey" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nID_Subject_Holder" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+
+    <changeSet id="issue-1138-addTableActionTaskLinkType" author="nickveremeichyk">
+        <createTable tableName="ActionTaskLinkType">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sID" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sName" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    
+    <changeSet id="Init action execute tables" author="alex.maryushin" runOnChange="true">
+		<sql splitStatements="true" dbms="postgresql">
+			DROP TABLE IF EXISTS "ActionExecute" CASCADE;
+			DROP TABLE IF EXISTS "ActionExecuteOld" CASCADE;
+			DROP TABLE IF EXISTS "ActionExecuteStatus" CASCADE;
+		</sql>
+		<sql splitStatements="true" dbms="h2">
+			DROP TABLE IF EXISTS "ActionExecute" CASCADE;
+			DROP TABLE IF EXISTS "ActionExecuteOld" CASCADE;
+			DROP TABLE IF EXISTS "ActionExecuteStatus" CASCADE;
+		</sql>
+		
+		<!-- ####################################################################################################### -->        
+        <createTable tableName="ActionExecuteStatus">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sID" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sName" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>        
+		<!-- ####################################################################################################### -->
+        <createTable tableName="ActionExecute">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="nID_ActionExecuteStatus" type="int">
+               <constraints nullable="false"
+                            foreignKeyName="FK_ActionExecute_ActionExecuteStatus"
+                            referencedTableName="ActionExecuteStatus" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+            <column name="oDateMake" type="timestamp">
+                <constraints nullable="false"/>            
+            </column>
+            <column name="oDateEdit" type="timestamp">
+                <constraints nullable="true"/>            
+            </column>            
+			<column name="nTry" type="int">
+                <constraints nullable="true"/>
+            </column>            
+			<column name="sMethod" type="varchar(50)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="soRequest" type="varchar(500)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="smParam" type="varchar(500)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sReturn" type="varchar(500)">
+            </column>                                    
+        </createTable>
+		<!-- ####################################################################################################### -->
+        <createTable tableName="ActionExecuteOld">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="nID_ActionExecuteStatus" type="int">
+               <constraints nullable="false"
+                            foreignKeyName="FK_ActionExecuteOld_ActionExecuteStatus"
+                            referencedTableName="ActionExecuteStatus" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+            <column name="oDateMake" type="timestamp">
+                <constraints nullable="false"/>            
+            </column>
+            <column name="oDateEdit" type="timestamp">
+                <constraints nullable="true"/>            
+            </column>            
+			<column name="nTry" type="int">
+                <constraints nullable="true"/>
+            </column>            
+			<column name="sMethod" type="varchar(50)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="soRequest" type="varchar(500)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="smParam" type="varchar(500)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sReturn" type="varchar(500)">
+            </column>                                    
+        </createTable>						        				        				
+	
+        <addAutoIncrement tableName="ActionExecute" columnName="nID" startWith="1" columnDataType="bigint"/>
+        <addAutoIncrement tableName="ActionExecuteOld" columnName="nID" startWith="1" columnDataType="bigint"/>	   
+        
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/ActionExecuteStatus.csv" tableName="ActionExecuteStatus" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sID" type="STRING"/>
+            <column name="sName" type="STRING"/>
+        </loadUpdateData>
+             
+	</changeSet>    
+
+</databaseChangeLog>

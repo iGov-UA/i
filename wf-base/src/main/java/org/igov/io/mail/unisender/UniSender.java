@@ -1,38 +1,32 @@
 package org.igov.io.mail.unisender;
 
 import com.mongodb.util.JSON;
-import java.io.UnsupportedEncodingException;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.FormHttpMessageConverter;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.ResourceHttpMessageConverter;
-import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import org.igov.debug.Log;
-import static org.igov.debug.Log.oLogBig_Mail;
 import org.igov.io.web.HttpEntityCover;
-import static org.igov.util.Util.sCut;
+import static org.igov.util.Tool.sCut;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Created by Dmytro Tsapko on 11/28/2015.
  */
 public class UniSender {
+    
     final static private Logger LOG = LoggerFactory.getLogger(UniSender.class);
+    private static final Logger LOG_BIG = LoggerFactory.getLogger("MailBig");
+    
     final static private String API_URL = "http://api.unisender.com/";
     final static private String SUBSCRIBE_URI = "/api/subscribe";
     final static private String CREATE_EMAIL_MESSAGE_URI = "/api/createEmailMessage";
@@ -117,20 +111,18 @@ public class UniSender {
     /**
      * this method has double_optin equals to 3 and overwrite equals to 1.
      *
-     * @param aaID
+     * @param asID
      * @param sMail
      * @return
      */
-    public UniResponse subscribe(List<String> aaID, String sMail) throws Exception {
-
+    public UniResponse subscribe(List<String> asID, String sMail) throws Exception {
         SubscribeRequest oSubscribeRequest = SubscribeRequest.getBuilder(this.sAuthKey, this.sLang)
-                .setListIds(aaID)
+                .setListIds(asID)
                 .setEmail(sMail)
                 .setDoubleOptin(3)
                 .setOverwrite(1).build();
 
         return subscribe(oSubscribeRequest);
-
     }
 
     public UniResponse createEmailMessage(String sFromName, String sFromMail, String sSubject, String sBody,
@@ -245,7 +237,7 @@ public class UniSender {
             LOG.warn("RESULT WARN (oUniResponse={})"+oUniResponse.getWarnings());
         }
         if(oUniResponse.getError().size()>0){
-            LOG.error("RESULT FAIL (oUniResponse={})"+oUniResponse.getError());
+            LOG.error("RESULT FAIL (oUniResponse={})", oUniResponse.getError());
             throw new Exception("RESULT "+oUniResponse.getError());
         }*/
 
@@ -289,7 +281,7 @@ public class UniSender {
         //result HTTP Request httpEntity
 //        LOG.info("!!!!!!!!!!!before send RESULT mParamObject: {}", mParamObject);
         //LOG.info("SENDING... (sURL={})", sURL);
-        oLogBig_Mail.info("REQUESTING... (osURL={}, mParamObject={})", sURL, mParamObject.toString());
+        LOG_BIG.debug("REQUESTING... (osURL={}, mParamObject={})", sURL, mParamObject.toString());
         
 //        HttpEntity oHttpEntity = new HttpEntity(mParamObject, oHttpHeaders);
 //        ResponseEntity<String> osResponseEntity = oRestTemplate.postForEntity(sURL, oHttpEntity, String.class);
@@ -305,21 +297,21 @@ public class UniSender {
         String sReturn = oHttpEntityCover.sReturn();
         if(!oHttpEntityCover.bStatusOk()){
             //oHttpEntityCover.
-            LOG.error("RESULT FAIL! (sURL={}, mParamObject={}, nReturn={}, sReturn(cuted)={})", sURL, mParamObject.toString(), oHttpEntityCover.nStatus(), sCut(100, sReturn));
-            oLogBig_Mail.error("RESULT FAIL (sReturn={})", sReturn);
+            LOG.error("RESULT FAIL! (sURL={}, mParamObject={}, nReturn={}, sReturn(cuted)={})", sURL, mParamObject.toString(), oHttpEntityCover.nStatus(), sReturn);
+            //oLogBig_Mail.error("RESULT FAIL (sReturn={})", sReturn);
             throw new Exception("[sendRequest](sURL="+sURL+"): nStatus()="+oHttpEntityCover.nStatus());
         }
         LOG.info("RESULT GOT! (sURL={}, mParamObject(cuted)={}, sReturn(cuted)={})", sURL, sCut(100, mParamObject.toString()), sCut(100, sReturn));
-        oLogBig_Mail.info("RESULT GOT! (sReturn={})", sReturn);
+        LOG_BIG.debug("RESULT GOT! (sReturn={})", sReturn);
         
         //LOG.info("RESULT (oUniResponse={})", sCut(100, oUniResponse.toString()));
         //oLogBig_Mail.info("RESULT (oUniResponse={})", oUniResponse);
         UniResponse oUniResponse = getUniResponse(sReturn);
         if(oUniResponse.getWarnings().size()>0){
-            LOG.warn("RESULT WARN (oUniResponse.getWarnings()={})"+oUniResponse.getWarnings());
+            LOG.warn("RESULT WARN (oUniResponse.getWarnings()={})", oUniResponse.getWarnings());
         }
         if(oUniResponse.getError().size()>0){
-            LOG.error("RESULT FAIL (oUniResponse.getError()={})"+oUniResponse.getError());
+            LOG.error("RESULT FAIL (oUniResponse.getError()={})", oUniResponse.getError());
             throw new Exception("RESULT "+oUniResponse.getError());
         }
         

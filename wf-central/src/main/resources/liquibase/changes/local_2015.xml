@@ -939,33 +939,106 @@
         </addColumn>
     </changeSet>
     
-    <!--changeSet id="issue-1053-remove-sMail-from-SubjectMessage" author="lesha1980" runOnChange="true" dbms="postgresql" failOnError="false">
+    <changeSet id="issue-1053-remove-sMail-from-SubjectMessage" author="lesha1980" runOnChange="true" dbms="postgresql" failOnError="false">
        <preConditions onFail="MARK_RAN">
            <columnExists tableName="SubjectMessage" columnName="sMail"/>
-           <sqlCheck expectedResult="0">select count('sMail') from 'SubjectMessage' where 'sMail' <> '' and 'sMail' is not null</sqlCheck>
+           <sqlCheck expectedResult="0">select count("sMail") from "SubjectMessage"
+                  </sqlCheck>
        </preConditions>
        <comment>remove column 'sMail' from table 'SubjectMessage'</comment>
-       <dropColumn tableName="SubjectMessage" columnName="sMail"/-->
-       <!--rollback>
-          <addColumn tableName="SubjectMessage">
-              <column name="sMail" type="varchar(100)"/>
-          </addColumn>     
-       </rollback-->
-    <!--/changeSet> 
+       <dropColumn tableName="SubjectMessage" columnName="sMail"/>
+    </changeSet>
  
-    <changeSet id="issue-1053-remove-sMail-from-SubjectMessage2" author="lesha1980" runOnChange="true" dbms="h2" failOnError="false">
-       <preConditions onFail="MARK_RAN">
-           <columnExists tableName="SubjectMessage" columnName="sMail"/>
-           <sqlCheck expectedResult="0">select count(sMail) from SubjectMessage where sMail <> '' and sMail is not null</sqlCheck>
-       </preConditions>
-       <comment>remove column 'sMail' from table 'SubjectMessage'</comment>
-       <dropColumn tableName="SubjectMessage" columnName="sMail"/-->
-       <!--rollback>
-          <addColumn tableName="SubjectMessage">
-              <column name="sMail" type="varchar(100)"/>
-          </addColumn>     
-       </rollback-->
-    <!--/changeSet--> 
-   
+    <!--changeSet id="issue-1050-2.1" author="grigoriy-romanenko-and-bw"-->
+    <changeSet id="issue-1050-all" author="grigoriy-romanenko" failOnError="false">
+        <addColumn tableName="HistoryEvent_Service">
+            <column name="nID_StatusType" type="bigint" defaultValue="13" value="13">
+                <constraints nullable="true" />
+            </column>
+        </addColumn>
+         <renameColumn newColumnName="sUserTaskName"
+                      oldColumnName="sStatus"
+                      tableName="HistoryEvent_Service"/>
+         <sqlFile path="classpath:liquibase/changes/sql/2015/#1050.sql"/>
+         <dropColumn tableName="HistoryEvent_Service" columnName="sID_Status"/>
+    </changeSet>
 
+    <!--changeSet id="issue-1050-2.2" author="grigoriy-romanenko">
+        <renameColumn newColumnName="sUserTaskName"
+                      oldColumnName="sStatus"
+                      tableName="HistoryEvent_Service"/>
+    </changeSet-->
+
+    <!--changeSet id="issue-1050-5" author="grigoriy-romanenko">
+        <sqlFile path="classpath:liquibase/changes/sql/2015/#1050.sql"/>
+    </changeSet-->
+
+    <!--changeSet id="issue-1050-5.4" author="grigoriy-romanenko">
+        <dropColumn tableName="HistoryEvent_Service" columnName="sID_Status"/>
+    </changeSet-->
+
+    <changeSet id="issue-982-increase-sValue" author="bw">
+        <modifyDataType columnName="sValue" newDataType="varchar(2500)" tableName="SubjectOrganJoinAttribute"/>
+    </changeSet>
+
+    <changeSet id="issue-1079" author="sergeiShemshur">
+        <addColumn tableName="Currency">
+            <column name="sID_Currency" type="varchar(10)">
+                <constraints unique="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="issue-1079-add-field-toMerchant" author="sergeiShemshur">
+        <addColumn tableName="Merchant">
+            <column name="sID_Currency" type="varchar(10)">
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="increase-sEventName-Custom" author="bw">
+        <modifyDataType columnName="sEventName_Custom" newDataType="varchar(1500)" tableName="HistoryEvent"/>
+    </changeSet>
+
+    <changeSet id="issue-1136" author="kr110666kai">
+        <createTable tableName="SubjectAccountType">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="sID" type="varchar(20)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="sNote" type="varchar(300)" defaultValue="">
+            </column>
+        </createTable>
+
+        <createTable tableName="SubjectAccount">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="sLogin" type="varchar(20)">
+                <constraints nullable="false" />
+            </column>
+            <column name="sNote" type="varchar(300)" defaultValue="">                
+            </column>
+            <column name="nID_SubjectAccountType" type="bigint">
+                <constraints nullable="false" referencedTableName="SubjectAccountType" referencedColumnNames="nID"
+                             foreignKeyName="FK_SubjectAccount_SubjectAccountType"
+                             />
+            </column>
+            <column name="nID_Server" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nID_Subject" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addUniqueConstraint columnNames="sLogin, nID_SubjectAccountType, nID_Server, nID_Subject" tableName="SubjectAccount"/>
+		<addAutoIncrement tableName="SubjectAccount" columnName="nID" startWith="100" columnDataType="bigint"/>
+                        
+    </changeSet>
+
+    <changeSet id="issue-1136-2" author="kr110666kai">
+	    <addForeignKeyConstraint constraintName="FK_AccountContact_Subject" referencedTableName="Subject" baseColumnNames="nID_Subject" baseTableName="SubjectAccount" referencedColumnNames="nID"/>
+    </changeSet>
 </databaseChangeLog>

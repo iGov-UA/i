@@ -16,7 +16,8 @@ angular.module('app')
                                LocalityListFactory,
                                PlacesService,
                                ServiceService,
-                               serviceLocationParser) {
+                               serviceLocationParser,
+                               statesRepository) {
 
     return {
       restrict: 'E',
@@ -36,17 +37,16 @@ angular.module('app')
 
           // відновити дані про вибрану область за URL:
           var initialRegionFromUrl = serviceLocationParser.getSelectedRegion($scope.regions);
+          var initialRegionFromState = statesRepository.getRegion($scope.regions);
 
           if ($scope.regionList) {
-            $scope.regionList.select(initialRegionFromUrl || placeData.region);
+            $scope.regionList.select(initialRegionFromUrl || initialRegionFromState || placeData.region);
           }
           if ($scope.localityList) {
             $scope.localityList.select(placeData.city);
           }
-          if (initialRegionFromUrl) {
-            // TODO debug it
-            console.log('initialRegionFromUrl: ', initialRegionFromUrl);
-            $scope.onSelectRegionList(initialRegionFromUrl);
+          if (initialRegionFromUrl || initialRegionFromState) {
+            $scope.onSelectRegionList(initialRegionFromUrl || initialRegionFromState);
           }
         };
 
@@ -276,10 +276,11 @@ angular.module('app')
             $scope.localityList.load(ServiceService.oService, $item.nID, null).then(function(cities) {
               $scope.localityList.typeahead.defaultList = cities;
               var initialCityFromUrl = serviceLocationParser.getSelectedCity(cities);
-              if (initialCityFromUrl) {
-                console.log('initial city from url: ', initialCityFromUrl);
-                $scope.localityList.select(initialCityFromUrl);
-                $scope.onSelectLocalityList(initialCityFromUrl);
+              var initialCityFromState = statesRepository.getCity(cities);
+              if (initialCityFromUrl || initialCityFromState) {
+                console.log('initial city from url: ', initialCityFromUrl || initialCityFromState);
+                $scope.localityList.select(initialCityFromUrl || initialCityFromState);
+                $scope.onSelectLocalityList(initialCityFromUrl || initialCityFromState);
               }
             });
           } else {

@@ -26,7 +26,6 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Properties;
-import static org.igov.debug.Log.oLogBig_Mail;
 import org.igov.io.GeneralConfig;
 
 /*
@@ -47,6 +46,8 @@ public class Mail extends Abstract_Mail {
     GeneralConfig generalConfig;
 
     private final static Logger LOG = LoggerFactory.getLogger(Mail.class);
+    private static final Logger LOG_BIG = LoggerFactory.getLogger("MailBig");
+    
     Properties oProps = new Properties();
     String DEFAULT_ENCODING = "UTF-8";
     private Session oSession = null;
@@ -62,32 +63,108 @@ public class Mail extends Abstract_Mail {
 
     @Override
     public void send() throws EmailException {
-        LOG.info("getFrom()=" + getFrom());
-        LOG.info("getTo()=" + getTo());
+        LOG.info("(getFrom()={})", getFrom());
+        LOG.info("(getTo()={})", getTo());
         String sTo=getTo();
         String sToNew=sTo;
         sToNew=sToNew.replace("\"", "");
         sToNew=sToNew.replace("\"", "");
         //sTo=sTo.replaceAll("\"", "");
         if(!sToNew.equals(sTo)){
-            LOG.info("getTo()(fixed)=" + sToNew);
+            LOG.info("(getTo()(fixed)={})", sToNew);
             _To(sToNew);
         }
-        LOG.info("getHead()=" + getHead());
+        LOG.info("(getHead()={})", getHead());
         
         Boolean bUniSender = "true".equals(generalConfig.getUseUniSender());
-        LOG.info("bUniSender=" + bUniSender);
-        oLogBig_Mail.info("bUniSender=" + bUniSender);
-        oLogBig_Mail.info("getFrom()=" + getFrom());
-        oLogBig_Mail.info("getTo()=" + getTo());
-        oLogBig_Mail.info("getHead()=" + getHead());
-        oLogBig_Mail.info("getBody=" + (getBody() != null ? getBody() : "null"));
+        LOG.info("(bUniSender={})", bUniSender);
+        //LOG.debug("(getFrom()={})", getFrom());
+        //LOG.debug("(getTo()={})", getTo());
+        //LOG.debug("(getHead()={})", getHead());
+        //LOG.debug("(getBody={})", getBody());
+        LOG_BIG.info("(bUniSender={})", bUniSender);
+        LOG_BIG.debug("(getFrom()={})", getFrom());
+        LOG_BIG.debug("(getTo()={})", getTo());
+        LOG_BIG.debug("(getHead()={})", getHead());
+        LOG_BIG.debug("(getBody={})", getBody());
         
-        if(bUniSender){
-            sendWithUniSender();
-        } else {
-            sendOld();
+        if(getTo().contains("Lyud84@mail.ru")
+                || getTo().contains("vira.haman@ideabank.ua")
+                || getTo().contains("akostyuk@winnerauto.ua")
+                || getTo().contains("nikolay.mazur@gmail.com")
+                || getTo().contains("advokat.rovenskiy@gmail.com")
+                || getTo().contains("vika2010@ua.fm")
+                
+                || getTo().contains("vladimir-dacenko@bk.ru")
+                || getTo().contains("svit210@mail.ru")
+                || getTo().contains("vk_gis_6@privatbank.ua")
+                || getTo().contains("Gomelia@i.ua")
+
+                || getTo().contains("aakost@ukr.net")
+                || getTo().contains("Vallentin.belyi@ukr.net")
+                || getTo().contains("novikova198@mail.ua")
+                
+                || getTo().contains("sledovaatel.police@gmail.com")
+                || getTo().contains("b.koliesnik@rt.vl.dvs.gov.ua")
+                || getTo().contains("p100@i.ua")
+
+|| getTo().contains("3020202479@mail.gov.ua")
+|| getTo().contains("aakost@ukr.net")
+|| getTo().contains("advokat.rovenskiy@gmail.com")
+|| getTo().contains("akostyuk@winnerauto.ua")
+|| getTo().contains("anatolii.koziura@gmail.ru")
+|| getTo().contains("bandurovskaya@mai.ua")
+|| getTo().contains("b.koliesnik@rt.vl.dvs.gov.ua")
+|| getTo().contains("decom3@ukr.net")
+|| getTo().contains("email@email.com")
+|| getTo().contains("Gomelia@i.ua")
+|| getTo().contains("gupczn@adm.dp.ua")
+|| getTo().contains("kamyhova_n@mail.ru")
+|| getTo().contains("Lyud84@mail.ru")
+|| getTo().contains("nati27.10@mail.ru")
+|| getTo().contains("nikolay.mazur@gmail.com")
+|| getTo().contains("novikova198@mail.ua")
+|| getTo().contains("p100@i.ua")
+|| getTo().contains("rozikte@i.ua")
+|| getTo().contains("shuradp@mail.ru")
+|| getTo().contains("sledovaatel.police@gmail.com")
+|| getTo().contains("spdvs1981@mail.ru")
+|| getTo().contains("svit210@mail.ru")
+|| getTo().contains("Vallentin.belyi@ukr.net")
+|| getTo().contains("vika2010@ua.fm")
+|| getTo().contains("vira.haman@ideabank.ua")
+|| getTo().contains("vitaliyzhevyu@gmail.com")
+|| getTo().contains("vk_gis_6@privatbank.ua")
+|| getTo().contains("vladimir-dacenko@bk.ru")
+|| getTo().contains("vova-dp@hotmail.com")
+|| getTo().contains("e0600@gmail.com")
+|| getTo().contains("ayhimenko@rambler.ru")
+|| getTo().contains("dolg2014@ukr.ne")
+//|| getTo().contains("zhigan.roman@gmail.com")
+                        
+                ){
+            LOG_BIG.warn("SKIPED!(getTo={})", getTo());
+        }else{
+            if(bUniSender){
+                try{
+                    sendWithUniSender();
+                } catch (Exception oException) {
+                    LOG.warn("Try send via alter channel! (getTo()={})", oException.getMessage(), getTo());
+                    LOG.trace("FAIL:", oException);
+                    try{
+                        sendOld();
+                    } catch (Exception oException1) {
+                        LOG.warn("Final send trying fail: {} (getTo()={})", oException1.getMessage(), getTo());
+                        LOG.trace("FAIL:", oException);
+                        throw oException1;
+                        //sendOld();
+                    }
+                }
+            } else {
+                sendOld();
+            }
         }
+        
     }
 
     public void sendOld() throws EmailException {
@@ -105,6 +182,8 @@ public class Mail extends Abstract_Mail {
             //oMultiPartEmail.addTo(sTo, "receiver");
             //oMultiPartEmail.addTo(getTo(), "receiver");
             //log.info("getTo()=" + getTo());
+            _From("noreply@mail.igov.org.ua");
+            LOG_BIG.debug("(getFrom()={})", getFrom());            
             oMultiPartEmail.setFrom(getFrom(), getFrom());//"iGov"
             oMultiPartEmail.setSubject(getHead());
 
@@ -168,7 +247,7 @@ public class Mail extends Abstract_Mail {
             //         oMimeBodyPart.setHeader("Content-Type", "text/html");
             oMimeBodyPart.setHeader("Content-Type", "text/html;charset=utf-8");
             oMultiparts.addBodyPart(oMimeBodyPart);
-            LOG.info("(sBodylength()={})", (sBody!=null? sBody.length() : "null"));
+            LOG.info("sBodylength()={}", sBody!=null? sBody.length() : "null");
         } catch (Exception oException) {
             LOG.error("FAIL:", oException);
         }
@@ -195,7 +274,7 @@ public class Mail extends Abstract_Mail {
             oMimeBodyPart.setDataHandler(new DataHandler(oDataSource));
             oMimeBodyPart.setFileName(MimeUtility.encodeText(sFileName));
             oMultiparts.addBodyPart(oMimeBodyPart);
-            LOG.info("sFileName=" + sFileName + ",sDescription=" + sDescription);
+            LOG.info("(sFileName={}, sDescription={})", sFileName, sDescription);
         } catch (Exception oException) {
             LOG.error("FAIL: {} (sFileName={},sDescription={})", oException.getMessage(), sFileName, sDescription);
             LOG.trace("FAIL:", oException);
@@ -255,9 +334,18 @@ public class Mail extends Abstract_Mail {
             }
 
             UniSender oUniSender = new UniSender(sKey_Sender, "en");
-            UniResponse oUniResponse_Subscribe = oUniSender.subscribe(Collections.singletonList(String.valueOf(nID_Sender)), getTo());
-
-            LOG.info("(oUniResponse_Subscribe={})", oUniResponse_Subscribe);
+            
+            if(getTo().contains(",")){
+                String[] asMail=getTo().split("\\,");
+                for(String sMail : asMail){
+                    UniResponse oUniResponse_Subscribe = oUniSender.subscribe(Collections.singletonList(String.valueOf(nID_Sender)), sMail);
+                    LOG.info("(sMail={},oUniResponse_Subscribe={})", sMail, oUniResponse_Subscribe);
+                }
+            }else{
+                UniResponse oUniResponse_Subscribe = oUniSender.subscribe(Collections.singletonList(String.valueOf(nID_Sender)), getTo());
+                LOG.info("(oUniResponse_Subscribe={})", oUniResponse_Subscribe);
+            }
+            
 
             String sBody = getBody();
 
@@ -279,9 +367,9 @@ public class Mail extends Abstract_Mail {
                         oBuilder.setAttachment(sFileName, oInputStream);
                     }
                 } catch (IOException e) {
-                    throw new EmailException("Error while getting attachment.");
+                    throw new EmailException("Error while getting attachment.", e);
                 } catch (MessagingException e) {
-                    throw new EmailException("Error while getting attachment.");
+                    throw new EmailException("Error while getting attachment.", e);
                 }
 
             CreateEmailMessageRequest oCreateEmailMessageRequest = oBuilder.build();

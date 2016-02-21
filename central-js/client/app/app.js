@@ -17,6 +17,7 @@ angular.module('appBoilerPlate', ['ngCookies',
   'textAngular']);
 
 angular.module('documents', ['appBoilerPlate']);
+angular.module('auth', ['appBoilerPlate']);
 angular.module('journal', ['appBoilerPlate']);
 angular.module('order', ['appBoilerPlate']);
 angular.module('about', ['appBoilerPlate']);
@@ -24,15 +25,22 @@ angular.module('feedback', ['appBoilerPlate']);
 
 angular.module('app', [
   'documents',
+  'auth',
   'journal',
   'order',
   'about',
   'feedback'
-]).config(function ($urlRouterProvider, $locationProvider) {
+]).config(function ($urlRouterProvider, $locationProvider, datepickerConfig) {
   $urlRouterProvider.otherwise('/');
   $locationProvider.html5Mode(true);
+  datepickerConfig.datepickerMode = 'year';
 }).run(function ($rootScope, $state) {
   $rootScope.state = $state;
+  $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
+     console.error('stateChangeError', error.data);
+     //TODO: Заменить на нормальный див-диалог из ErrorFactory
+     alert("Невідома помилка: " + error.data);
+  });
 });
 
 

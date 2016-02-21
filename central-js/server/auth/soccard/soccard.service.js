@@ -1,7 +1,9 @@
-var request = require('request');
-var async = require('async');
-var soccardUtil = require('./soccard.util');
-var config = require('../../config/environment');
+var request = require('request')
+  , async = require('async')
+  , soccardUtil = require('./soccard.util')
+  , config = require('../../config/environment')
+  , syncSubject = require('../../api/service/syncSubject.service.js')
+  , errors = require('../../components/errors');
 
 module.exports.getUser = function (accessToken, callback) {
   var infoURL = soccardUtil.getInfoURL(config);
@@ -23,9 +25,20 @@ module.exports.getUser = function (accessToken, callback) {
 
   request.get({
     url: infoURL,
-    headers: headers
+    headers: headers,
+    json: true
   }, function (error, response, body) {
-    callback(error, response, body);
+    if (error || body.error) {
+      callback(
+        errors.createError(errors.codes.EXTERNAL_SERVICE_ERROR,
+          body.error_description,
+          error || body.error),
+        null);
+    } else {
+      callback(null, {
+        customer: body
+      });
+    }
   });
 
 };
@@ -33,22 +46,16 @@ module.exports.getUser = function (accessToken, callback) {
 module.exports.syncWithSubject = function (accessToken, done) {
   async.waterfall([
       function (callback) {
-        module.exports.getUser(accessToken, function (error, response, body) {
-          if (error || body.error) {
-            callback(createError(error || body.error, body.error_description, response), null);
-          } else {
-            callback(null, {
-              customer: body
-            });
-          }
+        module.exports.getUser(accessToken, function (error, result) {
+          callback(error, result);
         });
       },
       function (result, callback) {
-        syncSubject.index(result.customer.personNumber, function (error, response, body) {
+        syncSubject.sync(result.customer.personNumber, function (error, response, body) {
           if (error) {
-            callback(createError(error, response), null);
+            callback(errors.createError(errors.codes.EXTERNAL_SERVICE_ERROR, body.error_description, error || body.error), null);
           } else {
-            result.subject = JSON.parse(body);
+            result.subject = body;
             callback(null, result);
           }
         });

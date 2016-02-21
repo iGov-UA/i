@@ -28,11 +28,11 @@ public class ActivitiRestTestController {
     public @ResponseBody Entity setEntity(
             @ApiParam(value = "id дозорного", required = false) @RequestParam(value = "nID", required = false) Long nID ,
             @ApiParam(value = "имя дозорного", required = true) @RequestParam(value = "sName") String sName)
-            throws ActivitiRestException {
+            throws CommonServiceException {
         try {
             return testEntityDao.saveOrUpdate(nID, sName);
         } catch (Exception e){
-            throw new ActivitiRestException("ex in controller!", e);
+            throw new CommonServiceException("ex in controller!", e);
         }
     }
 
@@ -40,11 +40,11 @@ public class ActivitiRestTestController {
     @ApiOperation(value = "Вызов дозорного", notes = "Подробное описание сервиса: вызов дозорного" )
     @RequestMapping(value = "/getEntity", method = RequestMethod.GET)
     public ResponseEntity<Entity> getEntity(
-            @RequestParam(value = "nID") Long nID) throws ActivitiRestException {
+            @RequestParam(value = "nID") Long nID) throws CommonServiceException {
         Entity entity = testEntityDao.getById(nID);
         if (entity == null) {
-            throw new ActivitiRestException(
-                    ActivitiExceptionController.BUSINESS_ERROR_CODE,
+            throw new CommonServiceException(
+                    ExceptionCommonController.BUSINESS_ERROR_CODE,
                     "Record not found. No such Entity with nID=" + nID,
                     HttpStatus.FORBIDDEN);
         }
@@ -59,7 +59,7 @@ public class ActivitiRestTestController {
 - более точное форматирование можно посмотреть здесь: #723, т.е. по "результатам" этой задачи
 - по возможности, делаем метод-"сеттер" <2>, который либо добавляет новую запись, либо обновляет ее, и начинается со слова set (примеры можно посмотреть в вышеперечисленных контроллерах)
 - вариант, когда сущность "заворачивается" в ResponseEntity <3>, используется в случаях, когда сервисы будут вызываться в Активити (сохраняется кодировка). Но таких случаев пока немного. Во всех остальных случаях достаточно просто возвращать эту сущность <2>.
-- исключения. Желательно бросать ActivitiRestException, которое "отлавливается" и преобразовывается в джейсоновский обьект с ошибкой вида: {code: "code", message: "message"} Также оно сразу логируется (уровень error) -- т.е. такие исключения можно отдельно не логировать. Есть разные конструкторы, вплоть до выбора http-статуса ошибки и "передачи" исходного исключения (методы <2> и <3>, плюс можно посмотреть в самом классе ActivitiRestException)
+- исключения. Желательно бросать CommonServiceException, которое "отлавливается" и преобразовывается в джейсоновский обьект с ошибкой вида: {code: "code", message: "message"} Также оно сразу логируется (уровень error) -- т.е. такие исключения можно отдельно не логировать. Есть разные конструкторы, вплоть до выбора http-статуса ошибки и "передачи" исходного исключения (методы <2> и <3>, плюс можно посмотреть в самом классе CommonServiceException)
 
 
 **__Пояснения по применению Swagger-аннотаций:__**

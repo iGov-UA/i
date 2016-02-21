@@ -20,7 +20,7 @@ public class JobsInitializer implements InitializingBean, ApplicationContextAwar
     private final static Logger LOG = LoggerFactory.getLogger(JobsInitializer.class);
 
     @Autowired
-    GeneralConfig generalConfig;
+    GeneralConfig generalConfig; 
     
     private static ApplicationContext applicationContext;
     private Scheduler scheduler;
@@ -58,7 +58,8 @@ public class JobsInitializer implements InitializingBean, ApplicationContextAwar
             LOG.info("oCronExpression__EveryNight_Deep.setCronExpression...");
             oCronTrigger_EveryNight_Deep.setCronExpression(oCronExpression__EveryNight_Deep);
         } catch (Exception oException) {
-            LOG.error("FAIL: ", oException);
+            LOG.error("FAIL: ", oException.getMessage());
+            LOG.debug("FAIL: ", oException);
         }
         if(!generalConfig.bTest()){
             LOG.info("scheduleJob...");

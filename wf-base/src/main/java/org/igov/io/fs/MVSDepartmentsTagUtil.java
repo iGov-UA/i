@@ -23,7 +23,7 @@ public class MVSDepartmentsTagUtil {
                 .currentThread().getContextClassLoader()
                 .getResourceAsStream(DEFAULT_ROOT_PATH + path), "UTF-8"))) {
 
-            LOG.info("Reading dictionary from stream:" + DEFAULT_ROOT_PATH + path);
+            LOG.info("Reading dictionary from stream: (DEFAULT_ROOT_PATH={},path={})", DEFAULT_ROOT_PATH, path);
             String line;
 
             while ((line = br.readLine()) != null) {
@@ -35,8 +35,9 @@ public class MVSDepartmentsTagUtil {
             VALUES.put(path, values);
             //Close the input stream
             br.close();
-        } catch (IOException e) {
-            LOG.error("Error during loading csv file" + e.getMessage(), e);
+        } catch (IOException oException) {
+            LOG.error("Error during loading csv file: {}",  oException.getMessage());
+            LOG.trace("FAIL:", oException);
         }
     }
 
@@ -46,10 +47,10 @@ public class MVSDepartmentsTagUtil {
         while (text.indexOf("[pattern_dictonary:") != -1 && n < 20) {
             n++;
             String pattern = StringUtils.substringBetween(text, "[pattern_dictonary:", "]");
-            LOG.info("Found pattern in the text: " + pattern);
+            LOG.info("Found pattern in the text: (pattern={})", pattern);
             String[] params = pattern.split(":");
             if (params.length > 2) {
-                LOG.info("Have to replace pattern with ID:" + params[1] + " and column:" + params[2]);
+                LOG.info("Have to replace pattern (ID={}, column={})", params[1], params[2]);
                 Map<String, String> patternValues = VALUES.get(params[0]);
                 if (patternValues == null) {
                     synchronized (VALUES) {
@@ -58,16 +59,16 @@ public class MVSDepartmentsTagUtil {
                     }
                 }
                 if (patternValues == null) {
-                    LOG.error("Unable to find dictionary value from the path: " + params[0]);
+                    LOG.error("Unable to find dictionary value from the path: (path={})", params[0]);
                     return res;
                 }
-                LOG.info("Pattern value for the specified ID: " + patternValues);
+                LOG.info("Pattern value for the specified ID: (ID={})", patternValues);
                 if (!patternValues.isEmpty()) {
                     String patternValue = patternValues.get(params[1]);
                     String[] patternColumns = patternValue.split(";");
                     String valueToReplace = patternColumns[Integer.valueOf(params[2])
                             - 1];// value in the map starts from second column in csv file
-                    LOG.info("Replacing pattern with the value " + valueToReplace);
+                    LOG.info("Replacing pattern with the value (value={})", valueToReplace);
                     res = StringUtils.replace(text, "[pattern_dictonary:" + pattern + "]", valueToReplace);
                 }
             }

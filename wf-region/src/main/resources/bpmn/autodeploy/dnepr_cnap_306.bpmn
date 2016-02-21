@@ -11,28 +11,32 @@
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="marker4" name="установ2" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;doc6&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;user&quot;},&quot;sCondition&quot;:&quot;[sCond]=='koristuvach'&quot;},&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;doc7&quot;,&quot;doc8&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;kad&quot;},&quot;sCondition&quot;:&quot;[sCond]=='both'&quot;},&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;doc7&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;kad&quot;},&quot;sCondition&quot;:&quot;[sCond]=='onlyD'&quot;},&quot;ShowFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;doc8&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;kad&quot;},&quot;sCondition&quot;:&quot;[sCond]=='onlyP'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker4" name="mark" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;doc4&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;spivvlasn&quot;},&quot;sCondition&quot;:&quot;[sCond]=='yes'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="place" name="Адреса земельної ділянки" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="area" name="Площа земельної ділянки;Га" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="vlasnist" name="Документ, що посвідчує право власності або користування земельною ділянкою, або договор суперфіцію" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="marker23" name="Правобережний ЦНАП" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_23&quot;:{&quot;aField_ID&quot;:[&quot;region&quot;,&quot;clerkPost&quot;],&quot;asID_Field_sValue&quot;:[&quot;23&quot;,&quot;woobraja@mail.ru&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'prav'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="marker24" name="Лівобережний ЦНАП" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_24&quot;:{&quot;aField_ID&quot;:[&quot;region&quot;,&quot;clerkPost&quot;],&quot;asID_Field_sValue&quot;:[&quot;24&quot;,&quot;Luda17_@ukr.net&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'lev'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="bud" name="Чи маєте ви проект будівництва?" type="enum" required="true">
-          <activiti:value id="yes" name="так"></activiti:value>
-          <activiti:value id="no" name="ні"></activiti:value>
+        <activiti:formProperty id="vlasnist" name="Документ, що посвідчує право власності або користування земельною ділянкою, або договор суперфіцію" type="enum" required="true">
+          <activiti:value id="vlasnist1" name="договір купівлі-продажу приватизованої земельної ділянки"></activiti:value>
+          <activiti:value id="vlasnist2" name="договір дарування приватизованої земельної ділянки"></activiti:value>
+          <activiti:value id="vlasnist3" name="договір міни приватизованої земельної ділянки"></activiti:value>
+          <activiti:value id="vlasnist4" name="свідоцтво про право власності на земельну ділянку"></activiti:value>
+          <activiti:value id="vlasnist5" name="державний акт на право власності на земельну ділянку"></activiti:value>
+          <activiti:value id="vlasnist6" name="державний акт на право постійного користування земельною ділянкою"></activiti:value>
+          <activiti:value id="vlasnist7" name="договір оренди земельної ділянки"></activiti:value>
+          <activiti:value id="vlasnist8" name="договір суперфіція"></activiti:value>
+          <activiti:value id="vlasnist9" name="витяг з Державного реєстру речових прав на земельну ділянку"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="doc1" name="Засвідчена в установленому порядку копія документа про право власності або користування земельною ділянкою;згідно з роз`ясненням МінЮсту від 02.2013, на засвідченому документі проставляється прізвище і ініціали того, хто посвідчує, особистий підпис, дата і відмітка &quot;Згідно з оригіналом&quot;" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="spivvlasn" name="Ви одноосібний власник ділянки?" type="enum" required="true">
           <activiti:value id="yes" name="ні, є інші співвласники"></activiti:value>
           <activiti:value id="no" name="так, ділянка належить лише мені"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="Message1" name="Увага" type="label" default="додайте необхідні файли!"></activiti:formProperty>
-        <activiti:formProperty id="doc1" name="Документ про право власності або користування земельною ділянкою;ви можете виготовити інформаційну довідку про земельну ділянку на сайті кадастрової карти http://map.land.gov.ua/kadastrova-karta" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="doc2" name="Ескізні наміри забудови;місце розташування будівель та споруд на земельній ділянці, відстані до меж сусідніх земельних ділянок та розташованих на них об`єктів, інженерних мереж і споруд, фасади та плани поверхів об`єктів із зазначенням габаритних розмірів, перелік систем інженерного забезпечення, у тому числі автономного, що планується до застосування, тощо. УВАГА! Для виготовлення правильних ескізів зверніться до архітекторів." type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Копія паспорта замовника" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="doc3" name="Проект будівництва" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="doc4" name="Засвідчена згода співвласників земельної ділянки (житлового будинку) на забудову;з ЕЦП нотаріуса" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="region" name="Регион" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="clerkPost" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="Message1" name="Увага" type="label" default="додайте необхідні файли!"></activiti:formProperty>
+        <activiti:formProperty id="doc2" name="Ескізні наміри забудови;місце розташування будівель та споруд на земельній ділянці, відстані до меж сусідніх земельних ділянок та розташованих на них об`єктів, інженерних мереж і споруд, фасади та плани поверхів об`єктів із зазначенням габаритних розмірів, перелік систем інженерного забезпечення, у тому числі автономного, що планується до застосування, тощо. УВАГА! Ескізні наміри можуть бути виготовлені самостійно (згідно з перерахованими вище параметрами), або з залученням фахівців-архитекторів." type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта замовника" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nRegion" name="Регион" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sClerkPost" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sArkhPost" name="Пошта департамента архітектури або ГоловАПУ" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="warningMessage" name="Увага" type="label" default="Подаючи звернення, Ви підтверджуєте достовірність усіх зазначених у зверненні даних і надаєте свою згоду на обробку Ваших персональних даних"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -54,10 +58,10 @@
 			Ваше звернення щодо Надання будівельного паспорту забудови земельної ділянки успішно зареєстроване.&lt;br /&gt;
 			Ви отримаєте відповідь протягом десяти робочих днів.
 			&lt;/p&gt;
-&lt;p&gt;Якщо у Вас з`явились питання, Ви можете звернутись до [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:3]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:4]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]&lt;/p&gt;
+&lt;p&gt;Якщо у Вас з`явились питання, Ви можете звернутись до [pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:3]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:4]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:5]&lt;/p&gt;
 			[pattern/mail/_common_signature_start.html]
 			Державна реєстраційна служба,&lt;br /&gt;
 			[pattern/mail/_common_signature_end.html]
@@ -75,8 +79,7 @@
           <activiti:expression>kamni@i.ua</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>ТЕСТ!
-Нове звернення на порталі igov.org.ua на тему: Надання будівельного паспорту забудови земельної ділянки. Заявник ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}</activiti:expression>
+          <activiti:expression>Нове звернення на порталі igov.org.ua на тему: Надання будівельного паспорту забудови земельної ділянки. Заявник ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
@@ -93,36 +96,42 @@
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="print_marker1" name="show/hidden text" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_1&quot;:{&quot;aElement_ID&quot;:[&quot;zgoda&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;user&quot;},&quot;sCondition&quot;:&quot;[sCond]=='koristuvach'&quot;},&quot;ShowElementsOnTrue_2&quot;:{&quot;aElement_ID&quot;:[&quot;dovidka&quot;,&quot;plan&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;kad&quot;},&quot;sCondition&quot;:&quot;[sCond]=='both'&quot;},&quot;ShowElementsOnTrue_3&quot;:{&quot;aElement_ID&quot;:[&quot;dovidka&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;kad&quot;},&quot;sCondition&quot;:&quot;[sCond]=='onlyD'&quot;},&quot;ShowElementsOnTrue_4&quot;:{&quot;aElement_ID&quot;:[&quot;plan&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;kad&quot;},&quot;sCondition&quot;:&quot;[sCond]=='onlyP'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="print_marker1" name="show/hidden text" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_1&quot;:{&quot;aElement_ID&quot;:[&quot;zgoda&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;user&quot;},&quot;sCondition&quot;:&quot;[sCond]=='koristuvach'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="place" name="Адреса земельної ділянки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="area" name="Площа земельної ділянки;Га" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="vlasnist" name="Документ, що посвідчує право власності або користування земельною ділянкою, або договор суперфіцію" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bud" name="Чи маєте ви проект будівництва?" type="enum" writable="false">
-          <activiti:value id="yes" name="так"></activiti:value>
-          <activiti:value id="no" name="ні"></activiti:value>
+        <activiti:formProperty id="vlasnist" name="Документ, що посвідчує право власності або користування земельною ділянкою, або договор суперфіцію" type="enum" writable="false">
+          <activiti:value id="vlasnist1" name="договір купівлі-продажу приватизованої земельної ділянки"></activiti:value>
+          <activiti:value id="vlasnist2" name="договір дарування приватизованої земельної ділянки"></activiti:value>
+          <activiti:value id="vlasnist3" name="договір міни приватизованої земельної ділянки"></activiti:value>
+          <activiti:value id="vlasnist4" name="свідоцтво про право власності на земельну ділянку"></activiti:value>
+          <activiti:value id="vlasnist5" name="державний акт на право власності на земельну ділянку"></activiti:value>
+          <activiti:value id="vlasnist6" name="державний акт на право постійного користування земельною ділянкою"></activiti:value>
+          <activiti:value id="vlasnist7" name="договір оренди земельної ділянки"></activiti:value>
+          <activiti:value id="vlasnist8" name="договір суперфіція"></activiti:value>
+          <activiti:value id="vlasnist9" name="витяг з Державного реєстру речових прав на земельну ділянку"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="spivvlasn" name="Ви одноосібний власник ділянки?" type="enum" writable="false">
           <activiti:value id="yes" name="ні, є інші співвласники"></activiti:value>
           <activiti:value id="no" name="так, ділянка належить лише мені"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="region" name="Регион" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="clerkPost" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="nRegion" name="Регион" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sClerkPost" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="proverka" name="Оберіть відповідь Головного архітектурно-планувального управління" type="enum" required="true">
           <activiti:value id="ok" name="містобудівні умови та обмеження надані"></activiti:value>
           <activiti:value id="bad" name="надати містобудівні умови та обмеження неможливо"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="result" name="Завантажте скан-копію відповіді" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/BudPass.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/BudPass.html]" type="invisible" default="Заява на підготовку містобудівних умов" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/BudPass.html]" type="invisible" default="Заява на виготовлення будівельного паспорта" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${doc1},${doc2},${doc3},${doc4},${bankIdPassport}</activiti:expression>
+            <activiti:expression>${doc1},${doc2},${doc4},${bankId_scan_passport}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow2" sourceRef="servicetask11" targetRef="exclusivegateway1"></sequenceFlow>
+    <sequenceFlow id="flow2" sourceRef="servicetask11" targetRef="usertask3"></sequenceFlow>
     <serviceTask id="servicetask3" name="Лист з підтвердженням" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="from">
@@ -138,13 +147,13 @@
           <activiti:expression>[pattern/mail/_common_header.html]
 			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 			&lt;p&gt;Ваше звернення опрацьоване.&lt;br /&gt;
-			Ви можете завантажити офіційну відповідь з додатку до цього листа, та отримати оригінал у [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;/p&gt;
-&lt;p&gt;[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:3]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:4]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]&lt;/p&gt;
+			Ви можете завантажити офіційну відповідь з додатку до цього листа, та отримати оригінал у [pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:2]&lt;/p&gt;
+&lt;p&gt;[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:3]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:4]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:5]&lt;/p&gt;
 &lt;p&gt;Для цього Вам потрібно особисто звернутися до адміністратора ЦНАП з документом, що посвідчує особу (паспорт) та оригіналами документів (документ про право власності, згода співвласників, т.і.). &lt;/p&gt;
  [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]   
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
@@ -174,13 +183,13 @@
 			&lt;p&gt;На жаль, Ваше звернення відхилене.&lt;/p&gt;
 			&lt;p&gt;У додатку до листа міститься офіційна відповідь.&lt;/p&gt;
 			За необхідності Ви можете подати ще одне звернення на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;igov.org.ua&lt;/a&gt;
-			&lt;p&gt;Якщо у вас виникли питання, Ви можете звернутись до [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;/p&gt;
+			&lt;p&gt;Якщо у вас виникли питання, Ви можете звернутись до [pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:2]&lt;/p&gt;
 &lt;p&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:3]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:4]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]&lt;/p&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:3]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:4]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:5]&lt;/p&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]   
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -198,13 +207,19 @@
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="print_marker1" name="show/hidden text" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_1&quot;:{&quot;aElement_ID&quot;:[&quot;zgoda&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;user&quot;},&quot;sCondition&quot;:&quot;[sCond]=='koristuvach'&quot;},&quot;ShowElementsOnTrue_2&quot;:{&quot;aElement_ID&quot;:[&quot;dovidka&quot;,&quot;plan&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;kad&quot;},&quot;sCondition&quot;:&quot;[sCond]=='both'&quot;},&quot;ShowElementsOnTrue_3&quot;:{&quot;aElement_ID&quot;:[&quot;dovidka&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;kad&quot;},&quot;sCondition&quot;:&quot;[sCond]=='onlyD'&quot;},&quot;ShowElementsOnTrue_4&quot;:{&quot;aElement_ID&quot;:[&quot;plan&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;kad&quot;},&quot;sCondition&quot;:&quot;[sCond]=='onlyP'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="print_marker1" name="show/hidden text" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_1&quot;:{&quot;aElement_ID&quot;:[&quot;zgoda&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;user&quot;},&quot;sCondition&quot;:&quot;[sCond]=='koristuvach'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="place" name="Адреса земельної ділянки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="area" name="Площа земельної ділянки;Га" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="vlasnist" name="Документ, що посвідчує право власності або користування земельною ділянкою, або договор суперфіцію" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bud" name="Чи маєте ви проект будівництва?" type="enum" writable="false">
-          <activiti:value id="yes" name="так"></activiti:value>
-          <activiti:value id="no" name="ні"></activiti:value>
+        <activiti:formProperty id="vlasnist" name="Документ, що посвідчує право власності або користування земельною ділянкою, або договор суперфіцію" type="enum" writable="false">
+          <activiti:value id="vlasnist1" name="договір купівлі-продажу приватизованої земельної ділянки"></activiti:value>
+          <activiti:value id="vlasnist2" name="договір дарування приватизованої земельної ділянки"></activiti:value>
+          <activiti:value id="vlasnist3" name="договір міни приватизованої земельної ділянки"></activiti:value>
+          <activiti:value id="vlasnist4" name="свідоцтво про право власності на земельну ділянку"></activiti:value>
+          <activiti:value id="vlasnist5" name="державний акт на право власності на земельну ділянку"></activiti:value>
+          <activiti:value id="vlasnist6" name="державний акт на право постійного користування земельною ділянкою"></activiti:value>
+          <activiti:value id="vlasnist7" name="договір оренди земельної ділянки"></activiti:value>
+          <activiti:value id="vlasnist8" name="договір суперфіція"></activiti:value>
+          <activiti:value id="vlasnist9" name="витяг з Державного реєстру речових прав на земельну ділянку"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="spivvlasn" name="Ви одноосібний власник ділянки?" type="enum" writable="false">
           <activiti:value id="yes" name="ні, є інші співвласники"></activiti:value>
@@ -214,15 +229,13 @@
           <activiti:value id="accept" name="Документи пройшли перевірку і передані до ГоловАПУ"></activiti:value>
           <activiti:value id="reject" name="В опрацюванні заявки відмовлено"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="RNo" name="Додайте реєстраційний номер звернення" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="RDate" name="Оберіть дату реєстрації звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/BudPass.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/BudPass.html]" type="invisible" default="Заява на підготовку містобудівних умов" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/BudPass.html]" type="invisible" default="Заява на виготовлення будівельного паспорта" writable="false"></activiti:formProperty>
         <activiti:formProperty id="comment1" name="Примітка:" type="string" default=" "></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${doc1},${doc2},${doc3},${doc4},${bankIdPassport}</activiti:expression>
+            <activiti:expression>${doc1},${doc2},${doc4},${bankId_scan_passport}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -245,12 +258,12 @@
           <activiti:expression>[pattern/mail/_common_header.html]
 			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 			&lt;p&gt;Ваше звернення пройшло попередню перевірку адміністратором ЦНАП і передано для опрацювання відповідальній особі. За кілька днів ви отримаєте результат опрацювання на цей email.&lt;br /&gt;Ви можете роздрукувати надану Вами заяву з прикріплення до цього листа.&lt;br /&gt;
-			&lt;p&gt;Якщо у Вас з`явились питання, Ви можете звернутись до [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:3]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:4]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]&lt;/p&gt;
+			&lt;p&gt;Якщо у Вас з`явились питання, Ви можете звернутись до [pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:3]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:4]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:5]&lt;/p&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -277,14 +290,14 @@
           <activiti:expression>[pattern/mail/_common_header.html]
 		    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 			&lt;p&gt;На жаль, Ваше звернення відхилене. &lt;/p&gt;
-			&lt;p&gt;${comment}&lt;br&gt; ${comment1}&lt;/p&gt;
+			&lt;p&gt;${comment1}&lt;/p&gt;
 			За необхідності Ви можете подати ще одне звернення на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;igov.org.ua&lt;/a&gt;&lt;/p&gt;
-			&lt;p&gt;Якщо у Вас з`явились питання, Ви можете звернутись до [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:3]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:4]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]&lt;/p&gt;
+			&lt;p&gt;Якщо у Вас з`явились питання, Ви можете звернутись до [pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:3]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:4]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:5]&lt;/p&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -335,11 +348,10 @@
           <activiti:expression>kamni@i.ua</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Результат опрацювання звернення № ${RNo} від ${RDate}</activiti:expression>
+          <activiti:expression>Результат опрацювання звернення ГоловАПУ</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>ТЕСТ!
-Звернення опрацьоване. Результат у прикріпленому файлі.</activiti:expression>
+          <activiti:expression>Звернення опрацьоване ГоловАПУ. Результат у прикріпленому файлі.</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${result}</activiti:expression>
@@ -348,9 +360,46 @@
     </serviceTask>
     <sequenceFlow id="flow30" sourceRef="usertask2" targetRef="servicetask11"></sequenceFlow>
     <sequenceFlow id="flow31" sourceRef="servicetask8" targetRef="endevent2"></sequenceFlow>
+    <userTask id="usertask3" name="Вдповідь заявнику" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
+      <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По-Батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Домашня адреса" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="print_marker1" name="show/hidden text" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_1&quot;:{&quot;aElement_ID&quot;:[&quot;zgoda&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;user&quot;},&quot;sCondition&quot;:&quot;[sCond]=='koristuvach'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="place" name="Адреса земельної ділянки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="area" name="Площа земельної ділянки;Га" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="vlasnist" name="Документ, що посвідчує право власності або користування земельною ділянкою, або договор суперфіцію" type="enum" writable="false">
+          <activiti:value id="vlasnist1" name="договір купівлі-продажу приватизованої земельної ділянки"></activiti:value>
+          <activiti:value id="vlasnist2" name="договір дарування приватизованої земельної ділянки"></activiti:value>
+          <activiti:value id="vlasnist3" name="договір міни приватизованої земельної ділянки"></activiti:value>
+          <activiti:value id="vlasnist4" name="свідоцтво про право власності на земельну ділянку"></activiti:value>
+          <activiti:value id="vlasnist5" name="державний акт на право власності на земельну ділянку"></activiti:value>
+          <activiti:value id="vlasnist6" name="державний акт на право постійного користування земельною ділянкою"></activiti:value>
+          <activiti:value id="vlasnist7" name="договір оренди земельної ділянки"></activiti:value>
+          <activiti:value id="vlasnist8" name="договір суперфіція"></activiti:value>
+          <activiti:value id="vlasnist9" name="витяг з Державного реєстру речових прав на земельну ділянку"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="spivvlasn" name="Ви одноосібний власник ділянки?" type="enum" writable="false">
+          <activiti:value id="yes" name="ні, є інші співвласники"></activiti:value>
+          <activiti:value id="no" name="так, ділянка належить лише мені"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="proverka" name="Відповідь Головного архітектурно-планувального управління" type="enum">
+          <activiti:value id="ok" name="містобудівні умови та обмеження надані"></activiti:value>
+          <activiti:value id="bad" name="надати містобудівні умови та обмеження неможливо"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/BudPass.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/BudPass.html]" type="invisible" default="Заява на виготовлення будівельного паспорта" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="comment1" name="Примітка:" type="string" default=" "></activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow32" sourceRef="usertask3" targetRef="exclusivegateway1"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_305">
-    <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_305" id="BPMNPlane_dnepr_cnap_305">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_306">
+    <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_306" id="BPMNPlane_dnepr_cnap_306">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="95.0" y="240.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -364,13 +413,13 @@
         <omgdc:Bounds height="55.0" width="105.0" x="302.0" y="-82.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
-        <omgdc:Bounds height="55.0" width="105.0" x="540.0" y="60.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="436.0" y="-10.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
-        <omgdc:Bounds height="35.0" width="35.0" x="700.0" y="70.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="586.0" y="0.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
-        <omgdc:Bounds height="55.0" width="105.0" x="665.0" y="-82.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="551.0" y="-82.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="55.0" width="105.0" x="176.0" y="142.0"></omgdc:Bounds>
@@ -382,10 +431,10 @@
         <omgdc:Bounds height="55.0" width="105.0" x="302.0" y="60.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
-        <omgdc:Bounds height="55.0" width="105.0" x="665.0" y="142.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="551.0" y="142.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
-        <omgdc:Bounds height="40.0" width="40.0" x="572.0" y="-75.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="468.0" y="-75.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask9" id="BPMNShape_servicetask9">
         <omgdc:Bounds height="55.0" width="105.0" x="60.0" y="142.0"></omgdc:Bounds>
@@ -400,7 +449,10 @@
         <omgdc:Bounds height="55.0" width="105.0" x="302.0" y="-10.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask11" id="BPMNShape_servicetask11">
-        <omgdc:Bounds height="55.0" width="105.0" x="430.0" y="-82.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="302.0" y="-150.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
+        <omgdc:Bounds height="55.0" width="105.0" x="436.0" y="-150.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
         <omgdi:waypoint x="165.0" y="87.0"></omgdi:waypoint>
@@ -411,16 +463,16 @@
         <omgdi:waypoint x="354.0" y="45.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="535.0" y="-55.0"></omgdi:waypoint>
-        <omgdi:waypoint x="572.0" y="-55.0"></omgdi:waypoint>
+        <omgdi:waypoint x="407.0" y="-123.0"></omgdi:waypoint>
+        <omgdi:waypoint x="436.0" y="-123.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
-        <omgdi:waypoint x="645.0" y="87.0"></omgdi:waypoint>
-        <omgdi:waypoint x="700.0" y="87.0"></omgdi:waypoint>
+        <omgdi:waypoint x="541.0" y="17.0"></omgdi:waypoint>
+        <omgdi:waypoint x="586.0" y="17.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
-        <omgdi:waypoint x="717.0" y="-27.0"></omgdi:waypoint>
-        <omgdi:waypoint x="717.0" y="70.0"></omgdi:waypoint>
+        <omgdi:waypoint x="603.0" y="-27.0"></omgdi:waypoint>
+        <omgdi:waypoint x="603.0" y="0.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
         <omgdi:waypoint x="228.0" y="115.0"></omgdi:waypoint>
@@ -436,19 +488,19 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
         <omgdi:waypoint x="374.0" y="169.0"></omgdi:waypoint>
-        <omgdi:waypoint x="665.0" y="169.0"></omgdi:waypoint>
+        <omgdi:waypoint x="551.0" y="169.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
         <omgdi:waypoint x="112.0" y="142.0"></omgdi:waypoint>
         <omgdi:waypoint x="112.0" y="115.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
-        <omgdi:waypoint x="592.0" y="-35.0"></omgdi:waypoint>
-        <omgdi:waypoint x="592.0" y="60.0"></omgdi:waypoint>
+        <omgdi:waypoint x="488.0" y="-35.0"></omgdi:waypoint>
+        <omgdi:waypoint x="488.0" y="-10.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
-        <omgdi:waypoint x="612.0" y="-55.0"></omgdi:waypoint>
-        <omgdi:waypoint x="665.0" y="-55.0"></omgdi:waypoint>
+        <omgdi:waypoint x="508.0" y="-55.0"></omgdi:waypoint>
+        <omgdi:waypoint x="551.0" y="-55.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
         <omgdi:waypoint x="112.0" y="240.0"></omgdi:waypoint>
@@ -463,12 +515,16 @@
         <omgdi:waypoint x="354.0" y="-27.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
-        <omgdi:waypoint x="407.0" y="-55.0"></omgdi:waypoint>
-        <omgdi:waypoint x="430.0" y="-55.0"></omgdi:waypoint>
+        <omgdi:waypoint x="354.0" y="-82.0"></omgdi:waypoint>
+        <omgdi:waypoint x="354.0" y="-95.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
-        <omgdi:waypoint x="717.0" y="142.0"></omgdi:waypoint>
-        <omgdi:waypoint x="717.0" y="105.0"></omgdi:waypoint>
+        <omgdi:waypoint x="603.0" y="142.0"></omgdi:waypoint>
+        <omgdi:waypoint x="603.0" y="35.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
+        <omgdi:waypoint x="488.0" y="-95.0"></omgdi:waypoint>
+        <omgdi:waypoint x="488.0" y="-75.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

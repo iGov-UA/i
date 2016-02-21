@@ -3,7 +3,7 @@
 var appTest = require('../../app.spec');
 
 appTest.centralNock
-  .get('/wf/service/services/getDocumentTypes')
+  .get('/wf/service/document/getDocumentTypes')
   .query(true)
   .reply(200, [{"bHidden": false, "nID": 21087, "sName": "test"}, {
     "bHidden": false,
@@ -18,7 +18,7 @@ appTest.centralNock
     "nID": 2,
     "sName": "Громадянський паспорт"
   }, {"bHidden": false, "nID": 3, "sName": "ІПН"}])
-  .get('/wf/service/services/getDocuments')
+  .get('/wf/service/document/getDocuments')
   .query(true)
   .reply(200, [{
     "sContentType": "false",
@@ -32,7 +32,7 @@ appTest.centralNock
     "sFile": "passport.zip",
     "sDate_Upload": "2015-07-05",
     "sID_Subject_Upload": "2000000001",
-    "sSubjectName_Upload": "Приватбанк",
+    "sSubjectName_Upload": "ПриватБанк",
     "oSubject_Upload": {"sID": "2000000001", "sLabel": null, "sLabelShort": null, "nID": 20049},
     "oSubject": {"sID": "2000000001", "sLabel": null, "sLabelShort": null, "nID": 20049}
   }], {

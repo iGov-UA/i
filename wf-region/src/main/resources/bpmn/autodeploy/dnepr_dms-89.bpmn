@@ -8,7 +8,6 @@
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="warning1" name="Зверніть увагу" type="label" default="&lt;b&gt;Ваші дані, завантажені з BankID, повинні бути актуальними та заповненими українською мовою.&lt;/b&gt; Якщо це не так - зверніться у службу підтримки Вашого банку."></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrevName1" name="Ви змінювали прізвище, ім’я та по батькові?" type="enum" required="true">
@@ -21,10 +20,10 @@
         <activiti:formProperty id="Date_of_birth" name="Дата народження" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="Areabirth" name="Місце народження; Країна, область, район і населений пункт" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="Nationality" name="Громадянство" type="string" default="Україна" required="true"></activiti:formProperty>
-        <activiti:formProperty id="RegistrationAddress" name="Стара адреса реєстрації; Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="RegistrationAddress" name="Стара адреса реєстрації;Область, Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="WhenCome" name="Дата зняття з попереднього місця реєстрації зазначена в талоні у форматі - ДД.ММ.PPPP;якщо реєстрація буде йти з одночасним зняттям, укажіть дату візиту" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="rename" name="Зверніть увагу" type="label" default="У зв'язку з переіменуванням вулиць, під час введення нової адреси звірте назву за &lt;a href=&quot;https://docs.google.com/spreadsheets/d/16j-w5pN0erlhdmTg5xl0bs9Gob1W0U3ivjIhy0BTHsU/edit?pli=1#gid=0&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;."></activiti:formProperty>
-        <activiti:formProperty id="newAddress" name="Нова адреса реєстрації; Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="newAddress" name="Нова адреса реєстрації;Область, Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="RegistrationDocument" name="Підставою для реєстрації нового місця проживання є" type="enum" required="true">
           <activiti:value id="order" name="Ордер"></activiti:value>
           <activiti:value id="ownDoc" name="Свідоцтво про право власності"></activiti:value>
@@ -79,11 +78,12 @@
           <activiti:value id="noR" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання послуги?" type="queueData" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="viddil" name="Відділ ДМС" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="postV" name="Пошта відділу ДМС" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="districtS" name="район/місто звернення" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="Registrationservice" name="Відділ ДМС" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible" default="Заявка актуальна"></activiti:formProperty>
         <activiti:formProperty id="lable" name="В залежності від підстави для реєстрації, будь ласка, завантажте" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="svid" name="Свідоцтво про право власності, або договір куплі/продажу та витяг з державного реєстру речових прав на нерухоме майно;Якщо декілька сторінок об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="ord" name="Ордер, або копія ордеру з печаткою ЖЕКу;Якщо декілька сторінок об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
@@ -101,7 +101,7 @@
     </boundaryEvent>
     <sequenceFlow id="flow1" sourceRef="boundaryerror1" targetRef="endevent2"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
-    <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
+    <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="servicetask3"></sequenceFlow>
     <scriptTask id="scripttask1" name="Передача значений" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
       var post = ['1210@dmsu.gov.ua', 'dms_dn_babysh@ukr.net', '1212@dmsu.gov.ua', '1213@dmsu.gov.ua', '1214@dmsu.gov.ua', '1215@dmsu.gov.ua', '1216@dmsu.gov.ua', '1217@dmsu.gov.ua', '1220@dmsu.gov.ua', '1221@dmsu.gov.ua', '1222@dmsu.gov.ua', 'cnap.vilnogirsk@gmail.com', 'dozvildndz@ukr.net', 'edv.rda@gmail.com', 'admin_kom@ukr.net', 'teplikcnap@gmail.com', 'zhigan.roman@gmail.com', 'zhigan.roman@gmail.com', 'zhigan.roman@gmail.com', 'zhigan.roman@gmail.com', 'zhigan.roman@gmail.com']
@@ -174,8 +174,9 @@ execution.setVariable('notification_day', timer)
 									&lt;p&gt;
 										Спеціалісти [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:3] оброблять Вашу заявку протягом 1-3 днів та надішлють Вам email з підтвердженням та запрошенням прийти до [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:3] у обраний час. 
 									&lt;/p&gt;
+									&lt;p&gt;[cancelTask]&lt;/p&gt; 
                                     [pattern/mail/_common_signature_start.html]
-									[pattern_dictonary:dnepr_dms.csv:value{[viddil]}:2],&lt;br /&gt;
+									[pattern_dictonary:dnepr_dms.csv:value{[viddil]}:2],&lt;br&gt;
 									[pattern/mail/_common_signature_end.html]   
 									[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -202,6 +203,7 @@ execution.setVariable('notification_day', timer)
     <userTask id="usertask1" name="Перевірка вхідних даних" activiti:candidateGroups="dnepr_dms-89_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="info" name="На цьому етапі:" type="label" default="Ви перевіряєте дані громадянина і вирішуєте чи всі вони вірні. Якщо все добре, то громадянин має прийти до Вас у вказаний день і час для отримання штампу про реєстрацію"></activiti:formProperty>
+        <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" writable="false"></activiti:formProperty>
@@ -295,11 +297,11 @@ execution.setVariable('notification_day', timer)
 										При необхідності реєстрації нового місця проживання Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;
 									&lt;/p&gt; 
 									&lt;p&gt;
-										Коментар Державного службовця:&lt;br /&gt;
+										Коментар Державного службовця:&lt;br&gt;
 											&lt;b&gt;&lt;i&gt;${decisionComment}&lt;/i&gt;&lt;/b&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
-										При вниникненні питань Ви можете звернутися до чергового:&lt;br /&gt;
+										При вниникненні питань Ви можете звернутися до чергового:&lt;br&gt;
 										тел. [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:5]
 									&lt;/p&gt;
 									[pattern/mail/_common_signature_start.html]
@@ -331,7 +333,7 @@ execution.setVariable('notification_day', timer)
                                     &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
                                         Спеціалісти [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:3] успішно опрацювли Вашу заяву.&lt;br /&gt;
-										Для того щоб закінчити процедуру реєстрації необхідно:&lt;br /&gt;
+										Для того щоб закінчити процедуру реєстрації необхідно:&lt;br&gt;
 										&lt;ul&gt;
 										&lt;li&gt;У будь-якому банку сплатити Державне мито у розмірі 0.85 грн і отримати квитанцію про сплату.&lt;/li&gt;
 										&lt;li&gt;Прийти до [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:3] за адресою: [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:4] з необхідними документами та звернутись до [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:7].&lt;/li&gt;
@@ -339,15 +341,16 @@ execution.setVariable('notification_day', timer)
 										&lt;/ul&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
-										&lt;b&gt;Реквізити для сплати:&lt;/b&gt;&lt;br /&gt;
-										&lt;i&gt;[pattern_dictonary:dnepr_dms.csv:value{[viddil]}:6]&lt;/i&gt;
+										&lt;b&gt;Реквізити для сплати:&lt;/b&gt;&lt;br&gt;
+										&lt;i&gt;[pattern_dictonary:dnepr_dms.csv:value{[viddil]}:6]&lt;br&gt;
+										Призначення платежу: реєстрація місця проживання​&lt;/i&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
 										&lt;b&gt;Деталі зустрічі:&lt;/b&gt;&lt;br /&gt;
 										День та час - ${date_of_visit}
 									&lt;/p&gt;
 									&lt;p&gt;
-										&lt;b&gt;Необхідні документи, які треба принести до [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:3] при реєстраціі місця проживання:&lt;/b&gt;&lt;br /&gt;
+										&lt;b&gt;Необхідні документи, які треба принести до [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:3] при реєстраціі місця проживання:&lt;/b&gt;&lt;br&gt;
 										&lt;ul&gt;
 										&lt;li&gt;документ, до якого вносяться відомості про місце проживання&lt;/li&gt;
 										&lt;li&gt;квитанцію про сплату державного мита з мокрою печаткою банку або документ про звільнення від його сплати&lt;/li&gt;
@@ -372,15 +375,16 @@ execution.setVariable('notification_day', timer)
 										&lt;/ul&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
-										Коментар Державного службовця:&lt;br /&gt;
+										Коментар Державного службовця:&lt;br&gt;
 										&lt;b&gt;&lt;i&gt;${decisionComment}&lt;/i&gt;&lt;/b&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
-										При вниникненні питань Ви можете звернутися до чергового:&lt;br /&gt;
+										При вниникненні питань Ви можете звернутися до чергового:&lt;br&gt;
 										тел. [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:5]
 									&lt;/p&gt;
+									&lt;p&gt;[cancelTask]&lt;/p&gt; 
                                     [pattern/mail/_common_signature_start.html]
-									[pattern_dictonary:dnepr_dms.csv:value{[viddil]}:2],&lt;br /&gt;
+									[pattern_dictonary:dnepr_dms.csv:value{[viddil]}:2],&lt;br&gt;
 									[pattern/mail/_common_signature_end.html]   
 									[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -390,6 +394,7 @@ execution.setVariable('notification_day', timer)
     <userTask id="usertask2_red" name="Візит громадянина" activiti:candidateGroups="dnepr_dms-89_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="info1" name="На цьому етапі:" type="label" default="Громадянин приходить до Вас. Ви звіряєте дані з ним, при необхідності вносите зміни. Роздруковуєте прінтформи, підписуєте їх та проставляєте штамп у паспорт громадянина."></activiti:formProperty>
+        <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="День та час зустрічі: " type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
@@ -494,11 +499,11 @@ execution.setVariable('notification_day', timer)
           <activiti:expression>[pattern/mail/_common_header.html]
                                     &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
-                                        На жаль Ви не з'явились до [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:3] у призначений день і час.&lt;br /&gt;
+                                        На жаль Ви не з'явились до [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:3] у призначений день і час.&lt;br&gt;
                                         При необхідності реєстрації нового місця проживання Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
-										При вниникненні питань Ви можете звернутися до чергового:&lt;br /&gt;
+										При вниникненні питань Ви можете звернутися до чергового:&lt;br&gt;
 										тел. [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:5]
                                     &lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
@@ -526,12 +531,12 @@ execution.setVariable('notification_day', timer)
           <activiti:expression>[pattern/mail/_common_header.html]
 								  &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
-                              		Ви отримали послугу "Реєстрація місця проживання особи (із опцією одночасного зняття з реєстрації з попереднього місця)".&lt;br /&gt;
-                              		Будь ласка, оцініть якість надання цієї послуги за допомогою форми нижче.&lt;br /&gt;
+                              		Ви отримали послугу "Реєстрація місця проживання особи (із опцією одночасного зняття з реєстрації з попереднього місця)".&lt;br&gt;
+                              		Будь ласка, оцініть якість надання цієї послуги за допомогою форми нижче.&lt;br&gt;
                               		Дякуємо.
 									&lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
-									[pattern_dictonary:dnepr_dms.csv:value{[viddil]}:2],&lt;br /&gt;
+									[pattern_dictonary:dnepr_dms.csv:value{[viddil]}:2],&lt;br&gt;
 									[pattern/mail/_common_signature_end.html]   
 									[pattern/mail/_common_feedback.html]
 									[pattern/mail/_common_footer.html]</activiti:expression>
@@ -608,9 +613,8 @@ execution.setVariable('notification_day', timer)
         <omgdi:waypoint x="140.0" y="210.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="121.0" y="107.0"></omgdi:waypoint>
-        <omgdi:waypoint x="121.0" y="68.0"></omgdi:waypoint>
-        <omgdi:waypoint x="157.0" y="67.0"></omgdi:waypoint>
+        <omgdi:waypoint x="174.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="261.0" y="147.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
         <omgdi:waypoint x="262.0" y="67.0"></omgdi:waypoint>

@@ -3,9 +3,11 @@ package org.activiti.explorer.servlet;
 import org.activiti.explorer.conf.ApplicationConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
+import org.springframework.web.context.support.XmlWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
 import javax.servlet.ServletContext;
@@ -20,9 +22,9 @@ public class WebConfigurer implements ServletContextListener {
 
     private final Logger LOG = LoggerFactory.getLogger(WebConfigurer.class);
 
-    public AnnotationConfigWebApplicationContext context;
+    public ApplicationContext context;
 
-    public void setContext(AnnotationConfigWebApplicationContext context) {
+    public void setContext(ApplicationContext context) {
         this.context = context;
     }
 
@@ -32,13 +34,14 @@ public class WebConfigurer implements ServletContextListener {
 
         LOG.debug("Configuring Spring root application context");
 
-        AnnotationConfigWebApplicationContext rootContext = null;
+        ApplicationContext rootContext;
 
         if (context == null) {
-            rootContext = new AnnotationConfigWebApplicationContext();
-            rootContext.register(ApplicationConfiguration.class);
-            rootContext.setServletContext(servletContext);
-            rootContext.refresh();
+            AnnotationConfigWebApplicationContext ctx = new AnnotationConfigWebApplicationContext();
+            ctx.register(ApplicationConfiguration.class);
+            ctx.setServletContext(servletContext);
+            ctx.refresh();
+            rootContext = ctx;
         } else {
             rootContext = context;
         }
@@ -54,7 +57,7 @@ public class WebConfigurer implements ServletContextListener {
      * Initializes Spring and Spring MVC.
      */
     private ServletRegistration.Dynamic initSpring(ServletContext servletContext,
-            AnnotationConfigWebApplicationContext rootContext) {
+            ApplicationContext rootContext) {
         LOG.debug("Configuring Spring Web application context");
         AnnotationConfigWebApplicationContext dispatcherServletConfiguration = new AnnotationConfigWebApplicationContext();
         dispatcherServletConfiguration.setParent(rootContext);

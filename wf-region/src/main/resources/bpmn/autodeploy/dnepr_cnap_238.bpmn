@@ -24,7 +24,7 @@
         <activiti:formProperty id="landAddress" name="Місце розташування земельної ділянки" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="landNumb" name="Кадастровий номер;у форматі хххххххххх:хх:ххх:хххх" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="shapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="region" name="Регион" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="nRegion" name="Регион" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="m1" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="m2" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="m3" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
@@ -32,7 +32,7 @@
         <activiti:formProperty id="m5" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="m6" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="forma" name="Подстановка принтформы" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="clerkPost" name="почта чиновника" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sClerkPost" name="почта чиновника" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Копія документа, що посвідчує особу (паспорт)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_inn" name="Копія документа про присвоєння податкового номера" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="marker1" name="CNAP232_3Reg" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_m&quot;:{&quot;aField_ID&quot;:[&quot;zapit&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;pidstavi&quot;},&quot;sCondition&quot;:&quot;[sReason]=='z2'&quot;}}}"></activiti:formProperty>
@@ -66,7 +66,7 @@
 			Ви отримаєте відповідь протягом 10 робочих днів.
 			&lt;/p&gt;
 			[pattern/mail/_common_signature_start.html]
-			[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
+			[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:2]&lt;br /&gt;
 			[pattern/mail/_common_signature_end.html]
 			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -79,7 +79,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>email@email.ua</activiti:expression>
+          <activiti:expression>kamni@i.ua</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression>Нове звернення на порталі igov.org.ua на тему: Видача довідки про наявність та розмір земельної частки (паю). Заявник ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}</activiti:expression>
@@ -155,13 +155,13 @@
           <activiti:expression>[pattern/mail/_common_header.html]
 			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 			&lt;p&gt;Ваше звернення опрацьоване.&lt;br /&gt;
-			Ви можете завантажити копію довідку про наявність та розмір земельної частки (паю) з додатку до цього листа, та отримати оригінал у [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;/p&gt;
-&lt;p&gt;[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:3]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:4]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]&lt;/p&gt;
+			Ви можете завантажити копію довідку про наявність та розмір земельної частки (паю) з додатку до цього листа, та отримати оригінал у [pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:2]&lt;/p&gt;
+&lt;p&gt;[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:3]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:4]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:5]&lt;/p&gt;
 &lt;p&gt;Для отримання довідки потрібно особисто звернутися до адміністратора ЦНАП з документом, що посвідчує особу (паспорт) та оригіналом документу про оплату послуг. &lt;/p&gt;
  [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]   
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
@@ -194,13 +194,13 @@
 			&lt;p&gt;На жаль, Ваш запит відхилено.&lt;/p&gt;
 			&lt;p&gt;${comment}&lt;/p&gt;
 			За необхідності Ви можете подати ще одне звернення на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;igov.org.ua&lt;/a&gt;
-			&lt;p&gt;Якщо у вас виникли питання, Ви можете звернутись до [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;/p&gt;
+			&lt;p&gt;Якщо у вас виникли питання, Ви можете звернутись до [pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:2]&lt;/p&gt;
 &lt;p&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:3]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:4]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]&lt;/p&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:3]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:4]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:5]&lt;/p&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]   
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -271,12 +271,12 @@
           <activiti:expression>[pattern/mail/_common_header.html]
 			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 			&lt;p&gt;Ваше звернення пройшло попередню перевірку адміністратором ЦНАП і передано для опрацювання відповідальній особі. За кілька днів ви отримаєте результат опрацювання на цей email.&lt;br /&gt;Ви можете роздрукувати своє повідомлення з прикріплення до цього листа.&lt;br /&gt;
-			&lt;p&gt;Якщо у Вас з`явились питання, Ви можете звернутись до [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:3]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:4]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]&lt;/p&gt;
+			&lt;p&gt;Якщо у Вас з`явились питання, Ви можете звернутись до [pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:3]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:4]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:5]&lt;/p&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -305,12 +305,12 @@
 			&lt;p&gt;На жаль, Ваше звернення відхилене. &lt;/p&gt;
 			&lt;p&gt;${comment1}&lt;/p&gt;
 			За необхідності Ви можете подати ще одну заяву на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;igov.org.ua&lt;/a&gt;&lt;/p&gt;
-			&lt;p&gt;Якщо у Вас з`явились питання, Ви можете звернутись до [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:3]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:4]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]&lt;/p&gt;
+			&lt;p&gt;Якщо у Вас з`явились питання, Ви можете звернутись до [pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:3]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:4]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:5]&lt;/p&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -321,21 +321,7 @@
     </sequenceFlow>
     <sequenceFlow id="flow22" sourceRef="servicetask8" targetRef="endevent1"></sequenceFlow>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var region1 = [ "Начальнику відділу Держгеокадастру Царичанського району Дніпропетровської області", "Начальнику Управління Держгеокадастру у Верхньодніпровському районі Дніпропетровської області", "Начальнику Управління Держгеокадастру у м. Дніпродзержинську Дніпропетровської області", "Начальнику Управління Держгеокадастру у Марганецькому районі Дніпропетровської області", "Начальнику Відділу Держгеокадастру у м. Нікополь Дніпропетровської області", "Начальнику Управління Держгеокадастру у Теплицькому районі Вінницької області", "Начальнику Управління Держгеокадастру у Наддвірнянському районі Івано-Франківської області", "Начальнику Управління Держгеокадастру у м. Буча Київської області", "Начальнику Управління Держгеокадастру у м. Вознесенськ Миколаївської області", "Начальнику Управління Держгеокадастру у м. Кузнецовськ Рівненської області", "Начальнику Управління Держгеокадастру у м. Здолбунів Рівненської області", "Начальнику Управління Держгеокадастру у м. Ізюм Харківської області", "Начальнику Управління Держгеокадастру у Нововодолазькому р-ні Харківської області"]
-var no = [ "20", "25", "26", "29", "30", "59", "202", "212", "322", "407", "416", "479", "505"]
-var post = [ "tsar.alternatyva@gmail.com", "cnap.vilnogirsk@gmail.com", "dozvildndz@ukr.net", "mn-centr@i.ua", "nikopol.admin@ukr.net", "teplikcnap@ukr.net", "Nadvirna@email.net", "poplavok67@gmail.com", "Voznesensk@email.net", "Kuznecovsk@email.com", "Zdolbuniv@email.net", "tkachov@kharkiv.biz.ua", "tkachov@kharkiv.biz.ua"]
-var So = [ "carich", "vilnogirskT", "dndzT", "marganT", "nikopolT", "vin_teplic", "if_nadv", "kiev_bucha", "mik_voznT", "rivn_kuznT", "rivn_zdolbT", "kh_izumT", "kh_novvod"]
-for (var i = 0; i&lt;13; i++){
-var per = So[i]
-if(execution.getVariable('sID_Public_SubjectOrganJoin') == per){
-var per2 = no[i]
-var per3 = region1[i]
-var per4 = post[i]
-break}}
-execution.setVariable('region', per2)
-execution.setVariable('shapka', per3)
-execution.setVariable('clerkPost', per4)
-var gal = 'V'
+      <script>var gal = 'V'
 var bs = ' '
 execution.setVariable('m1', bs)
 execution.setVariable('m2', bs)

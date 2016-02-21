@@ -1,36 +1,68 @@
-<div class="navbar navbar-default navbar-static-top" ng-controller="NavbarCtrl">
-  <div class="container">
-    <div class="navbar-header">
-      <button class="navbar-toggle" type="button" ng-click="isCollapsed = !isCollapsed">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a href="https://igov.org.ua" class="navbar-brand">igov.org.ua</a>
-    </div>
+<div class="row">
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="navbar navbar-default navbar-static-top i-gov-navbar" ng-controller="NavbarCtrl">
 
-    <div collapse="isCollapsed" class="navbar-collapse collapse" id="navbar-main">
+      <div ng-if="iGovNavbarHelper.auth.isLoggedIn()" class="navbar-header i-gov-navbar-instruments-container">
+        <a href="#" class="i-gov-navbar-instruments" ng-click="iGovNavbarHelper.areInstrumentsVisible = !iGovNavbarHelper.areInstrumentsVisible">
+          <img ng-show="!iGovNavbarHelper.areInstrumentsVisible" src="assets/images/u93.png">
+          <img ng-show="iGovNavbarHelper.areInstrumentsVisible" src="assets/images/u95.png">
+        </a>
+      </div>
 
-      <ul class="nav navbar-nav">
-        <li ng-repeat="menu in menus"
-            ng-show="isVisible(menu.type)"
-            ng-class="{active: isTaskFilterActive(menu.type)}">
-            <a ng-attr-id="{{menu.type}}" ng-click="applyTaskFilter(menu.type)">{{menu.title}}
-            <!--<a ng-if="menu.type!=='finished'" ng-attr-id="{{menu.type}}" ng-click="applyTaskFilter(menu.type)">{{menu.title}}-->
-            <span class="label label-info">{{menu.count}}</span>
-          </a>
-        </li>
-      </ul>
+      <div ng-if="iGovNavbarHelper.auth.isLoggedIn()" collapse="iGovNavbarHelper.isCollapsed" class="navbar-collapse collapse" id="navbar-main">
 
-      <ul ng-show="isLoggedIn()" class="nav navbar-nav navbar-right">
-        <li ng-show="isTest"><a href="" ng-click="goToServices()">Сервіс</a></li>
-        <li><a ng-attr-id="{{menu.type}}" ng-click="goToReports()">Звіти</a></li>
-        <li><a href="" ng-click="goToTasks()">Задачі</a></li>
-        <li ng-show="isTest"><a href="" ng-click="goToEscalations()">Ескалації</a></li>
-        <li><a href="" ng-click="goToTasks()">{{ getCurrentUserName()}}</a></li>
-        <li ng-class="{active: isActive('/logout')}"><a href="" ng-click="logout()">Вийти</a></li>
-      </ul>
+        <ul class="nav navbar-nav" ng-show="!iGovNavbarHelper.areInstrumentsVisible" ng-init="iGovNavbarHelper.load()">
+          <li ng-repeat="menu in iGovNavbarHelper.menus"
+              ng-show="isVisible(menu.type)"
+              ng-class="{active: isTaskFilterActive(menu.type)}">
+            <a ng-if="!applyTaskFilter" ng-attr-id="{{menu.type}}" ng-click="goToTasks(menu.tab)">{{menu.title}}
+              <span class="label label-info">{{menu.count}}</span>
+            </a>
+            <a ng-if="applyTaskFilter" ng-attr-id="{{menu.type}}" ng-click="!!tasksLoading || goToTasks(menu.tab)">{{menu.title}}
+              <span class="label label-info">{{menu.count}}</span>
+            </a>
+          </li>
+        </ul>
+
+        <ul class="nav navbar-nav" ng-show="iGovNavbarHelper.areInstrumentsVisible">
+          <li ng-class="{'active': (iGovNavbarHelper.currentTab === '/users')}"
+              ng-show="iGovNavbarHelper.isTest">
+            <a href="" ng-click="goToUsers()">Користувачі</a>
+          </li>
+          <li ng-class="{'active': (iGovNavbarHelper.currentTab === '/groups')}"
+              ng-show="iGovNavbarHelper.isTest">
+            <a href="" ng-click="goToGroups()">Групи</a>
+          </li>
+          <li ng-class="{'active': (iGovNavbarHelper.currentTab === '/escalations')}"
+              ng-show="iGovNavbarHelper.isTest">
+            <a href="" ng-click="goToEscalations()">Ескалації</a>
+          </li>
+          <li ng-class="{'active': (iGovNavbarHelper.currentTab === '/reports')}">
+            <a ng-attr-id="{{menu.type}}" ng-click="goToReports()">Звіт</a>
+          </li>
+          <li ng-class="{'active': (iGovNavbarHelper.currentTab === '/services')}"
+              ng-show="iGovNavbarHelper.isTest">
+            <a href="" ng-click="goToServices()">Розклад</a>
+          </li>
+          <li ng-class="{'active': (iGovNavbarHelper.currentTab === '/deploy')}"
+              ng-show="iGovNavbarHelper.isTest">
+            <a href="" ng-click="goToDeploy()">Розгортання</a>
+          </li>
+        </ul>
+
+        <ul class="nav navbar-nav navbar-right">
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+               aria-expanded="false">{{getCurrentUserName()}} <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="#" ng-click="goToProfile()">Профіль</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a href="#" ng-click="logout()">Вийти</a></li>
+            </ul>
+          </li>
+        </ul>
+
+      </div>
     </div>
   </div>
 </div>

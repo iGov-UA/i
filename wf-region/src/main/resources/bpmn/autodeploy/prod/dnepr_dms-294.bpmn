@@ -3,6 +3,7 @@
   <process id="dnepr_dms-294" name="Видача довідки про реєстрацію місця проживання/перебування особи" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть підрозділ ДМС або ЦНАП району (міста), до якого належить Ваше місце реєстрації" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="warning2" name="Зверніть увагу" type="label" default="&lt;b&gt;Дана довідка засвідчує лише місце реєстрації особи, яка подає заявку.&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
@@ -13,17 +14,13 @@
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="Date_of_birth" name="Дата народження; Формат - ДД.ММ.PPPP" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="Areabirth" name="Місце народження; Країна, область, район і населений пункт" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="rename" name="Зверніть увагу" type="label" default="У зв'язку з переіменуванням вулиць, під час введення нової адреси звірте назву за &lt;a href=&quot;https://docs.google.com/spreadsheets/d/16j-w5pN0erlhdmTg5xl0bs9Gob1W0U3ivjIhy0BTHsU/edit?pli=1#gid=0&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;."></activiti:formProperty>
-        <activiti:formProperty id="RegistrationAddress" name="Місце реєстрації; Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="district" name="Район м. Дніпропетровськ, у якому Ви зареєстровані" type="enum" required="true">
-          <activiti:value id="bab" name="Шевченківський (Бабушкінський)"></activiti:value>
-          <activiti:value id="kirov" name="Центральний (Кіровський)"></activiti:value>
-        </activiti:formProperty>
+        <activiti:formProperty id="RegistrationAddress" name="Місце реєстрації;Область, Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорта; у форматі pdf" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="viddil" name="Відділ ДМС" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="postV" name="Пошта відділу ДМС" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="districtS" name="район/місто звернення" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="Registrationservice" name="Відділ ДМС" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('dms/passport.json')}"></activiti:formProperty>
         <activiti:formProperty id="warning" name="Зверніть увагу" type="label" default="Подаючи звернення, Ви підтверджуєте достовірність усіх зазначених у зверненні даних і надаєте свою згоду на обробку Ваших персональних даних"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -34,7 +31,7 @@
     </boundaryEvent>
     <sequenceFlow id="flow1" sourceRef="boundaryerror1" targetRef="endevent2"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
-    <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
+    <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="servicetask4"></sequenceFlow>
     <scriptTask id="scripttask1" name="Передача значений" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
       var post = ['1210@dmsu.gov.ua', 'dms_dn_babysh@ukr.net', '1212@dmsu.gov.ua', '1213@dmsu.gov.ua', '1214@dmsu.gov.ua', '1215@dmsu.gov.ua', '1216@dmsu.gov.ua', '1217@dmsu.gov.ua', '1220@dmsu.gov.ua', '1221@dmsu.gov.ua', '1222@dmsu.gov.ua', 'cnap.vilnogirsk@gmail.com']
@@ -60,7 +57,7 @@ execution.setVariable('Registrationservice', per4)
     <serviceTask id="servicetask4" name="Повідомлення про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-           <activiti:expression>${postV}</activiti:expression>
+         <activiti:expression>${postV}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -102,7 +99,7 @@ execution.setVariable('Registrationservice', per4)
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow4" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
-    <userTask id="usertask1" name="Перевірка вхідних даних" activiti:candidateGroups="dnepr_dms-89_${district}">
+    <userTask id="usertask1" name="Перевірка вхідних даних" activiti:candidateGroups="dnepr_dms-89_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="info" name="На цьому етапі:" type="label" default="Ви перевіряєте дані громадянина. Якщо все добре, робите запрос у адресно-довідкове бюро. Після отримання довідки натискаєте 'Опрацювати' і громадянин має прийти до Вас за нею."></activiti:formProperty>
         <activiti:formProperty id="clFio1" name="ПІБ громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -112,7 +109,7 @@ execution.setVariable('Registrationservice', per4)
         <activiti:formProperty id="Date_of_birth" name="Дата народження громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Areabirth" name="Місце народження громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="RegistrationAddress" name="Місце реєстрації; Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="districtS" name="Місто або район, до якого належить місце проживання отримувача паспорта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="districtS" name="Місто або район, до якого належить місце проживання громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="workerDecision" name="Рішення держслужбовця" type="enum" required="true">
           <activiti:value id="accept" name="Призначити зустріч у відділенні"></activiti:value>
           <activiti:value id="decline" name="Відмовити в наданні послуги"></activiti:value>
@@ -213,7 +210,7 @@ execution.setVariable('Registrationservice', per4)
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow27" sourceRef="servicetask6" targetRef="usertask2_red"></sequenceFlow>
-    <userTask id="usertask2_red" name="Візит громадянина" activiti:candidateGroups="dnepr_dms-89_${district}">
+    <userTask id="usertask2_red" name="Візит громадянина" activiti:candidateGroups="dnepr_dms-89_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="info1" name="На цьому етапі:" type="label" default="Громадянин приходить до Вас. Ви роздруковуєте заяву, та віддаєте громадянину довідку."></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
@@ -225,7 +222,7 @@ execution.setVariable('Registrationservice', per4)
         <activiti:formProperty id="Date_of_birth" name="Дата народження громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Areabirth" name="Місце народження громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="RegistrationAddress" name="Місце реєстрації; Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="districtS" name="Місто або район, до якого належить місце проживання отримувача паспорта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="districtS" name="Місто або район, до якого належить місце проживання громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Registrationservice" name="Орган, який видає довідку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="result" name="Результат зустрічі" type="enum">
           <activiti:value id="reestr" name="Громадянин отримав довідку"></activiti:value>
@@ -326,11 +323,14 @@ execution.setVariable('Registrationservice', per4)
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="150.0" y="210.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
-        <omgdc:Bounds height="81.0" width="105.0" x="380.0" y="107.0"></omgdc:Bounds>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="180.0" y="40.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
         <omgdc:Bounds height="81.0" width="105.0" x="250.0" y="107.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
+        <omgdc:Bounds height="81.0" width="105.0" x="380.0" y="107.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="81.0" width="119.0" x="509.0" y="107.0"></omgdc:Bounds>
@@ -368,9 +368,6 @@ execution.setVariable('Registrationservice', per4)
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="55.0" width="105.0" x="783.0" y="409.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="180.0" y="40.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
         <omgdi:waypoint x="75.0" y="147.0"></omgdi:waypoint>
         <omgdi:waypoint x="96.0" y="147.0"></omgdi:waypoint>
@@ -380,17 +377,21 @@ execution.setVariable('Registrationservice', per4)
         <omgdi:waypoint x="167.0" y="210.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="153.0" y="107.0"></omgdi:waypoint>
-        <omgdi:waypoint x="152.0" y="67.0"></omgdi:waypoint>
-        <omgdi:waypoint x="180.0" y="67.0"></omgdi:waypoint>
+        <omgdi:waypoint x="211.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="250.0" y="147.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
-        <omgdi:waypoint x="485.0" y="147.0"></omgdi:waypoint>
-        <omgdi:waypoint x="509.0" y="147.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
+        <omgdi:waypoint x="285.0" y="67.0"></omgdi:waypoint>
+        <omgdi:waypoint x="303.0" y="68.0"></omgdi:waypoint>
+        <omgdi:waypoint x="302.0" y="107.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
         <omgdi:waypoint x="355.0" y="147.0"></omgdi:waypoint>
         <omgdi:waypoint x="380.0" y="147.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="485.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="509.0" y="147.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
         <omgdi:waypoint x="568.0" y="188.0"></omgdi:waypoint>
@@ -452,11 +453,6 @@ execution.setVariable('Registrationservice', per4)
       <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
         <omgdi:waypoint x="835.0" y="464.0"></omgdi:waypoint>
         <omgdi:waypoint x="834.0" y="477.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
-        <omgdi:waypoint x="285.0" y="67.0"></omgdi:waypoint>
-        <omgdi:waypoint x="303.0" y="68.0"></omgdi:waypoint>
-        <omgdi:waypoint x="302.0" y="107.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

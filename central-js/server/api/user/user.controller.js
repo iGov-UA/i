@@ -1,5 +1,6 @@
 var accountService = require('../../auth/bankid/bankid.service.js');
 var soccardService = require('../../auth/soccard/soccard.service.js');
+var emailService = require('../../auth/email/email.service.js');
 var userConvert = require('./user.convert');
 
 var finishRequest = function (req, res, err, result, type) {
@@ -9,6 +10,7 @@ var finishRequest = function (req, res, err, result, type) {
     res.end();
   } else {
     req.session.subject = result.subject;
+    req.session.bAdmin = result.admin;
     res.send({
       customer: userConvert.convertToCanonical(type, result.customer),
       admin: result.admin
@@ -30,7 +32,23 @@ module.exports.index = function (req, res) {
       finishRequest(req, res, err, result, type);
     });
   } else if (type === 'soccard') {
-    soccardService.getUser(req.session.access.accessToken, function (err, result) {
+    soccardService.syncWithSubject(req.session.access.accessToken, function (err, result) {
+      finishRequest(req, res, err, result, type);
+    });
+  } else if(type === 'email'){
+    emailService.syncWithSubject(req.session.access.email, function (err, result) {
+      if(!result.customer.firstName){
+        result.customer.firstName = req.session.account.firstName;
+      }
+      if(!result.customer.lastName){
+        result.customer.lastName = req.session.account.lastName;
+      }
+      if(!result.customer.middleName){
+        result.customer.middleName = req.session.account.middleName;
+      }
+      if(!result.customer.email){
+        result.customer.email = req.session.access.email;
+      }
       finishRequest(req, res, err, result, type);
     });
   }

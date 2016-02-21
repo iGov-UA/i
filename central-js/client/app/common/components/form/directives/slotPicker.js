@@ -30,7 +30,8 @@ angular.module('app').directive('slotPicker', function($http, dialogs) {
 
       scope.$watch('selected.slot', function(newValue) {
         if (newValue) {
-          $http.post('/api/service/flow/set/' + newValue.nID + '?sURL=' + scope.serviceData.sURL).then(function(response) {
+          //$http.post('/api/service/flow/set/' + newValue.nID + '?sURL=' + scope.serviceData.sURL).then(function(response) {
+          $http.post('/api/service/flow/set/' + newValue.nID + '?nID_Server=' + scope.serviceData.nID_Server).then(function(response) {
             scope.ngModel = JSON.stringify({
               nID_FlowSlotTicket: response.data.nID_Ticket,
               sDate: scope.selected.date.sDate + ' ' + scope.selected.slot.sTime + ':00.00'
@@ -50,7 +51,8 @@ angular.module('app').directive('slotPicker', function($http, dialogs) {
       scope.loadList = function(nID_SubjectOrganDepartment){
         scope.slotsLoading = true;
         var data = {
-          sURL: scope.serviceData.sURL,
+          //sURL: scope.serviceData.sURL,
+          nID_Server: scope.serviceData.nID_Server,
           nID_Service: (scope && scope.service && scope.service!==null ? scope.service.nID : null)
         };
         if (angular.isDefined(nID_SubjectOrganDepartment))

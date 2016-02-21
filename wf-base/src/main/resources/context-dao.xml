@@ -1,17 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns="http://www.springframework.org/schema/beans"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-    <context:component-scan base-package="org.igov.model" />
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+    <context:component-scan base-package="org.igov.model" use-default-filters="false">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
+    </context:component-scan>
+
     <aop:config>
-        <aop:pointcut id="model" expression="execution(* org.igov.model.*.*(..))"/>
-        <aop:advisor pointcut-ref="model" advice-ref="txAdvice"/>
+        <!-- package depth 1-->
+        <aop:pointcut id="dao1" expression="execution(* org.igov.model.*.*Dao.*(..))"/>
+        <aop:pointcut id="dao_impl1" expression="execution(* org.igov.model.*.*DaoImpl.*(..))"/>
+
+        <!-- package depth 2-->
+        <aop:pointcut id="dao2" expression="execution(* org.igov.model.*.*.*Dao.*(..))"/>
+        <aop:pointcut id="dao_impl2" expression="execution(* org.igov.model.*.*.*DaoImpl.*(..))"/>
+
+        <aop:advisor pointcut-ref="dao1" advice-ref="txAdvice"/>
+        <aop:advisor pointcut-ref="dao_impl1" advice-ref="txAdvice"/>
+        <aop:advisor pointcut-ref="dao2" advice-ref="txAdvice"/>
+        <aop:advisor pointcut-ref="dao_impl2" advice-ref="txAdvice"/>
     </aop:config>
+
+    <!-- ==============================   DAO   ============================= -->
 
     <bean id="flowPropertyDao" class="org.igov.model.core.GenericEntityDao">
         <constructor-arg value="#{T(org.igov.model.flow.FlowProperty)}"/>
@@ -24,9 +41,5 @@
     <bean id="subjectOrganDepartmentDao" class="org.igov.model.core.GenericEntityDao">
         <constructor-arg value="#{T(org.igov.model.subject.SubjectOrganDepartment)}"/>
     </bean>
-
-    <!--bean id="accessServiceLoginRight" class="org.igov.model.core.GenericEntityDao">
-        <constructor-arg value="#{T(org.igov.model.access.AccessServiceLoginRight)}"/>
-    </bean-->
 
 </beans>

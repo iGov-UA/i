@@ -1,6 +1,6 @@
 package org.igov.model.core;
 
-import org.igov.service.interceptor.exception.EntityNotFoundException;
+import org.igov.service.exception.EntityNotFoundException;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.ExpectedDatabase;

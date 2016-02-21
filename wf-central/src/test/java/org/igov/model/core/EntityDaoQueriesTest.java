@@ -22,15 +22,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ReflectionUtils;
-import org.igov.model.core.EntityDao;
-import org.igov.model.core.GenericEntityDao;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.Assert.fail;
 import org.junit.Ignore;
@@ -78,7 +73,6 @@ public class EntityDaoQueriesTest {
         }
     }
 
-    @Ignore
     @Test
     @Transactional(readOnly = true)
     public void shouldFindAllDaoAndExecuteEachQueryMethod() throws Exception {
@@ -89,6 +83,8 @@ public class EntityDaoQueriesTest {
 
         LOG.info(LOG_SEPARATOR_LINE);
         LOG.info(String.format("Found %s DAOs : %s", entityDaos.size(), entityDaos));
+
+        List<String> daoForEntitiesTested = new ArrayList<>();
 
         for (Map.Entry<String, EntityDao> entityDaoEntry : entityDaos.entrySet()) {
             EntityDao testedDao = entityDaoEntry.getValue();
@@ -111,6 +107,7 @@ public class EntityDaoQueriesTest {
             LOG.info(LOG_SEPARATOR_LINE);
             LOG.info(String.format("Run test for %s", testedDaoClassName));
 
+            daoForEntitiesTested.add(testedDao.getEntityClass().getSimpleName());
             testDaoMethods(testedDao);
         }
 
@@ -122,6 +119,8 @@ public class EntityDaoQueriesTest {
             LOG.info(String.format("Testing of %s DAOs completed successfully", entityDaos.size()));
             LOG.info(LOG_SEPARATOR_LINE);
         }
+
+        LOG.info(String.format("Tested %s dao for entities: %s", daoForEntitiesTested.size(), daoForEntitiesTested));
     }
 
     protected boolean isDaoExcluded(String testedDaoClassName) {
@@ -197,7 +196,7 @@ public class EntityDaoQueriesTest {
     }
 
     private void handleTestedMethodException(Method testedMethod, Object[] randomParams, HibernateException e) {
-        LOG.error("Method invocation failed!", e);
+        LOG.error("Error: {}. Method invocation failed!", e.getCause());
         failedMethods
                 .add(String.format("Failed method: %s with params: %s", testedMethod, Arrays.toString(randomParams)));
     }

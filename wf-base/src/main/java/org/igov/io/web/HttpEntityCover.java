@@ -9,9 +9,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import org.igov.debug.Log;
-import static org.igov.debug.Log.oLogBig_Web;
-import static org.igov.util.Util.sCut;
+import org.igov.io.Log;
+import static org.igov.util.Tool.sCut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ByteArrayResource;
@@ -34,12 +33,13 @@ import org.springframework.web.client.RestTemplate;
 public class HttpEntityCover {
     
     static final transient Logger LOG = LoggerFactory.getLogger(HttpEntityCover.class);
+    private static final Logger LOG_BIG = LoggerFactory.getLogger("WebBig");
     
     private HttpHeaders oHttpHeaders = new HttpHeaders();
     private String sURL = null;
     private MultiValueMap<String, Object> mParamObject = null;
     private MultiValueMap<String, ByteArrayResource> mParamByteArray = null;
-    
+
     
     private ResponseEntity<String> osResponseEntity = null;
             
@@ -47,6 +47,14 @@ public class HttpEntityCover {
         this.sURL = sURL;
     }
 
+    public HttpEntityCover _Reset(){
+        oHttpHeaders = new HttpHeaders();
+        sURL = null;
+        mParamObject = null;
+        mParamByteArray = null;
+        return this;
+    }
+    
     public HttpEntityCover _Header(HttpHeaders oHttpHeaders){
         this.oHttpHeaders = oHttpHeaders;
         return this;
@@ -95,7 +103,7 @@ public class HttpEntityCover {
             //Let's construct attachemnts HTTP entities
             if (mParamByteArray != null) {
                 Iterator<String> osIterator = mParamByteArray.keySet().iterator();
-                for (int n = 0; osIterator.hasNext(); n++) {
+                for (; osIterator.hasNext(); ) {
                     String sFileName = osIterator.next();
                     HttpHeaders oHttpHeaders_Part = new HttpHeaders();
                     oHttpHeaders_Part.setContentType(new MediaType("application", "octet-stream", StandardCharsets.UTF_8));
@@ -127,7 +135,7 @@ public class HttpEntityCover {
                         ;
             }
             LOG.info("FINISHED! (nStatus={},sURL={},sRequest(cuted)={},sReturn(cuted)={})",nStatus(),sURL,sCut(100,sRequest),sCut(100,sReturn()));
-            oLogBig_Web.info("FINISHED! (nStatus={},sURL={},sRequest={},sReturn()={})",nStatus(),sURL,sRequest,sReturn());
+            LOG_BIG.debug("FINISHED! (nStatus={},sURL={},sRequest={},sReturn()={})",nStatus(),sURL,sRequest,sReturn());
             //return osReturn.toString();
         }catch(Exception oException){
             new Log(this.getClass(), oException, null)
@@ -139,10 +147,12 @@ public class HttpEntityCover {
                     ._SendThrow()
                     ;
             LOG.error("BREAKED: {} (sURL={},sRequest={}):",oException.getMessage(),sURL,sRequest);
-            oLogBig_Web.error("BREAKED: {} (sURL={},sRequest={}):",oException.getMessage(),sURL,sRequest);
-            oLogBig_Web.trace("BREAKED:", oException);
+            //oLogBig_Web.error("BREAKED: {} (sURL={},sRequest={}):",oException.getMessage(),sURL,sRequest);
+            LOG_BIG.error("BREAKED: {} (sURL={},sRequest={}):",oException.getMessage(),sURL,sRequest);
+            LOG_BIG.debug("BREAKED:", oException);
             throw oException; //return null;
-        }        
+        }
+        _Reset();
         return this;
     }
     

@@ -20,7 +20,8 @@
       <div class="col-md-6 pull-left">Крок 3.
         {{data.formData.params["processName"].name==null?"":data.formData.params["processName"].name}}
       </div>
-      <div ng-if="bAdmin" style="/*display:none;*/" class="col-md-6 pull-right">
+        <div ng-hide="bAdmin == null || !bAdmin" style="/*display:none;*/" class="col-md-6 pull-right">
+        <!--div ng-if="bAdmin" style="/*display:none;*/" class="col-md-6 pull-right"-->
         <label for="ref" class="pull-right"> Заповнення референтом</label>
         <input type="checkbox" ng-model="referent" ng-click="onReferent()" id="ref" class="pull-right">
       </div>
@@ -63,10 +64,16 @@
       <div class="col-md-12">
         <div class="highlight">
           <form name="form" novalidate>
-              <div class="row col-md-8 col-md-push-2 update-bankid-message" ng-show="!isActivitiFormEmpty(activitiForm)">
+            <div class="clearfix" ng-if="selfOrdersCount.nOpened > 0">
+                <a class="pull-right" ng-hide="paramsBackup !== null" href ng-click="fillSelfPrevious()">Заповнити даними попередньої заявки</a>
+                <a class="pull-right" ng-hide="paramsBackup === null" href ng-click="fillSelfPreviousBack()">Відмінити авто-заповнені дані</a>
+            </div>
+
+              <div class="row col-md-8 col-md-push-2 update-bankid-message" ng-show="!isFormDataEmpty()">
                   Якщо ці або будь-які інші дані, які були передані з Вашого банку, вже не актуальні,
                   просимо Вас звернутися до цього банку для актуалізації.
               </div>
+
             <div class="row"
                  ng-repeat="property in activitiForm.formProperties track by property.id"
                  ng-if="isFieldVisible(property)">
@@ -205,6 +212,7 @@
                                 ng-model="data.formData.params[property.id].value"
                                 form-data-property="data.formData.params[property.id]"
                                 service-data="oServiceData"
+                                activiti-form="activitiForm"
                                 ng-required="isFieldRequired(property)"
                                 form-data="data.formData"></dropdown-organ>
 
@@ -262,12 +270,12 @@
                   <input type="checkbox"
                          ng-model="sign.checked"
                          name="{{data.formData.getSignFieldID()}}">
-                </label>
+                </label> 
                   <!--label  ng-if="isSignNeededRequired ? true : sign.checked">Після натискання "Замовити послугу"-->
                          <!--ng-model="isSignNeededRequired ? true : sign.checked"-->
                 <br/>
                 <button class="btn btn-info"
-                        ng-click="processForm(form)"
+                        ng-click="processForm(form, activitiForm.formProperties)"
                         ng-disable="cantSubmit(form)"
                         ng-hide="bSending(form)">
                   Замовити послугу

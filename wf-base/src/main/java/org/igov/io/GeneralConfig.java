@@ -1,5 +1,6 @@
 package org.igov.io;
 
+import static org.igov.util.ToolLuna.getProtectedNumber;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Component;
 public class GeneralConfig {
 
     private final static Logger LOG = LoggerFactory.getLogger(GeneralConfig.class);
-    public static Boolean bTest = null;
+    //public static Boolean bTest = null;
     @Value("${general.sHost}")
     private String sHost; //general.sHost=https://test.region.igov.org.ua
     @Value("${general.sHostCentral}")
@@ -28,16 +29,22 @@ public class GeneralConfig {
     private String general_sURL_DocumentKvitanciiForIgov;
     @Value("${general.sURL_DocumentKvitanciiForAccounts}")
     private String general_sURL_DocumentKvitanciiForAccounts;
+    
     @Value("${general.sURL_GenerationSID}")
     private String general_sURL_GenerationSID;
+    
     @Value("${general.sURL_DocumentKvitanciiCallback}")
     private String general_sURL_DocumentKvitanciiCallback;
+    
+    @Value("${general.PB.sURL_AuthSID}")
+    private String sURL_AuthSID_PB;
+    
     @Value("${general.SID_login}")
     private String SID_login;
     @Value("${general.SID_password}")
     private String SID_password;
     @Value("${general.nID_Server}")
-    private String nID_Server;
+    private String snID_Server;
 
     @Value("${general.mail.sKey_Sender}")
     private String sKey_Sender;
@@ -51,6 +58,8 @@ public class GeneralConfig {
     @Value("${BankID_sPassword}")
     private String sPassword_BankID;
     
+    @Value("${general.ukrdoc.sServerAddress}")
+    private String sUkrDocServerAddress;
 
     public String sLogin_BankID() {
         return sLogin_BankID;
@@ -62,12 +71,14 @@ public class GeneralConfig {
     
     public String sHost() {
         //general.sHost=https://test-version.region.igov.org.ua    
-        return sHost != null ? sHost : "https://test.region.igov.org.ua";
+        //return sHost != null ? sHost : "https://test.region.igov.org.ua";
+        return sHost;
     }
 
     public String sHostCentral() {
         //general.sHost=https://test-version.region.igov.org.ua    
-        return sHostCentral != null ? sHostCentral : "https://test.igov.org.ua";
+        //return sHostCentral != null ? sHostCentral : "https://test.igov.org.ua";
+        return sHostCentral;
     }
 
     public String sAuthLogin() {
@@ -87,45 +98,71 @@ public class GeneralConfig {
     }
 
     public String sURL_GenerationSID() {
-        return general_sURL_GenerationSID;
+        return general_sURL_GenerationSID != null ? general_sURL_GenerationSID : "https://auth-id.igov.org.ua/ChameleonServer/sessions/open";
     }
 
+    public String sURL_AuthSID_PB() {
+        return sURL_AuthSID_PB != null ? sURL_AuthSID_PB : "https://auth-id.igov.org.ua/Stage/ChameleonServer/sessions/open";
+    }
+    
     public String sURL_DocumentKvitanciiCallback() {
         return general_sURL_DocumentKvitanciiCallback;
     }
 
     public String getSID_login() {
-        return SID_login;
+        return SID_login != null ? SID_login : "igov";
     }
 
     public String getSID_password() {
-        return SID_password;
+        return SID_password != null ? SID_password : "igov-sess";
     }
 
     public boolean bTest() {
-        if (bTest != null) {
+        /*if (bTest != null) {
             return bTest;
-        }
+        }*/
         boolean b = true;
         try {
             b = (sbTest == null ? b : sbTest.trim().length() > 0 ? !"false".equalsIgnoreCase(sbTest.trim()) : true);
-            LOG.info("sbTest=" + sbTest);
+            LOG.info("(sbTest={})", sbTest);
         } catch (Exception oException) {
-            LOG.error("sbTest=" + sbTest, oException);
+        	LOG.error("Bad: {} (sbTest={})", oException.getMessage(), sbTest);
+        	LOG.debug("FAIL:", oException);
         }
-        bTest = b;
+        //bTest = b;
         return b;
     }
-    public String sID_Order(Long nID_Protected) {
-        return nID_Server()+"-"+nID_Protected;
+    public String sID_Order_ByOrder(Long nID_Order) {
+        return sID_Order_ByOrder(nID_Server(), nID_Order);
     }
+    public String sID_Order_ByOrder(Integer nID_Server, Long nID_Order) {
+        return new StringBuilder(nID_Server+"").append("-").append(nID_Order).toString();
+    }
+
+    public String sID_Order_ByProcess(Long nID_Process) {
+        return sID_Order_ByOrder(getProtectedNumber(nID_Process));
+    }
+    public String sID_Order_ByProcess(Integer nID_Server, Long nID_Process) {
+        return GeneralConfig.this.sID_Order_ByOrder(nID_Server(), getProtectedNumber(nID_Process));
+    }
+
     public int nID_Server() {
+        Integer nID_Server=null;
         try {
-            return Integer.parseInt(nID_Server);
-        } catch (NumberFormatException ignored) {
-            LOG.warn("can't parse nID_Server! nID_Server=" + nID_Server, ignored);
+            if(snID_Server==null){
+                nID_Server = 0;
+                throw new NumberFormatException("snID_Server="+snID_Server);
+            }
+            nID_Server=Integer.parseInt(snID_Server);
+            if(nID_Server==null || nID_Server<0){
+                nID_Server = 0;
+                throw new NumberFormatException("nID_Server="+nID_Server);
+            }
+        } catch (NumberFormatException oNumberFormatException) {
+            nID_Server = 0;
+            LOG.warn("can't parse nID_Server: {} (nID_Server={})", oNumberFormatException.getMessage(), snID_Server);
         }
-        return 0;
+        return nID_Server;
     }
 
 
@@ -141,9 +178,14 @@ public class GeneralConfig {
 
         try {
             return Integer.parseInt(nID_SendList_Unisender);
-        } catch (NumberFormatException ignored) {
-            LOG.warn("can't parse nID_SendList_Unisender! nID_SendList_Unisender=" + nID_SendList_Unisender, ignored);
+        } catch (NumberFormatException oException) {
+            LOG.warn("can't parse nID_SendList_Unisender!: {} (nID_SendList_Unisender={})", oException.getMessage(), nID_SendList_Unisender);
         }
         return 5998742; //default list_id
     }
+
+	public String getsUkrDocServerAddress() {
+		return sUkrDocServerAddress != null ? sUkrDocServerAddress : "https://doc.stage.it.loc/docs";
+	}
+    
 }

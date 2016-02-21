@@ -73,7 +73,7 @@ public class ControllerDownloadTimingScenario {
     @Ignore
     @Test
     public void shouldSuccessfullyReturnFileResponse() throws Exception {
-        MvcResult result = mockMvc.perform(get("/rest/file/download_bp_timing").
+        MvcResult result = mockMvc.perform(get("/action/task/download_bp_timing").
                 accept(MediaType.APPLICATION_JSON).
                 param("sID_BP_Name", "test").
                 param("sDateAt", "2015-06-01").
@@ -86,7 +86,7 @@ public class ControllerDownloadTimingScenario {
 
     @Test
     public void shouldReturnError() throws Exception {
-        mockMvc.perform(get("/rest/file/download_bp_timing").
+        mockMvc.perform(get("/action/task/download_bp_timing").
                 accept(MediaType.APPLICATION_JSON).
                 param("sID_BP_Name", "").
                 param("sDateAt", "2015-06-01").

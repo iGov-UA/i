@@ -52,7 +52,7 @@
 
 </head>
 
-<body ng-app="app">
+<body ng-app="app" errors-container>
 
 <!-- Google Tag Manager -->
 <noscript>
@@ -91,7 +91,6 @@
     <div ui-view="header"></div>
 
     <div class="main full-height">
-        <errors-container></errors-container>
         <div class="view"
              ui-view="main">
          </div>
@@ -152,11 +151,19 @@
 <script src="app/about/about.js"></script>
 <script src="app/about/test.js"></script>
 <script src="app/app.states.js"></script>
+<script src="app/auth/auth.directive.js"></script>
+<script src="app/auth/auth.state.js"></script>
+<script src="app/auth/email/auth.email.controller.js"></script>
+<script src="app/auth/email/auth.email.state.js"></script>
+<script src="app/common/components/buttonFileSelect/buttonFileSelect.directive.js"></script>
+<script src="app/common/components/buttonFileUpload/buttonFileUpload.directive.js"></script>
 <script src="app/common/components/deletionModal/deletionModal.controller.js"></script>
 <script src="app/common/components/dropdown/factories/dropdown.js"></script>
-<script src="app/common/components/errors/directives/mod.js"></script>
+<script src="app/common/components/errors/directives/errorsContainer.js"></script>
 <script src="app/common/components/errors/errors.controller.js"></script>
 <script src="app/common/components/errors/factories/errors.factory.js"></script>
+<script src="app/common/components/errors/factories/errorsSimple.factory.js"></script>
+<script src="app/common/components/errors/modal/errorsModal.controller.js"></script>
 <script src="app/common/components/form/directives/dropdownAutocomplete/dropdownAutocomplete.js"></script>
 <script src="app/common/components/form/directives/dropdownAutocomplete/dropdownAutocompleteList.factory.js"></script>
 <script src="app/common/components/form/directives/dropdownCountry/dropdownCountry.js"></script>
@@ -217,10 +224,10 @@
 <script src="app/documents/factories/bankiddocumentspassport.factory.js"></script>
 <script src="app/feedback/controllers/feedback.controller.js"></script>
 <script src="app/feedback/feedback.js"></script>
-<script src="app/journal/controllers/journal.controller.js"></script>
-<script src="app/journal/controllers/journalbankid.controller.js"></script>
-<script src="app/journal/controllers/journalcontent.controller.js"></script>
-<script src="app/journal/journal.js"></script>
+<script src="app/journal/journal.auth.controller.js"></script>
+<script src="app/journal/journal.content.controller.js"></script>
+<script src="app/journal/journal.index.controller.js"></script>
+<script src="app/journal/journal.state.js"></script>
 <script src="app/order/controllers/order.controller.js"></script>
 <script src="app/order/controllers/ordersearch.controller.js"></script>
 <script src="app/order/order.js"></script>
@@ -232,7 +239,6 @@
 <script src="app/service/place/controllers/place.absent.controller.js"></script>
 <script src="app/service/place/controllers/place.controller.js"></script>
 <script src="app/service/place/states.js"></script>
-<script src="app/service/services/auth/serviceAuthBlock.js"></script>
 <script src="app/service/services/locationParser/serviceLocationParser.js"></script>
 <script src="app/service/subcategory/subcategory.controller.js"></script>
 <!-- endinjector -->

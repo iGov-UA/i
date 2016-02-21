@@ -1,38 +1,41 @@
 package org.igov.model.subject;
 
-import org.igov.model.DocumentOperator_SubjectOrgan;
-import org.igov.model.DocumentAccess;
-import org.igov.model.Document;
+import org.igov.model.document.DocumentOperator_SubjectOrgan;
+import org.igov.model.document.access.DocumentAccess;
+import org.igov.model.document.Document;
 import net.sf.brunneng.jom.annotations.Skip;
-import org.igov.model.Document;
-import org.igov.model.DocumentAccess;
+import org.igov.model.document.Document;
+import org.igov.model.document.access.DocumentAccess;
+import org.igov.service.controller.IntegrationTestsApplicationConfiguration;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.igov.model.DocumentDao;
-import org.igov.model.DocumentAccessHandler;
-import org.igov.model.DocumentAccessHandler;
-import org.igov.model.DocumentAccessHandler_IGov;
-import org.igov.model.DocumentAccessHandler_IGov;
-import org.igov.model.DocumentDao;
-import org.igov.model.HandlerFactory;
-import org.igov.model.HandlerFactory;
-import org.igov.model.HandlerNotFoundException;
-import org.igov.model.HandlerNotFoundException;
+import org.igov.model.document.DocumentDao;
+import org.igov.service.business.document.access.handler.DocumentAccessHandler;
+import org.igov.service.business.document.access.handler.DocumentAccessHandler;
+import org.igov.service.business.document.access.handler.DocumentAccessHandler_IGov;
+import org.igov.service.business.document.access.handler.DocumentAccessHandler_IGov;
+import org.igov.model.document.DocumentDao;
+import org.igov.service.business.document.access.handler.HandlerFactory;
+import org.igov.service.business.document.access.handler.HandlerFactory;
+import org.igov.service.exception.HandlerNotFoundException;
+import org.igov.service.exception.HandlerNotFoundException;
 
 import static org.junit.Assert.*;
 import org.junit.Ignore;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 /**
  * @author dgroup
  * @since 28.06.15
  */
+@WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("default")
-@ContextConfiguration(locations = { "classpath:context.xml" })
+@ContextConfiguration(classes = IntegrationTestsApplicationConfiguration.class)
 public class DocumentOperatorTest {
     public static final Long DUMMY_OPERATOR_ID = 2L;
 

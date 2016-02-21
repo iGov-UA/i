@@ -54,7 +54,7 @@ angular.module('app')
     } else {
       $scope.isNew = true;
       $scope.serviceData = {
-        asAuth: 'BankID,EDS',
+        asAuth: 'BankID,EDS,email',
         nID_Server: 0,
         sURL: '',
         sNote: '',

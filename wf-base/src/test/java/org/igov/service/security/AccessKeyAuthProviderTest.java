@@ -1,7 +1,7 @@
 package org.igov.service.security;
 
-import org.igov.service.security.AccessKeyAuthProvider;
-import org.igov.service.security.BadAccessKeyCredentialsException;
+import org.igov.service.controller.security.BadAccessKeyCredentialsException;
+import org.igov.service.controller.security.AccessKeyAuthProvider;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -10,7 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.security.core.Authentication;
-import org.igov.model.AccessDataDao;
+import org.igov.service.business.access.AccessDataService;
 
 import static org.igov.service.security.AccessKeyAuthProviderFixtures.*;
 import static org.junit.Assert.assertEquals;
@@ -20,7 +20,7 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class AccessKeyAuthProviderTest {
     @Mock
-    public AccessDataDao accessDataDao;
+    public AccessDataService accessDataDao;
     @InjectMocks
     public AccessKeyAuthProvider oAccessKeyAuthProvider;
     @Rule

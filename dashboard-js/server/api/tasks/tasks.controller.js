@@ -3,6 +3,82 @@
 var _ = require('lodash');
 var activiti = require('../../components/activiti');
 var errors = require('../../components/errors');
+var userService = require('../user/user.service');
+var async = require('async');
+
+function createHttpError(error, statusCode) {
+  return {httpError: error, httpStatus: statusCode};
+}
+
+function step(input, lowerFunction, withoutResult) {
+  return withoutResult ? function (callback) {
+    lowerFunction(callback, input)
+  } : function (result, callback) {
+    lowerFunction(result, callback, input);
+  }
+}
+
+function loadGroups(wfCallback, assigneeID) {
+  userService.getGroups(assigneeID, function (error, statusCode, result) {
+    if (error) {
+      wfCallback(createHttpError(error, statusCode));
+    } else {
+      wfCallback(null, result.data);
+    }
+  });
+}
+
+function loadUsers(groups, wfCallback) {
+  userService.getUserIDsFromGroups(groups, function (error, users) {
+    wfCallback(error, users);
+  });
+}
+
+function loadTasksForOtherUsers(usersIDs, wfCallback, currentUserID) {
+  var tasks = [];
+  usersIDs = usersIDs
+    .filter(function (usersID) {
+      return usersID !== currentUserID
+    });
+
+  async.forEach(usersIDs, function (usersID, frCallback) {
+    var path = 'runtime/tasks';
+
+    var options = {
+      path: path,
+      query: {assignee: usersID},
+      json: true
+    };
+
+    activiti.get(options, function (error, statusCode, result) {
+      if (!error && result.data) {
+        tasks = tasks.concat(result.data);
+      }
+      frCallback(null);
+    });
+  }, function (error) {
+    wfCallback(error, tasks);
+  });
+}
+
+function loadAllTasks(tasks, wfCallback, assigneeID) {
+  var path = 'runtime/tasks';
+
+  var options = {
+    path: path,
+    query: {candidateOrAssigned: assigneeID, size: 500},
+    json: true
+  };
+
+  activiti.get(options, function (error, statusCode, result) {
+    if (error) {
+      wfCallback(error);
+    } else {
+      result.data = result.data.concat(tasks);
+      wfCallback(null, result);
+    }
+  });
+}
 
 // Get list of tasks
 exports.index = function (req, res) {
@@ -11,41 +87,55 @@ exports.index = function (req, res) {
   //https://test.igov.org.ua/wf/service/runtime/tasks?size=20
   query.size = 500;
 
-  var path = 'runtime/tasks';
-  if (req.query.filterType === 'selfAssigned') {
-    query.assignee = user.id;
-  } else if (req.query.filterType === 'unassigned') {
-    query.candidateUser = user.id;
-    query.unassigned = true;
-  } else if (req.query.filterType === 'finished') {
-    path = 'history/historic-task-instances';
-    query.taskAssignee = user.id;
-  } else if (req.query.filterType === 'tickets') {
-    path = 'flow/getFlowSlotTickets';
-    query.sLogin = user.id;
-    query.bEmployeeUnassigned = req.query.bEmployeeUnassigned;
-    if (req.query.sDate){
-      query.sDate = req.query.sDate;
-    }
-  } else if (req.query.filterType === 'all') {
-    query.candidateOrAssigned = user.id;
-  }
-
-  var options = {
-    path: path,
-    query: query
-  };
-
-  activiti.get(options, function (error, statusCode, result) {
-    if (error) {
-      res.send(error);
-    } else {
-      if (req.query.filterType === 'tickets') {
-        result = JSON.stringify({data: JSON.parse(result)});
+  if (req.query.filterType === 'all') {
+    async.waterfall([
+      step(user.id, loadGroups, true),
+      loadUsers,
+      step(user.id, loadTasksForOtherUsers),
+      step(user.id, loadAllTasks)
+    ], function (error, result) {
+      if (error) {
+        res.send(error);
+      } else {
+        res.json(result);
       }
-      res.json(result);
+    });
+  } else {
+    var path = 'runtime/tasks';
+    if (req.query.filterType === 'selfAssigned') {
+      query.assignee = user.id;
+    } else if (req.query.filterType === 'unassigned') {
+      query.candidateUser = user.id;
+      query.unassigned = true;
+    } else if (req.query.filterType === 'finished') {
+      path = 'history/historic-task-instances';
+      query.taskAssignee = user.id;
+    } else if (req.query.filterType === 'tickets') {
+      path = 'action/flow/getFlowSlotTickets';
+      query.sLogin = user.id;
+      query.bEmployeeUnassigned = req.query.bEmployeeUnassigned;
+      if (req.query.sDate) {
+        query.sDate = req.query.sDate;
+      }
     }
-  });
+
+    var options = {
+      path: path,
+      query: query,
+      json: true
+    };
+
+    activiti.get(options, function (error, statusCode, result) {
+      if (error) {
+        res.send(error);
+      } else {
+        if (req.query.filterType === 'tickets') {
+          result = {data: result};
+        }
+        res.json(result);
+      }
+    });
+  }
 };
 
 // Get list of task events
@@ -104,7 +194,7 @@ exports.getFormFromHistory = function (req, res) {
 exports.uploadFile = function (req, res) {
   var options = {
     url: activiti.getRequestURL({
-      path: 'rest/file/upload_file_as_attachment',
+      path: 'object/file/upload_file_as_attachment',
       query: {
         taskId: req.params.taskId,
         description: req.query.description
@@ -129,9 +219,34 @@ exports.getAttachments = function (req, res) {
   });
 };
 
+exports.getOrderMessages = function (req, res) {
+  var options = {
+    path: 'action/task/getOrderMessages_Local',
+    query: {
+      'nID_Process': req.params.nID_Process
+    }
+  };
+
+  activiti.get(options, function (error, statusCode, result) {
+    if (error) {
+      console.log("[getOrderMessages]:error="+error);
+      res.status(200).json("[]");
+      //res.send(error);
+    } else {
+        console.log("[getOrderMessages]:result="+result);
+        if(statusCode!==200){
+            res.status(200).json("[]");
+        }else{
+            res.status(statusCode).json(result);
+        }
+    }
+  });
+};
+
+
 exports.getAttachmentContent = function (req, res) {
   var options = {
-    path: 'rest/file/download_file_from_db',
+    path: 'object/file/download_file_from_db',
     query: {
       'taskId': req.params.taskId,
       'nFile': req.params.nFile
@@ -172,8 +287,9 @@ exports.getTask = function (req, res) {
 
 exports.getTasksByOrder = function (req, res) {
   var options = {
-    path: 'rest/tasks/getTasksByOrder',
-    query: {'nID_Protected': req.params.orderId}
+    path: 'action/task/getTasksByOrder',
+    query: {'nID_Order': req.params.orderId}
+    //query: {'nID_Process': req.params.nID_Process}
   };
   activiti.get(options, function (error, statusCode, result) {
     error ? res.send(error) : res.status(statusCode).json(result);
@@ -184,7 +300,7 @@ exports.getTasksByText = function (req, res) {
   var user = JSON.parse(req.cookies.user);
   //query.bEmployeeUnassigned = req.query.bEmployeeUnassigned;
   var options = {
-    path: 'rest/tasks/getTasksByText',
+    path: 'action/task/getTasksByText',
     query: {
       'sFind': req.params.text,
       'sLogin': user.id,//finished,unassigned, selfAssigned
@@ -199,7 +315,7 @@ exports.getTasksByText = function (req, res) {
 
 exports.getPatternFile = function (req, res) {
   var options = {
-    path: '/rest/getPatternFile',
+    path: 'object/file/getPatternFile',
     query: {
       'sPathFile': req.query.sPathFile
     }
@@ -209,7 +325,7 @@ exports.getPatternFile = function (req, res) {
 
 exports.upload_content_as_attachment = function (req, res) {
   activiti.post({
-    path: 'rest/file/upload_content_as_attachment',
+    path: 'object/file/upload_content_as_attachment',
     query: {
       nTaskId: req.params.taskId,
       sContentType: 'text/html',
@@ -226,7 +342,7 @@ exports.upload_content_as_attachment = function (req, res) {
 
 exports.setTaskQuestions = function (req, res) {
   activiti.get({
-    path: 'rest/setTaskQuestions',
+    path: 'action/task/setTaskQuestions',
     query: req.body
   }, function (error, statusCode, result) {
     res.statusCode = statusCode;
@@ -249,7 +365,7 @@ exports.checkAttachmentSign = function (req, res) {
   }
 
   var options = {
-    path: 'rest/file/check_attachment_sign',
+    path: 'object/file/check_attachment_sign',
     query: {
       nID_Task: nID_Task,
       nID_Attach: nID_Attach
@@ -266,4 +382,57 @@ exports.checkAttachmentSign = function (req, res) {
 
     res.status(200).send(body);
   });
+};
+
+exports.unassign = function (req, res) {
+  var nID_Task = req.params.taskId;
+  if (!nID_Task) {
+    res.status(400).send(errors.createError(errors.codes.INPUT_PARAMETER_ERROR, 'nID_Task should be specified'));
+    return;
+  }
+
+  var options = {
+    path: 'action/task/resetUserTaskAssign',
+    query: {
+      nID_UserTask: nID_Task
+    },
+    json: true
+  };
+
+  activiti.post(options, function (error, statusCode, result) {
+    error ? res.send(errors.createError(errors.codes.EXTERNAL_SERVICE_ERROR, 'Can\'t unassign', error))
+      : res.status(statusCode).json(result);
+  });
+};
+
+exports.getTaskData = function(req, res) {
+  var options = {
+    path: 'action/task/getTaskData',
+    query: {
+      nID_Task: req.params.taskId
+    },
+    json: true
+  };
+
+  activiti.get(options, function (error, statusCode, body) {
+    if (error) {
+      error = errors.createError(errors.codes.EXTERNAL_SERVICE_ERROR, 'Error while loading task data', error);
+      res.status(500).send(error);
+      return;
+    }
+
+    res.status(200).send(body);
+  });
+};
+
+exports.getMessageFile = function(req, res) {
+  var options = {
+    path: 'action/task/getMessageFile_Local',
+    query: {
+      //nID_Process: req.params.taskId,
+      nID_Message: req.params.messageId
+    },
+    json: true
+  };
+  activiti.filedownload(req, res, options);
 };

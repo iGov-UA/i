@@ -2,6 +2,7 @@ package org.igov.model.escalation;
 
 import org.igov.model.core.GenericEntityDao;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public class EscalationRuleDaoImpl extends GenericEntityDao<EscalationRule>
@@ -11,6 +12,7 @@ public class EscalationRuleDaoImpl extends GenericEntityDao<EscalationRule>
     }
 
     @Override
+    @Transactional
     public EscalationRule saveOrUpdate(Long nID, String sID_BP, String sID_userTask,
             String sCondition, String soData,
             String sPatternFile, EscalationRuleFunction ruleFunction) {

@@ -32,8 +32,8 @@
         <activiti:formProperty id="dock1" name="Документ, що містить технічні помилки" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="dock2" name="Документ, що підтверджує факт існування технічної помилки" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="dock3" name="Документ, що підтверджує правильну редакцію зазначення відповідних відомостей" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="region" name="Регион" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="clerkPost" name="почта чиновника" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="nRegion" name="Регион" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sClerkPost" name="почта чиновника" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="per1" name="витяг" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="per2" name="довідка" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="per3" name="викопіювання" type="invisible"></activiti:formProperty>
@@ -68,7 +68,7 @@
 			Ви отримаєте відповідь протягом трьох робочих днів.
 			&lt;/p&gt;
 			[pattern/mail/_common_signature_start.html]
-			[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
+			[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:2]&lt;br /&gt;
 			[pattern/mail/_common_signature_end.html]
 			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -81,7 +81,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${clerkPost}</activiti:expression>
+          <activiti:expression>${sClerkPost}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression>Нове звернення на порталі igov.org.ua на тему: Виправлення технічної помилки у відомостях з Державного земельного кадастру, допущеної органом, що здійснює його ведення, з видачею витягу. Заявник ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}</activiti:expression>
@@ -158,13 +158,13 @@
           <activiti:expression>[pattern/mail/_common_header.html]
 			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 			&lt;p&gt;Наведені вами дані змінено.&lt;br /&gt;
-			Ви можете завантажити копію протоколу виправлення помилки з додатку до цього листа, та отримати оригінал у [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;/p&gt;
-&lt;p&gt;[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:3]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:4]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]&lt;/p&gt;
+			Ви можете завантажити копію протоколу виправлення помилки з додатку до цього листа, та отримати оригінал у [pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:2]&lt;/p&gt;
+&lt;p&gt;[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:3]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:4]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:5]&lt;/p&gt;
 &lt;p&gt;Для отримання оригіналу протоколу виправлення помилки потрібно особисто звернутися до адміністратора ЦНАП з документом, що посвідчує особу (паспорт) та іншими документами, копії яких ви додавали до звернення. &lt;/p&gt;
  [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]   
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
@@ -197,13 +197,13 @@
 			&lt;p&gt;На жаль, Ваш запит відхилено.&lt;/p&gt;
 			&lt;p&gt;${comment}&lt;/p&gt;
 			За необхідності Ви можете подати ще одне звернення на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;igov.org.ua&lt;/a&gt;
-			&lt;p&gt;Якщо у вас виникли питання, Ви можете звернутись до [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;/p&gt;
+			&lt;p&gt;Якщо у вас виникли питання, Ви можете звернутись до [pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:2]&lt;/p&gt;
 &lt;p&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:3]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:4]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]&lt;/p&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:3]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:4]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:5]&lt;/p&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]   
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -275,12 +275,12 @@
           <activiti:expression>[pattern/mail/_common_header.html]
 			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 			&lt;p&gt;Ваше звернення пройшло попередню перевірку адміністратором ЦНАП і передано для опрацювання відповідальній особі. За кілька днів ви отримаєте результат опрацювання на цей email.&lt;br /&gt;Ви можете роздрукувати своє повідомлення з прикріплення до цього листа.&lt;br /&gt;
-			&lt;p&gt;Якщо у Вас з`явились питання, Ви можете звернутись до [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:3]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:4]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]&lt;/p&gt;
+			&lt;p&gt;Якщо у Вас з`явились питання, Ви можете звернутись до [pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:3]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:4]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:5]&lt;/p&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -309,12 +309,12 @@
 			&lt;p&gt;На жаль, для виконання вашого запиту недостатньо інформації. &lt;/p&gt;
 			&lt;p&gt;${comment1}&lt;/p&gt;
 			За необхідності Ви можете подати ще одну заяву на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;igov.org.ua&lt;/a&gt;&lt;/p&gt;
-			&lt;p&gt;Якщо у Вас з`явились питання, Ви можете звернутись до [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:3]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:4]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]&lt;/p&gt;
+			&lt;p&gt;Якщо у Вас з`явились питання, Ви можете звернутись до [pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:3]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:4]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:5]&lt;/p&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -325,20 +325,7 @@
     </sequenceFlow>
     <sequenceFlow id="flow22" sourceRef="servicetask8" targetRef="endevent1"></sequenceFlow>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var region1 = [ "Начальнику відділу Держгеокадастру Царичанського району Дніпропетровської області", "Начальнику Управління Держгеокадастру у Верхньодніпровському районі Дніпропетровської області", "Начальнику Управління Держгеокадастру у м. Дніпродзержинську Дніпропетровської області", "Начальнику Управління Держгеокадастру у Марганецькому районі Дніпропетровської області", "Начальнику Відділу Держгеокадастру у м. Нікополь Дніпропетровської області", "Начальнику Управління Держгеокадастру у Теплицькому районі Вінницької області", "Начальнику Управління Держгеокадастру у м. Буча Київської області", "Начальнику Управління Держгеокадастру у Вишгородському районі Київської області"]
-var no = [ "20", "25", "26", "29", "30", "59", "212", "227"]
-var post = [ "tsar.alternatyva@gmail.com", "cnap.vilnogirsk@gmail.com", "dozvildndz@ukr.net", "mn-centr@i.ua", "nikopol.admin@ukr.net", "teplikcnap@ukr.net", "stepashkanelya@gmail.com", "dozvol_zenter@ukr.net"]
-var So = [ "carich", "vilnogirskT", "dndzT", "marganT", "nikopolT", "vin_teplic", "kiev_bucha", "kiev_vish"]
-for (var i = 0; i&lt;8; i++){
-var per = So[i]
-if(execution.getVariable('sID_Public_SubjectOrganJoin') == per){
-var per12 = no[i]
-var per13 = region1[i]
-var per14 = post[i]
-break}}
-execution.setVariable('region', per12)
-execution.setVariable('shapka', per13)
-execution.setVariable('clerkPost', per14)
+      <script>
 var gal = 'X'
 var bs = ' '
 execution.setVariable('per1', bs)

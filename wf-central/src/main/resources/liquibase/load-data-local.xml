@@ -253,8 +253,7 @@
             <column name="sID" type="STRING"/>
             <column name="nID_Task" type="NUMERIC"/>
             <column name="nID_Subject" type="NUMERIC"/>
-            <column name="sStatus" type="STRING"/>
-            <column name="sID_Status" type="STRING"/>
+            <column name="sUserTaskName" type="STRING"/>
             <column name="nID_Service" type="NUMERIC"/>
             <column name="nID_Region" type="NUMERIC"/>
             <column name="sID_UA" type="STRING"/>
@@ -283,6 +282,7 @@
             <column name="sURL_CallbackStatusNew" type="STRING"/>
             <column name="sURL_CallbackPaySuccess" type="STRING"/>
             <column name="nID_SubjectOrgan" type="NUMERIC"/>
+            <column name="sID_Currency" type="STRING"/>
         </loadUpdateData>
 
         <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/Country.csv" tableName="Country" separator=";">
@@ -331,10 +331,11 @@
         </loadUpdateData>
 
         <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/Currency.csv" tableName="Currency" separator=";">
-            <column name="nID"        type="NUMERIC"/>
-            <column name="sID_UA"     type="STRING"/>
-            <column name="sName_UA"   type="STRING"/>
-            <column name="sName_EN"   type="STRING"/>
+            <column name="nID"          type="NUMERIC"/>
+            <column name="sID_UA"       type="STRING"/>
+            <column name="sName_UA"     type="STRING"/>
+            <column name="sName_EN"     type="STRING"/>
+            <column name="sID_Currency" type="STRING"/>
         </loadUpdateData>
 
         <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/ObjectEarthTarget.csv" tableName="ObjectEarthTarget" separator=";">
@@ -343,6 +344,21 @@
             <column name="sName_UA"   type="STRING"/>
         </loadUpdateData>
 
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/SubjectAccountType.csv" tableName="SubjectAccountType" separator=";">
+            <column name="nID"     type="NUMERIC"/>
+            <column name="sID"     type="STRING"/>
+            <column name="sNote"   type="STRING"/>
+        </loadUpdateData>
+
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/SubjectAccount.csv" tableName="SubjectAccount" separator=";">
+            <column name="nID"     type="NUMERIC"/>
+            <column name="sLogin"  type="STRING"/>
+            <column name="sNote"   type="STRING"/>
+            <column name="nID_SubjectAccountType"     type="NUMERIC"/>
+            <column name="nID_Server"     type="NUMERIC"/>
+            <column name="nID_Subject"    type="NUMERIC"/>
+        </loadUpdateData>
+        
     </changeSet>
   
 

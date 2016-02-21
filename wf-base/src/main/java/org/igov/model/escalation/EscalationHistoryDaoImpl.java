@@ -2,11 +2,12 @@ package org.igov.model.escalation;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
+import org.igov.model.core.GenericEntityDao;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import org.igov.model.core.GenericEntityDao;
 
 /**
  * @author NickVeremeichyk
@@ -53,6 +54,7 @@ public class EscalationHistoryDaoImpl extends GenericEntityDao<EscalationHistory
         return criteria.list();
     }
 
+    @Transactional
     @Override
     public EscalationHistory getByProcessId(Long nIdProcess) {
         Criteria criteria = getSession().createCriteria(EscalationHistory.class);

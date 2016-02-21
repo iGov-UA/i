@@ -8,38 +8,38 @@
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Копія паспорту" type="file"></activiti:formProperty>
-        <activiti:formProperty id="bankIdaddress" name="Адреса Вашої реєстрації; зазначена в громадянському паспорті" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса Вашої реєстрації; зазначена в громадянському паспорті" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="Індивідуальний податковий номер" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string"></activiti:formProperty>
         <activiti:formProperty id="Sex" name="Cтать" type="enum" required="true">
           <activiti:value id="attr1" name="Чоловіча"></activiti:value>
           <activiti:value id="attr2" name="Жіноча"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="oper_type" name="Оберіть послугу" type="enum" required="true">
-          <activiti:value id="attr1" name="Поновлення водійського посвядчення"></activiti:value>
-          <activiti:value id="attr2" name="Заміна водійського посвядчення"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="renamed" name="Ви змінювали коли-небудь прізвище?" type="enum" required="true">
           <activiti:value id="attr1" name="Так"></activiti:value>
           <activiti:value id="attr2" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="renamed_doc" name="Документ, що підтверджує зміну прізвища; назва документу, серія, номер, дата видачі, орган ким видано" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть сервісний центр, де Ви б бажали отримати послугу" type="select" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса МРЕВ" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sWork_Time" name="графік МРЕВ" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sMail_Employee" name="Відповідальна особа" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="nOper_Type" name="Оберіть послугу" type="enum" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sOper" name="Обрана послуга" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sOKPO" name="Код отримувача" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sBillMFO" name="МФО" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sBill" name="Розрахунковий рахунок" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sDescription" name="Призначення платежу" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sPrice" name="Вартість послуги" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sPayLink" name="Ви можете сплатити вартість послуги онлайн або іншим зручним для Вас чином" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="license" name="Посвідчення водія; серія, номер, дата видачі, орган ким видано, категорії, дата отримання" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="medical" name="Медична довідка; серія, номер, дата видачі, орган ким видано, категорії, срок дії" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="exam_card" name="Додайте скан-копію Вашої екзаменаційної картки водія" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="mreo" name="Оберіть МРЕВ, де Ви б бажали отримати послугу" type="enum" required="true">
-          <activiti:value id="dnepr_mreo" name="узвіз Тольятті, 2"></activiti:value>
-          <activiti:value id="dnepr_mreo2" name="вул. Маліновського, 130"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="phone" name="Ваш контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="text" name="Зверніть увагу:" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
-        <activiti:formProperty id="mail_employee" name="Відповідальна особа" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="s_address" name="Адреса/графік МРЕВ" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers" name="markersForValidations" type="markers" default="{}"></activiti:formProperty>
-        <activiti:formProperty id="marker1" name="Назначение емейлов/ адресов и графиков МРЭО/ департаментов Днепропетровска" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;mail_employee&quot;,&quot;s_address&quot;],&quot;asID_Field_sValue&quot;:[&quot;kyrbatsky@gmail.com.ua&quot;,&quot;1&quot;],&quot;asID_Field&quot;:{&quot;sMreo&quot;:&quot;mreo&quot;},&quot;sCondition&quot;:&quot;[sMreo] == 'dnepr_mreo'&quot;},&quot;ValuesFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;mail_employee&quot;,&quot;s_address&quot;],&quot;asID_Field_sValue&quot;:[&quot;kurbpa@gmail.com.ua&quot;,&quot;2&quot;],&quot;asID_Field&quot;:{&quot;sMreo&quot;:&quot;mreo&quot;},&quot;sCondition&quot;:&quot;[sMreo] == 'dnepr_mreo2'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="marker2" name="renamed" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;renamed_doc&quot;],&quot;asID_Field&quot;:{&quot;sCondit&quot;:&quot;renamed&quot;},&quot;sCondition&quot;:&quot;[sCondit]=='attr1'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="marker3" name="oper_type" type="markers" default="{}"></activiti:formProperty>
+        <activiti:formProperty id="marker1" name="Назначение емейлов/ адресов и графиков МРЭО/ департаментов Днепропетровска" type="markers" default="${markerService.loadFromFile('mvd/dnepr_mreo_2_1.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Підтягування документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -49,22 +49,18 @@
     </boundaryEvent>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow3" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
-    <userTask id="usertask1" name="Перевірка інформації" activiti:candidateGroups="${mreo}_bo">
+    <userTask id="usertask1" name="Перевірка інформації" activiti:candidateGroups="sales">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdaddress" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Sex" name="Cтать" type="enum" writable="false">
           <activiti:value id="attr1" name="Чоловіча"></activiti:value>
           <activiti:value id="attr2" name="Жіноча"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="oper_type" name="Оберіть послугу" type="enum" writable="false">
-          <activiti:value id="attr1" name="Поновлення водійського посвядчення"></activiti:value>
-          <activiti:value id="attr2" name="Заміна водійського посвядчення"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="renamed" name="Ви змінювали коли-небудь прізвище?" type="enum" writable="false">
           <activiti:value id="attr1" name="Так"></activiti:value>
@@ -73,23 +69,13 @@
         <activiti:formProperty id="renamed_doc" name="Документ, що підтверджує зміну прізвища; назва документу, серія, номер, дата видачі, орган ким видано" writable="false"></activiti:formProperty>
         <activiti:formProperty id="license" name="Посвідчення водія; серія, номер, дата видачі, орган ким видано, категорії, дата отримання" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="medical" name="Медична довідка; серія, номер, дата видачі, орган ким видано, категорії, срок дії" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Рішення про надання послуги" type="enum" required="true">
           <activiti:value id="accept" name="Зауваження відсутні. Надіслати громадянину дату / час візиту для отримання посвідчення"></activiti:value>
           <activiti:value id="reject" name="Відмовити громадянину в наданні послуги."></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sSum" name="Розмір держ.збору за надання послуги (для генерації рахунку для сплати через LIQPAY)" type="enum">
-          <activiti:value id="6.92" name="4.95грн"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="comment" name="Вкажіть дату візиту для отримання посвідчення або підставу для відмови в наданні послуги (Інформація буде спрямована громадянину на e-mail)" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="billToPay" name="Завантажити реквізити для оплати (Інформація буде спрямована громадянину на e-mail)" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта" type="invisible" default="0"></activiti:formProperty>
-        <activiti:formProperty id="sID_Merchant" name="ИД-строковой мерчанта (магазина)" type="invisible" default="i69897563405"></activiti:formProperty>
-        <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
-        <activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible" default="Сплата державного збору за послугу реєстрації авто з пробігом в МРЕВ (у т.ч. коміссія 1.8%)"></activiti:formProperty>
-        <activiti:formProperty id="mail_employee" name="Відповідальна особа" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -102,22 +88,18 @@
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'accept'}]]></conditionExpression>
     </sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
-    <userTask id="usertask2" name="Надання послуги" activiti:candidateGroups="${mreo}_bo">
+    <userTask id="usertask2" name="Надання послуги" activiti:candidateGroups="sales">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdaddress" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Sex" name="Cтать" type="enum" writable="false">
           <activiti:value id="attr1" name="Чоловіча"></activiti:value>
           <activiti:value id="attr2" name="Жіноча"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="oper_type" name="Оберіть послугу" type="enum" writable="false">
-          <activiti:value id="attr1" name="Поновлення водійського посвядчення"></activiti:value>
-          <activiti:value id="attr2" name="Заміна водійського посвядчення"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="renamed" name="Ви змінювали коли-небудь прізвище?" type="enum" writable="false">
           <activiti:value id="attr1" name="Так"></activiti:value>
@@ -133,8 +115,7 @@
           <activiti:value id="reject" name="Відмовити громадянину в наданні послуги."></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Надіслана громадянину дата візиту для отримання посвідчення" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sIDPayment" name="id платежа (якщо громадянин сплачував через систему Liqpay)" type="string" default="${sID_Payment}"></activiti:formProperty>
-        <activiti:formProperty id="decide2" type="enum" required="true">
+        <activiti:formProperty id="decide2" name="Результат надання послуги" type="enum" required="true">
           <activiti:value id="accept2" name="Підтверджую, що громадянин отримав посвідчення"></activiti:value>
           <activiti:value id="reject2" name="Громадянин не з'являється для отримання посвядчення. Закрити заявку."></activiti:value>
         </activiti:formProperty>
@@ -142,7 +123,7 @@
     </userTask>
     <endEvent id="endevent6" name="End"></endEvent>
     <sequenceFlow id="flow21" sourceRef="servicetask2" targetRef="usertask2"></sequenceFlow>
-    <serviceTask id="servicetask2" name="Повідомлення громадянина сплату послуги" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask2" name="Повідомлення громадянина сплату послуги" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -151,47 +132,35 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Реєстрація авто: рахунок на оплату та дата/час візиту]]></activiti:string>
+          <activiti:string><![CDATA[Поновлення або заміна водійського посвідчення]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header_with_payment.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-&lt;p&gt; Для отримання послуги Вам необхідно сплатити державний збір і  надати квитанцію про сплату перед тех.оглядом Вашого авто.&lt;br /&gt;
-
-Рахунок для сплати знаходиться в додатку до цього листа.&lt;br /&gt;
-Також Ви можете провести оплату через систему онлайн платежів.&lt;br /&gt;
-[paymentButton_LiqPay]
-&lt;/p&gt;&lt;p&gt;
-Після сплати державного збору Ви матимете можливість пройти тех.огляд Вашого авто  в зазначений Вами час за адресою  [pattern_dictonary:mreo.csv:value{[s_address]}:2]
+&lt;p&gt; Для отримання послуги Вам необхідно сплатити державний збір і надати квитанцію про сплату під час візиту за адресою ${sAddress}.
 &lt;/p&gt;
+
+
 &lt;p&gt;
 Просимо Вас мати із собою:&lt;br /&gt;
 1. Громадянський паспорт&lt;br /&gt;
-2. Техпаспорт&lt;br /&gt;
-3. Довідка-рахунок або або нотаріальний договір купівлі-продажу.&lt;br /&gt;
-4. Копія квитанції про сплату за послуги МРЕВ.&lt;br /&gt;
+2. Копія квитанції про сплату послуги&lt;br /&gt;
+3. Медична картка &lt;br /&gt;
 &lt;/p&gt;
+
 Дата візиту: &lt;br /&gt;
-${date_of_visit}&lt;br /&gt;
+${comment}&lt;br /&gt;
 &lt;p&gt;
 Графік прийому громадян:&lt;br /&gt;
  &lt;br /&gt;
-[pattern_dictonary:mreo.csv:value{[s_address]}:3]
-					 &lt;/p&gt;
+${sWork_Time}
+&lt;/p&gt;
 
                                     
-                                    &lt;hr style="width: 100%; height: 0; margin: 30px 0 15px 0; background: #dddddd; border: 0; border-bottom: 1px solid #dddddd;" /&gt;
-                                    &lt;p&gt;
-                                        З повагою,&lt;br /&gt;
-                                        Міністерство Внутрішніх Справ України,&lt;br /&gt;
-                                        Команда Порталу державних послуг &lt;a href="#current-page"&gt;iGov.org.ua&lt;/a&gt;.
-                                    &lt;/p&gt;
-                                &lt;/td&gt;
-                            &lt;/tr&gt;
-  [pattern/mail/_common_footer_with_payment.html]</activiti:expression>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>"${billToPay}"</activiti:expression>
+[pattern/mail/_common_signature_start.html]
+Міністерство Внутрішніх Справ України,&lt;br /&gt;
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer_with_payment.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -205,7 +174,7 @@ ${date_of_visit}&lt;br /&gt;
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Реєстрація авто з пробігом в МРЕВ]]></activiti:string>
+          <activiti:string><![CDATA[Поновлення або заміна водійського посвідчення]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -234,7 +203,7 @@ ${comment}&lt;br /&gt;
           <activiti:expression>"${email}"</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Реєстрація авто: рахунок на оплату та дата/час візиту]]></activiti:string>
+          <activiti:string><![CDATA[Поновлення/заміна водійського посвідчення. Оцінювання якості наданя послуги.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -256,10 +225,10 @@ ${comment}&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>"${mail_employee}"</activiti:expression>
+          <activiti:expression>"${sMail_Employee}"</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Нове звернення. (Заявник:  ${bankIdfirstName} ${bankIdmiddleName} ${bankIdlastName})</activiti:expression>
+          <activiti:expression>Нове звернення. Поновлення/заміна водійського посвідчення. (Заявник:  ${bankIdfirstName} ${bankIdmiddleName} ${bankIdlastName})</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
@@ -275,7 +244,7 @@ ${comment}&lt;br /&gt;
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Реєстрація авто в МРЕВ]]></activiti:string>
+          <activiti:string><![CDATA[Поновлення/заміна водійського посвідчення]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -363,7 +332,7 @@ ${comment}&lt;br /&gt;
         <omgdi:waypoint x="641.0" y="359.0"></omgdi:waypoint>
         <omgdi:waypoint x="641.0" y="430.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="609.0" y="305.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="95.0" x="609.0" y="305.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
@@ -406,7 +375,7 @@ ${comment}&lt;br /&gt;
         <omgdi:waypoint x="342.0" y="630.0"></omgdi:waypoint>
         <omgdi:waypoint x="343.0" y="660.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="352.0" y="630.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="351.0" y="618.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">

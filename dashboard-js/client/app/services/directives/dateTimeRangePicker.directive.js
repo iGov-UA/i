@@ -1,6 +1,6 @@
 (function () {
 
-  var separator = ' - ';
+  var sSeparator = ' - ';
 
   var defaultConfig = {
     singleDatePicker: true,
@@ -9,7 +9,7 @@
     autoApply: true,
     locale: {
       format: 'YYYY.MM.DD HH:mm',
-      separator: separator
+      separator: sSeparator
     },
     opens: 'right',
     drops: 'down',
@@ -22,13 +22,30 @@
   };
 
   var adjustConfig = function(config, defaultValue) {
-    var values = defaultValue.split(separator);
+    var asDate = defaultValue.split(sSeparator);
 
-    config.startDate = new Date(values[0]);
+    /*
+    config.startDate = new Date(asDate[0]);
 
-    if (values[1]) {
-      config.endDate = new Date(values[1]);
+    if (asDate[1]) {
+      config.endDate = new Date(asDate[1]);
     }
+    */
+   
+    
+    if (!asDate) {
+        config.startDate = new Date();
+        config.endDate = config.startDate;
+    }else{
+        config.startDate = new Date(asDate[0]);
+        if (asDate.length > 0 && asDate[1]) {
+          config.endDate = new Date(asDate[1]);
+        }else{
+          config.endDate = config.startDate;
+        }
+    }
+    
+    
   };
 
   var initDateRangePicker = function ($scope, element, ngModel, config) {

@@ -1,6 +1,6 @@
 package org.igov.service.controller;
 
-import org.igov.service.interceptor.exception.RecordNotFoundException;
+import org.igov.service.exception.RecordNotFoundException;
 import com.google.common.collect.ImmutableMap;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.history.HistoricTaskInstance;
@@ -17,9 +17,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.igov.util.convert.JsonRestUtils;
-import org.igov.util.convert.AlgorithmLuna;
-import org.igov.service.interceptor.exception.CRCInvalidException;
+import org.igov.util.JSON.JsonRestUtils;
+import org.igov.util.ToolLuna;
+import org.igov.service.exception.CRCInvalidException;
 
 import java.util.*;
 
@@ -51,7 +51,7 @@ public class ControllerTasksScenario extends ActivitiScenarioBase{
     @Ignore
     @Test
     public void shouldSuccessfullyReturnTasksJsonResponse() throws Exception {
-        mockMvc.perform(get("/rest/tasks/kermit").
+        mockMvc.perform(get("/action/task/login/kermit").
                 accept(MediaType.APPLICATION_JSON).
                 header("Authorization", "Basic YWN0aXZpdGktbWFzdGVyOlVqaHRKbkV2ZiE=")).
                 andExpect(status().isOk()).
@@ -82,7 +82,7 @@ public class ControllerTasksScenario extends ActivitiScenarioBase{
     public void shouldReturnJsonErrorMessageOnAnyRuntimeException() throws Exception {
         when(taskService.createTaskQuery()).
                 thenThrow(new NullPointerException("Parameter not specified"));
-        mockMvc.perform(get("/rest/tasks/kermit").
+        mockMvc.perform(get("/action/task/login/kermit").
                 accept(MediaType.APPLICATION_JSON).
                 header("Authorization", "Basic YWN0aXZpdGktbWFzdGVyOlVqaHRKbkV2ZiE=")).
                 andExpect(status().isInternalServerError()).
@@ -93,13 +93,14 @@ public class ControllerTasksScenario extends ActivitiScenarioBase{
         reset(taskService);
     }
 
+    @Ignore
     @Test
     public void testGetTaskByOrder() throws Exception {
 
-        final String getTasksByOrderUrl = "/rest/tasks/getTasksByOrder";
+        final String getTasksByOrderUrl = "/action/task/getTasksByOrder";
 
         String jsonData = mockMvc.perform(get(getTasksByOrderUrl).
-                param("nID_Protected", "123123")).
+                param("nID_Order", "123123")).
                 andExpect(status().isForbidden()).
                 andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
                 andReturn().getResponse().getContentAsString();
@@ -112,7 +113,7 @@ public class ControllerTasksScenario extends ActivitiScenarioBase{
         when(taskQuery.singleResult()).thenReturn(null);
 
         jsonData = mockMvc.perform(get(getTasksByOrderUrl).
-                param("nID_Protected", "123451")).
+                param("nID_Order", "123451")).
                 andExpect(status().isForbidden()).
                 andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
                 andReturn().getResponse().getContentAsString();
@@ -133,7 +134,7 @@ public class ControllerTasksScenario extends ActivitiScenarioBase{
         when(taskQuery.list()).thenReturn(tasks);
 
         jsonData = mockMvc.perform(get(getTasksByOrderUrl).
-                param("nID_Protected", "123451")).
+                param("nID_Order", "123451")).
                 andExpect(status().isOk()).
                 andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
                 andReturn().getResponse().getContentAsString();
