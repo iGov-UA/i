@@ -1944,10 +1944,7 @@ public class ActionTaskService {
 
 	                	ArrayList<FlowSlotTicket> res = (ArrayList<FlowSlotTicket>) flowSlotTicketDao.findAllByInValues("nID_Task_Activiti", taskIds);
 	                    
-	                	HttpHeaders headers = new HttpHeaders();
-	                    headers.setContentType(MediaType.ALL);
-	                	
-	                    return new SerializableResponseEntity<>(new ResponseEntity<>(res, headers, HttpStatus.OK));
+	                    return new SerializableResponseEntity<>(new ResponseEntity<>(res, null, HttpStatus.OK));
 	                }
 	            });
 		ArrayList<FlowSlotTicket> tickets = entities.getBody();
@@ -2043,10 +2040,8 @@ public class ActionTaskService {
                 	ArrayList<TaskInfo> res = (ArrayList<TaskInfo>) ((taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).list()
             				: (List) ((NativeTaskQuery) taskQuery).list());
                 	
-                	HttpHeaders headers = new HttpHeaders();
-                    headers.setContentType(MediaType.ALL);
                     
-                    return new SerializableResponseEntity<>(new ResponseEntity<>(res, headers, HttpStatus.OK));
+                    return new SerializableResponseEntity<>(new ResponseEntity<>(res, null, HttpStatus.OK));
                 }
             });
 		return entity.getBody();
