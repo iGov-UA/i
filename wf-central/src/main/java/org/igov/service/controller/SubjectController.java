@@ -625,5 +625,110 @@ public class SubjectController {
 	
 	return subjectAccounts;
     }
+    
+    @ApiOperation(value = "Добавление/обновление аккаунта субъекта", notes = "Добавляет или обновляет аккаунт субъекта в зависимости от того задан или нет параметр **nID**. "
+	    + "В случае успешного выполнения возвращается измененная или добавленная сущность\n"
+	    + "Пример добавления записи:\n"
+	    + "https://test.igov.org.ua/wf/service/subject/setSubjectAccount?nID_Subject=1&sLogin=mylog&nID_Server=5&nID_SubjectAccountType=2&sNote=Заметка_про_что-то\n"
+	    + "Ответ:\n"
+	    + "\n```json\n" 
+	    + "{\n"
+	    + "  \"sLogin\": \"mylog\",\n"
+	    + "  \"sNote\": \"Заметка про что-то\",\n"
+	    + "  \"subjectAccountType\": {\n"
+	    + "    \"sID\": \"PD\",\n"
+	    + "    \"sNote\": \"PD\",\n"
+	    + "    \"nID\": 2\n"
+	    + "  },\n"
+	    + "  \"nID_Server\": 5,\n"
+	    + "  \"nID_Subject\": 1,\n"
+	    + "  \"nID\": 103\n"
+	    + "}\n"
+	    + "\n```\n" 
+	    + "Пример обновления записи:\n"
+	    + "https://test.igov.org.ua/wf/service/subject/setSubjectAccount?nID=1&sNote=Заметка_обновленная\n"
+	    + "Ответ:\n"
+	    + "\n```json\n" 
+	    + "{\n"
+	    + "  \"sLogin\": \"Логин01\",\n"
+	    + "  \"sNote\": \"Заметка обновленная\",\n"
+	    + "  \"subjectAccountType\": {\n"
+	    + "    \"sID\": \"iGov\",\n"
+	    + "    \"sNote\": \"iGov\",\n"
+	    + "    \"nID\": 1\n"
+	    + "  },\n"
+	    + "  \"nID_Server\": 1,\n"
+	    + "  \"nID_Subject\": 1,\n"
+	    + "  \"nID\": 1\n"
+	    + "}\n"
+	    + "\n```\n" 
+	    + "Пример ошибочного добавления записи ( не заданы обязательные поля ):\n"
+	    + "https://test.igov.org.ua/wf/service/subject/setSubjectAccount\n"
+	    + "\n```json\n" 
+	    + "Ответ:\n"
+	    + "{\n"
+	    + "  \"code\": \"BUSINESS_ERR\",\n"
+	    + "  \"message\": \"Ошибка! При добавлении обязательны параметры: nID_Subject, sLogin, nID_Server, nID_SubjectAccountType\"\n"
+	    + "}\n"
+	    + "\n```\n"
+	    + "Пример ошибочного добавления записи ( нарушение уникальности аккаунта ):\n"
+	    + "https://test.igov.org.ua/wf/service/subject/setSubjectAccount?nID_Subject=1&sLogin=Логин01&nID_Server=1&nID_SubjectAccountType=1\n"
+	    + "Ответ:\n"
+	    + "\n```json\n" 
+	    + "{\n"
+  	    + "\"code\": \"BUSINESS_ERR\",\n"
+  	    + "\"message\": \"could not execute statement. Нарушение уникальности аккаунта\"\n"
+	    + "}\n"
+	    + "\n```\n"
+	    + "Пример ошибочного обновление записи ( не существующий аккаунт ):\n"
+	    + "https://test.igov.org.ua/wf/service/subject/setSubjectAccount?nID=777\n"
+	    + "\n```json\n" 
+	    + "Ответ:\n"
+	    + "{\n"
+  	    + "\"code\": \"BUSINESS_ERR\",\n"
+  	    + "\"message\": \"Entity with id=777 does not exist\"\n"
+	    + "}\n"
+	    + "\n```\n")
+    @RequestMapping(value = "/setSubjectAccount", method = RequestMethod.GET, headers = {JSON_TYPE} )
+    public @ResponseBody
+    SubjectAccount setSubjectAccount(
+	    @ApiParam(value = "ID аккаунта ( если не задан, то запись добавляется )", required = false) @RequestParam(value = "nID", required = false) Long nID,	    
+	    @ApiParam(value = "ID субъекта ( необходим, при добавлении )", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject,
+	    @ApiParam(value = "Логин ( необходим, при добавлении )", required = false) @RequestParam(value = "sLogin", required = false) String sLogin,
+	    @ApiParam(value = "ID сервера ( необходим, при добавлении )", required = false) @RequestParam(value = "nID_Server", required = false) Long nID_Server,
+	    @ApiParam(value = "ID типа аккаунта ( необходим, при добавлении )", required = false) @RequestParam(value = "nID_SubjectAccountType", required = false) Long nID_SubjectAccountType,
+	    @ApiParam(value = "Строка нотации", required = false) @RequestParam(value = "sNote", required = false) String sNote
+	    ) throws CommonServiceException {
 
+	// Если запись добавляется, то должны быть указаны все обязательные параметры
+	if ( nID == null && ( nID_Subject == null || sLogin == null || nID_Server == null || nID_SubjectAccountType == null ) ) {
+	    throw new CommonServiceException(
+                ExceptionCommonController.BUSINESS_ERROR_CODE,
+                "Ошибка! При добавлении обязательны параметры: nID_Subject, sLogin, nID_Server, nID_SubjectAccountType",
+                HttpStatus.BAD_REQUEST);	    
+	}
+	
+	// Если задан nID_SubjectAccountType то сначала находим сущность SubjectAccountType
+	SubjectAccountType subjectAccountType = null;
+	if (nID_SubjectAccountType != null ) {
+	    subjectAccountType = subjectAccountTypeDao.findByIdExpected(nID_SubjectAccountType);
+	    if ( subjectAccountType == null ) {
+		throw new CommonServiceException(
+	           ExceptionCommonController.BUSINESS_ERROR_CODE,
+	           "Error! Не найдена тип аккаунта для id=" + nID_SubjectAccountType, HttpStatus.NOT_FOUND);	    
+	    }
+	}
+	
+	SubjectAccount subjectAccountRet = null; 
+	try {
+	    subjectAccountRet = subjectAccountDao.setSubjectAccount(nID, nID_Subject, sLogin, nID_Server, subjectAccountType, sNote); 	    
+	} catch (org.hibernate.exception.ConstraintViolationException e) {
+	    throw new CommonServiceException(
+		    ExceptionCommonController.BUSINESS_ERROR_CODE,
+		    e.getMessage()+". Нарушение уникальности аккаунта", HttpStatus.BAD_REQUEST);
+	}
+	
+	return subjectAccountRet;
+    }
+    
 }
