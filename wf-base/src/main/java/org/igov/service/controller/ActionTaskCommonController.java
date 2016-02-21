@@ -1688,9 +1688,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 				bIncludeAlienAssignedTasks = (Boolean)elem.get("bIncludeAlienAssignedTasks");
 			}
 			
+			LOG.info("Selecting tasks");
 			List<TaskInfo> taskQuery = oActionTaskService.returnTasksFromCache(sLogin, sFilterStatus, bIncludeAlienAssignedTasks, groupsIds);
 			
 			long totalNumber = taskQuery.size();
+			LOG.info("Retreived {} tasks", taskQuery.size());
 			
 			if (bFilterHasTicket){
 				LOG.info("Removing tasks which don't have tickets");
