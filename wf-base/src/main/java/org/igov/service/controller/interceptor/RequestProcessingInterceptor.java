@@ -51,7 +51,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     private boolean bFinish = false;
     
     private static final Pattern TAG_PATTERN_PREFIX = Pattern.compile("runtime/tasks/[0-9]+$");
-    private final String URI_SYNC_CONTACTS = "/wf/service/subject/syncContacts";
+    private final String URI_SYNC_CONTACTS = "/wf/service/subject/contactsService";
     
     @Autowired
     protected RuntimeService runtimeService;
@@ -303,8 +303,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
            try
            {
             Map<String, String> mParamSync = new HashMap<String, String>();
-            mParamSync.put("sMailTo", sMailTo);
+            
             mParamSync.put("snID_Subject", snID_Subject);
+            mParamSync.put("sMailTo", sMailTo);
             LOG.info("Вносим параметры в коллекцию (sMailTo {}, snID_Subject {})", sMailTo, snID_Subject);
             String sURL = generalConfig.sHostCentral() + URI_SYNC_CONTACTS;
             LOG.info("(Подключаемся к центральному порталу)");
