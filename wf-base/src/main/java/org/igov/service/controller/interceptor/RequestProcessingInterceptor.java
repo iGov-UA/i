@@ -204,13 +204,14 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         
         //LOG.debug("sResponseBody: " + (sResponseBody != null ? sResponseBody : "null"));
         //oLogBig_Controller.info("sResponseBody: " + (sResponseBody != null ? sResponseBody : "null"));
-        LOG.info("(protocolize execute)");
+        
         try {
             if (!bSaveHistory || !(oResponse.getStatus() >= HttpStatus.OK.value()
                     && oResponse.getStatus() < HttpStatus.BAD_REQUEST.value())) {
                 return;
             }
             if (isSaveTask(oRequest, sResponseBody)) {
+                LOG.info("saveNewTaskInfo block");
                 saveNewTaskInfo(sRequestBody, sResponseBody, mRequestParam);
             } else if (isCloseTask(oRequest, sResponseBody)) {
                 saveClosedTaskInfo(sRequestBody);
@@ -238,7 +239,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     }
 
     private boolean isSaveTask(HttpServletRequest oRequest, String sResponseBody) {
-        LOG.info("(is save task)");
+        LOG.info("(is save task sResponseBody {}, '/form/form-data' {}. Method {} )", sResponseBody, oRequest.getRequestURL().toString().indexOf("/form/form-data"),oRequest.getMethod());
         return (sResponseBody != null && !"".equals(sResponseBody))
                 && oRequest.getRequestURL().toString().indexOf("/form/form-data") > 0
                 && "POST".equalsIgnoreCase(oRequest.getMethod().trim());
