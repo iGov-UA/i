@@ -53,4 +53,12 @@ public class TaskServiceImpl extends org.activiti.engine.impl.TaskServiceImpl {
 		commandExecutor.execute(new MongoDeleteAttachmentCmd(attachmentId, durableBytesDataStorage));
 	}
 
+	@Override
+	public void setAssignee(String taskId, String userId) {
+		LOG.info("Updating assignee of the task");
+		super.setAssignee(taskId, userId);
+	}
+	
+	
+
 }
