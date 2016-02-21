@@ -1956,15 +1956,16 @@ public class ActionTaskService {
 			}
 		}
 		LOG.info("Removing tasks which don't have flow slot tickets");
+		LinkedList<TaskInfo> res = new LinkedList<TaskInfo>();
 		Iterator<TaskInfo> iter = tasks.iterator();
 		while (iter.hasNext()){
 			TaskInfo curr = iter.next();
-			if (!mapOfTickets.keySet().contains(curr.getProcessInstanceId())){
-				LOG.info("Removing tasks with ID {}", curr.getId());
-				iter.remove();
+			if (mapOfTickets.keySet().contains(curr.getProcessInstanceId())){
+				LOG.info("Adding tasks with ID {} to the response", curr.getId());
+				res.add(curr);
 			}
 		}
-		return tasks;
+		return res;
     }
     
     public long getCountOfTasksForGroups(List<String> groupsIds) {
