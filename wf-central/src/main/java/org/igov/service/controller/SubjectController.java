@@ -517,9 +517,9 @@ public class SubjectController {
         return JsonRestUtils.toJsonResponse(serverOpt.get());
     }
     
-    @RequestMapping(value = "/contactsService", method = RequestMethod.GET)
+    @RequestMapping(value = "/syncContacts", method = RequestMethod.GET)
     public @ResponseBody
-    ResponseEntity contactsService (
+    ResponseEntity syncContacts (
         @ApiParam(value="Строка адрес электронной почты", required = true) @RequestParam(value="sMailTo", required=true) String sMailTo,
         @ApiParam(value="Строка ИД субьекта", required = true) @RequestParam(value="snID_Subject", required = true) String snID_Subject
          
