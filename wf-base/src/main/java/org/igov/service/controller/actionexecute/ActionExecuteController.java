@@ -66,4 +66,13 @@ public class ActionExecuteController {
         ActionExecute actionExecute = actionExecuteDAO.getActionExecute(id);
         return actionExecute;
     }
+    
+    @ApiOperation(value = "Получение акции ", notes = "")
+    @RequestMapping(value = "/getActionExecutes", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE, headers = {"Accept=application/json"})
+    public
+    @ResponseBody
+    List<ActionExecute> getActionExecutes() throws CommonServiceException {
+        List<ActionExecute> actionExecutes = actionExecuteDAO.findAll();
+        return actionExecutes;
+    }
 }
