@@ -174,4 +174,20 @@ public class Document extends NamedEntity {
         this.sContentType = s;
     }
 
+    @Override
+    public String toString() {
+        return "Document{" +
+                "documentType=" + documentType +
+                ", contentKey='" + contentKey + '\'' +
+                ", documentContentType=" + documentContentType +
+                ", file='" + file + '\'' +
+                ", date_Upload=" + date_Upload +
+                ", sContentType='" + sContentType + '\'' +
+                ", sID_subject_Upload='" + sID_subject_Upload + '\'' +
+                ", subjectName_Upload='" + subjectName_Upload + '\'' +
+                ", subject_Upload=" + subject_Upload +
+                ", subject=" + subject +
+                ", oSignData='" + oSignData + '\'' +
+                '}';
+    }
 }
