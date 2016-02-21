@@ -175,6 +175,10 @@ public class SubjectService {
         else
         {
             LOG.info("(subject Id {})", nID_Subject);
+           if(subjectDao == null)
+            LOG.info("(subjectDao null)");
+           else
+             LOG.info("(subjectDao not null)");
             subject = subjectDao.getSubject(nID_Subject);
             LOG.info("(Извлекаем subject Id {}, sID {}, Label {}, shortLabel {})", subject.getId(), subject.getsID(), subject.getsLabel(), subject.getsLabelShort());
         }
