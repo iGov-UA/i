@@ -1674,6 +1674,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 			boolean bFilterHasTicket = false;
 			boolean bIncludeAlienAssignedTasks = false;
 			
+			LOG.info("Current element {}", elem.toString());
 			if (elem.has("sFilterStatus")) {
 				sFilterStatus = (String) elem.get("sFilterStatus");
 			} else {
@@ -1681,22 +1682,23 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 			}
 			if (elem.has("bFilterHasTicket")) {
 				bFilterHasTicket = (Boolean)elem.get("bFilterHasTicket");
+				LOG.info("set bFilterHasTicket to {}", bFilterHasTicket);
 			}
 			if (elem.has("bIncludeAlienAssignedTasks")) {
 				bIncludeAlienAssignedTasks = (Boolean)elem.get("bIncludeAlienAssignedTasks");
 			}
 			
-			Object taskQuery = oActionTaskService.createQuery(sLogin, bIncludeAlienAssignedTasks, null, sFilterStatus,
-					groupsIds);
+			LOG.info("Selecting tasks sLogin:{} sFilterStatus:{} bIncludeAlienAssignedTasks:{}", sLogin, sFilterStatus, bIncludeAlienAssignedTasks);
+			List<TaskInfo> taskQuery = oActionTaskService.returnTasksFromCache(sLogin, sFilterStatus, bIncludeAlienAssignedTasks, groupsIds);
 			
-			long totalNumber = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery)taskQuery).count() : oActionTaskService.getCountOfTasksForGroups(groupsIds);
+			long totalNumber = taskQuery.size();
+			LOG.info("Retreived {} tasks", taskQuery.size());
 			
 			if (bFilterHasTicket){
-				Map<String, FlowSlotTicket> mapOfTickets = new HashMap<String, FlowSlotTicket>();
-				List<TaskInfo> tasks = oActionTaskService.getTasksWithTicketsFromQuery(taskQuery, 0, Long.valueOf(totalNumber).intValue(), bFilterHasTicket, mapOfTickets);
+				LOG.info("Removing tasks which don't have tickets");
+				List<TaskInfo> tasks = oActionTaskService.matchTasksWithTicketsFromQuery(sLogin, bFilterHasTicket, sFilterStatus, taskQuery);
 				totalNumber = tasks.size();
 			}
-			
 			
 			Map<String, Object> currRes = new HashMap<String, Object>();
 			currRes.put("nCount", totalNumber);	 
