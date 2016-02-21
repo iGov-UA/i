@@ -155,7 +155,7 @@ public class ActionTaskService {
     private GeneralConfig oGeneralConfig;
     @Autowired
     private FlowSlotTicketDao flowSlotTicketDao;
-    @Autowired
+//    @Autowired
     private CachedInvocationBean cachedInvocationBean;
 
 
