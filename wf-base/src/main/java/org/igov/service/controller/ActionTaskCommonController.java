@@ -1686,17 +1686,14 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 				bIncludeAlienAssignedTasks = (Boolean)elem.get("bIncludeAlienAssignedTasks");
 			}
 			
-			Object taskQuery = oActionTaskService.createQuery(sLogin, bIncludeAlienAssignedTasks, null, sFilterStatus,
-					groupsIds);
+			List<TaskInfo> taskQuery = oActionTaskService.returnTasksFromCache(sLogin, sFilterStatus, bIncludeAlienAssignedTasks, groupsIds);
 			
-			long totalNumber = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery)taskQuery).count() : oActionTaskService.getCountOfTasksForGroups(groupsIds);
+			long totalNumber = taskQuery.size();
 			
 			if (bFilterHasTicket){
-				Map<String, FlowSlotTicket> mapOfTickets = new HashMap<String, FlowSlotTicket>();
-				List<TaskInfo> tasks = oActionTaskService.getTasksWithTicketsFromQuery(taskQuery, 0, Long.valueOf(totalNumber).intValue(), bFilterHasTicket, mapOfTickets);
+				List<TaskInfo> tasks = oActionTaskService.matchTasksWithTicketsFromQuery(sLogin, bFilterHasTicket, sFilterStatus, taskQuery);
 				totalNumber = tasks.size();
 			}
-			
 			
 			Map<String, Object> currRes = new HashMap<String, Object>();
 			currRes.put("nCount", totalNumber);	 

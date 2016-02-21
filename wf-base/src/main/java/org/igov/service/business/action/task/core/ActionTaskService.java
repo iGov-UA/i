@@ -31,6 +31,9 @@ import org.igov.io.GeneralConfig;
 import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.mail.Mail;
 import org.igov.model.action.event.HistoryEvent_Service_StatusType;
+import org.igov.model.action.item.Category;
+import org.igov.model.action.item.ServiceData;
+import org.igov.model.action.item.Subcategory;
 import org.igov.model.action.task.core.ProcessDTOCover;
 import org.igov.model.action.task.core.TaskAssigneeCover;
 import org.igov.model.action.task.core.entity.TaskAssigneeI;
@@ -46,12 +49,17 @@ import org.igov.service.exception.TaskAlreadyUnboundException;
 import org.igov.util.ToolLuna;
 import org.igov.util.ToolJS;
 import org.igov.util.JSON.JsonDateTimeSerializer;
+import org.igov.util.JSON.JsonRestUtils;
+import org.igov.util.cache.CachedInvocationBean;
+import org.igov.util.cache.SerializableResponseEntity;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -76,7 +84,9 @@ import static org.igov.util.Tool.sO;
 //@Component
 @Service
 public class ActionTaskService {
-    public static final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd:HH-mm-ss", Locale.ENGLISH);
+    private static final String GET_ALL_TASK_FOR_USER = "getAllTaskForUser";
+	private static final String GET_ALL_TICKETS_CACHE = "getAllTickets";
+	public static final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd:HH-mm-ss", Locale.ENGLISH);
     public static final String CANCEL_INFO_FIELD = "sCancelInfo";
     private static final int DEFAULT_REPORT_FIELD_SPLITTER = 59;
     private static final int MILLIS_IN_HOUR = 1000 * 60 * 60;
@@ -123,6 +133,9 @@ public class ActionTaskService {
     private GeneralConfig oGeneralConfig;
     @Autowired
     private FlowSlotTicketDao flowSlotTicketDao;
+    @Autowired
+    private CachedInvocationBean cachedInvocationBean;
+
 
     
     public static String parseEnumValue(String sEnumName) {
@@ -1886,6 +1899,55 @@ public class ActionTaskService {
 		return tasks;
     }
     
+    public List<TaskInfo> matchTasksWithTicketsFromQuery(final String sLogin, boolean bIncludeAlienTickets, String sFilterStatus,
+    		List<TaskInfo> tasks){
+	
+		final List<Long> taskIds = new LinkedList<Long>();
+		for (int i = 0; i < tasks.size(); i++){
+			TaskInfo currTask = tasks.get(i);
+			if (currTask.getProcessInstanceId() != null){
+				taskIds.add(Long.valueOf(currTask.getProcessInstanceId()));
+			}
+		}
+		LOG.info("Preparing to select flow slot tickets. taskIds:{}", taskIds.toString());
+		if (taskIds.size() == 0){
+			return tasks;
+		}
+		SerializableResponseEntity<ArrayList<FlowSlotTicket>> entities = cachedInvocationBean
+	            .invokeUsingCache(new CachedInvocationBean.Callback<SerializableResponseEntity<ArrayList<FlowSlotTicket>>>(
+	                    GET_ALL_TICKETS_CACHE, sLogin, bIncludeAlienTickets, sFilterStatus) {
+	                @Override
+	                public SerializableResponseEntity<ArrayList<FlowSlotTicket>> execute() {
+	                	LOG.info("Loading tickets from cache for user {}", sLogin);
+
+	                	ArrayList<FlowSlotTicket> res = (ArrayList<FlowSlotTicket>) flowSlotTicketDao.findAllByInValues("nID_Task_Activiti", taskIds);
+	                    
+	                	HttpHeaders headers = new HttpHeaders();
+	                    headers.setContentType(MediaType.ALL);
+	                	
+	                    return new SerializableResponseEntity<>(new ResponseEntity<>(res, headers, HttpStatus.OK));
+	                }
+	            });
+		ArrayList<FlowSlotTicket> tickets = entities.getBody();
+		LOG.info("Found {} tickets for specified list of tasks IDs", tickets.size());
+		Map<String, FlowSlotTicket> mapOfTickets = new HashMap<String, FlowSlotTicket>();
+		if (tickets != null) {
+			for (FlowSlotTicket ticket : tickets) {
+				mapOfTickets.put(ticket.getnID_Task_Activiti().toString(), ticket);
+			}
+		}
+		LOG.info("Removing tasks which don't have flow slot tickets");
+		Iterator<TaskInfo> iter = tasks.iterator();
+		while (iter.hasNext()){
+			TaskInfo curr = iter.next();
+			if (!mapOfTickets.keySet().contains(curr.getProcessInstanceId())){
+				LOG.info("Removing tasks with ID {}", curr.getId());
+				iter.remove();
+			}
+		}
+		return tasks;
+    }
+    
     public long getCountOfTasksForGroups(List<String> groupsIds) {
 		StringBuilder groupIdsSB = new StringBuilder();
 		for (int i = 0; i < groupsIds.size(); i++){
@@ -1946,6 +2008,28 @@ public class ActionTaskService {
 		}
 	}
     
+	public List<TaskInfo> returnTasksFromCache(final String sLogin, final String sFilterStatus, final boolean bIncludeAlienAssignedTasks,
+			final List<String> groupsIds){
+		SerializableResponseEntity<ArrayList<TaskInfo>> entity = cachedInvocationBean
+            .invokeUsingCache(new CachedInvocationBean.Callback<SerializableResponseEntity<ArrayList<TaskInfo>>>(
+                    GET_ALL_TASK_FOR_USER, sLogin, sFilterStatus, bIncludeAlienAssignedTasks) {
+                @Override
+                public SerializableResponseEntity<ArrayList<TaskInfo>> execute() {
+                	LOG.info("Loading tasks from cache for user {}", sLogin);
+                	Object taskQuery = createQuery(sLogin, bIncludeAlienAssignedTasks, null, sFilterStatus, groupsIds);
+                	
+                	ArrayList<TaskInfo> res = (ArrayList<TaskInfo>) ((taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).list()
+            				: (List) ((NativeTaskQuery) taskQuery).list());
+                	
+                	HttpHeaders headers = new HttpHeaders();
+                    headers.setContentType(MediaType.ALL);
+                    
+                    return new SerializableResponseEntity<>(new ResponseEntity<>(res, headers, HttpStatus.OK));
+                }
+            });
+		return entity.getBody();
+	}
+	
 	public Object createQuery(String sLogin,
 			boolean bIncludeAlienAssignedTasks, String sOrderBy, String sFilterStatus,
 			List<String> groupsIds) {
@@ -2041,4 +2125,6 @@ public class ActionTaskService {
 		}
 		return taskInfo;
 	}
+	
+	
 }
