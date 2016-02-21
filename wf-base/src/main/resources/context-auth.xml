@@ -6,23 +6,30 @@
        http://www.springframework.org/schema/security
        http://www.springframework.org/schema/security/spring-security-3.2.xsd">
 
+    <beans>
+        <bean id="activitiLoginHandler" class="org.activiti.explorer.ui.login.DefaultLoginHandler">
+            <property name="identityService" ref="identityService"/>
+        </bean>
+
+        <bean id="activitiRestAuthProvider" class="org.igov.service.controller.security.ActivitiRestAuthProvider"/>
+        <bean id="accessKeyAuthFilter" class="org.igov.service.controller.security.AccessKeyAuthFilter"/>
+        <bean id="accessKeyAuthProvider" class="org.igov.service.controller.security.AccessKeyAuthProvider"/>
+        <bean id="accessServiceLoginRightFilter" class="org.igov.service.controller.security.AccessServiceLoginRightFilter"/>
+    </beans>
+
     <beans profile="prod">
         <bean id="authProp" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
             <property name="location" value="file:${catalina.home}/conf/AS.properties"/>
             <property name="ignoreUnresolvablePlaceholders" value="true"/>
         </bean>
 
-        <bean id="activitiLoginHandler" class="org.activiti.explorer.ui.login.DefaultLoginHandler">
-            <property name="identityService" ref="identityService"/>
-        </bean>
-
-        <bean id="activitiRestAuthProvider" class="org.igov.service.controller.security.ActivitiRestAuthProvider"/>
-        <bean id="accessKeyAuthProvider" class="org.igov.service.controller.security.AccessKeyAuthProvider"/>
-        <bean id="accessKeyAuthFilter" class="org.igov.service.controller.security.AccessKeyAuthFilter"/>
-
         <security:http create-session="stateless" realm="Activiti REST API">
             <security:intercept-url pattern="/service/**" access="ROLE_USER"/>
             <security:custom-filter ref="accessKeyAuthFilter" before="BASIC_AUTH_FILTER"/>
+
+            <!-- will be executed after successful authentication -->
+            <security:custom-filter ref="accessServiceLoginRightFilter" after="FILTER_SECURITY_INTERCEPTOR"/>
+
             <security:http-basic/>
         </security:http>
 
@@ -39,17 +46,13 @@
             <property name="ignoreUnresolvablePlaceholders" value="true"/>
         </bean>
 
-        <bean id="activitiLoginHandler" class="org.activiti.explorer.ui.login.DefaultLoginHandler">
-            <property name="identityService" ref="identityService"/>
-        </bean>
-
-        <bean id="activitiRestAuthProvider" class="org.igov.service.controller.security.ActivitiRestAuthProvider"/>
-        <bean id="accessKeyAuthFilter" class="org.igov.service.controller.security.AccessKeyAuthFilter"/>
-        <bean id="accessKeyAuthProvider" class="org.igov.service.controller.security.AccessKeyAuthProvider"/>
-
         <security:http create-session="stateless" realm="Activiti REST API">
             <security:intercept-url pattern="/service/**" access="ROLE_USER"/>
             <security:custom-filter ref="accessKeyAuthFilter" before="BASIC_AUTH_FILTER"/>
+
+            <!-- will be executed after successful authentication -->
+            <security:custom-filter ref="accessServiceLoginRightFilter" after="FILTER_SECURITY_INTERCEPTOR"/>
+
             <security:http-basic/>
         </security:http>
 
@@ -66,17 +69,13 @@
             <property name="ignoreUnresolvablePlaceholders" value="true"/>
         </bean>
 
-        <bean id="activitiLoginHandler" class="org.activiti.explorer.ui.login.DefaultLoginHandler">
-            <property name="identityService" ref="identityService"/>
-        </bean>
-
-        <bean id="activitiRestAuthProvider" class="org.igov.service.controller.security.ActivitiRestAuthProvider"/>
-        <bean id="accessKeyAuthFilter" class="org.igov.service.controller.security.AccessKeyAuthFilter"/>
-        <bean id="accessKeyAuthProvider" class="org.igov.service.controller.security.AccessKeyAuthProvider"/>
-
         <security:http create-session="stateless" realm="Activiti REST API">
             <security:intercept-url pattern="/service/**" access="ROLE_USER"/>
             <security:custom-filter ref="accessKeyAuthFilter" before="BASIC_AUTH_FILTER"/>
+
+            <!-- will be executed after successful authentication -->
+            <security:custom-filter ref="accessServiceLoginRightFilter" after="FILTER_SECURITY_INTERCEPTOR"/>
+
             <security:http-basic/>
         </security:http>
 
