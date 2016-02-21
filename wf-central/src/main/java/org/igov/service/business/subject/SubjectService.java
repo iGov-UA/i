@@ -57,7 +57,7 @@ public class SubjectService {
         
         Long nID_Subject = convertStringToLong(snID_Subject);
         LOG.info("(before getSubject nID_Subject {})", nID_Subject);
-        Subject subject = getSubject(nID_Subject, sMail);
+        Subject subject = getSubjectObject(nID_Subject, sMail);
         SubjectHuman oSubjectHuman = null;
        if(subject != null)
         oSubjectHuman = getSubjectHuman(subject);
@@ -154,7 +154,7 @@ public class SubjectService {
          
          return false;
     }
-    private Subject getSubject(Long nID_Subject, String sMail)
+    private Subject getSubjectObject(Long nID_Subject, String sMail)
     {
         Subject subject = null;
         if(nID_Subject == null)
