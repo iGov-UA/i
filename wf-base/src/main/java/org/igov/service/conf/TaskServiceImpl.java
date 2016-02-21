@@ -1,11 +1,9 @@
 package org.igov.service.conf;
 
 import java.io.InputStream;
-import java.util.Map;
 
 import org.activiti.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.activiti.engine.task.Attachment;
-import org.activiti.engine.task.Task;
 import org.igov.io.db.kv.statical.IBytesDataStorage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

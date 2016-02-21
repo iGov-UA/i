@@ -104,8 +104,8 @@ import org.springframework.web.multipart.MultipartFile;
 //@Component
 @Service
 public class ActionTaskService {
-    private static final String GET_ALL_TASK_FOR_USER = "getAllTaskForUser";
-	private static final String GET_ALL_TICKETS_CACHE = "getAllTickets";
+    public static final String GET_ALL_TASK_FOR_USER_CACHE = "getAllTaskForUser";
+	public static final String GET_ALL_TICKETS_CACHE = "getAllTickets";
 	public static final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd:HH-mm-ss", Locale.ENGLISH);
     public static final String CANCEL_INFO_FIELD = "sCancelInfo";
     private static final int DEFAULT_REPORT_FIELD_SPLITTER = 59;
@@ -2030,7 +2030,7 @@ public class ActionTaskService {
 			final List<String> groupsIds){
 		SerializableResponseEntity<ArrayList<TaskInfo>> entity = cachedInvocationBean
             .invokeUsingCache(new CachedInvocationBean.Callback<SerializableResponseEntity<ArrayList<TaskInfo>>>(
-                    GET_ALL_TASK_FOR_USER, sLogin, sFilterStatus, bIncludeAlienAssignedTasks) {
+                    GET_ALL_TASK_FOR_USER_CACHE, sLogin, sFilterStatus, bIncludeAlienAssignedTasks) {
                 @Override
                 public SerializableResponseEntity<ArrayList<TaskInfo>> execute() {
                 	LOG.info("Loading tasks from cache for user {} with filterStatus {} and bIncludeAlienAssignedTasks {}", sLogin, sFilterStatus, bIncludeAlienAssignedTasks);
