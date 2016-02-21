@@ -54,6 +54,7 @@ public class SubjectService {
         SubjectContact oSubjectContact = new SubjectContact();
         
         Long nID_Subject = convertStringToLong(snID_Subject);
+        LOG.info("(before getSubject nID_Subject {})", nID_Subject);
         Subject subject = getSubject(nID_Subject, sMail);
         SubjectHuman oSubjectHuman = null;
        if(subject != null)
@@ -171,6 +172,7 @@ public class SubjectService {
         }
         else
         {
+            LOG.info("(subject Id {})", nID_Subject);
             subject = subjectDao.getSubject(nID_Subject);
             LOG.info("(Извлекаем subject Id {}, sID {}, Label {}, shortLabel {})", subject.getId(), subject.getsID(), subject.getsLabel(), subject.getsLabelShort());
         }
