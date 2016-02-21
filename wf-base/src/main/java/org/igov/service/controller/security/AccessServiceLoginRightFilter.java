@@ -37,7 +37,6 @@ public class AccessServiceLoginRightFilter extends GenericFilterBean {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
         HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
 
-
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         String service = null;
         String parameters = null;
