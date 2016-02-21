@@ -7,7 +7,13 @@
     <!-- use profile "with-cache" if you want to enable cache in tests -->
     <beans profile="test,prod,with-cache">
 
-        <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+        
+
+    </beans>
+
+    <beans>
+
+		<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
             <property name="configLocation" value="classpath:ehcache.xml"/>
         </bean>
 
@@ -23,10 +29,6 @@
         <bean id="methodCacheAdvisor" class="org.igov.util.cache.MethodCacheAdvisor">
             <property name="interceptor" ref="methodCacheInterceptor"/>
         </bean>
-
-    </beans>
-
-    <beans>
 
         <bean id="cachedInvocationBean" class="org.igov.util.cache.CachedInvocationBean"/>
 
