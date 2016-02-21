@@ -1691,6 +1691,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 			long totalNumber = taskQuery.size();
 			
 			if (bFilterHasTicket){
+				LOG.info("Removing tasks which don't have tickets");
 				List<TaskInfo> tasks = oActionTaskService.matchTasksWithTicketsFromQuery(sLogin, bFilterHasTicket, sFilterStatus, taskQuery);
 				totalNumber = tasks.size();
 			}
