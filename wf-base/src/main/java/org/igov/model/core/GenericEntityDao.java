@@ -15,6 +15,11 @@ import org.igov.service.exception.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 
+import java.util.Collection;
+import java.util.List;
+
+import static org.hibernate.criterion.Restrictions.eq;
+import static org.hibernate.criterion.Restrictions.in;
 import com.google.common.base.Optional;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
@@ -82,7 +87,7 @@ public class GenericEntityDao<T extends Entity> implements EntityDao<T> {
     @SuppressWarnings("unchecked")
     @Override
     public Optional<T> findBy(String field, Object value) {
-        List<T> allBy = findByAttributeCriteria(field, value)
+        List<T> allBy = findAllByAttributeCriteria(field, value)
                 .setFirstResult(0)
                 .list();
         T foundEntity = Iterables.getFirst(allBy, null);
@@ -101,17 +106,22 @@ public class GenericEntityDao<T extends Entity> implements EntityDao<T> {
     @SuppressWarnings("unchecked")
     @Override
     public List<T> findAllBy(String field, Object value) {
-        return findByAttributeCriteria(field, value)
-                .list();
+        if (value instanceof Iterable) {
+            return findAllByAttributeCriteria(field, (Collection<Object>) value)
+                    .list();
+        } else {
+            return findAllByAttributeCriteria(field, value)
+                    .list();
+        }
     }
-    
+
     @SuppressWarnings("unchecked")
     @Override
     public List<T> findAllByInValues(String field, List<?> value) {
         return findAllByAttributeCriteria(field, value).list();
     }
-    
-    protected Criteria findByAttributeCriteria(String field, Object value) {
+
+    protected Criteria findAllByAttributeCriteria(String field, Object value) {
         Assert.hasText(field, "Specify field name");
         Assert.notNull(value, "Specify value");
 
@@ -128,10 +138,11 @@ public class GenericEntityDao<T extends Entity> implements EntityDao<T> {
         return criteria
                 .add(eq(fieldName, value));
     }
-    
-    protected Criteria findAllByAttributeCriteria(String field, List<?> values) {
+
+    protected Criteria findAllByAttributeCriteria(String field, Collection<Object> values) {
         Assert.hasText(field, "Specify field name");
         Assert.notNull(values, "Specify value");
+
 
         Criteria criteria = createCriteria();
         String fieldName = field;
@@ -142,11 +153,9 @@ public class GenericEntityDao<T extends Entity> implements EntityDao<T> {
 
             criteria = criteria.createCriteria(propertyPath);
         }
-
-        return criteria
-                .add(in(fieldName, values));
+        return criteria.add(in(fieldName, values));
     }
-    
+
     @SuppressWarnings("unchecked")
     @Override
     public List<T> findAll() {

@@ -1,8 +1,13 @@
 package org.igov.model.document;
 
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+import org.hibernate.Query;
 import org.igov.io.db.kv.statical.IBytesDataStorage;
 import org.igov.model.document.DocumentOperator_SubjectOrgan;
 import org.igov.model.subject.Subject;
+import org.igov.util.db.QueryBuilder;
+import org.igov.util.db.queryloader.QueryLoader;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -17,6 +22,9 @@ import org.igov.model.subject.Subject;
 
 @Repository
 public class DocumentDaoImpl extends GenericEntityDao<Document> implements DocumentDao {
+
+    @Autowired
+    QueryLoader queryLoader;
 
     private static final String contentMock = "No content!!!";
 
@@ -34,6 +42,16 @@ public class DocumentDaoImpl extends GenericEntityDao<Document> implements Docum
     @Override
     public List<Document> getDocuments(Long nID_Subject) {
         return findAllBy("subject.id", nID_Subject);
+    }
+
+    @Override
+    public List<String> getDocumentContentKeys(int offset) {
+        String selectQuery = queryLoader.get("select_document_content_key.sql");
+        Query query = new QueryBuilder(getSession())
+                .append(selectQuery)
+                .setParam("OFFSET", offset)
+                .toSQLQuery();
+        return Lists.newArrayList(Iterables.filter(query.list(), String.class));
     }
 
     @Override
