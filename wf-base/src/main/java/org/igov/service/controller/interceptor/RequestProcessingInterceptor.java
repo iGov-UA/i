@@ -51,7 +51,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     private boolean bFinish = false;
     
     private static final Pattern TAG_PATTERN_PREFIX = Pattern.compile("runtime/tasks/[0-9]+$");
-    private final String URI_SYNC_CONTACTS = "/wf/service/subject/contactsService";
+    private final String URI_SYNC_CONTACTS = "/wf/service/subject/syncContacts";
     
     @Autowired
     protected RuntimeService runtimeService;
