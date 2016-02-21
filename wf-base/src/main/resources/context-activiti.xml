@@ -68,6 +68,18 @@
     <bean id="processEngineConfiguration" class="org.igov.service.conf.MongoSpringProcessEngineConfiguration"
           parent="processEngineConfigurationInitial">
         <property name="bytesDataStorage" ref="durableBytesDataStorage"/>
+        
+        <property name="typedEventListeners">
+	      <map>
+	        <entry key="TASK_ASSIGNED,TASK_CREATED,TASK_COMPLETED" >
+	          <list>
+	            <bean class="org.igov.service.business.action.task.listener.ActivitiTaskEventListener" >
+	            	<property name="cachedInvocationBean" ref="cachedInvocationBean"/>
+	            </bean>
+	          </list>
+	        </entry>
+	      </map>
+	    </property>
     </bean>
 
     <bean id="processEngine" class="org.activiti.spring.ProcessEngineFactoryBean" destroy-method="destroy">
