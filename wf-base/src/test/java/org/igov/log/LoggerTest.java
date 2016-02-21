@@ -1,19 +1,20 @@
-package org.igov.log;
+ package org.igov.log;
 
+import org.igov.log.http.LogResponse;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import java.util.Collections;
+import static org.slf4j.helpers.MessageFormatter.arrayFormat;
+import static org.slf4j.helpers.MessageFormatter.format;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * @author dgroup
  * @since  08.01.2016
  */
 public class LoggerTest {
+    private static final String SL4J_MARKER = "{}";
 
     @Test
     @Ignore(value = "Last assertion isn't implemented yet")
@@ -24,7 +25,7 @@ public class LoggerTest {
         String expectedLog  = "Got (user={}, name={}, description={})";
 
         TestLogsConsumer consumer = new TestLogsConsumer();
-        Logger log = Logger.getLog(LoggerTest.class, consumer);
+        Logger log = LoggerImpl.getLog(LoggerTest.class, consumer);
 
         log.info("Got", userId, name, description);
 
@@ -39,7 +40,7 @@ public class LoggerTest {
         String msg      = "Houston we have a problem";
 
         String expectedMsg = status +":"+ header +" "+ msg;
-        Logger log = Logger.getLog(LoggerTest.class);
+        Logger log = LoggerImpl.getLog(LoggerTest.class);
 
         LogResponse response = log.errorHTTP(status, header, msg);
 
@@ -49,5 +50,23 @@ public class LoggerTest {
         assertEquals("Message is wrong", expectedMsg, response.message());
         assertEquals("Rwa message is wrong", msg, response.rawMessage());
         assertTrue("Arguments aren't empty", response.arguments().size() == 0);
+    }
+
+    @Test
+    public void wellFormedString(){
+        String msg = "My name is ";
+        String person = "Vova";
+        String expectedMessage = msg + person;
+
+        Logger log = LoggerImpl.getLog(LoggerTest.class);
+
+        assertEquals(expectedMessage, log.info(msg + SL4J_MARKER, person));
+    }
+
+    @Test
+    public void wellFormedStringSLF4J (){
+        assertEquals("Hi there.",   format("Hi {}.", "there").getMessage() );
+        assertEquals("Hi [there].", format("Hi {}.", new Object[]{"there"}).getMessage() );
+        assertEquals("Hi there.",   arrayFormat("Hi {}.", new Object[]{"there"}).getMessage() );
     }
 }

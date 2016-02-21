@@ -1,10 +1,11 @@
-package org.igov.log;
+package org.igov.log.http;
 
 import java.util.Collection;
+import java.util.Objects;
 
 /**
  * @author dgroup
- * @since 10.01.2016
+ * @since  10.01.2016
  */
 public class LogResponseImpl implements LogResponse {
     private int status;
@@ -42,5 +43,10 @@ public class LogResponseImpl implements LogResponse {
     @Override
     public Collection<Object> arguments() {
         return arguments;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(status, header, message, arguments);
     }
 }
