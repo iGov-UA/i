@@ -5,10 +5,41 @@
  */
 package org.igov.service.business.action.task.core;
 
+import static org.igov.io.fs.FileSystemData.getFiles_PatternPrint;
+import static org.igov.util.Tool.sO;
+
+import java.io.File;
+import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Scanner;
+import java.util.Set;
+import java.util.TreeSet;
+
+import javax.script.ScriptException;
+
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.UserTask;
-import org.activiti.engine.*;
+import org.activiti.engine.ActivitiObjectNotFoundException;
+import org.activiti.engine.EngineServices;
+import org.activiti.engine.FormService;
+import org.activiti.engine.HistoryService;
+import org.activiti.engine.IdentityService;
+import org.activiti.engine.RepositoryService;
+import org.activiti.engine.RuntimeService;
+import org.activiti.engine.TaskService;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.Expression;
@@ -24,16 +55,20 @@ import org.activiti.engine.identity.Group;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.repository.ProcessDefinition;
-import org.activiti.engine.task.*;
+import org.activiti.engine.task.Attachment;
+import org.activiti.engine.task.IdentityLink;
+import org.activiti.engine.task.IdentityLinkType;
+import org.activiti.engine.task.NativeTaskQuery;
+import org.activiti.engine.task.Task;
+import org.activiti.engine.task.TaskInfo;
+import org.activiti.engine.task.TaskInfoQuery;
+import org.activiti.engine.task.TaskQuery;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.igov.io.GeneralConfig;
 import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.mail.Mail;
 import org.igov.model.action.event.HistoryEvent_Service_StatusType;
-import org.igov.model.action.item.Category;
-import org.igov.model.action.item.ServiceData;
-import org.igov.model.action.item.Subcategory;
 import org.igov.model.action.task.core.ProcessDTOCover;
 import org.igov.model.action.task.core.TaskAssigneeCover;
 import org.igov.model.action.task.core.entity.TaskAssigneeI;
@@ -46,10 +81,10 @@ import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.RecordNotFoundException;
 import org.igov.service.exception.TaskAlreadyUnboundException;
-import org.igov.util.ToolLuna;
+import org.igov.util.ToolFS;
 import org.igov.util.ToolJS;
+import org.igov.util.ToolLuna;
 import org.igov.util.JSON.JsonDateTimeSerializer;
-import org.igov.util.JSON.JsonRestUtils;
 import org.igov.util.cache.CachedInvocationBean;
 import org.igov.util.cache.SerializableResponseEntity;
 import org.joda.time.DateTime;
@@ -63,19 +98,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.script.ScriptException;
-
-import java.io.File;
-import java.nio.charset.Charset;
-import java.text.SimpleDateFormat;
-import java.util.*;
-
-import static org.igov.io.fs.FileSystemData.getFiles_PatternPrint;
-
-import org.igov.util.ToolFS;
-
-import static org.igov.util.Tool.sO;
 
 /**
  *
