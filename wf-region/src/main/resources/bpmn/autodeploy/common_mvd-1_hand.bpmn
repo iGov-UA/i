@@ -3,11 +3,10 @@
   <process id="common_mvd_1_hand" name="(загальна)- Надання довідки про відсутність або наявніcть судимості" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-      	<activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть регіональне відділення для отримання довідки" type="select" default="0"></activiti:formProperty>
-        <activiti:formProperty id="sMail_Employee" name="sMail_Employee" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Обрана адреса" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть регіональне відділення для отримання довідки" type="select" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sMail_Employee" name="sMail_Employee" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Обрана адреса" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWork_Time" name="Графік роботи" type="label" default=" "></activiti:formProperty>
-        
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sFamily_RU" name="Фамилия (рус.)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
@@ -102,7 +101,7 @@
     </boundaryEvent>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow3" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
-    <userTask id="usertask1" name="Надання послуги" activiti:candidateGroups="test_mvd">
+    <userTask id="usertask1" name="Надання послуги" activiti:candidateGroups="common_mvd_1_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFamily_RU" name="Фамилия (рус.)" type="string" writable="false"></activiti:formProperty>
