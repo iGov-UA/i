@@ -1,6 +1,5 @@
 package org.igov.service.business.escalation;
 
-import com.google.gson.Gson;
 import com.mongodb.util.JSON;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,8 +14,6 @@ import com.mongodb.BasicDBList;
 import javax.script.ScriptException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.List;
-import java.util.ArrayList;
 import org.igov.io.GeneralConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -110,7 +107,6 @@ public class EscalationHelper implements ApplicationContextAware {
 
     private Map<String, Object> parseJsonData(String soData) {
         Map<String, Object> json = (Map<String, Object>) JSON.parse(soData);
-        Map<String, Object> json_ = new Gson().fromJson(soData, HashMap.class);
         return json;
     }
 

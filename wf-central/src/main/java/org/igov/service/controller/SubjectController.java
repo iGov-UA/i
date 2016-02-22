@@ -28,9 +28,11 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
+import org.igov.model.core.NamedEntity;
 import org.igov.model.subject.Server;
 import org.igov.model.subject.ServerDao;
 import org.igov.model.subject.SubjectContact;
+import org.igov.model.subject.SubjectContactDao;
 import org.igov.model.subject.organ.SubjectOrganJoin;
 import org.igov.model.subject.organ.SubjectOrganJoinAttribute;
 import org.igov.model.subject.organ.SubjectOrganJoinAttributeDao;
@@ -63,6 +65,9 @@ public class SubjectController {
 
     @Autowired
     private SubjectOrganDao subjectOrganDao;
+   
+    @Autowired
+    private SubjectContactDao subjectContactDao;
 
     @Autowired
     private SubjectOrganJoinAttributeDao subjectOrganJoinAttributeDao;
@@ -191,14 +196,19 @@ public class SubjectController {
     @RequestMapping(value = "/getSubjectHuman", method = RequestMethod.GET)
     public @ResponseBody
     SubjectHuman getSubjectHuman(@ApiParam(value = "номер-ИД субьекта", required = true) @RequestParam(value = "nID_Subject") Long nID_Subject) throws CommonServiceException {
+        return getSubjectHuman_(nID_Subject);
+    }
+    
+    private SubjectHuman getSubjectHuman_(Long nID_Subject)  throws CommonServiceException {
         Optional<SubjectHuman> subjectHuman = subjectHumanDao.findById(nID_Subject);
         if (subjectHuman.isPresent()) {
             return subjectHuman.get();
-        }
-        throw new CommonServiceException(
+        } else{
+            throw new CommonServiceException(
                 ExceptionCommonController.BUSINESS_ERROR_CODE,
                 "Record not found",
                 HttpStatus.NOT_FOUND);
+        }
     }
 
     @ApiOperation(value = "/getSubjectOrgan", notes = "##### SubjectController - Субъекты  и смежные сущности. Получение объекта SubjectOrgan по номеру #####\n\n"
@@ -224,14 +234,18 @@ public class SubjectController {
     @RequestMapping(value = "/getSubjectOrgan", method = RequestMethod.GET)
     public @ResponseBody
     SubjectOrgan getSubjectOrgan(@ApiParam(value = "номер-ИД субьекта", required = true) @RequestParam(value = "nID_Subject") Long nID_Subject) throws CommonServiceException {
+        return getSubjectOrgan_(nID_Subject);
+    }
+    
+    private SubjectOrgan getSubjectOrgan_(Long nID_Subject)  throws CommonServiceException{
         Optional<SubjectOrgan> subjectOrgan = subjectOrganDao.findById(nID_Subject);
         if (subjectOrgan.isPresent()) {
             return subjectOrgan.get();
-        }
-        throw new CommonServiceException(
+        } else{throw new CommonServiceException(
                 ExceptionCommonController.BUSINESS_ERROR_CODE,
                 "Record not found",
                 HttpStatus.NOT_FOUND);
+        }
     }
 
     /**
@@ -730,6 +744,75 @@ public class SubjectController {
 	}
 	
 	return subjectAccountRet;
+    }
+    
+    @ApiOperation(value = "Получение полного набора данных по субъектам", notes = "Получаем полный набор данных по субъектам. "
+	    + "Пример:\n"
+	    + "https://test.igov.org.ua/wf/service/subject/getSubjects\n\n"
+	    + "Ответ:\n"
+	    + "\n```\n")
+    @RequestMapping(value = "/getSubjects", method = RequestMethod.GET, headers = {JSON_TYPE} )
+    public @ResponseBody
+    Map getSubjects(
+	    @ApiParam(value = "Массив с логинами чиновников в виде json", required = false) @RequestParam(value = "saLogin", required = false) String saLogin,	    
+	    @ApiParam(value = "Массив с логинами групп в виде json", required = false) @RequestParam(value = "saGroup", required = false) String saGroup,
+	    @ApiParam(value = "Ид сервера", required = true) @RequestParam(value = "nID_Server", required = true) Long nID_Server) throws CommonServiceException {
+
+        Map<String, Map<String, NamedEntity>> result = new HashMap();
+	// Если не задали ни один параметр в запросе - ошибка
+	if ( saLogin == null && saGroup == null) {
+	    throw new CommonServiceException(
+                ExceptionCommonController.BUSINESS_ERROR_CODE,
+                "Ошибка! Укажите хотя бы один из параметров: saLogin, saGroup",
+                HttpStatus.BAD_REQUEST);	    
+	} else{
+            // находим сущность SubjectAccountType
+            SubjectAccountType subjectAccountType = subjectAccountTypeDao.findByIdExpected(new Long(1));
+            if ( subjectAccountType == null ) {
+                throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
+                     "Error! SubjectAccountType not founf for id=" + 1, HttpStatus.NOT_FOUND);	    
+            }
+            Long nID_Subject;
+            if(saLogin != null){
+                List<String> asLogin = JsonRestUtils.readObject(saLogin, List.class); 
+                for(String login : asLogin){
+                    Map<String, NamedEntity> organs = new HashMap();
+                    List<SubjectAccount> subjectAccounts = subjectAccountDao.findSubjectAccounts(null, login, nID_Server, subjectAccountType);
+                    if (subjectAccounts == null ||  subjectAccounts.isEmpty()) {
+                        throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
+	                "SubjectAccounts not found for login=" + login, HttpStatus.NOT_FOUND);
+                    }
+                    nID_Subject = subjectAccounts.get(0).getnID_Subject();
+                    Subject subject = subjectDao.getSubject(nID_Subject);
+                    SubjectHuman subjectHuman = getSubjectHuman_(nID_Subject);
+                    List<SubjectContact> subjectContact = subjectContactDao.findContacts(subject);
+                    subjectHuman.setaContact(subjectContact);
+                    organs.put(login, subjectHuman);
+                    result.put("logins", organs);
+                }
+            }
+            
+            if(saGroup != null){
+                List<String> asGroup = JsonRestUtils.readObject(saGroup, List.class);
+                for(String group : asGroup){
+                    Map<String, NamedEntity> organs = new HashMap();
+                    List<SubjectAccount> subjectAccounts = subjectAccountDao.findSubjectAccounts(null, group, nID_Server, subjectAccountType);
+                    if (subjectAccounts == null ||  subjectAccounts.isEmpty()) {
+                        throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
+	                "SubjectAccounts not found for login=" + group, HttpStatus.NOT_FOUND);
+                    }
+                    nID_Subject = subjectAccounts.get(0).getnID_Subject();
+                    Subject subject = subjectDao.getSubject(nID_Subject);
+                    SubjectOrgan subjectOrgan = getSubjectOrgan_(nID_Subject);
+                    List<SubjectContact> subjectContact = subjectContactDao.findContacts(subject);
+                    subjectOrgan.setaContact(subjectContact);
+                    organs.put(group, subjectOrgan);
+                    result.put("groups", organs);
+                }
+            }
+            
+        }
+        return null;
     }
     
 }

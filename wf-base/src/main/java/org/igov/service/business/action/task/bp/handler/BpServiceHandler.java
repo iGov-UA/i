@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import org.igov.cover.subject.SubjectCover;
 import org.igov.model.action.event.HistoryEvent_Service_StatusType;
 import org.igov.service.business.action.task.bp.BpService;
 
@@ -49,6 +50,8 @@ public class BpServiceHandler {
     private RepositoryService repositoryService;
     @Autowired
     private HistoryEventService historyEventService;
+    @Autowired
+    SubjectCover subjectCover;
 
     public String startFeedbackProcess(String sID_task, String snID_Process, String processName) {
         Map<String, Object> variables = new HashMap<>();
@@ -70,6 +73,7 @@ public class BpServiceHandler {
             variables.put("phone", "" + processVariables.get("phone"));
             variables.put("email", processVariables.get("email"));
             variables.put("organ", getCandidateGroups(processName, sID_task, processVariables));
+            setSubjectParams(sID_task, processName, variables);
             try {//issue 1006
                 String jsonHistoryEvent = historyEventService.getHistoryEvent(sID_Order);
                 LOG.info("get history event for bp:(jsonHistoryEvent={})", jsonHistoryEvent);
@@ -146,7 +150,7 @@ public class BpServiceHandler {
         mParam.put("organ", getCandidateGroups(sProcessName, mTaskParam.get("sTaskId").toString(), null));
         mParam.put("saField", new JSONObject(mTaskParam).toString());
         mParam.put("data", mTaskParam.get("sDate_BP"));
-
+        setSubjectParams(mTaskParam.get("sTaskId").toString(), sProcessName, mParam);
         LOG.info("START PROCESS_ESCALATION={}, with mParam={}", PROCESS_ESCALATION, mParam);
         String snID_ProcessEscalation = null;
         try {
@@ -158,10 +162,9 @@ public class BpServiceHandler {
         }
         return snID_ProcessEscalation;
     }
-
-    private String getCandidateGroups(final String sProcessName, final String snID_Task,
-            final Map<String, Object> mTaskVariable) {
-        Set<String> asCandidateCroupToCheck = new HashSet<>();
+    
+    private Set<String> getCurrentCadidateGroup(final String sProcessName){
+    Set<String> asCandidateCroupToCheck = new HashSet<>();
         BpmnModel oBpmnModel = repositoryService.getBpmnModel(sProcessName);
         for (FlowElement oFlowElement : oBpmnModel.getMainProcess().getFlowElements()) {
             if (oFlowElement instanceof UserTask) {
@@ -172,6 +175,12 @@ public class BpServiceHandler {
                 }
             }
         }
+        return asCandidateCroupToCheck;
+    }
+
+    private String getCandidateGroups(final String sProcessName, final String snID_Task,
+            final Map<String, Object> mTaskVariable) {
+        Set<String> asCandidateCroupToCheck = getCurrentCadidateGroup(sProcessName);
         String saCandidateCroupToCheck = asCandidateCroupToCheck.toString();
         if (saCandidateCroupToCheck.contains(BEGIN_GROUPS_PATTERN)) {
             Map<String, Object> mProcessVariable = null;
@@ -243,5 +252,12 @@ public class BpServiceHandler {
 
         }
         return jsonServiceMessage;
+    }
+    
+    public void setSubjectParams(String taskId, String sProcessName, Map<String, Object> mParam){
+        Set<String> currentCadidateGroup = getCurrentCadidateGroup(taskId);
+        Set<String> currentAssignLogins = null;
+        subjectCover.getSubjects(currentAssignLogins, currentCadidateGroup);  
+        //парсинг и помещение параметров в мапу
     }
 }
