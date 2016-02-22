@@ -777,7 +777,7 @@ public class SubjectController {
             if (saLogin != null) {
                 List<String> asLogin = JsonRestUtils.readObject(saLogin, List.class);
                 for (String login : asLogin) {
-                    Map<String, NamedEntity> logins = new HashMap();
+                    Map<String, NamedEntity> users = new HashMap();
                     List<SubjectAccount> subjectAccounts = subjectAccountDao.findSubjectAccounts(null, login, nID_Server, subjectAccountType);
                     if (subjectAccounts != null && !subjectAccounts.isEmpty()) {
                         nID_Subject = subjectAccounts.get(0).getnID_Subject();
@@ -785,8 +785,8 @@ public class SubjectController {
                         SubjectHuman subjectHuman = getSubjectHuman_(nID_Subject);
                         List<SubjectContact> subjectContact = subjectContactDao.findContacts(subject);
                         subjectHuman.setaContact(subjectContact);
-                        logins.put(login, subjectHuman);
-                        result.put("logins", logins);
+                        users.put(login, subjectHuman);
+                        result.put("users", users);
                     }
                 }
             }
@@ -803,7 +803,7 @@ public class SubjectController {
                         List<SubjectContact> subjectContact = subjectContactDao.findContacts(subject);
                         subjectOrgan.setaContact(subjectContact);
                         organs.put(group, subjectOrgan);
-                        result.put("groups", organs);
+                        result.put("organs", organs);
                     }
                 }
             }
