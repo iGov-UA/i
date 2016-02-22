@@ -30,11 +30,11 @@ public class MethodsCallRunnerUtil {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(MethodsCallRunnerUtil.class);
 	
-	public Object runMethod(String serviceName, String className, String methodName, Object[] parameters) throws CommonServiceException{
+	public Object runMethod(String className, String methodName, Object[] parameters) throws CommonServiceException{
 		try{			
 			Object ret = null;
 			Class<?> c = Class.forName(className);
-			Object o = springContext.getBean(serviceName);
+			Object o = springContext.getBean(c);
 			
 			Class<?>[] param_types = new Class<?>[parameters!=null?parameters.length:0];
 			if (parameters!=null && parameters.length>0)
