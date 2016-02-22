@@ -46,7 +46,7 @@ import org.igov.util.JSON.JsonRestUtils;
 import org.springframework.http.ResponseEntity;
 
 @Controller
-@Api(tags = {"SubjectController - субъекты  и смежные сущности"} )
+@Api(tags = {"SubjectController - субъекты  и смежные сущности"})
 @RequestMapping(value = "/subject")
 public class SubjectController {
 
@@ -65,7 +65,7 @@ public class SubjectController {
 
     @Autowired
     private SubjectOrganDao subjectOrganDao;
-   
+
     @Autowired
     private SubjectContactDao subjectContactDao;
 
@@ -80,9 +80,10 @@ public class SubjectController {
 
     @Autowired
     private SubjectAccountTypeDao subjectAccountTypeDao;
-    
+
     @Autowired
     private SubjectService subjectService;
+
     /**
      * получение субъекта, если таков найден, или добавление субъекта в
      * противном случае
@@ -201,16 +202,16 @@ public class SubjectController {
     SubjectHuman getSubjectHuman(@ApiParam(value = "номер-ИД субьекта", required = true) @RequestParam(value = "nID_Subject") Long nID_Subject) throws CommonServiceException {
         return getSubjectHuman_(nID_Subject);
     }
-    
-    private SubjectHuman getSubjectHuman_(Long nID_Subject)  throws CommonServiceException {
+
+    private SubjectHuman getSubjectHuman_(Long nID_Subject) throws CommonServiceException {
         Optional<SubjectHuman> subjectHuman = subjectHumanDao.findById(nID_Subject);
         if (subjectHuman.isPresent()) {
             return subjectHuman.get();
-        } else{
+        } else {
             throw new CommonServiceException(
-                ExceptionCommonController.BUSINESS_ERROR_CODE,
-                "Record not found",
-                HttpStatus.NOT_FOUND);
+                    ExceptionCommonController.BUSINESS_ERROR_CODE,
+                    "Record not found",
+                    HttpStatus.NOT_FOUND);
         }
     }
 
@@ -239,15 +240,16 @@ public class SubjectController {
     SubjectOrgan getSubjectOrgan(@ApiParam(value = "номер-ИД субьекта", required = true) @RequestParam(value = "nID_Subject") Long nID_Subject) throws CommonServiceException {
         return getSubjectOrgan_(nID_Subject);
     }
-    
-    private SubjectOrgan getSubjectOrgan_(Long nID_Subject)  throws CommonServiceException{
+
+    private SubjectOrgan getSubjectOrgan_(Long nID_Subject) throws CommonServiceException {
         Optional<SubjectOrgan> subjectOrgan = subjectOrganDao.findById(nID_Subject);
         if (subjectOrgan.isPresent()) {
             return subjectOrgan.get();
-        } else{throw new CommonServiceException(
-                ExceptionCommonController.BUSINESS_ERROR_CODE,
-                "Record not found",
-                HttpStatus.NOT_FOUND);
+        } else {
+            throw new CommonServiceException(
+                    ExceptionCommonController.BUSINESS_ERROR_CODE,
+                    "Record not found",
+                    HttpStatus.NOT_FOUND);
         }
     }
 
@@ -375,7 +377,6 @@ public class SubjectController {
 
         //LOG.info("(nID_SubjectOrganJoin={},smAttributeCustom(short)={})", nID, sCut(50, smAttributeCustom));
         //oLogBig_Controller.info("(nID_SubjectOrganJoin={},smAttributeCustom(short)={})", nID, smAttributeCustom);
-
         Map<String, String> mAttributeCustom = JsonRestUtils.readObject(smAttributeCustom, Map.class);
         //LOG.info("(mAttributeCustom(cuted)={}", sCut(50, mAttributeCustom.toString()));
         //oLogBig_Controller.info("(mAttributeCustom(cuted)={}", mAttributeCustom.toString());
@@ -400,7 +401,7 @@ public class SubjectController {
             //try{
             //}catch(){
             //}
-            if(oAttributeCustom.getValue() instanceof String){
+            if (oAttributeCustom.getValue() instanceof String) {
                 String sValue = oAttributeCustom.getValue().toString();
                 if (sValue == null || !sValue.startsWith("=")) {
                     //oSubjectOrganJoin.addAttribute(oAttributeCustom.getKey(), oAttributeCustom.getValue());
@@ -409,9 +410,9 @@ public class SubjectController {
                 }
             }
         }
-        
+
         for (Map.Entry<String, String> oAttributeCustom : mAttributeCustom.entrySet()) {
-            if(oAttributeCustom.getValue() instanceof String){
+            if (oAttributeCustom.getValue() instanceof String) {
                 String sValue = oAttributeCustom.getValue();
                 String sName = oAttributeCustom.getKey();
                 if (sValue != null && sValue.startsWith("=")) {
@@ -530,291 +531,285 @@ public class SubjectController {
 
         return JsonRestUtils.toJsonResponse(serverOpt.get());
     }
-    
+
     @RequestMapping(value = "/syncContacts", method = RequestMethod.GET)
     public @ResponseBody
-    ResponseEntity syncContacts (
-        @ApiParam(value="Строка адрес электронной почты", required = true) @RequestParam(value="sMailTo", required=true) String sMailTo,
-        @ApiParam(value="Строка ИД субьекта", required = true) @RequestParam(value="snID_Subject", required = true) String snID_Subject
-         
-    ) throws CommonServiceException
-    {
+    ResponseEntity syncContacts(
+            @ApiParam(value = "Строка адрес электронной почты", required = true) @RequestParam(value = "sMailTo", required = true) String sMailTo,
+            @ApiParam(value = "Строка ИД субьекта", required = true) @RequestParam(value = "snID_Subject", required = true) String snID_Subject
+    ) throws CommonServiceException {
         LOG.info("(Вход в contactsService sMailTo {}, snID_Subject {})", sMailTo, snID_Subject);
         SubjectContact oSubjectContact = subjectService.syncContactsService(snID_Subject, sMailTo);
-        
-       return JsonRestUtils.toJsonResponse(oSubjectContact);
-    }
 
+        return JsonRestUtils.toJsonResponse(oSubjectContact);
+    }
 
     @ApiOperation(value = "Получение аккаунтов субъектов", notes = "Возвращает список аккаунтов субъектов, согласно заданных параметров. "
-	    + "Обязательно должен быть задан один из параметров: **ID субъекта** или **Логин**. Если заданы оба, **Логин** игнорируется\n"
-	    + "Пример:\n"
-	    + "https://test.igov.org.ua/wf/service/subject/getSubjectAccounts?nID_Subject=1&nID_Server=1\n"
-	    + "Ответ:\n"
-	    + "\n```json\n" 
-	    + "[\n"
-	    + "  {\n"
-	    + "	   \"sLogin\": \"Логин01\",\n"
-	    + "	   \"sNote\": \"Примечание_1\",\n"
-	    + "	   \"subjectAccountType\":\n"
-	    + "	   {\n"
-	    + "	     \"sID\": \"iGov\",\n"
-	    + "	     \"sNote\": \"iGov\",\n"
-	    + "	     \"nID\": 1\n"
-	    + "	   },\n"
-	    + "	   \"nID_Server\": 1,\n"
-	    + "	   \"nID_Subject\": 1,\n"
-	    + "	   \"nID\": 1\n"
-	    + "	 },\n"
-	    + "	 {\n"
-	    + "	   \"sLogin\": \"Логин01\",\n"
-	    + "	   \"sNote\": \"Примечание_2\",\n"
-	    + "	   \"subjectAccountType\":\n"
-	    + "	     {\n"
-	    + "	       \"sID\": \"PD\",\n"
-	    + "	       \"sNote\": \"PD\",\n"
-	    + "	       \"nID\": 2\n"
-	    + "	       },\n"
-	    + "    \"nID_Server\": 1,\n"
-	    + "	   \"nID_Subject\": 1,\n"
-	    + "	   \"nID\": 2\n"
-	    + "  }\n"
-	    + "]\n"       
-	    + "\n```\n"
-	    + "Пример с ошибкой: не указаны обязательные параметры:\n"
-	    + "https://test.igov.org.ua/wf/service/subject/getSubjectAccounts\n"
-	    + "Ответ:\n"
-	    + "\n```json\n" 
-	    + "{\"code\":\"BUSINESS_ERR\",\"message\":\"Error! Parameters nID_Subject and  sLogin is null\"}\n" 
-	    + "\n```\n"
-	    + "Пример, если записи не найдены:\n"
-	    + "https://test.igov.org.ua/wf/service/subject/getSubjectAccounts?nID_Subject=1&nID_Server=100\n"
-	    + "Ответ:\n"
-	    + "\n```json\n" 
-	    + "{\n"  
-	    + "  \"code\":\"BUSINESS_ERR\",\n"
-	    + "	 \"message\":\"Record not found\"\n"
-	    + "}\n"
-	    +"\n```\n"
-	    )
-    @RequestMapping(value = "/getSubjectAccounts", method = RequestMethod.GET, headers = {JSON_TYPE} )
+            + "Обязательно должен быть задан один из параметров: **ID субъекта** или **Логин**. Если заданы оба, **Логин** игнорируется\n"
+            + "Пример:\n"
+            + "https://test.igov.org.ua/wf/service/subject/getSubjectAccounts?nID_Subject=1&nID_Server=1\n"
+            + "Ответ:\n"
+            + "\n```json\n"
+            + "[\n"
+            + "  {\n"
+            + "	   \"sLogin\": \"Логин01\",\n"
+            + "	   \"sNote\": \"Примечание_1\",\n"
+            + "	   \"subjectAccountType\":\n"
+            + "	   {\n"
+            + "	     \"sID\": \"iGov\",\n"
+            + "	     \"sNote\": \"iGov\",\n"
+            + "	     \"nID\": 1\n"
+            + "	   },\n"
+            + "	   \"nID_Server\": 1,\n"
+            + "	   \"nID_Subject\": 1,\n"
+            + "	   \"nID\": 1\n"
+            + "	 },\n"
+            + "	 {\n"
+            + "	   \"sLogin\": \"Логин01\",\n"
+            + "	   \"sNote\": \"Примечание_2\",\n"
+            + "	   \"subjectAccountType\":\n"
+            + "	     {\n"
+            + "	       \"sID\": \"PD\",\n"
+            + "	       \"sNote\": \"PD\",\n"
+            + "	       \"nID\": 2\n"
+            + "	       },\n"
+            + "    \"nID_Server\": 1,\n"
+            + "	   \"nID_Subject\": 1,\n"
+            + "	   \"nID\": 2\n"
+            + "  }\n"
+            + "]\n"
+            + "\n```\n"
+            + "Пример с ошибкой: не указаны обязательные параметры:\n"
+            + "https://test.igov.org.ua/wf/service/subject/getSubjectAccounts\n"
+            + "Ответ:\n"
+            + "\n```json\n"
+            + "{\"code\":\"BUSINESS_ERR\",\"message\":\"Error! Parameters nID_Subject and  sLogin is null\"}\n"
+            + "\n```\n"
+            + "Пример, если записи не найдены:\n"
+            + "https://test.igov.org.ua/wf/service/subject/getSubjectAccounts?nID_Subject=1&nID_Server=100\n"
+            + "Ответ:\n"
+            + "\n```json\n"
+            + "{\n"
+            + "  \"code\":\"BUSINESS_ERR\",\n"
+            + "	 \"message\":\"Record not found\"\n"
+            + "}\n"
+            + "\n```\n"
+    )
+    @RequestMapping(value = "/getSubjectAccounts", method = RequestMethod.GET, headers = {JSON_TYPE})
     @ApiResponses(value = {
-	        @ApiResponse(code = 400, message = "Ошибка в параметрах"),
-	        @ApiResponse(code = 404, message = "Record not found")
-	        })
+        @ApiResponse(code = 400, message = "Ошибка в параметрах"),
+        @ApiResponse(code = 404, message = "Record not found")
+    })
     public @ResponseBody
     List<SubjectAccount> getSubjectAccounts(
-	    @ApiParam(value = "ID субъекта ( необходим, если не указан Логин )", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject,
-	    @ApiParam(value = "Логин ( необходим, если, не указан ID субъекта )", required = false) @RequestParam(value = "sLogin", required = false) String sLogin,
-	    @ApiParam(value = "ID сервера", required = false) @RequestParam(value = "nID_Server", required = false) Long nID_Server,
-	    @ApiParam(value = "ID типа аккаунта", required = false) @RequestParam(value = "nID_SubjectAccountType", required = false) Long nID_SubjectAccountType
-	    ) throws CommonServiceException {
+            @ApiParam(value = "ID субъекта ( необходим, если не указан Логин )", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject,
+            @ApiParam(value = "Логин ( необходим, если, не указан ID субъекта )", required = false) @RequestParam(value = "sLogin", required = false) String sLogin,
+            @ApiParam(value = "ID сервера", required = false) @RequestParam(value = "nID_Server", required = false) Long nID_Server,
+            @ApiParam(value = "ID типа аккаунта", required = false) @RequestParam(value = "nID_SubjectAccountType", required = false) Long nID_SubjectAccountType
+    ) throws CommonServiceException {
 
-	List<SubjectAccount> subjectAccounts = null;
-	
-	// Один из параметров должен быть задан обязательно
-	if (nID_Subject == null && sLogin == null) {
-	    throw new CommonServiceException(
-	                ExceptionCommonController.BUSINESS_ERROR_CODE,
-	                "Error! Parameters nID_Subject and  sLogin is null",
-	                HttpStatus.BAD_REQUEST);	    
-	}
-	
-	// Если задан nID_SubjectAccountType то сначала находим сущность SubjectAccountType
-	SubjectAccountType subjectAccountType = null;
-	if (nID_SubjectAccountType != null ) {
-	    subjectAccountType = subjectAccountTypeDao.findByIdExpected(nID_SubjectAccountType);
-	    if ( subjectAccountType == null ) {
-		throw new CommonServiceException(
-	           ExceptionCommonController.BUSINESS_ERROR_CODE,
-	           "Error! Не найдена тип аккаунта для id=" + nID_SubjectAccountType, HttpStatus.NOT_FOUND);	    
-	    }
-	}
-	
-	subjectAccounts = subjectAccountDao.findSubjectAccounts(nID_Subject, sLogin, nID_Server, subjectAccountType);
-	if (subjectAccounts == null ||  subjectAccounts.size() == 0 ) {
-	       throw new CommonServiceException(
-	                ExceptionCommonController.BUSINESS_ERROR_CODE,
-	                "Record not found",
-	                HttpStatus.NOT_FOUND);
-	}
-	
-	return subjectAccounts;
+        List<SubjectAccount> subjectAccounts = null;
+
+        // Один из параметров должен быть задан обязательно
+        if (nID_Subject == null && sLogin == null) {
+            throw new CommonServiceException(
+                    ExceptionCommonController.BUSINESS_ERROR_CODE,
+                    "Error! Parameters nID_Subject and  sLogin is null",
+                    HttpStatus.BAD_REQUEST);
+        }
+
+        // Если задан nID_SubjectAccountType то сначала находим сущность SubjectAccountType
+        SubjectAccountType subjectAccountType = null;
+        if (nID_SubjectAccountType != null) {
+            subjectAccountType = subjectAccountTypeDao.findByIdExpected(nID_SubjectAccountType);
+            if (subjectAccountType == null) {
+                throw new CommonServiceException(
+                        ExceptionCommonController.BUSINESS_ERROR_CODE,
+                        "Error! Не найдена тип аккаунта для id=" + nID_SubjectAccountType, HttpStatus.NOT_FOUND);
+            }
+        }
+
+        subjectAccounts = subjectAccountDao.findSubjectAccounts(nID_Subject, sLogin, nID_Server, subjectAccountType);
+        if (subjectAccounts == null || subjectAccounts.size() == 0) {
+            throw new CommonServiceException(
+                    ExceptionCommonController.BUSINESS_ERROR_CODE,
+                    "Record not found",
+                    HttpStatus.NOT_FOUND);
+        }
+
+        return subjectAccounts;
     }
-    
+
     @ApiOperation(value = "Добавление/обновление аккаунта субъекта", notes = "Добавляет или обновляет аккаунт субъекта в зависимости от того задан или нет параметр **nID**. "
-	    + "В случае успешного выполнения возвращается измененная или добавленная сущность.\n"
-	    + "Пример добавления записи:\n"
-	    + "**(Важно: обязательно измените любой параметр (не sNote), иначе получите ошибку ограничения уникальности записи)**\n\n"
-	    + "https://test.igov.org.ua/wf/service/subject/setSubjectAccount?nID_Subject=1&sLogin=mylog&nID_Server=55&nID_SubjectAccountType=2&sNote=Заметка_про_что-то\n\n"
-	    + "Ответ:\n"
-	    + "\n```json\n" 
-	    + "{\n"
-	    + "  \"sLogin\": \"mylog\",\n"
-	    + "  \"sNote\": \"Заметка про что-то\",\n"
-	    + "  \"subjectAccountType\": {\n"
-	    + "    \"sID\": \"PD\",\n"
-	    + "    \"sNote\": \"PD\",\n"
-	    + "    \"nID\": 2\n"
-	    + "  },\n"
-	    + "  \"nID_Server\": 5,\n"
-	    + "  \"nID_Subject\": 1,\n"
-	    + "  \"nID\": 103\n"
-	    + "}\n"
-	    + "\n```\n" 
-	    + "Пример обновления записи:\n\n"
-	    + "https://test.igov.org.ua/wf/service/subject/setSubjectAccount?nID=1&sNote=Заметка_обновленная\n\n"
-	    + "Ответ:\n"
-	    + "\n```json\n" 
-	    + "{\n"
-	    + "  \"sLogin\": \"Логин01\",\n"
-	    + "  \"sNote\": \"Заметка обновленная\",\n"
-	    + "  \"subjectAccountType\": {\n"
-	    + "    \"sID\": \"iGov\",\n"
-	    + "    \"sNote\": \"iGov\",\n"
-	    + "    \"nID\": 1\n"
-	    + "  },\n"
-	    + "  \"nID_Server\": 1,\n"
-	    + "  \"nID_Subject\": 1,\n"
-	    + "  \"nID\": 1\n"
-	    + "}\n"
-	    + "\n```\n" 
-	    + "Пример ошибочного добавления записи ( не заданы обязательные поля ):\n\n"
-	    + "https://test.igov.org.ua/wf/service/subject/setSubjectAccount\n\n"
-	    + "Ответ:\n"
-	    + "\n```json\n" 
-	    + "{\n"
-	    + "  \"code\": \"BUSINESS_ERR\",\n"
-	    + "  \"message\": \"Ошибка! При добавлении обязательны параметры: nID_Subject, sLogin, nID_Server, nID_SubjectAccountType\"\n"
-	    + "}\n"
-	    + "\n```\n"
-	    + "Пример ошибочного добавления записи ( нарушение уникальности аккаунта ):\n\n"
-	    + "https://test.igov.org.ua/wf/service/subject/setSubjectAccount?nID_Subject=1&sLogin=Логин01&nID_Server=1&nID_SubjectAccountType=1\n\n"
-	    + "Ответ:\n"
-	    + "\n```json\n" 
-	    + "{\n"
-	    + "  \"code\": \"SYSTEM_ERR\",\n"
-	    + "  \"message\": \"could not execute statement; SQL [n/a]; constraint [SubjectAccount_sLogin_nID_SubjectAccountType_nID_Server_nID_key]; nested exception is org.hibernate.exception.ConstraintViolationException: could not execute statement\"\n"
-	    + "}\n"
-	    + "\n```\n"
-	    + "Пример ошибочного обновление записи ( не существующий аккаунт ):\n\n"
-	    + "https://test.igov.org.ua/wf/service/subject/setSubjectAccount?nID=777\n\n"
-	    + "Ответ:\n"
-	    + "\n```json\n" 
-	    + "{\n"
-  	    + "  \"code\": \"BUSINESS_ERR\",\n"
-  	    + "  \"message\": \"Entity with id=777 does not exist\"\n"
-	    + "}\n"
-	    + "\n```\n")
-    @RequestMapping(value = "/setSubjectAccount", method = RequestMethod.GET, headers = {JSON_TYPE} )
+            + "В случае успешного выполнения возвращается измененная или добавленная сущность.\n"
+            + "Пример добавления записи:\n"
+            + "**(Важно: обязательно измените любой параметр (не sNote), иначе получите ошибку ограничения уникальности записи)**\n\n"
+            + "https://test.igov.org.ua/wf/service/subject/setSubjectAccount?nID_Subject=1&sLogin=mylog&nID_Server=55&nID_SubjectAccountType=2&sNote=Заметка_про_что-то\n\n"
+            + "Ответ:\n"
+            + "\n```json\n"
+            + "{\n"
+            + "  \"sLogin\": \"mylog\",\n"
+            + "  \"sNote\": \"Заметка про что-то\",\n"
+            + "  \"subjectAccountType\": {\n"
+            + "    \"sID\": \"PD\",\n"
+            + "    \"sNote\": \"PD\",\n"
+            + "    \"nID\": 2\n"
+            + "  },\n"
+            + "  \"nID_Server\": 5,\n"
+            + "  \"nID_Subject\": 1,\n"
+            + "  \"nID\": 103\n"
+            + "}\n"
+            + "\n```\n"
+            + "Пример обновления записи:\n\n"
+            + "https://test.igov.org.ua/wf/service/subject/setSubjectAccount?nID=1&sNote=Заметка_обновленная\n\n"
+            + "Ответ:\n"
+            + "\n```json\n"
+            + "{\n"
+            + "  \"sLogin\": \"Логин01\",\n"
+            + "  \"sNote\": \"Заметка обновленная\",\n"
+            + "  \"subjectAccountType\": {\n"
+            + "    \"sID\": \"iGov\",\n"
+            + "    \"sNote\": \"iGov\",\n"
+            + "    \"nID\": 1\n"
+            + "  },\n"
+            + "  \"nID_Server\": 1,\n"
+            + "  \"nID_Subject\": 1,\n"
+            + "  \"nID\": 1\n"
+            + "}\n"
+            + "\n```\n"
+            + "Пример ошибочного добавления записи ( не заданы обязательные поля ):\n\n"
+            + "https://test.igov.org.ua/wf/service/subject/setSubjectAccount\n\n"
+            + "Ответ:\n"
+            + "\n```json\n"
+            + "{\n"
+            + "  \"code\": \"BUSINESS_ERR\",\n"
+            + "  \"message\": \"Ошибка! При добавлении обязательны параметры: nID_Subject, sLogin, nID_Server, nID_SubjectAccountType\"\n"
+            + "}\n"
+            + "\n```\n"
+            + "Пример ошибочного добавления записи ( нарушение уникальности аккаунта ):\n\n"
+            + "https://test.igov.org.ua/wf/service/subject/setSubjectAccount?nID_Subject=1&sLogin=Логин01&nID_Server=1&nID_SubjectAccountType=1\n\n"
+            + "Ответ:\n"
+            + "\n```json\n"
+            + "{\n"
+            + "  \"code\": \"SYSTEM_ERR\",\n"
+            + "  \"message\": \"could not execute statement; SQL [n/a]; constraint [SubjectAccount_sLogin_nID_SubjectAccountType_nID_Server_nID_key]; nested exception is org.hibernate.exception.ConstraintViolationException: could not execute statement\"\n"
+            + "}\n"
+            + "\n```\n"
+            + "Пример ошибочного обновление записи ( не существующий аккаунт ):\n\n"
+            + "https://test.igov.org.ua/wf/service/subject/setSubjectAccount?nID=777\n\n"
+            + "Ответ:\n"
+            + "\n```json\n"
+            + "{\n"
+            + "  \"code\": \"BUSINESS_ERR\",\n"
+            + "  \"message\": \"Entity with id=777 does not exist\"\n"
+            + "}\n"
+            + "\n```\n")
+    @RequestMapping(value = "/setSubjectAccount", method = RequestMethod.GET, headers = {JSON_TYPE})
     public @ResponseBody
     SubjectAccount setSubjectAccount(
-	    @ApiParam(value = "ID аккаунта ( если не задан, то запись добавляется )", required = false) @RequestParam(value = "nID", required = false) Long nID,	    
-	    @ApiParam(value = "ID субъекта ( необходим, при добавлении )", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject,
-	    @ApiParam(value = "Логин ( необходим, при добавлении )", required = false) @RequestParam(value = "sLogin", required = false) String sLogin,
-	    @ApiParam(value = "ID сервера ( необходим, при добавлении )", required = false) @RequestParam(value = "nID_Server", required = false) Long nID_Server,
-	    @ApiParam(value = "ID типа аккаунта ( необходим, при добавлении )", required = false) @RequestParam(value = "nID_SubjectAccountType", required = false) Long nID_SubjectAccountType,
-	    @ApiParam(value = "Строка нотации", required = false) @RequestParam(value = "sNote", required = false) String sNote
-	    ) throws CommonServiceException {
+            @ApiParam(value = "ID аккаунта ( если не задан, то запись добавляется )", required = false) @RequestParam(value = "nID", required = false) Long nID,
+            @ApiParam(value = "ID субъекта ( необходим, при добавлении )", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject,
+            @ApiParam(value = "Логин ( необходим, при добавлении )", required = false) @RequestParam(value = "sLogin", required = false) String sLogin,
+            @ApiParam(value = "ID сервера ( необходим, при добавлении )", required = false) @RequestParam(value = "nID_Server", required = false) Long nID_Server,
+            @ApiParam(value = "ID типа аккаунта ( необходим, при добавлении )", required = false) @RequestParam(value = "nID_SubjectAccountType", required = false) Long nID_SubjectAccountType,
+            @ApiParam(value = "Строка нотации", required = false) @RequestParam(value = "sNote", required = false) String sNote
+    ) throws CommonServiceException {
 
-	// Если запись добавляется, то должны быть указаны все обязательные параметры
-	if ( nID == null && ( nID_Subject == null || sLogin == null || nID_Server == null || nID_SubjectAccountType == null ) ) {
-	    throw new CommonServiceException(
-                ExceptionCommonController.BUSINESS_ERROR_CODE,
-                "Ошибка! При добавлении обязательны параметры: nID_Subject, sLogin, nID_Server, nID_SubjectAccountType",
-                HttpStatus.BAD_REQUEST);	    
-	}
-	
-	// Если задан nID_SubjectAccountType то сначала находим сущность SubjectAccountType
-	SubjectAccountType subjectAccountType = null;
-	if (nID_SubjectAccountType != null ) {
-	    subjectAccountType = subjectAccountTypeDao.findByIdExpected(nID_SubjectAccountType);
-	    if ( subjectAccountType == null ) {
-		throw new CommonServiceException(
-	           ExceptionCommonController.BUSINESS_ERROR_CODE,
-	           "Error! Не найдена тип аккаунта для id=" + nID_SubjectAccountType, HttpStatus.NOT_FOUND);	    
-	    }
-	}
-	
-	SubjectAccount subjectAccountRet = null; 
-	try {
-	    subjectAccountRet = subjectAccountDao.setSubjectAccount(nID, nID_Subject, sLogin, nID_Server, subjectAccountType, sNote); 	    
-	} catch (org.hibernate.exception.ConstraintViolationException e) {
-	    throw new CommonServiceException(
-		    ExceptionCommonController.BUSINESS_ERROR_CODE,
-		    e.getMessage()+". Нарушение уникальности аккаунта", HttpStatus.BAD_REQUEST);
-	}
-	
-	return subjectAccountRet;
+        // Если запись добавляется, то должны быть указаны все обязательные параметры
+        if (nID == null && (nID_Subject == null || sLogin == null || nID_Server == null || nID_SubjectAccountType == null)) {
+            throw new CommonServiceException(
+                    ExceptionCommonController.BUSINESS_ERROR_CODE,
+                    "Ошибка! При добавлении обязательны параметры: nID_Subject, sLogin, nID_Server, nID_SubjectAccountType",
+                    HttpStatus.BAD_REQUEST);
+        }
+
+        // Если задан nID_SubjectAccountType то сначала находим сущность SubjectAccountType
+        SubjectAccountType subjectAccountType = null;
+        if (nID_SubjectAccountType != null) {
+            subjectAccountType = subjectAccountTypeDao.findByIdExpected(nID_SubjectAccountType);
+            if (subjectAccountType == null) {
+                throw new CommonServiceException(
+                        ExceptionCommonController.BUSINESS_ERROR_CODE,
+                        "Error! Не найдена тип аккаунта для id=" + nID_SubjectAccountType, HttpStatus.NOT_FOUND);
+            }
+        }
+
+        SubjectAccount subjectAccountRet = null;
+        try {
+            subjectAccountRet = subjectAccountDao.setSubjectAccount(nID, nID_Subject, sLogin, nID_Server, subjectAccountType, sNote);
+        } catch (org.hibernate.exception.ConstraintViolationException e) {
+            throw new CommonServiceException(
+                    ExceptionCommonController.BUSINESS_ERROR_CODE,
+                    e.getMessage() + ". Нарушение уникальности аккаунта", HttpStatus.BAD_REQUEST);
+        }
+
+        return subjectAccountRet;
     }
-    
+
     @ApiOperation(value = "Получение полного набора данных по субъектам", notes = "Получаем полный набор данных по субъектам. "
-	    + "Пример:\n"
-	    + "https://test.igov.org.ua/wf/service/subject/getSubjects\n\n"
-	    + "Ответ:\n"
-	    + "\n```\n")
-    @RequestMapping(value = "/getSubjects", method = RequestMethod.GET, headers = {JSON_TYPE} )
+            + "Пример:\n"
+            + "https://test.igov.org.ua/wf/service/subject/getSubjects\n\n"
+            + "Ответ:\n"
+            + "\n```\n")
+    @RequestMapping(value = "/getSubjects", method = RequestMethod.GET, headers = {JSON_TYPE})
     public @ResponseBody
-    Map getSubjects(
-	    @ApiParam(value = "Массив с логинами чиновников в виде json", required = false) @RequestParam(value = "saLogin", required = false) String saLogin,	    
-	    @ApiParam(value = "Массив с логинами групп в виде json", required = false) @RequestParam(value = "saGroup", required = false) String saGroup,
-	    @ApiParam(value = "Ид сервера", required = true) @RequestParam(value = "nID_Server", required = true) Long nID_Server) throws CommonServiceException {
+    Map<String, Map<String, NamedEntity>> getSubjects(
+            @ApiParam(value = "Массив с логинами чиновников в виде json", required = false) @RequestParam(value = "saLogin", required = false) String saLogin,
+            @ApiParam(value = "Массив с логинами групп в виде json", required = false) @RequestParam(value = "saGroup", required = false) String saGroup,
+            @ApiParam(value = "Ид сервера", required = true) @RequestParam(value = "nID_Server", required = true) Long nID_Server) throws CommonServiceException {
 
         Map<String, Map<String, NamedEntity>> result = new HashMap();
-	// Если не задали ни один параметр в запросе - ошибка
-	if ( saLogin == null && saGroup == null) {
-	    throw new CommonServiceException(
-                ExceptionCommonController.BUSINESS_ERROR_CODE,
-                "Ошибка! Укажите хотя бы один из параметров: saLogin, saGroup",
-                HttpStatus.BAD_REQUEST);	    
-	} else{
+        // Если не задали ни один параметр в запросе - ошибка
+        if (saLogin == null && saGroup == null) {
+            throw new CommonServiceException(
+                    ExceptionCommonController.BUSINESS_ERROR_CODE,
+                    "Ошибка! Укажите хотя бы один из параметров: saLogin, saGroup",
+                    HttpStatus.BAD_REQUEST);
+        } else {
             // находим сущность SubjectAccountType
-            SubjectAccountType subjectAccountType = subjectAccountTypeDao.findByIdExpected(new Long(1));
-            if ( subjectAccountType == null ) {
+            SubjectAccountType subjectAccountType = subjectAccountTypeDao.findByIdExpected(Long.valueOf(1));
+            if (subjectAccountType == null) {
                 throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
-                     "Error! SubjectAccountType not founf for id=" + 1, HttpStatus.NOT_FOUND);	    
-            }
-            Long nID_Subject;
-            if(saLogin != null){
-                List<String> asLogin = JsonRestUtils.readObject(saLogin, List.class); 
-                for(String login : asLogin){
-                    Map<String, NamedEntity> organs = new HashMap();
-                    List<SubjectAccount> subjectAccounts = subjectAccountDao.findSubjectAccounts(null, login, nID_Server, subjectAccountType);
-                    if (subjectAccounts == null ||  subjectAccounts.isEmpty()) {
-                        throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
-	                "SubjectAccounts not found for login=" + login, HttpStatus.NOT_FOUND);
-                    }
-                    nID_Subject = subjectAccounts.get(0).getnID_Subject();
-                    Subject subject = subjectDao.getSubject(nID_Subject);
-                    SubjectHuman subjectHuman = getSubjectHuman_(nID_Subject);
-                    List<SubjectContact> subjectContact = subjectContactDao.findContacts(subject);
-                    subjectHuman.setaContact(subjectContact);
-                    organs.put(login, subjectHuman);
-                    result.put("logins", organs);
-                }
+                        "Error! SubjectAccountType not founf for id=" + 1, HttpStatus.NOT_FOUND);
             }
             
-            if(saGroup != null){
+            Long nID_Subject;
+            if (saLogin != null) {
+                List<String> asLogin = JsonRestUtils.readObject(saLogin, List.class);
+                for (String login : asLogin) {
+                    Map<String, NamedEntity> logins = new HashMap();
+                    List<SubjectAccount> subjectAccounts = subjectAccountDao.findSubjectAccounts(null, login, nID_Server, subjectAccountType);
+                    if (subjectAccounts != null && !subjectAccounts.isEmpty()) {
+                        nID_Subject = subjectAccounts.get(0).getnID_Subject();
+                        Subject subject = subjectDao.getSubject(nID_Subject);
+                        SubjectHuman subjectHuman = getSubjectHuman_(nID_Subject);
+                        List<SubjectContact> subjectContact = subjectContactDao.findContacts(subject);
+                        subjectHuman.setaContact(subjectContact);
+                        logins.put(login, subjectHuman);
+                        result.put("logins", logins);
+                    }
+                }
+            }
+
+            if (saGroup != null) {
                 List<String> asGroup = JsonRestUtils.readObject(saGroup, List.class);
-                for(String group : asGroup){
+                for (String group : asGroup) {
                     Map<String, NamedEntity> organs = new HashMap();
                     List<SubjectAccount> subjectAccounts = subjectAccountDao.findSubjectAccounts(null, group, nID_Server, subjectAccountType);
-                    if (subjectAccounts == null ||  subjectAccounts.isEmpty()) {
-                        throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
-	                "SubjectAccounts not found for login=" + group, HttpStatus.NOT_FOUND);
+                    if (subjectAccounts != null && !subjectAccounts.isEmpty()) {
+                        nID_Subject = subjectAccounts.get(0).getnID_Subject();
+                        Subject subject = subjectDao.getSubject(nID_Subject);
+                        SubjectOrgan subjectOrgan = getSubjectOrgan_(nID_Subject);
+                        List<SubjectContact> subjectContact = subjectContactDao.findContacts(subject);
+                        subjectOrgan.setaContact(subjectContact);
+                        organs.put(group, subjectOrgan);
+                        result.put("groups", organs);
                     }
-                    nID_Subject = subjectAccounts.get(0).getnID_Subject();
-                    Subject subject = subjectDao.getSubject(nID_Subject);
-                    SubjectOrgan subjectOrgan = getSubjectOrgan_(nID_Subject);
-                    List<SubjectContact> subjectContact = subjectContactDao.findContacts(subject);
-                    subjectOrgan.setaContact(subjectContact);
-                    organs.put(group, subjectOrgan);
-                    result.put("groups", organs);
                 }
             }
-            
+
         }
-        return null;
+        return result;
     }
-    
+
 }
