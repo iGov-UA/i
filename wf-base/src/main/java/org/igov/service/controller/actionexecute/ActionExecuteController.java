@@ -2,11 +2,8 @@ package org.igov.service.controller.actionexecute;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 
 import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.igov.model.action.execute.item.ActionExecute;
 import org.igov.model.action.execute.item.ActionExecuteDAO;
@@ -62,17 +59,17 @@ public class ActionExecuteController {
     @RequestMapping(value = "/getActionExecute", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE, headers = {"Accept=application/json"})
     public
     @ResponseBody
-    ActionExecute getActionExecute(@RequestParam(value = "nID") Long id) throws CommonServiceException {
-        ActionExecute actionExecute = actionExecuteDAO.getActionExecute(id);
-        return actionExecute;
+    ResponseEntity getActionExecute(@RequestParam(value = "nID") Long id) throws CommonServiceException {
+        ActionExecute actionExecute = actionExecuteDAO.findAll().get(0);
+        return JsonRestUtils.toJsonResponse(actionExecute);
     }
     
     @ApiOperation(value = "Получение акции ", notes = "")
     @RequestMapping(value = "/getActionExecutes", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE, headers = {"Accept=application/json"})
     public
     @ResponseBody
-    List<ActionExecute> getActionExecutes() throws CommonServiceException {
+    ResponseEntity getActionExecutes() throws CommonServiceException {
         List<ActionExecute> actionExecutes = actionExecuteDAO.findAll();
-        return actionExecutes;
+        return JsonRestUtils.toJsonResponse(actionExecutes);
     }
 }

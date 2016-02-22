@@ -7,8 +7,7 @@ import org.joda.time.DateTime;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class ActionExecuteDAOImpl extends GenericEntityDao<ActionExecute>
-		implements ActionExecuteDAO {
+public class ActionExecuteDAOImpl extends GenericEntityDao<ActionExecute> implements ActionExecuteDAO {
 
 	protected ActionExecuteDAOImpl() {
 		super(ActionExecute.class);
