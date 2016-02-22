@@ -19,6 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import org.activiti.engine.TaskService;
+import org.activiti.engine.task.Task;
 import org.igov.service.exchange.SubjectCover;
 import org.igov.model.action.event.HistoryEvent_Service_StatusType;
 import org.igov.model.core.NamedEntity;
@@ -51,6 +53,8 @@ public class BpServiceHandler {
     private RepositoryService repositoryService;
     @Autowired
     private HistoryEventService historyEventService;
+    @Autowired
+    private TaskService taskService;
     @Autowired
     SubjectCover subjectCover;
 
@@ -257,8 +261,12 @@ public class BpServiceHandler {
 
     public void setSubjectParams(String taskId, String sProcessName, Map<String, Object> mParam) {
         try {
+            
+            Set<String> currentAssignLogins = new HashSet<>();
+            Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+            currentAssignLogins.add(task.getAssignee());
             Set<String> currentCadidateGroup = getCurrentCadidateGroup(taskId);
-            Set<String> currentAssignLogins = null;
+            
             Map<String, Map<String, Map>> result = subjectCover.getSubjects(currentAssignLogins, currentCadidateGroup);
             if (result != null && !result.isEmpty()) {
                 mParam.put("userLabels", getSubjectLabel(result.get("users")));
