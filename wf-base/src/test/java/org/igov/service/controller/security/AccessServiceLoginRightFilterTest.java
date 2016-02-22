@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.hamcrest.Matchers.not;
+import org.junit.Ignore;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -68,6 +69,7 @@ public class AccessServiceLoginRightFilterTest {
         verifySuccessLogin();
     }
 
+    @Ignore
     @Test
     public void testAccessServiceLoginRightFilter_wrongUser() throws Exception {
 

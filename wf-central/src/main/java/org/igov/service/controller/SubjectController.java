@@ -80,6 +80,9 @@ public class SubjectController {
 
     @Autowired
     private SubjectAccountTypeDao subjectAccountTypeDao;
+    
+    @Autowired
+    private SubjectService subjectService;
     /**
      * получение субъекта, если таков найден, или добавление субъекта в
      * противном случае
@@ -528,17 +531,16 @@ public class SubjectController {
         return JsonRestUtils.toJsonResponse(serverOpt.get());
     }
     
-    @RequestMapping(value = "/contactsService", method = RequestMethod.GET)
+    @RequestMapping(value = "/syncContacts", method = RequestMethod.GET)
     public @ResponseBody
-    ResponseEntity contactsService (
+    ResponseEntity syncContacts (
         @ApiParam(value="Строка адрес электронной почты", required = true) @RequestParam(value="sMailTo", required=true) String sMailTo,
         @ApiParam(value="Строка ИД субьекта", required = true) @RequestParam(value="snID_Subject", required = true) String snID_Subject
          
     ) throws CommonServiceException
     {
         LOG.info("(Вход в contactsService sMailTo {}, snID_Subject {})", sMailTo, snID_Subject);
-        SubjectService oSubjectService = new SubjectService();
-        SubjectContact oSubjectContact = oSubjectService.syncContactsService(snID_Subject, sMailTo);
+        SubjectContact oSubjectContact = subjectService.syncContactsService(snID_Subject, sMailTo);
         
        return JsonRestUtils.toJsonResponse(oSubjectContact);
     }

@@ -12,30 +12,38 @@ import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Component;
 
+@Component
 public class MethodsCallRunnerUtil {
 
 	@Autowired
-	static ActionExecuteDAO actionExecuteDAO;
+	private ActionExecuteDAO actionExecuteDAO;
 
 	@Autowired
-	static ActionExecuteStatusDAO actionExecuteStatusDAO;
+	private ActionExecuteStatusDAO actionExecuteStatusDAO;
 	
+	@Autowired
+	private ApplicationContext springContext;
 	
 	private static final Logger LOG = LoggerFactory.getLogger(MethodsCallRunnerUtil.class);
 	
-	public static Object runMethod(String className, String methodName, Object[] parameters) throws CommonServiceException{
-		try{
+	public Object runMethod(String className, String methodName, Object[] parameters) throws CommonServiceException{
+		try{			
 			Object ret = null;
 			Class<?> c = Class.forName(className);
-			Class<?>[] param_types = new Class<?>[parameters.length];
-			for (int i=0; i< parameters.length; i++)
-				param_types[i] = parameters[i].getClass();
+			Object o = springContext.getBean(c);
+			
+			Class<?>[] param_types = new Class<?>[parameters!=null?parameters.length:0];
+			if (parameters!=null && parameters.length>0)
+				for (int i=0; i< parameters.length; i++)
+					param_types[i] = parameters[i].getClass();
 			
 			Method  method = c.getMethod(methodName, param_types);
 			
 			ActionExecute actionExecute = new ActionExecute();
-			ActionExecuteStatus actionExecuteStatus = actionExecuteStatusDAO.findByIdExpected(1L);								
+			ActionExecuteStatus actionExecuteStatus = actionExecuteStatusDAO.findByIdExpected(1l);								
 			actionExecute.setActionExecuteStatus(actionExecuteStatus);
 			actionExecute.setnTry(0);
 			actionExecute.setoDateEdit(null);
@@ -45,11 +53,11 @@ public class MethodsCallRunnerUtil {
 			actionExecute.setSmParam(null);
 			actionExecute.setsReturn(null);
 			
-			actionExecuteDAO.saveOrUpdate(actionExecute);
+			actionExecuteDAO.saveOrUpdate(actionExecute);			
 			if (parameters!= null)
-				ret = method.invoke(c, parameters);
+				ret = method.invoke(o, parameters);
 			else 
-				ret = method.invoke(c);
+				ret = method.invoke(o);
 			return ret;
 		}catch(Exception e){
 			LOG.error("FAIL: {}", e.getMessage());
