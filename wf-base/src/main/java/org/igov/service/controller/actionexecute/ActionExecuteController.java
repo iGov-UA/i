@@ -8,6 +8,8 @@ import java.util.List;
 
 import org.igov.model.action.execute.item.ActionExecute;
 import org.igov.model.action.execute.item.ActionExecuteDAO;
+import org.igov.model.action.execute.item.ActionExecuteOld;
+import org.igov.model.action.execute.item.ActionExecuteOldDAO;
 import org.igov.model.action.execute.item.ActionExecuteStatus;
 import org.igov.model.action.execute.item.ActionExecuteStatusDAO;
 import org.igov.service.exception.CommonServiceException;
@@ -33,6 +35,9 @@ public class ActionExecuteController {
 	private ActionExecuteStatusDAO actionExecuteStatusDAO;
 	@Autowired
 	private ActionExecuteDAO actionExecuteDAO;
+	@Autowired
+	private ActionExecuteOldDAO actionExecuteOldDAO;
+	
 	
     private static final Logger LOG = LoggerFactory.getLogger(ActionExecuteController.class);
 
@@ -58,8 +63,13 @@ public class ActionExecuteController {
              @ApiParam(value = "выбрать только с указанными статусами (массив JSON)", required = false) @RequestParam(value = "asID_Status", required = false) String asID_Status,
              @ApiParam(value = "выбрать только те, у которых число попыток не превышает указанный лимит (иначе с любым числом попыток)", required = false) @RequestParam(value = "nTryMax", required = false) Long nTryMax,
     		 @ApiParam(value = "номер-ИД записи", required = false) @RequestParam(value = "nID", required = false) Long nID){
-        
-        return JsonRestUtils.toJsonResponse(null);
+        	
+    		ResponseEntity<String> res = null;
+    		if(bOldOnly)
+    			res = JsonRestUtils.toJsonResponse(actionExecuteDAO.getActionExecute(nRowsMax, sMethodMask, asID_Status, nTryMax, nID));
+    		else
+    			res = JsonRestUtils.toJsonResponse(actionExecuteOldDAO.getActionExecute(nRowsMax, sMethodMask, asID_Status, nTryMax, nID));
+        	return res;
     }
 
     @ApiOperation(value = "выполнить задачи.", notes = "")
