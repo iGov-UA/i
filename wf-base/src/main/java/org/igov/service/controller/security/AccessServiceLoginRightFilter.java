@@ -43,6 +43,8 @@ public class AccessServiceLoginRightFilter extends GenericFilterBean {
 
         boolean hasAccessToService = true;
         if (!generalAuthLogin.equals(userName)) {
+//TODO:temp
+/*            
             try {
                 service = httpServletRequest.getRequestURI().substring(httpServletRequest.getContextPath().length());
                 parameters = httpServletRequest.getQueryString();
@@ -51,6 +53,7 @@ public class AccessServiceLoginRightFilter extends GenericFilterBean {
                 hasAccessToService = false;
                 LOG.error("Exception during call to [accessService.hasAccessToService]", e);
             }
+*/        
         }
 
         if (hasAccessToService) {
