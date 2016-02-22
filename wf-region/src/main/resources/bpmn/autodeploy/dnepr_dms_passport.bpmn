@@ -17,6 +17,7 @@
           <activiti:value id="attr1_no" name="ні"></activiti:value>
           <activiti:value id="attr2_yes" name="так"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть підрозділ міграційної служби, в якому Ви будете отримувати паспорт" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="area" name="Оберіть підрозділ міграційної служби, в якому Ви будете отримувати паспорт" type="enum" required="true">
           <activiti:value id="dnepr1" name="Дніпропетровськ (Центральний), вул. Поля, 1"></activiti:value>
           <activiti:value id="dnepr2" name="Дніпропетровськ (Бабушкінський), пр. Ілліча, 3"></activiti:value>
@@ -262,7 +263,7 @@ execution.setVariable('notification_day', timer)</script>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow25" sourceRef="servicetask3" targetRef="usertask2"></sequenceFlow>
-    <userTask id="usertask2" name="обробка дмс" activiti:candidateGroups="dnepr_dms_passport_${area}">
+    <userTask id="usertask2" name="обробка дмс" activiti:candidateGroups="dms_zagran_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
