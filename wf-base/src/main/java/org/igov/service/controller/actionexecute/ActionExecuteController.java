@@ -81,7 +81,7 @@ public class ActionExecuteController {
     @RequestMapping(value = "/moveActionExecute", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, headers = {"Accept=application/json"})
     public
     @ResponseBody
-    ResponseEntity runActionExecute(
+    ResponseEntity moveActionExecute(
     		@ApiParam(value = "число строк максимальное (максимально - не более 1000)", required = false) @RequestParam(value = "nRowsMax", required = false, defaultValue = "10") Integer nRowsMax,
     		@ApiParam(value = "выбрать только с указанной маской метода", required = false) @RequestParam(value = "sMethodMask ", required = false) String sMethodMask,
     		@ApiParam(value = "булевый, true=только из олд-таблицы, иначе только из основной (по умолчанию из основной", required = false) @RequestParam(value = "bOldOnly", required = false, defaultValue = "false") Boolean bOldOnly,
