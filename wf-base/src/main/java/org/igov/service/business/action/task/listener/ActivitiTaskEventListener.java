@@ -17,12 +17,14 @@ public class ActivitiTaskEventListener implements ActivitiEventListener {
 	
 	@Override
 	public void onEvent(ActivitiEvent event) {
-		LOG.info("event {} methodCacheInterceptor {}", event.getType(), methodCacheInterceptor);
+		LOG.info("event {} ", event.getType());
 		if (methodCacheInterceptor != null) {
             methodCacheInterceptor
                     .clearCacheForMethod(CachedInvocationBean.class, "invokeUsingCache", ActionTaskService.GET_ALL_TASK_FOR_USER_CACHE);
+            LOG.info("Cleared cache for " + ActionTaskService.GET_ALL_TASK_FOR_USER_CACHE + " method");
             methodCacheInterceptor
-            		.clearCacheForMethod(CachedInvocationBean.class, "invokeUsingCache", ActionTaskService.GET_ALL_TASK_FOR_USER_CACHE);
+            		.clearCacheForMethod(CachedInvocationBean.class, "invokeUsingCache", ActionTaskService.GET_ALL_TICKETS_CACHE);
+            LOG.info("Cleared cache for " + ActionTaskService.GET_ALL_TICKETS_CACHE + " method");
         }
 	}
 
