@@ -1,7 +1,11 @@
 package org.igov.model.action.execute.item;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.activiti.engine.impl.util.json.JSONArray;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
 import org.igov.model.core.GenericEntityDao;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Repository;
@@ -41,16 +45,9 @@ public class ActionExecuteOldDAOImpl extends GenericEntityDao<ActionExecuteOld>	
 		
 		getSession().saveOrUpdate(actionExecute);
 		return actionExecute.getId();
-	}
+	}	
 
 	@Override
-	public List<ActionExecuteOld> getActionExecute(Integer nRowsMax,
-			String sMethodMask, String asID_Status, Long nTryMax, Long nID) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/*@Override
 	public List<ActionExecuteOld> getActionExecute(Integer nRowsMax, String sMethodMask, String asID_Status, Long nTryMax, Long nID) {
 		List<ActionExecuteOld> resList = new ArrayList<ActionExecuteOld>();
 		
@@ -75,5 +72,5 @@ public class ActionExecuteOldDAOImpl extends GenericEntityDao<ActionExecuteOld>	
 		criteria.add(Restrictions.eq("nID", nID));
 		resList = criteria.list();
 		return resList;
-	}*/
+	}
 }
