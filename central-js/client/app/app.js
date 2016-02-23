@@ -30,10 +30,9 @@ angular.module('app', [
   'order',
   'about',
   'feedback'
-]).config(function ($urlRouterProvider, $locationProvider, datepickerConfig) {
+]).config(function ($urlRouterProvider, $locationProvider) {
   $urlRouterProvider.otherwise('/');
   $locationProvider.html5Mode(true);
-  datepickerConfig.datepickerMode = 'year';
 }).run(function ($rootScope, $state) {
   $rootScope.state = $state;
   $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
