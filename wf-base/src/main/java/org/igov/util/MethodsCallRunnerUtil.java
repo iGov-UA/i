@@ -7,8 +7,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.lang.reflect.Method;
-import java.util.Base64;
 
+import org.apache.commons.codec.binary.Base64;
 import org.igov.model.action.execute.item.ActionExecute;
 import org.igov.model.action.execute.item.ActionExecuteDAO;
 import org.igov.model.action.execute.item.ActionExecuteStatus;
@@ -36,7 +36,7 @@ public class MethodsCallRunnerUtil {
 	private static final Logger LOG = LoggerFactory.getLogger(MethodsCallRunnerUtil.class);
 	
 	private static Object fromString(String s) throws IOException, ClassNotFoundException {
-		byte[] data = Base64.getDecoder().decode(s);
+		byte[] data = Base64.decodeBase64(s);
 		ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
 		Object o = ois.readObject();
 		ois.close();
@@ -48,7 +48,7 @@ public class MethodsCallRunnerUtil {
 		ObjectOutputStream oos = new ObjectOutputStream(baos);
 		oos.writeObject(o);
 		oos.close();
-		return Base64.getEncoder().encodeToString(baos.toByteArray());
+		return Base64.encodeBase64String(baos.toByteArray());
 	}
 
 	public Object registrateMethod(String className, String methodName, Object[] parameters) throws CommonServiceException{

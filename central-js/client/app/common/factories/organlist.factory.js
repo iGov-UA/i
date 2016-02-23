@@ -25,6 +25,7 @@ angular.module('app').factory('OrganListFactory', function($http, $filter, Typea
 
     var data = {
       sID_UA: this.sID_UA
+      //sID_UA: this.sID_UA && this.sID_UA.trim() !== "" ? this.sID_UA : null
     };
 
     return this.typeahead.load('./api/organs/' + oServiceData.oSubject_Operator.nID, search, data).then(function(organs) {
