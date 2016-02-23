@@ -136,13 +136,13 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
       // (в формате "YYYY-MM-DD hh:mm", "YYYY-MM-DD" и "hh:mm")
       if (angular.isDefined(form.taskData)&&angular.isDefined(form.taskData.oProcess)) {
         printTemplate = this.populateSystemTag(printTemplate, "[sDateTimeCreateProcess]", function () {
-            return $filter('date')(new Date(form.taskData.oProcess.sDateCreate), 'yyyy-MM-dd HH:mm');
+            return $filter('date')(form.taskData.oProcess.sDateCreate, 'yyyy-MM-dd HH:mm');
         });
         printTemplate = this.populateSystemTag(printTemplate, "[sDateCreateProcess]", function () {
-            return $filter('date')(new Date(form.taskData.oProcess.sDateCreate), 'yyyy-MM-dd');
+            return $filter('date')(form.taskData.oProcess.sDateCreate, 'yyyy-MM-dd');
         });
         printTemplate = this.populateSystemTag(printTemplate, "[sTimeCreateProcess]", function () {
-            return $filter('date')(new Date(form.taskData.oProcess.sDateCreate), 'HH:mm');
+            return $filter('date')(form.taskData.oProcess.sDateCreate, 'HH:mm');
         });
       }
 
