@@ -10,6 +10,7 @@
 
     <context:component-scan base-package="org.activiti.explorer.conf" />
 
+
     <bean id="processEngineConfigurationInitial" class="org.activiti.spring.SpringProcessEngineConfiguration">
         <property name="dataSource" ref="dataSource"/>
         <property name="transactionManager" ref="transactionManager"/>
@@ -68,6 +69,18 @@
     <bean id="processEngineConfiguration" class="org.igov.service.conf.MongoSpringProcessEngineConfiguration"
           parent="processEngineConfigurationInitial">
         <property name="bytesDataStorage" ref="durableBytesDataStorage"/>
+        
+        <property name="typedEventListeners">
+	      <map>
+	        <entry key="TASK_ASSIGNED,TASK_CREATED,TASK_COMPLETED" >
+	          <list>
+	            <bean class="org.igov.service.business.action.task.listener.ActivitiTaskEventListener" >
+	            	<property name="methodCacheInterceptor" ref="methodCacheInterceptor"/>
+	            </bean>
+	          </list>
+	        </entry>
+	      </map>
+	    </property>
     </bean>
 
     <bean id="processEngine" class="org.activiti.spring.ProcessEngineFactoryBean" destroy-method="destroy">

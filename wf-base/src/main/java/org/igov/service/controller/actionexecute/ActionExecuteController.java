@@ -6,10 +6,10 @@ import io.swagger.annotations.ApiParam;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.igov.model.action.execute.item.ActionExecute;
 import org.igov.model.action.execute.item.ActionExecuteDAO;
+import org.igov.model.action.execute.item.ActionExecuteOld;
+import org.igov.model.action.execute.item.ActionExecuteOldDAO;
 import org.igov.model.action.execute.item.ActionExecuteStatus;
 import org.igov.model.action.execute.item.ActionExecuteStatusDAO;
 import org.igov.service.exception.CommonServiceException;
@@ -35,6 +35,9 @@ public class ActionExecuteController {
 	private ActionExecuteStatusDAO actionExecuteStatusDAO;
 	@Autowired
 	private ActionExecuteDAO actionExecuteDAO;
+	@Autowired
+	private ActionExecuteOldDAO actionExecuteOldDAO;
+	
 	
     private static final Logger LOG = LoggerFactory.getLogger(ActionExecuteController.class);
 
@@ -47,23 +50,57 @@ public class ActionExecuteController {
         List<ActionExecuteStatus> actionExecuteList = actionExecuteStatusDAO.findAll();
         return JsonRestUtils.toJsonResponse(actionExecuteList);
     }
-    
-    @ApiOperation(value = "Создание акции ", notes = "")
-    @RequestMapping(value = "/setActionExecute", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, headers = {"Accept=application/json"})
-    public
-    @ResponseBody
-    Long setActionExecute() {
+       
 
-        Long actionExecuteId = actionExecuteDAO.setActionExecute(1L, new DateTime(), new DateTime(), 1, "method", "request", "smParam", "sReturn");
-        return actionExecuteId;
-    }
- 
-    @ApiOperation(value = "Получение акции ", notes = "")
+    @ApiOperation(value = " получить массив всех акций. ", notes = "")
     @RequestMapping(value = "/getActionExecute", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE, headers = {"Accept=application/json"})
     public
     @ResponseBody
-    ActionExecute getActionExecute(@RequestParam(value = "nID") Long id) throws CommonServiceException {
-        ActionExecute actionExecute = actionExecuteDAO.getActionExecute(id);
-        return actionExecute;
+    ResponseEntity getActionExecute(
+    		 @ApiParam(value = "число строк максимальное (максимально - не более 1000)", required = false) @RequestParam(value = "nRowsMax", required = false, defaultValue = "10") Integer nRowsMax,
+    		 @ApiParam(value = "выбрать только с указанной маской метода", required = false) @RequestParam(value = "sMethodMask", required = false) String sMethodMask,
+             @ApiParam(value = "булевый, true=только из олд-таблицы, иначе только из основной (по умолчанию из основной", required = false) @RequestParam(value = "bOldOnly", required = false, defaultValue = "false") Boolean bOldOnly,
+             @ApiParam(value = "выбрать только с указанными статусами (массив JSON)", required = false) @RequestParam(value = "asID_Status", required = false) String asID_Status,
+             @ApiParam(value = "выбрать только те, у которых число попыток не превышает указанный лимит (иначе с любым числом попыток)", required = false) @RequestParam(value = "nTryMax", required = false) Integer nTryMax,
+    		 @ApiParam(value = "номер-ИД записи", required = false) @RequestParam(value = "nID", required = false) Long nID){
+        	
+    		ResponseEntity<String> res = null;
+    		if(bOldOnly)
+    			res = JsonRestUtils.toJsonResponse(actionExecuteOldDAO.getActionExecute(nRowsMax, sMethodMask, asID_Status, nTryMax, nID));
+    		else
+    			res = JsonRestUtils.toJsonResponse(actionExecuteDAO.getActionExecute(nRowsMax, sMethodMask, asID_Status, nTryMax, nID));
+        	return res;
     }
+
+    @ApiOperation(value = "выполнить задачи.", notes = "")
+    @RequestMapping(value = "/runActionExecute", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, headers = {"Accept=application/json"})
+    public
+    @ResponseBody
+    ResponseEntity runActionExecute(
+    		 @ApiParam(value = "число строк максимальное (максимально - не более 1000)", required = false) @RequestParam(value = "nRowsMax", required = false, defaultValue = "10") Integer nRowsMax,
+    		 @ApiParam(value = "выбрать только с указанной маской метода", required = false) @RequestParam(value = "sMethodMask", required = false) String sMethodMask,
+             @ApiParam(value = "булевый, true=только из олд-таблицы, иначе только из основной (по умолчанию из основной", required = false) @RequestParam(value = "bOldOnly", required = false, defaultValue = "false") Boolean bOldOnly,
+             @ApiParam(value = "выбрать только с указанными статусами (массив JSON)", required = false) @RequestParam(value = "asID_Status", required = false) String asID_Status,
+             @ApiParam(value = "выбрать только те, у которых число попыток не превышает указанный лимит (иначе с любым числом попыток)", required = false) @RequestParam(value = "nTryMax", required = false) Integer nTryMax,
+    		 @ApiParam(value = "номер-ИД записи", required = false) @RequestParam(value = "nID", required = false) Long nID){
+        
+        return JsonRestUtils.toJsonResponse(null);
+    }
+    
+    @ApiOperation(value = "переместить записи из основной таблицы в олд или обратно.", notes = "")
+    @RequestMapping(value = "/moveActionExecute", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, headers = {"Accept=application/json"})
+    public
+    @ResponseBody
+    ResponseEntity moveActionExecute(
+    		@ApiParam(value = "число строк максимальное (максимально - не более 1000)", required = false) @RequestParam(value = "nRowsMax", required = false, defaultValue = "10") Integer nRowsMax,
+    		@ApiParam(value = "выбрать только с указанной маской метода", required = false) @RequestParam(value = "sMethodMask", required = false) String sMethodMask,
+    		@ApiParam(value = "булевый, true=только из олд-таблицы, иначе только из основной (по умолчанию из основной", required = false) @RequestParam(value = "bOldOnly", required = false, defaultValue = "false") Boolean bOldOnly,
+    		@ApiParam(value = "выбрать только с указанными статусами (массив JSON)", required = false) @RequestParam(value = "asID_Status", required = false) String asID_Status,
+    		@ApiParam(value = "выбрать только те, у которых число попыток не превышает указанный лимит (иначе с любым числом попыток)", required = false) @RequestParam(value = "nTryMax", required = false) Integer nTryMax,
+    		@ApiParam(value = "номер-ИД записи", required = false) @RequestParam(value = "nID", required = false) Long nID,
+    		@ApiParam(value = "булевый, если указан true, то переместить из олд-а в основную (по умолчанию наоборот)", required = false) @RequestParam(value = "bBack", required = false, defaultValue="false") Boolean bBack){
+    	
+    	return JsonRestUtils.toJsonResponse(null);
+    }    
+    
 }

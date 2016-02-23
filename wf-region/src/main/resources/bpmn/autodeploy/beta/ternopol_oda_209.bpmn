@@ -10,16 +10,16 @@
         <activiti:formProperty id="phone" name="Телефон" type="string" default="+38"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; на цей e-mail Ви отримаєте результат обробки Вашего звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, до якого будете подавати запит" type="select" default="0"></activiti:formProperty>
-        <activiti:formProperty id="requestData" name="Вкажіть загальний опис запитуваної інформації або вид, назву, реквізити чи зміст документа" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="resultWay" name="Спосіб отримання відповіді" type="enum" required="true">
-          <activiti:value id="epost" name="На електронну адресу"></activiti:value>
-          <activiti:value id="opost" name="На поштову адресу"></activiti:value>
+        <activiti:formProperty id="sRequestData" name="Вкажіть загальний опис запитуваної інформації або вид, назву, реквізити чи зміст документа" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asResultWay" name="Спосіб отримання відповіді" type="enum" required="true">
+          <activiti:value id="sEpost" name="На електронну адресу"></activiti:value>
+          <activiti:value id="sOpost" name="На поштову адресу"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="bankIdAddress" name="Поштова адреса" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPlase_of_reg" name="Поштова адреса" type="string"></activiti:formProperty>
         <activiti:formProperty id="text" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
-        <activiti:formProperty id="marker1" name="Поштова адреса" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;bankIdAddress&quot;],&quot;asID_Field&quot;:{&quot;sService&quot;:&quot;resultWay&quot;},&quot;sCondition&quot;:&quot;[sService]=='На поштову адресу'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="postV" name="електронна пошта" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="group" name="sID_UA" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="marker1" name="Поштова адреса" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;bankIdAddress&quot;],&quot;asID_Field&quot;:{&quot;sService&quot;:&quot;asResultWay&quot;},&quot;sCondition&quot;:&quot;[sService]=='На поштову адресу'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sPostV" name="електронна пошта" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSignCnap" name="підпис" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <scriptTask id="scripttask1" name="Передача значений" scriptFormat="javascript" activiti:autoStoreVariables="false">
@@ -38,11 +38,35 @@ if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'PidgRDA'){
 per1 = 'pub_info@ko.te.ua'
 per2 = '6124800000'
 }
+if (execution.getVariable('sID_UA') == '2600000000'){
+per1 = 'Івано-Франківської обласної державної адміністрації'
+per2 = 'Івано-Франківська обласна держана адміністрація, м. Івано-Франківськ, вул. Грушевського, 21'
+var per3 = 'zhigan.roman@gmail.com'
+}
+
 execution.setVariable('postV', per1)
 execution.setVariable('group', per2)
 	  </script>
     </scriptTask>
     <sequenceFlow id="flow69" sourceRef="scripttask1" targetRef="servicetask6"></sequenceFlow>
+    <sequenceFlow id="flow64" sourceRef="startevent1" targetRef="servicetask8"></sequenceFlow>
+    <serviceTask id="servicetask8" name="Повідомлення про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>zhigan.roman@gmail.com</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення громадянина: Запит на отримання публічної інформації (для фізичних осіб)]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow68" sourceRef="servicetask8" targetRef="servicetask6"></sequenceFlow>
     <serviceTask id="servicetask6" name="Повідомлення успішне замовлення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
@@ -58,47 +82,29 @@ execution.setVariable('group', per2)
           <activiti:expression>[pattern/mail/_common_header.html]
  &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 &lt;p&gt;
-Ваш запит був успішно зареєстрований.&lt;br /&gt; 	
+Ваш запит був успішно зареєстрований.&lt;br&gt; 	
 Спеціалісти ОДА нададуть відповідь найближчим часом.
 &lt;/p&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:ternopol_oda_209_mailer.csv:value{[group]}:3]
+${sSignCnap},&lt;br&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow64" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
-    <serviceTask id="servicetask8" name="Повідомлення про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
-      <extensionElements>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="to">
-          <activiti:string><![CDATA[kurbpa@gmail.com]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення громадянина: Запит на отримання публічної інформації (для фізичних осіб)]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
-    <sequenceFlow id="flow65" sourceRef="servicetask6" targetRef="servicetask8"></sequenceFlow>
-    <sequenceFlow id="flow68" sourceRef="servicetask8" targetRef="usertask1"></sequenceFlow>
-    <userTask id="usertask1" name="Перевірка документів операціоністом" activiti:candidateGroups="${group}_oda_4">
+    <sequenceFlow id="flow65" sourceRef="servicetask6" targetRef="usertask1"></sequenceFlow>
+    <userTask id="usertask1" name="Перевірка документів операціоністом" activiti:candidateGroups="publ_info_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="ПІБ заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdAddress" name="Поштова адреса" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="requestData" name="Загальний опис запитуваної інформації або вид, назву, реквізити чи зміст документа" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="resultWay" name="Спосіб отримання відповіді" type="enum" writable="false">
-          <activiti:value id="epost" name="На електронну адресу"></activiti:value>
-          <activiti:value id="opost" name="На поштову адресу"></activiti:value>
+        <activiti:formProperty id="sPlase_of_reg" name="Поштова адреса" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sRequestData" name="Загальний опис запитуваної інформації або вид, назву, реквізити чи зміст документа" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asResultWay" name="Спосіб отримання відповіді" type="enum" writable="false">
+          <activiti:value id="sEpost" name="На електронну адресу"></activiti:value>
+          <activiti:value id="sOpost" name="На поштову адресу"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="workerDecision" name="Рішення операціоніста" type="enum" required="true">
+        <activiti:formProperty id="asWorkerDecision" name="Рішення операціоніста" type="enum" required="true">
           <activiti:value id="accept" name="Прийняти документи для розгляду"></activiti:value>
           <activiti:value id="decline" name="Відмовити у реєстрації звернення"></activiti:value>
         </activiti:formProperty>
@@ -108,8 +114,8 @@ execution.setVariable('group', per2)
     </userTask>
     <sequenceFlow id="flow50" sourceRef="usertask1" targetRef="exclusivegateway2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow57" name="${workerDecision=='decline'}" sourceRef="exclusivegateway2" targetRef="servicetask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${workerDecision=='decline'}]]></conditionExpression>
+    <sequenceFlow id="flow57" name="${asWorkerDecision=='decline'}" sourceRef="exclusivegateway2" targetRef="servicetask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asWorkerDecision=='decline'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask4" name="Email - відмова" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
@@ -126,9 +132,10 @@ execution.setVariable('group', per2)
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 &lt;p&gt;На жаль змушені Вам відмовити у реєстрації звернення.&lt;/p&gt;
-&lt;p&gt;Причина в наступному:&lt;br /&gt;${decisionComment}&lt;/p&gt;
+&lt;p&gt;Причина в наступному:&lt;br&gt;
+${decisionComment}&lt;/p&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:ternopol_oda_209_mailer.csv:value{[group]}:3]
+${sSignCnap},&lt;br&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -136,8 +143,8 @@ execution.setVariable('group', per2)
     </serviceTask>
     <sequenceFlow id="flow58" sourceRef="servicetask4" targetRef="endevent2"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
-    <sequenceFlow id="flow59" name="${workerDecision=='accept'} " sourceRef="exclusivegateway2" targetRef="servicetask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${workerDecision=='accept'}]]></conditionExpression>
+    <sequenceFlow id="flow59" name="${asWorkerDecision=='accept'} " sourceRef="exclusivegateway2" targetRef="servicetask5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asWorkerDecision=='accept'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask5" name="Звернення передане на розгляд" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
@@ -157,27 +164,27 @@ execution.setVariable('group', per2)
                                         Ваш запит щодо отримання публічної інформації переданий на розгляд ОДА.&lt;br /&gt;
                                     	Ви отримаєте відповідь найближчім часом.
                                     &lt;/p&gt;
-[pattern/mail/_common_signature_start.html]
-[pattern_dictonary:ternopol_oda_209_mailer.csv:value{[group]}:3]
-[pattern/mail/_common_signature_end.html]
+									[pattern/mail/_common_signature_start.html]
+									${sSignCnap},&lt;p&gt;
+									[pattern/mail/_common_signature_end.html]
 									[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow60" sourceRef="servicetask5" targetRef="usertask2"></sequenceFlow>
-    <userTask id="usertask2" name="Результат розгляду запиту" activiti:candidateGroups="${group}_oda_4">
+    <userTask id="usertask2" name="Результат розгляду запиту" activiti:candidateGroups="publ_info_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="docID" name="Реєстраційний номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="ПІБ заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdAddress" name="Поштова адреса" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="requestData" name="Загальний опис запитуваної інформації або вид, назву, реквізити чи зміст документа" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="resultWay" name="Спосіб отримання відповіді" type="enum" writable="false">
-          <activiti:value id="epost" name="На електронну адресу"></activiti:value>
-          <activiti:value id="opost" name="На поштову адресу"></activiti:value>
+        <activiti:formProperty id="sPlase_of_reg" name="Поштова адреса" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sRequestData" name="Загальний опис запитуваної інформації або вид, назву, реквізити чи зміст документа" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asResultWay" name="Спосіб отримання відповіді" type="enum" writable="false">
+          <activiti:value id="sEpost" name="На електронну адресу"></activiti:value>
+          <activiti:value id="sOpost" name="На поштову адресу"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="workerDecision1" name="За результатом розгляду" type="enum" required="true">
+        <activiti:formProperty id="asWorkerDecision1" name="За результатом розгляду" type="enum" required="true">
           <activiti:value id="rezscan" name="Надіслати на електронну адресу"></activiti:value>
           <activiti:value id="rezpost" name="Надіслати на поштову адресу"></activiti:value>
           <activiti:value id="decline1" name="Неможливо надати відповідь"></activiti:value>
@@ -188,8 +195,8 @@ execution.setVariable('group', per2)
     </userTask>
     <sequenceFlow id="flow61" sourceRef="usertask2" targetRef="exclusivegateway1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow52" name="${workerDecision1=='rezscan'}" sourceRef="exclusivegateway1" targetRef="servicetask1">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${workerDecision1=='rezscan'}]]></conditionExpression>
+    <sequenceFlow id="flow52" name="${asWorkerDecision1=='rezscan'}" sourceRef="exclusivegateway1" targetRef="servicetask1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asWorkerDecision1=='rezscan'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask1" name="Е-мейл з електронною копією" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
@@ -213,7 +220,7 @@ execution.setVariable('group', per2)
 									Будь ласка, оцініть якість надання послуги за допомогою форми нижче.
                                     &lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
-                                    [pattern_dictonary:ternopol_oda_209_mailer.csv:value{[group]}:3]
+                                    ${sSignCnap},&lt;br&gt;
                                     [pattern/mail/_common_signature_end.html]
 									[pattern/mail/_common_feedback.html]
 									[pattern/mail/_common_footer.html]</activiti:expression>
@@ -225,8 +232,8 @@ execution.setVariable('group', per2)
     </serviceTask>
     <sequenceFlow id="flow51" sourceRef="servicetask1" targetRef="endevent1"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
-    <sequenceFlow id="flow53" name="${workerDecision1=='rezpost'}" sourceRef="exclusivegateway1" targetRef="servicetask2">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${workerDecision1=='rezpost'}]]></conditionExpression>
+    <sequenceFlow id="flow53" name="${asWorkerDecision1=='rezpost'}" sourceRef="exclusivegateway1" targetRef="servicetask2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asWorkerDecision1=='rezpost'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask2" name="Е-мейл копія відправлена поштою" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
@@ -250,7 +257,7 @@ execution.setVariable('group', per2)
 									Будь ласка, оцініть якість надання послуги за допомогою форми нижче.
                                     &lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
-                                    [pattern_dictonary:ternopol_oda_209_mailer.csv:value{[group]}:3]
+                                    ${sSignCnap},&lt;br&gt;
                                     [pattern/mail/_common_signature_end.html]
 									[pattern/mail/_common_feedback.html]
 									[pattern/mail/_common_footer.html]</activiti:expression>
@@ -258,10 +265,10 @@ execution.setVariable('group', per2)
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow54" sourceRef="servicetask2" targetRef="endevent1"></sequenceFlow>
-    <sequenceFlow id="flow55" name="${workerDecision1=='decline1'}" sourceRef="exclusivegateway1" targetRef="servicetask3">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${workerDecision1=='decline1'}]]></conditionExpression>
+    <sequenceFlow id="flow55" name="${asWorkerDecision1=='decline1'}" sourceRef="exclusivegateway1" targetRef="servicetask3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asWorkerDecision1=='decline1'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask3" name="Відповіжь неможливо надати" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask3" name="Відповідь неможливо надати" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
@@ -280,20 +287,20 @@ execution.setVariable('group', per2)
                                     	Ви можете знайти офіційну відмову у додатках до листа.
                                     &lt;/p&gt;
 									&lt;p&gt;
-										Причина в наступному:&lt;br /&gt;
+										Причина в наступному:&lt;br&gt;
 										${decisionComment1}
 									&lt;/p&gt;
-[pattern/mail/_common_signature_start.html]
-[pattern_dictonary:ternopol_oda_209_mailer.csv:value{[group]}:3]
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+									[pattern/mail/_common_signature_start.html]
+									${sSignCnap},&lt;br&gt;
+									[pattern/mail/_common_signature_end.html]
+									[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>"${docFile}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow56" sourceRef="servicetask3" targetRef="endevent1"></sequenceFlow>   
+    <sequenceFlow id="flow56" sourceRef="servicetask3" targetRef="endevent1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_ternopol_oda_209">
     <bpmndi:BPMNPlane bpmnElement="ternopol_oda_209" id="BPMNPlane_ternopol_oda_209">
@@ -301,7 +308,13 @@ execution.setVariable('group', per2)
         <omgdc:Bounds height="35.0" width="35.0" x="10.0" y="136.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="56.0" y="126.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="156.0" y="10.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
+        <omgdc:Bounds height="74.0" width="105.0" x="230.0" y="117.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
+        <omgdc:Bounds height="64.0" width="131.0" x="66.0" y="122.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="64.0" width="145.0" x="380.0" y="122.0"></omgdc:Bounds>
@@ -336,15 +349,21 @@ execution.setVariable('group', per2)
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
         <omgdc:Bounds height="99.0" width="105.0" x="849.0" y="239.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
-        <omgdc:Bounds height="74.0" width="105.0" x="180.0" y="118.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
-        <omgdc:Bounds height="64.0" width="131.0" x="260.0" y="219.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow69" id="BPMNEdge_flow69">
-        <omgdi:waypoint x="161.0" y="153.0"></omgdi:waypoint>
-        <omgdi:waypoint x="180.0" y="155.0"></omgdi:waypoint>
+        <omgdi:waypoint x="208.0" y="65.0"></omgdi:waypoint>
+        <omgdi:waypoint x="282.0" y="117.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow64" id="BPMNEdge_flow64">
+        <omgdi:waypoint x="45.0" y="153.0"></omgdi:waypoint>
+        <omgdi:waypoint x="66.0" y="154.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow65" id="BPMNEdge_flow65">
+        <omgdi:waypoint x="335.0" y="154.0"></omgdi:waypoint>
+        <omgdi:waypoint x="380.0" y="154.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow68" id="BPMNEdge_flow68">
+        <omgdi:waypoint x="197.0" y="154.0"></omgdi:waypoint>
+        <omgdi:waypoint x="230.0" y="154.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow50" id="BPMNEdge_flow50">
         <omgdi:waypoint x="525.0" y="154.0"></omgdi:waypoint>
@@ -413,18 +432,6 @@ execution.setVariable('group', per2)
       <bpmndi:BPMNEdge bpmnElement="flow56" id="BPMNEdge_flow56">
         <omgdi:waypoint x="901.0" y="338.0"></omgdi:waypoint>
         <omgdi:waypoint x="901.0" y="397.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow64" id="BPMNEdge_flow64">
-        <omgdi:waypoint x="45.0" y="153.0"></omgdi:waypoint>
-        <omgdi:waypoint x="56.0" y="153.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow65" id="BPMNEdge_flow65">
-        <omgdi:waypoint x="232.0" y="192.0"></omgdi:waypoint>
-        <omgdi:waypoint x="325.0" y="219.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow68" id="BPMNEdge_flow68">
-        <omgdi:waypoint x="325.0" y="219.0"></omgdi:waypoint>
-        <omgdi:waypoint x="452.0" y="186.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

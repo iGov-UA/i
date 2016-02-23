@@ -5,6 +5,7 @@
  */
 package org.igov.service.business.subject;
 
+import java.util.List;
 import org.igov.model.subject.Subject;
 import org.igov.model.subject.SubjectContact;
 import org.igov.model.subject.SubjectContactDao;
@@ -14,13 +15,20 @@ import org.igov.model.subject.SubjectHuman;
 import org.igov.model.subject.SubjectHumanDao;
 import org.igov.model.subject.SubjectHumanIdType;
 import org.igov.model.subject.organ.SubjectOrganDao;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author Belyavtsev Vladimir Vladimirovich (BW)
  */
+@Service
 public class SubjectService {
+    
+     private static final Logger LOG = LoggerFactory.getLogger(SubjectService.class);
+
     
     @Autowired
     private SubjectDao subjectDao;
@@ -42,64 +50,155 @@ public class SubjectService {
         return subject_Upload;
     }
     
-    /* public SubjectContact syncContactMail(String sMail)
+  public SubjectContact syncContactsService(String snID_Subject, String sMail)
     {
-        SubjectContact oSubjectContact = null;
-        SubjectHuman oSubjectHuman = subjectHumanDao.getSubjectHuman(SubjectHumanIdType.Email, sMail);
-        Subject oSubject = (oSubjectHuman != null)? oSubjectHuman.getoSubject() : null;
+        LOG.info("(Вход в syncContactsService snID_Subject {}, sMail {})", snID_Subject, sMail);
+        SubjectContact oSubjectContact = new SubjectContact();
         
-        if(oSubject != null)
+        Long nID_Subject = convertStringToLong(snID_Subject);
+        LOG.info("(before getSubject nID_Subject {})", nID_Subject);
+        Subject subject = getSubjectObject(nID_Subject, sMail);
+        SubjectHuman oSubjectHuman = null;
+       if(subject != null)
+        oSubjectHuman = getSubjectHuman(subject);
+       
+       List<SubjectContact> list_contacts = subjectContactDao.findContacts(subject);
+       LOG.info("(получаем список контактов субьекта)");
+       List<SubjectContact> list_mail = subjectContactDao.findAllBy("sValue", sMail);
+       LOG.info("(получаем список контактов по sMail {})", sMail);
+       
+       oSubjectContact = this.synchronizationContacts(list_contacts, list_mail, subject, sMail);
+       
+        if(oSubjectHuman != null)
+       {
+           oSubjectHuman.setDefaultEmail(oSubjectContact);
+           subjectHumanDao.saveOrUpdateHuman(oSubjectHuman);
+       }
+       return oSubjectContact;
+    }
+    private SubjectContact synchronizationContacts(List<SubjectContact> list_contacts, List<SubjectContact> list_mail, Subject subject, String sMail)
+    {
+       SubjectContact res = null;
+       boolean bIsContact = this.isContactByMail(list_contacts, sMail);
+       boolean bIsDataBase = this.isContactByMail(list_mail, sMail);
+       if(bIsContact)
+       {
+            res = this.updateContact(subject, sMail);
+            LOG.info("(апдейтим контакт в списке контактов субьекта)");
+       }
+       else
+       {
+           if(bIsDataBase)
+           {
+              res = this.updateContact(subject, sMail);
+              LOG.info("(апдейтим контакт в списке контактов базы, переопределяя субьекта)");
+           }
+           else
+           {
+              res = this.createSubjectContact(sMail, subject);
+              LOG.info("(создаем контакт)");
+
+           }
+       }
+       
+       return res;  
+    }
+    private SubjectHuman getSubjectHuman(Subject subject)
+    {
+        return subjectHumanDao.findByExpected("oSubject", subject);
+    }
+      private SubjectContact createSubjectContact(String sMail, Subject subject)
+    {
+         SubjectContact contact = new SubjectContact();
+         contact.setSubject(subject);
+         contact.setSubjectContactType(subjectContactTypeDao.getEmailType());
+         contact.setsDate();
+         contact.setsValue(sMail);
+         subjectContactDao.saveOrUpdate(contact);
+         SubjectContact res = subjectContactDao.findByExpected("sValue", sMail);
+         
+         LOG.info("(создаем контакт subject Id {}, subject Label {}, subjectContact sValue {})", subject.getsID(), subject.getsLabel(), contact.getsValue());
+         
+         return res;
+    }
+    private SubjectContact updateContact(Subject subject, String sMail)
+    {
+        
+         SubjectContact res = null;
+       try
+       {
+         SubjectContact contact = subjectContactDao.findByExpected("sValue", sMail);
+         contact.setSubject(subject);
+         contact.setsDate();
+         subjectContactDao.saveOrUpdate(contact);
+         res = subjectContactDao.findByIdExpected(contact.getId());
+         
+         LOG.info("(апдейт контакта subject Id {}, subject Label {}, subjectContact sValue {})", subject.getsID(), subject.getsLabel(), contact.getsValue());
+       }
+       catch(Exception ex)
+       {
+          LOG.warn("(Fail update contact {})", ex.getMessage());
+       }
+         
+         return res;
+    }
+    private boolean isContactByMail(List<SubjectContact> list, String sMail )
+    {
+        
+         for(SubjectContact contact : list)
+         {
+             if(contact.getsValue().equals(sMail))
+                 return true; 
+             
+         }
+         
+         return false;
+    }
+    private Subject getSubjectObject(Long nID_Subject, String sMail)
+    {
+        Subject subject = null;
+        if(nID_Subject == null)
         {
-            oSubjectContact = subjectContactDao.findByExpected("sValue", sMail);
-            if(oSubjectContact != null)
+            String sID = SubjectHuman.getSubjectId(SubjectHumanIdType.Email, sMail);
+            
+            LOG.info("(sID {})", sID);
+            subject = subjectDao.getSubject(sID);
+            if(subject == null)
             {
-               oSubjectContact.setSubject(oSubject);
-               oSubjectContact.setsDate();
-               subjectContactDao.saveOrUpdate(oSubjectContact);
+               subject = new Subject();
+               subject.setsID(sID);
+               subjectDao.saveOrUpdateSubject(subject);
+               subject = subjectDao.getSubject(sID);
+               LOG.info("(Создаем subject Id {}, sID {})", subject.getId(), subject.getsID());
             }
         }
+        else
+        {
+            LOG.info("(subject Id {})", nID_Subject);
+           if(subjectDao == null)
+            LOG.info("(subjectDao null)");
+           else
+             LOG.info("(subjectDao not null)");
+            subject = subjectDao.getSubject(nID_Subject);
+            LOG.info("(Извлекаем subject Id {}, sID {}, Label {}, shortLabel {})", subject.getId(), subject.getsID(), subject.getsLabel(), subject.getsLabelShort());
+        }
         
-        return oSubjectContact;
+        return subject;
     }
-    
-    public SubjectContact syncContactMail(String sMail, Long nID_Subject)
+    private Long convertStringToLong(String snID)
     {
-        SubjectContact oSubjectContact = null;
-        Subject oSubject = subjectDao.getSubject(nID_Subject);
-        SubjectHuman oSubjectHuman = (oSubject != null)? subjectHumanDao.findByExpected("oSubject", oSubject) : null;
-       if(oSubject != null)
+        Long nID = null;
+       try
        {
-         try
-         {
-          oSubjectContact = subjectContactDao.findByExpected("sValue", sMail);
-         }
-         catch(Exception e)
-         {
-         
-         }
-          if(oSubjectContact != null)
-          {
-             oSubjectContact.setSubject(oSubject);
-             oSubjectContact.setsDate();
-          }
-          else
-          {
-             oSubjectContact = new SubjectContact();
-             oSubjectContact.setSubject(oSubject);
-             oSubjectContact.setsDate();
-             oSubjectContact.setSubjectContactType(subjectContactTypeDao.getEmailType());
-             oSubjectContact.setsValue(sMail);
-             subjectContactDao.saveOrUpdate(oSubjectContact);
-             if(oSubjectHuman != null)
-             {
-                oSubjectHuman.setDefaultEmail(oSubjectContact);
-                subjectHumanDao.saveOrUpdate(oSubjectHuman);
-             }
-          }
+           nID = Long.valueOf(snID);
+           LOG.info("(convertStringToLong nID {}, snID {})", nID, snID);
        }
-        
-        return oSubjectContact;
-    }*/
-   
+       catch(Exception ex)
+       {
+          LOG.warn("(Exception for converting string to long {})", ex.getMessage());
+       }
+       
+       return nID;
+    } 
     
 }

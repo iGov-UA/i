@@ -1,14 +1,18 @@
 package org.igov.model.action.execute.item;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.activiti.engine.impl.util.json.JSONArray;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
 import org.igov.model.core.GenericEntityDao;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
-public class ActionExecuteOldDAOImpl extends GenericEntityDao<ActionExecuteOld>
-		implements ActionExecuteOldDAO {
+public class ActionExecuteOldDAOImpl extends GenericEntityDao<ActionExecuteOld>	implements ActionExecuteOldDAO {
 
 	protected ActionExecuteOldDAOImpl() {
 		super(ActionExecuteOld.class);
@@ -42,6 +46,32 @@ public class ActionExecuteOldDAOImpl extends GenericEntityDao<ActionExecuteOld>
 		
 		getSession().saveOrUpdate(actionExecute);
 		return actionExecute.getId();
-	}
+	}	
 
+	@Transactional
+	@Override
+	public List<ActionExecuteOld> getActionExecute(Integer nRowsMax, String sMethodMask, String asID_Status, Integer nTryMax, Long nID) {
+		List<ActionExecuteOld> resList = new ArrayList<ActionExecuteOld>();
+		
+		Criteria criteria = getSession().createCriteria(ActionExecuteOld.class);
+		criteria.setMaxResults(nRowsMax);
+		if(nTryMax!=null)
+			criteria.add(Restrictions.le("nTry", nTryMax));
+		if(nID!=null)
+			criteria.add(Restrictions.eq("nID", nID));
+		if(asID_Status!=null){			
+			JSONArray statuses = new JSONArray(asID_Status);			
+			for(int i=0;i<statuses.length();i++){
+				criteria.add(Restrictions.in("nID_ActionExecuteStatus", (Object[]) statuses.get(i)));
+			}
+		}
+		if(sMethodMask!=null){
+			if(sMethodMask.contains("*"))			
+				criteria.add(Restrictions.like("sMethod", sMethodMask.replace("*", "%")));
+			else
+				criteria.add(Restrictions.eq("sMethod", sMethodMask));
+		}
+		resList = criteria.list();
+		return resList;
+	}
 }
