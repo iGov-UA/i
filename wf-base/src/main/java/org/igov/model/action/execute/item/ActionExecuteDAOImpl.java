@@ -47,7 +47,7 @@ public class ActionExecuteDAOImpl extends GenericEntityDao<ActionExecute> implem
 		return actionExecute.getId();
 	}
 
-	@Override
+/*	@Override
 	public List<ActionExecute> getActionExecute(Integer nRowsMax, String sMethodMask, String asID_Status, Long nTryMax, Long nID) {
 		List<ActionExecute> resList = new ArrayList<ActionExecute>();
 		
@@ -72,5 +72,5 @@ public class ActionExecuteDAOImpl extends GenericEntityDao<ActionExecute> implem
 		criteria.add(Restrictions.eq("nID", nID));
 		resList = criteria.list();
 		return resList;
-	}
+	}*/
 }

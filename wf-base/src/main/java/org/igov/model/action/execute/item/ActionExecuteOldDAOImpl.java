@@ -47,7 +47,7 @@ public class ActionExecuteOldDAOImpl extends GenericEntityDao<ActionExecuteOld>	
 		return actionExecute.getId();
 	}
 
-	@Override
+	/*@Override
 	public List<ActionExecuteOld> getActionExecute(Integer nRowsMax, String sMethodMask, String asID_Status, Long nTryMax, Long nID) {
 		List<ActionExecuteOld> resList = new ArrayList<ActionExecuteOld>();
 		
@@ -72,5 +72,5 @@ public class ActionExecuteOldDAOImpl extends GenericEntityDao<ActionExecuteOld>	
 		criteria.add(Restrictions.eq("nID", nID));
 		resList = criteria.list();
 		return resList;
-	}
+	}*/
 }
