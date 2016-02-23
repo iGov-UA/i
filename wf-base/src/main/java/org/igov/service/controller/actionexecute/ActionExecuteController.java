@@ -58,10 +58,10 @@ public class ActionExecuteController {
     @ResponseBody
     ResponseEntity getActionExecute(
     		 @ApiParam(value = "число строк максимальное (максимально - не более 1000)", required = false) @RequestParam(value = "nRowsMax", required = false, defaultValue = "10") Integer nRowsMax,
-    		 @ApiParam(value = "выбрать только с указанной маской метода", required = false) @RequestParam(value = "sMethodMask ", required = false) String sMethodMask,
+    		 @ApiParam(value = "выбрать только с указанной маской метода", required = false) @RequestParam(value = "sMethodMask", required = false) String sMethodMask,
              @ApiParam(value = "булевый, true=только из олд-таблицы, иначе только из основной (по умолчанию из основной", required = false) @RequestParam(value = "bOldOnly", required = false, defaultValue = "false") Boolean bOldOnly,
              @ApiParam(value = "выбрать только с указанными статусами (массив JSON)", required = false) @RequestParam(value = "asID_Status", required = false) String asID_Status,
-             @ApiParam(value = "выбрать только те, у которых число попыток не превышает указанный лимит (иначе с любым числом попыток)", required = false) @RequestParam(value = "nTryMax", required = false) Long nTryMax,
+             @ApiParam(value = "выбрать только те, у которых число попыток не превышает указанный лимит (иначе с любым числом попыток)", required = false) @RequestParam(value = "nTryMax", required = false) Integer nTryMax,
     		 @ApiParam(value = "номер-ИД записи", required = false) @RequestParam(value = "nID", required = false) Long nID){
         	
     		ResponseEntity<String> res = null;
@@ -78,10 +78,10 @@ public class ActionExecuteController {
     @ResponseBody
     ResponseEntity runActionExecute(
     		 @ApiParam(value = "число строк максимальное (максимально - не более 1000)", required = false) @RequestParam(value = "nRowsMax", required = false, defaultValue = "10") Integer nRowsMax,
-    		 @ApiParam(value = "выбрать только с указанной маской метода", required = false) @RequestParam(value = "sMethodMask ", required = false) String sMethodMask,
+    		 @ApiParam(value = "выбрать только с указанной маской метода", required = false) @RequestParam(value = "sMethodMask", required = false) String sMethodMask,
              @ApiParam(value = "булевый, true=только из олд-таблицы, иначе только из основной (по умолчанию из основной", required = false) @RequestParam(value = "bOldOnly", required = false, defaultValue = "false") Boolean bOldOnly,
              @ApiParam(value = "выбрать только с указанными статусами (массив JSON)", required = false) @RequestParam(value = "asID_Status", required = false) String asID_Status,
-             @ApiParam(value = "выбрать только те, у которых число попыток не превышает указанный лимит (иначе с любым числом попыток)", required = false) @RequestParam(value = "nTryMax", required = false) Long nTryMax,
+             @ApiParam(value = "выбрать только те, у которых число попыток не превышает указанный лимит (иначе с любым числом попыток)", required = false) @RequestParam(value = "nTryMax", required = false) Integer nTryMax,
     		 @ApiParam(value = "номер-ИД записи", required = false) @RequestParam(value = "nID", required = false) Long nID){
         
         return JsonRestUtils.toJsonResponse(null);
@@ -93,10 +93,10 @@ public class ActionExecuteController {
     @ResponseBody
     ResponseEntity moveActionExecute(
     		@ApiParam(value = "число строк максимальное (максимально - не более 1000)", required = false) @RequestParam(value = "nRowsMax", required = false, defaultValue = "10") Integer nRowsMax,
-    		@ApiParam(value = "выбрать только с указанной маской метода", required = false) @RequestParam(value = "sMethodMask ", required = false) String sMethodMask,
+    		@ApiParam(value = "выбрать только с указанной маской метода", required = false) @RequestParam(value = "sMethodMask", required = false) String sMethodMask,
     		@ApiParam(value = "булевый, true=только из олд-таблицы, иначе только из основной (по умолчанию из основной", required = false) @RequestParam(value = "bOldOnly", required = false, defaultValue = "false") Boolean bOldOnly,
     		@ApiParam(value = "выбрать только с указанными статусами (массив JSON)", required = false) @RequestParam(value = "asID_Status", required = false) String asID_Status,
-    		@ApiParam(value = "выбрать только те, у которых число попыток не превышает указанный лимит (иначе с любым числом попыток)", required = false) @RequestParam(value = "nTryMax", required = false) Long nTryMax,
+    		@ApiParam(value = "выбрать только те, у которых число попыток не превышает указанный лимит (иначе с любым числом попыток)", required = false) @RequestParam(value = "nTryMax", required = false) Integer nTryMax,
     		@ApiParam(value = "номер-ИД записи", required = false) @RequestParam(value = "nID", required = false) Long nID,
     		@ApiParam(value = "булевый, если указан true, то переместить из олд-а в основную (по умолчанию наоборот)", required = false) @RequestParam(value = "bBack", required = false, defaultValue="false") Boolean bBack){
     	
