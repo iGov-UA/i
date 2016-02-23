@@ -531,18 +531,72 @@ public class SubjectController {
 
         return JsonRestUtils.toJsonResponse(serverOpt.get());
     }
-
+   
+     /**
+     * 
+     * @param snID_Subject                 - Строка ИД субъекта (автоматически добавляемые параметр, опциональный) 
+     * @param sMailTo                      - Строка адрес электронной почты (опциональный)
+     * @param sPhone                       - Строка номер телефона (опциональный)
+     * @return                             - Возвращает список синхронизированных контактов
+     * @throws CommonServiceException 
+     */
+    @ApiOperation(value="Синхронизация контактов", notes = "#### Пример: \n"
+            + "https://test.igov.org.ua/wf/service/subject/syncContacts?snID_Subject=2&sMailTo=test44@gmail.com&sPhone=654 \n"
+            + "Ответ: \n"
+            + "HTTP Status: 200 \n"
+            + "\n```json\n"
+            + "["
+            + "{"
+            + "\"subject\":{ \n"
+            + "\"sID\":\"2872618515\",\n"
+            + "\"sLabel\":\"Белявцев Владимир Владимирович\", \n"
+            + "\"sLabelShort\":\"Белявцев В. В.\", \n"
+            + "\"nID\":2 \n"
+            + "},"
+            + "\"subjectContactType\": \n"
+            + "{ \n"
+            + "\"sName_EN\":\"Email\", \n"
+            + "\"sName_UA\":\"Електрона адреса\", \n"
+            + "\"sName_RU\":\"Электнонный адрес\", \n"
+            + "\"nID\":1 \n"
+            + "}, \n"
+            + "\"sValue\":\"test44@gmail.com\", \n"
+            + "\"sDate\":\"2016-02-23 19:57:56.279\", \n"
+            + "\"nID\":1003 \n"
+            + "}, \n"
+            + "{ \n"
+            + "\"subject\": {\n"
+            + "\"sID\":\"2872618515\", \n"
+            + "\"sLabel\":\"Белявцев Владимир Владимирович\", \n"
+            + "\"sLabelShort\":\"Белявцев В. В.\", \n"
+            + "\"nID\":2 \n"
+            + "}, \n"
+            + "\"subjectContactType\": { \n"
+            + "\"sName_EN\":\"Phone\", \n"
+            + "\"sName_UA\":\"Телефон\", \n"
+            + "\"sName_RU\":\"Телефон\", \n"
+            + "\"nID\":0 \n"
+            + "}, \n"
+            + "\"sValue\":\"654\", \n"
+            + "\"sDate\":\"2016-02-23 19:58:41.325\", \n"
+            + "\"nID\":1002"
+            + "} \n"
+            + "] \n"
+            + "\n```\n")
     @RequestMapping(value = "/syncContacts", method = RequestMethod.GET)
     public @ResponseBody
-    ResponseEntity syncContacts(
-            @ApiParam(value = "Строка адрес электронной почты", required = true) @RequestParam(value = "sMailTo", required = true) String sMailTo,
-            @ApiParam(value = "Строка ИД субьекта", required = true) @RequestParam(value = "snID_Subject", required = true) String snID_Subject
-    ) throws CommonServiceException {
-        LOG.info("(Вход в contactsService sMailTo {}, snID_Subject {})", sMailTo, snID_Subject);
-        SubjectContact oSubjectContact = subjectService.syncContactsService(snID_Subject, sMailTo);
-
-        return JsonRestUtils.toJsonResponse(oSubjectContact);
+    ResponseEntity syncContacts (
+       @ApiParam(value="Строка ИД субъекта (автоматически добавляемые параметр, опциональный)", required = false) @RequestParam(value="snID_Subject", required = false) String snID_Subject,
+       @ApiParam(value="Строка адрес электронной почты", required = false) @RequestParam(value="sMailTo", required=false) String sMailTo,
+       @ApiParam(value="Строка номер телефона", required = false) @RequestParam(value="sPhone", required=false) String sPhone
+    ) throws CommonServiceException
+    {
+        LOG.info("(Вход в contactsService sMailTo {}, snID_Subject {}, sPhone {})", sMailTo, snID_Subject, sPhone);
+        List<SubjectContact> listContacts = subjectService.syncContactsService(snID_Subject, sMailTo, sPhone);
+        
+       return JsonRestUtils.toJsonResponse(listContacts);
     }
+    
 
     @ApiOperation(value = "Получение аккаунтов субъектов", notes = "Возвращает список аккаунтов субъектов, согласно заданных параметров. "
             + "Обязательно должен быть задан один из параметров: **ID субъекта** или **Логин**. Если заданы оба, **Логин** игнорируется\n"
