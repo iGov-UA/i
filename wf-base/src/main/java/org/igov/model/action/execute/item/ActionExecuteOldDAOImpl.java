@@ -50,7 +50,7 @@ public class ActionExecuteOldDAOImpl extends GenericEntityDao<ActionExecuteOld>	
 
 	@Transactional
 	@Override
-	public List<ActionExecuteOld> getActionExecute(Integer nRowsMax, String sMethodMask, String asID_Status, Long nTryMax, Long nID) {
+	public List<ActionExecuteOld> getActionExecute(Integer nRowsMax, String sMethodMask, String asID_Status, Integer nTryMax, Long nID) {
 		List<ActionExecuteOld> resList = new ArrayList<ActionExecuteOld>();
 		
 		Criteria criteria = getSession().createCriteria(ActionExecuteOld.class);
