@@ -63,8 +63,11 @@ public class SubjectOrganDaoIml extends GenericEntityDao<SubjectOrgan> implement
         if (cityID != null && cityID > 0)
             crt.add(Restrictions.eq("cityId", cityID));
 
-        if (isNotBlank(sID_Place_UA) && sID_Place_UA!=null && !"".equals(sID_Place_UA.trim()))
-            crt.add(Restrictions.eq("uaId", sID_Place_UA));
+        if (isNotBlank(sID_Place_UA) && sID_Place_UA!=null && !"".equals(sID_Place_UA.trim())){
+            //crt.add(Restrictions.eq("uaId", sID_Place_UA));
+            crt.add(Restrictions.eqOrIsNull("uaId", sID_Place_UA));
+            //crt.add(Restrictions.eq("uaId", ""));
+        }
 
         return crt.list();
     }
