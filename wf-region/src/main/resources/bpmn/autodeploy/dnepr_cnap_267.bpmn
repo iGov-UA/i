@@ -6,9 +6,11 @@
       <extensionElements>
         <activiti:formProperty id="area" name="Оберіть область" type="enum" required="true">
           <activiti:value id="dn" name="Дніпропетровська"></activiti:value>
+          <activiti:value id="tr" name="Тернопільська"></activiti:value>
+          <activiti:value id="hm" name="Хмельницька"></activiti:value>
           <activiti:value id="cn" name="Чернігівська"></activiti:value>
           <activiti:value id="cs" name="Черкаська"></activiti:value>
-        </activiti:formProperty>
+       </activiti:formProperty>
         <activiti:formProperty id="info" name="Зверніть увагу: ця послуга є платною, при заповненні полів треба буде завантажити документ, що засвідчує внесення плати." type="label" default="Ви можете здійснити оплату зручним для Вас способом за  &lt;a href=&quot;https://docs.google.com/document/d/1yiEIf6rFHUJ1Xv0qaTyvWOG_pDvHjyBN4O5W3SgILnA/edit&quot; target=&quot;_blank&quot;&gt;реквізитами&lt;/a&gt; "></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
@@ -99,8 +101,8 @@
           <activiti:value id="thing" name="штука|шт"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="quantity" name="Кількість товару" type="long" required="true"></activiti:formProperty>
-        <activiti:formProperty id="cost_usd" name="Вартість товару (тис.дол.США)" type="long" required="true"></activiti:formProperty>
-        <activiti:formProperty id="cost_currency" name="Вартість товару (в тис.одиницях валюти контракту)" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="cost_usd" name="Вартість товару (тис.дол.США);данні потрібно подавати з точністю до 5 знаків після коми" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="cost_currency" name="Вартість товару (в тис.одиницях валюти контракту);данні потрібно подавати з точністю до 5 знаків після коми" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="sCountry_0" name="Країна призначення" type="select" required="true"></activiti:formProperty>
         <activiti:formProperty id="sID_UA_Country_0" name="Код країни призначення;(заповниться автоматично)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sCountry_1" name="Країна імпортера (експортера)" type="select"></activiti:formProperty>
@@ -182,10 +184,12 @@
         <activiti:formProperty id="markers21" name="Якщо експорт то додати документ" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_21&quot;:{&quot;aField_ID&quot;:[&quot;pogodgennya&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;type_lic&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'export'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <userTask id="usertask1" name="перевірка вхідних данних, прийняття рішення про надання послуги" activiti:candidateGroups="zed">
+    <userTask id="usertask1" name="перевірка вхідних данних, прийняття рішення про надання послуги" activiti:candidateGroups="zed_${group}">
       <extensionElements>
          <activiti:formProperty id="area" name="Оберіть область" type="enum" writable="false">
           <activiti:value id="dn" name="Дніпропетровська"></activiti:value>
+          <activiti:value id="tr" name="Тернопільська"></activiti:value>
+          <activiti:value id="hm" name="Хмельницька"></activiti:value>
           <activiti:value id="cn" name="Чернігівська"></activiti:value>
           <activiti:value id="cs" name="Черкаська"></activiti:value>
         </activiti:formProperty>
@@ -353,10 +357,12 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask2" name="рішення" activiti:candidateGroups="zed">
+    <userTask id="usertask2" name="рішення" activiti:candidateGroups="zed_${group}">
    <extensionElements>
          <activiti:formProperty id="area" name="Оберіть область" type="enum" writable="false">
           <activiti:value id="dn" name="Дніпропетровська"></activiti:value>
+          <activiti:value id="tr" name="Тернопільська"></activiti:value>
+          <activiti:value id="hm" name="Хмельницька"></activiti:value>
           <activiti:value id="cn" name="Чернігівська"></activiti:value>
           <activiti:value id="cs" name="Черкаська"></activiti:value>
         </activiti:formProperty>
@@ -642,23 +648,41 @@ var per3 = 'sAdress'
 var per4 = ' '
 var per5 = ' '
 var per6 = 'sWorkTime'
+var per7 = 'group'
 if (execution.getVariable('area') == 'dn'){
 per1 = 'darja.grek@gmail.com'
 per2 = 'Департамент економічного розвитку Дніпропетровської обласної державної адміністрації'
 per3 = 'м. Дніпропетровськ, просп. Карла Маркса, 75'
 per6 = "Режим роботи: Понеділок, середа з 9.00 до 18.00&lt;br /&gt; Вівторок, четвер з 9.00 до 20.00&lt;br /&gt; П'ятниця з 9.00 до 16.45&lt;br /&gt; Субота з 10.00 до 16.00&lt;br /&gt; Вихідний - Неділя&lt;br /&gt;"
+per7 = 'dnepr'
 }
 if (execution.getVariable('area') == 'cn'){
 per1 = 'darja.grek@gmail.com'
 per2 = 'Департамент економічного розвитку Чернігівської обласної державної адміністрації'
 per3 = 'м.Чернігів, вул. Шевченка, 7'
 per6 = "Режим роботи: Понеділок-П'ятниця з 8:00 - 17:00&lt;br /&gt; Обідня перерва: 13:00 - 14:00&lt;br /&gt; Вихідні дні: субота, неділя&lt;br /&gt;"
+per7 = 'chernigov'
 }
 if (execution.getVariable('area') == 'cs'){
 per1 = 'darja.grek@gmail.com'
 per2 = 'Департамент регіонального розвитку Черкаської обласної державної адміністрації'
 per3 = 'м. Черкаси, бул. Шевченка 185, каб. 403.'
 per6 = "Режим роботи: Понеділок-Четверг з 09:00 - 18:15&lt;br /&gt;Пятниця з 09:00 - 17:00&lt;br /&gt; Обідня перерва: 13:00 - 14:00&lt;br /&gt; Вихідні дні: субота, неділя&lt;br /&gt;"
+per7 = 'chercassi'
+}
+if (execution.getVariable('area') == 'tr'){
+per1 = 'darja.grek@gmail.com'
+per2 = 'Департамент економічного розвитку, інвестиційної діяльності та міжнародного співробітництва Тернопільської облдержадміністрації'
+per3 = 'м. Тернопіль, вул. Грушевського, 8'
+per6 = "Режим роботи: Понеділок-Четверг з 08:00 - 17:15&lt;br /&gt;Пятниця з 08:00 - 16:00&lt;br /&gt; Обідня перерва: 13:00 - 14:00&lt;br /&gt; Вихідні дні: субота, неділя&lt;br /&gt;"
+per7 = 'ternopil'
+}
+if (execution.getVariable('area') == 'hm'){
+per1 = 'darja.grek@gmail.com'
+per2 = 'Департамент економічного розвитку, інвестиційної діяльності та міжнародного співробітництва Тернопільської облдержадміністрації'
+per3 = 'м. Черкаси, бул. Шевченка 185, каб. 403.'
+per6 = "Режим роботи: Понеділок-Четверг з 09:00 - 18:15&lt;br /&gt;Пятниця з 09:00 - 17:00&lt;br /&gt; Обідня перерва: 13:00 - 14:00&lt;br /&gt; Вихідні дні: субота, неділя&lt;br /&gt;"
+per7 = 'khmelnitsky'
 }
 if(execution.getVariable('visnovok') != null){
 per4 = "4. Висновок експертної організації про відповідність контрактної ціни рівню цін кон'юнктури ринку на товари (роботи, послуги), що поставляються (виконуються, надаються) за конкретною зовнішньоекономічною операцією."
@@ -672,6 +696,7 @@ execution.setVariable('sAdress', per3)
 execution.setVariable('visnovok_js', per4)
 execution.setVariable('other_docs_js', per5)
 execution.setVariable('sWorkTime', per6)
+execution.setVariable('group', per7)
 </script>
 </scriptTask>
     <sequenceFlow id="flow12" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
