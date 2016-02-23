@@ -1,12 +1,14 @@
 package org.igov.model.subject.organ;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.igov.model.core.NamedEntity;
 
 import javax.persistence.*;
 import org.igov.model.subject.Subject;
+import org.igov.model.subject.SubjectContact;
 
 @javax.persistence.Entity
 @AttributeOverrides({ @AttributeOverride(name = "name",
@@ -30,6 +32,8 @@ public class SubjectOrgan extends NamedEntity {
     @JsonProperty(value = "sNameFull")
     @Column(name = "sNameFull", nullable = true)
     private String sNameFull;
+    
+    private transient List<SubjectContact> aContact;
 
     public Subject getoSubject() {
         return oSubject;
@@ -61,6 +65,14 @@ public class SubjectOrgan extends NamedEntity {
 
     public void setsNameFull(String sNameFull) {
         this.sNameFull = sNameFull;
+    }
+    
+    public List<SubjectContact> getaContact() {
+        return aContact;
+    }
+
+    public void setaContact(List<SubjectContact> aContact) {
+        this.aContact = aContact;
     }
 
 }

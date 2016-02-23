@@ -84,7 +84,7 @@
         <activiti:formProperty id="markers16" name="маркер чи перебувають у шлюбі" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_16&quot;:{&quot;aField_ID&quot;:[&quot;doc_marriage&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;marriage&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <userTask id="usertask1" name="обробка вхідних данних" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask1" name="обробка вхідних данних" activiti:candidateGroups="Children_Tern">
       <extensionElements>
         <activiti:formProperty id="rName" name="Район" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -133,7 +133,8 @@
           <activiti:value id="duplicate_change" name="видача дублікату посвідчення у разі пошкодження посвідчення, зміни прізвища, імені, по-батькові, встановлення розбіжностей у записах"></activiti:value>
           <activiti:value id="extension_student" name="продовження строку дії посвідчень багатодітної сім'ї у разі навчання дитини за денною формою після 18-річного віку"></activiti:value>
           <activiti:value id="add_foto_14_years" name="вклеювання фотографії у посвідчення дитини з багатодітеої сім'ї у зв'язку з досягненням 14-річного віку"></activiti:value>
-          <activiti:value id="extension_new_child" name="продовження строку дії посвідчень багатодітної сім'ї у зв'язку з народженням дитини"></activiti:value> </activiti:formProperty>
+          <activiti:value id="extension_new_child" name="продовження строку дії посвідчень багатодітної сім'ї у зв'язку з народженням дитини"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="reestr_numb" name="Реєстраційний номер" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="date_reestr" name="Укажіть дату реєстрації звернення" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="pib_admin" name="Прізвище та ініціали адміністратора" type="string" default=" "></activiti:formProperty>
@@ -159,7 +160,7 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask2" name="відправлення результату послуги" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask2" name="відправлення результату послуги" activiti:candidateGroups="Children_Tern">
       <extensionElements>
         <activiti:formProperty id="rName" name="Район" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -208,7 +209,8 @@
           <activiti:value id="duplicate_change" name="видача дублікату посвідчення у разі пошкодження посвідчення, зміни прізвища, імені, по-батькові, встановлення розбіжностей у записах"></activiti:value>
           <activiti:value id="extension_student" name="продовження строку дії посвідчень багатодітної сім'ї у разі навчання дитини за денною формою після 18-річного віку"></activiti:value>
           <activiti:value id="add_foto_14_years" name="вклеювання фотографії у посвідчення дитини з багатодітеої сім'ї у зв'язку з досягненням 14-річного віку"></activiti:value>
-          <activiti:value id="extension_new_child" name="продовження строку дії посвідчень багатодітної сім'ї у зв'язку з народженням дитини"></activiti:value></activiti:formProperty>
+          <activiti:value id="extension_new_child" name="продовження строку дії посвідчень багатодітної сім'ї у зв'язку з народженням дитини"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="reestr_numb" name="Реєстраційний номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_reestr" name="Укажіть дату реєстрації звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="pib_admin" name="Прізвище та ініціали адміністратора" type="string" writable="false"></activiti:formProperty>

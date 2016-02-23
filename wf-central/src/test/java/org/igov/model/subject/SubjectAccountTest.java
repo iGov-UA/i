@@ -163,8 +163,8 @@ public class SubjectAccountTest {
 		.findByIdExpected(test_nID_SubjectAccountType2);
 
 	// Проверка выборки на основании данных SubjectAccount.csv
-	getSubjectAccounts(1L, null, null, null, 4);
-	getSubjectAccounts(1L, "Логин01", null, null, 4);
+	getSubjectAccounts(1L, null, null, null, 5);
+	getSubjectAccounts(1L, "Логин01", null, null, 5);
 	getSubjectAccounts(null, "Логин01", null, null, 3);
 	getSubjectAccounts(1L, null, 1L, null, 2);
 	getSubjectAccounts(1L, null, 1L, testSubjectAccountType2, 1);

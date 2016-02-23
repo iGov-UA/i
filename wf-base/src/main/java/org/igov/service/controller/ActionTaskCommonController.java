@@ -14,12 +14,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -46,7 +43,6 @@ import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
-import org.activiti.engine.task.NativeTaskQuery;
 import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskInfo;
 import org.activiti.engine.task.TaskInfoQuery;
@@ -72,17 +68,12 @@ import org.igov.util.JSON.JsonDateTimeSerializer;
 import org.igov.util.Tool;
 import org.igov.util.ToolCellSum;
 import org.igov.util.JSON.JsonRestUtils;
-import org.joda.time.format.DateTimeFormatter;
 import org.json.simple.JSONValue;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -1674,6 +1665,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 			boolean bFilterHasTicket = false;
 			boolean bIncludeAlienAssignedTasks = false;
 			
+			LOG.info("Current element {}", elem.toString());
 			if (elem.has("sFilterStatus")) {
 				sFilterStatus = (String) elem.get("sFilterStatus");
 			} else {
@@ -1681,22 +1673,23 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 			}
 			if (elem.has("bFilterHasTicket")) {
 				bFilterHasTicket = (Boolean)elem.get("bFilterHasTicket");
+				LOG.info("set bFilterHasTicket to {}", bFilterHasTicket);
 			}
 			if (elem.has("bIncludeAlienAssignedTasks")) {
 				bIncludeAlienAssignedTasks = (Boolean)elem.get("bIncludeAlienAssignedTasks");
 			}
 			
-			Object taskQuery = oActionTaskService.createQuery(sLogin, bIncludeAlienAssignedTasks, null, sFilterStatus,
-					groupsIds);
+			LOG.info("Selecting tasks sLogin:{} sFilterStatus:{} bIncludeAlienAssignedTasks:{}", sLogin, sFilterStatus, bIncludeAlienAssignedTasks);
+			List<TaskInfo> taskQuery = oActionTaskService.returnTasksFromCache(sLogin, sFilterStatus, bIncludeAlienAssignedTasks, groupsIds);
 			
-			long totalNumber = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery)taskQuery).count() : oActionTaskService.getCountOfTasksForGroups(groupsIds);
+			long totalNumber = taskQuery.size();
+			LOG.info("Retreived {} tasks", taskQuery.size());
 			
 			if (bFilterHasTicket){
-				Map<String, FlowSlotTicket> mapOfTickets = new HashMap<String, FlowSlotTicket>();
-				List<TaskInfo> tasks = oActionTaskService.getTasksWithTicketsFromQuery(taskQuery, 0, Long.valueOf(totalNumber).intValue(), bFilterHasTicket, mapOfTickets);
+				LOG.info("Removing tasks which don't have tickets");
+				List<TaskInfo> tasks = oActionTaskService.matchTasksWithTicketsFromQuery(sLogin, bFilterHasTicket, sFilterStatus, taskQuery);
 				totalNumber = tasks.size();
 			}
-			
 			
 			Map<String, Object> currRes = new HashMap<String, Object>();
 			currRes.put("nCount", totalNumber);	 
