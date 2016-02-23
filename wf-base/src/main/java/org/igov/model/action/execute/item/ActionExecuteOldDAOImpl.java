@@ -9,6 +9,7 @@ import org.hibernate.criterion.Restrictions;
 import org.igov.model.core.GenericEntityDao;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public class ActionExecuteOldDAOImpl extends GenericEntityDao<ActionExecuteOld>	implements ActionExecuteOldDAO {
@@ -47,6 +48,7 @@ public class ActionExecuteOldDAOImpl extends GenericEntityDao<ActionExecuteOld>	
 		return actionExecute.getId();
 	}	
 
+	@Transactional
 	@Override
 	public List<ActionExecuteOld> getActionExecute(Integer nRowsMax, String sMethodMask, String asID_Status, Long nTryMax, Long nID) {
 		List<ActionExecuteOld> resList = new ArrayList<ActionExecuteOld>();
@@ -69,7 +71,6 @@ public class ActionExecuteOldDAOImpl extends GenericEntityDao<ActionExecuteOld>	
 			else
 				criteria.add(Restrictions.eq("sMethod", sMethodMask));
 		}
-		criteria.add(Restrictions.eq("nID", nID));
 		resList = criteria.list();
 		return resList;
 	}
