@@ -1,5 +1,5 @@
 ## In order to config WebStorm for developing purposes you should:
-### Creating nodejs (server) run configurations:
+### Creating grunt (client) run configurations:
 
 grunt run configuration will look like that:
 
