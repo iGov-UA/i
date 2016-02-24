@@ -13,6 +13,13 @@
         <activiti:formProperty id="bankId_scan_inn" name="сканована копія ІПН" type="file" default="завантажується автоматично" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdressBuilding" name="Адреса будівлі, щодо якої запрошується дозвіл на знесення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="fSvidoztvoNaPravoSobstvennosti" name="Завантажте свідоцтво про право власності на будинок" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="notice" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
+        <activiti:formProperty id="sPostName" name="назва посади відповідальної особи адміністартивного органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameRajon" name="назва району адміністартивного органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOblast" name="назва області адміністартивного органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sFioClerk" name="ПІБ відповідальної особи адміністартивного органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sEmailClerk" name="пошта посадовця" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -37,6 +44,11 @@
           <activiti:value id="reject" name="відмовити у розгляданні дозволу"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відмови внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sPostName" name="назва посади відповідальної особи адміністартивного органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameRajon" name="назва району адміністартивного органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOblast" name="назва області адміністартивного органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sFioClerk" name="ПІБ відповідальної особи адміністартивного органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sEmailClerk" name="пошта посадовця" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -45,7 +57,7 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask7"></sequenceFlow>
+    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow3" sourceRef="servicetask7" targetRef="servicetask2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow4" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
@@ -72,6 +84,11 @@
           <activiti:value id="reject" name="відмовити у видачі дозволу"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment_2" name="У разі відмови внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sPostName" name="назва посади відповідальної особи адміністартивного органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameRajon" name="назва району адміністартивного органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOblast" name="назва області адміністартивного органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sFioClerk" name="ПІБ відповідальної особи адміністартивного органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sEmailClerk" name="пошта посадовця" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -86,7 +103,7 @@
     <serviceTask id="servicetask2" name="Повідомлення посадовця " activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="To">
-          <activiti:expression>${sPost}</activiti:expression>
+          <activiti:expression>${sEmailClerk}</activiti:expression>
         </activiti:field>
         <activiti:field name="From">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -111,7 +128,7 @@
           <activiti:string><![CDATA[Звернення на тему: надання дозволу на знесення аварійних будівель]]></activiti:string>
         </activiti:field>
         <activiti:field name="To">
-          <activiti:expression>${sPost}</activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="From">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -129,7 +146,7 @@
     <serviceTask id="servicetask4" name="Повідомлення про відмову" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="To">
-          <activiti:expression>${sPost}</activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="From">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -150,7 +167,7 @@
     <serviceTask id="servicetask5" name="Повідомлення про отримання дозволу на знесення аварійних будівель" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="To">
-          <activiti:expression>${sPost}</activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="From">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -161,7 +178,7 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення успішно розглянуто та оформлено відповідний дозвіл на знесення аварійних будівель. Зверніться до сільської ради, щоб отримати відповідний документ.&lt;br /&gt;
+Ваше звернення успішно розглянуто та оформлено відповідний дозвіл на знесення аварійних будівель. Зверніться особисто до сільської ради з оригіналом паспорту, щоб отримати відповідний документ.&lt;br /&gt;
 [pattern/mail/_common_signature.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -171,7 +188,7 @@
     <serviceTask id="servicetask6" name="Повідомлення про  відмову" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="To">
-          <activiti:expression>${sPost}</activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="From">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -205,7 +222,7 @@
     <serviceTask id="servicetask7" name=" Повідомлення громадянина  про успішну реєстрацію звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="To">
-          <activiti:expression>${sPost}</activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="From">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -224,6 +241,30 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow17" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
+    <scriptTask id="scripttask1" name="Визначення параметрів email і т.ін. відповідальної особи" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var per1 = 'sPostName'
+var per2 = 'sNameRajon'
+var per3 = 'sNameOblast'
+var per4 = 'sFioClerk '
+var per5 = 'sEmailClerk '
+
+if (1==1 || execution.getVariable('sEmailClerk') == 'dn')
+{
+	per1 = 'Голові сільської ради'
+	per2 = 'в Макарівському районі '
+	per3 = 'Київської області'
+	per4 = 'Пелешок Юлії Василівни'
+	per5 =  'smoktii.igov@gmail.com'
+}
+			
+execution.setVariable('sPostName', per1)
+execution.setVariable('sNameRajon', per2)
+execution.setVariable('sNameOblast', per3)
+execution.setVariable('sFioClerk', per4)
+execution.setVariable('sEmailClerk', per5)      
+     </script>
+    </scriptTask>
+    <sequenceFlow id="flow18" sourceRef="scripttask1" targetRef="servicetask7"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_znes_bud_393">
     <bpmndi:BPMNPlane bpmnElement="znes_bud_393" id="BPMNPlane_znes_bud_393">
@@ -273,18 +314,21 @@
         <omgdc:Bounds height="35.0" width="35.0" x="140.0" y="180.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
-        <omgdc:Bounds height="71.0" width="171.0" x="240.0" y="92.0"></omgdc:Bounds>
+        <omgdc:Bounds height="79.0" width="171.0" x="240.0" y="92.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="68.0" width="190.0" x="151.0" y="3.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="95.0" y="127.0"></omgdi:waypoint>
         <omgdi:waypoint x="120.0" y="127.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="225.0" y="127.0"></omgdi:waypoint>
-        <omgdi:waypoint x="240.0" y="127.0"></omgdi:waypoint>
+        <omgdi:waypoint x="172.0" y="92.0"></omgdi:waypoint>
+        <omgdi:waypoint x="246.0" y="71.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="411.0" y="127.0"></omgdi:waypoint>
+        <omgdi:waypoint x="411.0" y="131.0"></omgdi:waypoint>
         <omgdi:waypoint x="430.0" y="127.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
@@ -350,6 +394,10 @@
       <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
         <omgdi:waypoint x="571.0" y="127.0"></omgdi:waypoint>
         <omgdi:waypoint x="590.0" y="127.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
+        <omgdi:waypoint x="246.0" y="71.0"></omgdi:waypoint>
+        <omgdi:waypoint x="325.0" y="92.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
