@@ -67,7 +67,8 @@ public class SubjectOrganDaoIml extends GenericEntityDao<SubjectOrgan> implement
             //crt.add(Restrictions.eq("uaId", sID_Place_UA));
             //crt.add(Restrictions.eqOrIsNull("uaId", sID_Place_UA));
             //crt.add(Restrictions.or(Restrictions.isNull("uaId"), Restrictions.isEmpty("uaId")));
-            crt.add(Restrictions.or(Restrictions.or(Restrictions.isNull("uaId"), Restrictions.isEmpty("uaId")), Restrictions.eq("uaId", sID_Place_UA)));
+            //crt.add(Restrictions.or(Restrictions.or(Restrictions.isNull("uaId"), Restrictions.isEmpty("uaId")), Restrictions.eqOrIsNull("uaId", sID_Place_UA)));
+            crt.add(Restrictions.or(Restrictions.isEmpty("uaId"), Restrictions.eqOrIsNull("uaId", sID_Place_UA)));
             //crt.add(Restrictions.eq("uaId", ""));
         }
 
