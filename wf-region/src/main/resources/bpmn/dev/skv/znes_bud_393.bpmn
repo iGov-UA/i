@@ -21,13 +21,13 @@
     <userTask id="usertask1" name="Прийняття рішення щодо розгляду надання дозволу">
       <extensionElements>
         <activiti:formProperty id="sAdressBuilding" name="Адреса будівлі, щодо якої запрошується дозвіл на знесення" type="string" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false" ></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" writable="false" ></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Серія та номер паспорту" type="string" writable="false" ></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Серія та номер паспорту" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="сканована копія паспорту" type="file" default="завантажується автоматично" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false" ></activiti:formProperty>
-        <activiti:formProperty id="fSvidoztvoNaPravoSobstvennosti" name="Завантажте свідоцтво про право власності на будинок" type="file" required="true" writable="false" ></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fSvidoztvoNaPravoSobstvennosti" name="Завантажте свідоцтво про право власності на будинок" type="file" writable="false" required="true"></activiti:formProperty>
         <activiti:formProperty id="decision_1" name="Прийняте рішення щодо розгляду надання дозволу" type="enum" required="true">
           <activiti:value id="accept" name="розглянути дозвіл"></activiti:value>
           <activiti:value id="reject" name="відмовити у розгляданні дозволу"></activiti:value>
@@ -46,15 +46,15 @@
     <sequenceFlow id="flow6" sourceRef="servicetask4" targetRef="endevent1"></sequenceFlow>
     <userTask id="usertask2" name="Друк заяви, оформлення дозволу">
       <extensionElements>
-        <activiti:formProperty id="sAdressBuilding" name="Адреса будівлі, щодо якої запрошується дозвіл на знесення" type="string" required="true" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdressBuilding" name="Адреса будівлі, щодо якої запрошується дозвіл на знесення" type="string" writable="false" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Серія та номер паспорту" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="сканована копія паспорту" type="file" default="завантажується автоматично" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="fSvidoztvoNaPravoSobstvennosti" name="Завантажте свідоцтво про право власності на будинок" type="file" required="true" writable="false"></activiti:formProperty>
-       	<activiti:formProperty id="sBody_1" name="[pattern/print/znes_bud_393_print.html]" type="invisible" default="Заява на надання дозволу на знесення будівлі" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fSvidoztvoNaPravoSobstvennosti" name="Завантажте свідоцтво про право власності на будинок" type="file" writable="false" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/znes_bud_393_print.html]" type="invisible" default="Заява на надання дозволу на знесення будівлі" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decision_2" name="Прийняте рішення щодо надання дозволу" type="enum" required="true">
           <activiti:value id="accept" name="надати дозвол"></activiti:value>
           <activiti:value id="reject" name="відмовити у видачі дозволу"></activiti:value>
@@ -150,7 +150,7 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow9" sourceRef="servicetask3" targetRef="usertask2"></sequenceFlow>
-    <serviceTask id="servicetask6" name="Повідомлення про відмову" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask6" name="Повідомлення про  відмову" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="To">
           <activiti:expression>${sPost}</activiti:expression>
