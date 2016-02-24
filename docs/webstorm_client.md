@@ -1,4 +1,3 @@
-## In order to config WebStorm for developing purposes you should:
 ### Creating grunt (client) run configurations:
 
 grunt run configuration will look like that:
