@@ -6,7 +6,8 @@
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім’я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdAddressFactual" name="Поштова адреса для зворотного зв’язку" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації (за паспортом)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sRealAdress" name="Поштова адреса для зворотного зв’язку; за якою зараз проживаєте" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="privateMail" name="Електронна пошта (е-mail)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="privatePhone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="asApplication" name="Прошу видати архівну довідку про" type="enum" required="true">
@@ -91,7 +92,9 @@
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім’я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdAddressFactual" name="Поштова адреса для зворотного зв’язку" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Поштова адреса для зворотного зв’язку" type="textArea" writable="false"></activiti:formProperty>        
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації (за паспортом)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sRealAdress" name="Поштова адреса для зворотного зв’язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="privateMail" name="Електронна пошта (е-mail)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="privatePhone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asApplication" name="Необхідна довідка про" type="enum" writable="false">
@@ -111,7 +114,7 @@
           <activiti:value id="decline" name="Сповістити громадянина, що довідка не може бути надана"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Зазначте дату отримання довідки або причину неможливості отримання послуги" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sBodyArchiv" name="[pattern/print/archiv/odessa_archiv_392_print.html]" type="invisible" default="Роспечатать заявление" writable="false"></activiti:formProperty>        
+        <activiti:formProperty id="sBodyArchiv" name="[pattern/print/archiv/odessa_archiv_392_print.html]" type="invisible" default="Заявка громадяннина" writable="false"></activiti:formProperty>        
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
