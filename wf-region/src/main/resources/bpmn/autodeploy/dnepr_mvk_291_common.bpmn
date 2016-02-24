@@ -10,7 +10,50 @@
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateToday" name="Вкажіть сьогоднішню дату" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asSpecialStatus" name="Маєте особливий статус" type="enum" required="true">
+          <activiti:value id="sEnumStatusYes" name="Так"></activiti:value>
+          <activiti:value id="sEnumStatusNo" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asHowSpecialStatus" name="Маєте особливий статус" type="enum" required="true">
+          <activiti:value id="sEnumStatusYes" name="Так"></activiti:value>
+          <activiti:value id="sEnumStatusNo" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asHowCategory" name="Оберіть категорію до якої Ви відноситесь" type="enum" required="true">
+          <activiti:value id="sEnumCat1" name="Учасник війни"></activiti:value>
+          <activiti:value id="sEnumCat2" name="Дитина війни"></activiti:value>
+          <activiti:value id="sEnumCat3" name="Інвалід Великої Вітчизняної війни"></activiti:value>
+          <activiti:value id="sEnumCat4" name="Інвалід війни"></activiti:value>
+          <activiti:value id="sEnumCat5" name="Учасник бойових дій"></activiti:value>
+          <activiti:value id="sEnumCat6" name="Ветеран праці"></activiti:value>
+          <activiti:value id="sEnumCat7" name="Інвалід I групи"></activiti:value>
+          <activiti:value id="sEnumCat8" name="Інвалід II групи"></activiti:value>
+          <activiti:value id="sEnumCat9" name="Інвалід III групи"></activiti:value>
+          <activiti:value id="sEnumCat10" name="Дитина-інвалід"></activiti:value>
+          <activiti:value id="sEnumCat11" name="Одинока мати"></activiti:value>
+          <activiti:value id="sEnumCat12" name="Мати-героїня"></activiti:value>
+          <activiti:value id="sEnumCat13" name="Багатодітна сім'я"></activiti:value>
+          <activiti:value id="sEnumCat14" name="Особа, що потерпіла від Чорнобильської катастрофи"></activiti:value>
+          <activiti:value id="sEnumCat15" name="Учасник ліквідації наслідків аварії на Чорнобильській АЕС"></activiti:value>
+          <activiti:value id="sEnumCat16" name="Герой України"></activiti:value>
+          <activiti:value id="sEnumCat17" name="Герой Радянського Союзу"></activiti:value>
+          <activiti:value id="sEnumCat18" name="Герой Соціалістичної Праці"></activiti:value>
+          <activiti:value id="sEnumCat19" name="Дитина"></activiti:value>
+          <activiti:value id="sEnumCat20" name="Інші категорії"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asHowSocStatus" name="Оберіть соціальний стан" type="enum" required="true">
+          <activiti:value id="sEnumSoc1" name="Пенсіонер"></activiti:value>
+          <activiti:value id="sEnumSoc2" name="Робітник"></activiti:value>
+          <activiti:value id="sEnumSoc3" name="Селянин"></activiti:value>
+          <activiti:value id="sEnumSoc4" name="Працівник бюджетної сфери"></activiti:value>
+          <activiti:value id="sEnumSoc5" name="Державний службовець"></activiti:value>
+          <activiti:value id="sEnumSoc6" name="Військовослужбовець"></activiti:value>
+          <activiti:value id="sEnumSoc7" name="Підприємець"></activiti:value>
+          <activiti:value id="sEnumSoc8" name="Безробітний"></activiti:value>
+          <activiti:value id="sEnumSoc9" name="Учень, студент"></activiti:value>
+          <activiti:value id="sEnumSoc10" name="Служитель релігійної організації"></activiti:value>
+          <activiti:value id="sEnumSoc11" name="Особа, що позбавлена волі; особа, воля якої обмежена"></activiti:value>
+          <activiti:value id="sEnumSoc12" name="Інші"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="asDistrict" name="Район Вашого проживання" type="enum" required="true">
           <activiti:value id="sEnumAnd" name="Амур-Нижньодніпровський"></activiti:value>
           <activiti:value id="sEnumShevch" name="Шевченківський (Бабушкінський)"></activiti:value>
@@ -24,28 +67,28 @@
         <activiti:formProperty id="sRename" name="Зверніть увагу" type="label" default="У зв'язку з переіменуванням вулиць, під час введення нової адреси звірте назву за &lt;a href=&quot;https://docs.google.com/spreadsheets/d/16j-w5pN0erlhdmTg5xl0bs9Gob1W0U3ivjIhy0BTHsU/edit?pli=1#gid=0&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;."></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Адреса проживання заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asTopHead" name="Оберіть тему звернення" type="enum" required="true">
-          <activiti:value id="sEnumTopHead1" name="Житлове господарство. Ремонт та эксплуатація житла."></activiti:value>
-          <activiti:value id="sEnumTopHead2" name="Торгівля"></activiti:value>
-          <activiti:value id="sEnumTopHead3" name="Транспорт і зв'язок"></activiti:value>
-          <activiti:value id="sEnumTopHead4" name="Соціальний захист"></activiti:value>
-          <activiti:value id="sEnumTopHead5" name="Праця і заробіня плата"></activiti:value>
+          <activiti:value id="sEnumTopHead1" name="Житлове господарство"></activiti:value>
+          <activiti:value id="sEnumTopHead2" name="Комунальне господарство"></activiti:value>
+          <activiti:value id="sEnumTopHead3" name="Промислова політика"></activiti:value>
+          <activiti:value id="sEnumTopHead4" name="Транспорт і зв'язок"></activiti:value>
+          <activiti:value id="sEnumTopHead5" name="Аграрна політика і земельні відносини"></activiti:value>
           <activiti:value id="sEnumTopHead6" name="Охорона здоров'я"></activiti:value>
-          <activiti:value id="sEnumTopHead7" name="Комунальне господарство. Вартість житлово-комунальних послуг"></activiti:value>
-          <activiti:value id="sEnumTopHead8" name="Комунальне господарство. Водозабеспечення"></activiti:value>
-          <activiti:value id="sEnumTopHead9" name="Комунальне господарство. Електропостачання"></activiti:value>
-          <activiti:value id="sEnumTopHead10" name="Комунальне господарство. Теплопостачання"></activiti:value>
-          <activiti:value id="sEnumTopHead11" name="Екологія та природні ресурси"></activiti:value>
-          <activiti:value id="sEnumTopHead12" name="Робота правоохоронних органів"></activiti:value>
-          <activiti:value id="sEnumTopHead13" name="Сім'я, діти, молодь, гендерна рівність, фізична культура і спорт"></activiti:value>
-          <activiti:value id="sEnumTopHead14" name="Культура та культурна спадщина, туризм"></activiti:value>
-          <activiti:value id="sEnumTopHead15" name="Освіта, наукова, науково-технічна, інноваційна діяльність та інтелектуальна власність"></activiti:value>
-          <activiti:value id="sEnumTopHead16" name="Інформаційна політика, діяльність ЗМІ"></activiti:value>
-          <activiti:value id="sEnumTopHead17" name="Діяльність об'єднань громадян, релігія та міжконфесійні відносини"></activiti:value>
-          <activiti:value id="sEnumTopHead18" name="Діяльність місцевого самоврядування"></activiti:value>
-          <activiti:value id="sEnumTopHead19" name="Промислова політика"></activiti:value>
-          <activiti:value id="sEnumTopHead20" name="Аграрна політика"></activiti:value>
-          <activiti:value id="sEnumTopHead21" name="Економічна політика і підприємства"></activiti:value>
-          <activiti:value id="sEnumTopHead22" name="Фінансова, податкова та митна політика"></activiti:value>
+          <activiti:value id="sEnumTopHead7" name="Соціальний захист, праця і заробітна плата"></activiti:value>
+          <activiti:value id="sEnumTopHead8" name="Сім'я, діти, молодь, ґендерна рівність, фізична культура і спорт"></activiti:value>
+          <activiti:value id="sEnumTopHead9" name="Екологія та природні ресурси"></activiti:value>
+          <activiti:value id="sEnumTopHead10" name="Торгівля"></activiti:value>
+          <activiti:value id="sEnumTopHead11" name="Сім'я, діти, молодь, ґендерна рівність, фізична культура і спорт"></activiti:value>
+          <activiti:value id="sEnumTopHead12" name="Освіта, наукова, науково-технічна, інноваційна діяльність та інтелектуальна власність"></activiti:value>
+          <activiti:value id="sEnumTopHead13" name="Культура та культурна спадщина, туризм"></activiti:value>
+          <activiti:value id="sEnumTopHead14" name="Благоустрій міста"></activiti:value>
+          <activiti:value id="sEnumTopHead15" name="Державне будівництво, адміністративно-територіальний устрій"></activiti:value>
+          <activiti:value id="sEnumTopHead16" name="Забезпечення дотримання законності та охорони правопорядку, реалізація прав і свобод громадян"></activiti:value>
+          <activiti:value id="sEnumTopHead17" name="Фінансова, податкова, митна політика"></activiti:value>
+          <activiti:value id="sEnumTopHead18" name="Комунальне господарство. Газифікація"></activiti:value>
+          <activiti:value id="sEnumTopHead19" name="Комунальне господарство. Електропостачання"></activiti:value>
+          <activiti:value id="sEnumTopHead20" name="Інформаційна політика, діяльність ЗМІ"></activiti:value>
+          <activiti:value id="sEnumTopHead21" name="Діяльність об'єднань громадян, релігія та міжконфесійні відносини"></activiti:value>
+          <activiti:value id="sEnumTopHead22" name="Діяльність місцевого самоврядування"></activiti:value>
           <activiti:value id="sEnumTopHead23" name="Інше"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asTop1" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum" required="true">
