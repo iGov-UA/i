@@ -50,7 +50,7 @@ public class ActionExecuteDAOImpl extends GenericEntityDao<ActionExecute> implem
 
 	@Transactional
 	@Override
-	public List<ActionExecute> getActionExecute(Integer nRowsMax, String sMethodMask, String asID_Status, Long nTryMax, Long nID) {
+	public List<ActionExecute> getActionExecute(Integer nRowsMax, String sMethodMask, String asID_Status, Integer nTryMax, Long nID) {
 		List<ActionExecute> resList = new ArrayList<ActionExecute>();
 		
 		Criteria criteria = getSession().createCriteria(ActionExecute.class);
