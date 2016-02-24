@@ -5,7 +5,7 @@ grunt run configuration will look like that:
 
 ![grunt run configuration preview](https://github.com/e-government-ua/i/blob/test/docs/img/client_step1.png)
 
-you can simply run it click "Play" button or run in debug using "Debug" button
+you can simply run it click "Play" button (for client debugging we need another configuration)
 
 #### 1. Go to "Edit Configurations"
 
