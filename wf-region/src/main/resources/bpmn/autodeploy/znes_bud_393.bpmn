@@ -19,6 +19,7 @@
         <activiti:formProperty id="sNameRajon" name="назва району адміністартивного органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOblast" name="назва області адміністартивного органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sFioClerk" name="ПІБ відповідальної особи адміністартивного органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA" name="sID_UA" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sEmailClerk" name="пошта посадовця" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -29,16 +30,16 @@
     </boundaryEvent>
     <userTask id="usertask1" name="Прийняття рішення щодо розгляду надання дозволу" activiti:candidateGroups="cnap_kiev_kolon">
       <extensionElements>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації громадянина" type="string" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Серія та номер паспорту" type="string" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="сканована копія паспорту" type="file" default="завантажується автоматично" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_inn" name="сканована копія ІПН" type="file" default="завантажується автоматично" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAdressBuilding" name="Адреса будівлі, щодо якої запрошується дозвіл на знесення" type="string" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="fSvidoztvoNaPravoSobstvennosti" name="Завантажте свідоцтво про право власності на будинок" type="file" writable="false" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації громадянина" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Серія та номер паспорту" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="сканована копія паспорту" type="file" default="завантажується автоматично" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_inn" name="сканована копія ІПН" type="file" default="завантажується автоматично" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdressBuilding" name="Адреса будівлі, щодо якої запрошується дозвіл на знесення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fSvidoztvoNaPravoSobstvennosti" name="Завантажте свідоцтво про право власності на будинок" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decision_1" name="Прийняте рішення щодо розгляду надання дозволу" type="enum" required="true">
           <activiti:value id="accept" name="розглянути дозвіл"></activiti:value>
           <activiti:value id="reject" name="відмовити у розгляданні дозволу"></activiti:value>
@@ -68,16 +69,16 @@
     <sequenceFlow id="flow6" sourceRef="servicetask4" targetRef="endevent1"></sequenceFlow>
     <userTask id="usertask2" name="Друк заяви, оформлення дозволу" activiti:candidateGroups="cnap_kiev_kolon">
       <extensionElements>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації громадянина" type="string" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Серія та номер паспорту" type="string" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="сканована копія паспорту" type="file" default="завантажується автоматично" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_inn" name="сканована копія ІПН" type="file" default="завантажується автоматично" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAdressBuilding" name="Адреса будівлі, щодо якої запрошується дозвіл на знесення" type="string" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="fSvidoztvoNaPravoSobstvennosti" name="Завантажте свідоцтво про право власності на будинок" type="file" writable="false" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації громадянина" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Серія та номер паспорту" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="сканована копія паспорту" type="file" default="завантажується автоматично" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_inn" name="сканована копія ІПН" type="file" default="завантажується автоматично" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdressBuilding" name="Адреса будівлі, щодо якої запрошується дозвіл на знесення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fSvidoztvoNaPravoSobstvennosti" name="Завантажте свідоцтво про право власності на будинок" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/znes_bud_393_print.html]" type="invisible" default="Заява на надання дозволу на знесення будівлі" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decision_2" name="Прийняте рішення щодо надання дозволу" type="enum" required="true">
           <activiti:value id="accept" name="надати дозвол"></activiti:value>
@@ -102,23 +103,17 @@
     </sequenceFlow>
     <serviceTask id="servicetask2" name="Повідомлення посадовця " activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
-        <activiti:field name="To">
+        <activiti:field name="to">
           <activiti:expression>${sEmailClerk}</activiti:expression>
         </activiti:field>
-        <activiti:field name="From">
+        <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення на тему: надання дозволу на знесення аварійних будівель]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний колего!&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-У черзі на обробку зареєстровано нове звернення.&lt;br /&gt;
-Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
-Опрацюйте це звернення на &lt;a href="http://region.igov.org.ua"&gt;порталі&lt;/a&gt;&lt;br /&gt;
-[pattern/mail/_common_signature.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -127,16 +122,16 @@
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення на тему: надання дозволу на знесення аварійних будівель]]></activiti:string>
         </activiti:field>
-        <activiti:field name="To">
+        <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
-        <activiti:field name="From">
+        <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Прийнято рішення щодо розгляду Вашого  звернення.&lt;br /&gt; 
+Прийнято рішення щодо розгляду Вашого звернення.&lt;br /&gt; 
 Ви отримаєте відповідь у визначений Законом термін на цю email-адресу.&lt;br /&gt;
 [pattern/mail/_common_signature.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
@@ -145,10 +140,10 @@
     </serviceTask>
     <serviceTask id="servicetask4" name="Повідомлення про відмову" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
-        <activiti:field name="To">
+        <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
-        <activiti:field name="From">
+        <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
@@ -166,10 +161,10 @@
     </serviceTask>
     <serviceTask id="servicetask5" name="Повідомлення про отримання дозволу на знесення аварійних будівель" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
-        <activiti:field name="To">
+        <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
-        <activiti:field name="From">
+        <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
@@ -187,10 +182,10 @@
     <sequenceFlow id="flow9" sourceRef="servicetask3" targetRef="usertask2"></sequenceFlow>
     <serviceTask id="servicetask6" name="Повідомлення про  відмову" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
-        <activiti:field name="To">
+        <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
-        <activiti:field name="From">
+        <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
@@ -221,10 +216,10 @@
     <sequenceFlow id="flow16" sourceRef="boundaryerror1" targetRef="endevent3"></sequenceFlow>
     <serviceTask id="servicetask7" name=" Повідомлення громадянина  про успішну реєстрацію звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
-        <activiti:field name="To">
+        <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
-        <activiti:field name="From">
+        <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
@@ -248,7 +243,7 @@ var per3 = 'sNameOblast'
 var per4 = 'sFioClerk '
 var per5 = 'sEmailClerk '
 
-if (1==1 || execution.getVariable('sEmailClerk') == 'dn')
+if (execution.getVariable('sID_UA') == '3222782601')
 {
 	per1 = 'Голові сільської ради'
 	per2 = 'в Макарівському районі '
