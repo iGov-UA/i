@@ -15,7 +15,7 @@
           <activiti:value id="sEnumBreakMarried" name="розірвання шлюбу"></activiti:value>
           <activiti:value id="sEnumDead" name="смерть"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sFullNameObject" name="П.І.Б. (прізвище (для жінок – обов’язково вказати дівоче прізвище), ім’я, по батькові народженого, одружених (розлучених), померлого)" type="label"></activiti:formProperty>
+        <activiti:formProperty id="sFullNameObject" name="П.І.Б. (прізвище (для жінок – обов’язково вказати дівоче прізвище), ім’я, по батькові народженого, одружених (розлучених), померлого)" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="lastName_UA1" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="firstName_UA1" name="Ім’я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA1" name="По батькові" type="string" required="true"></activiti:formProperty>
@@ -43,7 +43,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[iGov: Заява про підтвердження фактів]]></activiti:string>
+          <activiti:expression>iGov: Заява про підтвердження фактів enum{[asАpplication]}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -65,7 +65,7 @@
     <serviceTask id="servicetask3" name="Інформування посадовця" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${sPost}</activiti:expression>
+          <activiti:expression>valery.stavitsky@gmail.com</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -127,7 +127,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[iGov: Заява про підтвердження фактів ]]></activiti:string>
+          <activiti:expression>iGov: Заява про підтвердження фактів enum{[asАpplication]}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -159,7 +159,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[iGov: Заява про підтвердження фактів ]]></activiti:string>
+          <activiti:expression>iGov: Заява про підтвердження фактів enum{[asАpplication]}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
