@@ -12,7 +12,7 @@ module.exports = {
 
   soccard : {
     socCardAPIProtocol: 'https',
-    socCardAPIHostname: 'test.kyivcard.com.ua',
+    socCardAPIHostname: 'www.kyivcard.com.ua',
     socCardAPIVersion : '1.0'
   },
 
