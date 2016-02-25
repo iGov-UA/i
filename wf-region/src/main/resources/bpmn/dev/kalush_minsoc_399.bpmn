@@ -61,7 +61,7 @@
         <activiti:formProperty id="sCoustForDocument" name="Документ необхідний для" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="workerDecision" name="Результат обробки звернення" type="enum" required="true">
           <activiti:value id="accept" name="Сповістити громадянина, що довідка МОЖЕ бути надана"></activiti:value>
-          <activiti:value id="decline" name="Відмовити в данні довідки"></activiti:value>
+          <activiti:value id="decline" name="Відмовити в наданні довідки"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Вкажіть причину неможливості отримання послуги;Ця інформація буде відправлена на e-mail заявника *" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sBodyClaim" name="[pattern/print/minsoc/kalush_soc_399_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
@@ -147,7 +147,7 @@
         <activiti:formProperty id="email" name="Електронна пошта (е-mail)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCoustForDocument" name="Документ необхідний для" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="decisionComment" name="Зазначте дату отримання довідки;Ця інформація буде відправлена на e-mail заявника *" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="aResultComment" name="Вкажіть дату коли громадянин може отримати довідку;Ця інформація буде відправлена на e-mail заявника *" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sBodyClaim" name="[pattern/print/minsoc/kalush_soc_399_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
@@ -169,7 +169,7 @@
 	&lt;p&gt;
 	    Спеціалісти успішно опрацювли Вашу заяву.&lt;br&gt;
 		Коментар Державного службовця:&lt;br&gt;
-			&lt;b&gt;&lt;i&gt;${decisionComment}&lt;/i&gt;&lt;/b&gt;
+			&lt;b&gt;&lt;i&gt;${aResultComment}&lt;/i&gt;&lt;/b&gt;
 	&lt;/p&gt;
 	&lt;p&gt;                                    	
 		Ви можете отримати вашу &lt;b&gt;Довідку «дитина війни»&lt;/b&gt; за адресою:&lt;br&gt;
@@ -177,8 +177,7 @@
 	&lt;/p&gt;
 		[pattern/mail/_common_signature_start.html]
 		Управління соціального захисту населення Калуської міської ради,&lt;br&gt;
-		[pattern/mail/_common_signature_end.html]  
-		Управління соціального захисту населення Калуської міської ради,&lt;br&gt;</activiti:expression>
+		[pattern/mail/_common_signature_end.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
