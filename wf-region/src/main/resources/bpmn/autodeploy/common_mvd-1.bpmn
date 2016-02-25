@@ -6,7 +6,7 @@
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть сервісний центр, де Ви б бажали отримати послугу" type="select" default="0"></activiti:formProperty>  
         <activiti:formProperty id="sAddress" name="Адреса сервісного центру" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sMail_Signature" name="Підпис" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMail_Employee" name="sMail_Employee (field for test)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sMail_Employee" name="sMail_Employee" type="invisible" required="true"></activiti:formProperty>
         <activiti:formProperty id="sWork_Time" name="Графік прийому громадян" type="label" default=" "></activiti:formProperty>  
         
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
@@ -220,6 +220,8 @@
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 &lt;p&gt;
 Ваш запит успішно оброблено. &lt;br /&gt;
+Дата одержання довідки: &lt;br /&gt;
+${comment}
 
 Оригінал довідки Ви зможете отримати за адресою  &lt;br /&gt;
 ${sAddress}
@@ -228,7 +230,7 @@ ${sWork_Time}
 
  &lt;/p&gt;
 [pattern/mail/_common_signature_start.html]
- Міністерство Внутрішніх Справ України,
+${sMail_Signature}
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
@@ -259,7 +261,7 @@ ${sWork_Time}
 ${comment}&lt;br /&gt;
 
 [pattern/mail/_common_signature_start.html]
-Міністерство Внутрішніх Справ,
+${sMail_Signature}
 [pattern/mail/_common_signature_end.html]
                                        
 [pattern/mail/_common_footer.html]</activiti:expression>
@@ -289,7 +291,7 @@ ${comment}&lt;br /&gt;
 
 
 [pattern/mail/_common_signature_start.html]
-Міністерство Внутрішніх Справ,
+${sMail_Signature}
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
