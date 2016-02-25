@@ -26,7 +26,7 @@
         <activiti:formProperty id="nFoto" name="Завантажте фотографію для використання її на посвідченні" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFamily" name="Завантажте документ, що підтверджує родинний зв'язок із загиблим: Свідоцтво про укладення шлюбу або Свідоцтво про народження" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sLabel1" name="Завантажте документи, необхідні для визначення статусу  особи на яку поширюється дія Закону України “Про статус ветеранів війни, гарантії їх соціального захисту”. Якщо документ має декілька сторінок об'єднайте у pdf-файл або zip архів" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nSviDeath" name="Свідоцтво про смерть (копія) або повідомлення про загибель особи" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nSviDeath" name="Свідоцтво про смерть (копія) або повідомлення про загибель особи" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nVolunteer" name="Копія договору про здійснення волонтерської діяльності, укладеного з організацією, що залучає волонтерів, або посвідчення волонтера, або витяг з держ.реєстру волонтерів, або копія договору про надання волонтерської допомоги між волонтером і командиром" type="file"></activiti:formProperty>
         <activiti:formProperty id="nCommander" name="Cвідчення командира військової частини (органу, підрозділу), керівника добровольчого формування, які захищали незалежність України та брали безпосередню участь в АТО, про безпосередню участь особи в АТО, завірені печаткою військової частини" type="file"></activiti:formProperty>
         <activiti:formProperty id="nDovidkaVolunteer" name="Довідка керівника АТЦ при СБУ, ГШ ЗСУ про добровільне забезпечення або добровільне залучення до забезпечення проведення АТО особи, яка загинула (пропала безвісти) або померла" type="file"></activiti:formProperty>
@@ -37,6 +37,7 @@
         <activiti:formProperty id="nKlopot" name="Клопотання про надання статусу від керівника добров.формування, документи або письмові свідчення двох свідків з числа осіб, які разом з особою брали участь в АТО та отримали статус УБД/інваліда війни/учасника війни, що підтверджують участь особи в АТО" type="file"></activiti:formProperty>
         <activiti:formProperty id="nVLK" name="Постанова штатної військово-лікарської комісії відповідного військового формування;" type="file"></activiti:formProperty>
         <activiti:formProperty id="nEmployee" name="Документи про залучення особи до виконання завдань АТО або направлення (прибуття) у відрядження для участі в АТО, а також документи, що були підставою для прийняття керівником рішення про направлення особи у таке відрядження" type="file"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="Вибор категорії" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;nSudMed&quot;,&quot;nVolunteer&quot;,&quot;nCommander&quot;,&quot;nDovidkaVolunteer&quot;,&quot;nCourt&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asCategory&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumVolunteer'&quot;},&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;nSudMed&quot;,&quot;nDovATOvzaemod&quot;,&quot;nKlopot&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asCategory&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumDobrov'&quot;},&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;nSudMed&quot;,&quot;nDovATOvzaemod&quot;,&quot;nDokaz&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asCategory&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumDobrovLaw'&quot;},&quot;ShowFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;nVLK&quot;,&quot;nDokaz&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asCategory&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumArmy'&quot;},&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;nEmployee&quot;,&quot;nSudMed&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asCategory&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumEmployee'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -86,7 +87,7 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-        <userTask id="usertask1" name="Розгляд документів держслужбовцем" activiti:candidateGroups="upszn234">
+    <userTask id="usertask1" name="Розгляд документів держслужбовцем" activiti:candidateGroups="upszn234">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
@@ -199,11 +200,11 @@ ${decisionComment}&lt;/p&gt;
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="407.0" y="251.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
-        <omgdc:Bounds height="85.0" width="115.0" x="366.0" y="51.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
         <omgdc:Bounds height="75.0" width="105.0" x="220.0" y="56.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
+        <omgdc:Bounds height="85.0" width="115.0" x="366.0" y="51.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="75.0" width="111.0" x="510.0" y="56.0"></omgdc:Bounds>
