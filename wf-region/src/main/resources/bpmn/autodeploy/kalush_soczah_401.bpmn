@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="kalush_soczah_401" name="Надання статусу та видача (заміна) посвідчення Члена сім’ї загиблого (померлого) ветерана війни" isExecutable="true">
+  <process id="kalush_soczah_401" name="Надання статусу та видача (заміна) посвідчення члена сім’ї загиблого (померлого) ветерана війни" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
@@ -9,6 +9,8 @@
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації громадянина" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Адреса електронної пошти для зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asType" name="Оберіть тип звернення" type="enum" required="true">
           <activiti:value id="sEnumFirst" name="Надання статусу та видача посвідчення «Сім’я загиблого (померлого) ветерана війни»"></activiti:value>
           <activiti:value id="sEnumChange" name="Заміна посвідчення «Сім’я загиблого (померлого) ветерана війни»"></activiti:value>
@@ -20,9 +22,7 @@
           <activiti:value id="sEnumArmy" name="Військовослужбовці і працівники ЗСУ, НГ, СБУ, Служби зовнішньої розвідки, Держприкордонслужби, Держспецтрансслужби, військовослужбовців військових прокуратур,МВС, Управління державної охорони, Держспецзв’язку, ДСНС, ДПтС, ін."></activiti:value>
           <activiti:value id="sEnumEmployee" name="Працівники підприємств, установ, організацій, які залучалися до забезпечення проведення АТО"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Адреса електронної пошти для зв'язку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPrich" name="Причина заміни посвідчення" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPrich" name="Причина заміни посвідчення" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="nFoto" name="Завантажте фотографію для використання її на посвідченні" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFamily" name="Завантажте документ, що підтверджує родинний зв'язок із загиблим: Свідоцтво про укладення шлюбу або Свідоцтво про народження" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sLabel1" name="Завантажте будь ласка документи, необхідні для визначення статусу  особи на яку поширюється дія Закону України “Про статус ветеранів війни, гарантії їх соціального захисту”. Якщо документ має декілька сторінок об'єднайте у pdf-файл або zip архів" type="label" default=" "></activiti:formProperty>
@@ -39,8 +39,8 @@
         <activiti:formProperty id="nEmployee" name="Документи про безпосереднє залучення особи, яка загинула (пропала безвісти) чи померла, до виконання завдань антитерористичної операції в районах її проведення або направлення (прибуття) у відрядження для безпосередньої участі в антитерористичній операції в районах її проведення (витяги з наказів, розпоряджень, посвідчень про відрядження, книг нарядів, матеріалів спеціальних/службових розслідувань за фактами отримання поранень), а також документи, що були підставою для прийняття керівником підприємства, установи, організації рішення про направлення особи у таке відрядження" type="file"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <serviceTask id="servicetask1" name="Завантаження документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
+    <serviceTask id="servicetask1" name="Завантаження документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>
@@ -63,9 +63,8 @@
 &lt;p&gt; Ваше звернення щодо ${asType}  було зареєстровано у системі.&lt;br/&gt;
 Повідомлення про результат розгляду буде спрямоване на Ваш e-mail.&lt;/p&gt;
 &lt;br /&gt;
-[pattern_dictonary:dnepr_soc_help.csv:value{[283]}:2]&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_soc_help.csv:value{[283]}:5]&lt;br /&gt;
+[pattern_dictonary:dnepr_soc_help.csv:value{[234]}:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -80,27 +79,23 @@
         <activiti:field name="to">
           <activiti:expression>tanyazol@gmail.com</activiti:expression>
         </activiti:field>
-        <activiti:field name="Subject">
+        <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення. Надання статусу та видача (заміна) посвідчення «Сім’я загиблого (померлого) ветерана війни»]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а) колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-У Вас в черзі на обробку нове звернення щодо ${asType}&lt;br /&gt;
-Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
-Відпрацюйте це звернення на &lt;a href="https://region.igov.org.ua" target="_blank"&gt;порталі&lt;/a&gt;
-[pattern/mail/_common_signature.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow4" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
-    <userTask id="usertask1" name="Розгляд документів держслужбовцем">
+    <userTask id="usertask1" name="Розгляд документів держслужбовцем" activiti:candidateGroups="upszn234">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Адреса електронної пошти для зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asType" name="Оберіть тип звернення" type="enum" writable="false">
           <activiti:value id="sEnumFirst" name="Надання статусу та видача посвідчення «Сім’я загиблого (померлого) ветерана війни»"></activiti:value>
           <activiti:value id="sEnumChange" name="Заміна посвідчення «Сім’я загиблого (померлого) ветерана війни»"></activiti:value>
@@ -112,15 +107,13 @@
           <activiti:value id="sEnumArmy" name="Військовослужбовці і працівники ЗСУ, НГ, СБУ, Служби зовнішньої розвідки, Держприкордонслужби, Держспецтрансслужби, військовослужбовців військових прокуратур,МВС, Управління державної охорони, Держспецзв’язку, ДСНС, ДПтС, ін."></activiti:value>
           <activiti:value id="sEnumEmployee" name="Працівники підприємств, установ, організацій, які залучалися до забезпечення проведення АТО"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Адреса електронної пошти для зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPrich" name="Причина заміни посвідчення" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asEnumStatus" name="Обробка заяви" type="enum">
+        <activiti:formProperty id="asEnumStatus" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="sEnumApprove" name="Прийнято рішення про надання громадянину статусу Сім'я загиблого ветерана війни"></activiti:value>
           <activiti:value id="sEnumDeny" name="Відмова громадянину у разі надання неповного пакету документів"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sBody1" name="[pattern/print/UPZSN/kalush_soczah_401_print.html]" type="invisible" default="Форма заяви громадянина 1" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/UPZSN/kalush_soczah_401_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -132,7 +125,7 @@
     <sequenceFlow id="flow5" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
-    <serviceTask id="servicetask4" name="Лист про неповний пакет документів" activiti:async="true" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask4" name="Лист про неповний пакет документів" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -145,17 +138,13 @@
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-На жаль, Ваше звернення щодо ${asType} - відхилене.&lt;/p&gt;
-&lt;p&gt;Причина в наступному: 
-                                    &lt;/p&gt;
-&lt;p&gt;${decisionComment}&lt;/p&gt;
+&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br&gt;&lt;br&gt;
+&lt;p&gt;На жаль, Ваше звернення щодо ${asType} - відхилене.&lt;/p&gt;
+&lt;p&gt;Причина в наступному: &lt;br&gt;
+${decisionComment}&lt;/p&gt;
 &lt;p&gt;Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/ target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
-&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[283]}:2]&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[283]}:5],&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[234]}:2]&lt;/p&gt;
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
@@ -177,15 +166,15 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення щодо ${asType} - розглянуте.&lt;/p&gt;
-&lt;p&gt;Запрошуємо Вас отримати нове Посвідчення 
-                                   &lt;/p&gt;
-&lt;p&gt;Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/ target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
-&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[283]}:2]&lt;br /&gt;
+&lt;p&gt;Ваше звернення щодо ${asType} - розглянуте.&lt;/p&gt;
+&lt;p&gt;Запрошуємо Вас отримати нове Посвідчення за адресою:&lt;br&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[234]}:3]&lt;br&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[234]}:4]&lt;br&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[234]}:5]&lt;/p&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[283]}:5],&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[234]}:2],&lt;br&gt;
 [pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
