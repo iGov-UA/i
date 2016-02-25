@@ -84,7 +84,7 @@
         <activiti:formProperty id="markers16" name="маркер чи перебувають у шлюбі" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_16&quot;:{&quot;aField_ID&quot;:[&quot;doc_marriage&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;marriage&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <userTask id="usertask1" name="обробка вхідних данних" activiti:candidateGroups="Children_Tern">
+    <userTask id="usertask1" name="обробка вхідних данних (подовження)" activiti:candidateGroups="Children_Tern">
       <extensionElements>
         <activiti:formProperty id="rName" name="Район" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -139,10 +139,10 @@
         <activiti:formProperty id="date_reestr" name="Укажіть дату реєстрації звернення" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="pib_admin" name="Прізвище та ініціали адміністратора" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="decision_1" name="Результат обробки звернення" type="enum" required="true">
-          <activiti:value id="accept" name="Заповнені дані вірні - запросити громадянина"></activiti:value>
+          <activiti:value id="accept" name="Заповнені дані вірні - запросити громадянина для надання оригіналів на подовження"></activiti:value>
           <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="date_visit" name="Вкажіть дату і час - коли прийти громадянину" type="string"></activiti:formProperty>
+        <activiti:formProperty id="date_visit_1" name="Вкажіть дату і час - коли прийти громадянину" type="string"></activiti:formProperty>
         <activiti:formProperty id="date_pilgi" name="Вкажіть дату до якої діє право на отримання пільг" type="string"></activiti:formProperty>
         <activiti:formProperty id="date_sochelp" name="Вкажіть дату - коли громадянину треба звернутися в управління соціального захисту населення" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers11" name="принтформа якщо троє дітей" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_11&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;cel&quot;,&quot;line1&quot;,&quot;line2&quot;,&quot;line3&quot;,&quot;line4&quot;,&quot;line5&quot;,&quot;perelic&quot;,&quot;text&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sCond]=='three'&quot;}}}"></activiti:formProperty>
@@ -157,7 +157,86 @@
         <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/ternopil/ternopil_cnap_264_2_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/ternopil_cnap_264_print.html]" type="invisible" default="заява загальна" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/ternopil/ternopil_cnap_264_2_print.html]" type="invisible" default="офіційний бланк (для м.Тернопіль)" writable="false"></activiti:formProperty>
-      
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression>${doc_marriage},${dovidka},${passport_father},${passport_mother},${doc_student},${passport_children},${newspaper},${family}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <userTask id="usertask3" name="обробка вхідних данних">
+      <extensionElements>
+        <activiti:formProperty id="rName" name="Район" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні данні" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_today" name="Дата подання звернення" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="adres_1" name="Адреса реєстрації громадянина" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="pib_father" name="ПІБ батька" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="pib_mother" name="ПІБ матері" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="marriage" name="Чи перебувають батьки у шлюбі?" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="together" name="Чи зареєстровані батько і мати в одному районі?" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sCountChildren" name="Укажіть кількість дітей" type="enum" writable="false">
+          <activiti:value id="three" name="3"></activiti:value>
+          <activiti:value id="four" name="4"></activiti:value>
+          <activiti:value id="five" name="5"></activiti:value>
+          <activiti:value id="six" name="6 і більше"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="pib_child_1" name="ПІБ першої дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_child_1" name="Рік народження першої дитини" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="pib_child_2" name="ПІБ другої дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_child_2" name="Рік народження другої дитини" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="pib_child_3" name="ПІБ третьої дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_child_3" name="Рік народження третьої дитини" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="pib_child_4" name="ПІБ четвертої дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_child_4" name="Рік народження четвертої дитини" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="pib_child_5" name="ПІБ п'ятої дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_child_5" name="Рік народження п'ятої дитини" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="pib_child_6" name="ПІБ шостої дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_child_6" name="Рік народження шостої дитини" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="student" name="Чи є у родині особи, віком від 18 до 25 років, які навчаються за денною формою навчання?" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="purpose" name="Мета звернення" type="enum" writable="false">
+          <activiti:value id="form_basic" name="отримання посвідченнь багатодітної сім'ї та дитини з багатодітної сім'ї"></activiti:value>
+          <activiti:value id="form_children" name="отримання посвідчення дитини з багатодітної сім'ї"></activiti:value>
+          <activiti:value id="duplicate_loss" name="отримання дублікату посвідчення у разі його втрати"></activiti:value>
+          <activiti:value id="duplicate_change" name="видача дублікату посвідчення у разі пошкодження посвідчення, зміни прізвища, імені, по-батькові, встановлення розбіжностей у записах"></activiti:value>
+          <activiti:value id="extension_student" name="продовження строку дії посвідчень багатодітної сім'ї у разі навчання дитини за денною формою після 18-річного віку"></activiti:value>
+          <activiti:value id="add_foto_14_years" name="вклеювання фотографії у посвідчення дитини з багатодітеої сім'ї у зв'язку з досягненням 14-річного віку"></activiti:value>
+          <activiti:value id="extension_new_child" name="продовження строку дії посвідчень багатодітної сім'ї у зв'язку з народженням дитини"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="reestr_numb" name="Реєстраційний номер" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="date_reestr" name="Укажіть дату реєстрації звернення" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="pib_admin" name="Прізвище та ініціали адміністратора" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="decision_1" name="Результат обробки звернення" type="enum" required="true">
+          <activiti:value id="accept" name="Заповнені дані вірні, інформація направлена на розгляд"></activiti:value>
+          <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="date_pilgi" name="Вкажіть дату до якої діє право на отримання пільг" type="string"></activiti:formProperty>
+        <activiti:formProperty id="date_sochelp" name="Вкажіть дату - коли громадянину треба звернутися в управління соціального захисту населення" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markers11" name="принтформа якщо троє дітей" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_11&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;cel&quot;,&quot;line1&quot;,&quot;line2&quot;,&quot;line3&quot;,&quot;line4&quot;,&quot;line5&quot;,&quot;perelic&quot;,&quot;text&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sCond]=='three'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers12" name="принтформа якщо четверо дітей" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_12&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;cel&quot;,&quot;line1&quot;,&quot;line2&quot;,&quot;line3&quot;,&quot;line4&quot;,&quot;line5&quot;,&quot;line6&quot;,&quot;perelic&quot;,&quot;text&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sCond]=='four'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers13" name="принтформа якщо 5 дітей" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;cel&quot;,&quot;line1&quot;,&quot;line2&quot;,&quot;line3&quot;,&quot;line4&quot;,&quot;line5&quot;,&quot;line6&quot;,&quot;line7&quot;,&quot;perelic&quot;,&quot;text&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sCond]=='five'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers17" name="принтформа якщо 6 дітей" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_17&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;cel&quot;,&quot;line1&quot;,&quot;line2&quot;,&quot;line3&quot;,&quot;line4&quot;,&quot;line5&quot;,&quot;line6&quot;,&quot;line7&quot;,&quot;line8&quot;,&quot;perelic&quot;,&quot;text&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sCond]=='six'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sTypeCustodypf" name="прошу видати у принтформі" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="list_documents" name="перелік у принтформу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="shapka_0" name="шапка у принтформу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="comment_1" name="У разі відхилення звернення внесіть, будь ласка, причину" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_264_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/ternopil/ternopil_cnap_264_2_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/ternopil_cnap_264_print.html]" type="invisible" default="заява загальна" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/ternopil/ternopil_cnap_264_2_print.html]" type="invisible" default="офіційний бланк (для м.Тернопіль)" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -220,11 +299,14 @@
         <activiti:formProperty id="reestr_numb" name="Реєстраційний номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_reestr" name="Укажіть дату реєстрації звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="pib_admin" name="Прізвище та ініціали адміністратора" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_pilgi" name="Вкажіть дату до якої діє право на отримання пільг" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_sochelp" name="Вкажіть дату - коли громадянину треба звернутися в управління соціального захисту населення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decision_2" name="прийняте рішення" type="enum" required="true">
-          <activiti:value id="accept" name="позитивне рішення - запросити громадянина для отримання посвідчень або довідки"></activiti:value>
+          <activiti:value id="accept" name="позитивне рішення - запросити громадянина для отримання оригіналів документів"></activiti:value>
           <activiti:value id="reject" name="відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
         </activiti:formProperty>
-         <activiti:formProperty id="markers11" name="принтформа якщо троє дітей" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_11&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;cel&quot;,&quot;line1&quot;,&quot;line2&quot;,&quot;line3&quot;,&quot;line4&quot;,&quot;line5&quot;,&quot;perelic&quot;,&quot;text&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sCond]=='three'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="date_visit_2" name="Вкажіть дату і час - коли прийти громадянину за документами" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markers11" name="принтформа якщо троє дітей" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_11&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;cel&quot;,&quot;line1&quot;,&quot;line2&quot;,&quot;line3&quot;,&quot;line4&quot;,&quot;line5&quot;,&quot;perelic&quot;,&quot;text&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sCond]=='three'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers12" name="принтформа якщо четверо дітей" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_12&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;cel&quot;,&quot;line1&quot;,&quot;line2&quot;,&quot;line3&quot;,&quot;line4&quot;,&quot;line5&quot;,&quot;line6&quot;,&quot;perelic&quot;,&quot;text&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sCond]=='four'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers13" name="принтформа якщо 5 дітей" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;cel&quot;,&quot;line1&quot;,&quot;line2&quot;,&quot;line3&quot;,&quot;line4&quot;,&quot;line5&quot;,&quot;line6&quot;,&quot;line7&quot;,&quot;perelic&quot;,&quot;text&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sCond]=='five'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers17" name="принтформа якщо 6 дітей" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_17&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;cel&quot;,&quot;line1&quot;,&quot;line2&quot;,&quot;line3&quot;,&quot;line4&quot;,&quot;line5&quot;,&quot;line6&quot;,&quot;line7&quot;,&quot;line8&quot;,&quot;perelic&quot;,&quot;text&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sCond]=='six'&quot;}}}"></activiti:formProperty>
@@ -308,7 +390,7 @@ ${comment_1}&lt;br /&gt;
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask8" name="Повідомлення громадянина про успішне подання зверенння" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask10" name="Повідомлення громадянина про успішне подання зверенння">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -332,10 +414,10 @@ ${comment_1}&lt;br /&gt;
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask4" name="повідомлення громадянина про готовність посвідчення" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask8" name="Повідомлення громадянина про успішне подання зверенння (подовження)" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
-          <activiti:string><![CDATA[test_noreply@igov.org.ua]]></activiti:string>
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
           <activiti:expression>"${email}"</activiti:expression>
@@ -343,14 +425,60 @@ ${comment_1}&lt;br /&gt;
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення на тему: Встановлення статусу батьків та дитини з багатодітної сім’ї]]></activiti:string>
         </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${PrintForm_1}</activiti:expression>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
+Вам призначено дату і час для надання оригіналів посвідчень на подовження: ${date_visit_1}&lt;br /&gt;
+При собі треба мати:&lt;br /&gt;
+1. Документ, що посвідчує особу.&lt;br /&gt;
+2. Оригінали посвідчень.&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]&lt;br /&gt;
+[pattern/mail/_common_signature_start.html]
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2]&lt;br /&gt;
+[pattern/mail/_common_signature_end.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask11" name="повідомлення громадянина про відмову">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення на тему: Встановлення статусу батьків та дитини з багатодітної сім’ї]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;
+На жаль, Ваше звернення щодо enum{[purpose]}, відхилено через недостатню або неправильну інформацію.&lt;br /&gt;
+${comment_2}&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]&lt;br /&gt;
+Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;
+[pattern/mail/_common_signature_start.html]
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2]&lt;br /&gt;
+[pattern/mail/_common_signature_end.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask12" name="Запрошення громадянина за готовим документом">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>"${email}"</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення на тему: Встановлення статусу батьків та дитини з багатодітної сім’ї]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 Ваше звернення щодо enum{[purpose]} схвалено.&lt;br /&gt;
-Вам призначено дату і час візиту для отримання відповідних документів - ${date_visit}.&lt;br /&gt;
+Вам призначено дату і час візиту для отримання відповідних документів - ${date_visit_2}.&lt;br /&gt;
 Адреса: [pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:3], ${room}.&lt;br /&gt;
 При собі треба мати:&lt;br /&gt;
 1. Документ, що посвідчує особу.&lt;br /&gt;
@@ -456,7 +584,6 @@ execution.setVariable('shapka_0', per20)
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>
-    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow45" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow46" sourceRef="scripttask1" targetRef="servicetask5"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
@@ -468,124 +595,195 @@ execution.setVariable('shapka_0', per20)
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_1=='reject'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow53" sourceRef="servicetask8" targetRef="usertask2"></sequenceFlow>
-    <sequenceFlow id="flow54" sourceRef="usertask2" targetRef="exclusivegateway1"></sequenceFlow>
-    <sequenceFlow id="flow55" sourceRef="exclusivegateway1" targetRef="servicetask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_2=='accept'}]]></conditionExpression>
-    </sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
-    <sequenceFlow id="flow57" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
-    <sequenceFlow id="flow61" sourceRef="servicetask7" targetRef="endevent1"></sequenceFlow>
-    <sequenceFlow id="flow63" sourceRef="servicetask4" targetRef="endevent1"></sequenceFlow>
-    <sequenceFlow id="flow64" sourceRef="exclusivegateway1" targetRef="servicetask7">
+    <sequenceFlow id="flow65" sourceRef="servicetask5" targetRef="servicetask9"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow66" sourceRef="servicetask9" targetRef="exclusivegateway3"></sequenceFlow>
+    <sequenceFlow id="flow67" sourceRef="exclusivegateway3" targetRef="usertask3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${purpose=='form_basic'||purpose=='form_children'||purpose=='duplicate_loss'||purpose=='duplicate_change'||purpose=='add_foto_14_years'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow68" sourceRef="exclusivegateway3" targetRef="usertask1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${purpose=='extension_student'||purpose=='extension_new_child'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow72" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway5" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow74" sourceRef="usertask3" targetRef="exclusivegateway5"></sequenceFlow>
+    <sequenceFlow id="flow75" sourceRef="exclusivegateway5" targetRef="servicetask7">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_1=='reject'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow76" sourceRef="exclusivegateway5" targetRef="servicetask10">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_1=='accept'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow77" sourceRef="servicetask10" targetRef="usertask2"></sequenceFlow>
+    <endEvent id="endevent2" name="End"></endEvent>
+    <exclusiveGateway id="exclusivegateway6" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow79" sourceRef="usertask2" targetRef="exclusivegateway6"></sequenceFlow>
+    <sequenceFlow id="flow80" sourceRef="exclusivegateway6" targetRef="servicetask11">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_2=='reject'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow65" sourceRef="servicetask5" targetRef="servicetask9"></sequenceFlow>
-    <sequenceFlow id="flow66" sourceRef="servicetask9" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow82" sourceRef="servicetask11" targetRef="endevent2"></sequenceFlow>
+    <sequenceFlow id="flow83" sourceRef="exclusivegateway6" targetRef="servicetask12">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_2=='accept'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow84" sourceRef="servicetask12" targetRef="endevent2"></sequenceFlow>
+    <endEvent id="endevent3" name="End"></endEvent>
+    <sequenceFlow id="flow85" sourceRef="servicetask7" targetRef="endevent3"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_ternopol_rcnap_264">
     <bpmndi:BPMNPlane bpmnElement="ternopol_rcnap_264" id="BPMNPlane_ternopol_rcnap_264">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="100.0" y="48.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="258.0" y="-41.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
-        <omgdc:Bounds height="71.0" width="121.0" x="572.0" y="122.0"></omgdc:Bounds>
+        <omgdc:Bounds height="71.0" width="121.0" x="366.0" y="208.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
+        <omgdc:Bounds height="71.0" width="121.0" x="60.0" y="208.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
-        <omgdc:Bounds height="68.0" width="111.0" x="426.0" y="279.0"></omgdc:Bounds>
+        <omgdc:Bounds height="68.0" width="111.0" x="220.0" y="431.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
-        <omgdc:Bounds height="71.0" width="111.0" x="424.0" y="30.0"></omgdc:Bounds>
+        <omgdc:Bounds height="71.0" width="123.0" x="57.0" y="109.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask9" id="BPMNShape_servicetask9">
-        <omgdc:Bounds height="71.0" width="117.0" x="574.0" y="30.0"></omgdc:Bounds>
+        <omgdc:Bounds height="71.0" width="117.0" x="217.0" y="109.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
-        <omgdc:Bounds height="66.0" width="111.0" x="287.0" y="204.0"></omgdc:Bounds>
+        <omgdc:Bounds height="66.0" width="111.0" x="220.0" y="354.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask10" id="BPMNShape_servicetask10">
+        <omgdc:Bounds height="68.0" width="113.0" x="64.0" y="431.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
-        <omgdc:Bounds height="68.0" width="113.0" x="576.0" y="279.0"></omgdc:Bounds>
+        <omgdc:Bounds height="68.0" width="113.0" x="370.0" y="431.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
-        <omgdc:Bounds height="68.0" width="115.0" x="152.0" y="279.0"></omgdc:Bounds>
+      <bpmndi:BPMNShape bpmnElement="servicetask11" id="BPMNShape_servicetask11">
+        <omgdc:Bounds height="66.0" width="111.0" x="371.0" y="522.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask12" id="BPMNShape_servicetask12">
+        <omgdc:Bounds height="68.0" width="113.0" x="64.0" y="521.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="71.0" width="105.0" x="288.0" y="30.0"></omgdc:Bounds>
+        <omgdc:Bounds height="71.0" width="117.0" x="60.0" y="20.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="71.0" width="115.0" x="150.0" y="30.0"></omgdc:Bounds>
+        <omgdc:Bounds height="71.0" width="115.0" x="218.0" y="20.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="150.0" y="74.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
-        <omgdc:Bounds height="40.0" width="40.0" x="322.0" y="292.0"></omgdc:Bounds>
+        <omgdc:Bounds height="30.0" width="30.0" x="304.0" y="56.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
-        <omgdc:Bounds height="40.0" width="40.0" x="612.0" y="216.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="406.0" y="366.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="192.0" y="219.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="370.0" y="53.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
+        <omgdc:Bounds height="40.0" width="40.0" x="255.0" y="223.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway5" id="BPMNShape_exclusivegateway5">
+        <omgdc:Bounds height="40.0" width="40.0" x="100.0" y="366.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
+        <omgdc:Bounds height="35.0" width="35.0" x="258.0" y="611.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway6" id="BPMNShape_exclusivegateway6">
+        <omgdc:Bounds height="40.0" width="40.0" x="255.0" y="534.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
+        <omgdc:Bounds height="35.0" width="35.0" x="258.0" y="300.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
-        <omgdi:waypoint x="135.0" y="65.0"></omgdi:waypoint>
-        <omgdi:waypoint x="150.0" y="65.0"></omgdi:waypoint>
+        <omgdi:waypoint x="275.0" y="-6.0"></omgdi:waypoint>
+        <omgdi:waypoint x="275.0" y="20.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
-        <omgdi:waypoint x="265.0" y="65.0"></omgdi:waypoint>
-        <omgdi:waypoint x="288.0" y="65.0"></omgdi:waypoint>
+        <omgdi:waypoint x="218.0" y="55.0"></omgdi:waypoint>
+        <omgdi:waypoint x="177.0" y="55.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow46" id="BPMNEdge_flow46">
-        <omgdi:waypoint x="393.0" y="65.0"></omgdi:waypoint>
-        <omgdi:waypoint x="424.0" y="65.0"></omgdi:waypoint>
+        <omgdi:waypoint x="118.0" y="91.0"></omgdi:waypoint>
+        <omgdi:waypoint x="118.0" y="109.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow50" id="BPMNEdge_flow50">
-        <omgdi:waypoint x="632.0" y="193.0"></omgdi:waypoint>
-        <omgdi:waypoint x="632.0" y="216.0"></omgdi:waypoint>
+        <omgdi:waypoint x="426.0" y="279.0"></omgdi:waypoint>
+        <omgdi:waypoint x="426.0" y="366.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow51" id="BPMNEdge_flow51">
-        <omgdi:waypoint x="632.0" y="256.0"></omgdi:waypoint>
-        <omgdi:waypoint x="632.0" y="279.0"></omgdi:waypoint>
+        <omgdi:waypoint x="426.0" y="406.0"></omgdi:waypoint>
+        <omgdi:waypoint x="426.0" y="431.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow52" id="BPMNEdge_flow52">
-        <omgdi:waypoint x="612.0" y="236.0"></omgdi:waypoint>
-        <omgdi:waypoint x="398.0" y="237.0"></omgdi:waypoint>
+        <omgdi:waypoint x="406.0" y="386.0"></omgdi:waypoint>
+        <omgdi:waypoint x="331.0" y="387.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow53" id="BPMNEdge_flow53">
-        <omgdi:waypoint x="576.0" y="313.0"></omgdi:waypoint>
-        <omgdi:waypoint x="537.0" y="313.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow54" id="BPMNEdge_flow54">
-        <omgdi:waypoint x="426.0" y="313.0"></omgdi:waypoint>
-        <omgdi:waypoint x="362.0" y="312.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow55" id="BPMNEdge_flow55">
-        <omgdi:waypoint x="322.0" y="312.0"></omgdi:waypoint>
-        <omgdi:waypoint x="267.0" y="313.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow57" id="BPMNEdge_flow57">
-        <omgdi:waypoint x="165.0" y="104.0"></omgdi:waypoint>
-        <omgdi:waypoint x="164.0" y="236.0"></omgdi:waypoint>
-        <omgdi:waypoint x="192.0" y="236.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow61" id="BPMNEdge_flow61">
-        <omgdi:waypoint x="287.0" y="237.0"></omgdi:waypoint>
-        <omgdi:waypoint x="227.0" y="236.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow63" id="BPMNEdge_flow63">
-        <omgdi:waypoint x="209.0" y="279.0"></omgdi:waypoint>
-        <omgdi:waypoint x="209.0" y="254.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow64" id="BPMNEdge_flow64">
-        <omgdi:waypoint x="342.0" y="292.0"></omgdi:waypoint>
-        <omgdi:waypoint x="342.0" y="270.0"></omgdi:waypoint>
+        <omgdi:waypoint x="370.0" y="465.0"></omgdi:waypoint>
+        <omgdi:waypoint x="331.0" y="465.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow65" id="BPMNEdge_flow65">
-        <omgdi:waypoint x="535.0" y="65.0"></omgdi:waypoint>
-        <omgdi:waypoint x="574.0" y="65.0"></omgdi:waypoint>
+        <omgdi:waypoint x="180.0" y="144.0"></omgdi:waypoint>
+        <omgdi:waypoint x="217.0" y="144.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow66" id="BPMNEdge_flow66">
-        <omgdi:waypoint x="632.0" y="101.0"></omgdi:waypoint>
-        <omgdi:waypoint x="632.0" y="122.0"></omgdi:waypoint>
+        <omgdi:waypoint x="275.0" y="180.0"></omgdi:waypoint>
+        <omgdi:waypoint x="275.0" y="223.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow67" id="BPMNEdge_flow67">
+        <omgdi:waypoint x="255.0" y="243.0"></omgdi:waypoint>
+        <omgdi:waypoint x="181.0" y="243.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow68" id="BPMNEdge_flow68">
+        <omgdi:waypoint x="295.0" y="243.0"></omgdi:waypoint>
+        <omgdi:waypoint x="366.0" y="243.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow72" id="BPMNEdge_flow72">
+        <omgdi:waypoint x="334.0" y="71.0"></omgdi:waypoint>
+        <omgdi:waypoint x="370.0" y="70.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow74" id="BPMNEdge_flow74">
+        <omgdi:waypoint x="120.0" y="279.0"></omgdi:waypoint>
+        <omgdi:waypoint x="120.0" y="366.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow75" id="BPMNEdge_flow75">
+        <omgdi:waypoint x="140.0" y="386.0"></omgdi:waypoint>
+        <omgdi:waypoint x="220.0" y="387.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow76" id="BPMNEdge_flow76">
+        <omgdi:waypoint x="120.0" y="406.0"></omgdi:waypoint>
+        <omgdi:waypoint x="120.0" y="431.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow77" id="BPMNEdge_flow77">
+        <omgdi:waypoint x="177.0" y="465.0"></omgdi:waypoint>
+        <omgdi:waypoint x="177.0" y="465.0"></omgdi:waypoint>
+        <omgdi:waypoint x="220.0" y="465.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow79" id="BPMNEdge_flow79">
+        <omgdi:waypoint x="275.0" y="499.0"></omgdi:waypoint>
+        <omgdi:waypoint x="275.0" y="534.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow80" id="BPMNEdge_flow80">
+        <omgdi:waypoint x="295.0" y="554.0"></omgdi:waypoint>
+        <omgdi:waypoint x="371.0" y="555.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow82" id="BPMNEdge_flow82">
+        <omgdi:waypoint x="426.0" y="588.0"></omgdi:waypoint>
+        <omgdi:waypoint x="426.0" y="628.0"></omgdi:waypoint>
+        <omgdi:waypoint x="293.0" y="628.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow83" id="BPMNEdge_flow83">
+        <omgdi:waypoint x="255.0" y="554.0"></omgdi:waypoint>
+        <omgdi:waypoint x="177.0" y="555.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow84" id="BPMNEdge_flow84">
+        <omgdi:waypoint x="120.0" y="589.0"></omgdi:waypoint>
+        <omgdi:waypoint x="120.0" y="628.0"></omgdi:waypoint>
+        <omgdi:waypoint x="258.0" y="628.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow85" id="BPMNEdge_flow85">
+        <omgdi:waypoint x="275.0" y="354.0"></omgdi:waypoint>
+        <omgdi:waypoint x="275.0" y="335.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
