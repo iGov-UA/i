@@ -1,9 +1,12 @@
 ﻿<div ng-include="'components/navbar/navbar.html'" class="navbar-fixed-top"></div>
 <div class="row navbar-fixed-top i-gov-navbar-fillter" ng-if="sSelectedTask!='tickets' && sSelectedTask!='tickets'">
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-    <p><strong>Фільтр:</strong> не налаштовано</p>
+    <p><strong>Фільтр:</strong>
+      <span ng-if="model.taskDefinition.id != 'all' || model.userProcess.sID != 'all' || (!model.strictTaskDefinition || model.strictTaskDefinition.id != 'all')">налаштовано</span>
+      <span ng-if="model.taskDefinition.id == 'all' && model.userProcess.sID == 'all' && (model.strictTaskDefinition && model.strictTaskDefinition.id == 'all')">не налаштовано</span>
+    </p>
     <a ng-click="isFillterFormOpen = !isFillterFormOpen">Налаштувати фільтр</a>
-    <div ng-show="($storage.menuType == 'selfAssigned' || $storage.menuType == 'unassigned') && isFillterFormOpen">
+    <div ng-show="isFillterFormOpen">
       <form class="form-horizontal">
         <div class="form-group">
           <label class="col-sm-4 control-label">Фільтр за групою статусів</label>
