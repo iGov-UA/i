@@ -3,6 +3,12 @@
   <process id="common_mvd_1" name="(загальна)- Надання довідки про відсутність або наявніcть судимості" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть сервісний центр, де Ви б бажали отримати послугу" type="select" default="0"></activiti:formProperty>  
+        <activiti:formProperty id="sAddress" name="Адреса сервісного центру" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sMail_Signature" name="Підпис" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMail_Employee" name="sMail_Employee" type="invisible" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sWork_Time" name="Графік прийому громадян" type="label" default=" "></activiti:formProperty>  
+        
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sFamily_RU" name="Фамилия (рус.)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
@@ -97,7 +103,7 @@
     </boundaryEvent>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow3" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
-    <userTask id="usertask1" name="Надання послуги" activiti:candidateGroups="test_mvd">
+    <userTask id="usertask1" name="Надання послуги" activiti:candidateGroups="common_mvd_1_${sID_UA}">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" ></activiti:formProperty>
         <activiti:formProperty id="sFamily_RU" name="Фамилия (рус.)" type="string" ></activiti:formProperty>
@@ -178,8 +184,10 @@
           <activiti:value id="attr10" name="Оформлення або поновлення документів."></activiti:value>
           <activiti:value id="attr11" name="Інша"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса отримання послуги, обрана громадянином" type="string" ></activiti:formProperty>
+        
         <activiti:formProperty id="phone" name="Контактний телефон; у форматі +380...." type="string" ></activiti:formProperty>
-        <activiti:formProperty id="email" name=" e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" ></activiti:formProperty>
+        <activiti:formProperty id="email" name=" e-mail; На цей e-mail буде спрямовано результат обробки звернення" type="string" ></activiti:formProperty>
   
         <activiti:formProperty id="decide" name="Результат обробки звернення" type="enum" required="true">
           <activiti:value id="accept" name="Сповістити громадянина про дату отримання довідки"></activiti:value>
@@ -212,15 +220,17 @@
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 &lt;p&gt;
 Ваш запит успішно оброблено. &lt;br /&gt;
+Дата одержання довідки: &lt;br /&gt;
+${comment}
 
 Оригінал довідки Ви зможете отримати за адресою  &lt;br /&gt;
-....
+${sAddress}
 Графік прийому:&lt;br /&gt;
-....
+${sWork_Time}
 
  &lt;/p&gt;
 [pattern/mail/_common_signature_start.html]
- Міністерство Внутрішніх Справ України,
+${sMail_Signature}
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
@@ -251,7 +261,7 @@
 ${comment}&lt;br /&gt;
 
 [pattern/mail/_common_signature_start.html]
-Міністерство Внутрішніх Справ,
+${sMail_Signature}
 [pattern/mail/_common_signature_end.html]
                                        
 [pattern/mail/_common_footer.html]</activiti:expression>
@@ -281,7 +291,7 @@ ${comment}&lt;br /&gt;
 
 
 [pattern/mail/_common_signature_start.html]
-Міністерство Внутрішніх Справ,
+${sMail_Signature}
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
