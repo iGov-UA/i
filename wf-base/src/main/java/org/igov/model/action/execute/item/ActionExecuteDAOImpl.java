@@ -6,14 +6,19 @@ import java.util.List;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.loader.custom.Return;
 import org.igov.model.core.GenericEntityDao;
 import org.joda.time.DateTime;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public class ActionExecuteDAOImpl extends GenericEntityDao<ActionExecute> implements ActionExecuteDAO {
 
+	@Autowired
+	ActionExecuteOldDAO actionExecuteOldDAO;
+	
 	protected ActionExecuteDAOImpl() {
 		super(ActionExecute.class);
 	}
@@ -50,9 +55,35 @@ public class ActionExecuteDAOImpl extends GenericEntityDao<ActionExecute> implem
 
 	@Transactional
 	@Override
-	public List<ActionExecute> getActionExecute(Integer nRowsMax, String sMethodMask, String asID_Status, Integer nTryMax, Long nID) {
-		List<ActionExecute> resList = new ArrayList<ActionExecute>();
-		
+	public List<ActionExecute> getActionExecute(Integer nRowsMax, String sMethodMask, String asID_Status, Integer nTryMax, Long nID) {		
+		return getActionExecuteListByCriteria(nRowsMax, sMethodMask, asID_Status, nTryMax, nID);
+	}
+
+	@Override
+	@Transactional
+	public void moveActionExecute(Integer nRowsMax, String sMethodMask, String asID_Status, Integer nTryMax, Long nID) {
+		List<ActionExecute> actionExecuteList = new ArrayList<ActionExecute>();
+		actionExecuteList = getActionExecuteListByCriteria(nRowsMax, sMethodMask, asID_Status, nTryMax, nID);
+		if (actionExecuteList.size()>0){
+			for(ActionExecute actionExecute:actionExecuteList){
+				ActionExecuteOld actionExecuteOld = new ActionExecuteOld();
+						        
+				actionExecuteOld.setActionExecuteStatus(actionExecute.getActionExecuteStatus());
+				actionExecuteOld.setoDateMake(actionExecute.getoDateMake());
+				actionExecuteOld.setoDateEdit(actionExecute.getoDateEdit());
+				actionExecuteOld.setnTry(actionExecute.getnTry());
+				actionExecuteOld.setsMethod(actionExecute.getsMethod());
+				actionExecuteOld.setSoRequest(actionExecute.getSoRequest());
+				actionExecuteOld.setsReturn(actionExecute.getsReturn());
+				
+				actionExecuteOldDAO.saveOrUpdate(actionExecuteOld);
+				getSession().delete(actionExecute);
+			}
+		}
+	}
+	
+	@Transactional
+	private List<ActionExecute> getActionExecuteListByCriteria(Integer nRowsMax, String sMethodMask, String asID_Status, Integer nTryMax, Long nID){
 		Criteria criteria = getSession().createCriteria(ActionExecute.class);
 		criteria.setMaxResults(nRowsMax);
 		if(nTryMax!=null)
@@ -71,7 +102,6 @@ public class ActionExecuteDAOImpl extends GenericEntityDao<ActionExecute> implem
 			else
 				criteria.add(Restrictions.eq("sMethod", sMethodMask));
 		}		
-		resList = criteria.list();
-		return resList;
+		return criteria.list();
 	}
 }
