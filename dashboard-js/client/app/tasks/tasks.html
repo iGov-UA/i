@@ -132,6 +132,10 @@
         </button>
       </div>
 
+      <div ng-if="!clarify">
+        <puttowork-button ng-hide="selectedTask.assignee != null || $storage.menuType == 'all'"></puttowork-button>
+      </div>
+
       <div ng-repeat="item in taskForm" class="task-form-property" ng-show="selectedTask">
 
         <span ng-if="['string', 'long'].indexOf(item.type) > -1">
