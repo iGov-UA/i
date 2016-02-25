@@ -155,6 +155,8 @@ public class BpServiceHandler {
         mParam.put("organ", getCandidateGroups(sProcessName, mTaskParam.get("sTaskId").toString(), null));
         mParam.put("saField", new JSONObject(mTaskParam).toString());
         mParam.put("data", mTaskParam.get("sDate_BP"));
+        mParam.put("sServiceType", mTaskParam.get("sServiceType"));
+        mParam.put("area", mTaskParam.get("area"));
         setSubjectParams(mTaskParam.get("sTaskId").toString(), sProcessName, mParam);
         LOG.info("START PROCESS_ESCALATION={}, with mParam={}", PROCESS_ESCALATION, mParam);
         String snID_ProcessEscalation = null;
@@ -269,10 +271,22 @@ public class BpServiceHandler {
             
             Map<String, Map<String, Map>> result = subjectCover.getSubjects(currentAssignLogins, currentCadidateGroup);
             if (result != null && !result.isEmpty()) {
-                mParam.put("userLabels", getSubjectLabel(result.get("users")));
-                mParam.put("organLabels", getSubjectLabel(result.get("organs")));
-                mParam.put("userContacts", getContact(result.get("users")));
-                mParam.put("organContacts", getContact(result.get("organs")));
+                StringBuilder sb = new StringBuilder();
+                LOG.info("result: " + result);
+                String userLabels = getSubjectLabel(result.get("users"));
+                mParam.put("userLabels", userLabels);
+                String organLabels = getSubjectLabel(result.get("organs"));
+                mParam.put("organLabels", organLabels);
+                String userContacts = getContact(result.get("users"));
+                mParam.put("userContacts", userContacts);
+                String organContacts = getContact(result.get("organs"));
+                mParam.put("organContacts", organContacts);
+                sb.append(organLabels).append(" (").append(organContacts).append(")");
+                if(userLabels != null){
+                    sb.append(userLabels).append(" (").append(userContacts).append(")");
+                }
+                LOG.info("sEmployeeContacts: " + sb.toString());
+                mParam.put("sEmployeeContacts", sb.toString());
             }
         } catch (Exception ex) {
             LOG.error("[setSubjectParams]: ", ex);
