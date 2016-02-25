@@ -6,7 +6,6 @@ import java.util.List;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.loader.custom.Return;
 import org.igov.model.core.GenericEntityDao;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,18 +65,7 @@ public class ActionExecuteDAOImpl extends GenericEntityDao<ActionExecute> implem
 		actionExecuteList = getActionExecuteListByCriteria(nRowsMax, sMethodMask, asID_Status, nTryMax, nID);
 		if (actionExecuteList.size()>0){
 			for(ActionExecute actionExecute:actionExecuteList){
-				ActionExecuteOld actionExecuteOld = new ActionExecuteOld();
-						        
-				actionExecuteOld.setActionExecuteStatus(actionExecute.getActionExecuteStatus());
-				actionExecuteOld.setoDateMake(actionExecute.getoDateMake());
-				actionExecuteOld.setoDateEdit(actionExecute.getoDateEdit());
-				actionExecuteOld.setnTry(actionExecute.getnTry());
-				actionExecuteOld.setsMethod(actionExecute.getsMethod());
-				actionExecuteOld.setSoRequest(actionExecute.getSoRequest());
-				actionExecuteOld.setsReturn(actionExecute.getsReturn());
-				
-				actionExecuteOldDAO.saveOrUpdate(actionExecuteOld);
-				getSession().delete(actionExecute);
+				moveActionExecute(actionExecute);
 			}
 		}
 	}
@@ -103,5 +91,21 @@ public class ActionExecuteDAOImpl extends GenericEntityDao<ActionExecute> implem
 				criteria.add(Restrictions.eq("sMethod", sMethodMask));
 		}		
 		return criteria.list();
+	}
+	
+	
+	public void moveActionExecute(ActionExecute actionExecute) {
+		ActionExecuteOld actionExecuteOld = new ActionExecuteOld();
+        
+		actionExecuteOld.setActionExecuteStatus(actionExecute.getActionExecuteStatus());
+		actionExecuteOld.setoDateMake(actionExecute.getoDateMake());
+		actionExecuteOld.setoDateEdit(actionExecute.getoDateEdit());
+		actionExecuteOld.setnTry(actionExecute.getnTry());
+		actionExecuteOld.setsMethod(actionExecute.getsMethod());
+		actionExecuteOld.setSoRequest(actionExecute.getSoRequest());
+		actionExecuteOld.setsReturn(actionExecute.getsReturn());
+		
+		actionExecuteOldDAO.saveOrUpdate(actionExecuteOld);
+		getSession().delete(actionExecute);		
 	}
 }

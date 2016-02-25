@@ -6,7 +6,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.List;
 
 import org.apache.commons.codec.binary.Base64;
 import org.igov.model.action.execute.item.ActionExecute;
@@ -74,12 +76,21 @@ public class MethodsCallRunnerUtil {
 			actionExecute.setSoRequest(className);
 			actionExecute.setSmParam(parameters!=null?toString(parameters):null);
 			actionExecute.setsReturn(null);
+			actionExecuteDAO.saveOrUpdate(actionExecute);
 			
-			actionExecuteDAO.saveOrUpdate(actionExecute);			
-			if (parameters!= null)
-				ret = method.invoke(o, parameters);
-			else 
-				ret = method.invoke(o);
+			try{
+				if (parameters!= null)
+					ret = method.invoke(o, parameters);
+				else 
+					ret = method.invoke(o);
+				actionExecute.setActionExecuteStatus(actionExecuteStatusDAO.findByIdExpected(2l));
+				actionExecuteDAO.moveActionExecute(actionExecute);
+			}catch(InvocationTargetException e){
+				actionExecute.setActionExecuteStatus(actionExecuteStatusDAO.findByIdExpected(4l));
+				actionExecute.setnTry(1);
+				actionExecuteDAO.saveOrUpdate(actionExecute);
+			}
+			
 			return ret;
 		}catch(Exception e){
 			LOG.error("FAIL: {}", e.getMessage());
@@ -88,27 +99,37 @@ public class MethodsCallRunnerUtil {
 		}
 	}
 	
-	public void runMethod() throws CommonServiceException{
+	public void runMethod(Integer nRowsMax, String sMethodMask, String asID_Status, Integer nTryMax, Long nID) throws CommonServiceException{
 		try{
-			ActionExecute actionExecute = actionExecuteDAO.findByIdExpected(1l);
+			List<ActionExecute> actionExecuteLsit = actionExecuteDAO.getActionExecute(nRowsMax, sMethodMask, asID_Status, nTryMax, nID);
 			
-			Object ret = null;
-			Class<?> c = Class.forName(actionExecute.getSoRequest());
-			Object o = springContext.getBean(c);
+			for(ActionExecute actionExecute:actionExecuteLsit){
+				Object ret = null;
+				Class<?> c = Class.forName(actionExecute.getSoRequest());
+				Object o = springContext.getBean(c);
+				
+				Object[] parameters = actionExecute.getSmParam()!=null?(Object[]) fromString(actionExecute.getSmParam()):null;
+				
+				Class<?>[] param_types = new Class<?>[parameters!=null?parameters.length:0];
+				if (parameters!=null && parameters.length>0)
+					for (int i=0; i< parameters.length; i++)
+						param_types[i] = parameters[i].getClass();
+				
+				Method  method = c.getMethod(actionExecute.getsMethod(), param_types);
 			
-			Object[] parameters = actionExecute.getSmParam()!=null?(Object[]) fromString(actionExecute.getSmParam()):null;
-			
-			Class<?>[] param_types = new Class<?>[parameters!=null?parameters.length:0];
-			if (parameters!=null && parameters.length>0)
-				for (int i=0; i< parameters.length; i++)
-					param_types[i] = parameters[i].getClass();
-			
-			Method  method = c.getMethod(actionExecute.getsMethod(), param_types);
-			
-			if (parameters!= null)
-				ret = method.invoke(o, parameters);
-			else 
-				ret = method.invoke(o);
+				try{
+					if (parameters!= null)
+						ret = method.invoke(o, parameters);
+					else 
+						ret = method.invoke(o);
+					actionExecute.setActionExecuteStatus(actionExecuteStatusDAO.findByIdExpected(2l));
+					actionExecuteDAO.moveActionExecute(actionExecute);
+				}catch(InvocationTargetException e){
+					actionExecute.setActionExecuteStatus(actionExecuteStatusDAO.findByIdExpected(4l));
+					actionExecute.setnTry(actionExecute.getnTry()+1);
+					actionExecuteDAO.saveOrUpdate(actionExecute);
+				}
+			}
 		}catch(Exception e){
 			LOG.error("FAIL: {}", e.getMessage());
 	        LOG.trace("FAIL:", e);
