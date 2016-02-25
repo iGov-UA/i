@@ -116,7 +116,7 @@ public class BpServiceHandler {
             if (!(escalationId == null || "null".equals(escalationId.toString()))) {
                 LOG.info(String.format("For bp [%s] escalation process (with id=%s) has already started!",
                         processName, escalationId));
-                return;
+                //return;  для тестировани закоменчено
             }
             nID_Server = historyEvent.getInt("nID_Server");
         } catch (Exception oException) {
