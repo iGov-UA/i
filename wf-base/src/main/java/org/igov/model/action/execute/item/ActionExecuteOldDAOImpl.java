@@ -8,12 +8,16 @@ import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.igov.model.core.GenericEntityDao;
 import org.joda.time.DateTime;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public class ActionExecuteOldDAOImpl extends GenericEntityDao<ActionExecuteOld>	implements ActionExecuteOldDAO {
 
+	@Autowired
+	ActionExecuteDAO actionExecuteDAO;
+	
 	protected ActionExecuteOldDAOImpl() {
 		super(ActionExecuteOld.class);
 	}
@@ -73,5 +77,47 @@ public class ActionExecuteOldDAOImpl extends GenericEntityDao<ActionExecuteOld>	
 		}
 		resList = criteria.list();
 		return resList;
+	}
+
+	@Override
+	@Transactional
+	public void moveActionExecuteOld(Integer nRowsMax, String sMethodMask, String asID_Status, Integer nTryMax,
+			Long nID) {
+		List<ActionExecuteOld> resList = new ArrayList<ActionExecuteOld>();
+		Criteria criteria = getSession().createCriteria(ActionExecuteOld.class);
+		criteria.setMaxResults(nRowsMax);
+		if(nTryMax!=null)
+			criteria.add(Restrictions.le("nTry", nTryMax));
+		if(nID!=null)
+			criteria.add(Restrictions.eq("nID", nID));
+		if(asID_Status!=null){			
+			JSONArray statuses = new JSONArray(asID_Status);			
+			for(int i=0;i<statuses.length();i++){
+				criteria.add(Restrictions.in("nID_ActionExecuteStatus", (Object[]) statuses.get(i)));
+			}
+		}
+		if(sMethodMask!=null){
+			if(sMethodMask.contains("*"))			
+				criteria.add(Restrictions.like("sMethod", sMethodMask.replace("*", "%")));
+			else
+				criteria.add(Restrictions.eq("sMethod", sMethodMask));
+		}		
+		resList = criteria.list();
+		if (resList.size()>0){
+			for(ActionExecuteOld actionExecuteOld:resList){
+				ActionExecute actionExecute = new ActionExecute();
+						        
+				actionExecute.setActionExecuteStatus(actionExecuteOld.getActionExecuteStatus());
+				actionExecute.setoDateMake(actionExecuteOld.getoDateMake());
+				actionExecute.setoDateEdit(actionExecuteOld.getoDateEdit());
+				actionExecute.setnTry(actionExecuteOld.getnTry());
+				actionExecute.setsMethod(actionExecuteOld.getsMethod());
+				actionExecute.setSoRequest(actionExecuteOld.getSoRequest());
+				actionExecute.setsReturn(actionExecuteOld.getsReturn());
+				
+				actionExecuteDAO.saveOrUpdate(actionExecute);
+				getSession().delete(actionExecuteOld);
+			}
+		}
 	}
 }

@@ -99,8 +99,11 @@ public class ActionExecuteController {
     		@ApiParam(value = "выбрать только те, у которых число попыток не превышает указанный лимит (иначе с любым числом попыток)", required = false) @RequestParam(value = "nTryMax", required = false) Integer nTryMax,
     		@ApiParam(value = "номер-ИД записи", required = false) @RequestParam(value = "nID", required = false) Long nID,
     		@ApiParam(value = "булевый, если указан true, то переместить из олд-а в основную (по умолчанию наоборот)", required = false) @RequestParam(value = "bBack", required = false, defaultValue="false") Boolean bBack){
-    	
-    	return JsonRestUtils.toJsonResponse(null);
+    	if(bBack)
+    		actionExecuteOldDAO.moveActionExecuteOld(nRowsMax, sMethodMask, asID_Status, nTryMax, nID);
+    	else
+    		actionExecuteDAO.moveActionExecute(nRowsMax, sMethodMask, asID_Status, nTryMax, nID);
+    	return null;
     }    
     
 }
