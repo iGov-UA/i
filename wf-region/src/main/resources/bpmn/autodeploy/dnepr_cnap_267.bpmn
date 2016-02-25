@@ -872,10 +872,12 @@ execution.setVariable('group', per7)
         <activiti:formProperty id="other_docs_js" name="назва документу 5" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPost" name="пошта посадовця" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_267_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_267_2_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_3" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_267_3_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody_3" name="[pattern/print/dneprOblSnap/dnepr_cnap_267_3_print.html]" type="invisible" default="Бланк ліцензії" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dnepr_cnap_267_print.html]" type="invisible" default="Заявка на одержання ліцензії на імпорт" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_3" name="[pattern/print/dneprOblSnap/dnepr_cnap_267_3_print.html]" type="invisible" default="Лист-звернення щодо оформлення ліцензії в довільній формі" writable="false"></activiti:formProperty>
-      </extensionElements>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/dneprOblSnap/dnepr_cnap_267_2_print.html]" type="invisible" default="Лист-звернення щодо оформлення ліцензії в довільній формі" writable="false"></activiti:formProperty>
+       </extensionElements>
     </userTask>
     <sequenceFlow id="flow62" sourceRef="exclusivegateway3" targetRef="usertask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${area=='tr'}]]></conditionExpression>
@@ -883,49 +885,8 @@ execution.setVariable('group', per7)
     <sequenceFlow id="flow63" sourceRef="exclusivegateway3" targetRef="usertask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${area !='tr'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow64" sourceRef="usertask3" targetRef="servicetask10"></sequenceFlow>
-    <serviceTask id="servicetask10" name="повідомлення про рішення Тернопіль" activiti:delegateExpression="#{MailTaskWithAttachments}">
-      <extensionElements>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[test_noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="to">
-          <activiti:expression>"${email}"</activiti:expression>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Разова (індивідуальна) ліцензія на здійснення суб’єктами зовнішньоекономічної діяльності зовнішньоекономічних операцій]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${rishen},${PrintForm_1},${PrintForm_3}</activiti:expression>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Вам enum{[decision_2]}.&lt;br /&gt;  &lt;br /&gt;  
-Копія відповідного документу знаходиться у додатку до листа.&lt;br /&gt;
-Ви або уповноважена Вами особа (при наявності довіреності) можете отримати документ собисто під підпис за адресою ${sAdress}.&lt;br /&gt;&lt;br /&gt;
-При собі треба мати:&lt;br /&gt;
-1. Документ, що посвідчує особу.&lt;br /&gt;
-2. Для уповоноваженої особи - довіренність.&lt;br /&gt;
-3. Заяву, що знаходяться у додатку до листа (завантажте і роздрукуйте), засвідчену особистим  підписом  керівника  суб'єкта зовнішньоекономічної діяльності або уповноваженої ним особи.&lt;br /&gt;
-${visnovok_js}&lt;br /&gt;
-${other_docs_js}&lt;br /&gt;
-6. Лист-звернення, що знаходяться у додатку до листа (завантажте і роздрукуйте)  щодо оформлення ліцензії, підписаний керівником суб'єкта зовнішньоекономічної діяльності на офіційному бланку.&lt;br /&gt;
-7. Платіжний документ (квитанція) про оплату вартості послуги.&lt;br /&gt; 
-8. Копія зовнішньоекономічного договору (контракту), усі додатки та специфікації до нього, завірені в установленому законодавством порядку.&lt;br /&gt; 
-9. Сертифікат про походження товару або експертний висновок з визначенням країни походження та коду товару відповідно до Української класифікації товарів зовнішньоекономічної діяльності, виданий Торгово-промисловою палатою України або регіональними торгово-промисловими палатами.&lt;br /&gt;
-${sWorkTime}&lt;br /&gt; 
-[pattern/mail/_common_signature_start.html]
-${sNameUnit}&lt;br /&gt; 
-[pattern/mail/_common_signature_end.html]   
-[pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
-    <endEvent id="endevent3" name="End"></endEvent>
-    <sequenceFlow id="flow65" sourceRef="servicetask4" targetRef="endevent3"></sequenceFlow>
-    <sequenceFlow id="flow66" sourceRef="servicetask10" targetRef="endevent3"></sequenceFlow>
+    <sequenceFlow id="flow64" sourceRef="usertask3" targetRef="servicetask4"></sequenceFlow>
+    <sequenceFlow id="flow65" sourceRef="servicetask4" targetRef="endevent2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_267">
     <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_267" id="BPMNPlane_dnepr_cnap_267">
@@ -969,13 +930,7 @@ ${sNameUnit}&lt;br /&gt;
         <omgdc:Bounds height="40.0" width="40.0" x="538.0" y="290.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
-        <omgdc:Bounds height="55.0" width="141.0" x="296.0" y="350.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask10" id="BPMNShape_servicetask10">
-        <omgdc:Bounds height="56.0" width="105.0" x="119.0" y="350.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
-        <omgdc:Bounds height="35.0" width="35.0" x="154.0" y="293.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="141.0" x="296.0" y="283.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
         <omgdi:waypoint x="95.0" y="87.0"></omgdi:waypoint>
@@ -1029,24 +984,20 @@ ${sNameUnit}&lt;br /&gt;
         <omgdi:waypoint x="558.0" y="290.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow62" id="BPMNEdge_flow62">
-        <omgdi:waypoint x="558.0" y="330.0"></omgdi:waypoint>
-        <omgdi:waypoint x="366.0" y="350.0"></omgdi:waypoint>
+        <omgdi:waypoint x="538.0" y="310.0"></omgdi:waypoint>
+        <omgdi:waypoint x="437.0" y="310.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow63" id="BPMNEdge_flow63">
         <omgdi:waypoint x="558.0" y="290.0"></omgdi:waypoint>
         <omgdi:waypoint x="366.0" y="267.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow64" id="BPMNEdge_flow64">
-        <omgdi:waypoint x="296.0" y="377.0"></omgdi:waypoint>
-        <omgdi:waypoint x="224.0" y="378.0"></omgdi:waypoint>
+        <omgdi:waypoint x="366.0" y="283.0"></omgdi:waypoint>
+        <omgdi:waypoint x="171.0" y="268.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow65" id="BPMNEdge_flow65">
-        <omgdi:waypoint x="171.0" y="268.0"></omgdi:waypoint>
-        <omgdi:waypoint x="171.0" y="293.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow66" id="BPMNEdge_flow66">
-        <omgdi:waypoint x="171.0" y="350.0"></omgdi:waypoint>
-        <omgdi:waypoint x="171.0" y="328.0"></omgdi:waypoint>
+        <omgdi:waypoint x="171.0" y="212.0"></omgdi:waypoint>
+        <omgdi:waypoint x="171.0" y="185.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
