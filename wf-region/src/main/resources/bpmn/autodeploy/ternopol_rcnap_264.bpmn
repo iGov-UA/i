@@ -321,7 +321,7 @@
         <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/ternopil_cnap_264_print.html]" type="invisible" default="заява загальна" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
-    <serviceTask id="servicetask5" name="Повідомлення співробітника держ.органу" activiti:expression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask5" name="Повідомлення співробітника держ.органу" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -390,7 +390,7 @@ ${comment_1}&lt;br /&gt;
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask10" name="Повідомлення громадянина про успішне подання зверенння">
+    <serviceTask id="servicetask10" name="Повідомлення громадянина про успішне подання зверенння" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -439,7 +439,7 @@ ${comment_1}&lt;br /&gt;
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask11" name="повідомлення громадянина про відмову">
+    <serviceTask id="servicetask11" name="повідомлення громадянина про відмову" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
@@ -463,7 +463,7 @@ ${comment_2}&lt;br /&gt;
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask12" name="Запрошення громадянина за готовим документом">
+    <serviceTask id="servicetask12" name="Запрошення громадянина за готовим документом" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
