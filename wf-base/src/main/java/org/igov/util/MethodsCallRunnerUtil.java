@@ -58,14 +58,17 @@ public class MethodsCallRunnerUtil {
 			Object ret = null;
 			Class<?> c = Class.forName(className);
 			Object o = springContext.getBean(c);
-			
+			LOG.info("classname -{}", className);
+			LOG.info("methodName -{}", methodName);
 			Class<?>[] param_types = new Class<?>[parameters!=null?parameters.length:0];
 			if (parameters!=null && parameters.length>0)
 				for (int i=0; i< parameters.length; i++)
 					param_types[i] = parameters[i].getClass();
 			
 			Method  method = c.getMethod(methodName, param_types);
-			
+
+			LOG.info("method is-{}", method!=null?"not null":"null");
+
 			ActionExecute actionExecute = new ActionExecute();
 			ActionExecuteStatus actionExecuteStatus = actionExecuteStatusDAO.findByIdExpected(1l);								
 			actionExecute.setActionExecuteStatus(actionExecuteStatus);
@@ -83,12 +86,15 @@ public class MethodsCallRunnerUtil {
 					ret = method.invoke(o, parameters);
 				else 
 					ret = method.invoke(o);
+				LOG.info("return is {}",ret!=null?ret:null);
+
 				actionExecute.setActionExecuteStatus(actionExecuteStatusDAO.findByIdExpected(2l));
 				actionExecuteDAO.moveActionExecute(actionExecute);
 			}catch(InvocationTargetException e){
 				actionExecute.setActionExecuteStatus(actionExecuteStatusDAO.findByIdExpected(4l));
 				actionExecute.setnTry(1);
 				actionExecuteDAO.saveOrUpdate(actionExecute);
+				LOG.info("error during invoke method {}",e);
 			}
 			
 			return ret;

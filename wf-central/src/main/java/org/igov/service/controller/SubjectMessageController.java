@@ -33,6 +33,7 @@ import org.igov.service.business.subject.SubjectMessageService;
 import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.FileServiceIOException;
+import org.igov.util.MethodsCallRunnerUtil;
 import org.igov.util.JSON.JsonRestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,7 +85,8 @@ public class SubjectMessageController {
     @Autowired
     private IBytesDataInmemoryStorage oBytesDataInmemoryStorage;
     
-    
+    @Autowired 
+    MethodsCallRunnerUtil methodCallRunner;
     /**
      * получение сообщения
      *
@@ -396,7 +398,12 @@ public class SubjectMessageController {
     public
     @ResponseBody
     ResponseEntity getMessages() {
-        List<SubjectMessage> messages = subjectMessagesDao.getMessages();
+    	 List<SubjectMessage> messages = null;
+    	try{
+    		messages = (List<SubjectMessage>) methodCallRunner.registrateMethod(SubjectMessagesDao.class.getName(), "getMessages", null);
+    	}catch(Exception e){
+    		
+    	}         
         return JsonRestUtils.toJsonResponse(messages);
     }
     
