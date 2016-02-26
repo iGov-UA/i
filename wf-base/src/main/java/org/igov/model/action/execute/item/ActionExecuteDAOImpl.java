@@ -93,7 +93,7 @@ public class ActionExecuteDAOImpl extends GenericEntityDao<ActionExecute> implem
 		return criteria.list();
 	}
 	
-	
+	@Transactional
 	public void moveActionExecute(ActionExecute actionExecute) {
 		ActionExecuteOld actionExecuteOld = new ActionExecuteOld();
         
