@@ -72,6 +72,8 @@ import org.igov.model.action.event.HistoryEvent_Service_StatusType;
 import org.igov.model.action.task.core.ProcessDTOCover;
 import org.igov.model.action.task.core.TaskAssigneeCover;
 import org.igov.model.action.task.core.entity.TaskAssigneeI;
+import org.igov.model.escalation.EscalationRule;
+import org.igov.model.escalation.EscalationRuleDao;
 import org.igov.model.flow.FlowSlotTicket;
 import org.igov.model.flow.FlowSlotTicketDao;
 import org.igov.service.business.access.BankIDConfig;
@@ -2142,6 +2144,15 @@ public class ActionTaskService {
 		}
 		return taskInfo;
 	}
-	
+
+    /**
+     * Get sID_UserTask by nID_Task
+     * @param nID_Task
+     * @return sID_UserTask
+     */
+    public String getsIDUserTaskByTaskId(Long nID_Task){
+        return oHistoryService.createHistoricTaskInstanceQuery()
+                .taskId(nID_Task.toString()).singleResult().getTaskDefinitionKey();
+    }
 	
 }
