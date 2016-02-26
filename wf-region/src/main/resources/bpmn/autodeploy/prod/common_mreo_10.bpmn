@@ -67,8 +67,8 @@
         <activiti:formProperty id="sDetail6" name="Об'єм двигуна (см. куб)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Ваш контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file1" name="Копія документу реєстрації транспортного засобу" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="text" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
+        <activiti:formProperty id="file1" name="Копія тех.паспорта ; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file2" name="Копія свідоцтва про спадщину; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву" type="file" required="true"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Підтягування документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -143,7 +143,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="sBillToPay" name="В разі надання послуги, завантажте файл з реквізитами для сплати вартості послуги. Файл буде відправлено заявнику на  email" type="file"></activiti:formProperty>
         <activiti:formProperty id="visit" name="Побажання громадянина щодо візиту для отримання послуги" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="comment" name="Вкажіть дату візиту для отримання посвідчення або підставу для відмови в наданні послуги (Інформація буде спрямована громадянину на e-mail)" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="comment" name="Примітка про дату / час візиту або причини для відмови в наданні послуги(Інформація буде спрямована громадянину на e-mail)" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="sNotifyEvent_AfterSubmit" type="invisible" default="Електроний лист заявнику успішно відправлено. Заявка перейшла в чергу Необроблених з новим статусом - 'Надання послуги' "></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
@@ -246,7 +246,7 @@
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 &lt;p&gt; Для отримання послуги Вам необхідно сплатити державний збір і надати квитанцію про сплату під час візиту за адресою  ${sAddress}.
 &lt;/p&gt;
-Дата візиту: &lt;br /&gt;
+Примітка щодо візиту: &lt;br /&gt;
 ${comment}&lt;br /&gt;
 Рекомендовано прибути заздалегідь для проведення огляду автомобіля з одержанням акту експертного огляду.&lt;br /&gt;
 Рекомендований час 20-40 хвилин.
@@ -296,7 +296,7 @@ ${sMail_Signature}
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 &lt;br /&gt;
 На жаль, Вам відмовлено в реєстраціі авто.&lt;br /&gt;
-Підтсава: &lt;br /&gt;
+Підстава: &lt;br /&gt;
 ${comment}&lt;br /&gt;
 
 [pattern/mail/_common_signature_start.html]
