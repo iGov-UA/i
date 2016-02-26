@@ -48,7 +48,7 @@ public enum TaskReportField {
 			return currentRow.replace(this.getPattern(), sDateFormat.format(curTask.getCreateTime()));
 		}
     },
-    CLOSE_DATE("2", "${sDateClose}") {
+    CLOSE_DATE("4", "${sDateClose}") {
         @Override
         public String replaceValue(String currentRow, Task curTask, SimpleDateFormat sDateFormat, GeneralConfig oGeneralConfig) {
             return currentRow.replace(this.getPattern(), sDateFormat.format(curTask.getCreateTime()));
