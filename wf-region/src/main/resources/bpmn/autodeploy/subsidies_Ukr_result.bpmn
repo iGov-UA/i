@@ -76,6 +76,10 @@
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Домашня адреса" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="goal_2" name="Чи подавали на субсидію через портал iGov?" type="enum" writable="false">
+          <activiti:value id="Enum1" name="Так"></activiti:value>
+          <activiti:value id="Enum2" name="Ні"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Контактний e-mail" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="goal" name="Заявнику призначено субсидію?" type="enum">
@@ -83,11 +87,8 @@
           <activiti:value id="Enum2" name="Заява на субсидію в процесі обробки"></activiti:value>
           <activiti:value id="Enum3" name="Субсидія не призначалась"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="result" name="Додайте файл з розрахунком, якщо субсидію призначено" type="file"></activiti:formProperty>
-        <activiti:formProperty id="goal_2" name="Чи подавали на субсидію через портал iGov?" type="enum" writable="false">
-          <activiti:value id="Enum1" name="Так"></activiti:value>
-          <activiti:value id="Enum2" name="Ні"></activiti:value>
-        </activiti:formProperty>
+        <activiti:formProperty id="result" name="ОБОВ'ЯЗКОВО додайте файл з розрахунком, якщо субсидію призначено" type="file"></activiti:formProperty>
+        
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow2" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
@@ -107,7 +108,7 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 		    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-			&lt;p&gt;Результат Вашого звернення з приводу призначення субсидії наведено нижче у вигляді сканфото.   &lt;/p&gt;
+			&lt;p&gt;Результат Вашого звернення з приводу призначення субсидії знаходиться у прикріпленому нижче файлі.   &lt;/p&gt;
 			[pattern/mail/_common_signature_start.html]
 			&lt;p&gt;[pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:2]
 			&lt;/p&gt;

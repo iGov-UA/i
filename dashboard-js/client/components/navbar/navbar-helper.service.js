@@ -36,26 +36,31 @@
         title: 'Необроблені',
         type: tasks.filterTypes.unassigned,
         count: 0,
+        showCount: true,
         tab: 'unassigned'
       }, {
         title: 'В роботі',
         type: tasks.filterTypes.selfAssigned,
         count: 0,
+        showCount: true,
         tab: 'selfAssigned'
       }, {
         title: 'Мій розклад',
         type: tasks.filterTypes.tickets,
         count: 0,
+        showCount: true,
         tab: 'tickets'
       }, {
         title: 'Усі',
         type: tasks.filterTypes.all,
         count: 0,
+        showCount: false,
         tab: 'all'
       }, {
         title: 'Історія',
         type: tasks.filterTypes.finished,
         count: 0,
+        showCount: false,
         tab: 'finished'
       }];
 
@@ -66,15 +71,17 @@
 
     function loadTaskCounters() {
       _.each(service.menus, function (menu) {
-        tasks.list(menu.type)
-          .then(function (result) {
-            try {
-              result = JSON.parse(result);
-            } catch (e) {
-              result = result;
-            }
-            menu.count = result.data.length;
-          });
+        if (menu.showCount) {
+          tasks.list(menu.type)
+              .then(function(result) {
+                try {
+                  result = JSON.parse(result);
+                } catch (e) {
+                  result = result;
+                }
+                menu.count = result.data.length;
+              });
+        }
       });
     }
   }
