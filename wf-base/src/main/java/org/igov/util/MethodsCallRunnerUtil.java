@@ -55,17 +55,21 @@ public class MethodsCallRunnerUtil {
 
 	public Object registrateMethod(String className, String methodName, Object[] parameters) throws CommonServiceException{
 		try{			
+			LOG.info("in egistrateMethod");
 			Object ret = null;
 			Class<?> c = Class.forName(className);
 			Object o = springContext.getBean(c);
-			
+			LOG.info("classname -{}", className);
+			LOG.info("methodName -{}", methodName);
 			Class<?>[] param_types = new Class<?>[parameters!=null?parameters.length:0];
 			if (parameters!=null && parameters.length>0)
 				for (int i=0; i< parameters.length; i++)
 					param_types[i] = parameters[i].getClass();
 			
 			Method  method = c.getMethod(methodName, param_types);
-			
+
+			LOG.info("method is-{}", method!=null?"not null":"null");
+
 			ActionExecute actionExecute = new ActionExecute();
 			ActionExecuteStatus actionExecuteStatus = actionExecuteStatusDAO.findByIdExpected(1l);								
 			actionExecute.setActionExecuteStatus(actionExecuteStatus);
@@ -83,12 +87,15 @@ public class MethodsCallRunnerUtil {
 					ret = method.invoke(o, parameters);
 				else 
 					ret = method.invoke(o);
+				LOG.info("return is {}",ret!=null?ret:null);
+
 				actionExecute.setActionExecuteStatus(actionExecuteStatusDAO.findByIdExpected(2l));
 				actionExecuteDAO.moveActionExecute(actionExecute);
 			}catch(InvocationTargetException e){
 				actionExecute.setActionExecuteStatus(actionExecuteStatusDAO.findByIdExpected(4l));
 				actionExecute.setnTry(1);
 				actionExecuteDAO.saveOrUpdate(actionExecute);
+				LOG.info("error during invoke method {}",e);
 			}
 			
 			return ret;
@@ -99,12 +106,12 @@ public class MethodsCallRunnerUtil {
 		}
 	}
 	
-	public void runMethod(Integer nRowsMax, String sMethodMask, String asID_Status, Integer nTryMax, Long nID) throws CommonServiceException{
+	public Object runMethod(Integer nRowsMax, String sMethodMask, String asID_Status, Integer nTryMax, Long nID) throws CommonServiceException{
 		try{
+			Object ret = null;
 			List<ActionExecute> actionExecuteLsit = actionExecuteDAO.getActionExecute(nRowsMax, sMethodMask, asID_Status, nTryMax, nID);
-			
+			LOG.info("actionExecuteLsit size -{}",actionExecuteLsit.size());
 			for(ActionExecute actionExecute:actionExecuteLsit){
-				Object ret = null;
 				Class<?> c = Class.forName(actionExecute.getSoRequest());
 				Object o = springContext.getBean(c);
 				
@@ -122,14 +129,18 @@ public class MethodsCallRunnerUtil {
 						ret = method.invoke(o, parameters);
 					else 
 						ret = method.invoke(o);
+					LOG.info("return is {}",ret!=null?ret:null);
 					actionExecute.setActionExecuteStatus(actionExecuteStatusDAO.findByIdExpected(2l));
 					actionExecuteDAO.moveActionExecute(actionExecute);
 				}catch(InvocationTargetException e){
 					actionExecute.setActionExecuteStatus(actionExecuteStatusDAO.findByIdExpected(4l));
 					actionExecute.setnTry(actionExecute.getnTry()+1);
 					actionExecuteDAO.saveOrUpdate(actionExecute);
+					LOG.info("error during invoke method {}",e);
+
 				}
 			}
+			return ret;
 		}catch(Exception e){
 			LOG.error("FAIL: {}", e.getMessage());
 	        LOG.trace("FAIL:", e);

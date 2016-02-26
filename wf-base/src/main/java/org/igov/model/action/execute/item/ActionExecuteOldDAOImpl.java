@@ -67,7 +67,7 @@ public class ActionExecuteOldDAOImpl extends GenericEntityDao<ActionExecuteOld>	
 		if(nTryMax!=null)
 			criteria.add(Restrictions.le("nTry", nTryMax));
 		if(nID!=null)
-			criteria.add(Restrictions.eq("nID", nID));
+			criteria.add(Restrictions.eq("id", nID));
 		if(asID_Status!=null){			
 			JSONArray statuses = new JSONArray(asID_Status);			
 			for(int i=0;i<statuses.length();i++){

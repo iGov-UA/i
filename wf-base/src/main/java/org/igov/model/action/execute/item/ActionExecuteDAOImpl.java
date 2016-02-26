@@ -77,7 +77,7 @@ public class ActionExecuteDAOImpl extends GenericEntityDao<ActionExecute> implem
 		if(nTryMax!=null)
 			criteria.add(Restrictions.le("nTry", nTryMax));
 		if(nID!=null)
-			criteria.add(Restrictions.eq("nID", nID));
+			criteria.add(Restrictions.eq("id", nID));
 		if(asID_Status!=null){			
 			JSONArray statuses = new JSONArray(asID_Status);			
 			for(int i=0;i<statuses.length();i++){
@@ -93,7 +93,7 @@ public class ActionExecuteDAOImpl extends GenericEntityDao<ActionExecute> implem
 		return criteria.list();
 	}
 	
-	
+	@Transactional
 	public void moveActionExecute(ActionExecute actionExecute) {
 		ActionExecuteOld actionExecuteOld = new ActionExecuteOld();
         
