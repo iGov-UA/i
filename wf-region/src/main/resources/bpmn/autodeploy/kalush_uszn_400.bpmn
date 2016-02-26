@@ -22,8 +22,8 @@
         <activiti:formProperty id="file_arx" name="Архівна довідка" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file_ato" name="Документ що підтверджує участь в АТО" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file_ato_vidr" name="Документ про відрядження в АТО" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="marker_ww2_afg" name="Документи для учасника другої світової та війни в Афганістані" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;file_arx&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asWar_category&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'asWw2'||'asWafgan'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="marker_ato" name="Документи для учасника АТО" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;file_ato&quot;,&quot;file_ato_vidr&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asWar_category&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'asWato'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker_ww2_afg" name="Документи для учасника другої світової та війни в Афганістані" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;file_arx&quot;],&quot;asID_Field&quot;:{&quot;sVet&quot;:&quot;asWar_category&quot;},&quot;sCondition&quot;:&quot;[sVet] == 'asWw2'||[sVet] =='asWafgan'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker_ato" name="Документи для учасника АТО" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;file_ato&quot;,&quot;file_ato_vidr&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asWar_category&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'asWato'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -44,7 +44,7 @@
 [pattern/mail/_common_signature.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
-        <activiti:field name="subgect">
+        <activiti:field name="subject">
           <activiti:string><![CDATA[Нова заява про отроимання посвідчення учасника війни]]></activiti:string>
         </activiti:field>
       </extensionElements>
@@ -66,9 +66,9 @@
 &lt;p&gt; Ваше звернення щодо отримання посвідчення учасника війни зареєстроване в системі.
 Повідомлення про результат розгляду буде спрямоване на Ваш e-mail.&lt;/p&gt;
 &lt;br /&gt;
-[pattern_dictonary:dnepr_soc_help.csv:value228:5]&lt;br /&gt;
+[pattern_dictonary:dnepr_soc_help.csv:228:5]&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_soc_help.csv:value228:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_soc_help.csv:228:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -77,7 +77,7 @@
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
     <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
-    <userTask id="usertask1" name="Обробка та перевірка документів">
+    <userTask id="usertask1" name="Обробка та перевірка документів" activiti:candidateGroups="upszn234">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
@@ -86,12 +86,12 @@
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Адреса реєстрації заявника;(поштовий індекс, місто, вулиця, номер дому, номер квартири)" type="string" writable="false"></activiti:formProperty>
-        
         <activiti:formProperty id="asWar_category" name="Оберіть категорію учасника війни" type="enum" writable="false">
           <activiti:value id="asWw2" name="Учаник другої світової"></activiti:value>
           <activiti:value id="asWafgan" name="Учасник афганської війни"></activiti:value>
           <activiti:value id="asWato" name="Учасник війни на Донбасі (АТО)"></activiti:value>
-        </activiti:formProperty><activiti:formProperty id="adminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string" required="true"></activiti:formProperty>
+        </activiti:formProperty>
+        <activiti:formProperty id="adminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="number_cnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="date_registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="variants" name="Рішення щодо видачі посвідчення" type="enum">
@@ -102,8 +102,8 @@
         <activiti:formProperty id="sVuprav" name="Вкажіть які недоліки необхідно усунити заявнику." type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="date_end" name="Дата отримання посвідчення заявником" type="date"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/UPSZN/kalush_uszn_400_print.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="marker1" name="Відмова у видачі посвідчення" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sVidmova&quot;,&quot;sVuprav&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;variants&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'dok_bad'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="marker2" name="Видати посвідчення" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;date_end&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;variants&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'dok_ok'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker1" name="Відмова у видачі посвідчення" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;sVidmova&quot;,&quot;sVuprav&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;variants&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'dok_bad'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker2" name="Видати посвідчення" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;date_end&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;variants&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'dok_ok'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -133,9 +133,9 @@
 Нажаль ми змушені відмовити вам в видачі посвідчення учасника війни&lt;br/&gt; 
 Причина: ${sVidmova}.&lt;br/&gt; 
 Для усунення недоліків необхідно: ${sVuprav}.&lt;br/&gt; 
-[pattern_dictonary:dnepr_soc_help.csv:value228:5]&lt;br /&gt;
+[pattern_dictonary:dnepr_soc_help.csv:228:5]&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_soc_help.csv:value228:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_soc_help.csv:228:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
@@ -160,9 +160,9 @@
 1. Документ, що посвідчує особу.&lt;br/&gt; 
 2. Для уповоноваженої особи - довіренність.&lt;br/&gt;
 3. Оригінали документів, що були завантажені при подачі заяви на сайті.&lt;br/&gt;
-[pattern_dictonary:dnepr_soc_help.csv:value228:5]&lt;br /&gt;
+[pattern_dictonary:dnepr_soc_help.csv:228:5]&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_soc_help.csv:value228:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_soc_help.csv:228:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]</activiti:expression>
         </activiti:field>
       </extensionElements>

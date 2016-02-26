@@ -13,6 +13,7 @@ import org.igov.model.action.execute.item.ActionExecuteOldDAO;
 import org.igov.model.action.execute.item.ActionExecuteStatus;
 import org.igov.model.action.execute.item.ActionExecuteStatusDAO;
 import org.igov.service.exception.CommonServiceException;
+import org.igov.util.MethodsCallRunnerUtil;
 import org.igov.util.JSON.JsonRestUtils;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -38,8 +39,10 @@ public class ActionExecuteController {
 	@Autowired
 	private ActionExecuteOldDAO actionExecuteOldDAO;
 	
-	
-    private static final Logger LOG = LoggerFactory.getLogger(ActionExecuteController.class);
+	@Autowired
+	private MethodsCallRunnerUtil methodCallRunner; 
+    
+	private static final Logger LOG = LoggerFactory.getLogger(ActionExecuteController.class);
 
     @ApiOperation(value = "Получение массива всех акций ", notes = "")
     @RequestMapping(value = "/getActionExecuteStatuses", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE, headers = {"Accept=application/json"})
@@ -82,9 +85,8 @@ public class ActionExecuteController {
              @ApiParam(value = "булевый, true=только из олд-таблицы, иначе только из основной (по умолчанию из основной", required = false) @RequestParam(value = "bOldOnly", required = false, defaultValue = "false") Boolean bOldOnly,
              @ApiParam(value = "выбрать только с указанными статусами (массив JSON)", required = false) @RequestParam(value = "asID_Status", required = false) String asID_Status,
              @ApiParam(value = "выбрать только те, у которых число попыток не превышает указанный лимит (иначе с любым числом попыток)", required = false) @RequestParam(value = "nTryMax", required = false) Integer nTryMax,
-    		 @ApiParam(value = "номер-ИД записи", required = false) @RequestParam(value = "nID", required = false) Long nID){
-        
-        return JsonRestUtils.toJsonResponse(null);
+    		 @ApiParam(value = "номер-ИД записи", required = false) @RequestParam(value = "nID", required = false) Long nID) throws CommonServiceException{    	
+        return JsonRestUtils.toJsonResponse(methodCallRunner.runMethod(nRowsMax, sMethodMask, asID_Status, nTryMax, nID));
     }
     
     @ApiOperation(value = "переместить записи из основной таблицы в олд или обратно.", notes = "")
@@ -99,8 +101,11 @@ public class ActionExecuteController {
     		@ApiParam(value = "выбрать только те, у которых число попыток не превышает указанный лимит (иначе с любым числом попыток)", required = false) @RequestParam(value = "nTryMax", required = false) Integer nTryMax,
     		@ApiParam(value = "номер-ИД записи", required = false) @RequestParam(value = "nID", required = false) Long nID,
     		@ApiParam(value = "булевый, если указан true, то переместить из олд-а в основную (по умолчанию наоборот)", required = false) @RequestParam(value = "bBack", required = false, defaultValue="false") Boolean bBack){
-    	
-    	return JsonRestUtils.toJsonResponse(null);
+    	if(bBack)
+    		actionExecuteOldDAO.moveActionExecuteOld(nRowsMax, sMethodMask, asID_Status, nTryMax, nID);
+    	else
+    		actionExecuteDAO.moveActionExecute(nRowsMax, sMethodMask, asID_Status, nTryMax, nID);
+    	return null;
     }    
     
 }
