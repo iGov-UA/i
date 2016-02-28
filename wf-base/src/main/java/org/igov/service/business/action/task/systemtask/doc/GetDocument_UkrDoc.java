@@ -39,27 +39,28 @@ public class GetDocument_UkrDoc implements JavaDelegate {
 				generalConfig.sURL_AuthSID_PB() + "?lang=UA");
 		
 		String[] documentIDs = sessionId.split(":");
-		String url = String.format("/%s/%s/content", documentIDs[1], documentIDs[0]);
-		
-		LOG.info("Retrieved session ID:{} and created URL to request: {}", sessionId, url);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "Bearer " + sessionId);
-        
-        String resp = new RestRequest().get(generalConfig.getsUkrDocServerAddress() + url, MediaType.APPLICATION_JSON, StandardCharsets.UTF_8, String.class, headers);
-
-        LOG.info("Ukrdoc response:" + resp);
-        org.activiti.engine.impl.util.json.JSONObject respJson = new org.activiti.engine.impl.util.json.JSONObject(resp);
-        Object content = respJson.get("content");
-        
-        if (content != null){
-        	String name = (String) ((org.activiti.engine.impl.util.json.JSONObject)content).get("name");
-        	String text = (String) ((org.activiti.engine.impl.util.json.JSONObject)content).get("text");
-        	runtimeService.setVariable(execution.getProcessInstanceId(), "sHead_Document", name);
-        	runtimeService.setVariable(execution.getProcessInstanceId(), "sBody_Document", text);
-            LOG.info("Set variables to runtime process. name:{} text:{}", name, text);
-        }
-        
+		if (documentIDs.length > 1){
+			String url = String.format("/%s/%s/content", documentIDs[1], documentIDs[0]);
+			
+			LOG.info("Retrieved session ID:{} and created URL to request: {}", sessionId, url);
+	
+	        HttpHeaders headers = new HttpHeaders();
+	        headers.set("Authorization", "Bearer " + sessionId);
+	        
+	        String resp = new RestRequest().get(generalConfig.getsUkrDocServerAddress() + url, MediaType.APPLICATION_JSON, StandardCharsets.UTF_8, String.class, headers);
+	
+	        LOG.info("Ukrdoc response:" + resp);
+	        org.activiti.engine.impl.util.json.JSONObject respJson = new org.activiti.engine.impl.util.json.JSONObject(resp);
+	        Object content = respJson.get("content");
+	        
+	        if (content != null){
+	        	String name = (String) ((org.activiti.engine.impl.util.json.JSONObject)content).get("name");
+	        	String text = (String) ((org.activiti.engine.impl.util.json.JSONObject)content).get("text");
+	        	runtimeService.setVariable(execution.getProcessInstanceId(), "sHead_Document", name);
+	        	runtimeService.setVariable(execution.getProcessInstanceId(), "sBody_Document", text);
+	            LOG.info("Set variables to runtime process. name:{} text:{}", name, text);
+	        }
+		}
 	}
 
 	protected String getStringFromFieldExpression(Expression expression,
