@@ -209,6 +209,13 @@ p {font-size: 14px;}
         </activiti:field>
       </extensionElements>
     </serviceTask>
+    <serviceTask id="servicetask10" name="Оотримання інформації про документ з УкрДок" activiti:delegateExpression="#{GetDocument_UkrDoc}">
+      <extensionElements>
+        <activiti:field name="sID_Document">
+          <activiti:string><![CDATA[${sID_Document}]]></activiti:string>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <serviceTask id="servicetask2" name="Повідомлення чиновника про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
@@ -258,7 +265,8 @@ p {font-size: 14px;}
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow0" sourceRef="startevent1" targetRef="servicetask0"></sequenceFlow>
-    <sequenceFlow id="flow1" sourceRef="servicetask0" targetRef="servicetask1"></sequenceFlow>
+    <sequenceFlow id="flow-1" sourceRef="servicetask0" targetRef="servicetask10"></sequenceFlow>
+    <sequenceFlow id="flow23" sourceRef="servicetask10" targetRef="servicetask1"></sequenceFlow>
     <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
     <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
@@ -378,6 +386,9 @@ p {font-size: 14px;}
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask0" id="BPMNShape_servicetask0">
         <omgdc:Bounds height="71.0" width="105.0" x="140.0" y="70.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask10" id="BPMNShape_servicetask10">
+        <omgdc:Bounds height="71.0" width="105.0" x="300.0" y="70.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
         <omgdc:Bounds height="71.0" width="105.0" x="140.0" y="152.0"></omgdc:Bounds>
