@@ -45,7 +45,7 @@ public class GetDocument_UkrDoc implements JavaDelegate {
 			LOG.info("Retrieved session ID:{} and created URL to request: {}", sessionId, url);
 	
 	        HttpHeaders headers = new HttpHeaders();
-	        headers.set("Authorization", "Bearer " + sessionId);
+	        headers.set("Authorization", "promin.privatbank.ua/EXCL " + sessionId);
 	        
 	        String resp = new RestRequest().get(generalConfig.getsUkrDocServerAddress() + url, MediaType.APPLICATION_JSON, StandardCharsets.UTF_8, String.class, headers);
 	
