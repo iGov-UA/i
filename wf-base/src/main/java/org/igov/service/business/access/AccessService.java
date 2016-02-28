@@ -4,12 +4,9 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.mail.EmailException;
 import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
-import org.igov.io.mail.Mail;
+import org.igov.model.access.*;
 import org.igov.service.business.access.handler.AccessServiceLoginRightHandler;
-import org.igov.service.controller.AccessCommonController;
 import org.igov.service.exception.HandlerBeanValidationException;
-import org.igov.model.access.AccessServiceLoginRight;
-import org.igov.model.access.AccessServiceLoginRightDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -23,6 +20,8 @@ import javax.mail.internet.InternetAddress;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
 import org.igov.io.mail.NotificationPatterns;
 
 /**
@@ -36,6 +35,9 @@ public class AccessService implements ApplicationContextAware {
     private static final Logger LOG = LoggerFactory.getLogger(AccessService.class);
 
     private ApplicationContext applicationContext;
+
+    @Autowired
+    private AccessServiceLoginRoleDao accessServiceLoginRoleDao;
 
     @Autowired
     private AccessServiceLoginRightDao accessServiceLoginRightDao;
@@ -69,6 +71,51 @@ public class AccessService implements ApplicationContextAware {
         }
 
         return res;
+    }
+
+    public boolean hasAccessToService(String sLogin, String sService, String sData, String sMethod)
+            throws HandlerBeanValidationException {
+
+        boolean res = false;
+
+        List<AccessServiceLoginRole> roles = accessServiceLoginRoleDao.getUserRoles(sLogin);
+        A: for (AccessServiceLoginRole role : roles) {
+            List<AccessServiceRight> rights = role.getAccessServiceRole().resolveAllRightsSorted();
+
+            for (AccessServiceRight right : rights) {
+                if (isApplicableToServiceAndMethod(right, sService, sMethod)) {
+                    res = hasAccess(right, sData);
+                    break A;
+                }
+            }
+        }
+
+        return res;
+    }
+
+    private boolean hasAccess(AccessServiceRight right, String sData) throws HandlerBeanValidationException {
+        boolean res;
+
+        String handlerBeanName = right.getsHandlerBean();
+        if (handlerBeanName != null) {
+            AccessServiceLoginRightHandler handler = getHandlerBean(handlerBeanName);
+            res = handler.hasAccessToService(sData);
+        } else {
+            res = true;
+        }
+
+        return !right.isbDeny() == res;
+    }
+
+    private boolean isApplicableToServiceAndMethod(AccessServiceRight accessServiceRight,
+                                                   String sService, String sMethod) {
+        if (!accessServiceRight.getsService().equals(sService)) {
+            return false;
+        }
+
+        Set<String> supportedMethods = accessServiceRight.resolveSupportedMethods();
+        return supportedMethods == null || supportedMethods.contains(sMethod);
+
     }
 
     public void saveOrUpdateAccessServiceLoginRight(String sLogin, String sService, String sHandlerBean)

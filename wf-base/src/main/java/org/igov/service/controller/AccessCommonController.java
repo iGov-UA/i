@@ -214,7 +214,7 @@ public class AccessCommonController {
      * @param sData — Строка параметров к сервису (опциональный параметр, формат передачи пока не определен). Если задан бин sHandlerBean (см. ниже) то он может взять на себя проверку доступности сервиса для данного набора параметров.
      */
     @ApiOperation(value = "Проверка разрешения на доступ к сервису для пользователя", notes = "##### Пример:\n"
-        + "https://test.region.igov.org.ua/wf/service/access/hasAccessServiceLoginRight?sLogin=SomeLogin&sService=access/hasAccessServiceLoginRight\n"
+        + "https://test.region.igov.org.ua/wf/service/access/hasAccessServiceLoginRight?sLogin=SomeLogin&sService=access/hasAccessServiceLoginRight&sMethod=GET\n"
 	+ "\n```\n"
 	+ "Ответ false\n"
 	+ "\n```\n")
@@ -223,13 +223,15 @@ public class AccessCommonController {
         @ApiResponse(code = 200, message = "true - если у пользоватля с логином sLogin есть доступ к рест-сервиcу sService "
                 + "при вызове его с аргументами sData,"
                 + " или false - если доступа нет.")} )
-    public ResponseEntity hasAccessServiceLoginRight(@ApiParam(value = "Строка логин пользователя", required = true) @RequestParam(value = "sLogin") String sLogin,
+    public ResponseEntity hasAccessServiceLoginRight(
+            @ApiParam(value = "Строка логин пользователя", required = true) @RequestParam(value = "sLogin") String sLogin,
     		@ApiParam(value = "Строка название сервиса", required = true) @RequestParam(value = "sService") String sService,
-    		@ApiParam(value = "Строка параметр со строкой параметров к сервису (формат передачи пока не определен)", required = false) @RequestParam(value = "sData", required = false) String sData)
+    		@ApiParam(value = "Строка параметр со строкой параметров к сервису (формат передачи пока не определен)", required = false) @RequestParam(value = "sData", required = false) String sData,
+            @ApiParam(value = "Метод доступа к свервису (GET или POST или другиие)", required = false) @RequestParam(value = "sMethod") String sMethod)
             throws CommonServiceException {
 
         try {
-            return JsonRestUtils.toJsonResponse(oAccessService.hasAccessToService(sLogin, sService, sData));
+            return JsonRestUtils.toJsonResponse(oAccessService.hasAccessToService(sLogin, sService, sData, sMethod));
         } catch (HandlerBeanValidationException e) {
             LOG.warn("Error: {}", e.getMessage());
             LOG.trace("FAIL:", e);

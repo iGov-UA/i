@@ -119,7 +119,7 @@ public class AccessCommonControllerScenario {
 
     private boolean hasAccessServiceLoginRight(String sLogin, String sService) throws Exception {
         String getJsonData = mockMvc.perform(get("/access/hasAccessServiceLoginRight").
-                param("sLogin", sLogin).param("sService", sService)).
+                param("sLogin", sLogin).param("sService", sService).param("sMethod", "GET")).
                 andExpect(status().isOk()).
                 andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
                 andReturn().getResponse().getContentAsString();
