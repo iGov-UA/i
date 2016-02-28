@@ -18,13 +18,14 @@
         <activiti:formProperty id="lastName_UA1" name="Прізвище відповідальної особи 1" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="firstName_UA1" name="Ім'я відповідальної особи 1" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA1" name="По Батькові відповідальної особи 1" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="lastName_UA2" name="Прізвище відповідальної особи 1" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="firstName_UA2" name="Ім'я відповідальної особи 1" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="middleName_UA2" name="По Батькові відповідальної особи 1" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="lastName_UA2" name="Прізвище відповідальної особи 2" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="firstName_UA2" name="Ім'я відповідальної особи 2" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="middleName_UA2" name="По Батькові відповідальної особи 2" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameCompany" name="назва юридичної особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="edrpou" name="ЄДРПО юридичної особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Якщо юрідична особа" type="markers" default="${markerService.loadFromFile('skv/skv_spend_meeting_404_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="Якщо фізична особа" type="markers" default="${markerService.loadFromFile('skv/skv_spend_meeting_404_2.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="Додати фізичну особу" type="markers" default="${markerService.loadFromFile('skv/skv_spend_meeting_404_3.json')}"></activiti:formProperty>
         <activiti:formProperty id="sAdressBuilding" name="Адреса будівлі, щодо якої запрошується дозвіл на знесення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="fSvidoztvoNaPravoSobstvennosti" name="Завантажте свідоцтво про право власності на будинок" type="file" required="true"></activiti:formProperty>
       </extensionElements>
@@ -81,7 +82,7 @@
         <activiti:formProperty id="sAdressBuilding" name="Адреса будівлі, щодо якої запрошується дозвіл на знесення" type="string" writable="false" required="true"></activiti:formProperty>
         <activiti:formProperty id="fSvidoztvoNaPravoSobstvennosti" name="Завантажте свідоцтво про право власності на будинок" type="file" writable="false" required="true"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/skv/skv_test_print.html]" type="invisible" default="Заява на надання дозволу на знесення будівлі" writable="false"></activiti:formProperty>
-                <activiti:formProperty id="markers31" name="Щодо тестування прінт-форми" type="markers" default="${markerService.loadFromFile('skv/skv_test_print_1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers31" name="Щодо тестування прінт-форми" type="markers" default="${markerService.loadFromFile('skv/skv_test_print_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="decision_2" name="Прийняте рішення щодо надання дозволу" type="enum" required="true">
           <activiti:value id="accept" name="надати дозвол"></activiti:value>
           <activiti:value id="reject" name="відмовити у видачі дозволу"></activiti:value>
@@ -100,23 +101,17 @@
     </sequenceFlow>
     <serviceTask id="servicetask2" name="Повідомлення посадовця " activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
-        <activiti:field name="To">
-          <activiti:expression>${sPost}</activiti:expression>
+        <activiti:field name="to">
+          <activiti:expression>${sEmailClerk}</activiti:expression>
         </activiti:field>
-        <activiti:field name="From">
+        <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення на тему: надання дозволу на знесення аварійних будівель]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний колего!&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-У черзі на обробку зареєстровано нове звернення.&lt;br /&gt;
-Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
-Опрацюйте це звернення на &lt;a href="http://region.igov.org.ua"&gt;порталі&lt;/a&gt;&lt;br /&gt;
-[pattern/mail/_common_signature.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -125,16 +120,16 @@
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення на тему: надання дозволу на знесення аварійних будівель]]></activiti:string>
         </activiti:field>
-        <activiti:field name="To">
-          <activiti:expression>${sPost}</activiti:expression>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
-        <activiti:field name="From">
+        <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Прийнято рішення щодо розгляду Вашого  звернення.&lt;br /&gt; 
+Прийнято рішення щодо розгляду Вашого звернення.&lt;br /&gt; 
 Ви отримаєте відповідь у визначений Законом термін на цю email-адресу.&lt;br /&gt;
 [pattern/mail/_common_signature.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
@@ -143,10 +138,10 @@
     </serviceTask>
     <serviceTask id="servicetask4" name="Повідомлення про відмову" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
-        <activiti:field name="To">
-          <activiti:expression>${sPost}</activiti:expression>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
-        <activiti:field name="From">
+        <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
@@ -164,10 +159,10 @@
     </serviceTask>
     <serviceTask id="servicetask5" name="Повідомлення про отримання дозволу на знесення аварійних будівель" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
-        <activiti:field name="To">
-          <activiti:expression>${sPost}</activiti:expression>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
-        <activiti:field name="From">
+        <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
@@ -176,7 +171,7 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення успішно розглянуто та оформлено відповідний дозвіл на знесення аварійних будівель. Зверніться до сільської ради, щоб отримати відповідний документ.&lt;br /&gt;
+Ваше звернення успішно розглянуто та оформлено відповідний дозвіл на знесення аварійних будівель. Зверніться особисто до сільської ради з оригіналом паспорту, щоб отримати відповідний документ.&lt;br /&gt;
 [pattern/mail/_common_signature.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -185,10 +180,10 @@
     <sequenceFlow id="flow9" sourceRef="servicetask3" targetRef="usertask2"></sequenceFlow>
     <serviceTask id="servicetask6" name="Повідомлення про  відмову" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
-        <activiti:field name="To">
-          <activiti:expression>${sPost}</activiti:expression>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
-        <activiti:field name="From">
+        <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
@@ -219,10 +214,10 @@
     <sequenceFlow id="flow16" sourceRef="boundaryerror1" targetRef="endevent3"></sequenceFlow>
     <serviceTask id="servicetask7" name=" Повідомлення громадянина  про успішну реєстрацію звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
-        <activiti:field name="To">
-          <activiti:expression>${sPost}</activiti:expression>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
-        <activiti:field name="From">
+        <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
