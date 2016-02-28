@@ -38,7 +38,7 @@ public class GetDocument_UkrDoc implements JavaDelegate {
 		String sessionId = UkrDocUtil.getSessionId(generalConfig.getSID_login(), generalConfig.getSID_password(), 
 				generalConfig.sURL_AuthSID_PB() + "?lang=UA");
 		
-		String[] documentIDs = sessionId.split(":");
+		String[] documentIDs = sID_Document.split(":");
 		if (documentIDs.length > 1){
 			String url = String.format("/%s/%s/content", documentIDs[1], documentIDs[0]);
 			
