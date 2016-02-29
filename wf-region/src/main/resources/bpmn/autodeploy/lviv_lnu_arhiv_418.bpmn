@@ -38,8 +38,8 @@
           <activiti:value id="asSpesialist" name="спеціаліст"></activiti:value>
           <activiti:value id="asMol_spesialist" name="молодший спеціаліст"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="marker_Student" name="Якщо заявник навчався" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;anNavch_form&quot;,&quot;asKvalif&quot;,&quot;sAkademka&quot;,&quot;asVidrah&quot;],&quot;asID_Field&quot;:{&quot;sStud&quot;:&quot;asDocs&quot;},&quot;sCondition&quot;:&quot;[sStud] == 'asNak_zarahuv'||'asNak_vidrax'||'asDiplom'||'asDod_diplom'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="marker_Robitn" name="Якщо заявник працівник" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sPosada&quot;,&quot;asRob_type&quot;],&quot;asID_Field&quot;:{&quot;sRobot&quot;:&quot;asDocs&quot;},&quot;sCondition&quot;:&quot;[sRobot] == 'asNak_pruin'||'asNak_zviln'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker_Student" name="Якщо заявник навчався" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;anNavch_form&quot;,&quot;asKvalif&quot;,&quot;sAkademka&quot;,&quot;asVidrah&quot;],&quot;asID_Field&quot;:{&quot;sStud&quot;:&quot;asDocs&quot;},&quot;sCondition&quot;:&quot;[sStud] == 'asNak_zarahuv'||'asNak_vidrax'||'asDiplom'||'asDod_diplom'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker_Robitn" name="Якщо заявник працівник" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;sPosada&quot;,&quot;asRob_type&quot;],&quot;asID_Field&quot;:{&quot;sRobot&quot;:&quot;asDocs&quot;},&quot;sCondition&quot;:&quot;[sRobot] == 'asNak_pruin'||'asNak_zviln'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sFakulti" name="Факультет /коледж" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPosada" name="Посада" type="string"></activiti:formProperty>
         <activiti:formProperty id="asRob_type" name="Посада основна чи за сумісництвом" type="enum">
@@ -52,7 +52,7 @@
           <activiti:value id="asVidrah_ni" name="Ні"></activiti:value>
           <activiti:value id="asVidrah_tak" name="Так"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="marker_vidrahuvan" name="Якщо відраховувався" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sVidrax&quot;,&quot;sPonovlen&quot;,&quot;sPovton_kyrs&quot;,&quot;asPovtor_rik&quot;],&quot;asID_Field&quot;:{&quot;sVidrahui&quot;:&quot;asVidrah&quot;},&quot;sCondition&quot;:&quot;[sVidrahui] == 'asVidrah_tak'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker_vidrahuvan" name="Якщо відраховувався" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;sVidrax&quot;,&quot;sPonovlen&quot;,&quot;sPovton_kyrs&quot;,&quot;asPovtor_rik&quot;],&quot;asID_Field&quot;:{&quot;sVidrahui&quot;:&quot;asVidrah&quot;},&quot;sCondition&quot;:&quot;[sVidrahui] == 'asVidrah_tak'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sVidrax" name="Вкажіть дату відрахування" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPonovlen" name="Вкажіть дату поновлення після відрахування" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPovton_kyrs" name="Вкажіть з якого по який рік ви проходили повторний курс" type="string"></activiti:formProperty>
@@ -73,15 +73,15 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:string><![CDATA[${email}]]></activiti:string>
+          <activiti:string>${email}</activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Відмова в наданні архівної довідки]]></activiti:string>
+          <activiti:string><![CDATA[Заявка по видачі архівного витягу прийнята до роботи]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt; Ваше звернення щодо отримання архівної довідки в ЛНУ ім Івана Франка прийнято до роботи.
+&lt;p&gt; Ваше звернення щодо отримання архівного витягу в ЛНУ ім Івана Франка прийнято до роботи.
 Повідомлення про результат розгляду буде спрямоване на Ваш e-mail.&lt;/p&gt;
 &lt;br /&gt;
 телефон: 067 92 62 437&lt;br /&gt;
@@ -98,10 +98,10 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:string><![CDATA[Andriykyl@i.ua]]></activiti:string>
+          <activiti:string>Andriykyl@i.ua</activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нова заявка на архівну довідку]]></activiti:string>
+          <activiti:string><![CDATA[Нова заявка на архівний витяг]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -187,7 +187,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:string><![CDATA[${email}]]></activiti:string>
+          <activiti:string>${email}</activiti:string>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нова заявка на архівну довідку]]></activiti:string>
@@ -233,7 +233,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:string><![CDATA[${email}]]></activiti:string>
+          <activiti:string>${email}</activiti:string>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Оцініть якість наданої послуги]]></activiti:string>
