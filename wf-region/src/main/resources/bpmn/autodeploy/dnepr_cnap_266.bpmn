@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_cnap_266" name="Дніпропетровськ - Ліцензія на здійснення суб’єктами зовнішньоекономічної діяльності імпорту товарів" isExecutable="true">
+  <process id="dnepr_cnap_266" name="Ліцензія на здійснення суб’єктами зовнішньоекономічної діяльності імпорту товарів" isExecutable="true">
     <documentation>https://github.com/e-government-ua/iBP/issues/224</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
@@ -53,7 +53,7 @@
           <activiti:value id="ur_1" name="юридична особа"></activiti:value>
           <activiti:value id="fiz_1" name="фізична особа-підприємець"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="ur_name_1" name="Найменування" type="string" default=" "></activiti:formProperty>
+          <activiti:formProperty id="ur_name_1" name="Найменування" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="fiz_name_1" name="Прізвище, ім'я, по батькові" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="ur_adres_1" name="Місцезнаходження" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="fiz_adres_1" name="Місце проживання" type="string" default=" "></activiti:formProperty>
@@ -66,8 +66,9 @@
         <activiti:formProperty id="fiz_name_2" name="Прізвище, ім'я, по батькові" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="ur_adres_2" name="Місцезнаходження" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="fiz_adres_2" name="Місце проживання " type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sObjectCustoms" name="Найменування товару" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_UA_ObjectCustoms" name="Код товару (УКТ ЗЕД)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="text10" name=" " type="label" default="&lt;b&gt;інформація про товар&lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="name_tovar" name="Найменування товару" type="string"></activiti:formProperty>
+        <activiti:formProperty id="kod_tovar" name="Код товару (УКТ ЗЕД)" type="string"></activiti:formProperty>
         <activiti:formProperty id="unit" name="Одиниця виміру" type="enum" default="kilogram" required="true">
           <activiti:value id="kilogram" name="кілограм|кг"></activiti:value>
           <activiti:value id="bruttobetrags" name="бруттореєстрова тонна|бруттореєстр. Т"></activiti:value>
@@ -99,13 +100,13 @@
           <activiti:value id="thing" name="штука|шт"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="quantity" name="Кількість товару, що імпортується" type="long" required="true"></activiti:formProperty>
-        <activiti:formProperty id="cost_usd" name="Вартість товару, що імпортується (тис.дол.США)" type="long" required="true"></activiti:formProperty>
-        <activiti:formProperty id="cost_currency" name="Вартість товару, що імпортується (в тис.одиницях валюти контракту)" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="cost_usd" name="Вартість товару, що імпортується (тис.дол.США);данні потрібно подавати з точністю до 5 знаків після коми" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="cost_currency" name="Вартість товару, що імпортується (в тис.одиницях валюти контракту);данні потрібно подавати з точністю до 5 знаків після коми" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="country_destination" name="Країна призначення" type="string" default="804 Україна" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sCountry" name="Країна, де зареєстрований нерезидент-контрагент згідно із зовнішньоекономічним договором" type="select"></activiti:formProperty>
-        <activiti:formProperty id="sID_UA_Country" name="Код країни контрагента;(заповниться автоматично)" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sCountry_123" name="Країна походження товару, що імпортується" type="select"></activiti:formProperty>
-        <activiti:formProperty id="sID_UA_Country_123" name="Код країни походження;(заповниться автоматично)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCountry_1" name="Країна, де зареєстрований нерезидент-контрагент згідно із зовнішньоекономічним договором" type="select"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_Country_1" name="Код країни контрагента;(заповниться автоматично)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCountry_2" name="Країна походження товару, що імпортується" type="select"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_Country_2" name="Код країни походження;(заповниться автоматично)" type="string"></activiti:formProperty>
         <activiti:formProperty id="basis" name="Базисні умови поставки товару" type="enum" required="true">
           <activiti:value id="exw" name="EXW - Франко-завод"></activiti:value>
           <activiti:value id="fca" name="FСА - Франко-перевізник"></activiti:value>
@@ -131,7 +132,7 @@
         <activiti:formProperty id="sID_UA_Currency" name="Код валюти контракту;(заповниться автоматично)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sCurrency_7" name="Валюта розрахунку" type="select" required="true"></activiti:formProperty>
         <activiti:formProperty id="sID_UA_Currency_7" name="Код валюти розрахунку;(заповниться автоматично)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Митниця, де здійснюватиметься митне оформлення товару" type="select" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Митниця, де здійснюватиметься митне оформлення товару" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="sSubjectOrganJoinTax" name="Підрозділ митниці" type="select" required="true"></activiti:formProperty>
         <activiti:formProperty id="sID_UA_SubjectOrganJoinTax" name="Код митниці;(заповниться автоматично)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="charakter_ugoda" name="Характер угоди" type="enum" required="true">
@@ -153,67 +154,35 @@
           <activiti:value id="78" name="78 Переміщення товарів у рахунок компенсаційних зобов'язань з розрахунками у ВКВ"></activiti:value>
           <activiti:value id="84" name="84 Інше"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="dogovor_number" name="Номер зовнішньоекономічного договору (контракту)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="dogovor_date" name="Дата укладання зовнішньоекономічного договору (контракту)" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="count_applications" name="Укажіть кількість додатків та специфікацій до договору" type="enum" required="true">
-          <activiti:value id="0" name="0"></activiti:value>
-          <activiti:value id="1" name="1"></activiti:value>
-          <activiti:value id="2" name="2"></activiti:value>
-          <activiti:value id="3" name="3"></activiti:value>
-          <activiti:value id="4" name="4"></activiti:value>
-          <activiti:value id="5" name="5"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="application_name_1" name="Назва додатку 1; наприклад:специфікація, інвойс" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="application_number_1" name="Номер додатку 1" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="application_date_1" name="Дата укладання додатку 1" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="application_name_2" name="Назва додатку 2" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="application_number_2" name="Номер додатку 2" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="application_date_2" name="Дата укладання додатку 2" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="application_name_3" name="Назва додатку 3" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="application_number_3" name="Номер додатку 3" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="application_date_3" name="Дата укладання додатку 3" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="application_name_4" name="Назва додатку 4" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="application_number_4" name="Номер додатку 4" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="application_date_4" name="Дата укладання додатку 4" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="application_name_5" name="Назва додатку 5" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="application_number_5" name="Номер додатку 5" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="application_date_5" name="Дата укладання додатку 5" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="agreement_number" name="Номер погодження відповідного уповноваженого органу виконавчої влади" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="agreement_date" name="Дата погодження відповідного уповноваженого органу виконавчої влади" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="special" name="Особливі умови імпорту; наприклад кількість товару в додаткових одиницях виміру, номер поточного рахунку в іноземній валюті (якщо декілька валют платежу), найменування банку, інвойси, інше." type="string"></activiti:formProperty>
         <activiti:formProperty id="oplata" name="Платіжний документ (квитанція) про оплату вартості послуги; можна завантажити електронну квітанцію, сформовану в інтернет-банку" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="pismo" name="Лист-звернення щодо оформлення ліцензії з гарантією сплати державного сбору за її видачу, підписаний керівником суб'єкта зовнішньоекономічної діяльності на офіційному бланку" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="vipiska_edr" name="Копія виписки або витягу с єдиного державного реєстру юридичних осіб та фізичних осіб-підприємців, засвідчена в установленому законодавством порядку" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="dogovor" name="Копія зовнішньоекономічного договору (контракту), усі додатки та специфікації до нього, завірені в установленому законодавством порядку;завантажте єдиним архівом" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="pogodgennya" name="Погодження відповідного уповноваженого органу виконавчої влади (у випадках, визначених Кабінетом Міністрів України)" type="file"></activiti:formProperty>
-        <activiti:formProperty id="visnovok" name="Висновок експертної організації про відповідність контрактної ціни рівню цін кон'юнктури ринку на товари (роботи, послуги), що поставляються (виконуються, надаються) за конкретною зовнішньоекономічною операцією" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="other_docs" name="інші документи, на підставі яких оформлюється ліцензія;заповніть у разі необхідності (наприклад-калькуляція собівартості товарів, рахунок-фактура, інвойс, упаковчний лист, будь-яка інша інформация, кяка може бути корисною для прийняття рішення)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="dogovor_number" name="Номер зовнішньоекономічного договору (контракту)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="dogovor_date" name="Дата укладання зовнішньоекономічного договору (контракту)" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="application_name" name="В цьому полі надайте перелік усіх додатків та специфікацій до договору у форматі: назва-номер-дата укладання; наприклад:специфікація №2 від 22.10.2015р." type="textArea" default=" "></activiti:formProperty>
+        <activiti:formProperty id="visnovok" name="Висновок експертної організації про відповідність контрактної ціни рівню цін кон'юнктури ринку на товари (роботи, послуги), що поставляються (виконуються, надаються) за конкретною зовнішньоекономічною операцією" type="file"></activiti:formProperty>
+        <activiti:formProperty id="pogodgennya" name="Погодження (оригінал) відповідного уповноваженого органу виконавчої влади (у випадках, визначених Кабінетом Міністрів України" type="file"></activiti:formProperty>
+        <activiti:formProperty id="agreement_number" name="Номер погодження відповідного уповноваженого органу виконавчої влади" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="agreement_date" name="Дата погодження відповідного уповноваженого органу виконавчої влади" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="notice" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
-        <activiti:formProperty id="rName" name="номер району" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="rmail" name="пошти" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers6" name="маркер ЦНАП Правобережний" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_6&quot;:{&quot;aField_ID&quot;:[&quot;rName&quot;], &quot;asID_Field_sValue&quot;:[&quot;23&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='prav'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers7" name="маркер ЦНАП Лівобережний" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_7&quot;:{&quot;aField_ID&quot;:[&quot;rName&quot;], &quot;asID_Field_sValue&quot;:[&quot;24&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='lev'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers3" name="маркер почта ЦНАП Правобережний" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;rmail&quot;], &quot;asID_Field_sValue&quot;:[&quot;darja.grek@gmail.com&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='prav'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers4" name="маркер почта ЦНАП Лівобережний" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;rmail&quot;], &quot;asID_Field_sValue&quot;:[&quot;percolation@ukr.net&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='lev'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers0" name="Якщо  юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_0&quot;:{&quot;aField_ID&quot;:[&quot;ur_name&quot;,&quot;ur_adres&quot;,&quot;ur_tel&quot;, &quot;ur_fax&quot;,&quot;ur_edrpou&quot;,&quot;ur_pib&quot;,&quot;ur_post&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers00" name="Якщо  фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_00&quot;:{&quot;aField_ID&quot;:[&quot;fiz_name&quot;,&quot;fiz_adres&quot;,&quot;fiz_drfo&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="Якщо  юридична особа споживач" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;ur_name_1&quot;,&quot;ur_adres_1&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt_1&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur_1'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers11" name="Якщо  фізична особа споживач" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_11&quot;:{&quot;aField_ID&quot;:[&quot;fiz_name_1&quot;,&quot;fiz_adres_1&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt_1&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz_1'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers2" name="Якщо  юридична особа контрагент" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;ur_name_2&quot;,&quot;ur_adres_2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt_2&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur_2'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers22" name="Якщо  фізична особа контрагент" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_21&quot;:{&quot;aField_ID&quot;:[&quot;fiz_name_2&quot;,&quot;fiz_adres_2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt_2&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz_2'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers111" name="Якщо є 1 додаток" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_111&quot;:{&quot;aField_ID&quot;:[&quot;application_name_1&quot;,&quot;application_number_1&quot;, &quot;application_date_1&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;count_applications&quot;},&quot;sCondition&quot;:&quot;[sClient] == '1'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers12" name="Якщо є 2 додатки" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_12&quot;:{&quot;aField_ID&quot;:[&quot;application_name_1&quot;,&quot;application_number_1&quot;, &quot;application_date_1&quot;,&quot;application_name_2&quot;,&quot;application_number_2&quot;, &quot;application_date_2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;count_applications&quot;},&quot;sCondition&quot;:&quot;[sClient] == '2'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers13" name="Якщо є 3 додатки" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_13&quot;:{&quot;aField_ID&quot;:[&quot;application_name_1&quot;,&quot;application_number_1&quot;, &quot;application_date_1&quot;,&quot;application_name_2&quot;,&quot;application_number_2&quot;, &quot;application_date_2&quot;,&quot;application_name_3&quot;,&quot;application_number_3&quot;, &quot;application_date_3&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;count_applications&quot;},&quot;sCondition&quot;:&quot;[sClient] == '3'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers14" name="Якщо є 4 додатки" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_14&quot;:{&quot;aField_ID&quot;:[&quot;application_name_1&quot;,&quot;application_number_1&quot;, &quot;application_date_1&quot;,&quot;application_name_2&quot;,&quot;application_number_2&quot;, &quot;application_date_2&quot;,&quot;application_name_3&quot;,&quot;application_number_3&quot;, &quot;application_date_3&quot;,&quot;application_name_4&quot;,&quot;application_number_4&quot;, &quot;application_date_4&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;count_applications&quot;},&quot;sCondition&quot;:&quot;[sClient] == '4'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers15" name="Якщо є 5 додатків" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_15&quot;:{&quot;aField_ID&quot;:[&quot;application_name_1&quot;,&quot;application_number_1&quot;, &quot;application_date_1&quot;,&quot;application_name_2&quot;,&quot;application_number_2&quot;, &quot;application_date_2&quot;,&quot;application_name_3&quot;,&quot;application_number_3&quot;, &quot;application_date_3&quot;,&quot;application_name_4&quot;,&quot;application_number_4&quot;, &quot;application_date_4&quot;,&quot;application_name_5&quot;,&quot;application_number_5&quot;, &quot;application_date_5&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;count_applications&quot;},&quot;sCondition&quot;:&quot;[sClient] == '5'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sNameUnit" name="назва адміністартивного органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPost" name="пошта посадовця" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAdress" name="адреса адміністартивного органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="графік роботи адміністартивного органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="visnovok_js" name="назва документу 4" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="other_docs_js" name="назва документу 5" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="markers0" name="Якщо юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_0&quot;:{&quot;aField_ID&quot;:[&quot;ur_name&quot;,&quot;ur_adres&quot;,&quot;ur_tel&quot;, &quot;ur_fax&quot;,&quot;ur_edrpou&quot;,&quot;ur_pib&quot;,&quot;ur_post&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers00" name="Якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_00&quot;:{&quot;aField_ID&quot;:[&quot;fiz_name&quot;,&quot;fiz_adres&quot;,&quot;fiz_drfo&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="Якщо юридична особа споживач" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;ur_name_1&quot;,&quot;ur_adres_1&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt_1&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur_1'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers11" name="Якщо фізична особа споживач" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_11&quot;:{&quot;aField_ID&quot;:[&quot;fiz_name_1&quot;,&quot;fiz_adres_1&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt_1&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz_1'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers16" name="Якщо обрано базис поставки EXW" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_16&quot;:{&quot;aField_ID&quot;:[&quot;basis_1&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;basis&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'exw'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers17" name="Якщо обрано базис поставки FCA,СРТ,СІР,DDU,DDP" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_17&quot;:{&quot;aField_ID&quot;:[&quot;basis_2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;basis&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fса'||[sClient] == 'срт'||[sClient] == 'сір'||[sClient] == 'ddu'||[sClient] == 'ddр'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers18" name="Якщо обрано базис поставки FAS,FOB" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_18&quot;:{&quot;aField_ID&quot;:[&quot;basis_3&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;basis&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fаs'||[sClient] == 'fов'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers19" name="Якщо обрано базис поставки CFR,CIF,DES,DEQ" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_19&quot;:{&quot;aField_ID&quot;:[&quot;basis_4&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;basis&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'сfr'||[sClient] == 'сіf'||[sClient] == 'dеs'||[sClient] == 'dеq'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers20" name="Якщо обрано базис поставки DAF" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_20&quot;:{&quot;aField_ID&quot;:[&quot;basis_5&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;basis&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'dаf'&quot;}}}"></activiti:formProperty>
-      </extensionElements>
+       </extensionElements>
     </startEvent>
-    <userTask id="usertask1" name="перевірка вхідних данних, прийняття рішення про надання послуги" activiti:candidateGroups="zed">
+    <userTask id="usertask1" name="перевірка вхідних данних, прийняття рішення про надання послуги" activiti:candidateGroups="zed_${group}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Серія та номер паспорту" type="string" writable="false"></activiti:formProperty>
@@ -230,49 +199,49 @@
           <activiti:value id="notavto" name="не автоматична"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="text0" name=" " type="label" default="Данні заявника"></activiti:formProperty>
-        <activiti:formProperty id="subekt" name="Оберіть суб'єкт зовнішньоекономічної діяльності" type="enum" writable="false">
+        <activiti:formProperty id="subekt" name="Оберіть суб'єкт зовнішньоекономічної діяльності; ;writable=false" type="enum">
           <activiti:value id="ur" name="юридична особа"></activiti:value>
           <activiti:value id="fiz" name="фізична особа-підприємець"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="ur_name" name="Найменування" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="fiz_name" name="Прізвище, ім'я, по батькові" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="ur_adres" name="Місцезнаходження" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="fiz_adres" name="Місце проживання " type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="ur_tel" name="Телефон" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="ur_fax" name="Факс" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="ur_edrpou" name="Ідентифікаційний код згідно з Єдиним державним реєстром підприємств та організацій України (ЄДРПОУ) " type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="fiz_drfo" name="Ідентифікаційний номер у Державному реєстрі фізичних осіб (ДРФО)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="applicant_account_uah" name="Номер поточного рахунку у національній валюті" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="uah_bank_name" name="Найменування банку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="uah_bank_mfo" name="МФО банку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="uah_bank_adres" name="Місцезнаходження банку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="applicant_account_currency" name="Номер поточного рахунку в іноземній валюті" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="currency_bank_name" name="Найменування банку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="currency_bank_mfo" name="МФО банку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="currency_bank_adres" name="Місцезнаходження банку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="ur_pib" name="ПІБ керівника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="ur_post" name="Посада керівника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="text1" name=" " type="label" default="Данні споживача товару"></activiti:formProperty>
+        <activiti:formProperty id="ur_name" name="Найменування; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="fiz_name" name="Прізвище, ім'я, по батькові; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="ur_adres" name="Місцезнаходження; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="fiz_adres" name="Місце проживання; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="ur_tel" name="Телефон; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="ur_fax" name="Факс; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="ur_edrpou" name="ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="fiz_drfo" name="ДРФО; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="applicant_account_uah" name="Номер поточного рахунку у національній валюті; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="uah_bank_name" name="Найменування банку; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="uah_bank_mfo" name="МФО банку; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="uah_bank_adres" name="Місцезнаходження банку; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="applicant_account_currency" name="Номер поточного рахунку в іноземній валюті; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="currency_bank_name" name="Найменування банку; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="currency_bank_mfo" name="МФО банку; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="currency_bank_adres" name="Місцезнаходження банку; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="ur_pib" name="ПІБ керівника; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="ur_post" name="Посада керівника; ;writable=false" type="string"></activiti:formProperty>
+   		<activiti:formProperty id="text1" name=" " type="label" default="Данні споживача товару"></activiti:formProperty>
         <activiti:formProperty id="subekt_1" name="Оберіть суб'єкт зовнішньоекономічної діяльності" type="enum" writable="false">
           <activiti:value id="ur_1" name="юридична особа"></activiti:value>
           <activiti:value id="fiz_1" name="фізична особа-підприємець"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="ur_name_1" name="Найменування" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="fiz_name_1" name="Прізвище, ім'я, по батькові" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="ur_adres_1" name="Місцезнаходження" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="fiz_adres_1" name="Місце проживання" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="ur_name_1" name="Найменування; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="fiz_name_1" name="Прізвище, ім'я, по батькові; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="ur_adres_1" name="Місцезнаходження; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="fiz_adres_1" name="Місце проживання; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="text2" name=" " type="label" default="Данні контрагента (продавця)"></activiti:formProperty>
-        <activiti:formProperty id="subekt_2" name="Оберіть суб'єкт зовнішньоекономічної діяльності" type="enum" writable="false">
+        <activiti:formProperty id="subekt_2" name="Оберіть суб'єкт зовнішньоекономічної діяльності; ;writable=false" type="enum">
           <activiti:value id="ur_2" name="юридична особа"></activiti:value>
           <activiti:value id="fiz_2" name="фізична особа-підприємець"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="ur_name_2" name="Найменування" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="fiz_name_2" name="Прізвище, ім'я, по батькові" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="ur_adres_2" name="Місцезнаходження" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="fiz_adres_2" name="Місце проживання " type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sObjectCustoms" name="Найменування товару" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sID_UA_ObjectCustoms" name="Код товару (УКТ ЗЕД)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="unit" name="Одиниця виміру" type="enum" writable="false">
+        <activiti:formProperty id="ur_name_2" name="Найменування; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="fiz_name_2" name="Прізвище, ім'я, по батькові; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="ur_adres_2" name="Місцезнаходження; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="fiz_adres_2" name="Місце проживання; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="name_tovar" name="Найменування товару; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="kod_tovar" name="Код товару (УКТ ЗЕД); ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="unit" name="Одиниця виміру; ;writable=false" type="enum">
           <activiti:value id="kilogram" name="кілограм|кг"></activiti:value>
           <activiti:value id="bruttobetrags" name="бруттореєстрова тонна|бруттореєстр. Т"></activiti:value>
           <activiti:value id="wantagate" name="вантажопідйомність у метричних тоннах|вантажпідйом. метрич. Т"></activiti:value>
@@ -302,15 +271,15 @@
           <activiti:value id="thousand_kvt" name="тисяча кіловатгодин|тис. кВт·год"></activiti:value>
           <activiti:value id="thing" name="штука|шт"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="quantity" name="Кількість товару, що імпортується" type="long" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="cost_usd" name="Вартість товару, що імпортується (тис.дол.США)" type="long" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="cost_currency" name="Вартість товару, що імпортується (в тис.одиницях валюти контракту)" type="long" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="country_destination" name="Країна призначення" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCountry" name="Країна, де зареєстрований нерезидент-контрагент згідно із зовнішньоекономічним договором" type="select" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sID_UA_Country" name="Код країни контрагента;(заповниться автоматично)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCountry_123" name="Країна походження товару, що імпортується" type="select" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sID_UA_Country_123" name="Код країни походження;(заповниться автоматично)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="basis" name="Базисні умови поставки товару" type="enum" writable="false">
+        <activiti:formProperty id="quantity" name="Кількість товару, що імпортується; ;writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="cost_usd" name="Вартість товару, що імпортується (тис.дол.США); ;writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="cost_currency" name="Вартість товару, що імпортується (в тис.одиницях валюти контракту); ;writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="country_destination" name="Країна призначення; ;writable=false" type="select"></activiti:formProperty>
+        <activiti:formProperty id="sCountry_1" name="Країна імпортера (експортера); ;writable=false" type="select"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_Country_1" name="Код країни імпортера (експортера); ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCountry_2" name="Країна походження товару, що імпортується; ;writable=false" type="select"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_Country_2" name="Код країни походження; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="basis" name="Базисні умови поставки товару; ;writable=false" type="enum">
           <activiti:value id="exw" name="EXW - Франко-завод"></activiti:value>
           <activiti:value id="fca" name="FСА - Франко-перевізник"></activiti:value>
           <activiti:value id="fas" name="FАS - Франко вздовж борту судна"></activiti:value>
@@ -325,19 +294,19 @@
           <activiti:value id="ddu" name="DDU - Поставка без сплати мита"></activiti:value>
           <activiti:value id="ddp" name="DDР - Поставка зі сплатою мита"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="basis_1" name="Назва місця" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="basis_2" name="Назва місця призначення" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="basis_3" name="Назва порту відвантаження" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="basis_4" name="Назва порту призначення" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="basis_5" name="Назва місця поставки" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCurrency" name="Валюта контракту" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sID_UA_Currency" name="Код валюти контракту" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCurrency_7" name="Валюта розрахунку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sID_UA_Currency_7" name="Код валюти розрахунку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Митниця, де здійснюватиметься митне оформлення товару" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sSubjectOrganJoinTax" name="Підрозділ митниці" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sID_UA_SubjectOrganJoinTax" name="Код митниці" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="charakter_ugoda" name="Характер угоди" type="enum" writable="false">
+        <activiti:formProperty id="basis_1" name="Назва місця; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="basis_2" name="Назва місця призначення; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="basis_3" name="Назва порту відвантаження; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="basis_4" name="Назва порту призначення; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="basis_5" name="Назва місця поставки; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCurrency" name="Валюта контракту; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_Currency" name="Код валюти контракту; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCurrency_7" name="Валюта розрахунку; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_Currency_7" name="Код валюти розрахунку; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Митниця, де здійснюватиметься митне оформлення товару; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSubjectOrganJoinTax" name="Підрозділ митниці; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_SubjectOrganJoinTax" name="Код митниці; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="charakter_ugoda" name="Характер угоди; ;writable=false" type="enum">
           <activiti:value id="10" name="10 Переміщення товарів з розрахунками за товар у валюті України"></activiti:value>
           <activiti:value id="12" name="12 Переміщення товарів за договорами лізингу (оренди) з розрахунками у валюті України"></activiti:value>
           <activiti:value id="21" name="21 Переміщення товарів з розрахунками за товар у ВКВ (крім позначених кодами 22, 23, 26)"></activiti:value>
@@ -356,34 +325,10 @@
           <activiti:value id="78" name="78 Переміщення товарів у рахунок компенсаційних зобов'язань з розрахунками у ВКВ"></activiti:value>
           <activiti:value id="84" name="84 Інше"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="dogovor_number" name="Номер зовнішньоекономічного договору (контракту)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dogovor_date" name="Дата укладання зовнішньоекономічного договору (контракту)" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="count_applications" name="Укажіть кількість додатків та специфікацій до договору" type="enum" writable="false">
-          <activiti:value id="0" name="0"></activiti:value>
-          <activiti:value id="1" name="1"></activiti:value>
-          <activiti:value id="2" name="2"></activiti:value>
-          <activiti:value id="3" name="3"></activiti:value>
-          <activiti:value id="4" name="4"></activiti:value>
-          <activiti:value id="5" name="5"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="application_name_1" name="Назва додатку 1; наприклад:специфікація" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="application_number_1" name="Номер додатку 1" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="application_date_1" name="Дата укладання додатку 1" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="application_name_2" name="Назва додатку 2" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="application_number_2" name="Номер додатку 2" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="application_date_2" name="Дата укладання додатку 2" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="application_name_3" name="Назва додатку 3" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="application_number_3" name="Номер додатку 3" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="application_date_3" name="Дата укладання додатку 3" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="application_name_4" name="Назва додатку 4" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="application_number_4" name="Номер додатку 4" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="application_date_4" name="Дата укладання додатку 4" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="application_name_5" name="Назва додатку 5" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="application_number_5" name="Номер додатку 5" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="application_date_5" name="Дата укладання додатку 5" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="agreement_number" name="Номер погодження відповідного уповноваженого органу виконавчої влади" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="agreement_date" name="Дата погодження відповідного уповноваженого органу виконавчої влади" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="special" name="Особливі умови імпорту; наприклад кількість товару в додаткових одиницях виміру, номер поточного рахунку в іноземній валюті (якщо декілька валют платежу), найменування банку, інвойси, інше." type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="dogovor_number" name="Номер зовнішньоекономічного договору (контракту); ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="dogovor_date" name="Дата укладання зовнішньоекономічного договору (контракту); ;writable=false" type="date"></activiti:formProperty>
+        <activiti:formProperty id="application_name" name="Перелік усіх додатків та специфікацій ; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="special" name="Особливі умови; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="reestr_numb" name="Реєстраційний номер" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="date_reestr" name="Укажіть дату реєстрації звернення" type="date" default=" "></activiti:formProperty>
         <activiti:formProperty id="pib_admin" name="Прізвище та ініціали адміністратора" type="string" default=" "></activiti:formProperty>
@@ -392,17 +337,23 @@
           <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відхилення звернення внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="opis" name="Завантажте опис прийнятих документів " type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dneprOblSnap/dnepr_cnap_266_print.html]" type="invisible" default="Заявка на одержання ліцензії на імпорт" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameUnit" name="назва адміністартивного органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAdress" name="адреса адміністартивного органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="графік роботи адміністартивного органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="visnovok_js" name="назва документу 4" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="other_docs_js" name="назва документу 5" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPost" name="пошта посадовця" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dnepr_cnap_266_print.html]" type="invisible" default="Заявка на одержання ліцензії на імпорт" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/dneprOblSnap/dnepr_cnap_266_2_print.html]" type="invisible" default="Лист-звернення щодо оформлення ліцензії в довільній формі" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport}, ${oplata},${pismo},${vipiska_edr},${dogovor},${pogodgennya},${visnovok},${other_docs}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport}, ${oplata},${dogovor},${pogodgennya},${visnovok}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask2" name="рішення" activiti:candidateGroups="zed">
+    <userTask id="usertask2" name="рішення" activiti:candidateGroups="zed_${group}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Серія та номер паспорту" type="string" writable="false"></activiti:formProperty>
@@ -419,49 +370,49 @@
           <activiti:value id="notavto" name="не автоматична"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="text0" name=" " type="label" default="Данні заявника"></activiti:formProperty>
-        <activiti:formProperty id="subekt" name="Оберіть суб'єкт зовнішньоекономічної діяльності" type="enum" writable="false">
+        <activiti:formProperty id="subekt" name="Оберіть суб'єкт зовнішньоекономічної діяльності; ;writable=false" type="enum">
           <activiti:value id="ur" name="юридична особа"></activiti:value>
           <activiti:value id="fiz" name="фізична особа-підприємець"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="ur_name" name="Найменування" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="fiz_name" name="Прізвище, ім'я, по батькові" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="ur_adres" name="Місцезнаходження" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="fiz_adres" name="Місце проживання " type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="ur_tel" name="Телефон" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="ur_fax" name="Факс" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="ur_edrpou" name="Ідентифікаційний код згідно з Єдиним державним реєстром підприємств та організацій України (ЄДРПОУ) " type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="fiz_drfo" name="Ідентифікаційний номер у Державному реєстрі фізичних осіб (ДРФО)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="applicant_account_uah" name="Номер поточного рахунку у національній валюті" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="uah_bank_name" name="Найменування банку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="uah_bank_mfo" name="МФО банку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="uah_bank_adres" name="Місцезнаходження банку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="applicant_account_currency" name="Номер поточного рахунку в іноземній валюті" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="currency_bank_name" name="Найменування банку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="currency_bank_mfo" name="МФО банку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="currency_bank_adres" name="Місцезнаходження банку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="ur_pib" name="ПІБ керівника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="ur_post" name="Посада керівника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="text1" name=" " type="label" default="Данні споживача товару"></activiti:formProperty>
+        <activiti:formProperty id="ur_name" name="Найменування; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="fiz_name" name="Прізвище, ім'я, по батькові; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="ur_adres" name="Місцезнаходження; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="fiz_adres" name="Місце проживання; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="ur_tel" name="Телефон; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="ur_fax" name="Факс; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="ur_edrpou" name="ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="fiz_drfo" name="ДРФО; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="applicant_account_uah" name="Номер поточного рахунку у національній валюті; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="uah_bank_name" name="Найменування банку; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="uah_bank_mfo" name="МФО банку; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="uah_bank_adres" name="Місцезнаходження банку; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="applicant_account_currency" name="Номер поточного рахунку в іноземній валюті; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="currency_bank_name" name="Найменування банку; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="currency_bank_mfo" name="МФО банку; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="currency_bank_adres" name="Місцезнаходження банку; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="ur_pib" name="ПІБ керівника; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="ur_post" name="Посада керівника; ;writable=false" type="string"></activiti:formProperty>
+  		<activiti:formProperty id="text1" name=" " type="label" default="Данні споживача товару"></activiti:formProperty>
         <activiti:formProperty id="subekt_1" name="Оберіть суб'єкт зовнішньоекономічної діяльності" type="enum" writable="false">
           <activiti:value id="ur_1" name="юридична особа"></activiti:value>
           <activiti:value id="fiz_1" name="фізична особа-підприємець"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="ur_name_1" name="Найменування" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="fiz_name_1" name="Прізвище, ім'я, по батькові" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="ur_adres_1" name="Місцезнаходження" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="fiz_adres_1" name="Місце проживання" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="ur_name_1" name="Найменування; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="fiz_name_1" name="Прізвище, ім'я, по батькові; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="ur_adres_1" name="Місцезнаходження; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="fiz_adres_1" name="Місце проживання; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="text2" name=" " type="label" default="Данні контрагента (продавця)"></activiti:formProperty>
-        <activiti:formProperty id="subekt_2" name="Оберіть суб'єкт зовнішньоекономічної діяльності" type="enum" writable="false">
+        <activiti:formProperty id="subekt_2" name="Оберіть суб'єкт зовнішньоекономічної діяльності; ;writable=false" type="enum">
           <activiti:value id="ur_2" name="юридична особа"></activiti:value>
           <activiti:value id="fiz_2" name="фізична особа-підприємець"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="ur_name_2" name="Найменування" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="fiz_name_2" name="Прізвище, ім'я, по батькові" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="ur_adres_2" name="Місцезнаходження" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="fiz_adres_2" name="Місце проживання " type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sObjectCustoms" name="Найменування товару" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sID_UA_ObjectCustoms" name="Код товару (УКТ ЗЕД)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="unit" name="Одиниця виміру" type="enum" writable="false">
+        <activiti:formProperty id="ur_name_2" name="Найменування; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="fiz_name_2" name="Прізвище, ім'я, по батькові; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="ur_adres_2" name="Місцезнаходження; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="fiz_adres_2" name="Місце проживання; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="name_tovar" name="Найменування товару; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="kod_tovar" name="Код товару (УКТ ЗЕД); ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="unit" name="Одиниця виміру; ;writable=false" type="enum">
           <activiti:value id="kilogram" name="кілограм|кг"></activiti:value>
           <activiti:value id="bruttobetrags" name="бруттореєстрова тонна|бруттореєстр. Т"></activiti:value>
           <activiti:value id="wantagate" name="вантажопідйомність у метричних тоннах|вантажпідйом. метрич. Т"></activiti:value>
@@ -491,15 +442,15 @@
           <activiti:value id="thousand_kvt" name="тисяча кіловатгодин|тис. кВт·год"></activiti:value>
           <activiti:value id="thing" name="штука|шт"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="quantity" name="Кількість товару, що імпортується" type="long" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="cost_usd" name="Вартість товару, що імпортується (тис.дол.США)" type="long" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="cost_currency" name="Вартість товару, що імпортується (в тис.одиницях валюти контракту)" type="long" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="country_destination" name="Країна призначення" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCountry" name="Країна, де зареєстрований нерезидент-контрагент згідно із зовнішньоекономічним договором" type="select" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sID_UA_Country" name="Код країни контрагента;(заповниться автоматично)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCountry_123" name="Країна походження товару, що імпортується" type="select" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sID_UA_Country_123" name="Код країни походження;(заповниться автоматично)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="basis" name="Базисні умови поставки товару" type="enum" writable="false">
+        <activiti:formProperty id="quantity" name="Кількість товару, що імпортується; ;writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="cost_usd" name="Вартість товару, що імпортується (тис.дол.США); ;writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="cost_currency" name="Вартість товару, що імпортується (в тис.одиницях валюти контракту); ;writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="country_destination" name="Країна призначення; ;writable=false" type="select"></activiti:formProperty>
+        <activiti:formProperty id="sCountry_1" name="Країна імпортера (експортера); ;writable=false" type="select"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_Country_1" name="Код країни імпортера (експортера); ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCountry_2" name="Країна походження товару, що імпортується; ;writable=false" type="select"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_Country_2" name="Код країни походження; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="basis" name="Базисні умови поставки товару; ;writable=false" type="enum">
           <activiti:value id="exw" name="EXW - Франко-завод"></activiti:value>
           <activiti:value id="fca" name="FСА - Франко-перевізник"></activiti:value>
           <activiti:value id="fas" name="FАS - Франко вздовж борту судна"></activiti:value>
@@ -514,19 +465,19 @@
           <activiti:value id="ddu" name="DDU - Поставка без сплати мита"></activiti:value>
           <activiti:value id="ddp" name="DDР - Поставка зі сплатою мита"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="basis_1" name="Назва місця" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="basis_2" name="Назва місця призначення" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="basis_3" name="Назва порту відвантаження" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="basis_4" name="Назва порту призначення" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="basis_5" name="Назва місця поставки" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCurrency" name="Валюта контракту" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sID_UA_Currency" name="Код валюти контракту" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCurrency_7" name="Валюта розрахунку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sID_UA_Currency_7" name="Код валюти розрахунку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Митниця, де здійснюватиметься митне оформлення товару" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sSubjectOrganJoinTax" name="Підрозділ митниці" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sID_UA_SubjectOrganJoinTax" name="Код митниці" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="charakter_ugoda" name="Характер угоди" type="enum" writable="false">
+        <activiti:formProperty id="basis_1" name="Назва місця; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="basis_2" name="Назва місця призначення; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="basis_3" name="Назва порту відвантаження; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="basis_4" name="Назва порту призначення; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="basis_5" name="Назва місця поставки; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCurrency" name="Валюта контракту; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_Currency" name="Код валюти контракту; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCurrency_7" name="Валюта розрахунку; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_Currency_7" name="Код валюти розрахунку; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Митниця, де здійснюватиметься митне оформлення товару; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSubjectOrganJoinTax" name="Підрозділ митниці; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_SubjectOrganJoinTax" name="Код митниці; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="charakter_ugoda" name="Характер угоди; ;writable=false" type="enum">
           <activiti:value id="10" name="10 Переміщення товарів з розрахунками за товар у валюті України"></activiti:value>
           <activiti:value id="12" name="12 Переміщення товарів за договорами лізингу (оренди) з розрахунками у валюті України"></activiti:value>
           <activiti:value id="21" name="21 Переміщення товарів з розрахунками за товар у ВКВ (крім позначених кодами 22, 23, 26)"></activiti:value>
@@ -545,51 +496,35 @@
           <activiti:value id="78" name="78 Переміщення товарів у рахунок компенсаційних зобов'язань з розрахунками у ВКВ"></activiti:value>
           <activiti:value id="84" name="84 Інше"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="dogovor_number" name="Номер зовнішньоекономічного договору (контракту)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dogovor_date" name="Дата укладання зовнішньоекономічного договору (контракту)" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="count_applications" name="Укажіть кількість додатків та специфікацій до договору" type="enum" writable="false">
-          <activiti:value id="0" name="0"></activiti:value>
-          <activiti:value id="1" name="1"></activiti:value>
-          <activiti:value id="2" name="2"></activiti:value>
-          <activiti:value id="3" name="3"></activiti:value>
-          <activiti:value id="4" name="4"></activiti:value>
-          <activiti:value id="5" name="5"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="application_name_1" name="Назва додатку 1; наприклад:специфікація, інвойс" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="application_number_1" name="Номер додатку 1" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="application_date_1" name="Дата укладання додатку 1" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="application_name_2" name="Назва додатку 2" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="application_number_2" name="Номер додатку 2" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="application_date_2" name="Дата укладання додатку 2" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="application_name_3" name="Назва додатку 3" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="application_number_3" name="Номер додатку 3" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="application_date_3" name="Дата укладання додатку 3" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="application_name_4" name="Назва додатку 4" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="application_number_4" name="Номер додатку 4" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="application_date_4" name="Дата укладання додатку 4" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="application_name_5" name="Назва додатку 5" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="application_number_5" name="Номер додатку 5" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="application_date_5" name="Дата укладання додатку 5" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="agreement_number" name="Номер погодження відповідного уповноваженого органу виконавчої влади" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="agreement_date" name="Дата погодження відповідного уповноваженого органу виконавчої влади" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="special" name="Особливі умови імпорту; наприклад кількість товару в додаткових одиницях виміру, номер поточного рахунку в іноземній валюті (якщо декілька валют платежу), найменування банку, інвойси, інше." type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="dogovor_number" name="Номер зовнішньоекономічного договору (контракту); ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="dogovor_date" name="Дата укладання зовнішньоекономічного договору (контракту); ;writable=false" type="date"></activiti:formProperty>
+        <activiti:formProperty id="application_name" name="Перелік усіх додатків та специфікацій ; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="special" name="Особливі умови; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="reestr_numb" name="Реєстраційний номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_reestr" name="Укажіть дату реєстрації звернення" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="pib_admin" name="Прізвище та ініціали адміністратора" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decision_2" name="Прийняте рішення щодо надання ліцензії" type="enum" required="true">
-          <activiti:value id="accept" name="надано ліцензію"></activiti:value>
-          <activiti:value id="reject" name="відмовлено у наданні ліцензії"></activiti:value>
+          <activiti:value id="accept" name="надано індивідуальну ліцензію"></activiti:value>
+          <activiti:value id="reject" name="відмовлено у наданні індивідуальної ліцензії"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment_2" name="У разі відмови внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="rishen" name="Завантажте копію ліцензії або лист з обгрунтуванням причин відмови" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNameUnit" name="назва адміністартивного органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAdress" name="адреса адміністартивного органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="графік роботи адміністартивного органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="visnovok_js" name="назва документу 4" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="other_docs_js" name="назва документу 5" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPost" name="пошта посадовця" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_266_print.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dnepr_cnap_266_print.html]" type="invisible" default="Заявка на одержання ліцензії на імпорт" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_266_2_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dnepr_cnap_267_print.html]" type="invisible" default="Заявка на одержання ліцензії на імпорт" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/dneprOblSnap/dnepr_cnap_267_2_print.html]" type="invisible" default="Лист-звернення щодо оформлення ліцензії в довільній формі" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
-    <serviceTask id="servicetask7" name="повідомлення співробітника ЦНАП" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask7" name="повідомлення посадовця" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${rmail}</activiti:expression>
+          <activiti:expression>${sPost}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -608,7 +543,7 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask2" name=" успішне подання зверенння" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask2" name=" успішне подання зверенння" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[test_noreply@igov.org.ua]]></activiti:string>
@@ -619,20 +554,16 @@
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення на тему: Ліцензія на здійснення суб’єктами зовнішньоекономічної діяльності імпорту товарів]]></activiti:string>
         </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${opis}</activiti:expression>
-        </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення щодо отримання ліцензії на здійснення суб’єктами зовнішньоекономічної діяльності імпорту товарів передано на розгляд в департамент економічного розвитку Дніпропетровської обласної державної адміністрації і буде опрацьовано протягом 10 робочих днів (у режимі автоматичного ліцензування) або впродовж 30 календарних днів (у режимі не автоматичного ліцензування).&lt;br /&gt;&lt;br /&gt;
+Ваше звернення щодо отримання ліцензії на здійснення суб’єктами зовнішньоекономічної діяльності імпорту товарів передано на розгляд в ${sNameUnit} і буде опрацьовано протягом 30 календарних днів (у режимі не автоматичного ліцензування).&lt;br /&gt;&lt;br /&gt;
 Реєстраційний номер заяви: ${reestr_numb};&lt;br /&gt;
 До листа додається опис наданих Вами документів.&lt;br /&gt;
 &lt;br /&gt;
 Ви отримаєте додаткове повідомлення за результатами розгляду зверення.&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:5]&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:2]&lt;br /&gt;
+${sNameUnit}&lt;br /&gt; 
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -655,9 +586,8 @@
 На жаль, Ваше звернення щодо отримання ліцензії на здійснення суб’єктами зовнішньоекономічної діяльності імпорту товарів відхилено через недостатню або неправильну інформацію.&lt;br /&gt;
 ${comment_1}&lt;br /&gt;
 Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:5]&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:2]&lt;br /&gt;
+${sNameUnit}&lt;br /&gt; 
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -675,14 +605,14 @@ ${comment_1}&lt;br /&gt;
           <activiti:string><![CDATA[Звернення на тему: Ліцензія на здійснення суб’єктами зовнішньоекономічної діяльності імпорту товарів]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>"${rishen}",${PrintForm_1}</activiti:expression>
+          <activiti:expression>${rishen},${PrintForm_1},${PrintForm_2}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 Вам enum{[decision_2]}.&lt;br /&gt;  &lt;br /&gt;  
-Копія відповідного документиу знаходиться у додатку до листа.&lt;br /&gt;
-Ви або уповноважена Вами особа (при наявності довіреності) можете отримати документ собисто під підпис у ЦНАПі.&lt;br /&gt;&lt;br /&gt;
+Копія відповідного документу знаходиться у додатку до листа.&lt;br /&gt;
+Ви або уповноважена Вами особа (при наявності довіреності) можете отримати документ собисто під підпис за адресою ${sAdress}.&lt;br /&gt;&lt;br /&gt;
 При собі треба мати:&lt;br /&gt;
 1. Документ, що посвідчує особу.&lt;br /&gt;
 2. Для уповоноваженої особи - довіренність.&lt;br /&gt;
@@ -691,29 +621,63 @@ ${comment_1}&lt;br /&gt;
 5. Копю зовнішньоекономічного договору (контракту), усі додатки та специфікації до нього, завірені в установленому законодавством порядку.&lt;br /&gt;
 6. Погодження (оригінал) відповідного уповноваженого органу виконавчої влади (у випадках, визначених Кабінетом Міністрів України).&lt;br /&gt;
 7. Оригінал документу про сплату державного збору.&lt;br /&gt;
-8. Висновок експертної організації про відповідність контрактної ціни рівню цін кон'юнктури ринку на товари (роботи, послуги), що поставляються (виконуються, надаються) за конкретною зовнішньоекономічною операцією7. Платіжний документ (квитанція) про оплату вартості послуги.&lt;br /&gt;&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:5]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:3]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:4]&lt;br /&gt;
+8. Висновок експертної організації про відповідність контрактної ціни рівню цін кон'юнктури ринку на товари (роботи, послуги), що поставляються (виконуються, надаються) за конкретною зовнішньоекономічною операцією
+9. Платіжний документ (квитанція) про оплату вартості послуги.&lt;br /&gt;&lt;br /&gt;
+${sWorkTime}&lt;br /&gt; 
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:2]&lt;br /&gt;
+${sNameUnit}&lt;br /&gt; 
 [pattern/mail/_common_signature_end.html]   
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
+    <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>
+var per1 = 'sPost'
+var per2 = 'sNameUnit'
+var per3 = 'sAdress'
+var per4 = ' '
+var per5 = ' '
+var per6 = 'sWorkTime'
+var per7 = 'group'
+if (execution.getVariable('area') == 'prav'){
+per1 = 'darja.grek@gmail.com'
+per2 = 'Департамент економічного розвитку Дніпропетровської обласної державної адміністрації'
+per3 = 'м. Дніпропетровськ, просп. Карла Маркса, 75'
+per6 = "Режим роботи: Понеділок, середа з 9.00 до 18.00&lt;br /&gt; Вівторок, четвер з 9.00 до 20.00&lt;br /&gt; П'ятниця з 9.00 до 16.45&lt;br /&gt; Субота з 10.00 до 16.00&lt;br /&gt; Вихідний - Неділя&lt;br /&gt;"
+per7 = 'dnepr'
+}
+if (execution.getVariable('area') == 'lev'){
+per2 = 'Департамент економічного розвитку Дніпропетровської обласної державної адміністрації'
+per3 = 'м. Дніпропетровськ, просп. Карла Маркса, 75'
+per6 = "Режим роботи: Понеділок, середа з 9.00 до 18.00&lt;br /&gt; Вівторок, четвер з 9.00 до 20.00&lt;br /&gt; П'ятниця з 9.00 до 16.45&lt;br /&gt; Субота з 10.00 до 16.00&lt;br /&gt; Вихідний - Неділя&lt;br /&gt;"
+per7 = 'dnepr'
+}
+if(execution.getVariable('visnovok') != null){
+per4 = "4. Висновок експертної організації про відповідність контрактної ціни рівню цін кон'юнктури ринку на товари (роботи, послуги), що поставляються (виконуються, надаються) за конкретною зовнішньоекономічною операцією."
+}
+if(execution.getVariable('pogodgennya') != null){
+per5 = "5. Погодження (оригінал) відповідного уповноваженого органу виконавчої влади."
+}
+execution.setVariable('sPost', per1)
+execution.setVariable('sNameUnit', per2)
+execution.setVariable('sAdress', per3)
+execution.setVariable('visnovok_js', per4)
+execution.setVariable('other_docs_js', per5)
+execution.setVariable('sWorkTime', per6)
+execution.setVariable('group', per7)
+</script>
+    </scriptTask>
     <sequenceFlow id="flow12" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <boundaryEvent id="boundaryerror2" name="Error" attachedToRef="servicetask1">
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>
     <endEvent id="endevent2" name="End"></endEvent>
-    <sequenceFlow id="flow43" sourceRef="servicetask4" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow19" name="документи ок" sourceRef="exclusivegateway2" targetRef="servicetask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_1=='accept'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow22" sourceRef="servicetask2" targetRef="usertask2"></sequenceFlow>
     <sequenceFlow id="flow44" name="відхилення" sourceRef="exclusivegateway2" targetRef="servicetask9">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_1=='reject'}]]></conditionExpression>
     </sequenceFlow>
@@ -722,31 +686,37 @@ ${comment_1}&lt;br /&gt;
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow54" sourceRef="usertask1" targetRef="exclusivegateway2"></sequenceFlow>
     <sequenceFlow id="flow55" sourceRef="boundaryerror2" targetRef="endevent2"></sequenceFlow>
-    <sequenceFlow id="flow56" sourceRef="servicetask1" targetRef="servicetask7"></sequenceFlow>
     <sequenceFlow id="flow57" sourceRef="servicetask7" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow59" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
+    <sequenceFlow id="flow60" sourceRef="scripttask1" targetRef="servicetask7"></sequenceFlow>
+    <sequenceFlow id="flow65" sourceRef="servicetask4" targetRef="endevent2"></sequenceFlow>
+    <sequenceFlow id="flow66" sourceRef="servicetask2" targetRef="usertask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_266">
     <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_266" id="BPMNPlane_dnepr_cnap_266">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="50.0" y="70.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="60.0" y="70.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="55.0" width="137.0" x="490.0" y="60.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
-        <omgdc:Bounds height="55.0" width="141.0" x="296.0" y="211.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="141.0" x="296.0" y="212.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
         <omgdc:Bounds height="55.0" width="141.0" x="296.0" y="60.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
-        <omgdc:Bounds height="55.0" width="141.0" x="488.0" y="211.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="141.0" x="488.0" y="212.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask9" id="BPMNShape_servicetask9">
-        <omgdc:Bounds height="55.0" width="141.0" x="296.0" y="139.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="141.0" x="296.0" y="140.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
-        <omgdc:Bounds height="56.0" width="105.0" x="119.0" y="210.0"></omgdc:Bounds>
+        <omgdc:Bounds height="56.0" width="105.0" x="119.0" y="212.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="240.0" y="-20.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
         <omgdc:Bounds height="55.0" width="151.0" x="119.0" y="60.0"></omgdc:Bounds>
@@ -755,60 +725,65 @@ ${comment_1}&lt;br /&gt;
         <omgdc:Bounds height="30.0" width="30.0" x="120.0" y="87.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
-        <omgdc:Bounds height="35.0" width="35.0" x="154.0" y="149.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="154.0" y="150.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
-        <omgdc:Bounds height="40.0" width="40.0" x="538.0" y="146.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="538.0" y="147.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
-        <omgdi:waypoint x="85.0" y="87.0"></omgdi:waypoint>
+        <omgdi:waypoint x="95.0" y="87.0"></omgdi:waypoint>
         <omgdi:waypoint x="119.0" y="87.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
-        <omgdi:waypoint x="171.0" y="210.0"></omgdi:waypoint>
-        <omgdi:waypoint x="171.0" y="184.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
-        <omgdi:waypoint x="558.0" y="186.0"></omgdi:waypoint>
-        <omgdi:waypoint x="558.0" y="211.0"></omgdi:waypoint>
+        <omgdi:waypoint x="558.0" y="187.0"></omgdi:waypoint>
+        <omgdi:waypoint x="558.0" y="212.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="69.0" x="569.0" y="175.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="69.0" x="569.0" y="176.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
-        <omgdi:waypoint x="488.0" y="238.0"></omgdi:waypoint>
-        <omgdi:waypoint x="437.0" y="238.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
-        <omgdi:waypoint x="538.0" y="166.0"></omgdi:waypoint>
-        <omgdi:waypoint x="437.0" y="166.0"></omgdi:waypoint>
+        <omgdi:waypoint x="538.0" y="167.0"></omgdi:waypoint>
+        <omgdi:waypoint x="437.0" y="167.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="57.0" x="453.0" y="149.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="57.0" x="453.0" y="150.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
-        <omgdi:waypoint x="296.0" y="166.0"></omgdi:waypoint>
-        <omgdi:waypoint x="189.0" y="166.0"></omgdi:waypoint>
+        <omgdi:waypoint x="296.0" y="167.0"></omgdi:waypoint>
+        <omgdi:waypoint x="189.0" y="167.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow50" id="BPMNEdge_flow50">
-        <omgdi:waypoint x="296.0" y="238.0"></omgdi:waypoint>
-        <omgdi:waypoint x="224.0" y="238.0"></omgdi:waypoint>
+        <omgdi:waypoint x="296.0" y="239.0"></omgdi:waypoint>
+        <omgdi:waypoint x="224.0" y="240.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow54" id="BPMNEdge_flow54">
         <omgdi:waypoint x="558.0" y="115.0"></omgdi:waypoint>
-        <omgdi:waypoint x="558.0" y="146.0"></omgdi:waypoint>
+        <omgdi:waypoint x="558.0" y="147.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow55" id="BPMNEdge_flow55">
         <omgdi:waypoint x="135.0" y="117.0"></omgdi:waypoint>
-        <omgdi:waypoint x="171.0" y="149.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow56" id="BPMNEdge_flow56">
-        <omgdi:waypoint x="270.0" y="87.0"></omgdi:waypoint>
-        <omgdi:waypoint x="296.0" y="87.0"></omgdi:waypoint>
+        <omgdi:waypoint x="134.0" y="167.0"></omgdi:waypoint>
+        <omgdi:waypoint x="154.0" y="167.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow57" id="BPMNEdge_flow57">
         <omgdi:waypoint x="437.0" y="87.0"></omgdi:waypoint>
         <omgdi:waypoint x="490.0" y="87.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow59" id="BPMNEdge_flow59">
+        <omgdi:waypoint x="194.0" y="60.0"></omgdi:waypoint>
+        <omgdi:waypoint x="292.0" y="35.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow60" id="BPMNEdge_flow60">
+        <omgdi:waypoint x="292.0" y="35.0"></omgdi:waypoint>
+        <omgdi:waypoint x="366.0" y="60.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow65" id="BPMNEdge_flow65">
+        <omgdi:waypoint x="171.0" y="212.0"></omgdi:waypoint>
+        <omgdi:waypoint x="171.0" y="185.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow66" id="BPMNEdge_flow66">
+        <omgdi:waypoint x="488.0" y="239.0"></omgdi:waypoint>
+        <omgdi:waypoint x="437.0" y="239.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
