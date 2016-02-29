@@ -1,8 +1,7 @@
 var request = require('request')
   , async = require('async')
-  , organService = require('./../../api/organs/organ.service')
   , config = require('../../config/environment')
-  , syncSubject = require('../../api/service/syncSubject.service')
+  , syncSubject = require('../../api/subject/subject.service.js')
   , userConvert = require('../../api/user/user.convert')
   , activiti = require('../../components/activiti')
   , errors = require('../../components/errors');
@@ -12,7 +11,7 @@ module.exports.verifyContactEmail = function (email, callback) {
 };
 
 module.exports.getUser = function (nID, callback) {
-  organService.getSubjectHuman(nID, function (error, response, body) {
+  syncSubject.getSubjectHuman(nID, function (error, response, body) {
     if (error || body.error) {
       var errorResult = errors.createError(errors.codes.EXTERNAL_SERVICE_ERROR,
         body.error_description,
