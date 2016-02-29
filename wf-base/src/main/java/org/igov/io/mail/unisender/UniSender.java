@@ -22,11 +22,13 @@ import org.igov.util.MethodsCallRunnerUtil;
 import static org.igov.util.Tool.sCut;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 /**
  * Created by Dmytro Tsapko on 11/28/2015.
  */
+@Component 
 public class UniSender {
     
 	@Autowired 
@@ -113,6 +115,7 @@ public class UniSender {
         UniResponse oUniResponse = null;
         try{
         	LOG.info("Calling registrateMethod with params{}", mParam);
+        	LOG.info("methodCallRunner is {}",methodCallRunner);
         	oUniResponse = (UniResponse) methodCallRunner.registrateMethod(UniSender.class.getName(), "sendRequest", new Object[]{mParam, osURL.toString(),null});
         	LOG.info("Response from UniSender{}", oUniResponse);
         }catch(Exception e){
