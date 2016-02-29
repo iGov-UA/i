@@ -29,20 +29,21 @@
         <activiti:formProperty id="passport_children" name="Копія свідоцтва про народження дитини" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="doc_registration" name="Довідка про реєстрацію" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="zgoda" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність"></activiti:formProperty>
-        <activiti:formProperty id="rNumber" name="номер району" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="rName" name="район" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="remail" name="пошта району" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="rmail" name="пошти" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameArea" name="назва населеного пункту" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameUnit" name="назва адміністартивного органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPost" name="пошта посадовця" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адреса адм.органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneUnit" name="телефон для довідок" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="rchange" name="зміни для принтформи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers112" name="перефразування для принтформи прізвища" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_112&quot;:{&quot;aField_ID&quot;:[&quot;rchange&quot;],&quot;sValue&quot;:&quot;прізвище&quot;,&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;change&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'last_name'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers113" name="перефразування для принтформи імені" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_113&quot;:{&quot;aField_ID&quot;:[&quot;rchange&quot;],&quot;sValue&quot;:&quot;ім'я&quot;,&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;change&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'first_name'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers114" name="перефразування для принтформи по-батькові" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_114&quot;:{&quot;aField_ID&quot;:[&quot;rchange&quot;],&quot;sValue&quot;:&quot;по-батькові&quot;,&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;change&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'middle_name'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <userTask id="usertask1" name="надання адміністративної послуги" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask1" name="надання адміністративної послуги" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="rName" name="Район" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameArea" name="назва населеного пункту" type="string" writable="false"></activiti:formProperty> <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні данні" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Укажіть сьогоднішню дату" type="date" writable="false"></activiti:formProperty>
@@ -79,7 +80,7 @@
     <serviceTask id="servicetask4" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${remail}</activiti:expression>
+          <activiti:expression>${sPost}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -115,9 +116,9 @@
 Ваше звернення про прийняття рішення щодо зміни enum{[change]} дитини отримано та буде опрацьовано протягом 30 робочих днів.&lt;br /&gt;
 Ви отримаєте додаткове повідомлення за результатами розгляду звернення.&lt;br /&gt;
 &lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]&lt;br /&gt;
+Телефон для довідок:${sPhoneUnit}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2]&lt;br /&gt;
+${sNameUnit}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -143,7 +144,7 @@
 Отримано відповідь щодо Вашого зверенення - enum{[decision_1]} enum{[change]} дитини.&lt;br /&gt;
 ${comment_1}&lt;br /&gt;
 Копія рішення знаходиться у додатку до листа.&lt;br /&gt;
-Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у центрі надання адміністративних послуг.&lt;br /&gt;
+Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис за адресою:${sAddress}.&lt;br /&gt;
 При собі треба мати:&lt;br /&gt;
 1. Документ, що посвідчує особу.&lt;br /&gt;
 2. Для уповоноваженої особи - довіренність.&lt;br /&gt;
@@ -152,11 +153,10 @@ ${comment_1}&lt;br /&gt;
 5. Згоду (або відмову) батька на зміну прізвища (ім'я, по-батькові) дитини;&lt;br /&gt;
 6. Копію свідоцтва про народження дитини;&lt;br /&gt;
 7. Довідку про реєстрацію;&lt;br /&gt;&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:3]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:4]&lt;br /&gt;
+Графік роботи:${sWorkTime}&lt;br /&gt;
+Телефон для довідок:${sPhoneUnit}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2]&lt;br /&gt;
+${sNameUnit}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]   
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
@@ -165,27 +165,50 @@ ${comment_1}&lt;br /&gt;
     </serviceTask>
     <scriptTask id="scripttask1" name="Передача значений" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
-var per1 = 'remail'
-var per2 = 'rNumber'
-var per4 = 'rName'
+var per1 = 'sNameArea'
+var per2 = 'sNameUnit'
+var per3 = 'sPost'
+var per4 = 'sWorkTime'
+var per5 = 'sAddress'
+var per6 = 'sPhoneUnit'
+if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'Children_Tern'){
+per1 = 'Тернопільский район'
+per2 = 'Служба у справах дітей Тернопільського району'
+per3 = 'darja.grek@gmail.com'
+per4 = 'Понеділок-п'ятниця: 08.00-17.15&lt;br /&gt;Вихідний - Неділя&lt;br /&gt;'
+per5 = 'м. Тернопіль, вул. Кривоноса, 10'
+per6 = '(0352)43-24-62'
+}
+if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'cnap_carich'){
+per1 = 'Царичанскьий район'
+per2 = 'ЦНАП Царичанської РДА'
+per3 = 'darja.grek@gmail.com'
+per4 = 'Понеділок-п'ятниця з 8.00 до 20.00&lt;br /&gt;Субота з 9.00 до 16.00&lt;br /&gt;Без перерви на обід&lt;br /&gt;;'
+per5 = 'смт.Царичанка, вул. Театральна, 16г'
+per6 = '(05690)3-26-81'
+}
+if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'cnap_hmel_hmelT'){
+per1 = 'м.Хмельницький'
+per2 = 'ЦНАП м.Хмельницький'
+per3 = 'darja.grek@gmail.com'
+per4 = 'Понеділок, середа, п'ятниця: 09.00-16.00&lt;br /&gt;вівторок, четвер: 09.00-20.00&lt;br /&gt;, субота: 08.00-15.00&lt;br /&gt;Вихідний - Неділя&lt;br /&gt;'
+per5 = 'м. Хмельницький, вул. Соборна, 16'
+per6 = '(0382)76-58-61'
+}
 if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'vin_teplic'){
-per1 = 'darja.grek@gmail.com'
-per2 = '59'
-per4 = 'смт. Теплик'
+per1 = 'смт.Теплик'
+per2 = 'ЦНАП Теплицької РДА'
+per3 = 'darja.grek@gmail.com'
+per4 = 'Понеділок, середа, п'ятниця: 08.00-17.00&lt;br /&gt;вівторок, четвер: 08.00-20.00&lt;br /&gt;Вихідний - Неділя&lt;br /&gt;'
+per5 = 'смт Теплик, вул. Незалежності, 7'
+per6 = '(04353)2-19-09'
 }
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'carich'){
-per1 = 'darja.grek@gmail.com'
-per2 = '20'
-per4 = 'Царичанскьий район (Дніпропетровська область)'
-}
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'hmel_hmelT'){
-per1 = 'darja.grek@gmail.com'
-per2 = '533'
-per4 = 'ЦНАП Хмельницької міськради'
-}
-execution.setVariable('remail', per1)
-execution.setVariable('rNumber', per2)
-execution.setVariable('rName', per4)
+execution.setVariable('sNameArea', per1)
+execution.setVariable('sNameUnit', per2)
+execution.setVariable('sPost', per3)
+execution.setVariable('sWorkTime', per4)
+execution.setVariable('sAddress', per5)
+execution.setVariable('sPhoneUnit', per6)
 	  </script>
     </scriptTask>
     <endEvent id="endevent1" name="End"></endEvent>
