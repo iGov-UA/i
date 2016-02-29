@@ -849,7 +849,7 @@ public class SubjectController {
             Map<String, NamedEntity> organs = new HashMap();
             if (saGroup != null) {
                 Set<String> asGroup = JsonRestUtils.readObject(saGroup, Set.class);
-                LOG.info("asLogin: " + asLogin);
+                LOG.info("asGroup: " + asGroup);
                 for (String group : asGroup) {
                     List<SubjectAccount> subjectAccounts = subjectAccountDao.findSubjectAccounts(null, group, nID_Server, subjectAccountType);
                     if (subjectAccounts != null && !subjectAccounts.isEmpty()) {
