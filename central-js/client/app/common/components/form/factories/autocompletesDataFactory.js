@@ -13,7 +13,7 @@ angular.module('app').factory('autocompletesDataFactory', function () {
     SubjectOrganJoinTax: {
       valueProperty: 'sID_UA',
       titleProperty: 'sName_UA',
-      apiUrl: './api/organs/join-tax',
+      apiUrl: './api/subject/organs/join-tax',
       link: function (scope) {
         scope.$watch("formData.params['sID_Public_SubjectOrganJoin'].nID", function (newValue) {
           scope.resetAutoComplete();
