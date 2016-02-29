@@ -7,16 +7,19 @@
         <activiti:formProperty id="bankIdlastName" name="Призвіще" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
-         <activiti:formProperty id="bankIdAdressFactual" name="Адреса реєстрації " type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAdressFactual" name="Адреса реєстрації " type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані;серия, номер паспорту" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="n_vlas" name="Номер документу, що посвідчує право власності" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="n_place" name="Місце знаходження земельної ділянки" type="string" required="true"></activiti:formProperty> 
-        <activiti:formProperty id="total_place" name="Площа планованого будинку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="n_place" name="Місце знаходження земельної ділянки" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="total_place" name="Площа планованого будинку;м.кв" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail;На цей e-mail Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="date_today" name="Укажіть сьогоднішню дату" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="rNumber" name="номер району" type="invisible" default="635"></activiti:formProperty>
+        <activiti:formProperty id="rName" name="район" type="invisible" default="Колонщина"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Скан паспорта" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_inn" name="Скан ІПН" type="file" required="true"></activiti:formProperty>   
+        <activiti:formProperty id="bankId_scan_inn" name="Скан ІПН" type="file" required="true"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Лист звернення до держслужбовця" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -55,9 +58,9 @@
 			Ви отримаєте відповідь протягом десяти робочих днів.
 			&lt;/p&gt;
 			&lt;p&gt;Контакти відділу, який буде займатися обробкою Вашого звернення:
-	[pattern_dictonary:dnepr_reg_cnap.csv:value{635}:3]&lt;br /&gt;
-	[pattern_dictonary:dnepr_reg_cnap.csv:value{635}:4]&lt;br /&gt;
-	[pattern_dictonary:dnepr_reg_cnap.csv:value{635}:5]&lt;/p&gt;
+	[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:3]&lt;br /&gt;
+	[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:4]&lt;br /&gt;
+	[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]&lt;/p&gt;
 [pattern/mail/_common_signature_start.html]
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
@@ -70,8 +73,11 @@
         <activiti:formProperty id="bankIdlastName" name="Призвіще " type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я " type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAdressFactual" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="n_vlas" name="Номер документу, що посвідчує право власності" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="n_place" name="Місце знаходження ділянки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="total_place" name="Площа планованого будинку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Контактний e-mail" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
@@ -82,6 +88,14 @@
         <activiti:formProperty id="fileresult" name="Додайте файл з результатом згоди" type="file"></activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Коментар до рішення; Наприклад, пояснення чому громадянину було відмовлено в наданні згоди &lt;br /&gt; АБО &lt;br /&gt; Додаткові деталі для закінчення процессу оформлення паспорта" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/architecture/zayava_dozvil_na_bud.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="rName" name="Район" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="rNumber" name="номер району" type="invisible"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression>${bankId_scan_passport}, ${bankId_scan_inn}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
@@ -104,12 +118,12 @@
 			&lt;p&gt;За даними відділу архитектури Вам відмовленно у наданні будівельного паспорта на житловий або садовий будинок. &lt;/p&gt;
 &lt;p&gt;${decisionComment}&lt;/p&gt;
 			&lt;p&gt;За необхідності Ви можете звернутися за адресою:
-[pattern_dictonary:dnepr_reg_cnap.csv:value{635}:3]&lt;br&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{635}:4]&lt;br&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{635}:5]
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:3]&lt;br&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:4]&lt;br&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]
 &lt;/p&gt;
 			[pattern/mail/_common_signature_start.html]
-			[pattern_dictonary:dnepr_reg_cnap.csv:value{635}:2]&lt;br&gt;
+			[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2]&lt;br&gt;
                      [pattern/mail/_common_signature_end.html]
 			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -133,7 +147,7 @@
 			&lt;p&gt;Вам надано згоду на виготовлення будівельного паспорта на житловий/садовий будинок .   &lt;/p&gt;
 &lt;p&gt;${decisionComment}&lt;/p&gt;
 			[pattern/mail/_common_signature_start.html]
-			&lt;p&gt;[pattern_dictonary:dnepr_reg_cnap.csv:value{635}:2]
+			&lt;p&gt;[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2]
 			&lt;/p&gt;
             [pattern/mail/_common_signature_end.html]
 			[pattern/mail/_common_footer.html]</activiti:expression>
@@ -158,7 +172,7 @@
     <endEvent id="endevent3" name="End"></endEvent>
     <sequenceFlow id="flow10" sourceRef="boundaryerror1" targetRef="endevent3"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_myProcess">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_kolon_cnap394">
     <bpmndi:BPMNPlane bpmnElement="kolon_cnap394" id="BPMNPlane_kolon_cnap394">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="55.0" y="40.0"></omgdc:Bounds>
