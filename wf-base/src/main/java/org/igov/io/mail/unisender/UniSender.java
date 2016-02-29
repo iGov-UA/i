@@ -116,7 +116,7 @@ public class UniSender {
         	oUniResponse = (UniResponse) methodCallRunner.registrateMethod(UniSender.class.getName(), "sendRequest", new Object[]{mParam, osURL.toString(),null});
         	LOG.info("Response from UniSender{}", oUniResponse);
         }catch(Exception e){
-        	LOG.info("Error during sending email{}", e.getStackTrace());
+        	LOG.info("Error during sending email{} ", e);
         }        
 
         return oUniResponse;
@@ -215,7 +215,7 @@ public class UniSender {
         	oUniResponse = (UniResponse) methodCallRunner.registrateMethod(UniSender.class.getName(), "sendRequest", new Object[]{mParamObject,osURL.toString(),mParamByteArray});
         	LOG.info("Response from UniSender{}", oUniResponse);
         }catch(Exception e){
-        	LOG.info("Error during sending email{}", e.getStackTrace());
+        	LOG.info("Error during sending email{} ", e);
         }
 
         /*LOG.info("RESULT (oUniResponse={})", sCut(100, oUniResponse.toString()));
@@ -254,7 +254,7 @@ public class UniSender {
         	oUniResponse = (UniResponse) methodCallRunner.registrateMethod(UniSender.class.getName(), "sendRequest", new Object[]{mParam, osURL.toString(),null});
         	LOG.info("Response from UniSender{}", oUniResponse);
         }catch(Exception e){
-        	LOG.info("Error during sending email{}", e.getStackTrace());
+        	LOG.info("Error during sending email{} ", e);
         }
         	
         /*LOG.info("RESULT (oUniResponse={})", sCut(100, oUniResponse.toString()));
