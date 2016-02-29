@@ -1,6 +1,7 @@
 package org.igov.io.mail.unisender;
 
 import com.mongodb.util.JSON;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,16 +15,25 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
 import org.igov.io.web.HttpEntityCover;
+import org.igov.util.MethodsCallRunnerUtil;
+
 import static org.igov.util.Tool.sCut;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 /**
  * Created by Dmytro Tsapko on 11/28/2015.
  */
+
 public class UniSender {
     
+	/*@Autowired 
+    MethodsCallRunnerUtil methodCallRunner;*/
+	
     final static private Logger LOG = LoggerFactory.getLogger(UniSender.class);
     private static final Logger LOG_BIG = LoggerFactory.getLogger("MailBig");
     
@@ -102,8 +112,15 @@ public class UniSender {
         //LOG.info("RESULT mParam: {}", mParam);
 
         UniResponse oUniResponse = sendRequest(mParam, osURL.toString(), null);
-
-        //LOG.info("RESULT oUniResponse: {}", oUniResponse);
+        /*UniResponse oUniResponse = null;
+        try{
+        	LOG.info("Calling registrateMethod with params{}", mParam);
+        	LOG.info("methodCallRunner is {}",methodCallRunner);
+        	oUniResponse = (UniResponse) methodCallRunner.registrateMethod(UniSender.class.getName(), "sendRequest", new Object[]{mParam, osURL.toString(),null});
+        	LOG.info("Response from UniSender{}", oUniResponse);
+        }catch(Exception e){
+        	LOG.info("Error during sending email{} ", e);
+        }    */    
 
         return oUniResponse;
     }
@@ -196,6 +213,13 @@ public class UniSender {
         //oLogBig_Mail.info("SENDING... (osURL={}, mParamObject={})", osURL.toString(), mParamObject.toString());
 
         UniResponse oUniResponse = sendRequest(mParamObject, osURL.toString(), mParamByteArray);
+        /*try{
+        	LOG.info("Calling registrateMethod with params{}", mParamObject);
+        	oUniResponse = (UniResponse) methodCallRunner.registrateMethod(UniSender.class.getName(), "sendRequest", new Object[]{mParamObject,osURL.toString(),mParamByteArray});
+        	LOG.info("Response from UniSender{}", oUniResponse);
+        }catch(Exception e){
+        	LOG.info("Error during sending email{} ", e);
+        }*/
 
         /*LOG.info("RESULT (oUniResponse={})", sCut(100, oUniResponse.toString()));
         oLogBig_Mail.info("RESULT (oUniResponse={})", oUniResponse);
@@ -229,7 +253,15 @@ public class UniSender {
         //oLogBig_Mail.info("SENDING... (osURL={}, mParamObject={})", osURL.toString(), mParamObject.toString());
         
         UniResponse oUniResponse = sendRequest(mParam, osURL.toString(), null);
-
+       /* UniResponse oUniResponse = null;
+        try{
+        	LOG.info("Calling registrateMethod with params{}", mParam);
+        	oUniResponse = (UniResponse) methodCallRunner.registrateMethod(UniSender.class.getName(), "sendRequest", new Object[]{mParam, osURL.toString(),null});
+        	LOG.info("Response from UniSender{}", oUniResponse);
+        }catch(Exception e){
+        	LOG.info("Error during sending email{} ", e);
+        }*/
+        	
         /*LOG.info("RESULT (oUniResponse={})", sCut(100, oUniResponse.toString()));
         oLogBig_Mail.info("RESULT (oUniResponse={})", oUniResponse);
         

@@ -828,42 +828,65 @@ public class SubjectController {
             }
             
             Long nID_Subject;
+            Map<String, NamedEntity> users = new HashMap();
             if (saLogin != null) {
                 List<String> asLogin = JsonRestUtils.readObject(saLogin, List.class);
                 for (String login : asLogin) {
-                    Map<String, NamedEntity> users = new HashMap();
                     List<SubjectAccount> subjectAccounts = subjectAccountDao.findSubjectAccounts(null, login, nID_Server, subjectAccountType);
                     if (subjectAccounts != null && !subjectAccounts.isEmpty()) {
                         nID_Subject = subjectAccounts.get(0).getnID_Subject();
                         Subject subject = subjectDao.getSubject(nID_Subject);
-                        SubjectHuman subjectHuman = getSubjectHuman_(nID_Subject);
                         List<SubjectContact> subjectContact = subjectContactDao.findContacts(subject);
+                        SubjectHuman subjectHuman = getSubjectHumanBySubject(nID_Subject);
                         subjectHuman.setaContact(subjectContact);
-                        users.put(login, subjectHuman);
-                        result.put("users", users);
+                        users.put(login, subjectHuman); 
                     }
                 }
             }
-
+            result.put("users", users);
+            Map<String, NamedEntity> organs = new HashMap();
             if (saGroup != null) {
                 List<String> asGroup = JsonRestUtils.readObject(saGroup, List.class);
                 for (String group : asGroup) {
-                    Map<String, NamedEntity> organs = new HashMap();
                     List<SubjectAccount> subjectAccounts = subjectAccountDao.findSubjectAccounts(null, group, nID_Server, subjectAccountType);
                     if (subjectAccounts != null && !subjectAccounts.isEmpty()) {
                         nID_Subject = subjectAccounts.get(0).getnID_Subject();
                         Subject subject = subjectDao.getSubject(nID_Subject);
-                        SubjectOrgan subjectOrgan = getSubjectOrgan_(nID_Subject);
                         List<SubjectContact> subjectContact = subjectContactDao.findContacts(subject);
+                        SubjectOrgan subjectOrgan = getSubjectOrganBySubject(nID_Subject);
                         subjectOrgan.setaContact(subjectContact);
                         organs.put(group, subjectOrgan);
-                        result.put("organs", organs);
                     }
                 }
             }
+            result.put("organs", organs);
 
         }
         return result;
+    }
+    
+    private SubjectOrgan getSubjectOrganBySubject(Long nID_Subject) throws CommonServiceException {
+        Optional<SubjectOrgan> subjectOrgan = subjectOrganDao.findBy("oSubject.id", nID_Subject);
+        if (subjectOrgan.isPresent()) {
+            return subjectOrgan.get();
+        } else {
+            throw new CommonServiceException(
+                    ExceptionCommonController.BUSINESS_ERROR_CODE,
+                    "Record not found",
+                    HttpStatus.NOT_FOUND);
+        }
+    }
+    
+    private SubjectHuman getSubjectHumanBySubject(Long nID_Subject) throws CommonServiceException {
+        Optional<SubjectHuman> subjectHuman = subjectHumanDao.findBy("oSubject.id", nID_Subject);
+        if (subjectHuman.isPresent()) {
+            return subjectHuman.get();
+        } else {
+            throw new CommonServiceException(
+                    ExceptionCommonController.BUSINESS_ERROR_CODE,
+                    "Record not found",
+                    HttpStatus.NOT_FOUND);
+        }
     }
 
 }

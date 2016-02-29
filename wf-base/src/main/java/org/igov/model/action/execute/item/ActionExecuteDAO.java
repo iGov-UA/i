@@ -11,4 +11,6 @@ public interface ActionExecuteDAO extends EntityDao<ActionExecute> {
 	List<ActionExecute> getAllActionExecutes();
 	Long setActionExecute(Long nID_ActionExecuteStatus, DateTime oDateMake, DateTime oDateEdit, Integer nTry, String sMethod, String soRequest, String smParam, String sReturn);
 	List<ActionExecute> getActionExecute(Integer nRowsMax, String sMethodMask, String asID_Status, Integer nTryMax, Long nID);
+	void moveActionExecute(Integer nRowsMax, String sMethodMask, String asID_Status, Integer nTryMax, Long nID);
+	void moveActionExecute(ActionExecute actionExecute);
 }
