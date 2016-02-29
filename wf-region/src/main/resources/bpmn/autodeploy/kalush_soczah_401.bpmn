@@ -41,43 +41,42 @@
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-		<serviceTask id="servicetask1" name="Завантаження документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-		<boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
-		  <errorEventDefinition></errorEventDefinition>
-		</boundaryEvent>
-		<endEvent id="endevent1" name="End"></endEvent>
+    <serviceTask id="servicetask1" name="Завантаження документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
+      <errorEventDefinition></errorEventDefinition>
+    </boundaryEvent>
+    <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow2" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
-	<sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>	
-		<serviceTask id="servicetask2" name="Повідомлення держслужбовця про звернення" activiti:async="true" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
-		  <extensionElements>
-			<activiti:field name="from">
-			  <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-			</activiti:field>
-			<activiti:field name="to">
-			  <activiti:expression>tanyazol@gmail.com</activiti:expression>
-			</activiti:field>
-			<activiti:field name="subject">
-			  <activiti:string><![CDATA[Нове звернення. Надання статусу та видача (заміна) посвідчення «Сім’я загиблого (померлого) ветерана війни»]]></activiti:string>
-			</activiti:field>
-			<activiti:field name="text">
-			  <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
-			</activiti:field>
-		  </extensionElements>
-		</serviceTask>
-	<sequenceFlow id="flow4" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
-		<serviceTask id="servicetask3" name="Направлення громадянину листа про отримання звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
-		  <extensionElements>
-			<activiti:field name="from">
-			  <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-			</activiti:field>
-			<activiti:field name="to">
-			  <activiti:expression>${email}</activiti:expression>
-			</activiti:field>
-			<activiti:field name="subject">
-			  <activiti:string><![CDATA[Звернення на тему "Отримання (заміна) посвідчення члена сім'ї загиблого ветерана війни" прийняте]]></activiti:string>
-			</activiti:field>
-			<activiti:field name="text">
-				<activiti:expression>[pattern/mail/_common_header.html]
+    <serviceTask id="servicetask2" name="Повідомлення держслужбовця про звернення" activiti:async="true" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>tanyazol@gmail.com</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Нове звернення. Надання статусу та видача (заміна) посвідчення «Сім’я загиблого (померлого) ветерана війни»]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+	<sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
+    <serviceTask id="servicetask3" name="Направлення громадянину листа про отримання звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення на тему "Отримання (заміна) посвідчення члена сім'ї загиблого ветерана війни" прийняте]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
 				&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 				&lt;p&gt; Ваше звернення щодо ${asType}  було зареєстровано у системі.&lt;br/&gt;
 				Повідомлення про результат розгляду буде спрямоване на Ваш e-mail.&lt;/p&gt;
@@ -86,46 +85,47 @@
 				[pattern_dictonary:dnepr_soc_help.csv:value{[234]}:2]&lt;br /&gt;
 				[pattern/mail/_common_signature_end.html]
 				[pattern/mail/_common_footer.html]</activiti:expression>
-			</activiti:field>
-		  </extensionElements>
-		</serviceTask>
-	<sequenceFlow id="flow5" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>	
-		<userTask id="usertask1" name="Розгляд документів держслужбовцем" activiti:candidateGroups="upszn234">
-		  <extensionElements>
-			<activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-			<activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
-			<activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації громадянина" type="string" writable="false"></activiti:formProperty>
-			<activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
-			<activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
-			<activiti:formProperty id="email" name="Адреса електронної пошти для зв'язку" type="string" writable="false"></activiti:formProperty>
-			<activiti:formProperty id="asType" name="Оберіть тип звернення" type="enum" writable="false">
-			  <activiti:value id="sEnumFirst" name="Надання статусу та видача посвідчення «Сім’я загиблого (померлого) ветерана війни»"></activiti:value>
-			  <activiti:value id="sEnumChange" name="Заміна посвідчення «Сім’я загиблого (померлого) ветерана війни»"></activiti:value>
-			</activiti:formProperty>
-			<activiti:formProperty id="asCategory" name="Оберіть до якої категорії належав загиблий ветеран" type="enum" writable="false">
-			  <activiti:value id="sEnumVolunteer" name="Особи, які добровільно забезпечували проведення АТО (у т.ч здійснювали волонтерську діяльність)"></activiti:value>
-			  <activiti:value id="sEnumDobrovLaw" name="Особи, які, перебували у складі добровольчих формувань, які в подальшому були включені до складу ЗС, МВС, НГ та ін. утворених відповідно до законів України військових формувань та правоохоронних органів"></activiti:value>
-			  <activiti:value id="sEnumDobrov" name="Особи, які, перебували у складі добровольчих формувань, які в подальшому НЕ були включені до складу ЗС, МВС, НГ та ін. утворених відповідно до законів України військових формувань та правоохоронних органів"></activiti:value>
-			  <activiti:value id="sEnumArmy" name="Військовослужбовці і працівники ЗСУ, НГ, СБУ, Служби зовнішньої розвідки, Держприкордонслужби, Держспецтрансслужби, військовослужбовців військових прокуратур,МВС, Управління державної охорони, Держспецзв’язку, ДСНС, ДПтС, ін."></activiti:value>
-			  <activiti:value id="sEnumEmployee" name="Працівники підприємств, установ, організацій, які залучалися до забезпечення проведення АТО"></activiti:value>
-			</activiti:formProperty>
-			<activiti:formProperty id="sPrich" name="Причина заміни посвідчення" type="string" writable="false"></activiti:formProperty>
-			<activiti:formProperty id="asEnumStatus" name="Обробка заяви" type="enum" required="true">
-			  <activiti:value id="sEnumApprove" name="Прийнято рішення про надання громадянину статусу Сім'я загиблого ветерана війни"></activiti:value>
-			  <activiti:value id="sEnumDeny" name="Відмова громадянину у разі надання неповного пакету документів"></activiti:value>
-			</activiti:formProperty>
-			<activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
-			<activiti:formProperty id="sBody1" name="[pattern/print/UPZSN/kalush_soczah_401_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
-			<activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-			<activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-			  <activiti:field name="aFieldInheritedAttachmentID">
-				<activiti:expression>${nFoto},${nFamily},${nSviDeath},${nVolunteer},${nCommander},${nDovidkaVolunteer},${nSudMed},${nCourt},${nDovATOvzaemod},${nDokaz},${nKlopot},${nVLK},${nEmployee}</activiti:expression>
-			  </activiti:field>
-			</activiti:taskListener>
-		  </extensionElements>
-		</userTask>
-    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow4" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
+	<userTask id="usertask1" name="Розгляд документів держслужбовцем" activiti:candidateGroups="upszn234">
+      <extensionElements>
+        <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації громадянина" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Адреса електронної пошти для зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asType" name="Оберіть тип звернення" type="enum" writable="false">
+          <activiti:value id="sEnumFirst" name="Надання статусу та видача посвідчення «Сім’я загиблого (померлого) ветерана війни»"></activiti:value>
+          <activiti:value id="sEnumChange" name="Заміна посвідчення «Сім’я загиблого (померлого) ветерана війни»"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asCategory" name="Оберіть до якої категорії належав загиблий ветеран" type="enum" writable="false">
+          <activiti:value id="sEnumVolunteer" name="Особи, які добровільно забезпечували проведення АТО (у т.ч здійснювали волонтерську діяльність)"></activiti:value>
+          <activiti:value id="sEnumDobrovLaw" name="Особи, які, перебували у складі добровольчих формувань, які в подальшому були включені до складу ЗС, МВС, НГ та ін. утворених відповідно до законів України військових формувань та правоохоронних органів"></activiti:value>
+          <activiti:value id="sEnumDobrov" name="Особи, які, перебували у складі добровольчих формувань, які в подальшому НЕ були включені до складу ЗС, МВС, НГ та ін. утворених відповідно до законів України військових формувань та правоохоронних органів"></activiti:value>
+          <activiti:value id="sEnumArmy" name="Військовослужбовці і працівники ЗСУ, НГ, СБУ, Служби зовнішньої розвідки, Держприкордонслужби, Держспецтрансслужби, військовослужбовців військових прокуратур,МВС, Управління державної охорони, Держспецзв’язку, ДСНС, ДПтС, ін."></activiti:value>
+          <activiti:value id="sEnumEmployee" name="Працівники підприємств, установ, організацій, які залучалися до забезпечення проведення АТО"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sPrich" name="Причина заміни посвідчення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asEnumStatus" name="Обробка заяви" type="enum" required="true">
+          <activiti:value id="sEnumApprove" name="Прийнято рішення про надання громадянину статусу Сім'я загиблого ветерана війни"></activiti:value>
+          <activiti:value id="sEnumDeny" name="Відмова громадянину у разі надання неповного пакету документів"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/UPZSN/kalush_soczah_401_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression>${nFoto},${nFamily},${nSviDeath},${nVolunteer},${nCommander},${nDovidkaVolunteer},${nSudMed},${nCourt},${nDovATOvzaemod},${nDokaz},${nKlopot},${nVLK},${nEmployee}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+	<sequenceFlow id="flow5" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
     <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
+	<exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <serviceTask id="servicetask4" name="Лист про неповний пакет документів" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -138,7 +138,7 @@
           <activiti:string><![CDATA[Інформація щодо Надання статусу та видача (заміна) посвідчення «Сім’я загиблого (померлого) ветерана війни»]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-	        <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[pattern/mail/_common_header.html]
 			&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br&gt;&lt;br&gt;
 			&lt;p&gt;На жаль, Ваше звернення щодо ${asType} - відхилене.&lt;/p&gt;
 			&lt;p&gt;Причина в наступному: &lt;br&gt;
@@ -185,7 +185,7 @@
     </sequenceFlow>
     <sequenceFlow id="flow8" sourceRef="servicetask4" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow10" sourceRef="servicetask5" targetRef="endevent1"></sequenceFlow>
-</process>
+  </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_kalush_soczah_401">
     <bpmndi:BPMNPlane bpmnElement="kalush_soczah_401" id="BPMNPlane_kalush_soczah_401">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
@@ -200,11 +200,11 @@
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="407.0" y="251.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
-        <omgdc:Bounds height="75.0" width="105.0" x="220.0" y="56.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
-        <omgdc:Bounds height="85.0" width="115.0" x="366.0" y="51.0"></omgdc:Bounds>
+        <omgdc:Bounds height="85.0" width="115.0" x="240.0" y="51.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
+        <omgdc:Bounds height="75.0" width="105.0" x="372.0" y="56.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="75.0" width="111.0" x="510.0" y="56.0"></omgdc:Bounds>
@@ -227,6 +227,18 @@
         <omgdi:waypoint x="144.0" y="268.0"></omgdi:waypoint>
         <omgdi:waypoint x="407.0" y="268.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="195.0" y="93.0"></omgdi:waypoint>
+        <omgdi:waypoint x="240.0" y="93.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="355.0" y="93.0"></omgdi:waypoint>
+        <omgdi:waypoint x="372.0" y="93.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="477.0" y="93.0"></omgdi:waypoint>
+        <omgdi:waypoint x="510.0" y="93.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
         <omgdi:waypoint x="565.0" y="131.0"></omgdi:waypoint>
         <omgdi:waypoint x="566.0" y="164.0"></omgdi:waypoint>
@@ -245,25 +257,13 @@
           <omgdc:Bounds height="42.0" width="100.0" x="575.0" y="191.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
+      <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
         <omgdi:waypoint x="423.0" y="220.0"></omgdi:waypoint>
         <omgdi:waypoint x="424.0" y="251.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
+      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
         <omgdi:waypoint x="495.0" y="269.0"></omgdi:waypoint>
         <omgdi:waypoint x="442.0" y="268.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
-        <omgdi:waypoint x="195.0" y="93.0"></omgdi:waypoint>
-        <omgdi:waypoint x="220.0" y="93.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
-        <omgdi:waypoint x="325.0" y="93.0"></omgdi:waypoint>
-        <omgdi:waypoint x="366.0" y="93.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
-        <omgdi:waypoint x="481.0" y="93.0"></omgdi:waypoint>
-        <omgdi:waypoint x="510.0" y="93.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
