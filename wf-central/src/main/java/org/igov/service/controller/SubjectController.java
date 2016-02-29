@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
 import org.igov.model.core.NamedEntity;
@@ -830,7 +831,8 @@ public class SubjectController {
             Long nID_Subject;
             Map<String, NamedEntity> users = new HashMap();
             if (saLogin != null) {
-                List<String> asLogin = JsonRestUtils.readObject(saLogin, List.class);
+                Set<String> asLogin = JsonRestUtils.readObject(saLogin, Set.class);
+                LOG.info("asLogin: " + asLogin);
                 for (String login : asLogin) {
                     List<SubjectAccount> subjectAccounts = subjectAccountDao.findSubjectAccounts(null, login, nID_Server, subjectAccountType);
                     if (subjectAccounts != null && !subjectAccounts.isEmpty()) {
@@ -846,7 +848,8 @@ public class SubjectController {
             result.put("users", users);
             Map<String, NamedEntity> organs = new HashMap();
             if (saGroup != null) {
-                List<String> asGroup = JsonRestUtils.readObject(saGroup, List.class);
+                Set<String> asGroup = JsonRestUtils.readObject(saGroup, Set.class);
+                LOG.info("asLogin: " + asLogin);
                 for (String group : asGroup) {
                     List<SubjectAccount> subjectAccounts = subjectAccountDao.findSubjectAccounts(null, group, nID_Server, subjectAccountType);
                     if (subjectAccounts != null && !subjectAccounts.isEmpty()) {

@@ -268,7 +268,7 @@ public class BpServiceHandler {
             Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
             currentAssignLogins.add(task.getAssignee());
             Set<String> currentCadidateGroup = getCurrentCadidateGroup(sProcessName);
-            
+            LOG.info("currentAssignLogins: " + currentAssignLogins + " currentCadidateGroup: " + currentCadidateGroup);
             Map<String, Map<String, Map>> result = subjectCover.getSubjects(currentAssignLogins, currentCadidateGroup);
             if (result != null && !result.isEmpty()) {
                 StringBuilder sb = new StringBuilder();
