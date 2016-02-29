@@ -47,7 +47,7 @@
     </boundaryEvent>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow2" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
-    <serviceTask id="servicetask3" name="Повідомлення держслужбовця про звернення" activiti:async="true" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask2" name="Повідомлення держслужбовця про звернення" activiti:async="true" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -63,7 +63,7 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask2" name="Направлення громадянину листа про отримання звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask3" name="Направлення громадянину листа про отримання звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -75,15 +75,15 @@
           <activiti:string><![CDATA[Звернення на тему "Отримання (заміна) посвідчення члена сім'ї загиблого ветерана війни" прийняте]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt; Ваше звернення щодо ${asType}  було зареєстровано у системі.&lt;br/&gt;
-Повідомлення про результат розгляду буде спрямоване на Ваш e-mail.&lt;/p&gt;
-&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_soc_help.csv:value{[234]}:2]&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+	        <activiti:expression>[pattern/mail/_common_header.html]
+			&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+			&lt;p&gt; Ваше звернення щодо ${asType}  було зареєстровано у системі.&lt;br/&gt;
+			Повідомлення про результат розгляду буде спрямоване на Ваш e-mail.&lt;/p&gt;
+			&lt;br /&gt;
+			[pattern/mail/_common_signature_start.html]
+			[pattern_dictonary:dnepr_soc_help.csv:value{[234]}:2]&lt;br /&gt;
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -135,15 +135,15 @@
           <activiti:string><![CDATA[Інформація щодо Надання статусу та видача (заміна) посвідчення «Сім’я загиблого (померлого) ветерана війни»]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br&gt;&lt;br&gt;
-&lt;p&gt;На жаль, Ваше звернення щодо ${asType} - відхилене.&lt;/p&gt;
-&lt;p&gt;Причина в наступному: &lt;br&gt;
-${decisionComment}&lt;/p&gt;
-&lt;p&gt;Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/ target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
-[pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[234]}:2]&lt;/p&gt;
-[pattern/mail/_common_footer.html]</activiti:expression>
+	        <activiti:expression>[pattern/mail/_common_header.html]
+			&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br&gt;&lt;br&gt;
+			&lt;p&gt;На жаль, Ваше звернення щодо ${asType} - відхилене.&lt;/p&gt;
+			&lt;p&gt;Причина в наступному: &lt;br&gt;
+			${decisionComment}&lt;/p&gt;
+			&lt;p&gt;Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/ target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
+			[pattern/mail/_common_signature_start.html]
+			[pattern_dictonary:dnepr_reg_cnap.csv:value{[234]}:2]&lt;/p&gt;
+			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -163,28 +163,28 @@ ${decisionComment}&lt;/p&gt;
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;Ваше звернення щодо ${asType} - розглянуте.&lt;/p&gt;
-&lt;p&gt;Запрошуємо Вас отримати нове Посвідчення за адресою:&lt;br&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[234]}:3]&lt;br&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[234]}:4]&lt;br&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[234]}:5]&lt;/p&gt;
-[pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[234]}:2],&lt;br&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+			&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+			&lt;p&gt;Ваше звернення щодо ${asType} - розглянуте.&lt;/p&gt;
+			&lt;p&gt;Запрошуємо Вас отримати нове Посвідчення за адресою:&lt;br&gt;
+			[pattern_dictonary:dnepr_reg_cnap.csv:value{[234]}:3]&lt;br&gt;
+			[pattern_dictonary:dnepr_reg_cnap.csv:value{[234]}:4]&lt;br&gt;
+			[pattern_dictonary:dnepr_reg_cnap.csv:value{[234]}:5]&lt;/p&gt;
+			[pattern/mail/_common_signature_start.html]
+			[pattern_dictonary:dnepr_reg_cnap.csv:value{[234]}:2],&lt;br&gt;
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_feedback.html]
+			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow9" name="Повний пакет документів" sourceRef="exclusivegateway1" targetRef="servicetask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asEnumStatus == 'sEnumApprove'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow17" sourceRef="servicetask4" targetRef="endevent1"></sequenceFlow>
-    <sequenceFlow id="flow18" sourceRef="servicetask5" targetRef="endevent1"></sequenceFlow>
-    <sequenceFlow id="flow19" sourceRef="servicetask1" targetRef="servicetask3"></sequenceFlow>
-    <sequenceFlow id="flow20" sourceRef="servicetask3" targetRef="servicetask2"></sequenceFlow>
-    <sequenceFlow id="flow21" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow8" sourceRef="servicetask4" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow10" sourceRef="servicetask5" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
+    <sequenceFlow id="flow4" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
+    <sequenceFlow id="flow5" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_kalush_soczah_401">
     <bpmndi:BPMNPlane bpmnElement="kalush_soczah_401" id="BPMNPlane_kalush_soczah_401">
