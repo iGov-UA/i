@@ -2,6 +2,11 @@ package org.igov.service.controller;
 
 import static org.igov.service.business.action.task.core.AbstractModelTask.getByteArrayMultipartFileFromStorageInmemory;
 import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -48,12 +53,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.common.base.Optional;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 @Controller
 @Api(tags = {"SubjectMessageController"}, description = "Сообщения субьектов")
 @RequestMapping(value = "/subject/message")
@@ -398,18 +397,9 @@ public class SubjectMessageController {
     public
     @ResponseBody
     ResponseEntity getMessages() {
-    	 List<SubjectMessage> messages = null;
-    	try{
-    		messages = (List<SubjectMessage>) methodCallRunner.registrateMethod(SubjectMessagesDao.class.getName(), "getMessages", null);
-    	}catch(Exception e){
-    		
-    	}         
+    	 List<SubjectMessage> messages = subjectMessagesDao.getMessages();
         return JsonRestUtils.toJsonResponse(messages);
     }
-    
-  
-    
-    
     
     /**
      * получение массива сообщений по услуге

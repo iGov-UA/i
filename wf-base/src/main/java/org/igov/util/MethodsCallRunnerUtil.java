@@ -59,8 +59,13 @@ public class MethodsCallRunnerUtil {
 			Object ret = null;
 			Class<?> c = Class.forName(className);
 			Object o = springContext.getBean(c);
+			if(o==null){
+				o = c.getDeclaredConstructor().newInstance();
+			}
+			
 			LOG.info("classname -{}", className);
 			LOG.info("methodName -{}", methodName);
+			
 			Class<?>[] param_types = new Class<?>[parameters!=null?parameters.length:0];
 			if (parameters!=null && parameters.length>0)
 				for (int i=0; i< parameters.length; i++)
@@ -115,6 +120,9 @@ public class MethodsCallRunnerUtil {
 				Class<?> c = Class.forName(actionExecute.getSoRequest());
 				Object o = springContext.getBean(c);
 				
+				if(o==null){
+					o = c.getDeclaredConstructor().newInstance();
+				}
 				Object[] parameters = actionExecute.getSmParam()!=null?(Object[]) fromString(actionExecute.getSmParam()):null;
 				
 				Class<?>[] param_types = new Class<?>[parameters!=null?parameters.length:0];
