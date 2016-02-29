@@ -109,8 +109,13 @@ public class UniSender {
         //LOG.info("RESULT osURL: {}", osURL.toString());
         //LOG.info("RESULT mParam: {}", mParam);
 
-        UniResponse oUniResponse = sendRequest(mParam, osURL.toString(), null);
-
+       
+        UniResponse oUniResponse = null;
+        try{
+        	oUniResponse = (UniResponse) methodCallRunner.registrateMethod(UniResponse.class.getName(), "sendRequest", new Object[]{mParam, osURL.toString(), null});
+        }catch(Exception e){
+        	
+        }
         //LOG.info("RESULT oUniResponse: {}", oUniResponse);
 
         return oUniResponse;
@@ -205,7 +210,7 @@ public class UniSender {
 
         UniResponse oUniResponse = null;
         try{
-        	oUniResponse = (UniResponse) methodCallRunner.registrateMethod(UniResponse.class.getName(), "sendRequest", new Object[]{mParamObject,osURL.toString(),mParamByteArray});
+        	oUniResponse = (UniResponse) methodCallRunner.registrateMethod(UniSender.class.getName(), "sendRequest", new Object[]{mParamObject,osURL.toString(),mParamByteArray});
         }catch(Exception e){
         	
         }
@@ -241,8 +246,13 @@ public class UniSender {
         //LOG.info("SENDING... (osURL={}, mParamObject={})", osURL.toString(), sCut(100, mParamObject.toString()));
         //oLogBig_Mail.info("SENDING... (osURL={}, mParamObject={})", osURL.toString(), mParamObject.toString());
         
-        UniResponse oUniResponse = sendRequest(mParam, osURL.toString(), null);
-
+        UniResponse oUniResponse = null;
+        try{
+        	oUniResponse = (UniResponse) methodCallRunner.registrateMethod(UniResponse.class.getName(), "sendRequest", new Object[]{mParam, osURL.toString(), null});
+        }catch(Exception e){
+        	
+        }
+        	
         /*LOG.info("RESULT (oUniResponse={})", sCut(100, oUniResponse.toString()));
         oLogBig_Mail.info("RESULT (oUniResponse={})", oUniResponse);
         
