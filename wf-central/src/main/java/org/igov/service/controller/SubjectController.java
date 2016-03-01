@@ -22,7 +22,6 @@ import org.igov.model.subject.SubjectHumanIdType;
 import org.igov.model.subject.organ.SubjectOrgan;
 
 import com.google.common.base.Optional;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -839,15 +838,9 @@ public class SubjectController {
                     if (subjectAccounts != null && !subjectAccounts.isEmpty()) {
                         nID_Subject = subjectAccounts.get(0).getnID_Subject();
                         Subject subject = subjectDao.getSubject(nID_Subject);
-                        List<SubjectContact> subjectContacts = subjectContactDao.findContacts(subject);
-                        List<SubjectContact> subjectPhones = new ArrayList();
-                        for(SubjectContact contact : subjectContacts){
-                            if("Phone".equals(contact.getSubjectContactType().getsName_EN())){
-                                subjectPhones.add(contact);
-                            }
-                        }
+                        List<SubjectContact> subjectContact = subjectContactDao.findContacts(subject);
                         SubjectHuman subjectHuman = getSubjectHumanBySubject(nID_Subject);
-                        subjectHuman.setaContact(subjectPhones);
+                        subjectHuman.setaContact(subjectContact);
                         users.put(login, subjectHuman); 
                     }
                 }
@@ -862,15 +855,9 @@ public class SubjectController {
                     if (subjectAccounts != null && !subjectAccounts.isEmpty()) {
                         nID_Subject = subjectAccounts.get(0).getnID_Subject();
                         Subject subject = subjectDao.getSubject(nID_Subject);
-                        List<SubjectContact> subjectContacts = subjectContactDao.findContacts(subject);
-                        List<SubjectContact> subjectPhones = new ArrayList();
-                        for(SubjectContact contact : subjectContacts){
-                            if("Phone".equals(contact.getSubjectContactType().getsName_EN())){
-                                subjectPhones.add(contact);
-                            }
-                        }
+                        List<SubjectContact> subjectContact = subjectContactDao.findContacts(subject);
                         SubjectOrgan subjectOrgan = getSubjectOrganBySubject(nID_Subject);
-                        subjectOrgan.setaContact(subjectPhones);
+                        subjectOrgan.setaContact(subjectContact);
                         organs.put(group, subjectOrgan);
                     }
                 }
