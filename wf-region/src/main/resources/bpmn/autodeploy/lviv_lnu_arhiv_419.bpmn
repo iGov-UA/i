@@ -89,17 +89,17 @@
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAdress" name="Адреса реєстрації;(поштовий індекс, місто, вулиця, номер дому, номер квартири)" type="string" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sMphone" name="Мобільний телефон" type="string" default="+380" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sEmail" name="e-mail для зворотнього зв'язку" type="string" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asDocs" name="Документ для видачі" type="enum" writable="false" required="true">
+        <activiti:formProperty id="sAdress" name="Адреса реєстрації;(поштовий індекс, місто, вулиця, номер дому, номер квартири)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sMphone" name="Мобільний телефон" type="string" default="+380" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sEmail" name="e-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asDocs" name="Документ для видачі" type="enum" writable="false">
           <activiti:value id="asAtest" name="Атестат та додаток до атестату"></activiti:value>
           <activiti:value id="asDiplom" name="Диплом та додаток до диплому"></activiti:value>
           <activiti:value id="asTrud" name="Трудова книжка"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sRic_poch" name="Рік початку навчання" type="string" writable="false" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sRic_poch" name="Рік початку навчання" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sRic_zak" name="Рік закінчення навчання" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="anNavch_form" name="Форма навчання" type="enum" writable="false" required="true">
+        <activiti:formProperty id="anNavch_form" name="Форма навчання" type="enum" writable="false">
           <activiti:value id="asDenna" name="денна"></activiti:value>
           <activiti:value id="asZaoch" name="заочна"></activiti:value>
           <activiti:value id="asVechir" name="вечірня"></activiti:value>
@@ -115,7 +115,7 @@
           <activiti:value id="dok_bad" name="Заявка оформлена не вірно відмова."></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="Komment_rishenia" name="Коментар по рішенню;(Вкажіть дату отримання посвідчення, в разі відмови вкажіть причину відмови)" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="Заявка прийнята, проте процес не завершено. Вона з'явиться знов у вас в роботі і вам треба буде зробити відмітку чи виданий документ." type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="супровідний текст" type="invisible" default="Заявка прийнята, проте процес не завершено. Заявка з'явиться в необроблених і вам треба буде зробити відмітку чи виданий документ."></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
