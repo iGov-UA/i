@@ -135,7 +135,7 @@
     <sequenceFlow id="flow15" sourceRef="servicetask2" targetRef="exclusivegateway2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow41" name="Старий процесс" sourceRef="exclusivegateway2" targetRef="usertask1">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[$(sID_Public_SubjectOrganJoin != 1183)]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[$(sID_Public_SubjectOrganJoin != 'khar_bogod')]]></conditionExpression>
     </sequenceFlow>
     <userTask id="usertask1" name="Первинна перевірка даних" activiti:candidateGroups="rda_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
@@ -266,7 +266,7 @@
     </serviceTask>
     <sequenceFlow id="flow43" sourceRef="servicetask7" targetRef="endevent3"></sequenceFlow>
     <sequenceFlow id="flow42" name="Росширений для Богодухівського району" sourceRef="exclusivegateway2" targetRef="usertask3">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[$(sID_Public_SubjectOrganJoin == 1183)]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[$(sID_Public_SubjectOrganJoin == 'khar_bogod')]]></conditionExpression>
     </sequenceFlow>
     <userTask id="usertask3" name="Первинна обробка звернення Богодухів" activiti:candidateGroups="rda_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
@@ -349,7 +349,7 @@
     <sequenceFlow id="flow55" name="Відмовити" sourceRef="exclusivegateway5" targetRef="servicetask10">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='reject'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask4" name="Рішення голови" activiti:candidateGroups="rda_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask4" name="Рішення голови" activiti:candidateGroups="golova_rda_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFIO" name="Прізвище, ім`я, по-батькові громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
@@ -414,10 +414,10 @@
         <activiti:formProperty id="decisionComment" name="Якщо Ви відмовляєте у виконання звернення, обов'язково вкажіть підставу у цьому полі" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sResolution" name="Резолюція" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="dExecution" name="Строк виконання" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNameExecutor" name="Виконавець" type="string" required="true"></activiti:formProperty>        
+        <activiti:formProperty id="sNameExecutor" name="Виконавець" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sOrgan" name="назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/rda_360.html]" type="invisible" default="Заява Миколаївська, Чернігівська, Херсонська" writable="false"></activiti:formProperty>        
+        <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/rda_360.html]" type="invisible" default="Заява Миколаївська, Чернігівська, Херсонська" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -484,12 +484,12 @@
           <activiti:value id="sFirst" name="первинне"></activiti:value>
           <activiti:value id="sSecond" name="повторне звернення"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="dCreate" name="Дата надходження" type="date" writable="false"></activiti:formProperty>                
+        <activiti:formProperty id="dCreate" name="Дата надходження" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sResolution" name="Резолюція" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="dExecution" name="Строк виконання" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNameExecutor" name="Виконавець" type="string" writable="false"></activiti:formProperty>        
-        <activiti:formProperty id="sNameExecutorExtended" name="Розширені дані про виконавця;прізвище, ініціали та номер телефону безпосереднього виконавця" type="textArea" required="true"></activiti:formProperty>        
-		<activiti:formProperty id="sOrgan" name="назва органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameExecutor" name="Виконавець" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameExecutorExtended" name="Розширені дані про виконавця;прізвище, ініціали та номер телефону безпосереднього виконавця" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sOrgan" name="назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/rda_360.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBodycontrolCard_1" name="[pattern/print/ternopil/rda_360.html]" type="invisible" default="Реєстраційно-контрольна карта(Лицьовий бік)" writable="false"></activiti:formProperty>
@@ -593,8 +593,6 @@
           <activiti:value id="sSecond" name="повторне звернення"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="dCreate" name="Дата надходження" type="date" writable="false"></activiti:formProperty>
-        
-        
         <activiti:formProperty id="decide" name="Рішення про виконання звернення" type="enum" required="true">
           <activiti:value id="accept" name="Звернення виконане"></activiti:value>
           <activiti:value id="reject" name="Звернення не може бути виконано"></activiti:value>
@@ -772,7 +770,7 @@
         <omgdi:waypoint x="500.0" y="116.0"></omgdi:waypoint>
         <omgdi:waypoint x="613.0" y="117.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="82.0" x="509.0" y="96.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="100.0" x="509.0" y="96.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
@@ -820,14 +818,14 @@
         <omgdi:waypoint x="480.0" y="337.0"></omgdi:waypoint>
         <omgdi:waypoint x="480.0" y="369.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="490.0" y="337.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="79.0" x="490.0" y="337.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow55" id="BPMNEdge_flow55">
         <omgdi:waypoint x="460.0" y="317.0"></omgdi:waypoint>
         <omgdi:waypoint x="345.0" y="318.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="362.0" y="297.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="54.0" x="362.0" y="297.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow46" id="BPMNEdge_flow46">
@@ -878,14 +876,14 @@
         <omgdi:waypoint x="313.0" y="471.0"></omgdi:waypoint>
         <omgdi:waypoint x="282.0" y="360.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="327.0" y="462.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="54.0" x="327.0" y="462.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow62" id="BPMNEdge_flow62">
         <omgdi:waypoint x="480.0" y="510.0"></omgdi:waypoint>
         <omgdi:waypoint x="480.0" y="550.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="489.0" y="519.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="79.0" x="489.0" y="519.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
