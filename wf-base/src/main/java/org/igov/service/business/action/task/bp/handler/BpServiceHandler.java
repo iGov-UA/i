@@ -313,12 +313,10 @@ public class BpServiceHandler {
     private String getContact(Map<String, Map> subjects) {
         StringBuilder sbContact = new StringBuilder();
         if (subjects != null && !subjects.isEmpty()) {
-            LOG.info("!!!subjects: " + subjects);
             for (Map user : subjects.values()) {
-                LOG.info("!!!user: " + user);
                 if (user != null && !user.isEmpty() && user.get("aContact") != null) {
+                    List<Map> contacts = (List<Map>) user.get("aContact");
                     LOG.info("!!!aContact: " + user.get("aContact"));
-                    List<Map> contacts = (List<Map>) subjects.get("aContact");
                     if (contacts != null && !contacts.isEmpty()) {
                         for (Map contact : contacts) {
                             LOG.info("!!!contact: " + contact);
