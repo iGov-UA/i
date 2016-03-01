@@ -318,7 +318,9 @@ public class BpServiceHandler {
                     List<Map> contacts = (List<Map>) subjects.get("aContact");
                     if (contacts != null && !contacts.isEmpty()) {
                         for (Map contact : contacts) {
-                            if (contact != null && !contact.isEmpty() && contact.get("sValue") != null) { //oSubject
+                            if (contact != null && !contact.isEmpty() && contact.get("sValue") != null
+                                    && contact.get("subjectContactType") != null 
+                                    && "Phone".equalsIgnoreCase((String)((Map)contact.get("subjectContactType")).get("sName_EN"))) {
                                 sbContact.append(contact.get("sValue")).append("; ");
                             }
                         }
