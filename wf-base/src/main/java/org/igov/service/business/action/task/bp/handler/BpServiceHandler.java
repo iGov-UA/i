@@ -266,7 +266,7 @@ public class BpServiceHandler {
 
     public void setSubjectParams(String taskId, String sProcessName, Map<String, Object> mParam, Map processVariables) {
         try {
-            
+
             Set<String> currentAssignLogins = new HashSet<>();
             Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
             currentAssignLogins.add(task.getAssignee());
@@ -276,16 +276,18 @@ public class BpServiceHandler {
             if (result != null && !result.isEmpty()) {
                 StringBuilder sb = new StringBuilder();
                 LOG.info("result: " + result);
-                String userLabels = getSubjectLabel(result.get("users"));
-                mParam.put("userLabels", userLabels);
                 String organLabels = getSubjectLabel(result.get("organs"));
-                mParam.put("organLabels", organLabels);
-                String userContacts = getContact(result.get("users"));
-                mParam.put("userContacts", userContacts);
-                String organContacts = getContact(result.get("organs"));
-                mParam.put("organContacts", organContacts);
-                sb.append(organLabels).append(" (").append(organContacts).append(")");
-                if(userLabels != null){
+                if (organLabels != null) {
+                    mParam.put("organLabels", organLabels);
+                    String organContacts = getContact(result.get("organs"));
+                    mParam.put("organContacts", organContacts);
+                    sb.append(organLabels).append(" (").append(organContacts).append(")");
+                }
+                String userLabels = getSubjectLabel(result.get("users"));
+                if (userLabels != null) {
+                    mParam.put("userLabels", userLabels);
+                    String userContacts = getContact(result.get("users"));
+                    mParam.put("userContacts", userContacts);
                     sb.append(userLabels).append(" (").append(userContacts).append(")");
                 }
                 LOG.info("sEmployeeContacts: " + sb.toString());
@@ -311,11 +313,20 @@ public class BpServiceHandler {
     private String getContact(Map<String, Map> subjects) {
         StringBuilder sbContact = new StringBuilder();
         if (subjects != null && !subjects.isEmpty()) {
-            List<Map> contacts = (List<Map>) subjects.get("subjects");
-            if (contacts != null && !contacts.isEmpty()) {
-                for (Map contact : contacts) {
-                    if (contact != null && !contact.isEmpty() && contact.get("sValue") != null) { //oSubject
-                        sbContact.append(contact.get("sValue")).append("; ");
+            for (Map user : subjects.values()) {
+                if (user != null && !user.isEmpty() && user.get("aContact") != null) {
+                    List<Map> contacts = (List<Map>) user.get("aContact");
+                    LOG.info("!!!aContact: " + user.get("aContact"));
+                    if (contacts != null && !contacts.isEmpty()) {
+                        for (Map contact : contacts) {
+                            LOG.info("!!!contact: " + contact);
+                            if (contact != null && !contact.isEmpty() && contact.get("sValue") != null
+                                    && contact.get("subjectContactType") != null 
+                                    && "Phone".equalsIgnoreCase((String)((Map)contact.get("subjectContactType")).get("sName_EN"))) {
+                                LOG.info("!!!sValue: " + contact.get("sValue"));
+                                sbContact.append(contact.get("sValue")).append("; ");
+                            }
+                        }
                     }
                 }
             }
