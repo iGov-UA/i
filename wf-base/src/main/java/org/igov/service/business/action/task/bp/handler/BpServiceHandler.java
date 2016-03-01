@@ -331,6 +331,6 @@ public class BpServiceHandler {
                 }
             }
         }
-        return sbContact.toString();
+        return sbContact.toString(); //
     }
 }
