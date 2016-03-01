@@ -315,12 +315,15 @@ public class BpServiceHandler {
         if (subjects != null && !subjects.isEmpty()) {
             for (Map user : subjects.values()) {
                 if (user != null && !user.isEmpty() && user.get("aContact") != null) {
-                    List<Map> contacts = (List<Map>) subjects.get("aContact");
+                    List<Map> contacts = (List<Map>) user.get("aContact");
+                    LOG.info("!!!aContact: " + user.get("aContact"));
                     if (contacts != null && !contacts.isEmpty()) {
                         for (Map contact : contacts) {
+                            LOG.info("!!!contact: " + contact);
                             if (contact != null && !contact.isEmpty() && contact.get("sValue") != null
                                     && contact.get("subjectContactType") != null 
                                     && "Phone".equalsIgnoreCase((String)((Map)contact.get("subjectContactType")).get("sName_EN"))) {
+                                LOG.info("!!!sValue: " + contact.get("sValue"));
                                 sbContact.append(contact.get("sValue")).append("; ");
                             }
                         }
