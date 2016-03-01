@@ -43,7 +43,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:string><![CDATA[${email}]]></activiti:string>
+          <activiti:expression><![CDATA[${sEmail}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Заявка по видачі оригіналу документу з ВНЗ]]></activiti:string>
@@ -115,7 +115,7 @@
           <activiti:value id="dok_bad" name="Заявка оформлена не вірно відмова."></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="Komment_rishenia" name="Коментар по рішенню;(Вкажіть дату отримання посвідчення, в разі відмови вкажіть причину відмови)" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="Заявка прийнята, проте процес не завершено. Вона з'явить знов у вас в роботі і вам треба буде зробити відмітку чи були видані документи." type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="Заявка прийнята, проте процес не завершено. Вона з'явиться знов у вас в роботі і вам треба буде зробити відмітку чи виданий документ." type="invisible" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -131,7 +131,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:string><![CDATA[${email}]]></activiti:string>
+          <activiti:expression><![CDATA[${sEmail}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Відмова у видачі документа]]></activiti:string>
@@ -184,7 +184,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:string><![CDATA[${email}]]></activiti:string>
+          <activiti:expression><![CDATA[${sEmail}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Оцініть якість наданої послуги]]></activiti:string>

@@ -73,7 +73,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:string>${email}</activiti:string>
+          <activiti:expression><![CDATA[${sEmail}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Заявка по видачі архівного витягу прийнята до роботи]]></activiti:string>
@@ -178,6 +178,7 @@
           <activiti:value id="dok_bad" name="Заявка оформлена не вірно/відомості відсутні в архіві, відмова."></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="Komment_rishenia" name="Коментар по рішенню;(Вкажіть дату отримання посвідчення, в разі відмови вкажіть причину відмови)" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="Заявка прийнята, проте процес не завершено. Вона з'явиться знов у вас в роботі і вам треба буде зробити відмітку чи виданий документ." type="invisible" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
@@ -187,7 +188,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:string>${email}</activiti:string>
+          <activiti:expression><![CDATA[${sEmail}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нова заявка на архівну довідку]]></activiti:string>
@@ -233,7 +234,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:string>${email}</activiti:string>
+          <activiti:expression><![CDATA[${sEmail}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Оцініть якість наданої послуги]]></activiti:string>
