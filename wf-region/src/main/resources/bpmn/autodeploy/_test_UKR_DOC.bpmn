@@ -29,15 +29,15 @@
         <activiti:formProperty id="sPurpose" name="Цільове призначення ділянки;(обслуговування жилого будинку господарських будівель і споруд)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_inn" name="Копія довідки про присвоєння ідентифікаційного коду подавача" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile1" name="Документ, що підтверджує наявність відомостей про земельну ділянку у Державному земельному кадастрі та містить дані про площу земельної ділянки, цільове призначення, обмеження у використанні, склад земельних угідь та інші відомості - витяг з Державного земельного кадастру про земельну ділянку" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile2" name="Правовстановлюючи документи, що свідчать про державну реєстрацію права власності на нерухоме майно" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile3" name="Технічний паспорт на об’єкт нерухомого майна" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile4" name="Довідка з Державного земельного кадастру про наявність у Державному земельному кадастрі відомостей про отримання у власність земельної ділянки в межах норм безоплатної приватизації за певним видом її цільового призначення (використання)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile5" name="Технічні матеріали та документи, що підтверджують розмір земельної ділянки" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile1" name="Документ, що підтверджує наявність відомостей про земельну ділянку у Державному земельному кадастрі та містить дані про площу земельної ділянки, цільове призначення, обмеження у використанні, склад земельних угідь та інші відомості - витяг з Державного земельного кадастру про земельну ділянку" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile2" name="Правовстановлюючи документи, що свідчать про державну реєстрацію права власності на нерухоме майно" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile3" name="Технічний паспорт на об’єкт нерухомого майна" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile4" name="Довідка з Державного земельного кадастру про наявність у Державному земельному кадастрі відомостей про отримання у власність земельної ділянки в межах норм безоплатної приватизації за певним видом її цільового призначення (використання)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile5" name="Технічні матеріали та документи, що підтверджують розмір земельної ділянки" type="file"></activiti:formProperty>
         <activiti:formProperty id="nFile6" name="Довіреність, на підставі якої інтереси заявника представляє його уповноважена особа, або її копія, засвідчена у встановленому порядку;(якщо клопотання подається представником)" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sNotice" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
         <activiti:formProperty id="sID_Document_UkrDoc" name="Number UkrDoc" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sStatusName_UkrDoc" name="Status UkrDoc" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sDistr" name="Район" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask0" name="Відправка документу в УкрДок" activiti:delegateExpression="#{CreateDocument_UkrDoc}">
@@ -264,7 +264,7 @@ p {font-size: 14px;}
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow0" sourceRef="startevent1" targetRef="servicetask0"></sequenceFlow>
+    <sequenceFlow id="flow0" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow23" sourceRef="servicetask0" targetRef="servicetask10"></sequenceFlow>
     <sequenceFlow id="flow1" sourceRef="servicetask10" targetRef="servicetask1"></sequenceFlow>
     <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
@@ -378,17 +378,46 @@ p {font-size: 14px;}
     <sequenceFlow id="flow22" sourceRef="exclusivegateway1" targetRef="servicetask7">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sStatusName_UkrDoc == 'Исполнен с отказом'}]]></conditionExpression>
     </sequenceFlow>
+    <scriptTask id="scripttask1" name="Script District" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var per1 = 'region'
+if (execution.getVariable('sDistrict') == 'and'){
+per1 = 'Амур-Нижньодніпровському'
+}
+if (execution.getVariable('sDistrict') == 'bab'){
+per1 = 'Шевченківському (Бабушкінському)'
+}
+if (execution.getVariable('sDistrict') == 'zhovt'){
+per1 = 'Соборному (Жовтневому)'
+}
+if (execution.getVariable('sDistrict') == 'indust'){
+per1 = 'Індустріальному'
+}
+if (execution.getVariable('sDistrict') == 'kirov'){
+per1 = 'Центральному (Кіровському)'
+}
+if (execution.getVariable('sDistrict') == 'krasn'){
+per1 = 'Чечелівському (Красногвардійському)'
+}
+if (execution.getVariable('sDistrict') == 'lenin'){
+per1 = 'Новокодацькому (Ленінському)'
+}
+if (execution.getVariable('sDistrict') == 'samar'){
+per1 = 'Самарському'
+}
+execution.setVariable('sDistr', per1)</script>
+    </scriptTask>
+    <sequenceFlow id="flow24" sourceRef="scripttask1" targetRef="servicetask0"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__test_UKR_DOC">
     <bpmndi:BPMNPlane bpmnElement="_test_UKR_DOC" id="BPMNPlane__test_UKR_DOC">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="18.0" y="58.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="40.0" y="48.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask0" id="BPMNShape_servicetask0">
-        <omgdc:Bounds height="71.0" width="105.0" x="90.0" y="40.0"></omgdc:Bounds>
+        <omgdc:Bounds height="71.0" width="105.0" x="247.0" y="30.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask10" id="BPMNShape_servicetask10">
-        <omgdc:Bounds height="71.0" width="105.0" x="218.0" y="40.0"></omgdc:Bounds>
+        <omgdc:Bounds height="71.0" width="105.0" x="375.0" y="30.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
         <omgdc:Bounds height="71.0" width="105.0" x="130.0" y="170.0"></omgdc:Bounds>
@@ -423,17 +452,20 @@ p {font-size: 14px;}
       <bpmndi:BPMNShape bpmnElement="endevent4" id="BPMNShape_endevent4">
         <omgdc:Bounds height="35.0" width="35.0" x="6.0" y="456.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="63.0" width="105.0" x="112.0" y="34.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow0" id="BPMNEdge_flow0">
-        <omgdi:waypoint x="53.0" y="75.0"></omgdi:waypoint>
-        <omgdi:waypoint x="90.0" y="75.0"></omgdi:waypoint>
+        <omgdi:waypoint x="75.0" y="65.0"></omgdi:waypoint>
+        <omgdi:waypoint x="112.0" y="65.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
-        <omgdi:waypoint x="195.0" y="75.0"></omgdi:waypoint>
-        <omgdi:waypoint x="218.0" y="75.0"></omgdi:waypoint>
+        <omgdi:waypoint x="352.0" y="65.0"></omgdi:waypoint>
+        <omgdi:waypoint x="375.0" y="65.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="270.0" y="111.0"></omgdi:waypoint>
-        <omgdi:waypoint x="271.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="427.0" y="101.0"></omgdi:waypoint>
+        <omgdi:waypoint x="428.0" y="137.0"></omgdi:waypoint>
         <omgdi:waypoint x="179.0" y="137.0"></omgdi:waypoint>
         <omgdi:waypoint x="182.0" y="170.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
@@ -479,6 +511,10 @@ p {font-size: 14px;}
         <omgdi:waypoint x="300.0" y="388.0"></omgdi:waypoint>
         <omgdi:waypoint x="299.0" y="473.0"></omgdi:waypoint>
         <omgdi:waypoint x="209.0" y="473.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
+        <omgdi:waypoint x="217.0" y="65.0"></omgdi:waypoint>
+        <omgdi:waypoint x="247.0" y="65.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

@@ -135,7 +135,7 @@
     <sequenceFlow id="flow15" sourceRef="servicetask2" targetRef="exclusivegateway2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow41" name="Старий процесс" sourceRef="exclusivegateway2" targetRef="usertask1">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[$(sID_Public_SubjectOrganJoin != 'khar_bogod')]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[$(sID_Public_SubjectOrganJoin != "khar_bogod")]]></conditionExpression>
     </sequenceFlow>
     <userTask id="usertask1" name="Первинна перевірка даних" activiti:candidateGroups="rda_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
@@ -266,7 +266,7 @@
     </serviceTask>
     <sequenceFlow id="flow43" sourceRef="servicetask7" targetRef="endevent3"></sequenceFlow>
     <sequenceFlow id="flow42" name="Росширений для Богодухівського району" sourceRef="exclusivegateway2" targetRef="usertask3">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[$(sID_Public_SubjectOrganJoin == 'khar_bogod')]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[$(sID_Public_SubjectOrganJoin == "khar_bogod")]]></conditionExpression>
     </sequenceFlow>
     <userTask id="usertask3" name="Первинна обробка звернення Богодухів" activiti:candidateGroups="rda_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
