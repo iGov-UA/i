@@ -1922,10 +1922,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 				for (Task task : tasks){
 					assignee = task.getAssignee();
 					LOG.info("Processing task {} with assignee {}", task.getId(), task.getAssignee());
-					taskService.complete(task.getId());
-					LOG.info("Completed task {}", task.getId());
 					taskService.setVariable(task.getId(), "sStatusName_UkrDoc", status);
 					LOG.info("Set variable sStatusName_UkrDoc {} for task with ID {}", status, task.getId());
+					taskService.complete(task.getId());
+					LOG.info("Completed task {}", task.getId());
 				}
 				if (assignee != null){
 					LOG.info("Looking for a new task to claim it to the user {}", assignee);
