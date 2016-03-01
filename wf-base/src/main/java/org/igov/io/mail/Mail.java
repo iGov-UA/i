@@ -45,8 +45,8 @@ import org.igov.util.MethodsCallRunnerUtil;
 @Scope("prototype")
 public class Mail extends Abstract_Mail {
 
-	@Autowired 
-    MethodsCallRunnerUtil methodCallRunner;
+	/*@Autowired 
+    MethodsCallRunnerUtil methodCallRunner;*/
 	
     @Autowired
     GeneralConfig generalConfig;
@@ -236,7 +236,8 @@ public class Mail extends Abstract_Mail {
             oMimeMessage.setContent(oMultiparts);
 
             //            oMimeMessage.getRecipients(Message.RecipientType.CC);
-            methodCallRunner.registrateMethod(Transport.class.getName(), "send", new Object[]{oMimeMessage});
+            //methodCallRunner.registrateMethod(Transport.class.getName(), "send", new Object[]{oMimeMessage});
+            Transport.send(oMimeMessage);
             
         } catch (Exception oException) {
             LOG.error("FAIL: {} (getTo()={})", oException.getMessage(), getTo());
