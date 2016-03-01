@@ -3,27 +3,22 @@
   <process id="common_mvd_2" name="(загальна) - Надання дозволу на зброю" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
- 
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" required="true"></activiti:formProperty>
-		
-		<activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть регіональне відділення, де Ви б бажали отримати послугу" type="select" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть регіональне відділення, де Ви б бажали отримати послугу" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="sWork_Time" name="Графік прийому громадян" type="label" default=" "></activiti:formProperty>
-
         <activiti:formProperty id="goal" name="Оберіть потрібну Вам послугу" type="enum" required="true">
           <activiti:value id="attr1" name=" 1"></activiti:value>
           <activiti:value id="attr2" name=" 2"></activiti:value>
           <activiti:value id="attr3" name=" 3"></activiti:value>
         </activiti:formProperty>
-
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
-       
-        
         <activiti:formProperty id="sAddress" name="Адреса сервісного центру" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMail_Signature" name="Підпис" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMail_Employee" name="sMail_Employee" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_UA" name="sID_UA" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="nUser" name="nUser" type="long" required="true"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Підтягування додаткових документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -37,18 +32,14 @@
     <userTask id="usertask1" name="Надання послуги" activiti:candidateGroups="sales">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
-
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
-
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string"></activiti:formProperty>
-
         <activiti:formProperty id="goal" name="Обрана послуга" type="enum">
           <activiti:value id="attr1" name=" 1"></activiti:value>
           <activiti:value id="attr2" name=" 2"></activiti:value>
           <activiti:value id="attr3" name=" 3"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса отримання послуги, обрана громадянином" type="string"></activiti:formProperty>
-
         <activiti:formProperty id="email" name=" e-mail; На цей e-mail буде спрямовано результат обробки звернення" type="string"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Результат надання послуги" type="enum" required="true">
           <activiti:value id="accept" name="Підтвердити, що громадянин отримав послугу"></activiti:value>
@@ -135,7 +126,9 @@ ${sMail_Signature}
     </serviceTask>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow14" sourceRef="servicetask4" targetRef="exclusivegateway2"></sequenceFlow>
-    <sequenceFlow id="flow15" sourceRef="exclusivegateway2" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow15" name="${nUser !='0'}" sourceRef="exclusivegateway2" targetRef="usertask1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${nUser !='0'}]]></conditionExpression>
+    </sequenceFlow>
     <serviceTask id="servicetask5" name="Повідомлення громадянина про обробку звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -176,12 +169,19 @@ ${sMail_Signature}
       </extensionElements>
     </serviceTask>
     <intermediateCatchEvent id="timerintermediatecatchevent1" name="TimerCatchEvent">
-      <timerEventDefinition></timerEventDefinition>
+      <timerEventDefinition>
+        <timeDuration>PT5S</timeDuration>
+      </timerEventDefinition>
     </intermediateCatchEvent>
-    <sequenceFlow id="flow16" sourceRef="exclusivegateway2" targetRef="timerintermediatecatchevent1"></sequenceFlow>
+    <sequenceFlow id="flow16" name="${nUser =='0'}" sourceRef="exclusivegateway2" targetRef="timerintermediatecatchevent1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${nUser =='0'}]]></conditionExpression>
+    </sequenceFlow>
     <sequenceFlow id="flow17" sourceRef="timerintermediatecatchevent1" targetRef="servicetask5"></sequenceFlow>
     <endEvent id="endevent3" name="End"></endEvent>
     <sequenceFlow id="flow18" sourceRef="servicetask5" targetRef="endevent3"></sequenceFlow>
+    <sequenceFlow id="flow19" name="${decide == 'reject' || decide == 'reject2'}" sourceRef="exclusivegateway1" targetRef="endevent2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'reject' || decide == 'reject2'}]]></conditionExpression>
+    </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_common_mvd_2">
     <bpmndi:BPMNPlane bpmnElement="common_mvd_2" id="BPMNPlane_common_mvd_2">
@@ -260,10 +260,16 @@ ${sMail_Signature}
       <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
         <omgdi:waypoint x="480.0" y="240.0"></omgdi:waypoint>
         <omgdi:waypoint x="480.0" y="320.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="100.0" x="400.0" y="259.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
         <omgdi:waypoint x="500.0" y="220.0"></omgdi:waypoint>
         <omgdi:waypoint x="591.0" y="220.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="100.0" x="496.0" y="200.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
         <omgdi:waypoint x="626.0" y="220.0"></omgdi:waypoint>
@@ -272,6 +278,13 @@ ${sMail_Signature}
       <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
         <omgdi:waypoint x="891.0" y="220.0"></omgdi:waypoint>
         <omgdi:waypoint x="936.0" y="220.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
+        <omgdi:waypoint x="480.0" y="440.0"></omgdi:waypoint>
+        <omgdi:waypoint x="480.0" y="590.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="56.0" width="100.0" x="490.0" y="440.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
