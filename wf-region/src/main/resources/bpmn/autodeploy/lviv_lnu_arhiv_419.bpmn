@@ -27,11 +27,10 @@
           <activiti:value id="asVidrah_ni" name="Ні"></activiti:value>
           <activiti:value id="asVidrah_tak" name="Так"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="marker_vidrahuvan" name="Якщо відраховувався" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;file_zalic&quot;,&quot;file_stud&quot;,&quot;file_obxidn&quot;,&quot;sVtrata&quot;],&quot;asID_Field&quot;:{&quot;sVidrahui&quot;:&quot;asVidrah&quot;},&quot;sCondition&quot;:&quot;[sVidrahui] == 'asVidrah_tak'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="file_zalic" name="Сканкопія залікової книжки" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file_stud" name="Сканкопія студентського квитка" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="marker_vidrahuvan" name="Якщо відраховувався" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;file_zalic&quot;,&quot;file_stud&quot;,&quot;file_obxidn&quot;],&quot;asID_Field&quot;:{&quot;sVidrahui&quot;:&quot;asVidrah&quot;},&quot;sCondition&quot;:&quot;[sVidrahui] == 'asVidrah_tak'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="file_zalic" name="Сканкопія залікової книжки;(При втраті документу завантажте ахівом zip довідку з бюро знахідок та витяг об'яви з газети про втрату)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file_stud" name="Сканкопія студентського квитка;(При втраті документу завантажте ахівом zip довідку з бюро знахідок та витяг об'яви з газети про втрату)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file_obxidn" name="Сканкопія обхідного листка з бібліотек" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sVtrata" name="Якщо ви втратили залікову чи студентський, завантажте в відповідне поле ахівом zip довідку з бюро знахідок та витяг обяви з газети про втрату " type="string" writable="false"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask6" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -44,7 +43,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:string>${email}</activiti:string>
+          <activiti:string>${sEmail}</activiti:string>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Заявка по видачі оригіналу документу з ВНЗ]]></activiti:string>
@@ -90,17 +89,17 @@
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAdress" name="Адреса реєстрації;(поштовий індекс, місто, вулиця, номер дому, номер квартири)" type="string" required="true" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sMphone" name="Мобільний телефон" type="string" default="+380" required="true" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sEmail" name="e-mail для зворотнього зв'язку" type="string" required="true" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asDocs" name="Документ для видачі" type="enum" required="true" writable="false">
+        <activiti:formProperty id="sAdress" name="Адреса реєстрації;(поштовий індекс, місто, вулиця, номер дому, номер квартири)" type="string" writable="false" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sMphone" name="Мобільний телефон" type="string" default="+380" writable="false" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sEmail" name="e-mail для зворотнього зв'язку" type="string" writable="false" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asDocs" name="Документ для видачі" type="enum" writable="false" required="true">
           <activiti:value id="asAtest" name="Атестат та додаток до атестату"></activiti:value>
           <activiti:value id="asDiplom" name="Диплом та додаток до диплому"></activiti:value>
           <activiti:value id="asTrud" name="Трудова книжка"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sRic_poch" name="Рік початку навчання" type="string" required="true" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sRic_poch" name="Рік початку навчання" type="string" writable="false" required="true"></activiti:formProperty>
         <activiti:formProperty id="sRic_zak" name="Рік закінчення навчання" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="anNavch_form" name="Форма навчання" type="enum" required="true" writable="false">
+        <activiti:formProperty id="anNavch_form" name="Форма навчання" type="enum" writable="false" required="true">
           <activiti:value id="asDenna" name="денна"></activiti:value>
           <activiti:value id="asZaoch" name="заочна"></activiti:value>
           <activiti:value id="asVechir" name="вечірня"></activiti:value>
@@ -116,7 +115,7 @@
           <activiti:value id="dok_bad" name="Заявка оформлена не вірно відмова."></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="Komment_rishenia" name="Коментар по рішенню;(Вкажіть дату отримання посвідчення, в разі відмови вкажіть причину відмови)" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="Заявка прийнята, проте процес не завершено. Вона з'явить знов у вас в роботі і вам треба буде зробити відмітку чи були видані документи." type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="Заявка прийнята, проте процес не завершено. Вона з'явиться знов у вас в роботі і вам треба буде зробити відмітку чи виданий документ." type="invisible" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -132,7 +131,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:string>${email}</activiti:string>
+          <activiti:string>${sEmail}</activiti:string>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Відмова у видачі документа]]></activiti:string>
@@ -163,7 +162,7 @@
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asDocs" name="Документ для видачі" type="enum" required="true" writable="false">
+        <activiti:formProperty id="asDocs" name="Документ для видачі" type="enum" writable="false" required="true">
           <activiti:value id="asAtest" name="Атестат та додаток до атестату"></activiti:value>
           <activiti:value id="asDiplom" name="Диплом та додаток до диплому"></activiti:value>
           <activiti:value id="asTrud" name="Трудова книжка"></activiti:value>
@@ -185,7 +184,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:string>${email}</activiti:string>
+          <activiti:string>${sEmail}</activiti:string>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Оцініть якість наданої послуги]]></activiti:string>
@@ -221,6 +220,12 @@
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="88.0" y="145.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
+        <omgdc:Bounds height="60.0" width="115.0" x="160.0" y="132.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
+        <omgdc:Bounds height="30.0" width="30.0" x="260.0" y="182.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
         <omgdc:Bounds height="68.0" width="126.0" x="471.0" y="129.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -247,12 +252,6 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
         <omgdc:Bounds height="65.0" width="125.0" x="315.0" y="322.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
-        <omgdc:Bounds height="60.0" width="115.0" x="160.0" y="132.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="260.0" y="182.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="200.0" y="235.0"></omgdc:Bounds>
