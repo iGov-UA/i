@@ -405,7 +405,20 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow17" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
-    <scriptTask id="scripttask1" name="Визначення параметрів" scriptFormat="javascript" activiti:autoStoreVariables="false"></scriptTask>
+    <scriptTask id="scripttask1" name="Визначення параметрів" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var per1 = '${lastName_UA1} ${firstName_UA1} ${middleName_UA1} Адреса реєстрації: ${sAdress_1} Телефон: ${sphone_1} Місце роботи (навчання):  ${sPlace_of_Work_1}'
+var per2 = '${lastName_UA2} ${firstName_UA2} ${middleName_UA2} Адреса реєстрації: ${sAdress_2} Телефон: ${sphone_2} Місце роботи (навчання):  ${sPlace_of_Work_2}'
+var per3 = '${lastName_UA3} ${firstName_UA3} ${middleName_UA3} Адреса реєстрації: ${sAdress_3} Телефон: ${sphone_3} Місце роботи (навчання):  ${sPlace_of_Work_3}'
+
+if (execution.getVariable('isRepresentCompany_1') == 'id_Tak')
+{
+	per1 = per1+'\n'+'Організація: ${sNameCompany_1} (ЄДРПО  ${sedrpou_1})'
+}
+			
+execution.setVariable('sInfoOrg1', per1)
+execution.setVariable('sInfoOrg2', per2)
+execution.setVariable('sInfoOrg3', per3)</script>
+    </scriptTask>
     <sequenceFlow id="flow18" sourceRef="scripttask1" targetRef="servicetask7"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_spend_meeting_404">
