@@ -276,16 +276,16 @@ public class BpServiceHandler {
             if (result != null && !result.isEmpty()) {
                 StringBuilder sb = new StringBuilder();
                 LOG.info("result: " + result);
-                String organLabels = getSubjectLabel(result.get("organs"), "sNameFull");
+                String organLabels = getSubjectLabel(result.get("organs"), "sNameFull", "; ");
                 if (organLabels != null) {
                     mParam.put("organLabels", organLabels);
                     String organContacts = getContact(result.get("organs"));
                     mParam.put("organContacts", organContacts);
                     sb.append(organLabels).append(" (").append(organContacts).append(")");
                 }
-                String userLabels = getSubjectLabel(result.get("users"), "sFamily") + " "
-                        + getSubjectLabel(result.get("users"), "sName") + " "
-                        + getSubjectLabel(result.get("users"), "sSurname");
+                String userLabels = getSubjectLabel(result.get("users"), "sFamily", " ") + " "
+                        + getSubjectLabel(result.get("users"), "sName", " ") + " "
+                        + getSubjectLabel(result.get("users"), "sSurname", "; ");
                 if (userLabels != null) {
                     mParam.put("userLabels", userLabels);
                     String userContacts = getContact(result.get("users"));
@@ -300,7 +300,7 @@ public class BpServiceHandler {
         }
     }
 
-    private String getSubjectLabel(Map<String, Map> subjects, String paramName) {
+    private String getSubjectLabel(Map<String, Map> subjects, String paramName, String delimiter) {
         StringBuilder sbSubject = new StringBuilder();
         if (subjects != null && !subjects.isEmpty()) {
             for (Map user : subjects.values()) {
@@ -309,7 +309,7 @@ public class BpServiceHandler {
                 //}
 
                 if (user != null && !user.isEmpty() && user.get(paramName) != null) { //oSubject
-                    sbSubject.append(((Map) user).get(paramName)).append("; ");
+                    sbSubject.append(((Map) user).get(paramName)).append(delimiter);
                 }
             }
         }
