@@ -80,7 +80,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="lCountPeople" name="Передбачувана кількість учасників" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="fPovidomlennyaProZahid" name="Завантажте Повідомлення про проведення зборів, мітингів і т.ін., що підписано відповідальними особами " type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sLabel2" name=":" type="label" default="Інформація щодо організаторів заходу"></activiti:formProperty>
+        <activiti:formProperty id="sLabel2" name=" " type="label" default="&lt;b&gt;Інформація щодо організаторів заходу&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="eCountOrganizatorov" name="Кількість організаторів заходу" type="enum" default="idCount1" required="true">
           <activiti:value id="idCount1" name="1"></activiti:value>
           <activiti:value id="idCount2" name="2"></activiti:value>
@@ -98,7 +98,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="sNameCompany_1" name="Назва організації, що представляє відповідальна особа 1" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sedrpou_1" name="ЄДРПО організації, що представляє відповідальна особа 1" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sLabel21" name="Інформація щодо відповідальної особи 2 заходу" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sLabel21" name=" " type="label" default="&lt;b&gt;Інформація щодо відповідальної особи 2 заходу&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="lastName_UA2" name="Прізвище відповідальної особи 2" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="firstName_UA2" name="Ім'я відповідальної особи 2" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="middleName_UA2" name="По Батькові відповідальної особи 2" type="string" default=" "></activiti:formProperty>
@@ -111,19 +111,20 @@
         </activiti:formProperty>
         <activiti:formProperty id="sNameCompany_2" name="Назва організації, що представляє відповідальна особа 2" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sedrpou_2" name="ЄДРПО організації, що представляє відповідальна особа 2" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sLabel31" name="Інформація щодо відповідальної особи 3 заходу" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sLabel31" name=" " type="label" default="&lt;b&gt;Інформація щодо відповідальної особи 3 заходу&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="lastName_UA3" name="Прізвище відповідальної особи 3" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="firstName_UA3" name="Ім'я відповідальної особи 3" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="middleName_UA3" name="По Батькові відповідальної особи 3" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sAdress_3" name="Адреса реєстрації відповідальної особи 3" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sphone_3" name="Контактний (особистий) номер(и) телефону відповідальної особи 3" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sPlace_of_Work_3" name="Місце роботи (навчання) відповідальної особи 3" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="isRepresentCompany_3" name="Чи є відповідальна особа 2 представником організації (юридичної особи)?" type="enum" default="id_Ni">
+        <activiti:formProperty id="isRepresentCompany_3" name="Чи є відповідальна особа 3 представником організації (юридичної особи)?" type="enum" default="id_Ni">
           <activiti:value id="id_Ni" name="Ні"></activiti:value>
           <activiti:value id="id_Tak" name="Так"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sNameCompany_3" name="Назва організації, що представляє відповідальна особа 3" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sedrpou_3" name="ЄДРПО організації, що представляє відповідальна особа 3" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sEmailClerk" name="Email клерка" type="invisible" default="smoktii.igov@gmail.com"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Розкриття атрібутів щодо кількості організаторів заходу" type="markers" default="${markerService.loadFromFile('skv/skv_spend_meeting_404_1.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -205,7 +206,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове звернення на тему: надання дозволу на знесення аварійних будівель]]></activiti:string>
+          <activiti:string><![CDATA[Нове звернення на тему: повідомлення про проведення зборів, мітингів та ін.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
@@ -215,7 +216,7 @@
     <serviceTask id="servicetask3" name="Повідомлення громадянина про розгляд звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: надання дозволу на знесення аварійних будівель]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: повідомлення про проведення зборів, мітингів та ін.]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
@@ -226,7 +227,7 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Прийнято рішення щодо розгляду Вашого звернення.&lt;br /&gt; 
+Прийнято рішення щодо детального розгляду Вашого повідомлення.&lt;br /&gt; 
 Ви отримаєте відповідь у визначений Законом термін на цю email-адресу.&lt;br /&gt;
 [pattern/mail/_common_signature.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
@@ -242,7 +243,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: надання дозволу на знесення аварійних будівель]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: повідомлення про проведення зборів, мітингів та ін.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -263,7 +264,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: надання дозволу на знесення аварійних будівель]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: повідомлення про проведення зборів, мітингів та ін.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -284,7 +285,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: надання дозволу на знесення аварійних будівель]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: повідомлення про проведення зборів, мітингів та ін.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -318,7 +319,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове звернення на тему: надання дозволу на знесення аварійних будівель]]></activiti:string>
+          <activiti:string><![CDATA[Нове звернення на тему: повідомлення про проведення зборів, мітингів та ін.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
