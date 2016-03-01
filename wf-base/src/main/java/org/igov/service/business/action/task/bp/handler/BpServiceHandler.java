@@ -309,7 +309,7 @@ public class BpServiceHandler {
                 //}
 
                 if (user != null && !user.isEmpty() && user.get(paramName) != null) { //oSubject
-                    sbSubject.append(((Map) subjects).get(paramName)).append("; ");
+                    sbSubject.append(((Map) user).get(paramName)).append("; ");
                 }
             }
         }
