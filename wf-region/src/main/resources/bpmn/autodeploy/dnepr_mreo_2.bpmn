@@ -3,6 +3,18 @@
   <process id="dnepr_mreo_2" name="Днепропетровск - Поновлення або заміна водійського посвідчення" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть сервісний центр, де Ви б бажали отримати послугу" type="select" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса МРЕВ" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sWork_Time" name="графік МРЕВ" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sMail_Employee" name="Відповідальна особа" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="nOper_Type" name="Оберіть послугу" type="enum" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sOper" name="Обрана послуга" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sOKPO" name="Код отримувача" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sBillMFO" name="МФО" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sBill" name="Розрахунковий рахунок" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sDescription" name="Призначення платежу" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sPrice" name="Вартість послуги" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sPayLink" name="Ви можете сплатити вартість послуги онлайн або іншим зручним для Вас чином" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string"></activiti:formProperty>
@@ -20,20 +32,10 @@
           <activiti:value id="attr2" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="renamed_doc" name="Документ, що підтверджує зміну прізвища; назва документу, серія, номер, дата видачі, орган ким видано" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть сервісний центр, де Ви б бажали отримати послугу" type="select" default="0"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Адреса МРЕВ" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWork_Time" name="графік МРЕВ" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sMail_Employee" name="Відповідальна особа" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nOper_Type" name="Оберіть послугу" type="enum" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sOper" name="Обрана послуга" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sOKPO" name="Код отримувача" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sBillMFO" name="МФО" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sBill" name="Розрахунковий рахунок" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sDescription" name="Призначення платежу" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sPrice" name="Вартість послуги" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sPayLink" name="Ви можете сплатити вартість послуги онлайн або іншим зручним для Вас чином" type="label" default=" "></activiti:formProperty>
+
+
         <activiti:formProperty id="license" name="Посвідчення водія; серія, номер, дата видачі, орган ким видано, категорії, дата отримання" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="medical" name="Медична довідка; серія, номер, дата видачі, орган ким видано, категорії, срок дії" type="textArea" required="true"></activiti:formProperty>
+        
         <activiti:formProperty id="exam_card" name="Додайте скан-копію Вашої екзаменаційної картки водія" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Ваш контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
@@ -68,14 +70,13 @@
         </activiti:formProperty>
         <activiti:formProperty id="renamed_doc" name="Документ, що підтверджує зміну прізвища; назва документу, серія, номер, дата видачі, орган ким видано" writable="false"></activiti:formProperty>
         <activiti:formProperty id="license" name="Посвідчення водія; серія, номер, дата видачі, орган ким видано, категорії, дата отримання" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="medical" name="Медична довідка; серія, номер, дата видачі, орган ким видано, категорії, срок дії" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+       	<activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Рішення про надання послуги" type="enum" required="true">
           <activiti:value id="accept" name="Зауваження відсутні. Надіслати громадянину дату / час візиту для отримання посвідчення"></activiti:value>
           <activiti:value id="reject" name="Відмовити громадянину в наданні послуги."></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="comment" name="Вкажіть дату візиту для отримання посвідчення або підставу для відмови в наданні послуги (Інформація буде спрямована громадянину на e-mail)" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="comment" name="Вкажіть дату візиту для отримання посвідчення або підставу для відмови в наданні послуги (Інформація буде спрямована громадянину на e-mail)" type="textArea" required="true"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -107,8 +108,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="renamed_doc" name="Документ, що підтверджує зміну прізвища; назва документу, серія, номер, дата видачі, орган ким видано" writable="false"></activiti:formProperty>
         <activiti:formProperty id="license" name="Посвідчення водія; серія, номер, дата видачі, орган ким видано, категорії, дата отримання" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="medical" name="Медична довідка; серія, номер, дата видачі, орган ким видано, категорії, срок дії" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" writable="false"></activiti:formProperty>
+         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Рішення про надання послуги" type="enum" writable="false">
           <activiti:value id="accept" name="Зауваження відсутні. Надіслати громадянину дату / час візиту для отримання посвідчення"></activiti:value>
@@ -145,7 +145,7 @@
 Просимо Вас мати із собою:&lt;br /&gt;
 1. Громадянський паспорт&lt;br /&gt;
 2. Копія квитанції про сплату послуги&lt;br /&gt;
-3. Медична картка &lt;br /&gt;
+
 &lt;/p&gt;
 
 Дата візиту: &lt;br /&gt;

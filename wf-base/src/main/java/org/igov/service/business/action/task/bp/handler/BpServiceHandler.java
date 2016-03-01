@@ -77,8 +77,9 @@ public class BpServiceHandler {
             variables.put("bankIdlastName", processVariables.get("bankIdlastName"));
             variables.put("phone", "" + processVariables.get("phone"));
             variables.put("email", processVariables.get("email"));
-            variables.put("organ", getCandidateGroups(processName, sID_task, processVariables));
-            setSubjectParams(sID_task, processName, variables);
+            Set<String> organ = getCandidateGroups(processName, sID_task, processVariables, INDIRECTLY_GROUP_PREFIX);
+            variables.put("organ", organ.isEmpty() ? "" : organ.toString().substring(1, organ.toString().length() - 1));
+            setSubjectParams(sID_task, processName, variables, processVariables);
             try {//issue 1006
                 String jsonHistoryEvent = historyEventService.getHistoryEvent(sID_Order);
                 LOG.info("get history event for bp:(jsonHistoryEvent={})", jsonHistoryEvent);
@@ -130,7 +131,7 @@ public class BpServiceHandler {
         LOG.info(" >>Start escalation process. (nID_Proccess_Escalation={})", escalationProcessId);
         try {
             LOG.info(" updateHistoryEvent: " + snID_Process + " taskName: " + taskName + " params: " + params);
-            historyEventService.updateHistoryEvent(generalConfig.sID_Order_ByProcess(Long.valueOf(snID_Process)), taskName, false, HistoryEvent_Service_StatusType.OPENED_ESCALATION, params);
+            //для тестирования закоменчено historyEventService.updateHistoryEvent(generalConfig.sID_Order_ByProcess(Long.valueOf(snID_Process)), taskName, false, HistoryEvent_Service_StatusType.OPENED_ESCALATION, params);
             EscalationHistory escalationHistory = escalationHistoryService.create(Long.valueOf(snID_Process),
                     Long.valueOf(mTaskParam.get("sTaskId").toString()),
                     Long.valueOf(escalationProcessId), EscalationHistoryService.STATUS_CREATED);
@@ -152,12 +153,14 @@ public class BpServiceHandler {
         mParam.put("bankIdlastName", mTaskParam.get("bankIdlastName"));
         mParam.put("phone", "" + mTaskParam.get("phone"));
         mParam.put("email", mTaskParam.get("email"));
-        mParam.put("organ", getCandidateGroups(sProcessName, mTaskParam.get("sTaskId").toString(), null));
+        Set<String> organ = getCandidateGroups(sProcessName, mTaskParam.get("sTaskId").toString(), null, INDIRECTLY_GROUP_PREFIX);
+        //asCandidateCroupToCheck.isEmpty() ? "" : saCandidateCroupToCheck.substring(1, asCandidateCroupToCheck.toString().length() - 1)
+        mParam.put("organ", organ.isEmpty() ? "" : organ.toString().substring(1, organ.toString().length() - 1));
         mParam.put("saField", new JSONObject(mTaskParam).toString());
         mParam.put("data", mTaskParam.get("sDate_BP"));
         mParam.put("sServiceType", mTaskParam.get("sServiceType"));
         mParam.put("area", mTaskParam.get("area"));
-        setSubjectParams(mTaskParam.get("sTaskId").toString(), sProcessName, mParam);
+        setSubjectParams(mTaskParam.get("sTaskId").toString(), sProcessName, mParam, null);
         LOG.info("START PROCESS_ESCALATION={}, with mParam={}", PROCESS_ESCALATION, mParam);
         String snID_ProcessEscalation = null;
         try {
@@ -185,8 +188,8 @@ public class BpServiceHandler {
         return asCandidateCroupToCheck;
     }
 
-    private String getCandidateGroups(final String sProcessName, final String snID_Task,
-            final Map<String, Object> mTaskVariable) {
+    private Set<String> getCandidateGroups(final String sProcessName, final String snID_Task,
+            final Map<String, Object> mTaskVariable, String prefix) {
         Set<String> asCandidateCroupToCheck = getCurrentCadidateGroup(sProcessName);
         String saCandidateCroupToCheck = asCandidateCroupToCheck.toString();
         if (saCandidateCroupToCheck.contains(BEGIN_GROUPS_PATTERN)) {
@@ -215,14 +218,14 @@ public class BpServiceHandler {
                             LOG.info("replace candidateGroups: from sCandidateGroup={}, to sCandidateGroupNew={}", sCandidateGroup, sCandidateGroupNew);
                         }
                     }
-                    asCandidateGroupNew.add(INDIRECTLY_GROUP_PREFIX + sCandidateGroupNew);
+                    asCandidateGroupNew.add(prefix + sCandidateGroupNew);
                 }
                 asCandidateCroupToCheck = asCandidateGroupNew;
                 saCandidateCroupToCheck = asCandidateGroupNew.toString();
             }
         }
         LOG.info("saCandidateCroupToCheck={}", saCandidateCroupToCheck);
-        return asCandidateCroupToCheck.isEmpty() ? "" : saCandidateCroupToCheck.substring(1, saCandidateCroupToCheck.length() - 1);
+        return asCandidateCroupToCheck;
     }
 
     public String createServiceMessage(String taskId) {
@@ -261,28 +264,32 @@ public class BpServiceHandler {
         return jsonServiceMessage;
     }
 
-    public void setSubjectParams(String taskId, String sProcessName, Map<String, Object> mParam) {
+    public void setSubjectParams(String taskId, String sProcessName, Map<String, Object> mParam, Map processVariables) {
         try {
-            
+
             Set<String> currentAssignLogins = new HashSet<>();
             Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
             currentAssignLogins.add(task.getAssignee());
-            Set<String> currentCadidateGroup = getCurrentCadidateGroup(taskId);
-            
+            Set<String> currentCadidateGroup = getCandidateGroups(sProcessName, taskId, processVariables, "");
+            LOG.info("currentAssignLogins: " + currentAssignLogins + " currentCadidateGroup: " + currentCadidateGroup);
             Map<String, Map<String, Map>> result = subjectCover.getSubjects(currentAssignLogins, currentCadidateGroup);
             if (result != null && !result.isEmpty()) {
                 StringBuilder sb = new StringBuilder();
                 LOG.info("result: " + result);
-                String userLabels = getSubjectLabel(result.get("users"));
-                mParam.put("userLabels", userLabels);
-                String organLabels = getSubjectLabel(result.get("organs"));
-                mParam.put("organLabels", organLabels);
-                String userContacts = getContact(result.get("users"));
-                mParam.put("userContacts", userContacts);
-                String organContacts = getContact(result.get("organs"));
-                mParam.put("organContacts", organContacts);
-                sb.append(organLabels).append(" (").append(organContacts).append(")");
-                if(userLabels != null){
+                String organLabels = getSubjectLabel(result.get("organs"), "sNameFull");
+                if (organLabels != null) {
+                    mParam.put("organLabels", organLabels);
+                    String organContacts = getContact(result.get("organs"));
+                    mParam.put("organContacts", organContacts);
+                    sb.append(organLabels).append(" (").append(organContacts).append(")");
+                }
+                String userLabels = getSubjectLabel(result.get("users"), "sFamily") + " "
+                        + getSubjectLabel(result.get("users"), "sName") + " "
+                        + getSubjectLabel(result.get("users"), "sSurname");
+                if (userLabels != null) {
+                    mParam.put("userLabels", userLabels);
+                    String userContacts = getContact(result.get("users"));
+                    mParam.put("userContacts", userContacts);
                     sb.append(userLabels).append(" (").append(userContacts).append(")");
                 }
                 LOG.info("sEmployeeContacts: " + sb.toString());
@@ -293,12 +300,16 @@ public class BpServiceHandler {
         }
     }
 
-    private String getSubjectLabel(Map<String, Map> subjects) {
+    private String getSubjectLabel(Map<String, Map> subjects, String paramName) {
         StringBuilder sbSubject = new StringBuilder();
         if (subjects != null && !subjects.isEmpty()) {
             for (Map user : subjects.values()) {
-                if (user != null && !user.isEmpty() && user.get("oSubject") != null) { //oSubject
-                    sbSubject.append(((Map) user.get("oSubject")).get("sLabel")).append("; ");
+                //if (user != null && !user.isEmpty() && user.get("oSubject") != null) { //oSubject
+                //    sbSubject.append(((Map) user.get("oSubject")).get("sLabel")).append("; ");
+                //}
+
+                if (user != null && !user.isEmpty() && user.get(paramName) != null) { //oSubject
+                    sbSubject.append(((Map) user).get(paramName)).append("; ");
                 }
             }
         }
@@ -308,15 +319,24 @@ public class BpServiceHandler {
     private String getContact(Map<String, Map> subjects) {
         StringBuilder sbContact = new StringBuilder();
         if (subjects != null && !subjects.isEmpty()) {
-            List<Map> contacts = (List<Map>) subjects.get("subjects");
-            if (contacts != null && !contacts.isEmpty()) {
-                for (Map contact : contacts) {
-                    if (contact != null && !contact.isEmpty() && contact.get("sValue") != null) { //oSubject
-                        sbContact.append(contact.get("sValue")).append("; ");
+            for (Map user : subjects.values()) {
+                if (user != null && !user.isEmpty() && user.get("aContact") != null) {
+                    List<Map> contacts = (List<Map>) user.get("aContact");
+                    LOG.info("!!!aContact: " + user.get("aContact"));
+                    if (contacts != null && !contacts.isEmpty()) {
+                        for (Map contact : contacts) {
+                            LOG.info("!!!contact: " + contact);
+                            if (contact != null && !contact.isEmpty() && contact.get("sValue") != null
+                                    && contact.get("subjectContactType") != null
+                                    && "Phone".equalsIgnoreCase((String) ((Map) contact.get("subjectContactType")).get("sName_EN"))) {
+                                LOG.info("!!!sValue: " + contact.get("sValue"));
+                                sbContact.append(contact.get("sValue")).append("; ");
+                            }
+                        }
                     }
                 }
             }
         }
-        return sbContact.toString();
+        return sbContact.toString(); //
     }
 }
