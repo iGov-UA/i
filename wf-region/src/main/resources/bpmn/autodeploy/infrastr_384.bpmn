@@ -45,7 +45,7 @@
           <activiti:value id="sRepair" name="ремонт"></activiti:value>
           <activiti:value id="sReconst" name="переобладнання"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sShip" name="" type="label" default="Дані щодо судна"></activiti:formProperty>
+        <activiti:formProperty id="sShip" type="label" default="Дані щодо судна"></activiti:formProperty>
         <activiti:formProperty id="sShipName" name="Назва судна;відповідно до Свідоцтва про право плавання під прапором України або Суднового білета" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sShipNumb" name="Регістровий номер;наприклад SRU123459" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sShipNumb1" name="Номер ІМО / ЄІН" type="string" required="true"></activiti:formProperty>
@@ -53,7 +53,7 @@
           <activiti:value id="sCompany" name="юридична особа"></activiti:value>
           <activiti:value id="sMan" name="фізична особа"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sVlasn" name="" type="label" default="Дані щодо власника / судновласника"></activiti:formProperty>
+        <activiti:formProperty id="sVlasn" type="label" default="Дані щодо власника / судновласника"></activiti:formProperty>
         <activiti:formProperty id="sCompName" name="Повна назва юридичної особи" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно з ЄДРПОУ" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sCompAdress" name="Адреса юридичної особи" type="string" default=" " required="true"></activiti:formProperty>
@@ -64,7 +64,7 @@
         <activiti:formProperty id="sManAdress" name="Адреса  власника / судновласника" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="privatePhone" name="Телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="privateMail" name="E-mail" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sShipP" name="" type="label" default="Дані щодо місця огляду судна"></activiti:formProperty>
+        <activiti:formProperty id="sShipP" type="label" default="Дані щодо місця огляду судна"></activiti:formProperty>
         <activiti:formProperty id="sShipPlace" name="Місце огляду судна" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sShipDate" name="Бажані дата та час огляду судна" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sManContact" name="ПІБ контактної особи або пред’явника судна" type="string" required="true"></activiti:formProperty>
@@ -97,6 +97,7 @@
           <activiti:value id="sNo5" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('infrastr/infrastr_1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="param" name="Информация про заявителя в принтформе" type="invisible" default="щорічний / проміжний"></activiti:formProperty>
         <activiti:formProperty id="og1" name="Информация про заявителя в принтформе" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="og2" name="Информация про заявителя в принтформе" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="og3" name="Информация про заявителя в принтформе" type="invisible" default=" "></activiti:formProperty>
@@ -119,7 +120,33 @@
         <activiti:formProperty id="zay4" name="Информация про заявителя в принтформе" type="invisible" default=" "></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
+    <scriptTask id="scripttask1" name="Значення прінтформи" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var gal = 'V'
+      var param1 = '&lt;del&gt;щорічний&lt;/del&gt; / проміжний'
+      var param2 = 'щорічний / &lt;del&gt;проміжний&lt;/del&gt;'
+if(execution.getVariable('asOglyad') == 'sNew'){execution.setVariable('og1', gal)}
+if(execution.getVariable('asOglyad') == 'sReg'){execution.setVariable('og2', gal)}
+if(execution.getVariable('asOglyad') == 'sYear'){execution.setVariable('og3', gal);execution.setVariable('param', param2)}
+if(execution.getVariable('asOglyad') == 'sMiddle'){execution.setVariable('og3', gal);execution.setVariable('param', param1)}
+if(execution.getVariable('asOglyad') == 'sUnWat'){execution.setVariable('og4', gal)}
+if(execution.getVariable('asOglyad') == 'sUnReg'){execution.setVariable('og5', gal)}
+if(execution.getVariable('asOglyad') == 'sOther'){execution.setVariable('og6', gal)}
+if(execution.getVariable('asTypePay') == 'sShipOwner'){execution.setVariable('pay1', gal)}
+if(execution.getVariable('asTypePay') == 'sOwner'){execution.setVariable('pay2', gal)}
+if(execution.getVariable('asTypePay') == 'sManPay'){execution.setVariable('pay3', gal)}
+if(execution.getVariable('asTypePay') == 'sOtherPay'){execution.setVariable('pay4', gal)}
+if(execution.getVariable('asType') == 'sShipOwner'){execution.setVariable('zay1', gal)}
+if(execution.getVariable('asType') == 'sOwner'){execution.setVariable('zay2', gal)}
+if(execution.getVariable('asType') == 'sManPay'){execution.setVariable('zay3', gal)}
+if(execution.getVariable('asType') == 'sOtherPay'){execution.setVariable('zay4', gal)}
+if(execution.getVariable('asChange') == 'sYes1'){execution.setVariable('yes3', gal)}else{execution.setVariable('no3', gal)}
+if(execution.getVariable('asBrakeCorp') == 'sYes2'){execution.setVariable('yes4', gal)}else{execution.setVariable('no4', gal)}
+if(execution.getVariable('asBrakeMash') == 'sYes3'){execution.setVariable('yes5', gal)}else{execution.setVariable('no5', gal)}
+
+</script>
+</scriptTask>
+    <sequenceFlow id="flow45" sourceRef="scripttask1" targetRef="servicetask1"></sequenceFlow>
     <serviceTask id="servicetask1" name="Повідомлення про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -167,8 +194,8 @@
       <extensionElements>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний  телефон" type="string"  writable="false"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Е-mail" type="string"  writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний  телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Е-mail" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asType" name="Завку подає" type="enum" writable="false">
           <activiti:value id="sShipOwner" name="Судновласник"></activiti:value>
           <activiti:value id="sOwner" name="Власник"></activiti:value>
@@ -205,7 +232,7 @@
           <activiti:value id="sRepair" name="ремонт"></activiti:value>
           <activiti:value id="sReconst" name="переобладнання"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sShip" name="" type="label" default="Дані щодо судна"></activiti:formProperty>
+        <activiti:formProperty id="sShip" type="label" default="Дані щодо судна"></activiti:formProperty>
         <activiti:formProperty id="sShipName" name="Назва судна;відповідно до Свідоцтва про право плавання під прапором України або Суднового білета" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShipNumb" name="Регістровий номер;наприклад SRU123459" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShipNumb1" name="Номер ІМО / ЄІН" type="string" writable="false"></activiti:formProperty>
@@ -213,11 +240,11 @@
           <activiti:value id="sCompany" name="юридична особа"></activiti:value>
           <activiti:value id="sMan" name="фізична особа"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sVlasn" name="" type="label" default="Дані щодо власника / судновласника"></activiti:formProperty>
+        <activiti:formProperty id="sVlasn" type="label" default="Дані щодо власника / судновласника"></activiti:formProperty>
         <activiti:formProperty id="sCompName" name="Повна назва юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно з ЄДРПОУ" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCompAdress" name="Адреса юридичної особи" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sVlasnPIB" name="ПІБ власника / судновласника" default="${lastName_UA2} ${firstName_UA2} ${middleName_UA2}" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sVlasnPIB" name="ПІБ власника / судновласника" type="string" default="${lastName_UA2} ${firstName_UA2} ${middleName_UA2}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sManPassport" name="№, серія паспорту власника / судновласника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sManAdress" name="Адреса  власника / судновласника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="privatePhone" name="Телефон" type="string" writable="false"></activiti:formProperty>
@@ -228,7 +255,7 @@
           <activiti:value id="sDovir" name="довіреність"></activiti:value>
           <activiti:value id="sGarList" name="гарантійний лист"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sShipP" name="" type="label" default="Дані щодо місця огляду судна"></activiti:formProperty>
+        <activiti:formProperty id="sShipP" type="label" default="Дані щодо місця огляду судна"></activiti:formProperty>
         <activiti:formProperty id="sShipPlace" name="Місце огляду судна" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShipDate" name="Бажані дата та час огляду судна" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sManContact" name="ПІБ контактної особи або пред’явника судна" type="string" writable="false"></activiti:formProperty>
@@ -260,26 +287,27 @@
         <activiti:formProperty id="nBill" name="Рахунок для сплати" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/infr/registr_1.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/registr_1.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="og1" name="Информация про заявителя в принтформе" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="og2" name="Информация про заявителя в принтформе" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="og3" name="Информация про заявителя в принтформе" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="og4" name="Информация про заявителя в принтформе" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="og5" name="Информация про заявителя в принтформе" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="og6" name="Информация про заявителя в принтформе" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="pay1" name="Информация про заявителя в принтформе" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="pay2" name="Информация про заявителя в принтформе" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="pay3" name="Информация про заявителя в принтформе" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="pay4" name="Информация про заявителя в принтформе" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="yes3" name="Информация про заявителя в принтформе" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="yes4" name="Информация про заявителя в принтформе" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="yes5" name="Информация про заявителя в принтформе" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="no3" name="Информация про заявителя в принтформе" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="no4" name="Информация про заявителя в принтформе" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="no5" name="Информация про заявителя в принтформе" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="zay1" name="Информация про заявителя в принтформе" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="zay2" name="Информация про заявителя в принтформе" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="zay3" name="Информация про заявителя в принтформе" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="zay4" name="Информация про заявителя в принтформе" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="param" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="og1" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="og2" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="og3" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="og4" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="og5" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="og6" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="pay1" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="pay2" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="pay3" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="pay4" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="yes3" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="yes4" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="yes5" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="no3" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="no4" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="no5" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="zay1" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="zay2" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="zay3" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="zay4" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -332,7 +360,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>"${email}"</activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Заявка на проведення огляду судна в експлуатацiї]]></activiti:string>
@@ -368,6 +396,9 @@
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="10.0" y="140.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="71.0" width="105.0" x="70.0" y="122.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="71.0" width="105.0" x="200.0" y="122.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -389,12 +420,16 @@
       <bpmndi:BPMNShape bpmnElement="endevent6" id="BPMNShape_endevent6">
         <omgdc:Bounds height="35.0" width="35.0" x="740.0" y="230.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="71.0" width="105.0" x="70.0" y="122.0"></omgdc:Bounds>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="55.0" y="210.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="45.0" y="157.0"></omgdi:waypoint>
-        <omgdi:waypoint x="70.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="27.0" y="175.0"></omgdi:waypoint>
+        <omgdi:waypoint x="107.0" y="210.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="175.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="200.0" y="157.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="305.0" y="157.0"></omgdi:waypoint>
@@ -427,9 +462,9 @@
         <omgdi:waypoint x="701.0" y="247.0"></omgdi:waypoint>
         <omgdi:waypoint x="740.0" y="247.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="175.0" y="157.0"></omgdi:waypoint>
-        <omgdi:waypoint x="200.0" y="157.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
+        <omgdi:waypoint x="107.0" y="210.0"></omgdi:waypoint>
+        <omgdi:waypoint x="122.0" y="193.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

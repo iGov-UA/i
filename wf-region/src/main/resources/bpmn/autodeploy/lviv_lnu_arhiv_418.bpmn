@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="lviv_lnu_arhiv_418" name="Архівний витяг з Архіву Львівського Національного Університету ім. Івана Франка" isExecutable="true">
+  <process id="lviv_lnu_arhiv_418" name="Архівний витяг з Вищого навчального закладу (наказ про зарахування, відрахування, прийняття на роботу, звільнення, або копія диплому чи додатку до нього)" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
@@ -12,7 +12,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="sStareFIO" name="Старі прізвище ім'я та по батькові на момент навчання/роботи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="marker_zmina_pib" name="Якщо мінявся ПІБ" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sStareFIO&quot;],&quot;asID_Field&quot;:{&quot;sZmina&quot;:&quot;asZminapib&quot;},&quot;sCondition&quot;:&quot;[sZmina] == 'asPib_tak'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sAdress" name="Адреса реєстрації заявника;(поштовий індекс, місто, вулиця, номер дому, номер квартири)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAdress" name="Адреса реєстрації;(поштовий індекс, місто, вулиця, номер дому, номер квартири)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sMphone" name="Мобільний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="sSphone" name="Стаціонарний телефон" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEmail" name="Ваш e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
@@ -53,8 +53,8 @@
           <activiti:value id="asVidrah_tak" name="Так"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="marker_vidrahuvan" name="Якщо відраховувався" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;sVidrax&quot;,&quot;sPonovlen&quot;,&quot;sPovton_kyrs&quot;,&quot;asPovtor_rik&quot;],&quot;asID_Field&quot;:{&quot;sVidrahui&quot;:&quot;asVidrah&quot;},&quot;sCondition&quot;:&quot;[sVidrahui] == 'asVidrah_tak'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sVidrax" name="Вкажіть дату відрахування" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPonovlen" name="Вкажіть дату поновлення після відрахування" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sVidrax" name="Вкажіть рік відрахування" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPonovlen" name="Вкажіть рік поновлення після відрахування" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPovton_kyrs" name="Вкажіть з якого по який рік ви проходили повторний курс" type="string"></activiti:formProperty>
         <activiti:formProperty id="asPovtor_rik" name="Вкажіть який курс ви проходили повторно" type="enum">
           <activiti:value id="as11" name="1"></activiti:value>
@@ -73,7 +73,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:string><![CDATA[${email}]]></activiti:string>
+          <activiti:string>${email}</activiti:string>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Заявка по видачі архівного витягу прийнята до роботи]]></activiti:string>
@@ -156,14 +156,14 @@
           <activiti:value id="asRob_osn" name="Основна робота"></activiti:value>
           <activiti:value id="asRob_sumisn" name="Робота за сумісництвом"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sArmy" name="Вкажіть дати початку і кінця служби в армії" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAkademka" name="Вкажіть дати початку і кінця академічної відпустки" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asVidrah" name="Чи було вас відраховано, або залишено на повторний курс" type="enum" writable="false">
+        <activiti:formProperty id="sArmy" name="Дати початку і кінця служби в армії" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAkademka" name="Дати початку і кінця академічної відпустки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asVidrah" name="Чи було заявника відраховано, або залишено на повторний курс" type="enum" writable="false">
           <activiti:value id="asVidrah_ni" name="Ні"></activiti:value>
           <activiti:value id="asVidrah_tak" name="Так"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sVidrax" name="Вкажіть дату відрахування" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPonovlen" name="Вкажіть дату поновлення після відрахування" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sVidrax" name="Рік відрахування" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPonovlen" name="Рік поновлення після відрахування" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPovton_kyrs" name="Вкажіть з якого по який рік ви проходили повторний курс" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asPovtor_rik" name="Вкажіть який курс ви проходили повторно" type="enum" writable="false">
           <activiti:value id="as11" name="1"></activiti:value>
@@ -187,7 +187,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:string><![CDATA[${email}]]></activiti:string>
+          <activiti:string>${email}</activiti:string>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нова заявка на архівну довідку]]></activiti:string>
@@ -233,7 +233,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:string><![CDATA[${email}]]></activiti:string>
+          <activiti:string>${email}</activiti:string>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Оцініть якість наданої послуги]]></activiti:string>
