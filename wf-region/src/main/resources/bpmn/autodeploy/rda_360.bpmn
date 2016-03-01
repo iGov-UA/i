@@ -26,7 +26,7 @@
         <activiti:formProperty id="nFile1" name="Додати документ" type="file"></activiti:formProperty>
         <activiti:formProperty id="nFile2" name="Додати документ" type="file"></activiti:formProperty>
         <activiti:formProperty id="nFile3" name="Додати документ" type="file"></activiti:formProperty>
-        <activiti:formProperty id="asKindHandling" name="Вид звернення" type="enum">
+        <activiti:formProperty id="asKindHandling" name="Вид звернення" type="enum" required="true">
           <activiti:value id="sEnumKind_1" name="пропозиція (зауваження)"></activiti:value>
           <activiti:value id="sEnumKind_2" name="заява (клопотання)"></activiti:value>
           <activiti:value id="sEnumKind_3" name="скарга"></activiti:value>
@@ -73,6 +73,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="dCreate" name="Дата надходження" type="date"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('newField.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="hide fields fro Bogoduhiv" type="markers" default="${markerService.loadFromFile('bogoduhov/zvernenja_do_golovu.json')}"></activiti:formProperty>
         <activiti:formProperty id="sOrgan" name="назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sSignCnap" name="підпис" type="invisible"></activiti:formProperty>
@@ -135,7 +136,7 @@
     <sequenceFlow id="flow15" sourceRef="servicetask2" targetRef="exclusivegateway2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow41" name="Старий процесс" sourceRef="exclusivegateway2" targetRef="usertask1">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[$(sID_Public_SubjectOrganJoin != 'khar_bogod')]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Public_SubjectOrganJoin!='khar_bogod'}]]></conditionExpression>
     </sequenceFlow>
     <userTask id="usertask1" name="Первинна перевірка даних" activiti:candidateGroups="rda_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
@@ -225,7 +226,7 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow40" sourceRef="usertask2" targetRef="servicetask7"></sequenceFlow>
+    <sequenceFlow id="flow40" sourceRef="usertask2" targetRef="servicetask7"></sequenceFlow>    
     <serviceTask id="servicetask7" name="Емейл громадянину" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="from">
@@ -266,9 +267,9 @@
     </serviceTask>
     <sequenceFlow id="flow43" sourceRef="servicetask7" targetRef="endevent3"></sequenceFlow>
     <sequenceFlow id="flow42" name="Росширений для Богодухівського району" sourceRef="exclusivegateway2" targetRef="usertask3">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[$(sID_Public_SubjectOrganJoin == 'khar_bogod')]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Public_SubjectOrganJoin=='khar_bogod'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask3" name="Первинна обробка звернення Богодухів" activiti:candidateGroups="rda_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask3" name="Первинна обробка звернення до Богодухівської РДА" activiti:candidateGroups="rda_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFIO" name="Прізвище, ім`я, по-батькові громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
@@ -333,7 +334,7 @@
         <activiti:formProperty id="decisionComment" name="Якщо Ви відмовляєте у реєстрації звернення, обов'язково вкажіть підставу у цьому полі" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sOrgan" name="назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/rda_360.html]" type="invisible" default="Заява Миколаївська, Чернігівська, Херсонська" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/rda_360.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -417,7 +418,7 @@
         <activiti:formProperty id="sNameExecutor" name="Виконавець" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sOrgan" name="назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/rda_360.html]" type="invisible" default="Заява Миколаївська, Чернігівська, Херсонська" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/rda_360.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -492,8 +493,8 @@
         <activiti:formProperty id="sOrgan" name="назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/rda_360.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBodycontrolCard_1" name="[pattern/print/ternopil/rda_360.html]" type="invisible" default="Реєстраційно-контрольна карта(Лицьовий бік)" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBodycontrolCard_2" name="[pattern/print/ternopil/rda_360.html]" type="invisible" default="Реєстраційно-контрольна карта(Зворотний бік)" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBodycontrolCard_1" name="[pattern/print/bogoduhiv/bogoduhiv_zvern_354_print.html]" type="invisible" default="Реєстраційно-контрольна карта(Лицьовий бік)" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBodycontrolCard_2" name="[pattern/print/bogoduhiv/bogoduhiv_zvern_354_back_print.html]" type="invisible" default="Реєстраційно-контрольна карта(Зворотний бік)" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -503,7 +504,7 @@
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow47" sourceRef="usertask5" targetRef="servicetask8"></sequenceFlow>
-    <serviceTask id="servicetask8" name="Сповістити громадянина про прийняте рішення" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask8" name="Сповістити громадянина про прийняте рішення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
@@ -612,7 +613,7 @@
     <sequenceFlow id="flow50" sourceRef="usertask6" targetRef="exclusivegateway4"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow51" name="Виконано" sourceRef="exclusivegateway4" targetRef="servicetask9"></sequenceFlow>
-    <serviceTask id="servicetask9" name="E-Mail громадянину про успішне виконання рішення" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask9" name="E-Mail громадянину про успішне виконання рішення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>

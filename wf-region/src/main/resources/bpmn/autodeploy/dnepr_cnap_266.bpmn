@@ -34,7 +34,7 @@
         <activiti:formProperty id="fiz_adres" name="Місце проживання " type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="ur_tel" name="Телефон" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="ur_fax" name="Факс" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="ur_edrpou" name="Ідентифікаційний код згідно з Єдиним державним реєстром підприємств та організацій України (ЄДРПОУ) " type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="ur_edrpou" name="Ідентифікаційний код згідно з Єдиним державним реєстром підприємств та організацій України (ЄДРПОУ)" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="fiz_drfo" name="Ідентифікаційний номер у Державному реєстрі фізичних осіб (ДРФО)" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="ur_pib" name="ПІБ керівника" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="ur_post" name="Посада керівника" type="string" default=" "></activiti:formProperty>
@@ -67,8 +67,8 @@
         <activiti:formProperty id="ur_adres_2" name="Місцезнаходження" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="fiz_adres_2" name="Місце проживання " type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="text10" name=" " type="label" default="&lt;b&gt;інформація про товар&lt;/b&gt;"></activiti:formProperty>
-        <activiti:formProperty id="name_tovar" name="Найменування товару" type="string"></activiti:formProperty>
-        <activiti:formProperty id="kod_tovar" name="Код товару (УКТ ЗЕД)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="name_tovar" name="Найменування товару" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="kod_tovar" name="Код товару (УКТ ЗЕД)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="unit" name="Одиниця виміру" type="enum" default="kilogram" required="true">
           <activiti:value id="kilogram" name="кілограм|кг"></activiti:value>
           <activiti:value id="bruttobetrags" name="бруттореєстрова тонна|бруттореєстр. Т"></activiti:value>
@@ -103,10 +103,10 @@
         <activiti:formProperty id="cost_usd" name="Вартість товару, що імпортується (тис.дол.США);данні потрібно подавати з точністю до 5 знаків після коми" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="cost_currency" name="Вартість товару, що імпортується (в тис.одиницях валюти контракту);данні потрібно подавати з точністю до 5 знаків після коми" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="country_destination" name="Країна призначення" type="string" default="804 Україна" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sCountry_1" name="Країна, де зареєстрований нерезидент-контрагент згідно із зовнішньоекономічним договором" type="select"></activiti:formProperty>
-        <activiti:formProperty id="sID_UA_Country_1" name="Код країни контрагента;(заповниться автоматично)" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sCountry_2" name="Країна походження товару, що імпортується" type="select"></activiti:formProperty>
-        <activiti:formProperty id="sID_UA_Country_2" name="Код країни походження;(заповниться автоматично)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCountry_1" name="Країна, де зареєстрований нерезидент-контрагент згідно із зовнішньоекономічним договором" type="select" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_Country_1" name="Код країни контрагента;(заповниться автоматично)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCountry_2" name="Країна походження товару, що імпортується" type="select" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_Country_2" name="Код країни походження;(заповниться автоматично)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="basis" name="Базисні умови поставки товару" type="enum" required="true">
           <activiti:value id="exw" name="EXW - Франко-завод"></activiti:value>
           <activiti:value id="fca" name="FСА - Франко-перевізник"></activiti:value>
@@ -162,8 +162,6 @@
         <activiti:formProperty id="application_name" name="В цьому полі надайте перелік усіх додатків та специфікацій до договору у форматі: назва-номер-дата укладання; наприклад:специфікація №2 від 22.10.2015р." type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="visnovok" name="Висновок експертної організації про відповідність контрактної ціни рівню цін кон'юнктури ринку на товари (роботи, послуги), що поставляються (виконуються, надаються) за конкретною зовнішньоекономічною операцією" type="file"></activiti:formProperty>
         <activiti:formProperty id="pogodgennya" name="Погодження (оригінал) відповідного уповноваженого органу виконавчої влади (у випадках, визначених Кабінетом Міністрів України" type="file"></activiti:formProperty>
-        <activiti:formProperty id="agreement_number" name="Номер погодження відповідного уповноваженого органу виконавчої влади" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="agreement_date" name="Дата погодження відповідного уповноваженого органу виконавчої влади" type="date"></activiti:formProperty>
         <activiti:formProperty id="notice" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
         <activiti:formProperty id="sNameUnit" name="назва адміністартивного органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPost" name="пошта посадовця" type="invisible"></activiti:formProperty>
@@ -277,8 +275,8 @@
         <activiti:formProperty id="cost_usd" name="Вартість товару, що імпортується (тис.дол.США); ;writable=false" type="long"></activiti:formProperty>
         <activiti:formProperty id="cost_currency" name="Вартість товару, що імпортується (в тис.одиницях валюти контракту); ;writable=false" type="long"></activiti:formProperty>
         <activiti:formProperty id="country_destination" name="Країна призначення; ;writable=false" type="select"></activiti:formProperty>
-        <activiti:formProperty id="sCountry_1" name="Країна імпортера (експортера); ;writable=false" type="select"></activiti:formProperty>
-        <activiti:formProperty id="sID_UA_Country_1" name="Код країни імпортера (експортера); ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCountry_1" name="Країна імпортера; ;writable=false" type="select"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_Country_1" name="Код країни імпортера; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sCountry_2" name="Країна походження товару, що імпортується; ;writable=false" type="select"></activiti:formProperty>
         <activiti:formProperty id="sID_UA_Country_2" name="Код країни походження; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="basis" name="Базисні умови поставки товару; ;writable=false" type="enum">
@@ -519,8 +517,8 @@
         <activiti:formProperty id="sPost" name="пошта посадовця" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_266_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_266_2_print.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dnepr_cnap_267_print.html]" type="invisible" default="Заявка на одержання ліцензії на імпорт" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/dneprOblSnap/dnepr_cnap_267_2_print.html]" type="invisible" default="Лист-звернення щодо оформлення ліцензії в довільній формі" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dnepr_cnap_266_print.html]" type="invisible" default="Заявка на одержання ліцензії на імпорт" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/dneprOblSnap/dnepr_cnap_266_2_print.html]" type="invisible" default="Лист-звернення щодо оформлення ліцензії в довільній формі" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask7" name="повідомлення посадовця" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -622,9 +620,8 @@ ${sNameUnit}&lt;br /&gt;
 4. Лист-звернення щодо оформлення ліцензії з гарантією сплати державного сбору за її видачу, підписаний керівником суб'єкта зовнішньоекономічної діяльності на офіційному бланку.&lt;br /&gt;
 5. Копю зовнішньоекономічного договору (контракту), усі додатки та специфікації до нього, завірені в установленому законодавством порядку.&lt;br /&gt;
 6. Погодження (оригінал) відповідного уповноваженого органу виконавчої влади (у випадках, визначених Кабінетом Міністрів України).&lt;br /&gt;
-7. Оригінал документу про сплату державного збору.&lt;br /&gt;
-8. Висновок експертної організації про відповідність контрактної ціни рівню цін кон'юнктури ринку на товари (роботи, послуги), що поставляються (виконуються, надаються) за конкретною зовнішньоекономічною операцією
-9. Платіжний документ (квитанція) про оплату вартості послуги.&lt;br /&gt;&lt;br /&gt;
+7. Платіжний документ (квитанція) про оплату вартості послуги.&lt;br /&gt;
+8. Висновок експертної організації про відповідність контрактної ціни рівню цін кон'юнктури ринку на товари (роботи, послуги), що поставляються (виконуються, надаються) за конкретною зовнішньоекономічною операцією.&lt;br /&gt;&lt;br /&gt;
 ${sWorkTime}&lt;br /&gt; 
 [pattern/mail/_common_signature_start.html]
 ${sNameUnit}&lt;br /&gt; 
@@ -651,6 +648,7 @@ per6 = "Режим роботи: Понеділок, середа з 9.00 до 1
 per7 = 'dnepr'
 }
 if (execution.getVariable('area') == 'lev'){
+per1 = 'darja.grek@gmail.com'
 per2 = 'Департамент економічного розвитку Дніпропетровської обласної державної адміністрації'
 per3 = 'м. Дніпропетровськ, просп. Карла Маркса, 75'
 per6 = "Режим роботи: Понеділок, середа з 9.00 до 18.00&lt;br /&gt; Вівторок, четвер з 9.00 до 20.00&lt;br /&gt; П'ятниця з 9.00 до 16.45&lt;br /&gt; Субота з 10.00 до 16.00&lt;br /&gt; Вихідний - Неділя&lt;br /&gt;"
