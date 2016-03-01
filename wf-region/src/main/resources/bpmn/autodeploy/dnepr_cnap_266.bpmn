@@ -53,7 +53,7 @@
           <activiti:value id="ur_1" name="юридична особа"></activiti:value>
           <activiti:value id="fiz_1" name="фізична особа-підприємець"></activiti:value>
         </activiti:formProperty>
-          <activiti:formProperty id="ur_name_1" name="Найменування" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="ur_name_1" name="Найменування" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="fiz_name_1" name="Прізвище, ім'я, по батькові" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="ur_adres_1" name="Місцезнаходження" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="fiz_adres_1" name="Місце проживання" type="string" default=" "></activiti:formProperty>
@@ -163,7 +163,7 @@
         <activiti:formProperty id="visnovok" name="Висновок експертної організації про відповідність контрактної ціни рівню цін кон'юнктури ринку на товари (роботи, послуги), що поставляються (виконуються, надаються) за конкретною зовнішньоекономічною операцією" type="file"></activiti:formProperty>
         <activiti:formProperty id="pogodgennya" name="Погодження (оригінал) відповідного уповноваженого органу виконавчої влади (у випадках, визначених Кабінетом Міністрів України" type="file"></activiti:formProperty>
         <activiti:formProperty id="agreement_number" name="Номер погодження відповідного уповноваженого органу виконавчої влади" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="agreement_date" name="Дата погодження відповідного уповноваженого органу виконавчої влади" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="agreement_date" name="Дата погодження відповідного уповноваженого органу виконавчої влади" type="date"></activiti:formProperty>
         <activiti:formProperty id="notice" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
         <activiti:formProperty id="sNameUnit" name="назва адміністартивного органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPost" name="пошта посадовця" type="invisible"></activiti:formProperty>
@@ -175,12 +175,14 @@
         <activiti:formProperty id="markers00" name="Якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_00&quot;:{&quot;aField_ID&quot;:[&quot;fiz_name&quot;,&quot;fiz_adres&quot;,&quot;fiz_drfo&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Якщо юридична особа споживач" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;ur_name_1&quot;,&quot;ur_adres_1&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt_1&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur_1'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers11" name="Якщо фізична особа споживач" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_11&quot;:{&quot;aField_ID&quot;:[&quot;fiz_name_1&quot;,&quot;fiz_adres_1&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt_1&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz_1'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="Якщо юридична особа контрагент" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;ur_name_2&quot;,&quot;ur_adres_2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt_2&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur_2'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers22" name="Якщо фізична особа контрагент" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_22&quot;:{&quot;aField_ID&quot;:[&quot;fiz_name_2&quot;,&quot;fiz_adres_2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt_2&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz_2'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers16" name="Якщо обрано базис поставки EXW" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_16&quot;:{&quot;aField_ID&quot;:[&quot;basis_1&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;basis&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'exw'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers17" name="Якщо обрано базис поставки FCA,СРТ,СІР,DDU,DDP" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_17&quot;:{&quot;aField_ID&quot;:[&quot;basis_2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;basis&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fса'||[sClient] == 'срт'||[sClient] == 'сір'||[sClient] == 'ddu'||[sClient] == 'ddр'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers18" name="Якщо обрано базис поставки FAS,FOB" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_18&quot;:{&quot;aField_ID&quot;:[&quot;basis_3&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;basis&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fаs'||[sClient] == 'fов'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers19" name="Якщо обрано базис поставки CFR,CIF,DES,DEQ" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_19&quot;:{&quot;aField_ID&quot;:[&quot;basis_4&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;basis&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'сfr'||[sClient] == 'сіf'||[sClient] == 'dеs'||[sClient] == 'dеq'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers20" name="Якщо обрано базис поставки DAF" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_20&quot;:{&quot;aField_ID&quot;:[&quot;basis_5&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;basis&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'dаf'&quot;}}}"></activiti:formProperty>
-       </extensionElements>
+      </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="перевірка вхідних данних, прийняття рішення про надання послуги" activiti:candidateGroups="zed_${group}">
       <extensionElements>
@@ -221,7 +223,7 @@
         <activiti:formProperty id="currency_bank_adres" name="Місцезнаходження банку; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="ur_pib" name="ПІБ керівника; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="ur_post" name="Посада керівника; ;writable=false" type="string"></activiti:formProperty>
-   		<activiti:formProperty id="text1" name=" " type="label" default="Данні споживача товару"></activiti:formProperty>
+        <activiti:formProperty id="text1" name=" " type="label" default="Данні споживача товару"></activiti:formProperty>
         <activiti:formProperty id="subekt_1" name="Оберіть суб'єкт зовнішньоекономічної діяльності" type="enum" writable="false">
           <activiti:value id="ur_1" name="юридична особа"></activiti:value>
           <activiti:value id="fiz_1" name="фізична особа-підприємець"></activiti:value>
@@ -392,7 +394,7 @@
         <activiti:formProperty id="currency_bank_adres" name="Місцезнаходження банку; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="ur_pib" name="ПІБ керівника; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="ur_post" name="Посада керівника; ;writable=false" type="string"></activiti:formProperty>
-  		<activiti:formProperty id="text1" name=" " type="label" default="Данні споживача товару"></activiti:formProperty>
+        <activiti:formProperty id="text1" name=" " type="label" default="Данні споживача товару"></activiti:formProperty>
         <activiti:formProperty id="subekt_1" name="Оберіть суб'єкт зовнішньоекономічної діяльності" type="enum" writable="false">
           <activiti:value id="ur_1" name="юридична особа"></activiti:value>
           <activiti:value id="fiz_1" name="фізична особа-підприємець"></activiti:value>
@@ -549,7 +551,7 @@
           <activiti:string><![CDATA[test_noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>"${email}"</activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення на тему: Ліцензія на здійснення суб’єктами зовнішньоекономічної діяльності імпорту товарів]]></activiti:string>
@@ -620,9 +622,8 @@ ${sNameUnit}&lt;br /&gt;
 4. Лист-звернення щодо оформлення ліцензії з гарантією сплати державного сбору за її видачу, підписаний керівником суб'єкта зовнішньоекономічної діяльності на офіційному бланку.&lt;br /&gt;
 5. Копю зовнішньоекономічного договору (контракту), усі додатки та специфікації до нього, завірені в установленому законодавством порядку.&lt;br /&gt;
 6. Погодження (оригінал) відповідного уповноваженого органу виконавчої влади (у випадках, визначених Кабінетом Міністрів України).&lt;br /&gt;
-7. Оригінал документу про сплату державного збору.&lt;br /&gt;
-8. Висновок експертної організації про відповідність контрактної ціни рівню цін кон'юнктури ринку на товари (роботи, послуги), що поставляються (виконуються, надаються) за конкретною зовнішньоекономічною операцією
-9. Платіжний документ (квитанція) про оплату вартості послуги.&lt;br /&gt;&lt;br /&gt;
+7. Платіжний документ (квитанція) про оплату вартості послуги.&lt;br /&gt;
+8. Висновок експертної організації про відповідність контрактної ціни рівню цін кон'юнктури ринку на товари (роботи, послуги), що поставляються (виконуються, надаються) за конкретною зовнішньоекономічною операцією.&lt;br /&gt;&lt;br /&gt;
 ${sWorkTime}&lt;br /&gt; 
 [pattern/mail/_common_signature_start.html]
 ${sNameUnit}&lt;br /&gt; 
@@ -649,6 +650,7 @@ per6 = "Режим роботи: Понеділок, середа з 9.00 до 1
 per7 = 'dnepr'
 }
 if (execution.getVariable('area') == 'lev'){
+per1 = 'darja.grek@gmail.com'
 per2 = 'Департамент економічного розвитку Дніпропетровської обласної державної адміністрації'
 per3 = 'м. Дніпропетровськ, просп. Карла Маркса, 75'
 per6 = "Режим роботи: Понеділок, середа з 9.00 до 18.00&lt;br /&gt; Вівторок, четвер з 9.00 до 20.00&lt;br /&gt; П'ятниця з 9.00 до 16.45&lt;br /&gt; Субота з 10.00 до 16.00&lt;br /&gt; Вихідний - Неділя&lt;br /&gt;"
