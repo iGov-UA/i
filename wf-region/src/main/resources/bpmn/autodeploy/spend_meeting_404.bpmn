@@ -61,7 +61,7 @@
         <activiti:formProperty id="sNameCompany_3" name="Назва організації, що представляє відповідальна особа 3" type="string"></activiti:formProperty>
         <activiti:formProperty id="sedrpou_3" name="ЄДРПО організації, що представляє відповідальна особа 3" type="string"></activiti:formProperty>
         <activiti:formProperty id="fPovidomlennyaProZahid" name="Завантажте Повідомлення про проведення зборів, мітингів і т.ін., що підписано відповідальними особами " type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="Якщо один організатор заходу"  type="markers" default="${markerService.loadFromFile('skv/skv_spend_meeting_404_1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="Якщо один організатор заходу" type="markers" default="${markerService.loadFromFile('skv/skv_spend_meeting_404_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="Якщо два організаторів заходу" type="markers" default="${markerService.loadFromFile('skv/skv_spend_meeting_404_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="Якщо три організаторів заходу" type="markers" default="${markerService.loadFromFile('skv/skv_spend_meeting_404_3.json')}"></activiti:formProperty>
       </extensionElements>
@@ -251,13 +251,13 @@
     <serviceTask id="servicetask7" name=" Повідомлення громадянина  про успішну реєстрацію звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:string><![CDATA[smoktii@gmail.com]]></activiti:string>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове звернення на тему: надання дозволу на знесення аварійних будівель]]></activiti:string>
+          <activiti:string><![CDATA[Нове звернення на тему: Повідомлення про проведення зборів, мітингів і т.ін.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]

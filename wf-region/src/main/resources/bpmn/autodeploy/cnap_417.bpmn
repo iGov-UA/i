@@ -14,7 +14,7 @@
           <activiti:value id="sEnumFiz" name="Фізична особа"></activiti:value>
           <activiti:value id="sEnumUr" name="Юридична особа"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sNameCompany" name="П.І.Б. фізичної особи або повне найменування юридичної особи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNameCompany" name="П.І.Б. фізичної особи - підприємця або повне найменування юридичної особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="edrpou" name="Код ЄДРПОУ" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Поштова адреса;(юридичної особи або адреса реєстрації фізичної особи)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="adress2" name="Місце розташування земельної ділянки (адреса)" type="string" required="true"></activiti:formProperty>
@@ -22,7 +22,7 @@
         <activiti:formProperty id="nFile2" name="Викопіювання з кадастрової карти (плану)" type="file"></activiti:formProperty>
         <activiti:formProperty id="nFile3" name="Письмова згода землекористувача (землевласника) у разі ії вилучення (викуп) земельної ділянки" type="file"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Фізична особа" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_1&quot;: {&quot;aField_ID&quot;: [&quot;bankIdinn&quot;], &quot;asID_Field&quot;: {&quot;sClient&quot;: &quot;asChoiceSubject&quot;},&quot;sCondition&quot;: &quot;[sClient] == 'sEnumFiz'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers2" name="Юридична особа" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_2&quot;: {&quot;aField_ID&quot;: [&quot;edrpou&quot;], &quot;asID_Field&quot;: {&quot;sClient&quot;: &quot;asChoiceSubject&quot;},&quot;sCondition&quot;: &quot;[sClient] == 'sEnumUr'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="Юридична особа" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_2&quot;: {&quot;aField_ID&quot;: [&quot;edrpou&quot;,&quot;sNameCompany&quot;], &quot;asID_Field&quot;: {&quot;sClient&quot;: &quot;asChoiceSubject&quot;},&quot;sCondition&quot;: &quot;[sClient] == 'sEnumUr'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -90,9 +90,9 @@
         <activiti:formProperty id="edrpou" name="Код ЄДРПОУ" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Поштова адреса;(юридичної особи або адреса реєстрації фізичної особи)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adress2" name="Місце розташування земельної ділянки (адреса)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sExtensionNumber" name="Реєстраційний номер ЦНАП" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAdminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateRegistration" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sExtensionNumber" name="Реєстраційний номер ЦНАП" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateRegistration" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asStatus" name="Обробка після рішення Управління архітектури" type="enum" required="true">
           <activiti:value id="sEnumGood" name="Рішення готове. Запросити громадянина до ЦНАПу."></activiti:value>
           <activiti:value id="sEnumBad" name="Відправити заявнику копію рішення у разі негативного рішення управління"></activiti:value>
