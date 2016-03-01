@@ -3,30 +3,67 @@
   <process id="spend_meeting_404" name="Повідомлення про проведення зборів, мітингів, маніфестацій і демонстрацій, спортивних, видовищних та інших масових заходів" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації громадянина" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Серія та номер паспорту" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="сканована копія паспорту" type="file" default="завантажується автоматично" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_inn" name="сканована копія ІПН" type="file" default="завантажується автоматично" required="true"></activiti:formProperty>
-        <activiti:formProperty id="eTypePodavach" name="Оберіть фізична особа або юридична подає повідомлення" type="enum" required="true">
-          <activiti:value id="people" name="фізична особа"></activiti:value>
-          <activiti:value id="company" name="юридична особа"></activiti:value>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище заявника" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я заявника" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По Батькові заявника" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації громадянина-заявника" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний (особистий) номер телефону для зворотнього зв'язку" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLabel1" name="Інформація щодо заходу" type="label" default="Інформація"></activiti:formProperty>
+        <activiti:formProperty id="sMetaZahodu" name="Мета заходу" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="eFormaZahodu" name="Форма заходу" type="enum" required="true">
+          <activiti:value id="zbori" name="збори"></activiti:value>
+          <activiti:value id="miting" name="мітинг"></activiti:value>
+          <activiti:value id="manifest" name="маніфестація"></activiti:value>
+          <activiti:value id="hoda" name="хода"></activiti:value>
+          <activiti:value id="demonstration" name="демонстрація"></activiti:value>
+          <activiti:value id="sport" name="спортивний масовий захід"></activiti:value>
+          <activiti:value id="look" name="видовищний масовий захід"></activiti:value>
+          <activiti:value id="other" name="інший масовий захід"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sMistoZahodu" name="місце проведення заходу або маршрути руху (текстовое описание маршрута " type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="fMapViewMarshrut" name="сканована копія маршрута на картці" type="file" default="Необов'язково до завантаження"></activiti:formProperty>
+        <activiti:formProperty id="dDateTime_Beg" name="Дата та час початку заходу" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="dDateTime_End" name="Дата та час закінчення заходу" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="lCountPeople" name="Передбачувана кількість учасників" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sLabel2" name="Інформація щодо організаторів заходу" type="label" default="Інформація щодо організаторів заходу"></activiti:formProperty>
+        <activiti:formProperty id="eCountOrganizatorov" name="Кількість організаторів заходу" type="enum" required="true">
+          <activiti:value id="o1" name="1"></activiti:value>
+          <activiti:value id="o2" name="2"></activiti:value>
+          <activiti:value id="o3" name="3"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="lastName_UA1" name="Прізвище відповідальної особи 1" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="firstName_UA1" name="Ім'я відповідальної особи 1" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA1" name="По Батькові відповідальної особи 1" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="lastName_UA2" name="Прізвище відповідальної особи 1" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="firstName_UA2" name="Ім'я відповідальної особи 1" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="middleName_UA2" name="По Батькові відповідальної особи 1" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNameCompany" name="назва юридичної особи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="edrpou" name="ЄДРПО юридичної особи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="markers1_1" name="Якщо юрідична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sNameCompany&quot;,&quot;edrpo&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;eTypePodavach&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'company'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers1_2" name="Якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;adres_0&quot;,&quot;pib_fiz&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sAdressBuilding" name="Адреса будівлі, щодо якої запрошується дозвіл на знесення" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="fSvidoztvoNaPravoSobstvennosti" name="Завантажте свідоцтво про право власності на будинок" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAdress_1" name="Адреса реєстрації відповідальної особи 1" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sphone_1" name="Контактний (особистий) номер(и) телефону відповідальної особи 1" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPlace_of_Work_1" name="Місце роботи (навчання) відповідальної особи 1" type="string"></activiti:formProperty>
+        <activiti:formProperty id="isRepresentCompany_1" name="Чи є відповідальна особа 1 представником організації (юридичної особи)?" type="boolean"></activiti:formProperty>
+        <activiti:formProperty id="sNameCompany_1" name="Назва організації, що представляє відповідальна особа 1" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sedrpou_1" name="ЄДРПО організації, що представляє відповідальна особа 1" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLabel11" name="Інформація щодо відповідальної особи 2 заходу" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="lastName_UA2" name="Прізвище відповідальної особи 2" type="string"></activiti:formProperty>
+        <activiti:formProperty id="firstName_UA2" name="Ім'я відповідальної особи 2" type="string"></activiti:formProperty>
+        <activiti:formProperty id="middleName_UA2" name="По Батькові відповідальної особи 2" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAdress_2" name="Адреса реєстрації відповідальної особи 2" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sphone_2" name="Контактний (особистий) номер(и) телефону відповідальної особи 2" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPlace_of_Work_2" name="Місце роботи (навчання) відповідальної особи 2" type="string"></activiti:formProperty>
+        <activiti:formProperty id="isRepresentCompany_2" name="Чи є відповідальна особа 2 представником організації (юридичної особи)?" type="boolean"></activiti:formProperty>
+        <activiti:formProperty id="sNameCompany_2" name="Назва організації, що представляє відповідальна особа 2" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sedrpou_2" name="ЄДРПО організації, що представляє відповідальна особа 2" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLabel21" name="Інформація щодо відповідальної особи 2 заходу" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="lastName_UA3" name="Прізвище відповідальної особи 3" type="string"></activiti:formProperty>
+        <activiti:formProperty id="firstName_UA3" name="Ім'я відповідальної особи 3" type="string"></activiti:formProperty>
+        <activiti:formProperty id="middleName_UA3" name="По Батькові відповідальної особи 3" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAdress_3" name="Адреса реєстрації відповідальної особи 3" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sphone_3" name="Контактний (особистий) номер(и) телефону відповідальної особи 3" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPlace_of_Work_3" name="Місце роботи (навчання) відповідальної особи 3" type="string"></activiti:formProperty>
+        <activiti:formProperty id="isRepresentCompany_3" name="Чи є відповідальна особа 3 представником організації (юридичної особи)?" type="boolean"></activiti:formProperty>
+        <activiti:formProperty id="sNameCompany_3" name="Назва організації, що представляє відповідальна особа 3" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sedrpou_3" name="ЄДРПО організації, що представляє відповідальна особа 3" type="string"></activiti:formProperty>
+        <activiti:formProperty id="fPovidomlennyaProZahid" name="Завантажте Повідомлення про проведення зборів, мітингів і т.ін., що підписано відповідальними особами " type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="Якщо один організатор заходу" type="markers" default="${markerService.loadFromFile('skv/skv_spend_meeting_404_1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="Якщо два організаторів заходу" type="markers" default="${markerService.loadFromFile('skv/skv_spend_meeting_404_2.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="Якщо три організаторів заходу" type="markers" default="${markerService.loadFromFile('skv/skv_spend_meeting_404_3.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -34,7 +71,7 @@
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>
-    <userTask id="usertask1" name="Прийняття рішення щодо розгляду надання дозволу">
+    <userTask id="usertask1" name="Прийняття рішення щодо розгляду повідомлення">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false" required="true"></activiti:formProperty>
@@ -54,7 +91,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${bankId_scan_inn},${fSvidoztvoNaPravoSobstvennosti}</activiti:expression>
+            <activiti:expression>${fMapViewMarshrut},${fPovidomlennyaProZahid}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -68,7 +105,7 @@
     </sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow6" sourceRef="servicetask4" targetRef="endevent1"></sequenceFlow>
-    <userTask id="usertask2" name="Друк заяви, оформлення дозволу">
+    <userTask id="usertask2" name="Друк заяви, повідомлення щодо рішення">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false" required="true"></activiti:formProperty>
@@ -80,7 +117,8 @@
         <activiti:formProperty id="bankId_scan_inn" name="сканована копія ІПН" type="file" default="завантажується автоматично" writable="false" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdressBuilding" name="Адреса будівлі, щодо якої запрошується дозвіл на знесення" type="string" writable="false" required="true"></activiti:formProperty>
         <activiti:formProperty id="fSvidoztvoNaPravoSobstvennosti" name="Завантажте свідоцтво про право власності на будинок" type="file" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/znes_bud_393_print.html]" type="invisible" default="Заява на надання дозволу на знесення будівлі" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/skv/skv_test_print.html]" type="invisible" default="Заява на надання дозволу на знесення будівлі" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers31" name="Щодо тестування прінт-форми" type="markers" default="${markerService.loadFromFile('skv/skv_test_print_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="decision_2" name="Прийняте рішення щодо надання дозволу" type="enum" required="true">
           <activiti:value id="accept" name="надати дозвол"></activiti:value>
           <activiti:value id="reject" name="відмовити у видачі дозволу"></activiti:value>
@@ -89,7 +127,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${bankId_scan_inn},${fSvidoztvoNaPravoSobstvennosti}</activiti:expression>
+            <activiti:expression>${fMapViewMarshrut},${fPovidomlennyaProZahid}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -99,23 +137,17 @@
     </sequenceFlow>
     <serviceTask id="servicetask2" name="Повідомлення посадовця " activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
-        <activiti:field name="To">
-          <activiti:expression>${sPost}</activiti:expression>
+        <activiti:field name="to">
+          <activiti:expression>${sEmailClerk}</activiti:expression>
         </activiti:field>
-        <activiti:field name="From">
+        <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення на тему: надання дозволу на знесення аварійних будівель]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний колего!&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-У черзі на обробку зареєстровано нове звернення.&lt;br /&gt;
-Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
-Опрацюйте це звернення на &lt;a href="http://region.igov.org.ua"&gt;порталі&lt;/a&gt;&lt;br /&gt;
-[pattern/mail/_common_signature.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -124,16 +156,16 @@
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення на тему: надання дозволу на знесення аварійних будівель]]></activiti:string>
         </activiti:field>
-        <activiti:field name="To">
-          <activiti:expression>${sPost}</activiti:expression>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
-        <activiti:field name="From">
+        <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Прийнято рішення щодо розгляду Вашого  звернення.&lt;br /&gt; 
+Прийнято рішення щодо розгляду Вашого звернення.&lt;br /&gt; 
 Ви отримаєте відповідь у визначений Законом термін на цю email-адресу.&lt;br /&gt;
 [pattern/mail/_common_signature.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
@@ -142,10 +174,10 @@
     </serviceTask>
     <serviceTask id="servicetask4" name="Повідомлення про відмову" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
-        <activiti:field name="To">
-          <activiti:expression>${sPost}</activiti:expression>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
-        <activiti:field name="From">
+        <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
@@ -161,12 +193,12 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask5" name="Повідомлення про отримання дозволу на знесення аварійних будівель" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask5" name="Повідомлення що Повідомлення прийнято до відома" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
-        <activiti:field name="To">
-          <activiti:expression>${sPost}</activiti:expression>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
-        <activiti:field name="From">
+        <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
@@ -175,7 +207,7 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення успішно розглянуто та оформлено відповідний дозвіл на знесення аварійних будівель. Зверніться до сільської ради, щоб отримати відповідний документ.&lt;br /&gt;
+Ваше звернення успішно розглянуто та оформлено відповідний дозвіл на знесення аварійних будівель. Зверніться особисто до сільської ради з оригіналом паспорту, щоб отримати відповідний документ.&lt;br /&gt;
 [pattern/mail/_common_signature.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -184,10 +216,10 @@
     <sequenceFlow id="flow9" sourceRef="servicetask3" targetRef="usertask2"></sequenceFlow>
     <serviceTask id="servicetask6" name="Повідомлення про  відмову" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
-        <activiti:field name="To">
-          <activiti:expression>${sPost}</activiti:expression>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
-        <activiti:field name="From">
+        <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
@@ -218,10 +250,10 @@
     <sequenceFlow id="flow16" sourceRef="boundaryerror1" targetRef="endevent3"></sequenceFlow>
     <serviceTask id="servicetask7" name=" Повідомлення громадянина  про успішну реєстрацію звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
-        <activiti:field name="To">
-          <activiti:expression>${sPost}</activiti:expression>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
-        <activiti:field name="From">
+        <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
