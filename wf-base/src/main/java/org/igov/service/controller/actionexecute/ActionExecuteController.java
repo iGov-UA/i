@@ -4,8 +4,17 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
+import javax.activation.DataSource;
+import javax.mail.MessagingException;
+
+import org.activiti.engine.task.Attachment;
+import org.apache.commons.mail.ByteArrayDataSource;
+import org.apache.commons.mail.EmailException;
+import org.igov.io.mail.Mail;
 import org.igov.model.action.execute.item.ActionExecute;
 import org.igov.model.action.execute.item.ActionExecuteDAO;
 import org.igov.model.action.execute.item.ActionExecuteOld;
@@ -22,6 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,6 +42,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping(value = "/action/execute")
 public class ActionExecuteController {
 	
+	@Autowired
+	Mail mail;
 	@Autowired
 	private ActionExecuteStatusDAO actionExecuteStatusDAO;
 	@Autowired
@@ -107,5 +119,26 @@ public class ActionExecuteController {
     		actionExecuteDAO.moveActionExecute(nRowsMax, sMethodMask, asID_Status, nTryMax, nID);
     	return null;
     }    
+    
+    @ApiOperation(value = "/test/sendMail")
+    @RequestMapping(value = "/test/sendMail", method = RequestMethod.GET)
+    @Transactional
+    public void sendAttachmentsByMail()
+            throws IOException, MessagingException, EmailException {
+
+        mail._To("a.maryushin@astoundcommerce.com");
+        mail._Body("blblblblblallablablabllbabl");
+
+        LOG.info("(mail.getHead()={})", mail.getHead());
+        LOG.info("(mail.getBody()={})", mail.getBody());
+        LOG.info("(mail.getAuthUser()={})", mail.getAuthUser());
+        LOG.info("(mail.getAuthPassword()={})", mail.getAuthPassword());
+        LOG.info("(mail.getFrom()={})", mail.getFrom());
+        LOG.info("(mail.getTo()={})", mail.getTo());
+        LOG.info("(mail.getHost()={})", mail.getHost());
+        LOG.info("(mail.getPort()={})", mail.getPort());       
+        mail.sendWithUniSender();
+    }
+    
     
 }
