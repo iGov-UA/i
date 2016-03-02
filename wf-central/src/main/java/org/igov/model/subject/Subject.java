@@ -21,6 +21,7 @@ public class Subject extends Entity {
     @Column(name = "sLabelShort", nullable = true)
     private String sLabelShort;
     
+    @JsonProperty(value = "aSubjectAccountContact")
     private transient List<SubjectContact> aSubjectAccountContact;
 
     public String getsID() {
