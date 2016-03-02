@@ -23,11 +23,10 @@ module.exports = function(app) {
   app.use('/api/messages', require('./api/messages/index'));
   app.use('/api/catalog', require('./api/catalog'));
   app.post('/api/uploadfile', require('./api/uploadfile/post'));
-  app.use('/api/organs', require('./api/organs'));
   app.use('/api/countries', require('./api/countries'));
   app.use('/api/currencies', require('./api/currencies'));
   app.use('/api/object-customs', require('./api/object-customs'));
-  app.use('/api/subject-organ-join-tax', require('./api/subject-organ-join-tax'));
+  app.use('/api/subject', require('./api/subject'));
   app.use('/api/object-earth-target', require('./api/object-earth-target'));
   app.use('/api/markers', require('./api/markers'));
   // All undefined asset or api routes should return a 404

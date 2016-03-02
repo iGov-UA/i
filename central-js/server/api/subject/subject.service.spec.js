@@ -1,14 +1,14 @@
 'use strict';
 
-require('./organ.service.nock');
+require('./subject.service.nock');
 
 var should = require('should')
-  , organService = require('./organ.service');
+  , subjectService = require('./subject.service');
 
 
 describe('organ.service service tests', function () {
   it('should respond with 200 and without errors', function (done) {
-    organService.getSubjectOrgan('1', function (error, response, body) {
+    subjectService.getSubjectOrgan('1', function (error, response, body) {
       console.log(JSON.stringify(body));
       if (error) {
         done(error)
@@ -19,7 +19,7 @@ describe('organ.service service tests', function () {
   });
 
   it('should respond with 200 and without errors', function (done) {
-    organService.getSubjectHuman('1', function (error, response, body) {
+    subjectService.getSubjectHuman('1', function (error, response, body) {
       console.log(JSON.stringify(body));
       if (error) {
         done(error)
