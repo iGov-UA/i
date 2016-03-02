@@ -45,8 +45,8 @@ import org.igov.util.MethodsCallRunnerUtil;
 @Scope("prototype")
 public class Mail extends Abstract_Mail {
 
-	/*@Autowired 
-    MethodsCallRunnerUtil methodCallRunner;*/
+	@Autowired 
+    MethodsCallRunnerUtil methodCallRunner;
 	
     @Autowired
     GeneralConfig generalConfig;
@@ -342,6 +342,7 @@ public class Mail extends Abstract_Mail {
             }
 
             UniSender oUniSender = new UniSender(sKey_Sender, "en");
+            oUniSender.setMethodCallRunner(methodCallRunner);
             
             if(getTo().contains(",")){
                 String[] asMail=getTo().split("\\,");
