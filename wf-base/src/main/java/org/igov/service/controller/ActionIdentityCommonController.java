@@ -67,8 +67,27 @@ public class ActionIdentityCommonController {
 	}
 
 	@RequestMapping(value = "/getUsers", method = RequestMethod.GET)
-	public @ResponseBody List<User> getUsers(@RequestParam(value = "sID_Group", required = true) String sID_Group){
-				 return identityService.createUserQuery().memberOfGroup(sID_Group).list();
+	public @ResponseBody List<User> getUsers(@RequestParam(value = "sID_Group", required = true) String sID_Group) {
+		List<User> users = identityService.createUserQuery().memberOfGroup(sID_Group).list();
+		System.out.println(users.getClass().getName());
+		for (User user : users) {
+			if(user.getFirstName() == null){
+				user.setFirstName("");
+			}
+			if(user.getLastName() == null){
+				user.setLastName("");
+			}
+			if(user.getEmail() == null){
+				user.setEmail("");
+			}
+			if(user.isPictureSet() == true){
+				
+			}
+			
+			
+		}
+		System.out.println(users.size());
+		return users;
 	}
 
 	@RequestMapping(value = "/removeUser", method = RequestMethod.DELETE)
