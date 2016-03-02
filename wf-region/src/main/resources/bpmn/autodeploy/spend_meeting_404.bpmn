@@ -22,7 +22,7 @@
           <activiti:value id="other" name="інший масовий захід"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sMistoZahodu" name="Місце проведення заходу або маршрути руху (текстовое описание маршрута " type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="fMapViewMarshrut" name="Cканована копія маршрута на картці" type="file" default="Необов'язково до завантаження"></activiti:formProperty>
+        <activiti:formProperty id="fMapViewMarshrut" name="Cканована копія маршрута на картці" type="file"></activiti:formProperty>
         <activiti:formProperty id="dDate_Beg" name="Дата початку заходу" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="eTime_Beg" name="Час початку заходу" type="enum" default="idTime11" required="true">
           <activiti:value id="idTime0" name="00:00"></activiti:value>
@@ -137,7 +137,7 @@
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>
-    <userTask id="usertask1" name="Прийняття рішення щодо розгляду повідомлення">
+    <userTask id="usertask1" name="Прийняття рішення щодо розгляду повідомлення" activiti:candidateGroups="cnap_kiev_kolon">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації громадянина-заявника" type="string" writable="false"></activiti:formProperty>
@@ -234,7 +234,7 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
+    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask7"></sequenceFlow>
     <sequenceFlow id="flow3" sourceRef="servicetask7" targetRef="servicetask2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow4" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
@@ -554,8 +554,8 @@ execution.setVariable('sInfoOrg3', per3)</script>
         <omgdi:waypoint x="120.0" y="127.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="172.0" y="92.0"></omgdi:waypoint>
-        <omgdi:waypoint x="239.0" y="78.0"></omgdi:waypoint>
+        <omgdi:waypoint x="225.0" y="127.0"></omgdi:waypoint>
+        <omgdi:waypoint x="240.0" y="127.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="411.0" y="127.0"></omgdi:waypoint>

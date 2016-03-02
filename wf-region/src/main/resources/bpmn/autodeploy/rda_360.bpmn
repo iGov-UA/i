@@ -61,8 +61,8 @@
           <activiti:value id="sFirst" name="первинне"></activiti:value>
           <activiti:value id="sSecond" name="повторне звернення"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="dCreate" name="Дата подання заяви" type="invisible" default="${sDateCreate}"></activiti:formProperty>
-        <activiti:formProperty id="nFile" name="Додати документ;Якщо декілька сторінок об'єднайте у pdf-файл або zip архів" type="file"></activiti:formProperty>
+        <activiti:formProperty id="dCreate" name="Дата подання заяви" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile" name="Додати документ;Якщо декілька сторінок об'єднайте їх у pdf-файл або zip архів" type="file"></activiti:formProperty>
         <activiti:formProperty id="sMoreFiles" name="Чи потрібні ще поля для завантаження файлів" type="enum" default="no">
           <activiti:value id="no" name="Ні"></activiti:value>
           <activiti:value id="yes1" name="одне"></activiti:value>
@@ -77,6 +77,7 @@
         <activiti:formProperty id="sOrgan" name="назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sSignCnap" name="підпис" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sHeadFIO" name="Голова" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sRozklad" name="графік роботи ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPostV" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="flag" name="Флаг таймера" type="invisible" default="false"></activiti:formProperty>
@@ -265,7 +266,7 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow43" sourceRef="servicetask7" targetRef="endevent3"></sequenceFlow>
-    <sequenceFlow id="flow42" name="Росширений для Богодухівського району" sourceRef="exclusivegateway2" targetRef="usertask3">
+    <sequenceFlow id="flow63" name="Для богодухова" sourceRef="exclusivegateway2" targetRef="usertask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Public_SubjectOrganJoin=='khar_bogod'}]]></conditionExpression>
     </sequenceFlow>
     <userTask id="usertask3" name="Первинна перевірка данних наданих громадянином" activiti:candidateGroups="rda_${sID_Public_SubjectOrganJoin}">
@@ -325,8 +326,8 @@
           <activiti:value id="sFirst" name="первинне"></activiti:value>
           <activiti:value id="sSecond" name="повторне звернення"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="dCreate" name="Дата подання заяви" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="dValidateData" name="Дата перевірки данних" type="invisible" default="${sDateCreate}"></activiti:formProperty>
+        <activiti:formProperty id="dCreate" name="Дата подання заяви" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="dValidateData" name="Дата перевірки данних(в форматі ДД.ММ.РРРР)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Рішення про реєстрацію звернення" type="enum" required="true">
           <activiti:value id="accept" name="Взяти в роботу"></activiti:value>
           <activiti:value id="reject" name="Відмовити в реєстрації звернення"></activiti:value>
@@ -415,7 +416,7 @@
         <activiti:formProperty id="sResolution" name="Резолюція" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="dExecution" name="Строк виконання;в форматі ДД.ММ.РРРР" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameExecutor" name="Виконавець" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="dResolution" name="Дата накладення резолюції" type="invisible" default="${sDateCreate}"></activiti:formProperty>
+        <activiti:formProperty id="dResolution" name="Дата накладення резолюції;в форматі ДД.ММ.РРРР" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sOrgan" name="назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/rda_360.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
@@ -487,14 +488,16 @@
         </activiti:formProperty>
         <activiti:formProperty id="sResolution" name="Резолюція" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="dExecution" name="Строк виконання" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dCreate" name="Дата подання заяви" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="dValidateData" name="Дата перевірки данних" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="dResolution" name="Дата накладення резолюції" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="dTransExecutor" name="Дата направлення рішення виконавцю" type="invisible" default="${sDateCreate}"></activiti:formProperty>        
+        <activiti:formProperty id="dCreate" name="Дата подання заяви" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="dValidateData" name="Дата перевірки данних" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="dResolution" name="Дата накладення резолюції" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="dTransExecutor" name="Дата направлення рішення виконавцю (в форматі ДД.ММ.РРРР)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameExecutor" name="Виконавець" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameExecutorExtended" name="Розширені дані про виконавця;прізвище, ініціали та номер телефону безпосереднього виконавця" type="textArea" default="${sNameExecutor}" required="true"></activiti:formProperty>
+        <activiti:formProperty id="aResult" name="Результат розгляду звернення" type="textArea" readable="false" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sOrgan" name="назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sHeadFIO" name="ФІО голови" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/rda_360.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBodycontrolCard_1" name="[pattern/print/bogoduhiv/bogoduhiv_zvern_354_print.html]" type="invisible" default="Реєстраційно-контрольна карта(Лицьовий бік)" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBodycontrolCard_2" name="[pattern/print/bogoduhiv/bogoduhiv_zvern_354_back_print.html]" type="invisible" default="Реєстраційно-контрольна карта(Зворотний бік)" writable="false"></activiti:formProperty>
@@ -597,8 +600,12 @@
           <activiti:value id="sSecond" name="повторне звернення"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sResolution" name="Резолюція" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="dCreate" name="Дата подання заяви" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="dValidateData" name="Дата перевірки данних" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="dResolution" name="Дата накладення резолюції" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="dTransExecutor" name="Дата направлення рішення виконавцю" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="dExecution" name="Строк виконання" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNameExecutorExtended" name="Розширені дані про виконавця;прізвище, ініціали та номер телефону безпосереднього виконавця" type="textArea" default="${sNameExecutor}" required="true"></activiti:formProperty>        
+        <activiti:formProperty id="sNameExecutorExtended" name="Розширені дані про виконавця;прізвище, ініціали та номер телефону безпосереднього виконавця" type="textArea" default="${sNameExecutor}" required="true"></activiti:formProperty>
         <activiti:formProperty id="asResult" name="Рішення про виконання звернення" type="enum" required="true">
           <activiti:value id="sEnumResult_1" name="позитивно"></activiti:value>
           <activiti:value id="sEnumResult_2" name="відмовлено у задоволенні"></activiti:value>
@@ -607,12 +614,9 @@
           <activiti:value id="sEnumResult_5" name="надіслано за належністю"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="aResult" name="Результат розгляду звернення;інформація буде надіслана на електронну пошту громадянина" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="dCreate" name="Дата подання заяви" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="dValidateData" name="Дата перевірки данних" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="dResolution" name="Дата накладення резолюції" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="dTransExecutor" name="Дата направлення рішення виконавцю" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sOrgan" name="назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sHeadFIO" name="адреса органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/rda_360.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBodycontrolCard_1" name="[pattern/print/bogoduhiv/bogoduhiv_zvern_354_print.html]" type="invisible" default="Реєстраційно-контрольна карта(Лицьовий бік)" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBodycontrolCard_2" name="[pattern/print/bogoduhiv/bogoduhiv_zvern_354_back_print.html]" type="invisible" default="Реєстраційно-контрольна карта(Зворотний бік)" writable="false"></activiti:formProperty>
@@ -822,11 +826,11 @@
         <omgdi:waypoint x="798.0" y="307.0"></omgdi:waypoint>
         <omgdi:waypoint x="980.0" y="247.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">
+      <bpmndi:BPMNEdge bpmnElement="flow63" id="BPMNEdge_flow63">
         <omgdi:waypoint x="480.0" y="136.0"></omgdi:waypoint>
         <omgdi:waypoint x="480.0" y="194.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="56.0" width="100.0" x="489.0" y="126.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="82.0" x="490.0" y="153.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow56" id="BPMNEdge_flow56">
@@ -875,7 +879,7 @@
         <omgdi:waypoint x="227.0" y="472.0"></omgdi:waypoint>
         <omgdi:waypoint x="282.0" y="360.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="148.0" y="462.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="64.0" x="148.0" y="462.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow58" id="BPMNEdge_flow58">
@@ -887,7 +891,7 @@
         <omgdi:waypoint x="313.0" y="471.0"></omgdi:waypoint>
         <omgdi:waypoint x="282.0" y="360.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="327.0" y="462.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="54.0" x="327.0" y="462.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow57" id="BPMNEdge_flow57">
