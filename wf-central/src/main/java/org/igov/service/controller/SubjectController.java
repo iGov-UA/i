@@ -845,6 +845,7 @@ public class SubjectController {
                     nID_Subject = subjectAccounts.get(0).getnID_Subject();
                     subject = subjectDao.getSubject(nID_Subject);
                     List<SubjectContact> subjectContacts = subjectContactDao.findContacts(subject);
+                    LOG.info("subjectContacts: " + subjectContacts);
                     subject.setaSubjectAccountContact(subjectContacts);
                     subjects.put(login, subject);
                 }

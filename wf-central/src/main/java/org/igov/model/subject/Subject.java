@@ -51,4 +51,8 @@ public class Subject extends Entity {
     public void setaSubjectAccountContact(List<SubjectContact> aSubjectAccountContact) {
         this.aSubjectAccountContact = aSubjectAccountContact;
     }
+
+    public List<SubjectContact> getaSubjectAccountContact() {
+        return aSubjectAccountContact;
+    }
 }
