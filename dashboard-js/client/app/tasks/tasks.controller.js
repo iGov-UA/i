@@ -7,7 +7,7 @@
 
   tasksCtrl.$inject = [
     '$scope', '$window', 'tasks', 'processes', 'Modal', 'Auth', 'identityUser', '$localStorage', '$filter', 'lunaService',
-    'PrintTemplateService', 'taskFilterService', 'MarkersFactory', 'iGovNavbarHelper', '$location',
+    'PrintTemplateService', 'taskFilterService', 'MarkersFactory', 'iGovNavbarHelper', '$location', 'NavbarCtrl'
   ];
   function tasksCtrl(
     $scope, $window, tasks, processes, Modal, Auth, identityUser, $localStorage, $filter, lunaService,
@@ -219,6 +219,7 @@
     $scope.applyTaskFilter = function (menuType, nID_Task, resetSelectedTask) {
       $scope.tasksLoading = true;
       $scope.tasks = $scope.filteredTasks = null;
+      //$scope.goToTasks(menuType);//"selfAssigned"
       $scope.sSelectedTask = $scope.$storage.menuType;
       $scope.selectedTask = resetSelectedTask ? null : $scope.selectedTasks[menuType];
       $scope.$storage.menuType = menuType;
@@ -462,6 +463,7 @@
           Modal.assignTask(function (event) {
             //$scope.lightweightRefreshAfterSubmit();
             $scope.selectedTasks['unassigned'] = null;
+             $scope.goToTasks("selfAssigned");
             $scope.applyTaskFilter(iGovNavbarHelper.menus[1].type, $scope.selectedTask.id);
           }, 'Задача у вас в роботі', $scope.lightweightRefreshAfterSubmit);
 
