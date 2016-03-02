@@ -62,6 +62,7 @@
           <activiti:value id="sSecond" name="повторне звернення"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="dCreate" name="Дата подання заяви" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="dValidateData" name="Дата перевірки данних;в форматі ДД.ММ.РРРР" type="string" ></activiti:formProperty>
         <activiti:formProperty id="nFile" name="Додати документ;Якщо декілька сторінок об'єднайте у pdf-файл або zip архів" type="file"></activiti:formProperty>
         <activiti:formProperty id="sMoreFiles" name="Чи потрібні ще поля для завантаження файлів" type="enum" default="no">
           <activiti:value id="no" name="Ні"></activiti:value>
@@ -268,6 +269,14 @@
     <sequenceFlow id="flow42" name="Росширений для Богодухівського району" sourceRef="exclusivegateway2" targetRef="scripttask1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Public_SubjectOrganJoin=='khar_bogod'}]]></conditionExpression>
     </sequenceFlow>
+    
+    <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>
+            execution.setVariable("dValidateData", "sDateCreate")
+      </script>
+    </scriptTask>
+    
+    <sequenceFlow id="flow63" sourceRef="scripttask1" targetRef="usertask3"></sequenceFlow>
     <userTask id="usertask3" name="Первинна перевірка данних наданих громадянином" activiti:candidateGroups="rda_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFIO" name="Прізвище, ім`я, по-батькові громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -325,7 +334,7 @@
           <activiti:value id="sFirst" name="первинне"></activiti:value>
           <activiti:value id="sSecond" name="повторне звернення"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="dCreate" name="Дата подання заяви" type="date"></activiti:formProperty>
+        <activiti:formProperty id="dCreate" name="Дата подання заяви" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="dValidateData" name="Дата перевірки данних;в форматі ДД.ММ.РРРР" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Рішення про реєстрацію звернення" type="enum" required="true">
           <activiti:value id="accept" name="Взяти в роботу"></activiti:value>
@@ -697,10 +706,6 @@
     </sequenceFlow>
     <exclusiveGateway id="exclusivegateway5" name="Parallel Gateway"></exclusiveGateway>
     <exclusiveGateway id="exclusivegateway6" name="Parallel Gateway"></exclusiveGateway>
-    <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>execution.setVariable("docDateFormat", execution.getVariable("sDateCreate").format("dd.MM.yyyy"))</script>
-    </scriptTask>
-    <sequenceFlow id="flow63" sourceRef="scripttask1" targetRef="usertask3"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_rda_360">
     <bpmndi:BPMNPlane bpmnElement="rda_360" id="BPMNPlane_rda_360">
