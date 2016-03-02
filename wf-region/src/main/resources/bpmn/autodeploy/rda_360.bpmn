@@ -265,7 +265,7 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow43" sourceRef="servicetask7" targetRef="endevent3"></sequenceFlow>
-    <sequenceFlow id="flow42" name="Росширений для Богодухівського району" sourceRef="exclusivegateway2" targetRef="usertask3">
+    <sequenceFlow id="flow42" name="Росширений для Богодухівського району" sourceRef="exclusivegateway2" targetRef="scripttask1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Public_SubjectOrganJoin=='khar_bogod'}]]></conditionExpression>
     </sequenceFlow>
     <userTask id="usertask3" name="Первинна перевірка данних наданих громадянином" activiti:candidateGroups="rda_${sID_Public_SubjectOrganJoin}">
@@ -490,7 +490,7 @@
         <activiti:formProperty id="dCreate" name="Дата подання заяви" type="date"></activiti:formProperty>
         <activiti:formProperty id="dValidateData" name="Дата перевірки данних" type="string"></activiti:formProperty>
         <activiti:formProperty id="dResolution" name="Дата накладення резолюції" type="string"></activiti:formProperty>
-        <activiti:formProperty id="dTransExecutor" name="Дата направлення рішення виконавцю;в форматі ДД.ММ.РРРР" type="string" required="true"></activiti:formProperty>        
+        <activiti:formProperty id="dTransExecutor" name="Дата направлення рішення виконавцю;в форматі ДД.ММ.РРРР" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameExecutor" name="Виконавець" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameExecutorExtended" name="Розширені дані про виконавця;прізвище, ініціали та номер телефону безпосереднього виконавця" type="textArea" default="${sNameExecutor}" required="true"></activiti:formProperty>
         <activiti:formProperty id="sOrgan" name="назва органу" type="invisible"></activiti:formProperty>
@@ -598,7 +598,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="sResolution" name="Резолюція" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="dExecution" name="Строк виконання" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNameExecutorExtended" name="Розширені дані про виконавця;прізвище, ініціали та номер телефону безпосереднього виконавця" type="textArea" default="${sNameExecutor}" required="true"></activiti:formProperty>        
+        <activiti:formProperty id="sNameExecutorExtended" name="Розширені дані про виконавця;прізвище, ініціали та номер телефону безпосереднього виконавця" type="textArea" default="${sNameExecutor}" required="true"></activiti:formProperty>
         <activiti:formProperty id="asResult" name="Рішення про виконання звернення" type="enum" required="true">
           <activiti:value id="sEnumResult_1" name="позитивно"></activiti:value>
           <activiti:value id="sEnumResult_2" name="відмовлено у задоволенні"></activiti:value>
@@ -697,6 +697,10 @@
     </sequenceFlow>
     <exclusiveGateway id="exclusivegateway5" name="Parallel Gateway"></exclusiveGateway>
     <exclusiveGateway id="exclusivegateway6" name="Parallel Gateway"></exclusiveGateway>
+    <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>execution.setVariable("docDateFormat", execution.getVariable("sDateCreate").format("dd.MM.yyyy"))</script>
+    </scriptTask>
+    <sequenceFlow id="flow63" sourceRef="scripttask1" targetRef="usertask3"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_rda_360">
     <bpmndi:BPMNPlane bpmnElement="rda_360" id="BPMNPlane_rda_360">
@@ -769,6 +773,9 @@
       <bpmndi:BPMNShape bpmnElement="exclusivegateway6" id="BPMNShape_exclusivegateway6">
         <omgdc:Bounds height="40.0" width="40.0" x="460.0" y="470.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="580.0" y="194.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
         <omgdi:waypoint x="35.0" y="116.0"></omgdi:waypoint>
         <omgdi:waypoint x="60.0" y="117.0"></omgdi:waypoint>
@@ -824,7 +831,7 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">
         <omgdi:waypoint x="480.0" y="136.0"></omgdi:waypoint>
-        <omgdi:waypoint x="480.0" y="194.0"></omgdi:waypoint>
+        <omgdi:waypoint x="632.0" y="194.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="56.0" width="100.0" x="489.0" y="126.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
@@ -875,7 +882,7 @@
         <omgdi:waypoint x="227.0" y="472.0"></omgdi:waypoint>
         <omgdi:waypoint x="282.0" y="360.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="148.0" y="462.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="64.0" x="148.0" y="462.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow58" id="BPMNEdge_flow58">
@@ -887,7 +894,7 @@
         <omgdi:waypoint x="313.0" y="471.0"></omgdi:waypoint>
         <omgdi:waypoint x="282.0" y="360.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="327.0" y="462.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="54.0" x="327.0" y="462.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow57" id="BPMNEdge_flow57">
@@ -904,6 +911,10 @@
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="14.0" width="79.0" x="489.0" y="519.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow63" id="BPMNEdge_flow63">
+        <omgdi:waypoint x="580.0" y="221.0"></omgdi:waypoint>
+        <omgdi:waypoint x="546.0" y="229.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
