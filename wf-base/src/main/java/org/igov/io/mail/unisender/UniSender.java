@@ -31,7 +31,7 @@ import org.springframework.stereotype.Service;
 
 public class UniSender {
     
-	@Autowired 
+	 
     MethodsCallRunnerUtil methodCallRunner;
 	
     final static private Logger LOG = LoggerFactory.getLogger(UniSender.class);
@@ -388,5 +388,11 @@ public class UniSender {
         SimpleDateFormat oSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         return oSimpleDateFormat.format(oCalendar.getTime());
     }
+
+    @Autowired
+	public void setMethodCallRunner(MethodsCallRunnerUtil methodCallRunner) {
+		this.methodCallRunner = methodCallRunner;
+	}
+    
 }
 
