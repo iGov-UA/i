@@ -23,6 +23,7 @@ import org.igov.util.MethodsCallRunnerUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -39,12 +40,11 @@ import com.mongodb.util.JSON;
 @Component
 public class UniSender {
     
-	@Autowired
     MethodsCallRunnerUtil methodCallRunner;
     
     @Autowired
-    GeneralConfig generalConfig;
-	
+    GeneralConfig generalConfig;	   
+    
     final static private Logger LOG = LoggerFactory.getLogger(UniSender.class);
     private static final Logger LOG_BIG = LoggerFactory.getLogger("MailBig");
     
@@ -141,6 +141,7 @@ public class UniSender {
         UniResponse oUniResponse = null;
         try{
         	LOG.info("Calling registrateMethod with params{}", mParam);
+        	
         	LOG.info("methodCallRunner is {}",methodCallRunner);
         	oUniResponse = (UniResponse) methodCallRunner.registrateMethod(UniSender.class.getName(), "sendRequest", new Object[]{mParam, osURL.toString(),null});
         	LOG.info("Response from UniSender{}", oUniResponse);
@@ -416,5 +417,8 @@ public class UniSender {
         return oSimpleDateFormat.format(oCalendar.getTime());
     }
 
+    public void setMethodCallRunner(MethodsCallRunnerUtil methodCallRunner) {
+		this.methodCallRunner = methodCallRunner;
+	}
 }
 
