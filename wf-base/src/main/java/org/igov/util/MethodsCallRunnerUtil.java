@@ -56,12 +56,12 @@ public class MethodsCallRunnerUtil {
 
 	public Object registrateMethod(String className, String methodName, Object[] parameters) throws CommonServiceException{
 		try{			
-			LOG.info("in egistrateMethod");
+			LOG.info("in registrateMethod");
 			Object ret = null;
 			Class<?> c = Class.forName(className);
 			Object o = null;
 			try{
-				o =springContext.getBean(c);
+				o = springContext.getBean(c);
 			}catch(BeansException e){
 				LOG.info("Cant find bean with class name {} in spring context.", className);
 				o = c.getDeclaredConstructor().newInstance();

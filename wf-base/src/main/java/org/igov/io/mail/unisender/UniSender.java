@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.commons.lang3.StringUtils;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpEntityCover;
@@ -51,8 +53,8 @@ public class UniSender {
     final static private String CREATE_EMAIL_MESSAGE_URI = "/api/createEmailMessage";
     final static private String CREATE_CAMPAIGN_URI = "/api/createCampaign";
     final static private String AND = "&";
-    final private String sAuthKey;
-    final private String sLang;
+    private String sAuthKey;
+    private String sLang;
     private StringBuilder osURL;
 
     /**
@@ -72,19 +74,20 @@ public class UniSender {
     }
 
     public UniSender() {
+
+	}
+
+    @PostConstruct
+    public void initialize() {
     	this.sAuthKey = generalConfig.getsKey_Sender();
         if(StringUtils.isBlank(sAuthKey)){
-            throw new IllegalArgumentException("Please check api_key in UniSender property file configuration");
-        }
-        if(StringUtils.isBlank(sAuthKey)){
-            throw new IllegalArgumentException("Please check api_key in UniSender property file configuration");
-        }
+            LOG.error("Please check api_key in UniSender property file configuration");
+        }        
         this.sLang = "en";
         
         this.osURL = new StringBuilder(this.API_URL);
         osURL.append(this.sLang);
-	}
-    
+    }
     /**
      * @param sAuthKey - api_key - this is access key for UniSender API.
      *               LANG parameter will be "EN".
