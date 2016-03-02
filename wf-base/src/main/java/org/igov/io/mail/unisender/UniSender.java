@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
@@ -33,6 +34,7 @@ import com.mongodb.util.JSON;
  * Created by Dmytro Tsapko on 11/28/2015.
  */
 
+@Component
 public class UniSender {
     
 	@Autowired
