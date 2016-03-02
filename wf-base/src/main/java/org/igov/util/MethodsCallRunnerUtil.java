@@ -61,7 +61,7 @@ public class MethodsCallRunnerUtil {
 			Class<?> c = Class.forName(className);
 			Object o = null;
 			try{
-				o =springContext.getBean(c);
+				o = springContext.getBean(c);
 			}catch(BeansException e){
 				LOG.info("Cant find bean with class name {} in spring context.", className);
 				o = c.getDeclaredConstructor().newInstance();
