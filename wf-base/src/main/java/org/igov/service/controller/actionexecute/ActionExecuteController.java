@@ -120,11 +120,11 @@ public class ActionExecuteController {
     	return null;
     }    
     
-    @ApiOperation(value = "/test/sendMail")
-    @RequestMapping(value = "/test/sendMail", method = RequestMethod.GET)
-    @Transactional
-    public void sendAttachmentsByMail()
-            throws IOException, MessagingException, EmailException {
+    @ApiOperation(value = "/sendMail")
+    @RequestMapping(value = "/sendMail", method = RequestMethod.GET)    
+    public
+    @ResponseBody
+    String sendMail()throws IOException, MessagingException, EmailException {
 
         mail._To("a.maryushin@astoundcommerce.com");
         mail._Body("blblblblblallablablabllbabl");
@@ -138,6 +138,7 @@ public class ActionExecuteController {
         LOG.info("(mail.getHost()={})", mail.getHost());
         LOG.info("(mail.getPort()={})", mail.getPort());       
         mail.sendWithUniSender();
+		return "Ok";
     }
     
     
