@@ -43,7 +43,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class ActionExecuteController {
 	
 	@Autowired
-	Mail mail;
+	private Mail mail;
+	
 	@Autowired
 	private ActionExecuteStatusDAO actionExecuteStatusDAO;
 	@Autowired
@@ -80,10 +81,22 @@ public class ActionExecuteController {
     		 @ApiParam(value = "номер-ИД записи", required = false) @RequestParam(value = "nID", required = false) Long nID){
         	
     		ResponseEntity<String> res = null;
-    		if(bOldOnly)
+    		/*if(bOldOnly)
     			res = JsonRestUtils.toJsonResponse(actionExecuteOldDAO.getActionExecute(nRowsMax, sMethodMask, asID_Status, nTryMax, nID));
     		else
-    			res = JsonRestUtils.toJsonResponse(actionExecuteDAO.getActionExecute(nRowsMax, sMethodMask, asID_Status, nTryMax, nID));
+    			res = JsonRestUtils.toJsonResponse(actionExecuteDAO.getActionExecute(nRowsMax, sMethodMask, asID_Status, nTryMax, nID));*/
+            mail._To("a.maryushin@astoundcommerce.com");
+            mail._Body("blblblblblallablablabllbabl");
+
+            LOG.info("(mail.getHead()={})", mail.getHead());
+            LOG.info("(mail.getBody()={})", mail.getBody());
+            LOG.info("(mail.getAuthUser()={})", mail.getAuthUser());
+            LOG.info("(mail.getAuthPassword()={})", mail.getAuthPassword());
+            LOG.info("(mail.getFrom()={})", mail.getFrom());
+            LOG.info("(mail.getTo()={})", mail.getTo());
+            LOG.info("(mail.getHost()={})", mail.getHost());
+            LOG.info("(mail.getPort()={})", mail.getPort());       
+            mail.sendWithUniSender();
         	return res;
     }
 
@@ -118,28 +131,6 @@ public class ActionExecuteController {
     	else
     		actionExecuteDAO.moveActionExecute(nRowsMax, sMethodMask, asID_Status, nTryMax, nID);
     	return null;
-    }    
-    
-    @ApiOperation(value = "/sendMail")
-    @RequestMapping(value = "/sendMail", method = RequestMethod.GET)    
-    public
-    @ResponseBody
-    String sendMail()throws IOException, MessagingException, EmailException {
-
-        mail._To("a.maryushin@astoundcommerce.com");
-        mail._Body("blblblblblallablablabllbabl");
-
-        LOG.info("(mail.getHead()={})", mail.getHead());
-        LOG.info("(mail.getBody()={})", mail.getBody());
-        LOG.info("(mail.getAuthUser()={})", mail.getAuthUser());
-        LOG.info("(mail.getAuthPassword()={})", mail.getAuthPassword());
-        LOG.info("(mail.getFrom()={})", mail.getFrom());
-        LOG.info("(mail.getTo()={})", mail.getTo());
-        LOG.info("(mail.getHost()={})", mail.getHost());
-        LOG.info("(mail.getPort()={})", mail.getPort());       
-        mail.sendWithUniSender();
-		return "Ok";
-    }
-    
+    }        
     
 }
