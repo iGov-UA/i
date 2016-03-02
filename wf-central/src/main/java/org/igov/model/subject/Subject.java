@@ -1,6 +1,7 @@
 package org.igov.model.subject;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import org.igov.model.core.Entity;
 
 import javax.persistence.Column;
@@ -19,6 +20,8 @@ public class Subject extends Entity {
     @JsonProperty(value = "sLabelShort")
     @Column(name = "sLabelShort", nullable = true)
     private String sLabelShort;
+    
+    private transient List<SubjectContact> aSubjectContact;
 
     public String getsID() {
         return sID;
@@ -44,4 +47,7 @@ public class Subject extends Entity {
         this.sLabelShort = sLabelShort;
     }
 
+    public void setaSubjectContact(List<SubjectContact> aSubjectContact) {
+        this.aSubjectContact = aSubjectContact;
+    }
 }
