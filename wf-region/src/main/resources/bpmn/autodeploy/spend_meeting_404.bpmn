@@ -482,20 +482,49 @@
     <sequenceFlow id="flow17" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
     <scriptTask id="scripttask1" name="Визначення параметрів" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var per1 = execution.getVariable('lastName_UA1')+' '+execution.getVariable('firstName_UA1')+' '+
-execution.getVariable('middleName_UA1')+'Адреса реєстрації: '+execution.getVariable('sAdress_1')+
-'Телефон: '+execution.getVariable('sphone_1')+
+execution.getVariable('middleName_UA1')+'0x0A Адреса реєстрації: '+execution.getVariable('sAdress_1')+
+'U+000A Телефон: '+execution.getVariable('sphone_1')+
 'Місце роботи (навчання):  '+execution.getVariable('sPlace_of_Work_1')
-var per2 = '${lastName_UA2} ${firstName_UA2} ${middleName_UA2}Телефон: ${sphone_2} Місце роботи (навчання):  ${sPlace_of_Work_2}'
-var per3 = '${lastName_UA3} ${firstName_UA3} ${middleName_UA3} Адреса реєстрації: ${sAdress_3} Телефон: ${sphone_3} Місце роботи (навчання):  ${sPlace_of_Work_3}'
+var per2 = ''
+var per3 = ''
 
 if (execution.getVariable('isRepresentCompany_1') == 'id_Tak')
 {
-	per1 = per1+'\n'+'Організація: ${sNameCompany_1} (ЄДРПО  ${sedrpou_1})'
+	per1 = per1+'Організація: '+execution.getVariable('sNameCompany_1')+
+	' (ЄДРПОУ '+execution.getVariable('sedrpou_1')
 }
 			
+if (execution.getVariable('eCountOrganizatorov') == 'idCount2' || execution.getVariable('eCountOrganizatorov') == 'idCount3')
+{
+	per2 = per2 + execution.getVariable('lastName_UA2')+' '+execution.getVariable('firstName_UA2')+' '+
+				  execution.getVariable('middleName_UA2')+'Адреса реєстрації: '+execution.getVariable('sAdress_2')+
+				  'Телефон: '+execution.getVariable('sphone_2')+
+				  'Місце роботи (навчання):  '+execution.getVariable('sPlace_of_Work_2')
+}
+
+if (execution.getVariable('isRepresentCompany_2') == 'id_Tak' &amp;&amp; ( execution.getVariable('eCountOrganizatorov') == 'idCount2' || execution.getVariable('eCountOrganizatorov') == 'idCount3'))
+{
+	per2 = per2+'Організація: '+execution.getVariable('sNameCompany_2')+
+	' (ЄДРПОУ '+execution.getVariable('sedrpou_2')
+}
+
+if (execution.getVariable('eCountOrganizatorov') == 'idCount3')
+{
+	per3 = per3 + 	execution.getVariable('lastName_UA3')+' '+execution.getVariable('firstName_UA3')+' '+
+					execution.getVariable('middleName_UA3')+'Адреса реєстрації: '+execution.getVariable('sAdress_3')+
+					'Телефон: '+execution.getVariable('sphone_3')+
+					'Місце роботи (навчання):  '+execution.getVariable('sPlace_of_Work_3')
+}
+if (execution.getVariable('isRepresentCompany_3') == 'id_Tak' &amp;&amp; execution.getVariable('eCountOrganizatorov') == 'idCount3')
+{
+	per3 = per3+'Організація: '+execution.getVariable('sNameCompany_3')+
+	' (ЄДРПОУ '+execution.getVariable('sedrpou_3')
+}
+
 execution.setVariable('sInfoOrg1', per1) 
 execution.setVariable('sInfoOrg2', per2)
-execution.setVariable('sInfoOrg3', per3)</script>
+execution.setVariable('sInfoOrg3', per3)
+</script>
     </scriptTask>
     <sequenceFlow id="flow18" sourceRef="scripttask1" targetRef="servicetask7"></sequenceFlow>
   </process>
