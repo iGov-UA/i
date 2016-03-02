@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpEntityCover;
 import org.igov.util.MethodsCallRunnerUtil;
 import org.slf4j.Logger;
@@ -34,8 +35,11 @@ import com.mongodb.util.JSON;
 
 public class UniSender {
     
-	 
+	@Autowired
     MethodsCallRunnerUtil methodCallRunner;
+    
+    @Autowired
+    GeneralConfig generalConfig;
 	
     final static private Logger LOG = LoggerFactory.getLogger(UniSender.class);
     private static final Logger LOG_BIG = LoggerFactory.getLogger("MailBig");
@@ -65,6 +69,20 @@ public class UniSender {
         osURL.append(this.sLang);
     }
 
+    public UniSender() {
+    	this.sAuthKey = generalConfig.getsKey_Sender();
+        if(StringUtils.isBlank(sAuthKey)){
+            throw new IllegalArgumentException("Please check api_key in UniSender property file configuration");
+        }
+        if(StringUtils.isBlank(sAuthKey)){
+            throw new IllegalArgumentException("Please check api_key in UniSender property file configuration");
+        }
+        this.sLang = "en";
+        
+        this.osURL = new StringBuilder(this.API_URL);
+        osURL.append(this.sLang);
+	}
+    
     /**
      * @param sAuthKey - api_key - this is access key for UniSender API.
      *               LANG parameter will be "EN".
@@ -393,10 +411,5 @@ public class UniSender {
         return oSimpleDateFormat.format(oCalendar.getTime());
     }
 
-    @Autowired
-	public void setMethodCallRunner(MethodsCallRunnerUtil methodCallRunner) {
-		this.methodCallRunner = methodCallRunner;
-	}
-    
 }
 
