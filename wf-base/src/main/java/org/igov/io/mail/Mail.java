@@ -342,7 +342,6 @@ public class Mail extends Abstract_Mail {
             }
 
             UniSender oUniSender = new UniSender(sKey_Sender, "en");
-            oUniSender.setMethodCallRunner(methodCallRunner);
             
             if(getTo().contains(",")){
                 String[] asMail=getTo().split("\\,");
