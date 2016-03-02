@@ -19,6 +19,7 @@ import org.igov.service.exception.CommonServiceException;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -58,8 +59,11 @@ public class MethodsCallRunnerUtil {
 			LOG.info("in egistrateMethod");
 			Object ret = null;
 			Class<?> c = Class.forName(className);
-			Object o = springContext.getBean(c);
-			if(o==null){
+			Object o = null;
+			try{
+				o =springContext.getBean(c);
+			}catch(BeansException e){
+				LOG.info("Cant find bean with class name {} in spring context.", className);
 				o = c.getDeclaredConstructor().newInstance();
 			}
 			
