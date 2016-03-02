@@ -214,9 +214,26 @@
     <sequenceFlow id="flow7" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
     <userTask id="usertask2" name="Виконнання заявки" activiti:candidateGroups="lnu_arhiv">
       <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asZminapib" name="Чи змінили ви прізвище/ім'я/по батькові з моменту навчання/роботи" type="enum" writable="false">
+          <activiti:value id="asPib_ni" name="Ні"></activiti:value>
+          <activiti:value id="asPib_tak" name="Так"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sStareFIO" name="Старі прізвище ім'я та по батькові на момент навчання/роботи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sEmail" name="Ваш e-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asDocs" name="Назва затребуваного документу" type="enum" writable="false">
+          <activiti:value id="asNak_zarahuv" name="Витяг з наказу про зарахування"></activiti:value>
+          <activiti:value id="asNak_vidrax" name="витяг з наказу про відрахування"></activiti:value>
+          <activiti:value id="asNak_pruin" name="витяг з наказу про прийняття"></activiti:value>
+          <activiti:value id="asNak_zviln" name="витяг з наказу про звільнення з посади"></activiti:value>
+          <activiti:value id="asDiplom" name="копія диплому"></activiti:value>
+          <activiti:value id="asDod_diplom" name="копія додатку до диплома"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="vukonan" name="Чи виконана заявка на отримання довідки" type="enum" required="true">
           <activiti:value id="vuk_ok" name="Заявку виконано, відправити лист з запитом про оцінку послуги"></activiti:value>
-          <activiti:value id="vuk_bad" name="Заявка оформлена не вірно/відомості відсутні в архіві, відмова."></activiti:value>
+          <activiti:value id="vuk_bad" name="Послугу не надано"></activiti:value>
         </activiti:formProperty>
       </extensionElements>
     </userTask>

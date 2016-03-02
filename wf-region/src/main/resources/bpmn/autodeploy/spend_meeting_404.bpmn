@@ -8,6 +8,7 @@
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації громадянина-заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний (особистий) номер телефону для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sLabel1" name=" " type="label" default="&lt;b&gt;Інформація щодо заходу&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="sMetaZahodu" name="Мета заходу" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="eFormaZahodu" name="Форма заходу" type="enum" required="true">
@@ -20,8 +21,8 @@
           <activiti:value id="look" name="видовищний масовий захід"></activiti:value>
           <activiti:value id="other" name="інший масовий захід"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sMistoZahodu" name="Місце проведення заходу або маршрути руху (текстовое описание маршрута " type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="fMapViewMarshrut" name="Cканована копія маршрута на картці" type="file" default="Необов'язково до завантаження"></activiti:formProperty>
+        <activiti:formProperty id="sMistoZahodu" name="Місце проведення заходу або маршрути руху (текстовое описание маршрута)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="fMapViewMarshrut" name="Cканована копія маршрута на картці" type="file"></activiti:formProperty>
         <activiti:formProperty id="dDate_Beg" name="Дата початку заходу" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="eTime_Beg" name="Час початку заходу" type="enum" default="idTime11" required="true">
           <activiti:value id="idTime0" name="00:00"></activiti:value>
@@ -136,7 +137,7 @@
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>
-    <userTask id="usertask1" name="Прийняття рішення щодо розгляду повідомлення">
+    <userTask id="usertask1" name="Прийняття рішення щодо розгляду повідомлення" activiti:candidateGroups="cnap_kiev_kolon">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації громадянина-заявника" type="string" writable="false"></activiti:formProperty>
@@ -218,6 +219,8 @@
           <activiti:value id="idCount3" name="3"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sInfoOrg1" name="Організатор заходу 1" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sInfoOrg2" name="Організатор заходу 2" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sInfoOrg3" name="Організатор заходу 3" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decision_1" name="Прийняте рішення щодо розгляду повідомлення" type="enum" required="true">
           <activiti:value id="accept" name="розглянути повідомлення"></activiti:value>
           <activiti:value id="reject" name="відмовити у розгляданні повідомлення"></activiti:value>
@@ -240,18 +243,90 @@
     </sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow6" sourceRef="servicetask4" targetRef="endevent1"></sequenceFlow>
-    <userTask id="usertask2" name="Друк заяви, повідомлення щодо рішення">
+    <userTask id="usertask2" name="Друк заяви, повідомлення щодо рішення" activiti:candidateGroups="cnap_kiev_kolon">
       <extensionElements>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації громадянина" type="string" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Серія та номер паспорту" type="string" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="сканована копія паспорту" type="file" default="завантажується автоматично" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_inn" name="сканована копія ІПН" type="file" default="завантажується автоматично" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAdressBuilding" name="Адреса будівлі, щодо якої запрошується дозвіл на знесення" type="string" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="fSvidoztvoNaPravoSobstvennosti" name="Завантажте свідоцтво про право власності на будинок" type="file" writable="false" required="true"></activiti:formProperty>
+        <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації громадянина-заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний (особистий) номер телефону для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLabel1" name=" " type="label" default="&lt;b&gt;Інформація щодо заходу&lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sMetaZahodu" name="Мета заходу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="eFormaZahodu" name="Форма заходу" type="enum" writable="false">
+          <activiti:value id="zbori" name="збори"></activiti:value>
+          <activiti:value id="miting" name="мітинг"></activiti:value>
+          <activiti:value id="manifest" name="маніфестація"></activiti:value>
+          <activiti:value id="hoda" name="хода"></activiti:value>
+          <activiti:value id="demonstration" name="демонстрація"></activiti:value>
+          <activiti:value id="sport" name="спортивний масовий захід"></activiti:value>
+          <activiti:value id="look" name="видовищний масовий захід"></activiti:value>
+          <activiti:value id="other" name="інший масовий захід"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sMistoZahodu" name="Місце проведення заходу або маршрути руху (текстовое описание маршрута " type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="dDate_Beg" name="Дата початку заходу" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="eTime_Beg" name="Час початку заходу" type="enum" writable="false">
+          <activiti:value id="idTime0" name="00:00"></activiti:value>
+          <activiti:value id="idTime1" name="01:00"></activiti:value>
+          <activiti:value id="idTime2" name="02:00"></activiti:value>
+          <activiti:value id="idTime3" name="03:00"></activiti:value>
+          <activiti:value id="idTime4" name="04:00"></activiti:value>
+          <activiti:value id="idTime5" name="05:00"></activiti:value>
+          <activiti:value id="idTime6" name="06:00"></activiti:value>
+          <activiti:value id="idTime7" name="07:00"></activiti:value>
+          <activiti:value id="idTime8" name="08:00"></activiti:value>
+          <activiti:value id="idTime9" name="09:00"></activiti:value>
+          <activiti:value id="idTime10" name="10:00"></activiti:value>
+          <activiti:value id="idTime11" name="11:00"></activiti:value>
+          <activiti:value id="idTime12" name="12:00"></activiti:value>
+          <activiti:value id="idTime13" name="13:00"></activiti:value>
+          <activiti:value id="idTime14" name="14:00"></activiti:value>
+          <activiti:value id="idTime15" name="15:00"></activiti:value>
+          <activiti:value id="idTime16" name="16:00"></activiti:value>
+          <activiti:value id="idTime17" name="17:00"></activiti:value>
+          <activiti:value id="idTime18" name="18:00"></activiti:value>
+          <activiti:value id="idTime19" name="19:00"></activiti:value>
+          <activiti:value id="idTime20" name="20:00"></activiti:value>
+          <activiti:value id="idTime21" name="21:00"></activiti:value>
+          <activiti:value id="idTime22" name="22:00"></activiti:value>
+          <activiti:value id="idTime23" name="23:00"></activiti:value>
+          <activiti:value id="idTime24" name="24:00"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="dDate_End" name="Дата закінчення заходу" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="eTime_End" name="Час закінчення заходу" type="enum" writable="false">
+          <activiti:value id="idTime0" name="00:00"></activiti:value>
+          <activiti:value id="idTime1" name="01:00"></activiti:value>
+          <activiti:value id="idTime2" name="02:00"></activiti:value>
+          <activiti:value id="idTime3" name="03:00"></activiti:value>
+          <activiti:value id="idTime4" name="04:00"></activiti:value>
+          <activiti:value id="idTime5" name="05:00"></activiti:value>
+          <activiti:value id="idTime6" name="06:00"></activiti:value>
+          <activiti:value id="idTime7" name="07:00"></activiti:value>
+          <activiti:value id="idTime8" name="08:00"></activiti:value>
+          <activiti:value id="idTime9" name="09:00"></activiti:value>
+          <activiti:value id="idTime10" name="10:00"></activiti:value>
+          <activiti:value id="idTime11" name="11:00"></activiti:value>
+          <activiti:value id="idTime12" name="12:00"></activiti:value>
+          <activiti:value id="idTime13" name="13:00"></activiti:value>
+          <activiti:value id="idTime14" name="14:00"></activiti:value>
+          <activiti:value id="idTime15" name="15:00"></activiti:value>
+          <activiti:value id="idTime16" name="16:00"></activiti:value>
+          <activiti:value id="idTime17" name="17:00"></activiti:value>
+          <activiti:value id="idTime18" name="18:00"></activiti:value>
+          <activiti:value id="idTime19" name="19:00"></activiti:value>
+          <activiti:value id="idTime20" name="20:00"></activiti:value>
+          <activiti:value id="idTime21" name="21:00"></activiti:value>
+          <activiti:value id="idTime22" name="22:00"></activiti:value>
+          <activiti:value id="idTime23" name="23:00"></activiti:value>
+          <activiti:value id="idTime24" name="24:00"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="lCountPeople" name="Передбачувана кількість учасників" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLabel2" name=" " type="label" default="&lt;b&gt;Інформація щодо організаторів заходу&lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="eCountOrganizatorov" name="Кількість організаторів заходу" type="enum" writable="false">
+          <activiti:value id="idCount1" name="1"></activiti:value>
+          <activiti:value id="idCount2" name="2"></activiti:value>
+          <activiti:value id="idCount3" name="3"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sInfoOrg1" name="Організатор заходу 1" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sInfoOrg2" name="Організатор заходу 2" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sInfoOrg3" name="Організатор заходу 3" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/skv/skv_test_print.html]" type="invisible" default="Заява на надання дозволу на знесення будівлі" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers31" name="Щодо тестування прінт-форми" type="markers" default="${markerService.loadFromFile('skv/skv_test_print_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="decision_2" name="Прийняте рішення щодо надання дозволу" type="enum" required="true">
@@ -405,7 +480,23 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow17" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
-    <scriptTask id="scripttask1" name="Визначення параметрів" scriptFormat="javascript" activiti:autoStoreVariables="false"></scriptTask>
+    <scriptTask id="scripttask1" name="Визначення параметрів" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var per1 = execution.getVariable('lastName_UA1')+' '+execution.getVariable('firstName_UA1')+' '+
+execution.getVariable('middleName_UA1')+'Адреса реєстрації: '+execution.getVariable('sAdress_1')+
+'Телефон: '+execution.getVariable('sphone_1')+
+'Місце роботи (навчання):  '+execution.getVariable('sPlace_of_Work_1')
+var per2 = '${lastName_UA2} ${firstName_UA2} ${middleName_UA2}Телефон: ${sphone_2} Місце роботи (навчання):  ${sPlace_of_Work_2}'
+var per3 = '${lastName_UA3} ${firstName_UA3} ${middleName_UA3} Адреса реєстрації: ${sAdress_3} Телефон: ${sphone_3} Місце роботи (навчання):  ${sPlace_of_Work_3}'
+
+if (execution.getVariable('isRepresentCompany_1') == 'id_Tak')
+{
+	per1 = per1+'\n'+'Організація: ${sNameCompany_1} (ЄДРПО  ${sedrpou_1})'
+}
+			
+execution.setVariable('sInfoOrg1', per1) 
+execution.setVariable('sInfoOrg2', per2)
+execution.setVariable('sInfoOrg3', per3)</script>
+    </scriptTask>
     <sequenceFlow id="flow18" sourceRef="scripttask1" targetRef="servicetask7"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_spend_meeting_404">
