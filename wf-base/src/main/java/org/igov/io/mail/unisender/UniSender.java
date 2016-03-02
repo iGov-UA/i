@@ -29,7 +29,6 @@ import org.springframework.stereotype.Service;
  * Created by Dmytro Tsapko on 11/28/2015.
  */
 
-@Component
 public class UniSender {
     
 	@Autowired 
