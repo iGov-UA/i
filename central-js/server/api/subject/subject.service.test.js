@@ -1,6 +1,13 @@
 'use strict';
 
 module.exports.testData = {
+  subject: {
+    sID: "1111111111",
+    sLabel: null,
+    sLabelShort: null,
+    nID: 11
+  },
+
   subjectHuman: {
     "oSubject": {
       "sID": "2111111111", "sLabel": "Тестев Тест Тестович", "sLabelShort": "Тестев Т. Т.", "nID": 2
@@ -23,3 +30,4 @@ module.exports.testData = {
     "sOKPO": "011111", "sFormPrivacy": "ПАО", "sNameFull": "Банк Тест", "nID": 1, "sName": "ТестБанк"
   }
 };
+
