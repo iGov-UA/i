@@ -286,7 +286,7 @@ public class BpServiceHandler {
                 String userLabels = getSubjectLabel(result.get("users"), "sFamily", " ") + " "
                         + getSubjectLabel(result.get("users"), "sName", " ") + " "
                         + getSubjectLabel(result.get("users"), "sSurname", "; ");
-                if (userLabels != null) {
+                if (userLabels != null && !"".equals(userLabels.trim())) {
                     mParam.put("userLabels", userLabels);
                     String userContacts = getContact(result.get("users"));
                     mParam.put("userContacts", userContacts);
