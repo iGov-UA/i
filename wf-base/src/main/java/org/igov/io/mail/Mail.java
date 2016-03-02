@@ -45,12 +45,15 @@ import org.igov.util.MethodsCallRunnerUtil;
 @Scope("prototype")
 public class Mail extends Abstract_Mail {
 
-	/*@Autowired 
-    MethodsCallRunnerUtil methodCallRunner;*/
+	@Autowired 
+    MethodsCallRunnerUtil methodCallRunner;
 	
     @Autowired
     GeneralConfig generalConfig;
-
+    
+    @Autowired
+    UniSender oUniSender;
+    
     private final static Logger LOG = LoggerFactory.getLogger(Mail.class);
     private static final Logger LOG_BIG = LoggerFactory.getLogger("MailBig");
     
@@ -340,8 +343,10 @@ public class Mail extends Abstract_Mail {
             if(StringUtils.isBlank(sKey_Sender)){
                 throw new IllegalArgumentException("Please check api_key in UniSender property file configuration");
             }
-
-            UniSender oUniSender = new UniSender(sKey_Sender, "en");
+            
+            LOG.info("oUniSender - {}", oUniSender);
+            LOG.info("methodCallRunner - {}", methodCallRunner);
+            oUniSender.setMethodCallRunner(methodCallRunner);
             
             if(getTo().contains(",")){
                 String[] asMail=getTo().split("\\,");
