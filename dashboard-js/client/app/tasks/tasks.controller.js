@@ -462,6 +462,8 @@
           Modal.assignTask(function (event) {
             //$scope.lightweightRefreshAfterSubmit();
             $scope.selectedTasks['unassigned'] = null;
+             //NavbarCtrl.goToTasks("selfAssigned"); 
+            $location.path('/tasks/' + "selfAssigned");
             $scope.applyTaskFilter(iGovNavbarHelper.menus[1].type, $scope.selectedTask.id);
           }, 'Задача у вас в роботі', $scope.lightweightRefreshAfterSubmit);
 
