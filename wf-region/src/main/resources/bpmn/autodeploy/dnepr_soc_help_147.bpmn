@@ -23,6 +23,8 @@
         <activiti:formProperty id="mfo" name="МФО банку" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="edrpou" name="ЄДРПОУ банку" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="bank_account" name="Номер рахунку" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорту" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_inn" name="Скан-копія ІПН" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file1" name="Рішення районної, держадміністрації, виконавчого органу міської, районної у місті ради про влаштування дитини до дитячого будинку сімейного типу або прийомної сім'ї" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file2" name="Документи, що підтверджують статус дитини;(Рішення про надання статусу дитини-сироти або дитини, позбавленої батьківського піклування, приймається районною, районною у мм. Києві та Севастополі держадміністрацією, виконавчим органом міської чи районної у місті ради за місцем походження такої дитини за поданням служби у спрвах дітей. У рішенні зазначаються прізвище, ім'я, по-батькові дитини, дата народження, обставини, за яких вона залишилась без батьківського піклування, документи, які підтверджують ці обставини, та форма влаштування дитини)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file3" name="Довідка органу державної виконавчої служби про розмір аліментів" type="file" required="true"></activiti:formProperty>
@@ -66,10 +68,10 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${file1},${file2},${file3},${file4},${file5}</activiti:expression>
+            <activiti:expression>${file1},${file2},${file3},${file4},${file5},${bankId_scan_passport},${bankId_scan_inn}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
-      </extensionElements>
+      </extensionElements> 
     </userTask>
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
       <errorEventDefinition></errorEventDefinition>
@@ -191,7 +193,7 @@
     <sequenceFlow id="flow12" sourceRef="servicetask3" targetRef="endevent2"></sequenceFlow>
     <endEvent id="endevent3" name="End"></endEvent>
     <sequenceFlow id="flow13" sourceRef="servicetask2" targetRef="endevent3"></sequenceFlow>
-    <serviceTask id="servicetask4" name="E-mail опринятии заявления" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask4" name="E-mail о принятии заявления" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
