@@ -56,7 +56,7 @@ public class MethodsCallRunnerUtil {
 
 	public Object registrateMethod(String className, String methodName, Object[] parameters) throws CommonServiceException{
 		try{			
-			LOG.info("in egistrateMethod");
+			LOG.info("in registrateMethod");
 			Object ret = null;
 			Class<?> c = Class.forName(className);
 			Object o = null;
