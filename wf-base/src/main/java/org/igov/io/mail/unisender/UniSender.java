@@ -29,10 +29,11 @@ import org.springframework.stereotype.Service;
  * Created by Dmytro Tsapko on 11/28/2015.
  */
 
+@Component
 public class UniSender {
     
-	/*@Autowired 
-    MethodsCallRunnerUtil methodCallRunner;*/
+	@Autowired 
+    MethodsCallRunnerUtil methodCallRunner;
 	
     final static private Logger LOG = LoggerFactory.getLogger(UniSender.class);
     private static final Logger LOG_BIG = LoggerFactory.getLogger("MailBig");
