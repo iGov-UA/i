@@ -21,7 +21,7 @@ public class Subject extends Entity {
     @Column(name = "sLabelShort", nullable = true)
     private String sLabelShort;
     
-    private transient List<SubjectContact> aSubjectContact;
+    private transient List<SubjectContact> aSubjectAccountContact;
 
     public String getsID() {
         return sID;
@@ -47,7 +47,7 @@ public class Subject extends Entity {
         this.sLabelShort = sLabelShort;
     }
 
-    public void setaSubjectContact(List<SubjectContact> aSubjectContact) {
-        this.aSubjectContact = aSubjectContact;
+    public void setaSubjectAccountContact(List<SubjectContact> aSubjectAccountContact) {
+        this.aSubjectAccountContact = aSubjectAccountContact;
     }
 }

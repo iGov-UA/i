@@ -844,8 +844,9 @@ public class SubjectController {
                 if (subjectAccounts != null && !subjectAccounts.isEmpty()) {
                     nID_Subject = subjectAccounts.get(0).getnID_Subject();
                     subject = subjectDao.getSubject(nID_Subject);
-                    List<SubjectContact> subjectContact = subjectContactDao.findContacts(subject);
-                    subject.setaSubjectContact(subjectContact);
+                    List<SubjectContact> subjectContacts = subjectContactDao.findContacts(subject);
+                    subject.setaSubjectAccountContact(subjectContacts);
+                    subjects.put(login, subject);
                 }
             }
         }
