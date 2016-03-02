@@ -11,7 +11,7 @@
   ];
   function tasksCtrl(
     $scope, $window, tasks, processes, Modal, Auth, identityUser, $localStorage, $filter, lunaService,
-    PrintTemplateService, taskFilterService, MarkersFactory, iGovNavbarHelper, $location
+    PrintTemplateService, taskFilterService, MarkersFactory, iGovNavbarHelper, $location, NavbarCtrl
   ) {
     $scope.tasks = null;
     $scope.tasksLoading = false;
@@ -463,7 +463,7 @@
           Modal.assignTask(function (event) {
             //$scope.lightweightRefreshAfterSubmit();
             $scope.selectedTasks['unassigned'] = null;
-             $scope.goToTasks("selfAssigned");
+             NavbarCtrl.goToTasks("selfAssigned"); 
             $scope.applyTaskFilter(iGovNavbarHelper.menus[1].type, $scope.selectedTask.id);
           }, 'Задача у вас в роботі', $scope.lightweightRefreshAfterSubmit);
 
