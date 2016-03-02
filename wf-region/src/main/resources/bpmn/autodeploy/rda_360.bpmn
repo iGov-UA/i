@@ -61,7 +61,7 @@
           <activiti:value id="sFirst" name="первинне"></activiti:value>
           <activiti:value id="sSecond" name="повторне звернення"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="dCreate" name="Дата подання заяви" type="invisible" default="${sDateCreate}"></activiti:formProperty>
+        <activiti:formProperty id="dCreate" name="Дата подання заяви" type="string" default="${sDateCreate}"></activiti:formProperty>
         <activiti:formProperty id="nFile" name="Додати документ;Якщо декілька сторінок об'єднайте у pdf-файл або zip архів" type="file"></activiti:formProperty>
         <activiti:formProperty id="sMoreFiles" name="Чи потрібні ще поля для завантаження файлів" type="enum" default="no">
           <activiti:value id="no" name="Ні"></activiti:value>
@@ -325,8 +325,8 @@
           <activiti:value id="sFirst" name="первинне"></activiti:value>
           <activiti:value id="sSecond" name="повторне звернення"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="dCreate" name="Дата подання заяви" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="dValidateData" name="Дата перевірки данних" type="invisible" default="${sDateCreate}"></activiti:formProperty>
+        <activiti:formProperty id="dCreate" name="Дата подання заяви" type="string"></activiti:formProperty>
+        <activiti:formProperty id="dValidateData" name="Дата перевірки данних" type="string" default="${sDateCreate}"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Рішення про реєстрацію звернення" type="enum" required="true">
           <activiti:value id="accept" name="Взяти в роботу"></activiti:value>
           <activiti:value id="reject" name="Відмовити в реєстрації звернення"></activiti:value>
@@ -415,7 +415,7 @@
         <activiti:formProperty id="sResolution" name="Резолюція" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="dExecution" name="Строк виконання;в форматі ДД.ММ.РРРР" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameExecutor" name="Виконавець" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="dResolution" name="Дата накладення резолюції" type="invisible" default="${sDateCreate}"></activiti:formProperty>
+        <activiti:formProperty id="dResolution" name="Дата накладення резолюції" type="string" default="${sDateCreate}"></activiti:formProperty>
         <activiti:formProperty id="sOrgan" name="назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/rda_360.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
@@ -487,10 +487,10 @@
         </activiti:formProperty>
         <activiti:formProperty id="sResolution" name="Резолюція" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="dExecution" name="Строк виконання" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dCreate" name="Дата подання заяви" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="dValidateData" name="Дата перевірки данних" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="dResolution" name="Дата накладення резолюції" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="dTransExecutor" name="Дата направлення рішення виконавцю" type="invisible" default="${sDateCreate}"></activiti:formProperty>        
+        <activiti:formProperty id="dCreate" name="Дата подання заяви" type="string"></activiti:formProperty>
+        <activiti:formProperty id="dValidateData" name="Дата перевірки данних" type="string"></activiti:formProperty>
+        <activiti:formProperty id="dResolution" name="Дата накладення резолюції" type="string"></activiti:formProperty>
+        <activiti:formProperty id="dTransExecutor" name="Дата направлення рішення виконавцю" type="string" default="${sDateCreate}"></activiti:formProperty>        
         <activiti:formProperty id="sNameExecutor" name="Виконавець" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameExecutorExtended" name="Розширені дані про виконавця;прізвище, ініціали та номер телефону безпосереднього виконавця" type="textArea" default="${sNameExecutor}" required="true"></activiti:formProperty>
         <activiti:formProperty id="sOrgan" name="назва органу" type="invisible"></activiti:formProperty>
@@ -607,10 +607,10 @@
           <activiti:value id="sEnumResult_5" name="надіслано за належністю"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="aResult" name="Результат розгляду звернення;інформація буде надіслана на електронну пошту громадянина" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="dCreate" name="Дата подання заяви" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="dValidateData" name="Дата перевірки данних" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="dResolution" name="Дата накладення резолюції" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="dTransExecutor" name="Дата направлення рішення виконавцю" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="dCreate" name="Дата подання заяви" type="string"></activiti:formProperty>
+        <activiti:formProperty id="dValidateData" name="Дата перевірки данних" type="string"></activiti:formProperty>
+        <activiti:formProperty id="dResolution" name="Дата накладення резолюції" type="string"></activiti:formProperty>
+        <activiti:formProperty id="dTransExecutor" name="Дата направлення рішення виконавцю" type="string"></activiti:formProperty>
         <activiti:formProperty id="sOrgan" name="назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/rda_360.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>

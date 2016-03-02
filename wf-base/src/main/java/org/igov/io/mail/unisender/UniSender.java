@@ -31,8 +31,8 @@ import org.springframework.stereotype.Service;
 
 public class UniSender {
     
-	/*@Autowired 
-    MethodsCallRunnerUtil methodCallRunner;*/
+	@Autowired 
+    MethodsCallRunnerUtil methodCallRunner;
 	
     final static private Logger LOG = LoggerFactory.getLogger(UniSender.class);
     private static final Logger LOG_BIG = LoggerFactory.getLogger("MailBig");
