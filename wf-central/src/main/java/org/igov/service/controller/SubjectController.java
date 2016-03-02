@@ -802,7 +802,7 @@ public class SubjectController {
 
     @ApiOperation(value = "Получение полного набора данных по субъектам", notes = "Получаем полный набор данных по субъектам. "
             + "Пример:\n"
-            + "https://test.igov.org.ua/wf/service/subject/getSubjects\n\n"
+            + "https://test.igov.org.ua/wf/service/subject/getSubjectsByAccount\n\n"
             + "Ответ:\n"
             + "\n```\n")
     @RequestMapping(value = "/getSubjectsByAccount", method = RequestMethod.GET, headers = {JSON_TYPE})
