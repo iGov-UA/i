@@ -21,7 +21,7 @@
           <activiti:value id="look" name="видовищний масовий захід"></activiti:value>
           <activiti:value id="other" name="інший масовий захід"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sMistoZahodu" name="Місце проведення заходу або маршрути руху (текстовое описание маршрута " type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sMistoZahodu" name="Місце проведення заходу або маршрути руху (текстовое описание маршрута)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="fMapViewMarshrut" name="Cканована копія маршрута на картці" type="file"></activiti:formProperty>
         <activiti:formProperty id="dDate_Beg" name="Дата початку заходу" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="eTime_Beg" name="Час початку заходу" type="enum" default="idTime11" required="true">
@@ -234,7 +234,7 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask7"></sequenceFlow>
+    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow3" sourceRef="servicetask7" targetRef="servicetask2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow4" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
@@ -243,7 +243,7 @@
     </sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow6" sourceRef="servicetask4" targetRef="endevent1"></sequenceFlow>
-    <userTask id="usertask2" name="Друк заяви, повідомлення щодо рішення">
+    <userTask id="usertask2" name="Друк заяви, повідомлення щодо рішення" activiti:candidateGroups="cnap_kiev_kolon">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації громадянина-заявника" type="string" writable="false"></activiti:formProperty>
@@ -481,8 +481,11 @@
     </serviceTask>
     <sequenceFlow id="flow17" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
     <scriptTask id="scripttask1" name="Визначення параметрів" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var per1 = '${lastName_UA1} ${firstName_UA1} ${middleName_UA1} Адреса реєстрації: ${sAdress_1} Телефон: ${sphone_1} Місце роботи (навчання):  ${sPlace_of_Work_1}'
-var per2 = '${lastName_UA2} ${firstName_UA2} ${middleName_UA2} Адреса реєстрації: ${sAdress_2} Телефон: ${sphone_2} Місце роботи (навчання):  ${sPlace_of_Work_2}'
+      <script>var per1 = execution.getVariable('lastName_UA1')+' '+execution.getVariable('firstName_UA1')+' '+
+execution.getVariable('middleName_UA1')+'Адреса реєстрації: '+execution.getVariable('sAdress_1')+
+'Телефон: '+execution.getVariable('sphone_1')+
+'Місце роботи (навчання):  '+execution.getVariable('sPlace_of_Work_1')
+var per2 = '${lastName_UA2} ${firstName_UA2} ${middleName_UA2}Телефон: ${sphone_2} Місце роботи (навчання):  ${sPlace_of_Work_2}'
 var per3 = '${lastName_UA3} ${firstName_UA3} ${middleName_UA3} Адреса реєстрації: ${sAdress_3} Телефон: ${sphone_3} Місце роботи (навчання):  ${sPlace_of_Work_3}'
 
 if (execution.getVariable('isRepresentCompany_1') == 'id_Tak')
@@ -490,7 +493,7 @@ if (execution.getVariable('isRepresentCompany_1') == 'id_Tak')
 	per1 = per1+'\n'+'Організація: ${sNameCompany_1} (ЄДРПО  ${sedrpou_1})'
 }
 			
-execution.setVariable('sInfoOrg1', per1)
+execution.setVariable('sInfoOrg1', per1) 
 execution.setVariable('sInfoOrg2', per2)
 execution.setVariable('sInfoOrg3', per3)</script>
     </scriptTask>
@@ -554,8 +557,8 @@ execution.setVariable('sInfoOrg3', per3)</script>
         <omgdi:waypoint x="120.0" y="127.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="225.0" y="127.0"></omgdi:waypoint>
-        <omgdi:waypoint x="240.0" y="127.0"></omgdi:waypoint>
+        <omgdi:waypoint x="172.0" y="92.0"></omgdi:waypoint>
+        <omgdi:waypoint x="239.0" y="78.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="411.0" y="127.0"></omgdi:waypoint>
