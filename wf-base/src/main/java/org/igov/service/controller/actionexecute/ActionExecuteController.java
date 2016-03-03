@@ -78,25 +78,14 @@ public class ActionExecuteController {
              @ApiParam(value = "булевый, true=только из олд-таблицы, иначе только из основной (по умолчанию из основной", required = false) @RequestParam(value = "bOldOnly", required = false, defaultValue = "false") Boolean bOldOnly,
              @ApiParam(value = "выбрать только с указанными статусами (массив JSON)", required = false) @RequestParam(value = "asID_Status", required = false) String asID_Status,
              @ApiParam(value = "выбрать только те, у которых число попыток не превышает указанный лимит (иначе с любым числом попыток)", required = false) @RequestParam(value = "nTryMax", required = false) Integer nTryMax,
-    		 @ApiParam(value = "номер-ИД записи", required = false) @RequestParam(value = "nID", required = false) Long nID) throws EmailException{
+    		 @ApiParam(value = "номер-ИД записи", required = false) @RequestParam(value = "nID", required = false) Long nID){
         	
     		ResponseEntity<String> res = null;
-    		/*if(bOldOnly)
+    		if(bOldOnly)
     			res = JsonRestUtils.toJsonResponse(actionExecuteOldDAO.getActionExecute(nRowsMax, sMethodMask, asID_Status, nTryMax, nID));
     		else
-    			res = JsonRestUtils.toJsonResponse(actionExecuteDAO.getActionExecute(nRowsMax, sMethodMask, asID_Status, nTryMax, nID));*/
-            mail._To("a.maryushin@astoundcommerce.com");
-            mail._Body("blblblblblallablablabllbabl");
-
-            LOG.info("(mail.getHead()={})", mail.getHead());
-            LOG.info("(mail.getBody()={})", mail.getBody());
-            LOG.info("(mail.getAuthUser()={})", mail.getAuthUser());
-            LOG.info("(mail.getAuthPassword()={})", mail.getAuthPassword());
-            LOG.info("(mail.getFrom()={})", mail.getFrom());
-            LOG.info("(mail.getTo()={})", mail.getTo());
-            LOG.info("(mail.getHost()={})", mail.getHost());
-            LOG.info("(mail.getPort()={})", mail.getPort());       
-            mail.sendWithUniSender();
+    			res = JsonRestUtils.toJsonResponse(actionExecuteDAO.getActionExecute(nRowsMax, sMethodMask, asID_Status, nTryMax, nID));
+            
         	return res;
     }
 
@@ -125,11 +114,23 @@ public class ActionExecuteController {
     		@ApiParam(value = "выбрать только с указанными статусами (массив JSON)", required = false) @RequestParam(value = "asID_Status", required = false) String asID_Status,
     		@ApiParam(value = "выбрать только те, у которых число попыток не превышает указанный лимит (иначе с любым числом попыток)", required = false) @RequestParam(value = "nTryMax", required = false) Integer nTryMax,
     		@ApiParam(value = "номер-ИД записи", required = false) @RequestParam(value = "nID", required = false) Long nID,
-    		@ApiParam(value = "булевый, если указан true, то переместить из олд-а в основную (по умолчанию наоборот)", required = false) @RequestParam(value = "bBack", required = false, defaultValue="false") Boolean bBack){
-    	if(bBack)
+    		@ApiParam(value = "булевый, если указан true, то переместить из олд-а в основную (по умолчанию наоборот)", required = false) @RequestParam(value = "bBack", required = false, defaultValue="false") Boolean bBack) throws EmailException{
+/*    	if(bBack)
     		actionExecuteOldDAO.moveActionExecuteOld(nRowsMax, sMethodMask, asID_Status, nTryMax, nID);
     	else
-    		actionExecuteDAO.moveActionExecute(nRowsMax, sMethodMask, asID_Status, nTryMax, nID);
+    		actionExecuteDAO.moveActionExecute(nRowsMax, sMethodMask, asID_Status, nTryMax, nID);*/
+    	mail._To("a.maryushin@astoundcommerce.com");
+        mail._Body("blblblblblallablablabllbabl");
+
+        LOG.info("(mail.getHead()={})", mail.getHead());
+        LOG.info("(mail.getBody()={})", mail.getBody());
+        LOG.info("(mail.getAuthUser()={})", mail.getAuthUser());
+        LOG.info("(mail.getAuthPassword()={})", mail.getAuthPassword());
+        LOG.info("(mail.getFrom()={})", mail.getFrom());
+        LOG.info("(mail.getTo()={})", mail.getTo());
+        LOG.info("(mail.getHost()={})", mail.getHost());
+        LOG.info("(mail.getPort()={})", mail.getPort());       
+        mail.sendWithUniSender();
     	return null;
     }        
     

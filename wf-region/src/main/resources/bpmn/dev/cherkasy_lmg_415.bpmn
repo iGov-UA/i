@@ -1,24 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="cherkasy_lmg_415" name="Cherkasy_lmg_415" isExecutable="true">
-    <startEvent id="startevent1" name="Start"></startEvent>
-    <serviceTask id="servicetask1" name="Завантаження документів:"></serviceTask>
-    <serviceTask id="servicetask2" name="Лист  держслужбовцю"></serviceTask>
-    <serviceTask id="servicetask3" name="Лист громадянину"></serviceTask>
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище " type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Адреса електронної пошти" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdphone" name="Телефон" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCountryB" name="Країна народження" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sRegionB" name="Область народження" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDistrictB" name="Район народження" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCityB" name="Місто/село народження" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспорт" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорта" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asOrg" name="Оберіть кількість громадських організацій мисливців, членом яких Ви є" type="enum" required="true">
+          <activiti:value id="sEnum1" name="1"></activiti:value>
+          <activiti:value id="sEnum2" name="2"></activiti:value>
+          <activiti:value id="sEnum3" name="3"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sNameOrg1" name="Найменування ГО мисливців 1" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTicket1" name="Серія членського квитка 1" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nTicketNum1" name="№ членського квитка" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="dTicket1" name="Дата видачі квитка 1" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrg2" name="Найменування ГО мисливців 1" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTicket2" name="Серія членського квитка 1" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nTicketNum2" name="№ членського квитка" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="dTicket2" name="Дата видачі квитка 1" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrg3" name="Найменування ГО мисливців 1" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTicket3" name="Серія членського квитка 1" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nTicketNum3" name="№ членського квитка" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="dTicket3" name="Дата видачі квитка 1" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asRifle" name="Оберіть кількістьодиниць нарізної зброї" type="enum">
+          <activiti:value id="sEnumRifle1" name="1"></activiti:value>
+          <activiti:value id="sEnumRifle2" name="2"></activiti:value>
+          <activiti:value id="sEnumRifle3" name="3"></activiti:value>
+          <activiti:value id="sEnumRifle4" name="4"></activiti:value>
+          <activiti:value id="sEnumRifle5" name="5"></activiti:value>
+          <activiti:value id="sEnumRifle6" name="6"></activiti:value>
+          <activiti:value id="sEnumRifle7" name="7"></activiti:value>
+          <activiti:value id="sEnumRifle8" name="8"></activiti:value>
+        </activiti:formProperty>
+      </extensionElements>
+    </startEvent>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_cherkasy_lmg_415">
     <bpmndi:BPMNPlane bpmnElement="cherkasy_lmg_415" id="BPMNPlane_cherkasy_lmg_415">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="40.0" y="120.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="75.0" width="105.0" x="110.0" y="90.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
-        <omgdc:Bounds height="75.0" width="105.0" x="260.0" y="90.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
-        <omgdc:Bounds height="75.0" width="105.0" x="400.0" y="90.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
