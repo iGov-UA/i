@@ -71,9 +71,15 @@ public class MethodsCallRunnerUtil {
 			LOG.info("methodName -{}", methodName);
 			
 			Class<?>[] param_types = new Class<?>[parameters!=null?parameters.length:0];
+			LOG.info("param_types lenght -{}", param_types.length);
 			if (parameters!=null && parameters.length>0)
-				for (int i=0; i< parameters.length; i++)
-					param_types[i] = parameters[i].getClass();
+				for (int i=0; i< parameters.length; i++){					
+					if(param_types[i] != null){
+						LOG.info("param_types[{}]-{}", i, param_types[i]);
+						param_types[i] = parameters[i].getClass();
+					}else
+						param_types[i] = null;
+				}
 			
 			Method  method = c.getMethod(methodName, param_types);
 
