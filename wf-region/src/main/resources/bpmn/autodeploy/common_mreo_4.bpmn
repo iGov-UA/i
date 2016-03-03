@@ -76,9 +76,8 @@
         <activiti:formProperty id="file2" name="Копія договору купівлі-продажу;додається  за наявності договору" type="file"></activiti:formProperty>
       
         <activiti:formProperty id="file3" name="Копія доручення;додається  за наявності" type="file"></activiti:formProperty>
-
-        <activiti:formProperty id="text" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
-      </extensionElements>
+	 <activiti:formProperty id="sExpert_Time" name="sExpert_Time" type="invisible"></activiti:formProperty>
+	</extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Підтягування документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -258,7 +257,7 @@
 Примітка щодо візиту: &lt;br /&gt;
 ${comment}&lt;br /&gt;
 Рекомендовано прибути заздалегідь для проведення огляду транспортного засобу з одержанням акту експертного огляду.&lt;br /&gt;
-Рекомендований час 20-40 хвилин.
+Рекомендований час ${sExpert_Time}.
 &lt;p&gt;
 Графік прийому громадян:&lt;br /&gt;
 ${sWork_Time}
