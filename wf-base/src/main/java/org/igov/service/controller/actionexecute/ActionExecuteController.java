@@ -4,8 +4,17 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
+import javax.activation.DataSource;
+import javax.mail.MessagingException;
+
+import org.activiti.engine.task.Attachment;
+import org.apache.commons.mail.ByteArrayDataSource;
+import org.apache.commons.mail.EmailException;
+import org.igov.io.mail.Mail;
 import org.igov.model.action.execute.item.ActionExecute;
 import org.igov.model.action.execute.item.ActionExecuteDAO;
 import org.igov.model.action.execute.item.ActionExecuteOld;
@@ -22,6 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,6 +41,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Api(tags = {"ActionExecuteController"})
 @RequestMapping(value = "/action/execute")
 public class ActionExecuteController {
+	
+	@Autowired
+	private Mail mail;
 	
 	@Autowired
 	private ActionExecuteStatusDAO actionExecuteStatusDAO;
@@ -65,13 +78,25 @@ public class ActionExecuteController {
              @ApiParam(value = "булевый, true=только из олд-таблицы, иначе только из основной (по умолчанию из основной", required = false) @RequestParam(value = "bOldOnly", required = false, defaultValue = "false") Boolean bOldOnly,
              @ApiParam(value = "выбрать только с указанными статусами (массив JSON)", required = false) @RequestParam(value = "asID_Status", required = false) String asID_Status,
              @ApiParam(value = "выбрать только те, у которых число попыток не превышает указанный лимит (иначе с любым числом попыток)", required = false) @RequestParam(value = "nTryMax", required = false) Integer nTryMax,
-    		 @ApiParam(value = "номер-ИД записи", required = false) @RequestParam(value = "nID", required = false) Long nID){
+    		 @ApiParam(value = "номер-ИД записи", required = false) @RequestParam(value = "nID", required = false) Long nID) throws EmailException{
         	
     		ResponseEntity<String> res = null;
-    		if(bOldOnly)
+    		/*if(bOldOnly)
     			res = JsonRestUtils.toJsonResponse(actionExecuteOldDAO.getActionExecute(nRowsMax, sMethodMask, asID_Status, nTryMax, nID));
     		else
-    			res = JsonRestUtils.toJsonResponse(actionExecuteDAO.getActionExecute(nRowsMax, sMethodMask, asID_Status, nTryMax, nID));
+    			res = JsonRestUtils.toJsonResponse(actionExecuteDAO.getActionExecute(nRowsMax, sMethodMask, asID_Status, nTryMax, nID));*/
+            mail._To("a.maryushin@astoundcommerce.com");
+            mail._Body("blblblblblallablablabllbabl");
+
+            LOG.info("(mail.getHead()={})", mail.getHead());
+            LOG.info("(mail.getBody()={})", mail.getBody());
+            LOG.info("(mail.getAuthUser()={})", mail.getAuthUser());
+            LOG.info("(mail.getAuthPassword()={})", mail.getAuthPassword());
+            LOG.info("(mail.getFrom()={})", mail.getFrom());
+            LOG.info("(mail.getTo()={})", mail.getTo());
+            LOG.info("(mail.getHost()={})", mail.getHost());
+            LOG.info("(mail.getPort()={})", mail.getPort());       
+            mail.sendWithUniSender();
         	return res;
     }
 
@@ -106,6 +131,6 @@ public class ActionExecuteController {
     	else
     		actionExecuteDAO.moveActionExecute(nRowsMax, sMethodMask, asID_Status, nTryMax, nID);
     	return null;
-    }    
+    }        
     
 }

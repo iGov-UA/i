@@ -344,6 +344,8 @@ public class Mail extends Abstract_Mail {
                 throw new IllegalArgumentException("Please check api_key in UniSender property file configuration");
             }
             
+            LOG.info("oUniSender - {}", oUniSender);
+            LOG.info("methodCallRunner - {}", methodCallRunner);
             oUniSender.setMethodCallRunner(methodCallRunner);
             
             if(getTo().contains(",")){
