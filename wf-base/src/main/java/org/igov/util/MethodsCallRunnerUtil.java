@@ -212,7 +212,7 @@ public class MethodsCallRunnerUtil {
 			return ret;
 		}catch(Exception e){
 			LOG.error("FAIL: {}", e.getMessage());
-	        LOG.trace("FAIL:", e);
+	        LOG.error("FAIL: {}", e);
 	        throw new CommonServiceException(404, "Unknown exception: " + e.getMessage());
 		}
 	}
