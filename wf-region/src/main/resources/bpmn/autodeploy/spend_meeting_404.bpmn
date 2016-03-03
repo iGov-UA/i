@@ -141,9 +141,12 @@
     </boundaryEvent>
     <userTask id="usertask1" name="Прийняття рішення щодо розгляду повідомлення" activiti:candidateGroups="cnap_kiev_kolon">
       <extensionElements>
-        <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По Батькові заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації громадянина-заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний (особистий) номер телефону для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sLabel1" name=" " type="label" default="&lt;b&gt;Інформація щодо заходу&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="sMetaZahodu" name="Мета заходу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="eFormaZahodu" name="Форма заходу" type="enum" writable="false">
@@ -224,7 +227,7 @@
         <activiti:formProperty id="sInfoOrg2" name="Організатор заходу 2" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sInfoOrg3" name="Організатор заходу 3" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decision_1" name="Прийняте рішення щодо розгляду повідомлення" type="enum" required="true">
-          <activiti:value id="accept" name="розглянути повідомлення"></activiti:value>
+          <activiti:value id="accept" name="прийняти до розгляду повідомлення"></activiti:value>
           <activiti:value id="reject" name="відмовити у розгляданні повідомлення"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відмови внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
@@ -247,9 +250,12 @@
     <sequenceFlow id="flow6" sourceRef="servicetask4" targetRef="endevent1"></sequenceFlow>
     <userTask id="usertask2" name="Друк заяви, повідомлення щодо рішення" activiti:candidateGroups="cnap_kiev_kolon">
       <extensionElements>
-        <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По Батькові заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації громадянина-заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний (особистий) номер телефону для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sLabel1" name=" " type="label" default="&lt;b&gt;Інформація щодо заходу&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="sMetaZahodu" name="Мета заходу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="eFormaZahodu" name="Форма заходу" type="enum" writable="false">
@@ -331,9 +337,9 @@
         <activiti:formProperty id="sInfoOrg3" name="Організатор заходу 3" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/skv/spend_meeting_404_print.html]" type="invisible" default="Заява на надання дозволу на знесення будівлі" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers31" name="Щодо тестування прінт-форми" type="markers" default="${markerService.loadFromFile('skv/skv_404_print_1.json')}"></activiti:formProperty>
-        <activiti:formProperty id="decision_2" name="Прийняте рішення щодо надання дозволу" type="enum" required="true">
-          <activiti:value id="accept" name="надати дозвол"></activiti:value>
-          <activiti:value id="reject" name="відмовити у видачі дозволу"></activiti:value>
+        <activiti:formProperty id="decision_2" name="Прийняте рішення щодо повідомлення" type="enum" required="true">
+          <activiti:value id="accept" name="повідомлення прийнято до відома"></activiti:value>
+          <activiti:value id="reject" name="виконавча влада планує заборонити проведення заходу"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment_2" name="У разі відмови внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
