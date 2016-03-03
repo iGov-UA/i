@@ -24,7 +24,7 @@
           <activiti:value id="other" name="інший масовий захід"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sMistoZahodu" name="Місце проведення заходу або маршрути руху (текстовое описание маршрута)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="fMapViewMarshrut" name="Cканована копія маршрута на картці" type="file"></activiti:formProperty>
+        <activiti:formProperty id="fMapViewMarshrut" name="Cканована копія маршрута на картці" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="dDate_Beg" name="Дата початку заходу" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="eTime_Beg" name="Час початку заходу" type="enum" default="idTime11" required="true">
           <activiti:value id="idTime0" name="00:00"></activiti:value>
@@ -531,7 +531,29 @@ if (execution.getVariable('isRepresentCompany_3') == 'id_Tak' &amp;&amp; executi
 
 execution.setVariable('sInfoOrg1', per1) 
 execution.setVariable('sInfoOrg2', per2)
-execution.setVariable('sInfoOrg3', per3)</script>
+execution.setVariable('sInfoOrg3', per3)
+
+var per4 = 'sPostName'
+var per5 = 'sNameRajon'
+var per6 = 'sNameOblast'
+var per7 = 'sFioClerk '
+var per8 = 'sEmailClerk '
+
+if (execution.getVariable('sID_UA') == '3222782601')
+{
+	per4 = 'Голові сільської ради'
+	per5 = 'в Макарівському районі '
+	per6 = 'Київської області'
+	per7 = 'Пелешок Юлії Василівни'
+	per8 =  'kolonschinska_rada@ukr.net'
+}
+			
+execution.setVariable('sPostName', per4)
+execution.setVariable('sNameRajon', per5)
+execution.setVariable('sNameOblast', per6)
+execution.setVariable('sFioClerk', per7)
+execution.setVariable('sEmailClerk', per8)      
+     </script>
     </scriptTask>
     <sequenceFlow id="flow18" sourceRef="scripttask1" targetRef="servicetask7"></sequenceFlow>
   </process>
