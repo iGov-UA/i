@@ -228,7 +228,7 @@ public class MethodsCallRunnerUtil {
                 if (methodParamSize == paramSize) {          
                     boolean match = true;
                     for (int n = 0 ; n < methodParamSize; n++) {
-                    	if (!MethodUtils.isAssignmentCompatible(methodsParams[n], param_types[n])) {
+                    	if (param_types[n]!=null && !MethodUtils.isAssignmentCompatible(methodsParams[n], param_types[n])) {
                             match = false;
                             break;
                         }                    
