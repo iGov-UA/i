@@ -158,8 +158,8 @@ public class BpServiceHandler {
         mParam.put("organ", organ.isEmpty() ? "" : organ.toString().substring(1, organ.toString().length() - 1));
         mParam.put("saField", new JSONObject(mTaskParam).toString());
         mParam.put("data", mTaskParam.get("sDate_BP"));
-        mParam.put("sServiceType", mTaskParam.get("sServiceType"));
-        mParam.put("area", mTaskParam.get("area"));
+        mParam.put("sNameProcess", mTaskParam.get("sServiceType"));
+        mParam.put("sOrganName", mTaskParam.get("area"));
         setSubjectParams(mTaskParam.get("sTaskId").toString(), sProcessName, mParam, null);
         LOG.info("START PROCESS_ESCALATION={}, with mParam={}", PROCESS_ESCALATION, mParam);
         String snID_ProcessEscalation = null;
@@ -288,7 +288,7 @@ public class BpServiceHandler {
                     mParam.put("userLabels", userLabels);
                     String userContacts = getContact(result.get("users"));
                     mParam.put("userContacts", userContacts);
-                    sb.append(userLabels).append(" (").append(userContacts).append(")");
+                    sb.append(" ").append(userLabels).append(" (").append(userContacts).append(")");
                 }
                 LOG.info("sEmployeeContacts: " + sb.toString());
                 mParam.put("sEmployeeContacts", sb.toString());
