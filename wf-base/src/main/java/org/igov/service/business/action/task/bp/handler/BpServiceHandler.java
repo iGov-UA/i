@@ -304,13 +304,13 @@ public class BpServiceHandler {
         StringBuilder sbSubject = new StringBuilder();
         if (subjects != null && !subjects.isEmpty()) {
             for (Map user : subjects.values()) {
-                //if (user != null && !user.isEmpty() && user.get("oSubject") != null) { //oSubject
-                //    sbSubject.append(((Map) user.get("oSubject")).get("sLabel")).append("; ");
-                //}
-
-                if (user != null && !user.isEmpty() && user.get(paramName) != null) { //oSubject
-                    sbSubject.append(((Map) user).get(paramName)).append(delimiter);
+                if (user != null && !user.isEmpty()) { //oSubject
+                    sbSubject.append(user.get("sLabel")).append("  ");
                 }
+
+                /*if (user != null && !user.isEmpty() && user.get(paramName) != null) { //oSubject
+                    sbSubject.append(((Map) user).get(paramName)).append(delimiter);
+                }*/
             }
         }
         return sbSubject.toString();
@@ -320,9 +320,9 @@ public class BpServiceHandler {
         StringBuilder sbContact = new StringBuilder();
         if (subjects != null && !subjects.isEmpty()) {
             for (Map user : subjects.values()) {
-                if (user != null && !user.isEmpty() && user.get("aContact") != null) {
-                    List<Map> contacts = (List<Map>) user.get("aContact");
-                    LOG.info("!!!aContact: " + user.get("aContact"));
+                if (user != null && !user.isEmpty() && user.get("aSubjectAccountContact") != null) {
+                    List<Map> contacts = (List<Map>) user.get("aSubjectAccountContact");
+                    LOG.info("!!!aSubjectAccountContact: " + contacts);
                     if (contacts != null && !contacts.isEmpty()) {
                         for (Map contact : contacts) {
                             LOG.info("!!!contact: " + contact);
