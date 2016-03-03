@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="lugansk_novopskov_407" name="Видача ордена на службове жиле приміщення. Новопсков.Луганська область" isExecutable="true">
+  <process id="lugansk_novopskov_407" name="Видача ордера на службове жиле приміщення." isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По-батькові" type="string"></activiti:formProperty>
@@ -11,30 +10,30 @@
         <activiti:formProperty id="bankIdAdressFactual" name="Адреса;(місце реєстрації)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="Укажіть сьогоднішню дату" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="rNumber" name="номер району" type="invisible" default="279"></activiti:formProperty>
+        <activiti:formProperty id="date_today" name="Вкажіть сьогоднішню дату" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="rNumber" name="номер району" type="invisible" default="638"></activiti:formProperty>
         <activiti:formProperty id="rName" name="район" type="invisible" default="Новопсковський"></activiti:formProperty>
-        <activiti:formProperty id="file8" name="Копії паспортів на всіх членів сім'ї (1,2, 10 стр); завантажити одним архівом" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file1" name="Завантажте,будь ласка, Витяг з протоколу спільного засідання адміністрації та профспілкового комітету про надання службового житла" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file2" name="Заяву на видачу ордера завірену в КП «Новопсковське житло»" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file8" name="Копії паспортів на всіх членів сім'ї (1,2,10 стр); завантажити одним архівом" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file1" name="Витяг з протоколу спільного засідання адміністрації та профспілкового комітету про надання службового житла" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file2" name="Заява на видачу ордера завірену в КП «Новопсковське житло»" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file3" name="Акт обстеження житлових умов" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file4" name="Довідку Ф№3 з КП «Новопсковськежитло»" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file5" name="Довідку з місця роботи про працевлаштування;для працевлаштованих" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file5_1" name="Довідки з  ЖЕКу для не працевлаштованих;на всіх повнолітніх членів сім’ї" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file6" name="Завантажте, будь ласка, Копію свідоцтва про одруження" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file7" name="Копія свідоцтв про народження дітей; якщо більше 1, то одним архівом" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file9" name="Завантажте, будь ласка, Копію свідоцтва про розлучення" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file4" name="Довідка Ф№3 з КП «Новопсковськежитло»" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file5" name="Довідка з місця роботи про працевлаштування;для працевлаштованих" type="file"></activiti:formProperty>
+        <activiti:formProperty id="file5_1" name="Довідки з  ЖЕКу для не працевлаштованих;на всіх повнолітніх членів сім’ї" type="file"></activiti:formProperty>
         <activiti:formProperty id="merried" name="Оберіть, будь ласка, свій сімейний стан" type="enum" required="true">
           <activiti:value id="Enum1" name="Одруженний(-а)"></activiti:value>
           <activiti:value id="Enum2" name="Неодруженний(-а)"></activiti:value>
           <activiti:value id="Enum3" name="Розлучений(-а)"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="file6" name="Копія свідоцтва про одруження" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file9" name="Копія свідоцтва про розлучення" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Сімейний стан1" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;file6&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;merried&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'Enum1'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="Сімейний стан2" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;file9&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;merried&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'Enum3'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="child" name="Чи маєте Ви неповнолітніх дітей?" type="enum" required="true">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="no" name="Ні"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="file7" name="Копія свідоцтв про народження дітей; якщо більше 1, то одним архівом" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="Чи маєте дітей" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;file7&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;child&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -71,14 +70,14 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Звернення на  на тему: Видача ордера на службове жиле приміщення.</activiti:expression>
+          <activiti:expression>Звернення на тему: Видача ордера на службове жиле приміщення.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 			&lt;p&gt;
-			Ваше звернення щодо отримання  ордера на службове жиле приміщення.&lt;br /&gt;
-			Ви отримаєте відповідь протягом тридцяти робочих днів.
+			Ваше звернення щодо отримання  ордера на службове жиле приміщення успішно зареєстроване.&lt;br /&gt;
+			Ви отримаєте відповідь протягом тридцяти календарних днів.
 			&lt;/p&gt;
 			&lt;p&gt;Контакти відділу, який буде займатися обробкою Вашого звернення:
 	[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:3]&lt;br /&gt;
@@ -91,7 +90,7 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow4" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
-    <userTask id="usertask1" name="Перевірка даних">
+    <userTask id="usertask1" name="Перевірка даних" activiti:candidateGroups="novopskov_MVK">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
@@ -100,22 +99,13 @@
         <activiti:formProperty id="bankIdAdressFactual" name="Адреса;(місце реєстрації)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="file8" name="Копії паспортів на всіх членів сім'ї (1,2, 10 стр); завантажити одним архівом" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="file1" name="Завантажте,будь ласка, Витяг з протоколу спільного засідання адміністрації та профспілкового комітету про надання службового житла" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="file2" name="Заяву на видачу ордера завірену в КП «Новопсковське житло»" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="file3" name="Акт обстеження житлових умов" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="file4" name="Довідку Ф№3 з КП «Новопсковськежитло»" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="file5" name="Довідку з місця роботи про працевлаштування;для працевлаштованих" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="file5_1" name="Довідки з  ЖЕКу для не працевлаштованих;на всіх повнолітніх членів сім’ї" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="file6" name="Завантажте, будь ласка, Копію свідоцтва про одруження" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="file7" name="Копія свідоцтв про народження дітей; якщо більше 1, то одним архівом" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="file9" name="Завантажте, будь ласка, Копію свідоцтва про розлучення" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="merried" name="Оберіть, будь ласка, свій сімейний стан" type="enum" writable="false">
+        <activiti:formProperty id="date_today" name="Дата подачі заяви" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="merried" name="Сімейний стан заявника" type="enum" writable="false">
           <activiti:value id="Enum1" name="Одруженний(-а)"></activiti:value>
           <activiti:value id="Enum2" name="Неодруженний(-а)"></activiti:value>
           <activiti:value id="Enum3" name="Розлучений(-а)"></activiti:value>
         </activiti:formProperty>
-                <activiti:formProperty id="child" name="Чи маєте Ви неповнолітніх дітей?" type="enum" writable="false">
+        <activiti:formProperty id="child" name="Чи має заявник неповнолітніх дітей?" type="enum" writable="false">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="no" name="Ні"></activiti:value>
         </activiti:formProperty>
@@ -123,15 +113,15 @@
           <activiti:value id="da" name="Видати ордер"></activiti:value>
           <activiti:value id="net" name="Відмовити у видачі ордеру"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="fileresult" name="Додайте файл з результатом згоди" type="file"></activiti:formProperty>
-        <activiti:formProperty id="decisionComment" name="Коментар до рішення; Наприклад, пояснення чому громадянину було відмовлено в наданні згоди &lt;br /&gt; АБО &lt;br /&gt; Додаткові деталі для закінчення процессу оформлення паспорта" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/architecture/zayava_dozvil_na_bud.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fileresult" name="Додайте файл з результатом" type="file"></activiti:formProperty>
+        <activiti:formProperty id="decisionComment" name="Коментар до рішення; Наприклад, пояснення чому громадянину було відмовлено в наданні згоди &lt;br /&gt; АБО &lt;br /&gt; Деталі отримання документу" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/architecture/zayava_407.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="rName" name="Район" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="rNumber" name="номер району" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${file1},${file2},${file3},${file4},${file5},${file6},${file7},${file8},${file9}</activiti:expression>
+            <activiti:expression>${file1},${file2},${file3},${file4},${file5},{file5_1},${file6},${file7},${file8},${file9}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -168,7 +158,7 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow7" name="Відмовлено у видачі ореру" sourceRef="exclusivegateway1" targetRef="servicetask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${result==da}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${result=='net'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask5" name="Згода" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
@@ -193,12 +183,13 @@
 			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${fileresult}
-</activiti:expression>
+          <activiti:expression>${fileresult}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow8" name="Ордер видано" sourceRef="exclusivegateway1" targetRef="servicetask5"></sequenceFlow>
+    <sequenceFlow id="flow8" name="Ордер видано" sourceRef="exclusivegateway1" targetRef="servicetask5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${result=='da'}]]></conditionExpression>
+    </sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow9" sourceRef="servicetask4" targetRef="endevent2"></sequenceFlow>
     <endEvent id="endevent3" name="End"></endEvent>
@@ -277,7 +268,7 @@
         <omgdi:waypoint x="700.0" y="229.0"></omgdi:waypoint>
         <omgdi:waypoint x="700.0" y="280.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="710.0" y="259.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="72.0" x="710.0" y="259.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">

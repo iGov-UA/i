@@ -104,6 +104,7 @@ public class ActionExecuteDAOImpl extends GenericEntityDao<ActionExecute> implem
 		actionExecuteOld.setsMethod(actionExecute.getsMethod());
 		actionExecuteOld.setSoRequest(actionExecute.getSoRequest());
 		actionExecuteOld.setsReturn(actionExecute.getsReturn());
+		actionExecuteOld.setSmParam(actionExecute.getSmParam());
 		
 		actionExecuteOldDAO.saveOrUpdate(actionExecuteOld);
 		getSession().delete(actionExecute);		
