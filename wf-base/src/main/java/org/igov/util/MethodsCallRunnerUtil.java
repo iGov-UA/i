@@ -10,6 +10,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 
+import org.apache.commons.beanutils.MethodUtils;
 import org.apache.commons.codec.binary.Base64;
 import org.igov.model.action.execute.item.ActionExecute;
 import org.igov.model.action.execute.item.ActionExecuteDAO;
@@ -81,7 +82,15 @@ public class MethodsCallRunnerUtil {
 						param_types[i] = null;
 				}
 			
-			Method  method = c.getMethod(methodName, param_types);
+			Method  method = getMethod(param_types, c, methodName);
+			if (method==null)
+				method = c.getMethod(methodName, param_types);
+			if(method==null){
+				LOG.error("Cant find method {}, in class {}", methodName, className);
+				return null;
+			} 
+			if(!method.isAccessible())
+				method.setAccessible(true);
 
 			LOG.info("method is-{}", method!=null?"not null":"null");
 
@@ -140,7 +149,15 @@ public class MethodsCallRunnerUtil {
 					for (int i=0; i< parameters.length; i++)
 						param_types[i] = parameters[i].getClass();
 				
-				Method  method = c.getMethod(actionExecute.getsMethod(), param_types);
+				Method  method = getMethod(param_types, c, actionExecute.getsMethod());
+				if (method==null)
+					method = c.getMethod(actionExecute.getsMethod(), param_types);
+				if(method==null){
+					LOG.error("Cant find method {}, in class {}", actionExecute.getsMethod(), actionExecute.getSoRequest());
+					return null;
+				} 
+				if(!method.isAccessible())
+					method.setAccessible(true);				
 			
 				try{
 					if (parameters!= null)
@@ -164,6 +181,30 @@ public class MethodsCallRunnerUtil {
 	        LOG.trace("FAIL:", e);
 	        throw new CommonServiceException(404, "Unknown exception: " + e.getMessage());
 		}
+	}
+	
+	private Method getMethod(Class<?>[] param_types, Class clazz, String methodName){
+		// search through all methods 
+        int paramSize = param_types.length;
+        Method bestMatch = null;
+        Method[] methods = clazz.getDeclaredMethods();
+        for (int i = 0, size = methods.length; i < size ; i++) {
+            if (methods[i].getName().equals(methodName)) {
+                Class[] methodsParams = methods[i].getParameterTypes();
+                int methodParamSize = methodsParams.length;
+                if (methodParamSize == paramSize) {          
+                    boolean match = true;
+                    for (int n = 0 ; n < methodParamSize; n++) {
+                    	if (!MethodUtils.isAssignmentCompatible(methodsParams[n], param_types[n])) {
+                            match = false;
+                            break;
+                        }                    
+                    }                    
+                }
+                bestMatch = methods[i];                		
+            }
+        }
+        return bestMatch;
 	}
 	
 }
