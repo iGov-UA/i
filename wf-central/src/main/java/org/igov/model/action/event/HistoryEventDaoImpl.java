@@ -28,7 +28,7 @@ public class HistoryEventDaoImpl extends GenericEntityDao<HistoryEvent> implemen
     }
 
     @Override
-    public List<HistoryEvent> getHistoryEvents(Long nID_Subject) {
+    public List<HistoryEvent> getHistoryEvents(Long nID_Subject, boolean bGrouped ) {
 
         //List<HistoryEvent> historyEvents = findAllBy("subjectKey", nID_Subject);
         List<HistoryEvent> historyEvents = findAllByAttributeCriteria("subjectKey", nID_Subject)

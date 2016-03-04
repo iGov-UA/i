@@ -423,8 +423,10 @@ public class ActionEventController {
     @RequestMapping(value = "/getHistoryEvents", method = RequestMethod.GET)
     public @ResponseBody
     List<HistoryEvent> getHistoryEvents(
-            @ApiParam(value = "nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)", required = true) @RequestParam(value = "nID_Subject") long nID_Subject) {
-        return historyEventDao.getHistoryEvents(nID_Subject);
+            @ApiParam(value = "nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)", required = true) @RequestParam(value = "nID_Subject") long nID_Subject,
+            @ApiParam(value = "если true, то возвращать только последнюю по дате (sDate) запись, из тех, у которых nID_HistoryEvent_Service или nID_Document - один и тот-же", required = false) 
+            @RequestParam(value = "bGrouped", required=false, defaultValue = "false") Boolean bGrouped ) {
+        return historyEventDao.getHistoryEvents(nID_Subject, bGrouped);
     }
 
     ////-------------Statistics--------
