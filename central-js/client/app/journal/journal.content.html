@@ -16,16 +16,14 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-md-12">
-        <table class="table"
-               ng-init="limit = 7">
-            <tr data-ng-repeat="event in journal | limitTo: limit as results">
-                <td style="width: 150px;">{{ event.sDate | date: 'dd.MM.yyyy HH:mm'}}</td>
-                <!--td>{{ event.sEventName }}</td-->
-                <td>{{ event.sMessage }}</td>
-                
-            </tr>
-        </table>
+    <div class="col-md-12" ng-init="limit = 7">
+        <dl class="row" data-ng-repeat="event in journal | orderBy: '-sDate' | limitTo: limit as results">
+          <dt class="col-md-2"><center>{{ event.sDate | date: 'dd.MM.yyyy'}}</center>
+          <!--td>{{ event.sEventName }}</td-->
+          </dt>
+          <dd class="col-md-8">{{ event.sMessage }}</dd>
+          <dd ng-if="event.groupped" class="col-md-1"><a href="#">Детальніше</a></dd>
+        </dl>
     </div>
 </div>
 <div class="row">
