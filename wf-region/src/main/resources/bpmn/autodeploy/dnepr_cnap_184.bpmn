@@ -55,6 +55,7 @@
         <activiti:formProperty id="rdozvil" name="назви документів" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="pf" name="формулювання до принтформи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="letter" name="формулювання у лист" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sForTracert" name="Зміна для отладки" default="T" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers9" name="назва доку попередньго дозволу" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_9&quot;:{&quot;aField_ID&quot;:[&quot;rdozvil&quot;], &quot;asID_Field_sValue&quot;:[&quot;Оригінал попереднього дозволу&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;purpose&quot;},&quot;sCondition&quot;:&quot;[sReason]=='second_permission' || [sReason] == 'revoke'|| [sReason] == 'continuation' || [sReason] == 'restructuring'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Якщо  юрідична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;imya_ur&quot;,&quot;edrpo&quot;,&quot;pib_ur&quot;, &quot;adres_1&quot;,&quot;telef&quot;,&quot;doc_ur&quot;,&quot;statut&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers11" name="Якщо  фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_11&quot;:{&quot;aField_ID&quot;:[&quot;adres_0&quot;,&quot;pib_fiz&quot;,&quot;bankId_scan_passport&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz'&quot;}}}"></activiti:formProperty>
@@ -344,6 +345,9 @@ if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'sumi_gluhov'){
 per1 = 'darja.grek@gmail.com'
 per2 = '427'
 per4 = 'ЦНАП Глухівської міськради'
+}
+if (execution.getVariable('sForTracert') == 'T'){
+per1 = 'smoktii.igov@gmail.com'
 }
 execution.setVariable('remail', per1)
 execution.setVariable('rNumber', per2)

@@ -115,22 +115,10 @@ public class ActionExecuteController {
     		@ApiParam(value = "выбрать только те, у которых число попыток не превышает указанный лимит (иначе с любым числом попыток)", required = false) @RequestParam(value = "nTryMax", required = false) Integer nTryMax,
     		@ApiParam(value = "номер-ИД записи", required = false) @RequestParam(value = "nID", required = false) Long nID,
     		@ApiParam(value = "булевый, если указан true, то переместить из олд-а в основную (по умолчанию наоборот)", required = false) @RequestParam(value = "bBack", required = false, defaultValue="false") Boolean bBack) throws EmailException{
-/*    	if(bBack)
+    	if(bBack)
     		actionExecuteOldDAO.moveActionExecuteOld(nRowsMax, sMethodMask, asID_Status, nTryMax, nID);
     	else
-    		actionExecuteDAO.moveActionExecute(nRowsMax, sMethodMask, asID_Status, nTryMax, nID);*/
-    	mail._To("a.maryushin@astoundcommerce.com");
-        mail._Body("blblblblblallablablabllbabl");
-
-        LOG.info("(mail.getHead()={})", mail.getHead());
-        LOG.info("(mail.getBody()={})", mail.getBody());
-        LOG.info("(mail.getAuthUser()={})", mail.getAuthUser());
-        LOG.info("(mail.getAuthPassword()={})", mail.getAuthPassword());
-        LOG.info("(mail.getFrom()={})", mail.getFrom());
-        LOG.info("(mail.getTo()={})", mail.getTo());
-        LOG.info("(mail.getHost()={})", mail.getHost());
-        LOG.info("(mail.getPort()={})", mail.getPort());       
-        mail.sendWithUniSender();
+    		actionExecuteDAO.moveActionExecute(nRowsMax, sMethodMask, asID_Status, nTryMax, nID);    	
     	return null;
     }        
     
