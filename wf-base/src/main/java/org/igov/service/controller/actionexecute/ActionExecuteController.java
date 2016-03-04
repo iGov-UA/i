@@ -99,7 +99,8 @@ public class ActionExecuteController {
              @ApiParam(value = "булевый, true=только из олд-таблицы, иначе только из основной (по умолчанию из основной", required = false) @RequestParam(value = "bOldOnly", required = false, defaultValue = "false") Boolean bOldOnly,
              @ApiParam(value = "выбрать только с указанными статусами (массив JSON)", required = false) @RequestParam(value = "asID_Status", required = false) String asID_Status,
              @ApiParam(value = "выбрать только те, у которых число попыток не превышает указанный лимит (иначе с любым числом попыток)", required = false) @RequestParam(value = "nTryMax", required = false) Integer nTryMax,
-    		 @ApiParam(value = "номер-ИД записи", required = false) @RequestParam(value = "nID", required = false) Long nID) throws CommonServiceException{    	
+    		 @ApiParam(value = "номер-ИД записи", required = false) @RequestParam(value = "nID", required = false) Long nID) throws CommonServiceException{
+    	LOG.info("methodCallRunner is {methodCallRunner}");
         return JsonRestUtils.toJsonResponse(methodCallRunner.runMethod(nRowsMax, sMethodMask, asID_Status, nTryMax, nID));
     }
     
@@ -121,5 +122,32 @@ public class ActionExecuteController {
     		actionExecuteDAO.moveActionExecute(nRowsMax, sMethodMask, asID_Status, nTryMax, nID);    	
     	return null;
     }        
+    
+    @ApiOperation(value = "переместить записи из основной таблицы в олд или обратно.", notes = "")
+    @RequestMapping(value = "/testMail", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, headers = {"Accept=application/json"})
+    public
+    @ResponseBody
+    ResponseEntity testMail(
+    		@ApiParam(value = "число строк максимальное (максимально - не более 1000)", required = false) @RequestParam(value = "nRowsMax", required = false, defaultValue = "10") Integer nRowsMax,
+    		@ApiParam(value = "выбрать только с указанной маской метода", required = false) @RequestParam(value = "sMethodMask", required = false) String sMethodMask,
+    		@ApiParam(value = "булевый, true=только из олд-таблицы, иначе только из основной (по умолчанию из основной", required = false) @RequestParam(value = "bOldOnly", required = false, defaultValue = "false") Boolean bOldOnly,
+    		@ApiParam(value = "выбрать только с указанными статусами (массив JSON)", required = false) @RequestParam(value = "asID_Status", required = false) String asID_Status,
+    		@ApiParam(value = "выбрать только те, у которых число попыток не превышает указанный лимит (иначе с любым числом попыток)", required = false) @RequestParam(value = "nTryMax", required = false) Integer nTryMax,
+    		@ApiParam(value = "номер-ИД записи", required = false) @RequestParam(value = "nID", required = false) Long nID,
+    		@ApiParam(value = "булевый, если указан true, то переместить из олд-а в основную (по умолчанию наоборот)", required = false) @RequestParam(value = "bBack", required = false, defaultValue="false") Boolean bBack) throws EmailException{
+    	mail._To("a.maryushin@astoundcommerce.com");
+        mail._Body("blblblblblallablablabllbabl");
+
+        LOG.info("(mail.getHead()={})", mail.getHead());
+        LOG.info("(mail.getBody()={})", mail.getBody());
+        LOG.info("(mail.getAuthUser()={})", mail.getAuthUser());
+        LOG.info("(mail.getAuthPassword()={})", mail.getAuthPassword());
+        LOG.info("(mail.getFrom()={})", mail.getFrom());
+        LOG.info("(mail.getTo()={})", mail.getTo());
+        LOG.info("(mail.getHost()={})", mail.getHost());
+        LOG.info("(mail.getPort()={})", mail.getPort());       
+        mail.sendWithUniSender();	
+    	return null;
+    }   
     
 }
