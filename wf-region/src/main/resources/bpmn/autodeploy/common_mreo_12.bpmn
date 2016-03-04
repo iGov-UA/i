@@ -63,6 +63,7 @@
         <activiti:formProperty id="phone" name="Ваш контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="file1" name="Копія реєстраційних документів з автосалону; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву" type="file" required="true"></activiti:formProperty>
+      <activiti:formProperty id="sExpert_Time" name="sExpert_Time" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Підтягування документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -237,7 +238,7 @@
 Дата візиту: &lt;br /&gt;
 ${comment}&lt;br /&gt;
 Рекомендовано прибути заздалегідь для проведення огляду автомобіля з одержанням акту експертного огляду.&lt;br /&gt;
-Рекомендований час 20-40 хвилин.
+Рекомендований час ${sExpert_Time}.
 &lt;p&gt;
 Графік прийому громадян:&lt;br /&gt;
 ${sWork_Time}
