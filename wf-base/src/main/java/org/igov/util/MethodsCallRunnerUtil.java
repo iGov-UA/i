@@ -140,6 +140,7 @@ public class MethodsCallRunnerUtil {
 			actionExecute.setsReturn(null);
 			actionExecuteDAO.saveOrUpdate(actionExecute);
 			LOG.info("Method is saved!");
+			LOG.info("Action execute object:{}", actionExecute);
 			try{
 				if (parameters!= null)
 					ret = method.invoke(o, parameters);
@@ -148,7 +149,10 @@ public class MethodsCallRunnerUtil {
 				LOG.info("return is {}",ret!=null?ret:null);
 
 				actionExecute.setActionExecuteStatus(actionExecuteStatusDAO.findByIdExpected(2l));
+				LOG.info("Trying to move actionExecute to old table");
 				actionExecuteDAO.moveActionExecute(actionExecute);
+				LOG.info("ActionExecute is moved");
+
 			}catch(InvocationTargetException e){
 				actionExecute.setActionExecuteStatus(actionExecuteStatusDAO.findByIdExpected(4l));
 				actionExecute.setnTry(1);
@@ -194,6 +198,7 @@ public class MethodsCallRunnerUtil {
 					method.setAccessible(true);				
 			
 				try{
+					LOG.info("Trying to invoke method {}", method);
 					if (parameters!= null)
 						ret = method.invoke(o, parameters);
 					else 
