@@ -39,20 +39,54 @@ public class MethodsCallRunnerUtil {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(MethodsCallRunnerUtil.class);
 	
-	private static Object fromString(String s) throws IOException, ClassNotFoundException {
-		byte[] data = Base64.decodeBase64(s);
-		ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
-		Object o = ois.readObject();
-		ois.close();
+	private static Object fromString(String s){
+		Object o = null;
+		ObjectInputStream ois = null;
+		LOG.info("Entering fromString()");
+		LOG.info("method param: {}", s);
+		try{
+			byte[] data = Base64.decodeBase64(s);
+			ois = new ObjectInputStream(new ByteArrayInputStream(data));
+			o = ois.readObject();
+		}catch(Exception e){
+			LOG.error("Error during serializing data from string!");
+			LOG.error(e.getMessage());
+		}finally{
+			if(ois!=null)
+				try {
+					ois.close();
+				} catch (IOException e) {
+					LOG.error("Error during closing InputStream!");
+					LOG.error(e.getMessage());
+				}
+		}
 		return o;
 	}
 
 	private static String toString(Serializable o) throws IOException {
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		ObjectOutputStream oos = new ObjectOutputStream(baos);
-		oos.writeObject(o);
-		oos.close();
-		return Base64.encodeBase64String(baos.toByteArray());
+		String res = null;
+		ByteArrayOutputStream baos = null;
+		ObjectOutputStream oos = null;
+		try{
+			baos = new ByteArrayOutputStream();
+			oos = new ObjectOutputStream(baos);
+			oos.writeObject(o);
+			res = Base64.encodeBase64String(baos.toByteArray());
+		}catch(Exception e){
+			LOG.error("Error during serializing data to string!");
+			LOG.error(e.getMessage());
+		}finally{
+			try{
+				if(baos!=null)
+					baos.close();
+				if(oos!=null)
+					oos.close();
+			}catch(IOException e){
+				LOG.error("Error during closing OutputStream!");
+				LOG.error(e.getMessage());
+			}
+		}
+		return res;
 	}
 
 	public Object registrateMethod(String className, String methodName, Object[] parameters) throws CommonServiceException{
@@ -105,7 +139,8 @@ public class MethodsCallRunnerUtil {
 			actionExecute.setSmParam(parameters!=null?toString(parameters):null);
 			actionExecute.setsReturn(null);
 			actionExecuteDAO.saveOrUpdate(actionExecute);
-			
+			LOG.info("Method is saved!");
+			LOG.info("Action execute object:{}", actionExecute);
 			try{
 				if (parameters!= null)
 					ret = method.invoke(o, parameters);
@@ -114,7 +149,10 @@ public class MethodsCallRunnerUtil {
 				LOG.info("return is {}",ret!=null?ret:null);
 
 				actionExecute.setActionExecuteStatus(actionExecuteStatusDAO.findByIdExpected(2l));
+				LOG.info("Trying to move actionExecute to old table");
 				actionExecuteDAO.moveActionExecute(actionExecute);
+				LOG.info("ActionExecute is moved");
+
 			}catch(InvocationTargetException e){
 				actionExecute.setActionExecuteStatus(actionExecuteStatusDAO.findByIdExpected(4l));
 				actionExecute.setnTry(1);
@@ -125,7 +163,7 @@ public class MethodsCallRunnerUtil {
 			return ret;
 		}catch(Exception e){
 			LOG.error("FAIL: {}", e.getMessage());
-            LOG.trace("FAIL:", e);
+            LOG.error("FAIL:", e);
             throw new CommonServiceException(404, "Unknown exception: " + e.getMessage());
 		}
 	}
@@ -160,6 +198,7 @@ public class MethodsCallRunnerUtil {
 					method.setAccessible(true);				
 			
 				try{
+					LOG.info("Trying to invoke method {}", method);
 					if (parameters!= null)
 						ret = method.invoke(o, parameters);
 					else 
@@ -178,13 +217,12 @@ public class MethodsCallRunnerUtil {
 			return ret;
 		}catch(Exception e){
 			LOG.error("FAIL: {}", e.getMessage());
-	        LOG.trace("FAIL:", e);
+	        LOG.error("FAIL: {}", e);
 	        throw new CommonServiceException(404, "Unknown exception: " + e.getMessage());
 		}
 	}
 	
 	private Method getMethod(Class<?>[] param_types, Class clazz, String methodName){
-		// search through all methods 
         int paramSize = param_types.length;
         Method bestMatch = null;
         Method[] methods = clazz.getDeclaredMethods();
@@ -195,7 +233,7 @@ public class MethodsCallRunnerUtil {
                 if (methodParamSize == paramSize) {          
                     boolean match = true;
                     for (int n = 0 ; n < methodParamSize; n++) {
-                    	if (!MethodUtils.isAssignmentCompatible(methodsParams[n], param_types[n])) {
+                    	if (param_types[n]!=null && !MethodUtils.isAssignmentCompatible(methodsParams[n], param_types[n])) {
                             match = false;
                             break;
                         }                    
