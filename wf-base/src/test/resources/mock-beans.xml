@@ -10,6 +10,8 @@
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
 
     <context:component-scan base-package="org.activiti.redis"/>
+    <context:component-scan base-package="org.igov.util"/>
+    <context:component-scan base-package="org.igov.io" />
 
     <bean id="repositoryService" class="org.mockito.Mockito" factory-method="mock">
         <constructor-arg value="org.activiti.engine.RepositoryService" />
@@ -43,5 +45,8 @@
         <constructor-arg value="org.igov.io.web.HttpEntityInsedeCover" />
     </bean>
 
+	<bean id="methodCallRunner" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="org.igov.util.MethodsCallRunnerUtil" />
+    </bean>
     <context:property-placeholder location="classpath:/test-config.properties" ignore-unresolvable="true"/>
 </beans>

@@ -7,7 +7,10 @@ import org.activiti.engine.impl.util.json.JSONArray;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.igov.model.core.GenericEntityDao;
+import org.igov.service.controller.actionexecute.ActionExecuteController;
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +20,8 @@ public class ActionExecuteDAOImpl extends GenericEntityDao<ActionExecute> implem
 
 	@Autowired
 	ActionExecuteOldDAO actionExecuteOldDAO;
+	
+	private static final Logger LOG = LoggerFactory.getLogger(ActionExecuteDAOImpl.class);
 	
 	protected ActionExecuteDAOImpl() {
 		super(ActionExecute.class);
@@ -73,17 +78,23 @@ public class ActionExecuteDAOImpl extends GenericEntityDao<ActionExecute> implem
 	@Transactional
 	private List<ActionExecute> getActionExecuteListByCriteria(Integer nRowsMax, String sMethodMask, String asID_Status, Integer nTryMax, Long nID){
 		Criteria criteria = getSession().createCriteria(ActionExecute.class);
+		LOG.info("in getActionExecuteListByCriteria");
 		criteria.setMaxResults(nRowsMax);
+		LOG.info("nRowsMax - {}", nRowsMax);
+		LOG.info("nTryMax - {}", nTryMax);
 		if(nTryMax!=null)
 			criteria.add(Restrictions.le("nTry", nTryMax));
+		LOG.info("nID - {}", nID);
 		if(nID!=null)
 			criteria.add(Restrictions.eq("id", nID));
+		LOG.info("asID_Status - {}", asID_Status);
 		if(asID_Status!=null){			
 			JSONArray statuses = new JSONArray(asID_Status);			
 			for(int i=0;i<statuses.length();i++){
 				criteria.add(Restrictions.in("nID_ActionExecuteStatus", (Object[]) statuses.get(i)));
 			}
 		}
+		LOG.info("sMethodMask - {}", sMethodMask);
 		if(sMethodMask!=null){
 			if(sMethodMask.contains("*"))			
 				criteria.add(Restrictions.like("sMethod", sMethodMask.replace("*", "%")));
@@ -104,6 +115,7 @@ public class ActionExecuteDAOImpl extends GenericEntityDao<ActionExecute> implem
 		actionExecuteOld.setsMethod(actionExecute.getsMethod());
 		actionExecuteOld.setSoRequest(actionExecute.getSoRequest());
 		actionExecuteOld.setsReturn(actionExecute.getsReturn());
+		actionExecuteOld.setSmParam(actionExecute.getSmParam());
 		
 		actionExecuteOldDAO.saveOrUpdate(actionExecuteOld);
 		getSession().delete(actionExecute);		

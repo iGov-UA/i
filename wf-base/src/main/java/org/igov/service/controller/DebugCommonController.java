@@ -142,5 +142,17 @@ public class DebugCommonController {
             return new ResponseEntity<String>(sMessage, HttpStatus.FORBIDDEN);
         }
 
-    }    
+    }   
+    
+    @ApiOperation(value = "/test/action/getInfo", notes =  "#####  DebugCommonController:  #####\n\n" )
+    @RequestMapping(value = "/test/action/getInfo", method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
+    public
+    @ResponseBody
+    String getInfo( @ApiParam(value = "", required = false )  @RequestParam(value = "sID_TestType", required = false) String sID_TestType
+    ) {
+        
+        return "successfull";
+
+    }       
+    
 }

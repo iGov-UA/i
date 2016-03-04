@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="common_mvd_1_hand" name="(загальна)- Надання довідки про відсутність або наявніcть судимості" isExecutable="true">
+  <process id="common_mvd_1_hand" name="(загальна) - Надання довідки про відсутність або наявніcть судимості" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть регіональне відділення для отримання довідки" type="select" default="0"></activiti:formProperty>
@@ -72,9 +72,9 @@
         <activiti:formProperty id="sID_Country" name="Country Code (Code)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sCountry" name="Громадянство" type="string"></activiti:formProperty>
         <activiti:formProperty id="sCountry_UA" name="Країна народження" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sRegion" name="Регіон" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sArea" name="Район" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlace" name="Населений пункт" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sRegionBirth" name="Регіон народження" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sArea" name="Район народження" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPlace" name="Населений пункт народження" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="goal" name="Мета отримання довідки" type="enum" required="true">
           <activiti:value id="attr1" name="Здійснення усиновлення, встановлення опіки (піклування), створення прийомної сім'ї або дитячого будинку cімейного типу"></activiti:value>
           <activiti:value id="attr2" name="Оформлення документів в органи соціального забезпечення."></activiti:value>
@@ -86,11 +86,10 @@
           <activiti:value id="attr8" name="Для участі у тендері."></activiti:value>
           <activiti:value id="attr9" name="Оформлення громадянства."></activiti:value>
           <activiti:value id="attr10" name="Оформлення або поновлення документів."></activiti:value>
-          <activiti:value id="attr11" name="Інша"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон; у форматі +380...." type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="text" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
+        
         <activiti:formProperty id="markers2" name="fields for name change" type="markers" default="${markerService.loadFromFile('mvd/common_mvd.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -167,9 +166,9 @@
         <activiti:formProperty id="sID_Country" name="Country Code (Code)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sCountry" name="Громадянство" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCountry_UA" name="Країна народження" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sRegion" name="Регіон" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sArea" name="Район" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlace" name="Населений пункт" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sRegionBirth" name="Регіон народження" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sArea" name="Район народження" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPlace" name="Населений пункт народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="goal" name="Мета отримання довідки" type="enum" writable="false">
           <activiti:value id="attr1" name="Здійснення усиновлення, встановлення опіки (піклування), створення прийомної сім'ї або дитячого будинку cімейного типу"></activiti:value>
           <activiti:value id="attr2" name="Оформлення документів в органи соціального забезпечення."></activiti:value>
@@ -181,7 +180,6 @@
           <activiti:value id="attr8" name="Для участі у тендері."></activiti:value>
           <activiti:value id="attr9" name="Оформлення громадянства."></activiti:value>
           <activiti:value id="attr10" name="Оформлення або поновлення документів."></activiti:value>
-          <activiti:value id="attr11" name="Інша"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name=" e-mail; На цей e-mail  громадянин отримає результат обробки звернення" type="string" writable="false"></activiti:formProperty>
@@ -219,6 +217,11 @@
 
 Оригінал довідки Ви зможете отримати за адресою  &lt;br /&gt;
 ${sAddress}
+
+&lt;br /&gt;
+Примітка щодо дати отримання довідки:
+${comment}&lt;br /&gt;
+ &lt;b&gt; Увага! При собі обов'язково мати громадянський паспорт або інший документ, що посвідчує особу. &lt;/b&gt;  &lt;br /&gt;
 Графік прийому:&lt;br /&gt;
 ${sWork_Time}
 
