@@ -99,7 +99,8 @@ public class ActionExecuteController {
              @ApiParam(value = "булевый, true=только из олд-таблицы, иначе только из основной (по умолчанию из основной", required = false) @RequestParam(value = "bOldOnly", required = false, defaultValue = "false") Boolean bOldOnly,
              @ApiParam(value = "выбрать только с указанными статусами (массив JSON)", required = false) @RequestParam(value = "asID_Status", required = false) String asID_Status,
              @ApiParam(value = "выбрать только те, у которых число попыток не превышает указанный лимит (иначе с любым числом попыток)", required = false) @RequestParam(value = "nTryMax", required = false) Integer nTryMax,
-    		 @ApiParam(value = "номер-ИД записи", required = false) @RequestParam(value = "nID", required = false) Long nID) throws CommonServiceException{    	
+    		 @ApiParam(value = "номер-ИД записи", required = false) @RequestParam(value = "nID", required = false) Long nID) throws CommonServiceException{
+    	LOG.info("methodCallRunner is {methodCallRunner}");
         return JsonRestUtils.toJsonResponse(methodCallRunner.runMethod(nRowsMax, sMethodMask, asID_Status, nTryMax, nID));
     }
     
