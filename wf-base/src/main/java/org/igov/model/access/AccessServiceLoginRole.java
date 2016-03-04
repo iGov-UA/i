@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
  * Date: 28.02.2016
  * Time: 18:39
  */
+@javax.persistence.Entity
 public class AccessServiceLoginRole extends Entity {
 
     /**

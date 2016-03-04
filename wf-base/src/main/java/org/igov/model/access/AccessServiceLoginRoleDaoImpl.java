@@ -4,6 +4,7 @@ import org.hibernate.Criteria;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.igov.model.core.GenericEntityDao;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -12,11 +13,12 @@ import java.util.List;
  * Date: 28.02.2016
  * Time: 18:51
  */
+@Repository
 public class AccessServiceLoginRoleDaoImpl extends GenericEntityDao<AccessServiceLoginRole>
         implements AccessServiceLoginRoleDao {
 
 
-    protected AccessServiceLoginRoleDaoImpl() {
+    public AccessServiceLoginRoleDaoImpl() {
         super(AccessServiceLoginRole.class);
     }
 

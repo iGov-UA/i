@@ -121,6 +121,37 @@
             <column name="sName" type="STRING"/>
         </loadUpdateData>
 
+
+        <loadUpdateData tableName="AccessServiceRight" primaryKey="nID" file="data/AccessServiceRight.csv" encoding="UTF-8" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sName" type="STRING"/>
+            <column name="sService" type="STRING"/>
+            <column name="sHandlerBean" type="STRING"/>
+            <column name="bDeny" type="BOOLEAN"/>
+            <column name="nOrder" type="NUMERIC"/>
+        </loadUpdateData>
+
+        <loadUpdateData tableName="AccessServiceRole" primaryKey="nID" file="data/AccessServiceRole.csv" encoding="UTF-8" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sName" type="STRING"/>
+        </loadUpdateData>
+
+        <loadUpdateData tableName="AccessServiceRoleRight" primaryKey="nID" file="data/AccessServiceRoleRight.csv" encoding="UTF-8" separator=";">
+            <column name="nID_AccessServiceRole" type="NUMERIC"/>
+            <column name="nID_AccessServiceRight" type="NUMERIC"/>
+        </loadUpdateData>
+
+        <loadUpdateData tableName="AccessServiceRoleRightInclude" primaryKey="nID" file="data/AccessServiceRoleRightInclude.csv" encoding="UTF-8" separator=";">
+            <column name="nID_AccessServiceRole" type="NUMERIC"/>
+            <column name="nID_AccessServiceRole_Include" type="NUMERIC"/>
+        </loadUpdateData>
+
+        <loadUpdateData tableName="AccessServiceLoginRole" primaryKey="nID" file="data/AccessServiceLoginRole.csv" encoding="UTF-8" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sLogin" type="STRING"/>
+            <column name="nID_AccessServiceRole" type="NUMERIC"/>
+        </loadUpdateData>
+
     </changeSet>    
 
 

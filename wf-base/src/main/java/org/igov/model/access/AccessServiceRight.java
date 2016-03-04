@@ -1,10 +1,10 @@
 package org.igov.model.access;
 
-import org.igov.model.core.Entity;
 import org.igov.model.core.NamedEntity;
 import org.igov.service.business.access.handler.AccessServiceLoginRightHandler;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
  * Date: 28.02.2016
  * Time: 17:26
  */
+@Entity
 public class AccessServiceRight extends NamedEntity implements Comparable<AccessServiceRight> {
 
     private static final String METHOD_SEPARATOR = "/";

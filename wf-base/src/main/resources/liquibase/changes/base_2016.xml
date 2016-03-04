@@ -134,6 +134,88 @@
             <column name="sName" type="STRING"/>
         </loadUpdateData>
                     
-	</changeSet>    
+	</changeSet>
+
+    <changeSet id="issue-1173-createTables" author="brunneng">
+        <createTable tableName="AccessServiceRight">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sName" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sService" type="varchar(500)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sHandlerBean" type="varchar(200)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="bDeny" type="boolean" defaultValue="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nOrder" type="int">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="AccessServiceRole">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sName" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="AccessServiceRoleRight">
+            <column name="nID_AccessServiceRole" type="bigint" >
+                <constraints nullable="false" foreignKeyName="FK_ASRR_AccessServiceRole"
+                             referencedTableName="AccessServiceRole" referencedColumnNames="nID"/>
+            </column>
+            <column name="nID_AccessServiceRight" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_ASRR_AccessServiceRight"
+                             referencedTableName="AccessServiceRight" referencedColumnNames="nID"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint constraintName="AccessServiceRoleRight_key"
+                             tableName="AccessServiceRoleRight"
+                             columnNames="nID_AccessServiceRole, nID_AccessServiceRight"/>
+
+        <createTable tableName="AccessServiceRoleRightInclude">
+            <column name="nID_AccessServiceRole" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_ASRRI_AccessServiceRole"
+                             referencedTableName="AccessServiceRole" referencedColumnNames="nID"/>
+            </column>
+            <column name="nID_AccessServiceRole_Include" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_ASRRI_AccessServiceRole_Include"
+                             referencedTableName="AccessServiceRole" referencedColumnNames="nID"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint constraintName="AccessServiceRoleRightInclude_key"
+                             tableName="AccessServiceRoleRightInclude"
+                             columnNames="nID_AccessServiceRole, nID_AccessServiceRole_Include"/>
+
+        <createTable tableName="AccessServiceLoginRole">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sLogin" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nID_AccessServiceRole" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_ASLR_AccessServiceRole"
+                             referencedTableName="AccessServiceRole" referencedColumnNames="nID"/>
+            </column>
+        </createTable>
+
+    </changeSet>
+
+    <changeSet id="issue-1173-autoIncrement" author="brunneng" dbms="h2">
+        <addAutoIncrement tableName="AccessServiceRight" columnName="nID" startWith="1000" columnDataType="bigint"/>
+        <addAutoIncrement tableName="AccessServiceRole" columnName="nID" startWith="1000" columnDataType="bigint"/>
+        <addAutoIncrement tableName="AccessServiceLoginRole" columnName="nID" startWith="1000" columnDataType="bigint"/>
+    </changeSet>
 
 </databaseChangeLog>
