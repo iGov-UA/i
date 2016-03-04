@@ -148,7 +148,7 @@ public class DebugCommonController {
     @RequestMapping(value = "/test/action/getInfo", method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
     public
     @ResponseBody
-    String getInfo( @ApiParam(value = "", required = false )  @RequestParam(value = "sID_TestType") String sID_TestType
+    String getInfo( @ApiParam(value = "", required = false )  @RequestParam(value = "sID_TestType", required = false) String sID_TestType
     ) {
         
         return "successfull";
