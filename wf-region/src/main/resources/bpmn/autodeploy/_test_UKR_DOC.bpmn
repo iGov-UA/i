@@ -12,7 +12,7 @@
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Адреса реєстрації заявника;(поштовий індекс, місто, вулиця, номер дому, номер квартири)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sLabel1" name=" " type="label" default="&lt;strong&gt;Характеристики земельної ділянки&lt;/strong&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sSquare" name="Площа, га" type="string" required="long"></activiti:formProperty>
+        <activiti:formProperty id="sSquare" name="Площа, га" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDistrict" name="Район в якому розташована земельна ділянка" type="enum" required="true">
           <activiti:value id="and" name="Амур-Нижньодніпровському"></activiti:value>
           <activiti:value id="bab" name="Шевченківському (Бабушкінському)"></activiti:value>
@@ -264,10 +264,9 @@ p {font-size: 14px;}
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow0" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
+    <sequenceFlow id="flow0" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <sequenceFlow id="flow23" sourceRef="servicetask0" targetRef="servicetask10"></sequenceFlow>
-    <sequenceFlow id="flow1" sourceRef="servicetask10" targetRef="servicetask1"></sequenceFlow>
-    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
+    <sequenceFlow id="flow1" sourceRef="servicetask10" targetRef="servicetask2"></sequenceFlow>
     <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
       <errorEventDefinition></errorEventDefinition>
@@ -407,6 +406,7 @@ per1 = 'Самарському'
 execution.setVariable('sDistr', per1)</script>
     </scriptTask>
     <sequenceFlow id="flow24" sourceRef="scripttask1" targetRef="servicetask0"></sequenceFlow>
+    <sequenceFlow id="flow25" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__test_UKR_DOC">
     <bpmndi:BPMNPlane bpmnElement="_test_UKR_DOC" id="BPMNPlane__test_UKR_DOC">
@@ -414,16 +414,16 @@ execution.setVariable('sDistr', per1)</script>
         <omgdc:Bounds height="35.0" width="35.0" x="40.0" y="48.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask0" id="BPMNShape_servicetask0">
-        <omgdc:Bounds height="71.0" width="105.0" x="247.0" y="30.0"></omgdc:Bounds>
+        <omgdc:Bounds height="71.0" width="105.0" x="395.0" y="30.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask10" id="BPMNShape_servicetask10">
-        <omgdc:Bounds height="71.0" width="105.0" x="375.0" y="30.0"></omgdc:Bounds>
+        <omgdc:Bounds height="71.0" width="105.0" x="523.0" y="30.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="71.0" width="105.0" x="130.0" y="170.0"></omgdc:Bounds>
+        <omgdc:Bounds height="71.0" width="105.0" x="114.0" y="30.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="200.0" y="210.0"></omgdc:Bounds>
+        <omgdc:Bounds height="30.0" width="30.0" x="180.0" y="66.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="72.0" width="105.0" x="260.0" y="170.0"></omgdc:Bounds>
@@ -444,7 +444,7 @@ execution.setVariable('sDistr', per1)</script>
         <omgdc:Bounds height="40.0" width="40.0" x="280.0" y="348.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
-        <omgdc:Bounds height="35.0" width="35.0" x="197.0" y="268.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="177.0" y="120.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
         <omgdc:Bounds height="71.0" width="105.0" x="104.0" y="438.0"></omgdc:Bounds>
@@ -453,25 +453,21 @@ execution.setVariable('sDistr', per1)</script>
         <omgdc:Bounds height="35.0" width="35.0" x="6.0" y="456.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="63.0" width="105.0" x="112.0" y="34.0"></omgdc:Bounds>
+        <omgdc:Bounds height="63.0" width="105.0" x="260.0" y="34.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow0" id="BPMNEdge_flow0">
         <omgdi:waypoint x="75.0" y="65.0"></omgdi:waypoint>
-        <omgdi:waypoint x="112.0" y="65.0"></omgdi:waypoint>
+        <omgdi:waypoint x="114.0" y="65.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
-        <omgdi:waypoint x="352.0" y="65.0"></omgdi:waypoint>
-        <omgdi:waypoint x="375.0" y="65.0"></omgdi:waypoint>
+        <omgdi:waypoint x="500.0" y="65.0"></omgdi:waypoint>
+        <omgdi:waypoint x="523.0" y="65.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="427.0" y="101.0"></omgdi:waypoint>
-        <omgdi:waypoint x="428.0" y="137.0"></omgdi:waypoint>
-        <omgdi:waypoint x="179.0" y="137.0"></omgdi:waypoint>
-        <omgdi:waypoint x="182.0" y="170.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="235.0" y="205.0"></omgdi:waypoint>
-        <omgdi:waypoint x="260.0" y="206.0"></omgdi:waypoint>
+        <omgdi:waypoint x="575.0" y="101.0"></omgdi:waypoint>
+        <omgdi:waypoint x="576.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="311.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="312.0" y="170.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="365.0" y="206.0"></omgdi:waypoint>
@@ -500,8 +496,8 @@ execution.setVariable('sDistr', per1)</script>
         <omgdi:waypoint x="442.0" y="409.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
-        <omgdi:waypoint x="215.0" y="240.0"></omgdi:waypoint>
-        <omgdi:waypoint x="214.0" y="268.0"></omgdi:waypoint>
+        <omgdi:waypoint x="195.0" y="96.0"></omgdi:waypoint>
+        <omgdi:waypoint x="194.0" y="120.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
         <omgdi:waypoint x="104.0" y="473.0"></omgdi:waypoint>
@@ -513,8 +509,12 @@ execution.setVariable('sDistr', per1)</script>
         <omgdi:waypoint x="209.0" y="473.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
-        <omgdi:waypoint x="217.0" y="65.0"></omgdi:waypoint>
-        <omgdi:waypoint x="247.0" y="65.0"></omgdi:waypoint>
+        <omgdi:waypoint x="365.0" y="65.0"></omgdi:waypoint>
+        <omgdi:waypoint x="395.0" y="65.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
+        <omgdi:waypoint x="219.0" y="65.0"></omgdi:waypoint>
+        <omgdi:waypoint x="260.0" y="65.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
