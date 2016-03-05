@@ -22,7 +22,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/dao-test-context.xml")
 public class HistoryEventTest {
-    private static final Log LOG = LogFactory.getLog(EntityDaoQueriesTest.class);
+    private static final Log LOG = LogFactory.getLog(HistoryEventTest.class);
 
     @Autowired
     private HistoryEventDao historyEventDao;
@@ -32,6 +32,8 @@ public class HistoryEventTest {
     private final static Long testHistoryEvent_nID_Full = 12L;
     private final static Long testHistoryEvent_Service_nID_Full = 2L;
     private final static Long testDoc_nID_Full = 7L;
+
+    private final static Long testSubject_nID = 10L;
 
     @Test
     public void getHistoryEvent() {
@@ -65,27 +67,42 @@ public class HistoryEventTest {
 
     @Test
     public void getHistoryEvents() {
-	String msgError = "Ошибка получения HistoryEvent по id=" + testHistoryEvent_nID_Full;
-	List<HistoryEvent> historyEvents = historyEventDao.getHistoryEvents(10L, true);
-	Assert.assertNotNull(msgError, historyEvents);
-	LOG.info(String.format("Всего попало под кретерии строк %d=", historyEvents.size()));
+	getHistoryEventsBySubject( testSubject_nID, false, 20);
+	getHistoryEventsBySubject( testSubject_nID, true, 11);
+    }
+
+    private void getHistoryEventsBySubject(Long nID_Subject, boolean bGrouped, int retCount) {
+	List<HistoryEvent> historyEvents = historyEventDao.getHistoryEvents(nID_Subject, bGrouped);
+	Assert.assertNotNull("Ошибка получения historyEvents по nID_Subject=" + nID_Subject, historyEvents);
+	Assert.assertEquals(String.format("Ошибка получения данных по кретериям: nID_Subject=%d, bGrouped=%b.", nID_Subject,
+		bGrouped), retCount, historyEvents.size());
+
+	LOG.info(String.format("Согласно кретериям: nID_Subject=%d, bGrouped=%b, найдено строк %d", nID_Subject,
+		bGrouped, historyEvents.size()));
 
 	if (LOG.isDebugEnabled()) {
+	    String sHesId;
+	    String sDocId;
 	    for (HistoryEvent historyEvent : historyEvents) {
-		LOG.info(String.format("  id=%d, subj_id=%d", historyEvent.getId(), historyEvent.getSubjectKey()));
+
+		sHesId = "null.null";
+		sDocId = "null.null";
 
 		HistoryEvent_Service historyEvent_Service = historyEvent.getoHistoryEvent_Service();
 		if (historyEvent_Service != null) {
-		    LOG.info(String.format("  historyEvent_Service_nID=%d", historyEvent_Service.getId()));
+		    sHesId = historyEvent_Service.getId().toString();
 		}
 
 		Document document = historyEvent.getoDocument();
-		if (historyEvent_Service != null) {
-		    LOG.info(String.format("  document_nID=%d", document.getId()));
+		if (document != null) {
+		    sDocId = document.getId().toString();
 		}
+
+		LOG.info(String.format(" HistoryEvent.nID=%d, historyEvent_Service.nID=%s, Document.nID=%s, sDate=%s",
+			historyEvent.getId(), sHesId, sDocId, historyEvent.getDate()));
+
 	    }
 	}
-
     }
 
 }
