@@ -34,10 +34,10 @@ public class HistoryEventDaoImpl extends GenericEntityDao<HistoryEvent> implemen
      * 
      * Получение списка сущностей HistoryEvent по nID субъекта
      * Если bGrouped = false - выбираются все сущности для данного субъекта
-     * если bGrouped = false, то в список попадают только уникальные сущности. Если сущности не уникальные, то из них отбирается только
+     * если bGrouped = true, то в список попадают только уникальные сущности. Если сущности не уникальные, то из них отбирается только
      * одна с самым большим временем в поле sDate
      *  
-     * Уникальность сущности определяется сравнинием по полям oHistoryEvent_Service, oDocument
+     * Уникальность сущности определяется путем сравнения полей: oHistoryEvent_Service, oDocument
      * 
      * Алгоритм сравнения сущностей: 
      * - если поля oHistoryEvent_Service=null и oDocument=null- сущности разные 
@@ -139,7 +139,7 @@ public class HistoryEventDaoImpl extends GenericEntityDao<HistoryEvent> implemen
     }
 
     @Override
-    public Long setHistoryEvent(Long nID_Subject, Long nID_HistoryEventType, String sEventName_Custom, String sMessage)
+    public Long setHistoryEvent(Long nID_Subject, Long nID_HistoryEventType, String sEventName_Custom, String sMessage, HistoryEvent_Service historyEvent_Service, Document document )
             throws IOException {
         HistoryEvent historyEvent = new HistoryEvent();
         historyEvent.setSubjectKey(nID_Subject);
@@ -147,6 +147,8 @@ public class HistoryEventDaoImpl extends GenericEntityDao<HistoryEvent> implemen
         historyEvent.setEventNameCustom(sEventName_Custom);
         historyEvent.setsMessage(sMessage);
         historyEvent.setDate(new Date());
+        historyEvent.setoHistoryEvent_Service(historyEvent_Service);
+        historyEvent.setoDocument(document);
         return saveOrUpdate(historyEvent).getId();
     }
 }

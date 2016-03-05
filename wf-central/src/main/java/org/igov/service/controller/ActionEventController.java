@@ -6,6 +6,8 @@ import org.igov.model.subject.ServerDao;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpEntityInsedeCover;
 import org.igov.model.action.event.*;
+import org.igov.model.document.Document;
+import org.igov.model.document.DocumentDao;
 import org.igov.service.business.action.ActionEventService;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.RecordNotFoundException;
@@ -64,6 +66,8 @@ public class ActionEventController {
     private HttpEntityInsedeCover oHttpEntityInsedeCover;
     @Autowired
     private SubjectMessagesDao subjectMessagesDao; 
+    @Autowired    
+    private DocumentDao documentDao;
     
     /**
      * получает объект события по услуге, по одной из следующий комбинаций
@@ -386,11 +390,23 @@ public class ActionEventController {
             @ApiParam(value = "ИД-строка субъекта, который загрузил документ", required = false) @RequestParam(value = "nID_Subject", required = false) long nID_Subject,
             @ApiParam(value = "ИД-номер типа документа", required = false) @RequestParam(value = "nID_HistoryEventType", required = false) Long nID_HistoryEventType,
             @ApiParam(value = "кастомное описание документа", required = false) @RequestParam(value = "sEventName", required = false) String sEventName_Custom,
-            @ApiParam(value = "сохраняемое содержимое", required = true) @RequestParam(value = "sMessage") String sMessage)
+            @ApiParam(value = "сохраняемое содержимое", required = true) @RequestParam(value = "sMessage") String sMessage,
+            @ApiParam(value = "id - сервиса HistoryEven", required = false) @RequestParam(value = "nID_HistoryEvent_Service", required=false) Long nID_HistoryEvent_Service,
+            @ApiParam(value = "id - документа", required = false) @RequestParam(value = "nID_Document", required=false) Long nID_Document)
             throws IOException {
+	
+	HistoryEvent_Service historyEvent_Service = null;
+	Document document = null;
+	
+	if ( nID_HistoryEvent_Service != null) {
+	    historyEvent_Service = historyEventServiceDao.findByIdExpected(nID_HistoryEvent_Service);
+	}
+	if ( nID_Document != null) {
+	    document = documentDao.findByIdExpected(nID_Document);
+	}
 
         return historyEventDao.setHistoryEvent(nID_Subject,
-                nID_HistoryEventType, sEventName_Custom, sMessage);
+                nID_HistoryEventType, sEventName_Custom, sMessage, historyEvent_Service, document);
 
     }
 
@@ -417,9 +433,18 @@ public class ActionEventController {
      * @param nID_Subject ID авторизированого субъекта (добавляется в запрос
      * автоматически после аутентификации пользователя)????????
      */
-    @ApiOperation(value = "Загрузка событий", notes = "##### ActionEventController - События по действиям и статистика. Загрузка событий #####\n\n"
-            + "HTTP Context: http://server:port/wf/service/action/event/getHistoryEvents\n\n\n"
-            + "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)")
+    @ApiOperation(value = "Загрузка событий", notes = "##### Загружает историю событий #####\n\n"
+            + "HTTP Context: http://server:port/wf/service/action/event/getHistoryEvents\n\n"
+            + "В зависимости от параметра **bGrouped** к списку может применяться фильтр\n"
+            + "Если **bGrouped = false** - выбираются все сущности для данного субъекта\n"
+            + "если **bGrouped = true**, то в список попадают только уникальные сущности. Если сущности не уникальные, то из них отбирается только "
+            + "одна с самым большим временем в поле sDate\n\n"             
+            + "Уникальность сущности определяется путем сравнения полей **oHistoryEvent_Service, oDocument**\n\n"
+            + "Алгоритм сравнения сущностей:\n"
+            + "- если поля **oHistoryEvent_Service = null** и **oDocument=null**- сущности разные\n" 
+            + "- если **oHistoryEvent_Service = null**, а **oDocument = не null** -сравнение идет только по **oDocument**\n" 
+            + "- если **oHistoryEvent_Service = не null**, **а oDocument = null** - савнение идет только по **oHistoryEvent_Service**\n" 
+            + "- если **oHistoryEvent_Service = не null** и **oDocument = не null** - савнение идет и по **oHistoryEvent_Service** и по **oDocument**\n")
     @RequestMapping(value = "/getHistoryEvents", method = RequestMethod.GET)
     public @ResponseBody
     List<HistoryEvent> getHistoryEvents(
