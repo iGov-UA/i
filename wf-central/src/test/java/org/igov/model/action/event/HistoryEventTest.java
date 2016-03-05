@@ -8,6 +8,7 @@ import org.apache.commons.logging.LogFactory;
 import org.igov.model.core.EntityDaoQueriesTest;
 import org.igov.model.document.Document;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,6 +66,9 @@ public class HistoryEventTest {
 	Assert.assertNull(msgError, document);
     }
 
+    // Тест проверяет количество строк попадающих под кретерий
+    // если сработал скорее всего, проблема из-за изменений в файле HistoryEvent.csv
+//    @Ignore
     @Test
     public void getHistoryEvents() {
 	getHistoryEventsBySubject( testSubject_nID, false, 20);
