@@ -381,9 +381,11 @@ public class ActionEventController {
      * @param sEventName_Custom строка - кастомное описание документа
      * (необязательное поле)
      * @param sMessage строка - сохраняемое содержимое (обязательное поле)
+     * @param nID_HistoryEvent_Service строка - id - сервиса HistoryEven (не обязательное поле)
+     * @param nID_Document строка - id - документа (не обязательное поле)
      */
     @ApiOperation(value = "Сохранение события ", notes = "##### ActionEventController - События по действиям и статистика. Сохранение события #####\n\n"
-            + "HTTP Context: http://server:port/wf/service/action/event/setHistoryEvent")
+            + "HTTP Context: http://test.igov.org.ua/wf/service/action/event/setHistoryEvent")
     @RequestMapping(value = "/setHistoryEvent", method = RequestMethod.POST)
     public @ResponseBody
     Long setHistoryEvent(
@@ -415,9 +417,7 @@ public class ActionEventController {
      *
      * @param id ИД-номер документа
      */
-    @ApiOperation(value = "Получение документа по ид документа", notes = "##### ActionEventController - События по действиям и статистика. Получение документа по ид документа #####\n\n"
-            + "HTTP Context: http://server:port/wf/service/action/event/getHistoryEvent\n\n\n"
-            + "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n\n"
+    @ApiOperation(value = "Получение документа по ид документа", notes = "\n"
             + "Пример:\n"
             + "https://test.igov.org.ua/wf/service/action/event/getHistoryEvent?nID=1")
     @RequestMapping(value = "/getHistoryEvent", method = RequestMethod.GET)
@@ -434,22 +434,22 @@ public class ActionEventController {
      * автоматически после аутентификации пользователя)????????
      */
     @ApiOperation(value = "Загрузка событий", notes = "##### Загружает историю событий #####\n\n"
-            + "HTTP Context: http://server:port/wf/service/action/event/getHistoryEvents\n\n"
-            + "В зависимости от параметра **bGrouped** к списку может применяться фильтр\n"
-            + "Если **bGrouped = false** - выбираются все сущности для данного субъекта\n"
-            + "если **bGrouped = true**, то в список попадают только уникальные сущности. Если сущности не уникальные, то из них отбирается только "
+            + "Пример: http://test.igov.org.ua/wf/service/action/event/getHistoryEvents?nID_Subject=10\n\n"
+            + "В зависимости от параметра **bGrouped** к списку может применяться фильтр.\n\n"
+            + "- Если **bGrouped = false** - выбираются все сущности для данного субъекта\n"
+            + "- если **bGrouped = true**, то в список попадают только уникальные сущности. Если сущности не уникальные, то из них отбирается только "
             + "одна с самым большим временем в поле sDate\n\n"             
             + "Уникальность сущности определяется путем сравнения полей **oHistoryEvent_Service, oDocument**\n\n"
-            + "Алгоритм сравнения сущностей:\n"
+            + "Алгоритм сравнения сущностей:\n\n"
             + "- если поля **oHistoryEvent_Service = null** и **oDocument=null**- сущности разные\n" 
             + "- если **oHistoryEvent_Service = null**, а **oDocument = не null** -сравнение идет только по **oDocument**\n" 
             + "- если **oHistoryEvent_Service = не null**, **а oDocument = null** - савнение идет только по **oHistoryEvent_Service**\n" 
-            + "- если **oHistoryEvent_Service = не null** и **oDocument = не null** - савнение идет и по **oHistoryEvent_Service** и по **oDocument**\n")
+            + "- если **oHistoryEvent_Service = не null** и **oDocument = не null** - сравнение идет и по **oHistoryEvent_Service** и по **oDocument**\n")
     @RequestMapping(value = "/getHistoryEvents", method = RequestMethod.GET)
     public @ResponseBody
     List<HistoryEvent> getHistoryEvents(
-            @ApiParam(value = "nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)", required = true) @RequestParam(value = "nID_Subject") long nID_Subject,
-            @ApiParam(value = "если true, то возвращать только последнюю по дате (sDate) запись, из тех, у которых nID_HistoryEvent_Service или nID_Document - один и тот-же", required = false) 
+            @ApiParam(value = "id авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)", required = true) @RequestParam(value = "nID_Subject") long nID_Subject,
+            @ApiParam(value = "если **true**, то возвращает только последнюю по дате (sDate) запись, из тех, у которых nID_HistoryEvent_Service или nID_Document - один и тот-же", required = false) 
             @RequestParam(value = "bGrouped", required=false, defaultValue = "false") Boolean bGrouped ) {
         return historyEventDao.getHistoryEvents(nID_Subject, bGrouped);
     }
