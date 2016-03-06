@@ -397,19 +397,8 @@ public class ActionEventController {
             @ApiParam(value = "id - документа", required = false) @RequestParam(value = "nID_Document", required=false) Long nID_Document)
             throws IOException {
 	
-	HistoryEvent_Service historyEvent_Service = null;
-	Document document = null;
-	
-	if ( nID_HistoryEvent_Service != null) {
-	    historyEvent_Service = historyEventServiceDao.findByIdExpected(nID_HistoryEvent_Service);
-	}
-	if ( nID_Document != null) {
-	    document = documentDao.findByIdExpected(nID_Document);
-	}
-
         return historyEventDao.setHistoryEvent(nID_Subject,
-                nID_HistoryEventType, sEventName_Custom, sMessage, historyEvent_Service, document);
-
+                nID_HistoryEventType, sEventName_Custom, sMessage, nID_HistoryEvent_Service, nID_Document);
     }
 
     /**

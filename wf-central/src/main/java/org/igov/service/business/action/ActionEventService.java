@@ -202,7 +202,7 @@ public class ActionEventService {
         try {
             String eventMessage = HistoryEventMessage.createJournalMessage(eventType, values);
             historyEventDao.setHistoryEvent(documentId, eventType.getnID(),
-                    eventMessage, eventMessage, null, oDocument);
+                    eventMessage, eventMessage, null, oDocument.getId());
         } catch (IOException oException) {
             LOG.error("error: {}, during creating HistoryEvent", oException.getMessage());
             LOG.trace("FAIL:", oException);
@@ -230,7 +230,7 @@ public class ActionEventService {
             String eventMessage = HistoryEventMessage.createJournalMessage(
                     eventType, values);
             historyEventDao.setHistoryEvent(nID_Subject, eventType.getnID(),
-                    eventMessage, eventMessage, null, oDocument);
+                    eventMessage, eventMessage, null, oDocument.getId());
         } catch (IOException oException) {
             LOG.error("error: {}, during creating HistoryEvent", oException.getMessage());
             LOG.trace("FAIL:", oException);
