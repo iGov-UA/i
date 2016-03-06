@@ -1,0 +1,45 @@
+{
+	"motion":
+	{
+		"ValuesFieldsOnCondition_9":
+		{
+			"aField_ID":			["rdozvil"], 
+			"asID_Field_sValue":	["Оригінал попереднього дозволу"],
+			"asID_Field":			{"sReason":"purpose"},
+			"sCondition":			"[sReason]=='second_permission' || [sReason] == 'revoke'|| [sReason] == 'continuation' || [sReason] == 'restructuring'",
+			"sCommentForMarker":	["назва доку попередньго дозволу"]
+		},
+		/* Якщо  юрідична особа	*/	
+		"ShowFieldsOnCondition_1":
+		{
+			"aField_ID":			["imya_ur","edrpo","pib_ur", "adres_1","telef","doc_ur","statut"],
+			"asID_Field":			{"sClient":"subekt"},
+			"sCondition":			"[sClient] == 'ur'",
+			"sCommentForMarker":	["Якщо  юрідична особа"]
+		},
+		"ShowFieldsOnCondition_11":
+		{
+			"aField_ID":	["adres_0","pib_fiz","bankId_scan_passport"],
+			"asID_Field":	{"sClient":"subekt"},
+			"sCondition":	"[sClient] == 'fiz'"
+		},
+		"ShowFieldsOnCondition_2":
+		{
+			"aField_ID":	["number_previous","date_previous","original"],
+			"asID_Field":	{"sPerson":"purpose"},
+			"sCondition":	"[sPerson] == 'second_permission' || [sPerson] == 'revoke'|| [sPerson] == 'continuation' || [sPerson] == 'restructuring'"
+		},
+		"ShowFieldsOnCondition_3":
+		{
+			"aField_ID":	["placePhoto","advertFile","advertLicenseFile"],
+			"asID_Field":	{"sPerson":"purpose"},
+			"sCondition":	"[sPerson] == 'second_permission' || [sPerson] == 'first_permission'|| [sPerson] == 'continuation'|| [sPerson] == 'restructuring'"
+		},
+		"ShowFieldsOnCondition_4":
+		{
+			"aField_ID":	["confidant_pib","confidant_passport"],
+			"asID_Field":	{"sPerson":"how"},
+			"sCondition":	"[sPerson] == 'confidant'"
+		}
+	}
+}
