@@ -95,9 +95,8 @@ public class HistoryEventTest {
     private void getHistoryEventsBySubject(Long nID_Subject, boolean bGrouped, int retCount) {
 	List<HistoryEvent> historyEvents = historyEventDao.getHistoryEvents(nID_Subject, bGrouped);
 	Assert.assertNotNull("Ошибка получения historyEvents по nID_Subject=" + nID_Subject, historyEvents);
-	// Assert.assertEquals(String.format("Ошибка получения данных по
-	// кретериям: nID_Subject=%d, bGrouped=%b.", nID_Subject,
-	// bGrouped), retCount, historyEvents.size());
+	Assert.assertEquals(String.format("Ошибка получения данных по кретериям: nID_Subject=%d, bGrouped=%b.",
+		nID_Subject, bGrouped), retCount, historyEvents.size());
 
 	LOG.info(String.format("Согласно кретериям: nID_Subject=%d, bGrouped=%b, найдено строк %d", nID_Subject,
 		bGrouped, historyEvents.size()));
