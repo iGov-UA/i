@@ -184,13 +184,14 @@ public class ActionEventService {
     public void createHistoryEvent(HistoryEventType eventType, Long documentId,
             String sFIO, String sPhone, Long nMs, String sEmail) {
         Map<String, String> values = new HashMap<>();
+        Document oDocument = null;
         try {
             values.put(HistoryEventMessage.FIO, sFIO);
             values.put(HistoryEventMessage.TELEPHONE, sPhone);
             values.put(HistoryEventMessage.EMAIL, sEmail);
             values.put(HistoryEventMessage.DAYS, "" + TimeUnit.MILLISECONDS.toDays(nMs));
 
-            Document oDocument = documentDao.getDocument(documentId);
+            oDocument = documentDao.getDocument(documentId);
             values.put(HistoryEventMessage.DOCUMENT_NAME, oDocument.getName());
             values.put(HistoryEventMessage.DOCUMENT_TYPE, oDocument.getDocumentType().getName());
             documentId = oDocument.getSubject().getId();
@@ -201,7 +202,7 @@ public class ActionEventService {
         try {
             String eventMessage = HistoryEventMessage.createJournalMessage(eventType, values);
             historyEventDao.setHistoryEvent(documentId, eventType.getnID(),
-                    eventMessage, eventMessage);
+                    eventMessage, eventMessage, null, oDocument);
         } catch (IOException oException) {
             LOG.error("error: {}, during creating HistoryEvent", oException.getMessage());
             LOG.trace("FAIL:", oException);
@@ -212,8 +213,9 @@ public class ActionEventService {
             Long nID_Subject, String sSubjectName_Upload, Long nID_Document,
             Document document) {
         Map<String, String> values = new HashMap<>();
+        Document oDocument = null;
         try {
-            Document oDocument = document == null ? documentDao
+            oDocument = document == null ? documentDao
                     .getDocument(nID_Document) : document;
             values.put(HistoryEventMessage.DOCUMENT_TYPE, oDocument
                     .getDocumentType().getName());
@@ -228,7 +230,7 @@ public class ActionEventService {
             String eventMessage = HistoryEventMessage.createJournalMessage(
                     eventType, values);
             historyEventDao.setHistoryEvent(nID_Subject, eventType.getnID(),
-                    eventMessage, eventMessage);
+                    eventMessage, eventMessage, null, oDocument);
         } catch (IOException oException) {
             LOG.error("error: {}, during creating HistoryEvent", oException.getMessage());
             LOG.trace("FAIL:", oException);
@@ -304,7 +306,7 @@ public class ActionEventService {
             String eventMessage = HistoryEventMessage.createJournalMessage(
                     eventType, mParamMessage);
             historyEventDao.setHistoryEvent(nID_Subject, eventType.getnID(),
-                    eventMessage, eventMessage);
+                    eventMessage, eventMessage, null, null);
         } catch (IOException e) {            
             LOG.error("error: {}, during creating HistoryEvent", e.getMessage());
             LOG.trace("FAIL:", e);
