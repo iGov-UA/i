@@ -57,23 +57,14 @@ public class HistoryEventDaoImpl extends GenericEntityDao<HistoryEvent> implemen
 		    .addOrder(Order.desc("date"))
 		    .list();
 
-	    boolean isAdd = false;
-
+	    HistoryEvent historyEventOld = null;
 	    for (HistoryEvent historyEventNew : historyEventsNew) {
-
-		isAdd = true;
-
-		for (HistoryEvent historyEvent : historyEvents) {
-		    if (compHistoryEvent(historyEvent, historyEventNew)) {
-			isAdd = false;
-			break;
-		    }
+		if (compHistoryEvent(historyEventOld, historyEventNew)) {
+		    continue;
+		} else {
+		    historyEventOld = historyEventNew;
+		    historyEvents.add(historyEventOld);		    
 		}
-
-		if (isAdd) {
-		    historyEvents.add(historyEventNew);
-		}
-
 	    }
 
 	} else {
@@ -103,6 +94,9 @@ public class HistoryEventDaoImpl extends GenericEntityDao<HistoryEvent> implemen
      * - если oHistoryEvent_Service=не null и oDocument= не null - савнение идет и по oHistoryEvent_Service и по oDocument
      */
     private boolean compHistoryEvent(HistoryEvent evold, HistoryEvent evnew) {
+	if (evold == null ) {
+	    return false;
+	}
 	HistoryEvent_Service hesNew = evnew.getoHistoryEvent_Service();
 	Document docNew = evnew.getoDocument();
 
