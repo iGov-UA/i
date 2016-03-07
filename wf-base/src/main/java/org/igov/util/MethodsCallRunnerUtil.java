@@ -128,7 +128,7 @@ public class MethodsCallRunnerUtil {
 
 			//TODO move to separate method 
 			ActionExecute actionExecute = new ActionExecute();
-			actionExecute = actionExecuteDAO.setActionExecute(1l, new DateTime(), new DateTime(), 0, className, methodName, parameters!=null?toByteArray(parameters):null, new JSONArray(parameters).toString(), null);
+			actionExecute = actionExecuteDAO.setActionExecute(1l, new DateTime(), new DateTime(), 0, className, methodName, parameters!=null?toByteArray(parameters):new byte[0], new JSONArray(parameters).toString(), null);
 			actionExecuteDAO.saveOrUpdate(actionExecute);
 			
 			LOG.info("Method is saved!");
