@@ -52,9 +52,10 @@ public class ActionExecuteOld extends Entity {
 	@Column(name = "sMethod", nullable = true)
 	private String sMethod;	
 
+	@Lob
+    @Type(type="org.hibernate.type.PrimitiveByteArrayBlobType")
 	@JsonProperty(value = "soRequest")
 	@Column(name = "soRequest", nullable = true)
-	@Lob
 	private byte[] soRequest;
 	
 	@JsonProperty(value = "smParam")
