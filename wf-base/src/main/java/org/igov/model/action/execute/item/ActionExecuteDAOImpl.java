@@ -52,8 +52,7 @@ public class ActionExecuteDAOImpl extends GenericEntityDao<ActionExecute> implem
 		actionExecute.setnTry(nTry);
 		actionExecute.setsObject(sObject);
 		actionExecute.setsMethod(sMethod);
-		Blob blobContent = Hibernate.getLobCreator(getSession()).createBlob(soRequest);
-		actionExecute.setSoRequest(blobContent);
+		actionExecute.setSoRequest(soRequest);
 		actionExecute.setsReturn(sReturn);
 		
 		getSession().saveOrUpdate(actionExecute);

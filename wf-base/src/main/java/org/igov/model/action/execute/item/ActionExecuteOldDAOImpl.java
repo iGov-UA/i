@@ -48,8 +48,7 @@ public class ActionExecuteOldDAOImpl extends GenericEntityDao<ActionExecuteOld>	
 		actionExecuteOld.setnTry(nTry);
 		actionExecuteOld.setsObject(sObject);
 		actionExecuteOld.setsMethod(sMethod);
-		Blob blobContent = Hibernate.getLobCreator(getSession()).createBlob(soRequest);
-		actionExecuteOld.setSoRequest(blobContent);
+		actionExecuteOld.setSoRequest(soRequest);
 		actionExecuteOld.setsReturn(sReturn);
 		
 		getSession().saveOrUpdate(actionExecuteOld);

@@ -55,7 +55,7 @@ public class ActionExecuteOld extends Entity {
 	@JsonProperty(value = "soRequest")
 	@Column(name = "soRequest", nullable = true)
 	@Lob
-	private Blob soRequest;
+	private byte[] soRequest;
 	
 	@JsonProperty(value = "smParam")
 	@Column(name = "smParam", nullable = true)
@@ -105,11 +105,11 @@ public class ActionExecuteOld extends Entity {
 		this.sMethod = sMethod;
 	}
 
-	public Blob getSoRequest() {
+	public byte[] getSoRequest() {
 		return soRequest;
 	}
 
-	public void setSoRequest(Blob soRequest) {
+	public void setSoRequest(byte[] soRequest) {
 		this.soRequest = soRequest;
 	}
 
