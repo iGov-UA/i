@@ -1,10 +1,12 @@
 package org.igov.model.action.execute.item;
 
+import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.criterion.Restrictions;
 import org.igov.model.core.GenericEntityDao;
 import org.joda.time.DateTime;
@@ -33,23 +35,25 @@ public class ActionExecuteOldDAOImpl extends GenericEntityDao<ActionExecuteOld>	
 	}
 
 	@Override
-	public Long setActionExecute(Long nID_ActionExecuteStatus,
+	public Long setActionExecuteOld(Long nID_ActionExecuteStatus,
 			DateTime oDateMake, DateTime oDateEdit, Integer nTry,
-			String sMethod, String soRequest, String smParam, String sReturn) {
-		ActionExecuteOld actionExecute = new ActionExecuteOld();
+			String sObject, String sMethod, byte[] soRequest, String smParam, String sReturn) {
+		ActionExecuteOld actionExecuteOld = new ActionExecuteOld();
 		ActionExecuteStatus aes = new ActionExecuteStatus();
         aes.setId(nID_ActionExecuteStatus);
-        actionExecute.setActionExecuteStatus(aes);
+        actionExecuteOld.setActionExecuteStatus(aes);
         
-		actionExecute.setoDateMake(oDateMake);
-		actionExecute.setoDateEdit(oDateEdit);
-		actionExecute.setnTry(nTry);
-		actionExecute.setsMethod(sMethod);
-		actionExecute.setSoRequest(soRequest);
-		actionExecute.setsReturn(sReturn);
+		actionExecuteOld.setoDateMake(oDateMake);
+		actionExecuteOld.setoDateEdit(oDateEdit);
+		actionExecuteOld.setnTry(nTry);
+		actionExecuteOld.setsObject(sObject);
+		actionExecuteOld.setsMethod(sMethod);
+		Blob blobContent = Hibernate.getLobCreator(getSession()).createBlob(soRequest);
+		actionExecuteOld.setSoRequest(blobContent);
+		actionExecuteOld.setsReturn(sReturn);
 		
-		getSession().saveOrUpdate(actionExecute);
-		return actionExecute.getId();
+		getSession().saveOrUpdate(actionExecuteOld);
+		return actionExecuteOld.getId();
 	}	
 
 	@Transactional
@@ -97,6 +101,7 @@ public class ActionExecuteOldDAOImpl extends GenericEntityDao<ActionExecuteOld>	
 				actionExecute.setoDateMake(actionExecuteOld.getoDateMake());
 				actionExecute.setoDateEdit(actionExecuteOld.getoDateEdit());
 				actionExecute.setnTry(actionExecuteOld.getnTry());
+				actionExecute.setsObject(actionExecuteOld.getsObject());
 				actionExecute.setsMethod(actionExecuteOld.getsMethod());
 				actionExecute.setSoRequest(actionExecuteOld.getSoRequest());
 				actionExecute.setsReturn(actionExecuteOld.getsReturn());

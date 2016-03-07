@@ -10,11 +10,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 
+import org.activiti.engine.impl.util.json.JSONArray;
 import org.apache.commons.beanutils.MethodUtils;
-import org.apache.commons.codec.binary.Base64;
 import org.igov.model.action.execute.item.ActionExecute;
 import org.igov.model.action.execute.item.ActionExecuteDAO;
-import org.igov.model.action.execute.item.ActionExecuteStatus;
 import org.igov.model.action.execute.item.ActionExecuteStatusDAO;
 import org.igov.service.exception.CommonServiceException;
 import org.joda.time.DateTime;
@@ -39,17 +38,15 @@ public class MethodsCallRunnerUtil {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(MethodsCallRunnerUtil.class);
 	
-	private static Object fromString(String s){
+	private static Object fromByteArray(byte[] byteArray){
 		Object o = null;
 		ObjectInputStream ois = null;
-		LOG.info("Entering fromString()");
-		LOG.info("method param: {}", s);
-		try{
-			byte[] data = Base64.decodeBase64(s);
-			ois = new ObjectInputStream(new ByteArrayInputStream(data));
+		LOG.info("Entering fromByteArray()");
+		try{			
+			ois = new ObjectInputStream(new ByteArrayInputStream(byteArray));
 			o = ois.readObject();
 		}catch(Exception e){
-			LOG.error("Error during serializing data from string!");
+			LOG.error("Error during serializing data from byte array!");
 			LOG.error(e.getMessage());
 		}finally{
 			if(ois!=null)
@@ -63,17 +60,18 @@ public class MethodsCallRunnerUtil {
 		return o;
 	}
 
-	private static String toString(Serializable o) throws IOException {
-		String res = null;
+	//TODO check implementation for objects serizlization
+	private static byte[] toByteArray(Serializable o) throws IOException {
+		byte[] res = null;
 		ByteArrayOutputStream baos = null;
 		ObjectOutputStream oos = null;
 		try{
 			baos = new ByteArrayOutputStream();
 			oos = new ObjectOutputStream(baos);
 			oos.writeObject(o);
-			res = Base64.encodeBase64String(baos.toByteArray());
+			res = baos.toByteArray();
 		}catch(Exception e){
-			LOG.error("Error during serializing data to string!");
+			LOG.error("Error during serializing data to byte array!");
 			LOG.error(e.getMessage());
 		}finally{
 			try{
@@ -89,9 +87,9 @@ public class MethodsCallRunnerUtil {
 		return res;
 	}
 
-	public Object registrateMethod(String className, String methodName, Object[] parameters) throws CommonServiceException{
+	public Object registerMethod(String className, String methodName, Object[] parameters) throws CommonServiceException{
 		try{			
-			LOG.info("in registrateMethod");
+			LOG.info("in registerMethod");
 			Object ret = null;
 			Class<?> c = Class.forName(className);
 			Object o = null;
@@ -128,17 +126,11 @@ public class MethodsCallRunnerUtil {
 
 			LOG.info("method is-{}", method!=null?"not null":"null");
 
+			//TODO move to separate method 
 			ActionExecute actionExecute = new ActionExecute();
-			ActionExecuteStatus actionExecuteStatus = actionExecuteStatusDAO.findByIdExpected(1l);								
-			actionExecute.setActionExecuteStatus(actionExecuteStatus);
-			actionExecute.setnTry(0);
-			actionExecute.setoDateEdit(null);
-			actionExecute.setoDateMake(new DateTime());
-			actionExecute.setsMethod(methodName);
-			actionExecute.setSoRequest(className);
-			actionExecute.setSmParam(parameters!=null?toString(parameters):null);
-			actionExecute.setsReturn(null);
+			actionExecute = actionExecuteDAO.setActionExecute(1l, new DateTime(), new DateTime(), 0, className, methodName, parameters!=null?toByteArray(parameters):null, new JSONArray(parameters).toString(), null);
 			actionExecuteDAO.saveOrUpdate(actionExecute);
+			
 			LOG.info("Method is saved!");
 			LOG.info("Action execute object:{}", actionExecute);
 			try{
@@ -174,13 +166,13 @@ public class MethodsCallRunnerUtil {
 			List<ActionExecute> actionExecuteLsit = actionExecuteDAO.getActionExecute(nRowsMax, sMethodMask, asID_Status, nTryMax, nID);
 			LOG.info("actionExecuteLsit size -{}",actionExecuteLsit.size());
 			for(ActionExecute actionExecute:actionExecuteLsit){
-				Class<?> c = Class.forName(actionExecute.getSoRequest());
+				Class<?> c = Class.forName(actionExecute.getsObject());
 				Object o = springContext.getBean(c);
 				
 				if(o==null){
 					o = c.getDeclaredConstructor().newInstance();
 				}
-				Object[] parameters = actionExecute.getSmParam()!=null?(Object[]) fromString(actionExecute.getSmParam()):null;
+				Object[] parameters = actionExecute.getSmParam()!=null?(Object[]) fromByteArray(actionExecute.getSoRequest().getBytes(0, (int) actionExecute.getSoRequest().length())):null;
 				
 				Class<?>[] param_types = new Class<?>[parameters!=null?parameters.length:0];
 				if (parameters!=null && parameters.length>0)
