@@ -142,7 +142,7 @@ public class UniSender {
         	LOG.info("Calling registrateMethod with params{}", mParam);
         	
         	LOG.info("methodCallRunner is {}",methodCallRunner);
-        	oUniResponse = (UniResponse) methodCallRunner.registrateMethod(UniSender.class.getName(), "sendRequest", new Object[]{mParam, osURL.toString(),null});
+        	oUniResponse = (UniResponse) methodCallRunner.registerMethod(UniSender.class.getName(), "sendRequest", new Object[]{mParam, osURL.toString(),null});
         	LOG.info("Response from UniSender{}", oUniResponse);
         }catch(Exception e){
         	LOG.info("Error during sending email{} ", e);
@@ -242,7 +242,7 @@ public class UniSender {
         UniResponse oUniResponse = null;
         try{
         	LOG.info("Calling registrateMethod with params{}", mParamObject);
-        	oUniResponse = (UniResponse) methodCallRunner.registrateMethod(UniSender.class.getName(), "sendRequest", new Object[]{mParamObject,osURL.toString(),mParamByteArray});
+        	oUniResponse = (UniResponse) methodCallRunner.registerMethod(UniSender.class.getName(), "sendRequest", new Object[]{mParamObject,osURL.toString(),mParamByteArray});
         	LOG.info("Response from UniSender{}", oUniResponse);
         }catch(Exception e){
         	LOG.info("Error during sending email{} ", e);
@@ -283,7 +283,7 @@ public class UniSender {
         UniResponse oUniResponse = null;
         try{
         	LOG.info("Calling registrateMethod with params{}", mParam);
-        	oUniResponse = (UniResponse) methodCallRunner.registrateMethod(UniSender.class.getName(), "sendRequest", new Object[]{mParam, osURL.toString(),null});
+        	oUniResponse = (UniResponse) methodCallRunner.registerMethod(UniSender.class.getName(), "sendRequest", new Object[]{mParam, osURL.toString(),null});
         	LOG.info("Response from UniSender{}", oUniResponse);
         }catch(Exception e){
         	LOG.info("Error during sending email{} ", e);

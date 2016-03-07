@@ -1,13 +1,14 @@
 package org.igov.model.action.execute.item;
 
+import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.criterion.Restrictions;
 import org.igov.model.core.GenericEntityDao;
-import org.igov.service.controller.actionexecute.ActionExecuteController;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,9 +39,9 @@ public class ActionExecuteDAOImpl extends GenericEntityDao<ActionExecute> implem
 	}
 
 	@Override
-	public Long setActionExecute(Long nID_ActionExecuteStatus,
+	public ActionExecute setActionExecute(Long nID_ActionExecuteStatus,
 			DateTime oDateMake, DateTime oDateEdit, Integer nTry,
-			String sMethod, String soRequest, String smParam, String sReturn) {
+			String sObject, String sMethod, byte[] soRequest, String smParam, String sReturn) {
 		ActionExecute actionExecute = new ActionExecute();
 		ActionExecuteStatus aes = new ActionExecuteStatus();
         aes.setId(nID_ActionExecuteStatus);
@@ -49,12 +50,14 @@ public class ActionExecuteDAOImpl extends GenericEntityDao<ActionExecute> implem
 		actionExecute.setoDateMake(oDateMake);
 		actionExecute.setoDateEdit(oDateEdit);
 		actionExecute.setnTry(nTry);
+		actionExecute.setsObject(sObject);
 		actionExecute.setsMethod(sMethod);
-		actionExecute.setSoRequest(soRequest);
+		Blob blobContent = Hibernate.getLobCreator(getSession()).createBlob(soRequest);
+		actionExecute.setSoRequest(blobContent);
 		actionExecute.setsReturn(sReturn);
 		
 		getSession().saveOrUpdate(actionExecute);
-		return actionExecute.getId();
+		return actionExecute;
 	}
 
 	@Transactional
@@ -112,6 +115,7 @@ public class ActionExecuteDAOImpl extends GenericEntityDao<ActionExecute> implem
 		actionExecuteOld.setoDateMake(actionExecute.getoDateMake());
 		actionExecuteOld.setoDateEdit(actionExecute.getoDateEdit());
 		actionExecuteOld.setnTry(actionExecute.getnTry());
+		actionExecuteOld.setsObject(actionExecute.getsObject());
 		actionExecuteOld.setsMethod(actionExecute.getsMethod());
 		actionExecuteOld.setSoRequest(actionExecute.getSoRequest());
 		actionExecuteOld.setsReturn(actionExecute.getsReturn());
