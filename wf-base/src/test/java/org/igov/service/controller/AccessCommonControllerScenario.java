@@ -69,6 +69,23 @@ public class AccessCommonControllerScenario {
     }
 
     @Test
+    public void testSetAccessServiceRole() throws Exception {
+        final String newRoleName1 = "TestRole1_changed";
+        AccessRoleVO role = setAccessServiceRole(1L, newRoleName1);
+        Assert.assertEquals(newRoleName1, role.getsName());
+
+        role = getAccessServiceRoleRights(role.getnID());
+        Assert.assertEquals(newRoleName1, role.getsName());
+
+        final String newRoleName2 = "AAA";
+        role = setAccessServiceRole(null, newRoleName2);
+        Assert.assertEquals(newRoleName2, role.getsName());
+
+        role = getAccessServiceRoleRights(role.getnID());
+        Assert.assertEquals(newRoleName2, role.getsName());
+    }
+
+    @Test
     public void testGetAccessServiceLoginRight() throws Exception {
 
         List<String> services = getAccessServiceLoginRight("TestLogin");
@@ -174,6 +191,15 @@ public class AccessCommonControllerScenario {
         return JsonRestUtils.readObject(getJsonData, AccessRoleVO.class);
     }
 
+    private AccessRoleVO setAccessServiceRole(Long nID, String sName) throws Exception {
+        String getJsonData = mockMvc.perform(post("/access/setAccessServiceRole").
+                param("nID", nID != null ? nID.toString() : null).param("sName", sName)).
+                andExpect(status().isOk()).
+                andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
+                andReturn().getResponse().getContentAsString();
+        return JsonRestUtils.readObject(getJsonData, AccessRoleVO.class);
+    }
+
     private Set<String> getAllRights(List<AccessRoleVO> roles) {
         Set<String> res = new HashSet<>();
         roles.stream().map(this::getAllRights).forEach(res::addAll);
@@ -182,11 +208,15 @@ public class AccessCommonControllerScenario {
 
     private Set<String> getAllRights(AccessRoleVO role) {
         Set<String> res = new HashSet<>();
-        res.addAll(role.getaRoleRight().stream().map(AccessRoleRightVO::getoRight).map(AccessRightVO::getsName).collect(
-                Collectors.toList()));
+        if (role.getaRoleRight() != null) {
+            res.addAll(role.getaRoleRight().stream().map(AccessRoleRightVO::getoRight).map(AccessRightVO::getsName).collect(
+                    Collectors.toList()));
+        }
 
-        role.getaRoleRightInclude().stream().map(AccessRoleIncludeVO::getoRole).map(this::getAllRights).forEach(
-                res::addAll);
+        if (role.getaRoleRightInclude() != null) {
+            role.getaRoleRightInclude().stream().map(AccessRoleIncludeVO::getoRole).map(this::getAllRights).forEach(
+                    res::addAll);
+        }
         return res;
     }
 

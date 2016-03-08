@@ -87,6 +87,15 @@ public class AccessService implements ApplicationContextAware {
         return new AccessRoleVO(accessServiceRoleDao.findByIdExpected(roleId));
     }
 
+    public AccessRoleVO setAccessServiceRole(Long roleId, String sName) {
+        AccessServiceRole role = roleId != null
+                ? accessServiceRoleDao.findByIdExpected(roleId) : new AccessServiceRole();
+
+        role.setName(sName);
+        accessServiceRoleDao.saveOrUpdate(role);
+        return new AccessRoleVO(role, false);
+    }
+
     private boolean hasAccess(AccessServiceRight right, String sData) throws HandlerBeanValidationException {
         boolean res;
 

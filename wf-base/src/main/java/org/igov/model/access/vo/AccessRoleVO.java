@@ -16,19 +16,31 @@ public class AccessRoleVO {
     private Long nID;
     private String sName;
 
-    private List<AccessRoleRightVO> aRoleRight = new ArrayList<>();
-    private List<AccessRoleIncludeVO> aRoleRightInclude = new ArrayList<>();
+    private List<AccessRoleRightVO> aRoleRight = null;
+    private List<AccessRoleIncludeVO> aRoleRightInclude = null;
 
     public AccessRoleVO() {
         // constructor needed for json deserialization
     }
 
-    public AccessRoleVO(AccessServiceRole role) {
+    public AccessRoleVO(AccessServiceRole role, boolean withIncludesAndRoles) {
         nID = role.getId();
         sName = role.getName();
 
-        aRoleRight.addAll(role.getRights().stream().map(AccessRoleRightVO::new).collect(Collectors.toList()));
-        aRoleRightInclude.addAll(role.getIncludes().stream().map(AccessRoleIncludeVO::new).collect(Collectors.toList()));
+        if (withIncludesAndRoles) {
+            if (!role.getRights().isEmpty()) {
+                aRoleRight = new ArrayList<>(
+                        role.getRights().stream().map(AccessRoleRightVO::new).collect(Collectors.toList()));
+            }
+            if (!role.getIncludes().isEmpty()) {
+                aRoleRightInclude = new ArrayList<>(
+                        role.getIncludes().stream().map(AccessRoleIncludeVO::new).collect(Collectors.toList()));
+            }
+        }
+    }
+
+    public AccessRoleVO(AccessServiceRole role) {
+        this(role, true);
     }
 
     public Long getnID() {
