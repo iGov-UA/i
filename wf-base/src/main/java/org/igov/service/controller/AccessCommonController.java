@@ -245,6 +245,13 @@ public class AccessCommonController {
         return JsonRestUtils.toJsonResponse(oAccessService.getAccessServiceLoginRoles(sLogin));
     }
 
+    @RequestMapping(value = "/getAccessServiceRoleRights", method = RequestMethod.GET)
+    public ResponseEntity getAccessServiceRoleRights (
+            @ApiParam(value = "номер-ИД роли", required = true)
+            @RequestParam(value = "nID_AccessServiceRole") Long nID_AccessServiceRole) {
+        return JsonRestUtils.toJsonResponse(oAccessService.getAccessServiceRoleRights(nID_AccessServiceRole));
+    }
+
     /**
      * Сервис верификации контакта - электронного адреса
      * 

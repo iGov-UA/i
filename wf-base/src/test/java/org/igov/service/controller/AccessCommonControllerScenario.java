@@ -59,6 +59,14 @@ public class AccessCommonControllerScenario {
         assertEquals(getAllRights(roles), "TestRight1", "TestRight2");
     }
 
+    @Test
+    public void testGetAccessServiceRoleRights() throws Exception {
+        AccessRoleVO role = getAccessServiceRoleRights(1L); // TestRole1
+        assertEquals(getAllRights(role), "TestRight1", "TestRight2");
+
+        role = getAccessServiceRoleRights(3L); // TestRole3
+        assertEquals(getAllRights(role), "TestRight3");
+    }
 
     @Test
     public void testGetAccessServiceLoginRight() throws Exception {
@@ -155,6 +163,15 @@ public class AccessCommonControllerScenario {
                 andReturn().getResponse().getContentAsString();
         return JsonRestUtils.readObject(getJsonData, CollectionType.construct(List.class,
                 SimpleType.construct(AccessRoleVO.class)));
+    }
+
+    private AccessRoleVO getAccessServiceRoleRights(Long nID_AccessServiceRole) throws Exception {
+        String getJsonData = mockMvc.perform(get("/access/getAccessServiceRoleRights").
+                param("nID_AccessServiceRole", nID_AccessServiceRole.toString())).
+                andExpect(status().isOk()).
+                andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
+                andReturn().getResponse().getContentAsString();
+        return JsonRestUtils.readObject(getJsonData, AccessRoleVO.class);
     }
 
     private Set<String> getAllRights(List<AccessRoleVO> roles) {

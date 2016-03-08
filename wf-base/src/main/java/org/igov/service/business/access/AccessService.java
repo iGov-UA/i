@@ -42,6 +42,9 @@ public class AccessService implements ApplicationContextAware {
     private AccessServiceLoginRoleDao accessServiceLoginRoleDao;
 
     @Autowired
+    private AccessServiceRoleDao accessServiceRoleDao;
+
+    @Autowired
     private AccessServiceLoginRightDao accessServiceLoginRightDao;
     @Autowired
     private NotificationPatterns oNotificationPatterns;
@@ -78,6 +81,10 @@ public class AccessService implements ApplicationContextAware {
         List<AccessServiceLoginRole> roles = accessServiceLoginRoleDao.getUserRoles(sLogin);
         return roles.stream().map(AccessServiceLoginRole::getAccessServiceRole).map(AccessRoleVO::new).collect(
                 Collectors.toList());
+    }
+
+    public AccessRoleVO getAccessServiceRoleRights(Long roleId) {
+        return new AccessRoleVO(accessServiceRoleDao.findByIdExpected(roleId));
     }
 
     private boolean hasAccess(AccessServiceRight right, String sData) throws HandlerBeanValidationException {
