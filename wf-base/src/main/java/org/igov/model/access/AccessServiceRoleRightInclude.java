@@ -18,8 +18,8 @@ public class AccessServiceRoleRightInclude extends org.igov.model.core.Entity {
     private AccessServiceRole accessServiceRole;
 
     @ManyToOne
-    @JoinColumn(name="nID_AccessServiceRole_Included", nullable = false, updatable = false)
-    private AccessServiceRole accessServiceRoleIncluded;
+    @JoinColumn(name="nID_AccessServiceRole_Include", nullable = false, updatable = false)
+    private AccessServiceRole accessServiceRoleInclude;
 
     public AccessServiceRole getAccessServiceRole() {
         return accessServiceRole;
@@ -28,10 +28,10 @@ public class AccessServiceRoleRightInclude extends org.igov.model.core.Entity {
         this.accessServiceRole = accessServiceRole;
     }
 
-    public AccessServiceRole getAccessServiceRoleIncluded() {
-        return accessServiceRoleIncluded;
+    public AccessServiceRole getAccessServiceRoleInclude() {
+        return accessServiceRoleInclude;
     }
-    public void setAccessServiceRoleIncluded(AccessServiceRole accessServiceRoleIncluded) {
-        this.accessServiceRoleIncluded = accessServiceRoleIncluded;
+    public void setAccessServiceRoleInclude(AccessServiceRole accessServiceRoleInclude) {
+        this.accessServiceRoleInclude = accessServiceRoleInclude;
     }
 }

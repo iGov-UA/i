@@ -1,5 +1,12 @@
 package org.igov.service.controller;
 
+import com.fasterxml.jackson.databind.type.CollectionType;
+import com.fasterxml.jackson.databind.type.SimpleType;
+import org.aspectj.weaver.TypeFactory;
+import org.igov.model.access.vo.AccessRightVO;
+import org.igov.model.access.vo.AccessRoleIncludeVO;
+import org.igov.model.access.vo.AccessRoleRightVO;
+import org.igov.model.access.vo.AccessRoleVO;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -14,7 +21,11 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.igov.util.JSON.JsonRestUtils;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -40,6 +51,14 @@ public class AccessCommonControllerScenario {
     public void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
     }
+
+    @Test
+    public void testGetAccessServiceLoginRoles() throws Exception {
+        List<AccessRoleVO> roles = getAccessServiceLoginRoles("TestLogin");
+        Assert.assertEquals(1, roles.size());
+        assertEquals(getAllRights(roles), "TestRight1", "TestRight2");
+    }
+
 
     @Test
     public void testGetAccessServiceLoginRight() throws Exception {
@@ -126,6 +145,36 @@ public class AccessCommonControllerScenario {
                 andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
                 andReturn().getResponse().getContentAsString();
         return JsonRestUtils.readObject(getJsonData, Boolean.class);
+    }
+
+    private List<AccessRoleVO> getAccessServiceLoginRoles(String sLogin) throws Exception {
+        String getJsonData = mockMvc.perform(get("/access/getAccessServiceLoginRoles").
+                param("sLogin", sLogin)).
+                andExpect(status().isOk()).
+                andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
+                andReturn().getResponse().getContentAsString();
+        return JsonRestUtils.readObject(getJsonData, CollectionType.construct(List.class,
+                SimpleType.construct(AccessRoleVO.class)));
+    }
+
+    private Set<String> getAllRights(List<AccessRoleVO> roles) {
+        Set<String> res = new HashSet<>();
+        roles.stream().map(this::getAllRights).forEach(res::addAll);
+        return res;
+    }
+
+    private Set<String> getAllRights(AccessRoleVO role) {
+        Set<String> res = new HashSet<>();
+        res.addAll(role.getaRoleRight().stream().map(AccessRoleRightVO::getoRight).map(AccessRightVO::getsName).collect(
+                Collectors.toList()));
+
+        role.getaRoleRightInclude().stream().map(AccessRoleIncludeVO::getoRole).map(this::getAllRights).forEach(
+                res::addAll);
+        return res;
+    }
+
+    private void assertEquals(Set<String> actual, String... expected) {
+        Assert.assertEquals(new HashSet<>(Arrays.asList(expected)), actual);
     }
 
 }

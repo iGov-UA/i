@@ -239,6 +239,12 @@ public class AccessCommonController {
         }
     }
 
+    @RequestMapping(value = "/getAccessServiceLoginRoles", method = RequestMethod.GET)
+    public ResponseEntity getAccessServiceLoginRoles (
+            @ApiParam(value = "Строка логин пользователя", required = true) @RequestParam(value = "sLogin") String sLogin) {
+        return JsonRestUtils.toJsonResponse(oAccessService.getAccessServiceLoginRoles(sLogin));
+    }
+
     /**
      * Сервис верификации контакта - электронного адреса
      * 

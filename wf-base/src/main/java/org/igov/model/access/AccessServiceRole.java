@@ -65,7 +65,7 @@ public class AccessServiceRole extends NamedEntity {
                     AccessServiceRoleRight::getAccessServiceRight).collect(Collectors.toList()));
             if (!CollectionUtils.isEmpty(role.getIncludes())) {
                 Set<AccessServiceRole> newRoles = new HashSet<>(role.getIncludes().stream().map(
-                        AccessServiceRoleRightInclude::getAccessServiceRoleIncluded).collect(Collectors.toList()));
+                        AccessServiceRoleRightInclude::getAccessServiceRoleInclude).collect(Collectors.toList()));
                 newRoles.removeAll(visitedRoles);
                 currentRoles.addAll(newRoles);
             }

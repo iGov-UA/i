@@ -5,6 +5,7 @@ import org.apache.commons.mail.EmailException;
 import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
 import org.igov.model.access.*;
+import org.igov.model.access.vo.AccessRoleVO;
 import org.igov.service.business.access.handler.AccessServiceLoginRightHandler;
 import org.igov.service.exception.HandlerBeanValidationException;
 import org.slf4j.Logger;
@@ -21,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.igov.io.mail.NotificationPatterns;
 
@@ -70,6 +72,12 @@ public class AccessService implements ApplicationContextAware {
         }
 
         return res;
+    }
+
+    public List<AccessRoleVO> getAccessServiceLoginRoles(String sLogin) {
+        List<AccessServiceLoginRole> roles = accessServiceLoginRoleDao.getUserRoles(sLogin);
+        return roles.stream().map(AccessServiceLoginRole::getAccessServiceRole).map(AccessRoleVO::new).collect(
+                Collectors.toList());
     }
 
     private boolean hasAccess(AccessServiceRight right, String sData) throws HandlerBeanValidationException {
