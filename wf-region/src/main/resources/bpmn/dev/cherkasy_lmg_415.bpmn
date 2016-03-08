@@ -205,14 +205,37 @@
           <activiti:expression>tanyazol@gmail.com</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове звернення. Надання статусу та видача (заміна) посвідчення «Сім’я загиблого (померлого) ветерана війни»]]></activiti:string>
+          <activiti:string><![CDATA[Нове звернення. enum{[asType]}]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>     
-    <serviceTask id="servicetask3" name="Лист громадянину" activiti:delegateExpression="#{MailTaskWithoutAttachment}"></serviceTask>
+    <serviceTask id="servicetask3" name="Лист громадянину" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення на тему enum{[asType]} прийняте]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+				&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+				&lt;p&gt; Ваше звернення щодо enum{[asType]}  було зареєстровано у системі.&lt;br/&gt;
+				Повідомлення про результат розгляду буде спрямоване на Ваш e-mail.&lt;/p&gt;
+				&lt;br /&gt;
+				[pattern/mail/_common_signature_start.html]
+				[pattern_dictonary:dnepr_soc_help.csv:value{[234]}:2]&lt;br /&gt;
+				[pattern/mail/_common_signature_end.html]
+				[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+      </serviceTask>    
     <userTask id="usertask1" name="Розгляд документів" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}"></userTask> <!-- ДОБАВИТЬ ГРУППУ  -->
     <serviceTask id="servicetask4" name="Лист-відмова" activiti:delegateExpression="#{MailTaskWithoutAttachment}"></serviceTask>
     <serviceTask id="servicetask5" name="Лист-запрошення" activiti:delegateExpression="#{MailTaskWithAttachments}"></serviceTask>
