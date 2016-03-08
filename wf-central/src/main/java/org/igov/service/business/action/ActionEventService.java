@@ -202,7 +202,7 @@ public class ActionEventService {
         try {
             String eventMessage = HistoryEventMessage.createJournalMessage(eventType, values);
             historyEventDao.setHistoryEvent(documentId, eventType.getnID(),
-                    eventMessage, eventMessage, null, oDocument);
+                    eventMessage, eventMessage, null, oDocument.getId());
         } catch (IOException oException) {
             LOG.error("error: {}, during creating HistoryEvent", oException.getMessage());
             LOG.trace("FAIL:", oException);
@@ -230,7 +230,7 @@ public class ActionEventService {
             String eventMessage = HistoryEventMessage.createJournalMessage(
                     eventType, values);
             historyEventDao.setHistoryEvent(nID_Subject, eventType.getnID(),
-                    eventMessage, eventMessage, null, oDocument);
+                    eventMessage, eventMessage, null, oDocument.getId());
         } catch (IOException oException) {
             LOG.error("error: {}, during creating HistoryEvent", oException.getMessage());
             LOG.trace("FAIL:", oException);
@@ -301,12 +301,12 @@ public class ActionEventService {
     }
 
     public void setHistoryEvent(HistoryEventType eventType,
-            Long nID_Subject, Map<String, String> mParamMessage) {
+            Long nID_Subject, Map<String, String> mParamMessage, Long nID_HistoryEvent_Service, Long nID_Document) {
         try {
             String eventMessage = HistoryEventMessage.createJournalMessage(
                     eventType, mParamMessage);
             historyEventDao.setHistoryEvent(nID_Subject, eventType.getnID(),
-                    eventMessage, eventMessage, null, null);
+                    eventMessage, eventMessage, nID_HistoryEvent_Service, nID_Document);
         } catch (IOException e) {            
             LOG.error("error: {}, during creating HistoryEvent", e.getMessage());
             LOG.trace("FAIL:", e);
@@ -430,7 +430,7 @@ public class ActionEventService {
             Map<String, String> mParamMessage = new HashMap<>();
             mParamMessage.put(HistoryEventMessage.SERVICE_STATE, sUserTaskName);
             mParamMessage.put(HistoryEventMessage.TASK_NUMBER, sID_Order);
-            setHistoryEvent(HistoryEventType.ACTIVITY_STATUS_NEW, nID_Subject, mParamMessage);
+            setHistoryEvent(HistoryEventType.ACTIVITY_STATUS_NEW, nID_Subject, mParamMessage, oHistoryEvent_Service.getId(), null);
         }else{ //My journal. setTaskQuestions (issue 808, 809)
             
             //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TODO: Move To Interceptor!!!
@@ -469,7 +469,7 @@ public class ActionEventService {
                     mParamMessage.put(HistoryEventMessage.TASK_NUMBER, sID_Order);
                     mParamMessage.put(HistoryEventMessage.S_BODY, sBody == null ? "" : sBody);
                     mParamMessage.put(HistoryEventMessage.TABLE_BODY, createTable_TaskProperties(soData, true));
-                    setHistoryEvent(oHistoryEventType, nID_Subject, mParamMessage);
+                    setHistoryEvent(oHistoryEventType, nID_Subject, mParamMessage, oHistoryEvent_Service.getId(), null);
                     //oActionEventService.setHistoryEvent(HistoryEventType.ACTIVITY_STATUS_NEW, nID_Subject, mParamMessage);
                 /*} catch (Exception e) {
                     LOG.error("FAIL:", e);
@@ -562,7 +562,7 @@ public class ActionEventService {
         Map<String, String> mParamMessage = new HashMap<>();
         mParamMessage.put(HistoryEventMessage.SERVICE_NAME, sHead);//sProcessInstanceName
         mParamMessage.put(HistoryEventMessage.SERVICE_STATE, sUserTaskName);
-        setHistoryEvent(HistoryEventType.GET_SERVICE, nID_Subject, mParamMessage);
+        setHistoryEvent(HistoryEventType.GET_SERVICE, nID_Subject, mParamMessage, oHistoryEvent_Service.getId(), null);
         /*
         //My journal. setTaskQuestions (issue 808)
         oActionEventService.createHistoryEventForTaskQuestions(HistoryEventType.SET_TASK_QUESTIONS, soData, sBody,

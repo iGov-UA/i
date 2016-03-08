@@ -1,8 +1,11 @@
 package org.igov.model.action.execute.item;
 
+import java.sql.Blob;
+
 import javax.persistence.Column;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.Type;
@@ -41,13 +44,19 @@ public class ActionExecute extends Entity {
 	@Column(name = "nTry", nullable = true)
 	private Integer nTry;
 
+	@JsonProperty(value = "sObject")
+	@Column(name = "sObject", nullable = true)
+	private String sObject;
+	
 	@JsonProperty(value = "sMethod")
 	@Column(name = "sMethod", nullable = true)
 	private String sMethod;	
 
+	@Lob
+    @Type(type="org.hibernate.type.PrimitiveByteArrayBlobType")
 	@JsonProperty(value = "soRequest")
 	@Column(name = "soRequest", nullable = true)
-	private String soRequest;
+	private byte[] soRequest;
 	
 	@JsonProperty(value = "smParam")
 	@Column(name = "smParam", nullable = true)
@@ -89,11 +98,11 @@ public class ActionExecute extends Entity {
 		this.sMethod = sMethod;
 	}
 
-	public String getSoRequest() {
+	public byte[] getSoRequest() {
 		return soRequest;
 	}
 
-	public void setSoRequest(String soRequest) {
+	public void setSoRequest(byte[] soRequest) {
 		this.soRequest = soRequest;
 	}
 
@@ -120,5 +129,14 @@ public class ActionExecute extends Entity {
 	public void setActionExecuteStatus(ActionExecuteStatus actionExecuteStatus) {
 		this.actionExecuteStatus = actionExecuteStatus;
 	}
+
+	public String getsObject() {
+		return sObject;
+	}
+
+	public void setsObject(String sObject) {
+		this.sObject = sObject;
+	}
+	
 	
 }
