@@ -168,6 +168,9 @@
         </createTable>
 
         <createTable tableName="AccessServiceRoleRight">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
             <column name="nID_AccessServiceRole" type="bigint" >
                 <constraints nullable="false" foreignKeyName="FK_ASRR_AccessServiceRole"
                              referencedTableName="AccessServiceRole" referencedColumnNames="nID"/>
@@ -183,6 +186,9 @@
                              columnNames="nID_AccessServiceRole, nID_AccessServiceRight"/>
 
         <createTable tableName="AccessServiceRoleRightInclude">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
             <column name="nID_AccessServiceRole" type="bigint">
                 <constraints nullable="false" foreignKeyName="FK_ASRRI_AccessServiceRole"
                              referencedTableName="AccessServiceRole" referencedColumnNames="nID"/>

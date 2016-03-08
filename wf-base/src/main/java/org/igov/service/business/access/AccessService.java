@@ -52,27 +52,6 @@ public class AccessService implements ApplicationContextAware {
         this.applicationContext = applicationContext;
     }
 
-    public boolean hasAccessToService(String sLogin, String sService, String sData)
-            throws HandlerBeanValidationException {
-
-        boolean res = false;
-
-        AccessServiceLoginRight access = accessServiceLoginRightDao.getAccessServiceLoginRight(sLogin, sService);
-        if (access != null) {
-
-            String handlerBeanName = access.getsHandlerBean();
-            if (handlerBeanName != null) {
-                AccessServiceLoginRightHandler handler = getHandlerBean(handlerBeanName);
-                res = handler.hasAccessToService(sData);
-            } else {
-                res = true;
-            }
-
-        }
-
-        return res;
-    }
-
     public boolean hasAccessToService(String sLogin, String sService, String sData, String sMethod)
             throws HandlerBeanValidationException {
 

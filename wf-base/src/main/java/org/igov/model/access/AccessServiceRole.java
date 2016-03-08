@@ -5,6 +5,7 @@ import org.igov.model.core.NamedEntity;
 
 import javax.persistence.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Role which hold collection of rights of type {@link AccessServiceRight} + optional includes of rights from
@@ -19,34 +20,26 @@ public class AccessServiceRole extends NamedEntity {
     /**
      * Rights directly linked to this role.
      */
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(name="AccessServiceRoleRight",
-            joinColumns = {@JoinColumn(name = "nID_AccessServiceRole", nullable = false, updatable = false) },
-            inverseJoinColumns = { @JoinColumn(name = "nID_AccessServiceRight",
-                    nullable = false, updatable = false) })
-    private List<AccessServiceRight> rights;
+    @OneToMany(mappedBy = "accessServiceRole", cascade = CascadeType.ALL)
+    private List<AccessServiceRoleRight> rights;
 
     /**
      * Another roles which are included by current role. Currently role will have all rights from included roles.
      */
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(name="AccessServiceRoleRightInclude",
-            joinColumns = {@JoinColumn(name = "nID_AccessServiceRole", nullable = false, updatable = false) },
-            inverseJoinColumns = { @JoinColumn(name = "nID_AccessServiceRole_Include",
-                    nullable = false, updatable = false) })
-    private List<AccessServiceRole> includes;
+    @OneToMany(mappedBy = "accessServiceRole", cascade = CascadeType.ALL)
+    private List<AccessServiceRoleRightInclude> includes;
 
-    public List<AccessServiceRight> getRights() {
+    public List<AccessServiceRoleRight> getRights() {
         return rights;
     }
-    public void setRights(List<AccessServiceRight> rights) {
+    public void setRights(List<AccessServiceRoleRight> rights) {
         this.rights = rights;
     }
 
-    public List<AccessServiceRole> getIncludes() {
+    public List<AccessServiceRoleRightInclude> getIncludes() {
         return includes;
     }
-    public void setIncludes(List<AccessServiceRole> includes) {
+    public void setIncludes(List<AccessServiceRoleRightInclude> includes) {
         this.includes = includes;
     }
 
@@ -68,9 +61,11 @@ public class AccessServiceRole extends NamedEntity {
             i.remove();
             visitedRoles.add(role);
 
-            resultSet.addAll(role.getRights());
+            resultSet.addAll(role.getRights().stream().map(
+                    AccessServiceRoleRight::getAccessServiceRight).collect(Collectors.toList()));
             if (!CollectionUtils.isEmpty(role.getIncludes())) {
-                Set<AccessServiceRole> newRoles = new HashSet<>(role.getIncludes());
+                Set<AccessServiceRole> newRoles = new HashSet<>(role.getIncludes().stream().map(
+                        AccessServiceRoleRightInclude::getAccessServiceRoleIncluded).collect(Collectors.toList()));
                 newRoles.removeAll(visitedRoles);
                 currentRoles.addAll(newRoles);
             }
