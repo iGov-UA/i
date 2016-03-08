@@ -105,6 +105,13 @@ public class AccessCommonControllerScenario {
         rights = getAccessServiceRights(null, serviceName, null, null);
         Assert.assertEquals(1, rights.size());
         Assert.assertEquals(serviceName, rights.get(0).getsService());
+
+        String method = "get";
+        rights = getAccessServiceRights(null, null, method, null);
+        Assert.assertEquals(2, rights.size());
+        for (AccessRightVO right : rights) {
+            Assert.assertTrue(right.getSaMethod().toLowerCase().contains(method.toLowerCase()));
+        }
     }
 
     @Test

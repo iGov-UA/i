@@ -1,6 +1,7 @@
 package org.igov.model.access;
 
 import org.hibernate.Criteria;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.igov.model.core.GenericEntityDao;
 import org.springframework.stereotype.Repository;
@@ -26,10 +27,10 @@ public class AccessServiceRightDaoImpl extends GenericEntityDao<AccessServiceRig
             criteria.add(Restrictions.eq("nID", nID));
         }
         if (sService != null) {
-            criteria.add(Restrictions.like("sService", sService));
+            criteria.add(Restrictions.like("sService", sService, MatchMode.ANYWHERE));
         }
         if (saMethod != null) {
-            criteria.add(Restrictions.ilike("saMethod", saMethod));
+            criteria.add(Restrictions.ilike("saMethod", saMethod, MatchMode.ANYWHERE));
         }
         if (sHandlerBean != null) {
             criteria.add(Restrictions.eq("sHandlerBean", sHandlerBean));
