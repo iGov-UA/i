@@ -41,29 +41,37 @@ public class HistoryEvent extends Entity {
     private Date date;
     
     @JsonProperty(value = "oHistoryEvent_Service")
-    @JoinColumn(name = "nID_HistoryEvent_Service")
+    @JoinColumn(name = "nID_HistoryEvent_Service", insertable = false, updatable = false)
     @ManyToOne(fetch = FetchType.EAGER)
     private HistoryEvent_Service oHistoryEvent_Service;
 
+    @JsonIgnore
+    @Column(name = "nID_HistoryEvent_Service", nullable = true)
+    private Long nID_HistoryEvent_Service;
+
     @JsonProperty(value = "oDocument")
-    @JoinColumn(name = "nID_Document")
+    @JoinColumn(name = "nID_Document", insertable = false, updatable = false)
     @ManyToOne(fetch = FetchType.EAGER)
     private Document oDocument;
 
-    public HistoryEvent_Service getoHistoryEvent_Service() {
-        return oHistoryEvent_Service;
+    @JsonIgnore
+    @Column(name = "nID_Document", nullable = true)
+    private Long nID_Document;
+
+    public void setnID_HistoryEvent_Service(Long nID_HistoryEvent_Service) {
+        this.nID_HistoryEvent_Service = nID_HistoryEvent_Service;
     }
 
-    public void setoHistoryEvent_Service(HistoryEvent_Service oHistoryEvent_Service) {
-        this.oHistoryEvent_Service = oHistoryEvent_Service;
+    public HistoryEvent_Service getoHistoryEvent_Service() {
+        return oHistoryEvent_Service;
     }
 
     public Document getoDocument() {
         return oDocument;
     }
 
-    public void setoDocument(Document oDocument) {
-        this.oDocument = oDocument;
+    public void setnID_Document(Long nID_Document) {
+        this.nID_Document = nID_Document;
     }
 
     public Long getSubjectKey() {

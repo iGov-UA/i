@@ -1,57 +1,59 @@
 package org.igov.service.controller;
 
-import io.swagger.annotations.*;
-import org.activiti.engine.*;
-import org.activiti.engine.task.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import org.activiti.engine.RuntimeService;
+import org.activiti.engine.TaskService;
+import org.activiti.engine.task.Attachment;
 import org.apache.commons.mail.ByteArrayDataSource;
 import org.apache.commons.mail.EmailException;
 import org.igov.io.mail.Mail;
+import org.igov.service.business.action.task.core.ActionTaskService;
+import org.igov.service.exception.CRCInvalidException;
+import org.igov.service.exception.CommonServiceException;
+import org.igov.service.exception.RecordNotFoundException;
+import org.igov.service.exception.TaskAlreadyUnboundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.activation.DataSource;
 import javax.mail.MessagingException;
 import java.io.IOException;
 import java.io.InputStream;
-import org.igov.service.business.action.task.core.ActionTaskService;
-import org.igov.service.exception.CommonServiceException;
-import org.igov.service.exception.CRCInvalidException;
-import org.igov.service.exception.RecordNotFoundException;
-import org.igov.service.exception.TaskAlreadyUnboundException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-
-//import com.google.common.base.Optional;
 
 /**
  * @author BW
  */
 
 @Controller
-@Api(tags = { "DebugCommonController" }, description = "Дебаг и тест общий")
-//@RequestMapping(value = "/debug")
+@Api(tags = { "DebugCommonController - Дебаг и тест общий" })
 public class DebugCommonController {
-    
+
     private static final Logger LOG = LoggerFactory
             .getLogger(DebugCommonController.class);
 
-    
     @Autowired
     private TaskService taskService;
     @Autowired
     private RuntimeService runtimeService;
-    
+
     @Autowired
     private Mail oMail;
-    
+
     @Autowired
     private ActionTaskService oActionTaskService;
 
-    @ApiOperation(value = "/test/action/task/delete-processTest", notes = "#####  DebugCommonController: описания нет #####\n\n")
+    @ApiOperation(value = "/test/action/task/delete-processTest", notes = "#####  DebugCommonController: описания нет\n")
     @RequestMapping(value = "/test/action/task/delete-processTest", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -62,8 +64,7 @@ public class DebugCommonController {
         runtimeService.deleteProcessInstance(processInstanceID, sReason);
     }
 
-    
-    @ApiOperation(value = "/test/sendAttachmentsByMail", notes = "#####  DebugCommonController: описания нет #####\n\n")
+    @ApiOperation(value = "/test/sendAttachmentsByMail", notes = "#####  DebugCommonController: описания нет\n")
     @RequestMapping(value = "/test/sendAttachmentsByMail", method = RequestMethod.GET)
     @Transactional
     public void sendAttachmentsByMail(
@@ -114,17 +115,18 @@ public class DebugCommonController {
             oMail.send();
         }
     }
-    
-    @Deprecated //Нужно будет удалить после недели работы продеплоеной в прод версии (для обратной временной совместимости)
-    @ApiOperation(value = "/rest/tasks/cancelTask", notes =  "#####  DebugCommonController:  #####\n\n" )
+
+    @Deprecated
+    //Нужно будет удалить после недели работы продеплоеной в прод версии (для обратной временной совместимости)
+    @ApiOperation(value = "/rest/tasks/cancelTask", notes = "#####  DebugCommonController:\n")
     @RequestMapping(value = "/rest/tasks/cancelTask", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
     public
     @ResponseBody
-        //void cancelTask(@RequestParam(value = "nID_Protected") Long nID_Protected,
-    ResponseEntity<String> cancelTask( @ApiParam(value = "", required = true )  @RequestParam(value = "nID_Protected") Long nID_Protected,
-	    @ApiParam(value = "", required = false )  @RequestParam(value = "sInfo", required = false) String sInfo)
+    ResponseEntity<String> cancelTask(
+            @ApiParam(value = "", required = true) @RequestParam(value = "nID_Protected") Long nID_Protected,
+            @ApiParam(value = "", required = false) @RequestParam(value = "sInfo", required = false) String sInfo)
             throws CommonServiceException, TaskAlreadyUnboundException {
-        
+
         String sMessage = "Ваша заявка відмінена. Ви можете подати нову на Порталі державних послуг iGov.org.ua.<\n<br>"
                 + "З повагою, команда порталу  iGov.org.ua";
 
@@ -142,17 +144,18 @@ public class DebugCommonController {
             return new ResponseEntity<String>(sMessage, HttpStatus.FORBIDDEN);
         }
 
-    }   
-    
-    @ApiOperation(value = "/test/action/getInfo", notes =  "#####  DebugCommonController:  #####\n\n" )
+    }
+
+    @ApiOperation(value = "/test/action/getInfo", notes = "#####  DebugCommonController: \n")
     @RequestMapping(value = "/test/action/getInfo", method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
     public
     @ResponseBody
-    String getInfo( @ApiParam(value = "", required = false )  @RequestParam(value = "sID_TestType", required = false) String sID_TestType
+    String getInfo(@ApiParam(value = "", required = false)
+    @RequestParam(value = "sID_TestType", required = false) String sID_TestType
     ) {
-        
+
         return "successfull";
 
-    }       
-    
+    }
+
 }

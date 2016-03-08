@@ -13,6 +13,6 @@ public interface HistoryEventDao extends EntityDao<HistoryEvent> {
     public List<HistoryEvent> getHistoryEvents(Long nID_Subject, boolean bGrouped);
 
     public Long setHistoryEvent(Long nID_Subject, Long nID_HistoryEventType,
-            String sEventName_Custom, String sMessage, HistoryEvent_Service historyEvent_Service, Document document ) throws IOException;
+            String sEventName_Custom, String sMessage, Long nID_HistoryEvent_Service, Long nID_Document  ) throws IOException;
     
 }
