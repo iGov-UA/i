@@ -97,6 +97,17 @@ public class AccessCommonControllerScenario {
     }
 
     @Test
+    public void testGetAccessServiceRights() throws Exception {
+        List<AccessRightVO> rights = getAccessServiceRights(null, null, null, null);
+        Assert.assertEquals(3, rights.size());
+
+        String serviceName = "testService2";
+        rights = getAccessServiceRights(null, serviceName, null, null);
+        Assert.assertEquals(1, rights.size());
+        Assert.assertEquals(serviceName, rights.get(0).getsService());
+    }
+
+    @Test
     public void testSetAccessServiceLoginRight() throws Exception {
 
         String newLogin = "NewLogin1";
@@ -188,7 +199,8 @@ public class AccessCommonControllerScenario {
                 andExpect(status().isOk()).
                 andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
                 andReturn().getResponse().getContentAsString();
-        return JsonRestUtils.readObject(getJsonData, AccessRoleVO.class);
+        return ((List<AccessRoleVO>) JsonRestUtils.readObject(getJsonData, CollectionType.construct(List.class,
+                SimpleType.construct(AccessRoleVO.class)))).get(0);
     }
 
     private AccessRoleVO setAccessServiceRole(Long nID, String sName) throws Exception {
@@ -198,6 +210,20 @@ public class AccessCommonControllerScenario {
                 andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
                 andReturn().getResponse().getContentAsString();
         return JsonRestUtils.readObject(getJsonData, AccessRoleVO.class);
+    }
+
+    private List<AccessRightVO> getAccessServiceRights(Long nID, String sService, String saMethod,
+                                                       String sHandlerBean) throws Exception {
+        String getJsonData = mockMvc.perform(get("/access/getAccessServiceRights").
+                param("nID", nID != null ? nID.toString() : null).
+                param("sService", sService).
+                param("saMethod", saMethod).
+                param("sHandlerBean", sHandlerBean)).
+                andExpect(status().isOk()).
+                andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
+                andReturn().getResponse().getContentAsString();
+        return JsonRestUtils.readObject(getJsonData, CollectionType.construct(List.class,
+                SimpleType.construct(AccessRightVO.class)));
     }
 
     private Set<String> getAllRights(List<AccessRoleVO> roles) {

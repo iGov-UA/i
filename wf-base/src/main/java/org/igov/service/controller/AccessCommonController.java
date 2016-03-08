@@ -259,6 +259,15 @@ public class AccessCommonController {
         return JsonRestUtils.toJsonResponse(oAccessService.setAccessServiceRole(nID, sName));
     }
 
+    @RequestMapping(value = "/getAccessServiceRights", method = RequestMethod.GET)
+    public ResponseEntity getAccessServiceRoleRights (
+            @ApiParam(value = "номер-ИД права", required = false) @RequestParam(value = "nID", required = false) Long nID,
+            @ApiParam(value = "строка-сервис (маска)", required = false) @RequestParam(value = "sService", required = false) String sService,
+            @ApiParam(value = "строка-название метода вызова", required = false) @RequestParam(value = "saMethod", required = false) String saMethod,
+            @ApiParam(value = "строка-название бина-обработчика", required = false) @RequestParam(value = "sHandlerBean", required = false) String sHandlerBean) {
+        return JsonRestUtils.toJsonResponse(oAccessService.getAccessServiceRights(nID, sService, saMethod, sHandlerBean));
+    }
+
     /**
      * Сервис верификации контакта - электронного адреса
      * 

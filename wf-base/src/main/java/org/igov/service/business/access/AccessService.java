@@ -5,6 +5,7 @@ import org.apache.commons.mail.EmailException;
 import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
 import org.igov.model.access.*;
+import org.igov.model.access.vo.AccessRightVO;
 import org.igov.model.access.vo.AccessRoleVO;
 import org.igov.service.business.access.handler.AccessServiceLoginRightHandler;
 import org.igov.service.exception.HandlerBeanValidationException;
@@ -18,10 +19,7 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import org.igov.io.mail.NotificationPatterns;
@@ -43,6 +41,9 @@ public class AccessService implements ApplicationContextAware {
 
     @Autowired
     private AccessServiceRoleDao accessServiceRoleDao;
+
+    @Autowired
+    private AccessServiceRightDao accessServiceRightDao;
 
     @Autowired
     private AccessServiceLoginRightDao accessServiceLoginRightDao;
@@ -83,8 +84,16 @@ public class AccessService implements ApplicationContextAware {
                 Collectors.toList());
     }
 
-    public AccessRoleVO getAccessServiceRoleRights(Long roleId) {
-        return new AccessRoleVO(accessServiceRoleDao.findByIdExpected(roleId));
+    public List<AccessRoleVO> getAccessServiceRoleRights(Long roleId) {
+        List<AccessRoleVO> res = new ArrayList<>();
+        if (roleId != null) {
+            res.add(new AccessRoleVO(accessServiceRoleDao.findByIdExpected(roleId)));
+        }
+        else {
+            res.addAll(accessServiceRoleDao.findAll().stream().map(AccessRoleVO::new).collect(Collectors.toList()));
+        }
+
+        return res;
     }
 
     public AccessRoleVO setAccessServiceRole(Long roleId, String sName) {
@@ -94,6 +103,11 @@ public class AccessService implements ApplicationContextAware {
         role.setName(sName);
         accessServiceRoleDao.saveOrUpdate(role);
         return new AccessRoleVO(role, false);
+    }
+
+    public List<AccessRightVO> getAccessServiceRights(Long nID, String sService, String saMethod, String sHandlerBean) {
+        return accessServiceRightDao.getAccessServiceRights(nID, sService, saMethod, sHandlerBean).stream().map(
+                AccessRightVO::new).collect(Collectors.toList());
     }
 
     private boolean hasAccess(AccessServiceRight right, String sData) throws HandlerBeanValidationException {
