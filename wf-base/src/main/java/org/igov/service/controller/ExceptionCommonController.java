@@ -1,14 +1,11 @@
 package org.igov.service.controller;
 
-import org.igov.service.exception.CommonServiceException;
 import com.google.gwt.editor.client.Editor.Ignore;
 import org.igov.io.Log;
 import org.igov.io.Log.LogStatus;
-import org.igov.service.exception.CRCInvalidException;
-import org.igov.service.exception.EntityNotFoundException;
 import org.igov.model.action.task.core.entity.ErrorResponse;
-import org.igov.service.exception.RecordNotFoundException;
-import org.igov.service.exception.TaskAlreadyUnboundException;
+import org.igov.service.exception.*;
+import org.igov.util.JSON.JsonRestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -19,7 +16,6 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.igov.util.JSON.JsonRestUtils;
 
 /**
  * Created by diver on 4/6/15.
@@ -32,16 +28,10 @@ public class ExceptionCommonController {
     public static final String BUSINESS_ERROR_CODE = "BUSINESS_ERR";
     private static final Logger LOG = LoggerFactory.getLogger(ExceptionCommonController.class);
 
-    
-    //@Autowired
-    //private ExceptionCommonController exceptionController;
-
-    
     /* ========= */
     @ExceptionHandler({CRCInvalidException.class, EntityNotFoundException.class, RecordNotFoundException.class, TaskAlreadyUnboundException.class})
     @ResponseBody
     public ResponseEntity<String> handleAccessException(Exception e) throws CommonServiceException {
-        //return exceptionController.catchCommonServiceException(new CommonServiceException(
         return catchCommonServiceException(new CommonServiceException(
                 ExceptionCommonController.BUSINESS_ERROR_CODE,
                 e.getMessage(), e,
