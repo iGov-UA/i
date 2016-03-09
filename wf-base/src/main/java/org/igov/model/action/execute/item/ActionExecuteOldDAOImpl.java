@@ -102,7 +102,7 @@ public class ActionExecuteOldDAOImpl extends GenericEntityDao<ActionExecuteOld>	
 				actionExecute.setnTry(actionExecuteOld.getnTry());
 				actionExecute.setsObject(actionExecuteOld.getsObject());
 				actionExecute.setsMethod(actionExecuteOld.getsMethod());
-				actionExecute.setSoRequest(actionExecuteOld.getSoRequest());
+				//actionExecute.setSoRequest(actionExecuteOld.getSoRequest());
 				actionExecute.setsReturn(actionExecuteOld.getsReturn());
 				actionExecute.setSmParam(actionExecuteOld.getSmParam());
 				
