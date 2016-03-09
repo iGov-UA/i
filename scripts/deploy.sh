@@ -1,3 +1,4 @@
+#!/bin/sh
 
 ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no sybase@test.igov.org.ua << EOF
 
