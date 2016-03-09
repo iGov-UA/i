@@ -24,7 +24,6 @@
     $routeProvider
       .when('/tasks/:tab/', params);
     */
-
     $routeProvider
       .when('/tasks/unassigned', params);
     $routeProvider
