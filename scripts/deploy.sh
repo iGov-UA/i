@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no sybase@test.igov.org.ua << EOF
 
@@ -94,6 +94,7 @@ region() {
                 sudo /sybase/nginx/sbin/nginx -s reload
         fi
 }
+
 
 if [ "$bIncludeUI" == "true" ]; then
  cd /sybase && pm2 stop central-js && pm2 delete central-js
