@@ -49,9 +49,11 @@
         <activiti:formProperty id="nFile_AdvertLicense" name="Копія виписки з єдиного державного реєстру юридичних осіб та фізичних осіб" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_Original_Dozvolu" name="Оригінал попереднього дозволу" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="sText" name="Зверніть увагу:" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
-        <activiti:formProperty id="srNumber" name="номер району" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="srName" name="район" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sRemail" name="пошта району" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sClerkPost" name="пошта оргструктури (району)" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адрес оргструктури (району)" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameObject" name="назва оргструктури (району)" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sTelephonDovidka" name="телефон для довідки оргструктури (району)" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sWork_Time" name="графік роботи оргструктури (району)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sRdozvil" name="назви документів" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPf_Part" name="формулювання до принтформи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sLetter" name="формулювання у лист" type="invisible"></activiti:formProperty>
@@ -189,7 +191,7 @@
     <serviceTask id="servicetask5" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${sRemail}</activiti:expression>
+          <activiti:expression>${sClerkPost}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення на тему: Дозвіл на розміщення зовнішньої реклами]]></activiti:string>
@@ -226,9 +228,9 @@
 До листа додається опис наданих Вами документів.&lt;br /&gt;
 &lt;br /&gt;
 Ви отримаєте додаткове повідомлення за результатами розгляду зверення.&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[srNumber]}:5]&lt;br /&gt;
+${sWork_Time}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[srNumber]}:2]&lt;br /&gt;
+${sAddress}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -252,9 +254,9 @@
 &lt;br /&gt;
 ${sComment_1}&lt;br /&gt;
 Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[srNumber]}:5]&lt;br /&gt;
+${sWork_Time}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[srNumber]}:2]&lt;br /&gt;
+${sAddress}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -291,11 +293,11 @@ ${sComment_2}&lt;br /&gt;
 7. Оригінал попереднього дозволу (якщо Ви подавали запит на анулювання, переоформлення та подовження)
 &lt;br /&gt;
 &lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[srNumber]}:5]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[srNumber]}:3]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[srNumber]}:4]&lt;br /&gt;
+${sWork_Time}&lt;br /&gt;
+${sNameObject}&lt;br /&gt;
+${sTelephonDovidka}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[srNumber]}:2]&lt;br /&gt;
+${sWork_Time}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]   
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
@@ -304,40 +306,11 @@ ${sComment_2}&lt;br /&gt;
     </serviceTask>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
-var per1 = 'sRemail'
-var per2 = 'srNumber'
-var per4 = 'srName'
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'vin_teplic'){
-per1 = 'darja.grek@gmail.com'
-per2 = '59'
-per4 = 'смт. Теплик'
-}
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'vilnogirskT'){
-per1 = 'darja.grek@gmail.com'
-per2 = '25'
-per4 = 'Вільногірськ'
-}
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'dndzT'){
-per1 = 'darja.grek@gmail.com'
-per2 = '26'
-per4 = 'Дніпродзержинськ'
-}
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'lviv_chervonogradT'){
-per1 = 'darja.grek@gmail.com'
-per2 = '299'
-per4 = 'ЦНАП Червоноградської міськради'
-}
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'sumi_gluhov'){
-per1 = 'darja.grek@gmail.com'
-per2 = '427'
-per4 = 'ЦНАП Глухівської міськради'
-}
+var per1 = 'sClerkPost'
 if (execution.getVariable('sForTracert') == 'T'){
 per1 = 'smoktii.igov@gmail.com'
 }
-execution.setVariable('sRemail', per1)
-execution.setVariable('srNumber', per2)
-execution.setVariable('srName', per4)
+execution.setVariable('sClerkPost', per1)
 
 var per3 = 'sPf_Part'
 if (execution.getVariable('asPurpose') == 'first_permission'){
@@ -482,7 +455,7 @@ execution.setVariable('sLetter', per5)
         <omgdi:waypoint x="750.0" y="90.0"></omgdi:waypoint>
         <omgdi:waypoint x="750.0" y="200.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="69.0" x="750.0" y="129.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="69.0" x="760.0" y="129.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
