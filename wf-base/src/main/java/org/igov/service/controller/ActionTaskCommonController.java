@@ -279,7 +279,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 for (FormProperty property : data.getFormProperties()) {
 
                     String sValue = "";
-                    String sType = property.getType().getName();
+                    String sType = property.getType() != null ? property.getType().getName() : "";
                     if ("enum".equalsIgnoreCase(sType)) {
                         sValue = oActionTaskService.parseEnumProperty(property);
                     } else {
