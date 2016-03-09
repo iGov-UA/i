@@ -15,6 +15,7 @@ import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import javax.persistence.Lob;
 
 @javax.persistence.Entity
 public class ActionExecute extends Entity {
@@ -50,8 +51,8 @@ public class ActionExecute extends Entity {
     @Column(name = "sMethod", nullable = true)
     private String sMethod;
 
-    //@Type(type="org.hibernate.type.PrimitiveByteArrayBlobType")
-    @Type(type = "org.hibernate.type.BinaryType")
+    @Lob
+    @Type(type = "org.hibernate.type.PrimitiveByteArrayBlobType")
     @JsonProperty(value = "soRequest")
     @Column(name = "soRequest", nullable = true)
     private byte[] soRequest;
