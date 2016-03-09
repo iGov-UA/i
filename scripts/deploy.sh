@@ -1,10 +1,3 @@
-#!/bin/bash
-
-ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no sybase@test.igov.org.ua << EOF
-
-TMP=TEMP=TMPDIR=/tmp/c_alpha && export TMPDIR TMP TEMP
-mkdir -p $TMP
-
 central() {
         if [ "$bIncludeBack" == "true" ]
                 then
@@ -94,20 +87,3 @@ region() {
                 sudo /sybase/nginx/sbin/nginx -s reload
         fi
 }
-
-if [ "$bIncludeUI" == "true" ]; then
- cd /sybase && pm2 stop central-js && pm2 delete central-js
- rm -rf /sybase/central-js
- mv -f /sybase/.upload/central-js.$data /sybase/central-js
- ##mv -f /sybase/.upload/central-js.$data/dist /sybase/central-js
- cd /sybase/central-js
- #cp -f /sybase/.configs/central-js/index.js /sybase/central-js/server/config/index.js
- ##cp -f /sybase/.configs/central-js/config/index.js /sybase/central-js/server/config/index.js
- ##cp -f /sybase/.configs/central-js/config.js /sybase/central-js/server/config.js
- cp -f -R /sybase/.configs/central-js/* /sybase/central-js/
- pm2 start process.json --name central-js
- pm2 info central-js
-fi
-
-rm -rf $TMP/*
-EOF
