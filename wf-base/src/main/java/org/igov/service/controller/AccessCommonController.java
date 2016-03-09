@@ -259,6 +259,13 @@ public class AccessCommonController {
         return JsonRestUtils.toJsonResponse(oAccessService.setAccessServiceRole(nID, sName));
     }
 
+    @RequestMapping(value = "/removeAccessServiceRole", method = {RequestMethod.POST, RequestMethod.GET})
+    public ResponseEntity removeAccessServiceRole (
+            @ApiParam(value = "номер-ИД роли", required = true) @RequestParam(value = "nID") Long nID) {
+        oAccessService.removeAccessServiceRole(nID);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/getAccessServiceRights", method = RequestMethod.GET)
     public ResponseEntity getAccessServiceRoleRights (
             @ApiParam(value = "номер-ИД права", required = false) @RequestParam(value = "nID", required = false) Long nID,

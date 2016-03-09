@@ -105,6 +105,10 @@ public class AccessService implements ApplicationContextAware {
         return new AccessRoleVO(role, false);
     }
 
+    public void removeAccessServiceRole(Long roleId) {
+        accessServiceRoleDao.delete(roleId);
+    }
+
     public List<AccessRightVO> getAccessServiceRights(Long nID, String sService, String saMethod, String sHandlerBean) {
         return accessServiceRightDao.getAccessServiceRights(nID, sService, saMethod, sHandlerBean).stream().map(
                 AccessRightVO::new).collect(Collectors.toList());

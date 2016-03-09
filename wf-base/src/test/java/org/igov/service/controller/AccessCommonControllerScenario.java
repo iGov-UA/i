@@ -86,6 +86,13 @@ public class AccessCommonControllerScenario {
     }
 
     @Test
+    public void testRemoveAccessServiceRole() throws Exception {
+        AccessRoleVO role = getAccessServiceRoleRights(4L); // TestRole4
+        removeAccessServiceRole(role.getnID());
+        validateAccessServiceRoleNotFound(role.getnID());
+    }
+
+    @Test
     public void testGetAccessServiceLoginRight() throws Exception {
 
         List<String> services = getAccessServiceLoginRight("TestLogin");
@@ -99,7 +106,7 @@ public class AccessCommonControllerScenario {
     @Test
     public void testGetAccessServiceRights() throws Exception {
         List<AccessRightVO> rights = getAccessServiceRights(null, null, null, null);
-        Assert.assertEquals(3, rights.size());
+        Assert.assertEquals(4, rights.size());
 
         String serviceName = "testService2";
         rights = getAccessServiceRights(null, serviceName, null, null);
@@ -210,6 +217,12 @@ public class AccessCommonControllerScenario {
                 SimpleType.construct(AccessRoleVO.class)))).get(0);
     }
 
+    private void validateAccessServiceRoleNotFound(Long nID_AccessServiceRole) throws Exception {
+        mockMvc.perform(get("/access/getAccessServiceRoleRights").
+                param("nID_AccessServiceRole", nID_AccessServiceRole.toString())).
+                andExpect(status().is4xxClientError());
+    }
+
     private AccessRoleVO setAccessServiceRole(Long nID, String sName) throws Exception {
         String getJsonData = mockMvc.perform(post("/access/setAccessServiceRole").
                 param("nID", nID != null ? nID.toString() : null).param("sName", sName)).
@@ -231,6 +244,10 @@ public class AccessCommonControllerScenario {
                 andReturn().getResponse().getContentAsString();
         return JsonRestUtils.readObject(getJsonData, CollectionType.construct(List.class,
                 SimpleType.construct(AccessRightVO.class)));
+    }
+
+    public void removeAccessServiceRole(Long nID) throws Exception {
+        mockMvc.perform(post("/access/removeAccessServiceRole").param("nID", nID.toString())).andExpect(status().isOk());
     }
 
     private Set<String> getAllRights(List<AccessRoleVO> roles) {

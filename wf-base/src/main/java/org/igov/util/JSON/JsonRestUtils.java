@@ -109,19 +109,7 @@ public final class JsonRestUtils {
     }
     
     public static ResponseEntity<String> toJsonResponse(HttpStatus httpStatus, JsonResultMessage resultMessage) {
-        String json;
-        try {
-            json = toJson(resultMessage);
-        } catch (JsonProcessingException e) {
-        	LOG.error("Exception happen during convert object " + resultMessage + " to json.", e);
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        HttpHeaders headers = new HttpHeaders();
-
-        // UTF-8 needed for correctly encode ukrainian letters.
-        MediaType mediaType = new MediaType("application", "json", Charset.forName("UTF-8"));
-        headers.setContentType(mediaType);
-        return new ResponseEntity<>(json, headers, httpStatus);
+        return toJsonResponse(httpStatus, (Object) resultMessage);
     }
     
     public static ResponseEntity toJsonErrorResponse(HttpStatus httpStatus, String eMessage) {//?? move to JsonRestUtils
