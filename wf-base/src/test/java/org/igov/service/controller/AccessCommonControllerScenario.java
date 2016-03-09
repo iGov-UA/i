@@ -93,6 +93,18 @@ public class AccessCommonControllerScenario {
     }
 
     @Test
+    public void testRemoveAccessServiceRight() throws Exception {
+        AccessRoleVO role = getAccessServiceRoleRights(5L); // TestRole5
+        Assert.assertEquals(1, getAllRights(role).size());
+
+        Long rightId = role.getaRoleRight().get(0).getoRight().getnID();
+        removeAccessServiceRight(rightId);
+
+        role = getAccessServiceRoleRights(role.getnID());
+        Assert.assertEquals(0, getAllRights(role).size());
+    }
+
+    @Test
     public void testGetAccessServiceLoginRight() throws Exception {
 
         List<String> services = getAccessServiceLoginRight("TestLogin");
@@ -106,7 +118,7 @@ public class AccessCommonControllerScenario {
     @Test
     public void testGetAccessServiceRights() throws Exception {
         List<AccessRightVO> rights = getAccessServiceRights(null, null, null, null);
-        Assert.assertEquals(4, rights.size());
+        Assert.assertTrue(rights.size() > 0);
 
         String serviceName = "testService2";
         rights = getAccessServiceRights(null, serviceName, null, null);
@@ -248,6 +260,10 @@ public class AccessCommonControllerScenario {
 
     public void removeAccessServiceRole(Long nID) throws Exception {
         mockMvc.perform(post("/access/removeAccessServiceRole").param("nID", nID.toString())).andExpect(status().isOk());
+    }
+
+    public void removeAccessServiceRight(Long nID) throws Exception {
+        mockMvc.perform(post("/access/removeAccessServiceRight").param("nID", nID.toString())).andExpect(status().isOk());
     }
 
     private Set<String> getAllRights(List<AccessRoleVO> roles) {

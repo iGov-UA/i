@@ -1,30 +1,6 @@
 package org.igov.service.controller;
 
-import org.igov.service.exception.CommonServiceException;
-import org.slf4j.Logger;import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.igov.service.business.access.AccessService;
-import org.igov.service.exception.HandlerBeanValidationException;
-import org.igov.util.JSON.JsonRestUtils;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponses;
-import io.swagger.annotations.ApiResponse;
-import java.util.HashMap;
-import java.util.Map;
-import javax.mail.internet.AddressException;
-import javax.servlet.http.HttpServletRequest;
-
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import io.swagger.annotations.*;
 import org.activiti.engine.ProcessEngines;
 import org.apache.commons.mail.EmailException;
 import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
@@ -32,8 +8,28 @@ import org.igov.model.action.task.core.entity.LoginResponse;
 import org.igov.model.action.task.core.entity.LoginResponseI;
 import org.igov.model.action.task.core.entity.LogoutResponse;
 import org.igov.model.action.task.core.entity.LogoutResponseI;
+import org.igov.service.business.access.AccessService;
 import org.igov.service.exception.AccessServiceException;
+import org.igov.service.exception.CommonServiceException;
+import org.igov.service.exception.HandlerBeanValidationException;
+import org.igov.util.JSON.JsonRestUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.mail.internet.AddressException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * User: goodg_000
@@ -263,6 +259,13 @@ public class AccessCommonController {
     public ResponseEntity removeAccessServiceRole (
             @ApiParam(value = "номер-ИД роли", required = true) @RequestParam(value = "nID") Long nID) {
         oAccessService.removeAccessServiceRole(nID);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/removeAccessServiceRight", method = {RequestMethod.POST, RequestMethod.GET})
+    public ResponseEntity removeAccessServiceRight (
+            @ApiParam(value = "номер-ИД права", required = true) @RequestParam(value = "nID") Long nID) {
+        oAccessService.removeAccessServiceRight(nID);
         return new ResponseEntity(HttpStatus.OK);
     }
 
