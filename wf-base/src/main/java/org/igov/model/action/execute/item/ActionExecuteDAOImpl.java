@@ -53,7 +53,7 @@ public class ActionExecuteDAOImpl extends GenericEntityDao<ActionExecute> implem
 		actionExecute.setSoRequest(soRequest);
 		actionExecute.setsReturn(sReturn);
 		
-		//getSession().saveOrUpdate(actionExecute);
+		getSession().saveOrUpdate(actionExecute);
 		return actionExecute;
 	}
 
@@ -118,7 +118,7 @@ public class ActionExecuteDAOImpl extends GenericEntityDao<ActionExecute> implem
 		actionExecuteOld.setsReturn(actionExecute.getsReturn());
 		actionExecuteOld.setSmParam(actionExecute.getSmParam());
 		
-		//actionExecuteOldDAO.saveOrUpdate(actionExecuteOld);
-		//getSession().delete(actionExecute);		
+		actionExecuteOldDAO.saveOrUpdate(actionExecuteOld);
+		getSession().delete(actionExecute);		
 	}
 }
