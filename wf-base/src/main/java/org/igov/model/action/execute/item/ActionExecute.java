@@ -17,6 +17,7 @@ import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import javax.persistence.Basic;
 
 @javax.persistence.Entity
 public class ActionExecute extends Entity {
@@ -52,11 +53,11 @@ public class ActionExecute extends Entity {
 	@Column(name = "sMethod", nullable = true)
 	private String sMethod;	
 
-	@Lob
-    @Type(type="org.hibernate.type.PrimitiveByteArrayBlobType")
+	@Basic
+        @Type(type="org.hibernate.type.PrimitiveByteArrayBlobType")
 	@JsonProperty(value = "soRequest")
 	@Column(name = "soRequest", nullable = true)
-	private byte[] soRequest;
+	private Byte[] soRequest;
 	
 	@JsonProperty(value = "smParam")
 	@Column(name = "smParam", nullable = true)
@@ -98,11 +99,11 @@ public class ActionExecute extends Entity {
 		this.sMethod = sMethod;
 	}
 
-	public byte[] getSoRequest() {
+	public Byte[] getSoRequest() {
 		return soRequest;
 	}
 
-	public void setSoRequest(byte[] soRequest) {
+	public void setSoRequest(Byte[] soRequest) {
 		this.soRequest = soRequest;
 	}
 

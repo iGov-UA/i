@@ -15,12 +15,12 @@
         <activiti:formProperty id="fSvidoztvoNaPravoSobstvennosti" name="Завантажте свідоцтво про право власності на будинок" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний (особистий) номер телефону для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPostName" name="назва посади відповідальної особи адміністартивного органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPostClerkInDavalVidminok" name="назва посади відповідальної особи адміністартивного органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameRajon" name="назва району адміністартивного органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOblast" name="назва області адміністартивного органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sFioClerk" name="ПІБ відповідальної особи адміністартивного органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sFioClerkInDavalVidminok" name="ПІБ відповідальної особи адміністартивного органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_UA" name="sID_UA" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sEmailClerk" name="пошта посадовця" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sClerkPost" name="пошта посадовця" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -44,11 +44,12 @@
           <activiti:value id="reject" name="відмовити у розгляданні дозволу"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відмови внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sPostName" name="назва посади відповідальної особи адміністартивного органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPostClerkInDavalVidminok" name="назва посади відповідальної особи адміністартивного органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameRajon" name="назва району адміністартивного органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOblast" name="назва області адміністартивного органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sFioClerk" name="ПІБ відповідальної особи адміністартивного органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sEmailClerk" name="пошта посадовця" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sFioClerkInDavalVidminok" name="ПІБ відповідальної особи адміністартивного органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sClerkPost" name="пошта посадовця" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sForTracert" name="Зміна для отладки" type="invisible" default="T"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -74,11 +75,11 @@
         </activiti:formProperty>
         <activiti:formProperty id="comment_2" name="У разі відмови внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/znes_bud_393_print.html]" type="invisible" default="Заява на надання дозволу на знесення будівлі" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPostName" name="назва посади відповідальної особи адміністартивного органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPostClerkInDavalVidminok" name="назва посади відповідальної особи адміністартивного органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameRajon" name="назва району адміністартивного органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOblast" name="назва області адміністартивного органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sFioClerk" name="ПІБ відповідальної особи адміністартивного органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sEmailClerk" name="пошта посадовця" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sFioClerkInDavalVidminok" name="ПІБ відповідальної особи адміністартивного органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sClerkPost" name="пошта посадовця" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -111,7 +112,7 @@
     <serviceTask id="servicetask2" name="Повідомлення посадовця " activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${sEmailClerk}</activiti:expression>
+          <activiti:expression>${sClerkPost}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -235,26 +236,11 @@
     <sequenceFlow id="flow16" sourceRef="boundaryerror1" targetRef="endevent3"></sequenceFlow>
     <sequenceFlow id="flow17" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
     <scriptTask id="scripttask1" name="Визначення параметрів email і т.ін. відповідальної особи" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var per1 = 'sPostName'
-var per2 = 'sNameRajon'
-var per3 = 'sNameOblast'
-var per4 = 'sFioClerk '
-var per5 = 'sEmailClerk '
-
-if (execution.getVariable('sID_UA') == '3222782601')
-{
-	per1 = 'Голові сільської ради'
-	per2 = 'в Макарівському районі '
-	per3 = 'Київської області'
-	per4 = 'Пелешок Юлії Василівни'
-	per5 =  'kolonschinska_rada@ukr.net'
+      <script>var per1 = 'sClerkPost'
+if (execution.getVariable('sForTracert') == 'T'){
+per1 = 'smoktii.igov@gmail.com'
 }
-			
-execution.setVariable('sPostName', per1)
-execution.setVariable('sNameRajon', per2)
-execution.setVariable('sNameOblast', per3)
-execution.setVariable('sFioClerk', per4)
-execution.setVariable('sEmailClerk', per5)      
+execution.setVariable('sClerkPost', per1)
      </script>
     </scriptTask>
     <sequenceFlow id="flow18" sourceRef="scripttask1" targetRef="servicetask7"></sequenceFlow>
