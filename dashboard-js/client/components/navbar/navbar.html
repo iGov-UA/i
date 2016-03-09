@@ -12,6 +12,10 @@
       <div ng-if="iGovNavbarHelper.auth.isLoggedIn()" collapse="iGovNavbarHelper.isCollapsed" class="navbar-collapse collapse" id="navbar-main">
 
         <ul class="nav navbar-nav" ng-show="!iGovNavbarHelper.areInstrumentsVisible" ng-init="iGovNavbarHelper.load()">
+          <li class="navbar-search">
+            <input type="text" ng-keyup="searchInputKeyup($event)" ng-model="userInput.value" placeholder="Пошук" />
+          </li>
+
           <li ng-repeat="menu in iGovNavbarHelper.menus"
               ng-show="isVisible(menu.type)"
               ng-class="{active: isTaskFilterActive(menu.type)}">

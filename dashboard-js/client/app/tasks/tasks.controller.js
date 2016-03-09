@@ -7,11 +7,11 @@
 
   tasksCtrl.$inject = [
     '$scope', '$window', 'tasks', 'processes', 'Modal', 'Auth', 'identityUser', '$localStorage', '$filter', 'lunaService',
-    'PrintTemplateService', 'taskFilterService', 'MarkersFactory', 'iGovNavbarHelper', '$location'//, 'NavbarCtrl'
+    'PrintTemplateService', 'taskFilterService', 'MarkersFactory', 'iGovNavbarHelper', '$location', 'defaultSearchHandlerService'
   ];
   function tasksCtrl(
     $scope, $window, tasks, processes, Modal, Auth, identityUser, $localStorage, $filter, lunaService,
-    PrintTemplateService, taskFilterService, MarkersFactory, iGovNavbarHelper, $location//, NavbarCtrl
+    PrintTemplateService, taskFilterService, MarkersFactory, iGovNavbarHelper, $location, defaultSearchHandlerService
   ) {
     $scope.tasks = null;
     $scope.tasksLoading = false;
@@ -178,23 +178,23 @@
       if (sID_Field === null) {
         return true;
       }
-      console.log("sID_Field=" + sID_Field + ",formProperty.writable=" + formProperty.writable);
+      //console.log("sID_Field=" + sID_Field + ",formProperty.writable=" + formProperty.writable);
       if (!formProperty.writable) {
         return true;
       }
       var bNotBankID = sID_Field.indexOf("bankId") !== 0;
-      console.log("sID_Field=" + sID_Field + ",bNotBankID=" + bNotBankID);
+      //console.log("sID_Field=" + sID_Field + ",bNotBankID=" + bNotBankID);
       var bEditable = bNotBankID;
       var sFieldName = formProperty.name;
       if (sFieldName === null) {
         return true;
       }
       var as = sFieldName.split(";");
-      console.log("sID_Field=" + sID_Field + ",as=" + as + ",as.length=" + as.length);
+      //console.log("sID_Field=" + sID_Field + ",as=" + as + ",as.length=" + as.length);
       if (as.length > 2) {
         bEditable = as[2] === "writable=true" ? true : as[2] === "writable=false" ? false : bEditable;
       }
-      console.log("sID_Field=" + sID_Field + ",bEditable=" + bEditable);
+      //console.log("sID_Field=" + sID_Field + ",bEditable=" + bEditable);
 
       return !bEditable;//false
     };
@@ -463,7 +463,7 @@
           Modal.assignTask(function (event) {
             //$scope.lightweightRefreshAfterSubmit();
             $scope.selectedTasks['unassigned'] = null;
-             //NavbarCtrl.goToTasks("selfAssigned"); 
+             //NavbarCtrl.goToTasks("selfAssigned");
             $location.path('/tasks/' + "selfAssigned");
             $scope.applyTaskFilter(iGovNavbarHelper.menus[1].type, $scope.selectedTask.id);
           }, 'Задача у вас в роботі', $scope.lightweightRefreshAfterSubmit);
@@ -769,27 +769,11 @@
     }
 
     function defaultErrorHandler(response, msgMapping) {
-      var msg = response.status + ' ' + response.statusText + '\n' + response.data;
-      try {
-        try {
-          var data = JSON.parse(response.data);
-        } catch (e) {
-          var data = response.data;
-        }
-        if (data !== null && data !== undefined && ('code' in data) && ('message' in data)) {
-          if (msgMapping !== undefined && data.message in msgMapping)
-            msg = msgMapping[data.message];
-          else
-            msg = data.code + ' ' + data.message;
-        }
-      } catch (e) {
-        console.log(e);
-      }
+      defaultSearchHandlerService.handleError(response, msgMapping);
       if ($scope.taskForm) {
         $scope.taskForm.isSuccessfullySubmitted = false;
         $scope.taskForm.isInProcess = false;
       }
-      Modal.inform.error()(msg);
     }
 
     $scope.isCommentAfterReject = function (item) {

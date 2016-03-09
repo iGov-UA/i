@@ -5,8 +5,8 @@
     .module('dashboardJsApp')
     .controller('NavbarCtrl', navbarCtrl);
 
-  navbarCtrl.$inject = ['$scope', '$location', 'Auth', 'envConfigService', 'iGovNavbarHelper'];
-  function navbarCtrl($scope, $location, Auth, envConfigService, iGovNavbarHelper) {
+  navbarCtrl.$inject = ['$scope', '$location', 'Auth', 'envConfigService', 'iGovNavbarHelper', 'tasksSearchService'];
+  function navbarCtrl($scope, $location, Auth, envConfigService, iGovNavbarHelper, tasksSearchService) {
     $scope.menu = [{
       'title': 'Задачі',
       'link': '/tasks'
@@ -76,5 +76,12 @@
     $scope.goToProfile = function () {
       $location.path('/profile');
     };
+
+    $scope.userInput = {value: null};
+
+    $scope.searchInputKeyup = function ($event) {
+      if ($event.keyCode === 13)
+        tasksSearchService.searchTaskByUserInput($scope.userInput.value);
+    }
   }
 })();
