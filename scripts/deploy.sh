@@ -1,6 +1,9 @@
 #!/bin/bash
 
-export LANG=en_US.UTF-8
+ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no sybase@test.igov.org.ua << EOF
+
+TMP=TEMP=TMPDIR=/tmp/c_alpha && export TMPDIR TMP TEMP
+mkdir -p $TMP
 
 central() {
         if [ "$bIncludeBack" == "true" ]
