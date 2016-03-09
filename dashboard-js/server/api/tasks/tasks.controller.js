@@ -86,6 +86,7 @@ exports.index = function (req, res) {
   var query = {};
   //https://test.igov.org.ua/wf/service/runtime/tasks?size=20
   query.size = 500;
+  query.start = (req.query.page || 0) * 500;
 
   if (req.query.filterType === 'all') {
     async.waterfall([

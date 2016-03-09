@@ -23,7 +23,11 @@
       var path = $location.path();
       if (path.indexOf('/tasks') === 0) {
         service.areInstrumentsVisible = false;
-        service.currentTab = path.substr('/tasks/'.length) || 'tickets';
+        var matches = path.match(/^\/tasks\/(\w+)(\/\d+)?$/);
+        if (matches)
+          service.currentTab = matches[1];
+        else
+          service.currentTab = 'tickets';
       }
       else {
         service.areInstrumentsVisible = true;

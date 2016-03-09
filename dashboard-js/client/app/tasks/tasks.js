@@ -25,15 +25,11 @@
       .when('/tasks/:tab/', params);
     */
 
-    $routeProvider
-      .when('/tasks/unassigned', params);
-    $routeProvider
-      .when('/tasks/selfAssigned', params);
-    $routeProvider
-      .when('/tasks/tickets', params);
-    $routeProvider
-      .when('/tasks/all', params);
-    $routeProvider
-      .when('/tasks/finished', params);
+    $routeProvider.when('/tasks/unassigned', params);
+    $routeProvider.when('/tasks/selfAssigned', params);
+    $routeProvider.when('/tasks/tickets', params);
+    $routeProvider.when('/tasks/all', params);
+    $routeProvider.when('/tasks/finished', params);
+    $routeProvider.when('/tasks/:type/:id', params);
   }
 })();

@@ -7,11 +7,13 @@
 
   tasksCtrl.$inject = [
     '$scope', '$window', 'tasks', 'processes', 'Modal', 'Auth', 'identityUser', '$localStorage', '$filter', 'lunaService',
-    'PrintTemplateService', 'taskFilterService', 'MarkersFactory', 'iGovNavbarHelper', '$location', 'defaultSearchHandlerService'
+    'PrintTemplateService', 'taskFilterService', 'MarkersFactory', 'iGovNavbarHelper', '$location', 'defaultSearchHandlerService',
+    '$routeParams'
   ];
   function tasksCtrl(
     $scope, $window, tasks, processes, Modal, Auth, identityUser, $localStorage, $filter, lunaService,
-    PrintTemplateService, taskFilterService, MarkersFactory, iGovNavbarHelper, $location, defaultSearchHandlerService
+    PrintTemplateService, taskFilterService, MarkersFactory, iGovNavbarHelper, $location, defaultSearchHandlerService,
+    $routeParams
   ) {
     $scope.tasks = null;
     $scope.tasksLoading = false;
@@ -246,7 +248,7 @@
         }
       }
 
-      tasks.list(menuType, null, data)
+      tasks.list(menuType, data)
         .then(function (result) {
           try {
             var oResult = result;
@@ -607,11 +609,15 @@
       loadSelfAssignedTasks();
       $scope.taskFormLoaded = false;
 
-      _.each(iGovNavbarHelper.menus, function(menu) {
-        if (menu.tab === tab) {
-          $scope.applyTaskFilter(menu.type);
-        }
-      });
+      if ($routeParams.type) {
+        $scope.applyTaskFilter($routeParams.type, $routeParams.id);
+      } else {
+        _.each(iGovNavbarHelper.menus, function (menu) {
+          if (menu.tab === tab) {
+            $scope.applyTaskFilter(menu.type);
+          }
+        });
+      }
     };
 
     $scope.ticketsFilter = {

@@ -1,7 +1,7 @@
 'use strict';
 
 (function (angular) {
-  var tasksSearchService = function (tasks, Modal, defaultSearchHandlerService) {
+  var tasksSearchService = function (tasks, Modal, defaultSearchHandlerService, $location, iGovNavbarHelper) {
 
     var messageMap = {'CRC Error': 'Неправильний ID', 'Record not found': 'ID не знайдено'};
 
@@ -27,26 +27,40 @@
             Modal.inform.error(messageMap[result]);
           else
             console.log(result);
-          return;
-
-          searchResult.text = $scope.searchTask.text;
-          searchResult.tasks = JSON.parse(result);
-          var taskId = searchResult.tasks[0];
-          var taskFound = $scope.tasks.some(function (task) {
-            if (task.id === taskId) {
-              $scope.selectTask(task);
-            }
-            return task.id === taskId;
-          });
         }).catch(function (response) {
         defaultSearchHandlerService.handleError(response, messageMap)
       });
     };
 
+    var searchTypes = ['unassigned','selfAssigned'];
+
     var searchSuccess = function (taskId) {
-      tasks.getTask(taskId).then(function (task) {
-        console.log(task);
-      });
+      searchTaskInType(taskId, searchTypes[0]);
+    };
+
+    var searchTaskInType = function(taskId, type, page) {
+      if (!page)
+        page = 0;
+      tasks.list(type, {page: page}).then(function(response){
+        var taskFound = false;
+        for (var i=0;i<response.data.length;i++) {
+          var task = response.data[i];
+          if (task.id == taskId) {
+            taskFound = true;
+            $location.path('/tasks/' + type + '/' + taskId);
+            iGovNavbarHelper.load();
+            break;
+          }
+        }
+
+        if (!taskFound) {
+          if (response.start + response.size < response.total)
+            searchTaskInType(taskId, type, page + 1);
+          else if (searchTypes.indexOf(type) < searchTypes.length - 1) {
+            searchTaskInType(taskId, searchTypes[searchTypes.indexOf(type) + 1], 0);
+          }
+        }
+      })
     };
 
     return {
@@ -56,7 +70,7 @@
     }
   };
 
-  tasksSearchService.$inject = ['tasks', 'Modal', 'defaultSearchHandlerService'];
+  tasksSearchService.$inject = ['tasks', 'Modal', 'defaultSearchHandlerService', '$location', 'iGovNavbarHelper'];
 
   angular
     .module('dashboardJsApp')
