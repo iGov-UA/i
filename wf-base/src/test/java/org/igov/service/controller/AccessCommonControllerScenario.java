@@ -172,6 +172,21 @@ public class AccessCommonControllerScenario {
     }
 
     @Test
+    public void testSetAccessServiceRight() throws Exception {
+        AccessRoleVO role = getAccessServiceRoleRights(3L); // TestRole3
+        AccessRightVO oldRight = role.getaRoleRight().get(0).getoRight();
+
+        String newService = oldRight.getsService() + "111";
+        AccessRightVO newRight = setAccessServiceRight(oldRight.getnID(), oldRight.getsName(),
+                newService, oldRight.getSaMethod(), oldRight.getsHandlerBean());
+        Assert.assertEquals(newService, newRight.getsService());
+
+        role = getAccessServiceRoleRights(3L); // TestRole3
+        AccessRightVO newRight2 = role.getaRoleRight().get(0).getoRight();
+        Assert.assertEquals(newRight, newRight2);
+    }
+
+    @Test
     @Ignore
     public void testHasAccessServiceLoginRight() throws Exception {
 
@@ -256,6 +271,20 @@ public class AccessCommonControllerScenario {
                 andReturn().getResponse().getContentAsString();
         return JsonRestUtils.readObject(getJsonData, CollectionType.construct(List.class,
                 SimpleType.construct(AccessRightVO.class)));
+    }
+
+    private AccessRightVO setAccessServiceRight(Long nID, String sName, String sService, String saMethod,
+                                                       String sHandlerBean) throws Exception {
+        String getJsonData = mockMvc.perform(post("/access/setAccessServiceRight").
+                param("nID", nID != null ? nID.toString() : null).
+                param("sName", sName).
+                param("sService", sService).
+                param("saMethod", saMethod).
+                param("sHandlerBean", sHandlerBean)).
+                andExpect(status().isOk()).
+                andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
+                andReturn().getResponse().getContentAsString();
+        return JsonRestUtils.readObject(getJsonData, AccessRightVO.class);
     }
 
     public void removeAccessServiceRole(Long nID) throws Exception {

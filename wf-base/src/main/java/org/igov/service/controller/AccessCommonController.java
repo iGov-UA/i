@@ -2,8 +2,10 @@ package org.igov.service.controller;
 
 import io.swagger.annotations.*;
 import org.activiti.engine.ProcessEngines;
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.mail.EmailException;
 import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
+import org.igov.model.access.vo.AccessRightVO;
 import org.igov.model.action.task.core.entity.LoginResponse;
 import org.igov.model.action.task.core.entity.LoginResponseI;
 import org.igov.model.action.task.core.entity.LogoutResponse;
@@ -267,6 +269,27 @@ public class AccessCommonController {
             @ApiParam(value = "номер-ИД права", required = true) @RequestParam(value = "nID") Long nID) {
         oAccessService.removeAccessServiceRight(nID);
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/setAccessServiceRight", method = {RequestMethod.POST, RequestMethod.GET})
+    public ResponseEntity setAccessServiceRight (
+            @ApiParam(value = "номер-ИД права", required = true) @RequestParam(value = "nID") Long nID,
+            @ApiParam(value = "строка-название", required = true) @RequestParam(value = "sName", required = true) String sName,
+            @ApiParam(value = "номер порядка (проверки)", required = false) @RequestParam(value = "nOrder", required = false) Integer nOrder,
+            @ApiParam(value = "строка-сервис", required = false) @RequestParam(value = "sService", required = false) String sService,
+            @ApiParam(value = "строка-название метода вызова", required = false) @RequestParam(value = "saMethod", required = false) String saMethod,
+            @ApiParam(value = "строка-название бина-обработчика", required = false) @RequestParam(value = "sHandlerBean", required = false) String sHandlerBean,
+            @ApiParam(value = "булевый, запретить доступ к сервису?", required = false) @RequestParam(value = "bDeny", required = false) Boolean bDeny) {
+        AccessRightVO accessRightVO = new AccessRightVO();
+        accessRightVO.setnID(nID);
+        accessRightVO.setsName(sName);
+        accessRightVO.setnOrder(nOrder);
+        accessRightVO.setsService(sService);
+        accessRightVO.setSaMethod(saMethod);
+        accessRightVO.setsHandlerBean(sHandlerBean);
+        accessRightVO.setbDeny(BooleanUtils.isTrue(bDeny));
+
+        return JsonRestUtils.toJsonResponse(oAccessService.setAccessServiceRight(accessRightVO));
     }
 
     @RequestMapping(value = "/getAccessServiceRights", method = RequestMethod.GET)

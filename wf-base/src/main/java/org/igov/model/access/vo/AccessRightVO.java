@@ -83,4 +83,33 @@ public class AccessRightVO {
     public void setnOrder(Integer nOrder) {
         this.nOrder = nOrder;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        AccessRightVO that = (AccessRightVO) o;
+
+        if (bDeny != that.bDeny) return false;
+        if (nID != null ? !nID.equals(that.nID) : that.nID != null) return false;
+        if (sName != null ? !sName.equals(that.sName) : that.sName != null) return false;
+        if (sService != null ? !sService.equals(that.sService) : that.sService != null) return false;
+        if (saMethod != null ? !saMethod.equals(that.saMethod) : that.saMethod != null) return false;
+        if (sHandlerBean != null ? !sHandlerBean.equals(that.sHandlerBean) : that.sHandlerBean != null) return false;
+        return nOrder != null ? nOrder.equals(that.nOrder) : that.nOrder == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = nID != null ? nID.hashCode() : 0;
+        result = 31 * result + (sName != null ? sName.hashCode() : 0);
+        result = 31 * result + (sService != null ? sService.hashCode() : 0);
+        result = 31 * result + (saMethod != null ? saMethod.hashCode() : 0);
+        result = 31 * result + (sHandlerBean != null ? sHandlerBean.hashCode() : 0);
+        result = 31 * result + (bDeny ? 1 : 0);
+        result = 31 * result + (nOrder != null ? nOrder.hashCode() : 0);
+        return result;
+    }
 }

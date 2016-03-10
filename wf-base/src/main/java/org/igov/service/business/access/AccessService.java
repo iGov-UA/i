@@ -118,6 +118,21 @@ public class AccessService implements ApplicationContextAware {
                 AccessRightVO::new).collect(Collectors.toList());
     }
 
+    public AccessRightVO setAccessServiceRight(AccessRightVO accessRightVO) {
+        AccessServiceRight accessServiceRight = accessRightVO.getnID() != null ? accessServiceRightDao.findByIdExpected(
+                accessRightVO.getnID()) : new AccessServiceRight();
+
+        accessServiceRight.setName(accessRightVO.getsName());
+        accessServiceRight.setsService(accessRightVO.getsService());
+        accessServiceRight.setSaMethod(accessRightVO.getSaMethod());
+        accessServiceRight.setnOrder(accessRightVO.getnOrder());
+        accessServiceRight.setsHandlerBean(accessRightVO.getsHandlerBean());
+        accessServiceRight.setbDeny(accessRightVO.isbDeny());
+        accessServiceRightDao.saveOrUpdate(accessServiceRight);
+
+        return new AccessRightVO(accessServiceRight);
+}
+
     private boolean hasAccess(AccessServiceRight right, String sData) throws HandlerBeanValidationException {
         boolean res;
 
