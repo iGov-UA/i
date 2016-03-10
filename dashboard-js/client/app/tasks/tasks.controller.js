@@ -255,7 +255,7 @@
               // build filtered tasks array
               filterLoadedTasks();
 
-              defer.resolve();
+              defer.resolve(aTaskFiltered);
               tasksPage ++;
             }
 
@@ -297,8 +297,8 @@
         $scope.predicate = 'startTime';
       }
 
-      loadNextTasksPage().then(function(){
-        updateTaskSelection(nID_Task);
+      loadNextTasksPage().then(function(tasks){
+        updateTaskSelection(nID_Task, tasks);
       });
     };
 
@@ -634,19 +634,19 @@
 
     $scope.init = function () {
       var tab = $location.path().substr('/tasks/'.length) || 'tickets';
-
-      loadSelfAssignedTasks();
       $scope.taskFormLoaded = false;
 
-      if ($routeParams.type) {
-        $scope.applyTaskFilter($routeParams.type, $routeParams.id);
-      } else {
-        _.each(iGovNavbarHelper.menus, function (menu) {
-          if (menu.tab === tab) {
-            $scope.applyTaskFilter(menu.type);
-          }
-        });
-      }
+      loadSelfAssignedTasks().then(function(){
+        if ($routeParams.type) {
+          $scope.applyTaskFilter($routeParams.type, $routeParams.id);
+        } else {
+          _.each(iGovNavbarHelper.menus, function (menu) {
+            if (menu.tab === tab) {
+              $scope.applyTaskFilter(menu.type);
+            }
+          });
+        }
+      });
     };
 
     $scope.ticketsFilter = {
@@ -678,9 +678,9 @@
     };
 
     function loadSelfAssignedTasks() {
-      processes.list().then(function (processesDefinitions) {
+      return processes.list().then(function (processesDefinitions) {
         console.log("[loadSelfAssignedTasks]processesDefinitions=" + processesDefinitions);
-        $scope.applyTaskFilter($scope.$storage.menuType);
+        //$scope.applyTaskFilter($scope.$storage.menuType);
       }).catch(defaultErrorHandler);
     }
 
@@ -695,46 +695,40 @@
       });
     }
 
-    function updateTaskSelection(nID_Task) {
-      console.log("[updateTaskSelection]nID_Task=" + nID_Task);
-      if (nID_Task !== null && nID_Task !== undefined) {// && $scope.tasks.length >0
-        var s = null;
-        _.forEach($scope.filteredTasks, function (oItem) {
-          console.log("[updateTaskSelection]oItem.id=" + oItem.id)
-          if (oItem.id === nID_Task) {
-            s = nID_Task;//oItem.name;
-            $scope.selectTask(oItem);
+    function updateTaskSelection(nID_Task, tasks) {
+      if (nID_Task && tasks && tasks.length > 0) {
+        var foundTask = null;
+        for (var i = 0; i < tasks.length; i++) {
+          var task = tasks[i];
+          if (task.id == nID_Task) {
+            foundTask = task;
+            break;
           }
-        });
-        console.log("[updateTaskSelection]s=" + s);
-        if (s === null) {
-          nID_Task = null;
-        }//return s;
-      } else {
-        nID_Task = null;
-      }
-      if (nID_Task === null || nID_Task === undefined) {
-        if ($scope.selectedTask) {
-          $scope.selectTask($scope.selectedTask);
-        } else if ($scope.filteredTasks && $scope.filteredTasks[0]) {
-          $scope.selectTask($scope.filteredTasks[0]);
         }
-      }
+        if (foundTask)
+          $scope.selectTask(foundTask);
+        else
+          loadNextTasksPage().then(function (nextTasks) {
+            updateTaskSelection(nID_Task, nextTasks);
+          });
+      } else
+        initDefaultTaskSelection();
     }
 
-    function mapErrorHandler(msgMapping) {
-      return function (response) {
-        defaultErrorHandler(response, msgMapping);
-      };
-    }
+    var initDefaultTaskSelection = function () {
+      if ($scope.selectedTask)
+        $scope.selectTask($scope.selectedTask);
+      else if ($scope.filteredTasks && $scope.filteredTasks[0])
+        $scope.selectTask($scope.filteredTasks[0]);
+    };
 
-    function defaultErrorHandler(response, msgMapping) {
+    var defaultErrorHandler = function (response, msgMapping) {
       defaultSearchHandlerService.handleError(response, msgMapping);
       if ($scope.taskForm) {
         $scope.taskForm.isSuccessfullySubmitted = false;
         $scope.taskForm.isInProcess = false;
       }
-    }
+    };
 
     $scope.isCommentAfterReject = function (item) {
       if (item.id != "comment") return false;
