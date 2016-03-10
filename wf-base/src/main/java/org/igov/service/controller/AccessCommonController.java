@@ -243,10 +243,17 @@ public class AccessCommonController {
         return JsonRestUtils.toJsonResponse(oAccessService.getAccessServiceLoginRoles(sLogin));
     }
 
+    @RequestMapping(value = "/setAccessServiceLoginRole", method = {RequestMethod.POST, RequestMethod.GET})
+    public ResponseEntity setAccessServiceLoginRole (
+            @ApiParam(value = "номер-ИД", required = false) @RequestParam(value = "nID", required = false) Long nID,
+            @ApiParam(value = "Строка логин пользователя", required = true) @RequestParam(value = "sLogin", required = true) String sLogin,
+            @ApiParam(value = "номер-ИД роли", required = true) @RequestParam(value = "nID_AccessServiceRole", required = true) Long nID_AccessServiceRole ) {
+        return JsonRestUtils.toJsonResponse(oAccessService.setAccessServiceLoginRole(nID, sLogin, nID_AccessServiceRole));
+    }
+
     @RequestMapping(value = "/getAccessServiceRoleRights", method = RequestMethod.GET)
     public ResponseEntity getAccessServiceRoleRights (
-            @ApiParam(value = "номер-ИД роли", required = true)
-            @RequestParam(value = "nID_AccessServiceRole") Long nID_AccessServiceRole) {
+            @ApiParam(value = "номер-ИД роли", required = true) @RequestParam(value = "nID_AccessServiceRole") Long nID_AccessServiceRole) {
         return JsonRestUtils.toJsonResponse(oAccessService.getAccessServiceRoleRights(nID_AccessServiceRole));
     }
 

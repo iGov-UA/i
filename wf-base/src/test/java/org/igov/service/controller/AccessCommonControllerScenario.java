@@ -3,10 +3,7 @@ package org.igov.service.controller;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.SimpleType;
 import org.aspectj.weaver.TypeFactory;
-import org.igov.model.access.vo.AccessRightVO;
-import org.igov.model.access.vo.AccessRoleIncludeVO;
-import org.igov.model.access.vo.AccessRoleRightVO;
-import org.igov.model.access.vo.AccessRoleVO;
+import org.igov.model.access.vo.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -54,9 +51,10 @@ public class AccessCommonControllerScenario {
 
     @Test
     public void testGetAccessServiceLoginRoles() throws Exception {
-        List<AccessRoleVO> roles = getAccessServiceLoginRoles("TestLogin");
+        List<AccessLoginRoleVO> roles = getAccessServiceLoginRoles("TestLogin");
         Assert.assertEquals(1, roles.size());
-        assertEquals(getAllRights(roles), "TestRight1", "TestRight2");
+        assertEquals(getAllRights(roles.stream().map(AccessLoginRoleVO::getoRole).collect(Collectors.toList())),
+                "TestRight1", "TestRight2");
     }
 
     @Test
@@ -66,6 +64,20 @@ public class AccessCommonControllerScenario {
 
         role = getAccessServiceRoleRights(3L); // TestRole3
         assertEquals(getAllRights(role), "TestRight3");
+    }
+
+    @Test
+    public void testSetAccessServiceLoginRole() throws Exception {
+        final String login = "JJJ";
+        final Long roleId = 3L;
+
+        AccessLoginRoleVO loginRole = setAccessServiceLoginRole(null, login, roleId);
+        Assert.assertNotNull(loginRole.getnID());
+        Assert.assertEquals(login, loginRole.getsLogin());
+        Assert.assertEquals(roleId, loginRole.getoRole().getnID());
+
+        List<AccessLoginRoleVO> roles = getAccessServiceLoginRoles(login);
+        Assert.assertEquals(1, roles.size());
     }
 
     @Test
@@ -224,14 +236,14 @@ public class AccessCommonControllerScenario {
         return JsonRestUtils.readObject(getJsonData, Boolean.class);
     }
 
-    private List<AccessRoleVO> getAccessServiceLoginRoles(String sLogin) throws Exception {
+    private List<AccessLoginRoleVO> getAccessServiceLoginRoles(String sLogin) throws Exception {
         String getJsonData = mockMvc.perform(get("/access/getAccessServiceLoginRoles").
                 param("sLogin", sLogin)).
                 andExpect(status().isOk()).
                 andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
                 andReturn().getResponse().getContentAsString();
         return JsonRestUtils.readObject(getJsonData, CollectionType.construct(List.class,
-                SimpleType.construct(AccessRoleVO.class)));
+                SimpleType.construct(AccessLoginRoleVO.class)));
     }
 
     private AccessRoleVO getAccessServiceRoleRights(Long nID_AccessServiceRole) throws Exception {
@@ -285,6 +297,19 @@ public class AccessCommonControllerScenario {
                 andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
                 andReturn().getResponse().getContentAsString();
         return JsonRestUtils.readObject(getJsonData, AccessRightVO.class);
+    }
+
+    private AccessLoginRoleVO setAccessServiceLoginRole(Long nID, String sLogin, Long nID_AccessServiceRole)
+            throws Exception {
+
+        String getJsonData = mockMvc.perform(post("/access/setAccessServiceLoginRole").
+                param("nID", nID != null ? nID.toString() : null).
+                param("sLogin", sLogin).
+                param("nID_AccessServiceRole", nID_AccessServiceRole.toString())).
+                andExpect(status().isOk()).
+                andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
+                andReturn().getResponse().getContentAsString();
+        return JsonRestUtils.readObject(getJsonData, AccessLoginRoleVO.class);
     }
 
     public void removeAccessServiceRole(Long nID) throws Exception {

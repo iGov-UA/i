@@ -5,6 +5,7 @@ import org.apache.commons.mail.EmailException;
 import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
 import org.igov.model.access.*;
+import org.igov.model.access.vo.AccessLoginRoleVO;
 import org.igov.model.access.vo.AccessRightVO;
 import org.igov.model.access.vo.AccessRoleVO;
 import org.igov.service.business.access.handler.AccessServiceLoginRightHandler;
@@ -78,10 +79,18 @@ public class AccessService implements ApplicationContextAware {
         return res;
     }
 
-    public List<AccessRoleVO> getAccessServiceLoginRoles(String sLogin) {
+    public List<AccessLoginRoleVO> getAccessServiceLoginRoles(String sLogin) {
         List<AccessServiceLoginRole> roles = accessServiceLoginRoleDao.getUserRoles(sLogin);
-        return roles.stream().map(AccessServiceLoginRole::getAccessServiceRole).map(AccessRoleVO::new).collect(
-                Collectors.toList());
+        return roles.stream().map(AccessLoginRoleVO::new).collect(Collectors.toList());
+    }
+
+    public AccessLoginRoleVO setAccessServiceLoginRole(Long nID, String sLogin, Long nID_AccessServiceRole) {
+        AccessServiceLoginRole loginRole = nID != null ? accessServiceLoginRoleDao.findByIdExpected(nID) :
+                new AccessServiceLoginRole();
+        loginRole.setsLogin(sLogin);
+        loginRole.setAccessServiceRole(accessServiceRoleDao.findByIdExpected(nID_AccessServiceRole));
+        accessServiceLoginRoleDao.saveOrUpdate(loginRole);
+        return new AccessLoginRoleVO(loginRole);
     }
 
     public List<AccessRoleVO> getAccessServiceRoleRights(Long roleId) {
@@ -131,7 +140,7 @@ public class AccessService implements ApplicationContextAware {
         accessServiceRightDao.saveOrUpdate(accessServiceRight);
 
         return new AccessRightVO(accessServiceRight);
-}
+    }
 
     private boolean hasAccess(AccessServiceRight right, String sData) throws HandlerBeanValidationException {
         boolean res;
