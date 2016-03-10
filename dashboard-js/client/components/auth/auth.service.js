@@ -41,14 +41,18 @@ angular.module('dashboardJsApp')
             password: user.password
           }
         };
-
+        console.log('req' + angular.toString(req));
         $http(req).
         success(function (data) {
+          console.log('req' + angular.toString(req));
+          console.log('data' + angular.toString(data));
           currentUser = data;
           deferred.resolve(data);
           return cb();
         }).
         error(function (err) {
+          console.log('req' + angular.toString(req));
+          console.log('err' + angular.toString(err));
           this.logout();
           deferred.reject(err);
           return cb(err);
