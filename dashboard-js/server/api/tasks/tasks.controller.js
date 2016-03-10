@@ -85,8 +85,8 @@ exports.index = function (req, res) {
   var user = JSON.parse(req.cookies.user);
   var query = {};
   //https://test.igov.org.ua/wf/service/runtime/tasks?size=20
-  query.size = 500;
-  query.start = (req.query.page || 0) * 500;
+  query.size = 50;
+  query.start = (req.query.page || 0) * query.size;
 
   if (req.query.filterType === 'all') {
     async.waterfall([

@@ -1,7 +1,7 @@
 'use strict';
 
 (function (angular) {
-  var tasksSearchService = function (tasks, Modal, defaultSearchHandlerService, $location, iGovNavbarHelper) {
+  var tasksSearchService = function (tasks, Modal, defaultSearchHandlerService, $location, iGovNavbarHelper, $route) {
 
     var messageMap = {'CRC Error': 'Неправильний ID', 'Record not found': 'ID не знайдено'};
 
@@ -26,7 +26,7 @@
           if (messageMap.hasOwnProperty(result))
             Modal.inform.error(messageMap[result]);
           else
-            console.log(result);
+            searchSuccess(JSON.parse(result)[0]);
         }).catch(function (response) {
         defaultSearchHandlerService.handleError(response, messageMap)
       });
@@ -47,14 +47,18 @@
           var task = response.data[i];
           if (task.id == taskId) {
             taskFound = true;
-            $location.path('/tasks/' + type + '/' + taskId);
+            var newPath = '/tasks/' + type + '/' + taskId;
+            if (newPath == $location.$$path)
+              $route.reload();
+            else
+              $location.path(newPath);
             iGovNavbarHelper.load();
             break;
           }
         }
 
         if (!taskFound) {
-          if (response.start + response.size < response.total)
+          if ((response.start + response.size) < response.total)
             searchTaskInType(taskId, type, page + 1);
           else if (searchTypes.indexOf(type) < searchTypes.length - 1) {
             searchTaskInType(taskId, searchTypes[searchTypes.indexOf(type) + 1], 0);
@@ -70,7 +74,7 @@
     }
   };
 
-  tasksSearchService.$inject = ['tasks', 'Modal', 'defaultSearchHandlerService', '$location', 'iGovNavbarHelper'];
+  tasksSearchService.$inject = ['tasks', 'Modal', 'defaultSearchHandlerService', '$location', 'iGovNavbarHelper', '$route'];
 
   angular
     .module('dashboardJsApp')

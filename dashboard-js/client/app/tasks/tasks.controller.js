@@ -8,15 +8,15 @@
   tasksCtrl.$inject = [
     '$scope', '$window', 'tasks', 'processes', 'Modal', 'Auth', 'identityUser', '$localStorage', '$filter', 'lunaService',
     'PrintTemplateService', 'taskFilterService', 'MarkersFactory', 'iGovNavbarHelper', '$location', 'defaultSearchHandlerService',
-    '$routeParams'
+    '$routeParams', '$q'
   ];
   function tasksCtrl(
     $scope, $window, tasks, processes, Modal, Auth, identityUser, $localStorage, $filter, lunaService,
     PrintTemplateService, taskFilterService, MarkersFactory, iGovNavbarHelper, $location, defaultSearchHandlerService,
-    $routeParams
+    $routeParams, $q
   ) {
+
     $scope.tasks = null;
-    $scope.tasksLoading = false;
     $scope.selectedTasks = {};
     $scope.sSelectedTask = "";
     $scope.taskFormLoaded = false;
@@ -91,17 +91,21 @@
       $scope.model.taskDefinition = $scope.$storage[$scope.$storage['menuType'] + 'TaskDefinitionFilter'];
     }
 
+    var filterLoadedTasks = function() {
+      $scope.filteredTasks = taskFilterService.getFilteredTasks($scope.tasks, $scope.model);
+    };
+
     restoreTaskDefinitionFilter();
     $scope.taskDefinitionsFilterChange = function () {
       $scope.$storage[$scope.$storage['menuType'] + 'TaskDefinitionFilter'] = $scope.model.taskDefinition;
-      $scope.filteredTasks = taskFilterService.getFilteredTasks($scope.tasks, $scope.model);
+      filterLoadedTasks();
     };
     $scope.userProcessFilterChange = function () {
       $scope.$storage[$scope.$storage['menuType'] + 'UserProcessFilter'] = $scope.model.userProcess;
-      $scope.filteredTasks = taskFilterService.getFilteredTasks($scope.tasks, $scope.model);
+      filterLoadedTasks();
     };
     $scope.strictTaskDefinitionFilterChange = function () {
-      $scope.filteredTasks = taskFilterService.getFilteredTasks($scope.tasks, $scope.model);
+      filterLoadedTasks();
     };
     $scope.selectedSortOrder = {
       selected: "datetime_asc"
@@ -218,8 +222,61 @@
       tasks.downloadDocument($scope.selectedTask.id);
     };
 
-    $scope.applyTaskFilter = function (menuType, nID_Task, resetSelectedTask) {
+    var tasksPage = 0;
+
+    var loadNextTasksPage = function() {
+      var defer = $q.defer();
+      var data = {
+        page: tasksPage
+      };
+      if ($scope.$storage.menuType == 'tickets') {
+        data.bEmployeeUnassigned = $scope.ticketsFilter.bEmployeeUnassigned;
+        if ($scope.ticketsFilter.dateMode == 'date' && $scope.ticketsFilter.sDate) {
+          data.sDate = $filter('date')($scope.ticketsFilter.sDate, 'yyyy-MM-dd');
+        }
+      }
+
       $scope.tasksLoading = true;
+
+      tasks.list($scope.$storage.menuType, data)
+        .then(function (result) {
+          try {
+            var oResult = result;
+            if (oResult.data !== null && oResult.data !== undefined) {
+              // build tasks array
+              var aTaskFiltered = _.filter(oResult.data, function (oTask) {
+                return oTask.endTime !== null;
+              });
+              if (!$scope.tasks)
+                $scope.tasks = [];
+              for (var i = 0; i < aTaskFiltered.length; i++)
+                $scope.tasks.push(aTaskFiltered[i]);
+
+              // build filtered tasks array
+              filterLoadedTasks();
+
+              defer.resolve();
+              tasksPage ++;
+            }
+
+          } catch (e) {
+            Modal.inform.error()(e);
+            defer.reject(e);
+          }
+        })
+        .catch(function (err) {
+          Modal.inform.error()(err);
+          defer.reject(err);
+        })
+        .finally(function () {
+          $scope.tasksLoading = false;
+        });
+
+      return defer.promise;
+    };
+
+    $scope.applyTaskFilter = function (menuType, nID_Task, resetSelectedTask) {
+      tasksPage = 0;
       $scope.tasks = $scope.filteredTasks = null;
       //$scope.goToTasks(menuType);//"selfAssigned"
       $scope.sSelectedTask = $scope.$storage.menuType;
@@ -240,37 +297,9 @@
         $scope.predicate = 'startTime';
       }
 
-      var data = {};
-      if ($scope.$storage.menuType == 'tickets') {
-        data.bEmployeeUnassigned = $scope.ticketsFilter.bEmployeeUnassigned;
-        if ($scope.ticketsFilter.dateMode == 'date' && $scope.ticketsFilter.sDate) {
-          data.sDate = $filter('date')($scope.ticketsFilter.sDate, 'yyyy-MM-dd');
-        }
-      }
-
-      tasks.list(menuType, data)
-        .then(function (result) {
-          try {
-            var oResult = result;
-            if (oResult.data !== null && oResult.data !== undefined) {
-              var aTaskFiltered = _.filter(oResult.data, function (oTask) {
-                return oTask.endTime !== null;
-              });
-              $scope.tasks = aTaskFiltered;
-              $scope.filteredTasks = taskFilterService.getFilteredTasks($scope.tasks, $scope.model);
-              updateTaskSelection(nID_Task);
-            }
-
-          } catch (e) {
-            Modal.inform.error()(e);
-          }
-        })
-        .catch(function (err) {
-          Modal.inform.error()(err);
-        })
-        .finally(function () {
-          $scope.tasksLoading = false;
-        });
+      loadNextTasksPage().then(function(){
+        updateTaskSelection(nID_Task);
+      });
     };
 
     $scope.getUserName = function () {
@@ -497,7 +526,7 @@
       $scope.tasks = $.grep($scope.tasks, function (e) {
         return e.id != $scope.selectedTask.id;
       });
-      $scope.filteredTasks = taskFilterService.getFilteredTasks($scope.tasks, $scope.model);
+      filterLoadedTasks();
       $scope.taskForm.isInProcess = false;
       $scope.taskForm.isSuccessfullySubmitted = true;
       if (!$scope.tasks || !$scope.tasks[0]) {
@@ -644,83 +673,8 @@
 
     $scope.lunaService = lunaService;
 
-    $scope.searchTask = {
-      orderId: null,
-      text: null
-    };
-
-    $scope.searchTaskByOrder = function () {
-      var sID_Order = $scope.searchTask.orderId;
-      var nID_Order = 0;
-      var nAt = sID_Order.indexOf("-");
-      if (nAt >= 0) {
-        var as = sID_Order.split("-");
-        nID_Order = as[1];
-        //nAt
-      } else {
-        nID_Order = sID_Order;
-      }
-      tasks.getTasksByOrder(nID_Order)//$scope.searchTask.orderId
-        .then(function (result) {
-          if (result === 'CRC-error') {
-            ///Modal.inform.error()();
-            Modal.inform.error()('Невірній номер заявки!');
-          } else if (result === 'Record not found') {
-            //Modal.inform.error()();
-            Modal.inform.error()('Заявка не знайдена!');
-          } else {
-            var tid = JSON.parse(result)[0];
-            var taskFound = $scope.tasks.some(function (t) {
-              if (t.id == tid)
-                $scope.selectTask(t);
-              return t.id == tid;
-            });
-            if (!taskFound) Modal.inform.warning()('У даному розділі ID не знайдено, спробуйте виконати пошук у суміжних');
-          }
-        }).catch(mapErrorHandler({'CRC Error': 'Неправильний ID', 'Record not found': 'ID не знайдено'}));
-    };
     var searchResult = {
       tasks: []
-    };
-    $scope.searchTaskByText = function () {
-      if (_.isEmpty($scope.searchTask.text)) {
-        Modal.inform.error()('Будь ласка, введіть текст для пошуку!');
-        return;
-      }
-      if (_.isEqual($scope.searchTask.text, searchResult.text) && !_.isEmpty(searchResult.tasks)) {
-        var taskId = searchResult.tasks[0];
-        searchResult.tasks = _.rest(searchResult.tasks);
-        $scope.tasks.some(function (task) {
-          if (task.id === taskId) {
-            $scope.selectTask(task);
-          }
-          return task.id === taskId;
-        });
-        return;
-      }
-      tasks.getTasksByText($scope.searchTask.text, $scope.sSelectedTask)//sType
-        .then(function (result) {
-          if (result === 'CRC-error') {
-            Modal.inform.error()();
-            return;
-          }
-          if (result === 'Record not found') {
-            Modal.inform.error()();
-            return;
-          }
-          searchResult.text = $scope.searchTask.text;
-          searchResult.tasks = JSON.parse(result);
-          var taskId = searchResult.tasks[0];
-          var taskFound = $scope.tasks.some(function (task) {
-            if (task.id === taskId) {
-              $scope.selectTask(task);
-            }
-            return task.id === taskId;
-          });
-          if (!taskFound) {
-            Modal.inform.warning()('У даному розділі нічого не знайдено, спробуйте виконати пошук у суміжних');
-          }
-        }).catch(mapErrorHandler({'CRC Error': 'Неправильний ID', 'Record not found': 'ID не знайдено'}));
     };
 
     function loadSelfAssignedTasks() {
@@ -940,5 +894,18 @@
       $scope.getMessageFileUrl = function (oMessage, oFile) {
         return './api/tasks/' + $scope.nID_Process + '/getMessageFile/' + oMessage.nID + '/' + oFile.sFileName;
     }
+
+    $scope.whenScrolled = function() {
+      if ($scope.tasksLoading===false && $scope.isLoadMoreAvailable())
+        $scope.loadMoreTasks();
+    };
+
+    $scope.isLoadMoreAvailable = function () {
+      return true;
+    };
+
+    $scope.loadMoreTasks = function() {
+      loadNextTasksPage();
+    };
   }
 })();
