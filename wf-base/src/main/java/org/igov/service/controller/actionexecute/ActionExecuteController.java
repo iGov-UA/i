@@ -3,6 +3,9 @@ package org.igov.service.controller.actionexecute;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+
+import java.util.List;
+
 import org.apache.commons.mail.EmailException;
 import org.igov.io.mail.Mail;
 import org.igov.model.action.execute.item.ActionExecuteDAO;
@@ -10,22 +13,22 @@ import org.igov.model.action.execute.item.ActionExecuteOldDAO;
 import org.igov.model.action.execute.item.ActionExecuteStatus;
 import org.igov.model.action.execute.item.ActionExecuteStatusDAO;
 import org.igov.service.exception.CommonServiceException;
-import org.igov.util.JSON.JsonRestUtils;
 import org.igov.util.MethodsCallRunnerUtil;
+import org.igov.util.JSON.JsonRestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.List;
-
 @Controller
+@Component
 @Api(tags = {"ActionExecuteController"})
 @RequestMapping(value = "/action/execute")
 public class ActionExecuteController {
@@ -121,7 +124,7 @@ public class ActionExecuteController {
             @ApiParam(value = "число-лимит. выбрать только те, у которых число попыток не превышает указанный лимит (иначе с любым числом попыток)", required = false) @RequestParam(value = "nTryMax", required = false) Integer nTryMax,
             @ApiParam(value = "номер-ИД записи", required = false) @RequestParam(value = "nID", required = false) Long nID,
             @ApiParam(value = "булевый, если указан true, то переместить из олд-а в основную (по умолчанию false)", required = false) @RequestParam(value = "bBack", required = false, defaultValue = "false") Boolean bBack)
-            throws EmailException {
+            throws EmailException, CommonServiceException {
         mail._To("a.maryushin@astoundcommerce.com");
         mail._Body("blblblblblallablablabllbabl");
 
@@ -134,7 +137,13 @@ public class ActionExecuteController {
         LOG.info("(mail.getHost()={})", mail.getHost());
         LOG.info("(mail.getPort()={})", mail.getPort());       
         mail.sendWithUniSender();	
+        LOG.info("test method call");
+        methodCallRunner.registerMethod(ActionExecuteController.class.getName(), "testMethod", new Object[]{"param1", "param2".getBytes(), new Integer(4)}); 
     	return null;
     }   
+    
+    private void testMethod(String param1, byte[] param2, Integer param3){
+    	System.out.println(param1);
+    }
     
 }

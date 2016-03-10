@@ -3,8 +3,8 @@
 	{
 		"ShowFieldsOnCondition_0":
 		{
-			"sNote":				["Скрытие инвизибл служебных полей"],
-			"aField_ID":			["sClerkPost","sAddress","sNameObject", "sTelephonDovidka","sWork_Time", "sRdozvil", "sPf_Part", "sLetter", "sForTracert"],
+			"sNote":				["For Hide Invisible"],
+			"aField_ID":			["sAddress","sNameObject", "sTelephonDovidka","sWork_Time", "sRdozvil", "sPf_Part", "sLetter", "sForTracert"],
 			"asID_Field":			{"sClient":"asSubect"},
 			"sCondition":			"[sClient] == 'Not_Correct'"
 		},
@@ -18,28 +18,26 @@
 		},
 		"ShowFieldsOnCondition_1":
 		{
-			"sNote":				["Якщо  юрідична особа"],
+			"sNote":				["Ur-osoba"],
 			"aField_ID":			["sName_ur","edrpou","sPib_ur", "sAdres_1","workPhone"],
 			"asID_Field":			{"sClient":"asSubect"},
 			"sCondition":			"[sClient] == 'ur'"
 		},
 		"RequiredFieldsOnCondition_11": 
 		{
-			"sNote":		["Обязательно: Якщо  юрідична особа"],
 			"aField_ID":	["sName_ur","edrpou","sPib_ur", "sAdres_1","workPhone"],
 			"asID_Field":	{"sClient":"asSubect"},
 			"sCondition":	"[sClient] == 'ur'"
 		},
 		"ShowFieldsOnCondition_2":
 		{
-			"sNote":		["Якщо  фізична особа"],
+			"sNote":		["Fiz-osoba"],
 			"aField_ID":	["sAdres_0","sPib_fiz","bankId_scan_passport"],
 			"asID_Field":	{"sClient":"asSubect"},
 			"sCondition":	"[sClient] == 'fiz'"
 		},
 		"RequiredFieldsOnCondition_21": 
 		{
-			"sNote":		["Обязательно: Якщо  фізична особа"],
 			"aField_ID":	["sAdres_0","sPib_fiz","bankId_scan_passport"],
 			"asID_Field":	{"sClient":"asSubect"},
 			"sCondition":	"[sClient] == 'fiz'"
@@ -53,49 +51,45 @@
 		},
 		"RequiredFieldsOnCondition_31": 
 		{
-			"sNote":		["Обязательно: Якщо дозвіл повторний, анулювання, подовження"],
 			"aField_ID":	["sNumber_previous","sDate_previous","nFile_Original_Dozvolu"],
 			"asID_Field":	{"sPerson":"asPurpose"},
 			"sCondition":	"[sPerson] == 'second_permission' || [sPerson] == 'revoke'|| [sPerson] == 'continuation' || [sPerson] == 'restructuring'"
 		},
 		"ShowFieldsOnCondition_4":
 		{
-			"sNote":		["Якщо анулювання, то непотрібні аттачменти"],
+			"sNote":		["Annulyuvannya - hide files"],
 			"aField_ID":	["nFile_PlacePhoto","nFile_Advert","nFile_AdvertLicense"],
 			"asID_Field":	{"sPerson":"asPurpose"},
 			"sCondition":	"[sPerson] == 'second_permission' || [sPerson] == 'first_permission'|| [sPerson] == 'continuation'|| [sPerson] == 'restructuring'"
 		},
 		"RequiredFieldsOnCondition_41": 
 		{
-			"sNote":		["Обязательно: Якщо анулювання, то непотрібні аттачменти"],
 			"aField_ID":	["nFile_PlacePhoto","nFile_Advert","nFile_AdvertLicense"],
 			"asID_Field":	{"sPerson":"asPurpose"},
 			"sCondition":	"[sPerson] == 'second_permission' || [sPerson] == 'first_permission'|| [sPerson] == 'continuation'|| [sPerson] == 'restructuring'"
 		},
 		"ShowFieldsOnCondition_5":
 		{
-			"sNote":		["Якщо отримання через довірену особу"],
+			"sNote":		["Cherez dovirenu osobu"],
 			"aField_ID":	["sConfidant_pib","sConfidant_passport"],
 			"asID_Field":	{"sPerson":"asHow"},
 			"sCondition":	"[sPerson] == 'confidant'"
 		},
 		"RequiredFieldsOnCondition_51": 
 		{
-			"sNote":		["Обязательно: Якщо отримання через довірену особу"],
 			"aField_ID":	["sConfidant_pib","sConfidant_passport"],
 			"asID_Field":	{"sPerson":"asHow"},
 			"sCondition":	"[sPerson] == 'confidant'"
 		},
 		"ShowFieldsOnCondition_6":
 		{
-			"sNote":				["Для Новопскова Луганської обл відкриваємо Топогеодезичні матеріали зйомки місцевості (М 1:500)"],
+			"sNote":				["For Novopskov open Topology Materials (M1:500)"],
 			"aField_ID":			["nFile_Roztashuvannya_M1_500"],
 			"asID_Field":			{"sClient":"sID_Public_SubjectOrganJoin"},
 			"sCondition":			"[sClient] == 'mvk_lug_NovopskovskT'"
 		},
 		"RequiredFieldsOnCondition_61": 
 		{
-			"sNote":		["Обязательно: Для Новопскова Луганської обл відкриваємо Топогеодезичні матеріали зйомки місцевості (М 1:500)"],
 			"aField_ID":	["nFile_Roztashuvannya_M1_500"],
 			"asID_Field":	{"sClient":"sID_Public_SubjectOrganJoin"},
 			"sCondition":	"[sClient] == 'mvk_lug_NovopskovskT'"

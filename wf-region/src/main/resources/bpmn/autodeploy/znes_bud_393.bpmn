@@ -19,8 +19,9 @@
         <activiti:formProperty id="sNameRajon" name="назва району адміністартивного органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOblast" name="назва області адміністартивного органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sFioClerkInDavalVidminok" name="ПІБ відповідальної особи адміністартивного органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sForTracert" name="Зміна для отладки" type="invisible" default="T"></activiti:formProperty>
         <activiti:formProperty id="sID_UA" name="sID_UA" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sClerkPost" name="пошта посадовця" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sClerkPost" name="пошта посадовця" type="string" required="true"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -49,7 +50,6 @@
         <activiti:formProperty id="sNameOblast" name="назва області адміністартивного органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sFioClerkInDavalVidminok" name="ПІБ відповідальної особи адміністартивного органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sClerkPost" name="пошта посадовця" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sForTracert" name="Зміна для отладки" type="invisible" default="T"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
