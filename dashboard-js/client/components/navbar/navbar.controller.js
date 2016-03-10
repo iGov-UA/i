@@ -77,11 +77,26 @@
       $location.path('/profile');
     };
 
-    $scope.userInput = {value: null};
+    $scope.tasksSearch = {
+      value: null,
+      count: 0,
+      loading: false,
+      submited: false
+    };
 
     $scope.searchInputKeyup = function ($event) {
-      if ($event.keyCode === 13)
-        tasksSearchService.searchTaskByUserInput($scope.userInput.value);
+      if ($event.keyCode === 13 && $scope.tasksSearch.value) {
+        $scope.tasksSearch.loading=true;
+        $scope.tasksSearch.count=0;
+        $scope.tasksSearch.submited=true;
+        tasksSearchService.searchTaskByUserInput($scope.tasksSearch.value)
+          .then(function(aIds) {
+            $scope.tasksSearch.count = aIds.length;
+          })
+          .finally(function() {
+            $scope.tasksSearch.loading=false;
+          });
+      }
     }
   }
 })();

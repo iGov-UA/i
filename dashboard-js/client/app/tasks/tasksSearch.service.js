@@ -1,34 +1,53 @@
 'use strict';
 
 (function (angular) {
-  var tasksSearchService = function (tasks, Modal, defaultSearchHandlerService, $location, iGovNavbarHelper, $route) {
+  var tasksSearchService = function (tasks, Modal, defaultSearchHandlerService, $location, iGovNavbarHelper, $route, $q) {
 
     var messageMap = {'CRC Error': 'Неправильний ID', 'Record not found': 'ID не знайдено'};
 
     var searchTaskByUserInput = function (value) {
+      var defer = $q.defer();
       var matches = value.match(/((\d+)-)?(\d+)/);
       if (matches) {
         tasks.getTasksByOrder(matches[3]).then(function (result) {
           if (messageMap.hasOwnProperty(result))
-            searchTaskByText(value);
-          else
-            searchSuccess(JSON.parse(result)[0]);
+            searchTaskByText(value, defer);
+          else {
+            var aIds = JSON.parse(result);
+            if (angular.isArray(aIds) && aIds.length > 0) {
+              defer.resolve(aIds);
+              searchSuccess(aIds[0]);
+            } else
+              searchTaskByText(value, defer);
+          }
         }).catch(function () {
-          searchTaskByText(value);
+          searchTaskByText(value, defer);
         })
       } else
-        searchTaskByText(value);
+        searchTaskByText(value, defer);
+      return defer.promise;
     };
 
-    var searchTaskByText = function (value) {
+    var searchTaskByText = function (value, defer) {
       tasks.getTasksByText(value, 'selfAssigned')
         .then(function (result) {
-          if (messageMap.hasOwnProperty(result))
-            Modal.inform.error(messageMap[result]);
-          else
-            searchSuccess(JSON.parse(result)[0]);
+          if (messageMap.hasOwnProperty(result)) {
+            Modal.inform.error()(messageMap[result]);
+            defer.reject();
+          }
+          else {
+            var aIds = JSON.parse(result);
+            if (angular.isArray(aIds) && aIds.length > 0) {
+              defer.resolve(aIds);
+              searchSuccess(aIds[0]);
+            } else {
+              Modal.inform.error()('За даним кпритерієм задач не знайдено');
+              defer.reject();
+            }
+          }
         }).catch(function (response) {
         defaultSearchHandlerService.handleError(response, messageMap)
+        defer.reject();
       });
     };
 
@@ -74,7 +93,8 @@
     }
   };
 
-  tasksSearchService.$inject = ['tasks', 'Modal', 'defaultSearchHandlerService', '$location', 'iGovNavbarHelper', '$route'];
+  tasksSearchService.$inject = ['tasks', 'Modal', 'defaultSearchHandlerService', '$location', 'iGovNavbarHelper',
+    '$route', '$q'];
 
   angular
     .module('dashboardJsApp')

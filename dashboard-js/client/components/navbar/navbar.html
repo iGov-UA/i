@@ -13,7 +13,12 @@
 
         <ul class="nav navbar-nav" ng-show="!iGovNavbarHelper.areInstrumentsVisible" ng-init="iGovNavbarHelper.load()">
           <li class="navbar-search">
-            <input type="text" ng-keyup="searchInputKeyup($event)" ng-model="userInput.value" placeholder="Пошук" />
+            <input type="text" ng-keyup="searchInputKeyup($event)" ng-model="tasksSearch.value" placeholder="Пошук" />
+
+            <span class="label label-info" ng-if="tasksSearch.value && !tasksSearch.loading && tasksSearch.submited"
+              ng-bind="tasksSearch.count"></span>
+
+            <span class="label label-info" ng-if="tasksSearch.value && tasksSearch.loading && tasksSearch.submited">...</span>
           </li>
 
           <li ng-repeat="menu in iGovNavbarHelper.menus"
