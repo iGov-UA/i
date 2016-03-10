@@ -1,12 +1,10 @@
 package org.igov.model.action.execute.item;
 
-import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.criterion.Restrictions;
 import org.igov.model.core.GenericEntityDao;
 import org.joda.time.DateTime;
@@ -52,7 +50,7 @@ public class ActionExecuteDAOImpl extends GenericEntityDao<ActionExecute> implem
 		actionExecute.setnTry(nTry);
 		actionExecute.setsObject(sObject);
 		actionExecute.setsMethod(sMethod);
-		//actionExecute.setSoRequest(soRequest);
+		actionExecute.setSoRequest(soRequest);
 		actionExecute.setsReturn(sReturn);
 		
 		getSession().saveOrUpdate(actionExecute);
@@ -116,7 +114,7 @@ public class ActionExecuteDAOImpl extends GenericEntityDao<ActionExecute> implem
 		actionExecuteOld.setnTry(actionExecute.getnTry());
 		actionExecuteOld.setsObject(actionExecute.getsObject());
 		actionExecuteOld.setsMethod(actionExecute.getsMethod());
-		//actionExecuteOld.setSoRequest(actionExecute.getSoRequest());
+		actionExecuteOld.setSoRequest(actionExecute.getSoRequest());
 		actionExecuteOld.setsReturn(actionExecute.getsReturn());
 		actionExecuteOld.setSmParam(actionExecute.getSmParam());
 		
