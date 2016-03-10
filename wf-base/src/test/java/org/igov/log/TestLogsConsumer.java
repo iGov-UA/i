@@ -25,7 +25,10 @@ class TestLogsConsumer implements Consumer {
     }
 
     public String firstLogMessage() {
-        String msg = logs().keySet().iterator().next();
+        return withoutMethodName( logs().keySet().iterator().next() );
+    }
+
+    String withoutMethodName(String msg){
         return msg.substring(msg.indexOf(']')+2); // Remove method name from string
     }
 }

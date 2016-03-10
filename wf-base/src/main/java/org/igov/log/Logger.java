@@ -1,27 +1,59 @@
 package org.igov.log;
 
 import org.igov.log.http.LogResponse;
-import org.igov.log.http.LogResponseImpl;
+import org.slf4j.helpers.MessageFormatter;
 
-import java.util.Arrays;
-
-import static org.apache.commons.lang3.Validate.notBlank;
+import java.util.Set;
 
 /**
+ * Igov decorator on SLF4J
+ *
+ * Such "unusual" api is a requirement. Please don't blame me if you don't like such approach :)
+ *
  * @author dgroup
- * @since  21.02.16
+ * @since  08.01.2016
  */
 public interface Logger {
 
-    String trace(String msg, Object ... args);
-    String info (String msg, Object ... args);
-    String warn (String msg, Object ... args);
-    String error(Exception exp, String msg, Object ... args);
+    // SLF4J approach
+    String trace(String msg, Object ...args);
+    String debug(String msg, Object ...args);
+    String info (String msg, Object ...args);
+    String warn (String msg, Object ...args);
+    String error(String msg, Object ...args);
 
-    public default LogResponse errorHTTP(int status, String header, String msg, Object... args) {
-        // TODO Check status
-        notBlank(msg, "Message should be not blank");
 
-        return new LogResponseImpl(status, header, msg, Arrays.asList(args));
+    // Igov custom stuff
+    LogResponse errorHTTP(int status, String header, String msg);
+
+    Logger Trace(String msg);
+    Logger Debug(String msg);
+    Logger Info (String msg);
+    Logger Warn (String msg);
+    Logger Error(String msg);
+
+    Logger Cut(int length);
+
+    /** Send log message to appender and notify consumers */
+    String Send();
+
+    /** Add a parameter into log message */
+    Logger P(String parameter, Object value);
+
+    /** Add all parameters to message, send to appender and notify consumers */
+    String Params(Object ...args);
+
+
+
+    /**
+     * @return full SLF4J log message, where all `{}` symbols will be replaced to corresponding parameters.
+     **/
+    default String fullMsg(String msg, Object[] args) {
+        return MessageFormatter.arrayFormat(msg, args).getMessage();
+    }
+
+    default void notifyConsumers(Set<Consumer> consumers, String msg) {
+        for(Consumer consumer : consumers)
+            consumer.consume(msg);
     }
 }
