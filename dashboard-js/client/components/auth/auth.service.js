@@ -41,7 +41,7 @@ angular.module('dashboardJsApp')
             password: user.password
           }
         };
-        console.log('req' + angular.toString(req));
+        
         $http(req).
         success(function (data) {
           console.log('req' + angular.toString(req));
