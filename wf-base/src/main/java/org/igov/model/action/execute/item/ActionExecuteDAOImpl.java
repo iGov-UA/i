@@ -1,12 +1,10 @@
 package org.igov.model.action.execute.item;
 
-import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.criterion.Restrictions;
 import org.igov.model.core.GenericEntityDao;
 import org.joda.time.DateTime;
