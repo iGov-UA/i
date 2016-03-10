@@ -6,7 +6,7 @@
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По-батькові" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
         <activiti:formProperty id="vibor_service" name="Оберіть суть звернення" type="enum" required="true">
           <activiti:value id="issue" name="Видача дозволу (санітарного паспорту)"></activiti:value>
@@ -33,6 +33,7 @@
         <activiti:formProperty id="file6" name="Реєстраційні документи на спецавтотраспорт" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file11" name="Результати дозиметричного контролю" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file12" name="Показники потужності поглинутої дози (на борту, у кабіні водія, на відстані 2-х метрів від спецавтотранспорту)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file13" name="Акт перевірки дотримання санітарного законодавства на діючих підприємствах; який містить відомості, що необхідні для оформлення санітарного паспорту згідно додатку 2 до пункту 3.2. «Основних санітарних правил забезпечення радіаційної безпеки України» ДСП 6.177-2005-09-02" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file7" name="Документ, який засвідчує настання підстави для переоформлення документу дозвільного характеру;(зміна найменування суб'єкта господарювання - юридичної особи або прізвища, імені, по-батькові фізисної особи - підприємця, зміна місцезнаходження суб'єкта господарювання та інші підстави, встановлені Законом)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file8" name="Бланк документу дозвільного характеру, який непридатний для використання" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file9" name="Документ дозвільного характеру, який підлягає анулюванню" type="file" required="true"></activiti:formProperty>
@@ -43,7 +44,8 @@
         <activiti:formProperty id="substance_2" name="Суть заяви в лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="substance_3" name="Суть заяви в контексті листа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="term" name="Строк віконання" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="Видача дозволу" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_1&quot;: {&quot;aField_ID&quot;: [&quot;info&quot;,&quot;file1&quot;,&quot;file3&quot;,&quot;file4&quot;,&quot;file5&quot;,&quot;file6&quot;,&quot;file11&quot;,&quot;file12&quot;], &quot;asID_Field&quot;: {&quot;sClient&quot;: &quot;vibor_service&quot;},&quot;sCondition&quot;: &quot;[sClient] == 'issue'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="Видача дозволу" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;info&quot;,&quot;file1&quot;,&quot;file3&quot;,&quot;file4&quot;,&quot;file5&quot;,&quot;file6&quot;,&quot;file11&quot;,&quot;file12&quot;],&quot;asID_Field&quot;:{&quot;sClient1&quot;:&quot;vibor_service&quot;,&quot;sClient2&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sClient1] == 'issue' &amp;&amp; [sClient2] != 'don_mariupolT'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers5" name="Видача дозволу Маріуполь" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;info&quot;,&quot;file1&quot;,&quot;file13&quot;],&quot;asID_Field&quot;:{&quot;sClient1&quot;:&quot;vibor_service&quot;,&quot;sClient2&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sClient1] == 'issue'&amp;&amp; [sClient2]== 'don_mariupolT'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="Переоформлення дозволу" type="markers" default="{&quot;motion&quot; : {&quot;ShowFieldsOnCondition_2&quot; : {&quot;aField_ID&quot; : [&quot;file2&quot;,&quot;file7&quot;],&quot;asID_Field&quot; : {&quot;sClient&quot; : &quot;vibor_service&quot;},&quot;sCondition&quot; : &quot;[sClient] == 'restructuring'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="Видача дублікату дозволу" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_3&quot;: {&quot;aField_ID&quot;: [&quot;file8&quot;],&quot;asID_Field&quot; : {&quot;sClient&quot;: &quot;vibor_service&quot;}, &quot;sCondition&quot; : &quot;[sClient] == 'duplicate'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="Анулювання дозволу" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_4&quot;: {&quot;aField_ID&quot;: [&quot;file9&quot;],&quot;asID_Field&quot; : {&quot;sClient&quot;: &quot;vibor_service&quot;}, &quot;sCondition&quot; : &quot;[sClient] == 'cansel'&quot; }}}"></activiti:formProperty>
@@ -170,7 +172,7 @@ execution.setVariable('term', per7)
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${file1},${file2},${file3},${file4},${file5},${file6},${file7},${file8},${file9},${file11},${file12}</activiti:expression>
+            <activiti:expression>${file1},${file2},${file3},${file4},${file5},${file6},${file7},${file8},${file9},${file11},${file12},${file13}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -374,7 +376,56 @@ ${substance_2}.&lt;br /&gt;
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow13" sourceRef="servicetask4" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow14" sourceRef="servicetask6" targetRef="endevent2"></sequenceFlow>
-    <scriptTask id="scripttask2" name="Filelist" activiti:autoStoreVariables="false"></scriptTask>
+    <scriptTask id="scripttask2" name="Filelist" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var per1 = ' '
+var per2 = ' '
+var per3 = ' '
+var per4 = ' '
+var per5 = ' '
+var per6 = ' '
+var per7 = ' '
+var per8 = ' '
+var res = 'res'
+if (execution.getVariable('vibor_service') == 'issue') {
+per1 = '&lt;li&gt;Документ, що підтверджує внесення плати за комплексне вивчення документів та підготовку проекту висновку державної санітарно-епідеміологічної експертизи&lt;/li&gt;'
+if(execution.getVariable('file3') != null){
+per2 = "&lt;li&gt;Акт санітарно-епідеміологічного обстеження спецавтотранспорту, виданий теріторіальним закладом державної санітарно-епідеміологічної служби України&lt;/li&gt;"
+}
+if(execution.getVariable('file4') != null){
+per3 = "&lt;li&gt;Ліцензія на вид діяльності, видана Державною інспекцією з ядерної та радіаційної безпеки Державного комітету ядерного регулювання України&lt;/li&gt;"
+}
+if(execution.getVariable('file5') != null){
+per4 = "&lt;li&gt;Замовлення-заявка на передачу радіоактивних матеріалів (обладнання), узгоджена Головним управлінням Держсанепідслужби у Дніпропетровській області&lt;/li&gt;"
+}
+if(execution.getVariable('file6') != null){
+per5 = '&lt;li&gt;Реєстраційні документи на спецавтотраспорт&lt;/li&gt;'
+}
+if(execution.getVariable('file11') != null){
+per6 = "&lt;li&gt;Результати дозиметричного контролю&lt;/li&gt;"
+}
+if(execution.getVariable('file12') != null){
+per7 = "&lt;li&gt;Показники потужності поглинутої дози (на борту, у кабіні водія, на відстані 2-х метрів від спецавтотранспорту)&lt;/li&gt;"
+}
+if(execution.getVariable('file13') != null){
+per8 = "&lt;li&gt;Акт перевірки дотримання санітарного законодавства на діючих підприємствах&lt;/li&gt;"
+}
+res = '&lt;ol&gt;'+per1+per2+per3+per4+per5+per6+per7+per8+'&lt;/ol&gt;'
+}
+if (execution.getVariable('vibor_service') == 'restructuring') {
+per1 = '&lt;li&gt;Документ дозвільного характеру, який підлягає переоформленню.&lt;/li&gt;'
+per2 = '&lt;li&gt;Документ, який засвідчує настання підстави для переоформлення документу дозвільного характеру.&lt;/li&gt;'
+res = '&lt;ol&gt;'+per1+per2+'&lt;/ol&gt;'
+}
+if (execution.getVariable('vibor_service') == 'duplicate') {
+per1 = '&lt;li&gt;Бланк документу дозвільного характеру, який непридатний для використання.&lt;/li&gt;'
+res = '&lt;ol&gt;'+per1+'&lt;/ol&gt;'
+}
+if (execution.getVariable('vibor_service') == 'cansel') {
+per1 = '&lt;li&gt;Документ дозвільного характеру, який підлягає анулюванню.&lt;/li&gt;'
+res = '&lt;ol&gt;'+per1+'&lt;/ol&gt;'
+}
+execution.setVariable('list_documents', res)</script>
+    </scriptTask>
     <sequenceFlow id="flow15" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow16" sourceRef="scripttask1" targetRef="scripttask2"></sequenceFlow>
     <sequenceFlow id="flow17" sourceRef="scripttask2" targetRef="servicetask2"></sequenceFlow>
