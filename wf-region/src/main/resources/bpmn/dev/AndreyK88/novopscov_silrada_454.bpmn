@@ -87,7 +87,6 @@ ${sSubzvern}&lt;br /&gt;
         <activiti:formProperty id="file_richenie" name="Проект рішення про передачу майна в оренду" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="Komment_rishenia" name="Коментар по розгляду заявки;(Вкажіть реєстраційний номер заявки та іншу корисну для профільної комісії інформацію, в разі відмови поясніть причину відмови)" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="супровідний текст" type="invisible" default="Якщо заявка прийнята і завантажений проект рішення, вона буде передана на опрацювання до профільної комісії. У разі відмови робота по цій заявці завершена."></activiti:formProperty>
-        <activiti:formProperty id="rtext_after" name="текст піся опрацювання" type="invisible" default="Комісія підтвердила що все ок"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -167,8 +166,8 @@ ${sSubzvern}&lt;br /&gt;
         <activiti:formProperty id="sAdress_obj" name="Адреса розміщення об'єкта оренди" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Komment_rishenia" name="Коментар особи що розглядала звернення" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Komment_rishenia2" name="Коментар по рішенню після розгляду в комітеті" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="rtext_after" name="текст піся опрацювання" type="invisible" default="Комісія підтвердила що все ок"></activiti:formProperty>
-        <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="супровідний текст" type="invisible" default="${rtext_after}"></activiti:formProperty>
+        <activiti:formProperty id="text_after" name="текст піся опрацювання" type="invisible" default="Комісія підтвердила що все ок"></activiti:formProperty>
+        <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="супровідний текст" type="invisible" default="${text_after}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
