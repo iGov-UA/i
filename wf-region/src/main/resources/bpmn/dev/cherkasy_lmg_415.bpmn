@@ -205,7 +205,7 @@
           <activiti:expression>tanyazol@gmail.com</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове звернення. enum{[asType]}]]></activiti:string>
+          <activiti:string><![CDATA[Нове звернення. "Видача посвідчення мисливця і контрольної картки обліку добутої дичини й порушень правил полювання"]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
@@ -221,7 +221,7 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему enum{[asType]} прийняте]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему "Видача посвідчення мисливця і контрольної картки обліку добутої дичини й порушень правил полювання"]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -230,13 +230,26 @@
 				Повідомлення про результат розгляду буде спрямоване на Ваш e-mail.&lt;/p&gt;
 				&lt;br /&gt;
 				[pattern/mail/_common_signature_start.html]
-				[pattern_dictonary:dnepr_soc_help.csv:value{[234]}:2]&lt;br /&gt;
+				[pattern_dictonary:dnepr_soc_help.csv:234:2]&lt;br /&gt; <!-- ЗАМЕНИТЬ 234 на создать черкассы  -->
 				[pattern/mail/_common_signature_end.html]
 				[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
       </serviceTask>    
-    <userTask id="usertask1" name="Розгляд документів" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}"></userTask> <!-- ДОБАВИТЬ ГРУППУ  -->
+    <userTask id="usertask1" name="Розгляд документів" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}"> <!-- ДОБАВИТЬ ГРУППУ  -->
+    <activiti:formProperty id="status" name="Обробка заяви" type="enum" required="true">
+          <activiti:value id="sEnumApprove" name="Громадянина запрошено до отримання документів або складання іспиту"></activiti:value>
+          <activiti:value id="sEnumDeny" name="Відмова громадянину у видачі документів"></activiti:value>
+     <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
+    <activiti:formProperty id="sBody1" name="[pattern/print/UPZSN/kalush_soczah_401_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty><!-- ДОБАВИТЬ ПРИНТФОРМУ  -->
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+    <activiti:formProperty id="sBody1" name="[pattern/print/UPZSN/kalush_soczah_401_print.html]" type="invisible" default="Анкета мисливця" writable="false"></activiti:formProperty><!-- ДОБАВИТЬ ПРИНТФОРМУ  -->
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">      
+    </userTask>         
     <serviceTask id="servicetask4" name="Лист-відмова" activiti:delegateExpression="#{MailTaskWithoutAttachment}"></serviceTask>
     <serviceTask id="servicetask5" name="Лист-запрошення" activiti:delegateExpression="#{MailTaskWithAttachments}"></serviceTask>
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
