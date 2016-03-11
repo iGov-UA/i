@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="myProcess" name="Погодження на будівництво споруд, об’єктів дорожнього сервісу, автозаправних станцій, прокладення інженерних мереж та виконання інших робіт у межах смуги відведення автомобільних доріг." isExecutable="true">
+  <process id="Lug_novopskov_458" name="Погодження на будівництво споруд, об’єктів дорожнього сервісу, автозаправних станцій, прокладення інженерних мереж та виконання інших робіт у межах смуги відведення автомобільних доріг." isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Призвіще" type="string" required="true"></activiti:formProperty>
@@ -19,10 +19,13 @@
           <activiti:value id="Enum4" name="виконання інших робіт у межах смуги відведення автомобільних доріг"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="markers1" name="Інше" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;other&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;topic&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'Enum4'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання послуги?" type="queueData " required="true"></activiti:formProperty>
+          <activiti:formProperty id="Info11" name="Увага" type="label" default="Вам необхідно вибрати день візиту не раніше, ніж через 30 календарних днів від дня подачі заяви" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання послуги?" type="queueData" required="true"></activiti:formProperty>
         <activiti:formProperty id="Adress_obj" name="Місце знаходження об'єкта" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="squer_obj" name="Площа об'єкта; м.кв" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="other" name="Дозвіл необхідно на; введіть на виконання яких робіт необхідно дозвіл" type="textArea" required="true" default=" "></activiti:formProperty>
+        <activiti:formProperty id="other" name="Дозвіл необхідно на; введіть на виконання яких робіт необхідно дозвіл" type="textArea" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги" type="invisible" default="63"></activiti:formProperty>
+        <activiti:formProperty id="summ" name="Сумма для сплати" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="file1" name="Погодження з власником вулично-дорожньох мережі" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file2" name="Схема &quot;Організація дорожнього руху&quot; робочого проекту на розміщення об'єкту" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file3" name="Топографічний знімок місцевості (М 1:500) з прив'язкою місця розташування об'єкту" type="file" required="true"></activiti:formProperty>
@@ -84,7 +87,7 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow4" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
-     <userTask id="usertask1" name="Перевірка даних" activiti:candidateGroups="novopskov_MVK">
+    <userTask id="usertask1" name="Перевірка даних" activiti:candidateGroups="novopskov_MVK">
       <extensionElements>
         <activiti:formProperty id="Info" name="На цьому етапі:" type="label" default="Ви перевіряєте дані надані громадянином. "></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Призвіще" type="string" writable="false"></activiti:formProperty>
@@ -97,22 +100,15 @@
         <activiti:formProperty id="date_today" name="Дата заповнення заяви" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="rNumber" name="номер району" type="invisible" default="635" writable="false"></activiti:formProperty>
         <activiti:formProperty id="topic" name="Необхідно отримати згоду на" type="enum" writable="false">
-         <activiti:value id="Enum1" name="будівництво об'єкта сервісу"></activiti:value>
+          <activiti:value id="Enum1" name="будівництво об'єкта сервісу"></activiti:value>
           <activiti:value id="Enum2" name="будівництво об'єкта автозаправної станції"></activiti:value>
           <activiti:value id="Enum3" name="будівництво об'єкта прокладення інженерних мереж"></activiti:value>
           <activiti:value id="Enum4" name="виконання інших робіт у межах смуги відведення  автомобільних доріг"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="visitDay" name="День та час зустрічі" type="queueData " writable="false"></activiti:formProperty>
+        <activiti:formProperty id="visitDay" name="День та час зустрічі - " type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="squer_obj" name="Площа об'єкта; м.кв." type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Adress_obj" name="Місце знаходження об'єкта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="other" name="Отримання дозволу на" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="file1" name="Погодження з власником вулично-дорожньої мережі" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="file2" name="Схема &quot;Організація дорожнього руху&quot; робочого проекту на розміщення об'єкту" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="file3" name="Топографічний знімок місцевості (М 1:500) з прив'язкою місця розташування об'єкту" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="file4" name="Паспорт з прив'язкою об'єкту" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="file5" name="Акт відведення земельної ділянки" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="file6" name="Рішення власника дороги" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="file7" name="Технічні умови власника дороги" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="result" name="Рішення держслужбовця" type="enum" required="true">
           <activiti:value id="da" name="Призначити зустріч у відділенні"></activiti:value>
           <activiti:value id="net" name="Відмовити у наданні дозволу"></activiti:value>
@@ -198,7 +194,7 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 		    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-			&lt;p&gt;За даними держоргану Вам ВІДМОВЛЕНО у наданні погодження на будівництво ${topic} &lt;/p&gt;
+			&lt;p&gt;За даними держоргану Вам ВІДМОВЛЕНО у наданні погодження на будівництво enum{[topic]} &lt;/p&gt;
 &lt;p&gt;${decisionComment}&lt;/p&gt;
 			&lt;p&gt;За необхідності Ви можете звернутися за адресою:
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:3]&lt;br&gt;
@@ -219,12 +215,12 @@
     <sequenceFlow id="flow9" sourceRef="servicetask5" targetRef="servicetask6"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow10" sourceRef="servicetask6" targetRef="endevent2"></sequenceFlow>
-    <userTask id="usertask2" name="Візит громадянина"activiti:candidateGroups="novopskov_MVK">
+    <userTask id="usertask2" name="Візит громадянина" activiti:candidateGroups="novopskov_MVK">
       <extensionElements>
         <activiti:formProperty id="Info1" name="На цьому етапі:" type="label" default="Громадянин приносить оригінали документів та документ про оплату послуги"></activiti:formProperty>
-        <activiti:formProperty id="visitDay" name="День та час зустрічі" type="queueData"></activiti:formProperty>
+        <activiti:formProperty id="visitDay" name="День та час зустрічі - " type="queueData"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата заповнення заяви" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCancelInfo " name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;) " type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;) " type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Призвіще" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По-батькові" type="string" writable="false"></activiti:formProperty>
@@ -234,7 +230,7 @@
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="rNumber" name="номер району" type="invisible" default="635" writable="false"></activiti:formProperty>
         <activiti:formProperty id="topic" name="Згода на" type="enum" writable="false">
-         <activiti:value id="Enum1" name="будівництво об'єкта сервісу"></activiti:value>
+          <activiti:value id="Enum1" name="будівництво об'єкта сервісу"></activiti:value>
           <activiti:value id="Enum2" name="будівництво об'єкта автозаправної станції"></activiti:value>
           <activiti:value id="Enum3" name="будівництво об'єкта прокладення інженерних мереж"></activiti:value>
           <activiti:value id="Enum4" name="виконання інших робіт у межах смуги відведення  автомобільних доріг"></activiti:value>
@@ -318,11 +314,11 @@
     <serviceTask id="servicetask9" name="Видалення з черги" activiti:delegateExpression="#{releaseTicketsOfQueue}"></serviceTask>
     <sequenceFlow id="flow16" sourceRef="servicetask8" targetRef="servicetask9"></sequenceFlow>
     <sequenceFlow id="flow17" sourceRef="servicetask9" targetRef="endevent2"></sequenceFlow>
-   <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
       var name = ['oc','oa','op']
-var summ = ['309 грн(у т.ч. 134 грн за розроблення технічних умов та 175 грн за перевірку проектної документації)','330 грн (у т.ч. 155 грн за розроблення технічних умов та 175 грн за перевірку проектної документації)', '318 грн', '318 грн']
-var enum = ['будівництво об'єкта сервісу','будівництво об'єкту автозаправної станції','будівництво об'єкта прокладення інженерних мереж','виконання інших робіт у межах смуги відведення  автомобільних доріг']
+var ARsumm = ['309 грн(у т.ч. 134 грн за розроблення технічних умов та 175 грн за перевірку проектної документації)','330 грн (у т.ч. 155 грн за розроблення технічних умов та 175 грн за перевірку проектної документації)', '318 грн', '318 грн']
+var enum = ["будівництво об'єкта сервісу","будівництво об'єкту автозаправної станції","будівництво об'єкта прокладення інженерних мереж","виконання інших робіт у межах смуги відведення автомобільних доріг"]
 var per4 = 'sTypeCustodypf'
 var x = " "
 var y = " "
@@ -339,10 +335,10 @@ per4 = "Прошу надати дозвіл на будівництво об'є
 if (execution.getVariable('topic') == 'Enum4'){
 per4 = "виконання інших робіт у межах смуги відведення автомобільних доріг, а саме:"
 }
-for (var i=0; i<=3;i++)
+for (var i=0; i&lt;=3;i++)
 var x='enum[i]'
 if (exectution.getVariable('topic')==x)
-{var y='summ[i]'}
+{var y='ARsumm[i]'}
 execution.setVariable('summ',y)
 execution.setVariable('sTypeCustodypf', per4)
 	  </script>
@@ -350,8 +346,8 @@ execution.setVariable('sTypeCustodypf', per4)
     <sequenceFlow id="flow18" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow19" sourceRef="scripttask1" targetRef="servicetask2"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_myProcess">
-    <bpmndi:BPMNPlane bpmnElement="myProcess" id="BPMNPlane_myProcess">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Lug_novopskov_458">
+    <bpmndi:BPMNPlane bpmnElement="Lug_novopskov_458" id="BPMNPlane_Lug_novopskov_458">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="100.0" y="81.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
