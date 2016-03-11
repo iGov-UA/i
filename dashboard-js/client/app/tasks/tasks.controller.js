@@ -635,6 +635,7 @@
     $scope.init = function () {
       var tab = $location.path().substr('/tasks/'.length) || 'tickets';
       $scope.taskFormLoaded = false;
+      $scope.autoScrollTaskId = $routeParams.id;
 
       loadSelfAssignedTasks().then(function(){
         if ($routeParams.type) {
