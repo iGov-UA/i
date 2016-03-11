@@ -13,7 +13,7 @@
         <activiti:formProperty id="date_today" name="Вкажіть сьогоднішню дату" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="rNumber" name="номер району" type="invisible" default="140"></activiti:formProperty>
         <activiti:formProperty id="file1" name="Довідка про відсутність заборгованності від МКВЖРЕП або ОСББ" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file2" name="Довідка про відсутність заборгованності від МКП &quot;Бердичівводрканал&quot;" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file2" name="Довідка про відсутність заборгованності від МКП &quot;Бердичівводоканал&quot;" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file3" name="Довідка про відсутність заборгованності від КП &quot;Бердичівтеплоенерго&quot;" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file4" name="Довідка про відсутність заборгованності від ТОВ &quot;Полісся Екосфера&quot;" type="file" required="true"></activiti:formProperty>
       </extensionElements>
@@ -31,7 +31,7 @@
           <activiti:expression>noreply@igov.org.ua</activiti:expression>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>lomova_aleksandra@mail.ru</activiti:expression>
+          <activiti:expression>mmaj@mail.ua</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression>Нове звернення на порталі igov.org.ua на тему: Надання дозволу на відключення від мереж центрального опалення і постачання гарячої води. Заявник ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}</activiti:expression>
@@ -82,14 +82,13 @@
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подачі заяви" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="rNumber" name="номер району" type="invisible"></activiti:formProperty>
+          <activiti:formProperty id="sBody_1" name="[pattern/print/architecture/zayava_412.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="result" name="Рішення держслужбовця" type="enum" required="true">
           <activiti:value id="da" name="Видати дозвіл"></activiti:value>
           <activiti:value id="net" name="Відмовити у видачі дозволу"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="fileresult" name="Додайте файл з результатом" type="file"></activiti:formProperty>
-        <activiti:formProperty id="decisionComment" name="Коментар до рішення; Наприклад, пояснення чому громадянину було відмовлено в наданні згоди &lt;br /&gt; АБО &lt;br /&gt; Деталі отримання документу" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/architecture/zayava_412.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+         <activiti:formProperty id="decisionComment" name="Коментар до рішення; Наприклад, пояснення чому громадянину було відмовлено в наданні згоди &lt;br /&gt; АБО &lt;br /&gt; Деталі отримання документу" type="textArea"></activiti:formProperty>
+         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression>${file1},${file2},${file3},${file4}</activiti:expression>

@@ -44,7 +44,7 @@
   </div>
 </div>
 <div class="row no-horizontal-margin" ng-style="printModalState.show && {'overflow-y':'hidden'}" ng-init="init()">
-  <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 sidebar">
+  <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 sidebar"  igov-when-scrolled="whenScrolled()">
     <div class="tasks">
       <div ng-if="sSelectedTask=='tickets'" class="tasks-tickets-list-header">
 
@@ -74,16 +74,6 @@
       <div class="sort-select" ng-if="sSelectedTask!='tickets' && sSelectedTask!='tickets'">
         <div class="task-list-header">
           <div class="task-list-header-row">
-            <div class="task-list-header-cell">
-              <input ng-model="searchTask.orderId" class="task-list-header-search"
-                     placeholder="Введіть № звернення для пошуку"
-                     size="35" ng-keyup="($event.keyCode === 13)?searchTaskByOrder():0"/>
-            </div>
-            <div class="task-list-header-cell">
-              <input ng-model="searchTask.text" class="task-list-header-search"
-                     placeholder="Введіть текст для пошуку"
-                     size="35" ng-keyup="($event.keyCode === 13)?searchTaskByText():0"/>
-            </div>
             <div class="right-aligned task-list-header-cell">
               Сортувати:
               <select ng-options="option.value as option.text for option in sortOrderOptions"
@@ -99,15 +89,7 @@
         </div>
       </div>
       <div class="list-group">
-        <div ng-if="filteredTasks===null">
-          <h3>Завантаження списку...</h3>
-        </div>
-
-        <div ng-if="filteredTasks!==null && filteredTasks.length==0">
-          <h3>Задач не знайдено</h3>
-        </div>
-
-        <div ng-if="filteredTasks!==null  && filteredTasks.length>0">
+        <div ng-if="filteredTasks.length>0">
 
           <div ng-if="sSelectedTask=='tickets'">
             <a class="list-group-item task {{sSelectedTask}}_{{task.id}}" href="" title="Слот №{{task.nID_FlowSlot}} (Задача №{{task.nID_Task_Activiti}}, Процесс №{{task.nID_Instance}})"
@@ -123,7 +105,8 @@
                 ng-repeat="task in filteredTasks | orderBy:predicate:reverse"
                 title="{{task.description}} (Задача №{{task.id}}, Процесс №{{task.processDefinitionId}})"
                 ng-click="selectTask(task)"
-                ng-class="{'active': isTaskSelected(task)}">
+                ng-class="{'active': isTaskSelected(task)}"
+                igov-focus-if="autoScrollTaskId == task.id">
               <span class="ticket-date-time">{{ task.createTime ? sDateShort(task.createTime) : sDateShort(task.startTime) }}{{ task.endTime ? ' - ' + sDateShort(task.endTime) : '' }}</span>
               №{{task.processInstanceId}}{{lunaService.getLunaValue(task.processInstanceId)}} {{ getProcessName(task.processDefinitionId)
               }} | {{ task.name }}
@@ -133,6 +116,19 @@
 
         </div>
 
+        <div class="text-center">
+          <div ng-if="tasksLoading">
+            <h3>Завантаження списку...</h3>
+          </div>
+
+          <div ng-if="tasksLoading===false && isLoadMoreAvailable()">
+            <button class="btn btn-info" ng-click="loadMoreTasks()">Завантажити ще</button>
+          </div>
+
+          <div ng-if="!tasksLoading===false && !isLoadMoreAvailable()">
+            <h3>Більше задач не знайдено</h3>
+          </div>
+        </div>
       </div>
     </div>
   </div>

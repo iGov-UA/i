@@ -5,8 +5,8 @@
     .module('dashboardJsApp')
     .controller('NavbarCtrl', navbarCtrl);
 
-  navbarCtrl.$inject = ['$scope', '$location', 'Auth', 'envConfigService', 'iGovNavbarHelper'];
-  function navbarCtrl($scope, $location, Auth, envConfigService, iGovNavbarHelper) {
+  navbarCtrl.$inject = ['$scope', '$location', 'Auth', 'envConfigService', 'iGovNavbarHelper', 'tasksSearchService'];
+  function navbarCtrl($scope, $location, Auth, envConfigService, iGovNavbarHelper, tasksSearchService) {
     $scope.menu = [{
       'title': 'Задачі',
       'link': '/tasks'
@@ -76,5 +76,22 @@
     $scope.goToProfile = function () {
       $location.path('/profile');
     };
+
+    $scope.tasksSearch = iGovNavbarHelper.tasksSearch;
+
+    $scope.searchInputKeyup = function ($event) {
+      if ($event.keyCode === 13 && $scope.tasksSearch.value) {
+        $scope.tasksSearch.loading=true;
+        $scope.tasksSearch.count=0;
+        $scope.tasksSearch.submited=true;
+        tasksSearchService.searchTaskByUserInput($scope.tasksSearch.value)
+          .then(function(aIds) {
+            $scope.tasksSearch.count = aIds.length;
+          })
+          .finally(function() {
+            $scope.tasksSearch.loading=false;
+          });
+      }
+    }
   }
 })();

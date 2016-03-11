@@ -7,14 +7,16 @@
 
   tasksCtrl.$inject = [
     '$scope', '$window', 'tasks', 'processes', 'Modal', 'Auth', 'identityUser', '$localStorage', '$filter', 'lunaService',
-    'PrintTemplateService', 'taskFilterService', 'MarkersFactory', 'iGovNavbarHelper', '$location'//, 'NavbarCtrl'
+    'PrintTemplateService', 'taskFilterService', 'MarkersFactory', 'iGovNavbarHelper', '$location', 'defaultSearchHandlerService',
+    '$routeParams', '$q'
   ];
   function tasksCtrl(
     $scope, $window, tasks, processes, Modal, Auth, identityUser, $localStorage, $filter, lunaService,
-    PrintTemplateService, taskFilterService, MarkersFactory, iGovNavbarHelper, $location//, NavbarCtrl
+    PrintTemplateService, taskFilterService, MarkersFactory, iGovNavbarHelper, $location, defaultSearchHandlerService,
+    $routeParams, $q
   ) {
+
     $scope.tasks = null;
-    $scope.tasksLoading = false;
     $scope.selectedTasks = {};
     $scope.sSelectedTask = "";
     $scope.taskFormLoaded = false;
@@ -89,17 +91,21 @@
       $scope.model.taskDefinition = $scope.$storage[$scope.$storage['menuType'] + 'TaskDefinitionFilter'];
     }
 
+    var filterLoadedTasks = function() {
+      $scope.filteredTasks = taskFilterService.getFilteredTasks($scope.tasks, $scope.model);
+    };
+
     restoreTaskDefinitionFilter();
     $scope.taskDefinitionsFilterChange = function () {
       $scope.$storage[$scope.$storage['menuType'] + 'TaskDefinitionFilter'] = $scope.model.taskDefinition;
-      $scope.filteredTasks = taskFilterService.getFilteredTasks($scope.tasks, $scope.model);
+      filterLoadedTasks();
     };
     $scope.userProcessFilterChange = function () {
       $scope.$storage[$scope.$storage['menuType'] + 'UserProcessFilter'] = $scope.model.userProcess;
-      $scope.filteredTasks = taskFilterService.getFilteredTasks($scope.tasks, $scope.model);
+      filterLoadedTasks();
     };
     $scope.strictTaskDefinitionFilterChange = function () {
-      $scope.filteredTasks = taskFilterService.getFilteredTasks($scope.tasks, $scope.model);
+      filterLoadedTasks();
     };
     $scope.selectedSortOrder = {
       selected: "datetime_asc"
@@ -178,23 +184,23 @@
       if (sID_Field === null) {
         return true;
       }
-      console.log("sID_Field=" + sID_Field + ",formProperty.writable=" + formProperty.writable);
+      //console.log("sID_Field=" + sID_Field + ",formProperty.writable=" + formProperty.writable);
       if (!formProperty.writable) {
         return true;
       }
       var bNotBankID = sID_Field.indexOf("bankId") !== 0;
-      console.log("sID_Field=" + sID_Field + ",bNotBankID=" + bNotBankID);
+      //console.log("sID_Field=" + sID_Field + ",bNotBankID=" + bNotBankID);
       var bEditable = bNotBankID;
       var sFieldName = formProperty.name;
       if (sFieldName === null) {
         return true;
       }
       var as = sFieldName.split(";");
-      console.log("sID_Field=" + sID_Field + ",as=" + as + ",as.length=" + as.length);
+      //console.log("sID_Field=" + sID_Field + ",as=" + as + ",as.length=" + as.length);
       if (as.length > 2) {
         bEditable = as[2] === "writable=true" ? true : as[2] === "writable=false" ? false : bEditable;
       }
-      console.log("sID_Field=" + sID_Field + ",bEditable=" + bEditable);
+      //console.log("sID_Field=" + sID_Field + ",bEditable=" + bEditable);
 
       return !bEditable;//false
     };
@@ -216,8 +222,61 @@
       tasks.downloadDocument($scope.selectedTask.id);
     };
 
-    $scope.applyTaskFilter = function (menuType, nID_Task, resetSelectedTask) {
+    var tasksPage = 0;
+
+    var loadNextTasksPage = function() {
+      var defer = $q.defer();
+      var data = {
+        page: tasksPage
+      };
+      if ($scope.$storage.menuType == 'tickets') {
+        data.bEmployeeUnassigned = $scope.ticketsFilter.bEmployeeUnassigned;
+        if ($scope.ticketsFilter.dateMode == 'date' && $scope.ticketsFilter.sDate) {
+          data.sDate = $filter('date')($scope.ticketsFilter.sDate, 'yyyy-MM-dd');
+        }
+      }
+
       $scope.tasksLoading = true;
+
+      tasks.list($scope.$storage.menuType, data)
+        .then(function (result) {
+          try {
+            var oResult = result;
+            if (oResult.data !== null && oResult.data !== undefined) {
+              // build tasks array
+              var aTaskFiltered = _.filter(oResult.data, function (oTask) {
+                return oTask.endTime !== null;
+              });
+              if (!$scope.tasks)
+                $scope.tasks = [];
+              for (var i = 0; i < aTaskFiltered.length; i++)
+                $scope.tasks.push(aTaskFiltered[i]);
+
+              // build filtered tasks array
+              filterLoadedTasks();
+
+              defer.resolve(aTaskFiltered);
+              tasksPage ++;
+            }
+
+          } catch (e) {
+            Modal.inform.error()(e);
+            defer.reject(e);
+          }
+        })
+        .catch(function (err) {
+          Modal.inform.error()(err);
+          defer.reject(err);
+        })
+        .finally(function () {
+          $scope.tasksLoading = false;
+        });
+
+      return defer.promise;
+    };
+
+    $scope.applyTaskFilter = function (menuType, nID_Task, resetSelectedTask) {
+      tasksPage = 0;
       $scope.tasks = $scope.filteredTasks = null;
       //$scope.goToTasks(menuType);//"selfAssigned"
       $scope.sSelectedTask = $scope.$storage.menuType;
@@ -238,37 +297,9 @@
         $scope.predicate = 'startTime';
       }
 
-      var data = {};
-      if ($scope.$storage.menuType == 'tickets') {
-        data.bEmployeeUnassigned = $scope.ticketsFilter.bEmployeeUnassigned;
-        if ($scope.ticketsFilter.dateMode == 'date' && $scope.ticketsFilter.sDate) {
-          data.sDate = $filter('date')($scope.ticketsFilter.sDate, 'yyyy-MM-dd');
-        }
-      }
-
-      tasks.list(menuType, null, data)
-        .then(function (result) {
-          try {
-            var oResult = result;
-            if (oResult.data !== null && oResult.data !== undefined) {
-              var aTaskFiltered = _.filter(oResult.data, function (oTask) {
-                return oTask.endTime !== null;
-              });
-              $scope.tasks = aTaskFiltered;
-              $scope.filteredTasks = taskFilterService.getFilteredTasks($scope.tasks, $scope.model);
-              updateTaskSelection(nID_Task);
-            }
-
-          } catch (e) {
-            Modal.inform.error()(e);
-          }
-        })
-        .catch(function (err) {
-          Modal.inform.error()(err);
-        })
-        .finally(function () {
-          $scope.tasksLoading = false;
-        });
+      loadNextTasksPage().then(function(tasks){
+        updateTaskSelection(nID_Task, tasks);
+      });
     };
 
     $scope.getUserName = function () {
@@ -463,7 +494,7 @@
           Modal.assignTask(function (event) {
             //$scope.lightweightRefreshAfterSubmit();
             $scope.selectedTasks['unassigned'] = null;
-             //NavbarCtrl.goToTasks("selfAssigned"); 
+             //NavbarCtrl.goToTasks("selfAssigned");
             $location.path('/tasks/' + "selfAssigned");
             $scope.applyTaskFilter(iGovNavbarHelper.menus[1].type, $scope.selectedTask.id);
           }, 'Задача у вас в роботі', $scope.lightweightRefreshAfterSubmit);
@@ -495,7 +526,7 @@
       $scope.tasks = $.grep($scope.tasks, function (e) {
         return e.id != $scope.selectedTask.id;
       });
-      $scope.filteredTasks = taskFilterService.getFilteredTasks($scope.tasks, $scope.model);
+      filterLoadedTasks();
       $scope.taskForm.isInProcess = false;
       $scope.taskForm.isSuccessfullySubmitted = true;
       if (!$scope.tasks || !$scope.tasks[0]) {
@@ -603,13 +634,18 @@
 
     $scope.init = function () {
       var tab = $location.path().substr('/tasks/'.length) || 'tickets';
-
-      loadSelfAssignedTasks();
       $scope.taskFormLoaded = false;
+      $scope.autoScrollTaskId = $routeParams.id;
 
-      _.each(iGovNavbarHelper.menus, function(menu) {
-        if (menu.tab === tab) {
-          $scope.applyTaskFilter(menu.type);
+      loadSelfAssignedTasks().then(function(){
+        if ($routeParams.type) {
+          $scope.applyTaskFilter($routeParams.type, $routeParams.id);
+        } else {
+          _.each(iGovNavbarHelper.menus, function (menu) {
+            if (menu.tab === tab) {
+              $scope.applyTaskFilter(menu.type);
+            }
+          });
         }
       });
     };
@@ -638,89 +674,14 @@
 
     $scope.lunaService = lunaService;
 
-    $scope.searchTask = {
-      orderId: null,
-      text: null
-    };
-
-    $scope.searchTaskByOrder = function () {
-      var sID_Order = $scope.searchTask.orderId;
-      var nID_Order = 0;
-      var nAt = sID_Order.indexOf("-");
-      if (nAt >= 0) {
-        var as = sID_Order.split("-");
-        nID_Order = as[1];
-        //nAt
-      } else {
-        nID_Order = sID_Order;
-      }
-      tasks.getTasksByOrder(nID_Order)//$scope.searchTask.orderId
-        .then(function (result) {
-          if (result === 'CRC-error') {
-            ///Modal.inform.error()();
-            Modal.inform.error()('Невірній номер заявки!');
-          } else if (result === 'Record not found') {
-            //Modal.inform.error()();
-            Modal.inform.error()('Заявка не знайдена!');
-          } else {
-            var tid = JSON.parse(result)[0];
-            var taskFound = $scope.tasks.some(function (t) {
-              if (t.id == tid)
-                $scope.selectTask(t);
-              return t.id == tid;
-            });
-            if (!taskFound) Modal.inform.warning()('У даному розділі ID не знайдено, спробуйте виконати пошук у суміжних');
-          }
-        }).catch(mapErrorHandler({'CRC Error': 'Неправильний ID', 'Record not found': 'ID не знайдено'}));
-    };
     var searchResult = {
       tasks: []
     };
-    $scope.searchTaskByText = function () {
-      if (_.isEmpty($scope.searchTask.text)) {
-        Modal.inform.error()('Будь ласка, введіть текст для пошуку!');
-        return;
-      }
-      if (_.isEqual($scope.searchTask.text, searchResult.text) && !_.isEmpty(searchResult.tasks)) {
-        var taskId = searchResult.tasks[0];
-        searchResult.tasks = _.rest(searchResult.tasks);
-        $scope.tasks.some(function (task) {
-          if (task.id === taskId) {
-            $scope.selectTask(task);
-          }
-          return task.id === taskId;
-        });
-        return;
-      }
-      tasks.getTasksByText($scope.searchTask.text, $scope.sSelectedTask)//sType
-        .then(function (result) {
-          if (result === 'CRC-error') {
-            Modal.inform.error()();
-            return;
-          }
-          if (result === 'Record not found') {
-            Modal.inform.error()();
-            return;
-          }
-          searchResult.text = $scope.searchTask.text;
-          searchResult.tasks = JSON.parse(result);
-          var taskId = searchResult.tasks[0];
-          var taskFound = $scope.tasks.some(function (task) {
-            if (task.id === taskId) {
-              $scope.selectTask(task);
-            }
-            return task.id === taskId;
-          });
-          if (!taskFound) {
-            Modal.inform.warning()('У даному розділі нічого не знайдено, спробуйте виконати пошук у суміжних');
-          }
-        }).catch(mapErrorHandler({'CRC Error': 'Неправильний ID', 'Record not found': 'ID не знайдено'}));
-    };
 
     function loadSelfAssignedTasks() {
-      processes.list().then(function (processesDefinitions) {
+      return processes.list().then(function (processesDefinitions) {
         console.log("[loadSelfAssignedTasks]processesDefinitions=" + processesDefinitions);
-        $scope.applyTaskFilter($scope.$storage.menuType);
+        //$scope.applyTaskFilter($scope.$storage.menuType);
       }).catch(defaultErrorHandler);
     }
 
@@ -735,62 +696,40 @@
       });
     }
 
-    function updateTaskSelection(nID_Task) {
-      console.log("[updateTaskSelection]nID_Task=" + nID_Task);
-      if (nID_Task !== null && nID_Task !== undefined) {// && $scope.tasks.length >0
-        var s = null;
-        _.forEach($scope.filteredTasks, function (oItem) {
-          console.log("[updateTaskSelection]oItem.id=" + oItem.id)
-          if (oItem.id === nID_Task) {
-            s = nID_Task;//oItem.name;
-            $scope.selectTask(oItem);
+    function updateTaskSelection(nID_Task, tasks) {
+      if (nID_Task && tasks && tasks.length > 0) {
+        var foundTask = null;
+        for (var i = 0; i < tasks.length; i++) {
+          var task = tasks[i];
+          if (task.id == nID_Task) {
+            foundTask = task;
+            break;
           }
-        });
-        console.log("[updateTaskSelection]s=" + s);
-        if (s === null) {
-          nID_Task = null;
-        }//return s;
-      } else {
-        nID_Task = null;
-      }
-      if (nID_Task === null || nID_Task === undefined) {
-        if ($scope.selectedTask) {
-          $scope.selectTask($scope.selectedTask);
-        } else if ($scope.filteredTasks && $scope.filteredTasks[0]) {
-          $scope.selectTask($scope.filteredTasks[0]);
         }
-      }
+        if (foundTask)
+          $scope.selectTask(foundTask);
+        else
+          loadNextTasksPage().then(function (nextTasks) {
+            updateTaskSelection(nID_Task, nextTasks);
+          });
+      } else
+        initDefaultTaskSelection();
     }
 
-    function mapErrorHandler(msgMapping) {
-      return function (response) {
-        defaultErrorHandler(response, msgMapping);
-      };
-    }
+    var initDefaultTaskSelection = function () {
+      if ($scope.selectedTask)
+        $scope.selectTask($scope.selectedTask);
+      else if ($scope.filteredTasks && $scope.filteredTasks[0])
+        $scope.selectTask($scope.filteredTasks[0]);
+    };
 
-    function defaultErrorHandler(response, msgMapping) {
-      var msg = response.status + ' ' + response.statusText + '\n' + response.data;
-      try {
-        try {
-          var data = JSON.parse(response.data);
-        } catch (e) {
-          var data = response.data;
-        }
-        if (data !== null && data !== undefined && ('code' in data) && ('message' in data)) {
-          if (msgMapping !== undefined && data.message in msgMapping)
-            msg = msgMapping[data.message];
-          else
-            msg = data.code + ' ' + data.message;
-        }
-      } catch (e) {
-        console.log(e);
-      }
+    var defaultErrorHandler = function (response, msgMapping) {
+      defaultSearchHandlerService.handleError(response, msgMapping);
       if ($scope.taskForm) {
         $scope.taskForm.isSuccessfullySubmitted = false;
         $scope.taskForm.isInProcess = false;
       }
-      Modal.inform.error()(msg);
-    }
+    };
 
     $scope.isCommentAfterReject = function (item) {
       if (item.id != "comment") return false;
@@ -950,5 +889,18 @@
       $scope.getMessageFileUrl = function (oMessage, oFile) {
         return './api/tasks/' + $scope.nID_Process + '/getMessageFile/' + oMessage.nID + '/' + oFile.sFileName;
     }
+
+    $scope.whenScrolled = function() {
+      if ($scope.tasksLoading===false && $scope.isLoadMoreAvailable())
+        $scope.loadMoreTasks();
+    };
+
+    $scope.isLoadMoreAvailable = function () {
+      return true;
+    };
+
+    $scope.loadMoreTasks = function() {
+      loadNextTasksPage();
+    };
   }
 })();
