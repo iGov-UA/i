@@ -32,12 +32,12 @@ angular.module('dashboardJsApp')
        * @param  {Function} callback - optional
        * @return {Promise}
        */
-      list: function(filterType, callback, params) {
+      list: function(filterType, params) {
         return simpleHttpPromise({
           method: 'GET',
           url: '/api/tasks',
           params: angular.merge({filterType: filterType}, params)
-        }, callback);
+        });
       },
       getEventMap: function() {
         var deferred = $q.defer();
