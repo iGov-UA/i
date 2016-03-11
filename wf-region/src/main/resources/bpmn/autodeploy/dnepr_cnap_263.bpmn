@@ -31,10 +31,9 @@
         <activiti:formProperty id="project" name="Проект переобладнання або перепланування, улаштування підвісного балкону, погоджений в установленому порядку" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="zgoda" name="Згода власників, співвласників (наймачів) або уповноважених ними осіб на переобладнання перепланування чи улаштування підвісного балкону приміщень, що перебувають у їх спільній власності; завантажте єдиним архівом" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="teh_passport" name="Копія технічного паспорту на приміщення (квартиру)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="text" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
-        <activiti:formProperty id="nArea" name="номер району" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sArea" name="район" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="пошта району" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="nArea" name="номер району" type="invisible" default="533"></activiti:formProperty>
+        <activiti:formProperty id="sArea" name="район" type="invisible" default="Хмельницький"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="пошта району" type="invisible" default="darja.grek@gmail.com"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="обробка вхідних данних" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
@@ -213,8 +212,8 @@ ${comment_2}&lt;br /&gt;
         </activiti:field>
       </extensionElements>
     </serviceTask>
-      <scriptTask id="scripttask1" name="Script Task" activiti:autoStoreVariables="false">
-              <script>
+    <scriptTask id="scripttask1" name="Script Task" activiti:autoStoreVariables="false">
+      <script>
 var per1 = 'sMailClerk'
 var per2 = 'nArea'
 var per4 = 'sArea'
@@ -231,8 +230,8 @@ per4 = 'ЦНАП Хмельницької міськради'
 execution.setVariable('sMailClerk', per1)
 execution.setVariable('nArea', per2)
 execution.setVariable('sArea', per4)
- </script>   
-      </scriptTask>
+ </script>
+    </scriptTask>
     <serviceTask id="servicetask2" name="отримання додаткових документiв" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask2">
       <errorEventDefinition></errorEventDefinition>
@@ -252,8 +251,7 @@ execution.setVariable('sArea', per4)
     <sequenceFlow id="flow27" sourceRef="servicetask7" targetRef="endevent3"></sequenceFlow>
     <sequenceFlow id="flow28" sourceRef="servicetask6" targetRef="endevent3"></sequenceFlow>
     <sequenceFlow id="flow30" sourceRef="usertask3" targetRef="servicetask7"></sequenceFlow>
-  
-    <sequenceFlow id="flow33" sourceRef="servicetask2" targetRef="scripttask1"></sequenceFlow>
+    <sequenceFlow id="flow33" sourceRef="servicetask2" targetRef="servicetask4"></sequenceFlow>
     <sequenceFlow id="flow34" sourceRef="scripttask1" targetRef="servicetask4"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_263">
@@ -282,6 +280,9 @@ execution.setVariable('sArea', per4)
       <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
         <omgdc:Bounds height="69.0" width="171.0" x="90.0" y="216.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="220.0" y="-47.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="81.0" width="171.0" x="90.0" y="20.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -290,9 +291,6 @@ execution.setVariable('sArea', per4)
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
         <omgdc:Bounds height="35.0" width="35.0" x="158.0" y="137.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="220.0" y="-47.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
         <omgdi:waypoint x="105.0" y="104.0"></omgdi:waypoint>
@@ -342,8 +340,8 @@ execution.setVariable('sArea', per4)
         <omgdi:waypoint x="261.0" y="250.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
-        <omgdi:waypoint x="175.0" y="20.0"></omgdi:waypoint>
-        <omgdi:waypoint x="272.0" y="8.0"></omgdi:waypoint>
+        <omgdi:waypoint x="261.0" y="60.0"></omgdi:waypoint>
+        <omgdi:waypoint x="284.0" y="61.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
         <omgdi:waypoint x="272.0" y="8.0"></omgdi:waypoint>
