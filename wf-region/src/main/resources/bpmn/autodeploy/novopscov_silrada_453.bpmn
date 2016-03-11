@@ -15,7 +15,7 @@
         <activiti:formProperty id="sEmail" name="Ваш e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPlosha" name="Приблизна площа ділянки (га.)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdress_zemli" name="Адреса ділянки" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asZeml_Pruzn" name="Вкажіть призначення ділянки" type="enum" writable="false">
+        <activiti:formProperty id="asZeml_Pruzn" name="Вкажіть призначення ділянки" type="enum" required="true">
           <activiti:value id="asSilgosp" name="для ведення особистого селянського господарства"></activiti:value>
           <activiti:value id="asZutlo" name="для будівництва і обслуговування житлового будинку"></activiti:value>
           <activiti:value id="asSaray" name="для будівництва і обслуговування господарських будівель"></activiti:value>
@@ -40,7 +40,6 @@
 &lt;strong&gt;Шановний(-а) колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
 У Вас в черзі на обробку нове звернення про розроблення проекту землеустрою щодо відведення земельної ділянки або зміни цільового призначення земельної ділянки.&lt;br /&gt;
 Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
-${sSubzvern}&lt;br /&gt;
 Опрацюйте це звернення на &lt;a href="https://region.igov.org.ua" target="_blank"&gt;порталі&lt;/a&gt;
 [pattern/mail/_common_signature.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
@@ -96,7 +95,7 @@ ${sSubzvern}&lt;br /&gt;
           <activiti:value id="dok_bad" name="Заявка оформлена не вірно, відмова."></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="Komment_rishenia" name="Коментар по розгляду заяви;(Вкажіть реєстраційний номер заявки та іншу корисну інформацію, в разі відмови поясніть причину)" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="супровідний текст" type="invisible" default="Якщо заявка оформлена вірно і рішення прийняте, вона буде передана до секретаря сільради. У разі відмови робота по цій заявці завершена."></activiti:formProperty>
+        <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="супровідний текст" type="invisible" default="Якщо заявка оформлена вірно і рішення прийняте, вона буде передана до секретаря селищної ради. У разі відмови робота по цій заявці завершена."></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/novopskov/novopscov_silrada_453_print.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -152,7 +151,7 @@ ${sSubzvern}&lt;br /&gt;
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 &lt;p&gt; Ваше звернення про надання дозволу на розроблення проекту землеустрою розглянуто, заяву задоволено. 
-Рішення прийнято, ви можете отримати його у секретаря сільської ради. &lt;/p&gt;
+Рішення прийнято, ви можете отримати його у секретаря селищної ради. &lt;/p&gt;
 &lt;br /&gt;
 Тел 06463 2-18-40 &lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
@@ -167,7 +166,6 @@ ${sSubzvern}&lt;br /&gt;
     </sequenceFlow>
     <userTask id="usertask3" name="Видача рішення" activiti:candidateGroups="cnap_mvk_lug_NovopskovskT">
       <extensionElements>
-        
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
@@ -183,22 +181,11 @@ ${sSubzvern}&lt;br /&gt;
           <activiti:value id="asZutlo" name="для будівництва і обслуговування житлового будинку"></activiti:value>
           <activiti:value id="asSaray" name="для будівництва і обслуговування господарських будівель"></activiti:value>
         </activiti:formProperty>
-        
-        
-        
-
         <activiti:formProperty id="Komment_rishenia" name="Коментар по розгляду заявки" type="textArea" writable="false"></activiti:formProperty>
-        
         <activiti:formProperty id="variants2" name="Чи видано рішення заявнику" type="enum" required="true">
           <activiti:value id="dok_ok2" name="Заявник отримав рішення"></activiti:value>
           <activiti:value id="dok_bad2" name="Заявник не з'явився за рішенням"></activiti:value>
         </activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${file_richenie}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>

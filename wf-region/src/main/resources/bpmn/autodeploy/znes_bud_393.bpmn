@@ -3,6 +3,7 @@
   <process id="znes_bud_393" name="Надання дозволу на знесення аварійних будівель" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" required="true"></activiti:formProperty>
@@ -31,6 +32,7 @@
     </boundaryEvent>
     <userTask id="usertask1" name="Прийняття рішення щодо розгляду надання дозволу" activiti:candidateGroups="cnap_kiev_kolon">
       <extensionElements>
+        <activiti:formProperty id="sNameObject" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" writable="false"></activiti:formProperty>
@@ -60,6 +62,7 @@
     </userTask>
     <userTask id="usertask2" name="Друк заяви, оформлення дозволу" activiti:candidateGroups="cnap_kiev_kolon">
       <extensionElements>
+        <activiti:formProperty id="sNameObject" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" writable="false"></activiti:formProperty>
