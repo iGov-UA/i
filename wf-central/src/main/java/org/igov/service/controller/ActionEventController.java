@@ -363,12 +363,12 @@ public class ActionEventController {
     }
 
     //TODO: Сделать оограничение по строкам
-    @RequestMapping(value = "/getHistoryEventsService", method = RequestMethod.GET)
+    /*@RequestMapping(value = "/getHistoryEventsService", method = RequestMethod.GET)
     public
     @ResponseBody
     List<HistoryEvent_Service> getHistoryEventsService() {
         return historyEventServiceDao.findAll();
-    }
+    }*/
     
     
     //################ HistoryEvent services ###################
