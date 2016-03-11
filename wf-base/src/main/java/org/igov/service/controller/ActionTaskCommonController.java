@@ -616,6 +616,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         if (bIncludeGroups.equals(Boolean.TRUE)){
             //response.put("aGroups", oActionTaskService.getCandidateGroupByTaskID(nID_Task));
             response.put("aGroups", oActionTaskService.getGroupsIdByTaskID(nID_Task));
+            response.put("aGroupsOrder", oActionTaskService.getGroupOrderIDsByTaskID(nID_Task));
         }
         if (bIncludeStartForm.equals(Boolean.TRUE)){
             response.put("aFieldStartForm", oActionTaskService.getStartFormData(nID_Task));
