@@ -3,44 +3,38 @@
   <process id="nikolaev_oda_2" name="Взяття на облік громадян, які потребують поліпшення житлових умов" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть огран, у якому Ви бажаєте отримати рішення" type="select" default="0"></activiti:formProperty>
+		<activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть огран, у якому Ви бажаєте отримати рішення" type="select" default="0"></activiti:formProperty>              
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні данні" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Ваш e-mail" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddress" name="Адреса реєстрації" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile1" name="Копія довідки по формі-3 (довдовідка про склад сім'ї)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile2" name="Копія довідки із реєстраційної служби речових прав на нерухоме майно про наявність або відсутність власності у всіх повнолітніх членів сім’ї" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile3" name="Копії паспорта громадянина України заявника та повнолітніх членів сім'ї 1, 2, 10, 11 сторінок; файли можуть бути завантажені у вигляді ZIP-архіву" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile4" name="Копії свідоцтв про народження неповнолітніх дітей; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву" type="file" required="true"></activiti:formProperty>        
-        <activiti:formProperty id="asPrivilege" name="Чи маєти ви льготи для першочергового одержання житла" type="enum" required="true">
+        <activiti:formProperty id="nFile3" name="Копії паспорта громадянина України заявника та повнолітніх членів сім'ї 1, 2, 10, 11 сторінок; файли можуть бути завантажені у вигляді ZIP-архіву" type="file" required="true"></activiti:formProperty>        
+        <activiti:formProperty id="nFile4" name="Копії свідоцтв про народження неповнолітніх дітей; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Ваш e-mail" type="string" required="true"></activiti:formProperty>
+		<activiti:formProperty id="asPrivilege" name="Чи маєти ви льготи для першочергового одержання житла" type="enum" required="true">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="no" name="Ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="lPrivilege" name="Зверніть увагу" type="label" default="Укажіть свій статус так прикрипіть один чи декілька документів: 
-        	&lt;ul&gt; 
-        		&lt;li&gt;довідка МСЕК&lt;/li&gt; 
-        		&lt;li&gt;довідка про одержання грошової допомоги одинокої матері&lt;/li&gt; 
-        		&lt;li&gt;копія посвідчення багатодітної родини&lt;/li&gt; 
-        		&lt;li&gt;довідка з місця роботи для працівник міліції&lt;/li&gt; 
-        		&lt;li&gt;довідка з місця роботи для працівників освіти&lt;/li&gt; 
-        		&lt;li&gt;посвідчення ветерана війни&lt;/li&gt; 
-        		&lt;li&gt;свідоцтво постраждалих внаслідок Чорнобильської катастрофи&lt;/li&gt; 
-        		&lt;li&gt;документ який свідчить про статус сироти&lt;/li&gt; 
-        		&lt;li&gt;копія довідки із учбового закладу про розподіл на роботу у іншу місцевість&lt;/li&gt; 
-        		&lt;li&gt;копія приказу про призначення на посаду (працівників прокуратури та суду)&lt;/li&gt; 
-        	&lt;/ul&gt; ">
-        </activiti:formProperty>
+        <activiti:formProperty id="lPrivilege" name="Зверніть увагу" type="label" default="Укажіть свій статус так прикрипіть один чи декілька документів:
+		  <ul>
+		    <li>довідка МСЕК</li>
+		    <li>довідка про одержання грошової допомоги одинокої матері</li>
+		    <li>копія посвідчення багатодітної родини</li>
+		    <li>довідка з місця роботи для працівник міліції</li>
+		    <li>довідка з місця роботи для працівників освіти</li>
+		    <li>посвідчення ветерана війни</li>
+		    <li>свідоцтво постраждалих внаслідок Чорнобильської катастрофи</li>
+		    <li>документ який свідчить про статус сироти</li>
+		    <li>копія довідки із учбового закладу про розподіл на роботу у іншу місцевість</li>
+		    <li>копія приказу про призначення на посаду (працівників прокуратури та суду)</li>
+		  </ul>">
+		</activiti:formProperty>
         <activiti:formProperty id="sPrivilege" name="Укажіть свій статус;якщо декілька, то указуйте через кому" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nfile_Privilege" name="Копія(ї) документа, що надає льготу для першочергового одержання житла; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sSignCnap" name="підпис" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneCnap" name="телефон" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sRozklad" name="графік роботи" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPostV" name="Пошта" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sOrgan" name="назва органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="адреса органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="hide fields Privilege" type="markers" default="${markerService.loadFromFile('mvk/show_fill_privilege.json')}"></activiti:formProperty>
+		<activiti:formProperty id="nfile_Privilege" name="Копія(ї) документа, що надає льготу для першочергового одержання житла; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву" type="file" required="true"></activiti:formProperty>        
+        <activiti:formProperty id="markers1" name="hide fields Privilege" type="markers" default="${markerService.loadFromFile('mvk/show_fill_privilege.json')}"></activiti:formProperty>        
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow14" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -59,8 +53,10 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Нове звернення громадян на тему:&lt;br&gt;
-          	Взяття на облік громадян, які потребують поліпшення житлових умов</activiti:expression>
+          <activiti:expression>
+          	Нове звернення громадян на тему:&lt;br&gt;
+          	Взяття на облік громадян, які потребують поліпшення житлових умов
+          </activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
@@ -92,7 +88,7 @@
 				Спеціалісти відповідального органу оброблять Вашу заявку та нададуть відповідь найближчим часом. 
 			&lt;/p&gt;
 			[pattern/mail/_common_signature_start.html]
-			${sSignCnap}, &lt;br&gt;
+			Міська рада м. Миколаїв &lt;br&gt;
 			[pattern/mail/_common_signature_end.html]   
 			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -105,12 +101,12 @@
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні данні" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddress" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asPrivilege" name="Чи має льготи для першочергового одержання житла" type="enum" writable="false">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="no" name="Ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sPrivilege" name="Статус для льгот" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPrivilege" name="Статус для льгот" type="string" writable="false"></activiti:formProperty>        
         <activiti:formProperty id="decide" name="Рішення про надання послуги" type="enum" required="true">
           <activiti:value id="accept" name="Надати послугу"></activiti:value>
           <activiti:value id="reject" name="Відмовити"></activiti:value>
@@ -150,7 +146,7 @@
 				Підстава: ${comment}
 			&lt;/p&gt;
 			[pattern/mail/_common_signature_start.html]
-			${sSignCnap}, &lt;br&gt;
+			Міська рада м. Миколаїв, &lt;br&gt;
 			[pattern/mail/_common_signature_end.html]   
 			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -166,7 +162,7 @@
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні данні" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddress" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asPrivilege" name="Чи має льготи для першочергового одержання житла" type="enum" writable="false">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="no" name="Ні"></activiti:value>
@@ -211,15 +207,13 @@
 			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 			&lt;p&gt;                                   
 				Ваше звернення оброблено.&lt;br&gt;
-				Ви можете отримати витяг за адресою: &lt;br&gt; 
-				${sAddress}&lt;br&gt;
+				Ви можете отримати витяг за адресою:  м. Миколаїв, вул. Адміральська, 20 (перший поверх)
 				Графік роботи: &lt;br&gt;
-				${sRozklad}&lt;br&gt;
-				Телефон: &lt;br&gt;
-		 		${sPhoneCnap}&lt;br&gt;		
+				Понеділок-п’ятниця: з 08:00 до 20:00 (без перерви на обід), 
+				субота: з 10:00 до 16:00 (без перерви на обід)
 			&lt;/p&gt;
 			[pattern/mail/_common_signature_start.html]
-			${sSignCnap}, &lt;br&gt;
+			Міська рада м. Миколаїв &lt;br&gt;
 			[pattern/mail/_common_signature_end.html]   
 			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
