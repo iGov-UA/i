@@ -16,6 +16,12 @@
       load: load,
       loadTaskCounters: loadTaskCounters,
       menus: [],
+      tasksSearch: {
+        value: null,
+        count: 0,
+        loading: false,
+        submited: false
+      }
     };
 
     service.menus = [{

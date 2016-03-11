@@ -77,12 +77,7 @@
       $location.path('/profile');
     };
 
-    $scope.tasksSearch = {
-      value: null,
-      count: 0,
-      loading: false,
-      submited: false
-    };
+    $scope.tasksSearch = iGovNavbarHelper.tasksSearch;
 
     $scope.searchInputKeyup = function ($event) {
       if ($event.keyCode === 13 && $scope.tasksSearch.value) {
