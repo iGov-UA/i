@@ -2154,5 +2154,25 @@ public class ActionTaskService {
         return oHistoryService.createHistoricTaskInstanceQuery()
                 .taskId(nID_Task.toString()).singleResult().getTaskDefinitionKey();
     }
+
+    public Set<Map<String, String>> getGroupsIdByTaskID(Long nID_Task){
+        Set<Map<String, String>> result = new HashSet<Map<String, String>>();
+        Map<String, String> oGroupProperties = new HashMap<String, String>();
+        Group group;
+        Set<String> templatesTaskGroupIDs = getCandidateGroupByTaskID(nID_Task);
+
+        for (String groupID : templatesTaskGroupIDs){
+            group = oIdentityService.createGroupQuery().groupId(groupID).singleResult();
+            oGroupProperties.put("sID", group.getId());
+            oGroupProperties.put("sName", group.getName());
+            oGroupProperties.put("sType", group.getType());
+            result.add(oGroupProperties);
+            oGroupProperties.clear();
+        }
+
+        //loadCandidateGroupsFromTasks(getProcessDefinitionByTaskID(nID_Task.toString()), result);
+
+        return result;
+    }
 	
 }
