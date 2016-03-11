@@ -1,11 +1,27 @@
 ﻿<div ng-include="'components/navbar/navbar.html'" class="navbar-fixed-top"></div>
 <div class="row navbar-fixed-top i-gov-navbar-fillter" ng-if="sSelectedTask!='tickets' && sSelectedTask!='tickets'">
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-    <p><strong>Фільтр:</strong>
-      <span ng-if="model.taskDefinition.id != 'all' || model.userProcess.sID != 'all' || (!model.strictTaskDefinition || model.strictTaskDefinition.id != 'all')">налаштовано</span>
-      <span ng-if="model.taskDefinition.id == 'all' && model.userProcess.sID == 'all' && (model.strictTaskDefinition && model.strictTaskDefinition.id == 'all')">не налаштовано</span>
-    </p>
-    <a ng-click="isFillterFormOpen = !isFillterFormOpen">Налаштувати фільтр</a>
+    <div>
+      <strong>Фільтр:</strong>
+
+      <span ng-if="model.taskDefinition && model.taskDefinition.id != 'all'" class="btn btn-xs btn-default btn-filter-remove">
+        <span class="filter-text">Група: {{model.taskDefinition.name}}</span>
+        <a href="#" ng-click="resetTaskDefinition()" class="glyphicon glyphicon-remove"></a>
+      </span>
+
+      <span ng-if="model.userProcess && model.userProcess.sID != 'all'" class="btn btn-xs btn-default btn-filter-remove">
+        <span class="filter-text">БП: {{model.userProcess.sName}}</span>
+        <a href="#" ng-click="resetUserProcess()" class="glyphicon glyphicon-remove"></a>
+      </span>
+
+      <span ng-if="model.strictTaskDefinition && model.strictTaskDefinition.id != 'all'" class="btn btn-xs btn-default btn-filter-remove">
+        <span class="filter-text">Статус: {{model.strictTaskDefinition.name}}</span>
+        <a href="#" ng-click="resetStrictTaskDefinition()" class="glyphicon glyphicon-remove"></a>
+      </span>
+
+      <span ng-if="model.taskDefinition.id == 'all' && model.userProcess.sID == 'all' && model.strictTaskDefinition.id == 'all'">не налаштовано</span>
+    </div>
+    <a ng-click="isFillterFormOpen = !isFillterFormOpen" class="tiggle-filter">Налаштувати фільтр</a>
     <div ng-show="isFillterFormOpen" class="isFillterFormOpen">
       <form class="form-horizontal">
         <div class="form-group">
@@ -36,15 +52,17 @@
                     ng-change="strictTaskDefinitionFilterChange(option)"></select>
           </div>
         </div>
-        <button class="btn btn-default btn-xs pull-right"
-                ng-click="resetTaskFilters(); isFillterFormOpen = !isFillterFormOpen">Скинути фільтри
-        </button>
+
+        <div class="text-right">
+          <button class="btn btn-info" ng-click="applyTaskFilters();isFillterFormOpen=false;">Прийняти</button>
+          <button class="btn btn-default" ng-click="resetTaskFilters();isFillterFormOpen=false;">Скинути фільтри</button>
+        </div>
       </form>
     </div>
   </div>
 </div>
 <div class="row no-horizontal-margin" ng-style="printModalState.show && {'overflow-y':'hidden'}" ng-init="init()">
-  <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 sidebar"  igov-when-scrolled="whenScrolled()">
+  <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 sidebar"  igov-when-scrolled="whenScrolled()" id="tasks-list-holder">
     <div class="tasks">
       <div ng-if="sSelectedTask=='tickets'" class="tasks-tickets-list-header">
 

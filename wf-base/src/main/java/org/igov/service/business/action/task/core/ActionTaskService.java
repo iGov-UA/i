@@ -2158,21 +2158,57 @@ public class ActionTaskService {
     public Set<Map<String, String>> getGroupsIdByTaskID(Long nID_Task){
         Set<Map<String, String>> result = new HashSet<Map<String, String>>();
         Map<String, String> oGroupProperties = new HashMap<String, String>();
-        Group group;
+
         Set<String> templatesTaskGroupIDs = getCandidateGroupByTaskID(nID_Task);
+        LOG.info(String.format("Load CandidateGroup %s", templatesTaskGroupIDs));
 
         for (String groupID : templatesTaskGroupIDs){
-            group = oIdentityService.createGroupQuery().groupId(groupID).singleResult();
-            oGroupProperties.put("sID", group.getId());
-            oGroupProperties.put("sName", group.getName());
-            oGroupProperties.put("sType", group.getType());
-            result.add(oGroupProperties);
-            oGroupProperties.clear();
-        }
+            Group group = null;
+            try {
+                group = oIdentityService.createGroupQuery().groupId(groupID).singleResult();
+            } catch (Exception e){
+                LOG.info(String.format("GroupID %s generated exception %s", groupID, e.getMessage()));
+            }
 
-        //loadCandidateGroupsFromTasks(getProcessDefinitionByTaskID(nID_Task.toString()), result);
+            if (group != null){
+                oGroupProperties.put("sID", group.getId());
+                oGroupProperties.put("sName", group.getName());
+                oGroupProperties.put("sType", group.getType());
+                result.add(oGroupProperties);
+                if(!oGroupProperties.isEmpty()){
+                    oGroupProperties.clear();
+                }
+            }
+        }
 
         return result;
     }
-	
+
+    public Set<Map<String, String>> getGroupOrderIDsByTaskID(Long nID_Task){
+        Set<Map<String, String>> result = new HashSet<>();
+        Map<String, String> oGroupProperties = new HashMap<>();
+
+        Set<String> templatesTaskGroupIDs = getCandidateGroupByTaskID(nID_Task);
+        LOG.info(String.format("Load CandidateGroup %s", templatesTaskGroupIDs));
+
+        for (String groupID : templatesTaskGroupIDs){
+            Group group = null;
+            try {
+                group = oIdentityService.createGroupQuery().groupId(groupID).orderByGroupId().singleResult();
+            } catch (Exception e) {
+                LOG.info(String.format("GroupID %s generated exception %s", groupID, e.getMessage()));
+            }
+            if (group != null){
+                oGroupProperties.put("sID", group.getId());
+                oGroupProperties.put("sName", group.getName());
+                oGroupProperties.put("sType", group.getType());
+                result.add(oGroupProperties);
+                if(!oGroupProperties.isEmpty()){
+                    oGroupProperties.clear();
+                }
+            }
+        }
+
+        return result;
+    }
 }
