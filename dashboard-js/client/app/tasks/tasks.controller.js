@@ -32,11 +32,25 @@
     };
     $scope.userProcesses = taskFilterService.getDefaultProcesses();
     $scope.model.userProcess = $scope.userProcesses[0];
+    $scope.applyTaskFilters = function() {
+
+    };
+    $scope.resetTaskDefinition = function() {
+      $scope.model.taskDefinition = $scope.taskDefinitions[0];
+      $scope.taskDefinitionsFilterChange();
+    };
+    $scope.resetStrictTaskDefinition = function() {
+      $scope.model.strictTaskDefinition = $scope.strictTaskDefinitions[0];
+      $scope.strictTaskDefinitionFilterChange();
+    };
+    $scope.resetUserProcess = function() {
+      $scope.model.userProcess = $scope.userProcesses[0];
+      $scope.userProcessFilterChange();
+    };
     $scope.resetTaskFilters = function () {
       $scope.model.taskDefinition = $scope.taskDefinitions[0];
       $scope.model.strictTaskDefinition = $scope.strictTaskDefinitions[0];
-      $scope.model.userProcess = $scope.userProcesses[0];
-      $scope.userProcessFilterChange();
+      $scope.resetUserProcess();
     };
     $scope.$on('taskFilter:strictTaskDefinitions:update', function (ev, data) {
       $scope.strictTaskDefinitions = data;
