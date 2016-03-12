@@ -1983,7 +1983,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 					taskService.setVariable(task.getId(), "sStatusName_UkrDoc", status);
 					runtimeService.setVariable(task.getProcessInstanceId(), "sStatusName_UkrDoc", status);
 					runtimeService.setVariable(task.getProcessInstanceId(), "sID_Document_UkrDoc", sKey);
-					LOG.info("Set variable sStatusName_UkrDoc {} for task with ID {}", status, task.getId());
+					LOG.info("Set variable sStatusName_UkrDoc {} and sID_Document_UkrDoc {} for process instance with ID {}", status, sKey, task.getProcessInstanceId());
 					taskService.complete(task.getId());
 					LOG.info("Completed task {}", task.getId());
 				}
