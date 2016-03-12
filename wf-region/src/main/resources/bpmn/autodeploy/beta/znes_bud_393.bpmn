@@ -20,7 +20,7 @@
         <activiti:formProperty id="sNameRajon" name="назва району адміністартивного органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOblast" name="назва області адміністартивного органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sFioClerkInDavalVidminok" name="ПІБ відповідальної особи адміністартивного органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sForTracert" name="Зміна для отладки" type="invisible" default="T"></activiti:formProperty>
+        <activiti:formProperty id="sForTracert" name="Зміна для отладки" type="invisible" default="F"></activiti:formProperty>
         <activiti:formProperty id="sID_UA" name="sID_UA" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sClerkPost" name="пошта посадовця" type="invisible"></activiti:formProperty>
       </extensionElements>
@@ -30,9 +30,8 @@
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>
-    <userTask id="usertask1" name="Прийняття рішення щодо розгляду надання дозволу" activiti:candidateGroups="cnap_kiev_kolon">
+    <userTask id="usertask1" name="Прийняття рішення щодо розгляду надання дозволу" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="sNameObject" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" writable="false"></activiti:formProperty>
@@ -60,9 +59,8 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask2" name="Друк заяви, оформлення дозволу" activiti:candidateGroups="cnap_kiev_kolon">
+    <userTask id="usertask2" name="Друк заяви, оформлення дозволу" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="sNameObject" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" writable="false"></activiti:formProperty>
