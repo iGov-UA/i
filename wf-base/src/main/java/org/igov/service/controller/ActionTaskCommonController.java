@@ -1248,13 +1248,17 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 	        DataSource oDataSource = new ByteArrayDataSource(pi, sFileExt);
 	        oMail._To(sMailTo);
 	        oMail._Head(sSubject);
-	        oMail._Attach(oDataSource, sTaskDataFileName + "." + sFileExt, "");
+	        oMail._Body("");
+	        oMail._Attach(oDataSource, sTaskDataFileName, "");
 	        try {
 				oMail.sendWithUniSender();
 			} catch (EmailException e) {
 				LOG.error("Error occured while sending tasks data to email: {}", e.getMessage());
 			}
 	        pi.close();
+	        
+	        httpResponse.setContentType("text/plain");
+	        httpResponse.getWriter().print("OK");
         }
         
     }
