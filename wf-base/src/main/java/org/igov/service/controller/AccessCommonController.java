@@ -278,6 +278,24 @@ public class AccessCommonController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/setAccessServiceRoleRight", method = {RequestMethod.POST, RequestMethod.GET})
+    public ResponseEntity setAccessServiceRoleRight (
+            @ApiParam(value = "номер-ИД связки", required = false) @RequestParam(value = "nID", required = false) Long nID,
+            @ApiParam(value = "Строка логин пользователя", required = true) @RequestParam(value = "nID_AccessServiceRole", required = true) Long nID_AccessServiceRole,
+            @ApiParam(value = "номер-ИД роли", required = true) @RequestParam(value = "nID_AccessServiceRight", required = true) Long nID_AccessServiceRight) {
+        return JsonRestUtils.toJsonResponse(oAccessService.setAccessServiceRoleRight(nID,
+                nID_AccessServiceRole, nID_AccessServiceRight));
+    }
+
+    @RequestMapping(value = "/setAccessServiceRoleRightInclude", method = {RequestMethod.POST, RequestMethod.GET})
+    public ResponseEntity setAccessServiceRoleRightInclude (
+            @ApiParam(value = "номер-ИД связки", required = false) @RequestParam(value = "nID", required = false) Long nID,
+            @ApiParam(value = "Строка логин пользователя", required = true) @RequestParam(value = "nID_AccessServiceRole", required = true) Long nID_AccessServiceRole,
+            @ApiParam(value = "номер-ИД роли", required = true) @RequestParam(value = "nID_AccessServiceRole_Include", required = true) Long nID_AccessServiceRole_Include) {
+        return JsonRestUtils.toJsonResponse(oAccessService.setAccessServiceRoleRightInclude(nID,
+                nID_AccessServiceRole, nID_AccessServiceRole_Include));
+    }
+
     @RequestMapping(value = "/setAccessServiceRight", method = {RequestMethod.POST, RequestMethod.GET})
     public ResponseEntity setAccessServiceRight (
             @ApiParam(value = "номер-ИД права", required = true) @RequestParam(value = "nID") Long nID,

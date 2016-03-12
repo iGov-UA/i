@@ -5,9 +5,7 @@ import org.apache.commons.mail.EmailException;
 import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
 import org.igov.model.access.*;
-import org.igov.model.access.vo.AccessLoginRoleVO;
-import org.igov.model.access.vo.AccessRightVO;
-import org.igov.model.access.vo.AccessRoleVO;
+import org.igov.model.access.vo.*;
 import org.igov.service.business.access.handler.AccessServiceLoginRightHandler;
 import org.igov.service.exception.HandlerBeanValidationException;
 import org.slf4j.Logger;
@@ -42,6 +40,12 @@ public class AccessService implements ApplicationContextAware {
 
     @Autowired
     private AccessServiceRoleDao accessServiceRoleDao;
+
+    @Autowired
+    private AccessServiceRoleRightDao accessServiceRoleRightDao;
+
+    @Autowired
+    private AccessServiceRoleRightIncludeDao accessServiceRoleRightIncludeDao;
 
     @Autowired
     private AccessServiceRightDao accessServiceRightDao;
@@ -112,6 +116,30 @@ public class AccessService implements ApplicationContextAware {
         role.setName(sName);
         accessServiceRoleDao.saveOrUpdate(role);
         return new AccessRoleVO(role, false);
+    }
+
+    public AccessRoleRightVO setAccessServiceRoleRight(Long nID, Long nID_AccessServiceRole,
+                                                       Long nID_AccessServiceRight) {
+
+        AccessServiceRoleRight roleRight = nID != null ? accessServiceRoleRightDao.findByIdExpected(nID) :
+                new AccessServiceRoleRight();
+
+        roleRight.setAccessServiceRole(accessServiceRoleDao.findByIdExpected(nID_AccessServiceRole));
+        roleRight.setAccessServiceRight(accessServiceRightDao.findByIdExpected(nID_AccessServiceRight));
+        accessServiceRoleRightDao.saveOrUpdate(roleRight);
+        return new AccessRoleRightVO(roleRight);
+    }
+
+    public AccessRoleIncludeVO setAccessServiceRoleRightInclude(Long nID, Long nID_AccessServiceRole,
+                                                       Long nID_AccessServiceRole_Include) {
+
+        AccessServiceRoleRightInclude roleInclude = nID != null ? accessServiceRoleRightIncludeDao.findByIdExpected(nID) :
+                new AccessServiceRoleRightInclude();
+
+        roleInclude.setAccessServiceRole(accessServiceRoleDao.findByIdExpected(nID_AccessServiceRole));
+        roleInclude.setAccessServiceRoleInclude(accessServiceRoleDao.findByIdExpected(nID_AccessServiceRole_Include));
+        accessServiceRoleRightIncludeDao.saveOrUpdate(roleInclude);
+        return new AccessRoleIncludeVO(roleInclude);
     }
 
     public void removeAccessServiceRole(Long roleId) {

@@ -199,6 +199,35 @@ public class AccessCommonControllerScenario {
     }
 
     @Test
+    public void testSetAccessServiceRoleRight() throws Exception {
+        final long currentRoleId = 6L;
+        AccessRoleVO role = getAccessServiceRoleRights(currentRoleId);
+        Assert.assertTrue(getAllRights(role).isEmpty());
+
+        AccessRoleRightVO roleRightVO = setAccessServiceRoleRight(null, role.getnID(), currentRoleId);
+        Assert.assertNotNull(roleRightVO.getnID());
+        role = getAccessServiceRoleRights(currentRoleId);
+        assertEquals(getAllRights(role), "TestRight6");
+    }
+
+    @Test
+    public void testSetAccessServiceRoleRightInclude() throws Exception {
+        final long currentRoleId = 6L;
+        AccessRoleVO role = getAccessServiceRoleRights(currentRoleId);
+        Assert.assertTrue(role.getaRoleRightInclude() == null);
+
+        final long childRoleId = 7L;
+        AccessRoleIncludeVO roleIncludeVO = setAccessServiceRoleRightInclude(null, role.getnID(), childRoleId);
+        Assert.assertNotNull(roleIncludeVO.getnID());
+
+        role = getAccessServiceRoleRights(currentRoleId);
+        final AccessRoleIncludeVO include = role.getaRoleRightInclude().get(0);
+        Assert.assertEquals(roleIncludeVO.getnID(), include.getnID());
+
+        Assert.assertEquals(childRoleId, include.getoRole().getnID().longValue());
+    }
+
+    @Test
     @Ignore
     public void testHasAccessServiceLoginRight() throws Exception {
 
@@ -310,6 +339,32 @@ public class AccessCommonControllerScenario {
                 andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
                 andReturn().getResponse().getContentAsString();
         return JsonRestUtils.readObject(getJsonData, AccessLoginRoleVO.class);
+    }
+
+    private AccessRoleRightVO setAccessServiceRoleRight(Long nID, Long nID_AccessServiceRole, Long nID_AccessServiceRight)
+            throws Exception {
+
+        String getJsonData = mockMvc.perform(post("/access/setAccessServiceRoleRight").
+                param("nID", nID != null ? nID.toString() : null).
+                param("nID_AccessServiceRole", nID_AccessServiceRole.toString()).
+                param("nID_AccessServiceRight", nID_AccessServiceRight.toString())).
+                andExpect(status().isOk()).
+                andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
+                andReturn().getResponse().getContentAsString();
+        return JsonRestUtils.readObject(getJsonData, AccessRoleRightVO.class);
+    }
+
+    private AccessRoleIncludeVO setAccessServiceRoleRightInclude(Long nID, Long nID_AccessServiceRole,
+                                                               Long nID_AccessServiceRole_Include) throws Exception {
+
+        String getJsonData = mockMvc.perform(post("/access/setAccessServiceRoleRightInclude").
+                param("nID", nID != null ? nID.toString() : null).
+                param("nID_AccessServiceRole", nID_AccessServiceRole.toString()).
+                param("nID_AccessServiceRole_Include", nID_AccessServiceRole_Include.toString())).
+                andExpect(status().isOk()).
+                andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
+                andReturn().getResponse().getContentAsString();
+        return JsonRestUtils.readObject(getJsonData, AccessRoleIncludeVO.class);
     }
 
     public void removeAccessServiceRole(Long nID) throws Exception {
