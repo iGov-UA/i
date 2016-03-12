@@ -1254,6 +1254,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 			} catch (EmailException e) {
 				LOG.error("Error occured while sending tasks data to email: {}", e.getMessage());
 			}
+	        pi.close();
         }
         
     }
