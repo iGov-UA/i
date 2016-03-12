@@ -8,12 +8,12 @@
   tasksCtrl.$inject = [
     '$scope', '$window', 'tasks', 'processes', 'Modal', 'Auth', 'identityUser', '$localStorage', '$filter', 'lunaService',
     'PrintTemplateService', 'taskFilterService', 'MarkersFactory', 'iGovNavbarHelper', '$location', 'defaultSearchHandlerService',
-    '$routeParams', '$q'
+    '$stateParams', '$q', '$timeout'
   ];
   function tasksCtrl(
     $scope, $window, tasks, processes, Modal, Auth, identityUser, $localStorage, $filter, lunaService,
     PrintTemplateService, taskFilterService, MarkersFactory, iGovNavbarHelper, $location, defaultSearchHandlerService,
-    $routeParams, $q
+    $stateParams, $q, $timeout
   ) {
 
     $scope.tasks = null;
@@ -32,11 +32,25 @@
     };
     $scope.userProcesses = taskFilterService.getDefaultProcesses();
     $scope.model.userProcess = $scope.userProcesses[0];
+    $scope.applyTaskFilters = function() {
+
+    };
+    $scope.resetTaskDefinition = function() {
+      $scope.model.taskDefinition = $scope.taskDefinitions[0];
+      $scope.taskDefinitionsFilterChange();
+    };
+    $scope.resetStrictTaskDefinition = function() {
+      $scope.model.strictTaskDefinition = $scope.strictTaskDefinitions[0];
+      $scope.strictTaskDefinitionFilterChange();
+    };
+    $scope.resetUserProcess = function() {
+      $scope.model.userProcess = $scope.userProcesses[0];
+      $scope.userProcessFilterChange();
+    };
     $scope.resetTaskFilters = function () {
       $scope.model.taskDefinition = $scope.taskDefinitions[0];
       $scope.model.strictTaskDefinition = $scope.strictTaskDefinitions[0];
-      $scope.model.userProcess = $scope.userProcesses[0];
-      $scope.userProcessFilterChange();
+      $scope.resetUserProcess();
     };
     $scope.$on('taskFilter:strictTaskDefinitions:update', function (ev, data) {
       $scope.strictTaskDefinitions = data;
@@ -93,6 +107,11 @@
 
     var filterLoadedTasks = function() {
       $scope.filteredTasks = taskFilterService.getFilteredTasks($scope.tasks, $scope.model);
+
+      $timeout(function(){
+        // trigger scroll event to load more tasks
+        $('#tasks-list-holder').trigger('scroll');
+      });
     };
 
     restoreTaskDefinitionFilter();
@@ -223,6 +242,7 @@
     };
 
     var tasksPage = 0;
+    var totalTasks = null;
 
     var loadNextTasksPage = function() {
       var defer = $q.defer();
@@ -239,9 +259,8 @@
       $scope.tasksLoading = true;
 
       tasks.list($scope.$storage.menuType, data)
-        .then(function (result) {
+        .then(function (oResult) {
           try {
-            var oResult = result;
             if (oResult.data !== null && oResult.data !== undefined) {
               // build tasks array
               var aTaskFiltered = _.filter(oResult.data, function (oTask) {
@@ -251,7 +270,7 @@
                 $scope.tasks = [];
               for (var i = 0; i < aTaskFiltered.length; i++)
                 $scope.tasks.push(aTaskFiltered[i]);
-
+              totalTasks = oResult.total;
               // build filtered tasks array
               filterLoadedTasks();
 
@@ -635,10 +654,11 @@
     $scope.init = function () {
       var tab = $location.path().substr('/tasks/'.length) || 'tickets';
       $scope.taskFormLoaded = false;
+      $scope.autoScrollTaskId = $stateParams.id;
 
       loadSelfAssignedTasks().then(function(){
-        if ($routeParams.type) {
-          $scope.applyTaskFilter($routeParams.type, $routeParams.id);
+        if ($stateParams.type) {
+          $scope.applyTaskFilter($stateParams.type, $stateParams.id);
         } else {
           _.each(iGovNavbarHelper.menus, function (menu) {
             if (menu.tab === tab) {
@@ -895,7 +915,7 @@
     };
 
     $scope.isLoadMoreAvailable = function () {
-      return true;
+      return $scope.tasks !== null && $scope.tasks.length < totalTasks;
     };
 
     $scope.loadMoreTasks = function() {

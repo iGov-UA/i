@@ -46,11 +46,7 @@ import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.TaskFormData;
-import org.activiti.engine.history.HistoricDetail;
-import org.activiti.engine.history.HistoricFormProperty;
-import org.activiti.engine.history.HistoricProcessInstance;
-import org.activiti.engine.history.HistoricTaskInstance;
-import org.activiti.engine.history.HistoricVariableInstance;
+import org.activiti.engine.history.*;
 import org.activiti.engine.identity.Group;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
@@ -72,8 +68,6 @@ import org.igov.model.action.event.HistoryEvent_Service_StatusType;
 import org.igov.model.action.task.core.ProcessDTOCover;
 import org.igov.model.action.task.core.TaskAssigneeCover;
 import org.igov.model.action.task.core.entity.TaskAssigneeI;
-import org.igov.model.escalation.EscalationRule;
-import org.igov.model.escalation.EscalationRuleDao;
 import org.igov.model.flow.FlowSlotTicket;
 import org.igov.model.flow.FlowSlotTicketDao;
 import org.igov.service.business.access.BankIDConfig;
@@ -982,14 +976,6 @@ public class ActionTaskService {
 
     public List<String> getTaskIdsByProcessInstanceId(String processInstanceID) throws RecordNotFoundException {
 
-        /* issue 1131
-        List<Task> aTask = getTasksByProcessInstanceId(processInstanceID);
-        List<String> res = new ArrayList<>();
-        for (Task task : aTask) {
-            res.add(task.getId());
-        }
-        return res;
-        */
         return findTaskIDsByActiveAndHistoryProcessInstanceID(Long.parseLong(processInstanceID));
 
     }
@@ -1050,6 +1036,7 @@ public class ActionTaskService {
         }
 
         List<Map<String, String>> result = new LinkedList<>();
+        List<ProcessDefinition> resultProcessDefinitionList = new LinkedList<>();
 
         LOG.info(String.format(
                 "Selecting business processes for the user with login: %s",
@@ -1061,49 +1048,69 @@ public class ActionTaskService {
             LOG.info(String.format("Found %d active process definitions",
                     processDefinitionsList.size()));
 
-            List<Group> groups = oIdentityService.createGroupQuery().groupMember(sLogin).list();
-            if (groups != null && !groups.isEmpty()) {
-                StringBuilder sb = new StringBuilder();
-                for (Group group : groups) {
-                    sb.append(group.getId());
-                    sb.append(",");
-                }
-                LOG.info("Found {}  groups for the user {}:{}", groups.size(), sLogin, sb.toString());
-            }
-
-            for (ProcessDefinition processDef : processDefinitionsList) {
-                LOG.info("process definition id: {}", processDef.getId());
-
-                Set<String> candidateCroupsToCheck = new HashSet<>();
-                loadCandidateGroupsFromTasks(processDef, candidateCroupsToCheck);
-
-                loadCandidateStarterGroup(processDef, candidateCroupsToCheck);
-
-                findUsersGroups(groups, result, processDef, candidateCroupsToCheck);
-            }
+            resultProcessDefinitionList = getAvailabilityProcessDefinitionByLogin(sLogin, processDefinitionsList);
         } else {
             LOG.info("Have not found active process definitions.");
+        }
+
+        for (ProcessDefinition processDef : resultProcessDefinitionList){
+            Map<String, String> process = new HashMap<>();
+            process.put("sID", processDef.getKey());
+            process.put("sName", processDef.getName());
+            LOG.info(String.format("Added record to response %s", process.toString()));
+            result.add(process);
         }
 
         return result;
     }
 
-    private void findUsersGroups(List<Group> groups, List<Map<String, String>> res, ProcessDefinition processDef, Set<String> candidateCroupsToCheck) {
+    private List<ProcessDefinition> getAvailabilityProcessDefinitionByLogin(String sLogin, List<ProcessDefinition> processDefinitionsList) {
+
+        List<ProcessDefinition> resultList = new LinkedList<>();
+
+        List<Group> groups;
+        groups = oIdentityService.createGroupQuery().groupMember(sLogin).list();
+        if (groups != null && !groups.isEmpty()) {
+            StringBuilder sb = new StringBuilder();
+            for (Group group : groups) {
+                sb.append(group.getId());
+                sb.append(",");
+            }
+            LOG.info("Found {}  groups for the user {}:{}", groups.size(), sLogin, sb.toString());
+        }
+
+        for (ProcessDefinition processDef : processDefinitionsList) {
+            LOG.info("process definition id: {}", processDef.getId());
+
+            Set<String> candidateCroupsToCheck = getGroupsByProcessDefinition(processDef);
+
+            if(checkIncludeProcessDefinitionIntoGroupList(groups, candidateCroupsToCheck)){
+                resultList.add(processDef);
+            }
+        }
+        return resultList;
+    }
+
+    private Set<String> getGroupsByProcessDefinition(ProcessDefinition processDef) {
+        Set<String> candidateCroupsToCheck = new HashSet<>();
+        loadCandidateGroupsFromTasks(processDef, candidateCroupsToCheck);
+        loadCandidateStarterGroup(processDef, candidateCroupsToCheck);
+        return candidateCroupsToCheck;
+    }
+
+
+    private boolean checkIncludeProcessDefinitionIntoGroupList(List<Group> groups, Set<String> candidateCroupsToCheck){
         for (Group group : groups) {
             for (String groupFromProcess : candidateCroupsToCheck) {
                 if (groupFromProcess.contains("${")) {
                     groupFromProcess = groupFromProcess.replaceAll("\\$\\{?.*}", "(.*)");
                 }
                 if (group.getId().matches(groupFromProcess)) {
-                    Map<String, String> process = new HashMap<>();
-                    process.put("sID", processDef.getKey());
-                    process.put("sName", processDef.getName());
-                    LOG.info(String.format("Added record to response %s", process.toString()));
-                    res.add(process);
-                    return;
+                    return true;
                 }
             }
         }
+        return false;
     }
 
     
@@ -1819,38 +1826,14 @@ public class ActionTaskService {
      * @param nID_Task - Task ID
      * @return - CandidateGroup from ProcessDefinition by Task
      */
-    public Set<String> getCandidateGroupByTaskID(Long nID_Task){
+    private Set<String> getCandidateGroupByTaskID(Long nID_Task){
         Set<String> aCandidateGroup = new HashSet<>();
         ProcessDefinition processDefinition = getProcessDefinitionByTaskID(nID_Task.toString());
         loadCandidateGroupsFromTasks(processDefinition, aCandidateGroup);
         return aCandidateGroup;
     }
 
-    /**
-     * Проверяет вхождение пользователя в одну из груп, на которую распространяется тиска
-     * @param sLogin - логгин пользователя
-     * @param nID_Task - ИД-номер таски
-     * @return true - если пользователь входит в одну из групп; false - если совпадений не найдено.
-     */
-    public boolean checkAvailabilityTaskCandidateGroupsForUser(String sLogin, Long nID_Task){
-        Set<String> userGroupIDs = new HashSet<>();
-        Set<String> taskGroupIDs = getCandidateGroupByTaskID(nID_Task);
 
-        List<Group> groups = oIdentityService.createGroupQuery().groupMember(sLogin).list();
-        for (Group group : groups){
-            userGroupIDs.add(group.getId());
-        }
-
-        for (String userGroupID : userGroupIDs){
-            for (String taskGroupID : taskGroupIDs){
-                if (taskGroupID.equals(userGroupID)){
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
 
     /**
      * Возвращает список объектов Attachment, привязанных к таске
@@ -2154,5 +2137,57 @@ public class ActionTaskService {
         return oHistoryService.createHistoricTaskInstanceQuery()
                 .taskId(nID_Task.toString()).singleResult().getTaskDefinitionKey();
     }
-	
+
+    /**
+     * Получить список идентификаторов отождествленных групп по таске
+     * @param nID_Task - идентификатор таски
+     * @see IdentityLink#getGroupId()
+     * @see HistoricIdentityLink#getGroupId()
+     */
+    public Set<String> getGroupIDsByTaskID(Long nID_Task){
+
+        Set<String> result = new HashSet<>();
+        List<IdentityLink> identityLinks = oTaskService.getIdentityLinksForTask(nID_Task.toString());
+        if (CollectionUtils.isNotEmpty(identityLinks)){
+            for (IdentityLink link : identityLinks){
+                result.add(link.getGroupId());
+                LOG.info(String.format("Add Group id=%s for active Task id=%s", link.getGroupId(), nID_Task));
+            }
+        } else {
+            List<HistoricIdentityLink> historicIdentityLinks = oHistoryService.getHistoricIdentityLinksForTask(nID_Task.toString());
+            if (CollectionUtils.isNotEmpty(historicIdentityLinks)){
+                for (HistoricIdentityLink link : historicIdentityLinks){
+                    result.add(link.getGroupId());
+                    LOG.info(String.format("Add Group id=%s for historic Task id=%s", link.getGroupId(), nID_Task));
+                }
+            } else {
+                LOG.info(String.format("No found Group id for Task id=%s", nID_Task));
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * Проверяет вхождение пользователя в одну из груп, на которую распространяется тиска
+     * @param sLogin - логгин пользователя
+     * @param nID_Task - ИД-номер таски
+     * @return true - если пользователь входит в одну из групп; false - если совпадений не найдено.
+     */
+    public boolean checkAvailabilityTaskGroupsForUser(String sLogin, Long nID_Task){
+
+        ProcessDefinition BP_Task = getProcessDefinitionByTaskID(nID_Task.toString());
+        List<ProcessDefinition> aBP_Task = new LinkedList<>();
+        aBP_Task.add(BP_Task);
+
+        List<ProcessDefinition> result = new LinkedList<>();
+        result = getAvailabilityProcessDefinitionByLogin(sLogin, aBP_Task);
+
+        if (CollectionUtils.isNotEmpty(result)){
+            return true;
+        }
+
+        return false;
+    }
+
 }

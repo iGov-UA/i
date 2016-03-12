@@ -579,10 +579,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             nID_Task = oActionTaskService.getTaskIDbyProcess(nID_Process, sID_Order, Boolean.FALSE);
         }
         if(sLogin != null){
-            if (oActionTaskService.checkAvailabilityTaskCandidateGroupsForUser(sLogin, nID_Task)){
+            if (oActionTaskService.checkAvailabilityTaskGroupsForUser(sLogin, nID_Task)){
                 LOG.info("User {} have access to the Task {}", sLogin, nID_Task);
             } else {
-                String taskGroupIDs = oActionTaskService.getCandidateGroupByTaskID(nID_Task).toString();
+                String taskGroupIDs = oActionTaskService.getGroupIDsByTaskID(nID_Task).toString();
                 throw new AccessServiceException(AccessServiceException.Error.LOGIN_ERROR, "Access deny " + taskGroupIDs);
             }
         }
@@ -614,7 +614,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         response.put("oData", oActionTaskService.getQueueData(aField));
 
         if (bIncludeGroups.equals(Boolean.TRUE)){
-            response.put("aGroups", oActionTaskService.getCandidateGroupByTaskID(nID_Task));
+            response.put("aGroups", oActionTaskService.getGroupIDsByTaskID(nID_Task));
         }
         if (bIncludeStartForm.equals(Boolean.TRUE)){
             response.put("aFieldStartForm", oActionTaskService.getStartFormData(nID_Task));
