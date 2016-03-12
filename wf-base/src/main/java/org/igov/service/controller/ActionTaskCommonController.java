@@ -1248,7 +1248,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 	        DataSource oDataSource = new ByteArrayDataSource(pi, sFileExt);
 	        oMail._To(sMailTo);
 	        oMail._Head(sSubject);
-	        oMail._Body("");
+	        oMail._Body(sSubject);
 	        oMail._Attach(oDataSource, sTaskDataFileName, "");
 	        try {
 				oMail.sendWithUniSender();
