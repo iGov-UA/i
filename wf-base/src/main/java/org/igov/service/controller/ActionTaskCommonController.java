@@ -8,7 +8,13 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -23,6 +29,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import javax.activation.DataSource;
 import javax.servlet.http.HttpServletResponse;
 
 import liquibase.util.csv.CSVWriter;
@@ -49,7 +56,10 @@ import org.activiti.engine.task.TaskInfoQuery;
 import org.activiti.engine.task.TaskQuery;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.mail.ByteArrayDataSource;
+import org.apache.commons.mail.EmailException;
 import org.igov.io.GeneralConfig;
+import org.igov.io.mail.Mail;
 import org.igov.io.mail.NotificationPatterns;
 import org.igov.io.web.HttpRequester;
 import org.igov.model.action.event.HistoryEvent_Service_StatusType;
@@ -146,6 +156,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
     @Autowired
     private MessageService oMessageService;
+    
+    @Autowired
+    private Mail oMail;
 
     /**
      * Загрузка задач из Activiti:
@@ -1097,6 +1110,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "добавить заголовок с названиями полей в выходной файл, по умолчанию - false", required = false) @RequestParam(value = "bHeader", required = false, defaultValue = "false") Boolean bHeader,
             @ApiParam(value = "настраиваемые поля (название поля -- формула, issue 907", required = false) @RequestParam(value = "saFieldsCalc", required = false) String saFieldsCalc,
             @ApiParam(value = "сведение полей, которое производится над выборкой (issue 916)", required = false) @RequestParam(value = "saFieldSummary", required = false) String saFieldSummary,
+            @ApiParam(value = "Email для отправки выбранных данных", required = false) @RequestParam(value = "sMailTo", required = false) String sMailTo,
             HttpServletResponse httpResponse) throws IOException {
 
 //      'sID_State_BP': '',//'usertask1'
@@ -1165,8 +1179,18 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         httpResponse.setHeader("Content-disposition", "attachment; filename="
                 + sTaskDataFileName);
 
-        CSVWriter printWriter = new CSVWriter(httpResponse.getWriter(), separator.charAt(0),
+        CSVWriter printWriter = null;
+        PipedInputStream pi = new PipedInputStream();
+        
+        if (sMailTo != null){
+	        PipedOutputStream po = new PipedOutputStream(pi);
+	        PrintWriter pw = new PrintWriter(po);
+	        printWriter = new CSVWriter(pw, separator.charAt(0),
+	                CSVWriter.NO_QUOTE_CHARACTER);
+        } else {
+        	printWriter = new CSVWriter(httpResponse.getWriter(), separator.charAt(0),
                 CSVWriter.NO_QUOTE_CHARACTER);
+        }
 
         List<Map<String, Object>> csvLines = new LinkedList<>();
 
@@ -1216,6 +1240,22 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
 
         printWriter.close();
+        
+        if (sMailTo != null){
+        	LOG.info("Sending email with tasks data to email {}", sMailTo);
+	        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	        String sFileName = String.format("Выборка за: %s-%s для БП: %s ", sdf.format(dBeginDate), sdf.format(dEndDate), sID_BP);
+	        String sFileExt = "csv";
+	        DataSource oDataSource = new ByteArrayDataSource(pi, sFileExt);
+	        oMail._To(sMailTo);
+	        oMail._Attach(oDataSource, sFileName + "." + sFileExt, "");
+	        try {
+				oMail.sendWithUniSender();
+			} catch (EmailException e) {
+				LOG.error("Error occured while sending tasks data to email: {}", e.getMessage());
+			}
+        }
+        
     }
 
     /**
