@@ -57,12 +57,13 @@
         <activiti:formProperty id="substance_2" name="Суть заяви в лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="substance_3" name="Суть заяви в контексті листа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="term" name="Строк віконання" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="Видача дозволу" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_1&quot;: {&quot;aField_ID&quot;: [&quot;info&quot;,&quot;file1&quot;,&quot;file3&quot;,&quot;file4&quot;,&quot;file5&quot;,&quot;file6&quot;,&quot;file11&quot;,&quot;file12&quot;,&quot;file13&quot;,&quot;file14&quot;,&quot;file15&quot;,&quot;file16&quot;,&quot;file17&quot;,&quot;file18&quot;,&quot;file19&quot;,&quot;file20&quot;,&quot;file21&quot;], &quot;asID_Field&quot;:{&quot;sClient1&quot;:&quot;vibor_service&quot;,&quot;sClient2&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sClient1] == 'issue' &amp;&amp; [sClient2] != 'don_mariupolT'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="Видача дозволу Дніпро" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_1&quot;: {&quot;aField_ID&quot;: [&quot;info&quot;,&quot;file1&quot;,&quot;file3&quot;,&quot;file4&quot;,&quot;file5&quot;,&quot;file6&quot;,&quot;file11&quot;,&quot;file12&quot;,&quot;file13&quot;,&quot;file14&quot;,&quot;file15&quot;,&quot;file16&quot;,&quot;file17&quot;,&quot;file18&quot;,&quot;file19&quot;,&quot;file20&quot;,&quot;file21&quot;], &quot;asID_Field&quot;:{&quot;sClient1&quot;:&quot;vibor_service&quot;,&quot;sClient2&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sClient1] == 'issue' &amp;&amp; [sClient2] == ('prav'||'lev'||'dndzT')&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers6" name="Видача дозволу Маріуполь" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_6&quot;:{&quot;aField_ID&quot;:[&quot;info&quot;,&quot;file1&quot;,&quot;file22&quot;],&quot;asID_Field&quot;:{&quot;sClient1&quot;:&quot;vibor_service&quot;,&quot;sClient2&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sClient1] == 'issue'&amp;&amp; [sClient2]== 'don_mariupolT'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="Переоформлення дозволу" type="markers" default="{&quot;motion&quot; : {&quot;ShowFieldsOnCondition_2&quot; : {&quot;aField_ID&quot; : [&quot;file2&quot;,&quot;file7&quot;],&quot;asID_Field&quot; : {&quot;sClient&quot; : &quot;vibor_service&quot;},&quot;sCondition&quot; : &quot;[sClient] == 'restructuring'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="Видача дублікату дозволу" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_3&quot;: {&quot;aField_ID&quot;: [&quot;file8&quot;],&quot;asID_Field&quot; : {&quot;sClient&quot;: &quot;vibor_service&quot;}, &quot;sCondition&quot; : &quot;[sClient] == 'duplicate'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="Анулювання дозволу" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_4&quot;: {&quot;aField_ID&quot;: [&quot;file9&quot;],&quot;asID_Field&quot; : {&quot;sClient&quot;: &quot;vibor_service&quot;}, &quot;sCondition&quot; : &quot;[sClient] == 'cansel'&quot; }}}"></activiti:formProperty>
         <activiti:formProperty id="markers5" name="Показати виконавця" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_5&quot;: {&quot;aField_ID&quot;: [&quot;vibor_performer&quot;],&quot;asID_Field&quot; : {&quot;sClient&quot;: &quot;sID_Public_SubjectOrganJoin&quot;}, &quot;sCondition&quot; : &quot;[sClient] == 'prav'||[sClient] == 'lev'&quot; }}}"></activiti:formProperty>
+        <activiti:formProperty id="markers7" name="Видача дозволу Хмельницький" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_7&quot;:{&quot;aField_ID&quot;:[&quot;info&quot;,&quot;file1&quot;,&quot;file22&quot;,&quot;file3&quot;,&quot;file5&quot;,&quot;file6&quot;,&quot;file11&quot;,&quot;file12&quot;,&quot;file13&quot;,&quot;file15&quot;,&quot;file16&quot;,&quot;file17&quot;,&quot;file18&quot;,&quot;file19&quot;,&quot;file20&quot;,&quot;file21&quot;],&quot;asID_Field&quot;:{&quot;sClient1&quot;:&quot;vibor_service&quot;,&quot;sClient2&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sClient1] == 'issue' &amp;&amp; [sClient2] == 'hmel_hmelT'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -111,6 +112,11 @@ if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'don_mariupolT'){
 per1 = '102'
 per2 = 'dmitriy.istomin82@gmail.com'
 per3 = 'Головному державному санітарному лікарю м.Маріуполя'
+}
+if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'hmel_hmelT'){
+per1 = '533'
+per2 = 'tanyazol@gmail.com'
+per3 = 'Головному державному санітарному лікарю м.Хмельницького'
 }
 if (execution.getVariable('vibor_service') == 'issue'){
 per4 = 'видати'
@@ -169,9 +175,9 @@ execution.setVariable('term', per7)
         <activiti:formProperty id="kved" name="Вид діяльності згідно з КВЕД; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="edrpou_inn" name="Ідентифікаційний код згідно з ЄДРПОУ (для юридичних осіб) або ідентифікаційний номер фізичної особи - підприємця; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="trusted_person" name="П.І.Б. керівника юридичної особи / фізичної особи - підприємця/уповноваженої особи; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="adminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string"></activiti:formProperty>
-        <activiti:formProperty id="number_cnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string"></activiti:formProperty>
-        <activiti:formProperty id="date_registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="adminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="number_cnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="date_registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="shapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="substance" name="Суть заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="substance_2" name="Суть заяви в лист" type="invisible"></activiti:formProperty>
