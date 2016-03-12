@@ -31,9 +31,9 @@
         <activiti:formProperty id="project" name="Проект переобладнання або перепланування, улаштування підвісного балкону, погоджений в установленому порядку" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="zgoda" name="Згода власників, співвласників (наймачів) або уповноважених ними осіб на переобладнання перепланування чи улаштування підвісного балкону приміщень, що перебувають у їх спільній власності; завантажте єдиним архівом" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="teh_passport" name="Копія технічного паспорту на приміщення (квартиру)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nArea" name="номер району" type="invisible" default="533"></activiti:formProperty>
-        <activiti:formProperty id="sArea" name="район" type="invisible" default="Хмельницький"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="пошта району" type="invisible" default="darja.grek@gmail.com"></activiti:formProperty>
+        <activiti:formProperty id="nArea" name="номер району" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sArea" name="район" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="пошта району" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="обробка вхідних данних" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
@@ -138,7 +138,7 @@
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
 Ваше звернення щодо видачі дозволу на виконання enum{[balcony_work]} підвісного балкону enum{[balcony]}, що знаходиться за адресою ${locality} ${street} ${number_house}, отримано.&lt;br /&gt;
-Звернення буде опрацьовано управлінням архітектури, капітального будівництва та житлово-комунального господарства Вільногірської міської ради впродовж 30 календарних днів.&lt;br /&gt;
+Звернення буде опрацьовано управлінням архітектури, капітального будівництва та житлово-комунального господарства міської ради впродовж 30 календарних днів.&lt;br /&gt;
 &lt;br /&gt;
 Ви отримаєте додаткове повідомлення за результатами розгляду запиту.&lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[nArea]}:5]&lt;br /&gt;
