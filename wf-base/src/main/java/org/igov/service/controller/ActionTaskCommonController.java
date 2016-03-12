@@ -1242,8 +1242,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         
         if (sMailTo != null){
         	LOG.info("Sending email with tasks data to email {}", sMailTo);
-	        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-	        String sSubject = String.format("Выборка за: %s-%s для БП: %s ", sdf.format(dBeginDate), sdf.format(dEndDate), sID_BP);
+	        SimpleDateFormat sdf = new SimpleDateFormat("yyyy:MM:dd");
+	        String sSubject = String.format("Выборка за: (%s)-(%s) для БП: %s ", sdf.format(dBeginDate), sdf.format(dEndDate), sID_BP);
 	        String sFileExt = "csv";
 	        DataSource oDataSource = new ByteArrayDataSource(pi, sFileExt);
 	        oMail._To(sMailTo);
