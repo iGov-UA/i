@@ -228,6 +228,30 @@ public class AccessCommonControllerScenario {
     }
 
     @Test
+    public void testRemoveAccessServiceRoleRight() throws Exception {
+        AccessRoleVO role = getAccessServiceRoleRights(8L);
+        Assert.assertEquals(1, role.getaRoleRight().size());
+
+        removeAccessServiceRoleRight(role.getaRoleRight().get(0).getnID());
+
+        role = getAccessServiceRoleRights(role.getnID());
+
+        Assert.assertNull(role.getaRoleRight());
+    }
+
+    @Test
+    public void testRemoveAccessServiceRoleRightInclude() throws Exception {
+        AccessRoleVO role = getAccessServiceRoleRights(8L);
+        Assert.assertEquals(1, role.getaRoleRightInclude().size());
+
+        removeAccessServiceRoleRightInclude(role.getaRoleRightInclude().get(0).getnID());
+
+        role = getAccessServiceRoleRights(role.getnID());
+
+        Assert.assertNull(role.getaRoleRightInclude());
+    }
+
+    @Test
     @Ignore
     public void testHasAccessServiceLoginRight() throws Exception {
 
@@ -368,11 +392,23 @@ public class AccessCommonControllerScenario {
     }
 
     public void removeAccessServiceRole(Long nID) throws Exception {
-        mockMvc.perform(post("/access/removeAccessServiceRole").param("nID", nID.toString())).andExpect(status().isOk());
+        mockMvc.perform(post("/access/removeAccessServiceRole").param("nID", nID.toString())).
+                andExpect(status().isOk());
     }
 
     public void removeAccessServiceRight(Long nID) throws Exception {
-        mockMvc.perform(post("/access/removeAccessServiceRight").param("nID", nID.toString())).andExpect(status().isOk());
+        mockMvc.perform(post("/access/removeAccessServiceRight").param("nID", nID.toString())).
+                andExpect(status().isOk());
+    }
+
+    public void removeAccessServiceRoleRight(Long nID) throws Exception {
+        mockMvc.perform(post("/access/removeAccessServiceRoleRight").param("nID", nID.toString())).
+                andExpect(status().isOk());
+    }
+
+    public void removeAccessServiceRoleRightInclude(Long nID) throws Exception {
+        mockMvc.perform(post("/access/removeAccessServiceRoleRightInclude").param("nID", nID.toString())).
+                andExpect(status().isOk());
     }
 
     private Set<String> getAllRights(List<AccessRoleVO> roles) {
