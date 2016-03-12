@@ -46,11 +46,7 @@ import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.TaskFormData;
-import org.activiti.engine.history.HistoricDetail;
-import org.activiti.engine.history.HistoricFormProperty;
-import org.activiti.engine.history.HistoricProcessInstance;
-import org.activiti.engine.history.HistoricTaskInstance;
-import org.activiti.engine.history.HistoricVariableInstance;
+import org.activiti.engine.history.*;
 import org.activiti.engine.identity.Group;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
@@ -2175,8 +2171,8 @@ public class ActionTaskService {
                 .taskId(nID_Task.toString()).singleResult().getTaskDefinitionKey();
     }
 
-    public Set<String> getGroupsByTaskID(Long nID_Task){
-        Set<String> result = getGroupsByProcessDefinition(getProcessDefinitionByTaskID(nID_Task.toString()));
+    public Set<String> getGroupIDsByTaskID(Long nID_Task){
+        //Set<String> result = getGroupsByProcessDefinition(getProcessDefinitionByTaskID(nID_Task.toString()));
         /*
         for (String groupFromProcess : result) {
             if (groupFromProcess.contains("${")) {
@@ -2184,6 +2180,25 @@ public class ActionTaskService {
             }
         }
         */
+        Set<String> result = new HashSet<>();
+        List<IdentityLink> identityLinks = oTaskService.getIdentityLinksForTask(nID_Task.toString());
+        if (CollectionUtils.isNotEmpty(identityLinks)){
+            for (IdentityLink link : identityLinks){
+                result.add(link.getGroupId());
+                LOG.info(String.format("Add Group id=%s for active Task id=%s", link.getGroupId(), nID_Task));
+            }
+        } else {
+            List<HistoricIdentityLink> historicIdentityLinks = oHistoryService.getHistoricIdentityLinksForTask(nID_Task.toString());
+            if (CollectionUtils.isNotEmpty(historicIdentityLinks)){
+                for (HistoricIdentityLink link : historicIdentityLinks){
+                    result.add(link.getGroupId());
+                    LOG.info(String.format("Add Group id=%s for historic Task id=%s", link.getGroupId(), nID_Task));
+                }
+            } else {
+                LOG.info(String.format("No found Group id for Task id=%s", nID_Task));
+            }
+        }
+
         return result;
     }
 
