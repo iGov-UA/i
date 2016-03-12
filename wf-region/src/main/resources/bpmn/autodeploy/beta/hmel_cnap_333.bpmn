@@ -40,7 +40,6 @@
         <activiti:formProperty id="sDocAllAgree" name="Письмова згода всіх повнолітніх членів сім'ї, що проживають разом з особою, яка бажає взяти дитину під опіку; завантажте єдиним архівом" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sInfo_2" name=" " type="label" default="&lt;a href=&quot;https://docs.google.com/uc?authuser=0&amp;id=0B6mOkUg9oq1zR2MxN2hEYUNETWM&amp;export=download&quot; target=&quot;_blank&quot;&gt;бланк заяви-згоди&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="sInfo_3" name=" " type="label" default="Згідно законодавчо визначеної процедури буде проведено обстеження житлово-побутових умов, про дату та час перевірки Ви отримаєте окреме повідомлення на електронну пошту"></activiti:formProperty>
-        <activiti:formProperty id="zgoda" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність"></activiti:formProperty>
         <activiti:formProperty id="rNumber" name="номер району" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="rName" name="район" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="remail" name="пошта району" type="invisible"></activiti:formProperty>
@@ -50,7 +49,7 @@
         <activiti:formProperty id="markers13" name="якщо не є близьким родичем" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_13&quot;:{&quot;aField_ID&quot;:[&quot;sDocLearning&quot;,&quot;sSocRecomendation&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sRelative&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'no_2'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <userTask id="usertask1" name="перевірка вхідного пакету документів" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask1" name="перевірка вхідного пакету документів" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="rName" name="Район" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -97,7 +96,7 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask2" name="прийняття рішення щодо постановки на облік" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask2" name="прийняття рішення щодо постановки на облік" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="rName" name="Район" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -323,7 +322,7 @@ var per12 = ' '
 var per13 = ' '
 var per14 = ' '
 var res = 'res'
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'hmel_hmelT'){
+if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'cnap_hmel_hmelT'){
 per1 = 'cnap32@rada.khmelnytsky.com'
 per2 = '533'
 per4 = 'ЦНАП Хмельницької міськради'
