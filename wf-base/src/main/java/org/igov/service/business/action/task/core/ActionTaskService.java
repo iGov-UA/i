@@ -72,8 +72,6 @@ import org.igov.model.action.event.HistoryEvent_Service_StatusType;
 import org.igov.model.action.task.core.ProcessDTOCover;
 import org.igov.model.action.task.core.TaskAssigneeCover;
 import org.igov.model.action.task.core.entity.TaskAssigneeI;
-import org.igov.model.escalation.EscalationRule;
-import org.igov.model.escalation.EscalationRuleDao;
 import org.igov.model.flow.FlowSlotTicket;
 import org.igov.model.flow.FlowSlotTicketDao;
 import org.igov.service.business.access.BankIDConfig;
@@ -1050,6 +1048,7 @@ public class ActionTaskService {
         }
 
         List<Map<String, String>> result = new LinkedList<>();
+        List<ProcessDefinition> resultProcessDefinitionList = new LinkedList<>();
 
         LOG.info(String.format(
                 "Selecting business processes for the user with login: %s",
@@ -1061,31 +1060,57 @@ public class ActionTaskService {
             LOG.info(String.format("Found %d active process definitions",
                     processDefinitionsList.size()));
 
-            List<Group> groups = oIdentityService.createGroupQuery().groupMember(sLogin).list();
-            if (groups != null && !groups.isEmpty()) {
-                StringBuilder sb = new StringBuilder();
-                for (Group group : groups) {
-                    sb.append(group.getId());
-                    sb.append(",");
-                }
-                LOG.info("Found {}  groups for the user {}:{}", groups.size(), sLogin, sb.toString());
-            }
-
-            for (ProcessDefinition processDef : processDefinitionsList) {
-                LOG.info("process definition id: {}", processDef.getId());
-
-                Set<String> candidateCroupsToCheck = new HashSet<>();
-                loadCandidateGroupsFromTasks(processDef, candidateCroupsToCheck);
-
-                loadCandidateStarterGroup(processDef, candidateCroupsToCheck);
-
-                findUsersGroups(groups, result, processDef, candidateCroupsToCheck);
-            }
+            resultProcessDefinitionList = getAvailabilityProcessDefinitionByLogin(sLogin, processDefinitionsList);
         } else {
             LOG.info("Have not found active process definitions.");
         }
 
+        for (ProcessDefinition processDef : resultProcessDefinitionList){
+            Map<String, String> process = new HashMap<>();
+            process.put("sID", processDef.getKey());
+            process.put("sName", processDef.getName());
+            LOG.info(String.format("Added record to response %s", process.toString()));
+            result.add(process);
+        }
+
         return result;
+    }
+
+    private List<ProcessDefinition> getAvailabilityProcessDefinitionByLogin(String sLogin, List<ProcessDefinition> processDefinitionsList) {
+
+       // List<Map<String, String>> result = new LinkedList<>();
+        List<ProcessDefinition> resultList = new LinkedList<>();
+
+        List<Group> groups;
+        groups = oIdentityService.createGroupQuery().groupMember(sLogin).list();
+        if (groups != null && !groups.isEmpty()) {
+            StringBuilder sb = new StringBuilder();
+            for (Group group : groups) {
+                sb.append(group.getId());
+                sb.append(",");
+            }
+            LOG.info("Found {}  groups for the user {}:{}", groups.size(), sLogin, sb.toString());
+        }
+
+        for (ProcessDefinition processDef : processDefinitionsList) {
+            LOG.info("process definition id: {}", processDef.getId());
+
+            Set<String> candidateCroupsToCheck = getGroupsByProcessDefinition(processDef);
+
+            //findUsersGroups(groups, result, processDef, candidateCroupsToCheck);
+            if(checkIncludeProcessDefinitionIntoGroupList(groups, candidateCroupsToCheck)){
+                resultList.add(processDef);
+            }
+        }
+        //return result;
+        return resultList;
+    }
+
+    private Set<String> getGroupsByProcessDefinition(ProcessDefinition processDef) {
+        Set<String> candidateCroupsToCheck = new HashSet<>();
+        loadCandidateGroupsFromTasks(processDef, candidateCroupsToCheck);
+        loadCandidateStarterGroup(processDef, candidateCroupsToCheck);
+        return candidateCroupsToCheck;
     }
 
     private void findUsersGroups(List<Group> groups, List<Map<String, String>> res, ProcessDefinition processDef, Set<String> candidateCroupsToCheck) {
@@ -1104,6 +1129,25 @@ public class ActionTaskService {
                 }
             }
         }
+    }
+
+    private boolean checkIncludeProcessDefinitionIntoGroupList(List<Group> groups, Set<String> candidateCroupsToCheck){
+        for (Group group : groups) {
+            for (String groupFromProcess : candidateCroupsToCheck) {
+                if (groupFromProcess.contains("${")) {
+                    groupFromProcess = groupFromProcess.replaceAll("\\$\\{?.*}", "(.*)");
+                }
+                if (group.getId().matches(groupFromProcess)) {
+                    /*Map<String, String> process = new HashMap<>();
+                    process.put("sID", processDef.getKey());
+                    process.put("sName", processDef.getName());
+                    LOG.info(String.format("Added record to response %s", process.toString()));
+                    res.add(process);*/
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     
@@ -1819,38 +1863,14 @@ public class ActionTaskService {
      * @param nID_Task - Task ID
      * @return - CandidateGroup from ProcessDefinition by Task
      */
-    public Set<String> getCandidateGroupByTaskID(Long nID_Task){
+    private Set<String> getCandidateGroupByTaskID(Long nID_Task){
         Set<String> aCandidateGroup = new HashSet<>();
         ProcessDefinition processDefinition = getProcessDefinitionByTaskID(nID_Task.toString());
         loadCandidateGroupsFromTasks(processDefinition, aCandidateGroup);
         return aCandidateGroup;
     }
 
-    /**
-     * Проверяет вхождение пользователя в одну из груп, на которую распространяется тиска
-     * @param sLogin - логгин пользователя
-     * @param nID_Task - ИД-номер таски
-     * @return true - если пользователь входит в одну из групп; false - если совпадений не найдено.
-     */
-    public boolean checkAvailabilityTaskCandidateGroupsForUser(String sLogin, Long nID_Task){
-        Set<String> userGroupIDs = new HashSet<>();
-        Set<String> taskGroupIDs = getCandidateGroupByTaskID(nID_Task);
 
-        List<Group> groups = oIdentityService.createGroupQuery().groupMember(sLogin).list();
-        for (Group group : groups){
-            userGroupIDs.add(group.getId());
-        }
-
-        for (String userGroupID : userGroupIDs){
-            for (String taskGroupID : taskGroupIDs){
-                if (taskGroupID.equals(userGroupID)){
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
 
     /**
      * Возвращает список объектов Attachment, привязанных к таске
@@ -2155,60 +2175,54 @@ public class ActionTaskService {
                 .taskId(nID_Task.toString()).singleResult().getTaskDefinitionKey();
     }
 
-    public Set<Map<String, String>> getGroupsIdByTaskID(Long nID_Task){
-        Set<Map<String, String>> result = new HashSet<Map<String, String>>();
-        Map<String, String> oGroupProperties = new HashMap<String, String>();
-
-        Set<String> templatesTaskGroupIDs = getCandidateGroupByTaskID(nID_Task);
-        LOG.info(String.format("Load CandidateGroup %s", templatesTaskGroupIDs));
-
-        for (String groupID : templatesTaskGroupIDs){
-            Group group = null;
-            try {
-                group = oIdentityService.createGroupQuery().groupId(groupID).singleResult();
-            } catch (Exception e){
-                LOG.info(String.format("GroupID %s generated exception %s", groupID, e.getMessage()));
-            }
-
-            if (group != null){
-                oGroupProperties.put("sID", group.getId());
-                oGroupProperties.put("sName", group.getName());
-                oGroupProperties.put("sType", group.getType());
-                result.add(oGroupProperties);
-                if(!oGroupProperties.isEmpty()){
-                    oGroupProperties.clear();
-                }
+    public Set<String> getGroupsByTaskID(Long nID_Task){
+        Set<String> result = getGroupsByProcessDefinition(getProcessDefinitionByTaskID(nID_Task.toString()));
+        /*
+        for (String groupFromProcess : result) {
+            if (groupFromProcess.contains("${")) {
+                groupFromProcess = groupFromProcess.replaceAll("\\$\\{?.*}", "(.*)");
             }
         }
-
+        */
         return result;
     }
 
-    public Set<Map<String, String>> getGroupOrderIDsByTaskID(Long nID_Task){
-        Set<Map<String, String>> result = new HashSet<>();
-        Map<String, String> oGroupProperties = new HashMap<>();
+    /**
+     * Проверяет вхождение пользователя в одну из груп, на которую распространяется тиска
+     * @param sLogin - логгин пользователя
+     * @param nID_Task - ИД-номер таски
+     * @return true - если пользователь входит в одну из групп; false - если совпадений не найдено.
+     */
+    public boolean checkAvailabilityTaskGroupsForUser(String sLogin, Long nID_Task){
+        /*
+        Set<String> userGroupIDs = new HashSet<>();
+        Set<String> taskGroupIDs = getCandidateGroupByTaskID(nID_Task);
 
-        Set<String> templatesTaskGroupIDs = getCandidateGroupByTaskID(nID_Task);
-        LOG.info(String.format("Load CandidateGroup %s", templatesTaskGroupIDs));
+        List<Group> groups = oIdentityService.createGroupQuery().groupMember(sLogin).list();
+        for (Group group : groups){
+            userGroupIDs.add(group.getId());
+        }
 
-        for (String groupID : templatesTaskGroupIDs){
-            Group group = null;
-            try {
-                group = oIdentityService.createGroupQuery().groupId(groupID).orderByGroupId().singleResult();
-            } catch (Exception e) {
-                LOG.info(String.format("GroupID %s generated exception %s", groupID, e.getMessage()));
-            }
-            if (group != null){
-                oGroupProperties.put("sID", group.getId());
-                oGroupProperties.put("sName", group.getName());
-                oGroupProperties.put("sType", group.getType());
-                result.add(oGroupProperties);
-                if(!oGroupProperties.isEmpty()){
-                    oGroupProperties.clear();
+        for (String userGroupID : userGroupIDs){
+            for (String taskGroupID : taskGroupIDs){
+                if (taskGroupID.equals(userGroupID)){
+                    return true;
                 }
             }
         }
+        */
+        ProcessDefinition BP_Task = getProcessDefinitionByTaskID(nID_Task.toString());
+        List<ProcessDefinition> aBP_Task = new LinkedList<>();
+        aBP_Task.add(BP_Task);
 
-        return result;
+        List<ProcessDefinition> result = new LinkedList<>();
+        result = getAvailabilityProcessDefinitionByLogin(sLogin, aBP_Task);
+
+        if (CollectionUtils.isNotEmpty(result)){
+            return true;
+        }
+
+        return false;
     }
+
 }
