@@ -13,22 +13,33 @@
     .module('dashboardJsApp')
     .config(tasksConfig);
 
-  tasksConfig.$inject = ['$routeProvider'];
-  function tasksConfig($routeProvider) {
-    $routeProvider
-      .when('/tasks', params);
-
-    /*
-    THIS DOES NOT WORK SOMETIMES:
-
-    $routeProvider
-      .when('/tasks/:tab/', params);
-    */
-    $routeProvider.when('/tasks/unassigned', params);
-    $routeProvider.when('/tasks/selfAssigned', params);
-    $routeProvider.when('/tasks/tickets', params);
-    $routeProvider.when('/tasks/all', params);
-    $routeProvider.when('/tasks/finished', params);
-    $routeProvider.when('/tasks/:type/:id', params);
+  tasksConfig.$inject = ['$stateProvider'];
+  function tasksConfig($stateProvider) {
+    $stateProvider
+      .state('tasks', {
+        url: '/tasks',
+        controller: 'TasksBaseCtrl',
+        access: {
+          requiresLogin: true
+        },
+        templateUrl: 'app/tasks/base.html'
+      })
+      .state('tasks.typeof', {
+        url: '/:type',
+        templateUrl: 'app/tasks/tasks.html',
+        controller: 'TasksCtrl',
+        access: {
+          requiresLogin: true
+        }
+      })
+      .state('tasks.typeof.view', {
+        parent: 'tasks',
+        url: '/:type/:id',
+        templateUrl: 'app/tasks/tasks.html',
+        controller: 'TasksCtrl',
+        access: {
+          requiresLogin: true
+        }
+      });
   }
 })();
