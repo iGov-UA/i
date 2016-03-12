@@ -976,14 +976,6 @@ public class ActionTaskService {
 
     public List<String> getTaskIdsByProcessInstanceId(String processInstanceID) throws RecordNotFoundException {
 
-        /* issue 1131
-        List<Task> aTask = getTasksByProcessInstanceId(processInstanceID);
-        List<String> res = new ArrayList<>();
-        for (Task task : aTask) {
-            res.add(task.getId());
-        }
-        return res;
-        */
         return findTaskIDsByActiveAndHistoryProcessInstanceID(Long.parseLong(processInstanceID));
 
     }
@@ -1074,7 +1066,6 @@ public class ActionTaskService {
 
     private List<ProcessDefinition> getAvailabilityProcessDefinitionByLogin(String sLogin, List<ProcessDefinition> processDefinitionsList) {
 
-       // List<Map<String, String>> result = new LinkedList<>();
         List<ProcessDefinition> resultList = new LinkedList<>();
 
         List<Group> groups;
@@ -1093,12 +1084,10 @@ public class ActionTaskService {
 
             Set<String> candidateCroupsToCheck = getGroupsByProcessDefinition(processDef);
 
-            //findUsersGroups(groups, result, processDef, candidateCroupsToCheck);
             if(checkIncludeProcessDefinitionIntoGroupList(groups, candidateCroupsToCheck)){
                 resultList.add(processDef);
             }
         }
-        //return result;
         return resultList;
     }
 
@@ -1109,23 +1098,6 @@ public class ActionTaskService {
         return candidateCroupsToCheck;
     }
 
-    private void findUsersGroups(List<Group> groups, List<Map<String, String>> res, ProcessDefinition processDef, Set<String> candidateCroupsToCheck) {
-        for (Group group : groups) {
-            for (String groupFromProcess : candidateCroupsToCheck) {
-                if (groupFromProcess.contains("${")) {
-                    groupFromProcess = groupFromProcess.replaceAll("\\$\\{?.*}", "(.*)");
-                }
-                if (group.getId().matches(groupFromProcess)) {
-                    Map<String, String> process = new HashMap<>();
-                    process.put("sID", processDef.getKey());
-                    process.put("sName", processDef.getName());
-                    LOG.info(String.format("Added record to response %s", process.toString()));
-                    res.add(process);
-                    return;
-                }
-            }
-        }
-    }
 
     private boolean checkIncludeProcessDefinitionIntoGroupList(List<Group> groups, Set<String> candidateCroupsToCheck){
         for (Group group : groups) {
@@ -1134,11 +1106,6 @@ public class ActionTaskService {
                     groupFromProcess = groupFromProcess.replaceAll("\\$\\{?.*}", "(.*)");
                 }
                 if (group.getId().matches(groupFromProcess)) {
-                    /*Map<String, String> process = new HashMap<>();
-                    process.put("sID", processDef.getKey());
-                    process.put("sName", processDef.getName());
-                    LOG.info(String.format("Added record to response %s", process.toString()));
-                    res.add(process);*/
                     return true;
                 }
             }
@@ -2171,15 +2138,14 @@ public class ActionTaskService {
                 .taskId(nID_Task.toString()).singleResult().getTaskDefinitionKey();
     }
 
+    /**
+     * Получить список идентификаторов отождествленных групп по таске
+     * @param nID_Task - идентификатор таски
+     * @see IdentityLink#getGroupId()
+     * @see HistoricIdentityLink#getGroupId()
+     */
     public Set<String> getGroupIDsByTaskID(Long nID_Task){
-        //Set<String> result = getGroupsByProcessDefinition(getProcessDefinitionByTaskID(nID_Task.toString()));
-        /*
-        for (String groupFromProcess : result) {
-            if (groupFromProcess.contains("${")) {
-                groupFromProcess = groupFromProcess.replaceAll("\\$\\{?.*}", "(.*)");
-            }
-        }
-        */
+
         Set<String> result = new HashSet<>();
         List<IdentityLink> identityLinks = oTaskService.getIdentityLinksForTask(nID_Task.toString());
         if (CollectionUtils.isNotEmpty(identityLinks)){
@@ -2209,23 +2175,7 @@ public class ActionTaskService {
      * @return true - если пользователь входит в одну из групп; false - если совпадений не найдено.
      */
     public boolean checkAvailabilityTaskGroupsForUser(String sLogin, Long nID_Task){
-        /*
-        Set<String> userGroupIDs = new HashSet<>();
-        Set<String> taskGroupIDs = getCandidateGroupByTaskID(nID_Task);
 
-        List<Group> groups = oIdentityService.createGroupQuery().groupMember(sLogin).list();
-        for (Group group : groups){
-            userGroupIDs.add(group.getId());
-        }
-
-        for (String userGroupID : userGroupIDs){
-            for (String taskGroupID : taskGroupIDs){
-                if (taskGroupID.equals(userGroupID)){
-                    return true;
-                }
-            }
-        }
-        */
         ProcessDefinition BP_Task = getProcessDefinitionByTaskID(nID_Task.toString());
         List<ProcessDefinition> aBP_Task = new LinkedList<>();
         aBP_Task.add(BP_Task);
