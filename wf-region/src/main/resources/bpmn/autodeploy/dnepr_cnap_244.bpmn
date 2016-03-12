@@ -63,7 +63,6 @@
         <activiti:formProperty id="markers3" name="Видача дублікату дозволу" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_3&quot;: {&quot;aField_ID&quot;: [&quot;file8&quot;],&quot;asID_Field&quot; : {&quot;sClient&quot;: &quot;vibor_service&quot;}, &quot;sCondition&quot; : &quot;[sClient] == 'duplicate'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="Анулювання дозволу" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_4&quot;: {&quot;aField_ID&quot;: [&quot;file9&quot;],&quot;asID_Field&quot; : {&quot;sClient&quot;: &quot;vibor_service&quot;}, &quot;sCondition&quot; : &quot;[sClient] == 'cansel'&quot; }}}"></activiti:formProperty>
         <activiti:formProperty id="markers5" name="Показати виконавця" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_5&quot;: {&quot;aField_ID&quot;: [&quot;vibor_performer&quot;],&quot;asID_Field&quot; : {&quot;sClient&quot;: &quot;sID_Public_SubjectOrganJoin&quot;}, &quot;sCondition&quot; : &quot;[sClient] == 'prav'||[sClient] == 'lev'&quot; }}}"></activiti:formProperty>
-        <activiti:formProperty id="markers7" name="Видача дозволу Хмельницький" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_7&quot;:{&quot;aField_ID&quot;:[&quot;info&quot;,&quot;file1&quot;,&quot;file22&quot;,&quot;file3&quot;,&quot;file5&quot;,&quot;file6&quot;,&quot;file11&quot;,&quot;file12&quot;,&quot;file13&quot;,&quot;file15&quot;,&quot;file16&quot;,&quot;file17&quot;,&quot;file18&quot;,&quot;file19&quot;,&quot;file20&quot;,&quot;file21&quot;],&quot;asID_Field&quot;:{&quot;sClient1&quot;:&quot;vibor_service&quot;,&quot;sClient2&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sClient1] == 'issue' &amp;&amp; [sClient2] == 'hmel_hmelT'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -115,7 +114,7 @@ per3 = 'Головному державному санітарному ліка�
 }
 if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'hmel_hmelT'){
 per1 = '533'
-per2 = 'tanyazol@gmail.com'
+per2 = 'cnap32@rada.khmelnytsky.com, cnap35@rada.khmelnytsky.com'
 per3 = 'Головному державному санітарному лікарю м.Хмельницького'
 }
 if (execution.getVariable('vibor_service') == 'issue'){
@@ -339,7 +338,7 @@ execution.setVariable('term', per7)
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 &lt;p&gt;Ваше звернення щодо ${substance_3} дозволу (санітарний паспорт) на право експлуатації рентгенівського кабінету (зберігання та експлуатації пересувних і переносних (палатних) рентгенівських апаратів) лікувально-профілактичних закладів - відправлене в держсанепідслужбу.&lt;br /&gt;
 Спеціалісти повинні дати відповідь протягом ${term} з дня реєстрації заяви.&lt;br /&gt; 
-&lt;p&gt;Номер Вашого замовлення: ${number_cnap}&lt;/p&gt;.
+&lt;p&gt;Номер Вашого замовлення: ${number_cnap}&lt;/p&gt;
 &lt;/p&gt;
 &lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]&lt;br /&gt; 
