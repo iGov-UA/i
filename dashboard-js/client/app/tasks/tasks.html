@@ -62,7 +62,7 @@
   </div>
 </div>
 <div class="row no-horizontal-margin" ng-style="printModalState.show && {'overflow-y':'hidden'}" ng-init="init()">
-  <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 sidebar"  igov-when-scrolled="whenScrolled()">
+  <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 sidebar"  igov-when-scrolled="whenScrolled()" id="tasks-list-holder">
     <div class="tasks">
       <div ng-if="sSelectedTask=='tickets'" class="tasks-tickets-list-header">
 
@@ -143,7 +143,7 @@
             <button class="btn btn-info" ng-click="loadMoreTasks()">Завантажити ще</button>
           </div>
 
-          <div ng-if="!tasksLoading===false && !isLoadMoreAvailable()">
+          <div ng-if="tasksLoading===false && !isLoadMoreAvailable()">
             <h3>Більше задач не знайдено</h3>
           </div>
         </div>
