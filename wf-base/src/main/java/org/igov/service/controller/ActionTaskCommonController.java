@@ -1981,6 +1981,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 					assignee = task.getAssignee();
 					LOG.info("Processing task {} with assignee {}", task.getId(), task.getAssignee());
 					taskService.setVariable(task.getId(), "sStatusName_UkrDoc", status);
+					runtimeService.setVariable(task.getProcessInstanceId(), "sStatusName_UkrDoc", status);
+					runtimeService.setVariable(task.getProcessInstanceId(), "sID_Document_UkrDoc", sKey);
 					LOG.info("Set variable sStatusName_UkrDoc {} for task with ID {}", status, task.getId());
 					taskService.complete(task.getId());
 					LOG.info("Completed task {}", task.getId());
