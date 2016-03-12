@@ -1,20 +1,18 @@
  package org.igov.log;
 
-import org.igov.log.http.LogResponse;
-import org.junit.Ignore;
-import org.junit.Test;
+ import org.igov.log.http.LogResponse;
+ import org.junit.Test;
 
-import static org.slf4j.helpers.MessageFormatter.arrayFormat;
-import static org.slf4j.helpers.MessageFormatter.format;
-
-import static org.junit.Assert.*;
+ import static org.apache.commons.lang3.StringUtils.substring;
+ import static org.junit.Assert.*;
+ import static org.slf4j.helpers.MessageFormatter.arrayFormat;
+ import static org.slf4j.helpers.MessageFormatter.format;
 
 /**
  * @author dgroup
  * @since  08.01.2016
  */
 public class LoggerTest {
-    private static final String SL4J_MARKER = "{}";
 
     @Test
     public void logErrorHttp(){
@@ -41,6 +39,9 @@ public class LoggerTest {
         assertEquals("Hi there.",   format("Hi {}.", "there").getMessage() );
         assertEquals("Hi [there].", format("Hi {}.", new Object[]{"there"}).getMessage() );
         assertEquals("Hi there.",   arrayFormat("Hi {}.", new Object[]{"there"}).getMessage() );
+
+        Logger log = LoggerImpl.getLog(LoggerTest.class);
+        assertEquals("Hi there.",   log.fullMsg("Hi {}.", "there"));
     }
 
     @Test
@@ -58,7 +59,24 @@ public class LoggerTest {
     @Test
     public void slf4jApproach(){
         Logger log = LoggerImpl.getLog(LoggerTest.class);
-        String msg = log.trace("Hi {}. My name is {} and i'll save you!", "Earth", "Doctor");
-        assertEquals("Hi Earth. My name is Doctor and i'll save you!", msg);
+        String msg = log.trace("Hi `{}`. My name is {} and i'll save you!", "Earth", "Doctor");
+        assertEquals("Hi `Earth`. My name is Doctor and i'll save you!", msg);
+    }
+
+
+    @Test
+    public void cut(){
+        // Prerequisites
+        String text= "User name=Daniel";  int maxLength = text.length()-3;
+        assertEquals("User name=Dan",   substring(text, 0, maxLength));
+
+        // Cut last symbol
+        Logger log = LoggerImpl.getLog(LoggerTest.class);
+        String msg = log.Trace("User")
+            .P("name", "Daniel")    // User name=Daniel
+            .Cut(maxLength)
+            .Send();
+
+        assertEquals("Cut operation was broken", "User name=Dan", msg);
     }
 }

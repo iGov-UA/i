@@ -20,12 +20,15 @@ import static org.apache.commons.lang3.Validate.notNull;
  */
 public class LoggerImpl implements Logger {
 
-    private static final int CALL_STACK_DEPTH = 3;
+    private static final int DEPTH_CALL_STACK_SLF4J = 7;
+    private static final int DEPTH_CALL_STACK_IGOV  = 9;
+
     private final org.slf4j.Logger log;
     private final Set<Consumer> consumers;
 
     private String msg;
     private final Set<Customize> actions = new LinkedHashSet<>();
+    private Log task;
 
 
     private LoggerImpl(Class<?> clazz, Set<Consumer> consumers) {
@@ -36,38 +39,57 @@ public class LoggerImpl implements Logger {
 
 
     public String trace(String msg, Object ... args) {
-        return newRecord( fullMsg(msg, args),
-            ()-> log.trace(withCalledMethod(msg), args));
+        return trace(fullMsg(msg, args), DEPTH_CALL_STACK_SLF4J);
     }
 
     public String debug(String msg, Object... args) {
-        return newRecord( fullMsg(msg, args),
-            ()-> log.debug(withCalledMethod(msg), args));
+        return debug(fullMsg(msg, args), DEPTH_CALL_STACK_SLF4J);
     }
 
     public String info(String msg, Object ... args) {
-        return newRecord( fullMsg(msg, args),
-            ()-> log.info(withCalledMethod(msg), args));
+        return info(fullMsg(msg, args), DEPTH_CALL_STACK_SLF4J);
     }
 
     public String warn(String msg, Object ... args) {
-        return newRecord( fullMsg(msg, args),
-            ()-> log.warn(withCalledMethod(msg), args));
+        return warn(fullMsg(msg, args), DEPTH_CALL_STACK_SLF4J);
     }
 
     public String error(String msg, Object ... args) {
-        return newRecord( fullMsg(msg, args),
-            ()-> log.error(withCalledMethod(msg), args));
+        return error(fullMsg(msg, args), DEPTH_CALL_STACK_SLF4J);
     }
 
     public String error(String msg, Exception exp) {
-        log.error(msg, exp);
-        return msg;
+        return error(msg, exp, DEPTH_CALL_STACK_SLF4J);
     }
 
     public String error(Exception exp, String msg, Object ... args) {
-        return newRecord( fullMsg(msg, args),
-            ()-> log.error(withCalledMethod(msg), exp));
+        return error(fullMsg(msg, args), exp, DEPTH_CALL_STACK_SLF4J);
+    }
+
+
+
+    private String trace(String msg, int stackDepth) {
+        return newRecord(msg, ()-> log.trace(getMethodName(stackDepth)+" "+msg));
+    }
+
+    private String debug(String msg, int stackDepth) {
+        return newRecord(msg, ()-> log.debug(getMethodName(stackDepth)+" "+msg));
+    }
+
+    private String info (String msg, int stackDepth) {
+        return newRecord(msg, ()-> log.info(getMethodName(stackDepth)+" "+msg));
+    }
+
+    private String warn (String msg, int stackDepth) {
+        return newRecord(msg, ()-> log.warn(getMethodName(stackDepth)+" "+msg));
+    }
+
+    private String error(String msg, int stackDepth) {
+        return newRecord(msg, ()-> log.error(getMethodName(stackDepth)+" "+msg));
+    }
+
+    private String error(String msg, Exception exp, int stackDepth) {
+        return newRecord(msg, ()-> log.error(getMethodName(stackDepth)+" "+msg, exp));
     }
 
 
@@ -79,26 +101,31 @@ public class LoggerImpl implements Logger {
 
     public Logger Trace(String msg) {
         this.msg = msg;
+        task = ()-> trace(this.msg, DEPTH_CALL_STACK_IGOV);
         return this;
     }
 
     public Logger Debug(String msg) {
         this.msg = msg;
+        task = ()-> debug(this.msg, DEPTH_CALL_STACK_IGOV);
         return this;
     }
 
     public Logger Info(String msg) {
         this.msg = msg;
+        task = ()-> info(this.msg, DEPTH_CALL_STACK_IGOV);
         return this;
     }
 
     public Logger Warn(String msg) {
         this.msg = msg;
+        task = ()-> warn(this.msg, DEPTH_CALL_STACK_IGOV);
         return this;
     }
 
-    public Logger Error(String msg) {
+    public Logger Error(String msg, Exception exp) {
         this.msg = msg;
+        task = ()-> error(this.msg, exp, DEPTH_CALL_STACK_IGOV);
         return this;
     }
 
@@ -112,10 +139,14 @@ public class LoggerImpl implements Logger {
     public String Send() {
         for(Customize action : actions)
             msg = action.customize(msg);
+        task.doRecord();
         return msg;
     }
 
 
+    /**
+     * Add to current message a new piece of message
+     **/
     public Logger P(String parameter, Object value) {
         notNull(parameter, "Parameter key can't be a null");
         msg += " "+ parameter +"="+ value;
@@ -138,16 +169,15 @@ public class LoggerImpl implements Logger {
     }
 
 
-    private static String withCalledMethod(String msg) {
-        return getMethodName() + " " + msg;
-    }
+
+
     /**
      * Get the method name for a depth in call stack.
      */
-    private static String getMethodName()
+    private static String getMethodName(int depth)
     {
         return Thread.currentThread()
-                .getStackTrace()[CALL_STACK_DEPTH]
+                .getStackTrace()[depth]
                 .getMethodName();
     }
 
