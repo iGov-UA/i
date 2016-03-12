@@ -67,7 +67,7 @@ exports.authenticate = function (req, res) {
   async.waterfall([
     function (callback) {
       activiti.post(checkLogin, function (error, statusCode, result, headers) {
-        if (result.session && Boolean(result.session) === true) {
+        if (result && result.session && Boolean(result.session) === true) {
           var jsessionCookie = headers['set-cookie'][0].split('JSESSIONID=')[1];
           callback(null, jsessionCookie);
         } else if (error) {
@@ -75,8 +75,8 @@ exports.authenticate = function (req, res) {
         } else {
           var authError = {
             message: 'Відмовлено у авторізаціі. Перевірте логін/пароль',
-            serverMessage: result.message,
-            code: result.code,
+            serverMessage: result ? result.message : '',
+            code: result ? result.code : 0,
             statusCode: statusCode
           };
           callback(authError, null);

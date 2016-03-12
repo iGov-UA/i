@@ -289,6 +289,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         String sUserTaskName = bProcessClosed ? "" : aTask.get(0).getName();//"(нет назви)"
 
         String sMailTo = JsonRequestDataResolver.getEmail(omRequestBody);
+        String sPhone = JsonRequestDataResolver.getPhone(omRequestBody);
         //LOG.info("Check if ned sendTaskCreatedInfoEmail... (sMailTo={})", sMailTo);
         if (sMailTo != null) {
             LOG.info("Send notification mail... (sMailTo={})", sMailTo);
@@ -300,13 +301,20 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             }
             */
             
+         
+            oNotificationPatterns.sendTaskCreatedInfoEmail(sMailTo, sID_Order);
+            //LOG.info("Sent Email ok!");
+        }
+        
+        if(sMailTo != null || sPhone != null)
+        {
            try
            {
             Map<String, String> mParamSync = new HashMap<String, String>();
-            
             mParamSync.put("snID_Subject", snID_Subject);
             mParamSync.put("sMailTo", sMailTo);
-            LOG.info("Вносим параметры в коллекцию (sMailTo {}, snID_Subject {})", sMailTo, snID_Subject);
+            mParamSync.put("sPhone", sPhone);
+            LOG.info("Вносим параметры в коллекцию (sMailTo {}, snID_Subject {}, sPhone {})", sMailTo, snID_Subject, sPhone);
             String sURL = generalConfig.sHostCentral() + URI_SYNC_CONTACTS;
             LOG.info("(Подключаемся к центральному порталу)");
             String sResponse = httpRequester.getInside(sURL, mParamSync);
@@ -318,9 +326,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
              LOG.warn("(isSaveTask exception {})", ex.getMessage());
            }
      
-            oNotificationPatterns.sendTaskCreatedInfoEmail(sMailTo, sID_Order);
-            //LOG.info("Sent Email ok!");
         }
+      
         historyEventService.addHistoryEvent(sID_Order, sUserTaskName, mParam);
         //LOG.info("ok!");
         

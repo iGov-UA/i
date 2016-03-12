@@ -1,5 +1,10 @@
 angular.module('auth').controller('AuthByEmailController', function ($window, $scope, $location, $state, $stateParams, ServiceService, ErrorsFactory) {
 
+  if(!$stateParams.link){
+    $state.go('index');
+    return;
+  }
+
   $scope.isProcessing = false;
 
   function startProcessing() {

@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
 import org.igov.model.core.NamedEntity;
@@ -532,16 +533,69 @@ public class SubjectController {
         return JsonRestUtils.toJsonResponse(serverOpt.get());
     }
 
+    /**
+     *
+     * @param snID_Subject - Строка ИД субъекта (автоматически добавляемые
+     * параметр, опциональный)
+     * @param sMailTo - Строка адрес электронной почты (опциональный)
+     * @param sPhone - Строка номер телефона (опциональный)
+     * @return - Возвращает список синхронизированных контактов
+     * @throws CommonServiceException
+     */
+    @ApiOperation(value = "Синхронизация контактов", notes = "#### Пример: \n"
+            + "https://test.igov.org.ua/wf/service/subject/syncContacts?snID_Subject=2&sMailTo=test44@gmail.com&sPhone=654 \n"
+            + "Ответ: \n"
+            + "HTTP Status: 200 \n"
+            + "\n```json\n"
+            + "["
+            + "{"
+            + "\"subject\":{ \n"
+            + "\"sID\":\"2872618515\",\n"
+            + "\"sLabel\":\"Белявцев Владимир Владимирович\", \n"
+            + "\"sLabelShort\":\"Белявцев В. В.\", \n"
+            + "\"nID\":2 \n"
+            + "},"
+            + "\"subjectContactType\": \n"
+            + "{ \n"
+            + "\"sName_EN\":\"Email\", \n"
+            + "\"sName_UA\":\"Електрона адреса\", \n"
+            + "\"sName_RU\":\"Электнонный адрес\", \n"
+            + "\"nID\":1 \n"
+            + "}, \n"
+            + "\"sValue\":\"test44@gmail.com\", \n"
+            + "\"sDate\":\"2016-02-23 19:57:56.279\", \n"
+            + "\"nID\":1003 \n"
+            + "}, \n"
+            + "{ \n"
+            + "\"subject\": {\n"
+            + "\"sID\":\"2872618515\", \n"
+            + "\"sLabel\":\"Белявцев Владимир Владимирович\", \n"
+            + "\"sLabelShort\":\"Белявцев В. В.\", \n"
+            + "\"nID\":2 \n"
+            + "}, \n"
+            + "\"subjectContactType\": { \n"
+            + "\"sName_EN\":\"Phone\", \n"
+            + "\"sName_UA\":\"Телефон\", \n"
+            + "\"sName_RU\":\"Телефон\", \n"
+            + "\"nID\":0 \n"
+            + "}, \n"
+            + "\"sValue\":\"654\", \n"
+            + "\"sDate\":\"2016-02-23 19:58:41.325\", \n"
+            + "\"nID\":1002"
+            + "} \n"
+            + "] \n"
+            + "\n```\n")
     @RequestMapping(value = "/syncContacts", method = RequestMethod.GET)
     public @ResponseBody
     ResponseEntity syncContacts(
-            @ApiParam(value = "Строка адрес электронной почты", required = true) @RequestParam(value = "sMailTo", required = true) String sMailTo,
-            @ApiParam(value = "Строка ИД субьекта", required = true) @RequestParam(value = "snID_Subject", required = true) String snID_Subject
+            @ApiParam(value = "Строка ИД субъекта (автоматически добавляемые параметр, опциональный)", required = false) @RequestParam(value = "snID_Subject", required = false) String snID_Subject,
+            @ApiParam(value = "Строка адрес электронной почты", required = false) @RequestParam(value = "sMailTo", required = false) String sMailTo,
+            @ApiParam(value = "Строка номер телефона", required = false) @RequestParam(value = "sPhone", required = false) String sPhone
     ) throws CommonServiceException {
-        LOG.info("(Вход в contactsService sMailTo {}, snID_Subject {})", sMailTo, snID_Subject);
-        SubjectContact oSubjectContact = subjectService.syncContactsService(snID_Subject, sMailTo);
+        LOG.info("(Вход в contactsService sMailTo {}, snID_Subject {}, sPhone {})", sMailTo, snID_Subject, sPhone);
+        List<SubjectContact> listContacts = subjectService.syncContactsService(snID_Subject, sMailTo, sPhone);
 
-        return JsonRestUtils.toJsonResponse(oSubjectContact);
+        return JsonRestUtils.toJsonResponse(listContacts);
     }
 
     @ApiOperation(value = "Получение аккаунтов субъектов", notes = "Возвращает список аккаунтов субъектов, согласно заданных параметров. "
@@ -748,17 +802,17 @@ public class SubjectController {
 
     @ApiOperation(value = "Получение полного набора данных по субъектам", notes = "Получаем полный набор данных по субъектам. "
             + "Пример:\n"
-            + "https://test.igov.org.ua/wf/service/subject/getSubjects\n\n"
+            + "https://test.igov.org.ua/wf/service/subject/getSubjectsByAccount\n\n"
             + "Ответ:\n"
             + "\n```\n")
-    @RequestMapping(value = "/getSubjects", method = RequestMethod.GET, headers = {JSON_TYPE})
+    @RequestMapping(value = "/getSubjectsByAccount", method = RequestMethod.GET, headers = {JSON_TYPE})
     public @ResponseBody
-    Map<String, Map<String, NamedEntity>> getSubjects(
+    Map<String, Map<String, Subject>> getSubjectsByAccount(
             @ApiParam(value = "Массив с логинами чиновников в виде json", required = false) @RequestParam(value = "saLogin", required = false) String saLogin,
             @ApiParam(value = "Массив с логинами групп в виде json", required = false) @RequestParam(value = "saGroup", required = false) String saGroup,
             @ApiParam(value = "Ид сервера", required = true) @RequestParam(value = "nID_Server", required = true) Long nID_Server) throws CommonServiceException {
 
-        Map<String, Map<String, NamedEntity>> result = new HashMap();
+        Map<String, Map<String, Subject>> result = new HashMap();
         // Если не задали ни один параметр в запросе - ошибка
         if (saLogin == null && saGroup == null) {
             throw new CommonServiceException(
@@ -772,44 +826,32 @@ public class SubjectController {
                 throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
                         "Error! SubjectAccountType not founf for id=" + 1, HttpStatus.NOT_FOUND);
             }
-            
-            Long nID_Subject;
-            if (saLogin != null) {
-                List<String> asLogin = JsonRestUtils.readObject(saLogin, List.class);
-                for (String login : asLogin) {
-                    Map<String, NamedEntity> users = new HashMap();
-                    List<SubjectAccount> subjectAccounts = subjectAccountDao.findSubjectAccounts(null, login, nID_Server, subjectAccountType);
-                    if (subjectAccounts != null && !subjectAccounts.isEmpty()) {
-                        nID_Subject = subjectAccounts.get(0).getnID_Subject();
-                        Subject subject = subjectDao.getSubject(nID_Subject);
-                        SubjectHuman subjectHuman = getSubjectHuman_(nID_Subject);
-                        List<SubjectContact> subjectContact = subjectContactDao.findContacts(subject);
-                        subjectHuman.setaContact(subjectContact);
-                        users.put(login, subjectHuman);
-                        result.put("users", users);
-                    }
-                }
-            }
-
-            if (saGroup != null) {
-                List<String> asGroup = JsonRestUtils.readObject(saGroup, List.class);
-                for (String group : asGroup) {
-                    Map<String, NamedEntity> organs = new HashMap();
-                    List<SubjectAccount> subjectAccounts = subjectAccountDao.findSubjectAccounts(null, group, nID_Server, subjectAccountType);
-                    if (subjectAccounts != null && !subjectAccounts.isEmpty()) {
-                        nID_Subject = subjectAccounts.get(0).getnID_Subject();
-                        Subject subject = subjectDao.getSubject(nID_Subject);
-                        SubjectOrgan subjectOrgan = getSubjectOrgan_(nID_Subject);
-                        List<SubjectContact> subjectContact = subjectContactDao.findContacts(subject);
-                        subjectOrgan.setaContact(subjectContact);
-                        organs.put(group, subjectOrgan);
-                        result.put("organs", organs);
-                    }
-                }
-            }
-
+            result.put("users", getSubject(saLogin, subjectAccountType, nID_Server));
+            result.put("organs", getSubject(saGroup, subjectAccountType, nID_Server));  
         }
         return result;
+    }
+
+    private Map<String, Subject> getSubject(String saLogin, SubjectAccountType subjectAccountType, Long nID_Server) {
+        Map<String, Subject> subjects = new HashMap();
+        Long nID_Subject;
+        Subject subject;
+        if (saLogin != null) {
+            Set<String> asLogin = JsonRestUtils.readObject(saLogin, Set.class);
+            LOG.info("asLogin: " + asLogin);
+            for (String login : asLogin) {
+                List<SubjectAccount> subjectAccounts = subjectAccountDao.findSubjectAccounts(null, login, nID_Server, subjectAccountType);
+                if (subjectAccounts != null && !subjectAccounts.isEmpty()) {
+                    nID_Subject = subjectAccounts.get(0).getnID_Subject();
+                    subject = subjectDao.getSubject(nID_Subject);
+                    List<SubjectContact> subjectContacts = subjectContactDao.findContacts(subject);
+                    LOG.info("subjectContacts: " + subjectContacts);
+                    subject.setaSubjectAccountContact(subjectContacts);
+                    subjects.put(login, subject);
+                }
+            }
+        }
+        return subjects;
     }
 
 }

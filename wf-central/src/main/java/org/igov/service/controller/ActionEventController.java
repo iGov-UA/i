@@ -6,6 +6,8 @@ import org.igov.model.subject.ServerDao;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpEntityInsedeCover;
 import org.igov.model.action.event.*;
+import org.igov.model.document.Document;
+import org.igov.model.document.DocumentDao;
 import org.igov.service.business.action.ActionEventService;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.RecordNotFoundException;
@@ -64,6 +66,8 @@ public class ActionEventController {
     private HttpEntityInsedeCover oHttpEntityInsedeCover;
     @Autowired
     private SubjectMessagesDao subjectMessagesDao; 
+    @Autowired    
+    private DocumentDao documentDao;
     
     /**
      * получает объект события по услуге, по одной из следующий комбинаций
@@ -359,12 +363,12 @@ public class ActionEventController {
     }
 
     //TODO: Сделать оограничение по строкам
-    @RequestMapping(value = "/getHistoryEventsService", method = RequestMethod.GET)
+    /*@RequestMapping(value = "/getHistoryEventsService", method = RequestMethod.GET)
     public
     @ResponseBody
     List<HistoryEvent_Service> getHistoryEventsService() {
         return historyEventServiceDao.findAll();
-    }
+    }*/
     
     
     //################ HistoryEvent services ###################
@@ -377,21 +381,24 @@ public class ActionEventController {
      * @param sEventName_Custom строка - кастомное описание документа
      * (необязательное поле)
      * @param sMessage строка - сохраняемое содержимое (обязательное поле)
+     * @param nID_HistoryEvent_Service строка - id - сервиса HistoryEven (не обязательное поле)
+     * @param nID_Document строка - id - документа (не обязательное поле)
      */
     @ApiOperation(value = "Сохранение события ", notes = "##### ActionEventController - События по действиям и статистика. Сохранение события #####\n\n"
-            + "HTTP Context: http://server:port/wf/service/action/event/setHistoryEvent")
+            + "HTTP Context: http://test.igov.org.ua/wf/service/action/event/setHistoryEvent")
     @RequestMapping(value = "/setHistoryEvent", method = RequestMethod.POST)
     public @ResponseBody
     Long setHistoryEvent(
             @ApiParam(value = "ИД-строка субъекта, который загрузил документ", required = false) @RequestParam(value = "nID_Subject", required = false) long nID_Subject,
             @ApiParam(value = "ИД-номер типа документа", required = false) @RequestParam(value = "nID_HistoryEventType", required = false) Long nID_HistoryEventType,
             @ApiParam(value = "кастомное описание документа", required = false) @RequestParam(value = "sEventName", required = false) String sEventName_Custom,
-            @ApiParam(value = "сохраняемое содержимое", required = true) @RequestParam(value = "sMessage") String sMessage)
+            @ApiParam(value = "сохраняемое содержимое", required = true) @RequestParam(value = "sMessage") String sMessage,
+            @ApiParam(value = "id - сервиса HistoryEven", required = false) @RequestParam(value = "nID_HistoryEvent_Service", required=false) Long nID_HistoryEvent_Service,
+            @ApiParam(value = "id - документа", required = false) @RequestParam(value = "nID_Document", required=false) Long nID_Document)
             throws IOException {
-
+	
         return historyEventDao.setHistoryEvent(nID_Subject,
-                nID_HistoryEventType, sEventName_Custom, sMessage);
-
+                nID_HistoryEventType, sEventName_Custom, sMessage, nID_HistoryEvent_Service, nID_Document);
     }
 
     /**
@@ -399,11 +406,94 @@ public class ActionEventController {
      *
      * @param id ИД-номер документа
      */
-    @ApiOperation(value = "Получение документа по ид документа", notes = "##### ActionEventController - События по действиям и статистика. Получение документа по ид документа #####\n\n"
-            + "HTTP Context: http://server:port/wf/service/action/event/getHistoryEvent\n\n\n"
-            + "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n\n"
-            + "Пример:\n"
-            + "https://test.igov.org.ua/wf/service/action/event/getHistoryEvent?nID=1")
+    @ApiOperation(value = "Получение события истории по его id", notes = "\n"
+            + "Пример 1 (Нет документа или HistoryEvent_Service связанных с этим событием):\n"
+            + "https://test.igov.org.ua/wf/service/action/event/getHistoryEvent?nID=11\n\n"
+            + "\n```json\n"
+            + "{\n"
+            + "  \"sMessage\": \"Новая заявка создана_11\",\n"
+            + "  \"sDate\": \"2015-07-04 12:18:56.235\",\n"
+            + "  \"oHistoryEvent_Service\": null,\n"
+            + "  \"oDocument\": null,\n"
+            + "  \"nID\": 11,\n"
+            + "  \"nID_Subject\": 10,\n"
+            + "  \"nID_HistoryEventType\": 6,\n"
+            + "  \"sEventName\": \"Изменение статуса заявки\"\n"
+            + "}\n"
+            + "\n```\n"
+            + "Пример 2 (Есть Документ и HistoryEvent_Service связанные с этим событием):\n"
+            + "https://test.igov.org.ua/wf/service/action/event/getHistoryEvent?nID=12\n\n"
+            + "\n```json\n"
+            + "{\n"
+            + "  \"sMessage\": \"Новая заявка создана_11\",\n"
+            + "  \"sDate\": \"2015-07-04 12:18:56.235\",\n"
+            + "  \"oHistoryEvent_Service\": {\n"
+            + "    \"sID\": \"2\",\n"
+            + "    \"nID_Task\": 2,\n"
+            + "    \"nID_Subject\": 2,\n"
+            + "    \"sUserTaskName\": \"processing\",\n"
+            + "    \"sDate\": null,\n"
+            + "    \"nID_Service\": 1,\n"
+            + "    \"nID_Region\": 1,\n"
+            + "    \"sID_UA\": \"1200000000\",\n"
+            + "    \"nRate\": 0,\n"
+            + "    \"soData\": \"[]\",\n"
+            + "    \"sToken\": \"TokenValue\",\n"
+            + "    \"sHead\": \"\",\n"
+            + "    \"sBody\": \"\",\n"
+            + "    \"nTimeMinutes\": 567,\n"
+            + "    \"sID_Order\": \"0-22\",\n"
+            + "    \"nID_Server\": 0,\n"
+            + "    \"nID_Proccess_Feedback\": 0,\n"
+            + "    \"nID_Proccess_Escalation\": 0,\n"
+            + "    \"sID_Rate_Indirectly\": \"\",\n"
+            + "    \"nID_StatusType\": 13,\n"
+            + "    \"sID_StatusType\": \"Unknown\",\n"
+            + "    \"sName_UA_StatusType\": \"Заявка у невідомому статусі\",\n"
+            + "    \"nID_Protected\": null,\n"
+            + "    \"nID\": 2\n"
+            + "  },\n"
+            + "  \"oDocument\": {\n"
+            + "    \"sContentType\": \"text/plain\",\n"
+            + "    \"oSignData\": \"{}\",\n"
+            + "    \"contentType\": \"text/plain\",\n"
+            + "    \"nID\": 7,\n"
+            + "    \"sName\": \"Справка\",\n"
+            + "    \"oDocumentType\": {\n"
+            + "      \"bHidden\": false,\n"
+            + "      \"nID\": 0,\n"
+            + "      \"sName\": \"Квитанція про сплату\"\n"
+            + "    },\n"
+            + "    \"sID_Content\": \"0\",\n"
+            + "    \"oDocumentContentType\": {\n"
+            + "      \"nID\": 2,\n"
+            + "      \"sName\": \"text/plain\"\n"
+            + "    },\n"
+            + "    \"sFile\": \"dd1.txt\",\n"
+            + "    \"sDate_Upload\": \"2015-01-01\",\n"
+            + "    \"sID_Subject_Upload\": \"2872618520\",\n"
+            + "    \"sSubjectName_Upload\": \"ВасяПупкин3\",\n"
+            + "    \"oSubject_Upload\": {\n"
+            + "      \"sID\": \"ПАО\",\n"
+            + "      \"sLabel\": \"ПАО ПриватБанк\",\n"
+            + "      \"sLabelShort\": \"ПриватБанк\",\n"
+            + "      \"aSubjectAccountContact\": null,\n"
+            + "      \"nID\": 1\n"
+            + "    },\n"
+            + "    \"oSubject\": {\n"
+            + "      \"sID\": \"\",\n"
+            + "      \"sLabel\": \"Fozzie Bear\",\n"
+            + "      \"sLabelShort\": \"\",\n"
+            + "      \"aSubjectAccountContact\": null,\n"
+            + "      \"nID\": 25\n"
+            + "    }\n"
+            + "  },\n"
+            + "  \"nID\": 12,\n"
+            + "  \"nID_Subject\": 10,\n"
+            + "  \"nID_HistoryEventType\": 6,\n"
+            + "  \"sEventName\": \"Изменение статуса заявки\"\n"
+            + "}\n"
+            + "\n```\n")
     @RequestMapping(value = "/getHistoryEvent", method = RequestMethod.GET)
     public @ResponseBody
     HistoryEvent getHistoryEvent(
@@ -417,14 +507,25 @@ public class ActionEventController {
      * @param nID_Subject ID авторизированого субъекта (добавляется в запрос
      * автоматически после аутентификации пользователя)????????
      */
-    @ApiOperation(value = "Загрузка событий", notes = "##### ActionEventController - События по действиям и статистика. Загрузка событий #####\n\n"
-            + "HTTP Context: http://server:port/wf/service/action/event/getHistoryEvents\n\n\n"
-            + "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)")
+    @ApiOperation(value = "Загрузка событий", notes = "##### Загружает историю событий #####\n\n"
+            + "Пример: http://test.igov.org.ua/wf/service/action/event/getHistoryEvents?nID_Subject=10\n\n"
+            + "В зависимости от параметра **bGrouped** к списку может применяться фильтр.\n\n"
+            + "- Если **bGrouped = false** - выбираются все сущности для данного субъекта\n"
+            + "- если **bGrouped = true**, то в список попадают только уникальные сущности. Если сущности не уникальные, то из них отбирается только "
+            + "одна с самым большим временем в поле sDate\n\n"             
+            + "Уникальность сущности определяется путем сравнения полей **oHistoryEvent_Service, oDocument**\n\n"
+            + "Алгоритм сравнения сущностей:\n\n"
+            + "- если поля **oHistoryEvent_Service = null** и **oDocument=null**- сущности разные\n" 
+            + "- если **oHistoryEvent_Service = null**, а **oDocument = не null** -сравнение идет только по **oDocument**\n" 
+            + "- если **oHistoryEvent_Service = не null**, **а oDocument = null** - савнение идет только по **oHistoryEvent_Service**\n" 
+            + "- если **oHistoryEvent_Service = не null** и **oDocument = не null** - сравнение идет и по **oHistoryEvent_Service** и по **oDocument**\n")
     @RequestMapping(value = "/getHistoryEvents", method = RequestMethod.GET)
     public @ResponseBody
     List<HistoryEvent> getHistoryEvents(
-            @ApiParam(value = "nID_Subject ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)", required = true) @RequestParam(value = "nID_Subject") long nID_Subject) {
-        return historyEventDao.getHistoryEvents(nID_Subject);
+            @ApiParam(value = "id авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)", required = true) @RequestParam(value = "nID_Subject") long nID_Subject,
+            @ApiParam(value = "если **true**, то возвращает только последнюю по дате (sDate) запись, из тех, у которых nID_HistoryEvent_Service или nID_Document - один и тот-же", required = false) 
+            @RequestParam(value = "bGrouped", required=false, defaultValue = "false") Boolean bGrouped ) {
+        return historyEventDao.getHistoryEvents(nID_Subject, bGrouped);
     }
 
     ////-------------Statistics--------

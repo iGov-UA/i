@@ -279,7 +279,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 for (FormProperty property : data.getFormProperties()) {
 
                     String sValue = "";
-                    String sType = property.getType().getName();
+                    String sType = property.getType() != null ? property.getType().getName() : "";
                     if ("enum".equalsIgnoreCase(sType)) {
                         sValue = oActionTaskService.parseEnumProperty(property);
                     } else {
@@ -579,10 +579,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             nID_Task = oActionTaskService.getTaskIDbyProcess(nID_Process, sID_Order, Boolean.FALSE);
         }
         if(sLogin != null){
-            if (oActionTaskService.checkAvailabilityTaskCandidateGroupsForUser(sLogin, nID_Task)){
+            if (oActionTaskService.checkAvailabilityTaskGroupsForUser(sLogin, nID_Task)){
                 LOG.info("User {} have access to the Task {}", sLogin, nID_Task);
             } else {
-                String taskGroupIDs = oActionTaskService.getCandidateGroupByTaskID(nID_Task).toString();
+                //String taskGroupIDs = oActionTaskService.getCandidateGroupByTaskID(nID_Task).toString();
+                String taskGroupIDs = oActionTaskService.getGroupIDsByTaskID(nID_Task).toString();
                 throw new AccessServiceException(AccessServiceException.Error.LOGIN_ERROR, "Access deny " + taskGroupIDs);
             }
         }
@@ -614,7 +615,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         response.put("oData", oActionTaskService.getQueueData(aField));
 
         if (bIncludeGroups.equals(Boolean.TRUE)){
-            response.put("aGroups", oActionTaskService.getCandidateGroupByTaskID(nID_Task));
+            //response.put("aGroups", oActionTaskService.getCandidateGroupByTaskID(nID_Task));
+            response.put("aGroups", oActionTaskService.getGroupIDsByTaskID(nID_Task));
         }
         if (bIncludeStartForm.equals(Boolean.TRUE)){
             response.put("aFieldStartForm", oActionTaskService.getStartFormData(nID_Task));
@@ -639,7 +641,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
 
         response.put("sStatusName", oActionTaskService.getTaskName(nID_Task));
-        response.put("sID_Status", nID_Task);
+        response.put("sID_Status", oActionTaskService.getsIDUserTaskByTaskId(nID_Task));
 
         String sDateTimeCreate = JsonDateTimeSerializer.DATETIME_FORMATTER.print(
                 oActionTaskService.getTaskDateTimeCreate(nID_Task).getTime()
@@ -1921,9 +1923,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 				String assignee = null;
 				for (Task task : tasks){
 					assignee = task.getAssignee();
-					taskService.complete(task.getId());
+					LOG.info("Processing task {} with assignee {}", task.getId(), task.getAssignee());
 					taskService.setVariable(task.getId(), "sStatusName_UkrDoc", status);
-					LOG.info("Completed task with ID {}", task.getId());
+					LOG.info("Set variable sStatusName_UkrDoc {} for task with ID {}", status, task.getId());
+					taskService.complete(task.getId());
+					LOG.info("Completed task {}", task.getId());
 				}
 				if (assignee != null){
 					LOG.info("Looking for a new task to claim it to the user {}", assignee);

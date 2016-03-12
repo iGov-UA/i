@@ -46,12 +46,12 @@ angular.module('app').directive('dropdownOrgan', function (OrganListFactory, $ht
       var attributesApplying = false;
 
       var loadAttributesData = function (currentKey) {
-        $http.post('./api/organs/attributes/' + scope.serviceData.oSubject_Operator.nID + '/' + getSelectedRegion().nID,
+        $http.post('./api/subject/organs/attributes/' + scope.serviceData.oSubject_Operator.nID + '/' + getSelectedRegion().nID,
           getAttributesDataObject()).success(function (attributes) {
           attributesApplying = true;
           angular.forEach(attributes, function(attr){
             console.log("attr.sName="+attr.sName+",currentKey="+currentKey);
-            
+
           //angular.forEach(attributes, function(attr){
               if(attr.sValue && attr.sValue !== null && attr.sValue.substr(0,1)==="["){
                 console.log("attr.sValue="+attr.sValue);
@@ -101,7 +101,7 @@ angular.module('app').directive('dropdownOrgan', function (OrganListFactory, $ht
                                 if(oProperty.enumValues!==a && oProperty && oProperty !== null && oProperty.enumValues.length === 0 ){
                                     console.log("<>");
                                     //scope.formData.params[attr.sName].enumValues = a;
-                                    //if(oProperty.type === "enum" && oProperty.bVariable && oProperty.bVariable !== null && oProperty.bVariable === true){//oProperty.id === attr.sName && 
+                                    //if(oProperty.type === "enum" && oProperty.bVariable && oProperty.bVariable !== null && oProperty.bVariable === true){//oProperty.id === attr.sName &&
                                     oProperty.bVariable = true;
                                     oProperty.enumValues = a;
 //                                    scope.activitiForm.formProperties[n].bVariable = true;
@@ -113,7 +113,7 @@ angular.module('app').directive('dropdownOrgan', function (OrganListFactory, $ht
                                 }
                             }
                             n++;
-                        });   
+                        });
                     }
                 }
             }else if (angular.isDefined(scope.formData.params[attr.sName]) && currentKey != attr.sName){

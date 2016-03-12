@@ -81,16 +81,19 @@
 			<column name="nTry" type="int">
                 <constraints nullable="true"/>
             </column>            
-			<column name="sMethod" type="varchar(50)">
+            <column name="sObject" type="varchar(100)">
                 <constraints nullable="true"/>
             </column>
-            <column name="soRequest" type="varchar(500)">
+			<column name="sMethod" type="varchar(100)">
                 <constraints nullable="true"/>
             </column>
-            <column name="smParam" type="varchar(500)">
+            <column name="soRequest" type="blob">
                 <constraints nullable="true"/>
             </column>
-            <column name="sReturn" type="varchar(500)">
+            <column name="smParam" type="varchar(5000)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sReturn" type="varchar(5000)">
             </column>                                    
         </createTable>
 		<!-- ####################################################################################################### -->
@@ -112,16 +115,19 @@
 			<column name="nTry" type="int">
                 <constraints nullable="true"/>
             </column>            
-			<column name="sMethod" type="varchar(50)">
+            <column name="sObject" type="varchar(100)">
                 <constraints nullable="true"/>
             </column>
-            <column name="soRequest" type="varchar(500)">
+			<column name="sMethod" type="varchar(100)">
                 <constraints nullable="true"/>
             </column>
-            <column name="smParam" type="varchar(500)">
+            <column name="soRequest" type="blob">
                 <constraints nullable="true"/>
             </column>
-            <column name="sReturn" type="varchar(500)">
+            <column name="smParam" type="varchar(5000)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sReturn" type="varchar(5000)">
             </column>                                    
         </createTable>						        				        				
 	
@@ -133,31 +139,7 @@
             <column name="sID" type="STRING"/>
             <column name="sName" type="STRING"/>
         </loadUpdateData>
-
-        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/ActionExecute.csv" tableName="ActionExecute" separator=";">
-            <column name="nID" type="NUMERIC"/>
-            <column name="nID_ActionExecuteStatus" type="NUMERIC"/>
-            <column name="oDateMake" type="DATETIME"/>
-            <column name="oDateEdit" type="DATETIME"/>
-            <column name="nTry" type="NUMERIC"/>
-            <column name="sMethod" type="STRING"/>
-            <column name="soRequest" type="STRING"/>
-            <column name="smParam" type="STRING"/>
-            <column name="sReturn" type="STRING"/>
-        </loadUpdateData>
-        
-        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/ActionExecuteOld.csv" tableName="ActionExecuteOld" separator=";">
-            <column name="nID" type="NUMERIC"/>
-            <column name="nID_ActionExecuteStatus" type="NUMERIC"/>
-            <column name="oDateMake" type="DATETIME"/>
-            <column name="oDateEdit" type="DATETIME"/>
-            <column name="nTry" type="NUMERIC"/>
-            <column name="sMethod" type="STRING"/>
-            <column name="soRequest" type="STRING"/>
-            <column name="smParam" type="STRING"/>
-            <column name="sReturn" type="STRING"/>
-        </loadUpdateData>
-             
+                    
 	</changeSet>    
 
 </databaseChangeLog>
