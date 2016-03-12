@@ -1175,10 +1175,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
         LOG.debug("File name to return statistics : {}", sTaskDataFileName);
 
-        httpResponse.setContentType("text/csv;charset=" + charset.name());
-        httpResponse.setHeader("Content-disposition", "attachment; filename="
-                + sTaskDataFileName);
-
         CSVWriter printWriter = null;
         PipedInputStream pi = new PipedInputStream();
         
@@ -1190,6 +1186,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         } else {
         	printWriter = new CSVWriter(httpResponse.getWriter(), separator.charAt(0),
                 CSVWriter.NO_QUOTE_CHARACTER);
+        	httpResponse.setContentType("text/csv;charset=" + charset.name());
+            httpResponse.setHeader("Content-disposition", "attachment; filename="
+                    + sTaskDataFileName);
         }
 
         List<Map<String, Object>> csvLines = new LinkedList<>();
@@ -1244,11 +1243,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         if (sMailTo != null){
         	LOG.info("Sending email with tasks data to email {}", sMailTo);
 	        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-	        String sFileName = String.format("Выборка за: %s-%s для БП: %s ", sdf.format(dBeginDate), sdf.format(dEndDate), sID_BP);
+	        String sSubject = String.format("Выборка за: %s-%s для БП: %s ", sdf.format(dBeginDate), sdf.format(dEndDate), sID_BP);
 	        String sFileExt = "csv";
 	        DataSource oDataSource = new ByteArrayDataSource(pi, sFileExt);
 	        oMail._To(sMailTo);
-	        oMail._Attach(oDataSource, sFileName + "." + sFileExt, "");
+	        oMail._Head(sSubject);
+	        oMail._Attach(oDataSource, sTaskDataFileName + "." + sFileExt, "");
 	        try {
 				oMail.sendWithUniSender();
 			} catch (EmailException e) {
