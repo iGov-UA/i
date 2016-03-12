@@ -606,7 +606,7 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
         var sF = options.sFormat.substr(n, 1);
         console.log("sF=" + sF);
         var b = false;
-        if (sF === "х") {
+        if (sF === "#") {//х//#
           b = (s === "0" || s === "1" || s === "2" || s === "3" || s === "4" || s === "5" || s === "6" || s === "7" || s === "8" || s === "9");
         } else {
           b = (s === sF);
