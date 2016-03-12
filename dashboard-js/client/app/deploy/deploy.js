@@ -5,10 +5,11 @@
     .module('dashboardJsApp')
     .config(deployConfig);
 
-  deployConfig.$inject = ['$routeProvider'];
-  function deployConfig($routeProvider) {
-    $routeProvider
-      .when('/deploy', {
+  deployConfig.$inject = ['$stateProvider'];
+  function deployConfig($stateProvider) {
+    $stateProvider
+      .state('deploy', {
+        url: '/deploy',
         templateUrl: 'app/deploy/deploy.html',
         access: {
           requiresLogin: true
