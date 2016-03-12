@@ -46,7 +46,7 @@ angular.module('app').controller('FooterController', function ($scope) {
     ,{
       url: 'http://bdo.com.ua',
       alt: 'bdo',
-      image: 'assets/images/ads/bdo.png',
+      image: 'assets/images/ads/bdo.jpg',
       height: 50
     }
     ,{
@@ -58,7 +58,7 @@ angular.module('app').controller('FooterController', function ($scope) {
     ,{
       url: 'http://avante.com.ua',
       alt: 'avante',
-      image: 'assets/images/ads/avante.png',
+      image: 'assets/images/ads/avante.jpg',
       height: 50
     }
     ,{
