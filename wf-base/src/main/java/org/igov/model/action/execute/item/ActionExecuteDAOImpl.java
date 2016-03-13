@@ -52,6 +52,7 @@ public class ActionExecuteDAOImpl extends GenericEntityDao<ActionExecute> implem
 		actionExecute.setsObject(sObject);
 		actionExecute.setsMethod(sMethod);
 		actionExecute.setSoRequest(soRequest);
+		actionExecute.setSmParam(smParam);
 		actionExecute.setsReturn(sReturn);
 		
 		getSession().saveOrUpdate(actionExecute);
