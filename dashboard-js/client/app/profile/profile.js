@@ -5,10 +5,11 @@
     .module('dashboardJsApp')
     .config(profileConfig);
 
-  profileConfig.$inject = ['$routeProvider'];
-  function profileConfig($routeProvider) {
-    $routeProvider
-      .when('/profile', {
+  profileConfig.$inject = ['$stateProvider'];
+  function profileConfig($stateProvider) {
+    $stateProvider
+      .state('profile', {
+        url: '/profile',
         templateUrl: 'app/profile/profile.html',
         access: {
           requiresLogin: true

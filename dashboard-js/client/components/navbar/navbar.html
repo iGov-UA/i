@@ -27,35 +27,17 @@
             <a ng-if="!applyTaskFilter" ng-attr-id="{{menu.type}}" ng-click="goToTasks(menu.tab)">{{menu.title}}
               <span ng-if="menu.showCount" class="label label-info">{{menu.count}}</span>
             </a>
+
             <a ng-if="applyTaskFilter" ng-attr-id="{{menu.type}}" ng-click="!!tasksLoading || goToTasks(menu.tab)">{{menu.title}}
               <span ng-if="menu.showCount" class="label label-info">{{menu.count}}</span>
             </a>
           </li>
         </ul>
 
-        <ul class="nav navbar-nav" ng-show="iGovNavbarHelper.areInstrumentsVisible">
-          <li ng-class="{'active': (iGovNavbarHelper.currentTab === '/users')}"
-              ng-show="iGovNavbarHelper.isTest">
-            <a href="" ng-click="goToUsers()">Користувачі</a>
-          </li>
-          <li ng-class="{'active': (iGovNavbarHelper.currentTab === '/groups')}"
-              ng-show="iGovNavbarHelper.isTest">
-            <a href="" ng-click="goToGroups()">Групи</a>
-          </li>
-          <li ng-class="{'active': (iGovNavbarHelper.currentTab === '/escalations')}"
-              ng-show="iGovNavbarHelper.isTest">
-            <a href="" ng-click="goToEscalations()">Ескалації</a>
-          </li>
-          <li ng-class="{'active': (iGovNavbarHelper.currentTab === '/reports')}">
-            <a ng-attr-id="{{menu.type}}" ng-click="goToReports()">Звіт</a>
-          </li>
-          <li ng-class="{'active': (iGovNavbarHelper.currentTab === '/services')}"
-              ng-show="iGovNavbarHelper.isTest">
-            <a href="" ng-click="goToServices()">Розклад</a>
-          </li>
-          <li ng-class="{'active': (iGovNavbarHelper.currentTab === '/deploy')}"
-              ng-show="iGovNavbarHelper.isTest">
-            <a href="" ng-click="goToDeploy()">Розгортання</a>
+        <ul class="nav navbar-nav" ng-if="iGovNavbarHelper.isTest && iGovNavbarHelper.areInstrumentsVisible">
+          <li ng-repeat="menuItem in iGovNavbarHelper.instrumentsMenus"
+              ng-class="{'active': isSelectedInstrumentsMenu(menuItem)}">
+            <a ui-sref="{{::menuItem.state}}" ng-bind="::menuItem.title"></a>
           </li>
         </ul>
 
