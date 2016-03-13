@@ -18,10 +18,10 @@
           <activiti:value id="attr2_yes" name="так"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть підрозділ міграційної служби, в якому Ви будете отримувати паспорт" type="select" default="0"></activiti:formProperty>
-        <activiti:formProperty id="visitDate" name="В який день Ви бажаєте звернутися до міграційної служби?" type="queueData" required="true"></activiti:formProperty>
+        <activiti:formProperty id="visitDay" name="В який день Ви бажаєте звернутися до міграційної служби?" type="queueData" required="true"></activiti:formProperty>
         <activiti:formProperty id="warning1" name=" " type="label" default="Якщо Ви не знайшли у обраному підрозділі ДМС зручну дату, спробуйте обрати інший підрозділ Вашого міста."></activiti:formProperty>
-        <activiti:formProperty id="nID_Department_visitDate" name="Департамент" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDms_center" name="sDms_center" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="nID_Department_visitDay" name="Департамент" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса ДМС" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNotification_day" name="sNotification_day" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible" default="Заявка актуальна"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="flow data" type="markers" default="${markerService.loadFromFile('dms/dmsZagran.json')}"></activiti:formProperty>
@@ -96,8 +96,7 @@ execution.setVariable('sNotification_day', timer)</script>
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 &lt;p&gt;
-Чекаємо Вас за адресою 
-[pattern_dictonary:dnepr_dms_passport_departments.csv:value{[sDms_center]}:2]&lt;br&gt;
+Чекаємо Вас за адресою: ${sAddress}&lt;br&gt;
 для оформлення закордонного паспорта
 &lt;/p&gt;
 &lt;p&gt;
@@ -141,7 +140,7 @@ execution.setVariable('sNotification_day', timer)</script>
 								Для того щоб закінчити процедуру необхідно:&lt;br&gt;
 								&lt;ul&gt;
 								&lt;li&gt;У будь-якому банку зробити необхідні платежі та отримати квитанції про сплату.&lt;/li&gt;
-								&lt;li&gt;Прийти за адресою: [pattern_dictonary:dnepr_dms_passport_departments.csv:value{[sDms_center]}:2] з необхідними документами.&lt;/li&gt;
+								&lt;li&gt;Прийти за адресою: ${sAddress} з необхідними документами.&lt;/li&gt;
 								&lt;/ul&gt;
 								&lt;/p&gt;
 								&lt;p&gt;
@@ -202,7 +201,7 @@ execution.setVariable('sNotification_day', timer)</script>
 								Для того щоб закінчити процедуру необхідно:&lt;br&gt;
 								&lt;ul&gt;
 								&lt;li&gt;У будь-якому банку зробити необхідні платежі та отримати квитанції про сплату.&lt;/li&gt;
-								&lt;li&gt;Прийти за адресою: [pattern_dictonary:dnepr_dms_passport_departments.csv:value{[sDms_center]}:2] з необхідними документами.&lt;/li&gt;
+								&lt;li&gt;Прийти за адресою: ${sAddress} з необхідними документами.&lt;/li&gt;
 								&lt;/ul&gt;
 								&lt;/p&gt;
 								&lt;p&gt;
@@ -256,7 +255,7 @@ execution.setVariable('sNotification_day', timer)</script>
           <activiti:value id="attr1_no" name="ні"></activiti:value>
           <activiti:value id="attr2_yes" name="так"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="visitDate" name="Дата та час візиту - " type="queueData" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="visitDay" name="Дата та час візиту - " type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="finish" name="Результат візиту" type="enum" required="true">
           <activiti:value id="attr1_ok" name="Громадянин прийшов у назначений час"></activiti:value>
           <activiti:value id="attr2_missed" name="Громадянин не з'явився"></activiti:value>

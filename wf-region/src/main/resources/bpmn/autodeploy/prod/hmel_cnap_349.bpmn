@@ -50,7 +50,6 @@
         <activiti:formProperty id="sDateAccordance" name="Укажіть дату затвердження договору на вивіз твердих побутових відходів" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNumberAccordance" name="Укажіть номер договору на вивіз твердих побутових відходів" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDovirenist" name="Довіреність на право представляти інтереси суб'єкта звернення в органах місцевого самоврядування" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="notice" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
         <activiti:formProperty id="rNumber" name="номер району" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="rName" name="район" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="remail" name="пошта району" type="invisible"></activiti:formProperty>
@@ -66,7 +65,7 @@
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>
     <endEvent id="endevent2" name="End"></endEvent>
-    <userTask id="usertask1" name="прийняття рішення про надання послуги" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask1" name="прийняття рішення про надання послуги" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="rName" name="Район" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -127,7 +126,7 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask2" name="надання адміністративної послуги" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask2" name="надання адміністративної послуги" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
       <extensionElements>
          <activiti:formProperty id="rName" name="Район" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -306,7 +305,7 @@ var per2 = 'rNumber'
 var per3 = 'rAdresat'
 var per4 = 'rName'
 var per5 = 'rDovirenist'
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'hmel_hmelT'){
+if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'cnap_hmel_hmelT'){
 per1 = 'cnap32@rada.khmelnytsky.com'
 per2 = '533'
 per3 = 'Симчишину О.С.'
