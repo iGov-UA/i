@@ -89,6 +89,9 @@ public class ActionExecuteController {
             @ApiParam(value = "номер-ИД записи", required = false) @RequestParam(value = "nID", required = false) Long nID)
             throws CommonServiceException {
         LOG.info("methodCallRunner is {methodCallRunner}");
+        methodCallRunner.setActionExecuteDAO(actionExecuteDAO);
+        methodCallRunner.setActionExecuteOldDAO(actionExecuteOldDAO);
+        methodCallRunner.setActionExecuteStatusDAO(actionExecuteStatusDAO);
         return JsonRestUtils.toJsonResponse(methodCallRunner.runMethod(nRowsMax, sMethodMask, asID_Status, nTryMax, nID));
     }
 
