@@ -24,7 +24,7 @@ public class AccessServiceRightDaoImpl extends GenericEntityDao<AccessServiceRig
     public List<AccessServiceRight> getAccessServiceRights(Long nID, String sService, String saMethod, String sHandlerBean) {
         Criteria criteria = createCriteria();
         if (nID != null) {
-            criteria.add(Restrictions.eq("nID", nID));
+            criteria.add(Restrictions.eq("id", nID));
         }
         if (sService != null) {
             criteria.add(Restrictions.like("sService", sService, MatchMode.ANYWHERE));
