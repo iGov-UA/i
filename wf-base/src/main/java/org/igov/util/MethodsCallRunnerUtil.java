@@ -14,6 +14,7 @@ import org.activiti.engine.impl.util.json.JSONArray;
 import org.apache.commons.beanutils.MethodUtils;
 import org.igov.model.action.execute.item.ActionExecute;
 import org.igov.model.action.execute.item.ActionExecuteDAO;
+import org.igov.model.action.execute.item.ActionExecuteOldDAO;
 import org.igov.model.action.execute.item.ActionExecuteStatusDAO;
 import org.igov.service.exception.CommonServiceException;
 import org.joda.time.DateTime;
@@ -27,10 +28,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class MethodsCallRunnerUtil {
 
-	@Autowired
 	private ActionExecuteDAO actionExecuteDAO;
+	
+	private ActionExecuteOldDAO actionExecuteOldDAO;
 
-	@Autowired
 	private ActionExecuteStatusDAO actionExecuteStatusDAO;
 	
 	@Autowired
@@ -38,6 +39,20 @@ public class MethodsCallRunnerUtil {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(MethodsCallRunnerUtil.class);
 	
+	
+	public void setActionExecuteDAO(ActionExecuteDAO actionExecuteDAO) {
+		this.actionExecuteDAO = actionExecuteDAO;
+	}
+
+	public void setActionExecuteStatusDAO(
+			ActionExecuteStatusDAO actionExecuteStatusDAO) {
+		this.actionExecuteStatusDAO = actionExecuteStatusDAO;
+	}
+	
+	public void setActionExecuteOldDAO(ActionExecuteOldDAO actionExecuteOldDAO) {
+		this.actionExecuteOldDAO = actionExecuteOldDAO;
+	}
+
 	private static Object fromByteArray(byte[] byteArray){
 		Object o = null;
 		ObjectInputStream ois = null;

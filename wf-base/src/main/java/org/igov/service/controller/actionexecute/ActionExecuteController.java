@@ -29,7 +29,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@Component
 @Api(tags = {"ActionExecuteController"})
 @RequestMapping(value = "/action/execute")
 public class ActionExecuteController {
@@ -140,6 +139,9 @@ public class ActionExecuteController {
         LOG.info("(mail.getPort()={})", mail.getPort());       
         mail.sendWithUniSender();	
         LOG.info("test method call");
+        methodCallRunner.setActionExecuteDAO(actionExecuteDAO);
+        methodCallRunner.setActionExecuteOldDAO(actionExecuteOldDAO);
+        methodCallRunner.setActionExecuteStatusDAO(actionExecuteStatusDAO);
         methodCallRunner.registerMethod(ActionExecuteController.class.getName(), "testMethod", new Object[]{"param1", "param2".getBytes(), new Integer(1)}); 
     	return null;
     }   
