@@ -51,8 +51,6 @@ public class AccessService implements ApplicationContextAware {
     private AccessServiceRightDao accessServiceRightDao;
 
     @Autowired
-    private AccessServiceLoginRightDao accessServiceLoginRightDao;
-    @Autowired
     private NotificationPatterns oNotificationPatterns;
     @Autowired
     private IBytesDataInmemoryStorage oBytesDataInmemoryStorage;
@@ -214,36 +212,6 @@ public class AccessService implements ApplicationContextAware {
 
     }
 
-    public void saveOrUpdateAccessServiceLoginRight(String sLogin, String sService, String sHandlerBean)
-            throws HandlerBeanValidationException {
-        AccessServiceLoginRight access = accessServiceLoginRightDao.getAccessServiceLoginRight(sLogin, sService);
-        if (access == null) {
-            access = new AccessServiceLoginRight();
-        }
-
-        if (sHandlerBean != null) {
-            getHandlerBean(sHandlerBean);
-        }
-
-        access.setsLogin(sLogin);
-        access.setsService(sService);
-        access.setsHandlerBean(sHandlerBean);
-
-        accessServiceLoginRightDao.saveOrUpdate(access);
-    }
-
-    public boolean removeAccessServiceLoginRight(String sLogin, String sService) {
-        boolean removed = false;
-        AccessServiceLoginRight access = accessServiceLoginRightDao.getAccessServiceLoginRight(sLogin, sService);
-
-        if (access != null) {
-            accessServiceLoginRightDao.delete(access);
-            removed = true;
-        }
-
-        return removed;
-    }
-
     private AccessServiceLoginRightHandler getHandlerBean(String sHandlerBean) throws HandlerBeanValidationException {
         Object bean = applicationContext.getBean(sHandlerBean);
         if (bean == null) {
@@ -256,10 +224,6 @@ public class AccessService implements ApplicationContextAware {
         }
 
         return (AccessServiceLoginRightHandler) bean;
-    }
-
-    public List<String> getAccessibleServices(String sLogin) {
-        return accessServiceLoginRightDao.getAccessibleServices(sLogin);
     }
 
     public Map<String, String> getVerifyContactEmail(String sQuestion, String sAnswer) throws AddressException, EmailException,

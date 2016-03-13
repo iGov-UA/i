@@ -1,8 +1,6 @@
 package org.igov.model.access.vo;
 
 import org.igov.model.access.AccessServiceRight;
-import org.igov.model.access.AccessServiceRoleRight;
-import org.igov.service.business.access.handler.AccessServiceLoginRightHandler;
 
 import javax.persistence.Column;
 
