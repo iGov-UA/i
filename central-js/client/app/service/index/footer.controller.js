@@ -61,7 +61,7 @@ angular.module('app').controller('FooterController', function ($scope) {
       image: 'assets/images/ads/avante.jpg',
       height: 50
     }
-    ,{ 
+    ,{
       url: 'http://ukr.net',
       alt: 'ukrnet',
       image: 'assets/images/ads/ukrnet.png',
