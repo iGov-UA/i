@@ -34,6 +34,7 @@ public class ActionExecuteOldDAOImpl extends GenericEntityDao<ActionExecuteOld>	
 		return findAll();
 	}
 
+	@Transactional
 	@Override
 	public Long setActionExecuteOld(Long nID_ActionExecuteStatus,
 			DateTime oDateMake, DateTime oDateEdit, Integer nTry,
@@ -49,6 +50,7 @@ public class ActionExecuteOldDAOImpl extends GenericEntityDao<ActionExecuteOld>	
 		actionExecuteOld.setsObject(sObject);
 		actionExecuteOld.setsMethod(sMethod);
 		actionExecuteOld.setSoRequest(soRequest);
+		actionExecuteOld.setSmParam(smParam);
 		actionExecuteOld.setsReturn(sReturn);
 		
 		getSession().saveOrUpdate(actionExecuteOld);
@@ -61,6 +63,7 @@ public class ActionExecuteOldDAOImpl extends GenericEntityDao<ActionExecuteOld>	
 		return getActionExecuteOldListByCriteria(nRowsMax, sMethodMask, asID_Status, nTryMax, nID);
 	}
 
+	@Transactional
 	private List<ActionExecuteOld> getActionExecuteOldListByCriteria(Integer nRowsMax, String sMethodMask, String asID_Status,
 			Integer nTryMax, Long nID) {
 		List<ActionExecuteOld> resList = new ArrayList<ActionExecuteOld>();
