@@ -36,6 +36,7 @@ public class ActionExecuteDAOImpl extends GenericEntityDao<ActionExecute> implem
 		return findAll();
 	}
 
+	@Transactional
 	@Override
 	public ActionExecute setActionExecute(Long nID_ActionExecuteStatus,
 			DateTime oDateMake, DateTime oDateEdit, Integer nTry,
