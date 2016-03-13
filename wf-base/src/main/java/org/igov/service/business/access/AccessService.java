@@ -61,26 +61,6 @@ public class AccessService implements ApplicationContextAware {
         this.applicationContext = applicationContext;
     }
 
-    public boolean hasAccessToService(String sLogin, String sService, String sData, String sMethod)
-            throws HandlerBeanValidationException {
-
-        boolean res = false;
-
-        List<AccessServiceLoginRole> roles = accessServiceLoginRoleDao.getUserRoles(sLogin);
-        A: for (AccessServiceLoginRole role : roles) {
-            List<AccessServiceRight> rights = role.getAccessServiceRole().resolveAllRightsSorted();
-
-            for (AccessServiceRight right : rights) {
-                if (isApplicableToServiceAndMethod(right, sService, sMethod)) {
-                    res = hasAccess(right, sData);
-                    break A;
-                }
-            }
-        }
-
-        return res;
-    }
-
     // -------------- AccessServiceLoginRoles --------------------------------------------------------------------------
 
     public List<AccessLoginRoleVO> getAccessServiceLoginRoles(String sLogin) {
@@ -199,6 +179,32 @@ public class AccessService implements ApplicationContextAware {
 
     // -----------------------------------------------------------------------------------------------------------------
 
+    public boolean hasAccessToService(String sLogin, String sService, String sData, String sMethod)
+            throws HandlerBeanValidationException {
+
+        boolean res = false;
+
+        List<AccessServiceLoginRole> roles = accessServiceLoginRoleDao.getUserRoles(sLogin);
+        if (roles.isEmpty()) {
+            final String allUsersName = "*";
+            roles = accessServiceLoginRoleDao.getUserRoles(allUsersName);
+        }
+
+        A: for (AccessServiceLoginRole role : roles) {
+            List<AccessServiceRight> rights = role.getAccessServiceRole().resolveAllRightsSorted();
+
+            for (AccessServiceRight right : rights) {
+                if (isApplicableToServiceAndMethod(right, sService, sMethod)) {
+                    res = hasAccess(right, sData);
+                    break A;
+                }
+            }
+        }
+
+        return res;
+    }
+
+
     private boolean hasAccess(AccessServiceRight right, String sData) throws HandlerBeanValidationException {
         boolean res;
 
@@ -215,13 +221,39 @@ public class AccessService implements ApplicationContextAware {
 
     private boolean isApplicableToServiceAndMethod(AccessServiceRight accessServiceRight,
                                                    String sService, String sMethod) {
-        if (!accessServiceRight.getsService().equals(sService)) {
+        if (!isServiceMatchedPattern(sService, accessServiceRight.getsService())) {
             return false;
         }
 
         Set<String> supportedMethods = accessServiceRight.resolveSupportedMethods();
         return supportedMethods == null || supportedMethods.contains(sMethod);
 
+    }
+
+    /**
+     * Checks if service matched to <b>accessServicePattern</b>? accessServicePattern can contain * in beginning or
+     * end of pattern. For example to match service="TestService" valid patterns are "TestService",
+     * "Test*", "*Service" or "*".
+     * @param service current service string
+     * @param accessServicePattern field sService of entity AccessServiceRight.
+     * @return is service matched to accessServicePattern?
+     */
+    private boolean isServiceMatchedPattern(String service, String accessServicePattern) {
+        final String star = "*";
+
+        if (accessServicePattern.equals(star)) {
+            return true;
+        }
+        else if (accessServicePattern.startsWith(star)) {
+            final String suffix = accessServicePattern.substring(star.length());
+            return service.endsWith(suffix);
+        }
+        else if (accessServicePattern.endsWith(star)) {
+            final String prefix = accessServicePattern.substring(0, accessServicePattern.length() - star.length());
+            return service.startsWith(prefix);
+        }
+
+        return service.equals(accessServicePattern);
     }
 
     private AccessServiceLoginRightHandler getHandlerBean(String sHandlerBean) throws HandlerBeanValidationException {

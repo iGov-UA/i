@@ -33,9 +33,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("default")
 public class AccessServiceLoginRoleFilterTest {
 
-    // specified in AccessServiceLoginRight.csv
-    private static final String TEST_LOGIN = "TestLogin1";
-    private static final String TEST_SERVICE = "testService1";
+    // specified in AccessServiceLoginRole.csv
+    private static final String TEST_LOGIN = "TestLogin4";
+    private static final String TEST_SERVICE = "testService10";
+    private static final String PATTERN_MATCHED_SERVICE1 = "zeroService10";
+    private static final String PATTERN_MATCHED_SERVICE2 = "testService42";
+    private static final String WRONG_PATTERN_SERVICE1 = "zeroService9";
+    private static final String WRONG_PATTERN_SERVICE2 = "test42";
 
     private static final String WRONG_LOGIN = "WrongUser";
 
@@ -66,7 +70,7 @@ public class AccessServiceLoginRoleFilterTest {
         SecurityContextHolder.getContext().setAuthentication(
                 new TestingAuthenticationToken(generalAuthLogin, generalAuthPassword));
 
-        verifySuccessLogin();
+        verifySuccessLogin(TEST_SERVICE);
     }
 
     @Test
@@ -75,7 +79,7 @@ public class AccessServiceLoginRoleFilterTest {
         SecurityContextHolder.getContext().setAuthentication(
                 new TestingAuthenticationToken(WRONG_LOGIN, ""));
 
-        verifyForbidden();
+        verifyForbidden(TEST_SERVICE);
     }
 
     @Test
@@ -84,15 +88,19 @@ public class AccessServiceLoginRoleFilterTest {
         SecurityContextHolder.getContext().setAuthentication(
                 new TestingAuthenticationToken(TEST_LOGIN, ""));
 
-        verifySuccessLogin();
+        verifySuccessLogin(TEST_SERVICE);
+        verifySuccessLogin(PATTERN_MATCHED_SERVICE1);
+        verifySuccessLogin(PATTERN_MATCHED_SERVICE2);
+        verifyForbidden(WRONG_PATTERN_SERVICE1);
+        verifyForbidden(WRONG_PATTERN_SERVICE2);
     }
 
-    private void verifySuccessLogin() throws Exception {
-        mockMvc.perform(get(TEST_SERVICE)).andExpect(status().isNotFound()); // no such service, it's Ok.
+    private void verifySuccessLogin(String testServiceName) throws Exception {
+        mockMvc.perform(get(testServiceName)).andExpect(status().isNotFound()); // no such service, it's Ok.
     }
 
-    private void verifyForbidden() throws Exception {
-        mockMvc.perform(get(TEST_SERVICE)).andExpect(status().isForbidden());
+    private void verifyForbidden(String testServiceName) throws Exception {
+        mockMvc.perform(get(testServiceName)).andExpect(status().isForbidden());
     }
 
 }

@@ -22,7 +22,7 @@ public class AccessServiceRight extends NamedEntity implements Comparable<Access
     private static final String METHOD_SEPARATOR = "/";
 
     /**
-     * URL to service to provide access right to it.
+     * URL mask to service to provide access right to it.
      */
     @Column
     private String sService;
