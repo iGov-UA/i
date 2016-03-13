@@ -12,4 +12,6 @@ import java.util.List;
 public interface AccessServiceLoginRoleDao extends EntityDao<AccessServiceLoginRole> {
 
     List<AccessServiceLoginRole> getUserRoles(String sLogin);
+
+    AccessServiceLoginRole findLoginRole(String sLogin, Long nID_AccessServiceRole);
 }

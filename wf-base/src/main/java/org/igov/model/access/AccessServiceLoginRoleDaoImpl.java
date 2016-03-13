@@ -30,4 +30,14 @@ public class AccessServiceLoginRoleDaoImpl extends GenericEntityDao<AccessServic
 
         return criteria.list();
     }
+
+    @Override
+    public AccessServiceLoginRole findLoginRole(String sLogin, Long nID_AccessServiceRole) {
+        Criteria criteria = createCriteria();
+
+        criteria.add(Restrictions.eq("sLogin", sLogin));
+        criteria.add(Restrictions.eq("accessServiceRole.id", nID_AccessServiceRole));
+
+        return (AccessServiceLoginRole)criteria.uniqueResult();
+    }
 }

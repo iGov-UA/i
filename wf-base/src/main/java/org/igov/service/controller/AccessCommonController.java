@@ -310,6 +310,24 @@ public class AccessCommonController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/removeAccessServiceLoginRole", method = {RequestMethod.POST, RequestMethod.GET})
+    public ResponseEntity removeAccessServiceLoginRole (
+            @ApiParam(value = "номер-ИД связки", required = false) @RequestParam(value = "nID", required = false) Long nID,
+            @ApiParam(value = "строка-логин", required = false) @RequestParam(value = "sLogin", required = false) String sLogin,
+            @ApiParam(value = "номер-ИД роли", required = false) @RequestParam(value = "nID_AccessServiceRole", required = false) Long nID_AccessServiceRole) {
+        if (nID != null && sLogin == null && nID_AccessServiceRole == null) {
+            oAccessService.removeAccessServiceLoginRole(nID);
+        }
+        else if (nID == null && sLogin != null && nID_AccessServiceRole != null) {
+            oAccessService.removeAccessServiceLoginRole(sLogin, nID_AccessServiceRole);
+        }
+        else {
+            return new ResponseEntity<>("Нужно указать nID или (sLogin и nID_AccessServiceRole)", HttpStatus.FORBIDDEN);
+        }
+
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/setAccessServiceRight", method = {RequestMethod.POST, RequestMethod.GET})
     public ResponseEntity setAccessServiceRight (
             @ApiParam(value = "номер-ИД права", required = true) @RequestParam(value = "nID") Long nID,

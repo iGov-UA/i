@@ -51,7 +51,7 @@ public class AccessCommonControllerScenario {
 
     @Test
     public void testGetAccessServiceLoginRoles() throws Exception {
-        List<AccessLoginRoleVO> roles = getAccessServiceLoginRoles("TestLogin");
+        List<AccessLoginRoleVO> roles = getAccessServiceLoginRoles("TestLogin1");
         Assert.assertEquals(1, roles.size());
         assertEquals(getAllRights(roles.stream().map(AccessLoginRoleVO::getoRole).collect(Collectors.toList())),
                 "TestRight1", "TestRight2");
@@ -252,6 +252,21 @@ public class AccessCommonControllerScenario {
     }
 
     @Test
+    public void testRemoveAccessServiceLoginRole() throws Exception {
+
+        final String testLogin2 = "TestLogin2";
+        Assert.assertEquals(1, getAccessServiceLoginRoles(testLogin2).size());
+        removeAccessServiceLoginRole(2L, null, null);
+        Assert.assertEquals(0, getAccessServiceLoginRoles(testLogin2).size());
+
+
+        final String testLogin3 = "TestLogin3";
+        Assert.assertEquals(1, getAccessServiceLoginRoles(testLogin3).size());
+        removeAccessServiceLoginRole(null, testLogin3, 1L);
+        Assert.assertEquals(0, getAccessServiceLoginRoles(testLogin3).size());
+    }
+
+    @Test
     @Ignore
     public void testHasAccessServiceLoginRight() throws Exception {
 
@@ -408,6 +423,14 @@ public class AccessCommonControllerScenario {
 
     public void removeAccessServiceRoleRightInclude(Long nID) throws Exception {
         mockMvc.perform(post("/access/removeAccessServiceRoleRightInclude").param("nID", nID.toString())).
+                andExpect(status().isOk());
+    }
+
+    public void removeAccessServiceLoginRole(Long nID, String sLogin, Long nID_AccessServiceRole) throws Exception {
+        mockMvc.perform(post("/access/removeAccessServiceLoginRole").
+                param("nID", nID != null ? nID.toString() : null).
+                param("sLogin", sLogin).
+                param("nID_AccessServiceRole", nID_AccessServiceRole != null ? nID_AccessServiceRole.toString() : null)).
                 andExpect(status().isOk());
     }
 
