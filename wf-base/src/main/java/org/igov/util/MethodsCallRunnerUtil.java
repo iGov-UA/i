@@ -187,7 +187,7 @@ public class MethodsCallRunnerUtil {
 				if(o==null){
 					o = c.getDeclaredConstructor().newInstance();
 				}
-				Object[] parameters = null; //= actionExecute.getSmParam()!=null?(Object[]) fromByteArray(actionExecute.getSoRequest()):null;
+				Object[] parameters = actionExecute.getSmParam()!=null?(Object[]) fromByteArray(actionExecute.getSoRequest()):null;
 				
 				Class<?>[] param_types = new Class<?>[parameters!=null?parameters.length:0];
 				if (parameters!=null && parameters.length>0)
