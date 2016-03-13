@@ -43,10 +43,10 @@
         <activiti:formProperty id="sPib_fiz" name="П.І.Б. фізичної особи–підприємця" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sAdres_1" name="Місцезнаходження юридичної особи" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="workPhone" name="Телефон юридичної особи" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nFile_PlacePhoto" name="Фотокартка або комп'ютерний макет місця, на якому планується розташування реклами; Розмір має бути не менш 6х9 см." type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_PlacePhoto" name="Фотокартка або комп'ютерний макет місця, на якому планується розташування реклами; Розмір має бути не менш 6х9 см." type="file" required="true" default=" "></activiti:formProperty>
         <activiti:formProperty id="nFile_Advert" name="Ескіз рекламного засобу з конструктивним рішенням" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile_Roztashuvannya_M1_500" name="Топогеодезичні матеріали зйомки місцевості з прив'язкою місця розташування наземної рекламної конструкції (М 1:500)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile_AdvertLicense" name="Копія виписки з єдиного державного реєстру юридичних осіб та фізичних осіб" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Roztashuvannya_M1_500" name="Топогеодезичні матеріали зйомки місцевості з прив'язкою місця розташування наземної рекламної конструкції (М 1:500)" type="file" required="true" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFile_AdvertLicense" name="Копія виписки з єдиного державного реєстру юридичних осіб та фізичних осіб" type="file" required="true" default=" "></activiti:formProperty>
         <activiti:formProperty id="nFile_Original_Dozvolu" name="Оригінал попереднього дозволу" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="sClerkPost" name="пошта оргструктури (району)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адрес оргструктури (району)" type="invisible"></activiti:formProperty>
@@ -102,7 +102,7 @@
         <activiti:formProperty id="sAdres_1" name="Місцезнаходження юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="workPhone" name="Телефон юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sReestr_numb" name="Реєстраційний номер" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="date_of_birth" name="Укажіть дату реєстрації звернення" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sDate_Reestr" name="Укажіть дату реєстрації звернення" type="date"></activiti:formProperty>
         <activiti:formProperty id="sPib_Admin" name="Прізвище та ініціали адміністратора" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="asEnum_decision_1" name="Прийняття рішення про надання послуги" type="enum" required="true">
           <activiti:value id="accept" name="Заповнені дані вірні, інформація направлена на розгляд, очікується рішення"></activiti:value>
@@ -167,7 +167,7 @@
         <activiti:formProperty id="sAdres_1" name="Місцезнаходження юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="workPhone" name="Телефон юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sReestr_numb" name="Реєстраційний номер" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="date_of_birth" name="Укажіть дату реєстрації звернення" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDate_Reestr" name="Укажіть дату реєстрації звернення" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPib_Admin" name="Прізвище та ініціали адміністратора" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asEnum_decision_2" name="Результат рішення" type="enum" required="true">
           <activiti:value id="decision_2_1" name="дозвіл надано"></activiti:value>
@@ -187,6 +187,12 @@
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть центр надання адмінпослуг" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddPrintSpisok" name="формулювання у email додаткового додатку (М 1:500)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_184_print.html" type="file"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression>${bankId_scan_passport},${nFile_PlacePhoto},${nFile_Advert},${nFile_Roztashuvannya_M1_500},${nFile_AdvertLicense},${nFile_Original_Dozvolu},${form_signed}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask5" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
