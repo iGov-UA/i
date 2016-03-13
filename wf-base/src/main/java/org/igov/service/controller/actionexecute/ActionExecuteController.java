@@ -20,15 +20,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@Transactional
+@Component
 @Api(tags = {"ActionExecuteController"})
 @RequestMapping(value = "/action/execute")
 public class ActionExecuteController {
@@ -138,7 +138,7 @@ public class ActionExecuteController {
         LOG.info("(mail.getPort()={})", mail.getPort());       
         mail.sendWithUniSender();	
         LOG.info("test method call");
-        methodCallRunner.registerMethod(ActionExecuteController.class.getName(), "testMethod", new Object[]{"param1", "param2".getBytes(), new Integer(4)}); 
+        methodCallRunner.registerMethod(ActionExecuteController.class.getName(), "testMethod", new Object[]{"param1", "param2".getBytes(), new Integer(1)}); 
     	return null;
     }   
     
