@@ -2,9 +2,11 @@ package org.igov.service.controller;
 
 import com.google.common.base.Optional;
 import io.swagger.annotations.*;
+import org.igov.io.web.HttpEntityInsedeCover;
 import org.igov.io.web.HttpRequester;
 import org.igov.model.action.event.HistoryEvent_Service;
 import org.igov.model.action.event.HistoryEvent_ServiceDao;
+import org.igov.model.action.event.HistoryEvent_Service_StatusType;
 import org.igov.model.subject.Server;
 import org.igov.model.subject.ServerDao;
 import org.igov.service.business.action.ActionEventService;
@@ -13,19 +15,19 @@ import org.igov.service.exception.RecordNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import java.util.HashMap;
 import java.util.Map;
-import org.igov.io.web.HttpEntityInsedeCover;
-import org.igov.model.action.event.HistoryEvent_Service_StatusType;
 
 @Controller
-@Api(tags = {"ActionTaskCentralController"}, description = "Действия задачи центрально")
+@Api(tags = { "ActionTaskCentralController -- Действия задачи центрально" })
 @RequestMapping(value = "/action/task")
 public class ActionTaskCentralController {
 
@@ -41,18 +43,8 @@ public class ActionTaskCentralController {
     private ActionEventService oActionEventService;
     @Autowired
     private HistoryEvent_ServiceDao historyEventServiceDao;
-    
 
-    /**
-     * @param sID_Order строка-ид заявки
-     * @param saField строка-массива полей (например:
-     * "[{'id':'sFamily','type':'string','value':'Белявцев'},{'id':'nAge','type':'long','value':35}]")
-     * @param sToken строка-токена. Данный параметр формируется и сохраняется в
-     * запись HistoryEvent_Service во время вызова метода setTaskQuestions
-     * @param sHead строка заголовка сообщения (опциональный параметр)
-     * @param sBody строка тела сообщения (опциональный параметр)
-     */
-    @ApiOperation(value = "/setTaskAnswer_Central", notes = "##### ActionTaskCentralController - Действия задачи центрального. Нет описания #####\n\n")
+    @ApiOperation(value = "/setTaskAnswer_Central", notes = "Нет описания")
     @RequestMapping(value = "/setTaskAnswer_Central", method = RequestMethod.GET)
     public @ResponseBody
     void setTaskAnswer(
@@ -61,40 +53,17 @@ public class ActionTaskCentralController {
             @ApiParam(value = "строка-токена. Данный параметр формируется и сохраняется в запись HistoryEvent_Service во время вызова метода setTaskQuestions", required  = false) @RequestParam(value = "sToken", required = false) String sToken,
             @ApiParam(value = "номер-ИД субьекта", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject,
             @ApiParam(value = "строка заголовка сообщения", required = false) @RequestParam(value = "sHead", required = false) String sHead,
-            @ApiParam(value = "Включить авторизацию", required = false) @RequestParam(value = "bAuth", required = false, defaultValue = "false") Boolean bAuth,
+            @ApiParam(value = "булевый флаг. Включить авторизацию", required = false) @RequestParam(value = "bAuth", required = false, defaultValue = "false") Boolean bAuth,
             @ApiParam(value = "строка тела сообщения", required = false) @RequestParam(value = "sBody", required = false) String sBody
         ) throws CommonServiceException {
 
         try {
 
-            //TODO: Remove lete (for back compatibility)
-            /*if (sID_Order.indexOf(DASH) <= 0) {
-                sID_Order = "0-" + sID_Order;
-                LOG.warn("Old format of parameter! (sID_Order={})", sID_Order);
-            }*/
-            
-            
             HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
-            //Long nID_HistoryEvent_Service = oHistoryEvent_Service.getId();
-            
-            //@ApiParam(value = "Строка-Token", required = true) @RequestParam(value = "sToken", required = true) String sToken,
-            
+
             if(bAuth){
                 oActionEventService.checkAuth(oHistoryEvent_Service, nID_Subject, sToken);
             }
-            
-            
-            //HistoryEvent_Service_StatusType oHistoryEvent_Service_StatusType = HistoryEvent_Service_StatusType.getInstance(nID_Service);
-            
-            /*if(nID_Subject!=null && !Objects.equals(nID_Subject, oHistoryEvent_Service.getnID_Subject())){
-                if(sToken!=null){
-                    LOG.warn("nID_Subject is not owner of Order of messages and wrong sToken! (nID_Subject={},oHistoryEvent_Service.getnID_Subject()={},sToken={})", nID_Subject, oHistoryEvent_Service.getnID_Subject(),sToken);
-                    throw new Exception("nID_Subject is not Equal and wrong sToken!");
-                }else{
-                    LOG.warn("nID_Subject is not owner of Order of messages! (nID_Subject={},oHistoryEvent_Service.getnID_Subject()={})", nID_Subject, oHistoryEvent_Service.getnID_Subject());
-                    throw new Exception("nID_Subject is not Equal!");
-                }
-            } */                       
              
             LOG.info("Update history! (sID_Order={})", sID_Order);
             sBody = sBody != null ? sBody : "На заявку "+ sID_Order + " дана відповідь громадянином";
@@ -104,7 +73,6 @@ public class ActionTaskCentralController {
                 null,//sUserTaskName
                 saField,//soData
                 sToken,
-                //String sHead,
                 sBody,
                 null,//nTimeMinutes
                 null,//nID_Proccess_Feedback,
@@ -229,15 +197,9 @@ public class ActionTaskCentralController {
         subjectMessagesDao.setMessage(oSubjectMessage);
     }*/
 
-    /**
-     * @param nID_Subject номер-ИД субьекта (переменная обязательна)
-     * @param nID_Service номер-ИД услуги (переменная обязательна)
-     * @param sID_UA строка-ИД места Услуги (переменная обязательна)
-     * @param nID_Server номер-ИД сервера опциональный, по умолчанию 0
-     */
-    @ApiOperation(value = "Получение полей стартовой формы по: ИД субьекта, ИД услуги, ИД места Услуги", notes = "##### ActionTaskCentralController - Действия задачи центрального. Получение полей стартовой формы по: ИД субьекта, ИД услуги, ИД места Услуги #####\n\n"
-            + "HTTP Context: https://test.igov.org.ua/wf-central/service/action/task/getStartFormByTask_Central?nID_Subject=nID_Subject&nID_Service=nID_Service&sID_UA=sID_UA&nID_Server=nID_Server\n\n"
-            + "возвращает JSON содержащий поля стартовой формы процесса, процесс находится на основании ИД таски полученой из сущности HistoryEvent_Service. На основании HistoryEvent_Service определяется региональный сервер откуда нужно получить поля формы и собственно ИД таски.\n\n"
+    @ApiOperation(value = "Получение полей стартовой формы по: ИД субьекта, ИД услуги, ИД места Услуги", notes = ""
+            + "возвращает JSON содержащий поля стартовой формы процесса, процесс находится на основании ИД таски полученой из сущности HistoryEvent_Service. "
+            + "На основании HistoryEvent_Service определяется региональный сервер откуда нужно получить поля формы и собственно ИД таски.\n\n"
             + "Примеры:\n"
             + "https://test.igov.org.ua/wf-central/service/action/task/getStartFormByTask_Central?nID_Subject=2&nID_Service=1&sID_UA=1200000000\n\n"
             + "Ответ, если запись существует (HTTP status Code: 200 OK):\n"
