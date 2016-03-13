@@ -14,7 +14,7 @@
         <bean id="activitiRestAuthProvider" class="org.igov.service.controller.security.ActivitiRestAuthProvider"/>
         <bean id="accessKeyAuthFilter" class="org.igov.service.controller.security.AccessKeyAuthFilter"/>
         <bean id="accessKeyAuthProvider" class="org.igov.service.controller.security.AccessKeyAuthProvider"/>
-        <bean id="accessServiceLoginRightFilter" class="org.igov.service.controller.security.AccessServiceLoginRightFilter"/>
+        <bean id="accessServiceLoginRoleFilter" class="org.igov.service.controller.security.AccessServiceLoginRoleFilter"/>
     </beans>
 
     <beans profile="prod">
@@ -28,7 +28,7 @@
             <security:custom-filter ref="accessKeyAuthFilter" before="BASIC_AUTH_FILTER"/>
 
             <!-- will be executed after successful authentication -->
-            <security:custom-filter ref="accessServiceLoginRightFilter" after="FILTER_SECURITY_INTERCEPTOR"/>
+            <security:custom-filter ref="accessServiceLoginRoleFilter" after="FILTER_SECURITY_INTERCEPTOR"/>
 
             <security:http-basic/>
         </security:http>
@@ -51,7 +51,7 @@
             <security:custom-filter ref="accessKeyAuthFilter" before="BASIC_AUTH_FILTER"/>
 
             <!-- will be executed after successful authentication -->
-            <security:custom-filter ref="accessServiceLoginRightFilter" after="FILTER_SECURITY_INTERCEPTOR"/>
+            <security:custom-filter ref="accessServiceLoginRoleFilter" after="FILTER_SECURITY_INTERCEPTOR"/>
 
             <security:http-basic/>
         </security:http>
@@ -74,7 +74,7 @@
             <security:custom-filter ref="accessKeyAuthFilter" before="BASIC_AUTH_FILTER"/>
 
             <!-- will be executed after successful authentication -->
-            <security:custom-filter ref="accessServiceLoginRightFilter" after="FILTER_SECURITY_INTERCEPTOR"/>
+            <security:custom-filter ref="accessServiceLoginRoleFilter" after="FILTER_SECURITY_INTERCEPTOR"/>
 
             <security:http-basic/>
         </security:http>

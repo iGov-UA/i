@@ -31,11 +31,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = IntegrationTestsApplicationConfiguration.class)
 @ActiveProfiles("default")
-public class AccessServiceLoginRightFilterTest {
+public class AccessServiceLoginRoleFilterTest {
 
     // specified in AccessServiceLoginRight.csv
-    private static final String TEST_LOGIN = "TestLogin";
-    private static final String TEST_SERVICE = "TestService";
+    private static final String TEST_LOGIN = "TestLogin1";
+    private static final String TEST_SERVICE = "testService1";
 
     private static final String WRONG_LOGIN = "WrongUser";
 
@@ -43,7 +43,7 @@ public class AccessServiceLoginRightFilterTest {
     private WebApplicationContext webApplicationContext;
 
     @Autowired
-    private AccessServiceLoginRightFilter accessServiceLoginRightFilter;
+    private AccessServiceLoginRoleFilter accessServiceLoginRoleFilter;
 
     @Value("${general.auth.login}")
     private String generalAuthLogin;
@@ -56,7 +56,7 @@ public class AccessServiceLoginRightFilterTest {
     @Before
     public void setUp() {
         mockMvc = MockMvcBuilders
-                .webAppContextSetup(webApplicationContext).addFilter(accessServiceLoginRightFilter)
+                .webAppContextSetup(webApplicationContext).addFilter(accessServiceLoginRoleFilter)
                 .build();
     }
 
@@ -69,7 +69,6 @@ public class AccessServiceLoginRightFilterTest {
         verifySuccessLogin();
     }
 
-    @Ignore
     @Test
     public void testAccessServiceLoginRightFilter_wrongUser() throws Exception {
 
