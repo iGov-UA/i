@@ -81,6 +81,8 @@ public class AccessService implements ApplicationContextAware {
         return res;
     }
 
+    // -------------- AccessServiceLoginRoles --------------------------------------------------------------------------
+
     public List<AccessLoginRoleVO> getAccessServiceLoginRoles(String sLogin) {
         List<AccessServiceLoginRole> roles = accessServiceLoginRoleDao.getUserRoles(sLogin);
         return roles.stream().map(AccessLoginRoleVO::new).collect(Collectors.toList());
@@ -94,6 +96,19 @@ public class AccessService implements ApplicationContextAware {
         accessServiceLoginRoleDao.saveOrUpdate(loginRole);
         return new AccessLoginRoleVO(loginRole);
     }
+
+    public void removeAccessServiceLoginRole(Long nID) {
+        accessServiceLoginRoleDao.delete(nID);
+    }
+
+    public void removeAccessServiceLoginRole(String sLogin, Long nID_AccessServiceRole) {
+        AccessServiceLoginRole loginRole = accessServiceLoginRoleDao.findLoginRole(sLogin, nID_AccessServiceRole);
+        if (loginRole != null) {
+            accessServiceLoginRoleDao.delete(loginRole);
+        }
+    }
+
+    // -------------- AccessServiceRole --------------------------------------------------------------------------------
 
     public List<AccessRoleVO> getAccessServiceRoleRights(Long roleId) {
         List<AccessRoleVO> res = new ArrayList<>();
@@ -116,6 +131,12 @@ public class AccessService implements ApplicationContextAware {
         return new AccessRoleVO(role, false);
     }
 
+    public void removeAccessServiceRole(Long roleId) {
+        accessServiceRoleDao.delete(roleId);
+    }
+
+    // -------------- AccessServiceRoleRight ---------------------------------------------------------------------------
+
     public AccessRoleRightVO setAccessServiceRoleRight(Long nID, Long nID_AccessServiceRole,
                                                        Long nID_AccessServiceRight) {
 
@@ -127,6 +148,12 @@ public class AccessService implements ApplicationContextAware {
         accessServiceRoleRightDao.saveOrUpdate(roleRight);
         return new AccessRoleRightVO(roleRight);
     }
+
+    public void removeAccessServiceRoleRight(Long nID) {
+        accessServiceRoleRightDao.delete(nID);
+    }
+
+    // -------------- AccessServiceRoleRightInclude --------------------------------------------------------------------
 
     public AccessRoleIncludeVO setAccessServiceRoleRightInclude(Long nID, Long nID_AccessServiceRole,
                                                        Long nID_AccessServiceRole_Include) {
@@ -140,32 +167,11 @@ public class AccessService implements ApplicationContextAware {
         return new AccessRoleIncludeVO(roleInclude);
     }
 
-    public void removeAccessServiceRole(Long roleId) {
-        accessServiceRoleDao.delete(roleId);
-    }
-
-    public void removeAccessServiceRight(Long rightId) {
-        accessServiceRightDao.delete(rightId);
-    }
-
-    public void removeAccessServiceRoleRight(Long nID) {
-        accessServiceRoleRightDao.delete(nID);
-    }
-
     public void removeAccessServiceRoleRightInclude(Long nID) {
         accessServiceRoleRightIncludeDao.delete(nID);
     }
 
-    public void removeAccessServiceLoginRole(Long nID) {
-        accessServiceLoginRoleDao.delete(nID);
-    }
-
-    public void removeAccessServiceLoginRole(String sLogin, Long nID_AccessServiceRole) {
-        AccessServiceLoginRole loginRole = accessServiceLoginRoleDao.findLoginRole(sLogin, nID_AccessServiceRole);
-        if (loginRole != null) {
-            accessServiceLoginRoleDao.delete(loginRole);
-        }
-    }
+    // -------------- AccessServiceRight -------------------------------------------------------------------------------
 
     public List<AccessRightVO> getAccessServiceRights(Long nID, String sService, String saMethod, String sHandlerBean) {
         return accessServiceRightDao.getAccessServiceRights(nID, sService, saMethod, sHandlerBean).stream().map(
@@ -186,6 +192,12 @@ public class AccessService implements ApplicationContextAware {
 
         return new AccessRightVO(accessServiceRight);
     }
+
+    public void removeAccessServiceRight(Long rightId) {
+        accessServiceRightDao.delete(rightId);
+    }
+
+    // -----------------------------------------------------------------------------------------------------------------
 
     private boolean hasAccess(AccessServiceRight right, String sData) throws HandlerBeanValidationException {
         boolean res;

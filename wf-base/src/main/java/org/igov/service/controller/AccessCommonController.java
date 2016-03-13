@@ -106,6 +106,41 @@ public class AccessCommonController {
         }
     }
 
+
+    /**
+     * Сервис верификации контакта - электронного адреса
+     *
+     * @param sQuestion — Строка электронный адрес
+     * @param sAnswer — Строка ответ на запрос (код)
+     *
+     *
+     */
+    @ApiOperation(value = "Сервис верификации контакта - электронного адреса", notes = "##### Примеры:\n"
+            + "https://test.region.igov.org.ua/wf/service/access/verifyContactEmail?sQuestion=\\test@igov.org.ua\n"
+            + "Response\n"
+            + "\n```json\n"
+            + "{\n"
+            + "    \"bVerified\":true,\n"
+            + "}\n"
+            + "\n```\n")
+    @RequestMapping(value = "/verifyContactEmail", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    Map<String, String> verifyContactEmail(
+            @ApiParam(value = "Строка запрос (электронный адрес)", required = true) @RequestParam(value = "sQuestion") String sQuestion,
+            @ApiParam(value = "Строка ответ (код )", required = false)
+            @RequestParam(value = "sAnswer", required=false) String sAnswer) throws CommonServiceException, EmailException, RecordInmemoryException {
+        Map<String, String> res = new HashMap<String, String>();
+        try {
+            res = oAccessService.getVerifyContactEmail(sQuestion, sAnswer);
+        } catch (AddressException ex) {
+            LOG.warn("Email address {} is not correct", sQuestion);
+            LOG.warn("FAIL: ", ex);
+            res.put("bVerified", "false");
+        }
+        return res;
+    }
+
     /**
      * Проверка разрешения на доступ к сервису для пользователя
      * 
@@ -139,6 +174,8 @@ public class AccessCommonController {
         }
     }
 
+    // -------------- AccessServiceLoginRoles --------------------------------------------------------------------------
+
     @RequestMapping(value = "/getAccessServiceLoginRoles", method = RequestMethod.GET)
     public ResponseEntity getAccessServiceLoginRoles (
             @ApiParam(value = "Строка логин пользователя", required = true) @RequestParam(value = "sLogin") String sLogin) {
@@ -152,6 +189,26 @@ public class AccessCommonController {
             @ApiParam(value = "номер-ИД роли", required = true) @RequestParam(value = "nID_AccessServiceRole", required = true) Long nID_AccessServiceRole ) {
         return JsonRestUtils.toJsonResponse(oAccessService.setAccessServiceLoginRole(nID, sLogin, nID_AccessServiceRole));
     }
+
+    @RequestMapping(value = "/removeAccessServiceLoginRole", method = {RequestMethod.POST, RequestMethod.GET})
+    public ResponseEntity removeAccessServiceLoginRole (
+            @ApiParam(value = "номер-ИД связки", required = false) @RequestParam(value = "nID", required = false) Long nID,
+            @ApiParam(value = "строка-логин", required = false) @RequestParam(value = "sLogin", required = false) String sLogin,
+            @ApiParam(value = "номер-ИД роли", required = false) @RequestParam(value = "nID_AccessServiceRole", required = false) Long nID_AccessServiceRole) {
+        if (nID != null && sLogin == null && nID_AccessServiceRole == null) {
+            oAccessService.removeAccessServiceLoginRole(nID);
+        }
+        else if (nID == null && sLogin != null && nID_AccessServiceRole != null) {
+            oAccessService.removeAccessServiceLoginRole(sLogin, nID_AccessServiceRole);
+        }
+        else {
+            return new ResponseEntity<>("Нужно указать nID или (sLogin и nID_AccessServiceRole)", HttpStatus.FORBIDDEN);
+        }
+
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    // -------------- AccessServiceRole --------------------------------------------------------------------------------
 
     @RequestMapping(value = "/getAccessServiceRoleRights", method = RequestMethod.GET)
     public ResponseEntity getAccessServiceRoleRights (
@@ -173,21 +230,27 @@ public class AccessCommonController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/removeAccessServiceRight", method = {RequestMethod.POST, RequestMethod.GET})
-    public ResponseEntity removeAccessServiceRight (
-            @ApiParam(value = "номер-ИД права", required = true) @RequestParam(value = "nID") Long nID) {
-        oAccessService.removeAccessServiceRight(nID);
-        return new ResponseEntity(HttpStatus.OK);
-    }
+    // -------------- AccessServiceRoleRight ---------------------------------------------------------------------------
 
     @RequestMapping(value = "/setAccessServiceRoleRight", method = {RequestMethod.POST, RequestMethod.GET})
     public ResponseEntity setAccessServiceRoleRight (
             @ApiParam(value = "номер-ИД связки права и роли", required = false) @RequestParam(value = "nID", required = false) Long nID,
-            @ApiParam(value = "Строка логин пользователя", required = true) @RequestParam(value = "nID_AccessServiceRole", required = true) Long nID_AccessServiceRole,
+            @ApiParam(value = "строка логин пользователя", required = true) @RequestParam(value = "nID_AccessServiceRole", required = true) Long nID_AccessServiceRole,
             @ApiParam(value = "номер-ИД роли", required = true) @RequestParam(value = "nID_AccessServiceRight", required = true) Long nID_AccessServiceRight) {
         return JsonRestUtils.toJsonResponse(oAccessService.setAccessServiceRoleRight(nID,
                 nID_AccessServiceRole, nID_AccessServiceRight));
     }
+
+    @RequestMapping(value = "/removeAccessServiceRoleRight", method = {RequestMethod.POST, RequestMethod.GET})
+    public ResponseEntity removeAccessServiceRoleRight (
+            @ApiParam(value = "номер-ИД связки роли и права", required = true) @RequestParam(value = "nID") Long nID) {
+        oAccessService.removeAccessServiceRoleRight(nID);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+
+    // -------------- AccessServiceRoleRightInclude --------------------------------------------------------------------
+
 
     @RequestMapping(value = "/setAccessServiceRoleRightInclude", method = {RequestMethod.POST, RequestMethod.GET})
     public ResponseEntity setAccessServiceRoleRightInclude (
@@ -198,13 +261,6 @@ public class AccessCommonController {
                 nID_AccessServiceRole, nID_AccessServiceRole_Include));
     }
 
-    @RequestMapping(value = "/removeAccessServiceRoleRight", method = {RequestMethod.POST, RequestMethod.GET})
-    public ResponseEntity removeAccessServiceRoleRight (
-            @ApiParam(value = "номер-ИД связки роли и права", required = true) @RequestParam(value = "nID") Long nID) {
-        oAccessService.removeAccessServiceRoleRight(nID);
-        return new ResponseEntity(HttpStatus.OK);
-    }
-
     @RequestMapping(value = "/removeAccessServiceRoleRightInclude", method = {RequestMethod.POST, RequestMethod.GET})
     public ResponseEntity removeAccessServiceRoleRightInclude (
             @ApiParam(value = "номер-ИД связки права и права", required = true) @RequestParam(value = "nID") Long nID) {
@@ -212,22 +268,15 @@ public class AccessCommonController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/removeAccessServiceLoginRole", method = {RequestMethod.POST, RequestMethod.GET})
-    public ResponseEntity removeAccessServiceLoginRole (
-            @ApiParam(value = "номер-ИД связки", required = false) @RequestParam(value = "nID", required = false) Long nID,
-            @ApiParam(value = "строка-логин", required = false) @RequestParam(value = "sLogin", required = false) String sLogin,
-            @ApiParam(value = "номер-ИД роли", required = false) @RequestParam(value = "nID_AccessServiceRole", required = false) Long nID_AccessServiceRole) {
-        if (nID != null && sLogin == null && nID_AccessServiceRole == null) {
-            oAccessService.removeAccessServiceLoginRole(nID);
-        }
-        else if (nID == null && sLogin != null && nID_AccessServiceRole != null) {
-            oAccessService.removeAccessServiceLoginRole(sLogin, nID_AccessServiceRole);
-        }
-        else {
-            return new ResponseEntity<>("Нужно указать nID или (sLogin и nID_AccessServiceRole)", HttpStatus.FORBIDDEN);
-        }
+    // -------------- AccessServiceRight -------------------------------------------------------------------------------
 
-        return new ResponseEntity(HttpStatus.OK);
+    @RequestMapping(value = "/getAccessServiceRights", method = RequestMethod.GET)
+    public ResponseEntity getAccessServiceRoleRights (
+            @ApiParam(value = "номер-ИД права", required = false) @RequestParam(value = "nID", required = false) Long nID,
+            @ApiParam(value = "строка-сервис (маска)", required = false) @RequestParam(value = "sService", required = false) String sService,
+            @ApiParam(value = "строка-название метода вызова", required = false) @RequestParam(value = "saMethod", required = false) String saMethod,
+            @ApiParam(value = "строка-название бина-обработчика", required = false) @RequestParam(value = "sHandlerBean", required = false) String sHandlerBean) {
+        return JsonRestUtils.toJsonResponse(oAccessService.getAccessServiceRights(nID, sService, saMethod, sHandlerBean));
     }
 
     @RequestMapping(value = "/setAccessServiceRight", method = {RequestMethod.POST, RequestMethod.GET})
@@ -251,46 +300,11 @@ public class AccessCommonController {
         return JsonRestUtils.toJsonResponse(oAccessService.setAccessServiceRight(accessRightVO));
     }
 
-    @RequestMapping(value = "/getAccessServiceRights", method = RequestMethod.GET)
-    public ResponseEntity getAccessServiceRoleRights (
-            @ApiParam(value = "номер-ИД права", required = false) @RequestParam(value = "nID", required = false) Long nID,
-            @ApiParam(value = "строка-сервис (маска)", required = false) @RequestParam(value = "sService", required = false) String sService,
-            @ApiParam(value = "строка-название метода вызова", required = false) @RequestParam(value = "saMethod", required = false) String saMethod,
-            @ApiParam(value = "строка-название бина-обработчика", required = false) @RequestParam(value = "sHandlerBean", required = false) String sHandlerBean) {
-        return JsonRestUtils.toJsonResponse(oAccessService.getAccessServiceRights(nID, sService, saMethod, sHandlerBean));
+    @RequestMapping(value = "/removeAccessServiceRight", method = {RequestMethod.POST, RequestMethod.GET})
+    public ResponseEntity removeAccessServiceRight (
+            @ApiParam(value = "номер-ИД права", required = true) @RequestParam(value = "nID") Long nID) {
+        oAccessService.removeAccessServiceRight(nID);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
-    /**
-     * Сервис верификации контакта - электронного адреса
-     * 
-     * @param sQuestion — Строка электронный адрес
-     * @param sAnswer — Строка ответ на запрос (код)
-     * 
-     * 
-     */
-    @ApiOperation(value = "Сервис верификации контакта - электронного адреса", notes = "##### Примеры:\n"
-            + "https://test.region.igov.org.ua/wf/service/access/verifyContactEmail?sQuestion=\\test@igov.org.ua\n"
-            + "Response\n"
-            + "\n```json\n"
-            + "{\n"
-            + "    \"bVerified\":true,\n"
-            + "}\n"
-            + "\n```\n")
-    @RequestMapping(value = "/verifyContactEmail", method = RequestMethod.GET)
-    public
-    @ResponseBody
-    Map<String, String> verifyContactEmail(
-    		@ApiParam(value = "Строка запрос (электронный адрес)", required = true) @RequestParam(value = "sQuestion") String sQuestion,
-    		@ApiParam(value = "Строка ответ (код )", required = false) 
-    		@RequestParam(value = "sAnswer", required=false) String sAnswer) throws CommonServiceException, EmailException, RecordInmemoryException {
-        Map<String, String> res = new HashMap<String, String>();
-    	try {
-            res = oAccessService.getVerifyContactEmail(sQuestion, sAnswer);
-    	} catch (AddressException ex) {
-    		LOG.warn("Email address {} is not correct", sQuestion);
-    		LOG.warn("FAIL: ", ex);
-            res.put("bVerified", "false");
-    	}
-        return res;
-    }
 }
