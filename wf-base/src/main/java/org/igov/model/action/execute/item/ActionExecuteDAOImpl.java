@@ -1,12 +1,10 @@
 package org.igov.model.action.execute.item;
 
-import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.criterion.Restrictions;
 import org.igov.model.core.GenericEntityDao;
 import org.joda.time.DateTime;
@@ -38,6 +36,7 @@ public class ActionExecuteDAOImpl extends GenericEntityDao<ActionExecute> implem
 		return findAll();
 	}
 
+	@Transactional
 	@Override
 	public ActionExecute setActionExecute(Long nID_ActionExecuteStatus,
 			DateTime oDateMake, DateTime oDateEdit, Integer nTry,
@@ -52,7 +51,8 @@ public class ActionExecuteDAOImpl extends GenericEntityDao<ActionExecute> implem
 		actionExecute.setnTry(nTry);
 		actionExecute.setsObject(sObject);
 		actionExecute.setsMethod(sMethod);
-		//actionExecute.setSoRequest(soRequest);
+		actionExecute.setSoRequest(soRequest);
+		actionExecute.setSmParam(smParam);
 		actionExecute.setsReturn(sReturn);
 		
 		getSession().saveOrUpdate(actionExecute);

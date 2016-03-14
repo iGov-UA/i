@@ -35,6 +35,7 @@
         <activiti:formProperty id="country_applicant" name="Країна реєстрації заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="requisites_applicant" name="Реквізити заявника;(місцезнаходження, телефон, факс, E-mail, WWW)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="contract" name="Документ про повноваження заявника представляти виробника (власника);(договір, контракт, доручення)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="list_documents" name="Список документів" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="file1" name="Документ, що підтверджує внесення плати за комплексне вивчення документів та підготовку проекту висновку державної санітарно-епідеміологічної експертизи" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file2" name="Документ дозвільного характеру, який підлягає переоформленню" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file3" name="Спеціфікація (довідка про повний склад об'єкта експертизи та показники його ідентифікації)" type="file" required="true"></activiti:formProperty>
@@ -43,7 +44,7 @@
         <activiti:formProperty id="file6" name="Документи з країни-постачальника (виробника), що засвідчують безпечність об'єкта експертизи" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file11" name="Нормативний документ та технічна документація, у відповідності до яких виготовлений об'єкт експертизи;(за наявності)" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="file12" name="Акт про обстеження підприємства-виробника продукції (за наявності), висновки галузевих експертиз або фахівців та інші матеріали, що характерезують виробництво за показниками якості та безпеки" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file13" name="Протоколи досліджень об'экта експертизи за показниками якості та безпеки, якщо дослідження проводились раніше, в іншій лабораторії (установі), у тому числі за кордоном;(за наявності)" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="file13" name="Протоколи досліджень об'єкта експертизи за показниками якості та безпеки, якщо дослідження проводились раніше, в іншій лабораторії (установі), у тому числі за кордоном;(за наявності)" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="file14" name="Токсикологічне досьє (для основних діючих речовин, а також для спеціальних інгредієнтів) за розділами: гостра токсичність, підгостра токсичність, хронічна токсичність, алергенна, сенсибілітазивна, імунотоксична, тератогенна, ембріотоксична, канцерогенна, мутагенна дія тощо з посиланням на виконавця досліджень;(досьє може надаватися українською, англійською, російською мовами, а його анотована частина - у перекладі українською мовою)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file15" name="Результати клінічних, натурних випробувань, епідеміологічних, популяційних досліджень тощо або науково обгрунтовані докази їх недоцільності (у випадках передбачених законодавством України), методи контролю небезпечних факторів в об'єктах експертизи" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file16" name="Рекомндації із застосування та інструкція для споживача" type="file" required="true"></activiti:formProperty>
@@ -61,7 +62,7 @@
         <activiti:formProperty id="substance" name="Суть заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="substance_2" name="Суть заяви в лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="substance_3" name="Суть заяви в контексті листа" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="term" name="Строк віконання" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="term" name="Строк виконання" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Видача висновку (Дніпропетровськ)" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;info&quot;,&quot;scope&quot;,&quot;article&quot;,&quot;country_origin&quot;,&quot;producer&quot;,&quot;requisites_produser&quot;,&quot;data_contract&quot;,&quot;name_applicant&quot;,&quot;country_applicant&quot;,&quot;requisites_applicant&quot;,&quot;contract&quot;,&quot;file1&quot;,&quot;file3&quot;,&quot;file4&quot;,&quot;file5&quot;,&quot;file6&quot;,&quot;file11&quot;,&quot;file12&quot;,&quot;file13&quot;,&quot;file14&quot;,&quot;file15&quot;,&quot;file16&quot;,&quot;file17&quot;,&quot;file18&quot;,&quot;file19&quot;],&quot;asID_Field&quot;:{&quot;sClient1&quot;:&quot;vibor_service&quot;,&quot;sClient2&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sClient1] == 'issue' &amp;&amp; ([sClient2] == 'prav' || [sClient2] == 'lev')&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers5" name="Видача висновку (Маріуполь)" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;info&quot;,&quot;scope&quot;,&quot;article&quot;,&quot;country_origin&quot;,&quot;producer&quot;,&quot;requisites_produser&quot;,&quot;data_contract&quot;,&quot;name_applicant&quot;,&quot;country_applicant&quot;,&quot;requisites_applicant&quot;,&quot;contract&quot;,&quot;file1&quot;,&quot;file3&quot;,&quot;file4&quot;,&quot;file5&quot;,&quot;file6&quot;,&quot;file11&quot;,&quot;file12&quot;,&quot;file13&quot;,&quot;file14&quot;,&quot;file15&quot;,&quot;file16&quot;,&quot;file17&quot;,&quot;file19&quot;,&quot;file21&quot;,&quot;file22&quot;],&quot;asID_Field&quot;:{&quot;sClient1&quot;:&quot;vibor_service&quot;,&quot;sClient2&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sClient1] == 'issue'&amp;&amp; [sClient2] == 'don_mariupolT'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="Переоформлення висновку" type="markers" default="{&quot;motion&quot; : {&quot;ShowFieldsOnCondition_2&quot; : {&quot;aField_ID&quot; : [&quot;file2&quot;,&quot;file7&quot;],&quot;asID_Field&quot; : {&quot;sClient&quot; : &quot;vibor_service&quot;},&quot;sCondition&quot; : &quot;[sClient] == 'restructuring'&quot;}}}"></activiti:formProperty>
@@ -102,28 +103,27 @@
         <activiti:formProperty id="article" name="Код за ДКПП, код за УКТЗЕД, артикул; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="country_origin" name="Країна походження об'єкта експертизи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="producer" name="Виробник, розробник документів (його представник в Україні); ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="requisites_produser" name="Реквізити виробника, розробника;(місцезнаходження, телефон, факс, E-mail, WWW); ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="requisites_produser" name="Реквізити виробника, розробника; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="data_contract" name="Дані про контракт на постачання об'єкта в Україну; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="name_applicant" name="Заявник (власник); ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="country_applicant" name="Країна реєстрації заявника; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="requisites_applicant" name="Реквізити заявника;(місцезнаходження, телефон, факс, E-mail, WWW); ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="contract" name="Документ про повноваження заявника представляти виробника (власника);(договір, контракт, доручення); ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="adminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string"></activiti:formProperty>
-        <activiti:formProperty id="number_cnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string"></activiti:formProperty>
-        <activiti:formProperty id="date_registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="requisites_applicant" name="Реквізити заявника; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="contract" name="Документ про повноваження заявника представляти виробника (власника); ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="adminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="number_cnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="date_registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="shapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="substance" name="Суть заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="substance_2" name="Суть заяви в лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="substance_3" name="Суть заяви в контексті листа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="document" name="Назва документу" type="invisible" default="висновок державної санітарно-епідеміологічної експертизи щодо ввезення, реалізації та використання сировини, продукції іноземного виробн. за умови відсутності даних щодо їх безпечності для здоров’я населення"></activiti:formProperty>
-        <activiti:formProperty id="term" name="Строк віконання" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="term" name="Строк виконання" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="status" name="Обробка заяви" type="enum">
           <activiti:value id="attr1_wait" name="Документи передані в держсанепідслужбу"></activiti:value>
           <activiti:value id="attr2_finish" name="Відмова громадянину у разі надання неповного пакету документів"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="Per3" name="Перевірте подані громадянином дані, заповніть всі необхідні поля (П.І.Б адміністратора, дату реєстрації, реєстраційний номер та рішення про надання послуги), заповніть в полі нижче перелік документів, які прислав громадянин - потім роздрукуйте форму заяви." type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="list_documents" name="Вкажіть перелік документів, які надіслав громадянин" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="Per3" name="Перевірте подані громадянином дані, заповніть всі необхідні поля (П.І.Б адміністратора, дату реєстрації, реєстраційний номер та рішення про надання послуги), потім роздрукуйте форму заяви." type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_220_print1.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_220_print2.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/dneprOblSnap/dnepr_cnap_220_print1.html]" type="invisible" default="Форма заяви громадянина 1" writable="false"></activiti:formProperty>
@@ -178,16 +178,16 @@
         <activiti:formProperty id="substance" name="Суть заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="substance_2" name="Суть заяви в лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="substance_3" name="Суть заяви в контексті листа" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="term" name="Строк віконання" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="term" name="Строк виконання" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="adminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="number_cnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="status2" name="Статус висновку" type="enum">
           <activiti:value id="attr3_finish" name="Висновок (або рішення) готове, запросити громадянина"></activiti:value>
-          <activiti:value id="attr4_finish" name="Відмова громадянину у видачі висновку держсанепідслужбой"></activiti:value>
+          <activiti:value id="attr4_finish" name="Відмова громадянину у видачі висновку держсанепідслужбою"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="file10" name="Завантажте скановану копию висновку (або рішення) держсанепідслужби" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="file10" name="Завантажте скановану копію висновку (або рішення) держсанепідслужби" type="file" default=" "></activiti:formProperty>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask2" name="Повідомлення адміністратора ЦНАПу" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -196,7 +196,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:string><![CDATA[msvidran@gmail.com]]></activiti:string>
+          <activiti:string><![CDATA[dmitriy.istomin82@gmail.com]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення. Висновок державної санітарно-епідеміологічної експертизи щодо ввезення, реалізації та використання сировини, продукції іноземного виробн. за умови відсутності даних щодо їх безпечності для здоров’я населення.]]></activiti:string>
@@ -281,7 +281,7 @@
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 &lt;p&gt;Ваше звернення щодо ${substance_3} висновоку державної санітарно-епідеміологічної експертизи щодо ввезення, реалізації та використання сировини, продукції іноземного виробн. за умови відсутності даних щодо їх безпечності для здоров’я населення - відправлене в держсанепідслужбу.&lt;br /&gt;
 Спеціалісти повинні дати відповідь протягом тридцяти календарних днів з дня реєстрації заяви.&lt;br /&gt; 
-&lt;p&gt;Номер Вашого замовлення: ${number_cnap}&lt;/p&gt;.
+&lt;p&gt;Номер Вашого замовлення: ${number_cnap}&lt;/p&gt;
 &lt;/p&gt;
 &lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]&lt;br /&gt; 
@@ -355,7 +355,7 @@ var per6 = 'substance_3'
 var per7 ='term'
 if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'don_mariupolT'){
 per1 = '102'
-per2 = 'tanyazol@gmail.com'
+per2 = 'dmitriy.istomin82@gmail.com'
 per3 = 'Головному державному санітарному лікарю м.Маріуполя'
 }
 if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'prav'){
@@ -429,7 +429,6 @@ per6 = "&lt;li&gt;Токсикологічне досьє (для основни
 per7 = "&lt;li&gt;Результати клінічних, натурних випробувань, епідеміологічних, популяційних досліджень тощо або науково обгрунтовані докази їх недоцільності, методи контролю небезпечних факторів в об'єктах експертизи&lt;/li&gt;"
 per8 = "&lt;li&gt;Рекомндації із застосування та інструкція для споживача&lt;/li&gt;"
 per9 = "&lt;li&gt;Етикетка&lt;/li&gt;"
-
 if(execution.getVariable('file11') != null){
 per10 = "&lt;li&gt;Нормативний документ та технічна документація, у відповідності до яких виготовлений об'єкт експертизи.&lt;/li&gt;"
 }

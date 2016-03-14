@@ -14,6 +14,7 @@ import org.activiti.engine.impl.util.json.JSONArray;
 import org.apache.commons.beanutils.MethodUtils;
 import org.igov.model.action.execute.item.ActionExecute;
 import org.igov.model.action.execute.item.ActionExecuteDAO;
+import org.igov.model.action.execute.item.ActionExecuteOldDAO;
 import org.igov.model.action.execute.item.ActionExecuteStatusDAO;
 import org.igov.service.exception.CommonServiceException;
 import org.joda.time.DateTime;
@@ -29,7 +30,8 @@ public class MethodsCallRunnerUtil {
 
 	@Autowired
 	private ActionExecuteDAO actionExecuteDAO;
-
+	@Autowired
+	private ActionExecuteOldDAO actionExecuteOldDAO;
 	@Autowired
 	private ActionExecuteStatusDAO actionExecuteStatusDAO;
 	
@@ -172,14 +174,24 @@ public class MethodsCallRunnerUtil {
 				if(o==null){
 					o = c.getDeclaredConstructor().newInstance();
 				}
-				Object[] parameters = actionExecute.getSmParam()!=null?(Object[]) fromByteArray(actionExecute.getSoRequest()):null;
 				
-				Class<?>[] param_types = new Class<?>[parameters!=null?parameters.length:0];
-				if (parameters!=null && parameters.length>0)
-					for (int i=0; i< parameters.length; i++)
-						param_types[i] = parameters[i].getClass();
+				LOG.info("object - {}", o);				
+
+				Object[] parammeters = actionExecute.getSmParam()!=null?(Object[]) fromByteArray(actionExecute.getSoRequest()):null;
+				LOG.info("parammeters - {}", parammeters);
+				
+				if (parammeters!= null)					
+					LOG.info("parammeters size - {}", parammeters.length);
+				
+				Class<?>[] param_types = new Class<?>[parammeters!=null?parammeters.length:0];
+				if (parammeters!=null && parammeters.length>0)
+					for (int i=0; i< parammeters.length; i++){
+						param_types[i] = parammeters[i].getClass();
+						LOG.info("param_type - {}", parammeters[i].getClass().getName());
+					}
 				
 				Method  method = getMethod(param_types, c, actionExecute.getsMethod());
+				LOG.info("method - {}", method);
 				if (method==null)
 					method = c.getMethod(actionExecute.getsMethod(), param_types);
 				if(method==null){
@@ -191,8 +203,8 @@ public class MethodsCallRunnerUtil {
 			
 				try{
 					LOG.info("Trying to invoke method {}", method);
-					if (parameters!= null)
-						ret = method.invoke(o, parameters);
+					if (parammeters!= null)
+						ret = method.invoke(o, parammeters);
 					else 
 						ret = method.invoke(o);
 					LOG.info("return is {}",ret!=null?ret:null);

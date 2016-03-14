@@ -8,7 +8,13 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -23,6 +29,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import javax.activation.DataSource;
 import javax.servlet.http.HttpServletResponse;
 
 import liquibase.util.csv.CSVWriter;
@@ -39,6 +46,7 @@ import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.history.HistoricTaskInstanceQuery;
 import org.activiti.engine.identity.Group;
+import org.activiti.engine.impl.event.logger.handler.TaskCreatedEventHandler;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.repository.ProcessDefinition;
@@ -49,7 +57,10 @@ import org.activiti.engine.task.TaskInfoQuery;
 import org.activiti.engine.task.TaskQuery;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.mail.ByteArrayDataSource;
+import org.apache.commons.mail.EmailException;
 import org.igov.io.GeneralConfig;
+import org.igov.io.mail.Mail;
 import org.igov.io.mail.NotificationPatterns;
 import org.igov.io.web.HttpRequester;
 import org.igov.model.action.event.HistoryEvent_Service_StatusType;
@@ -146,6 +157,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
     @Autowired
     private MessageService oMessageService;
+    
+    @Autowired
+    private Mail oMail;
 
     /**
      * Загрузка задач из Activiti:
@@ -279,7 +293,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 for (FormProperty property : data.getFormProperties()) {
 
                     String sValue = "";
-                    String sType = property.getType().getName();
+                    String sType = property.getType() != null ? property.getType().getName() : "";
                     if ("enum".equalsIgnoreCase(sType)) {
                         sValue = oActionTaskService.parseEnumProperty(property);
                     } else {
@@ -579,10 +593,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             nID_Task = oActionTaskService.getTaskIDbyProcess(nID_Process, sID_Order, Boolean.FALSE);
         }
         if(sLogin != null){
-            if (oActionTaskService.checkAvailabilityTaskCandidateGroupsForUser(sLogin, nID_Task)){
+            if (oActionTaskService.checkAvailabilityTaskGroupsForUser(sLogin, nID_Task)){
                 LOG.info("User {} have access to the Task {}", sLogin, nID_Task);
             } else {
-                String taskGroupIDs = oActionTaskService.getCandidateGroupByTaskID(nID_Task).toString();
+                String taskGroupIDs = oActionTaskService.getGroupIDsByTaskID(nID_Task).toString();
                 throw new AccessServiceException(AccessServiceException.Error.LOGIN_ERROR, "Access deny " + taskGroupIDs);
             }
         }
@@ -614,7 +628,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         response.put("oData", oActionTaskService.getQueueData(aField));
 
         if (bIncludeGroups.equals(Boolean.TRUE)){
-            response.put("aGroups", oActionTaskService.getCandidateGroupByTaskID(nID_Task));
+            response.put("aGroups", oActionTaskService.getGroupIDsByTaskID(nID_Task));
         }
         if (bIncludeStartForm.equals(Boolean.TRUE)){
             response.put("aFieldStartForm", oActionTaskService.getStartFormData(nID_Task));
@@ -1097,6 +1111,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "добавить заголовок с названиями полей в выходной файл, по умолчанию - false", required = false) @RequestParam(value = "bHeader", required = false, defaultValue = "false") Boolean bHeader,
             @ApiParam(value = "настраиваемые поля (название поля -- формула, issue 907", required = false) @RequestParam(value = "saFieldsCalc", required = false) String saFieldsCalc,
             @ApiParam(value = "сведение полей, которое производится над выборкой (issue 916)", required = false) @RequestParam(value = "saFieldSummary", required = false) String saFieldSummary,
+            @ApiParam(value = "Email для отправки выбранных данных", required = false) @RequestParam(value = "sMailTo", required = false) String sMailTo,
+            @ApiParam(value = "начальная дата закрытия таски", required = false) @RequestParam(value = "sTaskEndDateAt", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date sTaskEndDateAt,
+            @ApiParam(value = "конечная дата закрытия таски", required = false) @RequestParam(value = "sTaskEndDateTo", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date sTaskEndDateTo,
             HttpServletResponse httpResponse) throws IOException {
 
 //      'sID_State_BP': '',//'usertask1'
@@ -1131,7 +1148,14 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 .taskCreatedBefore(dEndDate);
         HistoricTaskInstanceQuery historicQuery = historyService
                 .createHistoricTaskInstanceQuery()
-                .processDefinitionKey(sID_BP).taskCreatedAfter(dBeginDate)
+                .processDefinitionKey(sID_BP);
+        if (sTaskEndDateAt != null){
+        	historicQuery.taskCompletedAfter(sTaskEndDateAt);
+        }
+        if (sTaskEndDateTo != null){
+        	historicQuery.taskCompletedBefore(sTaskEndDateTo);
+        }
+        historicQuery.taskCreatedAfter(dBeginDate)
                 .taskCreatedBefore(dEndDate).includeProcessVariables();
         if (sID_State_BP != null) {
             historicQuery.taskDefinitionKey(sID_State_BP);
@@ -1147,7 +1171,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         if (sID_State_BP != null) {
             query = query.taskDefinitionKey(sID_State_BP);
         }
-        List<Task> foundResults = query.listPage(nRowStart, nRowsMax);
+        List<Task> foundResults = new LinkedList<Task>();
+        if (sTaskEndDateAt == null && sTaskEndDateTo != null){
+        	foundResults = query.listPage(nRowStart, nRowsMax);
+        }
 
         // 3. response
         SimpleDateFormat sdfFileName = new SimpleDateFormat(
@@ -1161,12 +1188,21 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
         LOG.debug("File name to return statistics : {}", sTaskDataFileName);
 
-        httpResponse.setContentType("text/csv;charset=" + charset.name());
-        httpResponse.setHeader("Content-disposition", "attachment; filename="
-                + sTaskDataFileName);
-
-        CSVWriter printWriter = new CSVWriter(httpResponse.getWriter(), separator.charAt(0),
+        CSVWriter printWriter = null;
+        PipedInputStream pi = new PipedInputStream();
+        
+        if (sMailTo != null){
+	        PipedOutputStream po = new PipedOutputStream(pi);
+	        PrintWriter pw = new PrintWriter(po);
+	        printWriter = new CSVWriter(pw, separator.charAt(0),
+	                CSVWriter.NO_QUOTE_CHARACTER);
+        } else {
+        	printWriter = new CSVWriter(httpResponse.getWriter(), separator.charAt(0),
                 CSVWriter.NO_QUOTE_CHARACTER);
+        	httpResponse.setContentType("text/csv;charset=" + charset.name());
+            httpResponse.setHeader("Content-disposition", "attachment; filename="
+                    + sTaskDataFileName);
+        }
 
         List<Map<String, Object>> csvLines = new LinkedList<>();
 
@@ -1216,6 +1252,28 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
 
         printWriter.close();
+        
+        if (sMailTo != null){
+        	LOG.info("Sending email with tasks data to email {}", sMailTo);
+	        SimpleDateFormat sdf = new SimpleDateFormat("yyyy:MM:dd");
+	        String sSubject = String.format("Выборка за: (%s)-(%s) для БП: %s ", sdf.format(dBeginDate), sdf.format(dEndDate), sID_BP);
+	        String sFileExt = "csv";
+	        DataSource oDataSource = new ByteArrayDataSource(pi, sFileExt);
+	        oMail._To(sMailTo);
+	        oMail._Head(sSubject);
+	        oMail._Body(sSubject);
+	        oMail._Attach(oDataSource, sTaskDataFileName, "");
+	        try {
+				oMail.sendWithUniSender();
+			} catch (EmailException e) {
+				LOG.error("Error occured while sending tasks data to email: {}", e.getMessage());
+			}
+	        pi.close();
+	        
+	        httpResponse.setContentType("text/plain");
+	        httpResponse.getWriter().print("OK");
+        }
+        
     }
 
     /**
@@ -1923,7 +1981,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 					assignee = task.getAssignee();
 					LOG.info("Processing task {} with assignee {}", task.getId(), task.getAssignee());
 					taskService.setVariable(task.getId(), "sStatusName_UkrDoc", status);
-					LOG.info("Set variable sStatusName_UkrDoc {} for task with ID {}", status, task.getId());
+					runtimeService.setVariable(task.getProcessInstanceId(), "sStatusName_UkrDoc", status);
+					runtimeService.setVariable(task.getProcessInstanceId(), "sID_Document_UkrDoc", sKey);
+					LOG.info("Set variable sStatusName_UkrDoc {} and sID_Document_UkrDoc {} for process instance with ID {}", status, sKey, task.getProcessInstanceId());
 					taskService.complete(task.getId());
 					LOG.info("Completed task {}", task.getId());
 				}

@@ -8,6 +8,7 @@ var cacheKey = 'admin-keys-map';
 var aAdminInn = [
 	'3119325858'
 	,'3167410996' //Забрудский
+        ,'2817305057' //Свидрань
 ];
 
 var getAdminKeys = function () {

@@ -1,52 +1,34 @@
 package org.igov.service.controller;
 
 import com.google.common.base.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.igov.service.exception.EntityNotFoundException;
-import org.igov.model.object.place.PlaceDao;
-import org.igov.model.object.place.PlaceTypeDao;
-import org.igov.model.object.place.PlaceHibernateHierarchyRecord;
-import org.igov.model.object.place.PlaceHierarchy;
-import org.igov.model.object.place.Place;
-import org.igov.model.object.place.PlaceType;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponses;
-import io.swagger.annotations.ApiResponse;
-import java.util.Arrays;
-
-import java.util.List;
-import javax.servlet.http.HttpServletResponse;
-
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-
-import org.igov.model.object.place.Country;
-import org.igov.model.object.place.CountryDao;
-import org.igov.model.object.place.Region;
+import io.swagger.annotations.*;
 import org.igov.model.core.BaseEntityDao;
+import org.igov.model.object.place.*;
 import org.igov.service.business.core.EntityService;
-import static org.igov.service.business.object.ObjectPlaceService.regionsToJsonResponse;
-import static org.igov.service.business.object.ObjectPlaceService.swap;
-import static org.igov.util.Tool.bNullArgsAll;
+import org.igov.service.exception.EntityNotFoundException;
 import org.igov.util.JSON.JsonRestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static org.igov.service.business.object.ObjectPlaceService.regionsToJsonResponse;
+import static org.igov.service.business.object.ObjectPlaceService.swap;
+import static org.igov.util.Tool.bNullArgsAll;
 
 /**
  * @author dgroup
  * @since 20.07.2015
  */
-@Api(tags = {"ObjectPlaceController"}, description = "Обьекты мест (населенных пунктов и регионов) и стран")
+@Api(tags = { "ObjectPlaceController -- Обьекты мест (населенных пунктов и регионов) и стран" })
 @Controller
 @RequestMapping(value = "/object/place")
 public class ObjectPlaceController {
@@ -73,7 +55,7 @@ public class ObjectPlaceController {
         return value != null && value > 0;
     }
 
-    @ApiOperation(value = "Получить иерархию объектов вниз начиная с указанного узла", notes = "##### ObjectPlaceController - Обьекты мест (населенных пунктов и регионов) и стран. Получить иерархию объектов вниз начиная с указанного узла #####\n\n"
+        @ApiOperation(value = "Получить иерархию объектов вниз начиная с указанного узла", notes = "Примеры\n"
             + "Параметыр nID\n\n"
             + "https://test.igov.org.ua/wf/service/object/place/getPlacesTree?nID=459\n\n\n"
             + "Ответ\n"
@@ -281,14 +263,14 @@ public class ObjectPlaceController {
             @ApiParam(value = "id места", required = false) @RequestParam(value = "nID", required = false) Long placeId,
             @ApiParam(value = "строка-ИД места (в классификаторе Украины)", required = false) @RequestParam(value = "sID_UA", required = false) String uaId,
             @ApiParam(value = "номер-МД типа места (населенного пункта/региона)", required = false) @RequestParam(value = "nID_PlaceType", required = false) Long typeId,
-            @ApiParam(value = "только территория (район)", required = false) @RequestParam(value = "bArea", required = false) Boolean area,
-            @ApiParam(value = "только корень (область)", required = false) @RequestParam(value = "bRoot", required = false) Boolean root,
+                @ApiParam(value = "булевый флаг. если true -- только территория (район)", required = false) @RequestParam(value = "bArea", required = false) Boolean area,
+                @ApiParam(value = "булевый флаг. если true -- только корень (область)", required = false) @RequestParam(value = "bRoot", required = false) Boolean root,
             @ApiParam(value = "число вложенных уровней", required = true) @RequestParam(value = "nDeep", defaultValue = "1") Long deep) {
 
         return placeDao.getTreeDown(new PlaceHibernateHierarchyRecord(placeId, typeId, uaId, area, root, deep));
     }
 
-    @ApiOperation(value = "Получение иерархии объектов вверх начиная с указанного узла", notes = "##### ObjectPlaceController - Обьекты мест (населенных пунктов и регионов) и стран. Получение иерархии объектов вверх начиная с указанного узла #####\n\n\n\n"
+        @ApiOperation(value = "Получение иерархии объектов вверх начиная с указанного узла", notes = "Примеры"
             + "Получить иерархию объектов вверх начиная с указанного узла (параметр nID).\n\n"
             + "https://test.igov.org.ua/wf-central/service/object/place/getPlace?nID=462\n"
             + "Ответ\n"
@@ -360,12 +342,12 @@ public class ObjectPlaceController {
     PlaceHierarchy getPlace(
             @ApiParam(value = "id места", required = false) @RequestParam(value = "nID", required = false) Long placeId,
             @ApiParam(value = "строка-ИД места (в классификаторе Украины)", required = false) @RequestParam(value = "sID_UA", required = false) String uaId,
-            @ApiParam(value = "в виде дерева", required = true) @RequestParam(value = "bTree", defaultValue = "false") Boolean tree) {
+                @ApiParam(value = "булевый флаг. если true -- в виде дерева", required = true) @RequestParam(value = "bTree", defaultValue = "false") Boolean tree) {
 
         return placeDao.getTreeUp(placeId, uaId, tree);
     }
 
-    @ApiOperation(value = "Вставить новый объект Place", notes = "##### ObjectPlaceController - Обьекты мест (населенных пунктов и регионов) и стран. Вставить новый объект Place #####\n\n"
+        @ApiOperation(value = "Вставить новый объект Place", notes = "Примеры\n"
             + "https://test.igov.org.ua/wf/service/object/place/setPlace?sName=child_of_462&nID_PlaceType=5&sID_UA=90005000462&sNameOriginal=5000_462_child\n\n"
             + "Результат\n"
             + "HTTP code = 200 OK\n\n\n"
@@ -429,8 +411,8 @@ public class ObjectPlaceController {
         }
     }
 
-    @ApiOperation(value = "Получение сущности Place", notes = "##### ObjectPlaceController - Обьекты мест (населенных пунктов и регионов) и стран. Получение сущности Place #####\n\n"
-            + "Пример: https://test.igov.org.ua/wf-central/service/object/place/getPlaceEntity?nID=22830\n\n\n"
+        @ApiOperation(value = "Получение сущности Place", notes =
+                "Пример: https://test.igov.org.ua/wf-central/service/object/place/getPlaceEntity?nID=22830\n"
             + "Ответ:"
             + "\n```json\n"
             + "{\n"
@@ -453,7 +435,7 @@ public class ObjectPlaceController {
                 : placeDao.findByExpected("sID_UA", uaId);
     }
 
-    @ApiOperation(value = "Удаление объекта Place", notes = "##### ObjectPlaceController - Обьекты мест (населенных пунктов и регионов) и стран. Удаление объекта Place #####\n\n"
+        @ApiOperation(value = "Удаление объекта Place", notes = "Примеры\n"
             + "Удалить объект Place по первичному ключу (параметр nID).\n\n"
             + "https://test.igov.org.ua/wf-central/service/object/place/removePlace?nID=22830\n"
             + "Результат\n"
@@ -495,7 +477,7 @@ public class ObjectPlaceController {
         }
     }
 
-    @ApiOperation(value = "Получение типа места", notes = "##### ObjectPlaceController - Обьекты мест (населенных пунктов и регионов) и стран. Получение типа места #####\n\n"
+        @ApiOperation(value = "Получение типа места", notes = "Примеры\n"
             + "Получить тип места (область)\n"
             + "https://test.igov.org.ua/wf-central/service/object/place/getPlaceTypes?bArea=true&bRoot=true\n"
             + "Ответ\n"
@@ -558,14 +540,13 @@ public class ObjectPlaceController {
             method = RequestMethod.GET, headers = {JSON_TYPE})
     public @ResponseBody
     List<PlaceType> getPlaceTypes(
-            @ApiParam(value = "только территория (район)", required = true) @RequestParam(value = "bArea") Boolean area,
-            @ApiParam(value = "только корень (область)", required = true) @RequestParam(value = "bRoot") Boolean root) {
+                @ApiParam(value = "булевый флаг. если true -- только территория (район)", required = true) @RequestParam(value = "bArea") Boolean area,
+                @ApiParam(value = "булевый флаг. если true -- только корень (область)", required = true) @RequestParam(value = "bRoot") Boolean root) {
 
         return placeTypeDao.getPlaceTypes(area, root);
     }
 
-    @ApiOperation(value = "Получение субъекта", notes = "##### ObjectPlaceController - Обьекты мест (населенных пунктов и регионов) и стран. Получение субъекта #####\n\n"
-            + "Получить тип места (как сущность) по первичному ключу (параметр nID)\n"
+        @ApiOperation(value = "Получение субъекта", notes = "Пример:\n"
             + "https://test.igov.org.ua/wf-central/service/object/place/getPlaceType?nID=1\n"
             + "Ответ\n"
             + "\n```json\n"
@@ -587,8 +568,7 @@ public class ObjectPlaceController {
         return placeTypeDao.findByIdExpected(placeTypeId);
     }
 
-    @ApiOperation(value = "Cоздание новый тип места", notes = "##### ObjectPlaceController - Обьекты мест (населенных пунктов и регионов) и стран. Cоздание нового тип места #####\n\n"
-            + "Cоздать новый тип места.\n"
+        @ApiOperation(value = "Cоздание нового тип места", notes = "Пример:\n"
             + "https://test.igov.org.ua/wf-central/service/object/place/setPlaceType?sName=Type_1&nOrder=2&bArea=false&bRoot=false\n"
             + "Результат\n"
             + "HTTP code = 200 OK\n\n"
@@ -633,8 +613,8 @@ public class ObjectPlaceController {
             @ApiParam(value = "номер-ИД записи", required = false) @RequestParam(value = "nID", required = false) Long placeTypeId,
             @ApiParam(value = "строка имени", required = false) @RequestParam(value = "sName", required = false) String name,
             @ApiParam(value = "номер порядковый", required = false) @RequestParam(value = "nOrder", required = false) Long order,
-            @ApiParam(value = "только территория (район)", required = true) @RequestParam(value = "bArea", defaultValue = "false") Boolean area,
-            @ApiParam(value = "только корень (область)", required = true) @RequestParam(value = "bRoot", defaultValue = "false") Boolean root) {
+                @ApiParam(value = "булевый флаг. если true -- только территория (район)", required = true) @RequestParam(value = "bArea", defaultValue = "false") Boolean area,
+                @ApiParam(value = "булевый флаг. если true -- только корень (область)", required = true) @RequestParam(value = "bRoot", defaultValue = "false") Boolean root) {
 
         PlaceType placeType = new PlaceType(placeTypeId, name, order, area, root);
 
@@ -646,8 +626,7 @@ public class ObjectPlaceController {
         }
     }
 
-    @ApiOperation(value = "Удаление типа места", notes = "##### ObjectPlaceController - Обьекты мест (населенных пунктов и регионов) и стран. Удаление типа места #####\n\n"
-            + "Удалить тип места по первичному ключу (nID).\n"
+        @ApiOperation(value = "Удаление типа места", notes = "Пример:\n"
             + "https://test.igov.org.ua/wf-central/service/object/place/removePlaceType?nID=23417\n"
             + "Результат\n"
             + "HTTP code = 200 OK\n\n"
@@ -686,16 +665,7 @@ public class ObjectPlaceController {
         placeTypeDao.delete(placeTypeId);
     }
 
-    /**
-     * Получения дерева мест (регионов и городов).
-     *
-     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос
-     * автоматически после аутентификации пользователя)
-     */
-    @ApiOperation(value = "Получения дерева мест (регионов и городов)", notes = "##### ObjectPlaceController - Обьекты мест (населенных пунктов и регионов) и стран. Получения дерева мест (регионов и городов) #####\n\n"
-            + "HTTP Context: http://server:port/wf/service/object/place/getPlaces\n\n\n"
-            + "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n\n"
-            + "Пример: \n"
+        @ApiOperation(value = "Получения дерева мест (регионов и городов)", notes = "Пример: \n"
             + "https://test.igov.org.ua/wf/service/object/place/getPlaces\n"
             + "Ответ:\n"
             + "\n```json\n"
@@ -792,20 +762,10 @@ public class ObjectPlaceController {
         return regionsToJsonResponse(regions);
     }
 
-    /**
-     * Изменение дерева мест (регионов и городов). Можно менять регионы (не
-     * добавлять и не удалять) + менять/добавлять города (но не удалять),
-     * Передается json в теле POST запроса в том же формате, в котором он был в
-     * getPlaces.
-     *
-     * @param nID_Subject ID авторизированого субъекта (добавляется в запрос
-     * автоматически после аутентификации пользователя)
-     */
-    @ApiOperation(value = "Изменение дерева мест (регионов и городов)", notes = "##### ObjectPlaceController - Обьекты мест (населенных пунктов и регионов) и стран. Изменение дерева мест (регионов и городов) #####\n\n"
-            + "HTTP Context: http://server:port/wf/service/object/place/setPlaces\n\n\n"
+        @ApiOperation(value = "Изменение дерева мест (регионов и городов)", notes = ""
             + "Можно менять регионы (не добавлять и не удалять) + менять/добавлять города (но не удалять), Передается json в теле POST запроса в том же формате, в котором он был в getPlaces.\n\n"
-            + "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n\n"
-            + "Возвращает: HTTP STATUS 200 + json представление сервиса после изменения. Чаще всего то же, что было передано в теле POST запроса + сгенерированные id-шники вложенных сущностей, если такие были.\n\n"
+                + "Возвращает: HTTP STATUS 200 + json представление сервиса после изменения. Чаще всего то же, что было передано в теле POST запроса + "
+                + "сгенерированные id-шники вложенных сущностей, если такие были.\n\n"
             + "Пример: \n"
             + "https://test.igov.org.ua/wf/service/object/place/setPlaces\n\n"
             + "\n```json\n"
@@ -848,19 +808,16 @@ public class ObjectPlaceController {
             + "\n```\n")
     @RequestMapping(value = "/setPlaces", method = RequestMethod.POST)
     public @ResponseBody
-    ResponseEntity setPlaces(@RequestBody String jsonData) {
+        ResponseEntity setPlaces(
+                @ApiParam(value = "строка-json в том же формате, в котором он был в getPlaces") @RequestBody String jsonData) {
 
         List<Region> aRegion = Arrays.asList(JsonRestUtils.readObject(jsonData, Region[].class));
         List<Region> aRegionUpdated = entityService.update(aRegion);
         return regionsToJsonResponse(aRegionUpdated);
     }
 
-    /**
-     * возвращает весь список стран (залит справочник согласно
-     */
-    @ApiOperation(value = "Возвращает весь список стран", notes = "##### ObjectPlaceController - Обьекты мест (населенных пунктов и регионов) и стран. Возвращает весь список стран #####\n\n"
-            + "HTTP Context: https://server:port/wf/service/object/place/getCountries\n\n"
-            + "(залит справочник согласно Википеции и Класифікації країн світу)\n\n"
+        @ApiOperation(value = "Возвращает весь список стран", notes = ""
+                + "(залит справочник согласно Википедии и Класифікації країн світу)\n\n"
             + "пример:\n"
             + "https://test.igov.org.ua/wf/service/object/place/getCountries")
     @RequestMapping(value = "/getCountries", method = RequestMethod.GET)
@@ -870,17 +827,8 @@ public class ObjectPlaceController {
         return countryDao.findAll();
     }
 
-    /**
-     * отдает элемент(по первому ненулевому из уникальных-ключей)
-     *
-     * @param nID_UA (опциональный)
-     * @param sID_Two (опциональный)
-     * @param sID_Three (опциональный)
-     * @param response
-     * @return list of countries according to filters
-     */
-    @ApiOperation(value = "Возвращает объект Страны по первому из 4х ключей (nID, nID_UA, sID_Two, sID_Three)", notes = "##### ObjectPlaceController - Обьекты мест (населенных пунктов и регионов) и стран. Возвращает объект Страны по первому из 4х ключей (nID, nID_UA, sID_Two, sID_Three) #####\n\n"
-            + "HTTP Context: https://server:port/wf/service/object/place/getCountry\n\n"
+        @ApiOperation(value = "Возвращает объект Страны по первому из 4х ключей (nID, nID_UA, sID_Two, sID_Three)", notes =
+                ""
             + "Если нет ни одного параметра возвращает ошибку 403. required at least one of parameters (nID, nID_UA, sID_Two, sID_Three)!\n\n"
             + "Eсли задано два ключа от разных записей -- вернется та, ключ который \"первее\" в таком порядке: nID, nID_UA, sID_Two, sID_Three.\n\n"
             + "пример: https://test.igov.org.ua/wf/service/object/place/getCountry?nID_UA=123\n\n"
@@ -926,28 +874,7 @@ public class ObjectPlaceController {
         return result;
     }
 
-    /**
-     * апдейтит элемент(если задан один из уникальных-ключей) или вставляет
-     * (если не задан nID), и отдает экземпляр нового объекта
-     *
-     * @param nID (опциональный, если другой уникальный-ключ задан и по нему
-     * найдена запись)
-     * @param nID_UA (опциональный, если другой уникальный-ключ задан и по нему
-     * найдена запись)
-     * @param sID_Two (опциональный, если другой уникальный-ключ задан и по нему
-     * найдена запись)
-     * @param sID_Three (опциональный, если другой уникальный-ключ задан и по
-     * нему найдена запись)
-     * @param sNameShort_UA (опциональный, если другой уникальный-ключ задан и
-     * по нему найдена запись)
-     * @param sNameShort_EN (опциональный, если другой уникальный-ключ задан и
-     * по нему найдена запись)
-     * @param sReference_LocalISO (опциональный)
-     * @param response
-     * @return
-     */
-    @ApiOperation(value = "Изменить объект \"Cтрана\"", notes = "##### ObjectPlaceController - Обьекты мест (населенных пунктов и регионов) и стран. Изменить объект \"Cтрана\" #####\n\n"
-            + "HTTP Context: https://server:port/wf/service/object/place/setCountry\n\n"
+        @ApiOperation(value = "Изменить объект \"Cтрана\"", notes = ""
             + "апдейтит элемент (если задан один из уникальных ключей) или вставляет (если не задан nID), и отдает экземпляр нового объекта.\n\n"
             + "Если нет ни одного параметра возвращает ошибку 403. All args are null! Если есть один из уникальных ключей, но запись"
             + " не найдена -- ошибка 403. Record not found! Если кидать \"новую\" запись с одним из уже существующих ключей nID_UA -- то обновится существующая запись по ключу nID_UA, если будет дублироваться другой ключ -- ошибка 403. Could not execute statement (из-за уникальных констрейнтов)")
@@ -960,8 +887,8 @@ public class ObjectPlaceController {
             @ApiParam(value = "ИД-номер Код, в Украинском классификаторе (уникальное)", required = false) @RequestParam(value = "nID_UA", required = false) Long nID_UA,
             @ApiParam(value = "ИД-строка Код-двухсимвольный, международный (уникальное, строка 2 символа)", required = false) @RequestParam(value = "sID_Two", required = false) String sID_Two,
             @ApiParam(value = "ИД-строка Код-трехсимвольный, международный (уникальное, строка 3 символа)", required = false) @RequestParam(value = "sID_Three", required = false) String sID_Three,
-            @ApiParam(value = "Назва країни, коротка, Украинская (уникальное, строка до 100 символов)", required = false) @RequestParam(value = "sNameShort_UA", required = false) String sNameShort_UA,
-            @ApiParam(value = "Назва країни, коротка, англійською мовою (уникальное, строка до 100 символов)", required = false) @RequestParam(value = "sNameShort_EN", required = false) String sNameShort_EN,
+                @ApiParam(value = "строка-Назва країни, коротка, Украинская (уникальное, строка до 100 символов)", required = false) @RequestParam(value = "sNameShort_UA", required = false) String sNameShort_UA,
+                @ApiParam(value = "строка-Назва країни, коротка, англійською мовою (уникальное, строка до 100 символов)", required = false) @RequestParam(value = "sNameShort_EN", required = false) String sNameShort_EN,
             @ApiParam(value = "Ссылка на локальный ISO-стандарт, с названием (a-teg с href) (строка до 100 символов)", required = false) @RequestParam(value = "sReference_LocalISO", required = false) String sReference_LocalISO,
             HttpServletResponse response) {
 
@@ -987,18 +914,7 @@ public class ObjectPlaceController {
         return result;
     }
 
-    /**
-     * удаляет элемент(по одому из уникальных ключей)
-     *
-     * @param nID -- опциональный, если другой уникальный-ключ задан и по нему
-     * найдена запись
-     * @param nID_UA-- опциональный
-     * @param sID_Two-- опциональный
-     * @param sID_Three-- опциональный
-     * @param response
-     */
-    @ApiOperation(value = "Удалить обьект по одному из четырех ключей (nID, nID_UA, sID_Two, sID_Three)", notes = "##### ObjectPlaceController - Обьекты мест (населенных пунктов и регионов) и стран. Удалить обьект по одному из четырех ключей (nID, nID_UA, sID_Two, sID_Three) #####\n\n"
-            + "HTTP Context: https://server:port/wf/service/object/place/removeCountry\n"
+        @ApiOperation(value = "Удалить обьект по одному из четырех ключей (nID, nID_UA, sID_Two, sID_Three)", notes = ""
             + "удаляет обьект по одному из четырех ключей (nID, nID_UA, sID_Two, sID_Three) или кидает ошибку 403. Record not found!.\n")
     @ApiResponses(value = {
         @ApiResponse(code = 403, message = "Record not found")})

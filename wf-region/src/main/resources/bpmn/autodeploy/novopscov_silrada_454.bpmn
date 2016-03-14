@@ -13,7 +13,7 @@
         <activiti:formProperty id="sEmail" name="Ваш e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdress_obj" name="Адреса розміщення об'єкта оренди" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="file_restr_svid" name="Сканкопія свідоцтва про державну реєстрацію суб'єкта підприємницької діяльності" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file_dovir" name="Сканкопія документу що підтверджує повнаження особи що звелнулась (довіреність)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file_dovir" name="Сканкопія документу що підтверджує повнаження особи що звернулась (довіреність)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file_podatkov" name="Сканкопія довідки з податкової про відсутність заборгованості перед податковою" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file_biznes_prop" name="Бізнес-пропозиція" type="file" required="true"></activiti:formProperty>
       </extensionElements>
@@ -84,10 +84,9 @@ ${sSubzvern}&lt;br /&gt;
           <activiti:value id="dok_ok" name="Заявку оформлено вірно, проект рішення підготовано, передати до виконкому"></activiti:value>
           <activiti:value id="dok_bad" name="Заявка оформлена не вірно, відмова."></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="file_richenie" name="Проект рішення про передачу майна в оренду" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="Komment_rishenia" name="Коментар по розгляду заявки;(Вкажіть реєстраційний номер заявки та іншу корисну для профільної комісії інформацію, в разі відмови поясніть причину відмови)" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="супровідний текст" type="invisible" default="Якщо заявка прийнята і завантажений проект рішення, вона буде передана на опрацювання до профільної комісії. У разі відмови робота по цій заявці завершена."></activiti:formProperty>
-        <activiti:formProperty id="rtext_after" name="текст піся опрацювання" type="invisible" default="Комісія підтвердила що все ок"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/novopskov/novopscov_silrada_454_print.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -166,13 +165,12 @@ ${sSubzvern}&lt;br /&gt;
         <activiti:formProperty id="sEmail" name="Ваш e-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdress_obj" name="Адреса розміщення об'єкта оренди" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Komment_rishenia" name="Коментар особи що розглядала звернення" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Komment_rishenia2" name="Коментар по рішенню після розгляду в комітеті" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="rtext_after" name="текст піся опрацювання" type="invisible" default="Комісія підтвердила що все ок"></activiti:formProperty>
-        <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="супровідний текст" type="invisible" default="${rtext_after}"></activiti:formProperty>
+        <activiti:formProperty id="Komment_rishenia2" name="Коментар по рішенню після опрацювання в комітеті і затвердження рішення радою" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="супровідний текст" type="invisible" default="Рішення передане в секретаріат"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${file_richenie},${file_restr_svid},${file_dovir},${file_podatkov},${file_biznes_prop}</activiti:expression>
+            <activiti:expression>${file_restr_svid},${file_dovir},${file_podatkov},${file_biznes_prop}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -192,8 +190,8 @@ ${sSubzvern}&lt;br /&gt;
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt; Рішення щодо надання в оренду комунального майна розглянуто в відповідній комісії і затверджене. 
-Проект рішення передано до відповідної депутатської комісії. &lt;/p&gt;
+&lt;p&gt; Рішення щодо надання в оренду комунального майна розглянуто в відповідній комісії і затверджене радою. 
+Рішення передано до секретаріату де ви можете його отримати. &lt;/p&gt;
 &lt;br /&gt;
 Тел 06463 2-18-40 &lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
@@ -214,17 +212,11 @@ ${sSubzvern}&lt;br /&gt;
         <activiti:formProperty id="sMphone" name="Мобільний телефон" type="string" default="+380" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sEmail" name="Ваш e-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdress_obj" name="Адреса розміщення об'єкта оренди" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Komment_rishenia2" name="Коментар після розгляду рішення в комісії" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Komment_rishenia2" name="Коментар після розгляду рішення в комітеті" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="variants2" name="Чи видано рішення заявнику" type="enum" required="true">
           <activiti:value id="dok_ok2" name="Заявник отримав рішення"></activiti:value>
           <activiti:value id="dok_bad2" name="Заявник не з'явився за рішенням"></activiti:value>
         </activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${file_richenie}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow10" sourceRef="servicetask6" targetRef="usertask3"></sequenceFlow>

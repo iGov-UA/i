@@ -1,12 +1,10 @@
 package org.igov.model.action.execute.item;
 
-import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.criterion.Restrictions;
 import org.igov.model.core.GenericEntityDao;
 import org.joda.time.DateTime;
@@ -34,6 +32,7 @@ public class ActionExecuteOldDAOImpl extends GenericEntityDao<ActionExecuteOld>	
 		return findAll();
 	}
 
+	@Transactional
 	@Override
 	public Long setActionExecuteOld(Long nID_ActionExecuteStatus,
 			DateTime oDateMake, DateTime oDateEdit, Integer nTry,
@@ -48,7 +47,8 @@ public class ActionExecuteOldDAOImpl extends GenericEntityDao<ActionExecuteOld>	
 		actionExecuteOld.setnTry(nTry);
 		actionExecuteOld.setsObject(sObject);
 		actionExecuteOld.setsMethod(sMethod);
-		//actionExecuteOld.setSoRequest(soRequest);
+		actionExecuteOld.setSoRequest(soRequest);
+		actionExecuteOld.setSmParam(smParam);
 		actionExecuteOld.setsReturn(sReturn);
 		
 		getSession().saveOrUpdate(actionExecuteOld);
@@ -61,6 +61,7 @@ public class ActionExecuteOldDAOImpl extends GenericEntityDao<ActionExecuteOld>	
 		return getActionExecuteOldListByCriteria(nRowsMax, sMethodMask, asID_Status, nTryMax, nID);
 	}
 
+	@Transactional
 	private List<ActionExecuteOld> getActionExecuteOldListByCriteria(Integer nRowsMax, String sMethodMask, String asID_Status,
 			Integer nTryMax, Long nID) {
 		List<ActionExecuteOld> resList = new ArrayList<ActionExecuteOld>();
