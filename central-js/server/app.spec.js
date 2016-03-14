@@ -11,6 +11,7 @@ var config = require('./config/environment');
 var bankidUtil = require('./auth/bankid/bankid.util.js');
 var testRequest = supertest(app);
 var loginAgent = superagent.agent();
+var async = require('async');
 
 
 var pathFromURL = function (urlString) {
@@ -113,7 +114,7 @@ var regionMock = nock('http://test.region.service')
 
 module.exports.loginWithBankID = function (callback) {
   testRequest
-    .get('/auth/email/callback?code=11223344&?link=' + testAuthResultURL)
+    .get('/auth/bankid/callback?code=11223344&?link=' + testAuthResultURL)
     .expect(302)
     .then(function (res) {
       loginAgent.saveCookies(res);
@@ -136,14 +137,73 @@ module.exports.loginWithEds = function (callback) {
 };
 
 module.exports.loginWithEmail = function (callback) {
-  testRequest
-    .get('/auth/email/verifyContactEmailAndCode?email=test@test.com&code=' + testAuthResultURL)
-    .expect(200)
-    .then(function (res) {
-      loginAgent.saveCookies(res);
-      callback(null, loginAgent);
-    }).catch(function (err) {
-    callback(err)
+  var code = 'ssss111';
+  var email = 'test@test.com';
+  var link = testAuthResultURL;
+  var firstName = 'firstName';
+  var lastName = 'lastName';
+  var middleName = 'middleName';
+
+  function prepareGet(url, agent){
+    var r = testRequest.get(url);
+    if(agent){
+      agent.attachCookies(r);
+    }
+    return r;
+  }
+
+  function preparePost(url, agent){
+    var r = testRequest.post(url);
+    if(agent){
+      agent.attachCookies(r);
+    }
+    return r;
+  }
+
+  function doGet(request, asyncCallback){
+    request
+      .expect(302)
+      .then(function (res) {
+        loginAgent.saveCookies(res);
+        asyncCallback(null, loginAgent);
+      })
+      .catch(function (err) {
+        asyncCallback(err, null);
+      });
+  }
+
+  function doPost(request, body, asyncCallback) {
+    request
+      .send(body)
+      .expect(200)
+      .then(function (res) {
+        loginAgent.saveCookies(res);
+        asyncCallback(null, loginAgent);
+      })
+      .catch(function (err) {
+        asyncCallback(err, null);
+      });
+  }
+
+  async.waterfall([
+    function (asyncCallback) {
+      doPost(preparePost('/auth/email/verifyContactEmail'), {email: email, link: link}, asyncCallback);
+    },
+    function (agent, asyncCallback) {
+      doPost(preparePost('/auth/email/verifyContactEmailAndCode',agent), {email: email, code: code}, asyncCallback);
+    },
+    function (agent, asyncCallback) {
+      doPost(preparePost('/auth/email/editFio', agent), {
+        firstName: firstName,
+        lastName: lastName,
+        middleName: middleName
+      }, asyncCallback);
+    },
+    function (agent, asyncCallback) {
+      doGet(prepareGet('/auth/email', agent), asyncCallback);
+    }
+  ], function (error, result) {
+    callback(error, result);
   });
 };
 
