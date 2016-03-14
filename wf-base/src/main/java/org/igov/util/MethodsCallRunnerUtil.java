@@ -28,10 +28,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class MethodsCallRunnerUtil {
 
+	@Autowired
 	private ActionExecuteDAO actionExecuteDAO;
-	
+	@Autowired
 	private ActionExecuteOldDAO actionExecuteOldDAO;
-
+	@Autowired
 	private ActionExecuteStatusDAO actionExecuteStatusDAO;
 	
 	@Autowired
@@ -39,20 +40,6 @@ public class MethodsCallRunnerUtil {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(MethodsCallRunnerUtil.class);
 	
-	
-	public void setActionExecuteDAO(ActionExecuteDAO actionExecuteDAO) {
-		this.actionExecuteDAO = actionExecuteDAO;
-	}
-
-	public void setActionExecuteStatusDAO(
-			ActionExecuteStatusDAO actionExecuteStatusDAO) {
-		this.actionExecuteStatusDAO = actionExecuteStatusDAO;
-	}
-	
-	public void setActionExecuteOldDAO(ActionExecuteOldDAO actionExecuteOldDAO) {
-		this.actionExecuteOldDAO = actionExecuteOldDAO;
-	}
-
 	private static Object fromByteArray(byte[] byteArray){
 		Object o = null;
 		ObjectInputStream ois = null;
