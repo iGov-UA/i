@@ -61,23 +61,24 @@ if [ "$bIncludeBack" == "true" ]; then
 		#mvn -P $sVersion clean install
 	fi
 	cd storage-static
-		mvn -P $sVersion clean install $sSuffixTest
+	mvn -P $sVersion clean install $sSuffixTest
     cd ..
     cd storage-temp
-        mvn -P $sVersion clean install $sSuffixTest
+    mvn -P $sVersion clean install $sSuffixTest
     cd ..
     cd wf-base
-        mvn -P $sVersion clean install site $sSuffixTest -Ddependency.locations.enabled=false
+    mvn -P $sVersion clean install site $sSuffixTest -Ddependency.locations.enabled=false
     cd ..
     cd wf-central
-        mvn -P $sVersion clean install site $sSuffixTest -Ddependency.locations.enabled=false
-	cd /sybase/jenkins/data/jobs/central_alpha/workspace/wf-central
+	mvn -P $sVersion clean install site $sSuffixTest -Ddependency.locations.enabled=false
+	
 	#Uploading to the target server
+	cd /sybase/jenkins/data/jobs/central_alpha/workspace/wf-central
 	rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' target/wf-central.war sybase@$sHost:/sybase/.upload/
 fi
 
 #Connecting to remote host (Project deploy)
-#ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $sHost << EOF
+ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $sHost << EOF
 
 #Creating temporary directories
 TMP=TEMP=TMPDIR=/tmp/c_$sVersion && export TMPDIR TMP TEMP
