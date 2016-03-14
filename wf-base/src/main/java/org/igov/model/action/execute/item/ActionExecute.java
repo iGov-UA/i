@@ -15,7 +15,6 @@ import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import javax.persistence.Lob;
 
 @javax.persistence.Entity
 public class ActionExecute extends Entity {
