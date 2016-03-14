@@ -1,17 +1,19 @@
-var url = require('url');
-var request = require('request');
-var FormData = require('form-data');
-var config = require('../../config/environment');
-var accountService = require('../../auth/bankid/bankid.service.js');
-var _ = require('lodash');
-var StringDecoder = require('string_decoder').StringDecoder;
-var async = require('async');
-var formTemplate = require('./form.template');
-var activiti = require('../../components/activiti');
-var errors = require('../../components/errors');
+var url = require('url')
+  , request = require('request')
+  , FormData = require('form-data')
+  , config = require('../../config/environment')
+  , accountService = require('../../auth/bankid/bankid.service.js')
+  , _ = require('lodash')
+  , StringDecoder = require('string_decoder').StringDecoder
+  , async = require('async')
+  , formTemplate = require('./form.template')
+  , activiti = require('../../components/activiti')
+  , region = require('../../components/region')
+  , errors = require('../../components/errors');
 
 module.exports.index = function (req, res) {
   var oConfigServerExternal = config.activiti;
+  var sHost = req.region.sHost;
 
   var callback = function (error, response, body) {
     res.send(body);
@@ -22,28 +24,18 @@ module.exports.index = function (req, res) {
   console.log("nID_Server=" + nID_Server);
   var sID_BP_Versioned = req.query.sID_BP_Versioned;
   console.log("sID_BP_Versioned=" + sID_BP_Versioned);
-  return activiti.getServerRegionHost(nID_Server, function (sHost) {
-    console.log("sHost=" + sHost);
+  console.log("sHost=" + sHost);
 
-    //var url = oServiceData.sURL + oServiceData.oData.sPath + '?processDefinitionId=' + processDefinitionId.sProcessDefinitionKeyWithVersion;
-    //'nID_Server': oServiceData.nID_Server
-    //, 'sID_BP_Versioned': processDefinitionId.sProcessDefinitionKeyWithVersion
+  var sURL = sHost + '/service/form/form-data?processDefinitionId=' + sID_BP_Versioned;
+  console.log("sURL=" + sURL);
 
-    //var sURL = sHost+'/service/repository/process-definitions';
-    var sURL = sHost + '/service/form/form-data?processDefinitionId=' + sID_BP_Versioned;
-    console.log("sURL=" + sURL);
-
-    return request.get({
-      //url: req.query.url,
-      url: sURL,//req.query.url
-      auth: {
-        username: oConfigServerExternal.username,
-        password: oConfigServerExternal.password
-      }
-    }, callback);
-
-  });
-
+  return request.get({
+    url: sURL,
+    auth: {
+      username: oConfigServerExternal.username,
+      password: oConfigServerExternal.password
+    }
+  }, callback);
 };
 
 module.exports.submit = function (req, res) {
@@ -181,54 +173,44 @@ module.exports.scanUpload = function (req, res) {
 
 module.exports.signCheck = function (req, res) {
   var fileID = req.query.fileID;
+  var sHost = req.region.sHost;
 
-//  this.checkFileSign = function (oServiceData, fileID){
-//    return $http.get('./api/process-form/sign/check', {
-//      params : {
-//        fileID : fileID,
-//        //sURL : oServiceData.sURL
+  var sURL = sHost + '/';
+  console.log("sURL=" + sURL);
 
-  var nID_Server = req.query.nID_Server;
-  activiti.getServerRegionHost(nID_Server, function (sHost) {
-    var sURL = sHost + '/';
-    console.log("sURL=" + sURL);
+  if (!fileID) {
+    res.status(400).send(errors.createError(errors.codes.INPUT_PARAMETER_ERROR, 'fileID should be specified'));
+    return;
+  }
 
-    //var sURL = req.query.sURL
+  if (!sURL) {
+    res.status(400).send(errors.createError(errors.codes.INPUT_PARAMETER_ERROR, 'sURL should be specified'));
+    return;
+  }
 
-    if (!fileID) {
-      res.status(400).send(errors.createError(errors.codes.INPUT_PARAMETER_ERROR, 'fileID should be specified'));
+  var reqParams = activiti.buildRequest(req, 'service/object/file/check_file_from_redis_sign', {
+    sID_File_Redis: fileID
+  }, sURL);
+  _.extend(reqParams, {json: true});
+
+  request(reqParams, function (error, response, body) {
+    if (error) {
+      error = errors.createError(errors.codes.EXTERNAL_SERVICE_ERROR, 'Error while checking file\'s sign', error);
+      res.status(500).send(error);
       return;
     }
 
-    if (!sURL) {
-      res.status(400).send(errors.createError(errors.codes.INPUT_PARAMETER_ERROR, 'sURL should be specified'));
+    if (body.code && body.code === 'SYSTEM_ERR') {
+      error = errors.createError(errors.codes.EXTERNAL_SERVICE_ERROR, body.message, body);
+      res.status(500).send(error);
       return;
     }
 
-    var reqParams = activiti.buildRequest(req, 'service/object/file/check_file_from_redis_sign', {
-      sID_File_Redis: fileID
-    }, sURL);
-    _.extend(reqParams, {json: true});
-
-    request(reqParams, function (error, response, body) {
-      if (error) {
-        error = errors.createError(errors.codes.EXTERNAL_SERVICE_ERROR, 'Error while checking file\'s sign', error);
-        res.status(500).send(error);
-        return;
-      }
-
-      if (body.code && body.code === 'SYSTEM_ERR') {
-        error = errors.createError(errors.codes.EXTERNAL_SERVICE_ERROR, body.message, body);
-        res.status(500).send(error);
-        return;
-      }
-
-      if (body.customer && body.customer.signatureData) {
-        res.status(200).send(body.customer.signatureData);
-      } else {
-        res.status(200).send({});
-      }
-    });
+    if (body.customer && body.customer.signatureData) {
+      res.status(200).send(body.customer.signatureData);
+    } else {
+      res.status(200).send({});
+    }
   });
 };
 

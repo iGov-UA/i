@@ -1,8 +1,10 @@
 'use strict';
 
-var should = require('should');
-var appTest = require('../../app.spec');
-var testRequest = appTest.testRequest;
+var should = require('should')
+, appTest = require('../../app.spec')
+, testRequest = appTest.testRequest;
+
+require('../subject/subject.service.nock');
 
 describe('GET /api/process-form/sign/check', function () {
   function assertErrorResult(res){
@@ -31,7 +33,7 @@ describe('GET /api/process-form/sign/check', function () {
   });
 
   it('should respond with 400 if no fileID', function (done) {
-    var signCheck = testRequest.get('/api/process-form/sign/check');
+    var signCheck = testRequest.get('/api/process-form/sign/check?nID_Server=1');
     agent.attachCookies(signCheck);
     signCheck.expect(400).then(function (res) {
       assertErrorResult(res);
@@ -53,7 +55,7 @@ describe('GET /api/process-form/sign/check', function () {
   });
 
   it('should respond with 200 with sign object', function (done) {
-    var signCheck = testRequest.get('/api/process-form/sign/check?fileID=1&sURL=http://test.region.service/');
+    var signCheck = testRequest.get('/api/process-form/sign/check?fileID=1&nID_Server=1');
     agent.attachCookies(signCheck);
     signCheck.expect(200).then(function (res) {
       done();
@@ -63,7 +65,7 @@ describe('GET /api/process-form/sign/check', function () {
   });
 
   it('should respond with 500 with error object', function (done) {
-    var signCheck = testRequest.get('/api/process-form/sign/check?fileID=2&sURL=http://test.region.service/');
+    var signCheck = testRequest.get('/api/process-form/sign/check?fileID=2&nID_Server=1');
     agent.attachCookies(signCheck);
     signCheck.expect(500).then(function (res) {
       assertErrorNestedResult(res);
