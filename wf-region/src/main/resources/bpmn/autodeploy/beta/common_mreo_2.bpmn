@@ -16,7 +16,7 @@
         <activiti:formProperty id="reqPhis" name="Оберіть тип пошуку фізичної особи (власника транспортного засобу)" type="enum">
           <activiti:value id="0" name=" "></activiti:value>
           <activiti:value id="1" name="пошук за індивідуальним податковим номером"></activiti:value>
-          <activiti:value id="2" name="пошук за ПІБ та даті народження"></activiti:value>
+          <activiti:value id="2" name="пошук за ПІБ"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="reqJur" name="Оберіть тип пошуку юридичної особи (власника транспортного засобу)" type="enum">
           <activiti:value id="0" name=" "></activiti:value>
@@ -28,14 +28,13 @@
         <activiti:formProperty id="ownerLastName" name="Прізвище власника транспортного засобу (укр.); вводити ПРОПИСНИМИ літерами" type="string"></activiti:formProperty>
         <activiti:formProperty id="ownerFirstName" name="Ім'я власника (укр.); вводити ПРОПИСНИМИ літерами" type="string"></activiti:formProperty>
         <activiti:formProperty id="ownerMiddleName" name="По батькові власника (укр.); вводити ПРОПИСНИМИ літерами" type="string"></activiti:formProperty>
-        <activiti:formProperty id="ownerBirthDateUnformated" name="Дата народження власника; Підказка: оберіть рік, місяць, день" type="date"></activiti:formProperty>
+ 		<activiti:formProperty id="ownerBirthDate" name="Дата народження власника; Підказка: Натисніть на кнопку з назвою місяця (у верхній частині календаря) і перейдете в режим вибору необхідного місяця. Після цього натисніть на кнопку з обраним роком (у верхній частині календаря) і перейдете в режим вибору необхідного року" type="date"></activiti:formProperty>
         <activiti:formProperty id="ownerInn" name="Індивидуальний податковий номер власника транспортного засобу" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers" name="markersForValidations" type="markers" default="{}"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="show_fields" type="markers" default="${markerService.loadFromFile('mvd/common_mreo_2_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="set_fields" type="markers" default="${markerService.loadFromFile('mvd/common_mreo_2_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="required_fields" type="markers" default="${markerService.loadFromFile('mvd/common_mreo_2_3.json')}"></activiti:formProperty>
-        <activiti:formProperty id="ownerBirthDate" name="ownerBirthDateFormated" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="searchDetail" name="searchDetail" type="invisible"></activiti:formProperty>
+       <activiti:formProperty id="searchDetail" name="searchDetail" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="reqDetail" name="reqDetail" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="resultData" name="Результат  перевірки" type="invisible" default="&lt;th&gt;no responce&lt;/th&gt;"></activiti:formProperty>
       </extensionElements>
@@ -47,7 +46,7 @@
     </boundaryEvent>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow3" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
-    <userTask id="usertask1" name="Перевірка (запит по фізичним особам)" activiti:candidateGroups="sales">
+    <userTask id="usertask1" name="Перевірка (запит по фізичним особам)" activiti:candidateGroups="common_mreo_2">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
@@ -60,7 +59,7 @@
         <activiti:formProperty id="ownerFirstName" name="Ім'я власника" type="string"></activiti:formProperty>
         <activiti:formProperty id="ownerLastName" name="Прізвище власника" type="string"></activiti:formProperty>
         <activiti:formProperty id="ownerMiddleName" name="По Батькові власника" type="string"></activiti:formProperty>
-        <activiti:formProperty id="ownerBirthDate" name="Дата народження власника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="ownerBirthDate" name="Дата народження власника" type="date"></activiti:formProperty>
         <activiti:formProperty id="resultData" name="Результат перевірки" type="textArea"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
@@ -69,13 +68,13 @@
     <serviceTask id="servicetask11" name="Повідомлення громадянину про обробку заяви" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
-          <activiti:string>noreply@igov.org.ua</activiti:string>
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string>Надання витягу з Єдиного державного реєстру МВС України</activiti:string>
+          <activiti:string><![CDATA[Надання витягу з Єдиного державного реєстру МВС України]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/mvd/_common_header.html]
@@ -95,25 +94,14 @@ ${resultData}
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <scriptTask id="scripttask1" name="Зміна формату дат/часу" scriptFormat="groovy" activiti:autoStoreVariables="false">
-      <script>execution.setVariable("ownerBirthDate", execution.getVariable("ownerBirthDateUnformated").format("dd.MM.yyyy"))</script>
-    </scriptTask>
     <sequenceFlow id="flow44" sourceRef="servicetask11" targetRef="endevent8"></sequenceFlow>
-    <sequenceFlow id="flow49" sourceRef="scripttask1" targetRef="scripttask2"></sequenceFlow>
-    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow51" name="${reqPhis=='2'}" sourceRef="exclusivegateway1" targetRef="scripttask1">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${reqPhis=='2'}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow52" name="${reqPhis!='2'}" sourceRef="exclusivegateway1" targetRef="scripttask2">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${reqPhis!='2'}]]></conditionExpression>
-    </sequenceFlow>
     <scriptTask id="scripttask2" name="set search info for mail" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>   	   	var req=execution.getVariable('reqDetail')
 		var info=' '
 if (req=='inn'){
 info='по фізичній особі з ІПН '+execution.getVariable('ownerInn')}
 if (req=='fio'){
-info = 'по фізичній особі: '+execution.getVariable('ownerLastName')+' '+execution.getVariable('ownerFirstName')+' '+execution.getVariable('ownerMiddleName')+' ('+execution.getVariable('ownerBirthDate')+' )'}
+info = 'по фізичній особі: '+execution.getVariable('ownerLastName')+' '+execution.getVariable('ownerFirstName')+' '+execution.getVariable('ownerMiddleName')}
 if (req=='LegalName'){
 info ='по юридичній особі: '+execution.getVariable('ownerLegalName')}
 if (req=='EDRPOU'){
@@ -121,86 +109,59 @@ info ='по юридичній особі з ЭДРПОУ '+execution.getVariabl
 execution.setVariable('searchDetail', info)
       </script>
     </scriptTask>
-    <sequenceFlow id="flow57" sourceRef="servicetask1" targetRef="exclusivegateway1"></sequenceFlow>
     <sequenceFlow id="flow58" sourceRef="scripttask2" targetRef="usertask1"></sequenceFlow>
     <sequenceFlow id="flow59" sourceRef="usertask1" targetRef="servicetask11"></sequenceFlow>
+    <sequenceFlow id="flow60" sourceRef="servicetask1" targetRef="scripttask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_common_mreo_2">
     <bpmndi:BPMNPlane bpmnElement="common_mreo_2" id="BPMNPlane_common_mreo_2">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="538.0" y="26.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="548.0" y="26.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="55.0" width="151.0" x="480.0" y="94.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="151.0" x="490.0" y="91.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="617.0" y="80.0"></omgdc:Bounds>
+        <omgdc:Bounds height="30.0" width="30.0" x="627.0" y="77.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="710.0" y="60.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
-        <omgdc:Bounds height="61.0" width="185.0" x="463.0" y="469.0"></omgdc:Bounds>
+        <omgdc:Bounds height="61.0" width="185.0" x="473.0" y="329.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent8" id="BPMNShape_endevent8">
-        <omgdc:Bounds height="35.0" width="35.0" x="538.0" y="690.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="548.0" y="550.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask11" id="BPMNShape_servicetask11">
-        <omgdc:Bounds height="64.0" width="185.0" x="463.0" y="587.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="185.0" x="360.0" y="256.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
-        <omgdc:Bounds height="40.0" width="40.0" x="535.0" y="200.0"></omgdc:Bounds>
+        <omgdc:Bounds height="64.0" width="185.0" x="473.0" y="447.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
-        <omgdc:Bounds height="55.0" width="171.0" x="470.0" y="360.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="171.0" x="480.0" y="220.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="555.0" y="61.0"></omgdi:waypoint>
-        <omgdi:waypoint x="555.0" y="94.0"></omgdi:waypoint>
+        <omgdi:waypoint x="565.0" y="61.0"></omgdi:waypoint>
+        <omgdi:waypoint x="565.0" y="91.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="647.0" y="95.0"></omgdi:waypoint>
+        <omgdi:waypoint x="657.0" y="92.0"></omgdi:waypoint>
         <omgdi:waypoint x="710.0" y="77.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
-        <omgdi:waypoint x="555.0" y="651.0"></omgdi:waypoint>
-        <omgdi:waypoint x="555.0" y="690.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow49" id="BPMNEdge_flow49">
-        <omgdi:waypoint x="452.0" y="311.0"></omgdi:waypoint>
-        <omgdi:waypoint x="555.0" y="360.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow51" id="BPMNEdge_flow51">
-        <omgdi:waypoint x="535.0" y="220.0"></omgdi:waypoint>
-        <omgdi:waypoint x="452.0" y="219.0"></omgdi:waypoint>
-        <omgdi:waypoint x="452.0" y="256.0"></omgdi:waypoint>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="72.0" x="-115.0" y="8.0"></omgdc:Bounds>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow52" id="BPMNEdge_flow52">
-        <omgdi:waypoint x="575.0" y="220.0"></omgdi:waypoint>
-        <omgdi:waypoint x="667.0" y="220.0"></omgdi:waypoint>
-        <omgdi:waypoint x="667.0" y="303.0"></omgdi:waypoint>
-        <omgdi:waypoint x="555.0" y="360.0"></omgdi:waypoint>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="68.0" x="3.0" y="-35.0"></omgdc:Bounds>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow57" id="BPMNEdge_flow57">
-        <omgdi:waypoint x="555.0" y="149.0"></omgdi:waypoint>
-        <omgdi:waypoint x="555.0" y="200.0"></omgdi:waypoint>
+        <omgdi:waypoint x="565.0" y="511.0"></omgdi:waypoint>
+        <omgdi:waypoint x="565.0" y="550.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow58" id="BPMNEdge_flow58">
-        <omgdi:waypoint x="555.0" y="415.0"></omgdi:waypoint>
-        <omgdi:waypoint x="555.0" y="469.0"></omgdi:waypoint>
+        <omgdi:waypoint x="565.0" y="275.0"></omgdi:waypoint>
+        <omgdi:waypoint x="565.0" y="329.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow59" id="BPMNEdge_flow59">
-        <omgdi:waypoint x="555.0" y="530.0"></omgdi:waypoint>
-        <omgdi:waypoint x="555.0" y="587.0"></omgdi:waypoint>
+        <omgdi:waypoint x="565.0" y="390.0"></omgdi:waypoint>
+        <omgdi:waypoint x="565.0" y="447.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow60" id="BPMNEdge_flow60">
+        <omgdi:waypoint x="565.0" y="146.0"></omgdi:waypoint>
+        <omgdi:waypoint x="565.0" y="220.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
