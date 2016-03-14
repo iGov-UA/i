@@ -189,7 +189,12 @@
         <activiti:formProperty id="nPetNum7" name="Паспорт, посвідчення 7" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPetMark8" name="Порода 8" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="nPetNum8" name="Паспорт, посвідчення 8" type="long" required="true"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="extended_marker1" type="markers" default="${markerService.loadFromFile('forest/cherkasy_lmg_415_1.json')}"></activiti:formProperty>
+     <activiti:formProperty id="sNameOrgan" name="Назва органа в емейл" type="invisible"></activiti:formProperty>
+     <activiti:formProperty id="sWorkTime" name="Час роботи" type="invisible"></activiti:formProperty>
+     <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок" type="invisible"></activiti:formProperty>
+     <activiti:formProperty id="sAddress" name="Адреса" type="invisible"></activiti:formProperty>
+     <activiti:formProperty id="nID_Department_visitDay" name="Номер органу для електронної черги" type="invisible"></activiti:formProperty>
+    	<activiti:formProperty id="markers1" name="extended_marker1" type="markers" default="${markerService.loadFromFile('forest/cherkasy_lmg_415_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="extended_marker2" type="markers" default="${markerService.loadFromFile('forest/cherkasy_lmg_415_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="extended_marker3" type="markers" default="${markerService.loadFromFile('forest/cherkasy_lmg_415_3.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="extended_marker4" type="markers" default="${markerService.loadFromFile('forest/cherkasy_lmg_415_4.json')}"></activiti:formProperty>
@@ -236,7 +241,7 @@
         </activiti:field>
       </extensionElements>
       </serviceTask>    
-    <userTask id="usertask1" name="Розгляд документів" activiti:candidateGroups="ulmg_${sID_Public_SubjectOrganJoin}"> <!-- ДОБАВИТЬ ГРУППУ  -->
+    <userTask id="usertask1" name="Розгляд документів" activiti:candidateGroups="ulmg_${sID_Public_SubjectOrganJoin}">
     <activiti:formProperty id="bankIdlastName" name="Прізвище " type="string"  writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"  writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"  writable="false"></activiti:formProperty>
@@ -426,9 +431,7 @@
 			При собі необхідно мати:
 			1. Для отримання Контрольної картки обліку добутої дичини та порушень правил полювання - Картку за попередній період 
 			2. Для отримання Посвідчення мисливця (або дубліката) - паспорт громадянина України та фотокартки (2 шт. 3х4 см)
-			
-			
-			
+									
 			[pattern/mail/_common_signature_start.html]
 			[pattern_dictonary:dnepr_reg_cnap.csv:234:2],&lt;br&gt;
 			[pattern/mail/_common_signature_end.html]
