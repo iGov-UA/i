@@ -109,7 +109,7 @@
           <activiti:value id="Enum1" name="будівництво об'єкта сервісу"></activiti:value>
           <activiti:value id="Enum2" name="будівництво об'єкта автозаправної станції"></activiti:value>
           <activiti:value id="Enum3" name="будівництво об'єкта прокладення інженерних мереж"></activiti:value>
-          <activiti:value id="Enum4" name="виконання інших робіт у межах смуги відведення автомобільних доріг"></activiti:value>
+          <activiti:value id="Enum4" name="виконання інших робіт у межах смуги відведення автомобільних доріг, а саме:"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="other" name="Виконання інших робіт у межах смуги відведення автомобільних доріг (за наявності)" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="result" name="Рішення держслужбовця" type="enum" required="true">
@@ -151,7 +151,7 @@
 Вам необхідно оплатити послугу.&lt;br /&gt; Реквізити для оплати: КОД ОКПО: 08682772 МФО 804013&lt;/br&gt;
 Банк ГУ ДКУ  в Луганській обл., м. Луганськ,&lt;/br&gt;
 Р/с 35220002000564&lt;/br&gt;
-Розмір плати: ${summ} &lt;/br&gt;
+Розмір оплати: ${summ} &lt;/br&gt;
 Інформація про держорган, який займався обробкою Вашого запиту (куди необхідно з'явитися у призначений час, щоб забрати оригінал погодження):&lt;br&gt; [pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:3]&lt;br&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]&lt;br&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:4]&lt;/br&gt;
@@ -192,7 +192,7 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 		    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-			&lt;p&gt;За даними держоргану Вам ВІДМОВЛЕНО у наданні погодження на enum{[topic]}&lt;br&gt;&lt;/p&gt;
+			&lt;p&gt;За даними держоргану Вам ВІДМОВЛЕНО у наданні погодження на enum{[topic]} ${other}&lt;br&gt;&lt;/p&gt;
 &lt;p&gt;${decisionComment}&lt;/p&gt;
 			&lt;p&gt;Інформація про держорган, який надає послугу:
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:3]&lt;br&gt;
@@ -233,7 +233,7 @@
           <activiti:value id="Enum1" name="будівництво об'єкта сервісу"></activiti:value>
           <activiti:value id="Enum2" name="будівництво об'єкта автозаправної станції"></activiti:value>
           <activiti:value id="Enum3" name="будівництво об'єкта прокладення інженерних мереж"></activiti:value>
-          <activiti:value id="Enum4" name="виконання інших робіт у межах смуги відведення автомобільних доріг"></activiti:value>
+          <activiti:value id="Enum4" name="виконання інших робіт у межах смуги відведення автомобільних доріг, а саме:"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="other" name="Виконання інших робіт у межах смуги відведення автомобільних доріг (за наявності)" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="result1" name="Результат візиту" type="enum">
@@ -337,7 +337,7 @@ per4 = "Прошу надати дозвіл на будівництво об'є
 y = "318 грн"
 }
 if (execution.getVariable('topic') == 'Enum4'){
-per4 = "виконання інших робіт у межах смуги відведення автомобільних доріг, а саме:"
+per4 = "Прошу надати дозвіл на виконання інших робіт у межах смуги відведення автомобільних доріг, а саме:"
 y = "318 грн"
 }
 execution.setVariable('summ', y)
