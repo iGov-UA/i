@@ -177,7 +177,8 @@ exports.getFormFromHistory = function (req, res) {
     query: {
       'taskId': req.params.taskId,
       'includeTaskLocalVariables': true,
-      'includeProcessVariables': true
+      //'includeProcessVariables': true
+      'includeProcessVariables': false
     }
 
   };
