@@ -7,28 +7,28 @@
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdAdressFactual" name="Адреса;(місце реєстрації)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAdressFactual" name="Адреса (місце реєстрації)" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Укажіть сьогоднішню дату" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="rNumber" name="номер району" type="invisible" default="279"></activiti:formProperty>
-        <activiti:formProperty id="sTypeCustodypf" name="прошу видати у принтформі" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="topic" name="Необхідно отримати згоду на " type="enum" required="true">
           <activiti:value id="Enum1" name="будівництво об'єкта сервісу"></activiti:value>
           <activiti:value id="Enum2" name="будівництво об'єкта автозаправної станції"></activiti:value>
           <activiti:value id="Enum3" name="будівництво об'єкта прокладення інженерних мереж"></activiti:value>
           <activiti:value id="Enum4" name="виконання інших робіт у межах смуги відведення автомобільних доріг"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="other" name="Дозвіл необхідно на: (введіть на виконання яких робіт необхідно дозвіл)" type="textArea" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Інше" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;other&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;topic&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'Enum4'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="Info11" name="Увага" type="label" default="Вам необхідно вибрати день візиту не раніше, ніж через 30 календарних днів від дня подачі заяви"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання послуги?" type="queueData" required="true"></activiti:formProperty>
         <activiti:formProperty id="Adress_obj" name="Місце знаходження об'єкта" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="squer_obj" name="Площа об'єкта, м.кв" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="other" name="Дозвіл необхідно на; введіть на виконання яких робіт необхідно дозвіл" type="textArea" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги" type="invisible" default="63"></activiti:formProperty>
+        <activiti:formProperty id="sTypeCustodypf" name="прошу видати у принтформі" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="summ" name="Сумма для сплати" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="file1" name="Погодження з власником вулично-дорожньох мережі" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file2" name="Схема &quot;Організація дорожнього руху&quot; робочого проекту на розміщення об'єкту" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file2" name="Схема &quot;Організація дорожнього руху&quot; (робочого проекту на розміщення об'єкту)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file3" name="Топографічний знімок місцевості (М 1:500) з прив'язкою місця розташування об'єкту" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file4" name="Паспорт з прив'язкою об'єкту" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file5" name="Акт відведення земельної ділянки" type="file" required="true"></activiti:formProperty>
@@ -97,15 +97,21 @@
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По-батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані заявника" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdAdressFactual" name="Адреса;(місце реєстрації заявника)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний телефон заявника" type="string"  writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAdressFactual" name="Адреса (місце реєстрації заявника)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата заповнення заяви" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="rNumber" name="номер району" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="День та час зустрічі - " type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="squer_obj" name="Площа об'єкта, м.кв." type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Adress_obj" name="Місце знаходження об'єкта" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="other" name="Отримання дозволу на" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="topic" name="Необхідно отримати згоду на " type="enum" writable="false">
+          <activiti:value id="Enum1" name="будівництво об'єкта сервісу"></activiti:value>
+          <activiti:value id="Enum2" name="будівництво об'єкта автозаправної станції"></activiti:value>
+          <activiti:value id="Enum3" name="будівництво об'єкта прокладення інженерних мереж"></activiti:value>
+          <activiti:value id="Enum4" name="виконання інших робіт у межах смуги відведення автомобільних доріг"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="other" name="Виконання інших робіт у межах смуги відведення автомобільних доріг (за наявності)" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="result" name="Рішення держслужбовця" type="enum" required="true">
           <activiti:value id="da" name="Призначити зустріч у відділенні"></activiti:value>
           <activiti:value id="net" name="Відмовити у наданні дозволу"></activiti:value>
@@ -113,7 +119,7 @@
         <activiti:formProperty id="summ" name="Сумма для сплати" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="fileresult" name="Додайте,будь ласка, файл з рішенням" type="file"></activiti:formProperty>
         <activiti:formProperty id="sTypeCustodypf" name="прошу видати у принтформі" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="decisionComment" name="Коментар до рішення;Наприклад, пояснення" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="decisionComment" name="Коментар до рішення(Наприклад, пояснення)" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/architecture/zayava_dozvil_458.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -141,7 +147,7 @@
           <activiti:expression>[pattern/mail/_common_header.html]
                                     &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                                                        
-&lt;p&gt;Вашу заяву успішно опрацювли. Є підстави для надання Вам погодження на enum{[topic]} &lt;/br&gt;
+&lt;p&gt;Вашу заяву успішно опрацювли. Є підстави для надання Вам погодження на enum{[topic]} ${other} &lt;/br&gt;
 Вам необхідно оплатити послугу.&lt;br /&gt; Реквізити для оплати: КОД ОКПО: 08682772 МФО 804013&lt;/br&gt;
 Банк ГУ ДКУ  в Луганській обл., м. Луганськ,&lt;/br&gt;
 Р/с 35220002000564&lt;/br&gt;
@@ -217,18 +223,25 @@
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По-батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані заявника" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdAdressFactual" name="Адреса;(місце реєстрації заявника)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний телефон заявника" type="string"  writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAdressFactual" name="Адреса (місце реєстрації заявника)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="rNumber" name="номер району" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="squer_obj" name="Площа об'єкта, м.кв." type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Adress_obj" name="Місце знаходження об'єкта" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="other" name="Отримання дозволу на" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="topic" name="Необхідно отримати згоду на " type="enum" writable="false">
+          <activiti:value id="Enum1" name="будівництво об'єкта сервісу"></activiti:value>
+          <activiti:value id="Enum2" name="будівництво об'єкта автозаправної станції"></activiti:value>
+          <activiti:value id="Enum3" name="будівництво об'єкта прокладення інженерних мереж"></activiti:value>
+          <activiti:value id="Enum4" name="виконання інших робіт у межах смуги відведення автомобільних доріг"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="other" name="Виконання інших робіт у межах смуги відведення автомобільних доріг (за наявності)" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="result1" name="Результат візиту" type="enum">
           <activiti:value id="ok" name="Громадянин з'явився на призначену дату"></activiti:value>
           <activiti:value id="no" name="Громадянин скасував/не з'явився на призначений візит"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="decisionComment1" name="Коментар до рішення;Пояснення" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="decisionComment1" name="Коментар до рішення(Пояснення)" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="summ" name="Сумма сплати" type="invisible"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow11" sourceRef="servicetask4" targetRef="usertask2"></sequenceFlow>
@@ -309,37 +322,26 @@
       <script>
 var ARsumm = ["309 грн(у т.ч. 134 грн за розроблення технічних умов та 175 грн за перевірку проектної документації)","330 грн (у т.ч. 155 грн за розроблення технічних умов та 175 грн за перевірку проектної документації)", "318 грн", "318 грн"]
 var ARen = ["будівництво об'єкта сервісу","будівництво об'єкту автозаправної станції","будівництво об'єкта прокладення інженерних мереж","виконання інших робіт у межах смуги відведення автомобільних доріг"]
-for (var i = 0; i&lt;4; i++){
-var x = ARen[i]
-if (execution.getVariable('topic') == x)
-{var y = ARsumm[i]}}
+var y = " "
 var per4 = 'sTypeCustodypf'
-var per5 = 'other'
 if (execution.getVariable('topic') == 'Enum1'){
 per4 = "Прошу надати дозвіл на будівництво об'єкта сервісу,"
+y = "309 грн (у т.ч. 134 грн за розроблення технічних умов та 175 грн за перевірку проектної документації)"
 }
 if (execution.getVariable('topic') == 'Enum2'){
 per4 = "Прошу надати дозвіл на будівництво об'єкту автозаправної станції,"
+y = "330 грн (у т.ч. 155 грн за розроблення технічних умов та 175 грн за перевірку проектної документації)"
 }
 if (execution.getVariable('topic') == 'Enum3'){
 per4 = "Прошу надати дозвіл на будівництво об'єкта прокладення інженерних мереж,"
+y = "318 грн"
 }
 if (execution.getVariable('topic') == 'Enum4'){
-per4 = "виконання інших робіт у межах смуги відведення автомобільних доріг, а саме: 'other'"
+per4 = "виконання інших робіт у межах смуги відведення автомобільних доріг, а саме:"
+y = "318 грн"
 }
-if (execution.getVariable('topic') == 'Enum1'){
-per5 = "будівництво об'єкта сервісу"
-}
-if (execution.getVariable('topic') == 'Enum2'){
-per5 = " будівництво об'єкту автозаправної станції"
-}
-if (execution.getVariable('topic') == 'Enum3'){
-per5 = " будівництво об'єкта прокладення інженерних мереж"
-}
-
-execution.setVariable('summ',y)
+execution.setVariable('summ', y)
 execution.setVariable('sTypeCustodypf', per4)
-execution.setVariable('other', per5)
 	  </script>
     </scriptTask>
     <sequenceFlow id="flow18" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
@@ -425,7 +427,7 @@ execution.setVariable('other', per5)
         <omgdi:waypoint x="626.0" y="178.0"></omgdi:waypoint>
         <omgdi:waypoint x="626.0" y="126.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="635.0" y="152.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="98.0" x="635.0" y="152.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
@@ -455,14 +457,14 @@ execution.setVariable('other', per5)
         <omgdi:waypoint x="860.0" y="118.0"></omgdi:waypoint>
         <omgdi:waypoint x="860.0" y="159.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="825.0" y="137.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="74.0" x="825.0" y="137.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
         <omgdi:waypoint x="880.0" y="98.0"></omgdi:waypoint>
         <omgdi:waypoint x="946.0" y="97.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="871.0" y="70.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="75.0" x="871.0" y="70.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
