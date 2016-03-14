@@ -75,7 +75,7 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow15" sourceRef="servicetask4" targetRef="endevent1"></sequenceFlow>
-    <serviceTask id="servicetask5" name="Повідомлення заявнику про отримання рішення" activiti:delegateExpression="#{MailTaskWithAttachment}">
+    <serviceTask id="servicetask5" name="Повідомлення заявнику про отримання рішення" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -137,7 +137,7 @@
     <sequenceFlow id="flow23" name="status=='status=='attr1_doc_ok'" sourceRef="exclusivegateway1" targetRef="servicetask6">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status=='attr1_doc_ok'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask7" name="Повідомлення заявнику про відмову" activiti:delegateExpression="#{MailTaskWithAttachment}">
+    <serviceTask id="servicetask7" name="Повідомлення заявнику про відмову" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>"${answer}"</activiti:expression>
@@ -186,7 +186,7 @@
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow27" sourceRef="servicetask6" targetRef="usertask4"></sequenceFlow>
-    <serviceTask id="servicetask8" name="Повідомлення держслужбовцю про новий запит" activiti:class="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask8" name="Повідомлення держслужбовцю про новий запит" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
