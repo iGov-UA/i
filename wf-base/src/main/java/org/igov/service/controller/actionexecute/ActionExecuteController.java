@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,7 +29,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@Transactional
 @Api(tags = {"ActionExecuteController"})
 @RequestMapping(value = "/action/execute")
 public class ActionExecuteController {
@@ -89,6 +89,9 @@ public class ActionExecuteController {
             @ApiParam(value = "номер-ИД записи", required = false) @RequestParam(value = "nID", required = false) Long nID)
             throws CommonServiceException {
         LOG.info("methodCallRunner is {methodCallRunner}");
+        methodCallRunner.setActionExecuteDAO(actionExecuteDAO);
+        methodCallRunner.setActionExecuteOldDAO(actionExecuteOldDAO);
+        methodCallRunner.setActionExecuteStatusDAO(actionExecuteStatusDAO);
         return JsonRestUtils.toJsonResponse(methodCallRunner.runMethod(nRowsMax, sMethodMask, asID_Status, nTryMax, nID));
     }
 
@@ -112,6 +115,7 @@ public class ActionExecuteController {
     	return null;
     }
 
+    @Transactional
     @ApiOperation(value = "переместить записи из основной таблицы в олд или обратно", notes = "")
     @RequestMapping(value = "/testMail", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, headers = {"Accept=application/json"})
     public
@@ -138,7 +142,10 @@ public class ActionExecuteController {
         LOG.info("(mail.getPort()={})", mail.getPort());       
         mail.sendWithUniSender();	
         LOG.info("test method call");
-        methodCallRunner.registerMethod(ActionExecuteController.class.getName(), "testMethod", new Object[]{"param1", "param2".getBytes(), new Integer(4)}); 
+        methodCallRunner.setActionExecuteDAO(actionExecuteDAO);
+        methodCallRunner.setActionExecuteOldDAO(actionExecuteOldDAO);
+        methodCallRunner.setActionExecuteStatusDAO(actionExecuteStatusDAO);
+        methodCallRunner.registerMethod(ActionExecuteController.class.getName(), "testMethod", new Object[]{"param1", "param2".getBytes(), new Integer(1)}); 
     	return null;
     }   
     

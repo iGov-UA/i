@@ -46,6 +46,7 @@ import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.history.HistoricTaskInstanceQuery;
 import org.activiti.engine.identity.Group;
+import org.activiti.engine.impl.event.logger.handler.TaskCreatedEventHandler;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.repository.ProcessDefinition;
@@ -1111,6 +1112,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "настраиваемые поля (название поля -- формула, issue 907", required = false) @RequestParam(value = "saFieldsCalc", required = false) String saFieldsCalc,
             @ApiParam(value = "сведение полей, которое производится над выборкой (issue 916)", required = false) @RequestParam(value = "saFieldSummary", required = false) String saFieldSummary,
             @ApiParam(value = "Email для отправки выбранных данных", required = false) @RequestParam(value = "sMailTo", required = false) String sMailTo,
+            @ApiParam(value = "начальная дата закрытия таски", required = false) @RequestParam(value = "sTaskEndDateAt", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date sTaskEndDateAt,
+            @ApiParam(value = "конечная дата закрытия таски", required = false) @RequestParam(value = "sTaskEndDateTo", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date sTaskEndDateTo,
             HttpServletResponse httpResponse) throws IOException {
 
 //      'sID_State_BP': '',//'usertask1'
@@ -1145,7 +1148,14 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 .taskCreatedBefore(dEndDate);
         HistoricTaskInstanceQuery historicQuery = historyService
                 .createHistoricTaskInstanceQuery()
-                .processDefinitionKey(sID_BP).taskCreatedAfter(dBeginDate)
+                .processDefinitionKey(sID_BP);
+        if (sTaskEndDateAt != null){
+        	historicQuery.taskCompletedAfter(sTaskEndDateAt);
+        }
+        if (sTaskEndDateTo != null){
+        	historicQuery.taskCompletedBefore(sTaskEndDateTo);
+        }
+        historicQuery.taskCreatedAfter(dBeginDate)
                 .taskCreatedBefore(dEndDate).includeProcessVariables();
         if (sID_State_BP != null) {
             historicQuery.taskDefinitionKey(sID_State_BP);
@@ -1161,7 +1171,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         if (sID_State_BP != null) {
             query = query.taskDefinitionKey(sID_State_BP);
         }
-        List<Task> foundResults = query.listPage(nRowStart, nRowsMax);
+        List<Task> foundResults = new LinkedList<Task>();
+        if (sTaskEndDateAt == null && sTaskEndDateTo != null){
+        	foundResults = query.listPage(nRowStart, nRowsMax);
+        }
 
         // 3. response
         SimpleDateFormat sdfFileName = new SimpleDateFormat(
@@ -1248,13 +1261,17 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 	        DataSource oDataSource = new ByteArrayDataSource(pi, sFileExt);
 	        oMail._To(sMailTo);
 	        oMail._Head(sSubject);
-	        oMail._Attach(oDataSource, sTaskDataFileName + "." + sFileExt, "");
+	        oMail._Body(sSubject);
+	        oMail._Attach(oDataSource, sTaskDataFileName, "");
 	        try {
 				oMail.sendWithUniSender();
 			} catch (EmailException e) {
 				LOG.error("Error occured while sending tasks data to email: {}", e.getMessage());
 			}
 	        pi.close();
+	        
+	        httpResponse.setContentType("text/plain");
+	        httpResponse.getWriter().print("OK");
         }
         
     }
@@ -1964,7 +1981,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 					assignee = task.getAssignee();
 					LOG.info("Processing task {} with assignee {}", task.getId(), task.getAssignee());
 					taskService.setVariable(task.getId(), "sStatusName_UkrDoc", status);
-					LOG.info("Set variable sStatusName_UkrDoc {} for task with ID {}", status, task.getId());
+					runtimeService.setVariable(task.getProcessInstanceId(), "sStatusName_UkrDoc", status);
+					runtimeService.setVariable(task.getProcessInstanceId(), "sID_Document_UkrDoc", sKey);
+					LOG.info("Set variable sStatusName_UkrDoc {} and sID_Document_UkrDoc {} for process instance with ID {}", status, sKey, task.getProcessInstanceId());
 					taskService.complete(task.getId());
 					LOG.info("Completed task {}", task.getId());
 				}

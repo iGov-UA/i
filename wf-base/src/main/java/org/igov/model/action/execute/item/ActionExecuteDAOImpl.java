@@ -36,6 +36,7 @@ public class ActionExecuteDAOImpl extends GenericEntityDao<ActionExecute> implem
 		return findAll();
 	}
 
+	@Transactional
 	@Override
 	public ActionExecute setActionExecute(Long nID_ActionExecuteStatus,
 			DateTime oDateMake, DateTime oDateEdit, Integer nTry,
@@ -51,6 +52,7 @@ public class ActionExecuteDAOImpl extends GenericEntityDao<ActionExecute> implem
 		actionExecute.setsObject(sObject);
 		actionExecute.setsMethod(sMethod);
 		actionExecute.setSoRequest(soRequest);
+		actionExecute.setSmParam(smParam);
 		actionExecute.setsReturn(sReturn);
 		
 		getSession().saveOrUpdate(actionExecute);

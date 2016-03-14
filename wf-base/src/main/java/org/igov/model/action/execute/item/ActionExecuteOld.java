@@ -50,9 +50,7 @@ public class ActionExecuteOld extends Entity {
     @Column(name = "sMethod", nullable = true)
     private String sMethod;
 
-    @Lob
-    @Type(type = "org.hibernate.type.PrimitiveByteArrayBlobType")
-    //@Type(type = "org.hibernate.type.BinaryType")
+    @Type(type = "org.hibernate.type.BinaryType")
     @JsonProperty(value = "soRequest")
     @Column(name = "soRequest", nullable = true)
     private byte[] soRequest;
