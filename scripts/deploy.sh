@@ -10,8 +10,75 @@ echo "В этом случае будет собран UI и backend. Первы
 bIncludeUI=$1 #Собираем UI?
 bIncludeBack=$2 #Собираем backend?
 sData=$3 #Дата переданная из Jenkins
-sVersion=$4 #версия sVersion
+sVersion=$4 #версия sVersion (alpha, beta, ...)
 sProject=$5 #название проекта ### wf-central ### Нужна ли вообще эта переменная?
+sHost=$6 #сервер на котором будет развернут проект
+data=`date "+%Y.%m.%d-%H.%M.%S"`
+
+TMP=TEMP=TMPDIR=/tmp/c_alpha && export TMPDIR TMP TEMP
+
+#Compiling project
+mkdir -p $TMP
+
+#Compiling UI
+if [ "$bIncludeUI" == "true" ]; then
+	cd central-js
+	npm cache clean
+	npm install
+	bower install
+	npm install grunt-contrib-imagemin
+	grunt build
+	cd dist
+	npm install --production
+	#Uploading to the target server
+	rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' /sybase/jenkins/data/jobs/central_alpha/workspace/central-js/dist/ sybase@$sHost:/sybase/.upload/central-js.$data/
+fi
+
+#Compiling Backend
+if [ "$bIncludeBack" == "true" ]; then
+	cd /sybase/jenkins/data/jobs/central_alpha/workspace
+ 
+#	if [ "$bExcludeTest" ==  "true" ]; then
+#	mvn -P $sVersion clean install site -U -DskipTests=true 
+#else
+#	mvn -P $sVersion clean install site -U
+#fi
+  
+#if [ "$bExcludeTest" ==  "true" ]; then
+#	mvn -P $sVersion clean install site -U -DskipTests=true -Ddependency.locations.enabled=false
+#else
+#	mvn -P $sVersion clean install site -U -Ddependency.locations.enabled=false
+#fi
+  
+	sSuffixTest=""
+	if [ "$bExcludeTest" ==  "true" ]; then
+		#mvn -P alpha clean test
+		sSuffixTest="-DskipTests=true"
+		#mvn -P $sVersion clean install -DskipTests=true    
+	#else
+		#mvn -P alpha clean test
+		#mvn -P $sVersion clean install -DskipTests=true    
+		#mvn -P $sVersion clean install
+	fi
+	cd storage-static
+	mvn -P $sVersion clean install $sSuffixTest
+    cd ..
+    cd storage-temp
+    mvn -P $sVersion clean install $sSuffixTest
+    cd ..
+    cd wf-base
+    mvn -P $sVersion clean install site $sSuffixTest -Ddependency.locations.enabled=false
+    cd ..
+    cd wf-central
+	mvn -P $sVersion clean install site $sSuffixTest -Ddependency.locations.enabled=false
+	
+	#Uploading to the target server
+	cd /sybase/jenkins/data/jobs/central_alpha/workspace/wf-central
+	rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' target/wf-central.war sybase@$sHost:/sybase/.upload/
+fi
+
+#Connecting to remote host (Project deploy)
+ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $sHost << EOF
 
 #Creating temporary directories
 TMP=TEMP=TMPDIR=/tmp/c_$sVersion && export TMPDIR TMP TEMP
@@ -90,4 +157,6 @@ if [ "$bIncludeBack" == "true" ]; then
 fi
 
 #Cleaning-up
+rm -rf $TMP/*
+EOF
 rm -rf $TMP/*
