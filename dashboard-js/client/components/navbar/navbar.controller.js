@@ -5,8 +5,8 @@
     .module('dashboardJsApp')
     .controller('NavbarCtrl', navbarCtrl);
 
-  navbarCtrl.$inject = ['$scope', '$location', 'Auth', 'envConfigService', 'iGovNavbarHelper', 'tasksSearchService'];
-  function navbarCtrl($scope, $location, Auth, envConfigService, iGovNavbarHelper, tasksSearchService) {
+  navbarCtrl.$inject = ['$scope', '$location', 'Auth', 'envConfigService', 'iGovNavbarHelper', 'tasksSearchService', '$state'];
+  function navbarCtrl($scope, $location, Auth, envConfigService, iGovNavbarHelper, tasksSearchService, $state) {
     $scope.menu = [{
       'title': 'Задачі',
       'link': '/tasks'
@@ -93,5 +93,9 @@
           });
       }
     }
+
+    $scope.isSelectedInstrumentsMenu = function(menuItem) {
+      return menuItem.state==$state.current.name;
+    };
   }
 })();

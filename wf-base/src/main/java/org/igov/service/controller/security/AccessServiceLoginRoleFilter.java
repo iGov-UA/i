@@ -13,16 +13,15 @@ import org.springframework.web.filter.GenericFilterBean;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServletResponseWrapper;
 import java.io.IOException;
 
 /**
  * Provide check access to service using AccessServiceLoginRight entities.
  */
 @Component
-public class AccessServiceLoginRightFilter extends GenericFilterBean {
+public class AccessServiceLoginRoleFilter extends GenericFilterBean {
 
-    private final Logger LOG = LoggerFactory.getLogger(AccessServiceLoginRightFilter.class);
+    private final Logger LOG = LoggerFactory.getLogger(AccessServiceLoginRoleFilter.class);
 
     @Value("${general.auth.login}")
     private String generalAuthLogin;
@@ -40,28 +39,29 @@ public class AccessServiceLoginRightFilter extends GenericFilterBean {
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         String service = null;
         String parameters = null;
+        String method = null;
 
         boolean hasAccessToService = true;
         if (!generalAuthLogin.equals(userName)) {
-//TODO:temp
-/*            
             try {
                 service = httpServletRequest.getRequestURI().substring(httpServletRequest.getContextPath().length());
                 parameters = httpServletRequest.getQueryString();
-                hasAccessToService = accessService.hasAccessToService(userName, service, parameters);
+                method = httpServletRequest.getMethod();
+
+                hasAccessToService = accessService.hasAccessToService(userName, service, parameters, method);
             } catch (HandlerBeanValidationException e) {
                 hasAccessToService = false;
                 LOG.error("Exception during call to [accessService.hasAccessToService]", e);
             }
-*/        
         }
 
         if (hasAccessToService) {
             filterChain.doFilter(servletRequest, servletResponse);
         }
         else {
-            httpServletResponse.sendError(HttpServletResponse.SC_FORBIDDEN, String.format("User [%s] has no access " +
-                    "to service [%s] with parameters [%s]", userName, service, parameters));
+            httpServletResponse.sendError(HttpServletResponse.SC_FORBIDDEN, String.format(
+                    "User [%s] has no [%s] access to service [%s] with parameters [%s]", userName, method, service,
+                    parameters));
         }
     }
 }
