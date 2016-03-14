@@ -20,8 +20,6 @@
         <activiti:formProperty id="sAdress" name="Адреса фактичного проживання;(поштовий індекс, місто, вулиця, номер дому, номер квартири)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Мобільний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
-        
-        
         <activiti:formProperty id="sPeriod" name="Період навчання/праці" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPosada" name="Посада" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asRob_type" name="Посада основна чи за сумісництвом" type="enum" required="true">
@@ -58,11 +56,6 @@
           <activiti:value id="sEnamOtr_postcifra" name="Цифровою копією на e-mail+поштою"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="marker_rob_navch" name="robota/navchanna" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;asNavch_form&quot;,&quot;asKvalif&quot;,&quot;sFakulty&quot;,&quot;sArmy&quot;,&quot;sAkademka&quot;,&quot;asVidrax&quot;],&quot;asID_Field&quot;:{&quot;sStud&quot;:&quot;asDocs&quot;},&quot;sCondition&quot;:&quot;[sStud] == 'sEnamDov_navch'&quot;},&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;sPosada&quot;,&quot;asRob_type&quot;,&quot;sPidrozdil&quot;],&quot;asID_Field&quot;:{&quot;sStud2&quot;:&quot;asDocs&quot;},&quot;sCondition&quot;:&quot;[sStud2] == 'sEnamDov_rob'&quot;},&quot;ShowFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;sVidrax&quot;],&quot;asID_Field&quot;:{&quot;sStud3&quot;:&quot;asVidrax&quot;},&quot;sCondition&quot;:&quot;[sStud3] == 'sEnamVid_tak'&quot;}}}"></activiti:formProperty>
-      
-        
-        
-        
-        
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Повідомлення працівника архіву про заявку" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -71,7 +64,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:string><![CDATA[archives.lnu@gmail.com]]></activiti:string>
+          <activiti:string><![CDATA[akylish88@gmail.com]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нова заявка на Витяг з наказу вищого навчального закладу що стосується навчання]]></activiti:string>
@@ -114,7 +107,6 @@
     </serviceTask>
     <userTask id="usertask1" name="Перевірка інформації по заявнику" activiti:candidateGroups="lnu_arhiv">
       <extensionElements>
-        
         <activiti:formProperty id="sVutag" name="З якого наказу необхідно видати витяг" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
@@ -163,17 +155,13 @@
           <activiti:value id="sEnamOtr_post" name="Поштою"></activiti:value>
           <activiti:value id="sEnamOtr_postcifra" name="Цифровою копією на e-mail+поштою"></activiti:value>
         </activiti:formProperty>
-                
-        
         <activiti:formProperty id="asVariants" name="Рішення щодо видачі довідки" type="enum" required="true">
           <activiti:value id="sEnamDok_ok" name="Заявку оформлено вірно/відомості наявні в архіві, видати довідку"></activiti:value>
           <activiti:value id="sEnamDok_bad" name="Заявка оформлена не вірно/відомості відсутні в архіві, відмова."></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="Komment_rishenia" name="Коментар по рішенню;(Вкажіть з якого числа можна отримати довідку, в разі відмови вкажіть причину відмови)" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="супровідний текст" type="invisible" default="Якщо заявка прийнята, вона з'явиться в необроблених і вам треба буде зробити відмітку чи виданий документ.У разі відмови робота по цій заявці завершена."></activiti:formProperty>
-      
-      
-      </extensionElements>
+       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <serviceTask id="servicetask3" name="Відмова в наданні довідки" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -208,9 +196,7 @@
     <sequenceFlow id="flow7" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
     <userTask id="usertask2" name="Виконнання заявки" activiti:candidateGroups="lnu_arhiv">
       <extensionElements>
-        
-        
-        <activiti:formProperty id="sVutag" name="З якого наказу необхідно видати витяг" type="string" writable="false"></activiti:formProperty>
+       <activiti:formProperty id="sVutag" name="З якого наказу необхідно видати витяг" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
@@ -227,11 +213,7 @@
           <activiti:value id="sEnamVuk_ok" name="Заявку виконано, відправити лист з запитом про оцінку послуги"></activiti:value>
           <activiti:value id="sEnamVuk_bad" name="Послугу не надано"></activiti:value>
         </activiti:formProperty>
-        
-        
-        
-        
-      </extensionElements>
+       </extensionElements>
     </userTask>
     <sequenceFlow id="flow11" name="${asVariants == 'sEnamDok_ok'}" sourceRef="exclusivegateway1" targetRef="usertask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asVariants == 'sEnamDok_ok'}]]></conditionExpression>
