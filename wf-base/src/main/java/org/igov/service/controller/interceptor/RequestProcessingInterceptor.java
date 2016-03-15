@@ -275,6 +275,11 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         if (snID_Region != null) {
             mParam.put("nID_Region", snID_Region);
         }
+
+        Long nID_ServiceData = (Long) omResponseBody.get("nID_ServiceData");
+        if (nID_ServiceData != null) {
+            mParam.put("nID_ServiceData", nID_ServiceData.toString());
+        }
         
         HistoricProcessInstance oHistoricProcessInstance =
                 historyService.createHistoricProcessInstanceQuery().processInstanceId(snID_Process).singleResult();
