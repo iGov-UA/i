@@ -1,12 +1,7 @@
 #!/bin/bash
 
-export LANG=en_US.UTF-8
-echo "Информация по скрипту: для корректной работы скрипну нужно передать все необходимые параметры"
-echo "Пример запуска скрипта в ручном режиме (аналогично запуску из Jenkins):"
-echo "./deploy.sh true true 2016.03.14-13.26.22 alpha wf-central test.igov.org.ua"
-echo "В этом случае будет собран UI и backend. Первый параметр отвечает за сборку UI, второй за backend."
-
 #Setting-up variables
+export LANG=en_US.UTF-8
 bIncludeUI=$1 #Собираем UI?
 bIncludeBack=$2 #Собираем backend?
 sData=$3 #Дата переданная из Jenkins
