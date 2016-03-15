@@ -8,13 +8,14 @@
         <activiti:formProperty id="bankIdmiddleName" name="По батькові " type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Копія паспорту" type="file"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_inn" name="Копія ІПН" type="file"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації; зазначена в громадянському паспорті" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="Індивідуальний податковий номер" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть сервісний центр, де Ви б бажали отримати послугу" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса сервісного центру" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sMail_Signature" name="Підпис" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sMail_Employee" name="sMail_Employee (field for test)" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sMail_Employee" name="sMail_Employee (field for test)" type="invisible" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sWork_Time" name="Графік прийому громадян" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="visit" name="Зазначте бажану дату / час візиту до сервісного центра для отримання послуги; ця інформація допоможе співробітнику сервісного центра  зарезервувати для Вас зручний час візиту" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNumber" name="Існуючий держ.номер ТЗ ; або номер для разової поїздки" type="string" required="true"></activiti:formProperty>
@@ -61,8 +62,8 @@
         <activiti:formProperty id="sDetail6" name="Об'єм двигуна (см. куб)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Ваш контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file1" name="Копія реєстраційних документів з автосалону" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="text" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
+        <activiti:formProperty id="file1" name="Копія реєстраційних документів з автосалону; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву" type="file" required="true"></activiti:formProperty>
+      <activiti:formProperty id="sExpert_Time" name="sExpert_Time" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Підтягування документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -237,7 +238,7 @@
 Дата візиту: &lt;br /&gt;
 ${comment}&lt;br /&gt;
 Рекомендовано прибути заздалегідь для проведення огляду автомобіля з одержанням акту експертного огляду.&lt;br /&gt;
-Рекомендований час 20-40 хвилин.
+Рекомендований час ${sExpert_Time}.
 &lt;p&gt;
 Графік прийому громадян:&lt;br /&gt;
 ${sWork_Time}
@@ -284,7 +285,7 @@ ${sMail_Signature}
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 &lt;br /&gt;
 На жаль, Вам відмовлено в реєстраціі авто.&lt;br /&gt;
-Підтсава: &lt;br /&gt;
+Підстава: &lt;br /&gt;
 ${comment}&lt;br /&gt;
 
 [pattern/mail/_common_signature_start.html]

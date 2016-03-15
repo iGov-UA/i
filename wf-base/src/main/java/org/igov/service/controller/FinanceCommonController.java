@@ -3,30 +3,30 @@ package org.igov.service.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.igov.service.controller.security.AuthenticationTokenSelector;
 import org.apache.commons.codec.binary.Base64;
-import org.slf4j.Logger;import org.slf4j.LoggerFactory;
+import org.igov.io.GeneralConfig;
+import org.igov.io.mail.Mail;
+import org.igov.service.business.access.AccessDataService;
+import org.igov.service.business.access.AccessKeyService;
+import org.igov.service.business.finance.LiqpayService;
+import org.igov.service.controller.security.AccessContract;
+import org.igov.service.controller.security.AuthenticationTokenSelector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.igov.service.business.access.AccessDataService;
-import org.igov.service.business.access.AccessKeyService;
-import org.igov.io.GeneralConfig;
-import org.igov.io.mail.Mail;
 
 import javax.servlet.http.HttpServletRequest;
-import org.igov.service.business.finance.LiqpayService;
+
 import static org.igov.service.business.finance.LiqpayService.TASK_MARK;
-import org.igov.service.controller.security.AccessContract;
 
-@Api(tags = { "FinanceCommonController" }, description = "Финансы общие (в т.ч. платежи)")
+@Api(tags = { "FinanceCommonController -- Финансы общие (в т.ч. платежи)" })
 @Controller
-//@RequestMapping(value = "/finance")
 public class FinanceCommonController {
-
 
     private static final Logger LOG = LoggerFactory.getLogger(FinanceCommonController.class);
 
@@ -41,10 +41,11 @@ public class FinanceCommonController {
 
     @Autowired
     private LiqpayService oLiqpayService;
-    
-    @ApiOperation(value = "/finance/setPaymentStatus_TaskActiviti", notes = "##### Контроллер платежей. Регистрация проведенного платежа - по колбэку от платежной системы #####\n\n" )
-    @RequestMapping(value = { "/finance/setPaymentStatus_TaskActiviti", "/setPaymentStatus_TaskActiviti" }, method = RequestMethod.POST, headers = {
-            "Accept=application/json"})
+
+    @ApiOperation(value = "/finance/setPaymentStatus_TaskActiviti", notes = "##### Контроллер платежей. Регистрация проведенного платежа - по колбэку от платежной системы\n")
+    @RequestMapping(value = { "/finance/setPaymentStatus_TaskActiviti",
+            "/setPaymentStatus_TaskActiviti" }, method = RequestMethod.POST,
+            headers = { "Accept=application/json" })
     public
     @ResponseBody
     String setPaymentStatus_TaskActiviti(
@@ -52,8 +53,8 @@ public class FinanceCommonController {
 	    @ApiParam(value = "Строка-ИД платежной системы", required = true) @RequestParam String sID_PaymentSystem,
 	    @ApiParam(value = "Строка со вспомогательными данными", required = true) @RequestParam String sData,
 	    @ApiParam(value = "Строка-префикс платежа (если их несколько в рамках заявки)", required = false) @RequestParam(value = "sPrefix", required = false) String sPrefix,
-	    @ApiParam(value = "Данные от платежной системы", required = false) @RequestParam(value = "data", required = false) String data,
-	    @ApiParam(value = "Подпись платежной системы", required = false) @RequestParam(value = "signature", required = false) String signature,
+            @ApiParam(value = "Строка-Данные от платежной системы", required = false) @RequestParam(value = "data", required = false) String data,
+            @ApiParam(value = "Строка-Подпись платежной системы", required = false) @RequestParam(value = "signature", required = false) String signature,
             HttpServletRequest request
     ) throws Exception {
 
@@ -152,9 +153,9 @@ public class FinanceCommonController {
         return sData;
     }
 
-    @ApiOperation(value = "/finance/setPaymentStatus_TaskActiviti_Direct", notes = "##### Контроллер платежей. Регистрация проведенного платежа - по прямому вызову#####\n\n" )
+    @ApiOperation(value = "/finance/setPaymentStatus_TaskActiviti_Direct", notes = "##### Контроллер платежей. Регистрация проведенного платежа - по прямому вызову\n")
     @RequestMapping(value = "/finance/setPaymentStatus_TaskActiviti_Direct", method = RequestMethod.GET, headers = {
-            "Accept=application/json"})
+            "Accept=application/json" })
     public
     @ResponseBody
     String setPaymentStatus_TaskActiviti_Direct(
@@ -162,8 +163,6 @@ public class FinanceCommonController {
 	    @ApiParam(value = "Строка-ИД платежной системы", required = true) @RequestParam String sID_PaymentSystem,
 	    @ApiParam(value = "Строка со вспомогательными данными", required = true) @RequestParam String sData,
 	    @ApiParam(value = "Cтрока-префикс платежа (если их несколько в рамках заявки)", required = false) @RequestParam(value = "sPrefix", required = false) String sPrefix,
-
-            //@RequestParam String snID_Task,
 	    @ApiParam(value = "Строка-ИД транзакции", required = true) @RequestParam String sID_Transaction,
 	    @ApiParam(value = "Строка-статуса платежа", required = true) @RequestParam String sStatus_Payment
 

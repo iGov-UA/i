@@ -1,6 +1,7 @@
 package org.igov.model.subject;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.igov.model.core.NamedEntity;
@@ -66,6 +67,8 @@ public class SubjectHuman extends NamedEntity {
     @JoinColumn(name = "nID_SubjectContact_DefaultPhone")
     @Cascade({ CascadeType.SAVE_UPDATE })
     private SubjectContact defaultPhone;
+    
+    private transient List<SubjectContact> aContact;
 
     public Subject getoSubject() {
         return oSubject;
@@ -145,5 +148,13 @@ public class SubjectHuman extends NamedEntity {
 
     public void setDefaultPhone(SubjectContact defaultPhone) {
         this.defaultPhone = defaultPhone;
+    }
+
+    public List<SubjectContact> getaContact() {
+        return aContact;
+    }
+
+    public void setaContact(List<SubjectContact> aContact) {
+        this.aContact = aContact;
     }
 }

@@ -8,7 +8,7 @@ angular.module('dashboardJsApp')
 		keepaliveProvider = KeepaliveProvider;
 	})
 	.run(
-		function($rootScope, $location, $cookieStore, Auth, Idle, Modal) {
+		function($rootScope, $location, $cookieStore, Auth, Idle, Modal, $state) {
 			var isKeepAliveAsked = false;
 
 			$rootScope.$on('Keepalive', function() {
@@ -57,9 +57,10 @@ angular.module('dashboardJsApp')
 				})('Сесія буде закрита');
 			});
 
+      /*
 			var lastPage;
 			$rootScope.$on('$routeChangeStart', function(event, next) {
-				if (next.access !== undefined) {
+				if (next && next.access !== undefined) {
 					if (!Auth.isLoggedIn()) {
 						event.preventDefault();
 						lastPage = next.originalPath;
@@ -76,4 +77,16 @@ angular.module('dashboardJsApp')
 					}
 				}
 			});
+			*/
+
+      $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams, options) {
+        if (toState && toState.access && toState.access.requiresLogin) {
+          if (!Auth.isLoggedIn()) {
+            event.preventDefault();
+            $state.go('main');
+          } else {
+            startWatching();
+          }
+        }
+      })
 		});

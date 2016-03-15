@@ -3,7 +3,7 @@
   <process id="cnap_293" name="Видача копій, витягів з розпоряджень міського голови, рішень, прийнятих міською радою та виконавчим комітетом" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Вам буде зручно отримати відповідь" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім`я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
@@ -25,22 +25,26 @@
         <activiti:formProperty id="docTyp" name="Тип" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="region" name="Регион" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="clerkPost" name="почта чиновника" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="group" name="група" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow23" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
-var no = [ "141", "145", "164", "322", "407", "533", "535", "634", "636", "142", "425", "637"]
-var post = [ "protokol@zt-rada.gov.ua", "ruli@mail.ua", "oo.golubcova@rada-berdyansk.gov.ua", "vasileva.77@mail.ru", "lyuda-sholom@yandex.ua", "cnap32@rada.khmelnytsky.com, cnap35@rada.khmelnytsky.com", "cnap_netishyn@ukr.net", "zhigan.roman@gmail.com", "zhigan.roman@gmail.com", "zhigan.roman@gmail.com", "zhigan.roman@gmail.com", "zhigan.roman@gmail.com"]
-var So = [ "zt_ztT", "zak_uzgT", "zp_berdT", "nik_voznT", "rivn_kuznT", "hmel_hmelT", "hmel_netishT", "kiev_gleev", "rov_kostT", "zhit_korostT", "sum_sum", "chern_mena"]
-for (var i = 0; i&lt;14; i++){
+var no = [ "639", "145", "164", "322", "407", "533", "535", "634", "636", "142", "425", "637", "214", "378"]
+var post = [ "zvern@zt-rada.gov.ua", "ruli@mail.ua", "oo.golubcova@rada-berdyansk.gov.ua", "vasileva.77@mail.ru", "lyuda-sholom@yandex.ua", "cnap32@rada.khmelnytsky.com, cnap35@rada.khmelnytsky.com", "cnap_netishyn@ukr.net", "zhigan.roman@gmail.com", "zhigan.roman@gmail.com", "zhigan.roman@gmail.com", "zhigan.roman@gmail.com", "zhigan.roman@gmail.com", "zhigan.roman@gmail.com", "zhigan.roman@gmail.com"]
+var So = [ "zt_ztT", "zak_uzgT", "zp_berdT", "nik_voznT", "rivn_kuznT", "hmel_hmelT", "hmel_netishT", "kiev_gleev", "rov_kostT", "zhit_korostT", "sum_sumT", "chern_mena", "kiev_irpenT", "polt_mirgT"]
+var GroupNamePrefix = [ "mvk", "cnap", "cnap", "cnap", "cnap", "cnap", "cnap", "cnap", "cnap", "cnap", "cnap", "cnap", "cnap", "cnap"]
+for (var i = 0; i&lt;20; i++){
 var per = So[i]
 if(execution.getVariable('sID_Public_SubjectOrganJoin') == per){
 var per2 = no[i]
 var per4 = post[i]
+var groupName = GroupNamePrefix[i] + '_' + per
 break}}
 execution.setVariable('region', per2)
 execution.setVariable('clerkPost', per4)
+execution.setVariable('group', groupName)
 var per1 = "копія рішення виконавчого комітету міської ради"
 if(execution.getVariable('docType') == 'gorsovet'){
 per1 = "копія рішення міської ради"
@@ -101,7 +105,7 @@ execution.setVariable('docTyp', per1)
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow16" sourceRef="servicetask5" targetRef="usertask1"></sequenceFlow>
-    <userTask id="usertask1" name="Перевірка вхідних даних" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask1" name="Перевірка вхідних даних" activiti:candidateGroups="${group}">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім`я" type="string" writable="false"></activiti:formProperty>
@@ -112,7 +116,7 @@ execution.setVariable('docTyp', per1)
         <activiti:formProperty id="email" name="e-mail" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="request" name="Запитуваний документ" type="textArea" default="${docTyp} №  ${docNumber} від  ${docDate}: ${docName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="request_goal" name="Мета запиту" type="string" default="${goal10}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="proverkaCNAP" name="Рішення про прийняття або відхилення заяви ЦНАП" type="enum" required="true">
+        <activiti:formProperty id="proverkaCNAP" name="Рішення про прийняття або відхилення заяви" type="enum" required="true">
           <activiti:value id="ok" name="Заяву прийнято"></activiti:value>
           <activiti:value id="bad" name="Заяву відхилено"></activiti:value>
         </activiti:formProperty>
@@ -183,7 +187,7 @@ execution.setVariable('docTyp', per1)
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow17" sourceRef="servicetask7" targetRef="usertask2"></sequenceFlow>
-    <userTask id="usertask2" name="Опрацювання звернення" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask2" name="Опрацювання звернення" activiti:candidateGroups="${group}">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім`я" type="string" writable="false"></activiti:formProperty>

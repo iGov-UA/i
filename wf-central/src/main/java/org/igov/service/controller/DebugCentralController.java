@@ -1,39 +1,36 @@
 package org.igov.service.controller;
 
 import io.swagger.annotations.*;
-import java.util.HashMap;
-import java.util.LinkedList;
-import org.igov.service.business.subject.SubjectMessageService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Map;
-import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.igov.service.business.action.task.bp.BpService;
 import org.igov.io.GeneralConfig;
-import static org.igov.io.Log.oLog_External;
 import org.igov.model.action.event.HistoryEvent_Service;
 import org.igov.model.action.event.HistoryEvent_ServiceDao;
 import org.igov.model.subject.message.SubjectMessage;
 import org.igov.model.subject.message.SubjectMessagesDao;
-import org.igov.model.subject.organ.SubjectOrganJoinAttribute;
-import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
+import org.igov.service.business.action.task.bp.BpService;
+import org.igov.service.business.subject.SubjectMessageService;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.util.JSON.JsonRestUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
-//import com.google.common.base.Optional;
+import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
+
 /**
  * @author BW
  */
 @Controller
-@Api(tags = {"DebugCentralController"}, description = "Дебаг и тест центральный")
-//@RequestMapping(value = "/debug")
+@Api(tags = { "DebugCentralController -- Дебаг и тест центральный" })
 public class DebugCentralController {
 
     private static final Logger LOG = LoggerFactory.getLogger(DebugCentralController.class);
@@ -66,7 +63,7 @@ public class DebugCentralController {
      * опционально(для обратной совместимости)
      * @throws CommonServiceException
      */
-    @ApiOperation(value = "/messages/setMessageRate", notes = "##### DebugCentralController(SubjectMessageController) - Сообщения субьектов. Установка сообщения-оценки #####\n\n")
+    @ApiOperation(value = "Установка сообщения-оценки", notes = "")
     @RequestMapping(value = "/messages/setMessageRate", method = RequestMethod.GET)//Rate
     public @ResponseBody
     String setMessageRate(
@@ -161,12 +158,10 @@ public class DebugCentralController {
         }
         return sReturn;//"Ok!";
     }
-    
-    
 
-    @ApiOperation(value = "Перенос данных из поля sMail в поле nID_SubjectContact_Mail таблицы SubjectMessage", notes = "##### SubjectMessageController - Сообщения субьектов. Переносит данные с поля sMail в nID_SubjectContact_Mail таблицы SubjectMessage. #####\n\n"
+    @ApiOperation(value = "Перенос данных из поля sMail в поле nID_SubjectContact_Mail таблицы SubjectMessage", notes =
+            ""
             + "Возвращает список из 100 первых измененных записей таблицы.  Метод также подчищает данные из sMail, устанавливая занчение null\n\n"
-            + "HTTP Context: https://test.igov.org.ua/wf/service/subject/message/transferDataFromMail\n\n\n"
             + "Пример ответа:\n"
             + "\n```json\n"
             + "[\n"
@@ -227,20 +222,17 @@ public class DebugCentralController {
     
     
     @ApiOperation(value = "Сохранить системное событие", notes = "Необходим для сбора логов из разных источников, например с криентского приложения")
-    //, headers = "content-type=text/*"
-    //headers = {"Accept=application/json"}, 
-    //, produces = "application/json;charset=UTF-8"    
     @RequestMapping(value = "/action/event/setEventSystem", method = {RequestMethod.GET, RequestMethod.POST})
     public
     @ResponseBody
     Long setEventSystem(
-            @ApiParam(value = "", required = false) @RequestParam(value = "sType", required = false) String sType,
+            @ApiParam(value = "строка-тип", required = false) @RequestParam(value = "sType", required = false) String sType,
             @ApiParam(value = "Номер-ИД субьекта", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject,
             @ApiParam(value = "Номер-ИД сервера", required = false) @RequestParam(value = "nID_Server", required = false) Long nID_Server,
-            @ApiParam(value = "", required = false) @RequestParam(value = "sFunction", required = false) String sFunction,
-            @ApiParam(value = "", required = false) @RequestParam(value = "sHead", required = false) String sHead,
-            @ApiParam(value = "", required = false) @RequestParam(value = "sBody", required = false) String sBody,
-            @ApiParam(value = "", required = false) @RequestParam(value = "sError", required = false) String sError,
+            @ApiParam(value = "строка-функция", required = false) @RequestParam(value = "sFunction", required = false) String sFunction,
+            @ApiParam(value = "строка-заголовок", required = false) @RequestParam(value = "sHead", required = false) String sHead,
+            @ApiParam(value = "строка-тело", required = false) @RequestParam(value = "sBody", required = false) String sBody,
+            @ApiParam(value = "строка-ошибка", required = false) @RequestParam(value = "sError", required = false) String sError,
             @ApiParam(value = "Карта других параметров", required = false) @RequestBody String smData
         ) throws CommonServiceException {
         //List subjectMessages;

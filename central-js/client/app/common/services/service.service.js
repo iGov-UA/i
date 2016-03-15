@@ -257,7 +257,7 @@ angular.module('app').service('ServiceService', function ($http, $q) {
   this.verifyContactEmailAndCode = function (authEmailData) {
     var data = {
       email: authEmailData.email,
-      code: authEmailData.approveCode
+      code: authEmailData.code
     };
     return $http.post('./auth/email/verifyContactEmailAndCode', data)
       .then(function (response) {

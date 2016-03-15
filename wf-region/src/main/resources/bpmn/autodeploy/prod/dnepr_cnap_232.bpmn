@@ -34,13 +34,11 @@
         <activiti:formProperty id="m4" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="m5" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="m6" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="forma" name="Подстановка принтформы" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sClerkPost" name="почта чиновника" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Копія документа, що посвідчує особу (паспорт)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_inn" name="Копія документа про присвоєння податкового номера" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="marker1" name="CNAP232_3Reg" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_m&quot;:{&quot;aField_ID&quot;:[&quot;zapit&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;pidstavi&quot;},&quot;sCondition&quot;:&quot;[sReason]=='z2'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="text" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
-      </extensionElements>
+        <activiti:formProperty id="marker" name="ShowFields" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_m&quot;:{&quot;aField_ID&quot;:[&quot;zapit&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;pidstavi&quot;},&quot;sCondition&quot;:&quot;[sReason]=='z2'&quot;}}}"></activiti:formProperty>
+        </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Загрузка файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <sequenceFlow id="flow5" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>

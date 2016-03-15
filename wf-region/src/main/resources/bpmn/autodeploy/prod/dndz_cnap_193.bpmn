@@ -21,7 +21,6 @@
         <activiti:formProperty id="special" name="Особливі умови роботи" type="string"></activiti:formProperty>
         <activiti:formProperty id="file1" name="Копія документа про державну реєстрацію суб’єкта господарювання" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file2" name="Копія документа, що засвідчує право власності на приміщення, де буде здійснюватись торгівля (надання послуг) або договору оренди приміщення (у разі оренди)" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="notice" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -239,7 +238,7 @@
         <activiti:field name="subject">
           <activiti:string><![CDATA[Видача довідки про встановлення режиму роботи об’єкта.]]></activiti:string>
         </activiti:field>
-        <activiti:field name="test">
+        <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 На жаль, Ваше звернення про надання інформації щодо видачи довідки про встановлення режиму роботи об’єкта - відхилине.&lt;/p&gt;

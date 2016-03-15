@@ -5,10 +5,11 @@
     .module('dashboardJsApp')
     .config(groupsConfig);
 
-  groupsConfig.$inject = ['$routeProvider'];
-  function groupsConfig($routeProvider) {
-    $routeProvider
-      .when('/groups', {
+  groupsConfig.$inject = ['$stateProvider'];
+  function groupsConfig($stateProvider) {
+    $stateProvider
+      .state('groups', {
+        url: '/groups',
         templateUrl: 'app/groups/groups.html',
         access: {
           requiresLogin: true

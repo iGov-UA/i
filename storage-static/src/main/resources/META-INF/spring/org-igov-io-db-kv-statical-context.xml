@@ -37,6 +37,10 @@
         </bean>
         <bean id="durableFileStorage" class="org.igov.io.db.kv.statical.impl.FileStorage">
         </bean>
+
+        <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+            <constructor-arg name="mongoDbFactory" ref="mongoDbFactory" />
+        </bean>
     </beans>
 	
     <beans profile="test">
@@ -61,6 +65,10 @@
         <bean id="durableBytesDataStorage" class="org.igov.io.db.kv.statical.impl.BytesDataStorage">
         </bean>
         <bean id="durableFileStorage" class="org.igov.io.db.kv.statical.impl.FileStorage">
+        </bean>
+
+        <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+            <constructor-arg name="mongoDbFactory" ref="mongoDbFactory" />
         </bean>
     </beans>        
         
@@ -87,6 +95,10 @@
         <bean id="durableBytesDataStorage" class="org.igov.io.db.kv.statical.impl.BytesDataStorage">
         </bean>
         <bean id="durableFileStorage" class="org.igov.io.db.kv.statical.impl.FileStorage">
+        </bean>
+
+        <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+            <constructor-arg name="mongoDbFactory" ref="mongoDbFactory" />
         </bean>
     </beans>
 </beans>

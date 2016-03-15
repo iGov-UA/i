@@ -1,7 +1,6 @@
 package org.igov.service.business.escalation;
 
 import org.igov.model.escalation.EscalationRuleFunctionDao;
-import org.igov.service.business.escalation.EscalationHelper;
 import org.activiti.engine.*;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.TaskFormData;
@@ -10,8 +9,6 @@ import org.activiti.engine.identity.User;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
-import org.igov.service.controller.ActionEscalationController;
-import org.igov.service.controller.ActionTaskCommonController;
 import org.igov.service.exception.CommonServiceException;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;import org.slf4j.LoggerFactory;

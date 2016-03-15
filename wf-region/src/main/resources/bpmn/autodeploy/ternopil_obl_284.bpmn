@@ -3,7 +3,6 @@
   <process id="ternopil_obl_284" name="Надання одноразової матеріальної допомоги громадянам" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, до якого Ви звертаєтесь" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище заявника" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я заявника" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові заявника" type="string"></activiti:formProperty>
@@ -12,6 +11,7 @@
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+38" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail для зворотнього зв'язку " type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddress" name="Місце проживання (реєстрації); Вкажіть район та назву населеного пункту, вулицю, номер будинку та квартири" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, до якого Ви звертаєтесь" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="whoIs" name="Заяву Ви подаєте як" type="enum" required="true">
           <activiti:value id="vlasn" name="отримувач домоги"></activiti:value>
           <activiti:value id="predst" name="законний представник отримувача допомоги"></activiti:value>
@@ -68,9 +68,9 @@
         <activiti:formProperty id="scanSum" name="Копія документу, що підтверджує суму завданих збитків" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="scanOth" name="Копія документу, що підтверджує скрутний матеріальний стан" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="warning" name="Зверніть увагу" type="label" default="Подаючи звернення, Ви підтверджуєте достовірність усіх зазначених у зверненні даних і надаєте свою згоду на обробку Ваших персональних даних"></activiti:formProperty>
-        <activiti:formProperty id="postV" name="електронна пошта" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="електронна пошта" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sOrganID" name="До якого державного органу звертається заявник" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sSignCnap" name="підпис" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('ternopil/helpODA.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -94,7 +94,7 @@ per1 = 'uszntrda@ukt.net'
 if (execution.getVariable('sOrganID') == 'BorshRda'){
 per1 = 'borshchiv@sobes-ter.gov.ua'
 }
-execution.setVariable('postV', per1)
+execution.setVariable('sMailClerk', per1)
 	  </script>
     </scriptTask>
     <serviceTask id="servicetask5" name="Повідомлення про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -141,13 +141,13 @@ execution.setVariable('postV', per1)
     <sequenceFlow id="flow4" sourceRef="servicetask4" targetRef="usertask1"></sequenceFlow>
     <userTask id="usertask1" name="Перевірка документів" activiti:candidateGroups="sh_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="sOrganID" name="До якого державного органу звертається заявник" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="ПІБ заявника, oдержувача допомоги АБО його законного представника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані oдержувача допомоги АБО його законного представника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddress" name="Місце проживання (реєстрації) oдержувача допомоги АБО його законного представника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН oдержувача допомоги АБО його законного представника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sOrganID" name="До якого державного органу звертається заявник" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="whoIs" name="Заява подана від" type="enum" writable="false">
           <activiti:value id="vlasn" name="отримувача домоги"></activiti:value>
           <activiti:value id="predst" name="законного представника"></activiti:value>
@@ -228,7 +228,7 @@ execution.setVariable('postV', per1)
 			&lt;/p&gt;
 			За необхідності Ви можете подати ще одну заяву на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;igov.org.ua&lt;/a&gt;&lt;/p&gt;
 			[pattern/mail/_common_signature_start.html]
-            ${sSignCnap}&lt;/p&gt;
+            ${sNameOrgan}&lt;/p&gt;
 			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
@@ -257,7 +257,7 @@ execution.setVariable('postV', per1)
 										Ви отримаєте відповідь у визначений законом термін.
 									&lt;/p&gt;
                                    [pattern/mail/_common_signature_start.html]
-                                   ${sSignCnap},&lt;br&gt;
+                                   ${sNameOrgan},&lt;br&gt;
                                    [pattern/mail/_common_signature_end.html]
                                    [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -266,6 +266,7 @@ execution.setVariable('postV', per1)
     <sequenceFlow id="flow20" sourceRef="servicetask7" targetRef="usertask2"></sequenceFlow>
     <userTask id="usertask2" name="На розгляді комісії" activiti:candidateGroups="sh_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
+        <activiti:formProperty id="sOrganID" name="До якого державного органу звертається заявник" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="docID" name="ID номер заяви" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="ПІБ заявника, oдержувача допомоги АБО його законного представника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані oдержувача допомоги АБО його законного представника" type="string" writable="false"></activiti:formProperty>
@@ -273,9 +274,7 @@ execution.setVariable('postV', per1)
         <activiti:formProperty id="bankIdinn" name="ІПН oдержувача допомоги АБО його законного представника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="email" name="E-Mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="whoIs" name="Заява подана від" type="enum" writable="false">
+       <activiti:formProperty id="whoIs" name="Заява подана від" type="enum" writable="false">
           <activiti:value id="vlasn" name="отримувача домоги"></activiti:value>
           <activiti:value id="predst" name="законного представника"></activiti:value>
         </activiti:formProperty>
@@ -356,7 +355,7 @@ execution.setVariable('postV', per1)
 										Скан-копія рішення знаходиться у додатках до цього листа.
                                     &lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
-                                    ${sSignCnap},&lt;br&gt;
+                                    ${sNameOrgan},&lt;br&gt;
                                     [pattern/mail/_common_signature_end.html]   
 									[pattern/mail/_common_feedback.html]
 									[pattern/mail/_common_footer.html]</activiti:expression>
@@ -397,7 +396,7 @@ execution.setVariable('postV', per1)
 										Скан-копія рішення знаходиться у додатках до цього листа
 									&lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
-                                    ${sSignCnap}&lt;/p&gt;
+                                    ${sNameOrgan}&lt;/p&gt;
 									[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>

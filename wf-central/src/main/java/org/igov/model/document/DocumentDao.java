@@ -16,6 +16,8 @@ public interface DocumentDao extends EntityDao<Document> {
 
     public List<Document> getDocuments(Long nID_Subject);
 
+    public List<String> getDocumentContentKeys(int offset);
+
     //public Long setDocument(String subject_Upload, String subjectName_Upload,
     //		String name, String file, Integer documentTypeId, Integer contentTypeId, byte[] content);
     //public Long setDocument(String sID_Subject_Upload, String sSubjectName_Upload,
