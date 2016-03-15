@@ -62,6 +62,7 @@ public class ControllerDeleteProcessScenario extends ActivitiScenarioBase {
         Assert.assertEquals(new RecordNotFoundException().getMessage(), res.get("message"));
     }
 
+    @Ignore
     @Test
     public void testDeleteProcess_OK() throws Exception {
         mockMvc.perform(delete("/action/task/delete-process").

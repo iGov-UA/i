@@ -1,19 +1,27 @@
 package org.igov.service.controller;
 
+import com.google.gson.JsonObject;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
+import com.mongodb.gridfs.GridFSDBFile;
+import org.activiti.engine.TaskService;
+import org.activiti.engine.task.Attachment;
+import org.activiti.engine.task.Task;
+import org.apache.commons.collections.IteratorUtils;
+import org.igov.io.db.kv.statical.impl.FileStorage;
+import org.igov.model.document.*;
 import org.igov.service.business.action.ActionEventService;
 import org.igov.service.business.subject.SubjectService;
-import org.igov.model.document.DocumentType;
-import org.igov.model.document.DocumentOperator_SubjectOrgan;
-import org.igov.model.document.DocumentContentType;
-import org.igov.model.document.Document;
-import org.igov.model.document.DocumentContentTypeDao;
-import org.igov.model.document.DocumentTypeDao;
-import org.igov.model.document.DocumentDao;
 import org.igov.model.subject.Subject;
 import org.activiti.engine.ActivitiObjectNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -28,7 +36,6 @@ import org.igov.service.business.document.access.handler.HandlerFactory;
 import org.igov.service.business.access.BankIDConfig;
 import org.igov.service.business.access.BankIDUtils;
 import org.igov.io.GeneralConfig;
-import org.igov.util.Tool;
 import org.igov.util.ToolWeb;
 
 
@@ -650,4 +657,124 @@ public class DocumentController {
         }
     }
 
+    
+
+
+    @Autowired
+    FileStorage durableFileStorage;
+
+    @Autowired
+    private GridFsTemplate oGridFsTemplate;
+
+    @Autowired
+    DocumentDaoImpl entityDao;
+
+    @Autowired
+    MongoTemplate mongoTemplate;
+
+    @Autowired
+    private TaskService taskService;
+
+    @ApiOperation(value = "Удалить все записи в mongo, на ключ которых не ссылается ни одна запись"
+            + "в сущности Document,  не ссылается ни одна запись в Attach-ах тасок Активити, "
+            + "удалить все записи в postgres, по sID_Content которой не найдено"
+            + "ни одной записи в mongo", notes = "todo")
+    @RequestMapping(value = "/cleanUpInvalidDocuments", method = RequestMethod.POST)
+    public @ResponseBody String cleanUpInvalidDocuments() {
+
+		/*  получаем батч ключей из Document
+		 	находим все upload файлы, по ключам из document, если их нет удаляем document
+		 	получаем батч по ключам, делаем запрос в document, если не находим, удаляем файлы из mongo
+		*/
+
+        int deletedFilesFromMongo = 0;
+        int deletedFilesFromPostgres = 0;
+
+
+        final int BATCH_SIZE = 100;
+
+
+        for(int offset = 0 ;; offset += BATCH_SIZE) {
+
+            Map<String, Attachment> attachments = new HashMap<>();
+            List<Task> activityTasks = taskService.createTaskQuery().listPage(offset, BATCH_SIZE);
+            for(Task task: activityTasks) {
+                List<Attachment> taskAttachments = taskService.getTaskAttachments(task.getId());
+                for (Attachment attachment: taskAttachments) {
+                    attachments.put(attachment.getId(), attachment);
+                }
+            }
+
+            Query query = new Query()
+                    .addCriteria(Criteria.where("filename").in(attachments));
+            List<GridFSDBFile> relatedFiles = oGridFsTemplate.find(query);
+
+            if (activityTasks.isEmpty()) {
+                break;
+            }
+        }
+
+
+        for (int offset = 0 ;; offset += BATCH_SIZE) {
+            List<String> contentKeys = documentDao.getDocumentContentKeys(offset);
+            Query query = new Query()
+                    .addCriteria(Criteria.where("filename").in(contentKeys));
+            List<GridFSDBFile> relatedFiles = oGridFsTemplate.find(query);
+            Set<String> relatedKeys = new HashSet<>();
+            for (GridFSDBFile gridFSDBFile: relatedFiles) {
+                relatedKeys.add(gridFSDBFile.getFilename());
+            }
+
+            for (String documentContentKey: contentKeys) {
+                if (!relatedKeys.contains(documentContentKey)) {
+                    List<Document> toRemoveDocs = documentDao.findAllBy("contentKey", documentContentKey);
+                    for (Document toRemove: toRemoveDocs) {
+                        //						documentDao.delete(toRemove);
+                        LOG.info("[cleanUpInvalidDocuments](deleted Document : {}):", toRemove);
+                        deletedFilesFromPostgres++;
+                    }
+                }
+            }
+
+            if (contentKeys.isEmpty()) {
+                break;
+            }
+        }
+
+        DBCollection collection = mongoTemplate.getCollection("fs.files");
+        for (int offset = 0 ;; offset += BATCH_SIZE) {
+            DBCursor cursor = collection.find(new BasicDBObject()).skip(offset).limit(BATCH_SIZE);
+            if (cursor.hasNext()) {
+
+                List<GridFSDBFile> uploadedFiles = IteratorUtils.toList(cursor.iterator(), BATCH_SIZE);
+                Map<String, GridFSDBFile> fileByName = new HashMap<>(BATCH_SIZE);
+                for (GridFSDBFile file: uploadedFiles) {
+                    fileByName.put(file.getFilename(), file);
+                }
+
+
+                List<Document> relatedDocuments = documentDao.findAllBy("contentKey", fileByName.keySet());
+                Set<String> existingContentKeys = new HashSet<>();
+                for (Document document: relatedDocuments) {
+                    existingContentKeys.add(document.getContentKey());
+                }
+
+                for(String contentKey: fileByName.keySet()) {
+                    if (!existingContentKeys.contains(contentKey)) {
+                        //oGridFsTemplate.delete(new Query().addCriteria(Criteria.where("filename").is(contentKey)));
+                        LOG.info("[cleanUpInvalidDocuments](deleted uploaded file from mongo: {}):", fileByName.get(contentKey));
+                        deletedFilesFromMongo++;
+                    }
+                }
+
+            } else {
+                break;
+            }
+        }
+
+        JsonObject object = new JsonObject();
+        object.addProperty("sRemovedNoSQL", deletedFilesFromMongo);
+        object.addProperty("sRemovedSQL", deletedFilesFromPostgres);
+        return object.toString();
+    }
 }

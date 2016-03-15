@@ -2,14 +2,14 @@
 
 var should = require('should');
 var userConvert = require('./user.convert');
-var organServiceTest = require('./../organs/organ.service.test');
+var subjectServiceTest = require('./../subject/subject.service.test');
 
 suite('user.convert', function () {
   suite('#convertToCanonical()', function () {
     test('should convert from email user to customer', function () {
       var type = 'email';
 
-      var customer = userConvert.convertToCanonical(type, organServiceTest.testData.subjectHuman);
+      var customer = userConvert.convertToCanonical(type, subjectServiceTest.testData.subjectHuman);
       console.log(JSON.stringify(customer));
 
       customer.should.have.property('type');

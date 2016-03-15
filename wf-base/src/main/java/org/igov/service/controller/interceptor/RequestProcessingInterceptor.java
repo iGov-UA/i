@@ -51,7 +51,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     private boolean bFinish = false;
     
     private static final Pattern TAG_PATTERN_PREFIX = Pattern.compile("runtime/tasks/[0-9]+$");
-    //private final String URI_SYNC_CONTACTS = "/wf/service/subject/syncContacts";
+    private final String URI_SYNC_CONTACTS = "/wf/service/subject/syncContacts";
     
     @Autowired
     protected RuntimeService runtimeService;
@@ -211,6 +211,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 return;
             }
             if (isSaveTask(oRequest, sResponseBody)) {
+                LOG.info("saveNewTaskInfo block");
                 saveNewTaskInfo(sRequestBody, sResponseBody, mRequestParam);
             } else if (isCloseTask(oRequest, sResponseBody)) {
                 saveClosedTaskInfo(sRequestBody);
@@ -238,6 +239,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     }
 
     private boolean isSaveTask(HttpServletRequest oRequest, String sResponseBody) {
+        LOG.info("(is save task sResponseBody {}, '/form/form-data' {}. Method {} )", sResponseBody, oRequest.getRequestURL().toString().indexOf("/form/form-data"),oRequest.getMethod());
         return (sResponseBody != null && !"".equals(sResponseBody))
                 && oRequest.getRequestURL().toString().indexOf("/form/form-data") > 0
                 && "POST".equalsIgnoreCase(oRequest.getMethod().trim());
@@ -287,6 +289,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         String sUserTaskName = bProcessClosed ? "" : aTask.get(0).getName();//"(нет назви)"
 
         String sMailTo = JsonRequestDataResolver.getEmail(omRequestBody);
+        String sPhone = JsonRequestDataResolver.getPhone(omRequestBody);
         //LOG.info("Check if ned sendTaskCreatedInfoEmail... (sMailTo={})", sMailTo);
         if (sMailTo != null) {
             LOG.info("Send notification mail... (sMailTo={})", sMailTo);
@@ -297,20 +300,38 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 return;
             }
             */
+            
+         
             oNotificationPatterns.sendTaskCreatedInfoEmail(sMailTo, sID_Order);
             //LOG.info("Sent Email ok!");
         }
-        historyEventService.addHistoryEvent(sID_Order, sUserTaskName, mParam);
-        //LOG.info("ok!");
         
-        /*if(sMailTo != null)
+        if(sMailTo != null || sPhone != null)
         {
+           try
+           {
             Map<String, String> mParamSync = new HashMap<String, String>();
             mParamSync.put("snID_Subject", snID_Subject);
             mParamSync.put("sMailTo", sMailTo);
+            mParamSync.put("sPhone", sPhone);
+            LOG.info("Вносим параметры в коллекцию (sMailTo {}, snID_Subject {}, sPhone {})", sMailTo, snID_Subject, sPhone);
             String sURL = generalConfig.sHostCentral() + URI_SYNC_CONTACTS;
-            String sResponse = httpRequester.postInside(sURL, mParamSync);
-        }*/
+            LOG.info("(Подключаемся к центральному порталу)");
+            String sResponse = httpRequester.getInside(sURL, mParamSync);
+            LOG.info("(Подключение осуществлено)");
+            
+           }
+           catch(Exception ex)
+           {
+             LOG.warn("(isSaveTask exception {})", ex.getMessage());
+           }
+     
+        }
+      
+        historyEventService.addHistoryEvent(sID_Order, sUserTaskName, mParam);
+        //LOG.info("ok!");
+        
+      
     }
     
     private void saveClosedTaskInfo(String sRequestBody) throws Exception {

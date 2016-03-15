@@ -248,30 +248,32 @@ public class SubjectMessageService {
        {
            String sID = SubjectHuman.getSubjectId(SubjectHumanIdType.Email, sMail);
            subject = subjectDao.getSubject(sID);
-          
-           if(subject == null)
-           {
+            
               List<SubjectContact> list_contacts = subjectContactDao.findAllBy("sValue", sMail);
               
-             if(list_contacts.size() == 0)
+             if(list_contacts.size() != 0)
              {
-              Subject subject_time = new Subject();
-              subject_time.setsID(sID);
-              subjectDao.saveOrUpdateSubject(subject_time);
-              subject = subjectDao.getSubject(sID);
-             }
-             else
-             {
-                for(SubjectContact contact : list_contacts)
+                 for(SubjectContact contact : list_contacts)
                 {
                     if(contact.getsValue().equals(sMail))
                     {
-                        subject = contact.getSubject();
+                        Subject subj = contact.getSubject();
+                        if(!subj.getsID().startsWith("_"))
+                            subject = subj;
                         break;
                     }
                 }
+              
              }
-           }
+             if(subject == null)
+             {
+                 Subject subject_time = new Subject();
+                 subject_time.setsID(sID);
+                 subjectDao.saveOrUpdateSubject(subject_time);
+                 subject = subjectDao.getSubject(sID);
+               
+             }
+           
        }
        else
          subject = subjectDao.getSubject(nID_Subject);
@@ -285,7 +287,7 @@ public class SubjectMessageService {
        
        return subject;
     }
-    
+     
     private SubjectHuman getSubjectHuman(Subject subject)
     {
         SubjectHuman subjectHuman = null;

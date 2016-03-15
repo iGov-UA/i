@@ -24,6 +24,10 @@
         <constructor-arg value="org.igov.io.GeneralConfig" />
     </bean>
 
+	<bean id="methodCallRunner" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="org.igov.util.MethodsCallRunnerUtil" />
+    </bean>
+    
     <bean id="mail" class="org.mockito.Mockito" factory-method="mock">
         <constructor-arg value="org.igov.io.mail.Mail" />
     </bean>
@@ -36,9 +40,14 @@
         <constructor-arg value="org.igov.io.web.HttpRequester" />
     </bean>
     
+    <bean id="oUniSender" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="org.igov.io.mail.unisender.UniSender" />
+    </bean>
+ 
+    
     <bean id="httpEntityInsedeCover" class="org.mockito.Mockito" factory-method="mock">
         <constructor-arg value="org.igov.io.web.HttpEntityInsedeCover" />
-    </bean>
+    </bean>            
 
     <context:property-placeholder location="classpath:email.properties" ignore-unresolvable="true"/>
     <context:property-placeholder location="classpath:test.properties" ignore-unresolvable="true"/>

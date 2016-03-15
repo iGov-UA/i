@@ -2,7 +2,7 @@ var request = require('request')
   , async = require('async')
   , soccardUtil = require('./soccard.util')
   , config = require('../../config/environment')
-  , syncSubject = require('../../api/service/syncSubject.service.js')
+  , syncSubject = require('../../api/subject/subject.service.js')
   , errors = require('../../components/errors');
 
 module.exports.getUser = function (accessToken, callback) {

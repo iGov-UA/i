@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="odes_archiv_392" name="Заява про підтвердження фактів народження, шлюбу, розірвання шлюбу, смерті" isExecutable="true">
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім’я" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації (за паспортом)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sRealAdress" name="Поштова адреса для зворотнього зв’язку; за якою зараз проживаєте" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="privateMail" name="Електронна пошта (е-mail)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="privatePhone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asApplication" name="Прошу видати архівну довідку про" type="enum" required="true">
+          <activiti:value id="sEnumBirthDay" name="народження"></activiti:value>
+          <activiti:value id="sEnumMarried" name="шлюбу"></activiti:value>
+          <activiti:value id="sEnumBreakMarried" name="розірвання шлюбу"></activiti:value>
+          <activiti:value id="sEnumDead" name="смерть"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sFullNameObject" name="Прізвище (для жінок – обов’язково вказати дівоче прізвище), ім’я, по батькові народженого, одружених (розлучених), померлого" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="lastName_UA1" name="Прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="firstName_UA1" name="Ім’я" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="middleName_UA1" name="По батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDateRegistration" name="Дата (рік) реєстрації (або дата події); формат ДД.ММ.РРРР" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPlaceRegistration" name="Місце реєстрації події; Для дорадянського періоду: назва церкви, волость, повіт, губернія. Для радянського періоду: район, область" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCoustForDocument" name="Укажіть будь ласка причину для чого вам потрібен документ" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPosition" name="Должность" type="invisible" default="Директору Державного архіву Одеської області"></activiti:formProperty>
+        <activiti:formProperty id="sNameDirector" name="Прізвище директора архіву" type="invisible" default="Левчуку В.В."></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <sequenceFlow id="flow3" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
+    <serviceTask id="servicetask1" name="Підтягування додаткових документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
+      <errorEventDefinition></errorEventDefinition>
+    </boundaryEvent>
+    <sequenceFlow id="flow2" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <sequenceFlow id="flow4" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
+    <serviceTask id="servicetask2" name="Інформування громадянина" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression>${privateMail}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression>iGov: Заява про підтвердження фактів народження, шлюбу, розірвання шлюбу, смерті</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+                                    &lt;p&gt;
+										Ваш запит був успішно зареєстрований у нашій системі. 
+								    &lt;/p&gt;
+									&lt;p&gt;
+										Спеціалісти оброблять Вашу заявку та надішлють Вам email з підтвердженням та запрошенням прийти у обраний час. 
+									&lt;/p&gt;
+									[pattern/mail/_common_signature_start.html]
+									Державний архів Одеської області,&lt;br&gt;
+									[pattern/mail/_common_signature_end.html]   
+									[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow5" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
+    <serviceTask id="servicetask3" name="Інформування посадовця" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression>valery.stavitsky@gmail.com</activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Нове звернення про підтвердження фактів народження, шлюбу, розірвання шлюбу, смерті]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+&lt;p&gt;
+У черзі на обробку зареєстровано нове звернення.&lt;br&gt;
+Опрацюйте це звернення на &lt;a href="http://region.igov.org.ua"&gt;порталі&lt;/a&gt;
+&lt;/p&gt;
+[pattern/mail/_common_signature.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow1" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
+    <userTask id="usertask1" name="Форма прийняття рішення" activiti:candidateGroups="arciv_odesObl">
+      <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім’я" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації (за паспортом)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sRealAdress" name="Поштова адреса для зворотнього зв’язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="privateMail" name="Електронна пошта (е-mail)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="privatePhone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asApplication" name="Необхідна довідка про" type="enum" writable="false">
+          <activiti:value id="sEnumBirthDay" name="народження"></activiti:value>
+          <activiti:value id="sEnumMarried" name="шлюбу"></activiti:value>
+          <activiti:value id="sEnumBreakMarried" name="розірвання шлюбу"></activiti:value>
+          <activiti:value id="sEnumDead" name="смерть"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="lastName_UA1" name="Прізвище" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="firstName_UA1" name="Ім’я" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="middleName_UA1" name="По батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateRegistration" name="Дата (рік) реєстрації (або дата події)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPlaceRegistration" name="Місце реєстрації (події)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCoustForDocument" name="Документ необхідний для" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="workerDecision" name="Результат обробки звернення" type="enum" required="true">
+          <activiti:value id="accept" name="Сповістити громадянина про можливість отримання довідки"></activiti:value>
+          <activiti:value id="decline" name="Сповістити громадянина, що довідка не може бути надана"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="decisionComment" name="Зазначте дату отримання довідки або причину неможливості отримання послуги" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sBodyArchiv" name="[pattern/print/archiv/odessa_archiv_392_print.html]" type="invisible" default="Заявка громадянина" writable="false"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow7" name="відхилення" sourceRef="exclusivegateway1" targetRef="servicetask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${workerDecision=='decline'}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask4" name="Лист про відмову" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression>${privateMail}</activiti:expression>
+        </activiti:field>
+		<activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression>iGov: Заява про підтвердження фактів народження, шлюбу, розірвання шлюбу, смерті</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+                                    &lt;p&gt;
+										На жаль, Вам відмовлено у надані послуги.&lt;br&gt;
+										При необхідності отримати &lt;b&gt;Довідку про підтвердження фактів enum{[asApplication]}&lt;/b&gt; Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;, врахувавши коментар Державного службовця.
+									&lt;/p&gt; 
+									&lt;p&gt;
+										Коментар Державного службовця:&lt;br&gt;
+											&lt;b&gt;&lt;i&gt;${decisionComment}&lt;/i&gt;&lt;/b&gt;
+									&lt;/p&gt;
+&lt;p&gt;
+За додатковою інформацієї ви можете звернутись:
+&lt;div style="text-align:justify; font-family:'book antiqua', palatino; font-size: medium; width:400px"&gt;
+    &lt;p style="color:#0000ff;"&gt;
+      Головний корпус Держархіву Одеської області:
+    &lt;/p&gt;
+    &lt;p style="color:#000080;"&gt;
+      &lt;b&gt;м. Одеса, вул. Жуковського, буд. 18, каб. 13&lt;br/&gt;
+        понеділок, середа, п'ятниця: 09:00 - 13:00 
+      &lt;/b&gt;
+    &lt;/p&gt;    
+    &lt;p style="color: #000080;"&gt;
+        контактний телефон: (+380 48) &amp;nbsp;&lt;b&gt;725-12-19&lt;/b&gt;
+    &lt;/p&gt;
+    &lt;p style="font-size: small; color: #000000;"&gt;
+      Желясков Степан Андрійович,&amp;nbsp;Гейтан Олена Георгіївна
+    &lt;/p&gt;
+    &lt;hr size="2"&gt;
+    
+    &lt;p style="color:#0000ff;"&gt;
+      Корпус №2 Держархіву Одеської області:
+    &lt;/p&gt;
+    &lt;p style="color:#000080;"&gt;
+      &lt;b&gt;
+        м. Одеса, вул. Пироговська, буд. 29, каб. 1&lt;br/&gt;
+        понеділок, середа, п'ятниця: 08:00 - 12:00
+      &lt;/b&gt;
+    &lt;/p&gt;    
+    &lt;p style="color: #000080;"&gt;
+        контактний телефон: (+380 48) &amp;nbsp;&lt;b&gt;718-95-80&lt;/b&gt;
+    &lt;/p&gt;
+    &lt;p style="font-size: small; color: #000000;"&gt;
+      Дворницька Юлія Ігорівна,&amp;nbsp;Мхатварі Євгенія Теймуразівна
+    &lt;/p&gt;
+    &lt;hr size="2"&gt;
+  &lt;/div&gt;
+
+
+									[pattern/mail/_common_signature_start.html]
+									Державний архів Одеської області,&lt;p&gt;
+									[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow9" sourceRef="servicetask4" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow8" name="документи ок" sourceRef="exclusivegateway1" targetRef="servicetask5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${workerDecision=='accept'}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask5" name="Лист про виконання" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression>${privateMail}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression>iGov: Заява про підтвердження фактів народження, шлюбу, розірвання шлюбу, смерті</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+                                    &lt;p&gt;
+                                        Спеціалісти успішно опрацювли Вашу заяву.&lt;br&gt;
+										Коментар Державного службовця:&lt;br&gt;
+											&lt;b&gt;&lt;i&gt;${decisionComment}&lt;/i&gt;&lt;/b&gt;
+									&lt;/p&gt;
+									&lt;p&gt;                                    	
+										Ви можете отримати вашу &lt;b&gt;Довідку про підтвердження фактів enum{[asApplication]}&lt;/b&gt; за адресою:&lt;br&gt;										
+										
+&lt;div style="text-align:justify; font-family:'book antiqua', palatino; font-size: medium; width:400px"&gt;
+    &lt;p style="color:#0000ff;"&gt;
+      Головний корпус Держархіву Одеської області:
+    &lt;/p&gt;
+    &lt;p style="color:#000080;"&gt;
+      &lt;b&gt;м. Одеса, вул. Жуковського, буд. 18, каб. 13&lt;br/&gt;
+        понеділок, середа, п'ятниця: 09:00 - 13:00 
+      &lt;/b&gt;
+    &lt;/p&gt;    
+    &lt;p style="color: #000080;"&gt;
+        контактний телефон: (+380 48) &amp;nbsp;&lt;b&gt;725-12-19&lt;/b&gt;
+    &lt;/p&gt;
+    &lt;p style="font-size: small; color: #000000;"&gt;
+      Желясков Степан Андрійович,&amp;nbsp;Гейтан Олена Георгіївна
+    &lt;/p&gt;
+    &lt;hr size="2"&gt;
+    
+    &lt;p style="color:#0000ff;"&gt;
+      Корпус №2 Держархіву Одеської області:
+    &lt;/p&gt;
+    &lt;p style="color:#000080;"&gt;
+      &lt;b&gt;
+        м. Одеса, вул. Пироговська, буд. 29, каб. 1&lt;br/&gt;
+        понеділок, середа, п'ятниця: 08:00 - 12:00
+      &lt;/b&gt;
+    &lt;/p&gt;    
+    &lt;p style="color: #000080;"&gt;
+        контактний телефон: (+380 48) &amp;nbsp;&lt;b&gt;718-95-80&lt;/b&gt;
+    &lt;/p&gt;
+    &lt;p style="font-size: small; color: #000000;"&gt;
+      Дворницька Юлія Ігорівна,&amp;nbsp;Мхатварі Євгенія Теймуразівна
+    &lt;/p&gt;
+    &lt;hr size="2"&gt;
+  &lt;/div&gt;
+									&lt;/p&gt;
+									[pattern/mail/_common_signature_start.html]
+									Державний архів Одеської області,&lt;br&gt;
+									[pattern/mail/_common_signature_end.html]   
+									[pattern/mail/_common_feedback.html]
+									[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow10" sourceRef="servicetask5" targetRef="endevent1"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_odes_archiv_392">
+    <bpmndi:BPMNPlane bpmnElement="odes_archiv_392" id="BPMNPlane_odes_archiv_392">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="80.0" y="120.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="160.0" y="110.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
+        <omgdc:Bounds height="30.0" width="30.0" x="160.0" y="138.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="157.0" y="210.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
+        <omgdc:Bounds height="60.0" width="121.0" x="320.0" y="108.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
+        <omgdc:Bounds height="70.0" width="125.0" x="545.0" y="104.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="59.0" width="115.0" x="550.0" y="234.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="470.0" y="243.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
+        <omgdc:Bounds height="61.0" width="149.0" x="276.0" y="197.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
+        <omgdc:Bounds height="55.0" width="149.0" x="276.0" y="286.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="115.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="160.0" y="137.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="175.0" y="168.0"></omgdi:waypoint>
+        <omgdi:waypoint x="174.0" y="210.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="265.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="320.0" y="138.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="441.0" y="138.0"></omgdi:waypoint>
+        <omgdi:waypoint x="545.0" y="139.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="607.0" y="174.0"></omgdi:waypoint>
+        <omgdi:waypoint x="607.0" y="234.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+        <omgdi:waypoint x="550.0" y="263.0"></omgdi:waypoint>
+        <omgdi:waypoint x="510.0" y="263.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
+        <omgdi:waypoint x="490.0" y="243.0"></omgdi:waypoint>
+        <omgdi:waypoint x="458.0" y="226.0"></omgdi:waypoint>
+        <omgdi:waypoint x="425.0" y="227.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="57.0" x="459.0" y="211.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
+        <omgdi:waypoint x="276.0" y="227.0"></omgdi:waypoint>
+        <omgdi:waypoint x="192.0" y="227.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
+        <omgdi:waypoint x="490.0" y="283.0"></omgdi:waypoint>
+        <omgdi:waypoint x="464.0" y="313.0"></omgdi:waypoint>
+        <omgdi:waypoint x="425.0" y="313.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="69.0" x="471.0" y="307.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
+        <omgdi:waypoint x="276.0" y="313.0"></omgdi:waypoint>
+        <omgdi:waypoint x="174.0" y="313.0"></omgdi:waypoint>
+        <omgdi:waypoint x="174.0" y="245.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

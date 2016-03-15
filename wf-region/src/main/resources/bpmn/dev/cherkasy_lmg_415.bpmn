@@ -1,0 +1,533 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="cherkasy_lmg_415" name="Видача посвідчення мисливця і контрольної картки обліку добутої дичини й порушень правил полювання" isExecutable="true">
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+      	<activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище " type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Адреса електронної пошти" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdphone" name="Телефон" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asType" name="Оберіть тип звернення:" type="enum" required="true">
+          <activiti:value id="sEnumCertif" name="Видача Посвідчення мисливця"></activiti:value>
+          <activiti:value id="sEnumCard" name="Видача Контрольної картки обліку добутої дичини та порушень правил полювання"></activiti:value>
+          <activiti:value id="sEnumCertifDouble" name="Видача дублікату Посвідчення мисливця"></activiti:value>
+          <activiti:value id="sEnumCardDouble" name="Видача дублікату Контрольної картки обліку добутої дичини та порушень правил полювання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sCountryB" name="Країна народження" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sRegionB" name="Область народження" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDistrictB" name="Район народження" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCityB" name="Місто/село народження" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспорт" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорта" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sJobPlace" name="Місце роботи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sJob" name="Посада" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sJobAdressPhone" name="Адреса, телефон місця роботи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asOrg" name="Оберіть кількість громадських організацій мисливців, членом яких Ви є" type="enum" required="true">
+          <activiti:value id="sEnum1" name="1"></activiti:value>
+          <activiti:value id="sEnum2" name="2"></activiti:value>
+          <activiti:value id="sEnum3" name="3"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sNameOrg1" name="Найменування ГО мисливців 1" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTicket1" name="Серія членського квитка 1" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nTicketNum1" name="№ членського квитка 1" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="dTicket1" name="Дата видачі квитка 1" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrg2" name="Найменування ГО мисливців 2" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTicket2" name="Серія членського квитка 2" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nTicketNum2" name="№ членського квитка 2" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="dTicket2" name="Дата видачі квитка 2" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrg3" name="Найменування ГО мисливців 3" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTicket3" name="Серія членського квитка 3" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nTicketNum3" name="№ членського квитка 3" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="dTicket3" name="Дата видачі квитка 3" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asRifle" name="Оберіть кількість одиниць власної нарізної зброї" type="enum" required="true">
+          <activiti:value id="sEnumRifle1" name="1"></activiti:value>
+          <activiti:value id="sEnumRifle2" name="2"></activiti:value>
+          <activiti:value id="sEnumRifle3" name="3"></activiti:value>
+          <activiti:value id="sEnumRifle4" name="4"></activiti:value>
+          <activiti:value id="sEnumRifle5" name="5"></activiti:value>
+          <activiti:value id="sEnumRifle6" name="6"></activiti:value>
+          <activiti:value id="sEnumRifle7" name="7"></activiti:value>
+          <activiti:value id="sEnumRifle8" name="8"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sRifleMark1" name="Марка нарізної зброї 1" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nRifleNum1" name="№ нарізної зброї 1" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sRifleClbr1" name="Калібр нарізної зброї 1" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sRifleMark2" name="Марка нарізної зброї 2" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nRifleNum2" name="№ нарізної зброї 2" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sRifleClbr2" name="Калібр нарізної зброї 2" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sRifleMark3" name="Марка нарізної зброї 3" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nRifleNum3" name="№ нарізної зброї 3" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sRifleClbr3" name="Калібр нарізної зброї 3" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sRifleMark4" name="Марка нарізної зброї 4" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nRifleNum4" name="№ нарізної зброї 4" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sRifleClbr4" name="Калібр нарізної зброї 4" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sRifleMark5" name="Марка нарізної зброї 5" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nRifleNum5" name="№ нарізної зброї 5" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sRifleClbr5" name="Калібр нарізної зброї 5" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sRifleMark6" name="Марка нарізної зброї 6" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nRifleNum6" name="№ нарізної зброї 6" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sRifleClbr6" name="Калібр нарізної зброї 6" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sRifleMark7" name="Марка нарізної зброї 7" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nRifleNum7" name="№ нарізної зброї 7" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sRifleClbr7" name="Калібр нарізної зброї 7" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sRifleMark8" name="Марка нарізної зброї 8" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nRifleNum8" name="№ нарізної зброї 8" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sRifleClbr8" name="Калібр нарізної зброї 8" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asSmooth" name="Оберіть кількість одиниць власної гладкоствольної зброї" type="enum" required="true">
+          <activiti:value id="sEnumSmooth1" name="1"></activiti:value>
+          <activiti:value id="sEnumSmooth2" name="2"></activiti:value>
+          <activiti:value id="sEnumSmooth3" name="3"></activiti:value>
+          <activiti:value id="sEnumSmooth4" name="4"></activiti:value>
+          <activiti:value id="sEnumSmooth5" name="5"></activiti:value>
+          <activiti:value id="sEnumSmooth6" name="6"></activiti:value>
+          <activiti:value id="sEnumSmooth7" name="7"></activiti:value>
+          <activiti:value id="sEnumSmooth8" name="8"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sSmoothMark1" name="Марка гладкоствольної зброї 1" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nSmoothNum1" name="№ гладкоствольної зброї 1" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSmoothClbr1" name="Калібр гладкоствольної зброї 1" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSmoothMark2" name="Марка гладкоствольної зброї 2" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nSmoothNum2" name="№ гладкоствольної зброї 2" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSmoothClbr2" name="Калібр гладкоствольної зброї 2" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSmoothMark3" name="Марка гладкоствольної зброї 3" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nSmoothNum3" name="№ гладкоствольної зброї 3" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSmoothClbr3" name="Калібр гладкоствольної зброї 3" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSmoothMark4" name="Марка гладкоствольної зброї 4" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nSmoothNum4" name="№ гладкоствольної зброї 4" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSmoothClbr4" name="Калібр гладкоствольної зброї 4" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSmoothMark5" name="Марка гладкоствольної зброї 5" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nSmoothNum5" name="№ гладкоствольної зброї 5" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSmoothClbr5" name="Калібр гладкоствольної зброї 5" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSmoothMark6" name="Марка гладкоствольної зброї 6" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nSmoothNum6" name="№ гладкоствольної зброї 6" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSmoothClbr6" name="Калібр гладкоствольної зброї 6" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSmoothMark7" name="Марка гладкоствольної зброї 7" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nSmoothNum7" name="№ гладкоствольної зброї 7" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSmoothClbr7" name="Калібр гладкоствольної зброї 7" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSmoothMark8" name="Марка гладкоствольної зброї 8" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nSmoothNum8" name="№ гладкоствольної зброї 8" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSmoothClbr8" name="Калібр гладкоствольної зброї 8" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asCold" name="Оберіть кількість одиниць власної холодної зброї" type="enum" required="true">
+          <activiti:value id="sEnumCold1" name="1"></activiti:value>
+          <activiti:value id="sEnumCold2" name="2"></activiti:value>
+          <activiti:value id="sEnumCold3" name="3"></activiti:value>
+          <activiti:value id="sEnumCold4" name="4"></activiti:value>
+          <activiti:value id="sEnumCold5" name="5"></activiti:value>
+          <activiti:value id="sEnumCold6" name="6"></activiti:value>
+          <activiti:value id="sEnumCold7" name="7"></activiti:value>
+          <activiti:value id="sEnumCold8" name="8"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sColdMark1" name="Марка холодної зброї 1" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nColdNum1" name="№ холодної зброї 1" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sColdMark2" name="Марка холодної зброї 2" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nColdNum2" name="№ холодної зброї 2" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sColdMark3" name="Марка холодної зброї 3" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nColdNum3" name="№ холодної зброї 3" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sColdMark4" name="Марка холодної зброї 4" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nColdNum4" name="№ холодної зброї 4" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sColdMark5" name="Марка холодної зброї 5" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nColdNum5" name="№ холодної зброї 5" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sColdMark6" name="Марка холодної зброї 6" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nColdNum6" name="№ холодної зброї 6" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sColdMark7" name="Марка холодної зброї 7" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nColdNum7" name="№ холодної зброї 7" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sColdMark8" name="Марка холодної зброї 8" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nColdNum8" name="№ холодної зброї 8" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asOther" name="Оберіть кількість одиниць власної іншої зброї" type="enum" required="true">
+          <activiti:value id="sEnumOther1" name="1"></activiti:value>
+          <activiti:value id="sEnumOther2" name="2"></activiti:value>
+          <activiti:value id="sEnumOther3" name="3"></activiti:value>
+          <activiti:value id="sEnumOther4" name="4"></activiti:value>
+          <activiti:value id="sEnumOther5" name="5"></activiti:value>
+          <activiti:value id="sEnumOther6" name="6"></activiti:value>
+          <activiti:value id="sEnumOther7" name="7"></activiti:value>
+          <activiti:value id="sEnumOther8" name="8"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sOtherMark1" name="Марка іншої зброї 1" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nOtherNum1" name="№ іншої зброї 1" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sOtherMark2" name="Марка іншої зброї 2" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nOtherNum2" name="№ іншої зброї 2" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sOtherMark3" name="Марка іншої зброї 3" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nOtherNum3" name="№ іншої зброї 3" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sOtherMark4" name="Марка іншої зброї 4" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nOtherNum4" name="№ іншої зброї 4" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sOtherMark5" name="Марка іншої зброї 5" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nOtherNum5" name="№ іншої зброї 5" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sOtherMark6" name="Марка іншої зброї 6" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nOtherNum6" name="№ іншої зброї 6" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sOtherMark7" name="Марка іншої зброї 7" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nOtherNum7" name="№ іншої зброї 7" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sOtherMark8" name="Марка іншої зброї 8" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nOtherNum8" name="№ іншої зброї 8" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asPet" name="Оберіть кількість мисливських собак, ловчих звірів та птахів" type="enum" required="true">
+          <activiti:value id="sEnumPet1" name="1"></activiti:value>
+          <activiti:value id="sEnumPet2" name="2"></activiti:value>
+          <activiti:value id="sEnumPet3" name="3"></activiti:value>
+          <activiti:value id="sEnumPet4" name="4"></activiti:value>
+          <activiti:value id="sEnumPet5" name="5"></activiti:value>
+          <activiti:value id="sEnumPet6" name="6"></activiti:value>
+          <activiti:value id="sEnumPet7" name="7"></activiti:value>
+          <activiti:value id="sEnumPet8" name="8"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sPetMark1" name="Порода 1" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nPetNum1" name="Паспорт, посвідчення 1" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPetMark2" name="Порода 2" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nPetNum2" name="Паспорт, посвідчення 2" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPetMark3" name="Порода 3" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nPetNum3" name="Паспорт, посвідчення 3" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPetMark4" name="Порода 4" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nPetNum4" name="Паспорт, посвідчення 4" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPetMark5" name="Порода 5" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nPetNum5" name="Паспорт, посвідчення 5" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPetMark6" name="Порода 6" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nPetNum6" name="Паспорт, посвідчення 6" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPetMark7" name="Порода 7" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nPetNum7" name="Паспорт, посвідчення 7" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPetMark8" name="Порода 8" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nPetNum8" name="Паспорт, посвідчення 8" type="long" required="true"></activiti:formProperty>
+     <activiti:formProperty id="sNameOrgan" name="Назва органа в емейл" type="invisible"></activiti:formProperty>
+     <activiti:formProperty id="sWorkTime" name="Час роботи" type="invisible"></activiti:formProperty>
+     <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок" type="invisible"></activiti:formProperty>
+     <activiti:formProperty id="sAddress" name="Адреса" type="invisible"></activiti:formProperty>
+     <activiti:formProperty id="nID_Department_visitDay" name="Номер органу для електронної черги" type="invisible"></activiti:formProperty>
+    	<activiti:formProperty id="markers1" name="extended_marker1" type="markers" default="${markerService.loadFromFile('forest/cherkasy_lmg_415_1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="extended_marker2" type="markers" default="${markerService.loadFromFile('forest/cherkasy_lmg_415_2.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="extended_marker3" type="markers" default="${markerService.loadFromFile('forest/cherkasy_lmg_415_3.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers4" name="extended_marker4" type="markers" default="${markerService.loadFromFile('forest/cherkasy_lmg_415_4.json')}"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <serviceTask id="servicetask1" name="Завантаження документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <serviceTask id="servicetask2" name="Повідомлення держслужбовця про звернення" activiti:async="true" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>tanyazol@gmail.com</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Нове звернення. "Видача посвідчення мисливця і контрольної картки обліку добутої дичини й порушень правил полювання"]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>     
+    <serviceTask id="servicetask3" name="Лист громадянину" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення на тему "Видача посвідчення мисливця і контрольної картки обліку добутої дичини й порушень правил полювання"]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+				&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+				&lt;p&gt; Ваше звернення щодо enum{[asType]}  було зареєстровано у системі.&lt;br/&gt;
+				Повідомлення про результат розгляду буде спрямоване на Ваш e-mail.&lt;/p&gt;
+				&lt;br /&gt;
+				[pattern/mail/_common_signature_start.html]
+				[pattern_dictonary:dnepr_soc_help.csv:234:2]&lt;br /&gt; <!-- ЗАМЕНИТЬ 234 на создать черкассы  -->
+				[pattern/mail/_common_signature_end.html]
+				[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+      </serviceTask>    
+    <userTask id="usertask1" name="Розгляд документів" activiti:candidateGroups="ulmg_${sID_Public_SubjectOrganJoin}">
+    <activiti:formProperty id="bankIdlastName" name="Прізвище " type="string"  writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"  writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"  writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Адреса електронної пошти" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdphone" name="Телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asType" name="Оберіть тип звернення:" type="enum" writable="false">
+          <activiti:value id="sEnumCertif" name="Видача Посвідчення мисливця"></activiti:value>
+          <activiti:value id="sEnumCard" name="Видача Контрольної картки обліку добутої дичини та порушень правил полювання"></activiti:value>
+          <activiti:value id="sEnumCertifDouble" name="Видача дублікату Посвідчення мисливця"></activiti:value>
+          <activiti:value id="sEnumCardDouble" name="Видача дублікату Контрольної картки обліку добутої дичини та порушень правил полювання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sCountryB" name="Країна народження" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sRegionB" name="Область народження" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDistrictB" name="Район народження" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCityB" name="Місто/село народження" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспорт" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорта" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sJobPlace" name="Місце роботи" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sJob" name="Посада" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sJobAdressPhone" name="Адреса, телефон місця роботи" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrg1" name="Найменування ГО мисливців 1" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTicket1" name="Серія членського квитка 1" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nTicketNum1" name="№ членського квитка 1" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="dTicket1" name="Дата видачі квитка 1" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrg2" name="Найменування ГО мисливців 2" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTicket2" name="Серія членського квитка 2" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nTicketNum2" name="№ членського квитка 2" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="dTicket2" name="Дата видачі квитка 2" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrg3" name="Найменування ГО мисливців 3" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTicket3" name="Серія членського квитка 3" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nTicketNum3" name="№ членського квитка 3" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="dTicket3" name="Дата видачі квитка 3" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sRifleMark1" name="Марка нарізної зброї 1" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nRifleNum1" name="№ нарізної зброї 1" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sRifleClbr1" name="Калібр нарізної зброї 1" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sRifleMark2" name="Марка нарізної зброї 2" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nRifleNum2" name="№ нарізної зброї 2" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sRifleClbr2" name="Калібр нарізної зброї 2" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sRifleMark3" name="Марка нарізної зброї 3" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nRifleNum3" name="№ нарізної зброї 3" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sRifleClbr3" name="Калібр нарізної зброї 3" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sRifleMark4" name="Марка нарізної зброї 4" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nRifleNum4" name="№ нарізної зброї 4" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sRifleClbr4" name="Калібр нарізної зброї 4" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sRifleMark5" name="Марка нарізної зброї 5" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nRifleNum5" name="№ нарізної зброї 5" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sRifleClbr5" name="Калібр нарізної зброї 5" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sRifleMark6" name="Марка нарізної зброї 6" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nRifleNum6" name="№ нарізної зброї 6" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sRifleClbr6" name="Калібр нарізної зброї 6" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sRifleMark7" name="Марка нарізної зброї 7" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nRifleNum7" name="№ нарізної зброї 7" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sRifleClbr7" name="Калібр нарізної зброї 7" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sRifleMark8" name="Марка нарізної зброї 8" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nRifleNum8" name="№ нарізної зброї 8" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sRifleClbr8" name="Калібр нарізної зброї 8" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSmoothMark1" name="Марка гладкоствольної зброї 1" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nSmoothNum1" name="№ гладкоствольної зброї 1" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSmoothClbr1" name="Калібр гладкоствольної зброї 1" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSmoothMark2" name="Марка гладкоствольної зброї 2" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nSmoothNum2" name="№ гладкоствольної зброї 2" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSmoothClbr2" name="Калібр гладкоствольної зброї 2" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSmoothMark3" name="Марка гладкоствольної зброї 3" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nSmoothNum3" name="№ гладкоствольної зброї 3" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSmoothClbr3" name="Калібр гладкоствольної зброї 3" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSmoothMark4" name="Марка гладкоствольної зброї 4" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nSmoothNum4" name="№ гладкоствольної зброї 4" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSmoothClbr4" name="Калібр гладкоствольної зброї 4" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSmoothMark5" name="Марка гладкоствольної зброї 5" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nSmoothNum5" name="№ гладкоствольної зброї 5" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSmoothClbr5" name="Калібр гладкоствольної зброї 5" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSmoothMark6" name="Марка гладкоствольної зброї 6" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nSmoothNum6" name="№ гладкоствольної зброї 6" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSmoothClbr6" name="Калібр гладкоствольної зброї 6" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSmoothMark7" name="Марка гладкоствольної зброї 7" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nSmoothNum7" name="№ гладкоствольної зброї 7" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSmoothClbr7" name="Калібр гладкоствольної зброї 7" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSmoothMark8" name="Марка гладкоствольної зброї 8" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nSmoothNum8" name="№ гладкоствольної зброї 8" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSmoothClbr8" name="Калібр гладкоствольної зброї 8" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sColdMark1" name="Марка холодної зброї 1" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nColdNum1" name="№ холодної зброї 1" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sColdMark2" name="Марка холодної зброї 2" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nColdNum2" name="№ холодної зброї 2" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sColdMark3" name="Марка холодної зброї 3" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nColdNum3" name="№ холодної зброї 3" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sColdMark4" name="Марка холодної зброї 4" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nColdNum4" name="№ холодної зброї 4" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sColdMark5" name="Марка холодної зброї 5" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nColdNum5" name="№ холодної зброї 5" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sColdMark6" name="Марка холодної зброї 6" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nColdNum6" name="№ холодної зброї 6" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sColdMark7" name="Марка холодної зброї 7" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nColdNum7" name="№ холодної зброї 7" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sColdMark8" name="Марка холодної зброї 8" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nColdNum8" name="№ холодної зброї 8" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sOtherMark1" name="Марка іншої зброї 1" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nOtherNum1" name="№ іншої зброї 1" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sOtherMark2" name="Марка іншої зброї 2" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nOtherNum2" name="№ іншої зброї 2" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sOtherMark3" name="Марка іншої зброї 3" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nOtherNum3" name="№ іншої зброї 3" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sOtherMark4" name="Марка іншої зброї 4" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nOtherNum4" name="№ іншої зброї 4" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sOtherMark5" name="Марка іншої зброї 5" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nOtherNum5" name="№ іншої зброї 5" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sOtherMark6" name="Марка іншої зброї 6" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nOtherNum6" name="№ іншої зброї 6" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sOtherMark7" name="Марка іншої зброї 7" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nOtherNum7" name="№ іншої зброї 7" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sOtherMark8" name="Марка іншої зброї 8" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nOtherNum8" name="№ іншої зброї 8" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPetMark1" name="Порода 1" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nPetNum1" name="Паспорт, посвідчення 1" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPetMark2" name="Порода 2" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nPetNum2" name="Паспорт, посвідчення 2" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPetMark3" name="Порода 3" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nPetNum3" name="Паспорт, посвідчення 3" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPetMark4" name="Порода 4" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nPetNum4" name="Паспорт, посвідчення 4" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPetMark5" name="Порода 5" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nPetNum5" name="Паспорт, посвідчення 5" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPetMark6" name="Порода 6" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nPetNum6" name="Паспорт, посвідчення 6" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPetMark7" name="Порода 7" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nPetNum7" name="Паспорт, посвідчення 7" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPetMark8" name="Порода 8" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nPetNum8" name="Паспорт, посвідчення 8" type="invisible" writable="false"></activiti:formProperty>
+    <activiti:formProperty id="status" name="Обробка заяви" type="enum" required="true">
+          <activiti:value id="sEnumApprove" name="Громадянина запрошено до отримання документів або складання іспиту"></activiti:value>
+          <activiti:value id="sEnumDeny" name="Відмова громадянину у видачі документів"></activiti:value>
+    </activiti:formProperty>      
+     <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
+    <activiti:formProperty id="sBody1" name="[pattern/print/UPZSN/kalush_soczah_401_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+    <activiti:formProperty id="sBody2" name="[pattern/print/UPZSN/kalush_soczah_402_print.html]" type="invisible" default="Анкета мисливця; вкажіть альбомну орієнтацію паперу для друку" writable="false"></activiti:formProperty>
+      <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression>${bankId_scan_passport}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </userTask>         
+    <serviceTask id="servicetask4" name="Лист-відмова" activiti:delegateExpression="#{MailTaskWithoutAttachment}"></serviceTask>
+    <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Інформація щодо видачі посвідчення мисливця і контрольної картки обліку добутої дичини й порушень правил полювання]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+			&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br&gt;&lt;br&gt;
+			&lt;p&gt;На жаль, Ваше звернення щодо ${asType} - відхилене.&lt;/p&gt;
+			&lt;p&gt;Причина в наступному: &lt;br&gt;
+			${decisionComment}&lt;/p&gt;
+			&lt;p&gt;Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/ target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
+			[pattern/mail/_common_signature_start.html]
+			[pattern_dictonary:dnepr_reg_cnap.csv:234:2]&lt;/p&gt;
+			[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    <serviceTask id="servicetask5" name="Лист-запрошення" activiti:delegateExpression="#{MailTaskWithAttachments}"></serviceTask>
+    <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Запрошення до отримання «Посвідчення мисливця і контрольної картки обліку добутої дичини й порушень правил полювання»]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+			&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+			&lt;p&gt;Ваше звернення щодо ${asType} - успішно розглянуте.&lt;/p&gt;
+			&lt;p&gt;Запрошуємо Вас отримати документи за адресою:&lt;br&gt;
+			[pattern_dictonary:dnepr_reg_cnap.csv:234:3]&lt;br&gt;
+			[pattern_dictonary:dnepr_reg_cnap.csv:234:4]&lt;br&gt;
+			[pattern_dictonary:dnepr_reg_cnap.csv:234:5]&lt;/p&gt;
+			При собі необхідно мати:
+			1. Для отримання Контрольної картки обліку добутої дичини та порушень правил полювання - Картку за попередній період 
+			2. Для отримання Посвідчення мисливця (або дубліката) - паспорт громадянина України та фотокартки (2 шт. 3х4 см)
+									
+			[pattern/mail/_common_signature_start.html]
+			[pattern_dictonary:dnepr_reg_cnap.csv:234:2],&lt;br&gt;
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_feedback.html]
+			[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
+      <errorEventDefinition></errorEventDefinition>
+    </boundaryEvent>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
+    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
+    <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
+    <sequenceFlow id="flow4" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow5" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
+    <sequenceFlow id="flow6" sourceRef="exclusivegateway1" targetRef="servicetask4"></sequenceFlow>
+    <sequenceFlow id="flow7" sourceRef="exclusivegateway1" targetRef="servicetask5"></sequenceFlow>
+    <sequenceFlow id="flow8" sourceRef="servicetask5" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow9" sourceRef="servicetask4" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow10" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_cherkasy_lmg_415">
+    <bpmndi:BPMNPlane bpmnElement="cherkasy_lmg_415" id="BPMNPlane_cherkasy_lmg_415">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="40.0" y="120.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="75.0" width="105.0" x="100.0" y="100.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
+        <omgdc:Bounds height="75.0" width="105.0" x="230.0" y="100.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
+        <omgdc:Bounds height="75.0" width="105.0" x="360.0" y="100.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="75.0" width="105.0" x="490.0" y="100.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
+        <omgdc:Bounds height="55.0" width="105.0" x="360.0" y="200.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
+        <omgdc:Bounds height="55.0" width="105.0" x="490.0" y="280.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
+        <omgdc:Bounds height="30.0" width="30.0" x="150.0" y="160.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="147.0" y="290.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="522.0" y="207.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="75.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="100.0" y="137.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="205.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="230.0" y="137.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="335.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="360.0" y="137.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="465.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="490.0" y="137.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="542.0" y="175.0"></omgdi:waypoint>
+        <omgdi:waypoint x="542.0" y="207.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+        <omgdi:waypoint x="522.0" y="227.0"></omgdi:waypoint>
+        <omgdi:waypoint x="465.0" y="227.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
+        <omgdi:waypoint x="542.0" y="247.0"></omgdi:waypoint>
+        <omgdi:waypoint x="542.0" y="280.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
+        <omgdi:waypoint x="490.0" y="307.0"></omgdi:waypoint>
+        <omgdi:waypoint x="182.0" y="307.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
+        <omgdi:waypoint x="360.0" y="227.0"></omgdi:waypoint>
+        <omgdi:waypoint x="164.0" y="227.0"></omgdi:waypoint>
+        <omgdi:waypoint x="164.0" y="290.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
+        <omgdi:waypoint x="165.0" y="190.0"></omgdi:waypoint>
+        <omgdi:waypoint x="164.0" y="290.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

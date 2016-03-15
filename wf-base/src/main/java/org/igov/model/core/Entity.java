@@ -14,7 +14,7 @@ import java.io.Serializable;
  * Time: 21:51
  */
 @MappedSuperclass
-public abstract class Entity {
+public abstract class Entity implements Serializable{
 
     protected static final String DATETIME_TYPE = "org.jadira.usertype.dateandtime.joda.PersistentDateTime";
 

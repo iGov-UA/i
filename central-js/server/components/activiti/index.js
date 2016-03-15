@@ -115,8 +115,8 @@ module.exports.buildGET = function (apiURL, params, sHost, session) {
 };
 
 module.exports.buildRequest = function (req, apiURL, params, sHost) {
-  var nID_Subject = req.session.subject ? req.session.subject.nID : null;
-  return this.buildGET(apiURL, params, sHost, nID_Subject);
+  //var nID_Subject = req.session.subject ? req.session.subject.nID : null;
+  return this.buildGET(apiURL, params, sHost, req.session);//nID_Subject
 };
 
 module.exports.getAuth = function () {
@@ -165,28 +165,6 @@ module.exports.sendDeleteRequest = function (req, res, apiURL, params, callback,
   var url = this.buildRequest(req, apiURL, params, sHost);
   return request.del(url, _callback);
 };
-
-/*
- module.exports.buildRequestFromServer = function (sPagePath, oParams, sHost) {
- var sURL = this.getRequestUrl(sPagePath, sHost);
- return {
- 'url': sURL,
- 'auth': this.getAuth(),
- 'qs': oParams
- };
- };
-
-
- module.exports.getRegionURL = function (res, nID) {
- //var _callback = callback ? callback : this.getDefaultCallback(res);
- //var url = this.buildRequest(req, apiURL, params, sHost);
- //return request(url, _callback);
- var sURL = this.buildRequestFromServer('/subject/getServer', {nID: nID});
- var oServer = request(sURL, this.getDefaultCallback(res));
- //var oServer = this.sendGetRequest(req, res, '/subject/getServer', _.extend(req.query, {nID: nID}));
- return oServer !== null ? oServer.sURL : null;
- };
- */
 
 module.exports.getServerRegionHost = function (nID_Server, fCompleted) {
   this.getServerRegion(nID_Server, function (oServer) {

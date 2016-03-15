@@ -224,15 +224,6 @@
             <column name="sDateAnswerExpire" type="STRING"/>
         </loadUpdateData>
 
-        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/HistoryEvent.csv" tableName="HistoryEvent" separator=";">
-            <column name="nID" type="NUMERIC"/>
-            <column name="nID_Subject" type="NUMERIC"/>
-            <column name="nID_HistoryEventType" type="NUMERIC"/>
-            <column name="sEventName_Custom" type="STRING"/>
-            <column name="sMessage" type="STRING"/>
-            <column name="sDate" type="STRING"/>
-        </loadUpdateData>
-
         <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/SubjectOrganJoin.csv" tableName="SubjectOrganJoin" separator=";">
             <column name="nID"              type="NUMERIC"/>
             <column name="nID_SubjectOrgan" type="NUMERIC"/>
@@ -266,6 +257,17 @@
             <column name="nID_Server" type="NUMERIC"/>
             <column name="nID_Proccess_Feedback" type="NUMERIC"/>
             <column name="nID_Proccess_Escalation" type="NUMERIC"/>
+        </loadUpdateData>
+
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/HistoryEvent.csv" tableName="HistoryEvent" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="nID_Subject" type="NUMERIC"/>
+            <column name="nID_HistoryEventType" type="NUMERIC"/>
+            <column name="sEventName_Custom" type="STRING"/>
+            <column name="sMessage" type="STRING"/>
+            <column name="sDate" type="STRING"/>
+            <column name="nID_HistoryEvent_Service" type="NUMERIC"/>
+            <column name="nID_Document" type="NUMERIC"/>
         </loadUpdateData>
 
         <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/SubjectMessageType.csv" tableName="SubjectMessageType" separator=";">
@@ -344,6 +346,21 @@
             <column name="sName_UA"   type="STRING"/>
         </loadUpdateData>
 
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/SubjectAccountType.csv" tableName="SubjectAccountType" separator=";">
+            <column name="nID"     type="NUMERIC"/>
+            <column name="sID"     type="STRING"/>
+            <column name="sNote"   type="STRING"/>
+        </loadUpdateData>
+
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/SubjectAccount.csv" tableName="SubjectAccount" separator=";">
+            <column name="nID"     type="NUMERIC"/>
+            <column name="sLogin"  type="STRING"/>
+            <column name="sNote"   type="STRING"/>
+            <column name="nID_SubjectAccountType"     type="NUMERIC"/>
+            <column name="nID_Server"     type="NUMERIC"/>
+            <column name="nID_Subject"    type="NUMERIC"/>
+        </loadUpdateData>
+        
     </changeSet>
   
 
