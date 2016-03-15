@@ -15,6 +15,7 @@ angular.module('app').factory('FormDataFactory', function (ParameterFactory, Dat
       params[property.id] = result[0].prototype.createFactory();
       params[property.id].value = property.value;
       params[property.id].required = property.required;
+      params[property.id].writible = property.writible;
     }
   };
 
