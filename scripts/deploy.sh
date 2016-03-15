@@ -18,7 +18,7 @@ TMP=TEMP=TMPDIR=/tmp/c_alpha && export TMPDIR TMP TEMP
 
 #Checking if all parameters are specified
 if [ $# -ne 6 ]; then
-	echo "Can't start. You must specify all arguments!"
+    echo "Can't start. You must specify all arguments!"
     echo "Here is an example: ./deploy.sh true true 2016.03.14-13.26.22 alpha wf-central test.igov.org.ua"
     echo "Parameter description: ./deploy.sh \$bIncludeUI \$bIncludeBack \$sData \$sVersion \$sProject \$sHost"
     exit 1
@@ -90,7 +90,7 @@ if [ "$bIncludeBack" == "true" ]; then
 fi
 
 #Connecting to remote host (Project deploy)
-#ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $sHost << EOF
+ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $sHost << EOF
 
 #Creating temporary directories
 TMP=TEMP=TMPDIR=/tmp/c_$sVersion && export TMPDIR TMP TEMP
@@ -150,7 +150,10 @@ if [ "$bIncludeBack" == "true" ]; then
 		sResponseCode=$(curl -o /dev/null --connect-timeout 5 --silent --head --write-out '%{http_code}\n' https://$sHost/)
 		if [ $sResponseCode -ne 200 ]; then
 			echo "Error. Unexpected server response code. Can't start previous configuration."
+			exit 1
 		fi
+		echo "Deployment failed. Previous configuration returned successfully."
+		exit 1
 	}
 	
 	#Создадим функцию для бекапа, т.к. для основного и вторичного инстанса действия идентичны
@@ -201,7 +204,6 @@ if [ "$bIncludeBack" == "true" ]; then
 		fallback secondary
 	else
 		echo "Everything is OK. Continuing deployment ..."
-		#Копируем конфиг с одним хостом для проксирования?
 		rm -f /sybase/nginx/conf/sites/upstream.conf
 		cp -p /sybase/.configs/nginx/only_secondary_upstream.conf /sybase/nginx/conf/sites/upstream.conf
 		sudo /sybase/nginx/sbin/nginx -s reload
@@ -225,7 +227,6 @@ if [ "$bIncludeBack" == "true" ]; then
 			fallback primary
 		else
 			echo "Everything is OK. Continuing deployment ..."
-			#Копируем конфиг с одним хостом для проксирования?
 			rm -f /sybase/nginx/conf/sites/upstream.conf
 			cp -p /sybase/.configs/nginx/only_primary_upstream.conf /sybase/nginx/conf/sites/upstream.conf
 			sudo /sybase/nginx/sbin/nginx -s reload
