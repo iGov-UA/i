@@ -1,6 +1,25 @@
-angular.module('journal').controller('JournalSearchController', function ($rootScope, $scope, $location, $window, $state, $stateParams, ServiceService, MessagesService, BankIDService, order, $http, ErrorsFactory, DatepickerFactory, ActivitiService) {
+angular.module('journal').controller('JournalSearchController', function (
+  $rootScope,
+  $scope,
+  $location,
+  $window,
+  $state,
+  $stateParams,
+  ServiceService,
+  MessagesService,
+  BankIDService,
+  BankIDLogin,
+  order,
+  $http,
+  ErrorsFactory,
+  JournalHelperService,
+  DatepickerFactory,
+  ActivitiService
+) {
 
-  $scope.aOrderMessage = [];
+  $scope.getOrderStatusString = JournalHelperService.getOrderStatusString;
+
+  $scope.aOrderMessages = [];
   $scope.sServerReturnOnAnswer = '';
 
   $scope.sID_Order = '';
@@ -26,34 +45,6 @@ angular.module('journal').controller('JournalSearchController', function ($rootS
   var bExistNotSpace = function (oValue) {
     return bExist(oValue) && oValue.trim() !== "";
   };
-
-
-  /*
-   $scope.htmldecode = function(encodedhtml)
-   {
-   var map = {
-   '&amp;'     :   '&',
-   '&gt;'      :   '>',
-   '&lt;'      :   '<',
-   '&quot;'    :   '"',
-   '&#39;'     :   "'"
-   };
-
-   var result = angular.copy(encodedhtml);
-   angular.forEach(map, function(value, key)
-   {
-   while(result.indexOf(key) > -1)
-   result = result.replace(key, value);
-   });
-
-   return result;
-   };
-
-   $scope.getHtml = function(html) {
-   return $sce.trustAsHtml(html);
-   };
-   */
-
 
   $scope.searchOrder = function (sID_Order_New, sToken_New) {//arguments.callee.toString()
     var oFuncNote = {sHead: "Пошук заявки", sFunc: "searchOrder"};
@@ -140,9 +131,10 @@ angular.module('journal').controller('JournalSearchController', function ($rootS
             oOrder = oResponse;
             if (ErrorsFactory.bSuccess(oFuncNote)) {
               $scope.oOrder = oOrder;
+              $scope.oOrder.sDate = new Date (oOrder.sDate.replace(' ', 'T'));
               $scope.bOrder = bExist(oOrder) && bExist(oOrder.nID);
               $scope.bOrderOwner = $scope.bOrder && bExist(oOrder.nID_Subject) && oOrder.nID_Subject === oOrder.nID_Subject_Auth;
-              $scope.bOrderQuestion = $scope.bOrder && $scope.aField.length > 0;
+              $scope.bOrderQuestion = $scope.bOrder && ($scope.aField.length > 0 || $scope.oOrder.nID_StatusType === 3);
               $scope.loadMessages($scope.sID_Order, $scope.sToken);
               return oOrder;
             }
@@ -170,7 +162,11 @@ angular.module('journal').controller('JournalSearchController', function ($rootS
         MessagesService.getServiceMessages(sID_Order, sToken).then(function (oResponse) {
           if (ErrorsFactory.bSuccessResponse(oResponse)) {
             if (bExist(oResponse.messages)) {
-              $scope.aOrderMessage = oResponse.messages;
+              $scope.aOrderMessages = oResponse.messages;
+              angular.forEach($scope.aOrderMessages, function (oOrderMessage) {
+                oOrderMessage.sDate = new Date(oOrderMessage.sDate.replace(' ', 'T'));
+              });
+              console.log($scope.aOrderMessages);
             } else {
               ErrorsFactory.addFail({
                 sBody: 'Отриман пустий під-об`єкт!',

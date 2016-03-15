@@ -26,29 +26,6 @@ angular.module('journal').config(function ($stateProvider, statesRepositoryProvi
           });
         }
       })
-      .state('index.journal.search', {
-        url: '/{searchKey:order|document}={searchValue:.*}?sToken',
-        parent: 'index.journal',
-        resolve: {
-          order: function($q, $stateParams, ServiceService) {
-            switch($stateParams.searchKey) {
-              case 'document'://This is not correct branch,
-              //should using specific api in the future.
-              //For example: ServiceService.searchDocument(...
-              case 'order':
-                return ServiceService.searchOrder($stateParams.searchValue, $stateParams.sToken);
-              default:
-                return $q.when(null);
-            };
-          }
-        },
-        views: {
-          'main@': {
-            templateUrl: 'app/journal/journal.content.html',
-            controller: 'JournalSearchController'
-          }
-        }
-      })
       .state('index.journal.content', {
         parent: 'index.journal',
         resolve: {
@@ -62,6 +39,45 @@ angular.module('journal').config(function ($stateProvider, statesRepositoryProvi
             controller: 'JournalContentController'
           }
         }
+      })
+      .state('index.search', {
+        url: 'search?sID_Order&nID&sToken',
+        //parent: 'index.journal',
+        resolve: {
+          order: function($q, $stateParams, ServiceService) {
+            if ($stateParams.nID) {
+              //This is not correct branch,
+              //should using specific api in the future.
+              //For example: ServiceService.searchDocument(...
+              return ServiceService.searchOrder($stateParams.nID, $stateParams.sToken);
+            }
+            else if ($stateParams.sID_Order) {
+              return ServiceService.searchOrder($stateParams.sID_Order, $stateParams.sToken);
+            }
+            else {
+              return $q.when(null);
+            }
+          },
+          BankIDLogin: function ($q, $state, $location, $stateParams, BankIDService) {
+             return BankIDService.isLoggedIn()
+               .catch(function () {
+                 return false;
+               });
+          }
+        },
+        views: {
+          'main@': {
+            templateUrl: 'app/journal/journal.search.html',
+            controller: 'JournalSearchController'
+          }
+        }/*,
+        onExit: function ($state, $q, BankIDLogin) {
+          $q.when($state.transition).then(function (state) {
+            if(BankIDLogin && state.name === 'index.journal'){
+              $state.go('.content');
+            }
+          });
+        }*/
       });
 //  }
 });
