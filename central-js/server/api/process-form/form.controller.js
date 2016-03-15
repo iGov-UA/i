@@ -84,9 +84,9 @@ module.exports.submit = function (req, res) {
     var nID_Subject = req.session.subject.nID;
     var properties = [];
     for (var id in options.formData.params) {
-      var oParam = options.formData.params[id];//fields
+//      var oParam = options.formData.params[id];//fields
       //if(oParam.type!=="markerds"){
-      if(oParam.writable){
+//      if(oParam.writable){
         var value = options.formData.params[id];
         if (id === 'nID_Subject') {
           value = nID_Subject;
@@ -103,7 +103,7 @@ module.exports.submit = function (req, res) {
           value: value
         });
       }
-    }
+//    }
 
     return request.post({
       url: sURL || null,//options.formData.url
