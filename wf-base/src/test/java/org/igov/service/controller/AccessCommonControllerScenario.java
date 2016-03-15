@@ -370,5 +370,53 @@ public class AccessCommonControllerScenario {
     private void assertEquals(Set<String> actual, String... expected) {
         Assert.assertEquals(new HashSet<>(Arrays.asList(expected)), actual);
     }
+    
+    @Ignore
+    @Test
+    public void testChangePassword_ShouldSuccess() throws Exception
+    {
+        String sUrl = "/action/task/changePassword";
+        String sLoginOwner = "kermit";
+        String sPasswordOld = "kermit";
+        String sPasswordNew = "kermit1";
+        
+        String jsonResponse = mockMvc.perform(post(sUrl).
+                param("sLoginOwner", sLoginOwner).
+                param("sPasswordOld", sPasswordOld).
+                param("sPasswordNew", sPasswordNew)).
+                andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+    }
+    @Ignore
+    @Test
+    public void testChangePassword_WrongPassword() throws Exception
+    {
+        String sUrl = "/action/task/changePassword";
+        String sLoginOwner = "kermit";
+        String sPasswordOld = "kermit45";
+        String sPasswordNew = "kermit";
+        
+        String jsonResponse = mockMvc.perform(post(sUrl).
+                param("sLoginOwner", sLoginOwner).
+                param("sPasswordOld", sPasswordOld).
+                param("sPasswordNew", sPasswordNew)).
+                andExpect(status().isForbidden()).andReturn().getResponse().getContentAsString();
+
+    }
+    @Ignore
+    @Test
+    public void testChangePassword_WrongLogin() throws Exception
+    {
+        String sUrl = "/action/task/changePassword";
+        String sLoginOwner = "kermit45";
+        String sPasswordOld = "kermit1";
+        String sPasswordNew = "kermit";
+        
+        String jsonResponse = mockMvc.perform(post(sUrl).
+                param("sLoginOwner", sLoginOwner).
+                param("sPasswordOld", sPasswordOld).
+                param("sPasswordNew", sPasswordNew)).
+                andExpect(status().isForbidden()).andReturn().getResponse().getContentAsString();
+
+    }
 
 }
