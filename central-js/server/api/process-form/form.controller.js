@@ -84,9 +84,10 @@ module.exports.submit = function (req, res) {
     var nID_Subject = req.session.subject.nID;
     var properties = [];
     for (var id in options.formData.params) {
-      var oParam = options.formData.fields[id];
+      var oParam = options.formData.params[id];//fields
       //if(oParam.type!=="markerds"){
-      if(oParam.writable){
+      var bWritible = !(oParam.writable === false)
+      if(bWritible){//oParam.writable
         var value = options.formData.params[id];
         if (id === 'nID_Subject') {
           value = nID_Subject;
