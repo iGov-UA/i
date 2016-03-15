@@ -155,7 +155,7 @@
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 &lt;p&gt;Ви подавали звернення щодо "Про приватизацію житлового приміщення".&lt;/p&gt;
-&lt;p&gt;В розгляді звернення відмовлено. &lt;/p&gt;
+&lt;p&gt;Звернення було розглянуто. В прийнятті рішення відмовлено. &lt;/p&gt;
 &lt;p&gt;${comment}&lt;/p&gt;
 [pattern/mail/_common_signature_start.html]
 [pattern/mail/_common_signature_end.html]
@@ -177,10 +177,10 @@
         <activiti:formProperty id="email" name="Електронна пошта для зворотнього звя'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="comment" name="Якщо рішенення прийнято, вкажіть причину у цьому полі" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="status2" name="Відправити відповідь громадянину (рішення прийнято / рішення не прийнято)" type="enum" required="true">
+        <activiti:formProperty id="status2" name="Відправити відповідь громадянину (рішення прийнято / рішення не прийнято)" type="textArea" required="true">
           <activiti:value id="attr3_rish_ok" name="Рішенення прийнято. Відправити скан рішення заявнику"></activiti:value>
-          <activiti:value id="attr4_rish_bad" name="Рішенення прийнято. Відправити скан рішення заявнику"></activiti:value>
+          <activiti:value id="attr4_rish_bad" name="Рішенення не прийнято. Відправити скан рішення заявнику"></activiti:value>
+        <activiti:formProperty id="comment" name="Якщо рішенення не прийнято, вкажіть причину у цьому полі" type="textArea"></activiti:formProperty>
         </activiti:formProperty>
         <activiti:formProperty id="answer" name="Відповідь" type="file" required="true"></activiti:formProperty>
       </extensionElements>

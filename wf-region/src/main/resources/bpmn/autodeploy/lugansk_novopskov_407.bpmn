@@ -3,11 +3,11 @@
   <process id="lugansk_novopskov_407" name="Видача ордера на службове жиле приміщення." isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По-батькові" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdAdressFactual" name="Адреса;(місце реєстрації)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По-батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAdressFactual" name="Адреса (місце реєстрації)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Вкажіть сьогоднішню дату" type="date" required="true"></activiti:formProperty>
@@ -17,8 +17,8 @@
         <activiti:formProperty id="file2" name="Заява на видачу ордера завірену в КП «Новопсковське житло»" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file3" name="Акт обстеження житлових умов" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file4" name="Довідка про склад сім'ї" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file5" name="Довідка з місця роботи про працевлаштування;для працевлаштованих" type="file"></activiti:formProperty>
-        <activiti:formProperty id="file5_1" name="Довідки з  ЖЕКу для не працевлаштованих;на всіх повнолітніх членів сім’ї" type="file"></activiti:formProperty>
+        <activiti:formProperty id="file5" name="Довідка з місця роботи про працевлаштування;для працевлаштованих" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file5_1" name="Довідки з  ЖЕКу для не працевлаштованих (на всіх повнолітніх членів сім’ї)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="merried" name="Оберіть, будь ласка, свій сімейний стан" type="enum" required="true">
           <activiti:value id="Enum1" name="Одруженний(-а)"></activiti:value>
           <activiti:value id="Enum2" name="Неодруженний(-а)"></activiti:value>
@@ -26,8 +26,8 @@
         </activiti:formProperty>
         <activiti:formProperty id="file6" name="Копія свідоцтва про одруження" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file9" name="Копія свідоцтва про розлучення" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="Сімейний стан1" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;file6&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;merried&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'Enum1'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers2" name="Сімейний стан2" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;file9&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;merried&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'Enum3'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="Сімейний стан1" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;file6&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;merried&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'Enum1'&quot;}}}" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="Сімейний стан2" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;file9&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;merried&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'Enum3'&quot;}}}" required="true"></activiti:formProperty>
         <activiti:formProperty id="child" name="Чи маєте Ви неповнолітніх дітей?" type="enum" required="true">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="no" name="Ні"></activiti:value>
@@ -275,7 +275,7 @@
         <omgdi:waypoint x="700.0" y="229.0"></omgdi:waypoint>
         <omgdi:waypoint x="700.0" y="280.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="710.0" y="259.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="72.0" x="710.0" y="259.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
