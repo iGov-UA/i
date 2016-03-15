@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
-
+import java.util.stream.Collectors;
 
 @Controller
 @Api(tags = { "ActionEventController -- События по действиям и статистика" })
@@ -454,7 +454,7 @@ public class ActionEventController {
 			+ "Результат для колонки sTextFeedback возвращается из сущности SubjectMessage, у которой nID_SubjectMessageType = 2\n"
 			+ "Результат для колонки sPhone возвращается из стартовой формы процесса из поля phone соответствующего регионального сервера\n"
 			+ "Примеры:\n"
-            + "https://test.igov.org.ua/wf/service/action/event/getServiceHistoryReport?sDateAt=2016-02-09 00:00:00&sDateTo=2016-02-11 00:00:00\n\n"
+            + "https://test.igov.org.ua/wf/service/action/event/getServiceHistoryReport?sDateAt=2016-02-09 00:00:00&sDateTo=2016-02-11 00:00:00&sanID_Service_Exclude=1,5,24,56\n\n"
             + "Результат\n"
             + "\n```csv\n"
             + "sID_Order,nID_Server,nID_Service,sID_Place,nID_Subject,nRate,sTextFeedback,sUserTaskName,sHead,sBody,nTimeMinutes,sPhone\n"
@@ -464,9 +464,13 @@ public class ActionEventController {
     public void getServiceHistoryReport(
             @ApiParam(value = "строка-Дата начала выборки данных в формате yyyy-MM-dd HH:mm:ss", required = true) @RequestParam(value = "sDateAt") String sDateAt,
             @ApiParam(value = "строка-Дата окончания выборки данных в формате yyyy-MM-dd HH:mm:ss", required = true) @RequestParam(value = "sDateTo") String sDateTo,
+            @ApiParam(value = "строка-массив(перечисление) ИД услуг, которые нужно исключить", required = false) @RequestParam(value = "sanID_Service_Exclude") String[] sanID_Service_Exclude,
             HttpServletResponse httpResponse){
     	DateTime dateAt = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss").parseDateTime(sDateAt);
     	DateTime dateTo = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss").parseDateTime(sDateTo);
+
+        List<String> asID_Service_Exclude = Arrays.asList(sanID_Service_Exclude);
+        List<Long> anID_Service_Exclude = asID_Service_Exclude.stream().map(Long::valueOf).collect(Collectors.toList());
     	
     	String[] headersMainField = { "sID_Order", "nID_Server",
                 "nID_Service", "sID_Place", "nID_Subject", "nRate", "sTextFeedback", "sUserTaskName", "sHead", 
@@ -484,9 +488,9 @@ public class ActionEventController {
                     CSVWriter.NO_QUOTE_CHARACTER);
 	        csvWriter.writeNext(headers.toArray(new String[headers.size()]));
 	        
-	    	List<HistoryEvent_Service> historyEvents = historyEventServiceDao.getHistoryEventPeriod(dateAt, dateTo);
+	    	List<HistoryEvent_Service> historyEvents = historyEventServiceDao.getHistoryEventPeriod(dateAt, dateTo, anID_Service_Exclude);
 	    	
-	    	LOG.info("Found {} history events for the period from {} to {}", historyEvents.size(), sDateAt, sDateTo);
+	    	LOG.info("Found {} history events for the period from {} to {}, except this ID_Services {}", historyEvents.size(), sDateAt, sDateTo, sanID_Service_Exclude);
 	    	
 	    	if (historyEvents.size() > 0){
 	            List<Long> historyEventServicesIDs = new LinkedList<Long>(); 
