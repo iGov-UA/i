@@ -7,28 +7,28 @@
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdAdressFactual" name="Адреса;(місце реєстрації)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAdressFactual" name="Адреса (місце реєстрації)" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Укажіть сьогоднішню дату" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="rNumber" name="номер району" type="invisible" default="635"></activiti:formProperty>
-        <activiti:formProperty id="sTypeCustodypf" name="прошу видати у принтформі" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="rNumber" name="номер району" type="invisible" default="279"></activiti:formProperty>
         <activiti:formProperty id="topic" name="Необхідно отримати згоду на " type="enum" required="true">
           <activiti:value id="Enum1" name="будівництво об'єкта сервісу"></activiti:value>
           <activiti:value id="Enum2" name="будівництво об'єкта автозаправної станції"></activiti:value>
           <activiti:value id="Enum3" name="будівництво об'єкта прокладення інженерних мереж"></activiti:value>
           <activiti:value id="Enum4" name="виконання інших робіт у межах смуги відведення автомобільних доріг"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="other" name="Дозвіл необхідно на: (введіть на виконання яких робіт необхідно дозвіл)" type="textArea" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Інше" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;other&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;topic&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'Enum4'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="Info11" name="Увага" type="label" default="Вам НЕОБобхідно вибрати день візиту не раніше, ніж через 30 календарних днів від дня подачі заяви"></activiti:formProperty>
+        <activiti:formProperty id="Info11" name="Увага" type="label" default="Вам необхідно вибрати день візиту не раніше, ніж через 30 календарних днів від дня подачі заяви"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання послуги?" type="queueData" required="true"></activiti:formProperty>
         <activiti:formProperty id="Adress_obj" name="Місце знаходження об'єкта" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="squer_obj" name="Площа об'єкта; м.кв" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="other" name="Дозвіл необхідно на; введіть на виконання яких робіт необхідно дозвіл" type="textArea" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="squer_obj" name="Площа об'єкта, м.кв" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги" type="invisible" default="63"></activiti:formProperty>
+        <activiti:formProperty id="sTypeCustodypf" name="прошу видати у принтформі" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="summ" name="Сумма для сплати" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="file1" name="Погодження з власником вулично-дорожньох мережі" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file2" name="Схема &quot;Організація дорожнього руху&quot; робочого проекту на розміщення об'єкту" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file2" name="Схема &quot;Організація дорожнього руху&quot; (робочого проекту на розміщення об'єкту)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file3" name="Топографічний знімок місцевості (М 1:500) з прив'язкою місця розташування об'єкту" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file4" name="Паспорт з прив'язкою об'єкту" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file5" name="Акт відведення земельної ділянки" type="file" required="true"></activiti:formProperty>
@@ -74,13 +74,15 @@
           <activiti:expression>[pattern/mail/_common_header.html]
 			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 			&lt;p&gt;
-			Ваше звернення щодо отримання погодження на будівництво споруд, об’єктів дорожнього сервісу, автозаправних станцій, прокладення інженерних мереж та виконання інших робіт у межах смуги відведення автомобільних доріг успішно зареєстровано.&lt;br /&gt;
-			Ви отримаєте відповідь протягом тридцяти робочих днів.
+			Ваш запит щодо отримання ПОГОДЖЕННЯ НА БУДІВНИЦТВО СПОРУД, ОБ'ЄКТІВ ДОРОЖНЬОГО СЕРВІСУ, АВТОЗАПРАВНИХ СТАНЦІЙ, ПРОКЛАДЕННЯ ІНЖЕНЕРНИХ МЕРЕЖ ТА ВИКОНАННЯ ІНШИХ РОБІТ У МЕЖАХ СМУГИ ВІДВЕДЕННЯ АВТОМОБІЛЬНИХ ДОРІГ був успішно зареєстрований у нашій системі.&lt;br /&gt;&lt;br /&gt;
+			Протягом тридцяти календарних днів на Вам email надійде відповідь (або підтвердження та запрошенням прийти до пункту видачі у обраний час, або відмову з поясненням причин).&lt;br /&gt;
 			&lt;/p&gt;
-			&lt;p&gt;Контакти відділу, який буде займатися обробкою Вашого звернення:
+			&lt;p&gt;Контакти відділу, який буде займатися обробкою Вашого звернення:&lt;br /&gt;
 	[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:3]&lt;br /&gt;
+	[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]&lt;br /&gt;&lt;br /&gt;
+	Режим роботи:
 	[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:4]&lt;br /&gt;
-	[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]&lt;/p&gt;
+	[cancelTask]&lt;/p&gt;
 [pattern/mail/_common_signature_start.html]
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
@@ -88,35 +90,36 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow4" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
-    <userTask id="usertask1" name="Перевірка даних" activiti:candidateGroups="novopskov_MVK">
+    <userTask id="usertask1" name="Перевірка даних" activiti:candidateGroups="cnap_mvk_lug_NovopskovskT">
       <extensionElements>
-        <activiti:formProperty id="Info" name="На цьому етапі:" type="label" default="Ви перевіряєте дані надані громадянином. "></activiti:formProperty>
+        <activiti:formProperty id="Info" name="На цьому етапі:" type="label" default="Ви перевіряєте дані надані громадянином."></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Призвіще" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По-батькові" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdAdressFactual" name="Адреса;(місце реєстрації)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані заявника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAdressFactual" name="Адреса (місце реєстрації заявника)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна пошта заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата заповнення заяви" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="rNumber" name="номер району" type="invisible" default="635" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="topic" name="Необхідно отримати згоду на" type="enum" writable="false">
+        <activiti:formProperty id="rNumber" name="номер району" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="visitDay" name="День та час зустрічі - " type="queueData" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="squer_obj" name="Площа об'єкта, м.кв." type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Adress_obj" name="Місце знаходження об'єкта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="topic" name="Необхідно отримати згоду на " type="enum" writable="false">
           <activiti:value id="Enum1" name="будівництво об'єкта сервісу"></activiti:value>
           <activiti:value id="Enum2" name="будівництво об'єкта автозаправної станції"></activiti:value>
           <activiti:value id="Enum3" name="будівництво об'єкта прокладення інженерних мереж"></activiti:value>
-          <activiti:value id="Enum4" name="виконання інших робіт у межах смуги відведення  автомобільних доріг"></activiti:value>
+          <activiti:value id="Enum4" name="виконання інших робіт у межах смуги відведення автомобільних доріг, а саме:"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="visitDay" name="День та час зустрічі - " type="queueData" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="squer_obj" name="Площа об'єкта; м.кв." type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Adress_obj" name="Місце знаходження об'єкта" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="other" name="Отримання дозволу на" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="other" name="Виконання інших робіт у межах смуги відведення автомобільних доріг (за наявності)" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="result" name="Рішення держслужбовця" type="enum" required="true">
           <activiti:value id="da" name="Призначити зустріч у відділенні"></activiti:value>
           <activiti:value id="net" name="Відмовити у наданні дозволу"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="summ" name="Сумма для сплати" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="fileresult" name="Додайте,будь ласка, файл з рішенням" type="file"></activiti:formProperty>
         <activiti:formProperty id="sTypeCustodypf" name="прошу видати у принтформі" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="decisionComment" name="Коментар до рішення; Наприклад, пояснення чому громадянину було відмовлено в наданні згоди &lt;br /&gt; АБО &lt;br /&gt; Додаткові деталі для закінчення процессу оформлення паспорта" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="decisionComment" name="Коментар до рішення(Наприклад, пояснення)" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/architecture/zayava_dozvil_458.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -143,37 +146,30 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
                                     &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-                                        Спеціалісти [pattern_dictonary:dnepr_reg_cna.csvp:value{[viddil]}:3] успішно опрацювли Вашу заяву.&lt;br&gt;
-&lt;p&gt;Вам необхідно оплатити послугу. Реквізити для оплати: КОД ОКПО:08682772 МФО 804013&lt;/br&gt;
+                                                                       
+&lt;p&gt;Вашу заяву успішно опрацювли. Є підстави для надання Вам погодження на enum{[topic]} ${other} &lt;/br&gt;
+Вам необхідно оплатити послугу.&lt;br /&gt; Реквізити для оплати: КОД ОКПО: 08682772 МФО 804013&lt;/br&gt;
 Банк ГУ ДКУ  в Луганській обл., м. Луганськ,&lt;/br&gt;
 Р/с 35220002000564&lt;/br&gt;
-Розмір плати: ${summ}&lt;/br&gt;&lt;/p&gt;
-										&lt;ul&gt;
-										&lt;li&gt;Прийти до [pattern_dictonary:dnepr_reg_cnap.csv:value{[viddil]}:3] за адресою: [pattern_dictonary:dnepr_reg_cnap.csv:value{[viddil]}:4] з необхідними документами та документом, що засвідчує оплату послуги. [pattern_dictonary:dnepr_reg_cnap.csv:value{[viddil]}:9].&lt;/li&gt;
-										&lt;/ul&gt;
-									&lt;/p&gt;
+Розмір оплати: ${summ} &lt;/br&gt;
+Інформація про держорган, який займався обробкою Вашого запиту (куди необхідно з'явитися у призначений час, щоб забрати оригінал погодження):&lt;br&gt; [pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:3]&lt;br&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]&lt;br&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:4]&lt;/br&gt;
+ПРИ СОБІ МАТИ: паспорт та документ про сплату послуги.
+&lt;/p&gt;
+									
 									&lt;p&gt;
 										&lt;b&gt;Деталі зустрічі:&lt;/b&gt;&lt;br&gt;
 										День та час - ${date_of_visit}
 									&lt;/p&gt;
-									&lt;p&gt;	
-										&lt;b&gt;Зверніть увагу:&lt;/b&gt; 
-										&lt;ul&gt;
-										&lt;li&gt;&lt;/li&gt;
-										&lt;/ul&gt;
-									&lt;/p&gt;
+									
 									&lt;p&gt;
 										Коментар Державного службовця:&lt;br&gt;
 										&lt;b&gt;&lt;i&gt;${decisionComment}&lt;/i&gt;&lt;/b&gt;
 									&lt;/p&gt;
-									&lt;p&gt;
-										При вниникненні питань Ви можете звернутися до чергового:&lt;br&gt;
-										тел. [pattern_dictonary:dnepr_reg_cnap.csv:value{[viddil]}:5]
-									&lt;/p&gt;
+									
                                     &lt;p&gt;[cancelTask]&lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
-									[pattern_dictonary:dnepr_reg_cnap.csv:value{[viddil]}:2],&lt;br&gt;
 									[pattern/mail/_common_signature_end.html]   
 									[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -196,9 +192,9 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 		    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-			&lt;p&gt;За даними держоргану Вам ВІДМОВЛЕНО у наданні погодження на будівництво enum{[topic]} &lt;/p&gt;
+			&lt;p&gt;За даними держоргану Вам ВІДМОВЛЕНО у наданні погодження на enum{[topic]} ${other}&lt;br&gt;&lt;/p&gt;
 &lt;p&gt;${decisionComment}&lt;/p&gt;
-			&lt;p&gt;За необхідності Ви можете звернутися за адресою:
+			&lt;p&gt;Інформація про держорган, який надає послугу:
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:3]&lt;br&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:4]&lt;br&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]
@@ -217,7 +213,7 @@
     <sequenceFlow id="flow9" sourceRef="servicetask5" targetRef="servicetask6"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow10" sourceRef="servicetask6" targetRef="endevent2"></sequenceFlow>
-    <userTask id="usertask2" name="Візит громадянина" activiti:candidateGroups="novopskov_MVK">
+    <userTask id="usertask2" name="Візит громадянина" activiti:candidateGroups="cnap_mvk_lug_NovopskovskT">
       <extensionElements>
         <activiti:formProperty id="Info1" name="На цьому етапі:" type="label" default="Громадянин приносить оригінали документів та документ про оплату послуги"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="День та час зустрічі - " type="queueData"></activiti:formProperty>
@@ -226,24 +222,26 @@
         <activiti:formProperty id="bankIdlastName" name="Призвіще" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По-батькові" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdAdressFactual" name="Адреса;(місце реєстрації)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="rNumber" name="номер району" type="invisible" default="635" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="topic" name="Згода на" type="enum" writable="false">
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані заявника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAdressFactual" name="Адреса (місце реєстрації заявника)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна пошта заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="rNumber" name="номер району" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="squer_obj" name="Площа об'єкта, м.кв." type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Adress_obj" name="Місце знаходження об'єкта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="topic" name="Необхідно отримати згоду на " type="enum" writable="false">
           <activiti:value id="Enum1" name="будівництво об'єкта сервісу"></activiti:value>
           <activiti:value id="Enum2" name="будівництво об'єкта автозаправної станції"></activiti:value>
           <activiti:value id="Enum3" name="будівництво об'єкта прокладення інженерних мереж"></activiti:value>
-          <activiti:value id="Enum4" name="виконання інших робіт у межах смуги відведення  автомобільних доріг"></activiti:value>
+          <activiti:value id="Enum4" name="виконання інших робіт у межах смуги відведення автомобільних доріг, а саме:"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="squer_obj" name="Площа об'єкта; м.кв." type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Adress_obj" name="Місце знаходження об'єкта" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="other" name="Отримання дозволу на" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="other" name="Виконання інших робіт у межах смуги відведення автомобільних доріг (за наявності)" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="result1" name="Результат візиту" type="enum">
-          <activiti:value id="ok" name="Громадянину видано згоду"></activiti:value>
-          <activiti:value id="no" name="Громадянину відмовлено у видачі згоди"></activiti:value>
+          <activiti:value id="ok" name="Громадянин з'явився на призначену дату"></activiti:value>
+          <activiti:value id="no" name="Громадянин скасував/не з'явився на призначений візит"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="decisionComment1" name="Коментар до рішення(Пояснення)" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="summ" name="Сумма сплати" type="invisible"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow11" sourceRef="servicetask4" targetRef="usertask2"></sequenceFlow>
@@ -264,14 +262,14 @@
           <activiti:expression>[pattern/mail/_common_header.html]
 								  &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
-                              		Ви отримали послугу "Погодження на будівництво споруд, об’єктів дорожнього сервісу, автозаправних станцій, прокладення інженерних мереж та виконання інших робіт у межах смуги відведення автомобільних доріг ".
+                              		Ви отримали послугу "Погодження на будівництво споруд, об’єктів дорожнього сервісу, автозаправних станцій, прокладення інженерних мереж та виконання інших робіт у межах смуги відведення автомобільних доріг".
                               		&lt;/p&gt;
                               		&lt;p&gt;
                               		Будь ласка, оцініть якість надання послуги за допомогою форми нижче.&lt;br&gt;
                               		Дякуємо.
 									&lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
-									[pattern_dictonary:dnepr_dms.csv:value{[viddil]}:2],&lt;br /&gt;
+									[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2],&lt;br /&gt;
 									[pattern/mail/_common_signature_end.html]   
 									[pattern/mail/_common_feedback.html]
 									[pattern/mail/_common_footer.html]</activiti:expression>
@@ -296,15 +294,19 @@
           <activiti:expression>[pattern/mail/_common_header.html]
                                     &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
-                                        На жаль Ви не з'явились до [pattern_dictonary:dnepr_reg)cnap.csv:value{[viddil]}:3] у призначений день і час.&lt;br&gt;
+                                        На жаль Ви не з'явились до центру надання адміністративних послуг у призначений день і час.&lt;br&gt;
                                         При необхідності Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
+										Коментар Державного службовця:&lt;br&gt;
+										&lt;b&gt;&lt;i&gt;${decisionComment1}&lt;/i&gt;&lt;/b&gt;
+									&lt;/p&gt;
+									&lt;p&gt;
 										При вниникненні питань Ви можете звернутися до чергового:&lt;br&gt;
-										тел. [pattern_dictonary:dnepr_reg_cnap.csv:value{[viddil]}:5]
                                     &lt;/p&gt;
+                                    [pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]
                                     [pattern/mail/_common_signature_start.html]
-									[pattern_dictonary:dnepr_reg_cnap.csv:value{[viddil]}:2],&lt;/p&gt;
+									[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2],&lt;/p&gt;
 									[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
@@ -320,28 +322,25 @@
       <script>
 var ARsumm = ["309 грн(у т.ч. 134 грн за розроблення технічних умов та 175 грн за перевірку проектної документації)","330 грн (у т.ч. 155 грн за розроблення технічних умов та 175 грн за перевірку проектної документації)", "318 грн", "318 грн"]
 var ARen = ["будівництво об'єкта сервісу","будівництво об'єкту автозаправної станції","будівництво об'єкта прокладення інженерних мереж","виконання інших робіт у межах смуги відведення автомобільних доріг"]
-var per4 = 'sTypeCustodypf'
-var x = " "
 var y = " "
-for (var i = 0; i&lt;=3; i++){
-var x = ARen[i]
-if (execution.getVariable('topic') == x)
-{var y = ARsumm[i]
-break}}
+var per4 = 'sTypeCustodypf'
 if (execution.getVariable('topic') == 'Enum1'){
 per4 = "Прошу надати дозвіл на будівництво об'єкта сервісу,"
+y = "309 грн (у т.ч. 134 грн за розроблення технічних умов та 175 грн за перевірку проектної документації)"
 }
 if (execution.getVariable('topic') == 'Enum2'){
 per4 = "Прошу надати дозвіл на будівництво об'єкту автозаправної станції,"
+y = "330 грн (у т.ч. 155 грн за розроблення технічних умов та 175 грн за перевірку проектної документації)"
 }
 if (execution.getVariable('topic') == 'Enum3'){
 per4 = "Прошу надати дозвіл на будівництво об'єкта прокладення інженерних мереж,"
+y = "318 грн"
 }
 if (execution.getVariable('topic') == 'Enum4'){
-per4 = "виконання інших робіт у межах смуги відведення автомобільних доріг, а саме:"
+per4 = "Прошу надати дозвіл на виконання інших робіт у межах смуги відведення автомобільних доріг, а саме:"
+y = "318 грн"
 }
-
-execution.setVariable('summ',y)
+execution.setVariable('summ', y)
 execution.setVariable('sTypeCustodypf', per4)
 	  </script>
     </scriptTask>

@@ -65,17 +65,9 @@
   <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 sidebar"  igov-when-scrolled="whenScrolled()" id="tasks-list-holder">
     <div class="tasks">
       <div ng-if="sSelectedTask=='tickets'" class="tasks-tickets-list-header">
-
-        <div class="tickets-assign">
-          <input type="checkbox" ng-model="ticketsFilter.bEmployeeUnassigned" id="ticketsFilter_bEmployeeUnassigned" ng-change="applyTicketsFilter()"
-          />
-          <label for="ticketsFilter_bEmployeeUnassigned">Тільки не взяті в обробку</label>
-        </div>
-        <br>
-        <a href="#" class="tickets-assign" ng-click="isFillterFormOpen = !isFillterFormOpen">Дата</a>
-        <div class="tickets-date" ng-show="isFillterFormOpen">
+        <div class="tickets-date">
           <a href ng-repeat="mode in ticketsFilter.dateModeList" ng-click="setTicketsDateMode(mode.key)" ng-class="{'selected':ticketsFilter.dateMode==mode.key}"
-          class="tickets-date-mode">{{mode.title}}</a>
+             class="tickets-date-mode">{{mode.title}}</a>
 
           <input datetimepicker
                  class="form-control date-picker"
@@ -86,6 +78,13 @@
                  ng-if="ticketsFilter.dateMode=='date'"
                  ng-model="ticketsFilter.sDate" />
         </div>
+
+        <div class="tickets-assign">
+          <input type="checkbox" ng-model="ticketsFilter.bEmployeeUnassigned" id="ticketsFilter_bEmployeeUnassigned" ng-change="applyTicketsFilter()"
+          />
+          <label for="ticketsFilter_bEmployeeUnassigned">Тільки не взяті в обробку</label>
+        </div>
+
         <div class="clearfix"></div>
       </div>
 

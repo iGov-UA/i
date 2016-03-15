@@ -31,11 +31,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = IntegrationTestsApplicationConfiguration.class)
 @ActiveProfiles("default")
-public class AccessServiceLoginRightFilterTest {
+public class AccessServiceLoginRoleFilterTest {
 
-    // specified in AccessServiceLoginRight.csv
-    private static final String TEST_LOGIN = "TestLogin";
-    private static final String TEST_SERVICE = "TestService";
+    // specified in AccessServiceLoginRole.csv
+    private static final String TEST_LOGIN = "TestLogin4";
+    private static final String TEST_SERVICE = "testService10";
+    private static final String PATTERN_MATCHED_SERVICE1 = "zeroService10";
+    private static final String PATTERN_MATCHED_SERVICE2 = "testService42";
+    private static final String WRONG_PATTERN_SERVICE1 = "zeroService9";
+    private static final String WRONG_PATTERN_SERVICE2 = "test42";
 
     private static final String WRONG_LOGIN = "WrongUser";
 
@@ -43,7 +47,7 @@ public class AccessServiceLoginRightFilterTest {
     private WebApplicationContext webApplicationContext;
 
     @Autowired
-    private AccessServiceLoginRightFilter accessServiceLoginRightFilter;
+    private AccessServiceLoginRoleFilter accessServiceLoginRoleFilter;
 
     @Value("${general.auth.login}")
     private String generalAuthLogin;
@@ -56,7 +60,7 @@ public class AccessServiceLoginRightFilterTest {
     @Before
     public void setUp() {
         mockMvc = MockMvcBuilders
-                .webAppContextSetup(webApplicationContext).addFilter(accessServiceLoginRightFilter)
+                .webAppContextSetup(webApplicationContext).addFilter(accessServiceLoginRoleFilter)
                 .build();
     }
 
@@ -66,17 +70,16 @@ public class AccessServiceLoginRightFilterTest {
         SecurityContextHolder.getContext().setAuthentication(
                 new TestingAuthenticationToken(generalAuthLogin, generalAuthPassword));
 
-        verifySuccessLogin();
+        verifySuccessLogin(TEST_SERVICE);
     }
 
-    @Ignore
     @Test
     public void testAccessServiceLoginRightFilter_wrongUser() throws Exception {
 
         SecurityContextHolder.getContext().setAuthentication(
                 new TestingAuthenticationToken(WRONG_LOGIN, ""));
 
-        verifyForbidden();
+        verifyForbidden(TEST_SERVICE);
     }
 
     @Test
@@ -85,15 +88,19 @@ public class AccessServiceLoginRightFilterTest {
         SecurityContextHolder.getContext().setAuthentication(
                 new TestingAuthenticationToken(TEST_LOGIN, ""));
 
-        verifySuccessLogin();
+        verifySuccessLogin(TEST_SERVICE);
+        verifySuccessLogin(PATTERN_MATCHED_SERVICE1);
+        verifySuccessLogin(PATTERN_MATCHED_SERVICE2);
+        verifyForbidden(WRONG_PATTERN_SERVICE1);
+        verifyForbidden(WRONG_PATTERN_SERVICE2);
     }
 
-    private void verifySuccessLogin() throws Exception {
-        mockMvc.perform(get(TEST_SERVICE)).andExpect(status().isNotFound()); // no such service, it's Ok.
+    private void verifySuccessLogin(String testServiceName) throws Exception {
+        mockMvc.perform(get(testServiceName)).andExpect(status().isNotFound()); // no such service, it's Ok.
     }
 
-    private void verifyForbidden() throws Exception {
-        mockMvc.perform(get(TEST_SERVICE)).andExpect(status().isForbidden());
+    private void verifyForbidden(String testServiceName) throws Exception {
+        mockMvc.perform(get(testServiceName)).andExpect(status().isForbidden());
     }
 
 }

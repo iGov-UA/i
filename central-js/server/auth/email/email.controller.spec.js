@@ -1,7 +1,6 @@
 'use strict';
 
-require('./../../api/organs/organ.service.nock');
-require('./../../api/service/syncSubject.service.nock');
+require('./../../api/subject/subject.service.nock');
 require('./email.service.nock');
 
 var should = require('should')

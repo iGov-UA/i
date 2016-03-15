@@ -4,12 +4,10 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.mail.EmailException;
 import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
-import org.igov.io.mail.Mail;
+import org.igov.model.access.*;
+import org.igov.model.access.vo.*;
 import org.igov.service.business.access.handler.AccessServiceLoginRightHandler;
-import org.igov.service.controller.AccessCommonController;
 import org.igov.service.exception.HandlerBeanValidationException;
-import org.igov.model.access.AccessServiceLoginRight;
-import org.igov.model.access.AccessServiceLoginRightDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -20,9 +18,9 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
+
 import org.igov.io.mail.NotificationPatterns;
 
 /**
@@ -38,7 +36,20 @@ public class AccessService implements ApplicationContextAware {
     private ApplicationContext applicationContext;
 
     @Autowired
-    private AccessServiceLoginRightDao accessServiceLoginRightDao;
+    private AccessServiceLoginRoleDao accessServiceLoginRoleDao;
+
+    @Autowired
+    private AccessServiceRoleDao accessServiceRoleDao;
+
+    @Autowired
+    private AccessServiceRoleRightDao accessServiceRoleRightDao;
+
+    @Autowired
+    private AccessServiceRoleRightIncludeDao accessServiceRoleRightIncludeDao;
+
+    @Autowired
+    private AccessServiceRightDao accessServiceRightDao;
+
     @Autowired
     private NotificationPatterns oNotificationPatterns;
     @Autowired
@@ -50,55 +61,199 @@ public class AccessService implements ApplicationContextAware {
         this.applicationContext = applicationContext;
     }
 
-    public boolean hasAccessToService(String sLogin, String sService, String sData)
-            throws HandlerBeanValidationException {
+    // -------------- AccessServiceLoginRoles --------------------------------------------------------------------------
 
-        boolean res = false;
+    public List<AccessLoginRoleVO> getAccessServiceLoginRoles(String sLogin) {
+        List<AccessServiceLoginRole> roles = accessServiceLoginRoleDao.getUserRoles(sLogin);
+        return roles.stream().map(AccessLoginRoleVO::new).collect(Collectors.toList());
+    }
 
-        AccessServiceLoginRight access = accessServiceLoginRightDao.getAccessServiceLoginRight(sLogin, sService);
-        if (access != null) {
+    public AccessLoginRoleVO setAccessServiceLoginRole(Long nID, String sLogin, Long nID_AccessServiceRole) {
+        AccessServiceLoginRole loginRole = nID != null ? accessServiceLoginRoleDao.findByIdExpected(nID) :
+                new AccessServiceLoginRole();
+        loginRole.setsLogin(sLogin);
+        loginRole.setAccessServiceRole(accessServiceRoleDao.findByIdExpected(nID_AccessServiceRole));
+        accessServiceLoginRoleDao.saveOrUpdate(loginRole);
+        return new AccessLoginRoleVO(loginRole);
+    }
 
-            String handlerBeanName = access.getsHandlerBean();
-            if (handlerBeanName != null) {
-                AccessServiceLoginRightHandler handler = getHandlerBean(handlerBeanName);
-                res = handler.hasAccessToService(sData);
-            } else {
-                res = true;
-            }
+    public void removeAccessServiceLoginRole(Long nID) {
+        accessServiceLoginRoleDao.delete(nID);
+    }
 
+    public void removeAccessServiceLoginRole(String sLogin, Long nID_AccessServiceRole) {
+        AccessServiceLoginRole loginRole = accessServiceLoginRoleDao.findLoginRole(sLogin, nID_AccessServiceRole);
+        if (loginRole != null) {
+            accessServiceLoginRoleDao.delete(loginRole);
+        }
+    }
+
+    // -------------- AccessServiceRole --------------------------------------------------------------------------------
+
+    public List<AccessRoleVO> getAccessServiceRoleRights(Long roleId) {
+        List<AccessRoleVO> res = new ArrayList<>();
+        if (roleId != null) {
+            res.add(new AccessRoleVO(accessServiceRoleDao.findByIdExpected(roleId)));
+        }
+        else {
+            res.addAll(accessServiceRoleDao.findAll().stream().map(AccessRoleVO::new).collect(Collectors.toList()));
         }
 
         return res;
     }
 
-    public void saveOrUpdateAccessServiceLoginRight(String sLogin, String sService, String sHandlerBean)
-            throws HandlerBeanValidationException {
-        AccessServiceLoginRight access = accessServiceLoginRightDao.getAccessServiceLoginRight(sLogin, sService);
-        if (access == null) {
-            access = new AccessServiceLoginRight();
-        }
+    public AccessRoleVO setAccessServiceRole(Long roleId, String sName) {
+        AccessServiceRole role = roleId != null
+                ? accessServiceRoleDao.findByIdExpected(roleId) : new AccessServiceRole();
 
-        if (sHandlerBean != null) {
-            getHandlerBean(sHandlerBean);
-        }
-
-        access.setsLogin(sLogin);
-        access.setsService(sService);
-        access.setsHandlerBean(sHandlerBean);
-
-        accessServiceLoginRightDao.saveOrUpdate(access);
+        role.setName(sName);
+        accessServiceRoleDao.saveOrUpdate(role);
+        return new AccessRoleVO(role, false);
     }
 
-    public boolean removeAccessServiceLoginRight(String sLogin, String sService) {
-        boolean removed = false;
-        AccessServiceLoginRight access = accessServiceLoginRightDao.getAccessServiceLoginRight(sLogin, sService);
+    public void removeAccessServiceRole(Long roleId) {
+        accessServiceRoleDao.delete(roleId);
+    }
 
-        if (access != null) {
-            accessServiceLoginRightDao.delete(access);
-            removed = true;
+    // -------------- AccessServiceRoleRight ---------------------------------------------------------------------------
+
+    public AccessRoleRightVO setAccessServiceRoleRight(Long nID, Long nID_AccessServiceRole,
+                                                       Long nID_AccessServiceRight) {
+
+        AccessServiceRoleRight roleRight = nID != null ? accessServiceRoleRightDao.findByIdExpected(nID) :
+                new AccessServiceRoleRight();
+
+        roleRight.setAccessServiceRole(accessServiceRoleDao.findByIdExpected(nID_AccessServiceRole));
+        roleRight.setAccessServiceRight(accessServiceRightDao.findByIdExpected(nID_AccessServiceRight));
+        accessServiceRoleRightDao.saveOrUpdate(roleRight);
+        return new AccessRoleRightVO(roleRight);
+    }
+
+    public void removeAccessServiceRoleRight(Long nID) {
+        accessServiceRoleRightDao.delete(nID);
+    }
+
+    // -------------- AccessServiceRoleRightInclude --------------------------------------------------------------------
+
+    public AccessRoleIncludeVO setAccessServiceRoleRightInclude(Long nID, Long nID_AccessServiceRole,
+                                                       Long nID_AccessServiceRole_Include) {
+
+        AccessServiceRoleRightInclude roleInclude = nID != null ? accessServiceRoleRightIncludeDao.findByIdExpected(nID) :
+                new AccessServiceRoleRightInclude();
+
+        roleInclude.setAccessServiceRole(accessServiceRoleDao.findByIdExpected(nID_AccessServiceRole));
+        roleInclude.setAccessServiceRoleInclude(accessServiceRoleDao.findByIdExpected(nID_AccessServiceRole_Include));
+        accessServiceRoleRightIncludeDao.saveOrUpdate(roleInclude);
+        return new AccessRoleIncludeVO(roleInclude);
+    }
+
+    public void removeAccessServiceRoleRightInclude(Long nID) {
+        accessServiceRoleRightIncludeDao.delete(nID);
+    }
+
+    // -------------- AccessServiceRight -------------------------------------------------------------------------------
+
+    public List<AccessRightVO> getAccessServiceRights(Long nID, String sService, String saMethod, String sHandlerBean) {
+        return accessServiceRightDao.getAccessServiceRights(nID, sService, saMethod, sHandlerBean).stream().map(
+                AccessRightVO::new).collect(Collectors.toList());
+    }
+
+    public AccessRightVO setAccessServiceRight(AccessRightVO accessRightVO) {
+        AccessServiceRight accessServiceRight = accessRightVO.getnID() != null ? accessServiceRightDao.findByIdExpected(
+                accessRightVO.getnID()) : new AccessServiceRight();
+
+        accessServiceRight.setName(accessRightVO.getsName());
+        accessServiceRight.setsService(accessRightVO.getsService());
+        accessServiceRight.setSaMethod(accessRightVO.getSaMethod());
+        accessServiceRight.setnOrder(accessRightVO.getnOrder());
+        accessServiceRight.setsHandlerBean(accessRightVO.getsHandlerBean());
+        accessServiceRight.setbDeny(accessRightVO.isbDeny());
+        accessServiceRightDao.saveOrUpdate(accessServiceRight);
+
+        return new AccessRightVO(accessServiceRight);
+    }
+
+    public void removeAccessServiceRight(Long rightId) {
+        accessServiceRightDao.delete(rightId);
+    }
+
+    // -----------------------------------------------------------------------------------------------------------------
+
+    public boolean hasAccessToService(String sLogin, String sService, String sData, String sMethod)
+            throws HandlerBeanValidationException {
+
+        boolean res = false;
+
+        List<AccessServiceLoginRole> roles = accessServiceLoginRoleDao.getUserRoles(sLogin);
+        if (roles.isEmpty()) {
+            final String allUsersName = "*";
+            roles = accessServiceLoginRoleDao.getUserRoles(allUsersName);
         }
 
-        return removed;
+        A: for (AccessServiceLoginRole role : roles) {
+            List<AccessServiceRight> rights = role.getAccessServiceRole().resolveAllRightsSorted();
+
+            for (AccessServiceRight right : rights) {
+                if (isApplicableToServiceAndMethod(right, sService, sMethod)) {
+                    res = hasAccess(right, sData);
+                    break A;
+                }
+            }
+        }
+
+        return res;
+    }
+
+
+    private boolean hasAccess(AccessServiceRight right, String sData) throws HandlerBeanValidationException {
+        boolean res;
+
+        String handlerBeanName = right.getsHandlerBean();
+        if (handlerBeanName != null) {
+            AccessServiceLoginRightHandler handler = getHandlerBean(handlerBeanName);
+            res = handler.hasAccessToService(sData);
+        } else {
+            res = true;
+        }
+
+        return !right.isbDeny() == res;
+    }
+
+    private boolean isApplicableToServiceAndMethod(AccessServiceRight accessServiceRight,
+                                                   String sService, String sMethod) {
+        if (!isServiceMatchedPattern(sService, accessServiceRight.getsService())) {
+            return false;
+        }
+
+        Set<String> supportedMethods = accessServiceRight.resolveSupportedMethods();
+        return supportedMethods == null || supportedMethods.contains(sMethod);
+
+    }
+
+    /**
+     * Checks if service matched to <b>accessServicePattern</b>? accessServicePattern can contain * in beginning or
+     * end of pattern. For example to match service="TestService" valid patterns are "TestService",
+     * "Test*", "*Service" or "*".
+     * @param service current service string
+     * @param accessServicePattern field sService of entity AccessServiceRight.
+     * @return is service matched to accessServicePattern?
+     */
+    private boolean isServiceMatchedPattern(String service, String accessServicePattern) {
+        final String star = "*";
+
+        if (accessServicePattern.equals(star)) {
+            return true;
+        }
+        else if (accessServicePattern.startsWith(star)) {
+            final String suffix = accessServicePattern.substring(star.length());
+            return service.endsWith(suffix);
+        }
+        else if (accessServicePattern.endsWith(star)) {
+            final String prefix = accessServicePattern.substring(0, accessServicePattern.length() - star.length());
+            return service.startsWith(prefix);
+        }
+
+        return service.equals(accessServicePattern);
     }
 
     private AccessServiceLoginRightHandler getHandlerBean(String sHandlerBean) throws HandlerBeanValidationException {
@@ -113,10 +268,6 @@ public class AccessService implements ApplicationContextAware {
         }
 
         return (AccessServiceLoginRightHandler) bean;
-    }
-
-    public List<String> getAccessibleServices(String sLogin) {
-        return accessServiceLoginRightDao.getAccessibleServices(sLogin);
     }
 
     public Map<String, String> getVerifyContactEmail(String sQuestion, String sAnswer) throws AddressException, EmailException,

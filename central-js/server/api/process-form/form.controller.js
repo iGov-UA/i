@@ -22,8 +22,6 @@ module.exports.index = function (req, res) {
   console.log("nID_Server=" + nID_Server);
   var sID_BP_Versioned = req.query.sID_BP_Versioned;
   console.log("sID_BP_Versioned=" + sID_BP_Versioned);
-  //var config = require('../../config/environment');
-  //var activiti = config.activiti;
   return activiti.getServerRegionHost(nID_Server, function (sHost) {
     console.log("sHost=" + sHost);
 
