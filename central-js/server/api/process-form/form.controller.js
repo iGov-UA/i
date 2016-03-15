@@ -84,21 +84,25 @@ module.exports.submit = function (req, res) {
     var nID_Subject = req.session.subject.nID;
     var properties = [];
     for (var id in options.formData.params) {
-      var value = options.formData.params[id];
-      if (id === 'nID_Subject') {
-        value = nID_Subject;
-      }
-      if (id === 'sID_UA' && options.formData.sID_UA_Common !== null) {
-        //if (id === 'sID_UA_Common') {
-        value = options.formData.sID_UA_Common;
-      } else if (id === 'sID_UA') {
-        value = options.formData.sID_UA;
-      }
+      var oParam = options.formData.params[id];
+      //if(oParam.type!=="markerds"){
+      if(oParam.writable){
+        var value = options.formData.fields[id];
+        if (id === 'nID_Subject') {
+          value = nID_Subject;
+        }
+        if (id === 'sID_UA' && options.formData.sID_UA_Common !== null) {
+          //if (id === 'sID_UA_Common') {
+          value = options.formData.sID_UA_Common;
+        } else if (id === 'sID_UA') {
+          value = options.formData.sID_UA;
+        }
 
-      properties.push({
-        id: id,
-        value: value
-      });
+        properties.push({
+          id: id,
+          value: value
+        });
+      }
     }
 
     return request.post({
