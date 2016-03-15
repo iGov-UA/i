@@ -28,7 +28,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class SubjectCover {
     
-    private final String URI_GET_GetSubjects = "/wf/service/subject/getSubjects";
+    private final String URI_GET_GetSubjects = "/wf/service/subject/getSubjectsByAccount";
 
     private static final Logger LOG = LoggerFactory.getLogger(SubjectCover.class);
     @Autowired

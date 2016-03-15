@@ -2,6 +2,11 @@ package org.igov.service.controller;
 
 import static org.igov.service.business.action.task.core.AbstractModelTask.getByteArrayMultipartFileFromStorageInmemory;
 import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -33,6 +38,7 @@ import org.igov.service.business.subject.SubjectMessageService;
 import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.FileServiceIOException;
+import org.igov.util.MethodsCallRunnerUtil;
 import org.igov.util.JSON.JsonRestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,12 +53,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.common.base.Optional;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 @Controller
 @Api(tags = {"SubjectMessageController"}, description = "Сообщения субьектов")
 @RequestMapping(value = "/subject/message")
@@ -84,7 +84,8 @@ public class SubjectMessageController {
     @Autowired
     private IBytesDataInmemoryStorage oBytesDataInmemoryStorage;
     
-    
+    @Autowired 
+    MethodsCallRunnerUtil methodCallRunner;
     /**
      * получение сообщения
      *
@@ -396,13 +397,9 @@ public class SubjectMessageController {
     public
     @ResponseBody
     ResponseEntity getMessages() {
-        List<SubjectMessage> messages = subjectMessagesDao.getMessages();
+    	 List<SubjectMessage> messages = subjectMessagesDao.getMessages();
         return JsonRestUtils.toJsonResponse(messages);
     }
-    
-  
-    
-    
     
     /**
      * получение массива сообщений по услуге

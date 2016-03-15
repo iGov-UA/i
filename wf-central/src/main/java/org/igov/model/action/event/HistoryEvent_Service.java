@@ -102,6 +102,10 @@ public class HistoryEvent_Service extends Entity {
     @Column(name = "nID_StatusType")
     private Long nID_StatusType = 13L;
 
+    @JsonProperty(value = "nID_ServiceData")
+    @Column(name = "nID_ServiceData")
+    private Long nID_ServiceData;
+
     @JsonProperty(value = "sID_StatusType")
     @Transient
     private String sID_StatusType;
@@ -284,5 +288,13 @@ public class HistoryEvent_Service extends Entity {
 
     public String getsName_UA_StatusType() {
         return HistoryEvent_Service_StatusType.getInstance(nID_StatusType).getsName_UA();
-    }    
+    }
+
+    public Long getnID_ServiceData() {
+        return nID_ServiceData;
+    }
+
+    public void setnID_ServiceData(Long nID_ServiceData) {
+        this.nID_ServiceData = nID_ServiceData;
+    }
 }

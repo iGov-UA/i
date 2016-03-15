@@ -81,16 +81,19 @@
 			<column name="nTry" type="int">
                 <constraints nullable="true"/>
             </column>            
-			<column name="sMethod" type="varchar(50)">
+            <column name="sObject" type="varchar(100)">
                 <constraints nullable="true"/>
             </column>
-            <column name="soRequest" type="varchar(500)">
+			<column name="sMethod" type="varchar(100)">
                 <constraints nullable="true"/>
             </column>
-            <column name="smParam" type="varchar(500)">
+            <column name="soRequest" type="bytea">
                 <constraints nullable="true"/>
             </column>
-            <column name="sReturn" type="varchar(500)">
+            <column name="smParam" type="varchar(5000)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sReturn" type="varchar(5000)">
             </column>                                    
         </createTable>
 		<!-- ####################################################################################################### -->
@@ -112,16 +115,19 @@
 			<column name="nTry" type="int">
                 <constraints nullable="true"/>
             </column>            
-			<column name="sMethod" type="varchar(50)">
+            <column name="sObject" type="varchar(100)">
                 <constraints nullable="true"/>
             </column>
-            <column name="soRequest" type="varchar(500)">
+			<column name="sMethod" type="varchar(100)">
                 <constraints nullable="true"/>
             </column>
-            <column name="smParam" type="varchar(500)">
+            <column name="soRequest" type="bytea">
                 <constraints nullable="true"/>
             </column>
-            <column name="sReturn" type="varchar(500)">
+            <column name="smParam" type="varchar(5000)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sReturn" type="varchar(5000)">
             </column>                                    
         </createTable>						        				        				
 	
@@ -133,31 +139,106 @@
             <column name="sID" type="STRING"/>
             <column name="sName" type="STRING"/>
         </loadUpdateData>
+                    
+	</changeSet>
 
-        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/ActionExecute.csv" tableName="ActionExecute" separator=";">
-            <column name="nID" type="NUMERIC"/>
-            <column name="nID_ActionExecuteStatus" type="NUMERIC"/>
-            <column name="oDateMake" type="DATETIME"/>
-            <column name="oDateEdit" type="DATETIME"/>
-            <column name="nTry" type="NUMERIC"/>
-            <column name="sMethod" type="STRING"/>
-            <column name="soRequest" type="STRING"/>
-            <column name="smParam" type="STRING"/>
-            <column name="sReturn" type="STRING"/>
-        </loadUpdateData>
-        
-        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/ActionExecuteOld.csv" tableName="ActionExecuteOld" separator=";">
-            <column name="nID" type="NUMERIC"/>
-            <column name="nID_ActionExecuteStatus" type="NUMERIC"/>
-            <column name="oDateMake" type="DATETIME"/>
-            <column name="oDateEdit" type="DATETIME"/>
-            <column name="nTry" type="NUMERIC"/>
-            <column name="sMethod" type="STRING"/>
-            <column name="soRequest" type="STRING"/>
-            <column name="smParam" type="STRING"/>
-            <column name="sReturn" type="STRING"/>
-        </loadUpdateData>
-             
-	</changeSet>    
+    <changeSet id="issue-1173-createTables" author="brunneng">
+        <createTable tableName="AccessServiceRight">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sName" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sService" type="varchar(500)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="saMethod" type="varchar(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sHandlerBean" type="varchar(200)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="bDeny" type="boolean" defaultValue="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nOrder" type="int">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="AccessServiceRole">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sName" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="AccessServiceRoleRight">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="nID_AccessServiceRole" type="bigint" >
+                <constraints nullable="false" foreignKeyName="FK_ASRR_AccessServiceRole"
+                             referencedTableName="AccessServiceRole" referencedColumnNames="nID" deleteCascade="true"/>/>
+            </column>
+            <column name="nID_AccessServiceRight" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_ASRR_AccessServiceRight"
+                             referencedTableName="AccessServiceRight" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint constraintName="AccessServiceRoleRight_key"
+                             tableName="AccessServiceRoleRight"
+                             columnNames="nID_AccessServiceRole, nID_AccessServiceRight"/>
+
+        <createTable tableName="AccessServiceRoleRightInclude">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="nID_AccessServiceRole" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_ASRRI_AccessServiceRole"
+                             referencedTableName="AccessServiceRole" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+            <column name="nID_AccessServiceRole_Include" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_ASRRI_AccessServiceRole_Include"
+                             referencedTableName="AccessServiceRole" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint constraintName="AccessServiceRoleRightInclude_key"
+                             tableName="AccessServiceRoleRightInclude"
+                             columnNames="nID_AccessServiceRole, nID_AccessServiceRole_Include"/>
+
+        <createTable tableName="AccessServiceLoginRole">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sLogin" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nID_AccessServiceRole" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_ASLR_AccessServiceRole"
+                             referencedTableName="AccessServiceRole" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint constraintName="AccessServiceLoginRole_key"
+                             tableName="AccessServiceLoginRole"
+                             columnNames="sLogin, nID_AccessServiceRole"/>
+
+        <dropTable cascadeConstraints="true" tableName="AccessServiceLoginRight"/>
+
+    </changeSet>
+
+    <changeSet id="issue-1173-autoIncrement" author="brunneng" dbms="h2">
+        <addAutoIncrement tableName="AccessServiceRight" columnName="nID" startWith="1000" columnDataType="bigint"/>
+        <addAutoIncrement tableName="AccessServiceRole" columnName="nID" startWith="1000" columnDataType="bigint"/>
+        <addAutoIncrement tableName="AccessServiceLoginRole" columnName="nID" startWith="1000" columnDataType="bigint"/>
+        <addAutoIncrement tableName="AccessServiceRoleRight" columnName="nID" startWith="1000" columnDataType="bigint"/>
+        <addAutoIncrement tableName="AccessServiceRoleRightInclude" columnName="nID" startWith="1000" columnDataType="bigint"/>
+    </changeSet>
 
 </databaseChangeLog>

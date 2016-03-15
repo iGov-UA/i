@@ -13,8 +13,8 @@
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть сервісний центр, де Ви б бажали отримати послугу" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса сервісного центру" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sMail_Signature" name="Підпис" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sMail_Employee" name="sMail_Employee (field for test)" type="invisible" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sMail_Signature" name="Підпис" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMail_Employee" name="sMail_Employee (field for test)" type="invisible" required="true"></activiti:formProperty>
         <activiti:formProperty id="sWork_Time" name="Графік прийому громадян" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="visit" name="Зазначте бажану дату / час візиту до сервісного центра для отримання послуги; ця інформація допоможе співробітнику сервісного центра  зарезервувати для Вас зручний час візиту" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNumber" name="Існуючий держ.номер ТЗ" type="string" required="true"></activiti:formProperty>
@@ -67,8 +67,12 @@
         <activiti:formProperty id="sDetail6" name="Об'єм двигуна (см. куб)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Ваш контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file1" name="Копія документу реєстрації транспортного засобу" type="file" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="file1" name="Копія тех.паспорта ; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file2" name="Копія договору купівлі-продажу;додається  за наявності договору" type="file"></activiti:formProperty>
+      
+        <activiti:formProperty id="file3" name="Копія доручення;додається  за наявності" type="file"></activiti:formProperty>
+
         <activiti:formProperty id="text" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -144,7 +148,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="sBillToPay" name="В разі надання послуги, завантажте файл з реквізитами для сплати вартості послуги. Файл буде відправлено заявнику на  email" type="file"></activiti:formProperty>
         <activiti:formProperty id="visit" name="Побажання громадянина щодо візиту для отримання послуги" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="comment" name="Вкажіть дату візиту для отримання посвідчення або підставу для відмови в наданні послуги (Інформація буде спрямована громадянину на e-mail)" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="comment" name="Примітка про дату / час візиту або причини для відмови в наданні послуги(Інформація буде спрямована громадянину на e-mail)" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="sNotifyEvent_AfterSubmit" type="invisible" default="Електроний лист заявнику успішно відправлено. Заявка перейшла в чергу Необроблених з новим статусом - 'Надання послуги' "></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
@@ -247,7 +251,7 @@
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 &lt;p&gt; Для отримання послуги Вам необхідно сплатити державний збір і надати квитанцію про сплату під час візиту за адресою  ${sAddress}.
 &lt;/p&gt;
-Дата візиту: &lt;br /&gt;
+Примітка щодо візиту: &lt;br /&gt;
 ${comment}&lt;br /&gt;
 Рекомендовано прибути заздалегідь для проведення огляду транспортного засобу з одержанням акту експертного огляду.&lt;br /&gt;
 Рекомендований час 20-40 хвилин.
@@ -257,13 +261,13 @@ ${sWork_Time}
  &lt;br /&gt;
 &lt;p&gt;
 Просимо Вас мати із собою:&lt;br /&gt;
-1. Громадянський паспорт&lt;br /&gt;
+1. Громадянський паспорт&lt;br /&gt;і
 2. Оригінал довідки про отримання ІПН &lt;br /&gt;
 3. Документи на володіння транспортним засобом та реєстраційні документи &lt;br /&gt;
 4. Оригінали квитанцій про сплату послуги з відміткою банку&lt;br /&gt;
 5. Копія доручення завірена нотаріально (за наявності) &lt;br /&gt;
 6. Договір купівлі-продажу &lt;br /&gt;
-7. Транспортний засіб
+6. Транспортний засіб
 
 &lt;/p&gt;
 &lt;/p&gt;

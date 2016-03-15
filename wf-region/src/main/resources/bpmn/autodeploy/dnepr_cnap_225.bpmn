@@ -331,58 +331,7 @@ if(execution.getVariable('aDocErr') == 'enum3'){execution.setVariable('iTemp3', 
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${proverkaCNAP=='ok'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow23" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
-    <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow24" sourceRef="servicetask7" targetRef="exclusivegateway3"></sequenceFlow>
-    <userTask id="usertask3" name="Опрацювання службою" activiti:candidateGroups="zem_${sID_Public_SubjectOrganJoin}">
-      <extensionElements>
-        <activiti:formProperty id="shapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім`я" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdAddressFactual" name="Домашня адреса" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCity" name="Населений пункт, в якому знаходиться земельна ділянка" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sError" name="Суть виявленої помилки" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="iTemp1" name="витяг" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="iTemp2" name="довідка" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="iTemp3" name="викопіювання" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sKadastrObject" name="Oб'єкт з земельного кадастру" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sVitiagNo" name="Реєстраційний номер витягу" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sVitiagDate" name="Дата видачі витягу" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDovidkaNo" name="Реєстраційний номер довідки" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDovidkaDate" name="Дата видачі довідки" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCopyNo" name="Реєстраційний номер викопіювання" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCopyDate" name="Дата видачі викопіювання" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sRealErr" name="Документ, що підтверджує факт існування технічної помилки" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sRealData" name="Документ, що підтверджує правильну редакцію зазначення відповідних відомостей" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sRegNo" name="Номер реєстрації звернення у ЦНАП" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sRegDate" name="Дата реєстрації звернення у ЦНАП;у форматі ДД.ММ.PPPP" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sRegPIB" name="ПІБ посадової особи ЦНАП" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="proverka" name="Рішення про прийняття або відхилення заяви" type="enum" required="true">
-          <activiti:value id="ok" name="Дані виправлено"></activiti:value>
-          <activiti:value id="bad" name="У виправлені даних відмовлено"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="comment" name="Якщо громадянину відмовлено, вкажіть причину у цьому полі" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="result" name="Додайте скановану копію протоколу виправлення помилки, якщо заяву опрацьовано або скановану копію відмови, якщо ні" type="file"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/KadastrTehPomilka.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/KadastrTehPomilka.html]" type="invisible" default="Повідомлення про виправлення технічної помилки" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${fDock1},${fDock2},${fDock3}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
-      </extensionElements>
-    </userTask>
-    <sequenceFlow id="flow25" sourceRef="exclusivegateway3" targetRef="usertask3">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Public_SubjectOrganJoin=='tern_tern'}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow26" sourceRef="usertask3" targetRef="usertask2"></sequenceFlow>
-    <sequenceFlow id="flow27" sourceRef="exclusivegateway3" targetRef="usertask2">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Public_SubjectOrganJoin!='tern_tern'}]]></conditionExpression>
-    </sequenceFlow>
+    <sequenceFlow id="flow24" sourceRef="servicetask7" targetRef="usertask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_225">
     <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_225" id="BPMNPlane_dnepr_cnap_225">
@@ -417,28 +366,22 @@ if(execution.getVariable('aDocErr') == 'enum3'){execution.setVariable('iTemp3', 
         <omgdc:Bounds height="55.0" width="105.0" x="378.0" y="142.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
-        <omgdc:Bounds height="55.0" width="105.0" x="750.0" y="142.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="520.0" y="142.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
-        <omgdc:Bounds height="40.0" width="40.0" x="900.0" y="149.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="670.0" y="149.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
-        <omgdc:Bounds height="55.0" width="105.0" x="868.0" y="230.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="638.0" y="230.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
-        <omgdc:Bounds height="35.0" width="35.0" x="972.0" y="150.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="742.0" y="150.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
-        <omgdc:Bounds height="55.0" width="105.0" x="866.0" y="47.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="636.0" y="47.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
         <omgdc:Bounds height="40.0" width="40.0" x="306.0" y="149.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
-        <omgdc:Bounds height="40.0" width="40.0" x="530.0" y="149.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
-        <omgdc:Bounds height="55.0" width="105.0" x="610.0" y="47.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
         <omgdi:waypoint x="45.0" y="169.0"></omgdi:waypoint>
@@ -465,30 +408,30 @@ if(execution.getVariable('aDocErr') == 'enum3'){execution.setVariable('iTemp3', 
         <omgdi:waypoint x="168.0" y="247.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="855.0" y="169.0"></omgdi:waypoint>
-        <omgdi:waypoint x="900.0" y="169.0"></omgdi:waypoint>
+        <omgdi:waypoint x="625.0" y="169.0"></omgdi:waypoint>
+        <omgdi:waypoint x="670.0" y="169.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
-        <omgdi:waypoint x="920.0" y="189.0"></omgdi:waypoint>
-        <omgdi:waypoint x="920.0" y="230.0"></omgdi:waypoint>
+        <omgdi:waypoint x="690.0" y="189.0"></omgdi:waypoint>
+        <omgdi:waypoint x="690.0" y="230.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="871.0" y="197.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="641.0" y="197.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
-        <omgdi:waypoint x="920.0" y="230.0"></omgdi:waypoint>
-        <omgdi:waypoint x="989.0" y="185.0"></omgdi:waypoint>
+        <omgdi:waypoint x="690.0" y="230.0"></omgdi:waypoint>
+        <omgdi:waypoint x="759.0" y="185.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="920.0" y="149.0"></omgdi:waypoint>
-        <omgdi:waypoint x="918.0" y="102.0"></omgdi:waypoint>
+        <omgdi:waypoint x="690.0" y="149.0"></omgdi:waypoint>
+        <omgdi:waypoint x="688.0" y="102.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="920.0" y="102.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="690.0" y="102.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
-        <omgdi:waypoint x="918.0" y="102.0"></omgdi:waypoint>
-        <omgdi:waypoint x="989.0" y="150.0"></omgdi:waypoint>
+        <omgdi:waypoint x="688.0" y="102.0"></omgdi:waypoint>
+        <omgdi:waypoint x="759.0" y="150.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
         <omgdi:waypoint x="228.0" y="115.0"></omgdi:waypoint>
@@ -508,19 +451,7 @@ if(execution.getVariable('aDocErr') == 'enum3'){execution.setVariable('iTemp3', 
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
         <omgdi:waypoint x="483.0" y="169.0"></omgdi:waypoint>
-        <omgdi:waypoint x="530.0" y="169.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
-        <omgdi:waypoint x="550.0" y="149.0"></omgdi:waypoint>
-        <omgdi:waypoint x="662.0" y="102.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
-        <omgdi:waypoint x="662.0" y="102.0"></omgdi:waypoint>
-        <omgdi:waypoint x="802.0" y="142.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
-        <omgdi:waypoint x="570.0" y="169.0"></omgdi:waypoint>
-        <omgdi:waypoint x="750.0" y="169.0"></omgdi:waypoint>
+        <omgdi:waypoint x="520.0" y="169.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
