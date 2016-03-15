@@ -4,18 +4,17 @@
 export LANG=en_US.UTF-8
 bIncludeUI=$1 #Собираем UI?
 bIncludeBack=$2 #Собираем backend?
-sData=$3 #Дата переданная из Jenkins
-sVersion=$4 #версия sVersion (alpha, beta, ...)
-sProject=$5 #название проекта ### wf-central ### Нужна ли вообще эта переменная?
-sHost=$6 #сервер на котором будет развернут проект
-data=`date "+%Y.%m.%d-%H.%M.%S"`
+sVersion=$3 #версия sVersion (alpha, beta, ...)
+sProject=$4 #название проекта ### wf-central ### Нужна ли вообще эта переменная?
+sHost=$5 #сервер на котором будет развернут проект
+sData=`date "+%Y.%m.%d-%H.%M.%S"`
 TMP=TEMP=TMPDIR=/tmp/c_alpha && export TMPDIR TMP TEMP
 
 #Checking if all parameters are specified
-if [ $# -ne 6 ]; then
-    echo "Can't start. You must specify all arguments!"
-    echo "Here is an example: ./deploy.sh true true 2016.03.14-13.26.22 alpha wf-central test.igov.org.ua"
-    echo "Parameter description: ./deploy.sh \$bIncludeUI \$bIncludeBack \$sData \$sVersion \$sProject \$sHost"
+if [ $# -ne 5 ]; then
+	echo "Can't start. You must specify all arguments!"
+    echo "Here is an example: ./deploy.sh true true alpha wf-central test.igov.org.ua"
+    echo "Parameter description: ./deploy.sh \$bIncludeUI \$bIncludeBack \$sVersion \$sProject \$sHost"
     exit 1
 fi
 
@@ -82,6 +81,12 @@ if [ "$bIncludeBack" == "true" ]; then
 	rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' target/wf-central.war sybase@$sHost:/sybase/.upload/
 	#Cleaning-up after all process finished
 	rm -rf $TMP/*
+fi
+
+#Проверим, есть ли что компилировать и деплоить
+if [[ "$bIncludeBack" == "false" && "$bIncludeUI" == "false" ]]; then
+    echo "Nothing to compile and deploy. Exiting..."
+    exit 0
 fi
 
 #Connecting to remote host (Project deploy)
