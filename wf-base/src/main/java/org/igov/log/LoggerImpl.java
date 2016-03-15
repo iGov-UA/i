@@ -1,15 +1,14 @@
 package org.igov.log;
 
+import com.google.common.collect.Sets;
 import org.igov.log.http.LogResponse;
 import org.igov.log.http.LogResponseImpl;
 import org.slf4j.LoggerFactory;
 
-import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 import static java.util.Collections.emptyList;
-import static java.util.Collections.singleton;
 import static org.apache.commons.lang3.StringUtils.substring;
 import static org.apache.commons.lang3.Validate.isTrue;
 import static org.apache.commons.lang3.Validate.notNull;
@@ -37,25 +36,25 @@ public class LoggerImpl implements Logger {
     }
 
 
-
+    // SLF4J approach
     public String trace(String msg, Object ... args) {
-        return trace(fullMsg(msg, args), DEPTH_CALL_STACK_SLF4J);
+        return trace(fullMessage(msg, args), DEPTH_CALL_STACK_SLF4J);
     }
 
     public String debug(String msg, Object... args) {
-        return debug(fullMsg(msg, args), DEPTH_CALL_STACK_SLF4J);
+        return debug(fullMessage(msg, args), DEPTH_CALL_STACK_SLF4J);
     }
 
     public String info(String msg, Object ... args) {
-        return info(fullMsg(msg, args), DEPTH_CALL_STACK_SLF4J);
+        return info(fullMessage(msg, args), DEPTH_CALL_STACK_SLF4J);
     }
 
     public String warn(String msg, Object ... args) {
-        return warn(fullMsg(msg, args), DEPTH_CALL_STACK_SLF4J);
+        return warn(fullMessage(msg, args), DEPTH_CALL_STACK_SLF4J);
     }
 
     public String error(String msg, Object ... args) {
-        return error(fullMsg(msg, args), DEPTH_CALL_STACK_SLF4J);
+        return error(fullMessage(msg, args), DEPTH_CALL_STACK_SLF4J);
     }
 
     public String error(String msg, Exception exp) {
@@ -63,7 +62,7 @@ public class LoggerImpl implements Logger {
     }
 
     public String error(Exception exp, String msg, Object ... args) {
-        return error(fullMsg(msg, args), exp, DEPTH_CALL_STACK_SLF4J);
+        return error(fullMessage(msg, args), exp, DEPTH_CALL_STACK_SLF4J);
     }
 
 
@@ -99,44 +98,45 @@ public class LoggerImpl implements Logger {
     }
 
 
-    public Logger Trace(String msg) {
+    // Igov custom stuff
+    public Logger _trace(String msg) {
         this.msg = msg;
         task = ()-> trace(this.msg, DEPTH_CALL_STACK_IGOV);
         return this;
     }
 
-    public Logger Debug(String msg) {
+    public Logger _debug(String msg) {
         this.msg = msg;
         task = ()-> debug(this.msg, DEPTH_CALL_STACK_IGOV);
         return this;
     }
 
-    public Logger Info(String msg) {
+    public Logger _info(String msg) {
         this.msg = msg;
         task = ()-> info(this.msg, DEPTH_CALL_STACK_IGOV);
         return this;
     }
 
-    public Logger Warn(String msg) {
+    public Logger _warn(String msg) {
         this.msg = msg;
         task = ()-> warn(this.msg, DEPTH_CALL_STACK_IGOV);
         return this;
     }
 
-    public Logger Error(String msg, Exception exp) {
+    public Logger _error(String msg, Exception exp) {
         this.msg = msg;
         task = ()-> error(this.msg, exp, DEPTH_CALL_STACK_IGOV);
         return this;
     }
 
-    public Logger Cut(int length) {
+    public Logger _cut(int length) {
         isTrue (length >= 0, "Length can't be a negative.");
         actions.add( e->substring(e, 0, length) );
         return this;
     }
 
 
-    public String Send() {
+    public String send() {
         for(Customize action : actions)
             msg = action.customize(msg);
         task.doRecord();
@@ -147,16 +147,16 @@ public class LoggerImpl implements Logger {
     /**
      * Add to current message a new piece of message
      **/
-    public Logger P(String parameter, Object value) {
+    public Logger _p(String parameter, Object value) {
         notNull(parameter, "Parameter key can't be a null");
         msg += " "+ parameter +"="+ value;
         return this;
     }
 
 
-    public String Params(Object... args) {
+    public String params(Object... args) {
         // TODO send msg to appender, notify consumers
-        return fullMsg(msg, args);
+        return fullMessage(msg, args);
     }
 
 
@@ -184,16 +184,11 @@ public class LoggerImpl implements Logger {
 
 
 
-    public static Logger getLog(Class<?> clazz) {
-        return getLog(clazz, Collections.<Consumer>emptySet());
-    }
-
-    public static Logger getLog(Class<?> clazz, Consumer consumer) {
-        return new LoggerImpl(clazz, singleton(consumer));
-    }
-
     public static Logger getLog(Class<?> clazz, Set<Consumer> consumers) {
         return new LoggerImpl(clazz, consumers);
+    }
+    public static Logger getLog(Class<?> clazz, Consumer ... consumers) {
+        return getLog(clazz, Sets.newHashSet(consumers));
     }
 
 

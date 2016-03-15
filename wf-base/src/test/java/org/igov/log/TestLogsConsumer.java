@@ -1,34 +1,27 @@
 package org.igov.log;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author dgroup
  * @since  08.01.2016
  */
+@SuppressWarnings("PMD")
 class TestLogsConsumer implements Consumer {
 
-    private Map<String, Object[]> logs = new LinkedHashMap<>();
+    private final List<String> logs = new ArrayList<>();
 
-    @Override
-    public void consume(String msg, Object... args) {
-        logs.put(msg, args);
+    public void consume(String msg) {
+        logs.add(msg);
     }
 
-    public Map<String, Object[]> logs(){
+
+    public List<String> logs(){
         return logs;
     }
 
-    public String msgFirst() {
-        return logs.keySet().iterator().next();
-    }
-
     public String firstLogMessage() {
-        return withoutMethodName( logs().keySet().iterator().next() );
-    }
-
-    String withoutMethodName(String msg){
-        return msg.substring(msg.indexOf(']')+2); // Remove method name from string
+        return logs.iterator().next();
     }
 }

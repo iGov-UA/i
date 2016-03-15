@@ -1,9 +1,10 @@
 package org.igov.log;
 
 import org.igov.log.http.LogResponse;
-import org.slf4j.helpers.MessageFormatter;
 
 import java.util.Set;
+
+import static org.slf4j.helpers.MessageFormatter.arrayFormat;
 
 /**
  * Igov decorator on SLF4J
@@ -29,30 +30,30 @@ public interface Logger {
     // Igov custom stuff
     LogResponse errorHTTP(int status, String header, String msg);
 
-    Logger Trace(String msg);
-    Logger Debug(String msg);
-    Logger Info (String msg);
-    Logger Warn (String msg);
-    Logger Error(String msg, Exception exp);
+    Logger _trace(String msg);
+    Logger _debug(String msg);
+    Logger _info (String msg);
+    Logger _warn (String msg);
+    Logger _error(String msg, Exception exp);
 
-    Logger Cut(int length);
+    Logger _cut(int length);
 
     /** Send log message to appender and notify consumers */
-    String Send();
+    String send();
 
     /** Add a parameter into log message */
-    Logger P(String parameter, Object value);
+    Logger _p(String parameter, Object value);
 
     /** Add all parameters to message, send to appender and notify consumers */
-    String Params(Object ...args);
+    String params(Object ...args);
 
 
 
     /**
      * @return full SLF4J log message, where all `{}` symbols will be replaced to corresponding parameters.
      **/
-    default String fullMsg(String msg, Object... args) {
-        return MessageFormatter.arrayFormat(msg, args).getMessage();
+    default String fullMessage(String msg, Object... args) {
+        return arrayFormat(msg, args).getMessage();
     }
 
     default void notifyConsumers(Set<Consumer> consumers, String msg) {
