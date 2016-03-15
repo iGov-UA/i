@@ -2,6 +2,7 @@ package org.igov.util.JSON;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -27,6 +28,17 @@ public final class JsonRestUtils {
     public static final String REASON_HEADER = "Reason";
     
     private JsonRestUtils() {
+    }
+
+    public static <T> T readObject(String jsonData, JavaType javaType) {
+        T res = null;
+        try {
+            res = new ObjectMapper().readValue(jsonData, javaType);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return res;
     }
 
     public static <T> T readObject(String jsonData, Class<T> clazz) {
@@ -97,19 +109,7 @@ public final class JsonRestUtils {
     }
     
     public static ResponseEntity<String> toJsonResponse(HttpStatus httpStatus, JsonResultMessage resultMessage) {
-        String json;
-        try {
-            json = toJson(resultMessage);
-        } catch (JsonProcessingException e) {
-        	LOG.error("Exception happen during convert object " + resultMessage + " to json.", e);
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        HttpHeaders headers = new HttpHeaders();
-
-        // UTF-8 needed for correctly encode ukrainian letters.
-        MediaType mediaType = new MediaType("application", "json", Charset.forName("UTF-8"));
-        headers.setContentType(mediaType);
-        return new ResponseEntity<>(json, headers, httpStatus);
+        return toJsonResponse(httpStatus, (Object) resultMessage);
     }
     
     public static ResponseEntity toJsonErrorResponse(HttpStatus httpStatus, String eMessage) {//?? move to JsonRestUtils

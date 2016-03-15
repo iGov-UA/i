@@ -37,7 +37,6 @@
         <activiti:formProperty id="nRegion" name="Регион" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sClerkPost" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sArkhPost305" name="Пошта департамента архітектури або ГоловАПУ" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="warningMessage" name="Увага" type="label" default="Подаючи звернення, Ви підтверджуєте достовірність усіх зазначених у зверненні даних і надаєте свою згоду на обробку Ваших персональних даних"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask5" name="Повідомлення громадянина  про успішну реєстрацію зверення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -117,8 +116,8 @@
         <activiti:formProperty id="nRegion" name="Регион" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sClerkPost" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="proverka" name="Оберіть відповідь Головного архітектурно-планувального управління" type="enum" required="true">
-          <activiti:value id="ok" name="містобудівні умови та обмеження надані"></activiti:value>
-          <activiti:value id="bad" name="надати містобудівні умови та обмеження неможливо"></activiti:value>
+          <activiti:value id="ok" name="будівельний паспорт оформлено"></activiti:value>
+          <activiti:value id="bad" name="оформити будівельний паспорт неможливо"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="result" name="Завантажте скан-копію відповіді" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/BudPass.html" type="file"></activiti:formProperty>
@@ -350,7 +349,7 @@
           <activiti:expression>Результат опрацювання звернення ГоловАПУ</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>Співробітники ГоловАПУ опрацювали звернення від ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}. Будь ласка, завершіть обробку на <a href="http://region.igov.org.ua">порталі</a></activiti:expression>
+          <activiti:expression>Співробітники ГоловАПУ опрацювали звернення від ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}. Будь ласка, завершіть обробку на &lt;a href="http://region.igov.org.ua"&gt;порталі&lt;/a&gt;</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${result}</activiti:expression>
@@ -387,8 +386,8 @@
           <activiti:value id="no" name="так, ділянка належить лише мені"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="proverka" name="Відповідь Головного архітектурно-планувального управління" type="enum">
-          <activiti:value id="ok" name="містобудівні умови та обмеження надані"></activiti:value>
-          <activiti:value id="bad" name="надати містобудівні умови та обмеження неможливо"></activiti:value>
+          <activiti:value id="ok" name="будівельний паспорт оформлено"></activiti:value>
+          <activiti:value id="bad" name="будівельний паспорт оформити неможливо"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/BudPass.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/BudPass.html]" type="invisible" default="Заява на виготовлення будівельного паспорта" writable="false"></activiti:formProperty>

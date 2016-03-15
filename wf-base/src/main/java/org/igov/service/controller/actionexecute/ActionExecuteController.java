@@ -28,7 +28,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@Transactional
 @Api(tags = {"ActionExecuteController"})
 @RequestMapping(value = "/action/execute")
 public class ActionExecuteController {
@@ -112,6 +111,7 @@ public class ActionExecuteController {
     	return null;
     }
 
+    @Transactional
     @ApiOperation(value = "переместить записи из основной таблицы в олд или обратно", notes = "")
     @RequestMapping(value = "/testMail", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, headers = {"Accept=application/json"})
     public
@@ -138,7 +138,7 @@ public class ActionExecuteController {
         LOG.info("(mail.getPort()={})", mail.getPort());       
         mail.sendWithUniSender();	
         LOG.info("test method call");
-        methodCallRunner.registerMethod(ActionExecuteController.class.getName(), "testMethod", new Object[]{"param1", "param2".getBytes(), new Integer(4)}); 
+        methodCallRunner.registerMethod(ActionExecuteController.class.getName(), "testMethod", new Object[]{"param1", "param2".getBytes(), new Integer(1)}); 
     	return null;
     }   
     

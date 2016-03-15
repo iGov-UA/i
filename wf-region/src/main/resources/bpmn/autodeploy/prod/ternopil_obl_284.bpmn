@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="ternopil_obl_284" name="Тернопільcька обл. - Надання одноразової матеріальної допомоги" isExecutable="true">
+  <process id="ternopil_obl_284" name="Надання одноразової матеріальної допомоги громадянам" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище заявника" type="string"></activiti:formProperty>
@@ -11,13 +11,10 @@
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+38" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail для зворотнього зв'язку " type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddress" name="Місце проживання (реєстрації); Вкажіть район та назву населеного пункту, вулицю, номер будинку та квартири" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, до якого Ви звертаєтесь" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="whoIs" name="Заяву Ви подаєте як" type="enum" required="true">
           <activiti:value id="vlasn" name="отримувач домоги"></activiti:value>
           <activiti:value id="predst" name="законний представник отримувача допомоги"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="organID" name="До якого державного органу Ви звертаєтесь" type="enum" required="true">
-          <activiti:value id="TernOda" name="Департаменту соціального захисту населення Тернопільської ОДА"></activiti:value>
-          <activiti:value id="TernRda" name="Управління соціального захисту населення Тернопільської РДА"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="citizenType" name="До якої категорії громадян належите Ви або особа, яку ви представляєте" type="enum" required="true">
           <activiti:value id="WorkLess" name="Малозабезпечена непрацююча особа"></activiti:value>
@@ -70,8 +67,9 @@
         <activiti:formProperty id="scanMed" name="Копія висновку з медичної установи" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="scanSum" name="Копія документу, що підтверджує суму завданих збитків" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="scanOth" name="Копія документу, що підтверджує скрутний матеріальний стан" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="warning" name="Зверніть увагу" type="label" default="Подаючи звернення, Ви підтверджуєте достовірність усіх зазначених у зверненні даних і надаєте свою згоду на обробку Ваших персональних даних"></activiti:formProperty>
-        <activiti:formProperty id="postV" name="електронна пошта" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="електронна пошта" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sOrganID" name="До якого державного органу звертається заявник" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('ternopil/helpODA.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -82,27 +80,26 @@
     </boundaryEvent>
     <sequenceFlow id="flow2" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
-    <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
+    <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="servicetask5"></sequenceFlow>
     <scriptTask id="scripttask1" name="Передача значений" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
 var per1 = 'post'
-if (execution.getVariable('organID') == 'TernOda'){
+if (execution.getVariable('sOrganID') == 'TernOda'){
 per1 = 'sobesternopil@gmail.com'
 }
-if (execution.getVariable('organID') == 'TernRda'){
+if (execution.getVariable('sOrganID') == 'TernRda'){
 per1 = 'uszntrda@ukt.net'
 }
-if (execution.getVariable('organID') == 'BorshRda'){
+if (execution.getVariable('sOrganID') == 'BorshRda'){
 per1 = 'borshchiv@sobes-ter.gov.ua'
 }
-execution.setVariable('postV', per1)
+execution.setVariable('sMailClerk', per1)
 	  </script>
     </scriptTask>
-    <sequenceFlow id="flow21" sourceRef="scripttask1" targetRef="servicetask5"></sequenceFlow>
     <serviceTask id="servicetask5" name="Повідомлення про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${postV}</activiti:expression>
+          <activiti:expression>${sMailClerk}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -132,7 +129,7 @@ execution.setVariable('postV', per1)
 									&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
 										Ваш запит був успішно зареєстрований у нашій системі.&lt;br /&gt; 	
-										Спеціалісти enum{[organID]} повинні дати відповідь найближчим часом. 
+										Спеціалісти ${sOrganID} повинні дати відповідь найближчим часом. 
 									&lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
 									[pattern/mail/_common_signature_end.html]
@@ -141,7 +138,7 @@ execution.setVariable('postV', per1)
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow4" sourceRef="servicetask4" targetRef="usertask1"></sequenceFlow>
-    <userTask id="usertask1" name="Перевірка документів" activiti:candidateGroups="ternopil_sh_${organID}">
+    <userTask id="usertask1" name="Перевірка документів" activiti:candidateGroups="sh_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="ПІБ заявника, oдержувача допомоги АБО його законного представника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані oдержувача допомоги АБО його законного представника" type="string" writable="false"></activiti:formProperty>
@@ -149,13 +146,10 @@ execution.setVariable('postV', per1)
         <activiti:formProperty id="bankIdinn" name="ІПН oдержувача допомоги АБО його законного представника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sOrganID" name="До якого державного органу звертається заявник" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="whoIs" name="Заява подана від" type="enum" writable="false">
           <activiti:value id="vlasn" name="отримувача домоги"></activiti:value>
           <activiti:value id="predst" name="законного представника"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="organID" name="До якого державного органу звертається заявник" type="enum" writable="false">
-          <activiti:value id="TernOda" name="Департаменту соціального захисту населення Тернопільської ОДА"></activiti:value>
-          <activiti:value id="TernRda" name="Управління соціального захисту населення Тернопільської РДА"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="citizenType" name="Для якої категорії громадян потрібна допомога" type="enum" writable="false">
           <activiti:value id="WorkLess" name="малозабезпеченої непрацюючої особи"></activiti:value>
@@ -233,7 +227,7 @@ execution.setVariable('postV', per1)
 			&lt;/p&gt;
 			За необхідності Ви можете подати ще одну заяву на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;igov.org.ua&lt;/a&gt;&lt;/p&gt;
 			[pattern/mail/_common_signature_start.html]
-            enum{[organID]}&lt;/p&gt;
+            ${sNameOrgan}&lt;/p&gt;
 			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
@@ -258,19 +252,20 @@ execution.setVariable('postV', per1)
           <activiti:expression>[pattern/mail/_common_header.html]
                                     &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
-										Ваш звернення було передане на розгляд коміссії.&lt;br /&gt; 	
+										Ваш звернення було передане на розгляд коміссії.&lt;br&gt; 	
 										Ви отримаєте відповідь у визначений законом термін.
 									&lt;/p&gt;
                                    [pattern/mail/_common_signature_start.html]
-                                   enum{[organID]},&lt;br /&gt;
+                                   ${sNameOrgan},&lt;br&gt;
                                    [pattern/mail/_common_signature_end.html]
                                    [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow20" sourceRef="servicetask7" targetRef="usertask2"></sequenceFlow>
-    <userTask id="usertask2" name="На розгляді комісії" activiti:candidateGroups="ternopil_sh_${organID}">
+    <userTask id="usertask2" name="На розгляді комісії" activiti:candidateGroups="sh_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
+        <activiti:formProperty id="sOrganID" name="До якого державного органу звертається заявник" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="docID" name="ID номер заяви" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="ПІБ заявника, oдержувача допомоги АБО його законного представника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані oдержувача допомоги АБО його законного представника" type="string" writable="false"></activiti:formProperty>
@@ -278,15 +273,9 @@ execution.setVariable('postV', per1)
         <activiti:formProperty id="bankIdinn" name="ІПН oдержувача допомоги АБО його законного представника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="email" name="E-Mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="whoIs" name="Заява подана від" type="enum" writable="false">
+       <activiti:formProperty id="whoIs" name="Заява подана від" type="enum" writable="false">
           <activiti:value id="vlasn" name="отримувача домоги"></activiti:value>
           <activiti:value id="predst" name="законного представника"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="organID" name="До якого державного органу звертається заявник" type="enum" writable="false">
-          <activiti:value id="TernOda" name="Департамент соціального захисту населення Тернопільської ОДА"></activiti:value>
-          <activiti:value id="TernRda" name="Управління соціального захисту населення Тернопільської РДА"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="citizenType" name="Для якої категорії громадян потрібна допомога" type="enum" writable="false">
           <activiti:value id="WorkLess" name="малозабезпеченої непрацюючої особи"></activiti:value>
@@ -357,15 +346,15 @@ execution.setVariable('postV', per1)
           <activiti:expression>[pattern/mail/_common_header.html]
                                     &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
-                                        Ваше звернення щодо надання одноразової матеріальної допомоги громадянам було успішно розглянуте.&lt;br /&gt;
+                                        Ваше звернення щодо надання одноразової матеріальної допомоги громадянам було успішно розглянуте.&lt;br&gt;
 										Ви отримаєте допомогу обраним Вами способом.
 									&lt;/p&gt;
 									&lt;p&gt;
-										Ідентифікаційний номер заяви, присвоєний державним органом - &lt;i&gt; ${docID}&lt;/i&gt; &lt;br /&gt;
+										Ідентифікаційний номер заяви, присвоєний державним органом - &lt;i&gt; ${docID}&lt;/i&gt; &lt;br&gt;
 										Скан-копія рішення знаходиться у додатках до цього листа.
                                     &lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
-                                    enum{[organID]},&lt;br /&gt;
+                                    ${sNameOrgan},&lt;br&gt;
                                     [pattern/mail/_common_signature_end.html]   
 									[pattern/mail/_common_feedback.html]
 									[pattern/mail/_common_footer.html]</activiti:expression>
@@ -396,17 +385,17 @@ execution.setVariable('postV', per1)
           <activiti:expression>[pattern/mail/_common_header.html]
                                     &lt;h3&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
-                                       На жаль, ми змушені відмовити вам у наданні послуги "надання одноразової матеріальної допомоги громадянам".&lt;br /&gt;
+                                       На жаль, ми змушені відмовити вам у наданні послуги "надання одноразової матеріальної допомоги громадянам".&lt;br&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
-										Причина в наступному:&lt;br /&gt;
+										Причина в наступному:&lt;br&gt;
 										${decisionComment1}
 									&lt;/p&gt;
 									&lt;p&gt;
 										Скан-копія рішення знаходиться у додатках до цього листа
 									&lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
-                                    enum{[organID]}&lt;/p&gt;
+                                    ${sNameOrgan}&lt;/p&gt;
 									[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
@@ -427,11 +416,14 @@ execution.setVariable('postV', per1)
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="73.0" y="186.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
-        <omgdc:Bounds height="66.0" width="111.0" x="340.0" y="96.0"></omgdc:Bounds>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="260.0" y="4.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
-        <omgdc:Bounds height="65.0" width="105.0" x="221.0" y="97.0"></omgdc:Bounds>
+        <omgdc:Bounds height="65.0" width="105.0" x="210.0" y="97.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
+        <omgdc:Bounds height="66.0" width="111.0" x="330.0" y="96.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="64.0" width="105.0" x="463.0" y="97.0"></omgdc:Bounds>
@@ -446,7 +438,7 @@ execution.setVariable('postV', per1)
         <omgdc:Bounds height="35.0" width="35.0" x="490.0" y="238.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
-        <omgdc:Bounds height="55.0" width="105.0" x="662.0" y="101.0"></omgdc:Bounds>
+        <omgdc:Bounds height="65.0" width="105.0" x="662.0" y="96.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
         <omgdc:Bounds height="64.0" width="121.0" x="782.0" y="97.0"></omgdc:Bounds>
@@ -463,9 +455,6 @@ execution.setVariable('postV', per1)
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
         <omgdc:Bounds height="71.0" width="105.0" x="780.0" y="220.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="150.0" y="31.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="45.0" y="128.0"></omgdi:waypoint>
         <omgdi:waypoint x="73.0" y="129.0"></omgdi:waypoint>
@@ -475,17 +464,16 @@ execution.setVariable('postV', per1)
         <omgdi:waypoint x="90.0" y="186.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="131.0" y="96.0"></omgdi:waypoint>
-        <omgdi:waypoint x="131.0" y="58.0"></omgdi:waypoint>
-        <omgdi:waypoint x="150.0" y="58.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
-        <omgdi:waypoint x="451.0" y="129.0"></omgdi:waypoint>
-        <omgdi:waypoint x="463.0" y="129.0"></omgdi:waypoint>
+        <omgdi:waypoint x="190.0" y="129.0"></omgdi:waypoint>
+        <omgdi:waypoint x="210.0" y="129.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
-        <omgdi:waypoint x="326.0" y="129.0"></omgdi:waypoint>
-        <omgdi:waypoint x="340.0" y="129.0"></omgdi:waypoint>
+        <omgdi:waypoint x="315.0" y="129.0"></omgdi:waypoint>
+        <omgdi:waypoint x="330.0" y="129.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="441.0" y="129.0"></omgdi:waypoint>
+        <omgdi:waypoint x="463.0" y="129.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
         <omgdi:waypoint x="568.0" y="129.0"></omgdi:waypoint>
@@ -544,11 +532,6 @@ execution.setVariable('postV', per1)
         <omgdi:waypoint x="832.0" y="291.0"></omgdi:waypoint>
         <omgdi:waypoint x="832.0" y="307.0"></omgdi:waypoint>
         <omgdi:waypoint x="903.0" y="307.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
-        <omgdi:waypoint x="255.0" y="58.0"></omgdi:waypoint>
-        <omgdi:waypoint x="273.0" y="59.0"></omgdi:waypoint>
-        <omgdi:waypoint x="273.0" y="97.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

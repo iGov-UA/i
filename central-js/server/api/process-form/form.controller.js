@@ -22,8 +22,6 @@ module.exports.index = function (req, res) {
   console.log("nID_Server=" + nID_Server);
   var sID_BP_Versioned = req.query.sID_BP_Versioned;
   console.log("sID_BP_Versioned=" + sID_BP_Versioned);
-  //var config = require('../../config/environment');
-  //var activiti = config.activiti;
   return activiti.getServerRegionHost(nID_Server, function (sHost) {
     console.log("sHost=" + sHost);
 
@@ -86,21 +84,25 @@ module.exports.submit = function (req, res) {
     var nID_Subject = req.session.subject.nID;
     var properties = [];
     for (var id in options.formData.params) {
-      var value = options.formData.params[id];
-      if (id === 'nID_Subject') {
-        value = nID_Subject;
-      }
-      if (id === 'sID_UA' && options.formData.sID_UA_Common !== null) {
-        //if (id === 'sID_UA_Common') {
-        value = options.formData.sID_UA_Common;
-      } else if (id === 'sID_UA') {
-        value = options.formData.sID_UA;
-      }
+      var oParam = options.formData.params[id];//fields
+      //if(oParam.type!=="markerds"){
+      if(oParam.writable){
+        var value = options.formData.params[id];
+        if (id === 'nID_Subject') {
+          value = nID_Subject;
+        }
+        if (id === 'sID_UA' && options.formData.sID_UA_Common !== null) {
+          //if (id === 'sID_UA_Common') {
+          value = options.formData.sID_UA_Common;
+        } else if (id === 'sID_UA') {
+          value = options.formData.sID_UA;
+        }
 
-      properties.push({
-        id: id,
-        value: value
-      });
+        properties.push({
+          id: id,
+          value: value
+        });
+      }
     }
 
     return request.post({

@@ -8,7 +8,13 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -23,6 +29,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import javax.activation.DataSource;
 import javax.servlet.http.HttpServletResponse;
 
 import liquibase.util.csv.CSVWriter;
@@ -39,6 +46,7 @@ import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.history.HistoricTaskInstanceQuery;
 import org.activiti.engine.identity.Group;
+import org.activiti.engine.impl.event.logger.handler.TaskCreatedEventHandler;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.repository.ProcessDefinition;
@@ -49,7 +57,10 @@ import org.activiti.engine.task.TaskInfoQuery;
 import org.activiti.engine.task.TaskQuery;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.mail.ByteArrayDataSource;
+import org.apache.commons.mail.EmailException;
 import org.igov.io.GeneralConfig;
+import org.igov.io.mail.Mail;
 import org.igov.io.mail.NotificationPatterns;
 import org.igov.io.web.HttpRequester;
 import org.igov.model.action.event.HistoryEvent_Service_StatusType;
@@ -85,6 +96,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.activiti.engine.ProcessEngine;
+import org.activiti.engine.ProcessEngines;
+import org.activiti.engine.identity.User;
 
 //import com.google.common.base.Optional;
 
@@ -146,6 +160,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
     @Autowired
     private MessageService oMessageService;
+    
+    @Autowired
+    private Mail oMail;
 
     /**
      * Загрузка задач из Activiti:
@@ -582,7 +599,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             if (oActionTaskService.checkAvailabilityTaskGroupsForUser(sLogin, nID_Task)){
                 LOG.info("User {} have access to the Task {}", sLogin, nID_Task);
             } else {
-                //String taskGroupIDs = oActionTaskService.getCandidateGroupByTaskID(nID_Task).toString();
                 String taskGroupIDs = oActionTaskService.getGroupIDsByTaskID(nID_Task).toString();
                 throw new AccessServiceException(AccessServiceException.Error.LOGIN_ERROR, "Access deny " + taskGroupIDs);
             }
@@ -615,7 +631,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         response.put("oData", oActionTaskService.getQueueData(aField));
 
         if (bIncludeGroups.equals(Boolean.TRUE)){
-            //response.put("aGroups", oActionTaskService.getCandidateGroupByTaskID(nID_Task));
             response.put("aGroups", oActionTaskService.getGroupIDsByTaskID(nID_Task));
         }
         if (bIncludeStartForm.equals(Boolean.TRUE)){
@@ -1099,6 +1114,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "добавить заголовок с названиями полей в выходной файл, по умолчанию - false", required = false) @RequestParam(value = "bHeader", required = false, defaultValue = "false") Boolean bHeader,
             @ApiParam(value = "настраиваемые поля (название поля -- формула, issue 907", required = false) @RequestParam(value = "saFieldsCalc", required = false) String saFieldsCalc,
             @ApiParam(value = "сведение полей, которое производится над выборкой (issue 916)", required = false) @RequestParam(value = "saFieldSummary", required = false) String saFieldSummary,
+            @ApiParam(value = "Email для отправки выбранных данных", required = false) @RequestParam(value = "sMailTo", required = false) String sMailTo,
+            @ApiParam(value = "начальная дата закрытия таски", required = false) @RequestParam(value = "sTaskEndDateAt", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date sTaskEndDateAt,
+            @ApiParam(value = "конечная дата закрытия таски", required = false) @RequestParam(value = "sTaskEndDateTo", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date sTaskEndDateTo,
             HttpServletResponse httpResponse) throws IOException {
 
 //      'sID_State_BP': '',//'usertask1'
@@ -1133,7 +1151,14 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 .taskCreatedBefore(dEndDate);
         HistoricTaskInstanceQuery historicQuery = historyService
                 .createHistoricTaskInstanceQuery()
-                .processDefinitionKey(sID_BP).taskCreatedAfter(dBeginDate)
+                .processDefinitionKey(sID_BP);
+        if (sTaskEndDateAt != null){
+        	historicQuery.taskCompletedAfter(sTaskEndDateAt);
+        }
+        if (sTaskEndDateTo != null){
+        	historicQuery.taskCompletedBefore(sTaskEndDateTo);
+        }
+        historicQuery.taskCreatedAfter(dBeginDate)
                 .taskCreatedBefore(dEndDate).includeProcessVariables();
         if (sID_State_BP != null) {
             historicQuery.taskDefinitionKey(sID_State_BP);
@@ -1149,7 +1174,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         if (sID_State_BP != null) {
             query = query.taskDefinitionKey(sID_State_BP);
         }
-        List<Task> foundResults = query.listPage(nRowStart, nRowsMax);
+        List<Task> foundResults = new LinkedList<Task>();
+        if (sTaskEndDateAt == null && sTaskEndDateTo != null){
+        	foundResults = query.listPage(nRowStart, nRowsMax);
+        }
 
         // 3. response
         SimpleDateFormat sdfFileName = new SimpleDateFormat(
@@ -1163,12 +1191,21 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
         LOG.debug("File name to return statistics : {}", sTaskDataFileName);
 
-        httpResponse.setContentType("text/csv;charset=" + charset.name());
-        httpResponse.setHeader("Content-disposition", "attachment; filename="
-                + sTaskDataFileName);
-
-        CSVWriter printWriter = new CSVWriter(httpResponse.getWriter(), separator.charAt(0),
+        CSVWriter printWriter = null;
+        PipedInputStream pi = new PipedInputStream();
+        
+        if (sMailTo != null){
+	        PipedOutputStream po = new PipedOutputStream(pi);
+	        PrintWriter pw = new PrintWriter(po);
+	        printWriter = new CSVWriter(pw, separator.charAt(0),
+	                CSVWriter.NO_QUOTE_CHARACTER);
+        } else {
+        	printWriter = new CSVWriter(httpResponse.getWriter(), separator.charAt(0),
                 CSVWriter.NO_QUOTE_CHARACTER);
+        	httpResponse.setContentType("text/csv;charset=" + charset.name());
+            httpResponse.setHeader("Content-disposition", "attachment; filename="
+                    + sTaskDataFileName);
+        }
 
         List<Map<String, Object>> csvLines = new LinkedList<>();
 
@@ -1218,6 +1255,28 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
 
         printWriter.close();
+        
+        if (sMailTo != null){
+        	LOG.info("Sending email with tasks data to email {}", sMailTo);
+	        SimpleDateFormat sdf = new SimpleDateFormat("yyyy:MM:dd");
+	        String sSubject = String.format("Выборка за: (%s)-(%s) для БП: %s ", sdf.format(dBeginDate), sdf.format(dEndDate), sID_BP);
+	        String sFileExt = "csv";
+	        DataSource oDataSource = new ByteArrayDataSource(pi, sFileExt);
+	        oMail._To(sMailTo);
+	        oMail._Head(sSubject);
+	        oMail._Body(sSubject);
+	        oMail._Attach(oDataSource, sTaskDataFileName, "");
+	        try {
+				oMail.sendWithUniSender();
+			} catch (EmailException e) {
+				LOG.error("Error occured while sending tasks data to email: {}", e.getMessage());
+			}
+	        pi.close();
+	        
+	        httpResponse.setContentType("text/plain");
+	        httpResponse.getWriter().print("OK");
+        }
+        
     }
 
     /**
@@ -1925,7 +1984,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 					assignee = task.getAssignee();
 					LOG.info("Processing task {} with assignee {}", task.getId(), task.getAssignee());
 					taskService.setVariable(task.getId(), "sStatusName_UkrDoc", status);
-					LOG.info("Set variable sStatusName_UkrDoc {} for task with ID {}", status, task.getId());
+					runtimeService.setVariable(task.getProcessInstanceId(), "sStatusName_UkrDoc", status);
+					runtimeService.setVariable(task.getProcessInstanceId(), "sID_Document_UkrDoc", sKey);
+					LOG.info("Set variable sStatusName_UkrDoc {} and sID_Document_UkrDoc {} for process instance with ID {}", status, sKey, task.getProcessInstanceId());
 					taskService.complete(task.getId());
 					LOG.info("Completed task {}", task.getId());
 				}
@@ -1966,4 +2027,131 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
         return JSONValue.toJSONString(oActionTaskService.getProcessVariableValue(nID_Process, sVariableName));
     }
+    
+    
+    /**
+     * 
+     * @param sLogin                     - Строка логин пользователя, меняющего пароль
+     * @param sPasswordOld               - Строка старый пароль
+     * @param sPasswordNew               - Строка новый пароль
+     * @return
+     * @throws CommonServiceException
+     * @throws RuntimeException         
+     */
+    
+    @ApiOperation(value = "Сервис смены пароля пользователя в Activity", notes = "#### Примеры \n"
+            + "Request: \n"
+            + "https://test.igov.org.ua/wf/service/action/task/changePassword\n"
+            + "sLoginOwner=kermit\n"
+            + "sPasswordOld=kermit\n"
+            + "sPasswordNew=kermit1\n"
+            + "Response: Ok, 200 \n"
+            + "\n ```json\n"
+            + "{\n"
+            + "\"userId\":\"kermit\",\n"
+            + "\"userEmail\":\"kermit@activiti.org\",\n"
+            + "\"userFirstName\":\"Kermit\",\n"
+            + "\"userLastName\":\"The Frog\"\n"
+            + "}\n"
+            + "\n```\n"
+            + "\n"
+            + "Wrong sPasswordOld\n"
+            + "Request:\n"
+            + "https://test.igov.org.ua/wf/service/action/task/changePassword\n"
+            + "sLoginOwner=kermit\n"
+            + "sPasswordOld=kermit45\n"
+            + "sPasswordNew=kermit1\n"
+            + "Response: Forbidden 403\n"
+            + "\n ```json\n"
+            + "{\n"
+            + "\"code\":\"BUSINESS_ERR\",\n"
+            + "\"message\":\"Password kermit45 is wrong\"\n"
+            + "}\n"
+            + "\n```\n"
+            + "\n"
+            + "Wrong sLogin\n"
+            + "Request:\n"
+            + "https://test.igov.org.ua/wf/service/action/task/changePassword\n"
+            + "sLoginOwner=kermit45\n"
+            + "sPasswordOld=kermit\n"
+            + "sPasswordNew=kermit1\n"
+            + "Response: Forbidden 403\n"
+            + "\n ```json\n"
+            + "{\n"
+            + "\"code\":\"BUSINESS_ERR\",\n"
+            + "\"message\":\"Error! user has not been found\"\n"
+            + "}\n"
+            + "\n```\n")
+    @RequestMapping(value = "/changePassword", method = {RequestMethod.POST, RequestMethod.GET})
+    public 
+    @ResponseBody
+    String changePassword(
+    @ApiParam(value="Строка логин пользователя, меняющего пароль", required = true) @RequestParam(value="sLoginOwner", required = true) String sLogin,
+    @ApiParam(value="Строка старый пароль", required = true) @RequestParam(value="sPasswordOld", required=true) String sPasswordOld,
+    @ApiParam(value="Строка новый пароль", required = true) @RequestParam(value="sPasswordNew", required=true) String sPasswordNew
+    ) throws CommonServiceException, RuntimeException
+    {
+      ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
+      IdentityService identityService = processEngine.getIdentityService();
+      User user = null;
+     
+      LOG.info("User will be found by sLoginOwner {}", sLogin);
+      user = identityService.createUserQuery().userId(sLogin).singleResult();
+    
+      if(user == null)
+      {
+         LOG.warn("Error! user has not been found");
+         throw new CommonServiceException(
+            ExceptionCommonController.BUSINESS_ERROR_CODE,
+            "Error! user has not been found",
+            HttpStatus.FORBIDDEN
+         );  
+      }
+         
+         
+    
+     
+      if(!user.getPassword().equals(sPasswordOld))
+      {
+          LOG.warn("The sPasswordOld parameter is not equal the user's password: {}");
+          throw new CommonServiceException(
+             ExceptionCommonController.BUSINESS_ERROR_CODE,
+             "Password " + sPasswordOld +" is wrong",
+             HttpStatus.FORBIDDEN
+             );
+          
+      }
+      user.setPassword(sPasswordNew);
+      
+      try
+      {
+         identityService.saveUser(user);
+      }
+      catch(RuntimeException e)
+      {
+           LOG.warn("User with such name already exists in base: {}", e.getMessage());
+           throw new RuntimeException(e);
+      }
+      
+      try
+      {
+         user = identityService.createUserQuery().userId(user.getId()).singleResult();   
+      }
+      catch(Exception e)
+      {
+          LOG.warn("Error! user has not been found: message{}", e.getMessage());
+          throw new CommonServiceException(
+            ExceptionCommonController.BUSINESS_ERROR_CODE,
+            e.getMessage(),
+            HttpStatus.FORBIDDEN
+         );
+      }
+      String userData = "{ \"userId\":\""+user.getId()+"\", "
+              + "\"userEmail\" : \""+user.getEmail()+"\", "
+              + "\"userFirstName\":\""+user.getFirstName()+"\", "
+              + "\"userLastName\":\""+ user.getLastName()+"\"}";
+      
+      return userData;
+    }
+
 }

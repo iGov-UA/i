@@ -16,7 +16,7 @@
         <activiti:formProperty id="file1" name="Витяг з протоколу спільного засідання адміністрації та профспілкового комітету про надання службового житла" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file2" name="Заява на видачу ордера завірену в КП «Новопсковське житло»" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file3" name="Акт обстеження житлових умов" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file4" name="Довідка Ф№3 з КП «Новопсковськежитло»" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file4" name="Довідка про склад сім'ї" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file5" name="Довідка з місця роботи про працевлаштування;для працевлаштованих" type="file"></activiti:formProperty>
         <activiti:formProperty id="file5_1" name="Довідки з  ЖЕКу для не працевлаштованих;на всіх повнолітніх членів сім’ї" type="file"></activiti:formProperty>
         <activiti:formProperty id="merried" name="Оберіть, будь ласка, свій сімейний стан" type="enum" required="true">
@@ -89,15 +89,15 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow4" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
-    <userTask id="usertask1" name="Перевірка даних" activiti:candidateGroups="novopskov_MVK">
+    <userTask id="usertask1" name="Перевірка даних" activiti:candidateGroups="cnap_mvk_lug_NovopskovskT">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По-батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdAdressFactual" name="Адреса;(місце реєстрації)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна пошта заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подачі заяви" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="merried" name="Сімейний стан заявника" type="enum" writable="false">
           <activiti:value id="Enum1" name="Одруженний(-а)"></activiti:value>
@@ -108,7 +108,7 @@
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="no" name="Ні"></activiti:value>
         </activiti:formProperty>
-         <activiti:formProperty id="sBody_1" name="[pattern/print/architecture/zayava_407.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/architecture/zayava_407.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="result" name="Рішення держслужбовця" type="enum" required="true">
           <activiti:value id="da" name="Видати ордер"></activiti:value>
           <activiti:value id="net" name="Відмовити у видачі ордеру"></activiti:value>
@@ -141,9 +141,11 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 		    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-			&lt;p&gt;За даними сільської ради Вам ВІДМОВЛЕНО у наданні ордера на службове жиле приміщення.&lt;/p&gt;
-&lt;p&gt;${decisionComment}&lt;/p&gt;
-			&lt;p&gt;За необхідності Ви можете звернутися за адресою:
+			&lt;p&gt;За даними держоргану Вам ВІДМОВЛЕНО у наданні ордера на службове жиле приміщення.&lt;/p&gt;
+			&lt;p&gt;
+										Коментар Державного службовця:&lt;br&gt;
+										&lt;b&gt;&lt;i&gt;${decisionComment}&lt;/i&gt;&lt;/b&gt;&lt;/p&gt;
+			&lt;p&gt;Контакти відділу, до якого можна звернутися:
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:3]&lt;br&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:4]&lt;br&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]
@@ -173,7 +175,14 @@
           <activiti:expression>[pattern/mail/_common_header.html]
 		    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 			&lt;p&gt;За даними сільської ради Вам НАДАНО ордер на службове жиле приміщення.   &lt;/p&gt;
-&lt;p&gt;${decisionComment}&lt;/p&gt;
+&lt;p&gt;
+										Коментар Державного службовця:&lt;br&gt;
+										&lt;b&gt;&lt;i&gt;${decisionComment}&lt;/i&gt;&lt;/b&gt;&lt;/p&gt;
+			&lt;p&gt;Контакти відділу, до якого необхідно звернутися:
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:3]&lt;br&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:4]&lt;br&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]
+&lt;/p&gt;
 			[pattern/mail/_common_signature_start.html]
 			&lt;p&gt;[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2]
 			&lt;/p&gt;
@@ -266,7 +275,7 @@
         <omgdi:waypoint x="700.0" y="229.0"></omgdi:waypoint>
         <omgdi:waypoint x="700.0" y="280.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="72.0" x="710.0" y="259.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="100.0" x="710.0" y="259.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
