@@ -1,52 +1,15 @@
 package org.igov.service.controller;
 
-import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
-import static org.igov.util.Tool.sO;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.nio.charset.Charset;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-
-import javax.activation.DataSource;
-import javax.servlet.http.HttpServletResponse;
-
+import com.fasterxml.jackson.core.JsonProcessingException;
+import io.swagger.annotations.*;
 import liquibase.util.csv.CSVWriter;
-
-import org.activiti.engine.ActivitiObjectNotFoundException;
-import org.activiti.engine.FormService;
-import org.activiti.engine.HistoryService;
-import org.activiti.engine.IdentityService;
-import org.activiti.engine.RepositoryService;
-import org.activiti.engine.RuntimeService;
-import org.activiti.engine.TaskService;
+import org.activiti.engine.*;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.history.HistoricTaskInstanceQuery;
 import org.activiti.engine.identity.Group;
-import org.activiti.engine.impl.event.logger.handler.TaskCreatedEventHandler;
+import org.activiti.engine.identity.User;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.repository.ProcessDefinition;
@@ -76,9 +39,9 @@ import org.igov.service.business.action.task.systemtask.doc.handler.UkrDocEventH
 import org.igov.service.business.subject.message.MessageService;
 import org.igov.service.exception.*;
 import org.igov.util.JSON.JsonDateTimeSerializer;
+import org.igov.util.JSON.JsonRestUtils;
 import org.igov.util.Tool;
 import org.igov.util.ToolCellSum;
-import org.igov.util.JSON.JsonRestUtils;
 import org.json.simple.JSONValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -88,17 +51,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.activiti.engine.ProcessEngine;
-import org.activiti.engine.ProcessEngines;
-import org.activiti.engine.identity.User;
+import javax.activation.DataSource;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
+import java.io.PrintWriter;
+import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
+import static org.igov.util.Tool.sO;
 
 //import com.google.common.base.Optional;
 
@@ -1941,7 +1907,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             + "\n```\n")
     @RequestMapping(value = "/callback/ukrdoc", method = {RequestMethod.POST})
     public @ResponseBody
-    String processUkrDocCallBack(@RequestBody String event){
+    ResponseEntity processUkrDocCallBack(@RequestBody String event){
     	
     	UkrDocEventHandler eventHandler = new UkrDocEventHandler();
     	eventHandler.processEvent(event);
@@ -2004,8 +1970,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 				LOG.info("Active tasks have not found for the process {}", processInstance.getId());
 			}
     	}
-    	
-    	return "OK";
+
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("sReturnSuccess", "OK");
+
+        return JsonRestUtils.toJsonResponse(response);
     }
  
     

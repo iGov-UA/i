@@ -1060,4 +1060,11 @@
 	    <addForeignKeyConstraint constraintName="FK_Document_HistoryEvent" referencedTableName="Document" referencedColumnNames="nID"
 	    	baseColumnNames="nID_Document" baseTableName="HistoryEvent" />
     </changeSet>
+
+    <changeSet id="issue-1188" author="PaulLuchyn">
+        <addColumn tableName="HistoryEvent_Service">
+            <column name="nID_ServiceData" type="bigint" defaultValue="null"/>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>
