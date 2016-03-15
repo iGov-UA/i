@@ -4,9 +4,9 @@
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть огран, у якому Ви бажаєте отримати рішення" type="select" default="0"></activiti:formProperty>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sSubzvern" name="Суб'єкт звернення:;(повна назва юридичної особи або фізичної-особи підприємця)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Адреса реєстрації суб'єкта звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Мобільний телефон" type="string" default="+380" required="true"></activiti:formProperty>
@@ -18,9 +18,9 @@
         <activiti:formProperty id="file_eskiz_fasad" name="Ескізи фасадів  ТС  у кольорі М 1:50 (для стаціонарних ТС)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file_ustr_terit" name="Схема благоустрою  прилеглої  території" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file_ingen_merez" name="Технічні умови щодо інженерного забезпечення (за наявності), отримані  замовником  у  балансоутримувача  відповідних інженерних мереж." type="file"></activiti:formProperty>
-        <activiti:formProperty id="sSignCnap" name="підпис" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneCnap" name="телефон ЦНАП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPostV" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sArhitekture_post" name="Пошта архітектури" type="invisible" default="vma.zhv@gmail.com"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -67,9 +67,9 @@ ${sSubzvern}&lt;br /&gt;
 &lt;p&gt; Ваше звернення щодо видачі паспорту прив’язки тимчасової споруди прийнято до роботи.
 Повідомлення про результат розгляду буде спрямоване на Ваш e-mail.&lt;/p&gt;
 &lt;br /&gt;
-За наявності питянь можете звернутись за телефоном: ${sPhoneCnap}.&lt;br /&gt;
+За наявності питянь можете звернутись за телефоном: ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-${sSignCnap}.&lt;br /&gt;
+${sNameOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -146,9 +146,9 @@ ${sSubzvern}&lt;br /&gt;
 &lt;p&gt; ЦНАП розглянув ваше звернення. Документи вірні. Відомості передані до міської ради.
 Повідомлення про результат розгляду в міській раді буде спрямоване на Ваш e-mail.&lt;/p&gt;
 &lt;br /&gt;
-За наявності питянь можете звернутись за телефоном: ${sPhoneCnap}.&lt;br /&gt;
+За наявності питянь можете звернутись за телефоном: ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-${sSignCnap}.&lt;br /&gt;
+${sNameOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -173,7 +173,6 @@ ${sSignCnap}.&lt;br /&gt;
         <activiti:formProperty id="Komment_rishenia2" name="Коментар по розгляду заявки;(Вкажіть корисні для ЦНАПу та заявника данні, в разі відмови поясніть причину відмови)" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="file_arhitectura" name="Завантажте відповідь" type="file"></activiti:formProperty>
         <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="супровідний текст1" type="invisible" default="Якщо заявка опрацьовано вона буде передана до ЦНАП.Також вам необхідно як найшвидше передати в ЦНАП паспорт прив'язки тимчасової споруди. У разі відмови робота по цій заявці завершена."></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression>${file_restr_svid},${file_kor_zeml},${file_sxem_rozm},${file_eskiz_fasad},${file_ustr_terit},${file_ingen_merez}</activiti:expression>
@@ -201,9 +200,9 @@ ${sSignCnap}.&lt;br /&gt;
 &lt;p&gt; Ваше звернення щодо видачі паспорту прив’язки тимчасової споруди розглянуте. В видачі документу відмовлено.
 Причина: ${Komment_rishenia}.&lt;/p&gt;
 &lt;br /&gt;
-За наявності питянь можете звернутись за телефоном: ${sPhoneCnap}.&lt;br /&gt;
+За наявності питянь можете звернутись за телефоном: ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-${sSignCnap}.&lt;br /&gt;
+${sNameOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -231,9 +230,9 @@ ${sSignCnap}.&lt;br /&gt;
 &lt;p&gt; Ваше звернення щодо видачі паспорту прив’язки тимчасової споруди розглянуте. В видачі документу відмовлено.
 Причина: ${Komment_rishenia2}.&lt;/p&gt;
 &lt;br /&gt;
-За наявності питянь можете звернутись за телефоном: ${sPhoneCnap}.&lt;br /&gt;
+За наявності питянь можете звернутись за телефоном: ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-${sSignCnap}.&lt;br /&gt;
+${sNameOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -260,9 +259,9 @@ ${sSignCnap}.&lt;br /&gt;
 &lt;p&gt; Ваше звернення щодо видачі паспорту прив’язки тимчасової споруди успішно розглянуте.
 Можете завтра прийти і отримати документ.&lt;/p&gt;
 &lt;br /&gt;
-За наявності питянь можете звернутись за телефоном: ${sPhoneCnap}.&lt;br /&gt;
+За наявності питянь можете звернутись за телефоном: ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-${sSignCnap}.&lt;br /&gt;
+${sNameOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -286,7 +285,6 @@ ${sSignCnap}.&lt;br /&gt;
           <activiti:value id="dok_ok3" name="Заявник отримав паспорт на розміщення тимчасової споруди"></activiti:value>
           <activiti:value id="dok_bad3" name="Заявник не з'явився"></activiti:value>
         </activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression>${file_arhitectura}</activiti:expression>
@@ -314,9 +312,9 @@ ${sSignCnap}.&lt;br /&gt;
 Дякуємо що скористались нашою послугою онлайн.&lt;br /&gt;
 Будь ласка оцініть якість наданої вам послуги. &lt;br /&gt;
 [pattern/mail/_common_feedback.html]
-За наявності питянь можете звернутись за телефоном: ${sPhoneCnap}.&lt;br /&gt;
+За наявності питянь можете звернутись за телефоном: ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-${sSignCnap}.&lt;br /&gt;
+${sNameOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
