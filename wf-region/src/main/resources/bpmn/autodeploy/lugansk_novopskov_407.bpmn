@@ -141,9 +141,11 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 		    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-			&lt;p&gt;За даними сільської ради Вам ВІДМОВЛЕНО у наданні ордера на службове жиле приміщення.&lt;/p&gt;
-&lt;p&gt;${decisionComment}&lt;/p&gt;
-			&lt;p&gt;За необхідності Ви можете звернутися за адресою:
+			&lt;p&gt;За даними держоргану Вам ВІДМОВЛЕНО у наданні ордера на службове жиле приміщення.&lt;/p&gt;
+			&lt;p&gt;
+										Коментар Державного службовця:&lt;br&gt;
+										&lt;b&gt;&lt;i&gt;${decisionComment}&lt;/i&gt;&lt;/b&gt;&lt;/p&gt;
+			&lt;p&gt;Контакти відділу, до якого можна звернутися:
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:3]&lt;br&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:4]&lt;br&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]
@@ -173,7 +175,14 @@
           <activiti:expression>[pattern/mail/_common_header.html]
 		    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 			&lt;p&gt;За даними сільської ради Вам НАДАНО ордер на службове жиле приміщення.   &lt;/p&gt;
-&lt;p&gt;${decisionComment}&lt;/p&gt;
+&lt;p&gt;
+										Коментар Державного службовця:&lt;br&gt;
+										&lt;b&gt;&lt;i&gt;${decisionComment}&lt;/i&gt;&lt;/b&gt;&lt;/p&gt;
+			&lt;p&gt;Контакти відділу, до якого необхідно звернутися:
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:3]&lt;br&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:4]&lt;br&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]
+&lt;/p&gt;
 			[pattern/mail/_common_signature_start.html]
 			&lt;p&gt;[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2]
 			&lt;/p&gt;

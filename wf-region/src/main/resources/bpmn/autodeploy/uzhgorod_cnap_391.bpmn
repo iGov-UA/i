@@ -37,7 +37,7 @@
     <serviceTask id="servicetask3" name="Інформування посадовця" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>valery.stavitsky@gmail.com</activiti:expression>
+          <activiti:expression><![CDATA[valery.stavitsky@gmail.com]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -46,12 +46,12 @@
           <activiti:string><![CDATA[Нове звернення по заявці на тему: Надання рішення міської ради про затвердження проектів землеустрою щодо відведення земельних ділянок]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow1" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
-    <userTask id="usertask1" name="Форма перевірки документів громадянина" activiti:candidateGroups="cnap_zakarp_uzhgorodT">
+    <userTask id="usertask1" name="Форма перевірки документів громадянина" activiti:candidateGroups="cnap_zak_uzgT">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім’я" type="string" writable="false"></activiti:formProperty>
@@ -78,7 +78,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nfileProjectLand},${nfileExtractOfCadastr}</activiti:expression>
+            <activiti:expression><![CDATA[${nfileProjectLand},${nfileExtractOfCadastr}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -91,7 +91,7 @@
     <serviceTask id="servicetask4" name="Лист про відмову" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -100,25 +100,25 @@
           <activiti:string><![CDATA[iGov: Заява на надання рішення міської ради про затвердження проектів землеустрою щодо відведення земельних ділянок]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-	&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-	&lt;p&gt;
-		На жаль, Вам відмовлено у надані послуги.&lt;br&gt;
-		При необхідності отримати &lt;b&gt;Рішення міської ради про затвердження проектів землеустрою щодо відведення земельних ділянок&lt;/b&gt; Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;, врахувавши коментар Державного службовця.
-	&lt;/p&gt; 
-	&lt;p&gt;
-		Коментар Державного службовця:&lt;br&gt;
-			&lt;b&gt;&lt;i&gt;${sDecisionComment}&lt;/i&gt;&lt;/b&gt;
-	&lt;/p&gt;
-	&lt;p&gt;
-		За додатковою інформацієї ви можете звернутись:&lt;br&gt;
-		&lt;i&gt;За адресою:&lt;/i&gt; &lt;br&gt; ${sAddress}&lt;br&gt; 
-		&lt;i&gt;График работы:&lt;/i&gt; &lt;br&gt; ${sWorkTime}&lt;br&gt;
-		&lt;i&gt;Телефон для справок:&lt;/i&gt; &lt;br&gt;${sPhoneOrgan}&lt;br&gt;
-	&lt;/p&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+	<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+	<p>
+		На жаль, Вам відмовлено у надані послуги.<br>
+		При необхідності отримати <b>Рішення міської ради про затвердження проектів землеустрою щодо відведення земельних ділянок</b> Ви можете подати ще одну заявку на порталі <a href="https://igov.org.ua/">iGov.org.ua</a>, врахувавши коментар Державного службовця.
+	</p> 
+	<p>
+		Коментар Державного службовця:<br>
+			<b><i>${sDecisionComment}</i></b>
+	</p>
+	<p>
+		За додатковою інформацієї ви можете звернутись:<br>
+		<i>За адресою:</i> <br> ${sAddress}<br> 
+		<i>График работы:</i> <br> ${sWorkTime}<br>
+		<i>Телефон для справок:</i> <br>${sPhoneOrgan}<br>
+	</p>
 		[pattern/mail/_common_signature_start.html]
-		${sNameOrgan},&lt;br&gt;
-		[pattern/mail/_common_footer.html]</activiti:expression>
+		${sNameOrgan},<br>
+		[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -129,7 +129,7 @@
     <serviceTask id="servicetask2" name="Документи ОК" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -138,23 +138,23 @@
           <activiti:string><![CDATA[iGov: Заява на надання рішення міської ради про затвердження проектів землеустрою щодо відведення земельних ділянок]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-    &lt;p&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+    <p>
     	Ваш запит був успішно зареєстрований у нашій системі, вхідні дані переглянуті і Ваша заявка взята в роботу.
-	&lt;/p&gt;
-	&lt;p&gt;
+	</p>
+	<p>
 		Ваші дані були направлені в відділ землекористування 
-	&lt;/p&gt;
+	</p>
 	[pattern/mail/_common_signature_start.html]
-		${sNameOrgan},&lt;br&gt;
+		${sNameOrgan},<br>
 	[pattern/mail/_common_signature_end.html]   
-	[pattern/mail/_common_footer.html]</activiti:expression>
+	[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow12" sourceRef="servicetask2" targetRef="usertask3"></sequenceFlow>
-    <userTask id="usertask3" name="Накладання резолюції" activiti:candidateGroups="nach_zem_zakarp_uzhgorodT">
+    <userTask id="usertask3" name="Накладання резолюції" activiti:candidateGroups="nach_zem_zak_uzgT">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім’я" type="string" writable="false"></activiti:formProperty>
@@ -176,13 +176,13 @@
         <activiti:formProperty id="markersChangeProjectPrint" name="Change Project Print" type="markers" default="${markerService.loadFromFile('zemlja/ChangeValProjectZemljaPrint.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nfileProjectLand},${nfileExtractOfCadastr}</activiti:expression>
+            <activiti:expression><![CDATA[${nfileProjectLand},${nfileExtractOfCadastr}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow14" name="Рішення в резолюції" sourceRef="usertask3" targetRef="usertask4"></sequenceFlow>
-    <userTask id="usertask4" name="Реєстрація пакету документів та перевірка документів на відповідність вимогам чинного законодавства" activiti:candidateGroups="spec_zem_zakarp_uzhgorodT">
+    <userTask id="usertask4" name="Реєстрація пакету документів та перевірка документів на відповідність вимогам чинного законодавства" activiti:candidateGroups="spec_zem_zak_uzgT">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім’я" type="string" writable="false"></activiti:formProperty>
@@ -200,7 +200,7 @@
         <activiti:formProperty id="fileProjectLand" name="Проект землеустрою щодо відведення земельної ділянки" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="fileExtractOfCadastr" name="Витяг з Державного земельного кадастру про земельну ділянку" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sResolution" name="Резолюція Начальника відділу землекористування" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="workerDecision" name="Надні документи відповідають законодавству та позитивна резульція" type="enum" required="true">
+        <activiti:formProperty id="anValidDocument" name="Надні документи відповідають законодавству та позитивна резульція" type="enum" required="true">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
@@ -210,7 +210,7 @@
         <activiti:formProperty id="markersChangeProjectPrint" name="Change Project Print" type="markers" default="${markerService.loadFromFile('zemlja/ChangeValProjectZemljaPrint.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nfileProjectLand},${nfileExtractOfCadastr}</activiti:expression>
+            <activiti:expression><![CDATA[${nfileProjectLand},${nfileExtractOfCadastr}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -218,15 +218,15 @@
     <sequenceFlow id="flow16" sourceRef="usertask4" targetRef="exclusivegateway2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow17" name="Не відповідні документи" sourceRef="exclusivegateway2" targetRef="servicetask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${workerDecision}!={'yes'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${anValidDocument}!={'yes'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow18" name="Рішення передане на розгляд комісії" sourceRef="exclusivegateway2" targetRef="servicetask7">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${workerDecision}=={'yes'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${anValidDocument}=={'yes'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask7" name="Лист, про резолюцію та те що документи будуть розглядатись на комісіі, а потім на сессії" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -235,28 +235,28 @@
           <activiti:string><![CDATA[iGov: Заява на надання рішення міської ради про затвердження проектів землеустрою щодо відведення земельних ділянок]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-    &lt;p&gt;
-    	Ваш заявка була успішно розглянута!&lt;br&gt;
-    	Резолюція Начальника відділу землекористування:   &lt;br&gt;
-    	${sResolution} &lt;br&gt;
-    	&lt;br&gt;&lt;br&gt;
-    	Далі рішення буде передане на розгляд комісії з питань раціонального використання. &lt;br&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+    <p>
+    	Ваш заявка була успішно розглянута!<br>
+    	Резолюція Начальника відділу землекористування:   <br>
+    	${sResolution} <br>
+    	<br><br>
+    	Далі рішення буде передане на розгляд комісії з питань раціонального використання. <br>
     	В випадку позитивного рішення комісії, документи будуть подані на розгляд міськ ради
-	&lt;/p&gt;
-	&lt;p&gt;
+	</p>
+	<p>
 		Ви отримаєте рішення комісії та сесіії, пізніше
-	&lt;/p&gt;
+	</p>
 	[pattern/mail/_common_signature_start.html]
-		${sNameOrgan},&lt;br&gt;
+		${sNameOrgan},<br>
 	[pattern/mail/_common_signature_end.html]   
-	[pattern/mail/_common_footer.html]</activiti:expression>
+	[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow15" sourceRef="servicetask7" targetRef="usertask5"></sequenceFlow>
-    <userTask id="usertask5" name="Підготовка рішення, роздрукування різних документів" activiti:candidateGroups="spec_zem_zakarp_uzhgorodT">
+    <userTask id="usertask5" name="Підготовка рішення, роздрукування різних документів" activiti:candidateGroups="spec_zem_zak_uzgT">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім’я" type="string" writable="false"></activiti:formProperty>
@@ -274,23 +274,19 @@
         <activiti:formProperty id="fileProjectLand" name="Проект землеустрою щодо відведення земельної ділянки" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="fileExtractOfCadastr" name="Витяг з Державного земельного кадастру про земельну ділянку" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sResolution" name="Резолюція Начальника відділу землекористування" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="workerDecision" name="Результат обробки звернення" type="enum" required="true">
-          <activiti:value id="accept" name="Сповістити громадянина, що документи в порядку і послуга буде оброблятись далі"></activiti:value>
-          <activiti:value id="decline" name="Відмовити в наданні послугу"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment" name="У разі відмови обов'язково вкажіть причину неможливості отримання послуги (Ця інформація буде відправлена на e-mail громадянина) *" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/zemlja/uzhgorod_cnap_391_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/zemlja/uzhgorod_cnap_391_print_card.html]" type="invisible" default="Реєстраційна карта" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersChangeProjectPrint" name="Change Project Print" type="markers" default="${markerService.loadFromFile('zemlja/ChangeValProjectZemljaPrint.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nfileProjectLand},${nfileExtractOfCadastr}</activiti:expression>
+            <activiti:expression><![CDATA[${nfileProjectLand},${nfileExtractOfCadastr}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow20" name="Рішення комісії та міськ ради" sourceRef="usertask5" targetRef="usertask6"></sequenceFlow>
-    <userTask id="usertask6" name="Результат рішень комісії чи міськ ради, після підпису" activiti:candidateGroups="spec_zem_zakarp_uzhgorodT">
+    <userTask id="usertask6" name="Результат рішень комісії чи міськ ради, після підпису" activiti:candidateGroups="spec_zem_zak_uzgT">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім’я" type="string" writable="false"></activiti:formProperty>
@@ -318,13 +314,13 @@
         <activiti:formProperty id="markersChangeProjectPrint" name="Change Project Print" type="markers" default="${markerService.loadFromFile('zemlja/ChangeValProjectZemljaPrint.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nfileProjectLand},${nfileExtractOfCadastr}</activiti:expression>
+            <activiti:expression><![CDATA[${nfileProjectLand},${nfileExtractOfCadastr}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow24" name="Рішення прийняте" sourceRef="usertask6" targetRef="usertask7"></sequenceFlow>
-    <userTask id="usertask7" name="Коментар ЦНАП, коли можна забрать" activiti:candidateGroups="cnap_zakarp_uzhgorodT">
+    <userTask id="usertask7" name="Коментар ЦНАП, коли можна забрать" activiti:candidateGroups="cnap_zak_uzgT">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім’я" type="string" writable="false"></activiti:formProperty>
@@ -351,7 +347,7 @@
         <activiti:formProperty id="markersChangeProjectPrint" name="Change Project Print" type="markers" default="${markerService.loadFromFile('zemlja/ChangeValProjectZemljaPrint.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nfileProjectLand},${nfileExtractOfCadastr}</activiti:expression>
+            <activiti:expression><![CDATA[${nfileProjectLand},${nfileExtractOfCadastr}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -367,7 +363,7 @@
     <serviceTask id="servicetask5" name="Лист про виконання" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -376,23 +372,23 @@
           <activiti:string><![CDATA[iGov: Заява на надання рішення міської ради про затвердження проектів землеустрою щодо відведення земельних ділянок]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-	&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-	&lt;p&gt;
-	    Спеціалісти успішно опрацювли Вашу заяву.&lt;br&gt;
-		Коментар Державного службовця:&lt;br&gt;
-			&lt;b&gt;&lt;i&gt;${aResultComment}&lt;/i&gt;&lt;/b&gt;
-	&lt;/p&gt;
-	&lt;p&gt;                                    	
-		Ви можете отримати вашу &lt;b&gt;Рішення міської ради про затвердження проектів землеустрою щодо відведення земельних ділянок&lt;/b&gt; &lt;br&gt; 
-		&lt;i&gt;За адресою:&lt;/i&gt; &lt;br&gt; ${sAddress}&lt;br&gt; 
-		&lt;i&gt;График работы:&lt;/i&gt; &lt;br&gt; ${sWorkTime}&lt;br&gt;
-		&lt;i&gt;Телефон для справок:&lt;/i&gt; &lt;br&gt;${sPhoneOrgan}&lt;br&gt;
-	&lt;/p&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+	<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+	<p>
+	    Спеціалісти успішно опрацювли Вашу заяву.<br>
+		Коментар Державного службовця:<br>
+			<b><i>${aResultComment}</i></b>
+	</p>
+	<p>                                    	
+		Ви можете отримати вашу <b>Рішення міської ради про затвердження проектів землеустрою щодо відведення земельних ділянок</b> <br> 
+		<i>За адресою:</i> <br> ${sAddress}<br> 
+		<i>График работы:</i> <br> ${sWorkTime}<br>
+		<i>Телефон для справок:</i> <br>${sPhoneOrgan}<br>
+	</p>
 		[pattern/mail/_common_signature_start.html]
-		${sNameOrgan},&lt;br&gt;
+		${sNameOrgan},<br>
 		[pattern/mail/_common_signature_end.html]   
-		[pattern/mail/_common_signature_end.html]</activiti:expression>
+		[pattern/mail/_common_signature_end.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -414,177 +410,177 @@
   <bpmndi:BPMNDiagram id="BPMNDiagram_uzhgorod_cnap_391">
     <bpmndi:BPMNPlane bpmnElement="uzhgorod_cnap_391" id="BPMNPlane_uzhgorod_cnap_391">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="210.0" y="14.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="210.0" y="65.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="71.0" width="135.0" x="160.0" y="110.0"></omgdc:Bounds>
+        <omgdc:Bounds height="71.0" width="135.0" x="160.0" y="161.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="265.0" y="110.0"></omgdc:Bounds>
+        <omgdc:Bounds height="30.0" width="30.0" x="265.0" y="161.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
-        <omgdc:Bounds height="58.0" width="135.0" x="160.0" y="295.0"></omgdc:Bounds>
+        <omgdc:Bounds height="58.0" width="135.0" x="160.0" y="346.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
-        <omgdc:Bounds height="60.0" width="131.0" x="340.0" y="294.0"></omgdc:Bounds>
+        <omgdc:Bounds height="60.0" width="131.0" x="340.0" y="345.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
-        <omgdc:Bounds height="40.0" width="40.0" x="385.0" y="160.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="385.0" y="211.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
-        <omgdc:Bounds height="74.0" width="149.0" x="657.0" y="32.0"></omgdc:Bounds>
+        <omgdc:Bounds height="74.0" width="149.0" x="657.0" y="83.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
-        <omgdc:Bounds height="64.0" width="130.0" x="496.0" y="219.0"></omgdc:Bounds>
+        <omgdc:Bounds height="64.0" width="130.0" x="496.0" y="270.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
-        <omgdc:Bounds height="67.0" width="130.0" x="496.0" y="530.0"></omgdc:Bounds>
+        <omgdc:Bounds height="67.0" width="130.0" x="496.0" y="581.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask4" id="BPMNShape_usertask4">
-        <omgdc:Bounds height="92.0" width="170.0" x="647.0" y="395.0"></omgdc:Bounds>
+        <omgdc:Bounds height="92.0" width="170.0" x="647.0" y="446.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
-        <omgdc:Bounds height="40.0" width="40.0" x="711.0" y="160.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="711.0" y="211.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
-        <omgdc:Bounds height="69.0" width="181.0" x="831.0" y="216.0"></omgdc:Bounds>
+        <omgdc:Bounds height="75.0" width="181.0" x="831.0" y="267.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask5" id="BPMNShape_usertask5">
-        <omgdc:Bounds height="81.0" width="124.0" x="860.0" y="406.0"></omgdc:Bounds>
+        <omgdc:Bounds height="81.0" width="124.0" x="860.0" y="457.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask6" id="BPMNShape_usertask6">
-        <omgdc:Bounds height="77.0" width="141.0" x="1088.0" y="408.0"></omgdc:Bounds>
+        <omgdc:Bounds height="77.0" width="141.0" x="1088.0" y="459.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask7" id="BPMNShape_usertask7">
-        <omgdc:Bounds height="67.0" width="141.0" x="1088.0" y="294.0"></omgdc:Bounds>
+        <omgdc:Bounds height="67.0" width="141.0" x="1088.0" y="345.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway4" id="BPMNShape_exclusivegateway4">
-        <omgdc:Bounds height="40.0" width="40.0" x="1138.0" y="173.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="1138.0" y="224.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
-        <omgdc:Bounds height="71.0" width="124.0" x="1097.0" y="47.0"></omgdc:Bounds>
+        <omgdc:Bounds height="71.0" width="124.0" x="1097.0" y="98.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="714.0" y="-40.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="714.0" y="11.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="textannotation1" id="BPMNShape_textannotation1">
-        <omgdc:Bounds height="83.0" width="100.0" x="347.0" y="518.0"></omgdc:Bounds>
+        <omgdc:Bounds height="83.0" width="100.0" x="347.0" y="569.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="textannotation2" id="BPMNShape_textannotation2">
-        <omgdc:Bounds height="92.0" width="100.0" x="347.0" y="395.0"></omgdc:Bounds>
+        <omgdc:Bounds height="92.0" width="100.0" x="347.0" y="446.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="textannotation3" id="BPMNShape_textannotation3">
-        <omgdc:Bounds height="301.0" width="100.0" x="50.0" y="-50.0"></omgdc:Bounds>
+        <omgdc:Bounds height="301.0" width="100.0" x="50.0" y="1.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="textannotation4" id="BPMNShape_textannotation4">
-        <omgdc:Bounds height="67.0" width="100.0" x="50.0" y="290.0"></omgdc:Bounds>
+        <omgdc:Bounds height="67.0" width="100.0" x="50.0" y="341.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
-        <omgdi:waypoint x="227.0" y="49.0"></omgdi:waypoint>
-        <omgdi:waypoint x="227.0" y="110.0"></omgdi:waypoint>
+        <omgdi:waypoint x="227.0" y="100.0"></omgdi:waypoint>
+        <omgdi:waypoint x="227.0" y="161.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="280.0" y="110.0"></omgdi:waypoint>
-        <omgdi:waypoint x="731.0" y="-5.0"></omgdi:waypoint>
+        <omgdi:waypoint x="280.0" y="161.0"></omgdi:waypoint>
+        <omgdi:waypoint x="731.0" y="46.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
-        <omgdi:waypoint x="227.0" y="181.0"></omgdi:waypoint>
-        <omgdi:waypoint x="227.0" y="295.0"></omgdi:waypoint>
+        <omgdi:waypoint x="227.0" y="232.0"></omgdi:waypoint>
+        <omgdi:waypoint x="227.0" y="346.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="295.0" y="324.0"></omgdi:waypoint>
-        <omgdi:waypoint x="340.0" y="324.0"></omgdi:waypoint>
+        <omgdi:waypoint x="295.0" y="375.0"></omgdi:waypoint>
+        <omgdi:waypoint x="340.0" y="375.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
-        <omgdi:waypoint x="405.0" y="294.0"></omgdi:waypoint>
-        <omgdi:waypoint x="405.0" y="200.0"></omgdi:waypoint>
+        <omgdi:waypoint x="405.0" y="345.0"></omgdi:waypoint>
+        <omgdi:waypoint x="405.0" y="251.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
-        <omgdi:waypoint x="405.0" y="160.0"></omgdi:waypoint>
-        <omgdi:waypoint x="731.0" y="106.0"></omgdi:waypoint>
+        <omgdi:waypoint x="405.0" y="211.0"></omgdi:waypoint>
+        <omgdi:waypoint x="731.0" y="157.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="57.0" x="300.0" y="100.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="57.0" x="300.0" y="151.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
-        <omgdi:waypoint x="731.0" y="32.0"></omgdi:waypoint>
-        <omgdi:waypoint x="731.0" y="-5.0"></omgdi:waypoint>
+        <omgdi:waypoint x="731.0" y="83.0"></omgdi:waypoint>
+        <omgdi:waypoint x="731.0" y="46.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
-        <omgdi:waypoint x="405.0" y="200.0"></omgdi:waypoint>
-        <omgdi:waypoint x="561.0" y="219.0"></omgdi:waypoint>
+        <omgdi:waypoint x="405.0" y="251.0"></omgdi:waypoint>
+        <omgdi:waypoint x="561.0" y="270.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="69.0" x="460.0" y="203.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="69.0" x="460.0" y="254.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
-        <omgdi:waypoint x="561.0" y="283.0"></omgdi:waypoint>
-        <omgdi:waypoint x="561.0" y="530.0"></omgdi:waypoint>
+        <omgdi:waypoint x="561.0" y="334.0"></omgdi:waypoint>
+        <omgdi:waypoint x="561.0" y="581.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
-        <omgdi:waypoint x="561.0" y="530.0"></omgdi:waypoint>
-        <omgdi:waypoint x="732.0" y="487.0"></omgdi:waypoint>
+        <omgdi:waypoint x="561.0" y="581.0"></omgdi:waypoint>
+        <omgdi:waypoint x="732.0" y="538.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="592.0" y="506.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="100.0" x="592.0" y="557.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
-        <omgdi:waypoint x="732.0" y="395.0"></omgdi:waypoint>
-        <omgdi:waypoint x="731.0" y="200.0"></omgdi:waypoint>
+        <omgdi:waypoint x="732.0" y="446.0"></omgdi:waypoint>
+        <omgdi:waypoint x="731.0" y="251.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
-        <omgdi:waypoint x="731.0" y="160.0"></omgdi:waypoint>
-        <omgdi:waypoint x="731.0" y="106.0"></omgdi:waypoint>
+        <omgdi:waypoint x="731.0" y="211.0"></omgdi:waypoint>
+        <omgdi:waypoint x="731.0" y="157.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="511.0" y="92.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="511.0" y="143.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
-        <omgdi:waypoint x="731.0" y="200.0"></omgdi:waypoint>
-        <omgdi:waypoint x="921.0" y="216.0"></omgdi:waypoint>
+        <omgdi:waypoint x="731.0" y="251.0"></omgdi:waypoint>
+        <omgdi:waypoint x="921.0" y="267.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="785.0" y="175.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="785.0" y="226.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
-        <omgdi:waypoint x="921.0" y="285.0"></omgdi:waypoint>
-        <omgdi:waypoint x="922.0" y="406.0"></omgdi:waypoint>
+        <omgdi:waypoint x="921.0" y="342.0"></omgdi:waypoint>
+        <omgdi:waypoint x="922.0" y="457.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
-        <omgdi:waypoint x="984.0" y="446.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1088.0" y="446.0"></omgdi:waypoint>
+        <omgdi:waypoint x="984.0" y="497.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1088.0" y="497.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="989.0" y="426.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="988.0" y="481.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
-        <omgdi:waypoint x="1158.0" y="408.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1158.0" y="361.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1158.0" y="459.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1158.0" y="412.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="91.0" x="1168.0" y="383.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="91.0" x="1168.0" y="434.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
-        <omgdi:waypoint x="1158.0" y="294.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1158.0" y="213.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1158.0" y="345.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1158.0" y="264.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
-        <omgdi:waypoint x="1158.0" y="173.0"></omgdi:waypoint>
-        <omgdi:waypoint x="731.0" y="106.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1158.0" y="224.0"></omgdi:waypoint>
+        <omgdi:waypoint x="731.0" y="157.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="978.0" y="90.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="96.0" x="978.0" y="141.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
-        <omgdi:waypoint x="1158.0" y="173.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1159.0" y="118.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1158.0" y="224.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1159.0" y="169.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="1168.0" y="133.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="97.0" x="1168.0" y="184.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
-        <omgdi:waypoint x="1159.0" y="47.0"></omgdi:waypoint>
-        <omgdi:waypoint x="731.0" y="-5.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1159.0" y="98.0"></omgdi:waypoint>
+        <omgdi:waypoint x="731.0" y="46.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

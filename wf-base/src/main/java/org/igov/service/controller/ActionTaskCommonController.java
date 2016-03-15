@@ -96,6 +96,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.activiti.engine.ProcessEngine;
+import org.activiti.engine.ProcessEngines;
+import org.activiti.engine.identity.User;
 
 //import com.google.common.base.Optional;
 
@@ -2024,4 +2027,131 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
         return JSONValue.toJSONString(oActionTaskService.getProcessVariableValue(nID_Process, sVariableName));
     }
+    
+    
+    /**
+     * 
+     * @param sLogin                     - Строка логин пользователя, меняющего пароль
+     * @param sPasswordOld               - Строка старый пароль
+     * @param sPasswordNew               - Строка новый пароль
+     * @return
+     * @throws CommonServiceException
+     * @throws RuntimeException         
+     */
+    
+    @ApiOperation(value = "Сервис смены пароля пользователя в Activity", notes = "#### Примеры \n"
+            + "Request: \n"
+            + "https://test.igov.org.ua/wf/service/action/task/changePassword\n"
+            + "sLoginOwner=kermit\n"
+            + "sPasswordOld=kermit\n"
+            + "sPasswordNew=kermit1\n"
+            + "Response: Ok, 200 \n"
+            + "\n ```json\n"
+            + "{\n"
+            + "\"userId\":\"kermit\",\n"
+            + "\"userEmail\":\"kermit@activiti.org\",\n"
+            + "\"userFirstName\":\"Kermit\",\n"
+            + "\"userLastName\":\"The Frog\"\n"
+            + "}\n"
+            + "\n```\n"
+            + "\n"
+            + "Wrong sPasswordOld\n"
+            + "Request:\n"
+            + "https://test.igov.org.ua/wf/service/action/task/changePassword\n"
+            + "sLoginOwner=kermit\n"
+            + "sPasswordOld=kermit45\n"
+            + "sPasswordNew=kermit1\n"
+            + "Response: Forbidden 403\n"
+            + "\n ```json\n"
+            + "{\n"
+            + "\"code\":\"BUSINESS_ERR\",\n"
+            + "\"message\":\"Password kermit45 is wrong\"\n"
+            + "}\n"
+            + "\n```\n"
+            + "\n"
+            + "Wrong sLogin\n"
+            + "Request:\n"
+            + "https://test.igov.org.ua/wf/service/action/task/changePassword\n"
+            + "sLoginOwner=kermit45\n"
+            + "sPasswordOld=kermit\n"
+            + "sPasswordNew=kermit1\n"
+            + "Response: Forbidden 403\n"
+            + "\n ```json\n"
+            + "{\n"
+            + "\"code\":\"BUSINESS_ERR\",\n"
+            + "\"message\":\"Error! user has not been found\"\n"
+            + "}\n"
+            + "\n```\n")
+    @RequestMapping(value = "/changePassword", method = {RequestMethod.POST, RequestMethod.GET})
+    public 
+    @ResponseBody
+    String changePassword(
+    @ApiParam(value="Строка логин пользователя, меняющего пароль", required = true) @RequestParam(value="sLoginOwner", required = true) String sLogin,
+    @ApiParam(value="Строка старый пароль", required = true) @RequestParam(value="sPasswordOld", required=true) String sPasswordOld,
+    @ApiParam(value="Строка новый пароль", required = true) @RequestParam(value="sPasswordNew", required=true) String sPasswordNew
+    ) throws CommonServiceException, RuntimeException
+    {
+      ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
+      IdentityService identityService = processEngine.getIdentityService();
+      User user = null;
+     
+      LOG.info("User will be found by sLoginOwner {}", sLogin);
+      user = identityService.createUserQuery().userId(sLogin).singleResult();
+    
+      if(user == null)
+      {
+         LOG.warn("Error! user has not been found");
+         throw new CommonServiceException(
+            ExceptionCommonController.BUSINESS_ERROR_CODE,
+            "Error! user has not been found",
+            HttpStatus.FORBIDDEN
+         );  
+      }
+         
+         
+    
+     
+      if(!user.getPassword().equals(sPasswordOld))
+      {
+          LOG.warn("The sPasswordOld parameter is not equal the user's password: {}");
+          throw new CommonServiceException(
+             ExceptionCommonController.BUSINESS_ERROR_CODE,
+             "Password " + sPasswordOld +" is wrong",
+             HttpStatus.FORBIDDEN
+             );
+          
+      }
+      user.setPassword(sPasswordNew);
+      
+      try
+      {
+         identityService.saveUser(user);
+      }
+      catch(RuntimeException e)
+      {
+           LOG.warn("User with such name already exists in base: {}", e.getMessage());
+           throw new RuntimeException(e);
+      }
+      
+      try
+      {
+         user = identityService.createUserQuery().userId(user.getId()).singleResult();   
+      }
+      catch(Exception e)
+      {
+          LOG.warn("Error! user has not been found: message{}", e.getMessage());
+          throw new CommonServiceException(
+            ExceptionCommonController.BUSINESS_ERROR_CODE,
+            e.getMessage(),
+            HttpStatus.FORBIDDEN
+         );
+      }
+      String userData = "{ \"userId\":\""+user.getId()+"\", "
+              + "\"userEmail\" : \""+user.getEmail()+"\", "
+              + "\"userFirstName\":\""+user.getFirstName()+"\", "
+              + "\"userLastName\":\""+ user.getLastName()+"\"}";
+      
+      return userData;
+    }
+
 }
