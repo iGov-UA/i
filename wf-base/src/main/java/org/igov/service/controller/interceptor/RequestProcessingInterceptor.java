@@ -220,9 +220,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             }
         } catch (Exception ex) {
             LOG.error("Can't save service-history record: {}",ex.getMessage());
+            LOG.error("Can't save service-history record: {}",ex);
             LOG_BIG.error("Can't save service-history record: {}",ex.getMessage());
             LOG_BIG.error("FAIL:", ex);
-            //oLogBig_Controller.error("can't save service-history record! ", ex);
         }
     }
 
@@ -247,6 +247,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
     private void saveNewTaskInfo(String sRequestBody, String sResponseBody, Map<String, String> mParamRequest)
             throws Exception {
+        LOG.info(" mParamRequest: " + mParamRequest + "sRequestBody: " + sRequestBody + " sResponseBody: " + sResponseBody);
         Map<String, String> mParam = new HashMap<>();
         JSONObject omRequestBody = (JSONObject) oJSONParser.parse(sRequestBody);
         JSONObject omResponseBody = (JSONObject) oJSONParser.parse(sResponseBody);
@@ -324,8 +325,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
       
         historyEventService.addHistoryEvent(sID_Order, sUserTaskName, mParam);
         //LOG.info("ok!");
-        
-      
     }
     
     private void saveClosedTaskInfo(String sRequestBody) throws Exception {
