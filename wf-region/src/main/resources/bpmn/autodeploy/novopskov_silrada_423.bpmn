@@ -164,7 +164,7 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow25" name="status2=='answer_bad'" sourceRef="exclusivegateway2" targetRef="servicetask7">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status2=='answer_ok'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status2=='answer_bad'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow26" sourceRef="servicetask7" targetRef="endevent2"></sequenceFlow>
     <userTask id="usertask4" name="Видача готового рішення" activiti:candidateGroups="cnap_mvk_lug_NovopskovskT">
@@ -180,8 +180,8 @@
         <activiti:formProperty id="status2" name="Відправити відповідь громадянину (рішення прийнято / рішення не прийнято)" type="textArea" required="true">
           <activiti:value id="attr3_rish_ok" name="Рішенення прийнято. Відправити скан рішення заявнику"></activiti:value>
           <activiti:value id="attr4_rish_bad" name="Рішенення не прийнято. Відправити скан рішення заявнику"></activiti:value>
-        <activiti:formProperty id="comment" name="Якщо рішенення не прийнято, вкажіть причину у цьому полі" type="textArea"></activiti:formProperty>
         </activiti:formProperty>
+        <activiti:formProperty id="comment" name="Якщо рішенення не прийнято, вкажіть причину у цьому полі" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="answer" name="Відповідь" type="file" required="true"></activiti:formProperty>
       </extensionElements>
     </userTask>
