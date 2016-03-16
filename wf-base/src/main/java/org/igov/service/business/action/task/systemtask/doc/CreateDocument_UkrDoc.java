@@ -86,6 +86,7 @@ public class CreateDocument_UkrDoc implements JavaDelegate {
         	String documentId = ((org.activiti.engine.impl.util.json.JSONObject)details).get("id") + ":" + 
 					((org.activiti.engine.impl.util.json.JSONObject)details).get("year");
         	runtimeService.setVariable(execution.getProcessInstanceId(), UKRDOC_ID_DOCUMENT_VARIABLE_NAME, documentId);
+        	runtimeService.setVariable(execution.getProcessInstanceId(), "sID_Document_UkrDoc", documentId);
             LOG.info("Set variable to runtime process:{}", documentId);
             
             LOG.info("Looking for a new task to set form properties");
@@ -94,8 +95,8 @@ public class CreateDocument_UkrDoc implements JavaDelegate {
 			for (Task task : tasks){
 				TaskFormData formData = formService.getTaskFormData(task.getId());
 				for (FormProperty formProperty : formData.getFormProperties()){
-					if (formProperty.getId().equals(UKRDOC_ID_DOCUMENT_VARIABLE_NAME)){
-						LOG.info("Found form property with the id " + UKRDOC_ID_DOCUMENT_VARIABLE_NAME + ". Setting value {}", documentId);
+					if (formProperty.getId().equals("sID_Document_UkrDoc")){
+						LOG.info("Found form property with the id " + "sID_Document_UkrDoc" + ". Setting value {}", documentId);
 						if (formProperty instanceof FormPropertyImpl){
 							((FormPropertyImpl)formProperty).setValue(documentId);
 						}
@@ -103,8 +104,8 @@ public class CreateDocument_UkrDoc implements JavaDelegate {
 				}
 				StartFormData startFormData = formService.getStartFormData(execution.getId());
 				for (FormProperty formProperty : startFormData.getFormProperties()){
-					if (formProperty.getId().equals(UKRDOC_ID_DOCUMENT_VARIABLE_NAME)){
-						LOG.info("Found start form property with the id " + UKRDOC_ID_DOCUMENT_VARIABLE_NAME + ". Setting value {}", documentId);
+					if (formProperty.getId().equals("sID_Document_UkrDoc")){
+						LOG.info("Found start form property with the id " + "sID_Document_UkrDoc" + ". Setting value {}", documentId);
 						if (formProperty instanceof FormPropertyImpl){
 							((FormPropertyImpl)formProperty).setValue(documentId);
 						}
