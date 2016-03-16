@@ -221,7 +221,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         } catch (Exception ex) {
             LOG.error("Can't save service-history record: {}",ex.getMessage());
             LOG_BIG.error("Can't save service-history record: {}",ex.getMessage());
-            LOG_BIG.trace("FAIL:", ex);
+            LOG_BIG.error("FAIL:", ex);
             //oLogBig_Controller.error("can't save service-history record! ", ex);
         }
     }
@@ -274,6 +274,11 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         String snID_Region = mParamRequest.get("nID_Region");
         if (snID_Region != null) {
             mParam.put("nID_Region", snID_Region);
+        }
+
+        Long nID_ServiceData = (Long) omResponseBody.get("nID_ServiceData");
+        if (nID_ServiceData != null) {
+            mParam.put("nID_ServiceData", nID_ServiceData + "");
         }
         
         HistoricProcessInstance oHistoricProcessInstance =

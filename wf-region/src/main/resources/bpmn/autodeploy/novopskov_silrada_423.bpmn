@@ -19,6 +19,7 @@
         <activiti:formProperty id="file_zgoda" name="Завантажте Заяву-згоду тимчасово відсутніх членів сім'ї наймача на проведення приватизації " type="file"></activiti:formProperty>
         <activiti:formProperty id="file_copii_IPN" name="Завантажте Копії ІНН всіх членів сім'ї хто бере участь в приватизації. Якщо декілька файлів об'єднайте у pdf-файл або zip архів" type="file"></activiti:formProperty>
         <activiti:formProperty id="file_copii_passport" name="Завантажте Копії паспортів членів сім'ї, свідоцтв про народження дітей. (Всі сторінки);Якщо декілька файлів об'єднайте у pdf-файл або zip архів" type="file"></activiti:formProperty>
+        <activiti:formProperty id="notice" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow5" sourceRef="start1" targetRef="servicetask1"></sequenceFlow>
@@ -39,10 +40,10 @@
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="status" name="Обробка звернення" type="enum" required="true">
-          <activiti:value id="attr1_doc_ok" name="Звернення прийнято. Відправити начальнику Управління"></activiti:value>
+          <activiti:value id="attr1_doc_ok" name="Звернення прийнято. Відправити на розгляд"></activiti:value>
           <activiti:value id="attr2_bad" name="Відмовити у розгляді без реєстрації у звязку з відсутністю необхідних документів"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="comment" name="Якщо Ви відмовляєте заявнику, вкажіть причину у цьому полі" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="comment_1" name="Якщо Ви відмовляєте заявнику, вкажіть причину у цьому полі" type="textArea"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -102,11 +103,8 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow18" name="status=='attr2_bad'" sourceRef="exclusivegateway1" targetRef="servicetask4">
+    <sequenceFlow id="flow18" name="нет" sourceRef="exclusivegateway1" targetRef="servicetask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status=='attr2_bad'}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow21" name="status2=='answer_ok'" sourceRef="exclusivegateway2" targetRef="servicetask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status2=='answer_ok'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask6" name="лист про успішне замовлення послуги" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
@@ -134,8 +132,8 @@
     </serviceTask>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow22" sourceRef="servicetask5" targetRef="endevent2"></sequenceFlow>
-    <sequenceFlow id="flow23" name="status=='status=='attr1_doc_ok'" sourceRef="exclusivegateway1" targetRef="servicetask6">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status=='attr1_doc_ok'}]]></conditionExpression>
+    <sequenceFlow id="flow23" name="да" sourceRef="exclusivegateway1" targetRef="servicetask6">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status=='attr1_ok'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask7" name="Повідомлення заявнику про відмову" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
@@ -155,7 +153,7 @@
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 &lt;p&gt;Ви подавали звернення щодо "Про приватизацію житлового приміщення".&lt;/p&gt;
-&lt;p&gt;В розгляді звернення відмовлено. &lt;/p&gt;
+&lt;p&gt;Звернення було розглянуто. В прийнятті рішення відмовлено. &lt;/p&gt;
 &lt;p&gt;${comment}&lt;/p&gt;
 [pattern/mail/_common_signature_start.html]
 [pattern/mail/_common_signature_end.html]
@@ -163,9 +161,6 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow25" name="status2=='answer_bad'" sourceRef="exclusivegateway2" targetRef="servicetask7">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status2=='answer_ok'}]]></conditionExpression>
-    </sequenceFlow>
     <sequenceFlow id="flow26" sourceRef="servicetask7" targetRef="endevent2"></sequenceFlow>
     <userTask id="usertask4" name="Видача готового рішення" activiti:candidateGroups="cnap_mvk_lug_NovopskovskT">
       <extensionElements>
@@ -177,12 +172,12 @@
         <activiti:formProperty id="email" name="Електронна пошта для зворотнього звя'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="comment" name="Якщо рішенення прийнято, вкажіть причину у цьому полі" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="status2" name="Відправити відповідь громадянину (рішення прийнято / рішення не прийнято)" type="enum" required="true">
+        <activiti:formProperty id="status2" name="Відправити відповідь громадянину" type="enum" required="true">
           <activiti:value id="attr3_rish_ok" name="Рішенення прийнято. Відправити скан рішення заявнику"></activiti:value>
-          <activiti:value id="attr4_rish_bad" name="Рішенення прийнято. Відправити скан рішення заявнику"></activiti:value>
+          <activiti:value id="attr4_rish_bad" name="Рішенення не прийнято. Відправити скан рішення заявнику"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="answer" name="Відповідь" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="comment_2" name="Якщо рішенення не прийнято, вкажіть причину у цьому полі" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="answer" name="Завантажте копію рішення" type="file" required="true"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow27" sourceRef="servicetask6" targetRef="usertask4"></sequenceFlow>
@@ -233,10 +228,16 @@
     <sequenceFlow id="flow29" sourceRef="servicetask1" targetRef="servicetask8"></sequenceFlow>
     <sequenceFlow id="flow30" sourceRef="servicetask8" targetRef="servicetask9"></sequenceFlow>
     <sequenceFlow id="flow31" sourceRef="servicetask9" targetRef="usertask1"></sequenceFlow>
-    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway 1"></exclusiveGateway>
     <sequenceFlow id="flow32" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
-    <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
+    <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway 2"></exclusiveGateway>
     <sequenceFlow id="flow33" sourceRef="usertask4" targetRef="exclusivegateway2"></sequenceFlow>
+    <sequenceFlow id="flow34" name="нет" sourceRef="exclusivegateway2" targetRef="servicetask7">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${rish=="attr4_bad"}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow35" name="да" sourceRef="exclusivegateway2" targetRef="servicetask5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${rish=="attr3_ok"}]]></conditionExpression>
+    </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_novopskov_slrd_423">
     <bpmndi:BPMNPlane bpmnElement="novopskov_slrd_423" id="BPMNPlane_novopskov_slrd_423">
@@ -301,14 +302,7 @@
         <omgdi:waypoint x="552.0" y="140.0"></omgdi:waypoint>
         <omgdi:waypoint x="395.0" y="140.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="92.0" x="422.0" y="140.0"></omgdc:Bounds>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
-        <omgdi:waypoint x="752.0" y="379.0"></omgdi:waypoint>
-        <omgdi:waypoint x="752.0" y="421.0"></omgdi:waypoint>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="707.0" y="388.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="100.0" x="422.0" y="140.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
@@ -319,14 +313,7 @@
         <omgdi:waypoint x="592.0" y="140.0"></omgdi:waypoint>
         <omgdi:waypoint x="700.0" y="141.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="594.0" y="139.0"></omgdc:Bounds>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
-        <omgdi:waypoint x="732.0" y="359.0"></omgdi:waypoint>
-        <omgdi:waypoint x="509.0" y="359.0"></omgdi:waypoint>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="568.0" y="339.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="100.0" x="594.0" y="139.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
@@ -356,6 +343,20 @@
       <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
         <omgdi:waypoint x="752.0" y="291.0"></omgdi:waypoint>
         <omgdi:waypoint x="752.0" y="339.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
+        <omgdi:waypoint x="732.0" y="359.0"></omgdi:waypoint>
+        <omgdi:waypoint x="509.0" y="359.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="100.0" x="561.0" y="360.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
+        <omgdi:waypoint x="752.0" y="379.0"></omgdi:waypoint>
+        <omgdi:waypoint x="752.0" y="421.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="100.0" x="762.0" y="379.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

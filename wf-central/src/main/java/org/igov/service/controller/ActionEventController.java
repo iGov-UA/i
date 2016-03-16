@@ -470,7 +470,7 @@ public class ActionEventController {
     	
     	String[] headersMainField = { "sID_Order", "nID_Server",
                 "nID_Service", "sID_Place", "nID_Subject", "nRate", "sTextFeedback", "sUserTaskName", "sHead", 
-                "sBody", "nTimeMinutes", "sPhone" };
+                "sBody", "nTimeMinutes", "sPhone", "nID_ServiceData" };
     	List<String> headers = new ArrayList<String>();
         headers.addAll(Arrays.asList(headersMainField));
     	
@@ -550,7 +550,8 @@ public class ActionEventController {
 		            JSONObject json = (JSONObject) new JSONParser().parse(osResponseEntityReturn.getBody());
 		            // sPhone
 		            line.add(json.get("phone") != null ? json.get("phone").toString() : "");
-		            
+                    line.add(historyEventService.getnID_ServiceData() != null ? historyEventService.getnID_ServiceData().toString() : "");
+
 		            csvWriter.writeNext(line.toArray(new String[line.size()]));
 		    	}
 	    	}
@@ -559,5 +560,6 @@ public class ActionEventController {
 			LOG.error("Error occurred while creating CSV file {}", e.getMessage());
 		} 
     }
-
+    //test
+    //test2
 }

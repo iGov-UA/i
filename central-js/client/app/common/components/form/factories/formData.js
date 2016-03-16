@@ -15,7 +15,7 @@ angular.module('app').factory('FormDataFactory', function (ParameterFactory, Dat
       params[property.id] = result[0].prototype.createFactory();
       params[property.id].value = property.value;
       params[property.id].required = property.required;
-      params[property.id].writible = property.writible;
+      params[property.id].writable = property.hasOwnProperty('writable') ? property.writable : true;
     }
   };
 
@@ -259,7 +259,9 @@ angular.module('app').factory('FormDataFactory', function (ParameterFactory, Dat
     };
     for (var key in this.params) {
       var param = this.params[key];
-      data.params[key] = param.get();
+      if (param.writable) {
+        data.params[key] = param.get();
+      }
     }
     return data;
   };
