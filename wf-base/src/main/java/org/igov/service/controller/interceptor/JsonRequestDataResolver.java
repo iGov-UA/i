@@ -21,8 +21,7 @@ public final class JsonRequestDataResolver {
         JSONArray jsonArray = (JSONArray) requestJson.get("properties");
         for (int i = 0; i < jsonArray.size(); ++i) {
             JSONObject property = (JSONObject) jsonArray.get(i);
-            res.put((String) property.get("id"), (String) property.get("value"));
-
+            res.put(String.valueOf(property.get("id")), String.valueOf(property.get("value"))); //
         }
 
         return res;
