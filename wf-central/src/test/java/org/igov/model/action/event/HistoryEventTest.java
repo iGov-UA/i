@@ -38,6 +38,7 @@ public class HistoryEventTest {
     private final static Long testSubject_nID = 10L;
     private final static Long testSubject_nID_Set = 11L;
 
+    @Ignore
     @Test
     public void getHistoryEvent() {
 
