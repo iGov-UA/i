@@ -35,7 +35,7 @@ build_central-js ()
 	grunt build
 	cd dist
 	npm install --production
-	rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' /sybase/jenkins/data/jobs/central_alpha/workspace/central-js/dist/ sybase@$sHost:/sybase/.upload/central-js.$data/
+	rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' /sybase/jenkins/data/jobs/central_alpha/workspace/central-js/dist/ sybase@$sHost:/sybase/.upload/central-js.$sData/
 }
 
 build_dashboard-js ()
@@ -49,7 +49,7 @@ build_dashboard-js ()
 	grunt build
 	cd dist
 	npm install --production
-	rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' ../dist/ sybase@$sHost:/sybase/.upload/dashboard-js.$data/
+	rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' ../dist/ sybase@$sHost:/sybase/.upload/dashboard-js.$sData/
 }
 
 build_base ()
@@ -72,20 +72,28 @@ build_base ()
 
 build_central ()
 {
+	sSuffixTest=""
+	if [ "$bExcludeTest" ==  "true" ]; then
+		local sBuildArg="-DskipTests=true"
+	fi
 	cd /sybase/jenkins/data/jobs/central_alpha/workspace
 	build_base
 	cd wf-central
-    mvn -P $sVersion clean install site $sSuffixTest -Ddependency.locations.enabled=false
+    mvn -P $sVersion clean install site $sBuildArg -Ddependency.locations.enabled=false
     cd /sybase/jenkins/data/jobs/central_alpha/workspace/wf-central
 	rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' target/wf-central.war sybase@$sHost:/sybase/.upload/
 }
 
 build_region ()
 {
+	sSuffixTest=""
+	if [ "$bExcludeTest" ==  "true" ]; then
+		local sBuildArg="-DskipTests=true"
+	fi
 	cd /sybase/jenkins/data/jobs/regional-alpha/workspace
 	build_base
 	cd wf-region
-    mvn -P $sVersion clean install site $sSuffixTest -Ddependency.locations.enabled=false
+    mvn -P $sVersion clean install site $sBuildArg -Ddependency.locations.enabled=false
 	cd /sybase/jenkins/data/jobs/regional-alpha/workspace/wf-region
 	rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' target/wf-region.war sybase@$sHost:/sybase/.upload/
 }
