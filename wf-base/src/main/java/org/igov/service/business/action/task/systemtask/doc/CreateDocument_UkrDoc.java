@@ -11,6 +11,7 @@ import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.delegate.JavaDelegate;
 import org.activiti.engine.form.FormProperty;
+import org.activiti.engine.form.StartFormData;
 import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.impl.form.FormPropertyImpl;
 import org.activiti.engine.task.Task;
@@ -95,6 +96,15 @@ public class CreateDocument_UkrDoc implements JavaDelegate {
 				for (FormProperty formProperty : formData.getFormProperties()){
 					if (formProperty.getId().equals(UKRDOC_ID_DOCUMENT_VARIABLE_NAME)){
 						LOG.info("Found form property with the id " + UKRDOC_ID_DOCUMENT_VARIABLE_NAME + ". Setting value {}", documentId);
+						if (formProperty instanceof FormPropertyImpl){
+							((FormPropertyImpl)formProperty).setValue(documentId);
+						}
+					}
+				}
+				StartFormData startFormData = formService.getStartFormData(execution.getId());
+				for (FormProperty formProperty : startFormData.getFormProperties()){
+					if (formProperty.getId().equals(UKRDOC_ID_DOCUMENT_VARIABLE_NAME)){
+						LOG.info("Found start form property with the id " + UKRDOC_ID_DOCUMENT_VARIABLE_NAME + ". Setting value {}", documentId);
 						if (formProperty instanceof FormPropertyImpl){
 							((FormPropertyImpl)formProperty).setValue(documentId);
 						}
