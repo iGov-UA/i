@@ -1,8 +1,10 @@
 package org.igov.service.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+
 import io.swagger.annotations.*;
 import liquibase.util.csv.CSVWriter;
+
 import org.activiti.engine.*;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.TaskFormData;
@@ -10,6 +12,7 @@ import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.history.HistoricTaskInstanceQuery;
 import org.activiti.engine.identity.Group;
 import org.activiti.engine.identity.User;
+import org.activiti.engine.impl.form.FormPropertyImpl;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.repository.ProcessDefinition;
@@ -55,6 +58,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.activation.DataSource;
 import javax.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
@@ -1956,16 +1960,33 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 					taskService.complete(task.getId());
 					LOG.info("Completed task {}", task.getId());
 				}
-				if (assignee != null){
-					LOG.info("Looking for a new task to claim it to the user {}", assignee);
+				
+					LOG.info("Looking for a new task to set form properties and claim it to the user {}", assignee);
 					tasks = taskService.createTaskQuery().processInstanceId(processInstance.getId()).active().list();
+					LOG.info("Get {} active tasks for the process", tasks);
 					for (Task task : tasks){
-						taskService.claim(task.getId(), assignee);
-						LOG.info("Claimed task {} for the user {}", task.getId(), assignee);
+						TaskFormData formData = formService.getTaskFormData(task.getId());
+						for (FormProperty formProperty : formData.getFormProperties()){
+							if (formProperty.getId().equals("sID_Document_UkrDoc")){
+								LOG.info("Found form property with the id sID_Document_UkrDoc. Setting value {}", sKey);
+								if (formProperty instanceof FormPropertyImpl){
+									((FormPropertyImpl)formProperty).setValue(sKey);
+								}
+							} else if (formProperty.getId().equals("sStatusName_UkrDoc")){
+								LOG.info("Found form property with the id sStatusName_UkrDoc. Setting value {}", status);
+								if (formProperty instanceof FormPropertyImpl){
+									((FormPropertyImpl)formProperty).setValue(status);
+								}
+							}
+						}
+						if (assignee != null){
+							taskService.claim(task.getId(), assignee);
+							LOG.info("Claimed task {} for the user {}", task.getId(), assignee);
+						} else {
+							LOG.info("Task was not assigned");
+						}
 					}
-				} else {
-					LOG.info("Task was not assigned");
-				}
+				
 			} else {
 				LOG.info("Active tasks have not found for the process {}", processInstance.getId());
 			}
