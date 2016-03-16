@@ -6,7 +6,6 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.sql.Select;
 import org.igov.model.core.GenericEntityDao;
 import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.EntityNotFoundException;
@@ -243,11 +242,10 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
 
 	@Override
 	public List<HistoryEvent_Service> getHistoryEventPeriod(DateTime dateAt,
-			DateTime dateTo, List<Long> anID_Service_Exclude) {
+			DateTime dateTo) {
 		Criteria oCriteria = getSession().createCriteria(HistoryEvent_Service.class);
         oCriteria.add(Restrictions.gt("sDate", dateAt));
         oCriteria.add(Restrictions.lt("sDate", dateTo));
-        oCriteria.add(Restrictions.not(Restrictions.in("nID_Service", anID_Service_Exclude)));
         
         List<HistoryEvent_Service> aHistoryEvent_Service = (List<HistoryEvent_Service>) oCriteria.list();
         if (aHistoryEvent_Service == null) {
