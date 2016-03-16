@@ -2,9 +2,15 @@ var express = require('express')
   , router = express.Router()
   , form = require('./form.controller')
   , auth = require('../../auth/auth.service.js')
-  , region = require('../../components/region');
+  , region = require('../../components/region')
+  , endpoint = require('../../components/endpoint');
 
-router.get('/', auth.isAuthenticated(), region.searchForHost(), form.index);
+router.get('/',
+  endpoint.assertQueryParams('nID_Server', 'sID_BP_Versioned'),
+  auth.isAuthenticated(),
+  region.searchForHost(),
+  form.index);
+
 router.post('/', auth.isAuthenticated(), form.submit);
 router.get('/sign', auth.isAuthenticated(), form.signForm);
 router.use('/sign/callback', auth.isAuthenticated(), form.signFormCallback);

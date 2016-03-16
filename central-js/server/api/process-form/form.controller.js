@@ -12,30 +12,15 @@ var url = require('url')
   , errors = require('../../components/errors');
 
 module.exports.index = function (req, res) {
-  var oConfigServerExternal = config.activiti;
   var sHost = req.region.sHost;
+  var sID_BP_Versioned = req.query.sID_BP_Versioned;
 
   var callback = function (error, response, body) {
     res.send(body);
     res.end();
   };
 
-  var nID_Server = req.query.nID_Server;
-  console.log("nID_Server=" + nID_Server);
-  var sID_BP_Versioned = req.query.sID_BP_Versioned;
-  console.log("sID_BP_Versioned=" + sID_BP_Versioned);
-  console.log("sHost=" + sHost);
-
-  var sURL = sHost + '/service/form/form-data?processDefinitionId=' + sID_BP_Versioned;
-  console.log("sURL=" + sURL);
-
-  return request.get({
-    url: sURL,
-    auth: {
-      username: oConfigServerExternal.username,
-      password: oConfigServerExternal.password
-    }
-  }, callback);
+  activiti.get('/service/form/form-data', {processDefinitionId: sID_BP_Versioned}, callback, sHost);
 };
 
 module.exports.submit = function (req, res) {

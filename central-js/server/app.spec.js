@@ -10,7 +10,6 @@ var appData = require('./app.data.spec.js');
 var config = require('./config/environment');
 var bankidUtil = require('./auth/bankid/bankid.util.js');
 var testRequest = supertest(app);
-var loginAgent = superagent.agent();
 var async = require('async');
 
 
@@ -97,7 +96,7 @@ var centralNock = nock('https://test.igov.org.ua')
   .persist()
   .log(console.log);
 
-var regionMock = nock('https://test.region.service')
+var regionMock = nock('https://test.region.igov.org.ua')
   .persist()
   .log(console.log)
   .get('/service/object/file/check_file_from_redis_sign')
@@ -112,28 +111,28 @@ var regionMock = nock('https://test.region.service')
   });
 
 
-module.exports.loginWithBankID = function (callback) {
+function getAuth(urlWithQueryParams, agentCallback, done) {
   testRequest
-    .get('/auth/bankid/callback?code=11223344&?link=' + testAuthResultURL)
+    .get(urlWithQueryParams)
     .expect(302)
     .then(function (res) {
+      var loginAgent = superagent.agent();
       loginAgent.saveCookies(res);
-      callback(null, loginAgent);
+      if (agentCallback) {
+        agentCallback(loginAgent);
+      }
+      done();
     }).catch(function (err) {
-    callback(err)
+    done(err)
   });
+}
+
+module.exports.loginWithBankID = function (done, agentCallback) {
+  getAuth('/auth/bankid/callback?code=11223344&?link=' + testAuthResultURL, agentCallback, done);
 };
 
-module.exports.loginWithEds = function (callback) {
-  testRequest
-    .get('/auth/eds/callback?code=11223344&link=' + testAuthResultURL)
-    .expect(302)
-    .then(function (res) {
-      loginAgent.saveCookies(res);
-      callback(null, loginAgent);
-    }).catch(function (err) {
-    callback(err)
-  });
+module.exports.loginWithEds = function (done, agentCallback) {
+  getAuth('/auth/eds/callback?code=11223344&link=' + testAuthResultURL, agentCallback, done);
 };
 
 module.exports.loginWithEmail = function (callback) {
@@ -144,23 +143,23 @@ module.exports.loginWithEmail = function (callback) {
   var lastName = 'lastName';
   var middleName = 'middleName';
 
-  function prepareGet(url, agent){
+  function prepareGet(url, agent) {
     var r = testRequest.get(url);
-    if(agent){
+    if (agent) {
       agent.attachCookies(r);
     }
     return r;
   }
 
-  function preparePost(url, agent){
+  function preparePost(url, agent) {
     var r = testRequest.post(url);
-    if(agent){
+    if (agent) {
       agent.attachCookies(r);
     }
     return r;
   }
 
-  function doGet(request, asyncCallback){
+  function doGet(request, asyncCallback) {
     request
       .expect(302)
       .then(function (res) {
@@ -177,6 +176,7 @@ module.exports.loginWithEmail = function (callback) {
       .send(body)
       .expect(200)
       .then(function (res) {
+        var loginAgent = superagent.agent();
         loginAgent.saveCookies(res);
         asyncCallback(null, loginAgent);
       })
@@ -190,7 +190,7 @@ module.exports.loginWithEmail = function (callback) {
       doPost(preparePost('/auth/email/verifyContactEmail'), {email: email, link: link}, asyncCallback);
     },
     function (agent, asyncCallback) {
-      doPost(preparePost('/auth/email/verifyContactEmailAndCode',agent), {email: email, code: code}, asyncCallback);
+      doPost(preparePost('/auth/email/verifyContactEmailAndCode', agent), {email: email, code: code}, asyncCallback);
     },
     function (agent, asyncCallback) {
       doPost(preparePost('/auth/email/editFio', agent), {
