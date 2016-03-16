@@ -38,7 +38,7 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
   };
   this.init = function (domen) {
     //test.kiev.igov.org.ua
-    
+
     this.domain = domen;
 
 
@@ -113,6 +113,7 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
         footer: {
           //templateUrl: 'app/footer/footer.html'
           templateUrl: getFooter(this.mode),
+          controller: 'FooterController'
         }
       }
     };

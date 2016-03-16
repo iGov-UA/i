@@ -19,6 +19,7 @@ import javax.activation.FileDataSource;
 import javax.activation.URLDataSource;
 import javax.mail.*;
 import javax.mail.internet.*;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,7 +27,9 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Properties;
+
 import org.igov.io.GeneralConfig;
+import org.igov.util.MethodsCallRunnerUtil;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -42,9 +45,15 @@ import org.igov.io.GeneralConfig;
 @Scope("prototype")
 public class Mail extends Abstract_Mail {
 
+	@Autowired 
+    MethodsCallRunnerUtil methodCallRunner;
+	
     @Autowired
     GeneralConfig generalConfig;
-
+    
+    @Autowired
+    UniSender oUniSender;
+    
     private final static Logger LOG = LoggerFactory.getLogger(Mail.class);
     private static final Logger LOG_BIG = LoggerFactory.getLogger("MailBig");
     
@@ -230,7 +239,9 @@ public class Mail extends Abstract_Mail {
             oMimeMessage.setContent(oMultiparts);
 
             //            oMimeMessage.getRecipients(Message.RecipientType.CC);
+            //methodCallRunner.registrateMethod(Transport.class.getName(), "send", new Object[]{oMimeMessage});
             Transport.send(oMimeMessage);
+            
         } catch (Exception oException) {
             LOG.error("FAIL: {} (getTo()={})", oException.getMessage(), getTo());
             LOG.trace("FAIL:", oException);
@@ -332,8 +343,10 @@ public class Mail extends Abstract_Mail {
             if(StringUtils.isBlank(sKey_Sender)){
                 throw new IllegalArgumentException("Please check api_key in UniSender property file configuration");
             }
-
-            UniSender oUniSender = new UniSender(sKey_Sender, "en");
+            
+            LOG.info("oUniSender - {}", oUniSender);
+            LOG.info("methodCallRunner - {}", methodCallRunner);
+            oUniSender.setMethodCallRunner(methodCallRunner);
             
             if(getTo().contains(",")){
                 String[] asMail=getTo().split("\\,");

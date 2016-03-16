@@ -166,28 +166,6 @@ module.exports.sendDeleteRequest = function (req, res, apiURL, params, callback,
   return request.del(url, _callback);
 };
 
-/*
- module.exports.buildRequestFromServer = function (sPagePath, oParams, sHost) {
- var sURL = this.getRequestUrl(sPagePath, sHost);
- return {
- 'url': sURL,
- 'auth': this.getAuth(),
- 'qs': oParams
- };
- };
-
-
- module.exports.getRegionURL = function (res, nID) {
- //var _callback = callback ? callback : this.getDefaultCallback(res);
- //var url = this.buildRequest(req, apiURL, params, sHost);
- //return request(url, _callback);
- var sURL = this.buildRequestFromServer('/subject/getServer', {nID: nID});
- var oServer = request(sURL, this.getDefaultCallback(res));
- //var oServer = this.sendGetRequest(req, res, '/subject/getServer', _.extend(req.query, {nID: nID}));
- return oServer !== null ? oServer.sURL : null;
- };
- */
-
 module.exports.getServerRegionHost = function (nID_Server, fCompleted) {
   this.getServerRegion(nID_Server, function (oServer) {
     console.log("[getServerRegionHost]oServer=" + oServer);

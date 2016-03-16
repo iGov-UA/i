@@ -52,7 +52,7 @@ public class SubjectOrganDaoIml extends GenericEntityDao<SubjectOrgan> implement
 
     @SuppressWarnings("unchecked" /* православно тут все... */)
     @Override
-    public List<SubjectOrganJoin> findSubjectOrganJoinsBy(Long organID, Long regionID, Long cityID, String uaID) {
+    public List<SubjectOrganJoin> findSubjectOrganJoinsBy(Long organID, Long regionID, Long cityID, String sID_Place_UA) {
         Criteria crt = getSession()
                 .createCriteria(SubjectOrganJoin.class)
                 .add(Restrictions.eq("subjectOrganId", organID));
@@ -63,8 +63,9 @@ public class SubjectOrganDaoIml extends GenericEntityDao<SubjectOrgan> implement
         if (cityID != null && cityID > 0)
             crt.add(Restrictions.eq("cityId", cityID));
 
-        if (isNotBlank(uaID))
-            crt.add(Restrictions.eq("uaId", uaID));
+        if (isNotBlank(sID_Place_UA)){
+            crt.add(Restrictions.or(Restrictions.isNull("uaId"), Restrictions.eqOrIsNull("uaId", sID_Place_UA)));
+        }
 
         return crt.list();
     }

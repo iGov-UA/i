@@ -1,5 +1,6 @@
 package org.igov.model.action.execute.item;
 
+
 import javax.persistence.Column;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -18,107 +19,120 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 @javax.persistence.Entity
 public class ActionExecute extends Entity {
 
-	@JsonProperty(value = "nID_ActionExecuteStatus")
-	@ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "nID_ActionExecuteStatus", nullable = false)		
-	private ActionExecuteStatus actionExecuteStatus;
-	
-	@JsonProperty(value = "oDateMake")
-	@JsonSerialize(using = JsonDateSerializer.class)
+    @JsonProperty(value = "nID_ActionExecuteStatus")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "nID_ActionExecuteStatus", nullable = false)
+    private ActionExecuteStatus actionExecuteStatus;
+
+    @JsonProperty(value = "oDateMake")
+    @JsonSerialize(using = JsonDateSerializer.class)
     @JsonDeserialize(using = JsonDateDeserializer.class)
     @Type(type = DATETIME_TYPE)
-	@Column(name = "oDateMake", nullable = false)
-	private DateTime oDateMake;	
-	
-	@JsonProperty(value = "oDateEdit")
-	@JsonSerialize(using = JsonDateSerializer.class)
+    @Column(name = "oDateMake", nullable = false)
+    private DateTime oDateMake;
+
+    @JsonProperty(value = "oDateEdit")
+    @JsonSerialize(using = JsonDateSerializer.class)
     @JsonDeserialize(using = JsonDateDeserializer.class)
     @Type(type = DATETIME_TYPE)
-	@Column(name = "oDateEdit", nullable = true)
-	private DateTime oDateEdit;
-	
-	@JsonProperty(value = "nTry")
-	@Column(name = "nTry", nullable = true)
-	private Integer nTry;
+    @Column(name = "oDateEdit", nullable = true)
+    private DateTime oDateEdit;
 
-	@JsonProperty(value = "sMethod")
-	@Column(name = "sMethod", nullable = true)
-	private String sMethod;	
+    @JsonProperty(value = "nTry")
+    @Column(name = "nTry", nullable = true)
+    private Integer nTry;
 
-	@JsonProperty(value = "soRequest")
-	@Column(name = "soRequest", nullable = true)
-	private String soRequest;
-	
-	@JsonProperty(value = "smParam")
-	@Column(name = "smParam", nullable = true)
-	private String smParam;
-	
-	@JsonProperty(value = "sReturn")
-	@Column(name = "sReturn", nullable = true)
-	private String sReturn;	
-	
-	public DateTime getoDateMake() {
-		return oDateMake;
-	}
+    @JsonProperty(value = "sObject")
+    @Column(name = "sObject", nullable = true)
+    private String sObject;
 
-	public void setoDateMake(DateTime oDateMake) {
-		this.oDateMake = oDateMake;
-	}
+    @JsonProperty(value = "sMethod")
+    @Column(name = "sMethod", nullable = true)
+    private String sMethod;
 
-	public DateTime getoDateEdit() {
-		return oDateEdit;
-	}
+    @Type(type = "org.hibernate.type.BinaryType")
+    @JsonProperty(value = "soRequest")
+    @Column(name = "soRequest", nullable = true)
+    private byte[] soRequest;
 
-	public void setoDateEdit(DateTime oDateEdit) {
-		this.oDateEdit = oDateEdit;
-	}
+    @JsonProperty(value = "smParam")
+    @Column(name = "smParam", nullable = true)
+    private String smParam;
 
-	public Integer getnTry() {
-		return nTry;
-	}
+    @JsonProperty(value = "sReturn")
+    @Column(name = "sReturn", nullable = true)
+    private String sReturn;
 
-	public void setnTry(Integer nTry) {
-		this.nTry = nTry;
-	}
+    public DateTime getoDateMake() {
+        return oDateMake;
+    }
 
-	public String getsMethod() {
-		return sMethod;
-	}
+    public void setoDateMake(DateTime oDateMake) {
+        this.oDateMake = oDateMake;
+    }
 
-	public void setsMethod(String sMethod) {
-		this.sMethod = sMethod;
-	}
+    public DateTime getoDateEdit() {
+        return oDateEdit;
+    }
 
-	public String getSoRequest() {
-		return soRequest;
-	}
+    public void setoDateEdit(DateTime oDateEdit) {
+        this.oDateEdit = oDateEdit;
+    }
 
-	public void setSoRequest(String soRequest) {
-		this.soRequest = soRequest;
-	}
+    public Integer getnTry() {
+        return nTry;
+    }
 
-	public String getSmParam() {
-		return smParam;
-	}
+    public void setnTry(Integer nTry) {
+        this.nTry = nTry;
+    }
 
-	public void setSmParam(String smParam) {
-		this.smParam = smParam;
-	}
+    public String getsMethod() {
+        return sMethod;
+    }
 
-	public String getsReturn() {
-		return sReturn;
-	}
+    public void setsMethod(String sMethod) {
+        this.sMethod = sMethod;
+    }
 
-	public void setsReturn(String sReturn) {
-		this.sReturn = sReturn;
-	}
+    public byte[] getSoRequest() {
+        return soRequest;
+    }
 
-	public ActionExecuteStatus getActionExecuteStatus() {
-		return actionExecuteStatus;
-	}
+    public void setSoRequest(byte[] soRequest) {
+        this.soRequest = soRequest;
+    }
 
-	public void setActionExecuteStatus(ActionExecuteStatus actionExecuteStatus) {
-		this.actionExecuteStatus = actionExecuteStatus;
-	}
-	
+    public String getSmParam() {
+        return smParam;
+    }
+
+    public void setSmParam(String smParam) {
+        this.smParam = smParam;
+    }
+
+    public String getsReturn() {
+        return sReturn;
+    }
+
+    public void setsReturn(String sReturn) {
+        this.sReturn = sReturn;
+    }
+
+    public ActionExecuteStatus getActionExecuteStatus() {
+        return actionExecuteStatus;
+    }
+
+    public void setActionExecuteStatus(ActionExecuteStatus actionExecuteStatus) {
+        this.actionExecuteStatus = actionExecuteStatus;
+    }
+
+    public String getsObject() {
+        return sObject;
+    }
+
+    public void setsObject(String sObject) {
+        this.sObject = sObject;
+    }
+
 }

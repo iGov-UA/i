@@ -100,6 +100,8 @@ angular.module('order').controller('OrderSearchController', function ($rootScope
                 doMerge(oThis, {sType: "warning", sBody: 'Невірний формат заявки!'});
               } else if (sMessage.indexOf(['Record not found']) > -1) {
                 doMerge(oThis, {sType: "warning", sBody: 'Заявку не знайдено!'});
+              } else if (sMessage.indexOf(['Transaction rolled back']) > -1) {
+                doMerge(oThis, {sType: "warning", sBody: 'Заявку не знайдено!'});
               }
             })) {
             if (oResponse.soData) {

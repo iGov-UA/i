@@ -28,12 +28,12 @@
           <activiti:value id="no" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Завантажте копію паспорту" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_inn" name="Завантажте копію ІПН" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="dov_sclad_sim" name="Завантажте довідку про склад сім'ї" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="dov_doh_sim" name="Завантажте довідки о доходах всіх членів сімї" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="info_2" name="Заповніть декларацію" type="label" default="Завантажте &lt;a href=&quot;https://www.dropbox.com/s/jyrbb4d12dt9vui/blank-deklaratsiya-dopomogi.doc?dl=0&quot; target=&quot;_blank&quot;&gt;декларацію&lt;/a&gt;, роздрукуйте, заповніть, та додайте у наступному полі."></activiti:formProperty>
         <activiti:formProperty id="dekl_doh" name="Заповнена декларація" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="dov_zem" name="Завантажте довідку про наявність та розмір земельної частки (паю)" type="file"></activiti:formProperty>
-        <activiti:formProperty id="notice" name="Зверніть увагу" type="label" default="Я усвідомлюю, що наведені мною відомості про доходи та майно, що вплинули або могли вплинути на прийняте рішення щодо надання соціальної допомоги, компенсацій та пільг, будуть перевірені згідно з чинним законодавством України."></activiti:formProperty>
         <activiti:formProperty id="markers1" name="маркер вибір отримання коштів" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;post_office&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;transfer_type&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'post'&quot;},&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;bank_name&quot;,&quot;mfo&quot;,&quot;edrpou&quot;,&quot;bank_account&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;transfer_type&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'bank'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="маркер земельної частки (паю)" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;dov_zem&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;dov_zem_pai&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="rName" name="номер р-на соцзащиты" type="invisible"></activiti:formProperty>
@@ -73,7 +73,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${dov_sclad_sim},${dekl_doh},${dov_zem}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport},${bankId_scan_inn},${dov_sclad_sim},${dekl_doh},${dov_zem}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -256,7 +256,7 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;Ваше звернення щодо призначення державної соціальної допомоги малозабезпеченим сім’ям в очикуванні недостатніх документів. Протягом трьох місяців Вам необхідно донести їх в [pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:2] за адресою [pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:3] або заповнити заявку повторно на порталі &lt;a target="_blank" href="http://igov.org.ua"&gt;iGov.org.ua&lt;/a&gt;, враховуючи коментар нижче.&lt;/p&gt;
+&lt;p&gt;Ваше звернення щодо призначення державної соціальної допомоги малозабезпеченим сім’ям в очікуванні недостатніх документів. Протягом трьох місяців Вам необхідно донести їх в [pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:2] за адресою [pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:3] або заповнити заявку повторно на порталі &lt;a target="_blank" href="http://igov.org.ua"&gt;iGov.org.ua&lt;/a&gt;, враховуючи коментар нижче.&lt;/p&gt;
 &lt;p&gt;Коментар спеціаліста: ${comment}&lt;/p&gt;
 &lt;br /&gt;
 [pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:5]

@@ -5,7 +5,8 @@ var request = require('request')
   , config = require('../../config/environment')
   , activiti = require('../../components/activiti')
   , authService = require('../auth.service')
-  , emailService = require('./email.service');
+  , emailService = require('./email.service')
+  , errors = require('../../components/errors');
 
 function httpCallback(asyncCallback) {
   return function (error, response, body) {
@@ -30,9 +31,22 @@ function verifiedCallback(asyncCallback) {
 }
 
 module.exports.authorize = function (req, res) {
+  var email = req.session.prepare.data.email;
+  var code = req.session.prepare.data.code;
+
+  if(!email){
+    res.status(400).send(errors.createError(errors.codes.INPUT_PARAMETER_ERROR, "email should be specified in session prepare"));
+    return;
+  }
+
+  if(!code){
+    res.status(400).send(errors.createError(errors.codes.INPUT_PARAMETER_ERROR, "code should be specified in session prepare"));
+    return;
+  }
+
   activiti.sendGetRequest(req, res, '/access/verifyContactEmail', {
-    sQuestion: req.session.prepare.data.email,
-    sAnswer: req.session.prepare.data.code
+    sQuestion: email,
+    sAnswer: code
   }, verifiedCallback(function (error, verified) {
     if (error) {
       res.status(401).send(error);
@@ -51,9 +65,22 @@ module.exports.editFio = function (req, res) {
   var lastName = req.body.lastName;
   var middleName = req.body.middleName;
 
+  var email = req.session.prepare.data.email;
+  var code = req.session.prepare.data.code;
+
+  if(!email){
+    res.status(400).send(errors.createError(errors.codes.INPUT_PARAMETER_ERROR, "email should be specified in session prepare"));
+    return;
+  }
+
+  if(!code){
+    res.status(400).send(errors.createError(errors.codes.INPUT_PARAMETER_ERROR, "code should be specified in session prepare"));
+    return;
+  }
+
   activiti.sendGetRequest(req, res, '/access/verifyContactEmail', {
-    sQuestion: req.session.prepare.data.email,
-    sAnswer: req.session.prepare.data.code
+    sQuestion: email,
+    sAnswer: code
   }, verifiedCallback(function (error, verified) {
     if (error) {
       res.status(401).send(error);
@@ -79,6 +106,16 @@ module.exports.verifyContactEmail = function (req, res) {
   var email = req.body.email;
   var link = req.body.link;
 
+  if(!email){
+    res.status(400).send(errors.createError(errors.codes.INPUT_PARAMETER_ERROR, "email should be specified"));
+    return;
+  }
+
+  if(!link){
+    res.status(400).send(errors.createError(errors.codes.INPUT_PARAMETER_ERROR, "link should be specified"));
+    return;
+  }
+
   emailService.verifyContactEmail(req.body.email, httpCallback(function (error, result) {
     if (error) {
       res.status(401).send(error);
@@ -95,6 +132,11 @@ module.exports.verifyContactEmail = function (req, res) {
 module.exports.verifyContactEmailAndCode = function (req, res) {
   var email = req.body.email;
   var code = req.body.code;
+
+  if(!code){
+    res.status(400).send(errors.createError(errors.codes.INPUT_PARAMETER_ERROR, "code should be specified"));
+    return;
+  }
 
   async.waterfall([
       function (asyncCallback) {

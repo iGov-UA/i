@@ -1041,4 +1041,23 @@
     <changeSet id="issue-1136-2" author="kr110666kai">
 	    <addForeignKeyConstraint constraintName="FK_AccountContact_Subject" referencedTableName="Subject" baseColumnNames="nID_Subject" baseTableName="SubjectAccount" referencedColumnNames="nID"/>
     </changeSet>
+    
+    <changeSet id="issue-subContact" author="olga">
+        <modifyDataType columnName="sLogin" newDataType="varchar(80)" tableName="SubjectAccount"/>
+    </changeSet>
+
+    <changeSet id="issue-1183" author="kr110666kai">
+    	<addColumn tableName="HistoryEvent">
+    		<column name="nID_HistoryEvent_Service" type="bigint" defaultValue="null">
+                <constraints nullable="true"/>
+    		</column>
+    		<column name="nID_Document" type="bigint" defaultValue="null">
+                <constraints nullable="true"/>
+    		</column>
+    	</addColumn>
+	    <addForeignKeyConstraint constraintName="FK_HistoryEventService_HistoryEvent" referencedTableName="HistoryEvent_Service" referencedColumnNames="nID"
+	    	baseColumnNames="nID_HistoryEvent_Service" baseTableName="HistoryEvent" />
+	    <addForeignKeyConstraint constraintName="FK_Document_HistoryEvent" referencedTableName="Document" referencedColumnNames="nID"
+	    	baseColumnNames="nID_Document" baseTableName="HistoryEvent" />
+    </changeSet>
 </databaseChangeLog>
