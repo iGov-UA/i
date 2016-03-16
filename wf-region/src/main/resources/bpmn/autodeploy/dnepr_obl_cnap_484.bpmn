@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dneprObl_cnap_484" name="Рішення місцевої ради про продаж земельної ділянки комунальної власності" isExecutable="true">
+  <process id="dnepr_obl_cnap_484" name="Рішення місцевої ради про продаж земельної ділянки комунальної власності" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати рішення" type="select" default="0"></activiti:formProperty>
@@ -82,7 +82,7 @@ ${sNameOrgan}.&lt;br /&gt;
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <userTask id="usertask1" name="ЦНАП обробка">
+    <userTask id="usertask1" name="ЦНАП обробка" activiti:candidateGroups="dnepr_cnap_nikopolT">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
@@ -194,7 +194,7 @@ ${sNameOrgan}.&lt;br /&gt;
     </sequenceFlow>
     <endEvent id="endevent3" name="End"></endEvent>
     <sequenceFlow id="flow30" sourceRef="servicetask5" targetRef="endevent3"></sequenceFlow>
-    <userTask id="usertask2" name="Міськрада рашення">
+    <userTask id="usertask2" name="Міськрада рашення" activiti:candidateGroups="dnepr_cnap_nikopolT">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
@@ -283,7 +283,7 @@ ${sNameOrgan}.&lt;br /&gt;
     <sequenceFlow id="flow34" name="рішення позитивне" sourceRef="exclusivegateway2" targetRef="servicetask7">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asVariantsRish == 'sEnamRish_ok'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask3" name="ЦНАП видача">
+    <userTask id="usertask3" name="ЦНАП видача" activiti:candidateGroups="dnepr_cnap_nikopolT">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
@@ -345,9 +345,11 @@ ${sNameOrgan}.&lt;br /&gt;
     <sequenceFlow id="flow39" sourceRef="servicetask4" targetRef="servicetask9"></sequenceFlow>
     <sequenceFlow id="flow40" sourceRef="servicetask6" targetRef="endevent3"></sequenceFlow>
     <sequenceFlow id="flow41" sourceRef="servicetask8" targetRef="endevent3"></sequenceFlow>
+    <sequenceFlow id="flow42" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
+    <sequenceFlow id="flow43" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_484">
-    <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_484" id="BPMNPlane_dnepr_cnap_484">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_obl_cnap_484">
+    <bpmndi:BPMNPlane bpmnElement="dnepr_obl_cnap_484" id="BPMNPlane_dnepr_obl_cnap_484">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="179.0" y="6.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -378,6 +380,9 @@ ${sNameOrgan}.&lt;br /&gt;
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
         <omgdc:Bounds height="55.0" width="105.0" x="765.0" y="61.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask9" id="BPMNShape_servicetask9">
+        <omgdc:Bounds height="55.0" width="105.0" x="632.0" y="220.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
         <omgdc:Bounds height="35.0" width="35.0" x="800.0" y="230.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -401,9 +406,6 @@ ${sNameOrgan}.&lt;br /&gt;
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
         <omgdc:Bounds height="55.0" width="105.0" x="880.0" y="500.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask9" id="BPMNShape_servicetask9">
-        <omgdc:Bounds height="55.0" width="105.0" x="632.0" y="220.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
         <omgdi:waypoint x="196.0" y="41.0"></omgdi:waypoint>
@@ -498,6 +500,14 @@ ${sNameOrgan}.&lt;br /&gt;
         <omgdi:waypoint x="932.0" y="500.0"></omgdi:waypoint>
         <omgdi:waypoint x="932.0" y="247.0"></omgdi:waypoint>
         <omgdi:waypoint x="835.0" y="247.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">
+        <omgdi:waypoint x="253.0" y="88.0"></omgdi:waypoint>
+        <omgdi:waypoint x="270.0" y="88.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
+        <omgdi:waypoint x="375.0" y="88.0"></omgdi:waypoint>
+        <omgdi:waypoint x="400.0" y="88.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
