@@ -11,7 +11,7 @@
         <activiti:formProperty id="bankIdPassport" name="Паспортні данні" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Сканований паспорт громадянина" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Укажіть сьогоднішню дату" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="adres_1" name="Адреса реєстрації громадянина" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса реєстрації громадянина" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         
@@ -20,15 +20,15 @@
           <activiti:value id="not_live" name="нежитлові в житлові"></activiti:value>
         </activiti:formProperty>
         
-        <activiti:formProperty id="subekt" name="Звернення подаю як" type="enum" required="true">
+        <activiti:formProperty id="sSubekt" name="Звернення подаю як" type="enum" required="true">
           <activiti:value id="fiz" name="фізична особа"></activiti:value>
           <activiti:value id="ur" name="юрідична особа"></activiti:value>
         </activiti:formProperty>
         
-        <activiti:formProperty id="imya_ur" name="У давальному відмінку повне найменування юридичної особи" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sNumberReestration" name="реєстраційний номер суб’єкта підприємницької діяльності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sNameUr" name="У давальному відмінку повне найменування юридичної особи" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sNumberReestration" name="Реєстраційний номер суб’єкта підприємницької діяльності" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sDateReestration" name="Дата реєстрації суб’єкта підприємницької діяльності" type="date" default=" "></activiti:formProperty>
-        <activiti:formProperty id="adres_2" name="Юрідична адреса" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sAdressUr" name="Юрідична адреса" type="string" default=" "></activiti:formProperty>
       
      
         
@@ -38,27 +38,31 @@
           <activiti:value id="ur_fiz" name="юридичній або фізичній особі"></activiti:value>
         </activiti:formProperty>
         
-        <activiti:formProperty id="obect" name="Назва об’єкту" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sObeject" name="Назва об’єкту" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameDoc" name="Назва правовстановлюючого документа на право власності або користування земельною ділянкою" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNumberDoc" name="Реєстраційний номер правовстановлюючого документа" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateDoc" name="Дата реєстрації правовстановлюючого документа" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="adres_0" name=" " type="label" default="Адреса приміщення"></activiti:formProperty>
-        <activiti:formProperty id="locality" name="Найменування населеного пункту" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="street" name="Вулиця" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="number_house" name="Будинок" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="function" name="Укажіть для чого житлове приміщення переводиться в нежитлове (цільове призначення)" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAdressObject" name=" " type="label" default="Адреса приміщення"></activiti:formProperty>
+        <activiti:formProperty id="sLocality" name="Найменування населеного пункту" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sStreet" name="Вулиця" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNumberHouse" name="Будинок" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFunction" name="Укажіть для чого житлове приміщення переводиться в нежитлове (цільове призначення)" type="textArea" required="true"></activiti:formProperty>
        
-        <activiti:formProperty id="dogovor" name="Завірена в установленому порядку, копія договору купівлі-продажу приміщення (квартири)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="teh_passport" name="Копія технічного паспорту приміщення (квартири)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="dovidka" name="Довідка про адресу реєстрації власника квартири за місцем проживання" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDogovor" name="Завірена в установленому порядку, копія договору купівлі-продажу приміщення (квартири)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTehPassport" name="Копія технічного паспорту приміщення (квартири)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDovidka" name="Довідка про адресу реєстрації власника квартири за місцем проживання" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="akt" name="Акт від Управління з питань наглядово-профілактичної діяльності ГУ ДСНС України в вашій області про технічну можливість використання приміщення за новим призначенням" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="no_debt" name="Довідка від КП «ЖИЛСЕРВІС» міської ради щодо відсутності боргу з комунальних та експлуатаційних платежів" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="teh_vozmognost" name="Довідка від УАКБ та ЖКГ міської ради про технічну можливість використання приміщенням за новим призначенням" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="energy" name="Довідка від місцевої дільниці енергозбиту" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="text" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
-        <activiti:formProperty id="rNumber" name="номер району" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="rName" name="район" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="remail" name="пошта району" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу" type="invisible"></activiti:formProperty>
+	    <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible"></activiti:formProperty>
+		<activiti:formProperty id="sPhoneOrgan" name="телефон для довідок" type="invisible"></activiti:formProperty>
+		<activiti:formProperty id="sAddress" name="адреса адміністративного органу" type="invisible"></activiti:formProperty>
+		<activiti:formProperty id="sMailClerk" name="пошта посадовця" type="invisible"></activiti:formProperty>
+		<activiti:formProperty id="sArea" name="назва населеного пункту" type="invisible"></activiti:formProperty>
+		<activiti:formProperty id="nArea" name="номер з довідника населеного пункту" type="invisible"></activiti:formProperty>
+		<activiti:formProperty id="sShapka" name="шапка у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Якщо  юрідична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;imya_ur&quot;,&quot;edrpo&quot;,&quot;pib_ur&quot;, &quot;adres_1&quot;,&quot;adres_1&quot;,&quot;telef&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers11" name="Якщо  фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_11&quot;:{&quot;aField_ID&quot;:[&quot;adres_0&quot;,&quot;pib_fiz&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz'&quot;}}}"></activiti:formProperty>
        
