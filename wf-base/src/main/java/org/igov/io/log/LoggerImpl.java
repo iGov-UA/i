@@ -1,14 +1,13 @@
-package org.igov.log;
+package org.igov.io.log;
 
 import com.google.common.collect.Sets;
-import org.igov.log.http.LogResponse;
-import org.igov.log.http.LogResponseImpl;
+import org.igov.io.log.http.LogResponse;
+import org.igov.io.log.http.LogResponseImpl;
 import org.slf4j.LoggerFactory;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import static java.util.Collections.emptyList;
 import static org.apache.commons.lang3.StringUtils.substring;
 import static org.apache.commons.lang3.Validate.isTrue;
 import static org.apache.commons.lang3.Validate.notNull;
@@ -93,8 +92,8 @@ public class LoggerImpl implements Logger {
 
 
 
-    public LogResponse errorHTTP(int status, String header, String msg) {
-        return new LogResponseImpl(status, header, msg, emptyList());
+    public LogResponse errorHTTP(int status, String header, String msg, Object ...params) {
+        return new LogResponseImpl(status, header, msg, params);
     }
 
 
