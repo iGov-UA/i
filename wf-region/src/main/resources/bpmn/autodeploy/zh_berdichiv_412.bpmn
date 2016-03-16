@@ -31,7 +31,7 @@
           <activiti:expression>noreply@igov.org.ua</activiti:expression>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>mmaj@mail.ua</activiti:expression>
+          <activiti:expression>lomova_aleksandra@mail.ru</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression>Нове звернення на порталі igov.org.ua на тему: Надання дозволу на відключення від мереж центрального опалення і постачання гарячої води. Заявник ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}</activiti:expression>
@@ -113,8 +113,14 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 		    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-			&lt;p&gt;За даними міської ради Вам НАДАНО дозвіл на відключення від мереж централізованого опалення і постачання гарячої води.   &lt;/p&gt;
+			&lt;p&gt;За даними міської ради Вам НАДАНО дозвіл на відключення від мереж централізованого опалення і постачання гарячої води.&lt;br&gt;
+Комментар Держслужбовця: &lt;/p&gt;
 &lt;p&gt;${decisionComment}&lt;/p&gt;
+&lt;p&gt;Контактна інформація відділу, який займається Вашим запитом:
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:3]&lt;br&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:4]&lt;br&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]
+&lt;/p&gt;
 			[pattern/mail/_common_signature_start.html]
 			&lt;p&gt;[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2]
 			&lt;/p&gt;
@@ -140,9 +146,10 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 		    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-			&lt;p&gt;За даними міської ради Вам ВІДМОВЛЕНО у наданні дозволу на відключення від мереж централізованого опалення і постачання гарячої води .&lt;/p&gt;
+			&lt;p&gt;За даними міської ради Вам ВІДМОВЛЕНО у наданні дозволу на відключення від мереж централізованого опалення і постачання гарячої води .&lt;br&gt;
+Комментар Держслужбовця:&lt;/p&gt;
 &lt;p&gt;${decisionComment}&lt;/p&gt;
-			&lt;p&gt;За необхідності Ви можете звернутися за адресою:
+			&lt;p&gt;Контактна інформація відділу, який займається Вашим запитом:
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:3]&lt;br&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:4]&lt;br&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]
@@ -228,14 +235,14 @@
         <omgdi:waypoint x="750.0" y="212.0"></omgdi:waypoint>
         <omgdi:waypoint x="840.0" y="212.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="54.0" x="760.0" y="212.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="100.0" x="760.0" y="212.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
         <omgdi:waypoint x="730.0" y="192.0"></omgdi:waypoint>
         <omgdi:waypoint x="730.0" y="145.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="60.0" x="745.0" y="158.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="100.0" x="745.0" y="158.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
