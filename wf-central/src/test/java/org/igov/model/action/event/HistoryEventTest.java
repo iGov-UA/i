@@ -87,6 +87,7 @@ public class HistoryEventTest {
     // если сработал скорее всего, проблема из-за изменений в файле
     // HistoryEvent.csv
     // @Ignore
+    @Ignore
     @Test
     public void getHistoryEvents() {
 	getHistoryEventsBySubject(testSubject_nID, false, 20);
