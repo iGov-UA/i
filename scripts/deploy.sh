@@ -173,7 +173,6 @@ build_central ()
 	build_base $saCompile
 	cd wf-central
     mvn -P $sVersion clean install site $sBuildArg -Ddependency.locations.enabled=false
-	cd ..
 	rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' target/wf-central.war sybase@$sHost:/sybase/.upload/
 }
 
@@ -216,21 +215,21 @@ fallback ()
 {
 	echo "Fatal error! Executing fallback task..."
 	#Убиваем процесс. Нет смысла ждать его корректной остановки.
-	cd /sybase/tomcat_${sProject}${1}/bin/ && ./_shutdown_force.sh
+	cd /sybase/tomcat_${sProject}$1/bin/ && ./_shutdown_force.sh
 	#Удаляем новые конфиги
-	rm -rf /sybase/tomcat_${sProject}${1}/conf
+	rm -rf /sybase/tomcat_${sProject}$1/conf
 	#Копируем старые конфиги обратно
-	cp -rp /sybase/.backup/configs/$sProject/tomcat_${sProject}${1}/$sDate/conf /sybase/tomcat_${sProject}${1}/
+	cp -rp /sybase/.backup/configs/$sProject/tomcat_${sProject}$1/$sDate/conf /sybase/tomcat_${sProject}$1/
 	#Очищаем папку с приложениями
-	rm -f /sybase/tomcat_${sProject}${1}/webapps/*
+	rm -f /sybase/tomcat_${sProject}$1/webapps/*
 	#Копируем обратно старое приложение
-	cp -p /sybase/.backup/war/$sProject/tomcat_${sProject}${1}/$sDate/wf.war /sybase/tomcat_${sProject}${1}/webapps/
+	cp -p /sybase/.backup/war/$sProject/tomcat_${sProject}$1/$sDate/wf.war /sybase/tomcat_${sProject}$1/webapps/
 	#Запускаем службу
-	cd /sybase/tomcat_${sProject}${1}/bin/ && ./_startup.sh
+	cd /sybase/tomcat_${sProject}$1/bin/ && ./_startup.sh
 	sleep 15
 	#Проверяем статус службы. Если нашлась ошибка в логе - завершаем скрипт с критической ошибкой.
-	if grep ERROR /sybase/tomcat_${sProject}${1}/logs/catalina.out | grep -v log4j | grep -v stopServer; then
-		echo "Fatal error found in tomcat_${sProject}${1}/logs/catalina.out! Can't start previous configuration."
+	if grep ERROR /sybase/tomcat_${sProject}$1/logs/catalina.out | grep -v log4j | grep -v stopServer; then
+		echo "Fatal error found in tomcat_${sProject}$1/logs/catalina.out! Can't start previous configuration."
 		exit 1
 	fi
 	#Возвращаем на место основной конфиг прокси для Nginx.
@@ -254,30 +253,30 @@ backup ()
 	#rm -rf /sybase/.backup/configs/$sProject/tomcat_$sProject-secondary/conf
 	#rm -f /sybase/.backup/war/$sProject/tomcat_$sProject-secondary/wf.war
 	#Делаем бекап конфигов
-	if [ ! -d /sybase/.backup/configs/$sProject/tomcat_${sProject}${1}/$sDate ]; then
-		mkdir -p /sybase/.backup/configs/$sProject/tomcat_${sProject}${1}/$sDate
+	if [ ! -d /sybase/.backup/configs/$sProject/tomcat_${sProject}$1/$sDate ]; then
+		mkdir -p /sybase/.backup/configs/$sProject/tomcat_${sProject}$1/$sDate
 	fi
-	cp -rp /sybase/tomcat_${sProject}${1}/conf /sybase/.backup/configs/$sProject/tomcat_${sProject}${1}/$sDate/
+	cp -rp /sybase/tomcat_${sProject}$1/conf /sybase/.backup/configs/$sProject/tomcat_${sProject}$1/$sDate/
 	#Делаем бекап приложения
-	if [ ! -d /sybase/.backup/war/$sProject/tomcat_${sProject}${1}/$sDate ]; then
-		mkdir -p /sybase/.backup/war/$sProject/tomcat_${sProject}${1}/$sDate
+	if [ ! -d /sybase/.backup/war/$sProject/tomcat_${sProject}$1/$sDate ]; then
+		mkdir -p /sybase/.backup/war/$sProject/tomcat_${sProject}$1/$sDate
 	fi
-	cp -p /sybase/tomcat_${sProject}${1}/webapps/wf.war /sybase/.backup/war/$sProject/tomcat_${sProject}${1}/$sDate/
+	cp -p /sybase/tomcat_${sProject}$1/webapps/wf.war /sybase/.backup/war/$sProject/tomcat_${sProject}$1/$sDate/
 }
 	
 #Функция по деплою томката. Для первичного и вторичного инстанса действия идентичны
 deploy-tomcat ()
 {
 	#Выключаем томкат. Ротируется ли лог при выключении или старте?
-	cd /sybase/tomcat_${sProject}${1}/bin/ && ./_shutdown_force.sh
+	cd /sybase/tomcat_${sProject}$1/bin/ && ./_shutdown_force.sh
 	sleep 5
 	#Разворачиваем новые конфиги
-	cp -rf /sybase/.configs/${sProject}/* /sybase/tomcat_${sProject}${1}/conf/
+	cp -rf /sybase/.configs/${sProject}/* /sybase/tomcat_${sProject}$1/conf/
 	#Устанавливаем новую версию приложения
-	rm -f /sybase/tomcat_${sProject}${1}/webapps/*
-	cp -p /sybase/.upload/$sProject.war /sybase/tomcat_${sProject}${1}/webapps/wf.war
+	rm -f /sybase/tomcat_${sProject}$1/webapps/*
+	cp -p /sybase/.upload/$sProject.war /sybase/tomcat_${sProject}$1/webapps/wf.war
 	#Запускаем томкат
-	cd /sybase/tomcat_${sProject}${1}/bin/ && ./_startup.sh
+	cd /sybase/tomcat_${sProject}$1/bin/ && ./_startup.sh
 	sleep 15
 }
 
@@ -321,9 +320,11 @@ fi
 
 if [ $sProject == "wf-central"  ] || [ $sProject == "wf-region" ]; then
 	#Сразу создадим бекапы
+	echo "Starting backup of DOUBLE"
 	backup _double
 
 	#Развернем новое приложение на вторичном инстансе
+	echo "Starting deploy of DOUBLE"
 	deploy-tomcat _double
 
 	#Проверяем на наличие ошибок вторичный инстанс
