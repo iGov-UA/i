@@ -22,7 +22,6 @@ fi
 #Определяем сервер для установки
 if [[ $sVersion == "alpha" && $sProject == "central-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-central" ]]; then
 		sHost="test.igov.org.ua"
-		sJenkinsWorkspace="/sybase/jenkins/data/jobs/central_alpha/workspace"
 fi
 #if [[ $sVersion == "beta" && $sProject == "central-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-central" ]]; then
 #		sHost="test-version.igov.org.ua"
@@ -32,8 +31,7 @@ fi
 #fi
 
 if [[ $sVersion == "alpha" && $sProject == "dashboard-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-region" ]]; then
-		sHost="test.igov.org.ua"
-		sJenkinsWorkspace="/sybase/jenkins/data/jobs/regional-alpha/workspace"
+		sHost="test.region.igov.org.ua"
 fi
 #if [[ $sVersion == "beta" && $sProject == "dashboard-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-region" ]]; then
 #		sHost="test-version.region.igov.org.ua"
@@ -47,6 +45,10 @@ if [ -z $sHost ]; then
 	exit 1
 fi
 
+if [ -z $saCompile ]; then
+	saCompile=(storage-static storage-temp wf-base)
+fi
+
 build_central-js ()
 {
 	cd central-js
@@ -57,7 +59,9 @@ build_central-js ()
 	grunt build
 	cd dist
 	npm install --production
-	rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' /sybase/jenkins/data/jobs/central_alpha/workspace/central-js/dist/ sybase@$sHost:/sybase/.upload/central-js.$sDate/
+	cd ..
+	rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' dist/ sybase@$sHost:/sybase/.upload/central-js.$sDate/
+	cd ..
 }
 
 build_dashboard-js ()
@@ -71,14 +75,13 @@ build_dashboard-js ()
 	grunt build
 	cd dist
 	npm install --production
-	rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' /sybase/jenkins/data/jobs/regional-alpha/workspace/dashboard-js/dist/ sybase@$sHost:/sybase/.upload/dashboard-js.$sDate/
+	cd ..
+	rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' dist/ sybase@$sHost:/sybase/.upload/dashboard-js.$sDate/
+	cd ..
 }
 
 build_base ()
 {
-	if [ -z "$saCompile" ]; then
-		saCompile=(storage-static storage-temp wf-base)
-	fi
 	if [ "$bExcludeTest" ==  "true" ]; then
 		local sBuildArg="-DskipTests=true"
 	fi
@@ -87,18 +90,21 @@ build_base ()
 		case "$sArrComponent" in
 		storage-static)
 			echo  "will build $sArrComponent"
-			cd $sJenkinsWorkspace/storage-static
+			cd storage-static
 			mvn -P $sVersion clean install $sBuildArg
+			cd ..
 			;;
 		storage-temp)
 			echo  "will build $sArrComponent"
-			cd $sJenkinsWorkspace/storage-temp
+			cd storage-temp
 			mvn -P $sVersion clean install $sBuildArg
+			cd ..
 			;;
 		wf-base)
 			echo  "will build $sArrComponent"
-			cd $sJenkinsWorkspace/wf-base
+			cd wf-base
 			mvn -P $sVersion clean install site $sBuildArg -Ddependency.locations.enabled=false
+			cd ..
 			;;
 		*)
 			echo "Bad project name $sArrComponent"
@@ -114,8 +120,9 @@ build_central ()
 		local sBuildArg="-DskipTests=true"
 	fi
 	build_base $saCompile
-	cd /sybase/jenkins/data/jobs/central_alpha/workspace/wf-central
+	cd wf-central
     mvn -P $sVersion clean install site $sBuildArg -Ddependency.locations.enabled=false
+	cd ..
 	rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' target/wf-central.war sybase@$sHost:/sybase/.upload/
 }
 
@@ -125,8 +132,9 @@ build_region ()
 		local sBuildArg="-DskipTests=true"
 	fi
 	build_base $saCompile
-	cd /sybase/jenkins/data/jobs/regional-alpha/workspace/wf-region
+	cd wf-region
     mvn -P $sVersion clean install site $sBuildArg -Ddependency.locations.enabled=false
+	cd ..
 	rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' target/wf-region.war sybase@$sHost:/sybase/.upload/
 }
 
@@ -144,7 +152,7 @@ if [ $sProject == "dashboard-js" ]; then
 fi
 
 #Connecting to remote host (Project deploy)
-#ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $sHost << EOF
+ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $sHost << EOF
 
 fallback ()
 {

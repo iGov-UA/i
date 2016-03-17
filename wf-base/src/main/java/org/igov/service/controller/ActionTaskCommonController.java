@@ -905,7 +905,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             + "\"5215055\",\"dn200986zda\",\"2015-09-25:13-05-22\",\"1565056\",\"0\",\"обробка дмс\",\"АМ765369 ЖОВТНЕВИМ РВ ДМУ УМВС УКРАЇНИ В ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ 18.03.2002\",\"ДМИТРО\",\"ДУБІЛЕТ\",\"ОЛЕКСАНДРОВИЧ\",\"attr1_no\",\"2015-09-28 08:15:00.00\",\"dd.MM.yyyy HH:MI\",\"dmitrij.zabrudskij@privatbank.ua\",\"attr2_missed\",\"attr1_yes\",\"\",\"38\",\"attr1_no\",\"{\"\"nID_FlowSlotTicket\"\":27768,\"\"sDate\"\":\"\"2015-09-28 08:15:00.00\"\"}\",\"0.0\",\"0.0\"\n"
             + "\n```\n")
     @Deprecated
-    @RequestMapping(value = "/download_bp_timing", method = RequestMethod.GET)
+    @RequestMapping(value = "/download_bp_timing", method = RequestMethod.GET, produces = "application/vnd.ms-excel") 
     @Transactional
     public void getTimingForBusinessProcessNew(
             @ApiParam(value = "ИД бизнес процесса", required = true) @RequestParam(value = "sID_BP_Name") String sID_BP_Name,
@@ -928,14 +928,15 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
         SimpleDateFormat sdfFileName = new SimpleDateFormat(
                 "yyyy-MM-ddHH-mm-ss", Locale.ENGLISH);
-        String fileName = sID_BP_Name + "_"
-                + sdfFileName.format(Calendar.getInstance().getTime()) + ".csv";
+        String fileName = "!" + sID_BP_Name + "_"
+                + sdfFileName.format(Calendar.getInstance().getTime()) + ".xlsx";
         LOG.debug("File name for statistics : {%s}", fileName);
         boolean isByFieldsSummary = saFieldSummary != null
                 && !saFieldSummary.isEmpty();
-        httpResponse.setContentType("text/csv;charset=UTF-8");
-        httpResponse.setHeader("Content-disposition", "attachment; filename="
-                + fileName);
+        //httpResponse.setContentType("text/csv;charset=UTF-8");
+        httpResponse.setContentType("application/vnd.ms-excel; charset=UTF-8");
+        httpResponse.setCharacterEncoding("UTF-8");
+        httpResponse.setHeader("Content-disposition", "attachment; filename=" + fileName);
 
         List<HistoricTaskInstance> foundResults = historyService
                 .createHistoricTaskInstanceQuery().taskCompletedAfter(dateAt)
