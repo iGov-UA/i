@@ -1,6 +1,6 @@
-package org.igov.log;
+package org.igov.io.log;
 
-import org.igov.log.http.LogResponse;
+import org.igov.io.log.http.LogResponse;
 
 import java.util.Set;
 
@@ -28,7 +28,7 @@ public interface Logger {
 
 
     // Igov custom stuff
-    LogResponse errorHTTP(int status, String header, String msg);
+    LogResponse errorHTTP(int status, String header, String msg, Object ...params);
 
     Logger _trace(String msg);
     Logger _debug(String msg);

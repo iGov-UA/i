@@ -196,6 +196,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                     || sURL.endsWith("/service/document/getDocuments")
                     || sURL.endsWith("/service/document/setDocumentFile")
                     || sURL.contains("/service/object/file/")
+                    || sURL.contains("/service/document/getDocumentAbstract")
+                    
                     ){
             }else{
                 LOG_BIG.debug("(sResponseBody={})", sResponseBody);
@@ -239,7 +241,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     }
 
     private boolean isSaveTask(HttpServletRequest oRequest, String sResponseBody) {
-        LOG.info("(is save task sResponseBody {}, '/form/form-data' {}. Method {} )", sResponseBody, oRequest.getRequestURL().toString().indexOf("/form/form-data"),oRequest.getMethod());
+        //LOG.info("(is save task sResponseBody {}, '/form/form-data' {}. Method {} )", sResponseBody, oRequest.getRequestURL().toString().indexOf("/form/form-data"),oRequest.getMethod());
         return (sResponseBody != null && !"".equals(sResponseBody))
                 && oRequest.getRequestURL().toString().indexOf("/form/form-data") > 0
                 && "POST".equalsIgnoreCase(oRequest.getMethod().trim());

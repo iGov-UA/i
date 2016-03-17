@@ -1,4 +1,4 @@
-package org.igov.log.http;
+package org.igov.io.log.http;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.commons.lang3.builder.EqualsBuilder;

@@ -1,6 +1,6 @@
- package org.igov.log;
+ package org.igov.io.log;
 
- import org.igov.log.http.LogResponse;
+ import org.igov.io.log.http.LogResponse;
  import org.junit.Test;
 
  import java.util.ArrayList;
@@ -8,7 +8,6 @@
 
  import static org.apache.commons.lang3.StringUtils.substring;
  import static org.junit.Assert.*;
-import org.junit.Ignore;
  import static org.slf4j.helpers.MessageFormatter.arrayFormat;
  import static org.slf4j.helpers.MessageFormatter.format;
 
@@ -18,7 +17,6 @@ import org.junit.Ignore;
  */
 public class LoggerTest {
 
-    @Ignore
     @Test
     public void logErrorHttp(){
         int status      = 404;
@@ -38,6 +36,24 @@ public class LoggerTest {
         assertTrue("Arguments aren't empty", response.arguments().size() == 0);
     }
 
+    @Test
+    public void logErrorHttpWithParams(){
+        String msgPattern   = "User id={}, name={}"; Object [] params = {100, "Tom"};
+        String fullMsg      = arrayFormat(msgPattern, params).getMessage();
+        String httpHeader   = "length=500;type=text";
+        int httpStatus      = 500; // Shit happens, mate
+        String expectedMsg  = httpStatus+":"+httpHeader+" User id=100, name=Tom";
+
+        Logger log          = LoggerImpl.getLog(LoggerTest.class);
+        LogResponse resp    = log.errorHTTP(httpStatus, httpHeader, msgPattern,  /* vararg */ params);
+
+        assertNotNull(resp);
+        assertEquals("Status is wrong", httpStatus, resp.status());
+        assertEquals("Header is wrong", httpHeader, resp.header());
+        assertEquals("Message is wrong", expectedMsg, resp.message());
+        assertEquals("Raw message is wrong", fullMsg, resp.rawMessage());
+        assertTrue("Arguments aren't empty", resp.arguments().size() == params.length);
+    }
 
     @Test
     @SuppressWarnings("PMD") // i know that there is a duplication of String, thank you, Cap (PMD)
