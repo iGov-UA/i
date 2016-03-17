@@ -1,53 +1,45 @@
 #!/bin/bash
 
+#Строка запуска скрипта выглядит так
+# ./deploy.sh --version alpha --project wf-region --exclude-test true --compile \*
+# ./deploy.sh --version alpha --project wf-central --exclude-test false --compile wf-base storage-temp storage-static
+
 #Setting-up variables
 export LANG=en_US.UTF-8
-sVersion=$1 #версия sVersion (alpha, beta, ...)
-sProject=$2 #название проекта ### wf-central ###
-bExcludeTest=$3 #Нужно ли выполнять тесты после сборки
-saCompile=($4) #массив с компонентами для сборки saCompile=storage-static,storage-temp,wf-base
+
+while [[ $# > 1 ]]
+do
+	sKey="$1"
+	case $sKey in
+		--version)
+			saVersion="$2"
+			shift
+			;;
+		--project)
+			sProject="$2"
+			shift
+			;;
+		--exclude-test)
+			bExcludeTest="$2"
+			shift
+			;;
+		--compile)
+			saCompile=
+			saCompile[0]="$2"
+			saCompile[1]="$3"
+			saCompile[2]="$4"
+			shift
+			;;
+		*)
+			echo "bad option"
+			exit 1
+			;;
+	esac
+shift
+done
+
 sDate=`date "+%Y.%m.%d-%H.%M.%S"`
-
-TMP=TEMP=TMPDIR=/tmp/c_alpha && export TMPDIR TMP TEMP
-mkdir -p $TMP
-
-#Проверяем, все ли параметры переданы
-if [ $# -ne 2 ]; then
-	echo "Can't start. You must specify all arguments!"
-    #echo "Here is an example: ./deploy.sh true true \"storage-static storage-temp wf-base\""
-    #echo "Parameter description: ./deploy.sh \$sVersion \$sProject \$saCompile"
-    exit 1
-fi
-
-#Определяем сервер для установки
-if [[ $sVersion == "alpha" && $sProject == "central-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-central" ]]; then
-		sHost="test.igov.org.ua"
-fi
-#if [[ $sVersion == "beta" && $sProject == "central-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-central" ]]; then
-#		sHost="test-version.igov.org.ua"
-#fi
-#if [[ $sVersion == "prod" && $sProject == "central-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-central" ]]; then
-#		sHost="igov.org.ua"
-#fi
-
-if [[ $sVersion == "alpha" && $sProject == "dashboard-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-region" ]]; then
-		sHost="test.region.igov.org.ua"
-fi
-#if [[ $sVersion == "beta" && $sProject == "dashboard-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-region" ]]; then
-#		sHost="test-version.region.igov.org.ua"
-#fi
-#if [[ $sVersion == "prod" && $sProject == "dashboard-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-region" ]]; then
-#		sHost="region.igov.org.ua"
-#fi
-
-if [ -z $sHost ]; then
-    echo "Cloud not select host for deploy. Wrong version or project."
-	exit 1
-fi
-
-if [ -z $saCompile ]; then
-	saCompile=(storage-static storage-temp wf-base)
-fi
+cd ..
 
 build_central-js ()
 {
@@ -106,9 +98,17 @@ build_base ()
 			mvn -P $sVersion clean install site $sBuildArg -Ddependency.locations.enabled=false
 			cd ..
 			;;
-		*)
-			echo "Bad project name $sArrComponent"
-			exit 1
+		"*")
+			echo "Build all base modules"
+			cd storage-static
+			mvn -P $sVersion clean install $sBuildArg
+			cd ..
+			cd storage-temp
+			mvn -P $sVersion clean install $sBuildArg
+			cd ..
+			cd wf-base
+			mvn -P $sVersion clean install site $sBuildArg -Ddependency.locations.enabled=false
+			cd ..
 		   ;;
 		esac
 	done
@@ -138,6 +138,31 @@ build_region ()
 	rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' target/wf-region.war sybase@$sHost:/sybase/.upload/
 }
 
+#Определяем сервер для установки
+if [[ $sVersion == "alpha" && $sProject == "central-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-central" ]]; then
+		sHost="test.igov.org.ua"
+		TMP=TEMP=TMPDIR=/tmp/c_alpha && export TMPDIR TMP TEMP
+		mkdir -p $TMP
+fi
+#if [[ $sVersion == "beta" && $sProject == "central-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-central" ]]; then
+#		sHost="test-version.igov.org.ua"
+#fi
+#if [[ $sVersion == "prod" && $sProject == "central-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-central" ]]; then
+#		sHost="igov.org.ua"
+#fi
+
+if [[ $sVersion == "alpha" && $sProject == "dashboard-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-region" ]]; then
+		sHost="test.region.igov.org.ua"
+		TMP=TEMP=TMPDIR=/tmp/r_alpha && export TMPDIR TMP TEMP
+		mkdir -p $TMP
+fi
+#if [[ $sVersion == "beta" && $sProject == "dashboard-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-region" ]]; then
+#		sHost="test-version.region.igov.org.ua"
+#fi
+#if [[ $sVersion == "prod" && $sProject == "dashboard-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-region" ]]; then
+#		sHost="region.igov.org.ua"
+#fi
+
 if [ $sProject == "wf-central" ]; then
 	build_central
 fi
@@ -150,6 +175,14 @@ fi
 if [ $sProject == "dashboard-js" ]; then
 	build_dashboard-js
 fi
+if [ -z $sProject ]; then
+	build_base $saCompile
+	exit 0
+fi
+if [ -z $sHost ]; then
+    echo "Cloud not select host for deploy. Wrong version or project."
+	exit 1
+fi
 
 #Connecting to remote host (Project deploy)
 ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $sHost << EOF
@@ -158,21 +191,21 @@ fallback ()
 {
 	echo "Fatal error! Executing fallback task..."
 	#Убиваем процесс. Нет смысла ждать его корректной остановки.
-	cd /sybase/tomcat_${sProject}_$1/bin/ && ./_shutdown_force.sh
+	cd /sybase/tomcat_${sProject}${1}/bin/ && ./_shutdown_force.sh
 	#Удаляем новые конфиги
-	rm -rf /sybase/tomcat_${sProject}_$1/conf
+	rm -rf /sybase/tomcat_${sProject}${1}/conf
 	#Копируем старые конфиги обратно
-	cp -rp /sybase/.backup/configs/$sProject/tomcat_${sProject}_$1/$sDate/conf /sybase/tomcat_${sProject}_$1/
+	cp -rp /sybase/.backup/configs/$sProject/tomcat_${sProject}${1}/$sDate/conf /sybase/tomcat_${sProject}${1}/
 	#Очищаем папку с приложениями
-	rm -f /sybase/tomcat_${sProject}_$1/webapps/*
+	rm -f /sybase/tomcat_${sProject}${1}/webapps/*
 	#Копируем обратно старое приложение
-	cp -p /sybase/.backup/war/$sProject/tomcat_${sProject}_$1/$sDate/wf.war /sybase/tomcat_${sProject}_$1/webapps/
+	cp -p /sybase/.backup/war/$sProject/tomcat_${sProject}${1}/$sDate/wf.war /sybase/tomcat_${sProject}${1}/webapps/
 	#Запускаем службу
-	cd /sybase/tomcat_${sProject}_$1/bin/ && ./_startup.sh
+	cd /sybase/tomcat_${sProject}${1}/bin/ && ./_startup.sh
 	sleep 15
 	#Проверяем статус службы. Если нашлась ошибка в логе - завершаем скрипт с критической ошибкой.
-	if grep ERROR /sybase/tomcat_${sProject}_$1/logs/catalina.out | grep -v log4j | grep -v stopServer
-		echo "Fatal error found in tomcat_${sProject}_$1/logs/catalina.out! Can't start previous configuration."
+	if grep ERROR /sybase/tomcat_${sProject}${1}/logs/catalina.out | grep -v log4j | grep -v stopServer
+		echo "Fatal error found in tomcat_${sProject}${1}/logs/catalina.out! Can't start previous configuration."
 		exit 1
 	fi
 	#Возвращаем на место основной конфиг прокси для Nginx.
@@ -196,30 +229,30 @@ backup ()
 	#rm -rf /sybase/.backup/configs/$sProject/tomcat_$sProject-secondary/conf
 	#rm -f /sybase/.backup/war/$sProject/tomcat_$sProject-secondary/wf.war
 	#Делаем бекап конфигов
-	if [ ! -d /sybase/.backup/configs/$sProject/tomcat_${sProject}_$1/$sDate ]; then
-		mkdir -p /sybase/.backup/configs/$sProject/tomcat_${sProject}_$1/$sDate
+	if [ ! -d /sybase/.backup/configs/$sProject/tomcat_${sProject}${1}/$sDate ]; then
+		mkdir -p /sybase/.backup/configs/$sProject/tomcat_${sProject}${1}/$sDate
 	fi
-	cp -rp /sybase/tomcat_${sProject}_$1/conf /sybase/.backup/configs/$sProject/tomcat_${sProject}_$1/$sDate/
+	cp -rp /sybase/tomcat_${sProject}${1}/conf /sybase/.backup/configs/$sProject/tomcat_${sProject}${1}/$sDate/
 	#Делаем бекап приложения
-	if [ ! -d /sybase/.backup/war/$sProject/tomcat_${sProject}_$1/$sDate ]; then
-		mkdir -p /sybase/.backup/war/$sProject/tomcat_${sProject}_$1/$sDate
+	if [ ! -d /sybase/.backup/war/$sProject/tomcat_${sProject}${1}/$sDate ]; then
+		mkdir -p /sybase/.backup/war/$sProject/tomcat_${sProject}${1}/$sDate
 	fi
-	cp -p /sybase/tomcat_${sProject}_$1/webapps/wf.war /sybase/.backup/war/$sProject/tomcat_${sProject}_$1/$sDate/
+	cp -p /sybase/tomcat_${sProject}${1}/webapps/wf.war /sybase/.backup/war/$sProject/tomcat_${sProject}${1}/$sDate/
 }
 	
 #Функция по деплою томката. Для первичного и вторичного инстанса действия идентичны
 deploy-tomcat ()
 {
 	#Выключаем томкат. Ротируется ли лог при выключении или старте?
-	cd /sybase/tomcat_${sProject}_$1/bin/ && ./_shutdown_force.sh
+	cd /sybase/tomcat_${sProject}${1}/bin/ && ./_shutdown_force.sh
 	sleep 5
 	#Разворачиваем новые конфиги
-	cp -rf /sybase/.configs/${sProject}_$1/* /sybase/tomcat_${sProject}_$1/conf/
+	cp -rf /sybase/.configs/${sProject}/* /sybase/tomcat_${sProject}${1}/conf/
 	#Устанавливаем новую версию приложения
-	rm -f /sybase/tomcat_${sProject}_$1/webapps/*
-	cp -p /sybase/.upload/$sProject.war /sybase/tomcat_${sProject}_$1/webapps/wf.war
+	rm -f /sybase/tomcat_${sProject}${1}/webapps/*
+	cp -p /sybase/.upload/$sProject.war /sybase/tomcat_${sProject}${1}/webapps/wf.war
 	#Запускаем томкат
-	cd /sybase/tomcat_${sProject}_$1/bin/ && ./_startup.sh
+	cd /sybase/tomcat_${sProject}${1}/bin/ && ./_startup.sh
 	sleep 15
 }
 
@@ -262,16 +295,16 @@ fi
 
 if [ $sProject == "wf-central"  ] || [ $sProject == "wf-region" ]; then
 	#Сразу создадим бекапы
-	backup secondary
+	backup _double
 
 	#Развернем новое приложение на вторичном инстансе
-	deploy-tomcat secondary
+	deploy-tomcat _double
 
 	#Проверяем на наличие ошибок вторичный инстанс
-	if grep ERROR /sybase/tomcat_${sProject}_secondary/logs/catalina.out | grep -v log4j | grep -v stopServer
+	if grep ERROR /sybase/tomcat_${sProject}_double/logs/catalina.out | grep -v log4j | grep -v stopServer
 	then
 		#Откатываемся назад
-		fallback secondary
+		fallback _double
 	else
 		echo "Everything is OK. Continuing deployment ..."
 		rm -f /sybase/nginx/conf/sites/upstream.conf
@@ -280,21 +313,21 @@ if [ $sProject == "wf-central"  ] || [ $sProject == "wf-region" ]; then
 		sResponseCode=$(curl -o /dev/null --connect-timeout 5 --silent --head --write-out '%{http_code}\n' https://$sHost/)
 		if [ $sResponseCode -ne 200 ]; then
 			echo "Error. Unexpected server response code. Returning to previous Tomcat configuration."
-			fallback secondary
+			fallback _double
 		fi
 		
 		#Разворачиваем приложение в основной инстанс
 		#Сразу создадим бекапы
-		backup primary
+		backup
 			
 		#Развернем новое приложение на вторичном инстансе
-		deploy-tomcat primary
+		deploy-tomcat
 			
 		#Проверяем на наличие ошибок вторичный инстанс
-		if grep ERROR /sybase/tomcat_${sProject}_primary/logs/catalina.out | grep -v log4j | grep -v stopServer
+		if grep ERROR /sybase/tomcat_${sProject}/logs/catalina.out | grep -v log4j | grep -v stopServer
 		then
 			#Откатываемся назад
-			fallback primary
+			fallback
 		else
 			echo "Everything is OK. Continuing deployment ..."
 			rm -f /sybase/nginx/conf/sites/upstream.conf
@@ -303,8 +336,9 @@ if [ $sProject == "wf-central"  ] || [ $sProject == "wf-region" ]; then
 			sResponseCode=$(curl -o /dev/null --connect-timeout 5 --silent --head --write-out '%{http_code}\n' https://$sHost/)
 			if [ $sResponseCode -ne 200 ]; then
 				echo "Error. Unexpected server response code. Returning to previous Tomcat configuration."
-				fallback primary
+				fallback
 			fi
+			cd /sybase/tomcat_${sProject}_double/bin/ && ./_shutdown_force.sh
 		fi
 	fi
 fi
