@@ -185,7 +185,7 @@ if [ -z $sHost ]; then
 fi
 
 #Connecting to remote host (Project deploy)
-#ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $sHost << EOF
+ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $sHost << EOF
 
 fallback ()
 {
@@ -338,6 +338,7 @@ if [ $sProject == "wf-central"  ] || [ $sProject == "wf-region" ]; then
 				echo "Error. Unexpected server response code. Returning to previous Tomcat configuration."
 				fallback
 			fi
+			cd /sybase/tomcat_${sProject}_double/bin/ && ./_shutdown_force.sh
 		fi
 	fi
 fi
