@@ -78,7 +78,7 @@ build_central-js ()
 	if [ "$bSkipBuild" == "true" ]; then
 		echo "Deploy to host: $sHost"
 		cd central-js
-		rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' dist/ sybase@$sHost:/sybase/.upload/central-js.$sDate/
+		rsync -az --delete -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' dist/ sybase@$sHost:/sybase/.upload/central-js/
 		return
 	fi
 	if [ "$bSkipDeploy" == "true" ]; then
@@ -102,7 +102,7 @@ build_central-js ()
 		cd dist
 		npm install --production
 		cd ..
-		rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' dist/ sybase@$sHost:/sybase/.upload/central-js.$sDate/
+		rsync -az --delete -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' dist/ sybase@$sHost:/sybase/.upload/central-js/
 		cd ..
 	fi
 }
@@ -119,7 +119,7 @@ build_dashboard-js ()
 	cd dist
 	npm install --production
 	cd ..
-	rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' dist/ sybase@$sHost:/sybase/.upload/dashboard-js.$sDate/
+	rsync -az --delete -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' dist/ sybase@$sHost:/sybase/.upload/dashboard-js/
 	cd ..
 }
 
@@ -230,7 +230,7 @@ fallback ()
 	cd /sybase/tomcat_${sProject}${1}/bin/ && ./_startup.sh
 	sleep 15
 	#Проверяем статус службы. Если нашлась ошибка в логе - завершаем скрипт с критической ошибкой.
-	if grep ERROR /sybase/tomcat_${sProject}${1}/logs/catalina.out | grep -v log4j | grep -v stopServer
+	if grep ERROR /sybase/tomcat_${sProject}${1}/logs/catalina.out | grep -v log4j | grep -v stopServer; then
 		echo "Fatal error found in tomcat_${sProject}${1}/logs/catalina.out! Can't start previous configuration."
 		exit 1
 	fi
@@ -293,7 +293,7 @@ if [ $sProject == "central-js" ]; then
 	#Удаляем старую версию
 	rm -rf /sybase/central-js
 	#Перемещаем новую версию на место старой
-	mv -f /sybase/.upload/central-js.$sDate /sybase/central-js
+	mv -f /sybase/.upload/central-js /sybase/central-js
 	#mv -f /sybase/.upload/central-js.$data/dist /sybase/central-js
 	cd /sybase/central-js
 	#cp -f /sybase/.configs/central-js/index.js /sybase/central-js/server/config/index.js
@@ -328,7 +328,7 @@ if [ $sProject == "wf-central"  ] || [ $sProject == "wf-region" ]; then
 	deploy-tomcat _double
 
 	#Проверяем на наличие ошибок вторичный инстанс
-	if grep ERROR /sybase/tomcat_${sProject}_double/logs/catalina.out | grep -v log4j | grep -v stopServer
+	if grep ERROR /sybase/tomcat_${sProject}_double/logs/catalina.out | grep -v log4j | grep -v stopServer; then
 	then
 		#Откатываемся назад
 		fallback _double
@@ -351,7 +351,7 @@ if [ $sProject == "wf-central"  ] || [ $sProject == "wf-region" ]; then
 		deploy-tomcat
 			
 		#Проверяем на наличие ошибок вторичный инстанс
-		if grep ERROR /sybase/tomcat_${sProject}/logs/catalina.out | grep -v log4j | grep -v stopServer
+		if grep ERROR /sybase/tomcat_${sProject}/logs/catalina.out | grep -v log4j | grep -v stopServer; then
 		then
 			#Откатываемся назад
 			fallback
