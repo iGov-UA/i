@@ -173,7 +173,6 @@ build_central ()
 	build_base $saCompile
 	cd wf-central
     mvn -P $sVersion clean install site $sBuildArg -Ddependency.locations.enabled=false
-	cd ..
 	rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' target/wf-central.war sybase@$sHost:/sybase/.upload/
 }
 
@@ -321,9 +320,11 @@ fi
 
 if [ $sProject == "wf-central"  ] || [ $sProject == "wf-region" ]; then
 	#Сразу создадим бекапы
+	echo "Starting backup of DOUBLE"
 	backup _double
 
 	#Развернем новое приложение на вторичном инстансе
+	echo "Starting deploy of DOUBLE"
 	deploy-tomcat _double
 
 	#Проверяем на наличие ошибок вторичный инстанс
