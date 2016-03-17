@@ -97,7 +97,7 @@
 &lt;p&gt; Ваше звернення щодо отримання Витягу з наказу вищого навчального закладу що стосується навчання прийнято до роботи.
 Повідомлення про результат розгляду буде спрямоване на Ваш e-mail.&lt;/p&gt;
 &lt;br /&gt;
-телефон: 067 92 62 437&lt;br /&gt;
+телефон: +38032 239 43 79&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 Архів Львівського Національного Університету ім. Івана Франка&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
@@ -156,16 +156,12 @@
           <activiti:value id="sEnamOtr_post" name="Поштою"></activiti:value>
           <activiti:value id="sEnamOtr_postcifra" name="Цифровою копією на e-mail+поштою"></activiti:value>
         </activiti:formProperty>
-                
-        
         <activiti:formProperty id="asVariants" name="Рішення щодо видачі довідки" type="enum" required="true">
           <activiti:value id="sEnamDok_ok" name="Заявку оформлено вірно/відомості наявні в архіві, видати довідку"></activiti:value>
           <activiti:value id="sEnamDok_bad" name="Заявка оформлена не вірно/відомості відсутні в архіві, відмова."></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="Komment_rishenia" name="Коментар по рішенню;(Вкажіть з якого числа можна отримати довідку, в разі відмови вкажіть причину відмови)" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="супровідний текст" type="invisible" default="Якщо заявка прийнята, вона з'явиться в необроблених і вам треба буде зробити відмітку чи виданий документ.У разі відмови робота по цій заявці завершена."></activiti:formProperty>
-      
-      
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
@@ -185,7 +181,7 @@
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 Вам відмовлено у видачі Витягу з наказу вищого навчального закладу що стосується навчання.&lt;br /&gt;
 Причина: ${Komment_rishenia} &lt;br /&gt;
-телефон: 067 92 62 437&lt;br /&gt;
+телефон: +38032 239 43 79&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 Архів Львівського Національного Університету ім. Івана Франка&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
@@ -201,8 +197,6 @@
     <sequenceFlow id="flow7" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
     <userTask id="usertask2" name="Виконнання заявки" activiti:candidateGroups="lnu_arhiv">
       <extensionElements>
-        
-        
         <activiti:formProperty id="sVutag" name="З якого наказу необхідно видати витяг" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
@@ -220,10 +214,6 @@
           <activiti:value id="sEnamVuk_ok" name="Заявку виконано, відправити лист з запитом про оцінку послуги"></activiti:value>
           <activiti:value id="sEnamVuk_bad" name="Послугу не надано"></activiti:value>
         </activiti:formProperty>
-        
-        
-        
-        
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow11" name="${asVariants == 'sEnamDok_ok'}" sourceRef="exclusivegateway1" targetRef="usertask2">
@@ -248,7 +238,7 @@
 Дякуємо що скористались нашою послугою онлайн.&lt;br /&gt;
 Будь ласка оцініть якість наданої вам послуги. &lt;br /&gt;
 [pattern/mail/_common_feedback.html]
-телефон: 067 92 62 437&lt;br /&gt;
+телефон: +38032 239 43 79&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 Архів Львівського Національного Університету ім. Івана Франка&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
