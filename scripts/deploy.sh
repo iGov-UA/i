@@ -77,6 +77,7 @@ build_central-js ()
 {
 	if [ "$bSkipBuild" == "true" ]; then
 		echo "Deploy to host: $sHost"
+		cd central-js
 		rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' dist/ sybase@$sHost:/sybase/.upload/central-js.$sDate/
 		return
 	fi
@@ -209,7 +210,7 @@ if [ -z $sHost ]; then
 	exit 1
 fi
 
-#Connecting to remote host (Project deploy)
+echo "Connecting to remote host (Project deploy)"
 ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $sHost << EOF
 
 fallback ()
@@ -282,6 +283,7 @@ deploy-tomcat ()
 }
 
 if [ $sProject == "central-js" ]; then
+	echo "Deploying project $sProject"
 	cd /sybase && pm2 stop central-js && pm2 delete central-js
 	#Делаем бекап старой версии
 	if [ ! -d /sybase/.backup/$sProject ]; then
