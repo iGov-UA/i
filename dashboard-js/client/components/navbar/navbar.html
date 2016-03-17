@@ -24,11 +24,11 @@
           <li ng-repeat="menu in iGovNavbarHelper.menus"
               ng-show="isVisible(menu.type)"
               ng-class="{active: isTaskFilterActive(menu.type)}">
-            <a ng-if="!applyTaskFilter" ng-attr-id="{{menu.type}}" ng-click="goToTasks(menu.tab)">{{menu.title}}
+            <a class="navbar-nav-tab" ng-if="!applyTaskFilter" ng-attr-id="{{menu.type}}" ng-click="goToTasks(menu.tab)">{{menu.title}}
               <span ng-if="menu.showCount" class="label label-info">{{menu.count}}</span>
             </a>
 
-            <a ng-if="applyTaskFilter" ng-attr-id="{{menu.type}}" ng-click="!!tasksLoading || goToTasks(menu.tab)">{{menu.title}}
+            <a class="navbar-nav-tab" ng-if="applyTaskFilter" ng-attr-id="{{menu.type}}" ng-click="!!tasksLoading || goToTasks(menu.tab)">{{menu.title}}
               <span ng-if="menu.showCount" class="label label-info">{{menu.count}}</span>
             </a>
           </li>

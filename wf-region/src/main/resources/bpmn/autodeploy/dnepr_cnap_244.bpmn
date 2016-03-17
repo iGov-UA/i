@@ -87,60 +87,66 @@ if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'prav' &amp;&amp; ex
 per1 = '23'
 per2 = 'woobraja@mail.ru'
 per3 = 'Головному державному санітарному лікарю Дніпропетровської області'
+per7 = 'двох місяців з дня реєстрації заяви'
 }
 if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'prav' &amp;&amp; execution.getVariable('vibor_performer') == 'rail'){
 per1 = '23'
 per2 = 'woobraja@mail.ru'
 per3 = 'Начальнику управління на Придніпровській залізниці ГУ Держсанепідслужби на залізничному транспорту'
+per7 = 'двох місяців з дня реєстрації заяви'
 }
 if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'lev' &amp;&amp; execution.getVariable('vibor_performer') == 'head'){
 per1 = '24'
 per2 = 'Luda17_@ukr.net'
 per3 = 'Головному державному санітарному лікарю Дніпропетровської області'
+per7 = 'двох місяців з дня реєстрації заяви'
 }
 if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'lev' &amp;&amp; execution.getVariable('vibor_performer') == 'rail'){
 per1 = '24'
 per2 = 'Luda17_@ukr.net'
 per3 = 'Начальнику управління на Придніпровській залізниці ГУ Держсанепідслужби на залізничному транспорту'
+per7 = 'двох місяців з дня реєстрації заяви'
 }
 if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'dndzT'){
 per1 = '26'
 per2 = 'dozvildndz@ukr.net'
 per3 = 'Начальнику Дніпродзержинського міського Управління Головного управління Держсанепідслужби у Дніпропетровській області'
+per7 = 'двох місяців з дня реєстрації заяви'
 }
 if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'don_mariupolT'){
 per1 = '102'
 per2 = 'dmitriy.istomin82@gmail.com'
 per3 = 'Головному державному санітарному лікарю м.Маріуполя'
+per7 = '10 робочих днів з дня одержання дозвільним органом від  адміністратора заяви та документів, що додаються до неї'
 }
 if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'hmel_hmelT'){
 per1 = '533'
 per2 = 'cnap32@rada.khmelnytsky.com, cnap35@rada.khmelnytsky.com'
 per3 = 'Головному державному санітарному лікарю м.Хмельницького'
+per7 = '10 робочих днів з дня реєстрації заяви'
 }
 if (execution.getVariable('vibor_service') == 'issue'){
 per4 = 'видати'
 per5 = 'Ваш дозвіл (санітарний паспорт) на право експлуатації рентгенівського кабінету (зберігання та експлуатації пересувних і переносних (палатних) рентгенівських апаратів) лікувально-профілактичних закладів - готовий'
 per6 = 'видачі'
-per7 = 'двох місяців'
 }
 if (execution.getVariable('vibor_service') == 'restructuring'){
 per4 = 'переоформити'
 per5 = 'Ваш переоформлений дозвіл (санітарний паспорт) на право експлуатації рентгенівського кабінету (зберігання та експлуатації пересувних і переносних (палатних) рентгенівських апаратів) лікувально-профілактичних закладів - готовий'
 per6 = 'переоформлення'
-per7 = 'двох робочих днів'
+per7 = 'двох робочих днів з дня реєстрації заяви'
 }
 if (execution.getVariable('vibor_service') == 'duplicate'){
 per4 = 'видати дублікат'
 per5 = 'Ваш дублікат дозволу (санітарний паспорт) на право експлуатації рентгенівського кабінету (зберігання та експлуатації пересувних і переносних (палатних) рентгенівських апаратів) лікувально-профілактичних закладів - готовий'
 per6 = 'видачі дублікату'
-per7 = 'двох робочих днів'
+per7 = 'двох робочих днів з дня реєстрації заяви'
 }
 if (execution.getVariable('vibor_service') == 'cansel'){
 per4 = 'анулювати'
 per5 = 'Рішення про анулювання документа дозвільного характеру - готове'
 per6 = 'анулювання'
-per7 = 'п`яти робочих днів'
+per7 = 'п`яти робочих днів з дня реєстрації заяви'
 }
 execution.setVariable('region', per1)
 execution.setVariable('clerkPost', per2)
@@ -255,7 +261,7 @@ execution.setVariable('term', per7)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${clerkPost}</activiti:expression>
+          <activiti:expression>tanyazol@gmail.com</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення. Дозвіл (санітарний паспорт) на право експлуатації рентгенівського кабінету (зберігання та експлуатації пересувних і переносних (палатних) рентгенівських апаратів) лікувально-профілактичних закладів.]]></activiti:string>
@@ -339,7 +345,7 @@ execution.setVariable('term', per7)
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 &lt;p&gt;Ваше звернення щодо ${substance_3} дозволу (санітарний паспорт) на право експлуатації рентгенівського кабінету (зберігання та експлуатації пересувних і переносних (палатних) рентгенівських апаратів) лікувально-профілактичних закладів - відправлене в держсанепідслужбу.&lt;br /&gt;
-Спеціалісти повинні дати відповідь протягом ${term} з дня реєстрації заяви.&lt;br /&gt; 
+Спеціалісти повинні дати відповідь протягом ${term} .&lt;br /&gt; 
 &lt;p&gt;Номер Вашого замовлення: ${number_cnap}&lt;/p&gt;
 &lt;/p&gt;
 &lt;br /&gt;

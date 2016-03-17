@@ -319,6 +319,7 @@ public class ActionEventService {
         try {
             historyEventService = historyEventServiceDao.getOrgerByID(sID_Order);
         } catch (CRCInvalidException | EntityNotFoundException e) {
+            LOG.error("getHistoryEventService: ", e);
             throw new CommonServiceException(
                     ExceptionCommonController.BUSINESS_ERROR_CODE,
                     e.getMessage(), e,
