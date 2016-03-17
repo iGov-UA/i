@@ -1,4 +1,4 @@
-package org.igov.log.http;
+package org.igov.io.log.http;
 
 import java.util.Collection;
 

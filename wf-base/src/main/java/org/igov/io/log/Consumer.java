@@ -1,4 +1,4 @@
-package org.igov.log;
+package org.igov.io.log;
 
 /**
  * Each implementation should contain `equals` and `hash code`.

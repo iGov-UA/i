@@ -40,17 +40,17 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:string><![CDATA[akylish88@gmail.com]]></activiti:string>
+          <activiti:expression>akylish88@gmail.com</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нова заявка про ${sPosluga_name}]]></activiti:string>
+           <activiti:expression>Нова заявка про ${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;strong&gt;Шановний(-а) колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
 У Вас в черзі на обробку нове звернення про ${sPosluga_name}&lt;br /&gt;
 Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
-${asOsoba}&lt;br /&gt;
+enum{[asOsoba]}&lt;br /&gt;
 Опрацюйте це звернення на &lt;a href="https://region.igov.org.ua" target="_blank"&gt;порталі&lt;/a&gt;
 [pattern/mail/_common_signature.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
@@ -66,7 +66,7 @@ ${asOsoba}&lt;br /&gt;
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Заявка про ${sPosluga_name}]]></activiti:string>
+          <activiti:expression>Заявка про ${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -102,8 +102,8 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="sEnamDok_ok" name="Заявку оформлено вірно, передати на опрацювання до міської ради"></activiti:value>
           <activiti:value id="sEnamDok_bad" name="Заявка оформлена не вірно відмова."></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="Komment_Cnap" name="Коментар по розгляду заявки;(Вкажіть корисну для міської ради інформацію, в разі відмови поясніть причину відмови)" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="супровідний текст" type="invisible" default="Якщо заявка прийнята, вона буде передана на опрацювання до міської ради. У разі відмови робота по цій заявці завершена."></activiti:formProperty>
+        <activiti:formProperty id="Komment_Cnap" name="Коментар по розгляду заявки;(Вкажіть корисну для місцевої ради інформацію, в разі відмови поясніть причину відмови)" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="супровідний текст" type="invisible" default="Якщо заявка прийнята, вона буде передана на опрацювання до місцевої ради. У разі відмови робота по цій заявці завершена."></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -121,17 +121,17 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:string><![CDATA[akylish88@gmail.com]]></activiti:string>
+          <activiti:expression>akylish88@gmail.com</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нова заявка передана з ЦНАП про ${sPosluga_name}]]></activiti:string>
+          <activiti:expression>Нова заявка передана з ЦНАП про ${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;strong&gt;Шановний(-а) колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
 У Вас в черзі на обробку нове звернення від ЦНАП про ${sPosluga_name}&lt;br /&gt;
 Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
-${asOsoba}&lt;br /&gt;
+enum{[asOsoba]}&lt;br /&gt;
 Опрацюйте це звернення на &lt;a href="https://region.igov.org.ua" target="_blank"&gt;порталі&lt;/a&gt;
 [pattern/mail/_common_signature.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
@@ -150,7 +150,7 @@ ${asOsoba}&lt;br /&gt;
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[${sPosluga_name}]]></activiti:string>
+          <activiti:expression>${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -174,7 +174,7 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[${sPosluga_name}]]></activiti:string>
+          <activiti:expression>${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -238,7 +238,7 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[${sPosluga_name}]]></activiti:string>
+          <activiti:expression>${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -265,7 +265,7 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[${sPosluga_name}]]></activiti:string>
+          <activiti:expression>${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -320,7 +320,7 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Оцініть якість наданої послуги]]></activiti:string>
+          <activiti:expression>Оцініть якість наданої послуги</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
