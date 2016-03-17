@@ -928,8 +928,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
         SimpleDateFormat sdfFileName = new SimpleDateFormat(
                 "yyyy-MM-ddHH-mm-ss", Locale.ENGLISH);
-        String fileName = sID_BP_Name + "_"
-                + sdfFileName.format(Calendar.getInstance().getTime()) + ".csv";
+        String fileName = "!" + sID_BP_Name + "_"
+                + sdfFileName.format(Calendar.getInstance().getTime()) + ".xlsx";
         LOG.debug("File name for statistics : {%s}", fileName);
         boolean isByFieldsSummary = saFieldSummary != null
                 && !saFieldSummary.isEmpty();
