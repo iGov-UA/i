@@ -1164,18 +1164,18 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
         CSVWriter printWriter = null;
         PipedInputStream pi = new PipedInputStream();
-        
+        LOG.info("!!!!!!!!!!!!!sMailTo: " + sMailTo);
         if (sMailTo != null){
 	        PipedOutputStream po = new PipedOutputStream(pi);
 	        PrintWriter pw = new PrintWriter(po);
 	        printWriter = new CSVWriter(pw, separator.charAt(0),
 	                CSVWriter.NO_QUOTE_CHARACTER);
         } else {
-        	printWriter = new CSVWriter(httpResponse.getWriter(), separator.charAt(0),
-                CSVWriter.NO_QUOTE_CHARACTER);
         	httpResponse.setContentType("text/csv;charset=" + charset.name());
-            httpResponse.setHeader("Content-disposition", "attachment; filename="
+                httpResponse.setHeader("Content-disposition", "attachment; filename="
                     + sTaskDataFileName);
+                printWriter = new CSVWriter(httpResponse.getWriter(), separator.charAt(0),
+                CSVWriter.NO_QUOTE_CHARACTER);
         }
 
         List<Map<String, Object>> csvLines = new LinkedList<>();
