@@ -39,6 +39,7 @@ shift
 done
 
 sDate=`date "+%Y.%m.%d-%H.%M.%S"`
+cd ..
 
 build_central-js ()
 {
