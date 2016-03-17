@@ -929,9 +929,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         LOG.debug("File name for statistics : {%s}", fileName);
         boolean isByFieldsSummary = saFieldSummary != null
                 && !saFieldSummary.isEmpty();
-        httpResponse.setContentType("text/csv;charset=UTF-8");
-        httpResponse.setHeader("Content-disposition", "attachment; filename="
-                + fileName);
+        //httpResponse.setContentType("text/csv;charset=UTF-8");
+        httpResponse.setContentType("application/vnd.ms-excel; charset=UTF-8");
+        httpResponse.setCharacterEncoding("UTF-8");
+        httpResponse.setHeader("Content-disposition", "attachment; filename=" + fileName);
 
         List<HistoricTaskInstance> foundResults = historyService
                 .createHistoricTaskInstanceQuery().taskCompletedAfter(dateAt)
