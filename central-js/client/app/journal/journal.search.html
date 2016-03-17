@@ -58,10 +58,20 @@
             <div ng-repeat="oFile in oOrderMessage.osData.aFile">
               Прикріплено файл: "{{::oFile.sFileName}}"
             </div>
+            <div ng-if="!bOrderQuestion || $index !== 0 || sServerReturnOnAnswer">
+              <div class="form-group" ng-repeat="oField in oOrderMessage.aData track by oField.sID">
+                <label class="col-md-6 control-label" style="padding-right: 0; padding-top: 0">
+                  <div>{{oField.sName}}:</div>
+                  <div style="color: #CC0000">{{oField.sNotify}}</div>
+                </label>
+                <div class="col-md-6">
+                  <strong ng-bind="oField.sValueNew"></strong>
+                </div>
+              </div>
+            </div>
+            <form name="oQuestion" ng-if="bOrderQuestion && $index == 0 && !sServerReturnOnAnswer" style="padding: 20px" class="form-horizontal">
 
-            <form name="oQuestion" ng-show="bOrderQuestion && $index == 0 && !sServerReturnOnAnswer" style="padding: 20px" class="form-horizontal">
-
-              <div class="form-group" ng-repeat="oField in aField track by oField.sID"
+              <div class="form-group" ng-repeat="oField in oOrderMessage.aData track by oField.sID"
                    ng-switch on="oField.sType">
                     <label class="col-md-6 control-label" style="padding-right: 0; padding-top: 0">
                       <div>{{oField.sName}}:</div>

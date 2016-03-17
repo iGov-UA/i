@@ -130,7 +130,6 @@ angular.module('journal').controller('JournalSearchController', function (
               $scope.aOrderMessages = oResponse.messages;
               angular.forEach($scope.aOrderMessages, function (oOrderMessage, nIndex) {
                 oOrderMessage.sDate = new Date(oOrderMessage.sDate.replace(' ', 'T'));
-                if (nIndex === 0) {
                   if (oOrderMessage.sData) {
                     try {
                       var aField = JSON.parse(oOrderMessage.sData.replace(/'/g, '\''));
@@ -152,7 +151,7 @@ angular.module('journal').controller('JournalSearchController', function (
                           oField.oFactory.required = true;
                         }
                       });
-                      $scope.aField = aField;
+                      oOrderMessage.aData = aField;
                     } catch (sError) {
                       ErrorsFactory.addFail({
                         sBody: 'Помилка десереалізації об`єкту з полями, у яких зауваження!',
@@ -161,7 +160,6 @@ angular.module('journal').controller('JournalSearchController', function (
                       });
                     }
                   }
-                }
               });
               console.log($scope.aOrderMessages);
             } else {
