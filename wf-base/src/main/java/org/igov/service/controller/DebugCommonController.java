@@ -158,4 +158,17 @@ public class DebugCommonController {
 
     }
 
+    //maxline: тестирование работы получения свободных слотов getFlowSlots findFlowSlotsByFlow и в случае отсутствия 
+    //генерация новых слотов buildFlowSlots
+     @ApiOperation(value = "/test/action/testSheduleBuilderFlowSlots", notes = "#####  DebugCommonController: описания нет\n")
+    @RequestMapping(value = "/test/action/testSheduleBuilderFlowSlots", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    void testSheduleBuilderFlowSlots(
+    ) throws Exception {
+        
+        LOG.info("/test/action/testSheduleBuilderFlowSlots  - invoked");
+        //runtimeService.deleteProcessInstance(processInstanceID, sReason);
+    }
+        
 }

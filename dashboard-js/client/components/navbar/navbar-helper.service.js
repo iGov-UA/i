@@ -5,8 +5,8 @@
     .module('dashboardJsApp')
     .factory('iGovNavbarHelper', iGovNavbarHelperFactory);
 
-  iGovNavbarHelperFactory.$inject = ['Auth', 'tasks', '$location'];
-  function iGovNavbarHelperFactory(Auth, tasks, $location) {
+  iGovNavbarHelperFactory.$inject = ['Auth', 'tasks', '$location', '$state'];
+  function iGovNavbarHelperFactory(Auth, tasks, $location, $state) {
     var service = {
       areInstrumentsVisible: false,
       auth: Auth,
@@ -16,6 +16,7 @@
       load: load,
       loadTaskCounters: loadTaskCounters,
       menus: [],
+      instrumentsMenus: [],
       tasksSearch: {
         value: null,
         count: 0,
@@ -56,6 +57,14 @@
       tab: 'finished'
     }];
 
+    service.instrumentsMenus = [
+      {state: 'users', title: 'Користувачі'},
+      {state: 'groups', title: 'Групи'},
+      {state: 'escalations', title: 'Ескалації'},
+      {state: 'reports', title: 'Звіт'},
+      {state: 'services', title: 'Розклад'},
+      {state: 'deploy', title: 'Розгортання'}
+    ];
 
     return service;
 

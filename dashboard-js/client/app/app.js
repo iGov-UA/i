@@ -15,7 +15,6 @@ angular.module('dashboardJsApp', [
 ]).config(function($urlRouterProvider, $locationProvider) {
   $urlRouterProvider
     .otherwise('/');
-
   $locationProvider.html5Mode(true);
 }).run(function(amMoment) {
   amMoment.changeLocale('uk');

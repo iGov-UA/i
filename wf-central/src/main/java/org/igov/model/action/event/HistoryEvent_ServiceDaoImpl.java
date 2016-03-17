@@ -160,6 +160,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
             nID_Server = Integer.parseInt(sID_Order.substring(0, dashPosition));
             nID_Order = Long.valueOf(sID_Order.substring(dashPosition + 1));*/
         } catch (Exception e) {
+            LOG.error("getOrgerByID: ", e);
             throw new IllegalArgumentException(
                     String.format("sID_Order has incorrect format! expected format:[XXX%sXXXXXX], actual value: %s",
                             DASH, sID_Order), e);

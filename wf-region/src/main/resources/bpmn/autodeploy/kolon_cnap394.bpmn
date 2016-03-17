@@ -3,16 +3,16 @@
   <process id="kolon_cnap394" name="Надання згоди на виготовлення будівельного паспорту на житловий або садовий будинок." isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-       <activiti:formProperty id="bankIdlastName" name="Призвіще" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdAdressFactual" name="Адреса реєстрації " type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані;серия, номер паспорту" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAdressFactual" name="Адреса реєстрації" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані (серия, номер паспорту)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="n_vlas" name="Номер документу, що посвідчує право власності" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="n_place" name="Місце знаходження земельної ділянки" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="total_place" name="Площа планованого будинку;м.кв" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Ваш e-mail;На цей e-mail Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="total_place" name="Площа планованого будинку, м.кв" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Контактний e-mail" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Укажіть сьогоднішню дату" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="rNumber" name="номер району" type="invisible" default="635"></activiti:formProperty>
@@ -26,10 +26,10 @@
           <activiti:expression>noreply@igov.org.ua</activiti:expression>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>kolonschinska_rada@ukr.net</activiti:expression>
+          <activiti:expression>lomovasandra@gmail.com</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Нове звернення на порталі igov.org.ua на тему: Надання згоди на виготовлення будівельного паспорта на житловий або садовий будинок. Заявник ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}</activiti:expression>
+          <activiti:expression>Нове звернення на порталі igov.org.ua на тему: Надання згоди на виготовлення будівельного паспорта на житловий або садовий будинок</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
@@ -46,7 +46,7 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Звернення на  на тему:  Надання згоди на виготовлення будівельного паспорта на житловий або садовий будинок.</activiti:expression>
+          <activiti:expression>Звернення на тему:  Надання згоди на виготовлення будівельного паспорта на житловий або садовий будинок.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -68,15 +68,15 @@
     <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
     <userTask id="usertask1" name="Перевірка даних" activiti:candidateGroups="cnap_kiev_kolon">
       <extensionElements>
-        <activiti:formProperty id="bankIdlastName" name="Призвіще " type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я " type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdAdressFactual" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="n_vlas" name="Номер документу, що посвідчує право власності" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAdressFactual" name="Адреса реєстрації заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="n_vlas" name="Номер документу, що посвідчує право власності заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="n_place" name="Місце знаходження ділянки" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="total_place" name="Площа планованого будинку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="total_place" name="Площа планованого будинку/ділянки, м.кв" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Контактний e-mail" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата заповнення заявки" type="date" writable="false"></activiti:formProperty>
@@ -85,9 +85,8 @@
           <activiti:value id="Enum2" name="Відмовити у виготовленні будівельного паспорта"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="fileresult" name="Додайте файл з результатом згоди" type="file"></activiti:formProperty>
-        <activiti:formProperty id="decisionComment" name="Коментар до рішення; Наприклад, пояснення чому громадянину було відмовлено в наданні згоди &lt;br /&gt; АБО &lt;br /&gt; Додаткові деталі для закінчення процессу оформлення паспорта" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="decisionComment" name="Коментар до рішення (Наприклад, пояснення чому громадянину було відмовлено в наданні згоди)" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/architecture/zayava_dozvil_na_bud.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
-   
         <activiti:formProperty id="rNumber" name="номер району" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -114,7 +113,8 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 		    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-			&lt;p&gt;За даними сільської ради Вам ВІДМОВЛЕНО у наданні будівельного паспорта на житловий або садовий будинок. &lt;/p&gt;
+			&lt;p&gt;За даними держоргану Вам ВІДМОВЛЕНО у наданні будівельного паспорта на житловий або садовий будинок.&lt;br&gt;
+			Комментар Держслужбовця, який обробляв заяву: &lt;/p&gt;
 &lt;p&gt;${decisionComment}&lt;/p&gt;
 			&lt;p&gt;За необхідності Ви можете звернутися за адресою:
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:3]&lt;br&gt;
@@ -128,7 +128,9 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow5" name="Відмовлено" sourceRef="exclusivegateway1" targetRef="servicetask3"></sequenceFlow>
+    <sequenceFlow id="flow5" name="Відмовлено" sourceRef="exclusivegateway1" targetRef="servicetask3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${result=='Enum2'}]]></conditionExpression>
+    </sequenceFlow>
     <serviceTask id="servicetask4" name="Згода" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="from">
@@ -143,7 +145,8 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 		    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-			&lt;p&gt;За даними сільської ради Вам НАДАНО згоду на виготовлення будівельного паспорта на житловий або садовий будинок.   &lt;/p&gt;
+			&lt;p&gt;За даними держоргана Вам НАДАНО згоду на виготовлення будівельного паспорта на житловий або садовий будинок.&lt;br&gt;  
+			Комментар Держслужбовця, який обробляв заяву:&lt;/p&gt;
 &lt;p&gt;${decisionComment}&lt;/p&gt;
 			[pattern/mail/_common_signature_start.html]
 			&lt;p&gt;[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2]
@@ -157,7 +160,7 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow6" name="Надано згоду" sourceRef="exclusivegateway1" targetRef="servicetask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${result==Enum1}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${result=='Enum1'}]]></conditionExpression>
     </sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow7" sourceRef="servicetask4" targetRef="endevent1"></sequenceFlow>
@@ -229,14 +232,14 @@
         <omgdi:waypoint x="610.0" y="149.0"></omgdi:waypoint>
         <omgdi:waypoint x="610.0" y="190.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="60.0" x="576.0" y="162.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="100.0" x="576.0" y="162.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
         <omgdi:waypoint x="630.0" y="129.0"></omgdi:waypoint>
         <omgdi:waypoint x="708.0" y="129.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="67.0" x="624.0" y="112.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="100.0" x="624.0" y="112.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
