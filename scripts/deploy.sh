@@ -19,7 +19,15 @@ do
 			sProject="$2"
 			shift
 			;;
-		--exclude-test)
+		--skip-deploy)
+			bSkipDeploy="$2"
+			shift
+			;;
+		--skip-build)
+			bSkipBuild="$2"
+			shift
+			;;
+			--exclude-test)
 			bExcludeTest="$2"
 			shift
 			;;
@@ -67,17 +75,33 @@ fi
 
 build_central-js ()
 {
-	cd central-js
-	npm cache clean
-	npm install
-	bower install
-	npm install grunt-contrib-imagemin
-	grunt build
-	cd dist
-	npm install --production
-	cd ..
-	rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' dist/ sybase@$sHost:/sybase/.upload/central-js.$sDate/
-	cd ..
+	if [ "$bSkipBuild" ==  "true" ]; then
+		echo "Deploy to host: $sHost"
+		rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' dist/ sybase@$sHost:/sybase/.upload/central-js.$sDate/
+	fi
+	if [ "$bSkipDeploy" ==  "true" ]; then
+		cd central-js
+		npm cache clean
+		npm install
+		bower install
+		npm install grunt-contrib-imagemin
+		grunt build
+		cd dist
+		npm install --production
+		cd ..
+	else
+		cd central-js
+		npm cache clean
+		npm install
+		bower install
+		npm install grunt-contrib-imagemin
+		grunt build
+		cd dist
+		npm install --production
+		cd ..
+		rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' dist/ sybase@$sHost:/sybase/.upload/central-js.$sDate/
+		cd ..
+	fi
 }
 
 build_dashboard-js ()
