@@ -221,7 +221,7 @@ fallback ()
 	#Копируем старые конфиги обратно
 	cp -rp /sybase/.backup/configs/$sProject/tomcat_${sProject}$1/$sDate/conf /sybase/tomcat_${sProject}$1/
 	#Очищаем папку с приложениями
-	rm -f /sybase/tomcat_${sProject}$1/webapps/*
+	rm -rf /sybase/tomcat_${sProject}$1/webapps/*
 	#Копируем обратно старое приложение
 	cp -p /sybase/.backup/war/$sProject/tomcat_${sProject}$1/$sDate/wf.war /sybase/tomcat_${sProject}$1/webapps/
 	#Запускаем службу
@@ -249,6 +249,7 @@ fallback ()
 #Создадим функцию для бекапа, т.к. для основного и вторичного инстанса действия идентичны
 backup ()
 {
+	echo "Backuping tomcat_${sProject}$1"
 	#Удаляем старые бекапы. Нужно написать функцию по ротации бекапов.
 	#rm -rf /sybase/.backup/configs/$sProject/tomcat_$sProject-secondary/conf
 	#rm -f /sybase/.backup/war/$sProject/tomcat_$sProject-secondary/wf.war
@@ -273,7 +274,7 @@ deploy-tomcat ()
 	#Разворачиваем новые конфиги
 	cp -rf /sybase/.configs/${sProject}/* /sybase/tomcat_${sProject}$1/conf/
 	#Устанавливаем новую версию приложения
-	rm -f /sybase/tomcat_${sProject}$1/webapps/*
+	rm -rf /sybase/tomcat_${sProject}$1/webapps/*
 	cp -p /sybase/.upload/$sProject.war /sybase/tomcat_${sProject}$1/webapps/wf.war
 	#Запускаем томкат
 	cd /sybase/tomcat_${sProject}$1/bin/ && ./_startup.sh
