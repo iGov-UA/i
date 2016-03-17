@@ -40,6 +40,31 @@ done
 
 sDate=`date "+%Y.%m.%d-%H.%M.%S"`
 
+#Определяем сервер для установки
+if [[ $sVersion == "alpha" && $sProject == "central-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-central" ]]; then
+		sHost="test.igov.org.ua"
+		TMP=TEMP=TMPDIR=/tmp/c_alpha && export TMPDIR TMP TEMP
+		mkdir -p $TMP
+fi
+#if [[ $sVersion == "beta" && $sProject == "central-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-central" ]]; then
+#		sHost="test-version.igov.org.ua"
+#fi
+#if [[ $sVersion == "prod" && $sProject == "central-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-central" ]]; then
+#		sHost="igov.org.ua"
+#fi
+
+if [[ $sVersion == "alpha" && $sProject == "dashboard-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-region" ]]; then
+		sHost="test.region.igov.org.ua"
+		TMP=TEMP=TMPDIR=/tmp/r_alpha && export TMPDIR TMP TEMP
+		mkdir -p $TMP
+fi
+#if [[ $sVersion == "beta" && $sProject == "dashboard-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-region" ]]; then
+#		sHost="test-version.region.igov.org.ua"
+#fi
+#if [[ $sVersion == "prod" && $sProject == "dashboard-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-region" ]]; then
+#		sHost="region.igov.org.ua"
+#fi
+
 build_central-js ()
 {
 	cd central-js
@@ -137,31 +162,6 @@ build_region ()
 	rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' target/wf-region.war sybase@$sHost:/sybase/.upload/
 }
 
-#Определяем сервер для установки
-if [[ $sVersion == "alpha" && $sProject == "central-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-central" ]]; then
-		sHost="test.igov.org.ua"
-		TMP=TEMP=TMPDIR=/tmp/c_alpha && export TMPDIR TMP TEMP
-		mkdir -p $TMP
-fi
-#if [[ $sVersion == "beta" && $sProject == "central-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-central" ]]; then
-#		sHost="test-version.igov.org.ua"
-#fi
-#if [[ $sVersion == "prod" && $sProject == "central-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-central" ]]; then
-#		sHost="igov.org.ua"
-#fi
-
-if [[ $sVersion == "alpha" && $sProject == "dashboard-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-region" ]]; then
-		sHost="test.region.igov.org.ua"
-		TMP=TEMP=TMPDIR=/tmp/r_alpha && export TMPDIR TMP TEMP
-		mkdir -p $TMP
-fi
-#if [[ $sVersion == "beta" && $sProject == "dashboard-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-region" ]]; then
-#		sHost="test-version.region.igov.org.ua"
-#fi
-#if [[ $sVersion == "prod" && $sProject == "dashboard-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-region" ]]; then
-#		sHost="region.igov.org.ua"
-#fi
-
 if [ $sProject == "wf-central" ]; then
 	build_central
 fi
@@ -184,7 +184,7 @@ if [ -z $sHost ]; then
 fi
 
 #Connecting to remote host (Project deploy)
-ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $sHost << EOF
+#ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $sHost << EOF
 
 fallback ()
 {
