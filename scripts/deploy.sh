@@ -77,6 +77,7 @@ build_central-js ()
 {
 	if [ "$bSkipBuild" == "true" ]; then
 		echo "Deploy to host: $sHost"
+		cd central-js
 		rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' dist/ sybase@$sHost:/sybase/.upload/central-js.$sDate/
 		return
 	fi
