@@ -185,7 +185,6 @@ build_region ()
 	build_base $saCompile
 	cd wf-region
     mvn -P $sVersion clean install site $sBuildArg -Ddependency.locations.enabled=false
-	cd ..
 	rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' target/wf-region.war sybase@$sHost:/sybase/.upload/
 }
 
@@ -336,11 +335,11 @@ if [ $sProject == "wf-central"  ] || [ $sProject == "wf-region" ]; then
 		rm -f /sybase/nginx/conf/sites/upstream.conf
 		cp -p /sybase/.configs/nginx/only_secondary_upstream.conf /sybase/nginx/conf/sites/upstream.conf
 		sudo /sybase/nginx/sbin/nginx -s reload
-		sResponseCode=$(curl -o /dev/null --connect-timeout 5 --silent --head --write-out '%{http_code}\n' https://$sHost/)
-		if [ $sResponseCode -ne 200 ]; then
-			echo "Error. Unexpected server response code. Returning to previous Tomcat configuration."
-			fallback _double
-		fi
+#		sResponseCode=$(curl -o /dev/null --connect-timeout 5 --silent --head --write-out '%{http_code}\n' https://$sHost/)
+#		if [ $sResponseCode -ne 200 ]; then
+#			echo "Error. Unexpected server response code. Returning to previous Tomcat configuration."
+#			fallback _double
+#		fi
 		
 		#Разворачиваем приложение в основной инстанс
 		#Сразу создадим бекапы
@@ -358,11 +357,11 @@ if [ $sProject == "wf-central"  ] || [ $sProject == "wf-region" ]; then
 			rm -f /sybase/nginx/conf/sites/upstream.conf
 			cp -p /sybase/.configs/nginx/only_primary_upstream.conf /sybase/nginx/conf/sites/upstream.conf
 			sudo /sybase/nginx/sbin/nginx -s reload
-			sResponseCode=$(curl -o /dev/null --connect-timeout 5 --silent --head --write-out '%{http_code}\n' https://$sHost/)
-			if [ $sResponseCode -ne 200 ]; then
-				echo "Error. Unexpected server response code. Returning to previous Tomcat configuration."
-				fallback
-			fi
+#			sResponseCode=$(curl -o /dev/null --connect-timeout 5 --silent --head --write-out '%{http_code}\n' https://$sHost/)
+#			if [ $sResponseCode -ne 200 ]; then
+#				echo "Error. Unexpected server response code. Returning to previous Tomcat configuration."
+#				fallback
+#			fi
 			cd /sybase/tomcat_${sProject}_double/bin/ && ./_shutdown_force.sh
 		fi
 	fi
