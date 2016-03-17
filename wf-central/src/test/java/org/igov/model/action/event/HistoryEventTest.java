@@ -38,6 +38,7 @@ public class HistoryEventTest {
     private final static Long testSubject_nID = 10L;
     private final static Long testSubject_nID_Set = 11L;
 
+    @Ignore
     @Test
     public void getHistoryEvent() {
 
@@ -86,6 +87,7 @@ public class HistoryEventTest {
     // если сработал скорее всего, проблема из-за изменений в файле
     // HistoryEvent.csv
     // @Ignore
+    @Ignore
     @Test
     public void getHistoryEvents() {
 	getHistoryEventsBySubject(testSubject_nID, false, 20);
