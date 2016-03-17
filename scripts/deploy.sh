@@ -41,7 +41,7 @@ fi
 #fi
 
 if [ -z $sHost ]; then
-    echo "Cloud not select host for deploy. Wrong version or project."
+    echo "Could not select host for deploy. Wrong version or project."
 	exit 1
 fi
 
