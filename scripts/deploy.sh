@@ -12,7 +12,7 @@ do
 	sKey="$1"
 	case $sKey in
 		--version)
-			saVersion="$2"
+			sVersion="$2"
 			shift
 			;;
 		--project)
@@ -75,11 +75,12 @@ fi
 
 build_central-js ()
 {
-	if [ "$bSkipBuild" ==  "true" ]; then
+	if [ "$bSkipBuild" == "true" ]; then
 		echo "Deploy to host: $sHost"
 		rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' dist/ sybase@$sHost:/sybase/.upload/central-js.$sDate/
+		return
 	fi
-	if [ "$bSkipDeploy" ==  "true" ]; then
+	if [ "$bSkipDeploy" == "true" ]; then
 		cd central-js
 		npm cache clean
 		npm install
@@ -89,6 +90,7 @@ build_central-js ()
 		cd dist
 		npm install --production
 		cd ..
+		return
 	else
 		cd central-js
 		npm cache clean
