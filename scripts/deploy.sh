@@ -1,27 +1,50 @@
 #!/bin/bash
 
+#Строка запуска скрипта выглядит так
+# ./deploy.sh --version alpha --project wf-region --exclude-test true --compile \*
+# ./deploy.sh --version alpha --project wf-central --exclude-test false --compile wf-base storage-temp storage-static
+
 #Setting-up variables
 export LANG=en_US.UTF-8
-sVersion=$1 #версия sVersion (alpha, beta, ...)
-sProject=$2 #название проекта ### wf-central ###
-bExcludeTest=$3 #Нужно ли выполнять тесты после сборки
-saCompile=($4) #массив с компонентами для сборки saCompile=storage-static,storage-temp,wf-base
+
+while [[ $# > 1 ]]
+do
+	sKey="$1"
+	case $sKey in
+		--version)
+			saVersion="$2"
+			shift
+			;;
+		--project)
+			sProject="$2"
+			shift
+			;;
+		--exclude-test)
+			bExcludeTest="$2"
+			shift
+			;;
+		--compile)
+			saCompile=
+			saCompile[0]="$2"
+			saCompile[1]="$3"
+			saCompile[2]="$4"
+			shift
+			;;
+		*)
+			echo "bad option"
+			exit 1
+			;;
+	esac
+shift
+done
+
 sDate=`date "+%Y.%m.%d-%H.%M.%S"`
-
-TMP=TEMP=TMPDIR=/tmp/c_alpha && export TMPDIR TMP TEMP
-mkdir -p $TMP
-
-#Проверяем, все ли параметры переданы
-if [ $# -ne 2 ]; then
-	echo "Can't start. You must specify all arguments!"
-    #echo "Here is an example: ./deploy.sh true true \"storage-static storage-temp wf-base\""
-    #echo "Parameter description: ./deploy.sh \$sVersion \$sProject \$saCompile"
-    exit 1
-fi
 
 #Определяем сервер для установки
 if [[ $sVersion == "alpha" && $sProject == "central-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-central" ]]; then
 		sHost="test.igov.org.ua"
+		TMP=TEMP=TMPDIR=/tmp/c_alpha && export TMPDIR TMP TEMP
+		mkdir -p $TMP
 fi
 #if [[ $sVersion == "beta" && $sProject == "central-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-central" ]]; then
 #		sHost="test-version.igov.org.ua"
@@ -32,6 +55,8 @@ fi
 
 if [[ $sVersion == "alpha" && $sProject == "dashboard-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-region" ]]; then
 		sHost="test.region.igov.org.ua"
+		TMP=TEMP=TMPDIR=/tmp/r_alpha && export TMPDIR TMP TEMP
+		mkdir -p $TMP
 fi
 #if [[ $sVersion == "beta" && $sProject == "dashboard-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-region" ]]; then
 #		sHost="test-version.region.igov.org.ua"
@@ -43,10 +68,6 @@ fi
 if [ -z $sHost ]; then
     echo "Cloud not select host for deploy. Wrong version or project."
 	exit 1
-fi
-
-if [ -z $saCompile ]; then
-	saCompile=(storage-static storage-temp wf-base)
 fi
 
 build_central-js ()
@@ -106,9 +127,17 @@ build_base ()
 			mvn -P $sVersion clean install site $sBuildArg -Ddependency.locations.enabled=false
 			cd ..
 			;;
-		*)
-			echo "Bad project name $sArrComponent"
-			exit 1
+		"*")
+			echo "Build all base modules"
+			cd storage-static
+			mvn -P $sVersion clean install $sBuildArg
+			cd ..
+			cd storage-temp
+			mvn -P $sVersion clean install $sBuildArg
+			cd ..
+			cd wf-base
+			mvn -P $sVersion clean install site $sBuildArg -Ddependency.locations.enabled=false
+			cd ..
 		   ;;
 		esac
 	done
@@ -149,6 +178,10 @@ if [ $sProject == "central-js" ]; then
 fi
 if [ $sProject == "dashboard-js" ]; then
 	build_dashboard-js
+fi
+if [ -z $sProject ]; then
+	build_base
+	exit 0
 fi
 
 #Connecting to remote host (Project deploy)
