@@ -22,7 +22,6 @@ fi
 #Определяем сервер для установки
 if [[ $sVersion == "alpha" && $sProject == "central-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-central" ]]; then
 		sHost="test.igov.org.ua"
-		sJenkinsWorkspace="/sybase/jenkins/data/jobs/central_alpha/workspace"
 fi
 #if [[ $sVersion == "beta" && $sProject == "central-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-central" ]]; then
 #		sHost="test-version.igov.org.ua"
@@ -33,7 +32,6 @@ fi
 
 if [[ $sVersion == "alpha" && $sProject == "dashboard-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-region" ]]; then
 		sHost="test.igov.org.ua"
-		sJenkinsWorkspace="/sybase/jenkins/data/jobs/regional-alpha/workspace"
 fi
 #if [[ $sVersion == "beta" && $sProject == "dashboard-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-region" ]]; then
 #		sHost="test-version.region.igov.org.ua"
