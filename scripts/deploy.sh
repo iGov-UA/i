@@ -211,7 +211,7 @@ if [ -z $sHost ]; then
 fi
 
 echo "Connecting to remote host (Project deploy)"
-ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $sHost << EOF
+#ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $sHost << EOF
 
 fallback ()
 {
@@ -230,7 +230,7 @@ fallback ()
 	cd /sybase/tomcat_${sProject}${1}/bin/ && ./_startup.sh
 	sleep 15
 	#Проверяем статус службы. Если нашлась ошибка в логе - завершаем скрипт с критической ошибкой.
-	if grep ERROR /sybase/tomcat_${sProject}${1}/logs/catalina.out | grep -v log4j | grep -v stopServer
+	if grep ERROR /sybase/tomcat_${sProject}${1}/logs/catalina.out | grep -v log4j | grep -v stopServer; then
 		echo "Fatal error found in tomcat_${sProject}${1}/logs/catalina.out! Can't start previous configuration."
 		exit 1
 	fi
@@ -328,7 +328,7 @@ if [ $sProject == "wf-central"  ] || [ $sProject == "wf-region" ]; then
 	deploy-tomcat _double
 
 	#Проверяем на наличие ошибок вторичный инстанс
-	if grep ERROR /sybase/tomcat_${sProject}_double/logs/catalina.out | grep -v log4j | grep -v stopServer
+	if grep ERROR /sybase/tomcat_${sProject}_double/logs/catalina.out | grep -v log4j | grep -v stopServer; then
 	then
 		#Откатываемся назад
 		fallback _double
@@ -351,7 +351,7 @@ if [ $sProject == "wf-central"  ] || [ $sProject == "wf-region" ]; then
 		deploy-tomcat
 			
 		#Проверяем на наличие ошибок вторичный инстанс
-		if grep ERROR /sybase/tomcat_${sProject}/logs/catalina.out | grep -v log4j | grep -v stopServer
+		if grep ERROR /sybase/tomcat_${sProject}/logs/catalina.out | grep -v log4j | grep -v stopServer; then
 		then
 			#Откатываемся назад
 			fallback
