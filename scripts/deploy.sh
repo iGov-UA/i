@@ -283,6 +283,7 @@ deploy-tomcat ()
 }
 
 if [ $sProject == "central-js" ]; then
+	echo "Deploying project $sProject"
 	cd /sybase && pm2 stop central-js && pm2 delete central-js
 	#Делаем бекап старой версии
 	if [ ! -d /sybase/.backup/$sProject ]; then
