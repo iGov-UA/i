@@ -41,7 +41,7 @@ fi
 #fi
 
 if [ -z $sHost ]; then
-    echo "Could not select host for deploy. Wrong version or project."
+    echo "Cloud not select host for deploy. Wrong version or project."
 	exit 1
 fi
 
@@ -61,6 +61,7 @@ build_central-js ()
 	npm install --production
 	cd ..
 	rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' dist/ sybase@$sHost:/sybase/.upload/central-js.$sDate/
+	cd ..
 }
 
 build_dashboard-js ()
@@ -76,6 +77,7 @@ build_dashboard-js ()
 	npm install --production
 	cd ..
 	rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' dist/ sybase@$sHost:/sybase/.upload/dashboard-js.$sDate/
+	cd ..
 }
 
 build_base ()
@@ -150,7 +152,7 @@ if [ $sProject == "dashboard-js" ]; then
 fi
 
 #Connecting to remote host (Project deploy)
-#ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $sHost << EOF
+ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $sHost << EOF
 
 fallback ()
 {
