@@ -1,6 +1,6 @@
 angular.module('app')
- .directive("igovSearch", ['CatalogService', 'statesRepository', 'RegionListFactory', 'LocalityListFactory', '$filter', 'messageBusService', 'stateStorageService', 'AdminService',
- function(CatalogService, statesRepository, RegionListFactory, LocalityListFactory, $filter, messageBusService, stateStorageService, AdminService) {
+ .directive("igovSearch", ['CatalogService', 'statesRepository', 'RegionListFactory', 'LocalityListFactory', '$filter', 'messageBusService', 'stateStorageService', 'AdminService', '$state',
+ function(CatalogService, statesRepository, RegionListFactory, LocalityListFactory, $filter, messageBusService, stateStorageService, AdminService, $state) {
   var directive = {
     restrict: 'E',
     scope: {},
@@ -8,6 +8,8 @@ angular.module('app')
     link: function($scope, $el, $attr) {
       var fullCatalog = [];
       var subscriptions = [];
+      var sID_Order_RegExp = /^\d$|^\d-$|^\d-\d+$/;
+      var sID_Order_Full_RegExp = /^\d-\d+$/;
 
       $scope.isCentral = statesRepository.isCentral();
       $scope.regionList = new RegionListFactory();
@@ -59,6 +61,9 @@ angular.module('app')
         messageBusService.publish('catalog:update', ctlg);
       }
       $scope.search = function() {
+        if (sID_Order_RegExp.test($scope.sSearch)) {
+          return null;
+        }
         var bShowEmptyFolders = AdminService.isAdmin();
         $scope.spinner = true;
         messageBusService.publish('catalog:updatePending');
@@ -71,6 +76,15 @@ angular.module('app')
             updateCatalog(angular.copy(fullCatalog));
           }
         });
+      };
+      $scope.searchOrder = function () {
+        if(sID_Order_Full_RegExp.test($scope.sSearch)) {
+          $state.go('index.search', {sID_Order: $scope.sSearch});
+        } else {
+          var ngModelController = $el.find('input').first().data().$ngModelController;
+          ngModelController.$setValidity('searchOrder',
+            sID_Order_Full_RegExp.test($scope.sSearch) || !sID_Order_RegExp.test($scope.sSearch));
+        }
       };
       // method to filter full catalog depending on current extended search parameters
       // choosen by user

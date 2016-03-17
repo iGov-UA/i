@@ -93,41 +93,6 @@ angular.module('journal').controller('JournalSearchController', function (
                 doMerge(oThis, {sType: "warning", sBody: 'Заявку не знайдено!'});
               }
             })) {
-            if (oResponse.soData) {
-              try {/*sID: item.id,
-               sName: item.name,
-               sType: item.type,
-               sValue: item.value,
-               sValueNew: "",
-               sNotify: $scope.clarifyFields[item.id].text*/
-                var aField = JSON.parse(oResponse.soData.replace(/'/g, '"'));
-                angular.forEach(aField, function (oField) {
-                  if (!bExist(oField.sID)) {
-                    oField.sID = oField.id;
-                    oField.sName = oField.id;
-                    oField.sType = oField.type;
-                    oField.sValue = oField.value;
-                    oField.sValueNew = oField.value;
-                    oField.sNotify = oField.value;
-                    oField.id = "";
-                    oField.type = "";
-                    oField.value = "";
-                  }
-                  if (oField.sType === "date") {
-                    oField.oFactory = DatepickerFactory.prototype.createFactory();
-                    oField.oFactory.value = oField.sValueNew;
-                    oField.oFactory.required = true;
-                  }
-                });
-                $scope.aField = aField;
-              } catch (sError) {
-                ErrorsFactory.addFail({
-                  sBody: 'Помилка десереалізації об`єкту з полями, у яких зауваження!',
-                  sError: sError,
-                  asParam: ['oData.soData: ' + oResponse.soData]
-                });
-              }
-            }
             oOrder = oResponse;
             if (ErrorsFactory.bSuccess(oFuncNote)) {
               $scope.oOrder = oOrder;
@@ -163,8 +128,40 @@ angular.module('journal').controller('JournalSearchController', function (
           if (ErrorsFactory.bSuccessResponse(oResponse)) {
             if (bExist(oResponse.messages)) {
               $scope.aOrderMessages = oResponse.messages;
-              angular.forEach($scope.aOrderMessages, function (oOrderMessage) {
+              angular.forEach($scope.aOrderMessages, function (oOrderMessage, nIndex) {
                 oOrderMessage.sDate = new Date(oOrderMessage.sDate.replace(' ', 'T'));
+                if (nIndex === 0) {
+                  if (oOrderMessage.sData) {
+                    try {
+                      var aField = JSON.parse(oOrderMessage.sData.replace(/'/g, '\''));
+                      angular.forEach(aField, function (oField) {
+                        if (!bExist(oField.sID)) {
+                          oField.sID = oField.id;
+                          oField.sName = oField.id;
+                          oField.sType = oField.type;
+                          oField.sValue = oField.value;
+                          oField.sValueNew = oField.value;
+                          oField.sNotify = oField.value;
+                          oField.id = "";
+                          oField.type = "";
+                          oField.value = "";
+                        }
+                        if (oField.sType === "date") {
+                          oField.oFactory = DatepickerFactory.prototype.createFactory();
+                          oField.oFactory.value = oField.sValueNew;
+                          oField.oFactory.required = true;
+                        }
+                      });
+                      $scope.aField = aField;
+                    } catch (sError) {
+                      ErrorsFactory.addFail({
+                        sBody: 'Помилка десереалізації об`єкту з полями, у яких зауваження!',
+                        sError: sError,
+                        asParam: ['oData.soData: ' + oResponse.soData]
+                      });
+                    }
+                  }
+                }
               });
               console.log($scope.aOrderMessages);
             } else {
@@ -183,7 +180,7 @@ angular.module('journal').controller('JournalSearchController', function (
       ErrorsFactory.log();
     }).catch(function (sError) {
       $scope.bAuth = false;
-      ErrorsFactory.logInfo({sBody: 'Невідома помилка авторизації!', sError: sError});
+      //ErrorsFactory.logInfo({sBody: 'Невідома помилка авторизації!', sError: sError});
     });
   };
 
@@ -279,28 +276,18 @@ angular.module('journal').controller('JournalSearchController', function (
   };
 
   function getRedirectURI() {
-    var stateForRedirect = $state.href('index.order.search', {error: ''}) + "?sID_Order=" + $scope.sID_Order;
+    var stateForRedirect = $state.href('index.search', {sID_Order: $scope.sID_Order});
     return $location.protocol() +
       '://' + $location.host() + ':'
       + $location.port()
       + stateForRedirect;
   }
 
-  $scope.loginWithBankId = function () {
-    $window.location.href = './auth/bankID?link=' + getRedirectURI();
+  $scope.getAuthMethods = function () {
+    return ["BankID","EDS"];
   };
 
-  $scope.loginWithEds = function () {
-    $window.location.href = './auth/eds?link=' + getRedirectURI();
-  };
-
-  $scope.loginWithEmail = function () {
-    $state.go('index.auth.email.verify', {link: getRedirectURI()});
-  };
-
-  $scope.loginWithSoccard = function () {
-    $window.location.href = './auth/soccard?link=' + getRedirectURI();
-  };
+  $scope.getRedirectUrl = getRedirectURI;
 
   if (order !== null) {
     $scope.searchOrder(

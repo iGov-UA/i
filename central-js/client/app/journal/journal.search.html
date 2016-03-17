@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" ng-if="bOrder">
   <ol class="breadcrumb">
     <li><a href="#" ui-sref="index.journal.content">Мій журнал</a></li>
     <li class="active">Звернення № {{sID_Order}}</li>
@@ -22,91 +22,11 @@
     </div>
   </h1>
 
+  <h2 ng-if="sServerReturnOnAnswer" ng-bind="sServerReturnOnAnswer"></h2>
+
   <div class="row">
     <div class="col-md-11 col-md-offset-1">
       <div ng-show="bOrderOwner">
-        <div ng-show="bOrder">
-          <dl ng-show="bOrderQuestion" class="col-md-10" style="margin-bottom: 0">
-            <!-- ng-repeat="oOrder in aOrder" -->
-            <dt class="u21">iGov</dt>
-            <dd ng-repeat-end class="u31">
-              <time class="u33" datetime="{{oOrder.sDate}}">{{ oOrder.sDate | date: 'dd MMMM yyyy HH:mm'}}</time>
-              <p ng-bind-html="oOrder.sBody" class="hide-table"></p><br />
-
-              <form name="oQuestion" ng-show="!sServerReturnOnAnswer" style="padding: 20px" class="form-horizontal">
-
-                <div class="form-group" ng-repeat="oField in aField track by oField.sID"
-                     ng-switch on="oField.sType">
-                      <label class="col-md-6 control-label" ng-bind="oField.sName + ':'" style="padding-right: 0"></label>
-                      <div class="col-md-6">
-
-                          <input ng-switch-when="string"
-                               type="text"
-                               name="{{oField.sID}}"
-                               ng-hide="oField.sID==='resident' || oField.sID === 'sCountry'"
-                               ng-model="oField.sValueNew"
-                               ng-required="true"
-                               class="form-control">
-
-                          <p ng-switch-when="date" class="input-group ng-scope" style="width:150px;">
-                              <input
-                                     type="text"
-                                     name="{{oField.sID}}"
-                                     datepicker-popup="{{oField.oFactory.format}}"
-                                     is-open="oField.oFactory.opened"
-                                     datepicker-options="oField.oFactory.options"
-                                     ng-model="oField.oFactory.value"
-                                     ng-required="true"
-                                     close-text="Close"
-                                     ng-readonly="true"
-                                     class="form-control"
-                                     value="oField.oFactory.value">
-
-                              <span class="input-group-btn">
-                                <button type="button"
-                                        class="btn btn-default"
-                                        ng-click="oField.oFactory.open($event)">
-                                  <i class="glyphicon glyphicon-calendar"></i>
-                                </button>
-                              </span>
-                          </p>
-
-                          <textarea ng-switch-when="textArea"
-                                name="{{oField.sID}}"
-                                ng-hide="oField.sID==='resident' || oField.sID === 'sCountry'"
-                                ng-model="oField.sValueNew"
-                                ng-required="true"
-                                class="form-control">
-                          </textarea>
-
-                          <label style="color: red;">{{oField.sNotify}}</label>
-                      </div>
-                </div>
-
-                <div class="row" style="margin-bottom: 0; margin-top: 20px">
-                  <div class="col-md-10">
-                    <label class="sr-only" for="searchEventControl">Залиште свій коментар до відповіді:</label>
-                    <textarea
-                      class="form-control"
-                      rows="1"
-                      style="height: 34px"
-                      placeholder="Залиште свій коментар до відповіді"
-                      ng-model="sOrderAnswerCommentNew"></textarea>
-                  </div>
-                  <div class="col-md-1">
-                    <button class="btn btn-primary" ng-click="sendAnswer()">Відправити</button>
-                  </div>
-                  <button-file-upload on-file-upload-success="onFileUploadSuccess($file)"
-                                      o-service-data="oOrder">Додати файл</button-file-upload>
-                </div>
-              </form>
-
-              <div ng-if="sServerReturnOnAnswer">
-                <h2 ng-bind="sServerReturnOnAnswer"></h2>
-              </div>
-            </dd>
-          </dl>
-        </div>
         <div class="col-md-10" ng-show="!bOrderQuestion && getOrderStatusString(oOrder.nID_StatusType) !== 'closed'">
           <div class="row">
             <div class="col-md-11">
@@ -138,39 +58,88 @@
             <div ng-repeat="oFile in oOrderMessage.osData.aFile">
               Прикріплено файл: "{{::oFile.sFileName}}"
             </div>
+
+            <form name="oQuestion" ng-show="bOrderQuestion && $index == 0 && !sServerReturnOnAnswer" style="padding: 20px" class="form-horizontal">
+
+              <div class="form-group" ng-repeat="oField in aField track by oField.sID"
+                   ng-switch on="oField.sType">
+                    <label class="col-md-6 control-label" style="padding-right: 0; padding-top: 0">
+                      <div>{{oField.sName}}:</div>
+                      <div style="color: #CC0000">{{oField.sNotify}}</div>
+                    </label>
+                    <div class="col-md-6">
+
+                        <input ng-switch-when="string"
+                             type="text"
+                             name="{{oField.sID}}"
+                             ng-hide="oField.sID==='resident' || oField.sID === 'sCountry'"
+                             ng-model="oField.sValueNew"
+                             ng-required="true"
+                             class="form-control">
+
+                        <p ng-switch-when="date" class="input-group ng-scope" style="width:150px;">
+                            <input
+                                   type="text"
+                                   name="{{oField.sID}}"
+                                   datepicker-popup="{{oField.oFactory.format}}"
+                                   is-open="oField.oFactory.opened"
+                                   datepicker-options="oField.oFactory.options"
+                                   ng-model="oField.oFactory.value"
+                                   ng-required="true"
+                                   close-text="Close"
+                                   ng-readonly="true"
+                                   class="form-control"
+                                   value="oField.oFactory.value">
+
+                            <span class="input-group-btn">
+                              <button type="button"
+                                      class="btn btn-default"
+                                      ng-click="oField.oFactory.open($event)">
+                                <i class="glyphicon glyphicon-calendar"></i>
+                              </button>
+                            </span>
+                        </p>
+
+                        <textarea ng-switch-when="textArea"
+                              name="{{oField.sID}}"
+                              ng-hide="oField.sID==='resident' || oField.sID === 'sCountry'"
+                              ng-model="oField.sValueNew"
+                              ng-required="true"
+                              class="form-control">
+                        </textarea>
+
+                    </div>
+              </div>
+
+              <div class="row" style="margin-bottom: 0; margin-top: 20px">
+                <div class="col-md-10">
+                  <label class="sr-only" for="searchEventControl">Залиште свій коментар до відповіді:</label>
+                  <textarea
+                    class="form-control"
+                    rows="1"
+                    style="height: 34px"
+                    placeholder="Залиште свій коментар до відповіді"
+                    ng-model="sOrderAnswerCommentNew"></textarea>
+                </div>
+                <div class="col-md-1">
+                  <button class="btn btn-primary" ng-click="sendAnswer()">Зберегти</button>
+                </div>
+                <button-file-upload on-file-upload-success="onFileUploadSuccess($file)"
+                                    o-service-data="oOrder">Додати файл</button-file-upload>
+              </div>
+            </form>
           </dd>
         </dl>
-
+      </div>
+      <div ng-show="bAuth && !bOrderOwner"><hr />
+        <p>Ви не є автором цього звернення.</p>
+        <p>Для перегляду детальної інформації, автору звернення потрібно увійти  в систему.</p>
       </div>
       <div ng-hide="bAuth">
         <div class="row">
-          <div class="list-group-item col-md-10"
-               ng-hide="authProcess">
-            <span>Увійти через: </span>
-            <button style="display: none;"
-                    class="btn btn-info"><i class="icon-door-lock"></i><span class="btn-text">igov.org.ua</span></button>
-            <a class="btn btn-info"
-               href="#"
-               ng-click="loginWithBankId()">
-              <span class="btn-text">BankID</span>
-              <i class="icon-bank-id"></i>
-            </a>
-            <button style="display: none;"
-                    class="btn"><i class="icon-mobil-id"></i></button>
-            <button ng-click="loginWithEds()"
-                    class="btn btn-success i-btn-badge">
-              <i class="icon-badge"></i>
-              <span class="btn-text"><div>Сертифікат електронно-</div><div>цифрового підпису</div></span>
-            </button>
-            <button ng-click="loginWithEmail()"
-                    class="btn btn-info">
-              <span class="btn-info"><div>Email</div></span>
-            </button>
-            <button ng-if="false" ng-click="loginWithSoccard()"
-                    class="btn btn-success i-btn-badge">
-              <i class="icon-badge"></i>
-              <span class="btn-text"><div>Карта киянина</div></span>
-            </button>
+          <div service-auth-block
+            redirect-uri="{{getRedirectUrl()}}"
+            auth-methods="{{getAuthMethods()}}">Для перегляду детальної інформації, увійдіть в систему
           </div>
           <div class="text-center"
                ng-show="authProcess">
@@ -183,3 +152,4 @@
     </div>
   </div>
 </div>
+<div class="container" ng-if="!bOrder"></div>
