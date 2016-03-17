@@ -1200,11 +1200,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 	        printWriter = new CSVWriter(pw, separator.charAt(0),
 	                CSVWriter.NO_QUOTE_CHARACTER);
         } else {
-        	printWriter = new CSVWriter(httpResponse.getWriter(), separator.charAt(0),
-                CSVWriter.NO_QUOTE_CHARACTER);
         	httpResponse.setContentType("text/csv;charset=" + charset.name());
-            httpResponse.setHeader("Content-disposition", "attachment; filename="
+                httpResponse.setHeader("Content-disposition", "attachment; filename="
                     + sTaskDataFileName);
+                printWriter = new CSVWriter(httpResponse.getWriter(), separator.charAt(0),
+                CSVWriter.NO_QUOTE_CHARACTER);
         }
 
         List<Map<String, Object>> csvLines = new LinkedList<>();
