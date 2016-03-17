@@ -41,6 +41,7 @@
         <activiti:formProperty id="nKlopot" name="Клопотання про надання статусу від керівника добров.формування, документи або письмові свідчення двох свідків з числа осіб, які разом з особою брали участь в АТО та отримали статус УБД/інваліда війни/учасника війни, що підтверджують участь особи в АТО" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nVLK" name="Постанова штатної військово-лікарської комісії відповідного військового формування;" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nEmployee" name="Документи про залучення особи до виконання завдань АТО або направлення (прибуття) у відрядження для участі в АТО, а також документи, що були підставою для прийняття керівником рішення про направлення особи у таке відрядження" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sSubstance" name="«Сім’я загиблого (померлого) ветерана війни»" type="invisible" default="«Сім’я загиблого (померлого) ветерана війни»"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Вибір категорії" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;nSviDeath&quot;,&quot;nFamily&quot;,&quot;nVLK&quot;,&quot;nDokaz&quot;],&quot;asID_Field&quot;:{&quot;sClient1&quot;:&quot;asCategory&quot;,&quot;sClient2&quot;:&quot;asType&quot;},&quot;sCondition&quot;:&quot;[sClient1] == 'sEnumArmy'&amp;&amp;[sClient2]=='sEnumFirst'&quot;},&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;nSviDeath&quot;,&quot;nFamily&quot;,&quot;nCertif&quot;,&quot;nMSEK&quot;],&quot;asID_Field&quot;:{&quot;sClient1&quot;:&quot;asCategory&quot;,&quot;sClient2&quot;:&quot;asType&quot;},&quot;sCondition&quot;:&quot;[sClient1] == 'sEnumInvalid'&amp;&amp;[sClient2]=='sEnumFirst'&quot;},&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;nSviDeath&quot;,&quot;nFamily&quot;,&quot;nCertif&quot;,&quot;nReward&quot;],&quot;asID_Field&quot;:{&quot;sClient1&quot;:&quot;asCategory&quot;,&quot;sClient2&quot;:&quot;asType&quot;},&quot;sCondition&quot;:&quot;[sClient1] == 'sEnumReward'&amp;&amp;[sClient2]=='sEnumFirst'&quot;},&quot;ShowFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;nSviDeath&quot;,&quot;nFamily&quot;,&quot;nVolunteer&quot;,&quot;nCommander&quot;,&quot;nDovidkaVolunteer&quot;,&quot;nSudMed&quot;,&quot;nCourt&quot;],&quot;asID_Field&quot;:{&quot;sClient1&quot;:&quot;asCategory&quot;,&quot;sClient2&quot;:&quot;asType&quot;},&quot;sCondition&quot;:&quot;[sClient1] == 'sEnumVolunteer'&amp;&amp;[sClient2]=='sEnumFirst'&quot;},&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;nSviDeath&quot;,&quot;nFamily&quot;,&quot;nDovATOvzaemod&quot;,&quot;nDokaz&quot;,&quot;nSudMed&quot;],&quot;asID_Field&quot;:{&quot;sClient1&quot;:&quot;asCategory&quot;,&quot;sClient2&quot;:&quot;asType&quot;},&quot;sCondition&quot;:&quot;[sClient1] == 'sEnumDobrovLaw'&amp;&amp;[sClient2]=='sEnumFirst'&quot;},&quot;ShowFieldsOnCondition_6&quot;:{&quot;aField_ID&quot;:[&quot;nSviDeath&quot;,&quot;nFamily&quot;,&quot;nDovATOvzaemod&quot;,&quot;nKlopot&quot;,&quot;nSudMed&quot;],&quot;asID_Field&quot;:{&quot;sClient1&quot;:&quot;asCategory&quot;,&quot;sClient2&quot;:&quot;asType&quot;},&quot;sCondition&quot;:&quot;[sClient1] == 'sEnumDobrov'&amp;&amp;[sClient2]=='sEnumFirst'&quot;},&quot;ShowFieldsOnCondition_7&quot;:{&quot;aField_ID&quot;:[&quot;nSviDeath&quot;,&quot;nFamily&quot;,&quot;nEmployee&quot;,&quot;nSudMed&quot;],&quot;asID_Field&quot;:{&quot;sClient1&quot;:&quot;asCategory&quot;,&quot;sClient2&quot;:&quot;asType&quot;},&quot;sCondition&quot;:&quot;[sClient1] == 'sEnumEmployee'&amp;&amp;[sClient2]=='sEnumFirst'&quot;},&quot;ShowFieldsOnCondition_8&quot;:{&quot;aField_ID&quot;:[&quot;sPrich&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asType&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumChange'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -57,13 +58,13 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>tanyazol@gmail.com</activiti:expression>
+          <activiti:expression><![CDATA[tanyazol@gmail.com]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення. Надання статусу та видача (заміна) посвідчення «Сім’я загиблого (померлого) ветерана війни»]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -74,21 +75,21 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення на тему "Отримання (заміна) посвідчення члена сім'ї загиблого ветерана війни" прийняте]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-				&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-				&lt;p&gt; Ваше звернення щодо enum{[asType]}  було зареєстровано у системі.&lt;br/&gt;
-				Повідомлення про результат розгляду буде спрямоване на Ваш e-mail.&lt;/p&gt;
-				&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+				<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+				<p> Ваше звернення щодо enum{[asType]}  було зареєстровано у системі.<br/>
+				Повідомлення про результат розгляду буде спрямоване на Ваш e-mail.</p>
+				<br />
 				[pattern/mail/_common_signature_start.html]
-				[pattern_dictonary:dnepr_soc_help.csv:234:2]&lt;br /&gt;
+				[pattern_dictonary:dnepr_soc_help.csv:234:2]<br />
 				[pattern/mail/_common_signature_end.html]
-				[pattern/mail/_common_footer.html]</activiti:expression>
+				[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -118,11 +119,12 @@
           <activiti:value id="sEnumDeny" name="Відмова громадянину у разі надання неповного пакету документів"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sSubstance" name="«Сім’я загиблого (померлого) ветерана війни»" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern\print\UPSZN\kalush_soczah_401_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFamily},${nCerti},${nMSEK},${nReward},${nSviDeath},${nVolunteer},${nCommander},${nDovidkaVolunteer},${nSudMed},${nCourt},${nDovATOvzaemod},${nDokaz},${nKlopot},${nVLK},${nEmployee}</activiti:expression>
+            <activiti:expression><![CDATA[${nFamily},${nCerti},${nMSEK},${nReward},${nSviDeath},${nVolunteer},${nCommander},${nDovidkaVolunteer},${nSudMed},${nCourt},${nDovATOvzaemod},${nDokaz},${nKlopot},${nVLK},${nEmployee}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -136,21 +138,21 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Інформація щодо Надання статусу та видача (заміна) посвідчення «Сім’я загиблого (померлого) ветерана війни»]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-			&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br&gt;&lt;br&gt;
-			&lt;p&gt;На жаль, Ваше звернення щодо ${asType} - відхилене.&lt;/p&gt;
-			&lt;p&gt;Причина в наступному: &lt;br&gt;
-			${decisionComment}&lt;/p&gt;
-			&lt;p&gt;Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/ target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+			<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br><br>
+			<p>На жаль, Ваше звернення щодо ${asType} - відхилене.</p>
+			<p>Причина в наступному: <br>
+			${decisionComment}</p>
+			<p>Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/ target="_blank">iGov.org.ua</a></p>
 			[pattern/mail/_common_signature_start.html]
-			[pattern_dictonary:nepr_soc_help.csv:234d:2]&lt;/p&gt;
-			[pattern/mail/_common_footer.html]</activiti:expression>
+			[pattern_dictonary:nepr_soc_help.csv:234d:2]</p>
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -163,24 +165,24 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Запрошення до отримання посвідчення «Сім’я загиблого (померлого) ветерана війни»]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-			&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-			&lt;p&gt;Ваше звернення щодо ${asType} - розглянуте.&lt;/p&gt;
-			&lt;p&gt;Запрошуємо Вас отримати нове Посвідчення за адресою:&lt;br&gt;
-			[pattern_dictonary:dnepr_soc_help.csv:234:3]&lt;br&gt;
-			[pattern_dictonary:dnepr_soc_help.csv:234:4]&lt;br&gt;
-			[pattern_dictonary:nepr_soc_help.csv:234:5]&lt;/p&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+			<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+			<p>Ваше звернення щодо ${asType} - розглянуте.</p>
+			<p>Запрошуємо Вас отримати нове Посвідчення за адресою:<br>
+			[pattern_dictonary:dnepr_soc_help.csv:234:3]<br>
+			[pattern_dictonary:dnepr_soc_help.csv:234:4]<br>
+			[pattern_dictonary:nepr_soc_help.csv:234:5]</p>
 			[pattern/mail/_common_signature_start.html]
-			[pattern_dictonary:nepr_soc_help.csv:234:2],&lt;br&gt;
+			[pattern_dictonary:nepr_soc_help.csv:234:2],<br>
 			[pattern/mail/_common_signature_end.html]
 			[pattern/mail/_common_feedback.html]
-			[pattern/mail/_common_footer.html]</activiti:expression>
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>

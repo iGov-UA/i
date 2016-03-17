@@ -1,8 +1,10 @@
 package org.igov.service.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+
 import io.swagger.annotations.*;
 import liquibase.util.csv.CSVWriter;
+
 import org.activiti.engine.*;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.TaskFormData;
@@ -10,6 +12,7 @@ import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.history.HistoricTaskInstanceQuery;
 import org.activiti.engine.identity.Group;
 import org.activiti.engine.identity.User;
+import org.activiti.engine.impl.form.FormPropertyImpl;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.repository.ProcessDefinition;
@@ -55,6 +58,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.activation.DataSource;
 import javax.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
@@ -901,7 +905,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             + "\"5215055\",\"dn200986zda\",\"2015-09-25:13-05-22\",\"1565056\",\"0\",\"обробка дмс\",\"АМ765369 ЖОВТНЕВИМ РВ ДМУ УМВС УКРАЇНИ В ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ 18.03.2002\",\"ДМИТРО\",\"ДУБІЛЕТ\",\"ОЛЕКСАНДРОВИЧ\",\"attr1_no\",\"2015-09-28 08:15:00.00\",\"dd.MM.yyyy HH:MI\",\"dmitrij.zabrudskij@privatbank.ua\",\"attr2_missed\",\"attr1_yes\",\"\",\"38\",\"attr1_no\",\"{\"\"nID_FlowSlotTicket\"\":27768,\"\"sDate\"\":\"\"2015-09-28 08:15:00.00\"\"}\",\"0.0\",\"0.0\"\n"
             + "\n```\n")
     @Deprecated
-    @RequestMapping(value = "/download_bp_timing", method = RequestMethod.GET)
+    @RequestMapping(value = "/download_bp_timing", method = RequestMethod.GET, produces = "application/vnd.ms-excel") 
     @Transactional
     public void getTimingForBusinessProcessNew(
             @ApiParam(value = "ИД бизнес процесса", required = true) @RequestParam(value = "sID_BP_Name") String sID_BP_Name,
@@ -924,14 +928,15 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
         SimpleDateFormat sdfFileName = new SimpleDateFormat(
                 "yyyy-MM-ddHH-mm-ss", Locale.ENGLISH);
-        String fileName = sID_BP_Name + "_"
-                + sdfFileName.format(Calendar.getInstance().getTime()) + ".csv";
+        String fileName = "!" + sID_BP_Name + "_"
+                + sdfFileName.format(Calendar.getInstance().getTime()) + ".xlsx";
         LOG.debug("File name for statistics : {%s}", fileName);
         boolean isByFieldsSummary = saFieldSummary != null
                 && !saFieldSummary.isEmpty();
-        httpResponse.setContentType("text/csv;charset=UTF-8");
-        httpResponse.setHeader("Content-disposition", "attachment; filename="
-                + fileName);
+        //httpResponse.setContentType("text/csv;charset=UTF-8");
+        httpResponse.setContentType("application/vnd.ms-excel; charset=UTF-8");
+        httpResponse.setCharacterEncoding("UTF-8");
+        httpResponse.setHeader("Content-disposition", "attachment; filename=" + fileName);
 
         List<HistoricTaskInstance> foundResults = historyService
                 .createHistoricTaskInstanceQuery().taskCompletedAfter(dateAt)
@@ -1956,16 +1961,33 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 					taskService.complete(task.getId());
 					LOG.info("Completed task {}", task.getId());
 				}
-				if (assignee != null){
-					LOG.info("Looking for a new task to claim it to the user {}", assignee);
+				
+					LOG.info("Looking for a new task to set form properties and claim it to the user {}", assignee);
 					tasks = taskService.createTaskQuery().processInstanceId(processInstance.getId()).active().list();
+					LOG.info("Get {} active tasks for the process", tasks);
 					for (Task task : tasks){
-						taskService.claim(task.getId(), assignee);
-						LOG.info("Claimed task {} for the user {}", task.getId(), assignee);
+						TaskFormData formData = formService.getTaskFormData(task.getId());
+						for (FormProperty formProperty : formData.getFormProperties()){
+							if (formProperty.getId().equals("sID_Document_UkrDoc")){
+								LOG.info("Found form property with the id sID_Document_UkrDoc. Setting value {}", sKey);
+								if (formProperty instanceof FormPropertyImpl){
+									((FormPropertyImpl)formProperty).setValue(sKey);
+								}
+							} else if (formProperty.getId().equals("sStatusName_UkrDoc")){
+								LOG.info("Found form property with the id sStatusName_UkrDoc. Setting value {}", status);
+								if (formProperty instanceof FormPropertyImpl){
+									((FormPropertyImpl)formProperty).setValue(status);
+								}
+							}
+						}
+						if (assignee != null){
+							taskService.claim(task.getId(), assignee);
+							LOG.info("Claimed task {} for the user {}", task.getId(), assignee);
+						} else {
+							LOG.info("Task was not assigned");
+						}
 					}
-				} else {
-					LOG.info("Task was not assigned");
-				}
+				
 			} else {
 				LOG.info("Active tasks have not found for the process {}", processInstance.getId());
 			}

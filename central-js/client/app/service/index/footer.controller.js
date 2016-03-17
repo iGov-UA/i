@@ -58,7 +58,7 @@ angular.module('app').controller('FooterController', function ($scope) {
     ,{
       url: 'http://avante.com.ua',
       alt: 'avante',
-      image: 'assets/images/ads/avante.jpg',
+      image: 'assets/images/ads/avante1.jpg',
       height: 50
     }
     ,{
@@ -89,6 +89,12 @@ angular.module('app').controller('FooterController', function ($scope) {
       url: 'https://www.facebook.com/3bobra',
       alt: 'tribobra',
       image: 'assets/images/ads/tribobra.png',
+      height: 50
+    }
+    ,{
+      url: 'https://webmoney.ua',
+      alt: 'webmoneyua',
+      image: 'assets/images/ads/webmoneyua1.png',
       height: 50
     }
     
