@@ -15,7 +15,8 @@ angular.module('dashboardJsApp')
           })
           .then(function() {
             // Logged in, redirect to home
-            $location.path('/tasks');
+            //$location.path('/tasks');
+            $location.path('/tasks/unassigned');
           })
           .catch(function(err) {
             $scope.errors.other = err ? err.message : 'Невідома помилка';
