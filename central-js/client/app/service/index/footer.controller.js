@@ -58,7 +58,7 @@ angular.module('app').controller('FooterController', function ($scope) {
     ,{
       url: 'http://avante.com.ua',
       alt: 'avante',
-      image: 'assets/images/ads/avante.jpg',
+      image: 'assets/images/ads/avante1.jpg',
       height: 50
     }
     ,{
