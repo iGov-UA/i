@@ -329,7 +329,6 @@ if [ $sProject == "wf-central"  ] || [ $sProject == "wf-region" ]; then
 
 	#Проверяем на наличие ошибок вторичный инстанс
 	if grep ERROR /sybase/tomcat_${sProject}_double/logs/catalina.out | grep -v log4j | grep -v stopServer; then
-	then
 		#Откатываемся назад
 		fallback _double
 	else
@@ -352,7 +351,6 @@ if [ $sProject == "wf-central"  ] || [ $sProject == "wf-region" ]; then
 			
 		#Проверяем на наличие ошибок вторичный инстанс
 		if grep ERROR /sybase/tomcat_${sProject}/logs/catalina.out | grep -v log4j | grep -v stopServer; then
-		then
 			#Откатываемся назад
 			fallback
 		else
