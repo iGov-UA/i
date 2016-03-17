@@ -94,7 +94,7 @@ angular.module('app').controller('FooterController', function ($scope) {
     ,{
       url: 'https://webmoney.ua',
       alt: 'webmoneyua',
-      image: 'assets/images/ads/webmoneyua.png',
+      image: 'assets/images/ads/webmoneyua1.png',
       height: 50
     }
     
