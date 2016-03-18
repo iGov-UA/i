@@ -22,7 +22,7 @@
         <activiti:formProperty id="sPrichina" name="Причина змін до договору:;(наприклад зміна назви заявника чи зміна оціночної вартості)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="file_prichina" name="Документ що підтверджує причину змін:;(наприклад свідоцтво з новою назвою чи витяг про оцінку землі)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="marker_osoba" name="vubir_osobu" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sSubzvern&quot;,&quot;sEDRPOU&quot;],&quot;asID_Field&quot;:{&quot;sZnach&quot;:&quot;asOsoba&quot;},&quot;sCondition&quot;:&quot;[sZnach] == 'sEnamUr'&quot;},&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;bankIdPassport&quot;,&quot;bankIdinn&quot;],&quot;asID_Field&quot;:{&quot;sZnach&quot;:&quot;asOsoba&quot;},&quot;sCondition&quot;:&quot;[sZnach] == 'sEnamFiz'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса ЦНАП" type="invisible"></activiti:formProperty>
@@ -84,7 +84,7 @@ ${sNameOrgan}.&lt;br /&gt;
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <userTask id="usertask1" name="ЦНАП обробка" activiti:candidateGroups="dnepr_cnap_nikopolT">
+    <userTask id="usertask1" name="ЦНАП обробка" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
@@ -200,7 +200,7 @@ ${sNameOrgan}.&lt;br /&gt;
     </sequenceFlow>
     <endEvent id="endevent3" name="End"></endEvent>
     <sequenceFlow id="flow30" sourceRef="servicetask5" targetRef="endevent3"></sequenceFlow>
-    <userTask id="usertask2" name="Міськрада рашення" activiti:candidateGroups="dnepr_cnap_nikopolT">
+    <userTask id="usertask2" name="Міськрада рашення" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
@@ -224,9 +224,9 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="sEnamRish_bad" name="Відмова. Рішення про внесення змін НЕ прийнято"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="Komment_Rada" name="Коментар по розгляду заявки;(Вкажіть корисну для ЦНАП інформацію, в разі відмови поясніть причину відмови)" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sBody1" name="[pattern\print\dneprOblSnap\dnepr_obl_cnap_484_print.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern\print\dneprOblSnap\dnepr_obl_cnap_490_print.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="print_marker1" name="ur_fiz_print" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_1&quot;:{&quot;aElement_ID&quot;:[&quot;UO&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asOsoba&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnamUr'&quot;},&quot;ShowElementsOnTrue_2&quot;:{&quot;aElement_ID&quot;:[&quot;FO&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asOsoba&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnamFiz'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="file_rishenia" name="Експертна грошова оцінка ділянки" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file_rishenia" name="Рішення про внесення змін" type="file"></activiti:formProperty>
         <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="супровідний текст" type="invisible" default="Якщо рішенням затверджено заявку, вона буде передана назад до ЦНАПу. У разі відмови робота по цій заявці завершена."></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -293,7 +293,7 @@ ${sNameOrgan}.&lt;br /&gt;
     <sequenceFlow id="flow34" name="рішення позитивне" sourceRef="exclusivegateway2" targetRef="servicetask7">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asVariantsRish == 'sEnamRish_ok'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask3" name="ЦНАП видача" activiti:candidateGroups="dnepr_cnap_nikopolT">
+    <userTask id="usertask3" name="ЦНАП видача" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
