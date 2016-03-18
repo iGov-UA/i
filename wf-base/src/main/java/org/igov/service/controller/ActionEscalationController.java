@@ -1,6 +1,7 @@
 package org.igov.service.controller;
 
 import io.swagger.annotations.*;
+import java.util.HashMap;
 import org.igov.io.GeneralConfig;
 import org.igov.model.escalation.*;
 import org.igov.service.business.escalation.EscalationService;
@@ -20,15 +21,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Map;
+import org.igov.exchange.Corezoid;
 
 @Controller
-@Api(tags = { "ActionEscalationController — Действия эскалаций" })
+@Api(tags = {"ActionEscalationController — Действия эскалаций"})
 @RequestMapping(value = "/action/escalation")
 public class ActionEscalationController {
 
     private static final Logger LOG = LoggerFactory.getLogger(ActionEscalationController.class);
     private static final String ERROR_CODE = "exception in escalation-controller!";
-    
+
     @Autowired
     GeneralConfig generalConfig;
     @Autowired
@@ -41,6 +44,9 @@ public class ActionEscalationController {
     private EscalationHistoryDao escalationHistoryDao;
     @Autowired
     private EscalationStatusDao escalationStatusDao;
+
+    @Autowired
+    Corezoid corezoid;
 
     @ApiOperation(value = "Запуск правила эскалации по его Ид")
     @RequestMapping(value = "/runEscalationRule", method = RequestMethod.GET)
@@ -59,18 +65,18 @@ public class ActionEscalationController {
     }
 
     //----------EscalationRuleFunction services-----------------
-
     @ApiOperation(value = "Добавление/обновление записи функции эскалации")
-    @ApiResponses(value = {@ApiResponse(code = 403, message = "Record not found")})
+    @ApiResponses(value = {
+        @ApiResponse(code = 403, message = "Record not found")})
     @RequestMapping(value = "/setEscalationRuleFunction", method = RequestMethod.GET)
     @ResponseBody
     public EscalationRuleFunction setEscalationRuleFunction(
-	    @ApiParam(value = "ИД-номер (уникальный-автоитерируемый):\n "
+            @ApiParam(value = "ИД-номер (уникальный-автоитерируемый):\n "
                     + "- если nID не задан, то это создание записи;\n "
                     + "- если nID задан, но его нету — будет ошибка;\n"
                     + "- если nID задан, и он есть — запись обновляется.\n", required = false) @RequestParam(value = "nID", required = false) Long nID,
-	    @ApiParam(value = "строка-название (Например \"Отсылка уведомления на электронную почту\")", required = true) @RequestParam(value = "sName") String sName,
-	    @ApiParam(value = "строка бина-обработчика", required = false) @RequestParam(value = "sBeanHandler", required = false) String sBeanHandler)
+            @ApiParam(value = "строка-название (Например \"Отсылка уведомления на электронную почту\")", required = true) @RequestParam(value = "sName") String sName,
+            @ApiParam(value = "строка бина-обработчика", required = false) @RequestParam(value = "sBeanHandler", required = false) String sBeanHandler)
             throws CommonServiceException {
 
         try {
@@ -82,7 +88,8 @@ public class ActionEscalationController {
     }
 
     @ApiOperation(value = "Возврат одной записи функции эскалации по ее nID")
-    @ApiResponses(value = { @ApiResponse(code = 403, message = "Record not found") })
+    @ApiResponses(value = {
+        @ApiResponse(code = 403, message = "Record not found")})
     @RequestMapping(value = "/getEscalationRuleFunction", method = RequestMethod.GET)
     @ResponseBody
     public EscalationRuleFunction getEscalationRuleFunction(
@@ -99,7 +106,7 @@ public class ActionEscalationController {
         return ruleFunction;
     }
 
-    @ApiOperation(value = "Выборка всех записей функции эскалации" )
+    @ApiOperation(value = "Выборка всех записей функции эскалации")
     @RequestMapping(value = "/getEscalationRuleFunctions", method = RequestMethod.GET)
     @ResponseBody
     public List<EscalationRuleFunction> getEscalationRuleFunctions()
@@ -112,8 +119,9 @@ public class ActionEscalationController {
         }
     }
 
-    @ApiOperation(value = "Удаление записи функции эскалации по ее nID" )
-    @ApiResponses(value = { @ApiResponse(code = 403, message = "Record not found") })
+    @ApiOperation(value = "Удаление записи функции эскалации по ее nID")
+    @ApiResponses(value = {
+        @ApiResponse(code = 403, message = "Record not found")})
     @RequestMapping(value = "/removeEscalationRuleFunction", method = RequestMethod.GET)
     @ResponseBody
     public void removeEscalationRuleFunction(
@@ -133,7 +141,6 @@ public class ActionEscalationController {
     }
 
     //----------EscalationRule services-----------------
-
     @ApiOperation(value = "Добавление/обновление записи правила эскалации", notes = "##### ПРИМЕР:\n"
             + "\n```\n"
             + "https://test.region.igov.org.ua/wf/service/action/escalation/setEscalationRule?sID_BP=zaporoshye_mvk-1a&sID_UserTask=*&sCondition=nElapsedDays==nDaysLimit&soData={nDaysLimit:3,asRecipientMail:'test@email.com'}&sPatternFile=escalation/escalation_template.html&nID_EscalationRuleFunction=1\n\n"
@@ -153,33 +160,35 @@ public class ActionEscalationController {
             + "      \"sName\":\"Send Email\"\n"
             + "    }\n"
             + "  }\n"
-            + "\n```\n" )
-    @ApiResponses(value = { @ApiResponse(code = 403, message = "Record not found") })
+            + "\n```\n")
+    @ApiResponses(value = {
+        @ApiResponse(code = 403, message = "Record not found")})
     @RequestMapping(value = "/setEscalationRule", method = RequestMethod.GET)
     @ResponseBody
     public EscalationRule setEscalationRule(
-	    @ApiParam(value = "ИД-номер (уникальный-автоитерируемый):\n"
+            @ApiParam(value = "ИД-номер (уникальный-автоитерируемый):\n"
                     + "- если nID не задан, то это создание записи\n"
                     + "- если nID задан, но его нету -- будет ошибка \"403. Record not found\"\n"
-                    + "- если nID задан, и он есть -- запись обновляется\n", required = false)  @RequestParam(value = "nID", required = false) Long nID,
-	    @ApiParam(value = "ИД-строка бизнес-процесса", required = true) @RequestParam(value = "sID_BP") String sID_BP,
-	    @ApiParam(value = "ИД-строка юзертаски бизнеспроцесса (если указана * -- то выбираются все задачи из бизнес-процесса)", required = true) @RequestParam(value = "sID_UserTask") String sID_UserTask,
-	    @ApiParam(value = "строка-условие (на языке javascript )", required = true) @RequestParam(value = "sCondition") String sCondition,
+                    + "- если nID задан, и он есть -- запись обновляется\n", required = false) @RequestParam(value = "nID", required = false) Long nID,
+            @ApiParam(value = "ИД-строка бизнес-процесса", required = true) @RequestParam(value = "sID_BP") String sID_BP,
+            @ApiParam(value = "ИД-строка юзертаски бизнеспроцесса (если указана * -- то выбираются все задачи из бизнес-процесса)", required = true) @RequestParam(value = "sID_UserTask") String sID_UserTask,
+            @ApiParam(value = "строка-условие (на языке javascript )", required = true) @RequestParam(value = "sCondition") String sCondition,
             @ApiParam(value = "строка JSON-обьектобьект, с данными", required = true) @RequestParam(value = "soData") String soData,
             @ApiParam(value = "строка файла-шаблона (примеры тут)", required = true) @RequestParam(value = "sPatternFile") String sPatternFile,
-	    @ApiParam(value = "ИД-номер функции эскалации", required = true) @RequestParam(value = "nID_EscalationRuleFunction") Long nID_EscalationRuleFunction)
+            @ApiParam(value = "ИД-номер функции эскалации", required = true) @RequestParam(value = "nID_EscalationRuleFunction") Long nID_EscalationRuleFunction)
             throws CommonServiceException {
 
         try {
             return oEscalationService.setEscalationRule(nID, sID_BP, sID_UserTask, sCondition, soData, sPatternFile,
-                            nID_EscalationRuleFunction);
+                    nID_EscalationRuleFunction);
         } catch (Exception e) {
             throw new CommonServiceException(ERROR_CODE, e);
         }
     }
 
-    @ApiOperation(value = "Возврат одной записи правила эскалации по ее nID" )
-    @ApiResponses(value = { @ApiResponse(code = 403, message = "Record not found") })
+    @ApiOperation(value = "Возврат одной записи правила эскалации по ее nID")
+    @ApiResponses(value = {
+        @ApiResponse(code = 403, message = "Record not found")})
     @RequestMapping(value = "/getEscalationRule", method = RequestMethod.GET)
     @ResponseBody
     public EscalationRule getEscalationRule(
@@ -196,7 +205,7 @@ public class ActionEscalationController {
         return rule;
     }
 
-    @ApiOperation(value = "Возвращает список всех записей правил эскалации" )
+    @ApiOperation(value = "Возвращает список всех записей правил эскалации")
     @RequestMapping(value = "/getEscalationRules", method = RequestMethod.GET)
     @ResponseBody
     public List<EscalationRule> getEscalationRules() throws CommonServiceException {
@@ -208,7 +217,8 @@ public class ActionEscalationController {
     }
 
     @ApiOperation(value = "Удаление записи правила эскалации по ее nID")
-    @ApiResponses(value = { @ApiResponse(code = 403, message = "Record not found") })
+    @ApiResponses(value = {
+        @ApiResponse(code = 403, message = "Record not found")})
     @RequestMapping(value = "/removeEscalationRule", method = RequestMethod.GET)
     @ResponseBody
     public void removeEscalationRule(
@@ -228,33 +238,32 @@ public class ActionEscalationController {
     }
 
     //------------------------------Escalation History services----------------------------------
-
     @SuppressWarnings("unchecked")
     @ApiOperation(value = "Возвращает массив объектов сущности по заданним параметрам", notes = "#####Примеры:\n "
             + "Пример 1: https://test.igov.org.ua/wf/service/action/escalation/getEscalationHistory\n\n"
-	        + "Пример ответа:\n\n"
-	        + "\n```json\n"
-	        + "  [{\n"
-	        + "    \"sDate\":\"2015-09-09 21:20:25.000\",\n"
-	        + "    \"nID\":1,\n"
-	        + "    \"nID_Process\":9463,\n"
-	        + "    \"nID_Process_Root\":29193,\n"
-	        + "    \"nID_UserTask\":894,\n"
-	        + "    \"nID_EscalationStatus\":91\n"
-	        + "  }\n"
-	        + "  ...\n"
-	        + "  ]\n"
-	        + "\n```\n"
-	        + "Пример 2:\n https://test.igov.org.ua/wf/service/action/escalation/getEscalationHistory?nID_Process=6276&nID_Process_Root=57119&nID_UserTask=634&sDateStart=2014-11-24%2000:03:00&sDateEnd=2014-12-26%2000:03:00&nRowsMax=100" )
+            + "Пример ответа:\n\n"
+            + "\n```json\n"
+            + "  [{\n"
+            + "    \"sDate\":\"2015-09-09 21:20:25.000\",\n"
+            + "    \"nID\":1,\n"
+            + "    \"nID_Process\":9463,\n"
+            + "    \"nID_Process_Root\":29193,\n"
+            + "    \"nID_UserTask\":894,\n"
+            + "    \"nID_EscalationStatus\":91\n"
+            + "  }\n"
+            + "  ...\n"
+            + "  ]\n"
+            + "\n```\n"
+            + "Пример 2:\n https://test.igov.org.ua/wf/service/action/escalation/getEscalationHistory?nID_Process=6276&nID_Process_Root=57119&nID_UserTask=634&sDateStart=2014-11-24%2000:03:00&sDateEnd=2014-12-26%2000:03:00&nRowsMax=100")
     @RequestMapping(value = "/getEscalationHistory", method = RequestMethod.GET)
     @ResponseBody
     public List<EscalationHistory> getEscalationHistory(
-	    @ApiParam(value = "номер-ИД процесса", required = false) @RequestParam(value = "nID_Process", required = false) Long nIdProcess,
-	    @ApiParam(value = "номер-ИД процесса (корневого)", required = false) @RequestParam(value = "nID_Process_Root", required = false) Long nIdProcessRoot,
-	    @ApiParam(value = "номер-ИД юзертаски", required = false) @RequestParam(value = "nID_UserTask", required = false) Long nIdUserTask,
-	    @ApiParam(value = "строка дата начала выборки, в формате YYYY-MM-DD hh:mm:ss", required = false) @RequestParam(value = "sDateStart", required = false) String sDateStart,
-	    @ApiParam(value = "строка дата конца выборки, в формате YYYY-MM-DD hh:mm:ss", required = false) @RequestParam(value = "sDateEnd", required = false) String sDateEnd,
-	    @ApiParam(value = "максимальное число строк, по умолчанию 100 (защита - не более 5000)", required = false) @RequestParam(value = "nRowsMax", required = false) Integer nRowsMax) throws CommonServiceException {
+            @ApiParam(value = "номер-ИД процесса", required = false) @RequestParam(value = "nID_Process", required = false) Long nIdProcess,
+            @ApiParam(value = "номер-ИД процесса (корневого)", required = false) @RequestParam(value = "nID_Process_Root", required = false) Long nIdProcessRoot,
+            @ApiParam(value = "номер-ИД юзертаски", required = false) @RequestParam(value = "nID_UserTask", required = false) Long nIdUserTask,
+            @ApiParam(value = "строка дата начала выборки, в формате YYYY-MM-DD hh:mm:ss", required = false) @RequestParam(value = "sDateStart", required = false) String sDateStart,
+            @ApiParam(value = "строка дата конца выборки, в формате YYYY-MM-DD hh:mm:ss", required = false) @RequestParam(value = "sDateEnd", required = false) String sDateEnd,
+            @ApiParam(value = "максимальное число строк, по умолчанию 100 (защита - не более 5000)", required = false) @RequestParam(value = "nRowsMax", required = false) Integer nRowsMax) throws CommonServiceException {
         try {
             DateTime startDate = null;
             DateTime endDate = null;
@@ -273,7 +282,6 @@ public class ActionEscalationController {
     }
 
     //------------------------------------Escalation Status services--------------------------------
-
     @ApiOperation(value = "Возвращает массив объектов сущности EscalationStatus", notes = "##### "
             + "Пример: https://<server>/wf/service/action/escalation/getEscalationStatuses\n\n"
             + "Oтвет:\n\n"
@@ -284,7 +292,7 @@ public class ActionEscalationController {
             + "{\"sNote\":\"БП в процессе\",\"nID\":3,\"sID\":\"BP_Process\"},\n"
             + "{\"sNote\":\"БП закрыт\",\"nID\":4,\"sID\":\"BP_Closed\"}\n"
             + "]\n"
-            + "\n```\n" )
+            + "\n```\n")
     @RequestMapping(value = "/getEscalationStatuses", method = RequestMethod.GET)
     @ResponseBody
     public List<EscalationStatus> getEscalationStatuses() throws CommonServiceException {
@@ -294,6 +302,14 @@ public class ActionEscalationController {
             throw new CommonServiceException(ERROR_CODE, e);
         }
 
+    }
 
+    //Todo временно создан сервис для отладки
+    @RequestMapping(value = "/sendToCorezoid", method = RequestMethod.GET)
+    @ResponseBody
+    public void sendToCorezoid(@RequestParam(value = "nID_Coresoid") Long nID_Coresoid) throws Exception {
+        Map<String, Object> data = new HashMap();
+        data.put("hello", "Привет");
+        corezoid.sendToCorezoid("32305", null);
     }
 }
