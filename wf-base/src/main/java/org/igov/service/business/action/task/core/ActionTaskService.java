@@ -286,6 +286,103 @@ public class ActionTaskService {
         return osTable.toString();
     }
 
+    public static String createTable_TaskProperties_Notification(String saField, Boolean bNew) {
+        if (saField == null || "[]".equals(saField) || "".equals(saField)) {
+            return "";
+        }
+        String sTableStyle;
+        sTableStyle = "<style>table.QuestionFields"
+                + " { border-collapse: collapse;"
+                + " width: 100%;"
+                + " margin:0 auto;}"
+                + " table.QuestionFields th,td {"
+                + " border: 1px solid #ddd;"
+                + " text-align:left;"
+                + " padding: 4px;"
+                + " height:35px;}"
+                + " table.Qwe TH {"
+                + " background: #65ABD0;"
+                + " height: 40px;"
+                + " vertical-align: midle;"
+                + " padding: 0;"
+                + " width:200px;"
+                + " text-align:left;"
+                + " color:#fff;"
+                + " padding-left:10px;"
+                + " }"
+                + "</style>";
+        //StringBuilder tableStr = new StringBuilder("Поле \t/ Тип \t/ Поточне значення\n");
+
+        /*osTable.append("<td>").append("Поле").append("</td>");
+        osTable.append("<td>").append("Тип").append("</td>");
+        osTable.append("<td>").append("Поточне значення").append("</td>");*/
+        JSONObject oFields = new JSONObject("{ \"soData\":" + saField + "}");
+        JSONArray aField = oFields.getJSONArray("soData");
+        StringBuilder osTable = new StringBuilder();
+        osTable.append(sTableStyle);
+        osTable.append("<table class=\"QuestionFields\">");
+        osTable.append("<tr>");
+        osTable.append("<th>").append("Поле").append("</th>");
+        if(bNew){
+            osTable.append("<th>").append("Старе значення").append("</th>");
+            osTable.append("<th>").append("Нове значення").append("</th>");
+        }else{
+            osTable.append("<th>").append("Значення").append("</th>");
+        }
+        osTable.append("<th>").append("Коментар").append("</th>");
+        osTable.append("</tr>");
+        for (int i = 0; i < aField.length(); i++) {
+            JSONObject oField = aField.getJSONObject(i);
+            /*Object oID=oField.opt("id");
+            Object oType=oField.opt("type");
+            Object oValue=oField.opt("value");
+            osTable.append("<tr>");
+            osTable.append("<td>").append(oID!=null?oID:"").append("</td>");
+            osTable.append("<td>").append(oType!=null?oType:"").append("</td>");
+            osTable.append("<td>").append(oValue!=null?oValue:"").append("</td>");*/
+        /*
+        sID: item.id,
+        sName: item.name,
+        sType: item.type,
+        sValue: item.value,
+        sValueNew: "",
+        sNotify: $scope.clarifyFields[item.id].text
+        */
+            Object sName=oField.opt("sName");
+            if(sName==null){
+                sName = oField.opt("sID");
+            }
+            if(sName==null){
+                sName = oField.opt("id");
+            }
+            Object oValue=oField.opt("sValue");
+            if(oValue==null){
+                oValue = oField.opt("value");
+            }
+            osTable.append("<tr>");
+            osTable.append("<td>").append(sName!=null?sName:"").append("</td>");
+            if(bNew){
+                Object oValueNew=oField.opt("sValueNew");
+                osTable.append("<td>").append(oValue!=null?oValue:"").append("</td>");
+                osTable.append("<td>").append(oValueNew!=null?oValueNew:"").append("</td>");
+                osTable.append("<td>").append((oValueNew+"").equals(oValue+"")?"(Не змінилось)":"(Змінилось)").append("</td>");
+            }else{
+                Object oNotify=oField.opt("sNotify");
+                osTable.append("<td>").append(oValue!=null?oValue:"").append("</td>");
+                osTable.append("<td>").append(oNotify!=null?oNotify:"").append("</td>");
+            }
+            osTable.append("</tr>");
+            /*osTable.append(record.opt("id") != null ? record.get("id") : "?")
+                    .append(" \t ")
+                    .append(record.opt("type") != null ? record.get("type").toString() : "??")
+                    .append(" \t ")
+                    .append(record.opt("value") != null ? record.get("value").toString() : "")
+                    .append(" \n");*/
+        }
+        osTable.append("</table>");
+        return osTable.toString();
+    }
+
     public TaskQuery buildTaskQuery(String sLogin, String bAssigned) {
         TaskQuery taskQuery = oTaskService.createTaskQuery();
         if (bAssigned != null) {
