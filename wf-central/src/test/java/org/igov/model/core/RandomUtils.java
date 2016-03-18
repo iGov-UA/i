@@ -6,9 +6,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.joda.time.DateTime;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Utility class which creates random value of given type.
@@ -136,6 +134,8 @@ public final class RandomUtils {
         } else if (type.isEnum()) {
             randomizer = enumRandomizer;
         } else if (type.isInstance(Collection.class)) {
+            randomizer = collectionRandomizer;
+        } else if (Collection.class.isAssignableFrom(type)) {
             randomizer = collectionRandomizer;
         }
 
