@@ -65,13 +65,14 @@ public class CreateDocument_UkrDoc implements JavaDelegate {
 		
 		LOG.info("Retrieved session ID:" + sessionId);
 		List<Attachment> attachments = taskService.getProcessInstanceAttachments(execution.getProcessInstanceId());
+		LOG.info("Found attachments for the process {}", attachments != null ? attachments.size() : 0))
 		Map<String, Object> urkDocRequest = UkrDocUtil.makeJsonRequestObject(sHeadValue, sBodyValue, sLoginAuthorValue, nID_PatternValue, 
 				attachments, execution.getId(), generalConfig);
 
 		JSONObject json = new JSONObject();
 		json.putAll( urkDocRequest );
 		
-		LOG.info("Created urk doc request object:" + json.toJSONString());
+		LOG.info("Created ukr doc request object:" + json.toJSONString());
 
         HttpHeaders headers = new HttpHeaders();
         //headers.set("Authorization", "Bearer " + sessionId);
