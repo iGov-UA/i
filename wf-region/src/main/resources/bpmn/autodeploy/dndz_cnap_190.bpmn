@@ -21,22 +21,21 @@
         <activiti:formProperty id="nameCompany" name="Назва юридичної особи" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="adress" name="Юридична адреса або місце реєстрації фізичної особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="based" name="Документ, що посвідчує перехід права власності (наприклад: договір № ___ від ДД.ММ.РРРР)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта" type="file"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_inn" name="Копія ІПН" type="file"></activiti:formProperty>
-         <activiti:formProperty id="square" name="Площа земельної ділянки (га)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="square" name="Площа земельної ділянки (га)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="adress2" name="Адреса земельної ділянки" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="newOwner" name="Новий власник нерухомого майна(П.І.Б.)" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="contractNumber" name="Номер договору оренди земельної ділянки" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="contractDate" name="Дата договору оренди земельної ділянки (у форматі ДД.ММ.РРРР)" type="string" required="true"></activiti:formProperty>
-          <activiti:formProperty id="rNumber" name="номер району" type="invisible" default="140"></activiti:formProperty>
-        <activiti:formProperty id="file1" name="Копія документу, що посвідчує перехід права власності" type="file"></activiti:formProperty>
+          <activiti:formProperty id="rNumber" name="номер району" type="invisible" default="26"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта" type="file"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_inn" name="Копія ІПН" type="file"></activiti:formProperty>
         <activiti:formProperty id="file2" name="Копія свідоцтва про реєстрацію суб’єкта підприємницької діяльності" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file3" name="Копія договору оренди земельної ділянки" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file4" name="Акт обстеження земельної ділянки" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file1" name="Копія документу, що посвідчує перехід права власності на майно" type="file"></activiti:formProperty>
         <activiti:formProperty id="file5" name="Для вбудованних приміщень обов'язково документ про право власності на приміщення" type="file"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="Вибір фізична/юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;nameCompany&quot;],[&quot;bankId_scan_passport&quot;],[&quot;bankId_scan_inn&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;selectEntrepreneur&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'attr2_company'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers2" name="Вибір причини розірвання" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;file3&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;selectReason&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'attr2_high_house'&quot;}}}"></activiti:formProperty>
-      </extensionElements>
+        <activiti:formProperty id="markers1" name="Юридична/фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;nameCompany&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;selectEntrepreneur&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'attr2_company'&quot;}}}" required="true"></activiti:formProperty>
+          </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <serviceTask id="servicetask2" name="Повідомленя адміністратора ЦНАПу" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -112,6 +111,7 @@
           <activiti:value id="attr1_wait" name="Документи передані в Департамент комунальної власності та земельних відносин міської ради"></activiti:value>
           <activiti:value id="attr2_finish" name="Відмова громадянину у разі надання неповного пакету документів"></activiti:value>
         </activiti:formProperty>
+         <activiti:formProperty id="rNumber" name="номер району" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
         <activiti:formProperty id="number_cnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string"></activiti:formProperty>
         <activiti:formProperty id="adminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string"></activiti:formProperty>
@@ -217,6 +217,7 @@
           <activiti:value id="attr1_sale" name="Відчуження нерухомого майна на користь нового власника"></activiti:value>
           <activiti:value id="attr2_high_house" name="Об’єкт нерухомого майна розташований у багатоповерховому житловому будинку."></activiti:value>
         </activiti:formProperty>
+         <activiti:formProperty id="rNumber" name="номер району" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nameCompany" name="Назва юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adress" name="Юридична адреса або місце реєстрації фізичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="based" name="Документ, що посвідчує перехід права власності" type="string" writable="false"></activiti:formProperty>
