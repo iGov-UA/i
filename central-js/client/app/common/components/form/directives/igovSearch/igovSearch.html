@@ -1,17 +1,19 @@
 <div class="big-inner-addon">
     <span class="glyphicon glyphicon-search al-left"
           aria-hidden="true"></span>
-    <input ng-model="sSearch"
-           ng-model-options="{ updateOn: 'default', debounce: {'default': 500} }"
-           ng-change="search()"
-           type="text"
-           class="form-control input-lg"
-           placeholder="Пошук послуги">
+    <form ng-submit="searchOrder()">
+      <input ng-model="sSearch"
+             ng-model-options="{ updateOn: 'default', debounce: {'default': 500} }"
+             ng-change="search()"
+             type="text"
+             class="form-control input-lg"
+             placeholder="Пошук послуги">
+    </form>
     <a href="#" title="Очистити" ng-show="sSearch" ng-click="clear()"><span class="glyphicon glyphicon-remove"></span></a>
     <a href="#" ng-click="onExtSearchClick()">
        <!--span class="glyphicon glyphicon-chevron-down al-right" ng-show="!bShowExtSearch" title="Розширений пошук" aria-hidden="true"></span-->
         <span class="glyphicon glyphicon-chevron-down al-right" ng-show="!bShowExtSearch" title="Розширений пошук" aria-hidden="true">
-        <span class="" ng-show="!bShowExtSearch" title="Розширений пошук" aria-hidden="true" style="font-size: 15px; font-family: Arial; color:grey;top:4px;">Фільтр</span>  
+        <span class="" ng-show="!bShowExtSearch" title="Розширений пошук" aria-hidden="true" style="font-size: 15px; font-family: Arial; color:grey;top:4px;">Фільтр</span>
         </span>
        <span class="glyphicon glyphicon-chevron-up al-right" ng-show="bShowExtSearch" title="Повернутися до простого пошуку" aria-hidden="true"></span>
     </a>

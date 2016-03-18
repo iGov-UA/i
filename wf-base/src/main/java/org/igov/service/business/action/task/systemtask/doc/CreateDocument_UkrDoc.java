@@ -14,6 +14,7 @@ import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.StartFormData;
 import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.impl.form.FormPropertyImpl;
+import org.activiti.engine.task.Attachment;
 import org.activiti.engine.task.Task;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.RestRequest;
@@ -63,12 +64,15 @@ public class CreateDocument_UkrDoc implements JavaDelegate {
 				generalConfig.sURL_AuthSID_PB() + "?lang=UA");
 		
 		LOG.info("Retrieved session ID:" + sessionId);
-		Map<String, Object> urkDocRequest = UkrDocUtil.makeJsonRequestObject(sHeadValue, sBodyValue, sLoginAuthorValue, nID_PatternValue);
+		List<Attachment> attachments = taskService.getProcessInstanceAttachments(execution.getProcessInstanceId());
+		LOG.info("Found attachments for the process {}", attachments != null ? attachments.size() : 0);
+		Map<String, Object> urkDocRequest = UkrDocUtil.makeJsonRequestObject(sHeadValue, sBodyValue, sLoginAuthorValue, nID_PatternValue, 
+				attachments, execution.getId(), generalConfig);
 
 		JSONObject json = new JSONObject();
 		json.putAll( urkDocRequest );
 		
-		LOG.info("Created urk doc request object:" + json.toJSONString());
+		LOG.info("Created ukr doc request object:" + json.toJSONString());
 
         HttpHeaders headers = new HttpHeaders();
         //headers.set("Authorization", "Bearer " + sessionId);

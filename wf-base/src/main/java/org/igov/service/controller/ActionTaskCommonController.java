@@ -905,7 +905,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             + "\"5215055\",\"dn200986zda\",\"2015-09-25:13-05-22\",\"1565056\",\"0\",\"обробка дмс\",\"АМ765369 ЖОВТНЕВИМ РВ ДМУ УМВС УКРАЇНИ В ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ 18.03.2002\",\"ДМИТРО\",\"ДУБІЛЕТ\",\"ОЛЕКСАНДРОВИЧ\",\"attr1_no\",\"2015-09-28 08:15:00.00\",\"dd.MM.yyyy HH:MI\",\"dmitrij.zabrudskij@privatbank.ua\",\"attr2_missed\",\"attr1_yes\",\"\",\"38\",\"attr1_no\",\"{\"\"nID_FlowSlotTicket\"\":27768,\"\"sDate\"\":\"\"2015-09-28 08:15:00.00\"\"}\",\"0.0\",\"0.0\"\n"
             + "\n```\n")
     @Deprecated
-    @RequestMapping(value = "/download_bp_timing", method = RequestMethod.GET)
+    @RequestMapping(value = "/download_bp_timing", method = RequestMethod.GET, produces = "application/vnd.ms-excel") 
     @Transactional
     public void getTimingForBusinessProcessNew(
             @ApiParam(value = "ИД бизнес процесса", required = true) @RequestParam(value = "sID_BP_Name") String sID_BP_Name,
@@ -1164,18 +1164,18 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
         CSVWriter printWriter = null;
         PipedInputStream pi = new PipedInputStream();
-        
+        LOG.info("!!!!!!!!!!!!!sMailTo: " + sMailTo);
         if (sMailTo != null){
 	        PipedOutputStream po = new PipedOutputStream(pi);
 	        PrintWriter pw = new PrintWriter(po);
 	        printWriter = new CSVWriter(pw, separator.charAt(0),
 	                CSVWriter.NO_QUOTE_CHARACTER);
         } else {
-        	printWriter = new CSVWriter(httpResponse.getWriter(), separator.charAt(0),
-                CSVWriter.NO_QUOTE_CHARACTER);
         	httpResponse.setContentType("text/csv;charset=" + charset.name());
-            httpResponse.setHeader("Content-disposition", "attachment; filename="
+                httpResponse.setHeader("Content-disposition", "attachment; filename="
                     + sTaskDataFileName);
+                printWriter = new CSVWriter(httpResponse.getWriter(), separator.charAt(0),
+                CSVWriter.NO_QUOTE_CHARACTER);
         }
 
         List<Map<String, Object>> csvLines = new LinkedList<>();

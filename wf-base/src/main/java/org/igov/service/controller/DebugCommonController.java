@@ -30,6 +30,7 @@ import javax.activation.DataSource;
 import javax.mail.MessagingException;
 import java.io.IOException;
 import java.io.InputStream;
+import org.joda.time.DateTime;
 
 /**
  * @author BW
@@ -167,7 +168,10 @@ public class DebugCommonController {
     void testSheduleBuilderFlowSlots(
     ) throws Exception {
         
+        //DateTime oDateStart = DateTime.now().withTimeAtStartOfDay();
         LOG.info("/test/action/testSheduleBuilderFlowSlots  - invoked");
+        //LOG.info("oDateStart = {}", oDateStart);
+        LOG.info("/test/action/testSheduleBuilderFlowSlots  - exit");
         //runtimeService.deleteProcessInstance(processInstanceID, sReason);
     }
         
