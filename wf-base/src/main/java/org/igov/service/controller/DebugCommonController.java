@@ -168,9 +168,9 @@ public class DebugCommonController {
     void testSheduleBuilderFlowSlots(
     ) throws Exception {
         
-        //DateTime oDateStart = DateTime.now().withTimeAtStartOfDay();
+        DateTime oDateStart = DateTime.now().withTimeAtStartOfDay();
         LOG.info("/test/action/testSheduleBuilderFlowSlots  - invoked");
-        //LOG.info("oDateStart = {}", oDateStart);
+        LOG.info("oDateStart = {}", oDateStart);
         LOG.info("/test/action/testSheduleBuilderFlowSlots  - exit");
         //runtimeService.deleteProcessInstance(processInstanceID, sReason);
     }
