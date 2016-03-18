@@ -84,9 +84,8 @@ ${sNameOrgan}.&lt;br /&gt;
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow4" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
-    <userTask id="usertask1" name="Обробка документів ЦНАП  (1-й крок)" activiti:candidateGroups="dnepr_cnap_${vibor}">
+    <userTask id="usertask1" name="Обробка документів ЦНАП  (1-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть центр надання адмінпослуг" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По-батькові" type="string" writable="false"></activiti:formProperty>
@@ -127,7 +126,7 @@ ${sNameOrgan}.&lt;br /&gt;
     <sequenceFlow id="flow9" name="status=='attr1_wait'" sourceRef="exclusivegateway1" targetRef="servicetask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status=='attr1_wait'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask2" name="Обробка документів спеціалістом (інженер-еколог) управління житлово-комунального господарства та комунальної власност (2-й крок)" activiti:candidateGroups="dnepr_cnap_${vibor}"></userTask>
+    <userTask id="usertask2" name="Обробка документів спеціалістом (інженер-еколог) управління житлово-комунального господарства та комунальної власност (2-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}"></userTask>
     <sequenceFlow id="flow10" sourceRef="servicetask5" targetRef="usertask2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow11" sourceRef="usertask2" targetRef="exclusivegateway2"></sequenceFlow>
