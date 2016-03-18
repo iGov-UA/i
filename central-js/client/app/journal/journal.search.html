@@ -74,8 +74,8 @@
               <div class="form-group" ng-repeat="oField in oOrderMessage.aData track by oField.sID"
                    ng-switch on="oField.sType">
                     <label class="col-md-6 control-label" style="padding-right: 0; padding-top: 0">
-                      <div>{{oField.sName}}:</div>
-                      <div style="color: #CC0000">{{oField.sNotify}}</div>
+                      {{oField.sName}}:
+                      <br /><span style="color: #CC0000" ng-if="oOrderMessage.oSubjectMessageType.nID !== 4">{{oField.sNotify}}</span>
                     </label>
                     <div class="col-md-6">
 
@@ -122,20 +122,9 @@
               </div>
 
               <div class="row" style="margin-bottom: 0; margin-top: 20px">
-                <div class="col-md-10">
-                  <label class="sr-only" for="searchEventControl">Залиште свій коментар до відповіді:</label>
-                  <textarea
-                    class="form-control"
-                    rows="1"
-                    style="height: 34px"
-                    placeholder="Залиште свій коментар до відповіді"
-                    ng-model="sOrderAnswerCommentNew"></textarea>
-                </div>
-                <div class="col-md-1">
+                <div class="col-md-offset-10 col-md-1">
                   <button class="btn btn-primary" ng-click="sendAnswer()">Зберегти</button>
                 </div>
-                <button-file-upload on-file-upload-success="onFileUploadSuccess($file)"
-                                    o-service-data="oOrder">Додати файл</button-file-upload>
               </div>
             </form>
           </dd>
