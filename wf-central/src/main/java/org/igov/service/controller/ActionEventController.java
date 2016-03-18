@@ -396,7 +396,7 @@ public class ActionEventController {
 
     @ApiOperation(value = "Загрузка событий", notes =
               "Пример 1: http://test.igov.org.ua/wf/service/action/event/getHistoryEvents?nID_Subject=10\n\n"
-            + "Пример 2: http://test.igov.org.ua/wf/service/action/event/getHistoryEvents?nID_Subject=10&HistoryEvent_Service=2\n\n"
+            + "Пример 2: http://test.igov.org.ua/wf/service/action/event/getHistoryEvents?nID_Subject=10&nID_HistoryEvent_Service=2\n\n"
             + "В зависимости от параметра **bGrouped** к списку может применяться фильтр.\n\n"
             + "- Если **bGrouped = false** - выбираются все сущности для данного субъекта\n"
             + "- если **bGrouped = true**, то в список попадают только уникальные сущности. Если сущности не уникальные, то из них отбирается только "
