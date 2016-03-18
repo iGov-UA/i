@@ -171,7 +171,7 @@ public class DebugCommonController {
         DateTime oDateStart = DateTime.now().withTimeAtStartOfDay();
         LOG.info("/test/action/testSheduleBuilderFlowSlots  - invoked");
         LOG.info("oDateStart = {}", oDateStart);
-        LOG.info("/test/action/testSheduleBuilderFlowSlots  - exit");
+        LOG.info("/test/action/testSheduleBuilderFlowSlots  - exit1");
         //runtimeService.deleteProcessInstance(processInstanceID, sReason);
     }
         
