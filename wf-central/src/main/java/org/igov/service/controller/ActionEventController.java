@@ -395,7 +395,8 @@ public class ActionEventController {
     }
 
     @ApiOperation(value = "Загрузка событий", notes =
-            "##### Пример: http://test.igov.org.ua/wf/service/action/event/getHistoryEvents?nID_Subject=10\n\n"
+              "Пример 1: http://test.igov.org.ua/wf/service/action/event/getHistoryEvents?nID_Subject=10\n\n"
+            + "Пример 2: http://test.igov.org.ua/wf/service/action/event/getHistoryEvents?nID_Subject=10&HistoryEvent_Service=2\n\n"
             + "В зависимости от параметра **bGrouped** к списку может применяться фильтр.\n\n"
             + "- Если **bGrouped = false** - выбираются все сущности для данного субъекта\n"
             + "- если **bGrouped = true**, то в список попадают только уникальные сущности. Если сущности не уникальные, то из них отбирается только "
@@ -410,7 +411,7 @@ public class ActionEventController {
     public @ResponseBody
     List<HistoryEvent> getHistoryEvents(
             @ApiParam(value = "id авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)", required = true) @RequestParam(value = "nID_Subject") long nID_Subject,
-            @ApiParam(value = "id HistoryEvent_Service. Если задан, то параметр добавляется к кретериям отбора", required = false) @RequestParam(value = "nID_HistoryEvent_Service", required = false) long nID_HistoryEvent_Service,
+            @ApiParam(value = "id HistoryEvent_Service. Если задан, то параметр добавляется к кретериям отбора", required = false) @RequestParam(value = "nID_HistoryEvent_Service", required = false) Long nID_HistoryEvent_Service,
             @ApiParam(value =
                     "булевый флаг, если **true**, то возвращает только последнюю по дате (sDate) запись, из тех, "
                             + "у которых nID_HistoryEvent_Service или nID_Document - один и тот-же", required = false) @RequestParam(value = "bGrouped", required = false, defaultValue = "false") Boolean bGrouped) {
