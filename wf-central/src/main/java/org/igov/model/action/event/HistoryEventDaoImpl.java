@@ -1,5 +1,7 @@
 package org.igov.model.action.event;
 
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Order;
 import org.springframework.stereotype.Repository;
 import org.igov.model.core.GenericEntityDao;
@@ -46,16 +48,25 @@ public class HistoryEventDaoImpl extends GenericEntityDao<HistoryEvent> implemen
      * - если oHistoryEvent_Service=не null и oDocument= не null - савнение идет и по oHistoryEvent_Service и по oDocument
      */
     @Override
-    public List<HistoryEvent> getHistoryEvents(Long nID_Subject, boolean bGrouped) {
+    public List<HistoryEvent> getHistoryEvents(Long nID_Subject, Long nID_HistoryEvent_Service, boolean bGrouped) {
 
 	List<HistoryEvent> historyEvents = new ArrayList<>();
+	
+	Criteria oCriteria = getSession().createCriteria(HistoryEvent.class);
+	if ( nID_Subject!=null ) {
+	    oCriteria.add(Restrictions.eq("subjectKey", nID_Subject));
+	}
+	if ( nID_HistoryEvent_Service!=null ) {
+	    oCriteria.add(Restrictions.eq("nID_HistoryEvent_Service", nID_HistoryEvent_Service));
+	}
+	
 	if (bGrouped) {
+	    
+	    oCriteria.addOrder(Order.asc("oHistoryEvent_Service"))
+	    .addOrder(Order.asc("oDocument"))
+	    .addOrder(Order.desc("date"));
 
-	    List<HistoryEvent> historyEventsNew = findAllByAttributeCriteria("subjectKey", nID_Subject)
-		    .addOrder(Order.asc("oHistoryEvent_Service"))
-		    .addOrder(Order.asc("oDocument"))
-		    .addOrder(Order.desc("date"))
-		    .list();
+	    List<HistoryEvent> historyEventsNew = oCriteria.list();
 
 	    HistoryEvent historyEventOld = null;
 	    for (HistoryEvent historyEventNew : historyEventsNew) {
@@ -68,7 +79,8 @@ public class HistoryEventDaoImpl extends GenericEntityDao<HistoryEvent> implemen
 	    }
 
 	} else {
-	    historyEvents = findAllByAttributeCriteria("subjectKey", nID_Subject).addOrder(Order.desc("date")).list();
+	    oCriteria.addOrder(Order.desc("date"));
+	    historyEvents = oCriteria.list();
 	}
 
 	if (historyEvents != null) {
