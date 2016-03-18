@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="Synelnykove_cnap_509" name="Акт обстеження зелених насаджень" isExecutable="true">
+  <process id="Synelnykove_cnap_509" name="Видача Акту обстеження земельної ділянки на наявність зелених насаджень" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть центр надання адмінпослуг" type="select" default="0"></activiti:formProperty>
@@ -12,12 +12,8 @@
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Укажіть сьогоднішню дату" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="subekt" name="Оберіть приналежність до суб'єктів підприємницької діяльності?" type="enum" required="true">
-          <activiti:value id="fiz" name="фізична особа"></activiti:value>
-          <activiti:value id="fop" name="фізична особа-підприємець"></activiti:value>
-          <activiti:value id="ur" name="юрідична особа"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="subekt_2" name="Звернення подаю" type="enum" required="true">
+        <activiti:formProperty id="subekt" name="Звернення подаю" type="enum" required="true">
           <activiti:value id="personally" name="особисто"></activiti:value>
           <activiti:value id="confidant" name="довірена особа"></activiti:value>
         </activiti:formProperty>
@@ -25,26 +21,19 @@
           <activiti:value id="delete" name="АКТ ОБСТЕЖЕННЯ ЗЕЛЕНИХ НАСАДЖЕНЬ НА ВИДАЛЕННЯ АВАРІЙНИХ, СУХОСТІЙНИХ І ФАУТНИХ ЗЕЛЕНИХ НАСАДЖЕНЬ"></activiti:value>
           <activiti:value id="rozrobka" name="АКТ ОБСТЕЖЕННЯ ЗЕЛЕНИХ НАСАДЖЕНЬ ПРИ РОЗРОБЦІ ПРОЕКТУ ВИДІЛЕННЯ ЗЕМЕЛЬНОЇ ДІЛЯНКИ"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="pib_fiz" name="П.І.Б. фізичної особи–підприємця" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nameCompany" name="Повне найменування юридичної особи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="kved" name="Вид діяльності згідно з КВЕД; тільки цифрові позначення" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="edrpo" name="Ідентифікаційний код згідно з ЄДРПОУ; тільки цифрові позначення" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="pib_ur" name="П.І.Б. керівника юридичної особи або уповноваженої особи" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="adres_1" name="Місцезнаходження юридичної особи" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="telef" name="Телефон юридичної особи" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="adress2" name="Місце розташування насадження (адреса)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="file1" name="Копія державного акту на земельну ділянку(при наявності)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file2" name="Схема розташування аварійних дерев" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file3" name="Експлікація земельної ділянки яка виділяється для користування чи оренди" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file4" name="Копія рішення міської ради щодо надання дозволу на розробку проектної документації для відведення земельної ділянки(при наявності)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="region" name="Регион" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="clerkPost" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса ЦНАП" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPosluga_name" name=" " type="invisible" default="Видача Акту обстеження земельної ділянки на наявність зелених насаджень"></activiti:formProperty>
         <activiti:formProperty id="marker31" name="Документи на видалення" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;file1&quot;,&quot;file2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;act&quot;},&quot;sCondition&quot;:&quot;delete&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="marker32" name="Документи для розробки ПВЗД" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;file3&quot;,&quot;file4&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;act&quot;},&quot;sCondition&quot;:&quot;rozrobka&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="marker11" name="Якщо фіз.особа" type="markers" default=" "></activiti:formProperty>
-        <activiti:formProperty id="marker12" name="Якщо фоп" type="markers" default=" "></activiti:formProperty>
-        <activiti:formProperty id="marker13" name="Якщо юр.особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;nameCompany&quot;,&quot;kved&quot;,&quot;edrpo&quot;,&quot;pib_ur&quot;,&quot;adres_1&quot;,&quot;telef&quot;],&quot;asID_Field&quot;:{&quot;sCond1&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;ur&quot;}}}"></activiti:formProperty>
-      </extensionElements>
+       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -53,9 +42,48 @@
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>
     <sequenceFlow id="flow2" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
-    <serviceTask id="servicetask2" name="Повідомлення адміністратора про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}"></serviceTask>
+    <serviceTask id="servicetask2" name="Повідомлення держслужбовцю про новий запит" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>esdnepr@gmail.com</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression>Нове звернення на тему ${sPosluga_name}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+        </serviceTask>
     <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
-    <serviceTask id="servicetask3" name="Повідомлення громадянина про прийом документів на розгляд" activiti:delegateExpression="#{MailTaskWithoutAttachment}"></serviceTask>
+    <serviceTask id="servicetask3" name="Повідомлення громадянину про прийом документів на розгляд" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression>Звернення на тему ${sPosluga_name}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+         <activiti:expression>[pattern/mail/_common_header.html]
+&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+&lt;p&gt; Ваше звернення на тему ${sPosluga_name} прийнято в роботу. &lt;br /&gt;
+Повідомлення про результат розгляду буде спрямоване на Ваш e-mail.&lt;/p&gt;
+&lt;br /&gt;
+За наявності питянь можете звернутись за телефоном: ${sPhoneOrgan}.&lt;br /&gt;
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan}.&lt;br /&gt;
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
     <sequenceFlow id="flow4" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
     <userTask id="usertask1" name="Обробка документів ЦНАП  (1-й крок)" activiti:candidateGroups="dnepr_cnap_${vibor}">
       <extensionElements>
@@ -68,12 +96,8 @@
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Укажіть сьогоднішню дату" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="subekt" name="Оберіть приналежність до суб'єктів підприємницької діяльності?" type="enum" writable="false">
-          <activiti:value id="fiz" name="фізична особа"></activiti:value>
-          <activiti:value id="fop" name="фізична особа-підприємець"></activiti:value>
-          <activiti:value id="ur" name="юрідична особа"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="subekt_2" name="Звернення подаю" type="enum" writable="false">
+        <activiti:formProperty id="subekt" name="Звернення подаю" type="enum" writable="false">
           <activiti:value id="personally" name="особисто"></activiti:value>
           <activiti:value id="confidant" name="довірена особа"></activiti:value>
         </activiti:formProperty>
@@ -81,13 +105,6 @@
           <activiti:value id="delete" name="АКТ ОБСТЕЖЕННЯ ЗЕЛЕНИХ НАСАДЖЕНЬ НА ВИДАЛЕННЯ АВАРІЙНИХ, СУХОСТІЙНИХ І ФАУТНИХ ЗЕЛЕНИХ НАСАДЖЕНЬ"></activiti:value>
           <activiti:value id="rozrobka" name="АКТ ОБСТЕЖЕННЯ ЗЕЛЕНИХ НАСАДЖЕНЬ ПРИ РОЗРОБЦІ ПРОЕКТУ ВИДІЛЕННЯ ЗЕМЕЛЬНОЇ ДІЛЯНКИ"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="pib_fiz" name="П.І.Б. фізичної особи–підприємця" type="string" default=" " writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nameCompany" name="Повне найменування юридичної особи" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="kved" name="Вид діяльності згідно з КВЕД; тільки цифрові позначення" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="edrpo" name="Ідентифікаційний код згідно з ЄДРПОУ; тільки цифрові позначення" type="string" default=" " writable="false"></activiti:formProperty>
-        <activiti:formProperty id="pib_ur" name="П.І.Б. керівника юридичної особи або уповноваженої особи" type="string" default=" " writable="false"></activiti:formProperty>
-        <activiti:formProperty id="adres_1" name="Місцезнаходження юридичної особи" type="string" default=" " writable="false"></activiti:formProperty>
-        <activiti:formProperty id="telef" name="Телефон юридичної особи" type="string" default=" " writable="false"></activiti:formProperty>
         <activiti:formProperty id="adress2" name="Місце розташування насадження (адреса)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="extension_number" name="Реєстраційний номер ЦНАП" type="string"></activiti:formProperty>
         <activiti:formProperty id="adminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string"></activiti:formProperty>
