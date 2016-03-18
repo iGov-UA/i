@@ -31,6 +31,8 @@ import java.net.URISyntaxException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.activiti.engine.delegate.DelegateTask;
+import org.activiti.engine.delegate.TaskListener;
 import org.igov.service.business.action.task.core.ActionTaskService;
 import org.igov.service.business.action.task.systemtask.misc.CancelTaskUtil;
 import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
@@ -39,7 +41,7 @@ import org.igov.service.controller.security.AccessContract;
 import static org.igov.util.ToolLuna.getProtectedNumber;
 import org.igov.util.ToolWeb;
 
-public abstract class Abstract_MailTaskCustom implements JavaDelegate {
+public abstract class Abstract_MailTaskCustom implements JavaDelegate, TaskListener {
 
     static final transient Logger LOG = LoggerFactory
             .getLogger(Abstract_MailTaskCustom.class);
@@ -514,5 +516,11 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
         LOG.debug("Loaded content from file:" + sData);
         return sData;
     }
+    
+    @Override
+    public void execute(DelegateExecution oExecution) throws Exception {}
+    
+    @Override
+    public void notify(DelegateTask dt) {}
 }
 
