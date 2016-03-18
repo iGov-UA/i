@@ -26,6 +26,6 @@ public interface HistoryEvent_ServiceDao extends EntityDao<HistoryEvent_Service>
     HistoryEvent_Service getLastTaskHistory(Long nID_Subject, Long nID_Service, String sID_UA);
     
     List<HistoryEvent_Service> getOrdersHistory(Long nID_Subject, Long nID_Service, String sID_UA, int nLimit);
-    
-    List<HistoryEvent_Service> getHistoryEventPeriod(DateTime dateAt, DateTime dateTo);
+
+    List<HistoryEvent_Service> getHistoryEventPeriod(DateTime dateAt, DateTime dateTo, List<Long> anID_Service_Exclude);
 }
