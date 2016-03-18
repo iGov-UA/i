@@ -150,7 +150,7 @@ public class NotificationPatterns {
 
             String sText = "<b>Шановний (-а) " + sClientFIO + "!</b><br><br>"
                     + "Для успішної обробки Вашого звернення, державний службовець "
-                    + (sEmployerFIO != null ? "(" + sEmployerFIO + ")" : "") + " потребує уточнення деяких даних";
+                    + (sEmployerFIO != null ? "(" + sEmployerFIO + ")" : "") + " потребує уточнення деяких даних.";
 
             StringBuilder osBody = new StringBuilder(sText);
             osBody.append("<br/>").append(createTable_TaskProperties_Notification(saField, false)).append("<br/>");

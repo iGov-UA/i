@@ -300,7 +300,7 @@ public class ActionTaskService {
                 + " text-align:left;"
                 + " padding: 4px;"
                 + " height:35px;}"
-                + " table.Qwe TH {"
+                + " table.QuestionFields th {"
                 + " background: #65ABD0;"
                 + " height: 40px;"
                 + " vertical-align: midle;"
