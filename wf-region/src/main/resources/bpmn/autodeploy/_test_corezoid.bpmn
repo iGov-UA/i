@@ -528,20 +528,20 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Тест корезоид]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt; Ваше звернення до міської ради було зареєстровано у системі.&lt;br/&gt;
-Повідомлення про результат послуги буде спрямоване на Ваш e-mail.&lt;/p&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p> Ваше звернення до міської ради було зареєстровано у системі.<br/>
+Повідомлення про результат послуги буде спрямоване на Ваш e-mail.</p>
 [pattern/mail/_common_signature_start.html]
-Канцелярія Дніпропетровської міської ради,&lt;br /&gt;
+Канцелярія Дніпропетровської міської ради,<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -1062,11 +1062,35 @@
         <activiti:formProperty id="sReason" name="Суть звернення" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sAdditionalInformation" name="Додаткова інформація" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sRegistrationNumberRGA" name="Реєстраційний номер ОДА" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneCall_SubjectContact_Client" name="Телефон, с которого поступил звонок" type="string" default="380688541954"></activiti:formProperty>
         <activiti:formProperty id="sAnswer" name="Канал відповіді" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAnswer_UkrDoc" name="Відповідь УкрДок" type="string" default="Відповідь громадянину УкрДок"></activiti:formProperty>
+        <activiti:formProperty id="nDaysRemain" name="Ориентировочный срок ответа на обращение (дней)" type="long" default="12"></activiti:formProperty>
+        <activiti:formProperty id="sID_Conveyour" name="ConveyourCorezoid" type="string" default="93682"></activiti:formProperty>
+        <activiti:formProperty id="sID_Order" name="№ заявки в IGov" type="string" default="0-000000005"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile1}</activiti:expression>
+            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}">
+          <activiti:field name="soJSON">
+            <activiti:expression><![CDATA[{
+  "sFIO_Subject_Client": "${clFio}",
+  "sPhonePrivate_SubjectContact_Client": "${phone}",
+  "sPhoneCall_SubjectContact_Client": "${sPhoneCall_SubjectContact_Client}",
+  "sID_Order": "${sID_Order}",
+  "sDate_Order": "${sDateCreate}",
+  "sAddress": "${sAdressProbl}",
+  "sCategory": "${asKindTr}",
+  "sType": "${asTypeTr}",
+  "sHead": "${asTopHead}",
+  "sHeadSub": "${asTop1}",
+  "sBody": "${sReason}",
+  "nDaysRemain": "${nDaysRemain}",
+  "sAnswer_UkrDoc": "${sAnswer_UkrDoc}"
+}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -1096,7 +1120,7 @@
         <omgdc:Bounds height="55.0" width="105.0" x="450.0" y="130.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
-        <omgdc:Bounds height="35.0" width="35.0" x="750.0" y="140.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="600.0" y="140.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="115.0" y="157.0"></omgdi:waypoint>
@@ -1116,7 +1140,7 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
         <omgdi:waypoint x="555.0" y="157.0"></omgdi:waypoint>
-        <omgdi:waypoint x="750.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="600.0" y="157.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
