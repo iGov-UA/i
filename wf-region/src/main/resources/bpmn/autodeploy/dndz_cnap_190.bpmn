@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dndz_cnap_190" name="Дніпродзержинськ - ЦНАП - Розірвання договору оренди земельної ділянки або припинення права постійного користування земельною ділянкою " isExecutable="true">
+  <process id="dndz_cnap_190" name="Дніпродзержинськ - ЦНАП - Розірвання договору оренди земельної ділянки або припинення права постійного користування земельною ділянкою" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
@@ -9,29 +9,32 @@
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта для зворотнього звя'язку" type="string" required="true"></activiti:formProperty>
+         <activiti:formProperty id="date_today" name="Вкажіть сьогоднішню дату" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="selectEntrepreneur" name="Суб’єкт звернення" type="enum" required="true">
           <activiti:value id="attr1_self" name="Фізична особа - підприємець або громадянин України"></activiti:value>
           <activiti:value id="attr2_company" name="Юридична особа"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="selectReason" name="Обкріть причину розірвання договору оренди земельної ділянки" type="enum" required="true">
+        <activiti:formProperty id="selectReason" name="Оберіть причину розірвання договору оренди земельної ділянки" type="enum" required="true">
           <activiti:value id="attr1_sale" name="Відчуження нерухомого майна на користь нового власника"></activiti:value>
           <activiti:value id="attr2_high_house" name="Об’єкт нерухомого майна розташований у багатоповерховому житловому будинку."></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="nameCompany" name="Назва юридичної особи" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="adress" name="Юридична адреса або місце реєстрації фізичної особи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="based" name="Документ, що посвідчує перехід права власності;(наприклад: договір № ___ від ДД.ММ.РРРР)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="square" name="Площа земельної ділянки (га)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="based" name="Документ, що посвідчує перехід права власності (наприклад: договір № ___ від ДД.ММ.РРРР)" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта" type="file"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_inn" name="Копія ІПН" type="file"></activiti:formProperty>
+         <activiti:formProperty id="square" name="Площа земельної ділянки (га)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="adress2" name="Адреса земельної ділянки" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="newOwner" name="Новий власник нерухомого майна" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="newOwner" name="Новий власник нерухомого майна(П.І.Б.)" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="contractNumber" name="Номер договору оренди земельної ділянки" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="contractDate" name="Дата договору оренди земельної ділянки;(у форматі ДД.ММ.РРРР)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="Вкажіть сьогоднішню дату" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="contractDate" name="Дата договору оренди земельної ділянки (у форматі ДД.ММ.РРРР)" type="string" required="true"></activiti:formProperty>
+          <activiti:formProperty id="rNumber" name="номер району" type="invisible" default="140"></activiti:formProperty>
         <activiti:formProperty id="file1" name="Копія документу, що посвідчує перехід права власності" type="file"></activiti:formProperty>
-        <activiti:formProperty id="file2" name="Копія свідоцтва про реєстрацію суб’єкта підприємницької діяльності" type="file"></activiti:formProperty>
-        <activiti:formProperty id="file3" name="Копія ІПН" type="file"></activiti:formProperty>
-        <activiti:formProperty id="notice" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="Вибір фізична/юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;nameCompany&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;selectEntrepreneur&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'attr2_company'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="file2" name="Копія свідоцтва про реєстрацію суб’єкта підприємницької діяльності" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file3" name="Копія договору оренди земельної ділянки" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file4" name="Акт обстеження земельної ділянки" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file5" name="Для вбудованних приміщень обов'язково документ про право власності на приміщення" type="file"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="Вибір фізична/юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;nameCompany&quot;],[&quot;bankId_scan_passport&quot;],[&quot;bankId_scan_inn&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;selectEntrepreneur&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'attr2_company'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="Вибір причини розірвання" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;file3&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;selectReason&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'attr2_high_house'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -42,39 +45,13 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:string><![CDATA[msvidran@gmail.com]]></activiti:string>
+          <activiti:string><![CDATA[lomova_aleksandra@mail.ru]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Розірвання договору оренди земельної ділянки або припинення права постійного користування земельною ділянкою.]]></activiti:string>
+          <activiti:string><![CDATA[Нове звернення на порталі igov.org.ua на тему: Розірвання договору оренди земельної ділянки або припинення права постійного користування земельною ділянкою.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-                                    &lt;h3&gt;Шановний(-а) колего!&lt;/h3&gt;
-                                    &lt;p&gt;
-У Вас в черзі на обробку зареєстровано нове звернення щодо розірвання договору оренди земельної ділянки або припинення права постійного користування земельною ділянкою.&lt;br /&gt;
-&lt;br /&gt;
-Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
-Опрацюйте це звернення на &lt;a href="https://region.igov.org.ua" target="_blank"&gt;порталі&lt;/a&gt;
-                                    &lt;/p&gt;
-                                    &lt;hr style="width: 100%; height: 0; margin: 30px 0 15px 0; background: #dddddd; border: 0; border-bottom: 1px solid #dddddd;" /&gt;
-                                    &lt;p&gt;
-                                    З повагою,&lt;br /&gt;
-					  				Команда Порталу державних послуг &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov&lt;/a&gt;
-                                        &lt;/p&gt;
-                                    &lt;/p&gt;
-                                &lt;/td&gt;
-                            &lt;/tr&gt;
-                        &lt;/table&gt;
-                    &lt;/td&gt;
-                &lt;/tr&gt;
-                &lt;!--content end--&gt;
-            &lt;/table&gt;
-        &lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;/tbody&gt;
-&lt;/table&gt;
-&lt;/body&gt;
-&lt;/html&gt;</activiti:expression>
+          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -89,7 +66,7 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Розірвання договору оренди земельної ділянки або припинення права постійного користування земельною ділянкою.]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Розірвання договору оренди земельної ділянки або припинення права постійного користування земельною ділянкою.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -97,9 +74,11 @@
 &lt;p&gt; Ваше звернення щодо розірвання договору оренди земельної ділянки або припинення права постійного користування земельною ділянкою було зареєстровано у системі.&lt;br/&gt;
 Повідомлення про результат послуги буде спрямоване на Ваш e-mail.&lt;/p&gt;
 &lt;br /&gt;
-Телефон для довідок: (05692) 2-61-50 &lt;br /&gt;
+&lt;p&gt;Контакти відділу, який буде займатися обробкою Вашого звернення:
+	[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:3]&lt;br /&gt;
+	[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:4]&lt;br /&gt;
+	[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]&lt;/p&gt;
 [pattern/mail/_common_signature_start.html]
-ЦНАП м.Дніпродзержинськ.&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -112,6 +91,7 @@
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта для зворотнього звя'язку" type="string" writable="false"></activiti:formProperty>
+          <activiti:formProperty id="date_today" name="Дата заповнення заяви" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="selectEntrepreneur" name="Суб’єкт звернення" type="enum" writable="false">
           <activiti:value id="attr1_self" name="Фізична особа - підприємець або громадянин України"></activiti:value>
           <activiti:value id="attr2_company" name="Юридична особа"></activiti:value>
@@ -128,7 +108,6 @@
         <activiti:formProperty id="newOwner" name="Новий власник нерухомого майна" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="contractNumber" name="Номер договору оренди земельної ділянки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="contractDate" name="Дата договору оренди земельної ділянки;(у форматі ДД.ММ.РРРР)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="Дата заповнення заяви" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="status" name="Обробка заяви (1-й етап)" type="enum">
           <activiti:value id="attr1_wait" name="Документи передані в Департамент комунальної власності та земельних відносин міської ради"></activiti:value>
           <activiti:value id="attr2_finish" name="Відмова громадянину у разі надання неповного пакету документів"></activiti:value>
@@ -143,7 +122,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport}, ${file1}, ${file2}, ${file3}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport},${bankId_scan_inn}, ${file1}, ${file2}, ${file3}, ${file4}, ${file5}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -165,16 +144,19 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-На жаль, Ваше звернення про розірвання договору оренди земельної ділянки або припинення права постійного користування земельною ділянкою. - відхилине.&lt;/p&gt;
+На жаль, Ваше звернення про розірвання договору оренди земельної ділянки або припинення права постійного користування земельною ділянкою - відхилено.&lt;/p&gt;
 &lt;p&gt;Причина в наступному: 
                                     &lt;/p&gt;
 &lt;p&gt;${decisionComment}&lt;/p&gt;
-&lt;p&gt;Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="#current-page"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
-&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-ЦНАП м.Дніпродзержинськ&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+	&lt;p&gt;Контактна інформація відділу, який займалася Вашим запитом:
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:3]&lt;br&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:4]&lt;br&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]
+&lt;/p&gt;
+			[pattern/mail/_common_signature_start.html]
+			[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2]&lt;br&gt;
+                     [pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -196,12 +178,15 @@
 Спеціалісти з органу місцевого самоврядування повинні дати відповідь протягом 30 днів з дня реєстрації заяви (в разі неможливості прийняття рішення у 30 денний строк, питання заявника розглядається - на першому засіданні (слуханні) після закінчення цього строку)&lt;br /&gt; 
 &lt;p&gt;Номер Вашого замовлення: ${number_cnap}&lt;/p&gt; .
 &lt;/p&gt;
-&lt;br /&gt;
-Телефон для довідок: (05692) 2-61-50 &lt;br /&gt; 
-[pattern/mail/_common_signature_start.html]
-ЦНАП м.Дніпродзержинськ.&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+	&lt;p&gt;Контактна інформація відділу, який займається Вашим запитом:
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:3]&lt;br&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:4]&lt;br&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]
+&lt;/p&gt;
+			[pattern/mail/_common_signature_start.html]
+			[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2]&lt;br&gt;
+                     [pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -270,19 +255,17 @@
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 &lt;p&gt;
 Ваше звернення щодо розірвання договору оренди земельної ділянки або припинення права постійного користування земельною ділянкою - опрацьоване.&lt;br /&gt;
-Відповідь Ви можете отримати за адресою: м.Дніпродзержинськ, Комсомольський пр-т, 10/12.
+Відповідь Ви можете отримати за адресою: [pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:3]
 &lt;/p&gt;
 &lt;br /&gt;
-Телефон для довідок: (05692) 2-61-50 &lt;br /&gt;
-Графік роботи ЦНАП-у:&lt;br /&gt;
-Понеділок, середа, п'ятниця з 8.00 до 17.00&lt;br /&gt;
-Вівторок, четвер з 8.00 до 20.00&lt;br /&gt;
-Субота з 9.00 до 16.00&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-ЦНАП м.Дніпродзержинськ,&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+&lt;p&gt;Контактна інформація відділу, який займається Вашим запитом:
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:4]&lt;br&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]
+&lt;/p&gt;
+			[pattern/mail/_common_signature_start.html]
+			[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2]&lt;br&gt;
+                     [pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -304,21 +287,20 @@
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 &lt;p&gt;
-На жаль, Ваше звернення щодо розірвання договору оренди земельної ділянки або припинення права постійного користування земельною ділянкою - відхилене.&lt;/p&gt;
+На жаль, Ваше звернення щодо розірвання договору оренди земельної ділянки або припинення права постійного користування земельною ділянкою - відхилено.&lt;/p&gt;
 &lt;br /&gt;
 &lt;p&gt;Причина в наступному: &lt;/p&gt;
 &lt;p&gt;${decisionComment2}&lt;/p&gt;
 &lt;br /&gt;
-Телефон для довідок: (05692) 2-61-50 &lt;br /&gt;
-Адреса: м.Дніпродзержинськ, Комсомольський пр-т, 10/12&lt;br /&gt;
-Графік роботи ЦНАП-у:&lt;br /&gt;
-Понеділок, середа, п'ятниця з 8.00 до 17.00&lt;br /&gt;
-Вівторок, четвер з 8.00 до 20.00&lt;br /&gt;
-Субота з 9.00 до 16.00&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-ЦНАП м.Дніпродзержинськ,&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+&lt;p&gt;Контактна інформація відділу, який займається Вашим запитом:
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:3]&lt;br&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:4]&lt;br&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]
+&lt;/p&gt;
+			[pattern/mail/_common_signature_start.html]
+			[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2]&lt;br&gt;
+                     [pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -403,14 +385,14 @@
         <omgdi:waypoint x="720.0" y="205.0"></omgdi:waypoint>
         <omgdi:waypoint x="810.0" y="206.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="709.0" y="164.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="100.0" x="709.0" y="164.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
         <omgdi:waypoint x="700.0" y="225.0"></omgdi:waypoint>
         <omgdi:waypoint x="700.0" y="280.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="661.0" y="245.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="95.0" x="661.0" y="245.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
