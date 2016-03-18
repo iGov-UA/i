@@ -672,18 +672,7 @@ public class SubjectController {
                     HttpStatus.BAD_REQUEST);
         }
 
-        // Если задан nID_SubjectAccountType то сначала находим сущность SubjectAccountType
-        SubjectAccountType subjectAccountType = null;
-        if (nID_SubjectAccountType != null) {
-            subjectAccountType = subjectAccountTypeDao.findByIdExpected(nID_SubjectAccountType);
-            if (subjectAccountType == null) {
-                throw new CommonServiceException(
-                        ExceptionCommonController.BUSINESS_ERROR_CODE,
-                        "Error! Не найдена тип аккаунта для id=" + nID_SubjectAccountType, HttpStatus.NOT_FOUND);
-            }
-        }
-
-        subjectAccounts = subjectAccountDao.findSubjectAccounts(nID_Subject, sLogin, nID_Server, subjectAccountType);
+        subjectAccounts = subjectAccountDao.findSubjectAccounts(nID_Subject, sLogin, nID_Server, nID_SubjectAccountType);
         if (subjectAccounts == null || subjectAccounts.size() == 0) {
             throw new CommonServiceException(
                     ExceptionCommonController.BUSINESS_ERROR_CODE,
@@ -777,20 +766,9 @@ public class SubjectController {
                     HttpStatus.BAD_REQUEST);
         }
 
-        // Если задан nID_SubjectAccountType то сначала находим сущность SubjectAccountType
-        SubjectAccountType subjectAccountType = null;
-        if (nID_SubjectAccountType != null) {
-            subjectAccountType = subjectAccountTypeDao.findByIdExpected(nID_SubjectAccountType);
-            if (subjectAccountType == null) {
-                throw new CommonServiceException(
-                        ExceptionCommonController.BUSINESS_ERROR_CODE,
-                        "Error! Не найдена тип аккаунта для id=" + nID_SubjectAccountType, HttpStatus.NOT_FOUND);
-            }
-        }
-
         SubjectAccount subjectAccountRet = null;
         try {
-            subjectAccountRet = subjectAccountDao.setSubjectAccount(nID, nID_Subject, sLogin, nID_Server, subjectAccountType, sNote);
+            subjectAccountRet = subjectAccountDao.setSubjectAccount(nID, nID_Subject, sLogin, nID_Server, nID_SubjectAccountType, sNote);
         } catch (org.hibernate.exception.ConstraintViolationException e) {
             throw new CommonServiceException(
                     ExceptionCommonController.BUSINESS_ERROR_CODE,
@@ -826,13 +804,13 @@ public class SubjectController {
                 throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
                         "Error! SubjectAccountType not founf for id=" + 1, HttpStatus.NOT_FOUND);
             }
-            result.put("users", getSubject(saLogin, subjectAccountType, nID_Server));
-            result.put("organs", getSubject(saGroup, subjectAccountType, nID_Server));  
+            result.put("users", getSubject(saLogin, 1L, nID_Server));
+            result.put("organs", getSubject(saGroup, 1L, nID_Server));  
         }
         return result;
     }
 
-    private Map<String, Subject> getSubject(String saLogin, SubjectAccountType subjectAccountType, Long nID_Server) {
+    private Map<String, Subject> getSubject(String saLogin, Long nID_SubjectAccountType, Long nID_Server) {
         Map<String, Subject> subjects = new HashMap();
         Long nID_Subject;
         Subject subject;
@@ -840,7 +818,7 @@ public class SubjectController {
             Set<String> asLogin = JsonRestUtils.readObject(saLogin, Set.class);
             LOG.info("asLogin: " + asLogin);
             for (String login : asLogin) {
-                List<SubjectAccount> subjectAccounts = subjectAccountDao.findSubjectAccounts(null, login, nID_Server, subjectAccountType);
+                List<SubjectAccount> subjectAccounts = subjectAccountDao.findSubjectAccounts(null, login, nID_Server, nID_SubjectAccountType);
                 if (subjectAccounts != null && !subjectAccounts.isEmpty()) {
                     nID_Subject = subjectAccounts.get(0).getnID_Subject();
                     subject = subjectDao.getSubject(nID_Subject);
