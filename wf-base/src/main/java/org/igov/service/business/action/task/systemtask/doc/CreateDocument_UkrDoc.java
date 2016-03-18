@@ -78,19 +78,25 @@ public class CreateDocument_UkrDoc implements JavaDelegate {
 		
 		FormData oStartFormData = execution.getEngineServices().getFormService()
                 .getStartFormData(execution.getProcessDefinitionId());
-            for (FormProperty formProperty : oStartFormData.getFormProperties()) {
-            	if (!(formProperty.getType() instanceof FormFileType))
-            		continue;
-            	String sKeyRedis = formProperty.getValue();
-            	String asFieldName = formProperty.getName();
-            	String sID_Field = formProperty.getId();
+		LOG.info("SCAN:file");
+        List<String> asFieldID = AbstractModelTask.getListFieldCastomTypeFile(oStartFormData);
+        LOG.info("[addAttachmentsToTask]");
+        LOG.info("(asFieldID={})", asFieldID.toString());
+        List<String> asFieldValue = AbstractModelTask.getVariableValues(execution, asFieldID);
+        LOG.info("(asFieldValue={})", asFieldValue.toString());
+        List<String> asFieldName = AbstractModelTask.getListCastomFieldName(oStartFormData);
+        LOG.info("(asFieldName={})", asFieldName.toString());
+        if (!asFieldValue.isEmpty()) {
+            int n = 0;
+            for (String sKeyRedis : asFieldValue) {
                 LOG.info("(sKeyRedis={})", sKeyRedis);
                 if (sKeyRedis != null && !sKeyRedis.isEmpty() && !"".equals(sKeyRedis.trim()) && !"null"
                         .equals(sKeyRedis.trim()) && sKeyRedis.length() > 15) {
                         //String sDescription = asFieldName.get((asFieldName.size() - 1) - n);
-                        String sDescription = asFieldName;
-                        LOG.info("(sDescription={})", sDescription);
-                        LOG.info("(sID_Field={})", sID_Field);
+                		String sDescription = asFieldName.get(n);
+                		LOG.info("(sDescription={})", sDescription);
+                		String sID_Field = asFieldID.get(n);
+                		LOG.info("(sID_Field={})", sID_Field);
 
                         byte[] aByteFile;
                         ByteArrayMultipartFile oByteArrayMultipartFile = null;
@@ -144,7 +150,9 @@ public class CreateDocument_UkrDoc implements JavaDelegate {
                     } else {
                         LOG.error("asFieldName has nothing! (asFieldName={})", asFieldName);
                     }
+                n++;
             }
+        }
 		
         LOG.info("beginning of addAttachmentsToTask(startformData, task):execution.getProcessDefinitionId()={}",
         		execution.getProcessDefinitionId());
