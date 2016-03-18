@@ -76,7 +76,6 @@ public class UkrDocUtil {
 		content.put("name", sHeadValue);
 		content.put("text", sBodyValue);
 		content.put("paragraphs", new JSONArray());
-		content.put("extensions", new HashMap<Object,Object>());
 		
 		res.put("content", content);
 		
@@ -84,9 +83,7 @@ public class UkrDocUtil {
 		attributes.put("Автор", sLoginAuthorValue);
 		Map<String, Object> extensions = new HashMap<String, Object>();
 		if (attachments != null && !attachments.isEmpty()){
-			Map<String, Object> tables = new HashMap<String, Object>();
-			extensions.put("tables", tables);
-			Map<String, List<?>> applications = new HashMap<String, List<?>>();
+			Map<String, List<?>> tables = new HashMap<String, List<?>>();
 			List<List<String>> attachmentsInfo = new LinkedList<List<String>>();
 			for (Attachment attachment : attachments){
 				List<String> info = new LinkedList<String>();
@@ -94,7 +91,8 @@ public class UkrDocUtil {
 				info.add(String.format(DOWNLOAD_FILE_FROM_PATTERN, generalConfig.sHost(), taskId, attachment.getId()));
 				attachmentsInfo.add(info);
 			}
-			applications.put("Приложения", attachmentsInfo);
+			tables.put("Приложения", attachmentsInfo);
+			extensions.put("tables", tables);
 		}
 		
 		extensions.put("attributes", attributes);
