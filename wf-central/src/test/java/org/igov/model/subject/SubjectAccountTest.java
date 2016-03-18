@@ -47,6 +47,15 @@ public class SubjectAccountTest {
     private static final Long test_nID_SubjectAccountType1 = 1L;
     private static final Long test_nID_SubjectAccountType2 = 2L;
 
+    private static final Long test_nID_SubjectAccountTypeError = 7777777777L;
+
+    @Test(expected = org.springframework.dao.DataIntegrityViolationException.class )
+    public void testSaveSubjectAccountError() {
+	SubjectAccount subjectAccount = subjectAccountDao.findByIdExpected(1L);	
+	subjectAccount.setnID_SubjectAccountType(test_nID_SubjectAccountTypeError);
+	subjectAccountDao.saveOrUpdate(subjectAccount);
+    }
+    
     @Test
     public void testSaveAndUpdateSubjectAccount() {
 	// Проверили получение типов Аккаунтов
