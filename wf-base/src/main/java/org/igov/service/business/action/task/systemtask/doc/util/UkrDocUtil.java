@@ -14,6 +14,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.activiti.engine.task.Attachment;
+import org.igov.io.GeneralConfig;
 import org.igov.io.web.RestRequest;
 import org.igov.service.exception.DocumentNotFoundException;
 import org.json.simple.JSONArray;
@@ -26,6 +28,7 @@ import org.xml.sax.SAXException;
 
 public class UkrDocUtil {
 	
+	private static final String DOWNLOAD_FILE_FROM_PATTERN = "%s/wf/service/object/file/download_file_from_db?taskId=%s&attachmentId=%s";
 	private final static Logger LOG = LoggerFactory.getLogger(UkrDocUtil.class);
 
 	public static String getSessionId(String login, String password, String uriSid) {
@@ -66,20 +69,32 @@ public class UkrDocUtil {
     }
 	
 	public static Map<String, Object> makeJsonRequestObject(String sHeadValue, String sBodyValue, String sLoginAuthorValue, 
-			String nID_PatternValue) {
+			String nID_PatternValue, List<Attachment> attachments, String taskId, GeneralConfig generalConfig) {
 		Map<String, Object> res = new LinkedHashMap<String, Object>();
 		
 		Map<String, Object> content = new LinkedHashMap<String, Object>();
 		content.put("name", sHeadValue);
 		content.put("text", sBodyValue);
 		content.put("paragraphs", new JSONArray());
-		content.put("extensions", new HashMap<Object,Object>());
 		
 		res.put("content", content);
 		
 		Map<String, String> attributes = new HashMap<String, String>();
 		attributes.put("Автор", sLoginAuthorValue);
 		Map<String, Object> extensions = new HashMap<String, Object>();
+		if (attachments != null && !attachments.isEmpty()){
+			Map<String, List<?>> tables = new HashMap<String, List<?>>();
+			List<List<String>> attachmentsInfo = new LinkedList<List<String>>();
+			for (Attachment attachment : attachments){
+				List<String> info = new LinkedList<String>();
+				info.add(attachment.getName());
+				info.add(String.format(DOWNLOAD_FILE_FROM_PATTERN, generalConfig.sHost(), taskId, attachment.getId()));
+				attachmentsInfo.add(info);
+			}
+			tables.put("Приложения", attachmentsInfo);
+			extensions.put("tables", tables);
+		}
+		
 		extensions.put("attributes", attributes);
 		
 		content.put("extensions", extensions);
