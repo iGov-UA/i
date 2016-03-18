@@ -46,6 +46,7 @@ public class SendObject_Corezoid extends Abstract_MailTaskCustom {
                 String key = (String)it.next();
                 data.put(key, soJSON_Result.get(key));
             }
+            data.put("nID_Task", Integer.parseInt(delegateTask.getId()));
             LOG.info("sendToCorezoid data:" + data);
             corezoid.sendToCorezoid(sID_Conveyour.getExpressionText(), data);
         } catch (Exception ex) {
