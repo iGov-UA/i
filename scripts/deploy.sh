@@ -97,7 +97,6 @@ build_central-js ()
 		cd dist
 		npm install --production
 		cd ..
-		rm -rf $TMP/*
 		return
 	else
 		cd central-js
@@ -109,7 +108,6 @@ build_central-js ()
 		cd dist
 		npm install --production
 		cd ..
-		rm -rf $TMP/*
 		rsync -az --delete -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' dist/ sybase@$sHost:/sybase/.upload/central-js/
 		cd ..
 	fi
@@ -134,7 +132,6 @@ build_dashboard-js ()
 		cd dist
 		npm install --production
 		cd ..
-		rm -rf $TMP/*
 		return
 	else
 		cd dashboard-js
@@ -146,7 +143,6 @@ build_dashboard-js ()
 		cd dist
 		npm install --production
 		cd ..
-		rm -rf $TMP/*
 		rsync -az --delete -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' dist/ sybase@$sHost:/sybase/.upload/dashboard-js/
 		cd ..
 	fi
