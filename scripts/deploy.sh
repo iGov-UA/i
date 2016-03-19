@@ -256,6 +256,10 @@ if [ -z $sHost ]; then
     echo "Cloud not select host for deploy. Wrong version or project."
 	exit 1
 fi
+if [ "$bSkipDeploy" == "true" ]; then
+	echo "Deploy dsiabled"
+	exit 0
+fi
 
 echo "Connecting to remote host (Project deploy)"
 ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $sHost << EOF
