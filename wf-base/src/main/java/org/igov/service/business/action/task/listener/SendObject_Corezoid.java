@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.Map;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.Expression;
+import org.activiti.engine.delegate.TaskListener;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.igov.io.GeneralConfig;
 import org.slf4j.Logger;
@@ -15,7 +16,7 @@ import org.igov.exchange.Corezoid;
 import org.igov.service.business.action.task.systemtask.mail.Abstract_MailTaskCustom;
 
 @Component("SendObject_Corezoid")
-public class SendObject_Corezoid extends Abstract_MailTaskCustom {
+public class SendObject_Corezoid extends Abstract_MailTaskCustom implements TaskListener{
 
     private final static Logger LOG = LoggerFactory.getLogger(SendObject_Corezoid.class);
 
