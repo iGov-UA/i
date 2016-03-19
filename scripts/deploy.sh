@@ -27,8 +27,8 @@ do
 			bSkipBuild="$2"
 			shift
 			;;
-			--exclude-test)
-			bExcludeTest="$2"
+		--skip-test)
+			bSkipTest="$2"
 			shift
 			;;
 		--compile)
@@ -51,7 +51,10 @@ sDate=`date "+%Y.%m.%d-%H.%M.%S"`
 #Определяем сервер для установки
 if [[ $sVersion == "alpha" && $sProject == "central-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-central" ]]; then
 		sHost="test.igov.org.ua"
-		TMP=TEMP=TMPDIR=/tmp/c_alpha && export TMPDIR TMP TEMP
+		TMP=/tmp/c_alpha
+		TMPDIR=/tmp/c_alpha
+		TEMP=/tmp/c_alpha
+		export TMPDIR TMP TEMP
 		mkdir -p $TMP
 fi
 #if [[ $sVersion == "beta" && $sProject == "central-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-central" ]]; then
@@ -63,7 +66,10 @@ fi
 
 if [[ $sVersion == "alpha" && $sProject == "dashboard-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-region" ]]; then
 		sHost="test.region.igov.org.ua"
-		TMP=TEMP=TMPDIR=/tmp/r_alpha && export TMPDIR TMP TEMP
+		TMP=/tmp/r_alpha
+		TMPDIR=/tmp/r_alpha
+		TEMP=/tmp/r_alpha
+		export TMPDIR TMP TEMP
 		mkdir -p $TMP
 fi
 #if [[ $sVersion == "beta" && $sProject == "dashboard-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-region" ]]; then
@@ -128,9 +134,10 @@ build_dashboard-js ()
 		cd ..
 		return
 	else
-		cd central-js
-		npm cache clean
+		cd dashboard-js    
 		npm install
+		npm list grunt
+		npm list grunt-google-cdn
 		bower install
 		npm install grunt-contrib-imagemin
 		grunt build
@@ -144,7 +151,7 @@ build_dashboard-js ()
 
 build_base ()
 {
-	if [ "$bExcludeTest" ==  "true" ]; then
+	if [ "$bSkipTest" ==  "true" ]; then
 		local sBuildArg="-DskipTests=true"
 	fi
 	for sArrComponent in "${saCompile[@]}"
@@ -192,7 +199,7 @@ build_central ()
 		return
 	fi
 	if [ "$bSkipDeploy" == "true" ]; then
-		if [ "$bExcludeTest" ==  "true" ]; then
+		if [ "$bSkipTest" ==  "true" ]; then
 			local sBuildArg="-DskipTests=true"
 		fi
 		build_base $saCompile
@@ -200,7 +207,7 @@ build_central ()
 		mvn -P $sVersion clean install site $sBuildArg -Ddependency.locations.enabled=false
 		return
 	else
-		if [ "$bExcludeTest" ==  "true" ]; then
+		if [ "$bSkipTest" ==  "true" ]; then
 			local sBuildArg="-DskipTests=true"
 		fi
 		build_base $saCompile
@@ -218,7 +225,7 @@ build_region ()
 		return
 	fi
 	if [ "$bSkipDeploy" == "true" ]; then
-		if [ "$bExcludeTest" ==  "true" ]; then
+		if [ "$bSkipTest" ==  "true" ]; then
 			local sBuildArg="-DskipTests=true"
 		fi
 		build_base $saCompile
@@ -226,7 +233,7 @@ build_region ()
 		mvn -P $sVersion clean install site $sBuildArg -Ddependency.locations.enabled=false
 		return
 	else
-		if [ "$bExcludeTest" ==  "true" ]; then
+		if [ "$bSkipTest" ==  "true" ]; then
 			local sBuildArg="-DskipTests=true"
 		fi
 		build_base $saCompile
