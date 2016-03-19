@@ -139,7 +139,7 @@ if [ $sProject == "wf-central"  ] || [ $sProject == "wf-region" ]; then
 	cd /sybase/tomcat_${sProject}_double/bin/ && ./_startup.sh
 	sleep 15
 
-	nTimeout = 0
+	nTimeout=0
 	until grep -q "| INFO | org.apache.catalina.startup.Catalina | main | [start]Server startup in" /sybase/tomcat_${sProject}_double/logs/catalina.out || [ $nTimeout -eq 30 ]; do
 		((nTimeout++))
 		sleep 1
