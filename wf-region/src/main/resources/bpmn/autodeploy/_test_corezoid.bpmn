@@ -518,7 +518,7 @@
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="hideValidateFields3" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common3.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sAnswer" name="Канал відповіді" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAnswerChannel" name="Канал відповіді" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -1063,24 +1063,24 @@
         <activiti:formProperty id="sAdditionalInformation" name="Додаткова інформація" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sRegistrationNumberRGA" name="Реєстраційний номер ОДА" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhoneCall_SubjectContact_Client" name="Телефон, с которого поступил звонок" type="string" default="380688541954"></activiti:formProperty>
-        <activiti:formProperty id="sAnswer" name="Канал відповіді" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAnswerChannel" name="Канал відповіді" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAnswer_UkrDoc" name="Відповідь УкрДок" type="string" default="Відповідь громадянину УкрДок"></activiti:formProperty>
         <activiti:formProperty id="nDaysRemain" name="Ориентировочный срок ответа на обращение (дней)" type="long" default="12"></activiti:formProperty>
-        <activiti:formProperty id="sID_Conveyour" name="ConveyourCorezoid" type="string" default="93682"></activiti:formProperty>
-        <activiti:formProperty id="sID_Order" name="№ заявки в IGov" type="string" default="0-000000005"></activiti:formProperty>
+        <activiti:formProperty id="sAnswer" name="Ответ кол-центра" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAnswerStatus" name="Статус ответа" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}">
+        <activiti:taskListener event="create" delegateExpression="${SendObject_Corezoid}">
           <activiti:field name="soJSON">
             <activiti:expression><![CDATA[{
   "sFIO_Subject_Client": "${clFio}",
   "sPhonePrivate_SubjectContact_Client": "${phone}",
   "sPhoneCall_SubjectContact_Client": "${sPhoneCall_SubjectContact_Client}",
-  "sID_Order": "${sID_Order}",
+  "sID_Order": "[sID_Order]",
   "sDate_Order": "${sDateCreate}",
   "sAddress": "${sAdressProbl}",
   "sCategory": "${asKindTr}",
@@ -1091,6 +1091,11 @@
   "nDaysRemain": "${nDaysRemain}",
   "sAnswer_UkrDoc": "${sAnswer_UkrDoc}"
 }]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${SendObject_Corezoid}">
+          <activiti:field name="sID_Conveyour">
+            <activiti:expression><![CDATA[78073]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
