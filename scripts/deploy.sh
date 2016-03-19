@@ -47,7 +47,7 @@ shift
 done
 
 sDate=`date "+%Y.%m.%d-%H.%M.%S"`
-nTimeout=0
+let nTimeout=1
 
 #Определяем сервер для установки
 if [[ $sVersion == "alpha" && $sProject == "central-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-central" ]]; then
@@ -403,7 +403,7 @@ if [ $sProject == "wf-central"  ] || [ $sProject == "wf-region" ]; then
 	sleep 15
 
 	until grep -q "| INFO | org.apache.catalina.startup.Catalina | main | [start]Server startup in" /sybase/tomcat_${sProject}_double/logs/catalina.out || [ $nTimeout -eq 30 ]; do
-		nTimeout=((nTimeout++))
+		((nTimeout++))
 		sleep 1
 		echo "waiting for server startup $nTimeout"
 		if [ $nTimeout -ge 30 ]; then
