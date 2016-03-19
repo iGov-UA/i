@@ -1,6 +1,11 @@
 package org.igov.service.controller;
 
+import com.corezoid.sdk.entity.CorezoidMessage;
+import com.corezoid.sdk.entity.RequestOperation;
+import com.corezoid.sdk.utils.HttpManager;
+import net.sf.json.JSONObject;
 import io.swagger.annotations.*;
+import java.util.Arrays;
 import java.util.HashMap;
 import org.igov.io.GeneralConfig;
 import org.igov.model.escalation.*;
@@ -22,6 +27,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import org.igov.exchange.Corezoid;
 
 @Controller
@@ -32,6 +38,8 @@ public class ActionEscalationController {
     private static final Logger LOG = LoggerFactory.getLogger(ActionEscalationController.class);
     private static final String ERROR_CODE = "exception in escalation-controller!";
 
+    @Autowired
+    Corezoid corezoid;
     @Autowired
     GeneralConfig generalConfig;
     @Autowired
@@ -45,8 +53,6 @@ public class ActionEscalationController {
     @Autowired
     private EscalationStatusDao escalationStatusDao;
 
-    @Autowired
-    Corezoid corezoid;
 
     @ApiOperation(value = "Запуск правила эскалации по его Ид")
     @RequestMapping(value = "/runEscalationRule", method = RequestMethod.GET)
@@ -303,13 +309,20 @@ public class ActionEscalationController {
         }
 
     }
-
+       
     //Todo временно создан сервис для отладки
-    @RequestMapping(value = "/sendToCorezoid", method = RequestMethod.GET)
+    @RequestMapping(value = "/sendToCorezoidNew", method = RequestMethod.GET)
     @ResponseBody
-    public void sendToCorezoid(@RequestParam(value = "nID_Coresoid") Long nID_Coresoid) throws Exception {
-        Map<String, Object> data = new HashMap();
-        data.put("hello", "Привет");
-        corezoid.sendToCorezoid("32305", null);
+    public String sendToCorezoidNew(@RequestParam(value = "id") String id) throws Exception {
+        String result;
+        try {
+            Map data = new HashMap();
+            data.put("hello", "hello");
+            return corezoid.sendToCorezoid(id, data);
+        } catch (Exception ex) {
+            LOG.error("eror:", ex);
+            result = ex.getMessage() + ex.toString();
+        }
+        return result;
     }
 }
