@@ -27,8 +27,8 @@ do
 			bSkipBuild="$2"
 			shift
 			;;
-			--exclude-test)
-			bExcludeTest="$2"
+		--skip-test)
+			bSkipTest="$2"
 			shift
 			;;
 		--compile)
@@ -150,7 +150,7 @@ build_dashboard-js ()
 
 build_base ()
 {
-	if [ "$bExcludeTest" ==  "true" ]; then
+	if [ "$bSkipTest" ==  "true" ]; then
 		local sBuildArg="-DskipTests=true"
 	fi
 	for sArrComponent in "${saCompile[@]}"
@@ -198,7 +198,7 @@ build_central ()
 		return
 	fi
 	if [ "$bSkipDeploy" == "true" ]; then
-		if [ "$bExcludeTest" ==  "true" ]; then
+		if [ "$bSkipTest" ==  "true" ]; then
 			local sBuildArg="-DskipTests=true"
 		fi
 		build_base $saCompile
@@ -206,7 +206,7 @@ build_central ()
 		mvn -P $sVersion clean install site $sBuildArg -Ddependency.locations.enabled=false
 		return
 	else
-		if [ "$bExcludeTest" ==  "true" ]; then
+		if [ "$bSkipTest" ==  "true" ]; then
 			local sBuildArg="-DskipTests=true"
 		fi
 		build_base $saCompile
@@ -224,7 +224,7 @@ build_region ()
 		return
 	fi
 	if [ "$bSkipDeploy" == "true" ]; then
-		if [ "$bExcludeTest" ==  "true" ]; then
+		if [ "$bSkipTest" ==  "true" ]; then
 			local sBuildArg="-DskipTests=true"
 		fi
 		build_base $saCompile
@@ -232,7 +232,7 @@ build_region ()
 		mvn -P $sVersion clean install site $sBuildArg -Ddependency.locations.enabled=false
 		return
 	else
-		if [ "$bExcludeTest" ==  "true" ]; then
+		if [ "$bSkipTest" ==  "true" ]; then
 			local sBuildArg="-DskipTests=true"
 		fi
 		build_base $saCompile
