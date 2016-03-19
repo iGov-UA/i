@@ -27,8 +27,8 @@ do
 			bSkipBuild="$2"
 			shift
 			;;
-			--exclude-test)
-			bExcludeTest="$2"
+		--skip-test)
+			bSkipTest="$2"
 			shift
 			;;
 		--compile)
@@ -64,7 +64,7 @@ fi
 if [[ $sVersion == "alpha" && $sProject == "dashboard-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-region" ]]; then
 		sHost="test.region.igov.org.ua"
 		TMP=TEMP=TMPDIR=/tmp/r_alpha && export TMPDIR TMP TEMP
-		mkdir -p $TMP
+		mkdir -p $TMP 
 fi
 #if [[ $sVersion == "beta" && $sProject == "dashboard-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-region" ]]; then
 #		sHost="test-version.region.igov.org.ua"
@@ -116,7 +116,7 @@ build_dashboard-js ()
 		return
 	fi
 	if [ "$bSkipDeploy" == "true" ]; then
-		cd dashboard-js    
+		cd dashboard-js
 		npm install
 		npm list grunt
 		npm list grunt-google-cdn
@@ -128,9 +128,10 @@ build_dashboard-js ()
 		cd ..
 		return
 	else
-		cd central-js
-		npm cache clean
+		cd dashboard-js
 		npm install
+		npm list grunt
+		npm list grunt-google-cdn
 		bower install
 		npm install grunt-contrib-imagemin
 		grunt build
@@ -144,7 +145,7 @@ build_dashboard-js ()
 
 build_base ()
 {
-	if [ "$bExcludeTest" ==  "true" ]; then
+	if [ "$bSkipTest" ==  "true" ]; then
 		local sBuildArg="-DskipTests=true"
 	fi
 	for sArrComponent in "${saCompile[@]}"
@@ -192,7 +193,7 @@ build_central ()
 		return
 	fi
 	if [ "$bSkipDeploy" == "true" ]; then
-		if [ "$bExcludeTest" ==  "true" ]; then
+		if [ "$bSkipTest" ==  "true" ]; then
 			local sBuildArg="-DskipTests=true"
 		fi
 		build_base $saCompile
@@ -200,7 +201,7 @@ build_central ()
 		mvn -P $sVersion clean install site $sBuildArg -Ddependency.locations.enabled=false
 		return
 	else
-		if [ "$bExcludeTest" ==  "true" ]; then
+		if [ "$bSkipTest" ==  "true" ]; then
 			local sBuildArg="-DskipTests=true"
 		fi
 		build_base $saCompile
@@ -218,7 +219,7 @@ build_region ()
 		return
 	fi
 	if [ "$bSkipDeploy" == "true" ]; then
-		if [ "$bExcludeTest" ==  "true" ]; then
+		if [ "$bSkipTest" ==  "true" ]; then
 			local sBuildArg="-DskipTests=true"
 		fi
 		build_base $saCompile
@@ -226,7 +227,7 @@ build_region ()
 		mvn -P $sVersion clean install site $sBuildArg -Ddependency.locations.enabled=false
 		return
 	else
-		if [ "$bExcludeTest" ==  "true" ]; then
+		if [ "$bSkipTest" ==  "true" ]; then
 			local sBuildArg="-DskipTests=true"
 		fi
 		build_base $saCompile
@@ -400,6 +401,33 @@ if [ $sProject == "wf-central"  ] || [ $sProject == "wf-region" ]; then
 	cd /sybase/tomcat_${sProject}_double/bin/ && ./_startup.sh
 	sleep 15
 
+	nTimeout=0
+	until grep -q "| INFO | org.apache.catalina.startup.Catalina | main | [start]Server startup in" /sybase/tomcat_${sProject}_double/logs/catalina.out || [ $nTimeout -eq 30 ]; do
+		((nTimeout++))
+		sleep 1
+		echo "waiting for server startup $nTimeout"
+		if [ $nTimeout -ge 30 ]; then
+			echo "timeout reached"
+			#Откатываемся назад
+			echo "Fatal error! Executing fallback task..."
+			#Убиваем процесс. Нет смысла ждать его корректной остановки.
+			cd /sybase/tomcat_${sProject}_double/bin/ && ./_shutdown_force.sh
+			#Удаляем новые конфиги
+			rm -rf /sybase/tomcat_${sProject}_double/conf
+			#Копируем старые конфиги обратно
+			cp -rp /sybase/.backup/configs/$sProject/tomcat_${sProject}_double/$sDate/conf /sybase/tomcat_${sProject}_double/
+			#Очищаем папку с приложениями
+			rm -rf /sybase/tomcat_${sProject}_double/webapps/*
+			#Копируем обратно старое приложение
+			cp -p /sybase/.backup/war/$sProject/tomcat_${sProject}_double/$sDate/wf.war /sybase/tomcat_${sProject}_double/webapps/
+			#Запускаем службу
+			cd /sybase/tomcat_${sProject}_double/bin/ && ./_startup.sh
+			sleep 15
+			echo "Deploy failed previous configuration returned"
+			exit 1
+		fi
+	done
+	
 	#Проверяем на наличие ошибок вторичный инстанс
 	if grep ERROR /sybase/tomcat_${sProject}_double/logs/catalina.out | grep -v log4j | grep -v stopServer; then
 		#Откатываемся назад
