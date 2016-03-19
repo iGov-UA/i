@@ -127,7 +127,7 @@ if [ $sProject == "wf-central"  ] || [ $sProject == "wf-region" ]; then
 
 	#Развернем новое приложение на вторичном инстансе
 	echo "Starting deploy of DOUBLE"
-	#Выключаем томкат. Ротируется ли лог при выключении или старте?
+	#Выключаем томкат.
 	cd /sybase/tomcat_${sProject}_double/bin/ && ./_shutdown_force.sh
 	sleep 5
 	#Разворачиваем новые конфиги
@@ -140,11 +140,11 @@ if [ $sProject == "wf-central"  ] || [ $sProject == "wf-region" ]; then
 	sleep 15
 
 	nTimeout=0
-	until grep -q "| INFO | org.apache.catalina.startup.Catalina | main | [start]Server startup in" /sybase/tomcat_${sProject}_double/logs/catalina.out || [ $nTimeout -eq 40 ]; do
+	until grep -q "FrameworkServlet 'dispatcher': initialization completed in" /sybase/tomcat_${sProject}_double/logs/catalina.out || [ $nTimeout -eq 120 ]; do
 		((nTimeout++))
 		sleep 1
 		echo "waiting for server startup $nTimeout"
-		if [ $nTimeout -ge 40 ]; then
+		if [ $nTimeout -ge 120 ]; then
 			echo "timeout reached"
 			#Откатываемся назад
 			echo "Fatal error! Executing fallback task..."
