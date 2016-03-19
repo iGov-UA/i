@@ -137,6 +137,7 @@ public class CreateDocument_UkrDoc implements JavaDelegate {
                             	attachId.add(oAttachment.getName());
                             	attachId.add(oAttachment.getId());
                             	attachId.add(execution.getId());
+                            	LOG.info("Adding attach info to the list {}", attachId);
                             	attachmentsIds.add(attachId);
                             	
                                 String nID_Attachment = oAttachment.getId();
