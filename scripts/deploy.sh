@@ -109,18 +109,37 @@ build_central-js ()
 
 build_dashboard-js ()
 {
-	cd dashboard-js    
-	npm install
-    npm list grunt
-    npm list grunt-google-cdn
-	bower install
-	npm install grunt-contrib-imagemin
-	grunt build
-	cd dist
-	npm install --production
-	cd ..
-	rsync -az --delete -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' dist/ sybase@$sHost:/sybase/.upload/dashboard-js/
-	cd ..
+	if [ "$bSkipBuild" == "true" ]; then
+		echo "Deploy to host: $sHost"
+		cd dashboard-js
+		rsync -az --delete -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' dist/ sybase@$sHost:/sybase/.upload/dashboard-js/
+		return
+	fi
+	if [ "$bSkipDeploy" == "true" ]; then
+		cd dashboard-js    
+		npm install
+		npm list grunt
+		npm list grunt-google-cdn
+		bower install
+		npm install grunt-contrib-imagemin
+		grunt build
+		cd dist
+		npm install --production
+		cd ..
+		return
+	else
+		cd central-js
+		npm cache clean
+		npm install
+		bower install
+		npm install grunt-contrib-imagemin
+		grunt build
+		cd dist
+		npm install --production
+		cd ..
+		rsync -az --delete -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' dist/ sybase@$sHost:/sybase/.upload/dashboard-js/
+		cd ..
+	fi
 }
 
 build_base ()
@@ -167,24 +186,54 @@ build_base ()
 
 build_central ()
 {
-	if [ "$bExcludeTest" ==  "true" ]; then
-		local sBuildArg="-DskipTests=true"
+	if [ "$bSkipBuild" == "true" ]; then
+		cd wf-central
+		rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' target/wf-central.war sybase@$sHost:/sybase/.upload/
+		return
 	fi
-	build_base $saCompile
-	cd wf-central
-    mvn -P $sVersion clean install site $sBuildArg -Ddependency.locations.enabled=false
-	rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' target/wf-central.war sybase@$sHost:/sybase/.upload/
+	if [ "$bSkipDeploy" == "true" ]; then
+		if [ "$bExcludeTest" ==  "true" ]; then
+			local sBuildArg="-DskipTests=true"
+		fi
+		build_base $saCompile
+		cd wf-central
+		mvn -P $sVersion clean install site $sBuildArg -Ddependency.locations.enabled=false
+		return
+	else
+		if [ "$bExcludeTest" ==  "true" ]; then
+			local sBuildArg="-DskipTests=true"
+		fi
+		build_base $saCompile
+		cd wf-central
+		mvn -P $sVersion clean install site $sBuildArg -Ddependency.locations.enabled=false
+		rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' target/wf-central.war sybase@$sHost:/sybase/.upload/
+	fi
 }
 
 build_region ()
 {
-	if [ "$bExcludeTest" ==  "true" ]; then
-		local sBuildArg="-DskipTests=true"
+	if [ "$bSkipBuild" == "true" ]; then
+		cd wf-region
+		rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' target/wf-region.war sybase@$sHost:/sybase/.upload/
+		return
 	fi
-	build_base $saCompile
-	cd wf-region
-    mvn -P $sVersion clean install site $sBuildArg -Ddependency.locations.enabled=false
-	rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' target/wf-region.war sybase@$sHost:/sybase/.upload/
+	if [ "$bSkipDeploy" == "true" ]; then
+		if [ "$bExcludeTest" ==  "true" ]; then
+			local sBuildArg="-DskipTests=true"
+		fi
+		build_base $saCompile
+		cd wf-region
+		mvn -P $sVersion clean install site $sBuildArg -Ddependency.locations.enabled=false
+		return
+	else
+		if [ "$bExcludeTest" ==  "true" ]; then
+			local sBuildArg="-DskipTests=true"
+		fi
+		build_base $saCompile
+		cd wf-region
+		mvn -P $sVersion clean install site $sBuildArg -Ddependency.locations.enabled=false
+		rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' target/wf-region.war sybase@$sHost:/sybase/.upload/
+	fi
 }
 
 if [ $sProject == "wf-central" ]; then
