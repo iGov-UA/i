@@ -58,6 +58,13 @@ angular.module('journal').config(function ($stateProvider, statesRepositoryProvi
               return $q.when(null);
             }
           },
+          events: function ($q, order, ServiceService) {
+            if (order) {
+              return ServiceService.getJournalEvents(order.nID);
+            } else {
+              return $q.when(null);
+            }
+          },
           BankIDLogin: function ($q, $state, $location, $stateParams, BankIDService) {
              return BankIDService.isLoggedIn()
                .catch(function () {

@@ -1,7 +1,7 @@
 <div class="container">
     <div class="row">
-        <div class="col-md-4">
-          Для перегляду історії обробки, зазначте номер звернення<br />
+        <div class="col-md-5">
+          <p>Для перегляду історії обробки, зазначте номер звернення</p><br />
           <form name="oFormSearch"
                 role="form"
                 ng-submit="oFormSearch.$valid && searchOrder(sID_Order,sToken)"
@@ -19,19 +19,14 @@
             </div>
           </form>
         </div>
-        <div class="col-md-8">
+        <div class="col-md-7">
           <div class="row">
-            <div class="col-md-12">
-              <form class="form-signin-bankid_">
-                <h4 class="form-signin-bankid-heading_">... або увійдіть в систему для перегляду подій щодо усіх Ваших звернень та документів
-                  <button style="display: none;"
-                          class="btn btn-info"><i class="icon-door-lock"></i><span class="btn-text">igov.org.ua</span></button>
-                </h4>
-                <div service-auth-block class="list-group-item"
-                  redirect-uri="{{getRedirectUrl()}}"
-                  auth-methods="{{getAuthMethods()}}">Крок 1. Увійдіть в систему через
-                </div>
-              </form>
+            <div class="text-center">
+              <p>... або увійдіть в систему для перегляду подій щодо усіх Ваших звернень та документів</p><br />
+              <div service-auth-block
+                redirect-uri="{{getRedirectUrl()}}"
+                auth-methods="{{getAuthMethods()}}">
+              </div>
             </div>
             <div class="text-center" ng-show="error">
               <p>{{error}}</p>
