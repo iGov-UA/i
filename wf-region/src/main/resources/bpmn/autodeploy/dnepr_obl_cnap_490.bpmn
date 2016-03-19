@@ -22,10 +22,11 @@
         <activiti:formProperty id="sPrichina" name="Причина змін до договору:;(наприклад зміна назви заявника чи зміна оціночної вартості)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="file_prichina" name="Документ що підтверджує причину змін:;(наприклад свідоцтво з новою назвою чи витяг про оцінку землі)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="marker_osoba" name="vubir_osobu" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sSubzvern&quot;,&quot;sEDRPOU&quot;],&quot;asID_Field&quot;:{&quot;sZnach&quot;:&quot;asOsoba&quot;},&quot;sCondition&quot;:&quot;[sZnach] == 'sEnamUr'&quot;},&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;bankIdPassport&quot;,&quot;bankIdinn&quot;],&quot;asID_Field&quot;:{&quot;sZnach&quot;:&quot;asOsoba&quot;},&quot;sCondition&quot;:&quot;[sZnach] == 'sEnamFiz'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса ЦНАП" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPosluga_name" name="назва послуги" type="invisible" default="Внесення змін до договору оренди землі"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -79,12 +80,14 @@ enum{[asOsoba]}&lt;br /&gt;
 За наявності питянь можете звернутись за телефоном: ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}.&lt;br /&gt;
+${sAddress}.&lt;br /&gt;
+${sWorkTime}.&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <userTask id="usertask1" name="ЦНАП обробка" activiti:candidateGroups="dnepr_cnap_nikopolT">
+    <userTask id="usertask1" name="ЦНАП обробка" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
@@ -103,7 +106,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="sDogovor_rekvizit" name="Реквізити договору:;(номер і дата укладення)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPrichina" name="Причина змін до договору:;(наприклад зміна назви заявника чи зміна оціночної вартості)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asVariants" name="Результат розгляду заявки" type="enum" required="true">
-          <activiti:value id="sEnamDok_ok" name="Заявку оформлено вірно, передати на опрацювання до міської ради"></activiti:value>
+          <activiti:value id="sEnamDok_ok" name="Заявку оформлено вірно, передати на опрацювання до місцевої ради"></activiti:value>
           <activiti:value id="sEnamDok_bad" name="Заявка оформлена не вірно відмова."></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="Komment_Cnap" name="Коментар по розгляду заявки;(Вкажіть корисну для місцевої ради інформацію, в разі відмови поясніть причину відмови)" type="textArea" required="true"></activiti:formProperty>
@@ -166,6 +169,8 @@ enum{[asOsoba]}&lt;br /&gt;
 За наявності питянь можете звернутись за телефоном: ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}.&lt;br /&gt;
+${sAddress}.&lt;br /&gt;
+${sWorkTime}.&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -190,6 +195,8 @@ ${sNameOrgan}.&lt;br /&gt;
 За наявності питянь можете звернутись за телефоном: ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}.&lt;br /&gt;
+${sAddress}.&lt;br /&gt;
+${sWorkTime}.&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -200,7 +207,7 @@ ${sNameOrgan}.&lt;br /&gt;
     </sequenceFlow>
     <endEvent id="endevent3" name="End"></endEvent>
     <sequenceFlow id="flow30" sourceRef="servicetask5" targetRef="endevent3"></sequenceFlow>
-    <userTask id="usertask2" name="Міськрада рашення" activiti:candidateGroups="dnepr_cnap_nikopolT">
+    <userTask id="usertask2" name="Міськрада рашення" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
@@ -224,9 +231,9 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="sEnamRish_bad" name="Відмова. Рішення про внесення змін НЕ прийнято"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="Komment_Rada" name="Коментар по розгляду заявки;(Вкажіть корисну для ЦНАП інформацію, в разі відмови поясніть причину відмови)" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sBody1" name="[pattern\print\dneprOblSnap\dnepr_obl_cnap_484_print.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern\print\dneprOblSnap\dnepr_obl_cnap_490_print.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="print_marker1" name="ur_fiz_print" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_1&quot;:{&quot;aElement_ID&quot;:[&quot;UO&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asOsoba&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnamUr'&quot;},&quot;ShowElementsOnTrue_2&quot;:{&quot;aElement_ID&quot;:[&quot;FO&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asOsoba&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnamFiz'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="file_rishenia" name="Експертна грошова оцінка ділянки" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file_rishenia" name="Рішення про внесення змін" type="file"></activiti:formProperty>
         <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="супровідний текст" type="invisible" default="Якщо рішенням затверджено заявку, вона буде передана назад до ЦНАПу. У разі відмови робота по цій заявці завершена."></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -258,6 +265,8 @@ ${sPosluga_name} не прийняте. &lt;br /&gt;
 За наявності питянь можете звернутись за телефоном: ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}.&lt;br /&gt;
+${sAddress}.&lt;br /&gt;
+${sWorkTime}.&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -285,6 +294,8 @@ ${sNameOrgan}.&lt;br /&gt;
 За наявності питянь можете звернутись за телефоном: ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}.&lt;br /&gt;
+${sAddress}.&lt;br /&gt;
+${sWorkTime}.&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -293,7 +304,7 @@ ${sNameOrgan}.&lt;br /&gt;
     <sequenceFlow id="flow34" name="рішення позитивне" sourceRef="exclusivegateway2" targetRef="servicetask7">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asVariantsRish == 'sEnamRish_ok'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask3" name="ЦНАП видача" activiti:candidateGroups="dnepr_cnap_nikopolT">
+    <userTask id="usertask3" name="ЦНАП видача" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
@@ -342,6 +353,8 @@ ${sNameOrgan}.&lt;br /&gt;
 За наявності питянь можете звернутись за телефоном: ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}.&lt;br /&gt;
+${sAddress}.&lt;br /&gt;
+${sWorkTime}.&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>

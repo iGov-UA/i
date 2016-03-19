@@ -5,7 +5,7 @@
 </div>
 <table ng-show="loaded" class="table table-striped">
   <thead>
-  <tr>
+  <tr class="tableTitle">
     <th><!--a ng-click="changeSort()">Ім'я області &nbsp;{{ arrow }}</a--></th>
     <th><center style="font-weight: normal;">Кількість наданих послуг</center></th>
     <th ng-if="nRate>0"><center style="font-weight: normal;">Середня оцінка
@@ -21,7 +21,7 @@
   </tr>
   </thead>
   <tbody >
-    <tr ng-repeat="region in stats | orderBy:'sName':reverse">
+    <tr ng-repeat="region in stats | orderBy:'sName':reverse" class="tableContent">
       <td>{{region.sName}}</td>
       <td style="text-align: center">{{region.nCount}}</td>
       <td ng-if="nRate>0" style="text-align: center">{{region.nRate/20}}</td>

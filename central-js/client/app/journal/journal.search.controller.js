@@ -10,6 +10,7 @@ angular.module('journal').controller('JournalSearchController', function (
   BankIDService,
   BankIDLogin,
   order,
+  events,
   $http,
   ErrorsFactory,
   JournalHelperService,
@@ -128,6 +129,9 @@ angular.module('journal').controller('JournalSearchController', function (
           if (ErrorsFactory.bSuccessResponse(oResponse)) {
             if (bExist(oResponse.messages)) {
               $scope.aOrderMessages = oResponse.messages;
+              if (events) {
+                $scope.aOrderMessages = $scope.aOrderMessages.concat(events);
+              }
               angular.forEach($scope.aOrderMessages, function (oOrderMessage, nIndex) {
                 oOrderMessage.sDate = new Date(oOrderMessage.sDate.replace(' ', 'T'));
                   if (oOrderMessage.sData) {

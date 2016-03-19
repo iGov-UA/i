@@ -42,7 +42,7 @@
         <activiti:formProperty id="sDistr" name="Район" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <serviceTask id="servicetask0" name="Відправка документу в УкрДок" activiti:delegateExpression="#{CreateDocument_UkrDoc}">
+    <serviceTask id="servicetask0" name="Відправка документу в УкрДок" activiti:delegateExpression="#{CreateDocument_UkrDoc}" >
       <extensionElements>
         <activiti:field name="sLoginAuthor">
           <activiti:string><![CDATA[EO180277SMV]]></activiti:string>
@@ -209,7 +209,6 @@ p {font-size: 14px;}
         <activiti:field name="nID_Pattern">
           <activiti:expression>10677</activiti:expression>
         </activiti:field>
-        <activiti:executionListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:executionListener>
       </extensionElements>
     </serviceTask>
     <serviceTask id="servicetask10" name="Отриманная інформації з УкрДок" activiti:delegateExpression="#{GetDocument_UkrDoc}">
@@ -400,7 +399,11 @@ execution.setVariable('sDistr', per1)</script>
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sStatusName_UkrDoc == 'Исполнен'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow29" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
-    <serviceTask id="servicetask11" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <serviceTask id="servicetask11" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}">
+     <extensionElements>
+    		<activiti:executionListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:executionListener>
+      </extensionElements>
+    </serviceTask>
     <boundaryEvent id="boundaryerror2" name="Error" attachedToRef="servicetask11">
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>
