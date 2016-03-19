@@ -34,8 +34,8 @@ public class SendObject_Corezoid extends Abstract_MailTaskCustom implements Task
     public void notify(DelegateTask delegateTask) {
         try {
             LOG.info("!!!!!!!!!!!!!!!!!SendObject_Corezoid soJSON_Result: " + soJSON.getExpressionText());
-            String sJSON = getStringFromFieldExpression(this.soJSON, delegateTask.getExecution());
-            String sJSON_Result = replaceTags(sJSON, delegateTask.getExecution());
+            //String sJSON = getStringFromFieldExpression(this.soJSON, delegateTask.getExecution());
+            String sJSON_Result = replaceTags(this.soJSON.getExpressionText(), delegateTask.getExecution());
             LOG.info("sJSON_Result: " + sJSON_Result);
             JSONObject soJSON_Result = new JSONObject(sJSON_Result);
             Map<String, Object> data = new HashMap();
