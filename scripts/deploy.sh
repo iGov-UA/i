@@ -51,10 +51,7 @@ sDate=`date "+%Y.%m.%d-%H.%M.%S"`
 #Определяем сервер для установки
 if [[ $sVersion == "alpha" && $sProject == "central-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-central" ]]; then
 		sHost="test.igov.org.ua"
-		TMP=/tmp/c_alpha
-		TMPDIR=/tmp/c_alpha
-		TEMP=/tmp/c_alpha
-		export TMPDIR TMP TEMP
+		TMP=TEMP=TMPDIR=/tmp/c_alpha && export TMPDIR TMP TEMP
 		mkdir -p $TMP
 fi
 #if [[ $sVersion == "beta" && $sProject == "central-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-central" ]]; then
@@ -66,11 +63,8 @@ fi
 
 if [[ $sVersion == "alpha" && $sProject == "dashboard-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-region" ]]; then
 		sHost="test.region.igov.org.ua"
-		TMP=/tmp/r_alpha
-		TMPDIR=/tmp/r_alpha
-		TEMP=/tmp/r_alpha
-		export TMPDIR TMP TEMP
-		mkdir -p $TMP
+		TMP=TEMP=TMPDIR=/tmp/r_alpha && export TMPDIR TMP TEMP
+		mkdir -p $TMP 
 fi
 #if [[ $sVersion == "beta" && $sProject == "dashboard-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-region" ]]; then
 #		sHost="test-version.region.igov.org.ua"
