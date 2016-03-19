@@ -407,6 +407,33 @@ if [ $sProject == "wf-central"  ] || [ $sProject == "wf-region" ]; then
 	cd /sybase/tomcat_${sProject}_double/bin/ && ./_startup.sh
 	sleep 15
 
+	nTimeout=0
+	until grep -q "| INFO | org.apache.catalina.startup.Catalina | main | [start]Server startup in" /sybase/tomcat_${sProject}_double/logs/catalina.out || [ $nTimeout -eq 30 ]; do
+		((nTimeout++))
+		sleep 1
+		echo "waiting for server startup $nTimeout"
+		if [ $nTimeout -ge 30 ]; then
+			echo "timeout reached"
+			#Откатываемся назад
+			echo "Fatal error! Executing fallback task..."
+			#Убиваем процесс. Нет смысла ждать его корректной остановки.
+			cd /sybase/tomcat_${sProject}_double/bin/ && ./_shutdown_force.sh
+			#Удаляем новые конфиги
+			rm -rf /sybase/tomcat_${sProject}_double/conf
+			#Копируем старые конфиги обратно
+			cp -rp /sybase/.backup/configs/$sProject/tomcat_${sProject}_double/$sDate/conf /sybase/tomcat_${sProject}_double/
+			#Очищаем папку с приложениями
+			rm -rf /sybase/tomcat_${sProject}_double/webapps/*
+			#Копируем обратно старое приложение
+			cp -p /sybase/.backup/war/$sProject/tomcat_${sProject}_double/$sDate/wf.war /sybase/tomcat_${sProject}_double/webapps/
+			#Запускаем службу
+			cd /sybase/tomcat_${sProject}_double/bin/ && ./_startup.sh
+			sleep 15
+			echo "Deploy failed previous configuration returned"
+			exit 1
+		fi
+	done
+	
 	#Проверяем на наличие ошибок вторичный инстанс
 	if grep ERROR /sybase/tomcat_${sProject}_double/logs/catalina.out | grep -v log4j | grep -v stopServer; then
 		#Откатываемся назад
