@@ -140,11 +140,11 @@ if [ $sProject == "wf-central"  ] || [ $sProject == "wf-region" ]; then
 	sleep 15
 
 	nTimeout=0
-	until grep -q "| INFO | org.apache.catalina.startup.Catalina | main | [start]Server startup in" /sybase/tomcat_${sProject}_double/logs/catalina.out || [ $nTimeout -eq 380 ]; do
+	until grep -q "| INFO | org.apache.catalina.startup.Catalina | main | [start]Server startup in" /sybase/tomcat_${sProject}_double/logs/catalina.out || [ $nTimeout -eq 40 ]; do
 		((nTimeout++))
 		sleep 1
 		echo "waiting for server startup $nTimeout"
-		if [ $nTimeout -ge 380 ]; then
+		if [ $nTimeout -ge 40 ]; then
 			echo "timeout reached"
 			#Откатываемся назад
 			echo "Fatal error! Executing fallback task..."
