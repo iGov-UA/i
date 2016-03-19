@@ -51,7 +51,10 @@ sDate=`date "+%Y.%m.%d-%H.%M.%S"`
 #Определяем сервер для установки
 if [[ $sVersion == "alpha" && $sProject == "central-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-central" ]]; then
 		sHost="test.igov.org.ua"
-		TMP=TEMP=TMPDIR=/tmp/c_alpha && export TMPDIR TMP TEMP
+		TMP=/tmp/c_alpha
+		TMPDIR=/tmp/c_alpha
+		TEMP=/tmp/c_alpha
+		export TMPDIR TMP TEMP
 		mkdir -p $TMP
 fi
 #if [[ $sVersion == "beta" && $sProject == "central-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-central" ]]; then
@@ -63,7 +66,10 @@ fi
 
 if [[ $sVersion == "alpha" && $sProject == "dashboard-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-region" ]]; then
 		sHost="test.region.igov.org.ua"
-		TMP=TEMP=TMPDIR=/tmp/r_alpha && export TMPDIR TMP TEMP
+		TMP=/tmp/r_alpha
+		TMPDIR=/tmp/r_alpha
+		TEMP=/tmp/r_alpha
+		export TMPDIR TMP TEMP
 		mkdir -p $TMP
 fi
 #if [[ $sVersion == "beta" && $sProject == "dashboard-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-region" ]]; then
@@ -91,6 +97,7 @@ build_central-js ()
 		cd dist
 		npm install --production
 		cd ..
+		rm -rf $TMP/*
 		return
 	else
 		cd central-js
@@ -102,6 +109,7 @@ build_central-js ()
 		cd dist
 		npm install --production
 		cd ..
+		rm -rf $TMP/*
 		rsync -az --delete -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' dist/ sybase@$sHost:/sybase/.upload/central-js/
 		cd ..
 	fi
@@ -126,9 +134,10 @@ build_dashboard-js ()
 		cd dist
 		npm install --production
 		cd ..
+		rm -rf $TMP/*
 		return
 	else
-		cd central-js
+		cd dashboard-js
 		npm cache clean
 		npm install
 		bower install
@@ -137,6 +146,7 @@ build_dashboard-js ()
 		cd dist
 		npm install --production
 		cd ..
+		rm -rf $TMP/*
 		rsync -az --delete -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' dist/ sybase@$sHost:/sybase/.upload/dashboard-js/
 		cd ..
 	fi
