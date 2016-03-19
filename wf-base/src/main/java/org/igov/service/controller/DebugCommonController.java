@@ -44,8 +44,8 @@ public class DebugCommonController {
     private static final Logger LOG = LoggerFactory
             .getLogger(DebugCommonController.class);
 
-    @Autowired
-    private FlowService oFlowService;
+    //@Autowired
+    //private FlowService oFlowService;
 
     @Autowired
     private TaskService taskService;
@@ -180,12 +180,12 @@ public class DebugCommonController {
         boolean bAll = true;
         int nFreeDays = 3;
         
-        Days res = oFlowService.getFlowSlots(nID_Service, nID_ServiceData, sID_BP, nID_SubjectOrganDepartment,
-                oDateStart, oDateEnd, bAll, nFreeDays);
+       // Days res = oFlowService.getFlowSlots(nID_Service, nID_ServiceData, sID_BP, nID_SubjectOrganDepartment,
+        //        oDateStart, oDateEnd, bAll, nFreeDays);
         
         //oFlowService.buildFlowSlots(nID_Flow_ServiceData, startDate, stopDate);
 
-        LOG.info("Days = {}", res);
+        //LOG.info("Days = {}", res);
         
         LOG.info("/test/action/testSheduleBuilderFlowSlots  - exit3");
         //runtimeService.deleteProcessInstance(processInstanceID, sReason);
