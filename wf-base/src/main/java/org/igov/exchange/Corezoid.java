@@ -5,12 +5,14 @@
  */
 package org.igov.exchange;
 
-import com.pb.crm.conveyorapiutils.entity.ConveyorMessage;
-import com.pb.crm.conveyorapiutils.entity.ConveyorRequest;
-import com.pb.crm.conveyorapiutils.entity.RequestOperation;
-import com.pb.crm.conveyorapiutils.utils.HttpManager;
+import com.corezoid.sdk.entity.CorezoidMessage;
+import com.corezoid.sdk.entity.RequestOperation;
+import com.corezoid.sdk.utils.HttpManager;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
+import java.util.Random;
+import net.sf.json.JSONObject;
 import org.igov.io.GeneralConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,14 +31,20 @@ public class Corezoid {
     @Autowired
     GeneralConfig generalConfig;
     
-    public void sendToCorezoid(String nID_Corezoid, Map<String, Object> data) throws Exception {
-            LOG.info("hostAddress: " + generalConfig.getsCorezoidServerAddress() + " conveyerID: " + nID_Corezoid + " data: " + data);
-            ConveyorMessage mes = ConveyorMessage.request(generalConfig.getsCorezoidSecretKey(), Arrays.asList(RequestOperation.create(generalConfig.getsCorezoidUser(), null, data)));
-            ConveyorRequest request = ConveyorRequest.getRequest(generalConfig.getsCorezoidServerAddress(), nID_Corezoid, mes);
-            String answer = new HttpManager().send(request);
-            LOG.info("answer: " + answer);
-            Map<String, String> map = ConveyorMessage.parseAnswer(answer);
-            LOG.info(map.toString());
+    public String sendToCorezoid(String nID_Corezoid, Map<String, Object> data) throws Exception {
+            LOG.info("conveyerID: " + nID_Corezoid + " user: " + generalConfig.getsCorezoidUser() 
+                    + " secretKey: " + generalConfig.getsCorezoidSecretKey() + " data: " + data);
+            JSONObject requestData = new JSONObject();
+            requestData.accumulateAll(data);
+            LOG.info("requestData: " + requestData);
+            String ref = "iGov" + System.currentTimeMillis() + new Random(System.currentTimeMillis()).nextInt(1000);
+            RequestOperation operation = RequestOperation.create(nID_Corezoid, ref, requestData);
+            List<RequestOperation> ops = Arrays.asList(operation);
+            CorezoidMessage message = CorezoidMessage.request(generalConfig.getsCorezoidSecretKey(), generalConfig.getsCorezoidUser(), ops);
+            HttpManager http = new HttpManager();
+            String resut = http.send(message);
+            LOG.info("resut: " + resut);
+            return resut;
     }
     
 }
