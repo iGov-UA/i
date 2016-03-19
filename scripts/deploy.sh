@@ -134,9 +134,10 @@ build_dashboard-js ()
 		cd ..
 		return
 	else
-		cd dashboard-js
-		npm cache clean
+		cd dashboard-js    
 		npm install
+		npm list grunt
+		npm list grunt-google-cdn
 		bower install
 		npm install grunt-contrib-imagemin
 		grunt build
