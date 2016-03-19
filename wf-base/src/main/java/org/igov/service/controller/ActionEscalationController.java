@@ -1,6 +1,11 @@
 package org.igov.service.controller;
 
+import com.pb.crm.conveyorapiutils.entity.ConveyorMessage;
+import com.pb.crm.conveyorapiutils.entity.ConveyorRequest;
+import com.pb.crm.conveyorapiutils.entity.RequestOperation;
+import com.pb.crm.conveyorapiutils.utils.HttpManager;
 import io.swagger.annotations.*;
+import java.util.Arrays;
 import java.util.HashMap;
 import org.igov.io.GeneralConfig;
 import org.igov.model.escalation.*;
@@ -45,8 +50,6 @@ public class ActionEscalationController {
     @Autowired
     private EscalationStatusDao escalationStatusDao;
 
-    @Autowired
-    Corezoid corezoid;
 
     @ApiOperation(value = "Запуск правила эскалации по его Ид")
     @RequestMapping(value = "/runEscalationRule", method = RequestMethod.GET)
@@ -307,9 +310,26 @@ public class ActionEscalationController {
     //Todo временно создан сервис для отладки
     @RequestMapping(value = "/sendToCorezoid", method = RequestMethod.GET)
     @ResponseBody
-    public void sendToCorezoid(@RequestParam(value = "nID_Coresoid") Long nID_Coresoid) throws Exception {
-        Map<String, Object> data = new HashMap();
-        data.put("hello", "Привет");
-        corezoid.sendToCorezoid("32305", null);
+    public String sendToCorezoid(@RequestParam(value = "id") String id
+    ,@RequestParam(value = "address") String address
+    ,@RequestParam(value = "secretKey") String secretKey
+    ,@RequestParam(value = "user") String user) throws Exception {
+        String result = "ok!";
+        try {
+            Map<String, Object> data = new HashMap();
+            data.put("hello", "Привет");
+            LOG.info("hostAddress: " + address + " conveyerID: " + id + " data: " + data);
+            ConveyorMessage mes = ConveyorMessage.request(secretKey, Arrays.asList(RequestOperation.create(user, null, data)));
+            ConveyorRequest request = ConveyorRequest.getRequest(address, id, mes);
+            String answer = new HttpManager().send(request);
+            LOG.info("answer: " + answer);
+            Map<String, String> map = ConveyorMessage.parseAnswer(answer);
+            LOG.info(map.toString());
+        } catch (Exception ex) {
+            LOG.error("eror:", ex);
+            System.out.print("!!!!!!!!!!!!error: " + ex);
+            result = ex.getMessage() + ex.toString();
+        }
+        return result;
     }
 }

@@ -41,7 +41,7 @@ import org.igov.service.controller.security.AccessContract;
 import static org.igov.util.ToolLuna.getProtectedNumber;
 import org.igov.util.ToolWeb;
 
-public abstract class Abstract_MailTaskCustom implements JavaDelegate, TaskListener {
+public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 
     static final transient Logger LOG = LoggerFactory
             .getLogger(Abstract_MailTaskCustom.class);
@@ -520,7 +520,5 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate, TaskListe
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {}
     
-    @Override
-    public void notify(DelegateTask dt) {}
 }
 

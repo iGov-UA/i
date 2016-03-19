@@ -31,8 +31,8 @@ public class Corezoid {
     
     public void sendToCorezoid(String nID_Corezoid, Map<String, Object> data) throws Exception {
             LOG.info("hostAddress: " + generalConfig.getsCorezoidServerAddress() + " conveyerID: " + nID_Corezoid + " data: " + data);
-            ConveyorMessage mes = ConveyorMessage.request(generalConfig.getsCorezoidSecretKey(), Arrays.asList(RequestOperation.create(nID_Corezoid, null, data)));
-            ConveyorRequest request = ConveyorRequest.getRequest(generalConfig.getsCorezoidServerAddress(), generalConfig.getsCorezoidUser(), mes);
+            ConveyorMessage mes = ConveyorMessage.request(generalConfig.getsCorezoidSecretKey(), Arrays.asList(RequestOperation.create(generalConfig.getsCorezoidUser(), null, data)));
+            ConveyorRequest request = ConveyorRequest.getRequest(generalConfig.getsCorezoidServerAddress(), nID_Corezoid, mes);
             String answer = new HttpManager().send(request);
             LOG.info("answer: " + answer);
             Map<String, String> map = ConveyorMessage.parseAnswer(answer);
