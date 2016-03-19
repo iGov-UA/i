@@ -341,9 +341,7 @@ if [ $sProject == "central-js" ]; then
 	if [ ! -d /sybase/.backup/$sProject ]; then
 		mkdir -p /sybase/.backup/$sProject
 	fi
-	cp -p /sybase/central-js /sybase/.backup/$sProject/$sDate
-	#Удаляем старую версию
-	rm -rf /sybase/central-js
+	mv -f /sybase/central-js /sybase/.backup/$sProject/$sDate
 	#Перемещаем новую версию на место старой
 	mv -f /sybase/.upload/central-js /sybase/central-js
 	#mv -f /sybase/.upload/central-js.$data/dist /sybase/central-js
