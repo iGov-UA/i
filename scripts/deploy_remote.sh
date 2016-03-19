@@ -198,7 +198,7 @@ if [ $sProject == "wf-central"  ] || [ $sProject == "wf-region" ]; then
 		exit 1
 	else
 		echo "Everything is OK. Continuing deployment ..."
-		cat /sybase/.configs/nginx/only_secondary_upstream.conf > /sybase/nginx/conf/sites/upstream.conf
+		cat /sybase/.configs/nginx/${sProject}_secondary_upstream.conf > /sybase/nginx/conf/sites/${sProject}_upstream.conf
 		sudo /sybase/nginx/sbin/nginx -s reload
 #		sResponseCode=$(curl -o /dev/null --connect-timeout 5 --silent --head --write-out '%{http_code}\n' https://$sHost/)
 #		if [ $sResponseCode -ne 200 ]; then
@@ -219,7 +219,7 @@ if [ $sProject == "wf-central"  ] || [ $sProject == "wf-region" ]; then
 			fallback
 		else
 			echo "Everything is OK. Continuing deployment ..."
-			cat /sybase/.configs/nginx/only_primary_upstream.conf > /sybase/nginx/conf/sites/upstream.conf
+			cat /sybase/.configs/nginx/${sProject}_primary_upstream.conf > /sybase/nginx/conf/sites/${sProject}_upstream.conf
 			sudo /sybase/nginx/sbin/nginx -s reload
 #			sResponseCode=$(curl -o /dev/null --connect-timeout 5 --silent --head --write-out '%{http_code}\n' https://$sHost/)
 #			if [ $sResponseCode -ne 200 ]; then
