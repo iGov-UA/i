@@ -116,7 +116,7 @@ build_dashboard-js ()
 		return
 	fi
 	if [ "$bSkipDeploy" == "true" ]; then
-		cd dashboard-js    
+		cd dashboard-js
 		npm install
 		npm list grunt
 		npm list grunt-google-cdn
@@ -128,7 +128,7 @@ build_dashboard-js ()
 		cd ..
 		return
 	else
-		cd dashboard-js    
+		cd dashboard-js
 		npm install
 		npm list grunt
 		npm list grunt-google-cdn
