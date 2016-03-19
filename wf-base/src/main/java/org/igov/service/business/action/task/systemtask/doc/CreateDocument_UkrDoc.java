@@ -3,6 +3,7 @@ package org.igov.service.business.action.task.systemtask.doc;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -86,6 +87,7 @@ public class CreateDocument_UkrDoc implements JavaDelegate {
         LOG.info("(asFieldValue={})", asFieldValue.toString());
         List<String> asFieldName = AbstractModelTask.getListCastomFieldName(oStartFormData);
         LOG.info("(asFieldName={})", asFieldName.toString());
+        List<List<String>> attachmentsIds = new LinkedList<List<String>>();
         if (!asFieldValue.isEmpty()) {
             int n = 0;
             for (String sKeyRedis : asFieldValue) {
@@ -131,6 +133,12 @@ public class CreateDocument_UkrDoc implements JavaDelegate {
                                     oInputStream);
 
                             if (oAttachment != null) {
+                            	List<String> attachId = new LinkedList<String>();
+                            	attachId.add(oAttachment.getName());
+                            	attachId.add(oAttachment.getId());
+                            	attachId.add(execution.getId());
+                            	attachmentsIds.add(attachId);
+                            	
                                 String nID_Attachment = oAttachment.getId();
                                 //LOG.info("(nID_Attachment={})", nID_Attachment);
                                 LOG.info("Try set variable(sID_Field={}) with the value(nID_Attachment={}), for new attachment...",
@@ -157,10 +165,9 @@ public class CreateDocument_UkrDoc implements JavaDelegate {
         LOG.info("beginning of addAttachmentsToTask(startformData, task):execution.getProcessDefinitionId()={}",
         		execution.getProcessDefinitionId());
 		
-		List<Attachment> attachments = taskService.getProcessInstanceAttachments(execution.getProcessInstanceId());
-		LOG.info("Found attachments for the process {}", attachments != null ? attachments.size() : 0);
+		LOG.info("Found attachments for the process {}", attachmentsIds.size());
 		Map<String, Object> urkDocRequest = UkrDocUtil.makeJsonRequestObject(sHeadValue, sBodyValue, sLoginAuthorValue, nID_PatternValue, 
-				attachments, execution.getId(), generalConfig);
+				attachmentsIds, execution.getId(), generalConfig);
 
 		JSONObject json = new JSONObject();
 		json.putAll( urkDocRequest );
