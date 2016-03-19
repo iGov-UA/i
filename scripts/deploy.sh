@@ -357,13 +357,12 @@ fi
 if [ $sProject == "dashboard-js" ]; then
 	cd /sybase
 	pm2 stop dashboard-js
+	pm2 delete dashboard-js
 	if [ ! -d /sybase/.backup/$sProject ]; then
 		mkdir -p /sybase/.backup/$sProject
 	fi
-	cp -p /sybase/dashboard-js /sybase/.backup/$sProject/$sDate
-	pm2 delete dashboard-js
-	rm -rf /sybase/dashboard-js
-	mv /sybase/.upload/dashboard-js.$sDate /sybase/dashboard-js
+	mv -f /sybase/dashboard-js /sybase/.backup/$sProject/$sDate
+	mv /sybase/.upload/dashboard-js /sybase/dashboard-js
     cp -f /sybase/.configs/dashboard-js/process.json /sybase/dashboard-js/process.json
 	cd /sybase/dashboard-js
 	pm2 start process.json --name dashboard-js
