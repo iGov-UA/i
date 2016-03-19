@@ -30,18 +30,22 @@ import javax.activation.DataSource;
 import javax.mail.MessagingException;
 import java.io.IOException;
 import java.io.InputStream;
+import org.igov.service.business.flow.FlowService;
+import org.igov.service.business.flow.slot.Days;
 import org.joda.time.DateTime;
 
 /**
  * @author BW
  */
-
 @Controller
-@Api(tags = { "DebugCommonController - Дебаг и тест общий" })
+@Api(tags = {"DebugCommonController - Дебаг и тест общий"})
 public class DebugCommonController {
 
     private static final Logger LOG = LoggerFactory
             .getLogger(DebugCommonController.class);
+
+    @Autowired
+    private FlowService oFlowService;
 
     @Autowired
     private TaskService taskService;
@@ -56,8 +60,7 @@ public class DebugCommonController {
 
     @ApiOperation(value = "/test/action/task/delete-processTest", notes = "#####  DebugCommonController: описания нет\n")
     @RequestMapping(value = "/test/action/task/delete-processTest", method = RequestMethod.GET)
-    public
-    @ResponseBody
+    public @ResponseBody
     void deleteProcessTest(@RequestParam(value = "sProcessInstanceID") String processInstanceID,
             @RequestParam(value = "sLogin", required = false) String sLogin,
             @RequestParam(value = "sReason", required = false) String sReason
@@ -121,8 +124,7 @@ public class DebugCommonController {
     //Нужно будет удалить после недели работы продеплоеной в прод версии (для обратной временной совместимости)
     @ApiOperation(value = "/rest/tasks/cancelTask", notes = "#####  DebugCommonController:\n")
     @RequestMapping(value = "/rest/tasks/cancelTask", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
-    public
-    @ResponseBody
+    public @ResponseBody
     ResponseEntity<String> cancelTask(
             @ApiParam(value = "", required = true) @RequestParam(value = "nID_Protected") Long nID_Protected,
             @ApiParam(value = "", required = false) @RequestParam(value = "sInfo", required = false) String sInfo)
@@ -149,10 +151,9 @@ public class DebugCommonController {
 
     @ApiOperation(value = "/test/action/getInfo", notes = "#####  DebugCommonController: \n")
     @RequestMapping(value = "/test/action/getInfo", method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
-    public
-    @ResponseBody
+    public @ResponseBody
     String getInfo(@ApiParam(value = "", required = false)
-    @RequestParam(value = "sID_TestType", required = false) String sID_TestType
+            @RequestParam(value = "sID_TestType", required = false) String sID_TestType
     ) {
 
         return "successfull";
@@ -161,18 +162,33 @@ public class DebugCommonController {
 
     //maxline: тестирование работы получения свободных слотов getFlowSlots findFlowSlotsByFlow и в случае отсутствия 
     //генерация новых слотов buildFlowSlots
-     @ApiOperation(value = "/test/action/testSheduleBuilderFlowSlots", notes = "#####  DebugCommonController: описания нет\n")
+    @ApiOperation(value = "/test/action/testSheduleBuilderFlowSlots", notes = "#####  DebugCommonController: описания нет\n")
     @RequestMapping(value = "/test/action/testSheduleBuilderFlowSlots", method = RequestMethod.GET)
-    public
-    @ResponseBody
-    void testSheduleBuilderFlowSlots(
-    ) throws Exception {
-        
+    public @ResponseBody
+    void testSheduleBuilderFlowSlots() throws Exception {
+
         DateTime oDateStart = DateTime.now().withTimeAtStartOfDay();
+        DateTime oDateEnd = oDateStart.plusDays(10);
         LOG.info("/test/action/testSheduleBuilderFlowSlots  - invoked");
         LOG.info("oDateStart = {}", oDateStart);
-        LOG.info("/test/action/testSheduleBuilderFlowSlots  - exit1");
+        LOG.info("oDateEnd = {}", oDateEnd);
+
+        Long nID_Service = null; //176L;
+        Long nID_ServiceData = 63L; //null;
+        String sID_BP = null;
+        Long nID_SubjectOrganDepartment = null;
+        boolean bAll = true;
+        int nFreeDays = 3;
+        
+        Days res = oFlowService.getFlowSlots(nID_Service, nID_ServiceData, sID_BP, nID_SubjectOrganDepartment,
+                oDateStart, oDateEnd, bAll, nFreeDays);
+        
+        //oFlowService.buildFlowSlots(nID_Flow_ServiceData, startDate, stopDate);
+
+        LOG.info("Days = {}", res);
+        
+        LOG.info("/test/action/testSheduleBuilderFlowSlots  - exit2");
         //runtimeService.deleteProcessInstance(processInstanceID, sReason);
     }
-        
+
 }
