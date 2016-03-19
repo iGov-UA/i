@@ -47,14 +47,14 @@
         </div>
 
         <dl class="col-md-10">
-          <dt ng-repeat-start="oOrderMessage in aOrderMessages" class="u21" ng-class="{'my': oOrderMessage.oSubjectMessageType.nID == 4}">
-            {{oOrderMessage.oSubjectMessageType.nID == 4 ? 'Я' : 'iGov'}}
+          <dt ng-repeat-start="oOrderMessage in aOrderMessages | filter: {nID_HistoryEventType: '!9'} | orderBy: '-sDate'" class="u21" ng-class="{'my': oOrderMessage.oSubjectMessageType.nID == 4 || oOrderMessage.nID_HistoryEventType == 1}">
+            {{oOrderMessage.oSubjectMessageType.nID == 4 || oOrderMessage.nID_HistoryEventType == 1 ? 'Я' : 'iGov'}}
           </dt>
           <dd ng-repeat-end class="u31">
             <time class="u33" datetime="{{oOrderMessage.sDate}}">{{oOrderMessage.sDate | date: 'dd.MM.yyyy HH:mm'}}</time>
             <span class="u53"></span>
             <p>{{oOrderMessage.sHead}}</p>
-            <p ng-bind-html="oOrderMessage.sBody" class="hide-table"></p>
+            <p ng-bind-html="oOrderMessage.sMessage || oOrderMessage.sBody" class="hide-table"></p>
             <div ng-repeat="oFile in oOrderMessage.osData.aFile">
               Прикріплено файл: "{{::oFile.sFileName}}"
             </div>
