@@ -197,7 +197,7 @@ public class DebugCommonController {
 
         LOG.info("Days = {}", res);
         
-        LOG.info("/test/action/testSheduleBuilderFlowSlots  - exit4");
+        LOG.info("/test/action/testSheduleBuilderFlowSlots  - exit5");
         //runtimeService.deleteProcessInstance(processInstanceID, sReason);
     }
 
