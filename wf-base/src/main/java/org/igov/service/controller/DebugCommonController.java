@@ -174,8 +174,9 @@ public class DebugCommonController {
             @RequestParam(value = "nID_ServiceData", required = false) Long nID_ServiceData,
             @RequestParam(value = "sDateStart", required = false) String sDateStart,
             @RequestParam(value = "sDateStop", required = false) String sDateStop,
-            @RequestParam(value = "nFreeDays", required = false, defaultValue = "3") int nFreeDays,
-            @RequestParam(value = "nDays", required = false, defaultValue = "5") int nDays,
+            @RequestParam(value = "bAll", required = false) boolean bAll,
+            @RequestParam(value = "nFreeDays", required = false, defaultValue = "30") int nFreeDays,
+            @RequestParam(value = "nDays", required = false, defaultValue = "180") int nDays,
             @RequestParam(value = "sOperation", required = false) String sOperation) throws Exception {
         LOG.info("/test/action/testSheduleBuilderFlowSlots  - invoked");
 
@@ -197,11 +198,13 @@ public class DebugCommonController {
         if (sOperation == null) {
             sOperation = "";
         }
-
-        
-//        if (sDateStop == null || sDateStop.equals("")) {
-//            //sDateStop = "2016-05-12 00:00:00.000";
-            oDateEnd = oDateStart.plusDays(nDays);
+        if (bAll != true) {
+            bAll = false;
+        }
+//boolean bAll = true;
+        //        if (sDateStop == null || sDateStop.equals("")) {
+        //            //sDateStop = "2016-05-12 00:00:00.000";
+        oDateEnd = oDateStart.plusDays(nDays);
 //        } else {
 //            oDateEnd = oFlowService.parseJsonDateTimeSerializer(sDateStop);
 //        }
@@ -215,8 +218,6 @@ public class DebugCommonController {
 
         String sID_BP = null;
         Long nID_SubjectOrganDepartment = null;
-
-        boolean bAll = true;
 
         Days res = oFlowService.getFlowSlots(nID_Service, nID_ServiceData, sID_BP, nID_SubjectOrganDepartment,
                 oDateStart, oDateEnd, bAll, nFreeDays);
