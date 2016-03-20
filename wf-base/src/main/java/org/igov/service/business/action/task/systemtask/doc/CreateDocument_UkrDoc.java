@@ -238,18 +238,18 @@ public class CreateDocument_UkrDoc extends AbstractModelTask implements JavaDele
 		LOG.info("Parameters of the task sLogin:{}, sHead:{}, sBody:{}, nId_PatternValue:{}", sLoginAuthorValue, sHeadValue,
 				sBodyValue, nID_PatternValue);
 		
+		List<Attachment> attach1 = taskService.getProcessInstanceAttachments(delegateTask.getProcessInstanceId());
+
+		List<Attachment> attach2 = taskService.getTaskAttachments(delegateTask.getId());
+		
+		LOG.info("Found attachments for the process {}: {}", attach1 != null ? attach1.size() : 0, attach2 != null ? attach2.size() : 0);
+		
 		String sessionId = UkrDocUtil.getSessionId(generalConfig.getSID_login(), generalConfig.getSID_password(), 
 				generalConfig.sURL_AuthSID_PB() + "?lang=UA");
 		
 		LOG.info("Retrieved session ID:" + sessionId);
 		
 		List<Attachment> attachments = new LinkedList<Attachment>();
-		
-		List<Attachment> attach1 = taskService.getProcessInstanceAttachments(delegateTask.getProcessInstanceId());
-
-		List<Attachment> attach2 = taskService.getTaskAttachments(delegateTask.getId());
-		
-		LOG.info("Found attachments for the process {}: {}", attach1 != null ? attach1.size() : 0, attach2 != null ? attach2.size() : 0);
 		
         DelegateExecution oExecution = delegateTask.getExecution();
         // получить группу бп
