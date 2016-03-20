@@ -238,9 +238,17 @@ public class CreateDocument_UkrDoc extends AbstractModelTask implements JavaDele
 		LOG.info("Parameters of the task sLogin:{}, sHead:{}, sBody:{}, nId_PatternValue:{}", sLoginAuthorValue, sHeadValue,
 				sBodyValue, nID_PatternValue);
 		
+		List<Attachment> attachments = new LinkedList<Attachment>();
+		
 		List<Attachment> attach1 = taskService.getProcessInstanceAttachments(delegateTask.getProcessInstanceId());
+		if (attach1 != null && !attach1.isEmpty()){
+			attachments = attach1;
+		}
 
 		List<Attachment> attach2 = taskService.getTaskAttachments(delegateTask.getId());
+		if (attach2 != null && !attach2.isEmpty()){
+			attachments = attach2;
+		}
 		
 		LOG.info("Found attachments for the process {}: {}", attach1 != null ? attach1.size() : 0, attach2 != null ? attach2.size() : 0);
 		
@@ -249,31 +257,32 @@ public class CreateDocument_UkrDoc extends AbstractModelTask implements JavaDele
 		
 		LOG.info("Retrieved session ID:" + sessionId);
 		
-		List<Attachment> attachments = new LinkedList<Attachment>();
 		
-        DelegateExecution oExecution = delegateTask.getExecution();
-        // получить группу бп
-        Set<IdentityLink> identityLink = delegateTask.getCandidates();
-        // получить User группы
-        List<User> aUser = oExecution.getEngineServices().getIdentityService()
-                .createUserQuery()
-                .memberOfGroup(identityLink.iterator().next().getGroupId())
-                .list();
-
-        LOG.info("Finding any assigned user-member of group. (aUser={})", aUser);
-        if (aUser == null || aUser.size() == 0 || aUser.get(0) == null || aUser.get(0).getId() == null) {
-            //TODO  what to do if no user?
-        } else {
-            // setAuthenticatedUserId первого попавщегося
-            //TODO Shall we implement some logic for user selection.
-            oExecution.getEngineServices().getIdentityService().setAuthenticatedUserId(aUser.get(0).getId());
-            // получить информацию по стартовой форме бп
-            FormData oStartFormData = oExecution.getEngineServices().getFormService()
-                    .getStartFormData(oExecution.getProcessDefinitionId());
-            LOG.info("beginning of addAttachmentsToTask(startformData, task):execution.getProcessDefinitionId()={}",
-                    oExecution.getProcessDefinitionId());
-            attachments = addAttachmentsToTask(oStartFormData, delegateTask);
-        }
+		if (attachments.isEmpty()){
+	        DelegateExecution oExecution = delegateTask.getExecution();
+	        // получить группу бп
+	        Set<IdentityLink> identityLink = delegateTask.getCandidates();
+	        // получить User группы
+	        List<User> aUser = oExecution.getEngineServices().getIdentityService()
+	                .createUserQuery()
+	                .memberOfGroup(identityLink.iterator().next().getGroupId())
+	                .list();
+	
+	        LOG.info("Finding any assigned user-member of group. (aUser={})", aUser);
+	        if (aUser == null || aUser.size() == 0 || aUser.get(0) == null || aUser.get(0).getId() == null) {
+	            //TODO  what to do if no user?
+	        } else {
+	            // setAuthenticatedUserId первого попавщегося
+	            //TODO Shall we implement some logic for user selection.
+	            oExecution.getEngineServices().getIdentityService().setAuthenticatedUserId(aUser.get(0).getId());
+	            // получить информацию по стартовой форме бп
+	            FormData oStartFormData = oExecution.getEngineServices().getFormService()
+	                    .getStartFormData(oExecution.getProcessDefinitionId());
+	            LOG.info("beginning of addAttachmentsToTask(startformData, task):execution.getProcessDefinitionId()={}",
+	                    oExecution.getProcessDefinitionId());
+	            attachments = addAttachmentsToTask(oStartFormData, delegateTask);
+	        }
+		}
 		
 //		FormData oStartFormData = execution.getEngineServices().getFormService()
 //                .getStartFormData(execution.getProcessDefinitionId());
