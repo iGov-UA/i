@@ -28,8 +28,10 @@ import java.io.*;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
 import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 
 public abstract class AbstractModelTask {
@@ -315,8 +317,10 @@ public abstract class AbstractModelTask {
      * @param oFormData FormData from task where we search file fields.
      * @param oTask     where we add Attachments.
      */
-    public void addAttachmentsToTask(FormData oFormData, DelegateTask oTask) {
+    public List<Attachment> addAttachmentsToTask(FormData oFormData, DelegateTask oTask) {
         DelegateExecution oExecution = oTask.getExecution();
+        
+        List<Attachment> res = new LinkedList<Attachment>();
 
         LOG.info("SCAN:file");
         List<String> asFieldID = getListFieldCastomTypeFile(oFormData);
@@ -372,6 +376,9 @@ public abstract class AbstractModelTask {
                                     oInputStream);
 
                             if (oAttachment != null) {
+                            	LOG.info("Added attachment with ID {} to the task:process {}:{}",
+                            			oAttachment.getId(), oTask.getId(), oExecution.getProcessInstanceId());
+                            	res.add(oAttachment);
                                 String nID_Attachment = oAttachment.getId();
                                 //LOG.info("(nID_Attachment={})", nID_Attachment);
                                 LOG.info("Try set variable(sID_Field={}) with the value(nID_Attachment={}), for new attachment...",
@@ -446,6 +453,8 @@ public abstract class AbstractModelTask {
          }
             
          }*/
+        
+        return res;
 
     }
 

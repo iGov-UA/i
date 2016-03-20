@@ -66,21 +66,19 @@
           <activiti:value id="sNotChange" name="без зміни цільового призначення"></activiti:value>
           <activiti:value id="sChange" name="зі зміною цільового призначення"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="fileProjectLand" name="Проект землеустрою щодо відведення земельної ділянки" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="fileExtractOfCadastr" name="Витяг з Державного земельного кадастру про земельну ділянку" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="workerDecision" name="Результат обробки звернення" type="enum" required="true">
           <activiti:value id="accept" name="Сповістити громадянина, що документи в порядку і послуга буде оброблятись далі"></activiti:value>
           <activiti:value id="decline" name="Відмовити в наданні послугу"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDecisionComment" name="Вкажіть причину неможливості отримання послуги(ця інформація буде відправлена на e-mail громадянина) *" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDecisionComment" name="Вкажіть причину неможливості отримання послуги(ця інформація буде відправлена на e-mail громадянина) *" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/zemlja/uzhgorod_cnap_391_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersChangeProjectPrint" name="Change Project Print" type="markers" default="${markerService.loadFromFile('zemlja/ChangeValProjectZemljaPrint.json')}"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>        
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${nfileProjectLand},${nfileExtractOfCadastr}]]></activiti:expression>
           </activiti:field>
-        </activiti:taskListener>
+        </activiti:taskListener>        
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
@@ -169,8 +167,6 @@
           <activiti:value id="sNotChange" name="без зміни цільового призначення"></activiti:value>
           <activiti:value id="sChange" name="зі зміною цільового призначення"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="fileProjectLand" name="Проект землеустрою щодо відведення земельної ділянки" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="fileExtractOfCadastr" name="Витяг з Державного земельного кадастру про земельну ділянку" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sResolution" name="Ваша резолюція по данному питанню" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/zemlja/uzhgorod_cnap_391_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersChangeProjectPrint" name="Change Project Print" type="markers" default="${markerService.loadFromFile('zemlja/ChangeValProjectZemljaPrint.json')}"></activiti:formProperty>
@@ -197,8 +193,6 @@
           <activiti:value id="sNotChange" name="без зміни цільового призначення"></activiti:value>
           <activiti:value id="sChange" name="зі зміною цільового призначення"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="fileProjectLand" name="Проект землеустрою щодо відведення земельної ділянки" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="fileExtractOfCadastr" name="Витяг з Державного земельного кадастру про земельну ділянку" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sResolution" name="Резолюція Начальника відділу землекористування" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="anValidDocument" name="Надні документи відповідають законодавству та позитивна резульція" type="enum" required="true">
           <activiti:value id="yes" name="так"></activiti:value>
@@ -271,8 +265,6 @@
           <activiti:value id="sNotChange" name="без зміни цільового призначення"></activiti:value>
           <activiti:value id="sChange" name="зі зміною цільового призначення"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="fileProjectLand" name="Проект землеустрою щодо відведення земельної ділянки" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="fileExtractOfCadastr" name="Витяг з Державного земельного кадастру про земельну ділянку" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sResolution" name="Резолюція Начальника відділу землекористування" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDecisionComment" name="У разі відмови обов'язково вкажіть причину неможливості отримання послуги (Ця інформація буде відправлена на e-mail громадянина) *" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/zemlja/uzhgorod_cnap_391_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
@@ -301,14 +293,13 @@
           <activiti:value id="sNotChange" name="без зміни цільового призначення"></activiti:value>
           <activiti:value id="sChange" name="зі зміною цільового призначення"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="fileProjectLand" name="Проект землеустрою щодо відведення земельної ділянки" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="fileExtractOfCadastr" name="Витяг з Державного земельного кадастру про земельну ділянку" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sResolution" name="Резолюція Начальника відділу землекористування" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="aResultCommition" name="Результат рішень комісії чи міськ ради" type="enum" required="true">
+        <activiti:formProperty id="aResultCommition" name="Результат рішень комісії чи міської ради" type="enum" required="true">
           <activiti:value id="yes" name="позитивне"></activiti:value>
           <activiti:value id="no" name="негативне"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDecisionComment" name="У разі відмови обов'язково вкажіть причину відмови про затвердження проекту землеустрою (Ця інформація буде відправлена на e-mail громадянину *" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDecisionComment" name="У разі відмови обов'язково вкажіть причину відмови про затвердження проекту землеустрою (Ця інформація буде відправлена на e-mail громадянину *" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="nFileSolveSesion" name="Прикріпити рішення ради" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/zemlja/uzhgorod_cnap_391_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/zemlja/uzhgorod_cnap_391_print_card.html]" type="invisible" default="Реєстраційна карта" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersChangeProjectPrint" name="Change Project Print" type="markers" default="${markerService.loadFromFile('zemlja/ChangeValProjectZemljaPrint.json')}"></activiti:formProperty>
@@ -335,19 +326,17 @@
           <activiti:value id="sNotChange" name="без зміни цільового призначення"></activiti:value>
           <activiti:value id="sChange" name="зі зміною цільового призначення"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="fileProjectLand" name="Проект землеустрою щодо відведення земельної ділянки" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="fileExtractOfCadastr" name="Витяг з Державного земельного кадастру про земельну ділянку" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sResolution" name="Резолюція Начальника відділу землекористування" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="aResultCommition" name="Результат рішень комісії чи міськ ради" type="enum" writable="false">
           <activiti:value id="yes" name="позитивне"></activiti:value>
           <activiti:value id="no" name="негативне"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDecisionComment" name="Укажіть час коли можна зарати готове рішення (Ця інформація буде відправлена на e-mail громадянину) *" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDecisionComment" name="Укажіть час коли можна зарати готове рішення (Ця інформація буде відправлена на e-mail громадянину) *" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/zemlja/uzhgorod_cnap_391_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersChangeProjectPrint" name="Change Project Print" type="markers" default="${markerService.loadFromFile('zemlja/ChangeValProjectZemljaPrint.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nfileProjectLand},${nfileExtractOfCadastr}]]></activiti:expression>
+            <activiti:expression><![CDATA[${nfileProjectLand},${nfileExtractOfCadastr},${nFileSolveSesion}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
