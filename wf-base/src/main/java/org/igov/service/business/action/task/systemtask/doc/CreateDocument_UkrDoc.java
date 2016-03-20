@@ -252,8 +252,11 @@ public class CreateDocument_UkrDoc implements JavaDelegate, TaskListener {
 		LOG.info("Retrieved session ID:" + sessionId);
 		
 		List<Attachment> attachments = execution.getEngineServices().getTaskService().getTaskAttachments(delegateTask.getId());
+		List<Attachment> processInstanceAttachments = execution.getEngineServices().getTaskService().getProcessInstanceAttachments(delegateTask.getProcessInstanceId());
 		
-		LOG.info("Found {} attachments for the task {}", attachments != null ? attachments.size() : 0, delegateTask.getId());
+		LOG.info("Found {}:{} attachments for the task {}", attachments != null ? attachments.size() : 0, 
+				processInstanceAttachments != null ? processInstanceAttachments.size() : 0,
+				delegateTask.getId());
 		
 //		FormData oStartFormData = execution.getEngineServices().getFormService()
 //                .getStartFormData(execution.getProcessDefinitionId());
