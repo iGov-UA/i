@@ -175,6 +175,7 @@ public class DebugCommonController {
 
         Long nID_Service = null; //176L;
         Long nID_ServiceData = 63L; //null;
+        Long nID_Flow_ServiceData = 12L; //_test_queue_cancel
         String sID_BP = null;
         Long nID_SubjectOrganDepartment = null;
         boolean bAll = true;
@@ -183,7 +184,16 @@ public class DebugCommonController {
         Days res = oFlowService.getFlowSlots(nID_Service, nID_ServiceData, sID_BP, nID_SubjectOrganDepartment,
                oDateStart, oDateEnd, bAll, nFreeDays);
         
-        //oFlowService.buildFlowSlots(nID_Flow_ServiceData, startDate, stopDate);
+        
+        String sDateStart = "2016-05-12 00:00:00.000";
+        String sDateStop = "2016-06-13 00:00:00.000";
+        DateTime startDate = oFlowService.parseJsonDateTimeSerializer(sDateStart);
+        DateTime stopDate = oFlowService.parseJsonDateTimeSerializer(sDateStop);
+
+        LOG.info("startDate = {}", startDate);
+        LOG.info("stopDate = {}", stopDate);
+
+        oFlowService.buildFlowSlots(nID_Flow_ServiceData, startDate, stopDate);
 
         LOG.info("Days = {}", res);
         
