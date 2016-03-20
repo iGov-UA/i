@@ -25,7 +25,8 @@ fallback ()
 		exit 1
 	fi
 	#Возвращаем на место основной конфиг прокси для Nginx.
-	cat /sybase/.configs/nginx/${sProject}_primary_upstream.conf /sybase/nginx/conf/sites/${sProject}_upstream.conf
+	rm -f /sybase/nginx/conf/sites/upstream.conf
+	cp -p /sybase/.configs/nginx/only_primary_upstream.conf /sybase/nginx/conf/sites/upstream.conf
 	sudo /sybase/nginx/sbin/nginx -s reload
 	sleep 5
 	sResponseCode=$(curl -o /dev/null --connect-timeout 5 --silent --head --write-out '%{http_code}\n' https://$sHost/)
@@ -139,12 +140,13 @@ if [ $sProject == "wf-central"  ] || [ $sProject == "wf-region" ]; then
 	sleep 15
 
 	nTimeout=0
-	until grep -q "FrameworkServlet 'dispatcher': initialization completed in" /sybase/tomcat_${sProject}_double/logs/catalina.out || [ $nTimeout -eq 120 ]; do
+	until grep -q "FrameworkServlet 'dispatcher': initialization completed in" /sybase/tomcat_${sProject}_double/logs/catalina.out || [ $nTimeout -eq 180 ]; do
 		((nTimeout++))
 		sleep 1
 		echo "waiting for server startup $nTimeout"
 		if [ $nTimeout -ge 180 ]; then
 			echo "timeout reached"
+			grep -B 3 -A 2 ERROR /sybase/tomcat_${sProject}_double/logs/catalina.out
 			#Откатываемся назад
 			echo "Fatal error! Executing fallback task..."
 			#Убиваем процесс. Нет смысла ждать его корректной остановки.
@@ -164,6 +166,7 @@ if [ $sProject == "wf-central"  ] || [ $sProject == "wf-region" ]; then
 	
 	#Проверяем на наличие ошибок вторичный инстанс
 	if grep ERROR /sybase/tomcat_${sProject}_double/logs/catalina.out | grep -v log4j | grep -v stopServer; then
+		grep -B 3 -A 2 ERROR /sybase/tomcat_${sProject}_double/logs/catalina.out
 		#Откатываемся назад
 		echo "Fatal error! Executing fallback task..."
 		#Убиваем процесс. Нет смысла ждать его корректной остановки.
@@ -214,6 +217,7 @@ if [ $sProject == "wf-central"  ] || [ $sProject == "wf-region" ]; then
 			
 		#Проверяем на наличие ошибок вторичный инстанс
 		if grep ERROR /sybase/tomcat_${sProject}/logs/catalina.out | grep -v log4j | grep -v stopServer; then
+			grep -B 3 -A 2 ERROR /sybase/tomcat_${sProject}/logs/catalina.out
 			#Откатываемся назад
 			fallback
 		else
