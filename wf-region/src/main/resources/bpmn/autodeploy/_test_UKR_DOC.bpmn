@@ -565,17 +565,12 @@ execution.setVariable('sDistr', per1)</script>
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sStatusName_UkrDoc == 'Исполнен'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow29" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
-    <serviceTask id="servicetask11" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}">
-     <extensionElements>
-    		<activiti:executionListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:executionListener>
-      </extensionElements>
-    </serviceTask>
+    <serviceTask id="servicetask11" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <boundaryEvent id="boundaryerror2" name="Error" attachedToRef="servicetask11">
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>
     <endEvent id="endevent5" name="End"></endEvent>
     <sequenceFlow id="flow30" sourceRef="boundaryerror2" targetRef="endevent5"></sequenceFlow>
-    <!--sequenceFlow id="flow31" sourceRef="servicetask0" targetRef="servicetask2"></sequenceFlow -->
     <sequenceFlow id="flow32" sourceRef="scripttask1" targetRef="servicetask11"></sequenceFlow>
     <sequenceFlow id="flow33" sourceRef="servicetask11" targetRef="servicetask2"></sequenceFlow>
   </process>
