@@ -47,7 +47,6 @@ shift
 done
 
 sDate=`date "+%Y.%m.%d-%H.%M.%S"`
-let nTimeout=1
 
 #Определяем сервер для установки
 if [[ $sVersion == "alpha" && $sProject == "central-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-central" ]]; then
