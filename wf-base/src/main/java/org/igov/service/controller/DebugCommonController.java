@@ -48,6 +48,10 @@ public class DebugCommonController {
     private static final Logger LOG = LoggerFactory
             .getLogger(DebugCommonController.class);
 
+    public static final int DAYS_IN_MONTH = 30;
+    public static final int WORK_DAYS_NEEDED = 20;
+    public static final int DAYS_IN_HALF_YEAR = 180;
+
     @Autowired
     private FlowService oFlowService;
 
@@ -175,7 +179,7 @@ public class DebugCommonController {
             @RequestParam(value = "sDateStart", required = false) String sDateStart,
             @RequestParam(value = "sDateStop", required = false) String sDateStop,
             @RequestParam(value = "bAll", required = false) boolean bAll,
-            @RequestParam(value = "nFreeDays", required = false, defaultValue = "30") int nFreeDays,
+            @RequestParam(value = "nFreeDays", required = false, defaultValue = "30") int nFreeDaysNeeded, //Maxline: TODO не используется?
             @RequestParam(value = "nDays", required = false, defaultValue = "180") int nDays,
             @RequestParam(value = "sOperation", required = false) String sOperation) throws Exception {
         LOG.info("/test/action/testSheduleBuilderFlowSlots  - invoked");
@@ -198,38 +202,37 @@ public class DebugCommonController {
         if (sOperation == null) {
             sOperation = "";
         }
-        if (bAll != true) {
+        if (bAll != true) {  // Maxline: bAll должно быть false в рабочей версии
             bAll = false;
         }
-//boolean bAll = true;
+        //boolean bAll = true;
         //        if (sDateStop == null || sDateStop.equals("")) {
         //            //sDateStop = "2016-05-12 00:00:00.000";
-        oDateEnd = oDateStart.plusDays(nDays);
-//        } else {
-//            oDateEnd = oFlowService.parseJsonDateTimeSerializer(sDateStop);
-//        }
+        //oDateEnd = oDateStart.plusDays(nDays);
+        //        } else {
+        //            oDateEnd = oFlowService.parseJsonDateTimeSerializer(sDateStop);
+        //        }
 
         LOG.info("sDateStart = {}", sDateStart);
         LOG.info("sDateStop = {}", sDateStop);
         LOG.info("oDateStart = {}", oDateStart);
-        LOG.info("oDateEnd = {}", oDateEnd);
-
-        Long nID_Service = null; //176L;
-
-        String sID_BP = null;
-        Long nID_SubjectOrganDepartment = null;
-
-        Days res = oFlowService.getFlowSlots(nID_Service, nID_ServiceData, sID_BP, nID_SubjectOrganDepartment,
-                oDateStart, oDateEnd, bAll, nFreeDays);
-        LOG.info("Days = {}", res);
+        //LOG.info("oDateEnd = {}", oDateEnd);
 
         switch (sOperation) {
             case "checkAndBuild":
-                LOG.info("Days.size() = {}", res.getaDay().size());
-                for (Day day : res.getaDay()) {
-                    LOG.info("Day = {}, isbHasFree = {}", day.getsDate(), day.isbHasFree());
-                }
+                int nStartDay = 0;
+                DateTime dateStart = oDateStart.plusDays(0);
+                DateTime dateEnd;
 
+                while (!isFreeDaysEnough(nID_ServiceData, oDateStart) && nStartDay < DAYS_IN_HALF_YEAR) {
+                    dateStart = dateStart.plusDays(nStartDay);
+                    dateEnd = dateStart.plusDays(nStartDay + DAYS_IN_MONTH);
+
+                    List<FlowSlotVO> resFlowSlotVO = oFlowService.buildFlowSlots(nID_Flow_ServiceData, dateStart, dateEnd);
+                    LOG.info("resFlowSlotVO.size() = {}", resFlowSlotVO.size());
+
+                    nStartDay += DAYS_IN_MONTH;
+                }
                 break;
             case "build":
                 List<FlowSlotVO> resFlowSlotVO = oFlowService.buildFlowSlots(nID_Flow_ServiceData, oDateStart, oDateEnd);
@@ -243,6 +246,29 @@ public class DebugCommonController {
 
         LOG.info("/test/action/testSheduleBuilderFlowSlots  - exit1");
         //runtimeService.deleteProcessInstance(processInstanceID, sReason);
+    }
+
+    private boolean isFreeDaysEnough(Long nID_ServiceData, DateTime oDateStart) {
+        int nFreeWorkDaysFact;
+
+        Long nID_Service = null; //176L;
+        String sID_BP = null;
+        Long nID_SubjectOrganDepartment = null;
+        boolean bAll = false;
+        DateTime oDateEnd = oDateStart.plusDays(DAYS_IN_HALF_YEAR);
+        LOG.info("oDateEnd = {}", oDateEnd);
+
+        Days res = oFlowService.getFlowSlots(nID_Service, nID_ServiceData, sID_BP, nID_SubjectOrganDepartment,
+                oDateStart, oDateEnd, bAll, WORK_DAYS_NEEDED);  //Maxline: есть еще nFreeDaysNeeded
+        LOG.info("Days = {}", res);
+
+        nFreeWorkDaysFact = res.getaDay().size();
+        LOG.info("Days.size() = {}, WORK_DAYS_NEEDED = {}", nFreeWorkDaysFact, WORK_DAYS_NEEDED);
+        for (Day day : res.getaDay()) {
+            LOG.info("Day = {}, isbHasFree = {}", day.getsDate(), day.isbHasFree());
+        }
+
+        return nFreeWorkDaysFact >= WORK_DAYS_NEEDED;
     }
 
 }
