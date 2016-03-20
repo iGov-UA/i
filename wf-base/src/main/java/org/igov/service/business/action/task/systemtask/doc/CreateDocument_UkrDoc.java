@@ -251,96 +251,112 @@ public class CreateDocument_UkrDoc implements JavaDelegate, TaskListener {
 		
 		LOG.info("Retrieved session ID:" + sessionId);
 		
-		FormData oStartFormData = execution.getEngineServices().getFormService()
-                .getStartFormData(execution.getProcessDefinitionId());
-		LOG.info("SCAN:file");
-        List<String> asFieldID = AbstractModelTask.getListFieldCastomTypeFile(oStartFormData);
-        LOG.info("[addAttachmentsToTask]");
-        LOG.info("(asFieldID={})", asFieldID.toString());
-        List<String> asFieldValue = AbstractModelTask.getVariableValues(execution, asFieldID);
-        LOG.info("(asFieldValue={})", asFieldValue.toString());
-        List<String> asFieldName = AbstractModelTask.getListCastomFieldName(oStartFormData);
-        LOG.info("(asFieldName={})", asFieldName.toString());
-        List<List<String>> attachmentsIds = new LinkedList<List<String>>();
-        if (!asFieldValue.isEmpty()) {
-            int n = 0;
-            for (String sKeyRedis : asFieldValue) {
-                LOG.info("(sKeyRedis={})", sKeyRedis);
-                if (sKeyRedis != null && !sKeyRedis.isEmpty() && !"".equals(sKeyRedis.trim()) && !"null"
-                        .equals(sKeyRedis.trim()) && sKeyRedis.length() > 15) {
-                        //String sDescription = asFieldName.get((asFieldName.size() - 1) - n);
-                		String sDescription = asFieldName.get(n);
-                		LOG.info("(sDescription={})", sDescription);
-                		String sID_Field = asFieldID.get(n);
-                		LOG.info("(sID_Field={})", sID_Field);
-
-                        byte[] aByteFile;
-                        ByteArrayMultipartFile oByteArrayMultipartFile = null;
-                        try {
-                            aByteFile = oBytesDataInmemoryStorage.getBytes(sKeyRedis);
-                            oByteArrayMultipartFile = AbstractModelTask.getByteArrayMultipartFileFromStorageInmemory(aByteFile);
-                        } catch (ClassNotFoundException | IOException | RecordInmemoryException e1) {
-                            throw new ActivitiException(e1.getMessage(), e1);
-                        }
-                        if (oByteArrayMultipartFile != null) {
-                            String sFileName = null;
-                            try {
-                                sFileName = new String(oByteArrayMultipartFile.getOriginalFilename().getBytes(),
-                                        "UTF-8");
-                            } catch (java.io.UnsupportedEncodingException oException) {
-                                LOG.error("error on getting sFileName: {}", oException.getMessage());
-                                LOG.debug("FAIL:", oException);
-                                throw new ActivitiException(oException.getMessage(), oException);
-                            }
-                            LOG.info("(sFileName={})", sFileName);
-
-                            //===
-                            InputStream oInputStream = null;
-                            try {
-                                oInputStream = oByteArrayMultipartFile.getInputStream();
-                            } catch (Exception e) {
-                                throw new ActivitiException(e.getMessage(), e);
-                            }
-                            Attachment oAttachment = execution.getEngineServices().getTaskService().createAttachment(
-                                    oByteArrayMultipartFile.getContentType() + ";" + oByteArrayMultipartFile.getExp(),
-                                    execution.getId(), execution.getProcessInstanceId(), sFileName, sDescription,
-                                    oInputStream);
-
-                            if (oAttachment != null) {
-                            	List<String> attachId = new LinkedList<String>();
-                            	attachId.add(oAttachment.getName());
-                            	attachId.add(oAttachment.getId());
-                            	attachId.add(execution.getId());
-                            	LOG.info("Adding attach info to the list {}", attachId);
-                            	attachmentsIds.add(attachId);
-                            	
-                                String nID_Attachment = oAttachment.getId();
-                                //LOG.info("(nID_Attachment={})", nID_Attachment);
-                                LOG.info("Try set variable(sID_Field={}) with the value(nID_Attachment={}), for new attachment...",
-                                        sID_Field, nID_Attachment);
-                                execution.getEngineServices().getRuntimeService()
-                                        .setVariable(execution.getProcessInstanceId(), sID_Field, nID_Attachment);
-                                LOG.info("Finished setting new value for variable with attachment (sID_Field={})",
-                                        sID_Field);
-                            } else {
-                                LOG.error("Can't add attachment to (oTask.getId()={})", execution.getId());
-                            }
-                            //===
-
-                        } else {
-                            LOG.error("oByteArrayMultipartFile==null!  (sKeyRedis={})", sKeyRedis);
-                        }
-                    } else {
-                        LOG.error("asFieldName has nothing! (asFieldName={})", asFieldName);
-                    }
-                n++;
-            }
-        }
+		List<Attachment> attachments = execution.getEngineServices().getTaskService().getTaskAttachments(delegateTask.getId());
 		
-        LOG.info("beginning of addAttachmentsToTask(startformData, task):execution.getProcessDefinitionId()={}",
-        		execution.getProcessDefinitionId());
+		LOG.info("Found {} attachments for the task {}", attachments != null ? attachments.size() : 0, delegateTask.getId());
 		
-		LOG.info("Found attachments for the process {}", attachmentsIds.size());
+//		FormData oStartFormData = execution.getEngineServices().getFormService()
+//                .getStartFormData(execution.getProcessDefinitionId());
+//		LOG.info("SCAN:file");
+//        List<String> asFieldID = AbstractModelTask.getListFieldCastomTypeFile(oStartFormData);
+//        LOG.info("[addAttachmentsToTask]");
+//        LOG.info("(asFieldID={})", asFieldID.toString());
+//        List<String> asFieldValue = AbstractModelTask.getVariableValues(execution, asFieldID);
+//        LOG.info("(asFieldValue={})", asFieldValue.toString());
+//        List<String> asFieldName = AbstractModelTask.getListCastomFieldName(oStartFormData);
+//        LOG.info("(asFieldName={})", asFieldName.toString());
+//        List<List<String>> attachmentsIds = new LinkedList<List<String>>();
+//        if (!asFieldValue.isEmpty()) {
+//            int n = 0;
+//            for (String sKeyRedis : asFieldValue) {
+//                LOG.info("(sKeyRedis={})", sKeyRedis);
+//                if (sKeyRedis != null && !sKeyRedis.isEmpty() && !"".equals(sKeyRedis.trim()) && !"null"
+//                        .equals(sKeyRedis.trim()) && sKeyRedis.length() > 15) {
+//                        //String sDescription = asFieldName.get((asFieldName.size() - 1) - n);
+//                		String sDescription = asFieldName.get(n);
+//                		LOG.info("(sDescription={})", sDescription);
+//                		String sID_Field = asFieldID.get(n);
+//                		LOG.info("(sID_Field={})", sID_Field);
+//
+//                        byte[] aByteFile;
+//                        ByteArrayMultipartFile oByteArrayMultipartFile = null;
+//                        try {
+//                            aByteFile = oBytesDataInmemoryStorage.getBytes(sKeyRedis);
+//                            oByteArrayMultipartFile = AbstractModelTask.getByteArrayMultipartFileFromStorageInmemory(aByteFile);
+//                        } catch (ClassNotFoundException | IOException | RecordInmemoryException e1) {
+//                            throw new ActivitiException(e1.getMessage(), e1);
+//                        }
+//                        if (oByteArrayMultipartFile != null) {
+//                            String sFileName = null;
+//                            try {
+//                                sFileName = new String(oByteArrayMultipartFile.getOriginalFilename().getBytes(),
+//                                        "UTF-8");
+//                            } catch (java.io.UnsupportedEncodingException oException) {
+//                                LOG.error("error on getting sFileName: {}", oException.getMessage());
+//                                LOG.debug("FAIL:", oException);
+//                                throw new ActivitiException(oException.getMessage(), oException);
+//                            }
+//                            LOG.info("(sFileName={})", sFileName);
+//
+//                            //===
+//                            InputStream oInputStream = null;
+//                            try {
+//                                oInputStream = oByteArrayMultipartFile.getInputStream();
+//                            } catch (Exception e) {
+//                                throw new ActivitiException(e.getMessage(), e);
+//                            }
+//                            Attachment oAttachment = execution.getEngineServices().getTaskService().createAttachment(
+//                                    oByteArrayMultipartFile.getContentType() + ";" + oByteArrayMultipartFile.getExp(),
+//                                    execution.getId(), execution.getProcessInstanceId(), sFileName, sDescription,
+//                                    oInputStream);
+//
+//                            if (oAttachment != null) {
+//                            	List<String> attachId = new LinkedList<String>();
+//                            	attachId.add(oAttachment.getName());
+//                            	attachId.add(oAttachment.getId());
+//                            	attachId.add(execution.getId());
+//                            	LOG.info("Adding attach info to the list {}", attachId);
+//                            	attachmentsIds.add(attachId);
+//                            	
+//                                String nID_Attachment = oAttachment.getId();
+//                                //LOG.info("(nID_Attachment={})", nID_Attachment);
+//                                LOG.info("Try set variable(sID_Field={}) with the value(nID_Attachment={}), for new attachment...",
+//                                        sID_Field, nID_Attachment);
+//                                execution.getEngineServices().getRuntimeService()
+//                                        .setVariable(execution.getProcessInstanceId(), sID_Field, nID_Attachment);
+//                                LOG.info("Finished setting new value for variable with attachment (sID_Field={})",
+//                                        sID_Field);
+//                            } else {
+//                                LOG.error("Can't add attachment to (oTask.getId()={})", execution.getId());
+//                            }
+//                            //===
+//
+//                        } else {
+//                            LOG.error("oByteArrayMultipartFile==null!  (sKeyRedis={})", sKeyRedis);
+//                        }
+//                    } else {
+//                        LOG.error("asFieldName has nothing! (asFieldName={})", asFieldName);
+//                    }
+//                n++;
+//            }
+//        }
+//		
+//        LOG.info("beginning of addAttachmentsToTask(startformData, task):execution.getProcessDefinitionId()={}",
+//        		execution.getProcessDefinitionId());
+//		
+//		LOG.info("Found attachments for the process {}", attachmentsIds.size());
+		
+		List<List<String>> attachmentsIds = new LinkedList<List<String>>();
+		if (attachments != null){
+			for (Attachment attachment : attachments){
+				List<String> attachId = new LinkedList<String>();
+		    	attachId.add(attachment.getName());
+		    	attachId.add(attachment.getId());
+		    	attachId.add(execution.getId());
+		    	LOG.info("Adding attach info to the list {}", attachId);
+		    	attachmentsIds.add(attachId);
+			}
+		}
 		Map<String, Object> urkDocRequest = UkrDocUtil.makeJsonRequestObject(sHeadValue, sBodyValue, sLoginAuthorValue, nID_PatternValue, 
 				attachmentsIds, execution.getId(), generalConfig);
 
