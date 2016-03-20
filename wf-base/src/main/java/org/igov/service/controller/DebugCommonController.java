@@ -208,7 +208,7 @@ public class DebugCommonController {
         //boolean bAll = true;
         //        if (sDateStop == null || sDateStop.equals("")) {
         //            //sDateStop = "2016-05-12 00:00:00.000";
-        //oDateEnd = oDateStart.plusDays(nDays);
+        oDateEnd = oDateStart.plusDays(nDays);
         //        } else {
         //            oDateEnd = oFlowService.parseJsonDateTimeSerializer(sDateStop);
         //        }
@@ -216,7 +216,7 @@ public class DebugCommonController {
         LOG.info("sDateStart = {}", sDateStart);
         LOG.info("sDateStop = {}", sDateStop);
         LOG.info("oDateStart = {}", oDateStart);
-        //LOG.info("oDateEnd = {}", oDateEnd);
+        LOG.info("oDateEnd = {}", oDateEnd);
 
         switch (sOperation) {
             case "checkAndBuild":
@@ -244,7 +244,7 @@ public class DebugCommonController {
                 break;
         }
 
-        LOG.info("/test/action/testSheduleBuilderFlowSlots  - exit1");
+        LOG.info("/test/action/testSheduleBuilderFlowSlots  - exit2");
         //runtimeService.deleteProcessInstance(processInstanceID, sReason);
     }
 
