@@ -6,6 +6,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.activiti.engine.ActivitiException;
 import org.activiti.engine.FormService;
@@ -20,8 +21,10 @@ import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.StartFormData;
 import org.activiti.engine.form.TaskFormData;
+import org.activiti.engine.identity.User;
 import org.activiti.engine.impl.form.FormPropertyImpl;
 import org.activiti.engine.task.Attachment;
+import org.activiti.engine.task.IdentityLink;
 import org.activiti.engine.task.Task;
 import org.igov.io.GeneralConfig;
 import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
@@ -39,7 +42,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
 @Component("CreateDocument_UkrDoc")
-public class CreateDocument_UkrDoc implements JavaDelegate, TaskListener {
+public class CreateDocument_UkrDoc extends AbstractModelTask implements JavaDelegate, TaskListener {
 
 	public static final String UKRDOC_ID_DOCUMENT_VARIABLE_NAME = "sID_Document";
 
@@ -223,17 +226,6 @@ public class CreateDocument_UkrDoc implements JavaDelegate, TaskListener {
         
 	}
 
-	protected String getStringFromFieldExpression(Expression expression,
-			DelegateExecution execution) {
-		if (expression != null) {
-			Object value = expression.getValue(execution);
-			if (value != null) {
-				return value.toString();
-			}
-		}
-		return null;
-	}
-
 	@Override
 	public void notify(DelegateTask delegateTask) {
 		DelegateExecution execution = delegateTask.getExecution();
@@ -251,12 +243,36 @@ public class CreateDocument_UkrDoc implements JavaDelegate, TaskListener {
 		
 		LOG.info("Retrieved session ID:" + sessionId);
 		
-		List<Attachment> attachments = execution.getEngineServices().getTaskService().getTaskAttachments(delegateTask.getId());
-		List<Attachment> processInstanceAttachments = execution.getEngineServices().getTaskService().getProcessInstanceAttachments(delegateTask.getProcessInstanceId());
+		List<Attachment> attachments = new LinkedList<Attachment>();
+//				taskService.getProcessInstanceAttachments(delegateTask.getProcessInstanceId());
+//		LOG.info("Found attachments for the process {}", attachments != null ? attachments.size() : 0);
+//		if (attachments != null && attachments.size() > 0){
+//			LOG.info("Returning from listener as there are {} attachments already assigned to the task", attachments.size());
+//		}
 		
-		LOG.info("Found {}:{} attachments for the task {}", attachments != null ? attachments.size() : 0, 
-				processInstanceAttachments != null ? processInstanceAttachments.size() : 0,
-				delegateTask.getId());
+        DelegateExecution oExecution = delegateTask.getExecution();
+        // получить группу бп
+        Set<IdentityLink> identityLink = delegateTask.getCandidates();
+        // получить User группы
+        List<User> aUser = oExecution.getEngineServices().getIdentityService()
+                .createUserQuery()
+                .memberOfGroup(identityLink.iterator().next().getGroupId())
+                .list();
+
+        LOG.info("Finding any assigned user-member of group. (aUser={})", aUser);
+        if (aUser == null || aUser.size() == 0 || aUser.get(0) == null || aUser.get(0).getId() == null) {
+            //TODO  what to do if no user?
+        } else {
+            // setAuthenticatedUserId первого попавщегося
+            //TODO Shall we implement some logic for user selection.
+            oExecution.getEngineServices().getIdentityService().setAuthenticatedUserId(aUser.get(0).getId());
+            // получить информацию по стартовой форме бп
+            FormData oStartFormData = oExecution.getEngineServices().getFormService()
+                    .getStartFormData(oExecution.getProcessDefinitionId());
+            LOG.info("beginning of addAttachmentsToTask(startformData, task):execution.getProcessDefinitionId()={}",
+                    oExecution.getProcessDefinitionId());
+            attachments = addAttachmentsToTask(oStartFormData, delegateTask);
+        }
 		
 //		FormData oStartFormData = execution.getEngineServices().getFormService()
 //                .getStartFormData(execution.getProcessDefinitionId());
