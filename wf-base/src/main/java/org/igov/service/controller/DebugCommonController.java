@@ -31,6 +31,7 @@ import javax.mail.MessagingException;
 import java.io.IOException;
 import java.io.InputStream;
 import org.igov.service.business.flow.FlowService;
+import org.igov.service.business.flow.slot.ClearSlotsResult;
 import org.igov.service.business.flow.slot.Days;
 import org.joda.time.DateTime;
 
@@ -189,11 +190,14 @@ public class DebugCommonController {
         String sDateStop = "2016-06-13 00:00:00.000";
         DateTime startDate = oFlowService.parseJsonDateTimeSerializer(sDateStart);
         DateTime stopDate = oFlowService.parseJsonDateTimeSerializer(sDateStop);
+        boolean bWithTickets = false;
 
         LOG.info("startDate = {}", startDate);
         LOG.info("stopDate = {}", stopDate);
 
-        oFlowService.buildFlowSlots(nID_Flow_ServiceData, startDate, stopDate);
+        //oFlowService.buildFlowSlots(nID_Flow_ServiceData, startDate, stopDate);
+        
+        oFlowService.clearFlowSlots(nID_Flow_ServiceData, startDate, stopDate, bWithTickets);
 
         LOG.info("Days = {}", res);
         
