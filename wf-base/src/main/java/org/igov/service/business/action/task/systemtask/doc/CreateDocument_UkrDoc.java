@@ -228,6 +228,7 @@ public class CreateDocument_UkrDoc extends AbstractModelTask implements JavaDele
 
 	@Override
 	public void notify(DelegateTask delegateTask) {
+		
 		DelegateExecution execution = delegateTask.getExecution();
 		
 		String sLoginAuthorValue = getStringFromFieldExpression(this.sLoginAuthor, execution);
@@ -375,19 +376,8 @@ public class CreateDocument_UkrDoc extends AbstractModelTask implements JavaDele
 //		
 //		LOG.info("Found attachments for the process {}", attachmentsIds.size());
 		
-		List<List<String>> attachmentsIds = new LinkedList<List<String>>();
-		if (attachments != null){
-			for (Attachment attachment : attachments){
-				List<String> attachId = new LinkedList<String>();
-		    	attachId.add(attachment.getName());
-		    	attachId.add(attachment.getId());
-		    	attachId.add(delegateTask.getId());
-		    	LOG.info("Adding attach info to the list {}", attachId);
-		    	attachmentsIds.add(attachId);
-			}
-		}
 		Map<String, Object> urkDocRequest = UkrDocUtil.makeJsonRequestObject(sHeadValue, sBodyValue, sLoginAuthorValue, nID_PatternValue, 
-				attachmentsIds, execution.getId(), generalConfig);
+				attachments, execution.getId(), generalConfig);
 
 		JSONObject json = new JSONObject();
 		json.putAll( urkDocRequest );
