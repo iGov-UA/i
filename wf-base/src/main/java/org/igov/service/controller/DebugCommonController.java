@@ -30,10 +30,12 @@ import javax.activation.DataSource;
 import javax.mail.MessagingException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import org.igov.service.business.flow.FlowService;
 import org.igov.service.business.flow.slot.ClearSlotsResult;
 import org.igov.service.business.flow.slot.Days;
 import org.igov.service.business.flow.slot.Day;
+import org.igov.service.business.flow.slot.FlowSlotVO;
 import org.joda.time.DateTime;
 
 /**
@@ -229,7 +231,8 @@ public class DebugCommonController {
 
                 break;
             case "build":
-                oFlowService.buildFlowSlots(nID_Flow_ServiceData, oDateStart, oDateEnd);
+                List<FlowSlotVO> resFlowSlotVO = oFlowService.buildFlowSlots(nID_Flow_ServiceData, oDateStart, oDateEnd);
+                LOG.info("resFlowSlotVO.size() = {}", resFlowSlotVO.size());
                 break;
             case "clear":
                 boolean bWithTickets = false;
