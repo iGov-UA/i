@@ -1,0 +1,105 @@
+{
+	"motion":
+	{
+		"ShowFieldsOnCondition_0":
+		{
+			"sNote":				["For Hide Invisible"],
+			"aField_ID":			["asPurpose","sAddress","sNameObject", "sTelephonDovidka","sWork_Time", "sRdozvil", "sPf_Part", "sLetter", "sForTracert", "sShapka_dozvil_na_reklamu_184"],
+			"asID_Field":			{"sClient":"asSubect"},
+			"sCondition":			"[sClient] == 'Not_Correct'"
+		},
+		"ValuesFieldsOnCondition_9":
+		{
+			"sNote":				["Name Doc попередньго дозволу"],
+			"aField_ID":			["sRdozvil"], 
+			"asID_Field_sValue":	["Оригінал попереднього дозволу"],
+			"asID_Field":			{"sReason":"asPurpose"},
+			"sCondition":			"[sReason]=='second_permission' || [sReason] == 'revoke'|| [sReason] == 'continuation' || [sReason] == 'restructuring'"
+		},
+		"ShowFieldsOnCondition_1":
+		{
+			"sNote":				["Ur-osoba"],
+			"aField_ID":			["sName_ur","edrpou","sPib_ur", "sAdres_1","workPhone"],
+			"asID_Field":			{"sClient":"asSubect"},
+			"sCondition":			"[sClient] == 'ur'"
+		},
+		"RequiredFieldsOnCondition_11": 
+		{
+			"aField_ID":	["sName_ur","edrpou","sPib_ur", "sAdres_1","workPhone"],
+			"asID_Field":	{"sClient":"asSubect"},
+			"sCondition":	"[sClient] == 'ur'"
+		},
+		"ShowFieldsOnCondition_2":
+		{
+			"sNote":		["Fiz-osoba"],
+			"aField_ID":	["sAdres_0","sPib_fiz","bankId_scan_passport"],
+			"asID_Field":	{"sClient":"asSubect"},
+			"sCondition":	"[sClient] == 'fiz'"
+		},
+		"RequiredFieldsOnCondition_21": 
+		{
+			"aField_ID":	["sAdres_0","sPib_fiz","bankId_scan_passport"],
+			"asID_Field":	{"sClient":"asSubect"},
+			"sCondition":	"[sClient] == 'fiz'"
+		},
+		"ShowFieldsOnCondition_3":
+		{
+			"sNote":		["Якщо дозвіл повторний, анулювання, подовження"],
+			"aField_ID":	["sNumber_previous","sDate_previous","nFile_Original_Dozvolu"],
+			"asID_Field":	{"sPerson":"asPurpose"},
+			"sCondition":	"[sPerson] == 'second_permission' || [sPerson] == 'revoke'|| [sPerson] == 'continuation' || [sPerson] == 'restructuring'"
+		},
+		"RequiredFieldsOnCondition_31": 
+		{
+			"aField_ID":	["sNumber_previous","sDate_previous","nFile_Original_Dozvolu"],
+			"asID_Field":	{"sPerson":"asPurpose"},
+			"sCondition":	"[sPerson] == 'second_permission' || [sPerson] == 'revoke'|| [sPerson] == 'continuation' || [sPerson] == 'restructuring'"
+		},
+		"ShowFieldsOnCondition_4":
+		{
+			"sNote":		["Annulyuvannya - hide files"],
+			"aField_ID":	["nFile_PlacePhoto","nFile_Advert","nFile_AdvertLicense"],
+			"asID_Field":	{"sPerson":"asPurpose"},
+			"sCondition":	"[sPerson] == 'second_permission' || [sPerson] == 'first_permission'|| [sPerson] == 'continuation'|| [sPerson] == 'restructuring'"
+		},
+		"RequiredFieldsOnCondition_41": 
+		{
+			"aField_ID":	["nFile_PlacePhoto","nFile_Advert","nFile_AdvertLicense"],
+			"asID_Field":	{"sPerson":"asPurpose"},
+			"sCondition":	"[sPerson] == 'second_permission' || [sPerson] == 'first_permission'|| [sPerson] == 'continuation'|| [sPerson] == 'restructuring'"
+		},
+		"ShowFieldsOnCondition_5":
+		{
+			"sNote":		["Cherez dovirenu osobu"],
+			"aField_ID":	["sConfidant_pib","sConfidant_passport"],
+			"asID_Field":	{"sPerson":"asHow"},
+			"sCondition":	"[sPerson] == 'confidant'"
+		},
+		"ShowFieldsOnCondition_52":
+		{
+			"sNote":		["Hide choice dovirenu osobu"],
+			"aField_ID":	["asHow"],
+			"asID_Field":	{"sPerson":"asSubect"},
+			"sCondition":	"[sPerson] == 'not_correct'"
+		},
+		"RequiredFieldsOnCondition_51": 
+		{
+			"aField_ID":	["sConfidant_pib","sConfidant_passport"],
+			"asID_Field":	{"sPerson":"asHow"},
+			"sCondition":	"[sPerson] == 'confidant'"
+		},
+		"ShowFieldsOnCondition_6":
+		{
+			"sNote":				["For Novopskov open Topology Materials (M1:500)"],
+			"aField_ID":			["nFile_Roztashuvannya_M1_500"],
+			"asID_Field":			{"sClient":"sID_Public_SubjectOrganJoin"},
+			"sCondition":			"[sClient] == 'mvk_lug_NovopskovskT'"
+		},
+		"RequiredFieldsOnCondition_61": 
+		{
+			"aField_ID":	["nFile_Roztashuvannya_M1_500"],
+			"asID_Field":	{"sClient":"sID_Public_SubjectOrganJoin"},
+			"sCondition":	"[sClient] == 'mvk_lug_NovopskovskT'"
+		}
+	}
+}
