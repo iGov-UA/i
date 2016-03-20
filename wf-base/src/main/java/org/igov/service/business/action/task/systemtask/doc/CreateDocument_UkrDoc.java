@@ -170,7 +170,7 @@ public class CreateDocument_UkrDoc implements JavaDelegate, TaskListener {
 		
 		LOG.info("Found attachments for the process {}", attachmentsIds.size());
 		Map<String, Object> urkDocRequest = UkrDocUtil.makeJsonRequestObject(sHeadValue, sBodyValue, sLoginAuthorValue, nID_PatternValue, 
-				attachmentsIds, execution.getId(), generalConfig);
+				new LinkedList<List<String>>(), execution.getId(), generalConfig);
 
 		JSONObject json = new JSONObject();
 		json.putAll( urkDocRequest );
