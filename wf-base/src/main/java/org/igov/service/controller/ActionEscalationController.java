@@ -1,9 +1,9 @@
 package org.igov.service.controller;
 
-import com.pb.crm.conveyorapiutils.entity.ConveyorMessage;
-import com.pb.crm.conveyorapiutils.entity.ConveyorRequest;
-import com.pb.crm.conveyorapiutils.entity.RequestOperation;
-import com.pb.crm.conveyorapiutils.utils.HttpManager;
+import com.corezoid.sdk.entity.CorezoidMessage;
+import com.corezoid.sdk.entity.RequestOperation;
+import com.corezoid.sdk.utils.HttpManager;
+import net.sf.json.JSONObject;
 import io.swagger.annotations.*;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import org.igov.exchange.Corezoid;
 
 @Controller
@@ -37,6 +38,8 @@ public class ActionEscalationController {
     private static final Logger LOG = LoggerFactory.getLogger(ActionEscalationController.class);
     private static final String ERROR_CODE = "exception in escalation-controller!";
 
+    @Autowired
+    Corezoid corezoid;
     @Autowired
     GeneralConfig generalConfig;
     @Autowired
@@ -306,28 +309,18 @@ public class ActionEscalationController {
         }
 
     }
-
+       
     //Todo временно создан сервис для отладки
-    @RequestMapping(value = "/sendToCorezoid", method = RequestMethod.GET)
+    @RequestMapping(value = "/sendToCorezoidNew", method = RequestMethod.GET)
     @ResponseBody
-    public String sendToCorezoid(@RequestParam(value = "id") String id
-    ,@RequestParam(value = "address") String address
-    ,@RequestParam(value = "secretKey") String secretKey
-    ,@RequestParam(value = "user") String user) throws Exception {
-        String result = "ok!";
+    public String sendToCorezoidNew(@RequestParam(value = "id") String id) throws Exception {
+        String result;
         try {
-            Map<String, Object> data = new HashMap();
-            data.put("hello", "Привет");
-            LOG.info("hostAddress: " + address + " conveyerID: " + id + " data: " + data);
-            ConveyorMessage mes = ConveyorMessage.request(secretKey, Arrays.asList(RequestOperation.create(user, null, data)));
-            ConveyorRequest request = ConveyorRequest.getRequest(address, id, mes);
-            String answer = new HttpManager().send(request);
-            LOG.info("answer: " + answer);
-            Map<String, String> map = ConveyorMessage.parseAnswer(answer);
-            LOG.info(map.toString());
+            Map data = new HashMap();
+            data.put("hello", "hello");
+            return corezoid.sendToCorezoid(id, data);
         } catch (Exception ex) {
             LOG.error("eror:", ex);
-            System.out.print("!!!!!!!!!!!!error: " + ex);
             result = ex.getMessage() + ex.toString();
         }
         return result;

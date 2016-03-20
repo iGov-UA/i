@@ -69,7 +69,7 @@ public class UkrDocUtil {
     }
 	
 	public static Map<String, Object> makeJsonRequestObject(String sHeadValue, String sBodyValue, String sLoginAuthorValue, 
-			String nID_PatternValue, List<Attachment> attachments, String taskId, GeneralConfig generalConfig) {
+			String nID_PatternValue, List<List<String>> attachmentsIds, String taskId, GeneralConfig generalConfig) {
 		Map<String, Object> res = new LinkedHashMap<String, Object>();
 		
 		Map<String, Object> content = new LinkedHashMap<String, Object>();
@@ -82,13 +82,13 @@ public class UkrDocUtil {
 		Map<String, String> attributes = new HashMap<String, String>();
 		attributes.put("Автор", sLoginAuthorValue);
 		Map<String, Object> extensions = new HashMap<String, Object>();
-		if (attachments != null && !attachments.isEmpty()){
+		if (attachmentsIds != null && !attachmentsIds.isEmpty()){
 			Map<String, List<?>> tables = new HashMap<String, List<?>>();
 			List<List<String>> attachmentsInfo = new LinkedList<List<String>>();
-			for (Attachment attachment : attachments){
+			for (List<String> attachInfo : attachmentsIds){
 				List<String> info = new LinkedList<String>();
-				info.add(attachment.getName());
-				info.add(String.format(DOWNLOAD_FILE_FROM_PATTERN, generalConfig.sHost(), taskId, attachment.getId()));
+				info.add(attachInfo.get(0));
+				info.add(String.format(DOWNLOAD_FILE_FROM_PATTERN, generalConfig.sHost(), attachInfo.get(1), attachInfo.get(2)));
 				attachmentsInfo.add(info);
 			}
 			tables.put("Приложения", attachmentsInfo);

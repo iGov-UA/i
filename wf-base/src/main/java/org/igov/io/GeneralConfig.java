@@ -61,14 +61,10 @@ public class GeneralConfig {
     @Value("${general.ukrdoc.sServerAddress}")
     private String sUkrDocServerAddress;
 
-    @Value("${general.corezoid.sServerAddress}")
-    private String sCorezoidServerAddress;
     @Value("${general.corezoid.sID_User}")
     private String sCorezoidUser;
     @Value("${general.corezoid.sSecretKey}")
     private String sCorezoidSecretKey;
-    @Value("${general.corezoid.sID_Callcenters}")
-    private String sID_Corezoid_Callcenters;
 
     public String sLogin_BankID() {
         return sLogin_BankID;
@@ -203,20 +199,12 @@ public class GeneralConfig {
         return snID_Server;
     }
 
-    public String getsCorezoidServerAddress() {
-        return sCorezoidServerAddress;
-    }
-
     public String getsCorezoidUser() {
         return sCorezoidUser;
     }
 
     public String getsCorezoidSecretKey() {
         return sCorezoidSecretKey;
-    }
-
-    public String getsID_Corezoid_Callcenters() {
-        return sID_Corezoid_Callcenters;
     }
 
 }

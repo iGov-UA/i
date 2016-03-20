@@ -16,7 +16,7 @@
           <activiti:value id="personally" name="особисто"></activiti:value>
           <activiti:value id="confidant" name="довірена особа"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="act" name="Мета замовлення послуги" type="enum" required="true">
+        <activiti:formProperty id="act" name="Вид послуги" type="enum" required="true">
           <activiti:value id="delete" name="АКТ ОБСТЕЖЕННЯ ЗЕЛЕНИХ НАСАДЖЕНЬ НА ВИДАЛЕННЯ АВАРІЙНИХ, СУХОСТІЙНИХ І ФАУТНИХ ЗЕЛЕНИХ НАСАДЖЕНЬ"></activiti:value>
           <activiti:value id="rozrobka" name="АКТ ОБСТЕЖЕННЯ ЗЕЛЕНИХ НАСАДЖЕНЬ ПРИ РОЗРОБЦІ ПРОЕКТУ ВИДІЛЕННЯ ЗЕМЕЛЬНОЇ ДІЛЯНКИ"></activiti:value>
         </activiti:formProperty>
@@ -84,9 +84,8 @@ ${sNameOrgan}.&lt;br /&gt;
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow4" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
-    <userTask id="usertask1" name="Обробка документів ЦНАП  (1-й крок)" activiti:candidateGroups="dnepr_cnap_${vibor}">
+    <userTask id="usertask1" name="Обробка документів ЦНАП  (1-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть центр надання адмінпослуг" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По-батькові" type="string" writable="false"></activiti:formProperty>
@@ -99,7 +98,7 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="personally" name="особисто"></activiti:value>
           <activiti:value id="confidant" name="довірена особа"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="act" name="Мета замовлення послуги" type="enum" writable="false">
+        <activiti:formProperty id="act" name="Вид послуги" type="enum" writable="false">
           <activiti:value id="delete" name="АКТ ОБСТЕЖЕННЯ ЗЕЛЕНИХ НАСАДЖЕНЬ НА ВИДАЛЕННЯ АВАРІЙНИХ, СУХОСТІЙНИХ І ФАУТНИХ ЗЕЛЕНИХ НАСАДЖЕНЬ"></activiti:value>
           <activiti:value id="rozrobka" name="АКТ ОБСТЕЖЕННЯ ЗЕЛЕНИХ НАСАДЖЕНЬ ПРИ РОЗРОБЦІ ПРОЕКТУ ВИДІЛЕННЯ ЗЕМЕЛЬНОЇ ДІЛЯНКИ"></activiti:value>
         </activiti:formProperty>
@@ -117,29 +116,164 @@ ${sNameOrgan}.&lt;br /&gt;
     <sequenceFlow id="flow5" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
-    <serviceTask id="servicetask4" name="Відмова громадянину в разі неповного комплекту документів" activiti:delegateExpression="#{MailTaskWithoutAttachment}"></serviceTask>
+    <serviceTask id="servicetask4" name="Відмова громадянину в разі неповного комплекту документів" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+     <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression>Звернення на тему ${sPosluga_name}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+         <activiti:expression>[pattern/mail/_common_header.html]
+&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+&lt;p&gt; Ваше звернення на тему ${sPosluga_name} не прийнято в роботу. &lt;br /&gt;
+Документи оформлені НЕ вірно. Відмова. &lt;br /&gt;
+Причина відмови: ${Komment_Cnap} &lt;br /&gt;
+За наявності питянь можете звернутись за телефоном: ${sPhoneOrgan}.&lt;br /&gt;
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan}.&lt;br /&gt;
+${sAddress}.&lt;br /&gt;
+${sWorkTime}.&lt;br /&gt;
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>   
+    </serviceTask>
     <sequenceFlow id="flow7" name="status=='attr2_bad'" sourceRef="exclusivegateway1" targetRef="servicetask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status=='attr2_bad'}]]></conditionExpression>
     </sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow8" sourceRef="servicetask4" targetRef="endevent2"></sequenceFlow>
-    <serviceTask id="servicetask5" name="E-mail гомадянину про передачу документів в департамент управління житлово-комунального господарства та комунальної власності" activiti:delegateExpression="#{MailTaskWithoutAttachment}"></serviceTask>
+    <serviceTask id="servicetask5" name="E-mail гомадянину про передачу документів в департамент управління житлово-комунального господарства та комунальної власності" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+     <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression>Звернення на тему ${sPosluga_name}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+         <activiti:expression>[pattern/mail/_common_header.html]
+&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+&lt;p&gt;Ви подавали звернення на тему ${sPosluga_name}.&lt;br /&gt;
+&lt;p&gt;Послуга успішно замовлена.&lt;/p&gt;
+&lt;p&gt;Ви отримаєте відповідь у визначений законом термін на цю email-адресу.&lt;/p&gt;
+За наявності питянь можете звернутись за телефоном: ${sPhoneOrgan}.&lt;br /&gt;
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan}.&lt;br /&gt;
+${sAddress}.&lt;br /&gt;
+${sWorkTime}.&lt;br /&gt;
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>   
+    </serviceTask>
     <sequenceFlow id="flow9" name="status=='attr1_wait'" sourceRef="exclusivegateway1" targetRef="servicetask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status=='attr1_wait'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask2" name="Обробка документів спеціалістом (інженер-еколог) управління житлово-комунального господарства та комунальної власност (2-й крок)" activiti:candidateGroups="dnepr_cnap_${vibor}"></userTask>
+    <userTask id="usertask2" name="Обробка документів спеціалістом (інженер-еколог) управління житлово-комунального господарства та комунальної власност (2-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
+     <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По-батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_today" name="Укажіть сьогоднішню дату" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="subekt" name="Звернення подаю" type="enum" writable="false">
+          <activiti:value id="personally" name="особисто"></activiti:value>
+          <activiti:value id="confidant" name="довірена особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="act" name="Вид послуги" type="enum" writable="false">
+          <activiti:value id="delete" name="АКТ ОБСТЕЖЕННЯ ЗЕЛЕНИХ НАСАДЖЕНЬ НА ВИДАЛЕННЯ АВАРІЙНИХ, СУХОСТІЙНИХ І ФАУТНИХ ЗЕЛЕНИХ НАСАДЖЕНЬ"></activiti:value>
+          <activiti:value id="rozrobka" name="АКТ ОБСТЕЖЕННЯ ЗЕЛЕНИХ НАСАДЖЕНЬ ПРИ РОЗРОБЦІ ПРОЕКТУ ВИДІЛЕННЯ ЗЕМЕЛЬНОЇ ДІЛЯНКИ"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="adress2" name="Місце розташування насадження (адреса)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="extension_number" name="Реєстраційний номер ЦНАП" type="string"></activiti:formProperty>
+        <activiti:formProperty id="adminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string"></activiti:formProperty>
+        <activiti:formProperty id="status2" name="Відправити відповідь громадянину" type="enum" required="true">
+          <activiti:value id="attr3_rish_ok" name="Звернення оброблене. Відправити скан заявнику."></activiti:value>
+          <activiti:value id="attr4_rish_bad" name="Звернення не оброблене."></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="comment1" name="Якщо  Акт не може бути виданний, вкажіть причину у цьому полі" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="answer" name="Відповідь" type="file" required="true"></activiti:formProperty>
+      </extensionElements>   
+    </userTask>
     <sequenceFlow id="flow10" sourceRef="servicetask5" targetRef="usertask2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow11" sourceRef="usertask2" targetRef="exclusivegateway2"></sequenceFlow>
-    <serviceTask id="servicetask6" name="Отправка e-mail в разі відмови департаментом комунального господарства" activiti:delegateExpression="#{MailTaskWithAttachments}"></serviceTask>
-    <sequenceFlow id="flow12" sourceRef="exclusivegateway2" targetRef="servicetask6"></sequenceFlow>
+    <serviceTask id="servicetask6" name="Отправка e-mail в разі відмови " activiti:delegateExpression="#{MailTaskWithAttachments}">
+     <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression>Звернення на тему ${sPosluga_name}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+         <activiti:expression>[pattern/mail/_common_header.html]
+&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+&lt;p&gt;Ви подавали звернення на тему ${sPosluga_name}. &lt;br /&gt;
+Звернення не може бути оброблено. &lt;br /&gt;
+Причина відмови: ${Komment_Cnap} &lt;br /&gt;
+За наявності питянь можете звернутись за телефоном: ${sPhoneOrgan}.&lt;br /&gt;
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan}.&lt;br /&gt;
+${sAddress}.&lt;br /&gt;
+${sWorkTime}.&lt;br /&gt;
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>   
+    </serviceTask>
+    <sequenceFlow id="flow12" sourceRef="exclusivegateway2" targetRef="servicetask6">
+        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status2=='attr3_rish_ok'}]]></conditionExpression>
+    
+    </sequenceFlow>
     <sequenceFlow id="flow13" sourceRef="servicetask6" targetRef="endevent2"></sequenceFlow>
-    <serviceTask id="servicetask7" name="Отправка e-mail в разі готовності ордеру" activiti:delegateExpression="#{MailTaskWithAttachments}"></serviceTask>
-    <sequenceFlow id="flow14" sourceRef="exclusivegateway2" targetRef="servicetask7"></sequenceFlow>
+    <serviceTask id="servicetask7" name="Отправка e-mail в разі готовності ордеру" activiti:delegateExpression="#{MailTaskWithAttachments}">
+     <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression>Звернення на тему ${sPosluga_name}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+         <activiti:expression>[pattern/mail/_common_header.html]
+&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+&lt;p&gt;Ви подавали звернення на тему ${sPosluga_name}. &lt;br /&gt;
+Звернення оброблено. &lt;br /&gt;
+За наявності питянь можете звернутись за телефоном: ${sPhoneOrgan}.&lt;br /&gt;
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan}.&lt;br /&gt;
+${sAddress}.&lt;br /&gt;
+${sWorkTime}.&lt;br /&gt;
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>    
+    </serviceTask>
+    <sequenceFlow id="flow14" sourceRef="exclusivegateway2" targetRef="servicetask7">
+        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status2=='attr3_rish_ok'}]]></conditionExpression>
+        </sequenceFlow>
     <endEvent id="endevent3" name="End"></endEvent>
     <sequenceFlow id="flow15" sourceRef="servicetask7" targetRef="endevent3">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status=='attr2_bad'}
-]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status=='attr2_bad'}]]></conditionExpression>
     </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_Synelnykove_cnap_509">
