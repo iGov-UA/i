@@ -171,7 +171,7 @@ public class DebugCommonController {
             @RequestParam(value = "nID_ServiceData", required = false) Long nID_ServiceData,
             @RequestParam(value = "sDateStart", required = false) String sDateStart,
             @RequestParam(value = "sDateStop", required = false) String sDateStop,
-            @RequestParam(value = "nFreeDays", required = false) int nFreeDays,
+            @RequestParam(value = "nFreeDays", required = false, defaultValue = "3") int nFreeDays,
             @RequestParam(value = "sOperation", required = false) String sOperation) throws Exception {
         LOG.info("/test/action/testSheduleBuilderFlowSlots  - invoked");
 
@@ -180,7 +180,7 @@ public class DebugCommonController {
 
         //Maxline: TODO добавить исключения
         nID_Flow_ServiceData = (nID_Flow_ServiceData == null) ? 12L : nID_Flow_ServiceData; //_test_queue_cancel
-        nFreeDays = (nFreeDays == 0) ? 3 : nFreeDays;
+        //nFreeDays = (nFreeDays == 0) ? 3 : nFreeDays;
         nID_ServiceData = (nID_ServiceData == null) ? 358L : nID_ServiceData; //_test_queue_cancel
         //Long nID_ServiceData = 63L; //Видача/заміна паспорта громадянина для виїзду за кордон
 
