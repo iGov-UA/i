@@ -36,7 +36,7 @@ do
 			saCompile[0]="$2"
 			saCompile[1]="$3"
 			saCompile[2]="$4"
-			shift
+			shift 3
 			;;
 		*)
 			echo "bad option"
