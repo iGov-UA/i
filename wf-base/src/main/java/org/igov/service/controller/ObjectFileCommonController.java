@@ -1,9 +1,11 @@
 package org.igov.service.controller;
 
 import com.google.common.base.Charsets;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+
 import org.activiti.engine.*;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
@@ -36,6 +38,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -276,17 +279,23 @@ public class ObjectFileCommonController {
         HistoricTaskInstance historicTaskInstanceQuery = historyService
                 .createHistoricTaskInstanceQuery().taskId(taskId)
                 .singleResult();
-        String processInstanceId = historicTaskInstanceQuery
-                .getProcessInstanceId();
-        if (processInstanceId == null) {
-            throw new ActivitiObjectNotFoundException(
-                    "ProcessInstanceId for taskId '" + taskId + "' not found.",
-                    Attachment.class);
+        Attachment attachmentRequested = null;
+        if (historicTaskInstanceQuery != null){
+	        String processInstanceId = historicTaskInstanceQuery
+	                .getProcessInstanceId();
+	        if (processInstanceId == null) {
+	            throw new ActivitiObjectNotFoundException(
+	                    "ProcessInstanceId for taskId '" + taskId + "' not found.",
+	                    Attachment.class);
+	        }
+	        attachmentRequested = oActionTaskService.getAttachment(attachmentId, taskId,
+	                nFile, processInstanceId);
+        } else {
+        	attachmentRequested = taskService.getAttachment(attachmentId);
         }
 
         // Выбираем по процессу прикрепленные файлы
-        Attachment attachmentRequested = oActionTaskService.getAttachment(attachmentId, taskId,
-                nFile, processInstanceId);
+        
 
         InputStream attachmentStream = taskService
                 .getAttachmentContent(attachmentRequested.getId());

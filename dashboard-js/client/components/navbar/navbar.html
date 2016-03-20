@@ -13,7 +13,11 @@
 
         <ul class="nav navbar-nav" ng-show="!iGovNavbarHelper.areInstrumentsVisible" ng-init="iGovNavbarHelper.load()">
           <li class="navbar-search">
-            <input type="text" ng-keyup="searchInputKeyup($event)" ng-model="tasksSearch.value" placeholder="Пошук" />
+            <span class="find-field-tooltip">
+              <input type="text" ng-keyup="searchInputKeyup($event)" ng-model="tasksSearch.value" placeholder="Пошук" />
+              <span class="find-field-tooltip-text">Для пошуку введіть номер звернення або текст</span>
+            </span>
+
 
             <span class="label label-info" ng-if="tasksSearch.value && !tasksSearch.loading && tasksSearch.submited"
               ng-bind="tasksSearch.count"></span>
