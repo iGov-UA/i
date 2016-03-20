@@ -42,7 +42,7 @@
         <activiti:formProperty id="sDistr" name="Район" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <serviceTask id="servicetask0" name="Відправка документу в УкрДок" activiti:delegateExpression="#{CreateDocument_UkrDoc}" >
+    <serviceTask id="servicetask0" name="Відправка документу в УкрДок" >
       <extensionElements>
         <activiti:field name="sLoginAuthor">
           <activiti:string><![CDATA[EO180277SMV]]></activiti:string>
@@ -294,6 +294,7 @@ p {font-size: 14px;}
         <activiti:formProperty id="sStatusName_UkrDoc" name="Status UkrDoc" type="string"></activiti:formProperty>
         <activiti:formProperty id="sHead_Document_UkrDoc" name="Status UkrDoc" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody_Document_UkrDoc" name="Status UkrDoc" type="invisible"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="assignment" delegateExpression="${CreateDocument_UkrDoc}">
         <activiti:field name="sLoginAuthor">
           <activiti:string><![CDATA[EO180277SMV]]></activiti:string>
@@ -575,9 +576,9 @@ execution.setVariable('sDistr', per1)</script>
     </boundaryEvent>
     <endEvent id="endevent5" name="End"></endEvent>
     <sequenceFlow id="flow30" sourceRef="boundaryerror2" targetRef="endevent5"></sequenceFlow>
-    <sequenceFlow id="flow31" sourceRef="servicetask0" targetRef="servicetask2"></sequenceFlow>
+    <!--sequenceFlow id="flow31" sourceRef="servicetask0" targetRef="servicetask2"></sequenceFlow -->
     <sequenceFlow id="flow32" sourceRef="scripttask1" targetRef="servicetask11"></sequenceFlow>
-    <sequenceFlow id="flow33" sourceRef="servicetask11" targetRef="servicetask0"></sequenceFlow>
+    <sequenceFlow id="flow33" sourceRef="servicetask11" targetRef="servicetask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__test_UKR_DOC">
     <bpmndi:BPMNPlane bpmnElement="_test_UKR_DOC" id="BPMNPlane__test_UKR_DOC">
