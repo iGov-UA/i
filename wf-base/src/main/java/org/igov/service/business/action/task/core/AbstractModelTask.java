@@ -376,6 +376,8 @@ public abstract class AbstractModelTask {
                                     oInputStream);
 
                             if (oAttachment != null) {
+                            	LOG.info("Added attachment with ID {} to the task:process {}:{}",
+                            			oAttachment.getId(), oTask.getId(), oExecution.getProcessInstanceId());
                             	res.add(oAttachment);
                                 String nID_Attachment = oAttachment.getId();
                                 //LOG.info("(nID_Attachment={})", nID_Attachment);

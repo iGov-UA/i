@@ -53,7 +53,7 @@ public class SendObject_Corezoid extends Abstract_MailTaskCustom implements Task
             LOG.info("sendToCorezoid data:" + data);
             corezoid.sendToCorezoid(sID_Conveyour.getExpressionText(), data);
         } catch (Exception ex) {
-            LOG.error("SendObject_Corezoid soJSON: " + soJSON.getExpressionText(), ex);
+            LOG.error("SendObject_Corezoid soJSON error: " + soJSON.getExpressionText(), ex);
         }
     }
 
