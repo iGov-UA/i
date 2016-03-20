@@ -25,8 +25,7 @@ fallback ()
 		exit 1
 	fi
 	#Возвращаем на место основной конфиг прокси для Nginx.
-	rm -f /sybase/nginx/conf/sites/upstream.conf
-	cp -p /sybase/.configs/nginx/only_primary_upstream.conf /sybase/nginx/conf/sites/upstream.conf
+	cat /sybase/.configs/nginx/${sProject}_primary_upstream.conf /sybase/nginx/conf/sites/${sProject}_upstream.conf
 	sudo /sybase/nginx/sbin/nginx -s reload
 	sleep 5
 	sResponseCode=$(curl -o /dev/null --connect-timeout 5 --silent --head --write-out '%{http_code}\n' https://$sHost/)
