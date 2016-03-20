@@ -144,7 +144,7 @@ if [ $sProject == "wf-central"  ] || [ $sProject == "wf-region" ]; then
 		((nTimeout++))
 		sleep 1
 		echo "waiting for server startup $nTimeout"
-		if [ $nTimeout -ge 120 ]; then
+		if [ $nTimeout -ge 180 ]; then
 			echo "timeout reached"
 			#Откатываемся назад
 			echo "Fatal error! Executing fallback task..."
