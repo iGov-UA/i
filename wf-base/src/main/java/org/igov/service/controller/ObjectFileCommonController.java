@@ -1,9 +1,11 @@
 package org.igov.service.controller;
 
 import com.google.common.base.Charsets;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+
 import org.activiti.engine.*;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
@@ -36,6 +38,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -287,27 +290,51 @@ public class ObjectFileCommonController {
         // Выбираем по процессу прикрепленные файлы
         Attachment attachmentRequested = oActionTaskService.getAttachment(attachmentId, taskId,
                 nFile, processInstanceId);
+        String sFileName = attachmentRequested.getName();
+        String description = attachmentRequested.getDescription();
+        String type = attachmentRequested.getType();
 
-        InputStream attachmentStream = taskService
-                .getAttachmentContent(attachmentRequested.getId());
+        String id = attachmentRequested.getId();
+		return getAttachmentContent(httpResponse, sFileName, description, type, id);
+    }
+
+    @ApiOperation(value = "Загрузки прикрепленного к заявке файла из постоянной базы", notes = "##### Пример:\n "
+            + "https://test.igov.org.ua/wf/service/object/file/getAttachmentByID?nId=111111&sFileName=111.txt&sType=text&description=aaaa\n")
+    @RequestMapping(value = "/getAttachmentByID", method = RequestMethod.GET)
+    @Transactional
+    public
+    @ResponseBody
+    byte[] getAttachmentByID(
+            @ApiParam(value = "sFileName", required = true) @RequestParam(value = "sFileName") String sFileName,
+            @ApiParam(value = "description", required = true) @RequestParam(value = "sDescription") String sDescription,
+            @ApiParam(value = "sType", required = true) @RequestParam(value = "sType") String sType,
+            @ApiParam(value = "nId", required = true) @RequestParam(required = true, value = "nId") Integer nId,
+            HttpServletResponse httpResponse) throws IOException {
+    	return getAttachmentContent(httpResponse, sFileName, sDescription, sType, nId.toString());
+    }
+    
+	private byte[] getAttachmentContent(HttpServletResponse httpResponse,
+			String sFileName, String description, String type, String id) {
+		InputStream attachmentStream = taskService
+                .getAttachmentContent(id);
         if (attachmentStream == null) {
-            throw new ActivitiObjectNotFoundException("Attachment for taskId '"
-                    + taskId + "' doesn't have content associated with it.",
+            throw new ActivitiObjectNotFoundException("Attachment with ID '"
+                    + id + "' doesn't have content associated with it.",
                     Attachment.class);
         }
 
-        String sFileName = attachmentRequested.getName();
+        
         int nTo = sFileName.lastIndexOf(".");
         if (nTo >= 0) {
-            sFileName = "attach_" + attachmentRequested.getId() + "."
+            sFileName = "attach_" + id + "."
                     + sFileName.substring(nTo + 1);
         }
 
         // Вычитывем из потока массив байтов контента и помещаем параметры
         // контента в header
         VariableMultipartFile multipartFile = new VariableMultipartFile(
-                attachmentStream, attachmentRequested.getDescription(),
-                sFileName, attachmentRequested.getType());
+                attachmentStream, description,
+                sFileName, type);
         httpResponse.setHeader("Content-disposition", "attachment; filename="
                 + sFileName);
         httpResponse.setHeader("Content-Type", "application/octet-stream");
@@ -315,7 +342,7 @@ public class ObjectFileCommonController {
         httpResponse.setContentLength(multipartFile.getBytes().length);
 
         return multipartFile.getBytes();
-    }
+	}
 
     @ApiOperation(value = "Проверка ЭЦП на атачменте(файл) таски Activiti", notes = "##### Примеры:\n"
             + "https://test.region.igov.org.ua/wf/service/object/file/check_attachment_sign?nID_Task=7315073&nID_Attach=7315075\n"
