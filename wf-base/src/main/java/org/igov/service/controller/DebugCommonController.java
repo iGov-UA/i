@@ -31,6 +31,7 @@ import javax.mail.MessagingException;
 import java.io.IOException;
 import java.io.InputStream;
 import org.igov.service.business.flow.FlowService;
+import org.igov.service.business.flow.slot.ClearSlotsResult;
 import org.igov.service.business.flow.slot.Days;
 import org.joda.time.DateTime;
 
@@ -165,29 +166,61 @@ public class DebugCommonController {
     @ApiOperation(value = "/test/action/testSheduleBuilderFlowSlots", notes = "#####  DebugCommonController: описания нет\n")
     @RequestMapping(value = "/test/action/testSheduleBuilderFlowSlots", method = RequestMethod.GET)
     public @ResponseBody
-    void testSheduleBuilderFlowSlots() throws Exception {
-
-        DateTime oDateStart = DateTime.now().withTimeAtStartOfDay();
-        DateTime oDateEnd = oDateStart.plusDays(10);
+    void testSheduleBuilderFlowSlots(
+            @RequestParam(value = "sDateStart", required = false) String sDateStart,
+            @RequestParam(value = "sDateStop", required = false) String sDateStop,
+            @RequestParam(value = "sOperation", required = false) String sOperation
+    ) throws Exception {
         LOG.info("/test/action/testSheduleBuilderFlowSlots  - invoked");
+
+        DateTime oDateStart;
+        DateTime oDateEnd;
+
+        //Maxline: TODO добавить исключения
+        if (sDateStart == null || sDateStart.equals("")) {
+            //sDateStart = "2016-05-12 00:00:00.000";
+            oDateStart = DateTime.now().withTimeAtStartOfDay();
+        } else {
+            oDateStart = oFlowService.parseJsonDateTimeSerializer(sDateStart);
+        }
+
+        int nDays = 5;
+        if (sDateStop == null || sDateStop.equals("")) {
+            //sDateStop = "2016-05-12 00:00:00.000";
+            oDateEnd = oDateStart.plusDays(nDays);
+
+        } else {
+            oDateEnd = oFlowService.parseJsonDateTimeSerializer(sDateStop);
+        }
+
+        LOG.info("sDateStart = {}", sDateStart);
+        LOG.info("sDateStop = {}", sDateStop);
         LOG.info("oDateStart = {}", oDateStart);
         LOG.info("oDateEnd = {}", oDateEnd);
 
         Long nID_Service = null; //176L;
         Long nID_ServiceData = 63L; //null;
+        Long nID_Flow_ServiceData = 12L; //_test_queue_cancel
         String sID_BP = null;
         Long nID_SubjectOrganDepartment = null;
+
         boolean bAll = true;
         int nFreeDays = 3;
-        
         Days res = oFlowService.getFlowSlots(nID_Service, nID_ServiceData, sID_BP, nID_SubjectOrganDepartment,
-               oDateStart, oDateEnd, bAll, nFreeDays);
-        
-        //oFlowService.buildFlowSlots(nID_Flow_ServiceData, startDate, stopDate);
-
+                oDateStart, oDateEnd, bAll, nFreeDays);
         LOG.info("Days = {}", res);
-        
-        LOG.info("/test/action/testSheduleBuilderFlowSlots  - exit4");
+
+        switch (sOperation) {
+            case "built":
+                oFlowService.buildFlowSlots(nID_Flow_ServiceData, oDateStart, oDateEnd);
+                break;
+            case "clear":
+                boolean bWithTickets = false;
+                oFlowService.clearFlowSlots(nID_Flow_ServiceData, oDateStart, oDateEnd, bWithTickets);
+                break;
+        }
+
+        LOG.info("/test/action/testSheduleBuilderFlowSlots  - exit1");
         //runtimeService.deleteProcessInstance(processInstanceID, sReason);
     }
 

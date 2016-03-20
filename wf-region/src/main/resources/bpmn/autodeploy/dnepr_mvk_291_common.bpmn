@@ -522,7 +522,7 @@
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="hideValidateFields3" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common3.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sAnswer" name="Канал відповіді" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAnswerChannel" name="Канал відповіді" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -1073,7 +1073,7 @@
         <activiti:formProperty id="sReason" name="Опишіть суть звернення" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sAdditionalInformation" name="Додаткова інформація" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sRegistrationNumberRGA" name="Реєстраційний номер ОДА" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAnswer" name="Канал відповіді" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAnswerChannel" name="Канал відповіді" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="asStatus" name="Обробка звернення" type="enum">
           <activiti:value id="sEnumSendEmail" name="Відправити швидку відповідь на E-mail"></activiti:value>
           <activiti:value id="sEnumSendInEmergency" name="Відправити до Аварійної служби"></activiti:value>
@@ -1793,7 +1793,7 @@ execution.setVariable('sAnswer', res)</script>
         <activiti:formProperty id="sReason" name="Опишіть суть звернення" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sAdditionalInformation" name="Додаткова інформація" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sRegistrationNumberRGA" name="Реєстраційний номер ОДА" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAnswer" name="Канал відповіді" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAnswerChannel" name="Канал відповіді" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="asStatus" name="Обробка звернення" type="enum">
           <activiti:value id="sOperator_1" name="Оператор 1"></activiti:value>
           <activiti:value id="sOperator_2" name="Оператор 2"></activiti:value>
@@ -1824,12 +1824,159 @@ execution.setVariable('sAnswer', res)</script>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow34" sourceRef="usertask4" targetRef="usertask1"></sequenceFlow>
-    <userTask id="usertask5" name="Обробка Дніпрогаз канцелярія"></userTask>
+    <userTask id="usertask5" name="Обробка Дніпрогаз канцелярія">
+      <extensionElements>
+        <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asDistrict" name="Район проживання" type="enum" writable="false">
+          <activiti:value id="sEnumAnd" name="Амур-Нижньодніпровський"></activiti:value>
+          <activiti:value id="sEnumBab" name="Шевченківський (Бабушкінський)"></activiti:value>
+          <activiti:value id="sEnumZhovt" name="Соборний (Жовтневий)"></activiti:value>
+          <activiti:value id="sEnumIndust" name="Індустріальний"></activiti:value>
+          <activiti:value id="sEnumKirov" name="Центральний (Кіровський)"></activiti:value>
+          <activiti:value id="sEnumKrasn" name="Чечелівський (Красногвардійський)"></activiti:value>
+          <activiti:value id="sEnumLenin" name="Новокодацький (Ленінський)"></activiti:value>
+          <activiti:value id="sEnumSamar" name="Самарський"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sAdress" name="Адреса реєстрації заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="oDateToday" name="Дата подачи заяви" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asTop18" name="Тема звернення" type="enum" writable="false">
+          <activiti:value id="sEnumTop182" name="Установка (перевірка, заміна) лічильника"></activiti:value>
+          <activiti:value id="sEnumTop183" name="Відсутність газифікації"></activiti:value>
+          <activiti:value id="sEnumTop184" name="Газифікація будинку"></activiti:value>
+          <activiti:value id="sEnumTop185" name="Інши питання"></activiti:value>
+          <activiti:value id="sEnumTop186" name="Підключення газу"></activiti:value>
+          <activiti:value id="sEnumTop187" name="Ремонт (заміни) газової колоки"></activiti:value>
+          <activiti:value id="sEnumTop188" name="Фінансування робіт"></activiti:value>
+          <activiti:value id="sEnumTop189" name="Ремонт газового обладнення"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sReason" name="Суть звернення" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateRegistration" name="Дата реєстрації звернення" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asStatus" name="Обробка звернення" type="enum" required="true">
+          <activiti:value id="sEnumDep1" name="Виробничо-технічний відділ"></activiti:value>
+          <activiti:value id="sEnumDep2" name="Управління обліку та балансів"></activiti:value>
+          <activiti:value id="sEnumDep3" name="Юридичне управління"></activiti:value>
+          <activiti:value id="sEnumDep4" name="Канцелярія"></activiti:value>
+          <activiti:value id="sEnumDep5" name="ВЕС – 1"></activiti:value>
+          <activiti:value id="sEnumDep6" name="ВЕС – 2"></activiti:value>
+          <activiti:value id="sEnumDep7" name="ВЕС – 3"></activiti:value>
+          <activiti:value id="sEnumDep8" name="ВЕУ – 4"></activiti:value>
+          <activiti:value id="sEnumDep9" name="Управління інформаційних систем та технологій"></activiti:value>
+          <activiti:value id="sEnumExit" name="Відмовити громадянину"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDecisionComment" name="Якщо ви відмовляєте заявнику у реєстрації звернення, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sDateControl" name="Контрольна дата (у форматі ДД/ММ/РРРР)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAdminComment" name="Коментар для відділу" type="textArea" default="Прошу розглянути. Підготуйте відповідь згідно з чинним законодавством."></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression>${nFile1}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
     <sequenceFlow id="flow35" sourceRef="exclusivegateway1" targetRef="usertask5"></sequenceFlow>
-    <userTask id="usertask6" name="Обробка Дніпрогаз відділ"></userTask>
+    <userTask id="usertask6" name="Обробка Дніпрогаз відділ">
+        <extensionElements>
+        <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asDistrict" name="Район проживання" type="enum" writable="false">
+          <activiti:value id="sEnumAnd" name="Амур-Нижньодніпровський"></activiti:value>
+          <activiti:value id="sEnumBab" name="Шевченківський (Бабушкінський)"></activiti:value>
+          <activiti:value id="sEnumZhovt" name="Соборний (Жовтневий)"></activiti:value>
+          <activiti:value id="sEnumIndust" name="Індустріальний"></activiti:value>
+          <activiti:value id="sEnumKirov" name="Центральний (Кіровський)"></activiti:value>
+          <activiti:value id="sEnumKrasn" name="Чечелівський (Красногвардійський)"></activiti:value>
+          <activiti:value id="sEnumLenin" name="Новокодацький (Ленінський)"></activiti:value>
+          <activiti:value id="sEnumSamar" name="Самарський"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sAdress" name="Адреса реєстрації заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asTop18" name="Тема звернення" type="enum" writable="false">
+          <activiti:value id="sEnumTop182" name="Установка (перевірка, заміна) лічильника"></activiti:value>
+          <activiti:value id="sEnumTop183" name="Відсутність газифікації"></activiti:value>
+          <activiti:value id="sEnumTop184" name="Газифікація будинку"></activiti:value>
+          <activiti:value id="sEnumTop185" name="Інши питання"></activiti:value>
+          <activiti:value id="sEnumTop186" name="Підключення газу"></activiti:value>
+          <activiti:value id="sEnumTop187" name="Ремонт (заміни) газової колоки"></activiti:value>
+          <activiti:value id="sEnumTop188" name="Фінансування робіт"></activiti:value>
+          <activiti:value id="sEnumTop189" name="Ремонт газового обладнення"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sReason" name="Суть звернення" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="oDateToday" name="Дата подачи заяви" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdminComment" name="Коментар для відділу" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateControl" name="Контрольна дата (у форматі ДД/ММ/РРРР)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDepComment" name="Коментар відділу" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="nFileAnswer" name="Підготуйте відповідь та завантажте в файл" type="file" default=" "></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression>${nFile1},${nFileAnswer}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
     <sequenceFlow id="flow36" sourceRef="usertask5" targetRef="usertask6"></sequenceFlow>
     <sequenceFlow id="flow37" sourceRef="exclusivegateway5" targetRef="usertask4"></sequenceFlow>
-    <userTask id="usertask7" name="Перевірка відповіді"></userTask>
+    <userTask id="usertask7" name="Перевірка відповіді">
+      <extensionElements>
+        <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asDistrict" name="Район проживання" type="enum" writable="false">
+          <activiti:value id="sEnumAnd" name="Амур-Нижньодніпровський"></activiti:value>
+          <activiti:value id="sEnumBab" name="Шевченківський (Бабушкінський)"></activiti:value>
+          <activiti:value id="sEnumZhovt" name="Соборний (Жовтневий)"></activiti:value>
+          <activiti:value id="sEnumIndust" name="Індустріальний"></activiti:value>
+          <activiti:value id="sEnumKirov" name="Центральний (Кіровський)"></activiti:value>
+          <activiti:value id="sEnumKrasn" name="Чечелівський (Красногвардійський)"></activiti:value>
+          <activiti:value id="sEnumLenin" name="Новокодацький (Ленінський)"></activiti:value>
+          <activiti:value id="sEnumSamar" name="Самарський"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sAdress" name="Адреса реєстрації заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="oDateToday" name="Дата подачи заяви" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asTop18" name="Тема звернення" type="enum" writable="false">
+          <activiti:value id="sEnumTop182" name="Установка (перевірка, заміна) лічильника"></activiti:value>
+          <activiti:value id="sEnumTop183" name="Відсутність газифікації"></activiti:value>
+          <activiti:value id="sEnumTop184" name="Газифікація будинку"></activiti:value>
+          <activiti:value id="sEnumTop185" name="Інши питання"></activiti:value>
+          <activiti:value id="sEnumTop186" name="Підключення газу"></activiti:value>
+          <activiti:value id="sEnumTop187" name="Ремонт (заміни) газової колоки"></activiti:value>
+          <activiti:value id="sEnumTop188" name="Фінансування робіт"></activiti:value>
+          <activiti:value id="sEnumTop189" name="Ремонт газового обладнення"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sReason" name="Суть звернення" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateRegistration" name="Дата реєстрації звернення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDepComment" name="Коментар відділу" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asStatus" name="Відправити відповідь громадянину або у відділ на доопрацювання" type="enum">
+          <activiti:value id="sEnumAnswer" name="Відправити громадянину відповідь"></activiti:value>
+          <activiti:value id="sEnumDep1" name="Виробничо-технічний відділ"></activiti:value>
+          <activiti:value id="sEnumDep2" name="Управління обліку та балансів"></activiti:value>
+          <activiti:value id="sEnumDep3" name="Юридичне управління"></activiti:value>
+          <activiti:value id="sEnumDep4" name="Канцелярія"></activiti:value>
+          <activiti:value id="sEnumDep5" name="ВЕС – 1"></activiti:value>
+          <activiti:value id="sEnumDep6" name="ВЕС – 2"></activiti:value>
+          <activiti:value id="sEnumDep7" name="ВЕС – 3"></activiti:value>
+          <activiti:value id="sEnumDep8" name="ВЕУ – 4"></activiti:value>
+          <activiti:value id="sEnumDep9" name="Управління інформаційних систем та технологій"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sAdminComment" name="Коментар, який Ви залишили для відділу" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sDateControl" name="Контрольна дата (у форматі ДД/ММ/РРРР)" type="string"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression>${nFileAnswer}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
     <sequenceFlow id="flow38" sourceRef="usertask6" targetRef="usertask7"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway5" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow39" sourceRef="usertask7" targetRef="exclusivegateway5"></sequenceFlow>
@@ -1852,21 +1999,16 @@ execution.setVariable('sAnswer', res)</script>
           <activiti:value id="sEnumSamar" name="Самарський"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Адреса реєстрації заявника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asTopic" name="Тема звернення" type="enum" writable="false">
-          <activiti:value id="sEnumTop1" name="Загальні питання електропостачання"></activiti:value>
-          <activiti:value id="sEnumTop2" name="Установка (перевірка, заміна) лічильника"></activiti:value>
-          <activiti:value id="sEnumTop3" name="Відсутність електропостачання"></activiti:value>
-          <activiti:value id="sEnumTop4" name="Неякісне електропостачання"></activiti:value>
-          <activiti:value id="sEnumTop5" name="Ремонт електричного обладнення"></activiti:value>
-          <activiti:value id="sEnumTop6" name="Інші питання елекстропостачання"></activiti:value>
+        <activiti:formProperty id="asTop19" name="Тема звернення" type="enum" required="true">
+          <activiti:value id="sEnumTop191" name="Загальні питання електропостачання"></activiti:value>
+          <activiti:value id="sEnumTop192" name="Установка (перевірка, заміна) лічильника"></activiti:value>
+          <activiti:value id="sEnumTop193" name="Відсутність електропостачання"></activiti:value>
+          <activiti:value id="sEnumTop194" name="Неякісне електропостачання"></activiti:value>
+          <activiti:value id="sEnumTop195" name="Ремонт електричного обладнення"></activiti:value>
+          <activiti:value id="sEnumTop196" name="Інші питання"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sReason" name="Суть звернення" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration" name="Дата реєстрації звернення" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asStatus" name="Обробка звернення" type="enum" required="true">
-          <activiti:value id="sEnumAnsw" name="Відповісти громадянину на звернення"></activiti:value>
-          <activiti:value id="sEnumExit" name="Відмовити громадянину"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sDecisionComment" name="Якщо ви відмовляєте заявнику у реєстрації звернення, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
         <activiti:formProperty id="nFileAnswer" name="Завантажте файл з відповідю" type="file" default=" "></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">

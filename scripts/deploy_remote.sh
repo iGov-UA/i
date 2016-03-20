@@ -140,12 +140,13 @@ if [ $sProject == "wf-central"  ] || [ $sProject == "wf-region" ]; then
 	sleep 15
 
 	nTimeout=0
-	until grep -q "FrameworkServlet 'dispatcher': initialization completed in" /sybase/tomcat_${sProject}_double/logs/catalina.out || [ $nTimeout -eq 120 ]; do
+	until grep -q "FrameworkServlet 'dispatcher': initialization completed in" /sybase/tomcat_${sProject}_double/logs/catalina.out || [ $nTimeout -eq 180 ]; do
 		((nTimeout++))
 		sleep 1
 		echo "waiting for server startup $nTimeout"
-		if [ $nTimeout -ge 120 ]; then
+		if [ $nTimeout -ge 180 ]; then
 			echo "timeout reached"
+			grep -B 3 -A 2 ERROR /sybase/tomcat_${sProject}_double/logs/catalina.out
 			#Откатываемся назад
 			echo "Fatal error! Executing fallback task..."
 			#Убиваем процесс. Нет смысла ждать его корректной остановки.
@@ -165,6 +166,7 @@ if [ $sProject == "wf-central"  ] || [ $sProject == "wf-region" ]; then
 	
 	#Проверяем на наличие ошибок вторичный инстанс
 	if grep ERROR /sybase/tomcat_${sProject}_double/logs/catalina.out | grep -v log4j | grep -v stopServer; then
+		grep -B 3 -A 2 ERROR /sybase/tomcat_${sProject}_double/logs/catalina.out
 		#Откатываемся назад
 		echo "Fatal error! Executing fallback task..."
 		#Убиваем процесс. Нет смысла ждать его корректной остановки.
@@ -215,6 +217,7 @@ if [ $sProject == "wf-central"  ] || [ $sProject == "wf-region" ]; then
 			
 		#Проверяем на наличие ошибок вторичный инстанс
 		if grep ERROR /sybase/tomcat_${sProject}/logs/catalina.out | grep -v log4j | grep -v stopServer; then
+			grep -B 3 -A 2 ERROR /sybase/tomcat_${sProject}/logs/catalina.out
 			#Откатываемся назад
 			fallback
 		else

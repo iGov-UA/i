@@ -176,12 +176,15 @@ public class AccessCommonController {
 
     // -------------- AccessServiceLoginRoles --------------------------------------------------------------------------
 
+    @ApiOperation(value = "Получить массив ролей логина")
     @RequestMapping(value = "/getAccessServiceLoginRoles", method = RequestMethod.GET)
     public ResponseEntity getAccessServiceLoginRoles (
             @ApiParam(value = "Строка логин пользователя", required = true) @RequestParam(value = "sLogin") String sLogin) {
         return JsonRestUtils.toJsonResponse(oAccessService.getAccessServiceLoginRoles(sLogin));
     }
 
+    @ApiOperation(value = "Установить роль логина")
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Результирующий обьект роли логина")})
     @RequestMapping(value = "/setAccessServiceLoginRole", method = {RequestMethod.POST, RequestMethod.GET})
     public ResponseEntity setAccessServiceLoginRole (
             @ApiParam(value = "номер-ИД", required = false) @RequestParam(value = "nID", required = false) Long nID,
@@ -190,6 +193,8 @@ public class AccessCommonController {
         return JsonRestUtils.toJsonResponse(oAccessService.setAccessServiceLoginRole(nID, sLogin, nID_AccessServiceRole));
     }
 
+    @ApiOperation(value = "Удаление роли с логина", notes = "Удаление происходит либо по nID связки, либо по паре" +
+            "значений sLogin и nID_AccessServiceRole.")
     @RequestMapping(value = "/removeAccessServiceLoginRole", method = {RequestMethod.POST, RequestMethod.GET})
     public ResponseEntity removeAccessServiceLoginRole (
             @ApiParam(value = "номер-ИД связки", required = false) @RequestParam(value = "nID", required = false) Long nID,
@@ -210,12 +215,17 @@ public class AccessCommonController {
 
     // -------------- AccessServiceRole --------------------------------------------------------------------------------
 
+    @ApiOperation(value = "Получить массив объеков ролей с правами в виде дерева", notes = "Если задан" +
+        " nID_AccessServiceRole то возвращает права для этой роли, если нет - то для всех ролей.")
     @RequestMapping(value = "/getAccessServiceRoleRights", method = RequestMethod.GET)
     public ResponseEntity getAccessServiceRoleRights (
-            @ApiParam(value = "номер-ИД роли", required = true) @RequestParam(value = "nID_AccessServiceRole") Long nID_AccessServiceRole) {
+            @ApiParam(value = "номер-ИД роли", required = false) @RequestParam(value = "nID_AccessServiceRole", required = false) Long nID_AccessServiceRole) {
         return JsonRestUtils.toJsonResponse(oAccessService.getAccessServiceRoleRights(nID_AccessServiceRole));
     }
 
+    @ApiOperation(value = "Добавить/обновить объект-роли",
+            notes="Если задан nID, то обновляет обьект роли, если нет - создает новый")
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Результирующий обьект роли")})
     @RequestMapping(value = "/setAccessServiceRole", method = {RequestMethod.POST, RequestMethod.GET})
     public ResponseEntity setAccessServiceRole (
             @ApiParam(value = "номер-ИД роли", required = false) @RequestParam(value = "nID", required = false) Long nID,
@@ -223,6 +233,7 @@ public class AccessCommonController {
         return JsonRestUtils.toJsonResponse(oAccessService.setAccessServiceRole(nID, sName));
     }
 
+    @ApiOperation(value = "Удалить объект-роли")
     @RequestMapping(value = "/removeAccessServiceRole", method = {RequestMethod.POST, RequestMethod.GET})
     public ResponseEntity removeAccessServiceRole (
             @ApiParam(value = "номер-ИД роли", required = true) @RequestParam(value = "nID") Long nID) {
@@ -232,6 +243,9 @@ public class AccessCommonController {
 
     // -------------- AccessServiceRoleRight ---------------------------------------------------------------------------
 
+    @ApiOperation(value = "Добавить/обновить объект-связку роли на право доступа к сервису",
+            notes="Если задан nID, то обновляет обьект связку роли на право, если нет - создает новый")
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Результирующий обьект-связку роли на право доступа к сервису")})
     @RequestMapping(value = "/setAccessServiceRoleRight", method = {RequestMethod.POST, RequestMethod.GET})
     public ResponseEntity setAccessServiceRoleRight (
             @ApiParam(value = "номер-ИД связки права и роли", required = false) @RequestParam(value = "nID", required = false) Long nID,
@@ -241,6 +255,7 @@ public class AccessCommonController {
                 nID_AccessServiceRole, nID_AccessServiceRight));
     }
 
+    @ApiOperation(value = "Удалить объект-связку роли на право доступа к сервису")
     @RequestMapping(value = "/removeAccessServiceRoleRight", method = {RequestMethod.POST, RequestMethod.GET})
     public ResponseEntity removeAccessServiceRoleRight (
             @ApiParam(value = "номер-ИД связки роли и права", required = true) @RequestParam(value = "nID") Long nID) {
@@ -251,8 +266,10 @@ public class AccessCommonController {
 
     // -------------- AccessServiceRoleRightInclude --------------------------------------------------------------------
 
-
+    @ApiOperation(value = "Добавить/обновить объект-связку включение одного права, другим правом",
+            notes="Если задан nID, то обновляет обьект-связку, если нет - создает новый")
     @RequestMapping(value = "/setAccessServiceRoleRightInclude", method = {RequestMethod.POST, RequestMethod.GET})
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Результирующий обьект-связку включение одного права, другим правом")})
     public ResponseEntity setAccessServiceRoleRightInclude (
             @ApiParam(value = "номер-ИД связки права и включенного права", required = false) @RequestParam(value = "nID", required = false) Long nID,
             @ApiParam(value = "Строка логин пользователя", required = true) @RequestParam(value = "nID_AccessServiceRole", required = true) Long nID_AccessServiceRole,
@@ -261,6 +278,7 @@ public class AccessCommonController {
                 nID_AccessServiceRole, nID_AccessServiceRole_Include));
     }
 
+    @ApiOperation(value = "Удалить объект-связку включение одного права, другим правом")
     @RequestMapping(value = "/removeAccessServiceRoleRightInclude", method = {RequestMethod.POST, RequestMethod.GET})
     public ResponseEntity removeAccessServiceRoleRightInclude (
             @ApiParam(value = "номер-ИД связки права и права", required = true) @RequestParam(value = "nID") Long nID) {
@@ -270,6 +288,7 @@ public class AccessCommonController {
 
     // -------------- AccessServiceRight -------------------------------------------------------------------------------
 
+    @ApiOperation(value = "Получить массив объектов-прав на сервис по фильтру")
     @RequestMapping(value = "/getAccessServiceRights", method = RequestMethod.GET)
     public ResponseEntity getAccessServiceRoleRights (
             @ApiParam(value = "номер-ИД права", required = false) @RequestParam(value = "nID", required = false) Long nID,
@@ -279,7 +298,10 @@ public class AccessCommonController {
         return JsonRestUtils.toJsonResponse(oAccessService.getAccessServiceRights(nID, sService, saMethod, sHandlerBean));
     }
 
+    @ApiOperation(value = "Добавить/обновить объект-права на сервис",
+            notes="Если задан nID, то обновляет обьект-право, если нет - создает новый")
     @RequestMapping(value = "/setAccessServiceRight", method = {RequestMethod.POST, RequestMethod.GET})
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Результирующий объект-права на сервис")})
     public ResponseEntity setAccessServiceRight (
             @ApiParam(value = "номер-ИД права", required = true) @RequestParam(value = "nID") Long nID,
             @ApiParam(value = "строка-название", required = true) @RequestParam(value = "sName", required = true) String sName,
@@ -300,6 +322,7 @@ public class AccessCommonController {
         return JsonRestUtils.toJsonResponse(oAccessService.setAccessServiceRight(accessRightVO));
     }
 
+    @ApiOperation(value = "Удалить объект-право на сервис")
     @RequestMapping(value = "/removeAccessServiceRight", method = {RequestMethod.POST, RequestMethod.GET})
     public ResponseEntity removeAccessServiceRight (
             @ApiParam(value = "номер-ИД права", required = true) @RequestParam(value = "nID") Long nID) {
