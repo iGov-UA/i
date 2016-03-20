@@ -33,6 +33,8 @@ public class SendObject_Corezoid extends Abstract_MailTaskCustom implements Task
     @Override
     public void notify(DelegateTask delegateTask) {
         try {
+            LOG.info("delegateTask: getVariable: " + delegateTask.getVariable("sPhoneCall_SubjectContact_Client") 
+                    + " getVariableLocal: " + delegateTask.getVariableLocal("sPhoneCall_SubjectContact_Client"));
             LOG.info("!!!!!!!!!!!!!!!!!SendObject_Corezoid soJSON_Result: " + soJSON.getExpressionText());
             //String sJSON = getStringFromFieldExpression(this.soJSON, delegateTask.getExecution());
             String sJSON_Result = replaceTags(this.soJSON.getExpressionText(), delegateTask.getExecution());
