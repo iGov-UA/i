@@ -33,6 +33,7 @@ import java.io.InputStream;
 import org.igov.service.business.flow.FlowService;
 import org.igov.service.business.flow.slot.ClearSlotsResult;
 import org.igov.service.business.flow.slot.Days;
+import org.igov.service.business.flow.slot.Day;
 import org.joda.time.DateTime;
 
 /**
@@ -172,6 +173,7 @@ public class DebugCommonController {
             @RequestParam(value = "sDateStart", required = false) String sDateStart,
             @RequestParam(value = "sDateStop", required = false) String sDateStop,
             @RequestParam(value = "nFreeDays", required = false, defaultValue = "3") int nFreeDays,
+            @RequestParam(value = "nDays", required = false, defaultValue = "5") int nDays,
             @RequestParam(value = "sOperation", required = false) String sOperation) throws Exception {
         LOG.info("/test/action/testSheduleBuilderFlowSlots  - invoked");
 
@@ -194,13 +196,13 @@ public class DebugCommonController {
             sOperation = "";
         }
 
-        int nDays = 5;
-        if (sDateStop == null || sDateStop.equals("")) {
-            //sDateStop = "2016-05-12 00:00:00.000";
+        
+//        if (sDateStop == null || sDateStop.equals("")) {
+//            //sDateStop = "2016-05-12 00:00:00.000";
             oDateEnd = oDateStart.plusDays(nDays);
-        } else {
-            oDateEnd = oFlowService.parseJsonDateTimeSerializer(sDateStop);
-        }
+//        } else {
+//            oDateEnd = oFlowService.parseJsonDateTimeSerializer(sDateStop);
+//        }
 
         LOG.info("sDateStart = {}", sDateStart);
         LOG.info("sDateStop = {}", sDateStop);
@@ -221,6 +223,10 @@ public class DebugCommonController {
         switch (sOperation) {
             case "checkAndBuild":
                 LOG.info("Days.size() = {}", res.getaDay().size());
+                for (Day day : res.getaDay()) {
+                    LOG.info("Day = {}, isbHasFree = {}", day.getsDate(), day.isbHasFree());
+                }
+
                 break;
             case "build":
                 oFlowService.buildFlowSlots(nID_Flow_ServiceData, oDateStart, oDateEnd);
