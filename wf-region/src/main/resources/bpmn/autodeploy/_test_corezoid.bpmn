@@ -12,8 +12,8 @@
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний телефон" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAdditionalPhone" name="Додатковий телефон" type="string"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAdditionalPhone" name="Додатковий телефон" type="string" default="+380"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string"></activiti:formProperty>
         <activiti:formProperty id="asSpecialStatus" name="Маєте особливий статус" type="enum" required="true">
           <activiti:value id="sEnumStatusYes" name="Так"></activiti:value>
@@ -528,20 +528,20 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Тест корезоид]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
-<p> Ваше звернення до міської ради було зареєстровано у системі.<br/>
-Повідомлення про результат послуги буде спрямоване на Ваш e-mail.</p>
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+&lt;p&gt; Ваше звернення до міської ради було зареєстровано у системі.&lt;br/&gt;
+Повідомлення про результат послуги буде спрямоване на Ваш e-mail.&lt;/p&gt;
 [pattern/mail/_common_signature_start.html]
-Канцелярія Дніпропетровської міської ради,<br />
+Канцелярія Дніпропетровської міської ради,&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -554,7 +554,7 @@
     <sequenceFlow id="flow3" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <userTask id="usertask1" name="Обробка" activiti:candidateGroups="sales">
       <extensionElements>
-        <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" variable="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
@@ -1062,7 +1062,7 @@
         <activiti:formProperty id="sReason" name="Суть звернення" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sAdditionalInformation" name="Додаткова інформація" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sRegistrationNumberRGA" name="Реєстраційний номер ОДА" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneCall_SubjectContact_Client" name="Телефон, с которого поступил звонок" type="string" default="380688541954"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneCall_SubjectContact_Client" name="Телефон, с которого поступил звонок" type="string" variable="380688541954"></activiti:formProperty>
         <activiti:formProperty id="sAnswerChannel" name="Канал відповіді" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAnswer_UkrDoc" name="Відповідь УкрДок" type="string" default="Відповідь громадянину УкрДок"></activiti:formProperty>
         <activiti:formProperty id="nDaysRemain" name="Ориентировочный срок ответа на обращение (дней)" type="long" default="12"></activiti:formProperty>
@@ -1071,17 +1071,17 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
+            <activiti:expression>${nFile1}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${SendObject_Corezoid}">
           <activiti:field name="soJSON">
-            <activiti:expression><![CDATA[{"sFIO_Subject_Client":"value{[clFio]}","sPhonePrivate_SubjectContact_Client":"{[phone]}","sPhoneCall_SubjectContact_Client":"value{[sPhoneCall_SubjectContact_Client]}","sID_Order":"[sID_Order]","sDate_Order":"[sDateCreate]","sAddress":"[sAdressProbl]","sCategory":"[asKindTr]","sType":"[asTypeTr]","sHead":"[asTopHead]","sHeadSub":"[asTop1]","sBody":"[sReason]","nDaysRemain":"[nDaysRemain]","sAnswer_UkrDoc":"[sAnswer_UkrDoc]"}]]></activiti:expression>
+            <activiti:expression>{"sFIO_Subject_Client":"value{[clFio]}","sPhonePrivate_SubjectContact_Client":"{[phone]}","sPhoneCall_SubjectContact_Client":"[value]{[sPhoneCall_SubjectContact_Client]}","sID_Order":"[sID_Order]","sDate_Order":"[sDateCreate]","sAddress":"[sAdressProbl]","sCategory":"[asKindTr]","sType":"[asTypeTr]","sHead":"[asTopHead]","sHeadSub":"[asTop1]","sBody":"[sReason]","nDaysRemain":"[nDaysRemain]","sAnswer_UkrDoc":"[sAnswer_UkrDoc]"}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${SendObject_Corezoid}">
           <activiti:field name="sID_Conveyour">
-            <activiti:expression><![CDATA[93682]]></activiti:expression>
+            <activiti:expression>93682</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
