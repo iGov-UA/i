@@ -87,7 +87,7 @@
     <sequenceFlow id="flow28" name="відхилення" sourceRef="exclusivegateway1" targetRef="servicetask8">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${workerDecision=='decline'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask8" name="Лист про відмову">
+    <serviceTask id="servicetask8" name="Лист про відмову" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
           <extensionElements>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
@@ -421,7 +421,7 @@
    	<sequenceFlow id="flow30" name="Рішення негативне" sourceRef="exclusivegateway4" targetRef="servicetask9">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${aResultCommition}=={'no'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask9" name="Лист про відмову">
+    <serviceTask id="servicetask9" name="Лист про відмову" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
           <extensionElements>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
