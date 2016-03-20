@@ -148,28 +148,28 @@ build_base ()
 	if [ "$bSkipTest" ==  "true" ]; then
 		local sBuildArg="-DskipTests=true"
 	fi
-#	for sArrComponent in "${saCompile[@]}"
-#	do
-#		case "$sArrComponent" in
-#		storage-static)
-#			echo  "will build $sArrComponent"
-#			cd storage-static
-#			mvn -P $sVersion clean install $sBuildArg
-#			cd ..
-#			;;
-#		storage-temp)
-#			echo  "will build $sArrComponent"
-#			cd storage-temp
-#			mvn -P $sVersion clean install $sBuildArg
-#			cd ..
-#			;;
-#		wf-base)
-#			echo  "will build $sArrComponent"
-#			cd wf-base
-#			mvn -P $sVersion clean install site $sBuildArg -Ddependency.locations.enabled=false
-#			cd ..
-#			;;
-#		"*")
+	for sArrComponent in "${saCompile[@]}"
+	do
+		case "$sArrComponent" in
+		storage-static)
+			echo  "will build $sArrComponent"
+			cd storage-static
+			mvn -P $sVersion clean install $sBuildArg
+			cd ..
+			;;
+		storage-temp)
+			echo  "will build $sArrComponent"
+			cd storage-temp
+			mvn -P $sVersion clean install $sBuildArg
+			cd ..
+			;;
+		wf-base)
+			echo  "will build $sArrComponent"
+			cd wf-base
+			mvn -P $sVersion clean install site $sBuildArg -Ddependency.locations.enabled=false
+			cd ..
+			;;
+		"*")
 			echo "Build all base modules"
 			cd storage-static
 			mvn -P $sVersion clean install $sBuildArg
@@ -180,9 +180,9 @@ build_base ()
 			cd wf-base
 			mvn -P $sVersion clean install site $sBuildArg -Ddependency.locations.enabled=false
 			cd ..
-#		   ;;
-#		esac
-#	done
+		   ;;
+		esac
+	done
 }
 
 build_central ()
