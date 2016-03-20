@@ -372,7 +372,7 @@ public class CreateDocument_UkrDoc extends AbstractModelTask implements JavaDele
 				List<String> attachId = new LinkedList<String>();
 		    	attachId.add(attachment.getName());
 		    	attachId.add(attachment.getId());
-		    	attachId.add(execution.getId());
+		    	attachId.add(delegateTask.getId());
 		    	LOG.info("Adding attach info to the list {}", attachId);
 		    	attachmentsIds.add(attachId);
 			}
