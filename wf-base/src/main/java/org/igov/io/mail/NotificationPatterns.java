@@ -154,7 +154,8 @@ public class NotificationPatterns {
 
             StringBuilder osBody = new StringBuilder(sText);
             osBody.append("<br>").append("<br>").append(createTable_TaskProperties_Notification(saField, false));
-            osBody.append("Примітка:" + "\n" + sCommentary).append("</br>");
+            osBody.append("<br>").append("Примітка:").append("</br>");
+            osBody.append(sCommentary).append("<br>");
             osBody.append("<br/>").append("Щоб уточнити дані, Вам потрібно <a href=\"" + sURL
                     + "\"> перейти в розділ \"Мій журнал\" порталу iGov</a> "
                     + "і внести інформацію у відповідні поля.").append("<br/>");
