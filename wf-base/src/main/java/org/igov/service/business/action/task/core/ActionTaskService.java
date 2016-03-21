@@ -303,7 +303,7 @@ public class ActionTaskService {
                 + " table th {"
                 + " background: #65ABD0;"
                 + " height: 40px;"
-                + " vertical-align: midle;"
+                + " vertical-align: middle;"
                 + " padding: 0;"
                 + " width:200px;"
                 + " text-align:left;"
