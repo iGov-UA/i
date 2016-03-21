@@ -159,7 +159,7 @@ public class NotificationPatterns {
             osBody.append("<br/>").append("Щоб уточнити дані, Вам потрібно <a href=\"" + sURL
                     + "\"> перейти в розділ \"Мій журнал\" порталу iGov</a> "
                     + "і внести інформацію у відповідні поля.").append("<br/>");
-            osBody.append("<br/>").append("Дякуємо за порозуміння").append("<br/>");
+            osBody.append("<br/>").append("Дякуємо за порозуміння ok").append("<br/>");
             //osBody.append("Для уточнення - перейдіть по цьому посіланню: ").append(sURL).append("<br/>");
 
             String sBody = osBody.toString();

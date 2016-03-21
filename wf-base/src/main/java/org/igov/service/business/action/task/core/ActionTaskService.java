@@ -320,7 +320,7 @@ public class ActionTaskService {
         osTable.append(sTableStyle);
         osTable.append("<table>");
         osTable.append("<tr>");
-        osTable.append("<th>").append("Поле").append("</th>");
+        osTable.append("<th height='40'>").append("Поле").append("</th>");
         if(bNew){
             osTable.append("<th>").append("Старе значення").append("</th>");
             osTable.append("<th>").append("Нове значення").append("</th>");
