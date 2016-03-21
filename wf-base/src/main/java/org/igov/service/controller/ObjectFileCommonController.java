@@ -334,21 +334,20 @@ public class ObjectFileCommonController {
             @ApiParam(value = "sFileName", required = true) @RequestParam(value = "sFileName") String sFileName,
             @ApiParam(value = "description", required = true) @RequestParam(value = "sDescription") String sDescription,
             @ApiParam(value = "sType", required = true) @RequestParam(value = "sType") String sType,
-            @ApiParam(value = "nId", required = true) @RequestParam(required = true, value = "nId") Integer nId,
+            @ApiParam(value = "sId", required = true) @RequestParam(required = true, value = "sId") String nId,
             HttpServletResponse httpResponse) throws IOException {
-    	String id = nId.toString();
 		InputStream attachmentStream = ((org.igov.service.conf.TaskServiceImpl)taskService)
-		        .getAttachmentContentByMongoID(id);
+		        .getAttachmentContentByMongoID(nId);
 		if (attachmentStream == null) {
 		    throw new ActivitiObjectNotFoundException("Attachment with ID '"
-		            + id + "' doesn't have content associated with it.",
+		            + nId + "' doesn't have content associated with it.",
 		            Attachment.class);
 		}
 		
 		
 		int nTo = sFileName.lastIndexOf(".");
 		if (nTo >= 0) {
-		    sFileName = "attach_" + id + "."
+		    sFileName = "attach_" + nId + "."
 		            + sFileName.substring(nTo + 1);
 		}
 		
