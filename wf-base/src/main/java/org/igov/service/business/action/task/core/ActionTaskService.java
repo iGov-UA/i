@@ -291,16 +291,16 @@ public class ActionTaskService {
             return "";
         }
         String sTableStyle;
-        sTableStyle = "<style>table.QuestionFields"
+        sTableStyle = "<style>table"
                 + " { border-collapse: collapse;"
                 + " width: 100%;"
-                + " margin:0 auto;}"
-                + " table.QuestionFields th,td {"
+                + " max-width: 800px;}"
+                + " table th,td {"
                 + " border: 1px solid #ddd;"
                 + " text-align:left;"
                 + " padding: 4px;"
                 + " height:35px;}"
-                + " table.QuestionFields th {"
+                + " table th {"
                 + " background: #65ABD0;"
                 + " height: 40px;"
                 + " vertical-align: midle;"
@@ -309,6 +309,7 @@ public class ActionTaskService {
                 + " text-align:left;"
                 + " color:#fff;"
                 + " padding-left:10px;"
+                + " height: 40px;"
                 + " }"
                 + "</style>";
         //StringBuilder tableStr = new StringBuilder("Поле \t/ Тип \t/ Поточне значення\n");
@@ -320,7 +321,7 @@ public class ActionTaskService {
         JSONArray aField = oFields.getJSONArray("soData");
         StringBuilder osTable = new StringBuilder();
         osTable.append(sTableStyle);
-        osTable.append("<table class=\"QuestionFields\">");
+        osTable.append("<table>");
         osTable.append("<tr>");
         osTable.append("<th>").append("Поле").append("</th>");
         if(bNew){
