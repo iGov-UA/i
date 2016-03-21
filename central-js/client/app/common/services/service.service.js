@@ -188,9 +188,13 @@ angular.module('app').service('ServiceService', function ($http, $q) {
     });
   };
 
-  this.getJournalEvents = function () {
+  this.getJournalEvents = function (nID_HistoryEvent_Service) {
     var data = {};
-    return $http.get('./api/journal', {
+    var url = './api/journal';
+    if (nID_HistoryEvent_Service) {
+      url += '/' + nID_HistoryEvent_Service;
+    }
+    return $http.get(url, {
       params: data,
       data: data
     }).then(function (response) {

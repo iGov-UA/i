@@ -1,32 +1,32 @@
 package org.igov.service.business.action.task.systemtask.doc;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-import org.activiti.engine.ActivitiException;
 import org.activiti.engine.FormService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.delegate.DelegateExecution;
+import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.delegate.JavaDelegate;
+import org.activiti.engine.delegate.TaskListener;
 import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.StartFormData;
 import org.activiti.engine.form.TaskFormData;
+import org.activiti.engine.identity.User;
 import org.activiti.engine.impl.form.FormPropertyImpl;
 import org.activiti.engine.task.Attachment;
+import org.activiti.engine.task.IdentityLink;
 import org.activiti.engine.task.Task;
 import org.igov.io.GeneralConfig;
 import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
-import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
-import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
 import org.igov.io.web.RestRequest;
 import org.igov.service.business.action.task.core.AbstractModelTask;
-import org.igov.service.business.action.task.form.FormFileType;
 import org.igov.service.business.action.task.systemtask.doc.util.UkrDocUtil;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
@@ -36,7 +36,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
 @Component("CreateDocument_UkrDoc")
-public class CreateDocument_UkrDoc implements JavaDelegate {
+public class CreateDocument_UkrDoc extends AbstractModelTask implements JavaDelegate, TaskListener {
 
 	public static final String UKRDOC_ID_DOCUMENT_VARIABLE_NAME = "sID_Document";
 
@@ -63,6 +63,14 @@ public class CreateDocument_UkrDoc implements JavaDelegate {
 	
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
+        
+	}
+
+	@Override
+	public void notify(DelegateTask delegateTask) {
+		
+		DelegateExecution execution = delegateTask.getExecution();
+		
 		String sLoginAuthorValue = getStringFromFieldExpression(this.sLoginAuthor, execution);
 		String sHeadValue = getStringFromFieldExpression(this.sHead, execution);
 		String sBodyValue = getStringFromFieldExpression(this.sBody, execution);
@@ -71,86 +79,52 @@ public class CreateDocument_UkrDoc implements JavaDelegate {
 		LOG.info("Parameters of the task sLogin:{}, sHead:{}, sBody:{}, nId_PatternValue:{}", sLoginAuthorValue, sHeadValue,
 				sBodyValue, nID_PatternValue);
 		
+		List<Attachment> attachments = new LinkedList<Attachment>();
+		
+		List<Attachment> attach1 = taskService.getProcessInstanceAttachments(delegateTask.getProcessInstanceId());
+		if (attach1 != null && !attach1.isEmpty()){
+			attachments = attach1;
+		}
+
+		List<Attachment> attach2 = taskService.getTaskAttachments(delegateTask.getId());
+		if (attach2 != null && !attach2.isEmpty()){
+			attachments = attach2;
+		}
+		
+		LOG.info("Found attachments for the process {}: {}", attach1 != null ? attach1.size() : 0, attach2 != null ? attach2.size() : 0);
+		
 		String sessionId = UkrDocUtil.getSessionId(generalConfig.getSID_login(), generalConfig.getSID_password(), 
 				generalConfig.sURL_AuthSID_PB() + "?lang=UA");
 		
 		LOG.info("Retrieved session ID:" + sessionId);
 		
-		FormData oStartFormData = execution.getEngineServices().getFormService()
-                .getStartFormData(execution.getProcessDefinitionId());
-            for (FormProperty formProperty : oStartFormData.getFormProperties()) {
-            	if (!(formProperty.getType() instanceof FormFileType))
-            		continue;
-            	String sKeyRedis = formProperty.getValue();
-            	String asFieldName = formProperty.getName();
-            	String sID_Field = formProperty.getId();
-                LOG.info("(sKeyRedis={})", sKeyRedis);
-                if (sKeyRedis != null && !sKeyRedis.isEmpty() && !"".equals(sKeyRedis.trim()) && !"null"
-                        .equals(sKeyRedis.trim()) && sKeyRedis.length() > 15) {
-                        //String sDescription = asFieldName.get((asFieldName.size() - 1) - n);
-                        String sDescription = asFieldName;
-                        LOG.info("(sDescription={})", sDescription);
-                        LOG.info("(sID_Field={})", sID_Field);
-
-                        byte[] aByteFile;
-                        ByteArrayMultipartFile oByteArrayMultipartFile = null;
-                        try {
-                            aByteFile = oBytesDataInmemoryStorage.getBytes(sKeyRedis);
-                            oByteArrayMultipartFile = AbstractModelTask.getByteArrayMultipartFileFromStorageInmemory(aByteFile);
-                        } catch (ClassNotFoundException | IOException | RecordInmemoryException e1) {
-                            throw new ActivitiException(e1.getMessage(), e1);
-                        }
-                        if (oByteArrayMultipartFile != null) {
-                            String sFileName = null;
-                            try {
-                                sFileName = new String(oByteArrayMultipartFile.getOriginalFilename().getBytes(),
-                                        "UTF-8");
-                            } catch (java.io.UnsupportedEncodingException oException) {
-                                LOG.error("error on getting sFileName: {}", oException.getMessage());
-                                LOG.debug("FAIL:", oException);
-                                throw new ActivitiException(oException.getMessage(), oException);
-                            }
-                            LOG.info("(sFileName={})", sFileName);
-
-                            //===
-                            InputStream oInputStream = null;
-                            try {
-                                oInputStream = oByteArrayMultipartFile.getInputStream();
-                            } catch (Exception e) {
-                                throw new ActivitiException(e.getMessage(), e);
-                            }
-                            Attachment oAttachment = execution.getEngineServices().getTaskService().createAttachment(
-                                    oByteArrayMultipartFile.getContentType() + ";" + oByteArrayMultipartFile.getExp(),
-                                    execution.getId(), execution.getProcessInstanceId(), sFileName, sDescription,
-                                    oInputStream);
-
-                            if (oAttachment != null) {
-                                String nID_Attachment = oAttachment.getId();
-                                //LOG.info("(nID_Attachment={})", nID_Attachment);
-                                LOG.info("Try set variable(sID_Field={}) with the value(nID_Attachment={}), for new attachment...",
-                                        sID_Field, nID_Attachment);
-                                execution.getEngineServices().getRuntimeService()
-                                        .setVariable(execution.getProcessInstanceId(), sID_Field, nID_Attachment);
-                                LOG.info("Finished setting new value for variable with attachment (sID_Field={})",
-                                        sID_Field);
-                            } else {
-                                LOG.error("Can't add attachment to (oTask.getId()={})", execution.getId());
-                            }
-                            //===
-
-                        } else {
-                            LOG.error("oByteArrayMultipartFile==null!  (sKeyRedis={})", sKeyRedis);
-                        }
-                    } else {
-                        LOG.error("asFieldName has nothing! (asFieldName={})", asFieldName);
-                    }
-            }
 		
-        LOG.info("beginning of addAttachmentsToTask(startformData, task):execution.getProcessDefinitionId()={}",
-        		execution.getProcessDefinitionId());
+		if (attachments.isEmpty()){
+	        DelegateExecution oExecution = delegateTask.getExecution();
+	        // получить группу бп
+	        Set<IdentityLink> identityLink = delegateTask.getCandidates();
+	        // получить User группы
+	        List<User> aUser = oExecution.getEngineServices().getIdentityService()
+	                .createUserQuery()
+	                .memberOfGroup(identityLink.iterator().next().getGroupId())
+	                .list();
+	
+	        LOG.info("Finding any assigned user-member of group. (aUser={})", aUser);
+	        if (aUser == null || aUser.size() == 0 || aUser.get(0) == null || aUser.get(0).getId() == null) {
+	            //TODO  what to do if no user?
+	        } else {
+	            // setAuthenticatedUserId первого попавщегося
+	            //TODO Shall we implement some logic for user selection.
+	            oExecution.getEngineServices().getIdentityService().setAuthenticatedUserId(aUser.get(0).getId());
+	            // получить информацию по стартовой форме бп
+	            FormData oStartFormData = oExecution.getEngineServices().getFormService()
+	                    .getStartFormData(oExecution.getProcessDefinitionId());
+	            LOG.info("beginning of addAttachmentsToTask(startformData, task):execution.getProcessDefinitionId()={}",
+	                    oExecution.getProcessDefinitionId());
+	            attachments = addAttachmentsToTask(oStartFormData, delegateTask);
+	        }
+		}
 		
-		List<Attachment> attachments = taskService.getProcessInstanceAttachments(execution.getProcessInstanceId());
-		LOG.info("Found attachments for the process {}", attachments != null ? attachments.size() : 0);
 		Map<String, Object> urkDocRequest = UkrDocUtil.makeJsonRequestObject(sHeadValue, sBodyValue, sLoginAuthorValue, nID_PatternValue, 
 				attachments, execution.getId(), generalConfig);
 
@@ -202,18 +176,7 @@ public class CreateDocument_UkrDoc implements JavaDelegate {
 				}
 			}
         }
-        
-	}
-
-	protected String getStringFromFieldExpression(Expression expression,
-			DelegateExecution execution) {
-		if (expression != null) {
-			Object value = expression.getValue(execution);
-			if (value != null) {
-				return value.toString();
-			}
-		}
-		return null;
+		
 	}
 	
 }
