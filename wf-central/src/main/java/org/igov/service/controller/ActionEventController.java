@@ -27,6 +27,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.NumberUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,7 +36,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
-
+import java.util.stream.Collectors;
 
 @Controller
 @Api(tags = { "ActionEventController -- События по действиям и статистика" })
@@ -394,7 +395,8 @@ public class ActionEventController {
     }
 
     @ApiOperation(value = "Загрузка событий", notes =
-            "##### Пример: http://test.igov.org.ua/wf/service/action/event/getHistoryEvents?nID_Subject=10\n\n"
+              "Пример 1: http://test.igov.org.ua/wf/service/action/event/getHistoryEvents?nID_Subject=10\n\n"
+            + "Пример 2: http://test.igov.org.ua/wf/service/action/event/getHistoryEvents?nID_Subject=10&nID_HistoryEvent_Service=2\n\n"
             + "В зависимости от параметра **bGrouped** к списку может применяться фильтр.\n\n"
             + "- Если **bGrouped = false** - выбираются все сущности для данного субъекта\n"
             + "- если **bGrouped = true**, то в список попадают только уникальные сущности. Если сущности не уникальные, то из них отбирается только "
@@ -408,11 +410,12 @@ public class ActionEventController {
     @RequestMapping(value = "/getHistoryEvents", method = RequestMethod.GET)
     public @ResponseBody
     List<HistoryEvent> getHistoryEvents(
-            @ApiParam(value = "номер-id авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)", required = true) @RequestParam(value = "nID_Subject") long nID_Subject,
+            @ApiParam(value = "id авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)", required = true) @RequestParam(value = "nID_Subject") long nID_Subject,
+            @ApiParam(value = "id HistoryEvent_Service. Если задан, то параметр добавляется к кретериям отбора", required = false) @RequestParam(value = "nID_HistoryEvent_Service", required = false) Long nID_HistoryEvent_Service,
             @ApiParam(value =
                     "булевый флаг, если **true**, то возвращает только последнюю по дате (sDate) запись, из тех, "
                             + "у которых nID_HistoryEvent_Service или nID_Document - один и тот-же", required = false) @RequestParam(value = "bGrouped", required = false, defaultValue = "false") Boolean bGrouped) {
-        return historyEventDao.getHistoryEvents(nID_Subject, bGrouped);
+        return historyEventDao.getHistoryEvents(nID_Subject, nID_HistoryEvent_Service, bGrouped);
     }
 
     ////-------------Statistics--------
@@ -454,7 +457,7 @@ public class ActionEventController {
 			+ "Результат для колонки sTextFeedback возвращается из сущности SubjectMessage, у которой nID_SubjectMessageType = 2\n"
 			+ "Результат для колонки sPhone возвращается из стартовой формы процесса из поля phone соответствующего регионального сервера\n"
 			+ "Примеры:\n"
-            + "https://test.igov.org.ua/wf/service/action/event/getServiceHistoryReport?sDateAt=2016-02-09 00:00:00&sDateTo=2016-02-11 00:00:00\n\n"
+            + "https://test.igov.org.ua/wf/service/action/event/getServiceHistoryReport?sDateAt=2016-02-09 00:00:00&sDateTo=2016-02-11 00:00:00&sanID_Service_Exclude=1,5,24,56\n\n"
             + "Результат\n"
             + "\n```csv\n"
             + "sID_Order,nID_Server,nID_Service,sID_Place,nID_Subject,nRate,sTextFeedback,sUserTaskName,sHead,sBody,nTimeMinutes,sPhone\n"
@@ -464,13 +467,14 @@ public class ActionEventController {
     public void getServiceHistoryReport(
             @ApiParam(value = "строка-Дата начала выборки данных в формате yyyy-MM-dd HH:mm:ss", required = true) @RequestParam(value = "sDateAt") String sDateAt,
             @ApiParam(value = "строка-Дата окончания выборки данных в формате yyyy-MM-dd HH:mm:ss", required = true) @RequestParam(value = "sDateTo") String sDateTo,
-            HttpServletResponse httpResponse){
+            @ApiParam(value = "строка-массив(перечисление) ИД услуг, которые нужно исключить", required = false) @RequestParam(value = "sanID_Service_Exclude", required = false) String[] sanID_Service_Exclude,
+            HttpServletResponse httpResponse) {
     	DateTime dateAt = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss").parseDateTime(sDateAt);
     	DateTime dateTo = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss").parseDateTime(sDateTo);
     	
     	String[] headersMainField = { "sID_Order", "nID_Server",
                 "nID_Service", "sID_Place", "nID_Subject", "nRate", "sTextFeedback", "sUserTaskName", "sHead", 
-                "sBody", "nTimeMinutes", "sPhone" };
+                "sBody", "nTimeMinutes", "sPhone", "nID_ServiceData" };
     	List<String> headers = new ArrayList<String>();
         headers.addAll(Arrays.asList(headersMainField));
     	
@@ -483,9 +487,16 @@ public class ActionEventController {
             csvWriter = new CSVWriter(httpResponse.getWriter(), ';',
                     CSVWriter.NO_QUOTE_CHARACTER);
 	        csvWriter.writeNext(headers.toArray(new String[headers.size()]));
-	        
-	    	List<HistoryEvent_Service> historyEvents = historyEventServiceDao.getHistoryEventPeriod(dateAt, dateTo);
-	    	
+
+            List<Long> anID_Service_Exclude = null;
+
+            if(sanID_Service_Exclude != null && sanID_Service_Exclude.length > 0){
+                List<String> asID_Service_Exclude = Arrays.asList(sanID_Service_Exclude);
+                anID_Service_Exclude = asID_Service_Exclude.stream().map(s -> NumberUtils.parseNumber(s, Long.class)).collect(Collectors.toList());
+            }
+
+	    	List<HistoryEvent_Service> historyEvents = historyEventServiceDao.getHistoryEventPeriod(dateAt, dateTo, anID_Service_Exclude);
+
 	    	LOG.info("Found {} history events for the period from {} to {}", historyEvents.size(), sDateAt, sDateTo);
 	    	
 	    	if (historyEvents.size() > 0){
@@ -550,7 +561,8 @@ public class ActionEventController {
 		            JSONObject json = (JSONObject) new JSONParser().parse(osResponseEntityReturn.getBody());
 		            // sPhone
 		            line.add(json.get("phone") != null ? json.get("phone").toString() : "");
-		            
+                    line.add(historyEventService.getnID_ServiceData() != null ? historyEventService.getnID_ServiceData().toString() : "");
+
 		            csvWriter.writeNext(line.toArray(new String[line.size()]));
 		    	}
 	    	}
@@ -559,5 +571,6 @@ public class ActionEventController {
 			LOG.error("Error occurred while creating CSV file {}", e.getMessage());
 		} 
     }
-
+    //test
+    //test2
 }

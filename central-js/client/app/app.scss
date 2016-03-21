@@ -1,9 +1,11 @@
 $icon-font-path: "/bower_components/bootstrap-sass-official/vendor/assets/fonts/bootstrap/";
 $fa-font-path: "/bower_components/font-awesome/fonts";
-
+$breadcrumb-separator: ">";
+$breadcrumb-bg: none;
+$link-color: #0099FF;
 /*$grid-float-breakpoint: 992px;*/
-
 @import 'bootstrap-sass-official/vendor/assets/stylesheets/bootstrap';
+@import "journal/journal";
 @import 'font-awesome/scss/font-awesome';
 
 /**
@@ -51,6 +53,13 @@ hr {
   height: 2px;
   margin: 1em 0;
   padding: 0;
+}
+
+hr.sexy {
+  border: 0;
+  height: 1px;
+  background-color: #B2B2B2;
+  background: linear-gradient(to left, transparent 0%, #B2B2B2 50%, transparent 100%);
 }
 
 p {
@@ -359,7 +368,7 @@ ul.dropdown-menu {
 
 .big-inner-addon input {
   padding-left: 40px;
-  padding-right: 40px;
+  padding-right: 85px;
 }
 
 .big-inner-addon .al-left {
@@ -381,7 +390,7 @@ ul.dropdown-menu {
 .big-inner-addon .glyphicon-remove {
   position: absolute;
   top: 17px;
-  right: 35px;
+  right: 9px;
 }
 
 .ord-inner-addon {
@@ -1329,15 +1338,50 @@ input.ng-touched.ng-invalid-email, input.ng-touched.ng-invalid-tel {
 
 /* Fixes for mobile devices */
 @media all and (min-width: 300px) and (max-width: 768px) {
+  /* content */
+  .container .service-name {
+    font-size: 15px;
+  }
   /* nav tab */
-  .nav > li > a {
-    padding: 0 5px;
-    font-size: 8px;
+  .longTabs > li > a {
+    padding: 0 12px;
+    font-size: 15px;
     line-height: 30px;
   }
-  .nav > .active > a {
+
+  .midTabs > li > a {
+    padding: 0 5px;
     font-size: 11px;
+    line-height: 30px;
   }
+
+  /* tabs with statistic */
+  .tableTitle {
+    font-size: 12px;
+  }
+
+  .tableContent {
+    font-size: 12px;
+  }
+
+  /* footer */
+  .footer-container .footer-header {
+    font-size: 14px;}
+  .footer-container ul {
+    margin-bottom: 5px;
+  }
+  .footer-container ul li {
+    margin-top: 5px;
+  }
+  .footer-container ul a {
+    font-size: 12px;
+  }
+  .banners a img {
+    height: 20px;
+  }
+}
+.banners a img {
+  margin: 10px 10px 0 0;
 }
 
 table.QuestionFields td {
@@ -1351,4 +1395,8 @@ table.QuestionFields td {
 
 .glyphicon-chevron-down:after {
     content: "\e114";
+}
+
+.hide-table table {
+  display: none;
 }

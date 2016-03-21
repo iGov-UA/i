@@ -3,20 +3,38 @@
   <process id="zovtyvodu_cnap_430" name="Видача паспорту прив’язки тимчасової споруди" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sSubzvern" name="Суб'єкт звернення:;(повна назва юридичної особи або фізичної-особи підприємця)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAdress" name="Адреса реєстрації суб'єкта звернення" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sMphone" name="Мобільний телефон" type="string" default="+380" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sEmail" name="Ваш e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати рішення" type="select" default="0"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSubzvern" name="Суб'єкт звернення;(повна назва юридичної особи або фізичної-особи підприємця)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAdressRegistration" name="Адреса реєстрації суб'єкта звернення" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Мобільний телефон" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdress_obj" name="Адреса розміщення тимчасової споруди для провадження підприємницької діяльності:" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file_restr_svid" name="Копія свідоцтва про державну реєстрацію суб'єкта підприємницької діяльності" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file_kor_zeml" name="Копія документу, який посвідчує право користування або власності на земельну ділянку (з відповідним цільовим призначенням)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file_sxem_rozm" name="Схема розміщення ТС" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file_eskiz_fasad" name="Ескізи фасадів  ТС  у кольорі М 1:50 (для стаціонарних ТС)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file_ustr_terit" name="Схема благоустрою  прилеглої  території" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file_ingen_merez" name="Технічні умови щодо інженерного забезпечення (за наявності), отримані  замовником  у  балансоутримувача  відповідних інженерних мереж." type="file"></activiti:formProperty>
+        <activiti:formProperty id="asPurpose" name="Мета звернення" type="enum" writable="false">
+          <activiti:value id="getPassport" name="Видача паспорта"></activiti:value>
+          <activiti:value id="continPassport" name="Продовження дії паспорта"></activiti:value>
+          <activiti:value id="editPassport" name="Внесення змін до паспорта"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sNumberPassport" name="Регистрационный номер паспорта" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="dStartPassprot" name="Укажіть дату реэстрації паспорту" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="dContine" name="Укажіть дату до якої бажаєте продовжити строк дії паспорту" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_restr_svid" name="Копія свідоцтва про державну реєстрацію суб'єкта підприємницької діяльності" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_kor_zeml" name="Копія документу, який посвідчує право користування або власності на земельну ділянку (з відповідним цільовим призначенням)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_sxem_rozm" name="Схема розміщення ТС" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_eskiz_fasad" name="Ескізи фасадів  ТС  у кольорі М 1:50 (для стаціонарних ТС)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_ustr_terit" name="Схема благоустрою  прилеглої  території" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_ingen_merez" name="Технічні умови щодо інженерного забезпечення (за наявності), отримані  замовником  у  балансоутримувача  відповідних інженерних мереж." type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Passport" name="Копія паспорта" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="название органа в подписи письма" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="график работы" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон для справок" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адрес органа" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="шапка принтформы" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible" default="akylish88@gmail.com"></activiti:formProperty>
+        <activiti:formProperty id="sArhitekture_post" name="Пошта архітектури" type="invisible" default="vma.zhv@gmail.com"></activiti:formProperty>
+        <activiti:formProperty id="markerPassport" name="Continue Passprot" type="markers" default="${markerService.loadFromFile('architecture/PassportTemporaryStructures.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -27,70 +45,73 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:string><![CDATA[akylish88@gmail.com]]></activiti:string>
+          <activiti:string><![CDATA[${sMailClerk}]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нова заявка на видачу паспорту прив’язки тимчасової споруди]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а) колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-У Вас в черзі на обробку нове звернення на видачу паспорту прив’язки тимчасової споруди.&lt;br /&gt;
-Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
-${sSubzvern}&lt;br /&gt;
-Опрацюйте це звернення на &lt;a href="https://region.igov.org.ua" target="_blank"&gt;порталі&lt;/a&gt;
-[pattern/mail/_common_signature.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
+    <sequenceFlow id="flow2" sourceRef="servicetask10" targetRef="servicetask2"></sequenceFlow>
     <serviceTask id="servicetask3" name="Лист заявнику" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${sEmail}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Заявка на видачу паспорту прив’язки тимчасової споруди]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt; Ваше звернення щодо видачі паспорту прив’язки тимчасової споруди прийнято до роботи.
-Повідомлення про результат розгляду буде спрямоване на Ваш e-mail.&lt;/p&gt;
-&lt;br /&gt;
-Тел/факс (05652)2-32-85, 2-35-28&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p> Ваше звернення щодо видачі паспорту прив’язки тимчасової споруди прийнято до роботи.
+Повідомлення про результат розгляду буде спрямоване на Ваш e-mail.</p>
+<br />
+За наявності питянь можете звернутись за телефоном: ${sPhoneOrgan}.<br />
 [pattern/mail/_common_signature_start.html]
-Центр адміністративних послуг виконавчого комітету Жовтоводської міської ради&lt;br /&gt;
+${sNameOrgan}.<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
-    <userTask id="usertask1" name="Обробка в цнап" activiti:candidateGroups="cnap_zhvodT">
+    <userTask id="usertask1" name="Обробка в ЦНАП" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdressRegistration" name="Адреса реєстрації суб'єкта звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSubzvern" name="Суб'єкт звернення:;(повна назва юридичної особи або фізичної-особи підприємця)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAdress" name="Адреса реєстрації суб'єкта звернення" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sMphone" name="Мобільний телефон" type="string" default="+380" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sEmail" name="e-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Мобільний телефон" type="string" default="+380" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="e-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdress_obj" name="Адреса розміщення тимчасової споруди для провадження підприємницької діяльності:" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asPurpose" name="Мета звернення" type="enum" writable="false">
+          <activiti:value id="getPassport" name="Видача паспорта"></activiti:value>
+          <activiti:value id="continPassport" name="Продовження дії паспорта"></activiti:value>
+          <activiti:value id="editPassport" name="Внесення змін до паспорта"></activiti:value>
+        </activiti:formProperty>
+		<activiti:formProperty id="sNumberPassport" name="Регистрационный номер паспорта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="dStartPassprot" name="Укажіть дату реэстрації паспорту" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="dContine" name="Дата до якої необхідно продовжити строк дії паспорту" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="variants1" name="Результат розгляду заявки" type="enum" required="true">
           <activiti:value id="dok_ok" name="Заявку оформлено вірно, передати на опрацювання до міської ради"></activiti:value>
           <activiti:value id="dok_bad" name="Заявка оформлена не вірно відмова."></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="Komment_rishenia" name="Коментар по розгляду заявки;(Вкажіть реєстраційний номер заявки та іншу корисну для міської ради інформацію, в разі відмови поясніть причину відмови)" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="супровідний текст" type="invisible" default="Якщо заявка прийнята, вона буде передана на опрацювання до міської ради. У разі відмови робота по цій заявці завершена."></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/architecture/zovtyvodu_cnap_430_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markerPassportPrin" name="Continue Passprot Prin" type="markers" default="${markerService.loadFromFile('architecture/PassportTemporaryStructures_Print.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${file_restr_svid},${file_kor_zeml},${file_sxem_rozm},${file_eskiz_fasad},${file_ustr_terit},${file_ingen_merez}</activiti:expression>
+            <activiti:expression>${nFile_restr_svid},${nFile_kor_zeml},${nFile_sxem_rozm},${nFile_eskiz_fasad},${nFile_ustr_terit},${nFile_ingen_merez},${nFile_Passport}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -110,16 +131,14 @@ ${sSubzvern}&lt;br /&gt;
           <activiti:string><![CDATA[Заявка на видачу паспорту прив’язки тимчасової споруди]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt; Ваше звернення щодо видачі паспорту прив’язки тимчасової споруди прийнято до роботи.
-Повідомлення про результат розгляду буде спрямоване на Ваш e-mail.&lt;/p&gt;
-&lt;br /&gt;
-Тел/факс (05652)2-32-85, 2-35-28&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-Центр адміністративних послуг виконавчого комітету Жовтоводської міської ради&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<strong>Шановний(-а) колего!</strong><br /><br />
+У Вас в черзі на обробку нове звернення на видачу паспорту прив’язки тимчасової споруди.<br />
+Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}<br />
+${sSubzvern}<br />
+Опрацюйте це звернення на <a href="https://region.igov.org.ua" target="_blank">порталі</a>
+[pattern/mail/_common_signature.html]
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -132,47 +151,57 @@ ${sSubzvern}&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${sEmail}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Заявка на видачу паспорту прив’язки тимчасової споруди]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt; ЦНАП розглянув ваше звернення. Документи вірні. Відомості передані до міської ради.
-Повідомлення про результат розгляду в міській раді буде спрямоване на Ваш e-mail.&lt;/p&gt;
-&lt;br /&gt;
-Тел/факс (05652)2-32-85, 2-35-28&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p> ЦНАП розглянув ваше звернення. Документи вірні. Відомості передані до міської ради.
+Повідомлення про результат розгляду в міській раді буде спрямоване на Ваш e-mail.</p>
+<br />
+За наявності питянь можете звернутись за телефоном: ${sPhoneOrgan}.<br />
 [pattern/mail/_common_signature_start.html]
-Центр адміністративних послуг виконавчого комітету Жовтоводської міської ради&lt;br /&gt;
+${sNameOrgan}.<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow7" sourceRef="servicetask4" targetRef="servicetask5"></sequenceFlow>
-    <userTask id="usertask2" name="обробка в міськраді" activiti:candidateGroups="mvk_430_zhvodT">
+    <userTask id="usertask2" name="Обробка в міськраді" activiti:candidateGroups="mvk_430_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdressRegistration" name="Адреса реєстрації суб'єкта звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSubzvern" name="Суб'єкт звернення:;(повна назва юридичної особи або фізичної-особи підприємця)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAdress" name="Адреса реєстрації суб'єкта звернення" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sMphone" name="Мобільний телефон" type="string" default="+380" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sEmail" name="e-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Мобільний телефон" type="string" default="+380" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="e-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdress_obj" name="Адреса розміщення тимчасової споруди для провадження підприємницької діяльності:" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asPurpose" name="Мета звернення" type="enum" writable="false">
+          <activiti:value id="getPassport" name="Видача паспорта"></activiti:value>
+          <activiti:value id="continPassport" name="Продовження дії паспорта"></activiti:value>
+          <activiti:value id="editPassport" name="Внесення змін до паспорта"></activiti:value>
+        </activiti:formProperty>
+		<activiti:formProperty id="sNumberPassport" name="Регистрационный номер паспорта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="dStartPassprot" name="Укажіть дату реэстрації паспорту" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="dContine" name="Дата до якої необхідно продовжити строк дії паспорту" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Komment_rishenia" name="Коментар по заявці працівника ЦНАП" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="variants2" name="Результат розгляду заявки" type="enum" required="true">
           <activiti:value id="dok_ok2" name="Заявку оформлено вірно, передати на опрацювання до міської ради"></activiti:value>
           <activiti:value id="dok_bad2" name="Заявка оформлена не вірно відмова."></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="Komment_rishenia2" name="Коментар по розгляду заявки;(Вкажіть корисні для ЦНАПу та заявника данні, в разі відмови поясніть причину відмови)" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file_arhitectura" name="Завантажте відповідь" type="file"></activiti:formProperty>
         <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="супровідний текст1" type="invisible" default="Якщо заявка опрацьовано вона буде передана до ЦНАП.Також вам необхідно як найшвидше передати в ЦНАП паспорт прив'язки тимчасової споруди. У разі відмови робота по цій заявці завершена."></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/architecture/zovtyvodu_cnap_430_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markerPassportPrin" name="Continue Passprot Prin" type="markers" default="${markerService.loadFromFile('architecture/PassportTemporaryStructures_Print.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${file_restr_svid},${file_kor_zeml},${file_sxem_rozm},${file_eskiz_fasad},${file_ustr_terit},${file_ingen_merez}</activiti:expression>
+            <activiti:expression>${nFile_restr_svid},${nFile_kor_zeml},${nFile_sxem_rozm},${nFile_eskiz_fasad},${nFile_ustr_terit},${nFile_ingen_merez},${nFile_Passport}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -186,22 +215,22 @@ ${sSubzvern}&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${sEmail}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Відмова по заявці на видачу паспорту прив’язки тимчасової споруди]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt; Ваше звернення щодо видачі паспорту прив’язки тимчасової споруди розглянуте. В видачі документу відмовлено.
-Причина: ${Komment_rishenia}.&lt;/p&gt;
-&lt;br /&gt;
-Тел/факс (05652)2-32-85, 2-35-28&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p> Ваше звернення щодо видачі паспорту прив’язки тимчасової споруди розглянуте. В видачі документу відмовлено.
+Причина: ${Komment_rishenia}.</p>
+<br />
+За наявності питянь можете звернутись за телефоном: ${sPhoneOrgan}.<br />
 [pattern/mail/_common_signature_start.html]
-Центр адміністративних послуг виконавчого комітету Жовтоводської міської ради&lt;br /&gt;
+${sNameOrgan}.<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -216,22 +245,22 @@ ${sSubzvern}&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${sEmail}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Відмова по заявці на видачу паспорту прив’язки тимчасової споруди]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt; Ваше звернення щодо видачі паспорту прив’язки тимчасової споруди розглянуте. В видачі документу відмовлено.
-Причина: ${Komment_rishenia2}.&lt;/p&gt;
-&lt;br /&gt;
-Тел/факс (05652)2-32-85, 2-35-28&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p> Ваше звернення щодо видачі паспорту прив’язки тимчасової споруди розглянуте. В видачі документу відмовлено.
+Причина: ${Komment_rishenia2}.</p>
+<br />
+За наявності питянь можете звернутись за телефоном: ${sPhoneOrgan}.<br />
 [pattern/mail/_common_signature_start.html]
-Центр адміністративних послуг виконавчого комітету Жовтоводської міської ради&lt;br /&gt;
+${sNameOrgan}.<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -245,43 +274,58 @@ ${sSubzvern}&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${sEmail}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Міська рада. Заявка на видачу паспорту прив’язки тимчасової споруди]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt; Ваше звернення щодо видачі паспорту прив’язки тимчасової споруди успішно розглянуте.
-Можете завтра прийти і отримати документ.&lt;/p&gt;
-&lt;br /&gt;
-Тел/факс (05652)2-32-85, 2-35-28&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p> Ваше звернення щодо видачі паспорту прив’язки тимчасової споруди успішно розглянуте.
+Можете завтра прийти і отримати документ.</p>
+<br />
+За наявності питянь можете звернутись за телефоном: ${sPhoneOrgan}.<br />
 [pattern/mail/_common_signature_start.html]
-Центр адміністративних послуг виконавчого комітету Жовтоводської міської ради&lt;br /&gt;
+${sNameOrgan}.<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow14" name="${variants2 == 'dok_ok2'}" sourceRef="exclusivegateway2" targetRef="servicetask8">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${variants2 == 'dok_ok2'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask3" name="видача документа цнап" activiti:candidateGroups="cnap_zhvodT">
+    <userTask id="usertask3" name="видача документа цнап" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSubzvern" name="Суб'єкт звернення:;(повна назва юридичної особи або фізичної-особи підприємця)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAdress" name="Адреса реєстрації суб'єкта звернення" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sMphone" name="Мобільний телефон" type="string" default="+380" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sEmail" name="e-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdressRegistration" name="Адреса реєстрації суб'єкта звернення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Мобільний телефон" type="string" default="+380" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="e-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdress_obj" name="Адреса розміщення тимчасової споруди для провадження підприємницької діяльності:" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asPurpose" name="Мета звернення" type="enum" writable="false">
+          <activiti:value id="getPassport" name="Видача паспорта"></activiti:value>
+          <activiti:value id="continPassport" name="Продовження дії паспорта"></activiti:value>
+          <activiti:value id="editPassport" name="Внесення змін до паспорта"></activiti:value>
+        </activiti:formProperty>
+		<activiti:formProperty id="sNumberPassport" name="Регистрационный номер паспорта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="dStartPassprot" name="Укажіть дату реэстрації паспорту" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="dContine" name="Дата до якої необхідно продовжити строк дії паспорту" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Komment_rishenia2" name="Коментар по заявці працівника ЦНАП" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="variants3" name="Чи видано документ на руки?" type="enum" required="true">
           <activiti:value id="dok_ok3" name="Заявник отримав паспорт на розміщення тимчасової споруди"></activiti:value>
           <activiti:value id="dok_bad3" name="Заявник не з'явився"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/architecture/zovtyvodu_cnap_430_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markerPassportPrin" name="Continue Passprot Prin" type="markers" default="${markerService.loadFromFile('architecture/PassportTemporaryStructures_Print.json')}"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${file_arhitectura}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow15" sourceRef="servicetask8" targetRef="usertask3"></sequenceFlow>
@@ -293,22 +337,22 @@ ${sSubzvern}&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${sEmail}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Оцініть якість наданої послуги]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Дякуємо що скористались нашою послугою онлайн.&lt;br /&gt;
-Будь ласка оцініть якість наданої вам послуги. &lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+Дякуємо що скористались нашою послугою онлайн.<br />
+Будь ласка оцініть якість наданої вам послуги. <br />
 [pattern/mail/_common_feedback.html]
-Тел/факс (05652)2-32-85, 2-35-28&lt;br /&gt;
+За наявності питянь можете звернутись за телефоном: ${sPhoneOrgan}.<br />
 [pattern/mail/_common_signature_start.html]
-Центр адміністративних послуг виконавчого комітету Жовтоводської міської ради&lt;br /&gt;
+${sNameOrgan}.<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -323,6 +367,8 @@ ${sSubzvern}&lt;br /&gt;
     </sequenceFlow>
     <sequenceFlow id="flow20" sourceRef="servicetask9" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow21" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
+    <serviceTask id="servicetask10" name="EnumConverTask" activiti:delegateExpression="${asPurpose}"></serviceTask>
+    <sequenceFlow id="flow22" sourceRef="servicetask1" targetRef="servicetask10"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_zovtyvodu_cnap_430">
     <bpmndi:BPMNPlane bpmnElement="zovtyvodu_cnap_430" id="BPMNPlane_zovtyvodu_cnap_430">
@@ -380,13 +426,16 @@ ${sSubzvern}&lt;br /&gt;
       <bpmndi:BPMNShape bpmnElement="servicetask9" id="BPMNShape_servicetask9">
         <omgdc:Bounds height="55.0" width="105.0" x="188.0" y="309.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask10" id="BPMNShape_servicetask10">
+        <omgdc:Bounds height="55.0" width="105.0" x="275.0" y="20.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="128.0" y="127.0"></omgdi:waypoint>
         <omgdi:waypoint x="188.0" y="127.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="293.0" y="127.0"></omgdi:waypoint>
-        <omgdi:waypoint x="328.0" y="127.0"></omgdi:waypoint>
+        <omgdi:waypoint x="327.0" y="75.0"></omgdi:waypoint>
+        <omgdi:waypoint x="380.0" y="100.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="433.0" y="127.0"></omgdi:waypoint>
@@ -478,6 +527,10 @@ ${sSubzvern}&lt;br /&gt;
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
         <omgdi:waypoint x="293.0" y="170.0"></omgdi:waypoint>
         <omgdi:waypoint x="380.0" y="210.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
+        <omgdi:waypoint x="240.0" y="100.0"></omgdi:waypoint>
+        <omgdi:waypoint x="327.0" y="75.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

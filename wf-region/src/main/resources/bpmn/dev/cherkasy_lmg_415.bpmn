@@ -193,8 +193,7 @@
      <activiti:formProperty id="sWorkTime" name="Час роботи" type="invisible"></activiti:formProperty>
      <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок" type="invisible"></activiti:formProperty>
      <activiti:formProperty id="sAddress" name="Адреса" type="invisible"></activiti:formProperty>
-     <activiti:formProperty id="nID_Department_visitDay" name="Номер органу для електронної черги" type="invisible"></activiti:formProperty>
-    	<activiti:formProperty id="markers1" name="extended_marker1" type="markers" default="${markerService.loadFromFile('forest/cherkasy_lmg_415_1.json')}"></activiti:formProperty>
+      	<activiti:formProperty id="markers1" name="extended_marker1" type="markers" default="${markerService.loadFromFile('forest/cherkasy_lmg_415_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="extended_marker2" type="markers" default="${markerService.loadFromFile('forest/cherkasy_lmg_415_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="extended_marker3" type="markers" default="${markerService.loadFromFile('forest/cherkasy_lmg_415_3.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="extended_marker4" type="markers" default="${markerService.loadFromFile('forest/cherkasy_lmg_415_4.json')}"></activiti:formProperty>
@@ -376,9 +375,11 @@
           <activiti:value id="sEnumApprove" name="Громадянина запрошено до отримання документів або складання іспиту"></activiti:value>
           <activiti:value id="sEnumDeny" name="Відмова громадянину у видачі документів"></activiti:value>
     </activiti:formProperty>      
-     <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
-    <activiti:formProperty id="sBody1" name="[pattern/print/UPZSN/kalush_soczah_401_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
-    <activiti:formProperty id="sBody2" name="[pattern/print/UPZSN/kalush_soczah_402_print.html]" type="invisible" default="Анкета мисливця; вкажіть альбомну орієнтацію паперу для друку" writable="false"></activiti:formProperty>
+     <activiti:formProperty id="sDecisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
+    <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/cherkasy_lmg_415_a.html" type="file"></activiti:formProperty>
+    <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/cherkasy_lmg_415_z.html" type="file"></activiti:formProperty>
+    <activiti:formProperty id="sBody1" name="[pattern/print/cherkasy_lmg_415_a.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+    <activiti:formProperty id="sBody2" name="[pattern/print/cherkasy_lmg_415_z.html]" type="invisible" default="Анкета мисливця; вкажіть альбомну орієнтацію паперу для друку" writable="false"></activiti:formProperty>
       <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -402,7 +403,7 @@
 			&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br&gt;&lt;br&gt;
 			&lt;p&gt;На жаль, Ваше звернення щодо ${asType} - відхилене.&lt;/p&gt;
 			&lt;p&gt;Причина в наступному: &lt;br&gt;
-			${decisionComment}&lt;/p&gt;
+			${sDecisionComment}&lt;/p&gt;
 			&lt;p&gt;Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/ target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
 			[pattern/mail/_common_signature_start.html]
 			[pattern_dictonary:dnepr_reg_cnap.csv:234:2]&lt;/p&gt;
