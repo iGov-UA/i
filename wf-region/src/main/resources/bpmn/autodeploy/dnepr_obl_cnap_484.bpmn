@@ -75,7 +75,7 @@ enum{[asOsoba]}&lt;br /&gt;
 &lt;p&gt; Ваше звернення щодо ${sPosluga_name} прийнято в роботу. &lt;br /&gt;
 Повідомлення про результат розгляду буде спрямоване на Ваш e-mail.&lt;/p&gt;
 &lt;br /&gt;
-За наявності питянь можете звернутись за телефоном: ${sPhoneOrgan}.&lt;br /&gt;
+За наявності питань можете звернутись за телефоном: ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}.&lt;br /&gt;
 ${sAddress}.&lt;br /&gt;
@@ -106,6 +106,7 @@ ${sWorkTime}.&lt;br /&gt;
           <activiti:value id="sEnamDok_bad" name="Заявка оформлена не вірно, відмова."></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="Komment_Cnap" name="Коментар по розгляду заявки;(Вкажіть корисну для місцевої ради інформацію, в разі відмови поясніть причину відмови)" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern\print\dneprOblSnap\dnepr_obl_cnap_484_print.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="супровідний текст" type="invisible" default="Якщо заявка прийнята, вона буде передана на опрацювання до місцевої ради. У разі відмови робота по цій заявці завершена."></activiti:formProperty>
         <activiti:formProperty id="print_marker1" name="ur_fiz_print" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_1&quot;:{&quot;aElement_ID&quot;:[&quot;UO&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asOsoba&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnamUr'&quot;},&quot;ShowElementsOnTrue_2&quot;:{&quot;aElement_ID&quot;:[&quot;FO&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asOsoba&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnamFiz'&quot;}}}"></activiti:formProperty>
@@ -162,7 +163,7 @@ enum{[asOsoba]}&lt;br /&gt;
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 Документи оформлені НЕ вірно. Відмова. &lt;br /&gt;
 Причина відмови: ${Komment_Cnap} &lt;br /&gt;
-За наявності питянь можете звернутись за телефоном: ${sPhoneOrgan}.&lt;br /&gt;
+За наявності питань можете звернутись за телефоном: ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}.&lt;br /&gt;
 ${sAddress}.&lt;br /&gt;
@@ -188,7 +189,7 @@ ${sWorkTime}.&lt;br /&gt;
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 Документи оформлені вірно.&lt;br /&gt;
 Заявка передана до місцевої ради. &lt;br /&gt;
-За наявності питянь можете звернутись за телефоном: ${sPhoneOrgan}.&lt;br /&gt;
+За наявності питань можете звернутись за телефоном: ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}.&lt;br /&gt;
 ${sAddress}.&lt;br /&gt;
@@ -225,9 +226,10 @@ ${sWorkTime}.&lt;br /&gt;
           <activiti:value id="sEnamRish_bad" name="Рішення про продаж землі не прийнято"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="Komment_Rada" name="Коментар по розгляду заявки;(Вкажіть корисну для ЦНАП інформацію, в разі відмови поясніть причину відмови)" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern\print\dneprOblSnap\dnepr_obl_cnap_484_print.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="print_marker1" name="ur_fiz_print" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_1&quot;:{&quot;aElement_ID&quot;:[&quot;UO&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asOsoba&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnamUr'&quot;},&quot;ShowElementsOnTrue_2&quot;:{&quot;aElement_ID&quot;:[&quot;FO&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asOsoba&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnamFiz'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="file_rishenia" name="Експертна грошова оцінка ділянки" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file_rishenia" name="Рішення місцевої ради" type="file"></activiti:formProperty>
         <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="супровідний текст" type="invisible" default="Якщо рішенням затверджено заявку, вона буде передана назад до ЦНАПу. У разі відмови робота по цій заявці завершена."></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -256,7 +258,7 @@ ${sWorkTime}.&lt;br /&gt;
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 ${sPosluga_name} не прийняте. &lt;br /&gt;
 Причина: ${Komment_Rada} &lt;br /&gt;
-За наявності питянь можете звернутись за телефоном: ${sPhoneOrgan}.&lt;br /&gt;
+За наявності питань можете звернутись за телефоном: ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}.&lt;br /&gt;
 ${sAddress}.&lt;br /&gt;
@@ -285,7 +287,7 @@ ${sWorkTime}.&lt;br /&gt;
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 Документи оформлені вірно.&lt;br /&gt;
 Заявка передана до міської ради. &lt;br /&gt;
-За наявності питянь можете звернутись за телефоном: ${sPhoneOrgan}.&lt;br /&gt;
+За наявності питань можете звернутись за телефоном: ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}.&lt;br /&gt;
 ${sAddress}.&lt;br /&gt;
@@ -343,7 +345,7 @@ ${sWorkTime}.&lt;br /&gt;
 Дякуємо що скористались нашою послугою онлайн.&lt;br /&gt;
 Будь ласка оцініть якість наданої вам послуги. &lt;br /&gt;
 [pattern/mail/_common_feedback.html]
-За наявності питянь можете звернутись за телефоном: ${sPhoneOrgan}.&lt;br /&gt;
+За наявності питань можете звернутись за телефоном: ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}.&lt;br /&gt;
 ${sAddress}.&lt;br /&gt;

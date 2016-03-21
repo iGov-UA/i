@@ -125,6 +125,8 @@ public class CreateDocument_UkrDoc extends AbstractModelTask implements JavaDele
 	        }
 		}
 		
+		LOG.info("Processing {} attachments", attachments.size());
+		
 		Map<String, Object> urkDocRequest = UkrDocUtil.makeJsonRequestObject(sHeadValue, sBodyValue, sLoginAuthorValue, nID_PatternValue, 
 				attachments, execution.getId(), generalConfig);
 
