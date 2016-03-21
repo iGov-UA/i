@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_dms_passport" name="Отримання паспорта громадянина України для виїзда за кордон" isExecutable="true">
+  <process id="dnepr_dms_passport" name="Отримання/заміна паспорта громадянина України для виїзда за кордон" isExecutable="true">
     <startEvent id="startevent1" name="Start" activiti:initiator="initiator">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
@@ -10,7 +10,7 @@
         <activiti:formProperty id="phone" name="Ваш телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваша електронна пошта" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="have_passport" name="У Вас на даний момент є закордонний паспорт?" type="enum" required="true">
-          <activiti:value id="attr1_yes" name="так, хочу подовжити"></activiti:value>
+          <activiti:value id="attr1_yes" name="так, хочу замінити"></activiti:value>
           <activiti:value id="attr2_no" name="ні, буду отримувати перший раз"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="biometrical" name="Ви бажаєте замовити біометричний паспорт?" type="enum" default="attr1_no" required="true">
@@ -251,7 +251,7 @@ ${sNameOrgan},&lt;br&gt;
         <activiti:formProperty id="phone" name="Телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="have_passport" name="Наявність у громадянина закордонного паспорту" type="enum" writable="false">
-          <activiti:value id="attr1_yes" name="вже є, буде подовжувати"></activiti:value>
+          <activiti:value id="attr1_yes" name="вже є, буде замінювати"></activiti:value>
           <activiti:value id="attr2_no" name="буде отримувати в перший раз"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="biometrical" name="Чи необхідно виготовити біометричний паспорт?" type="enum" writable="false">

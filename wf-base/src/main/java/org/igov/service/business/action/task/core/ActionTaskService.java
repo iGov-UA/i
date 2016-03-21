@@ -295,21 +295,18 @@ public class ActionTaskService {
                 + " { border-collapse: collapse;"
                 + " width: 100%;"
                 + " max-width: 800px;}"
-                + " table th,td {"
+                + " table td {"
                 + " border: 1px solid #ddd;"
                 + " text-align:left;"
                 + " padding: 4px;"
-                + " height:35px;}"
+                + " height:40px;}"
                 + " table th {"
                 + " background: #65ABD0;"
-                + " height: 40px;"
-                + " vertical-align: midle;"
-                + " padding: 0;"
+                + " vertical-align: middle;"
+                + " padding: 10px;"
                 + " width:200px;"
                 + " text-align:left;"
                 + " color:#fff;"
-                + " padding-left:10px;"
-                + " height: 40px;"
                 + " }"
                 + "</style>";
         //StringBuilder tableStr = new StringBuilder("Поле \t/ Тип \t/ Поточне значення\n");
@@ -750,7 +747,7 @@ public class ActionTaskService {
     private String replaceFormProperties(String currentRow, TaskFormData data) {
         String res = currentRow;
         for (FormProperty property : data.getFormProperties()) {
-            LOG.info(String.format("Matching property %s:%s:%s with fieldNames", property.getId(), property.getName(), property.getType().getName()));
+            LOG.info(String.format("Matching property %s %s %s with fieldNames", property.getId(), property.getName(), property.getType().getName()));
             if (currentRow != null && res.contains("${" + property.getId() + "}")) {
                 LOG.info(String.format("Found field with id %s in the pattern. Adding value to the result", "${" + property.getId() + "}"));
                 String sValue = getPropertyValue(property);
@@ -902,7 +899,7 @@ public class ActionTaskService {
     private String getPropertyValue(FormProperty property) {
         String sValue;
         String sType = property.getType().getName();
-        LOG.info("(sType={})", sType);
+        LOG.info("getId:" + property.getId() + " getName: " + property.getName() + " getType: " + sType + " getValue: " + property.getValue());
         if ("enum".equalsIgnoreCase(sType)) {
             sValue = parseEnumProperty(property);
         } else {

@@ -41,7 +41,6 @@
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="Шапка" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="marker1" name="Фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;bankId_scan_passport&quot;,&quot;scan_inn&quot;,&quot;graphics&quot;,&quot;right&quot;,&quot;coordination&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;subject_of_appeal&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'attr1'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="marker2" name="Юридична особа або фізична особа - підприємець" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;copy_vytyag&quot;,&quot;graphics&quot;,&quot;right&quot;,&quot;coordination&quot;],&quot;asID_Field&quot;:{&quot;sReason1&quot;:&quot;subject_of_appeal&quot;},&quot;sCondition&quot;:&quot;[sReason1] == 'attr2'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="marker3" name="ОСББ, ЖБК, ОК" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;file1&quot;,&quot;file2&quot;,&quot;file3&quot;,&quot;file4&quot;,&quot;file5&quot;,&quot;file6&quot;,&quot;file7&quot;,&quot;file8&quot;,&quot;file9&quot;,&quot;file10&quot;,&quot;file11&quot;],&quot;asID_Field&quot;:{&quot;sReason2&quot;:&quot;subject_of_appeal&quot;},&quot;sCondition&quot;:&quot;[sReason2] == 'attr3'&quot;}}}"></activiti:formProperty>
@@ -54,7 +53,7 @@
     </boundaryEvent>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow2" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
-    <userTask id="usertask1" name="Обробка ЦНАП Ужгород (1-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask1" name="Обробка ЦНАП Ужгород (1-й крок)" activiti:candidateGroups="uzhgorod_cnap_112">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Автор звернення " type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
@@ -78,7 +77,6 @@
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="file1" name="Якщо з документами все гаразд - завантажте скановану копію описа документів, надісланих громодянином" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="Шапка" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody" name="[pattern/print/uzhgorod_cnap_112_print.html]" type="invisible" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -131,7 +129,7 @@ ${sWorkTime}.&lt;br /&gt;
     </sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow8" sourceRef="servicetask5" targetRef="endevent2"></sequenceFlow>
-    <userTask id="usertask2" name="Підготовка відповіді після рішення Відділу землекористування (2-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask2" name="Підготовка відповіді після рішення Відділу землекористування (2-й крок)" activiti:candidateGroups="uzhgorod_cnap_112">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Автор звернення " type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
@@ -276,7 +274,6 @@ ${sAddress}.&lt;br /&gt;
 ${sWorkTime}.&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
-        </activiti:field>
       </extensionElements>
     </serviceTask>
   </process>
