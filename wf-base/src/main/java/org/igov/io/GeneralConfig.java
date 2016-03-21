@@ -29,16 +29,16 @@ public class GeneralConfig {
     private String general_sURL_DocumentKvitanciiForIgov;
     @Value("${general.sURL_DocumentKvitanciiForAccounts}")
     private String general_sURL_DocumentKvitanciiForAccounts;
-    
+
     @Value("${general.sURL_GenerationSID}")
     private String general_sURL_GenerationSID;
-    
+
     @Value("${general.sURL_DocumentKvitanciiCallback}")
     private String general_sURL_DocumentKvitanciiCallback;
-    
+
     @Value("${general.PB.sURL_AuthSID}")
     private String sURL_AuthSID_PB;
-    
+
     @Value("${general.SID_login}")
     private String SID_login;
     @Value("${general.SID_password}")
@@ -57,9 +57,14 @@ public class GeneralConfig {
     private String sLogin_BankID;
     @Value("${BankID_sPassword}")
     private String sPassword_BankID;
-    
+
     @Value("${general.ukrdoc.sServerAddress}")
     private String sUkrDocServerAddress;
+
+    @Value("${general.corezoid.sID_User}")
+    private String sCorezoidUser;
+    @Value("${general.corezoid.sSecretKey}")
+    private String sCorezoidSecretKey;
 
     public String sLogin_BankID() {
         return sLogin_BankID;
@@ -68,7 +73,7 @@ public class GeneralConfig {
     public String sPassword_BankID() {
         return sPassword_BankID;
     }
-    
+
     public String sHost() {
         //general.sHost=https://test-version.region.igov.org.ua    
         //return sHost != null ? sHost : "https://test.region.igov.org.ua";
@@ -104,7 +109,7 @@ public class GeneralConfig {
     public String sURL_AuthSID_PB() {
         return sURL_AuthSID_PB != null ? sURL_AuthSID_PB : "https://auth-id.igov.org.ua/Stage/ChameleonServer/sessions/open";
     }
-    
+
     public String sURL_DocumentKvitanciiCallback() {
         return general_sURL_DocumentKvitanciiCallback;
     }
@@ -119,44 +124,47 @@ public class GeneralConfig {
 
     public boolean bTest() {
         /*if (bTest != null) {
-            return bTest;
-        }*/
+         return bTest;
+         }*/
         boolean b = true;
         try {
             b = (sbTest == null ? b : sbTest.trim().length() > 0 ? !"false".equalsIgnoreCase(sbTest.trim()) : true);
             LOG.info("(sbTest={})", sbTest);
         } catch (Exception oException) {
-        	LOG.error("Bad: {} (sbTest={})", oException.getMessage(), sbTest);
-        	LOG.debug("FAIL:", oException);
+            LOG.error("Bad: {} (sbTest={})", oException.getMessage(), sbTest);
+            LOG.debug("FAIL:", oException);
         }
         //bTest = b;
         return b;
     }
+
     public String sID_Order_ByOrder(Long nID_Order) {
         return sID_Order_ByOrder(nID_Server(), nID_Order);
     }
+
     public String sID_Order_ByOrder(Integer nID_Server, Long nID_Order) {
-        return new StringBuilder(nID_Server+"").append("-").append(nID_Order).toString();
+        return new StringBuilder(nID_Server + "").append("-").append(nID_Order).toString();
     }
 
     public String sID_Order_ByProcess(Long nID_Process) {
         return sID_Order_ByOrder(getProtectedNumber(nID_Process));
     }
+
     public String sID_Order_ByProcess(Integer nID_Server, Long nID_Process) {
         return GeneralConfig.this.sID_Order_ByOrder(nID_Server(), getProtectedNumber(nID_Process));
     }
 
     public int nID_Server() {
-        Integer nID_Server=null;
+        Integer nID_Server = null;
         try {
-            if(snID_Server==null){
+            if (snID_Server == null) {
                 nID_Server = 0;
-                throw new NumberFormatException("snID_Server="+snID_Server);
+                throw new NumberFormatException("snID_Server=" + snID_Server);
             }
-            nID_Server=Integer.parseInt(snID_Server);
-            if(nID_Server==null || nID_Server<0){
+            nID_Server = Integer.parseInt(snID_Server);
+            if (nID_Server == null || nID_Server < 0) {
                 nID_Server = 0;
-                throw new NumberFormatException("nID_Server="+nID_Server);
+                throw new NumberFormatException("nID_Server=" + nID_Server);
             }
         } catch (NumberFormatException oNumberFormatException) {
             nID_Server = 0;
@@ -164,7 +172,6 @@ public class GeneralConfig {
         }
         return nID_Server;
     }
-
 
     public String getsKey_Sender() {
         return sKey_Sender != null ? sKey_Sender : "591335ic471gpqoc43dbtg6n7s1e8bchpbp4wdxa";
@@ -184,8 +191,20 @@ public class GeneralConfig {
         return 5998742; //default list_id
     }
 
-	public String getsUkrDocServerAddress() {
-		return sUkrDocServerAddress != null ? sUkrDocServerAddress : "https://doc.stage.it.loc/docs";
-	}
-    
+    public String getsUkrDocServerAddress() {
+        return sUkrDocServerAddress != null ? sUkrDocServerAddress : "https://doc.stage.it.loc/docs";
+    }
+
+    public String getSnID_Server() {
+        return snID_Server;
+    }
+
+    public String getsCorezoidUser() {
+        return sCorezoidUser;
+    }
+
+    public String getsCorezoidSecretKey() {
+        return sCorezoidSecretKey;
+    }
+
 }

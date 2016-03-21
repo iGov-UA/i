@@ -1,13 +1,16 @@
 package org.igov.service.business.action.task.listener;
 
+import org.activiti.engine.TaskService;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.TaskListener;
 import org.activiti.engine.form.FormData;
 import org.activiti.engine.identity.User;
+import org.activiti.engine.task.Attachment;
 import org.activiti.engine.task.IdentityLink;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.igov.service.business.action.task.core.AbstractModelTask;
 
@@ -23,9 +26,18 @@ public class FileTaskUploadListener extends AbstractModelTask implements TaskLis
     static final transient Logger LOG = LoggerFactory.getLogger(FileTaskUploadListener.class);
 
     private static final long serialVersionUID = 1L;
+    
+    @Autowired
+    private TaskService taskService;
 
     @Override
     public void notify(DelegateTask oTask) {
+    	List<Attachment> attachments = taskService.getProcessInstanceAttachments(oTask.getProcessInstanceId());
+		LOG.info("Found attachments for the process {}", attachments != null ? attachments.size() : 0);
+		if (attachments != null && attachments.size() > 0){
+			LOG.info("Returning from listener as there are {} attachments already assigned to the task", attachments.size());
+		}
+		
         DelegateExecution oExecution = oTask.getExecution();
         // получить группу бп
         Set<IdentityLink> identityLink = oTask.getCandidates();
