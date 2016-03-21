@@ -2,6 +2,7 @@ package org.igov.service.business.action.task.systemtask.doc.util;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -29,7 +30,7 @@ import org.xml.sax.SAXException;
 
 public class UkrDocUtil {
 	
-	private static final String DOWNLOAD_FILE_FROM_PATTERN = "%s/wf/service/object/file/download_file_from_storage_static?sId=%s&sFileName=%s&sType=%s&sDescription=%s";
+	private static final String DOWNLOAD_FILE_FROM_PATTERN = "%s/wf/service/object/file/download_file_from_storage_static?sId=%s&sFileName=%s&sType=%s";
 	private final static Logger LOG = LoggerFactory.getLogger(UkrDocUtil.class);
 
 	public static String getSessionId(String login, String password, String uriSid) {
@@ -88,8 +89,7 @@ public class UkrDocUtil {
 			List<List<String>> attachmentsInfo = new LinkedList<List<String>>();
 			for (Attachment attachInfo : attachmentsIds){
 				List<String> info = new LinkedList<String>();
-				info.add(String.format(DOWNLOAD_FILE_FROM_PATTERN, generalConfig.sHost(), ((AttachmentEntity)attachInfo).getContentId(), attachInfo.getName(), attachInfo.getType(), attachInfo.getDescription()));
-				attachmentsInfo.add(info);
+				info.add(String.format(DOWNLOAD_FILE_FROM_PATTERN, generalConfig.sHost(), ((AttachmentEntity)attachInfo).getContentId(), URLEncoder.encode(attachInfo.getName()), attachInfo.getType()));
 			}
 			tables.put("Приложения", attachmentsInfo);
 			extensions.put("tables", tables);
