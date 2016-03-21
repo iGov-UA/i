@@ -2,6 +2,7 @@ package org.igov.service.business.action.task.systemtask.doc.util;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -14,6 +15,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.activiti.engine.impl.persistence.entity.AttachmentEntity;
 import org.activiti.engine.task.Attachment;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.RestRequest;
@@ -28,7 +30,7 @@ import org.xml.sax.SAXException;
 
 public class UkrDocUtil {
 	
-	private static final String DOWNLOAD_FILE_FROM_PATTERN = "%s/wf/service/object/file/download_file_from_db?taskId=%s&attachmentId=%s";
+	private static final String DOWNLOAD_FILE_FROM_PATTERN = "%s/wf/service/object/file/download_file_from_storage_static?sId=%s&sFileName=%s&sType=%s";
 	private final static Logger LOG = LoggerFactory.getLogger(UkrDocUtil.class);
 
 	public static String getSessionId(String login, String password, String uriSid) {
@@ -69,7 +71,7 @@ public class UkrDocUtil {
     }
 	
 	public static Map<String, Object> makeJsonRequestObject(String sHeadValue, String sBodyValue, String sLoginAuthorValue, 
-			String nID_PatternValue, List<List<String>> attachmentsIds, String taskId, GeneralConfig generalConfig) {
+			String nID_PatternValue, List<Attachment> attachmentsIds, String taskId, GeneralConfig generalConfig) {
 		Map<String, Object> res = new LinkedHashMap<String, Object>();
 		
 		Map<String, Object> content = new LinkedHashMap<String, Object>();
@@ -85,10 +87,10 @@ public class UkrDocUtil {
 		if (attachmentsIds != null && !attachmentsIds.isEmpty()){
 			Map<String, List<?>> tables = new HashMap<String, List<?>>();
 			List<List<String>> attachmentsInfo = new LinkedList<List<String>>();
-			for (List<String> attachInfo : attachmentsIds){
+			for (Attachment attachInfo : attachmentsIds){
 				List<String> info = new LinkedList<String>();
-				info.add(attachInfo.get(0));
-				info.add(String.format(DOWNLOAD_FILE_FROM_PATTERN, generalConfig.sHost(), attachInfo.get(1), attachInfo.get(2)));
+				info.add(URLEncoder.encode(attachInfo.getName()));
+				info.add(String.format(DOWNLOAD_FILE_FROM_PATTERN, generalConfig.sHost(), URLEncoder.encode(((AttachmentEntity)attachInfo).getContentId()), URLEncoder.encode(attachInfo.getName()), URLEncoder.encode(attachInfo.getType())));
 				attachmentsInfo.add(info);
 			}
 			tables.put("Приложения", attachmentsInfo);
