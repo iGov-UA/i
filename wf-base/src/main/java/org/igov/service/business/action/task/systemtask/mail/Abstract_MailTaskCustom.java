@@ -31,15 +31,16 @@ import java.net.URISyntaxException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.activiti.engine.delegate.DelegateTask;
-import org.activiti.engine.delegate.TaskListener;
+import org.activiti.engine.HistoryService;
 import org.igov.service.business.action.task.core.ActionTaskService;
 import org.igov.service.business.action.task.systemtask.misc.CancelTaskUtil;
 import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
 
 import org.igov.service.controller.security.AccessContract;
+import org.igov.util.JSON.JsonDateTimeSerializer;
 import static org.igov.util.ToolLuna.getProtectedNumber;
 import org.igov.util.ToolWeb;
+import org.joda.time.format.DateTimeFormatter;
 
 public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 
@@ -53,6 +54,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
     private static final String TAG_nID_Protected = "[nID_Protected]";
     private static final String TAG_sID_Order = "[sID_Order]";
     private static final String TAG_nID_SUBJECT = "[nID_Subject]";
+    private static final String TAG_sDateCreate = "[sDateCreate]";
     //private static final String TAG_sURL_SERVICE_MESSAGE = "[sURL_ServiceMessage]";
     private static final Pattern TAG_sURL_SERVICE_MESSAGE = Pattern.compile("\\[sURL_ServiceMessage(.*?)\\]");
     private static final Pattern TAG_sPATTERN_CONTENT_COMPILED = Pattern.compile("\\[pattern/(.*?)\\]");
@@ -65,6 +67,8 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
     private static final String PATTERN_SUBJECT_ID = "nID_Subject%s";
     @Autowired
     public TaskService taskService;
+    @Autowired
+    public HistoryService historyService;
     @Value("${mailServerHost}")
     public String mailServerHost;
     @Value("${mailServerPort}")
@@ -77,12 +81,12 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
     public String mailServerPassword;
     @Value("${mailAddressNoreply}")
     public String mailAddressNoreplay;
-    
+
     @Value("${mailServerUseSSL}")
     private boolean bSSL;
     @Value("${mailServerUseTLS}")
     private boolean bTLS;
-    
+
     public Expression from;
     public Expression to;
     public Expression subject;
@@ -115,7 +119,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
         }
 
         LOG.debug("sTextSource=" + sTextSource);
-        
+
         String sTextReturn = sTextSource;
 
         sTextReturn = replaceTags_LIQPAY(sTextReturn, execution);
@@ -132,16 +136,16 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
                 .getProcessInstanceId()));
 
         if (sTextReturn.contains(TAG_nID_Protected)) {
-            LOG.info("TAG_nID_Protected:(nID_Order={})",nID_Order);
+            LOG.info("TAG_nID_Protected:(nID_Order={})", nID_Order);
             sTextReturn = sTextReturn.replaceAll("\\Q" + TAG_nID_Protected + "\\E", "" + nID_Order);
         }
-        
+
         if (sTextReturn.contains(TAG_sID_Order)) {
             String sID_Order = generalConfig.sID_Order_ByOrder(nID_Order);
             LOG.info("TAG_sID_Order:(sID_Order={})", sID_Order);
             sTextReturn = sTextReturn.replaceAll("\\Q" + TAG_sID_Order + "\\E", "" + sID_Order);
         }
-        
+
         if (sTextReturn.contains(TAG_CANCEL_TASK)) {
             LOG.info("TAG_CANCEL_TASK:(nID_Protected={})", nID_Order);
             String sHTML_CancelTaskButton = cancelTaskUtil.getCancelFormHTML(nID_Order);
@@ -153,8 +157,16 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
             sTextReturn = sTextReturn.replaceAll("\\Q" + TAG_nID_SUBJECT + "\\E", "" + nID_Subject);
         }
 
+        if (sTextReturn.contains(TAG_sDateCreate)) {
+            Date oProcessInstanceStartDate = historyService.createProcessInstanceHistoryLogQuery(execution.getProcessInstanceId()).singleResult().getStartTime();
+            DateTimeFormatter formatter = JsonDateTimeSerializer.DATETIME_FORMATTER;
+            String sDateCreate = formatter.print(oProcessInstanceStartDate.getTime());
+            LOG.info("TAG_sDateCreate: (sDateCreate={})", sDateCreate);
+            sTextReturn = sTextReturn.replaceAll("\\Q" + TAG_sDateCreate + "\\E", "" + sDateCreate);
+        }
+
         sTextReturn = replaceTags_sURL_SERVICE_MESSAGE(sTextReturn, execution, nID_Order);
-        
+
         return sTextReturn;
     }
 
@@ -319,7 +331,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
         return matcher.appendTail(outputTextBuffer).toString();
     }
 
-    private String replaceTags_sURL_SERVICE_MESSAGE(String textWithoutTags, 
+    private String replaceTags_sURL_SERVICE_MESSAGE(String textWithoutTags,
             DelegateExecution execution, Long nID_Order) throws Exception {
 
         StringBuffer outputTextBuffer = new StringBuffer();
@@ -331,39 +343,36 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
             if (matcherPrefix.find()) {
                 prefix = matcherPrefix.group();
             }
-                String URL_SERVICE_MESSAGE = generalConfig.sHostCentral()
-                        + "/wf/service/subject/message/setMessageRate";
+            String URL_SERVICE_MESSAGE = generalConfig.sHostCentral()
+                    + "/wf/service/subject/message/setMessageRate";
 
-                String sURI = ToolWeb.deleteContextFromURL(URL_SERVICE_MESSAGE);
-                /*ProcessDefinition processDefinition = execution.getEngineServices()
-                        .getRepositoryService().createProcessDefinitionQuery()
-                        .processDefinitionId(execution.getProcessDefinitionId())
-                        .singleResult();*/
+            String sURI = ToolWeb.deleteContextFromURL(URL_SERVICE_MESSAGE);
+            /*ProcessDefinition processDefinition = execution.getEngineServices()
+             .getRepositoryService().createProcessDefinitionQuery()
+             .processDefinitionId(execution.getProcessDefinitionId())
+             .singleResult();*/
 
-                String sQueryParamPattern = "?"
-                        //+ "sHead=Отзыв" + "&sMail= " + "&sData="
-                        //+ (processDefinition != null && processDefinition.getName() != null ? processDefinition.getName().trim() : "")
-                        + "&sID_Rate=" + prefix.replaceAll("_", "")
-                        //+ "&nID_SubjectMessageType=1" + "&nID_Protected="+ nID_Protected
-                        + "&sID_Order="+generalConfig.sID_Order_ByOrder(nID_Order)
-                        ;
+            String sQueryParamPattern = "?"
+                    //+ "sHead=Отзыв" + "&sMail= " + "&sData="
+                    //+ (processDefinition != null && processDefinition.getName() != null ? processDefinition.getName().trim() : "")
+                    + "&sID_Rate=" + prefix.replaceAll("_", "")
+                    //+ "&nID_SubjectMessageType=1" + "&nID_Protected="+ nID_Protected
+                    + "&sID_Order=" + generalConfig.sID_Order_ByOrder(nID_Order);
 
-                String sQueryParam = String.format(sQueryParamPattern);
-                if (nID_Subject != null) {
-                    sQueryParam = sQueryParam
-                            + "&nID_Subject=" + nID_Subject
-                            ;
-                }
+            String sQueryParam = String.format(sQueryParamPattern);
+            if (nID_Subject != null) {
                 sQueryParam = sQueryParam
-                        //TODO: Need remove in future!!!
-                        + "&" + AuthenticationTokenSelector.ACCESS_CONTRACT + "=" + AccessContract.RequestAndLoginUnlimited.name()
-                        ;
-                LOG.info("(sURI={},{})", sURI, sQueryParam);
-                String sAccessKey = accessCover.getAccessKeyCentral(sURI + sQueryParam, AccessContract.RequestAndLoginUnlimited);
-                String replacemet = URL_SERVICE_MESSAGE + sQueryParam
-                        + "&" + AuthenticationTokenSelector.ACCESS_KEY + "=" + sAccessKey;
-                LOG.info("(replacemet URL={}) ", replacemet);
-                matcher.appendReplacement(outputTextBuffer, replacemet);
+                        + "&nID_Subject=" + nID_Subject;
+            }
+            sQueryParam = sQueryParam
+                    //TODO: Need remove in future!!!
+                    + "&" + AuthenticationTokenSelector.ACCESS_CONTRACT + "=" + AccessContract.RequestAndLoginUnlimited.name();
+            LOG.info("(sURI={},{})", sURI, sQueryParam);
+            String sAccessKey = accessCover.getAccessKeyCentral(sURI + sQueryParam, AccessContract.RequestAndLoginUnlimited);
+            String replacemet = URL_SERVICE_MESSAGE + sQueryParam
+                    + "&" + AuthenticationTokenSelector.ACCESS_KEY + "=" + sAccessKey;
+            LOG.info("(replacemet URL={}) ", replacemet);
+            matcher.appendReplacement(outputTextBuffer, replacemet);
         }
         return matcher.appendTail(outputTextBuffer).toString();
     }
@@ -397,7 +406,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
                     }
                 }
             } catch (Exception e) {
-                LOG.error("Error: {}, occured while looking for a form for task:{}",e.getMessage(), taskId);
+                LOG.error("Error: {}, occured while looking for a form for task:{}", e.getMessage(), taskId);
                 LOG.debug("FAIL:", e);
             }
         }
@@ -500,8 +509,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
                 //._SSL(true)
                 //._TLS(true)
                 ._SSL(bSSL)
-                ._TLS(bTLS)
-                ;
+                ._TLS(bTLS);
 
         return oMail;
     }
@@ -517,9 +525,9 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
         LOG.debug("Loaded content from file:" + sData);
         return sData;
     }
-    
-    @Override
-    public void execute(DelegateExecution oExecution) throws Exception {}
-    
-}
 
+    @Override
+    public void execute(DelegateExecution oExecution) throws Exception {
+    }
+
+}
