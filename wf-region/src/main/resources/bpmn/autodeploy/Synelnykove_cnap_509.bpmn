@@ -20,15 +20,16 @@
           <activiti:value id="rozrobka" name="АКТ ОБСТЕЖЕННЯ ЗЕЛЕНИХ НАСАДЖЕНЬ ПРИ РОЗРОБЦІ ПРОЕКТУ ВИДІЛЕННЯ ЗЕМЕЛЬНОЇ ДІЛЯНКИ"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="adress2" name="Місце розташування насадження (адреса)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file1" name="Копія державного акту на земельну ділянку(при наявності)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file1" name="Копія державного акту на земельну ділянку(при наявності)" type="file"></activiti:formProperty>
         <activiti:formProperty id="file2" name="Схема розташування аварійних дерев" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file3" name="Експлікація земельної ділянки яка виділяється для користування чи оренди" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file4" name="Копія рішення міської ради щодо надання дозволу на розробку проектної документації для відведення земельної ділянки(при наявності)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file4" name="Копія рішення міської ради щодо надання дозволу на розробку проектної документації для відведення земельної ділянки(при наявності)" type="file"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPosluga_name" name=" " type="invisible" default="Видача Акту обстеження земельної ділянки на наявність зелених насаджень"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="marker31" name="Документи на видалення" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;file1&quot;,&quot;file2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;act&quot;},&quot;sCondition&quot;:&quot;[sClient]=='delete'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="marker32" name="Документи для розробки ПВЗД" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;file3&quot;,&quot;file4&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;act&quot;},&quot;sCondition&quot;:&quot;[sClient]=='rozrobka'&quot;}}}"></activiti:formProperty>
       </extensionElements>
@@ -200,8 +201,8 @@ ${sWorkTime}.&lt;br /&gt;
           <activiti:value id="attr3_rish_ok" name="Звернення оброблене. Відправити скан заявнику."></activiti:value>
           <activiti:value id="attr4_rish_bad" name="Звернення не оброблене."></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="comment1" name="Якщо  Акт не може бути виданний, вкажіть причину у цьому полі" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="answer" name="Відповідь" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="Komment_Cnap" name="Якщо  Акт не може бути виданний, вкажіть причину у цьому полі" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="answer" name="Відповідь" type="file"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow10" sourceRef="servicetask5" targetRef="usertask2"></sequenceFlow>
@@ -232,10 +233,13 @@ ${sWorkTime}.&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
+         <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>${answer}</activiti:expression>
+        </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow12" name="status2=='attr3_rish_ok'" sourceRef="exclusivegateway2" targetRef="servicetask6">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status2=='attr3_rish_ok'}]]></conditionExpression>
+    <sequenceFlow id="flow12" name="status2=='attr4_rish_bad'" sourceRef="exclusivegateway2" targetRef="servicetask6">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status2=='attr4_rish_bad'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow13" sourceRef="servicetask6" targetRef="endevent2"></sequenceFlow>
     <serviceTask id="servicetask7" name="Отправка e-mail в разі готовності ордеру" activiti:delegateExpression="#{MailTaskWithAttachments}">
@@ -262,15 +266,16 @@ ${sWorkTime}.&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
+       <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>${answer}</activiti:expression>
+        </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow14" name="status2=='attr3_rish_ok'" sourceRef="exclusivegateway2" targetRef="servicetask7">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status2=='attr3_rish_ok'}]]></conditionExpression>
     </sequenceFlow>
     <endEvent id="endevent3" name="End"></endEvent>
-    <sequenceFlow id="flow15" sourceRef="servicetask7" targetRef="endevent3">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status=='attr2_bad'}]]></conditionExpression>
-    </sequenceFlow>
+    <sequenceFlow id="flow15" sourceRef="servicetask7" targetRef="endevent3"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_Synelnykove_cnap_509">
     <bpmndi:BPMNPlane bpmnElement="Synelnykove_cnap_509" id="BPMNPlane_Synelnykove_cnap_509">
@@ -350,7 +355,7 @@ ${sWorkTime}.&lt;br /&gt;
         <omgdi:waypoint x="680.0" y="88.0"></omgdi:waypoint>
         <omgdi:waypoint x="720.0" y="88.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="92.0" x="690.0" y="88.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="92.0" x="639.0" y="48.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
@@ -376,7 +381,7 @@ ${sWorkTime}.&lt;br /&gt;
         <omgdi:waypoint x="680.0" y="460.0"></omgdi:waypoint>
         <omgdi:waypoint x="731.0" y="460.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="690.0" y="460.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="690.0" y="510.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
