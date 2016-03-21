@@ -8,7 +8,7 @@
 export LANG=en_US.UTF-8
 
 #This will cause the shell to exit immediately if a simple command exits with a nonzero exit value.
-#set -e
+set -e
 
 while [[ $# > 1 ]]
 do
@@ -39,11 +39,8 @@ do
 			shift
 			;;
 		--compile)
-			saCompile=
-			saCompile[0]="$2"
-			saCompile[1]="$3"
-			saCompile[2]="$4"
-			shift 3
+			IFS=',' read -r -a saCompile <<< "$2"
+			shift
 			;;
 		*)
 			echo "bad option"
