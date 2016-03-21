@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_obl_cnap_420" name="Рішення про переоформлення права користування земельною ділянкою" isExecutable="true">
+  <process id="dnepr_obl_cnap_520" name="Рішення про переоформлення права користування земельною ділянкою" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати послугу" type="select" default="0"></activiti:formProperty>
@@ -84,7 +84,7 @@ enum{[asOsoba]}&lt;br /&gt;
 &lt;p&gt; Ваше звернення щодо ${sPosluga_name} прийнято в роботу. &lt;br /&gt;
 Повідомлення про результат розгляду буде спрямоване на Ваш e-mail.&lt;/p&gt;
 &lt;br /&gt;
-За наявності питянь можете звернутись за телефоном: ${sPhoneOrgan}.&lt;br /&gt;
+За наявності питань можете звернутись за телефоном: ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}.&lt;br /&gt;
 ${sAddress}.&lt;br /&gt;
@@ -179,7 +179,7 @@ enum{[asOsoba]}&lt;br /&gt;
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 Документи оформлені НЕ вірно. Відмова. &lt;br /&gt;
 Причина відмови: ${Komment_Cnap} &lt;br /&gt;
-За наявності питянь можете звернутись за телефоном: ${sPhoneOrgan}.&lt;br /&gt;
+За наявності питань можете звернутись за телефоном: ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}.&lt;br /&gt;
 ${sAddress}.&lt;br /&gt;
@@ -205,7 +205,7 @@ ${sWorkTime}.&lt;br /&gt;
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 Документи оформлені вірно.&lt;br /&gt;
 Заявка передана до місцевої ради. &lt;br /&gt;
-За наявності питянь можете звернутись за телефоном: ${sPhoneOrgan}.&lt;br /&gt;
+За наявності питань можете звернутись за телефоном: ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}.&lt;br /&gt;
 ${sAddress}.&lt;br /&gt;
@@ -246,8 +246,8 @@ ${sWorkTime}.&lt;br /&gt;
         </activiti:formProperty>
         <activiti:formProperty id="Komment_Cnap" name="Коментар ЦНАП" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asVariantsRish" name="Результат розгляду заявки, чи прийнято рішення?" type="enum" required="true">
-          <activiti:value id="sEnamRish_ok" name="Рішення про внесення змін прийнято"></activiti:value>
-          <activiti:value id="sEnamRish_bad" name="Відмова. Рішення про внесення змін НЕ прийнято"></activiti:value>
+          <activiti:value id="sEnamRish_ok" name="Рішення про переоформлення права користування прийнято"></activiti:value>
+          <activiti:value id="sEnamRish_bad" name="Відмова. Рішення про переоформлення права користування НЕ прийнято"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="Komment_Rada" name="Коментар по розгляду заявки;(Вкажіть корисну для ЦНАП інформацію, в разі відмови поясніть причину відмови)" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern\print\dneprOblSnap\dnepr_obl_cnap_520_print.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
@@ -281,7 +281,7 @@ ${sWorkTime}.&lt;br /&gt;
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 ${sPosluga_name} не прийняте. &lt;br /&gt;
 Причина: ${Komment_Rada} &lt;br /&gt;
-За наявності питянь можете звернутись за телефоном: ${sPhoneOrgan}.&lt;br /&gt;
+За наявності питань можете звернутись за телефоном: ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}.&lt;br /&gt;
 ${sAddress}.&lt;br /&gt;
@@ -309,8 +309,9 @@ ${sWorkTime}.&lt;br /&gt;
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 Документи оформлені вірно.&lt;br /&gt;
-Заявка передана до міської ради. &lt;br /&gt;
-За наявності питянь можете звернутись за телефоном: ${sPhoneOrgan}.&lt;br /&gt;
+${sPosluga_name} прийнято. &lt;br /&gt;
+Ви можете отримати документи в ЦНАП.
+За наявності питань можете звернутись за телефоном: ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}.&lt;br /&gt;
 ${sAddress}.&lt;br /&gt;
@@ -369,7 +370,7 @@ ${sWorkTime}.&lt;br /&gt;
 Дякуємо що скористались нашою послугою онлайн.&lt;br /&gt;
 Будь ласка оцініть якість наданої вам послуги. &lt;br /&gt;
 [pattern/mail/_common_feedback.html]
-За наявності питянь можете звернутись за телефоном: ${sPhoneOrgan}.&lt;br /&gt;
+За наявності питань можете звернутись за телефоном: ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}.&lt;br /&gt;
 ${sAddress}.&lt;br /&gt;

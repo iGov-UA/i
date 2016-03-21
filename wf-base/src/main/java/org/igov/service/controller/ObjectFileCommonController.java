@@ -325,16 +325,15 @@ public class ObjectFileCommonController {
     }
 
     @ApiOperation(value = "Загрузки прикрепленного к заявке файла из постоянной базы", notes = "##### Пример:\n "
-            + "https://test.igov.org.ua/wf/service/object/file/download_file_from_storage_static?nId=111111&sFileName=111.txt&sType=text&description=aaaa\n")
+            + "https://test.igov.org.ua/wf/service/object/file/download_file_from_storage_static?sId=111111&sFileName=111.txt&sType=text\n")
     @RequestMapping(value = "/download_file_from_storage_static", method = RequestMethod.GET)
     @Transactional
     public
     @ResponseBody
     byte[] getAttachmentByID(
+    		@ApiParam(value = "sId", required = true) @RequestParam(required = true, value = "sId") String nId,
             @ApiParam(value = "sFileName", required = true) @RequestParam(value = "sFileName") String sFileName,
-            @ApiParam(value = "description", required = true) @RequestParam(value = "sDescription") String sDescription,
             @ApiParam(value = "sType", required = true) @RequestParam(value = "sType") String sType,
-            @ApiParam(value = "sId", required = true) @RequestParam(required = true, value = "sId") String nId,
             HttpServletResponse httpResponse) throws IOException {
 		InputStream attachmentStream = ((org.igov.service.conf.TaskServiceImpl)taskService)
 		        .getAttachmentContentByMongoID(nId);
@@ -354,7 +353,7 @@ public class ObjectFileCommonController {
 		// Вычитывем из потока массив байтов контента и помещаем параметры
 		// контента в header
 		VariableMultipartFile multipartFile = new VariableMultipartFile(
-		        attachmentStream, sDescription,
+		        attachmentStream, sFileName,
 		        sFileName, sType);
 		httpResponse.setHeader("Content-disposition", "attachment; filename="
 		        + sFileName);
