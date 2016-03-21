@@ -295,11 +295,11 @@ public class ActionTaskService {
                 + " { border-collapse: collapse;"
                 + " width: 100%;"
                 + " max-width: 800px;}"
-                + " table th,td {"
+                + " table td {"
                 + " border: 1px solid #ddd;"
                 + " text-align:left;"
                 + " padding: 4px;"
-                + " height:35px;}"
+                + " height:40px;}"
                 + " table th {"
                 + " background: #65ABD0;"
                 + " height: 40px;"
@@ -309,7 +309,6 @@ public class ActionTaskService {
                 + " text-align:left;"
                 + " color:#fff;"
                 + " padding-left:10px;"
-                + " height: 40px;"
                 + " }"
                 + "</style>";
         //StringBuilder tableStr = new StringBuilder("Поле \t/ Тип \t/ Поточне значення\n");
