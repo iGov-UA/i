@@ -14,6 +14,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.activiti.engine.impl.persistence.entity.AttachmentEntity;
 import org.activiti.engine.task.Attachment;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.RestRequest;
@@ -87,7 +88,7 @@ public class UkrDocUtil {
 			List<List<String>> attachmentsInfo = new LinkedList<List<String>>();
 			for (Attachment attachInfo : attachmentsIds){
 				List<String> info = new LinkedList<String>();
-				info.add(String.format(DOWNLOAD_FILE_FROM_PATTERN, generalConfig.sHost(), attachInfo.getId(), attachInfo.getName(), attachInfo.getType(), attachInfo.getDescription()));
+				info.add(String.format(DOWNLOAD_FILE_FROM_PATTERN, generalConfig.sHost(), ((AttachmentEntity)attachInfo).getContentId(), attachInfo.getName(), attachInfo.getType(), attachInfo.getDescription()));
 				attachmentsInfo.add(info);
 			}
 			tables.put("Приложения", attachmentsInfo);
