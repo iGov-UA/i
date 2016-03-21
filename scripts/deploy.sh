@@ -8,7 +8,7 @@
 export LANG=en_US.UTF-8
 
 #This will cause the shell to exit immediately if a simple command exits with a nonzero exit value.
-set -e
+#set -e
 
 while [[ $# > 1 ]]
 do
