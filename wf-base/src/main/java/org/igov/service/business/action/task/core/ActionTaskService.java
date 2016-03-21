@@ -302,13 +302,11 @@ public class ActionTaskService {
                 + " height:40px;}"
                 + " table th {"
                 + " background: #65ABD0;"
-                + " height: 40px;"
                 + " vertical-align: middle;"
-                + " padding: 0;"
+                + " padding: 10px;"
                 + " width:200px;"
                 + " text-align:left;"
                 + " color:#fff;"
-                + " padding-left:10px;"
                 + " }"
                 + "</style>";
         //StringBuilder tableStr = new StringBuilder("Поле \t/ Тип \t/ Поточне значення\n");
@@ -322,7 +320,7 @@ public class ActionTaskService {
         osTable.append(sTableStyle);
         osTable.append("<table>");
         osTable.append("<tr>");
-        osTable.append("<th>").append("Поле").append("</th>");
+        osTable.append("<th height='40'>").append("Поле").append("</th>");
         if(bNew){
             osTable.append("<th>").append("Старе значення").append("</th>");
             osTable.append("<th>").append("Нове значення").append("</th>");
