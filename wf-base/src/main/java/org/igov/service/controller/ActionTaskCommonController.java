@@ -1080,7 +1080,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public void downloadTasksData(
             @ApiParam(value = "название бизнесс процесса", required = true) @RequestParam(value = "sID_BP", required = true) String sID_BP,
             @ApiParam(value = "состояние задачи, по умолчанию исключается из фильтра Берется из поля taskDefinitionKey задачи", required = false) @RequestParam(value = "sID_State_BP", required = false) String sID_State_BP,
-            @ApiParam(value = "имена полей для выборкы разделенных через ';', чтобы добавить все поля можно использовать - '*' или не передевать параметр в запросе. Поле также может содержать названия колонок. Например, saFields=Passport\\=${passport};{email}", required = false) @RequestParam(value = "saFields", required = false, defaultValue = "*") String saFields,
+            @ApiParam(value = "имена полей для выборкы разделенных через ';', чтобы добавить все поля можно использовать - '*' или не передевать параметр в запросе. "
+                    + "Поле также может содержать названия колонок. Например, saFields=Passport\\=${passport};{email}", required = false) @RequestParam(value = "saFields", required = false, defaultValue = "*") String saFields,
             @ApiParam(value = "ASCII код для разделителя", required = false) @RequestParam(value = "nASCI_Spliter", required = false) String nASCI_Spliter,
             @ApiParam(value = "имя исходящего файла, по умолчанию - data_BP-bpName_.txt\"", required = false) @RequestParam(value = "sFileName", required = false) String fileName,
             @ApiParam(value = "кодировка исходящего файла, по умолчанию - win1251", required = false) @RequestParam(value = "sID_Codepage", required = false, defaultValue = "win1251") String sID_Codepage,
@@ -1191,19 +1192,22 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         if (bHeader && header != null && saFieldSummary == null) {
             printWriter.writeNext(headers);
         }
-
+        LOG.info("!!!!!!!!!!fillTheCSVMap...");
         oActionTaskService.fillTheCSVMap(sID_BP, dBeginDate, dEndDate, foundResults, sDateCreateDF,
                 csvLines, saFields, saFieldsCalc, headers);
+        LOG.info("!!!!!!!!!!fillTheCSVMap ok");
         if (Boolean.TRUE.equals(bIncludeHistory)) {
             Set<String> tasksIdToExclude = new HashSet<>();
             for (Task task : foundResults) {
                 tasksIdToExclude.add(task.getId());
             }
+            LOG.info("!!!!!!!!!!fillTheCSVMapHistoricTasks...");
             oActionTaskService.fillTheCSVMapHistoricTasks(sID_BP, dBeginDate, dEndDate,
                     foundHistoricResults, sDateCreateDF, csvLines, saFields,
                     tasksIdToExclude, saFieldsCalc, headers);
+            LOG.info("!!!!!!!!!!fillTheCSVMapHistoricTasks ok");
         }
-
+        
         if (saFieldSummary != null) {
             LOG.info(">>>saFieldsSummary={}", saFieldSummary);
             try {
