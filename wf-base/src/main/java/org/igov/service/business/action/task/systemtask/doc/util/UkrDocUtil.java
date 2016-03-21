@@ -90,6 +90,7 @@ public class UkrDocUtil {
 			for (Attachment attachInfo : attachmentsIds){
 				List<String> info = new LinkedList<String>();
 				info.add(String.format(DOWNLOAD_FILE_FROM_PATTERN, generalConfig.sHost(), ((AttachmentEntity)attachInfo).getContentId(), URLEncoder.encode(attachInfo.getName()), attachInfo.getType()));
+				attachmentsInfo.add(info);
 			}
 			tables.put("Приложения", attachmentsInfo);
 			extensions.put("tables", tables);
