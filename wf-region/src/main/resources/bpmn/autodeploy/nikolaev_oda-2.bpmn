@@ -38,27 +38,27 @@
     </boundaryEvent>
     <sequenceFlow id="flow11" sourceRef="boundaryerror1" targetRef="endevent3"></sequenceFlow>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
-	<script><![CDATA[	
+      <script>	
 		var vPhone = execution.getVariable('sPhoneOrgan')
 		var vTime = execution.getVariable('sWorkTime')
 		var vAdress = execution.getVariable('sAddress')
 		var result = ''
 		
-		if (vAdress.length > 3){
-		  result += '<b>Адреса:</b> ' + vAdress + '<br>'
+		if (vAdress.length &gt; 3){
+		  result += '&lt;b&gt;Адреса:&lt;/b&gt; ' + vAdress + '&lt;br&gt;'
 		}
 		
-		if (vTime.length > 3){
-		  result += '<b>Час роботи:</b> ' + vTime + '<br>'
+		if (vTime.length &gt; 3){
+		  result += '&lt;b&gt;Час роботи:&lt;/b&gt; ' + vTime + '&lt;br&gt;'
 		}
 		
-		if (vPhone.length > 3){
-		  result += '<b>Телефон:</b> ' + vPhone + '<br>'
+		if (vPhone.length &gt; 3){
+		  result += '&lt;b&gt;Телефон:&lt;/b&gt; ' + vPhone + '&lt;br&gt;'
 		}
 		
 		execution.setVariable('sContact', result);	
-	]]></script>
-	</scriptTask>
+	</script>
+    </scriptTask>
     <sequenceFlow id="flow21" sourceRef="scripttask1" targetRef="servicetask2"></sequenceFlow>
     <serviceTask id="servicetask2" name="Повідомлення чиновника про нову заявку" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
@@ -90,19 +90,19 @@
           <activiti:expression><![CDATA[Взяття на облік громадян, які потребують поліпшення житлових умов]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[
-          	<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+          <activiti:expression><![CDATA[<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<p>
 				Дякуємо, що скористалися Інтернет-сервісом від порталу <a href="https://igov.org.ua/" target="_blank">iGov</a>.
 			</p>
 			<p>
-				Ваш запит був успішно зареєстрований у нашій системі. 
+				Ваш запит був успішно зареєстрований у нашій системі. <br> 
+				За додатковими питаннямі ви можете звернутись за<br>
+				${sContact}				
 			</p>
 			<p>
 				Спеціалісти відповідального органу оброблять Вашу заявку та нададуть відповідь найближчим часом. 
 			</p>
-			${sNameOrgan}, <br>
-          ]]></activiti:expression>
+			${sNameOrgan}, <br>]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -151,15 +151,17 @@
           <activiti:expression><![CDATA[Взяття на облік громадян, які потребують поліпшення житлових умов]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[
-			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+          <activiti:expression><![CDATA[<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<p>
 				На жаль Вам відмовлено в наданні послуги.
 			</p>
 				Підстава: ${comment}
-				<br><br>
-			${sNameOrgan}, <br>
-		  ]]></activiti:expression>
+				<br>
+				За додатковими питаннямі ви можете звернутись за<br>
+				${sContact}<br>				
+				
+				<br>
+			${sNameOrgan}, <br>]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -214,23 +216,19 @@
           <activiti:expression><![CDATA[Взяття на облік громадян, які потребують поліпшення житлових умов]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[
-          	<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+          <activiti:expression><![CDATA[<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<p>
 				Ваше звернення виконано.<br>
 				<br>
-				Ви можете отримати результат<br>	
-				${sAddress}<br>
-				${sWorkTime}<br>
-				${sPhoneOrgan}<br>		
+				Ви можете отримати результат<br>
+				${sContact}<br>			
 			</p>
-			${sNameOrgan},<br>
-          ]]></activiti:expression>
+			${sNameOrgan},<br>]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow20" sourceRef="servicetask4" targetRef="endevent3"></sequenceFlow>
-    <endEvent id="endevent3" name="End"></endEvent>    
+    <endEvent id="endevent3" name="End"></endEvent>
     <sequenceFlow id="flow23" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <textAnnotation id="textannotation1">
       <text>Выбирается услуга:
@@ -253,6 +251,9 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
         <omgdc:Bounds height="30.0" width="30.0" x="23.0" y="170.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="143.0" y="54.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="70.0" width="132.0" x="197.0" y="132.0"></omgdc:Bounds>
@@ -280,9 +281,6 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
         <omgdc:Bounds height="35.0" width="35.0" x="101.0" y="288.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="143.0" y="54.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="textannotation1" id="BPMNShape_textannotation1">
         <omgdc:Bounds height="61.0" width="255.0" x="1.0" y="1.0"></omgdc:Bounds>
@@ -347,7 +345,7 @@
         <omgdi:waypoint x="363.0" y="424.0"></omgdi:waypoint>
         <omgdi:waypoint x="189.0" y="425.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="94.0" x="216.0" y="405.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="100.0" x="216.0" y="405.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
