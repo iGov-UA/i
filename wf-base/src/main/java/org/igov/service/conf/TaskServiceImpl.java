@@ -55,7 +55,7 @@ public class TaskServiceImpl extends org.activiti.engine.impl.TaskServiceImpl {
 	
 	public InputStream getAttachmentContentByMongoID(String contentId) {
 		LOG.info("Calling org.igov.service.conf.TaskServiceImpl.getAttachmentContent(String)");
-		return commandExecutor.execute(new MongoGetAttachmentContentCmd(contentId, durableBytesDataStorage));
+		return commandExecutor.execute(new MongoGetAttachmentContentByMongoIDCmd(contentId, durableBytesDataStorage));
 	}
 
 }
