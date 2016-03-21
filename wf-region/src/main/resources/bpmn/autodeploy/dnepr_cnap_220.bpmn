@@ -50,14 +50,14 @@
         <activiti:formProperty id="file8" name="Бланк документу дозвільного характеру, який непридатний для використання" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file9" name="Документ дозвільного характеру, який підлягає анулюванню" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file11" name="Нормативний документ, та технічна документація, у відповідності до яких виготовлений об’єкт експертизи, а також технологічна документація (процес, регламент, інструкція тощо);(за наявності)" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="notice" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
-        <activiti:formProperty id="region" name="Регион" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="clerkPost" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="shapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органа" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapka220" name="Шапка заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="substance" name="Суть заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="substance_2" name="Суть заяви в лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="substance_3" name="Суть заяви в контексті листа" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="term" name="Строк віконання" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="term" name="Строк виконання" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers101" name="Видача висновку" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_1&quot;: {&quot;aField_ID&quot;: [&quot;info&quot;,&quot;scope&quot;,&quot;article&quot;,&quot;country_origin&quot;,&quot;producer&quot;,&quot;requisites_produser&quot;,&quot;data_contract&quot;,&quot;name_applicant&quot;,&quot;country_applicant&quot;,&quot;requisites_applicant&quot;,&quot;contract&quot;,&quot;file1&quot;,&quot;file3&quot;,&quot;file4&quot;,&quot;file5&quot;,&quot;file6&quot;], &quot;asID_Field&quot;: {&quot;sClient&quot;: &quot;vibor_service&quot;},&quot;sCondition&quot;: &quot;[sClient] == 'issue'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers102" name="Переоформлення висновку" type="markers" default="{&quot;motion&quot; : {&quot;ShowFieldsOnCondition_2&quot; : {&quot;aField_ID&quot; : [&quot;file2&quot;,&quot;file7&quot;],&quot;asID_Field&quot; : {&quot;sClient&quot; : &quot;vibor_service&quot;},&quot;sCondition&quot; : &quot;[sClient] == 'restructuring'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers103" name="Видача дублікату висновку" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_3&quot;: {&quot;aField_ID&quot;: [&quot;file8&quot;],&quot;asID_Field&quot; : {&quot;sClient&quot;: &quot;vibor_service&quot;}, &quot;sCondition&quot; : &quot;[sClient] == 'duplicate'&quot;}}}"></activiti:formProperty>
@@ -77,9 +77,7 @@
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow4" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <scriptTask id="scripttask1" name="Script pulling data" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var per1 = 'region'
-var per2 = 'clerkPost'
-var per3 = 'shapka'
+      <script>
 var per4 = 'substance'
 var per5 = 'substance_2'
 var per6 = 'substance_3'
@@ -88,26 +86,6 @@ if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'carich'){
 per1 = '20'
 per2 = 'tsar.alternatyva@gmail.com'
 per3 = 'Головному державному санітарному лікарю Царичанського, Петриківського, Магдалинівського району'
-}
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'prav' &amp;&amp; execution.getVariable('vibor_performer') == 'head'){
-per1 = '23'
-per2 = 'woobraja@mail.ru'
-per3 = 'Головному державному санітарному лікарю Дніпропетровської області'
-}
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'prav' &amp;&amp; execution.getVariable('vibor_performer') == 'rail'){
-per1 = '23'
-per2 = 'woobraja@mail.ru'
-per3 = 'Начальнику управління на Придніпровській залізниці ГУ Держсанепідслужби на залізничному транспорту'
-}
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'lev' &amp;&amp; execution.getVariable('vibor_performer') == 'head'){
-per1 = '24'
-per2 = 'Luda17_@ukr.net'
-per3 = 'Головному державному санітарному лікарю Дніпропетровської області'
-}
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'lev' &amp;&amp; execution.getVariable('vibor_performer') == 'rail'){
-per1 = '24'
-per2 = 'Luda17_@ukr.net'
-per3 = 'Начальнику управління на Придніпровській залізниці ГУ Держсанепідслужби на залізничному транспорту'
 }
 if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'vilnogirskT'){
 per1 = '25'
@@ -158,9 +136,6 @@ per5 = 'Рішення про анулювання документа дозві
 per6 = 'анулювання'
 per7 = 'п`яти робочих днів'
 }
-execution.setVariable('region', per1)
-execution.setVariable('clerkPost', per2)
-execution.setVariable('shapka', per3)
 execution.setVariable('substance', per4)
 execution.setVariable('substance_2', per5)
 execution.setVariable('substance_3', per6)
@@ -170,19 +145,19 @@ execution.setVariable('term', per7)
     <userTask id="usertask1" name="Обробка вхідної документації ЦНАПом (1-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="adress" name="Місцезнаходження юридичної особи / місце проживання фізичної особи - підприємця" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="adress" name="Місцезнаходження юридичної особи / місце проживання фізичної особи - підприємця; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна пошта; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="vibor_service" name="Суть звернення" type="enum" writable="false">
           <activiti:value id="issue" name="Видача висновку"></activiti:value>
           <activiti:value id="restructuring" name="Переоформлення висновку"></activiti:value>
           <activiti:value id="duplicate" name="Видача дублікату висновку"></activiti:value>
           <activiti:value id="cansel" name="Анулювання висновку"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="date_today" name="Дата подачи заяви" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="name_object" name="Об'єкт, на який видається документ" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="adress2" name="Адреса об'єкта, на який видається документ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_today" name="Дата подачи заяви; ;writable=false" type="date"></activiti:formProperty>
+        <activiti:formProperty id="name_object" name="Об'єкт, на який видається документ; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="adress2" name="Адреса об'єкта, на який видається документ;;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="name_company" name="У давальному відмінку повне найменовання юридичної особи/П.І.Б. фізичної особи - підприємця" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="kved" name="Вид діяльності згідно з КВЕД" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="edrpou_inn" name="Ідентифікаційний код згідно з ЄДРПОУ (для юридичних осіб) або ідентифікаційний номер фізичної особи - підприємця" type="string" writable="false"></activiti:formProperty>
@@ -201,15 +176,15 @@ execution.setVariable('term', per7)
           <activiti:value id="head" name="Головне управління Держсанепідслужби у Дніпропетровській області"></activiti:value>
           <activiti:value id="rail" name="Управління на Придніпровській залізниці Головного управління Держсанепідслужби на залізничному транспорті"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="adminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string"></activiti:formProperty>
-        <activiti:formProperty id="number_cnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string"></activiti:formProperty>
-        <activiti:formProperty id="date_registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string"></activiti:formProperty>
-        <activiti:formProperty id="shapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="adminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="number_cnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="date_registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sShapka220" name="Шапка заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="substance" name="Суть заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="substance_2" name="Суть заяви в лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="substance_3" name="Суть заяви в контексті листа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="document" name="Назва документу" type="invisible" default="висновок державної санітарно-епідеміологічної експертизи діючих об’єктів"></activiti:formProperty>
-        <activiti:formProperty id="term" name="Строк віконання" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="term" name="Строк виконання" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="list_documents" name="Список документів" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="status" name="Обробка заяви" type="enum">
           <activiti:value id="attr1_wait" name="Документи передані в держсанепідслужбу"></activiti:value>
@@ -271,7 +246,7 @@ execution.setVariable('term', per7)
         <activiti:formProperty id="substance" name="Суть заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="substance_2" name="Суть заяви в лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="substance_3" name="Суть заяви в контексті листа" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="term" name="Строк віконання" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="term" name="Строк виконання" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="vibor_performer" name="Виконавець" type="enum" writable="false">
           <activiti:value id="head" name="Головне управління Держсанепідслужби у Дніпропетровській області"></activiti:value>
           <activiti:value id="rail" name="Управління на Придніпровській залізниці Головного управління Держсанепідслужби на залізничному транспорті"></activiti:value>
@@ -326,9 +301,9 @@ execution.setVariable('term', per7)
 &lt;p&gt; Ваше звернення щодо ${substance_3} висновоку державної санітарно-епідеміологічної експертизи діючих об’єктів було зареєстровано у системі.&lt;br/&gt;
 Повідомлення про результат послуги буде спрямоване на Ваш e-mail.&lt;/p&gt;
 &lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]&lt;br /&gt;
+${sPhoneOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
+${sNameOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -348,15 +323,15 @@ execution.setVariable('term', per7)
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-На жаль, Ваше звернення щодо ${substance_3} висновку державної санітарно-епідеміологічної експертизи діючих об’єктів - відхилине.&lt;/p&gt;
+На жаль, Ваше звернення щодо ${substance_3} висновоку державної санітарно-епідеміологічної експертизи діючих об’єктів - відхилине.&lt;/p&gt;
 &lt;p&gt;Причина в наступному: 
                                     &lt;/p&gt;
 &lt;p&gt;${decisionComment}&lt;/p&gt;
 &lt;p&gt;Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/ target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
 &lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]&lt;br /&gt;
+${sPhoneOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2],&lt;br /&gt;
+${sNameOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -381,9 +356,9 @@ execution.setVariable('term', per7)
 &lt;p&gt;Номер Вашого замовлення: ${number_cnap}&lt;/p&gt;.
 &lt;/p&gt;
 &lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]&lt;br /&gt; 
+${sPhoneOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2],&lt;br /&gt;
+${sNameOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -414,13 +389,14 @@ ${substance_2}.&lt;br /&gt;
 3. Оригінали документів, що були завантажені при подачі заяви на сайті.&lt;br/&gt;
 4. Підписані завірені печаткою заяви, які знаходяться в прикріплених файлах.
 &lt;/p&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5],&lt;br /&gt;
+${sPhoneOrgan},&lt;br /&gt;
 &lt;br /&gt;
-Графік роботи ЦНАП-у:&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:4],&lt;br /&gt;
+Графік роботи ЦНАП:&lt;br /&gt;
+${sWorkTime},&lt;br /&gt;
+${sAddress}&lt;br /&gt;
 &lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2],&lt;br /&gt;
+${sNameOrgan},&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
