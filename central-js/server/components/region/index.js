@@ -16,8 +16,12 @@ function addRegion(req, sHost, isCacheUsed, nID_Server){
 
 function _searchForHost (req, res, next) {
   var nID_Server = req.query.nID_Server;
+  if(!nID_Server){
+    nID_Server = req.body.nID_Server;
+  }
 
-  if (!nID_Server) {
+  if (nID_Server === undefined && nID_Server === null && nID_Server === "") {
+    console.log(JSON.stringify(req.body));
     res.status(400).json(errors.createInputParameterError('nID_Server parameter should be specified for current request'));
   } else {
     serversCache.get(nID_Server, function (err, value) {

@@ -12,3 +12,10 @@ appTest
   .get('/wf/service/form/form-data')
   .query(true)
   .reply(200, formServiceTest.testData.forms.empty, headers);
+
+appTest
+  .regionMock
+  .post('/wf/service/form/form-data')
+  .query(true)
+  .reply(200, formServiceTest.testData.forms.empty, headers);
+

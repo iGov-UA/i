@@ -1,16 +1,17 @@
 'use strict';
 
-var nock = require('nock');
-var url = require('url');
-var urlencode = require('urlencode');
-var superagent = require('superagent');
-var supertest = require('supertest-as-promised');
-var app = require('./app');
-var appData = require('./app.data.spec.js');
-var config = require('./config/environment');
-var bankidUtil = require('./auth/bankid/bankid.util.js');
-var testRequest = supertest(app);
-var async = require('async');
+var nock = require('nock')
+  , url = require('url')
+  , urlencode = require('urlencode')
+  , superagent = require('superagent')
+  , supertest = require('supertest-as-promised')
+  , app = require('./app')
+  , testRequest = supertest(app)
+  , async = require('async')
+  , appData = require('./app.data.spec.js')
+  , appTests = require('./app.tests.spec.js')(testRequest)
+  , config = require('./config/environment')
+  , bankidUtil = require('./auth/bankid/bankid.util.js');
 
 
 var pathFromURL = function (urlString) {
@@ -207,9 +208,11 @@ module.exports.loginWithEmail = function (callback) {
   });
 };
 
+
 module.exports.app = app;
 module.exports.bankidMock = bankidMock;
 module.exports.centralNock = centralNock;
 module.exports.regionMock = regionMock;
 module.exports.authResultMock = authResultMock;
 module.exports.testRequest = testRequest;
+module.exports.tests = appTests;
