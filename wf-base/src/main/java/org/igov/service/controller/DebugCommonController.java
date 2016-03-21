@@ -31,6 +31,8 @@ import javax.mail.MessagingException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import org.igov.model.flow.FlowServiceDataDao;
+import org.igov.model.flow.Flow_ServiceData;
 import org.igov.service.business.flow.FlowService;
 import org.igov.service.business.flow.slot.ClearSlotsResult;
 import org.igov.service.business.flow.slot.Days;
@@ -54,6 +56,9 @@ public class DebugCommonController {
 
     @Autowired
     private FlowService oFlowService;
+
+    @Autowired
+    private FlowServiceDataDao flowServiceDataDao;
 
     @Autowired
     private TaskService taskService;
@@ -179,76 +184,89 @@ public class DebugCommonController {
             @RequestParam(value = "sDateStart", required = false) String sDateStart,
             @RequestParam(value = "sDateStop", required = false) String sDateStop,
             @RequestParam(value = "bAll", required = false) boolean bAll,
-            @RequestParam(value = "nFreeDays", required = false, defaultValue = "30") int nFreeDaysNeeded, //Maxline: TODO не используется?
-            @RequestParam(value = "nDays", required = false, defaultValue = "180") int nDays,
+            @RequestParam(value = "nFreeDays", required = false, defaultValue = "10") int nFreeDaysNeeded, //Maxline: TODO не используется?
+            @RequestParam(value = "nDays", required = false, defaultValue = "10") int nDays,
             @RequestParam(value = "sOperation", required = false) String sOperation) throws Exception {
         LOG.info("/test/action/testSheduleBuilderFlowSlots  - invoked");
 
-        DateTime oDateStart;
-        DateTime oDateEnd;
-
-        //Maxline: TODO добавить исключения
-        nID_Flow_ServiceData = (nID_Flow_ServiceData == null) ? 12L : nID_Flow_ServiceData; //_test_queue_cancel
-        //nFreeDays = (nFreeDays == 0) ? 3 : nFreeDays;
-        nID_ServiceData = (nID_ServiceData == null) ? 358L : nID_ServiceData; //_test_queue_cancel
-        //Long nID_ServiceData = 63L; //Видача/заміна паспорта громадянина для виїзду за кордон
-
-        if (sDateStart == null || sDateStart.equals("")) {
-            //sDateStart = "2016-05-12 00:00:00.000";
-            oDateStart = DateTime.now().withTimeAtStartOfDay();
-        } else {
-            oDateStart = oFlowService.parseJsonDateTimeSerializer(sDateStart);
-        }
         if (sOperation == null) {
             sOperation = "";
         }
-        if (bAll != true) {  // Maxline: bAll должно быть false в рабочей версии
-            bAll = false;
-        }
-        //boolean bAll = true;
-        //        if (sDateStop == null || sDateStop.equals("")) {
-        //            //sDateStop = "2016-05-12 00:00:00.000";
-        oDateEnd = oDateStart.plusDays(nDays);
-        //        } else {
-        //            oDateEnd = oFlowService.parseJsonDateTimeSerializer(sDateStop);
-        //        }
+        DateTime oDateStart;
+        DateTime oDateEnd;
 
-        LOG.info("sDateStart = {}", sDateStart);
-        LOG.info("sDateStop = {}", sDateStop);
-        LOG.info("oDateStart = {}", oDateStart);
-        LOG.info("oDateEnd = {}", oDateEnd);
+        LOG.info(" sDateStart = {}", sDateStart);
+        LOG.info(" sDateStop = {}", sDateStop);
 
         switch (sOperation) {
             case "checkAndBuild":
+                bAll = false;
+                oDateStart = DateTime.now().withTimeAtStartOfDay();
+                LOG.info(" oDateStart = {}", oDateStart);
+
+                //Maxline: TODO добавить исключения
+                nID_Flow_ServiceData = 12L; //_test_queue_cancel
+                Flow_ServiceData flow = flowServiceDataDao.findByIdExpected(nID_Flow_ServiceData);
+                nID_ServiceData = flow.getnID_ServiceData();   //nID_ServiceData = 358  _test_queue_cancel, nID_ServiceData = 63L Видача/заміна паспорта громадянина для виїзду за кордон
+
                 int nStartDay = 0;
                 DateTime dateStart = oDateStart.plusDays(0);
                 DateTime dateEnd;
 
-                while (!isFreeDaysEnough(nID_ServiceData, oDateStart) && nStartDay < DAYS_IN_HALF_YEAR) {
+                while (!isEnoughFreeDays(nID_ServiceData, oDateStart) && nStartDay < DAYS_IN_HALF_YEAR) {
                     dateStart = dateStart.plusDays(nStartDay);
                     dateEnd = dateStart.plusDays(nStartDay + DAYS_IN_MONTH);
 
                     List<FlowSlotVO> resFlowSlotVO = oFlowService.buildFlowSlots(nID_Flow_ServiceData, dateStart, dateEnd);
-                    LOG.info("resFlowSlotVO.size() = {}", resFlowSlotVO.size());
+                    LOG.info(" resFlowSlotVO.size() = {}", resFlowSlotVO.size());
 
                     nStartDay += DAYS_IN_MONTH;
                 }
+
+                boolean bEnoughFreeDays = nStartDay < DAYS_IN_HALF_YEAR;
+
                 break;
             case "build":
+                oDateStart = getoDateStart(sDateStart);
+                oDateEnd = oDateStart.plusDays(nDays);
+                LOG.info(" oDateEnd = {}", oDateEnd);
+
+                if (bAll != true) {  // Maxline: bAll должно быть false в рабочей версии
+                    bAll = false;
+                }
+                nID_Flow_ServiceData = (nID_Flow_ServiceData == null) ? 12L : nID_Flow_ServiceData; //_test_queue_cancel
+
                 List<FlowSlotVO> resFlowSlotVO = oFlowService.buildFlowSlots(nID_Flow_ServiceData, oDateStart, oDateEnd);
-                LOG.info("resFlowSlotVO.size() = {}", resFlowSlotVO.size());
+                LOG.info(" resFlowSlotVO.size() = {}", resFlowSlotVO.size());
                 break;
             case "clear":
+                oDateStart = getoDateStart(sDateStart);
+                oDateEnd = oDateStart.plusDays(nDays);
+                LOG.info(" oDateEnd = {}", oDateEnd);
+
                 boolean bWithTickets = false;
+                nID_Flow_ServiceData = (nID_Flow_ServiceData == null) ? 12L : nID_Flow_ServiceData; //_test_queue_cancel
+
                 oFlowService.clearFlowSlots(nID_Flow_ServiceData, oDateStart, oDateEnd, bWithTickets);
                 break;
         }
 
-        LOG.info("/test/action/testSheduleBuilderFlowSlots  - exit2");
+        LOG.info(" /test/action/testSheduleBuilderFlowSlots  - exit3");
         //runtimeService.deleteProcessInstance(processInstanceID, sReason);
     }
 
-    private boolean isFreeDaysEnough(Long nID_ServiceData, DateTime oDateStart) {
+    private DateTime getoDateStart(String sDateStart) {
+        DateTime oDateStart;
+        if (sDateStart == null || sDateStart.equals("")) {  //sDateStart = "2016-05-12 00:00:00.000";
+            oDateStart = DateTime.now().withTimeAtStartOfDay();
+        } else {
+            oDateStart = oFlowService.parseJsonDateTimeSerializer(sDateStart);
+        }
+        LOG.info(" oDateStart = {}", oDateStart);
+        return oDateStart;
+    }
+
+    private boolean isEnoughFreeDays(Long nID_ServiceData, DateTime oDateStart) {
         int nFreeWorkDaysFact;
 
         Long nID_Service = null; //176L;
@@ -256,16 +274,16 @@ public class DebugCommonController {
         Long nID_SubjectOrganDepartment = null;
         boolean bAll = false;
         DateTime oDateEnd = oDateStart.plusDays(DAYS_IN_HALF_YEAR);
-        LOG.info("oDateEnd = {}", oDateEnd);
+        LOG.info(" oDateEnd = {}", oDateEnd);
 
         Days res = oFlowService.getFlowSlots(nID_Service, nID_ServiceData, sID_BP, nID_SubjectOrganDepartment,
                 oDateStart, oDateEnd, bAll, WORK_DAYS_NEEDED);  //Maxline: есть еще nFreeDaysNeeded
-        LOG.info("Days = {}", res);
+        LOG.info(" Days = {}", res);
 
         nFreeWorkDaysFact = res.getaDay().size();
-        LOG.info("Days.size() = {}, WORK_DAYS_NEEDED = {}", nFreeWorkDaysFact, WORK_DAYS_NEEDED);
+        LOG.info(" Days.size() = {}, WORK_DAYS_NEEDED = {}", nFreeWorkDaysFact, WORK_DAYS_NEEDED);
         for (Day day : res.getaDay()) {
-            LOG.info("Day = {}, isbHasFree = {}", day.getsDate(), day.isbHasFree());
+            LOG.info(" Day = {}, isbHasFree = {}", day.getsDate(), day.isbHasFree());
         }
 
         return nFreeWorkDaysFact >= WORK_DAYS_NEEDED;
