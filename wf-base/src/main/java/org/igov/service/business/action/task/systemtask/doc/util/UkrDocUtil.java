@@ -28,7 +28,7 @@ import org.xml.sax.SAXException;
 
 public class UkrDocUtil {
 	
-	private static final String DOWNLOAD_FILE_FROM_PATTERN = "%s/wf/service/object/file/getAttachmentByID?nId=%s&sFileName=%s&sType=%s&description=%s";
+	private static final String DOWNLOAD_FILE_FROM_PATTERN = "%s/wf/service/object/file/download_file_from_storage_static?nId=%s&sFileName=%s&sType=%s&sDescription=%s";
 	private final static Logger LOG = LoggerFactory.getLogger(UkrDocUtil.class);
 
 	public static String getSessionId(String login, String password, String uriSid) {

@@ -299,8 +299,8 @@ public class ObjectFileCommonController {
     }
 
     @ApiOperation(value = "Загрузки прикрепленного к заявке файла из постоянной базы", notes = "##### Пример:\n "
-            + "https://test.igov.org.ua/wf/service/object/file/getAttachmentByID?nId=111111&sFileName=111.txt&sType=text&description=aaaa\n")
-    @RequestMapping(value = "/getAttachmentByID", method = RequestMethod.GET)
+            + "https://test.igov.org.ua/wf/service/object/file/download_file_from_storage_static?nId=111111&sFileName=111.txt&sType=text&description=aaaa\n")
+    @RequestMapping(value = "/download_file_from_storage_static", method = RequestMethod.GET)
     @Transactional
     public
     @ResponseBody
