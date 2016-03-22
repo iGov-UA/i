@@ -1175,7 +1175,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             query = query.taskDefinitionKey(sID_State_BP);
         }
         List<Task> foundResults = new LinkedList<Task>();
-        if (sTaskEndDateAt == null && sTaskEndDateTo != null){
+        if (sTaskEndDateAt == null && sTaskEndDateTo == null){
         	foundResults = query.listPage(nRowStart, nRowsMax);
         }
 
