@@ -1080,8 +1080,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public void downloadTasksData(
             @ApiParam(value = "название бизнесс процесса", required = true) @RequestParam(value = "sID_BP", required = true) String sID_BP,
             @ApiParam(value = "состояние задачи, по умолчанию исключается из фильтра Берется из поля taskDefinitionKey задачи", required = false) @RequestParam(value = "sID_State_BP", required = false) String sID_State_BP,
-            @ApiParam(value = "имена полей для выборкы разделенных через ';', чтобы добавить все поля можно использовать - '*' или не передевать параметр в запросе. "
-                    + "Поле также может содержать названия колонок. Например, saFields=Passport\\=${passport};{email}", required = false) @RequestParam(value = "saFields", required = false, defaultValue = "*") String saFields,
+            @ApiParam(value = "имена полей для выборкы разделенных через ';', чтобы добавить все поля можно использовать - '*' или не передевать параметр в запросе. Поле также может содержать названия колонок. Например, saFields=Passport\\=${passport};{email}", required = false) @RequestParam(value = "saFields", required = false, defaultValue = "*") String saFields,
             @ApiParam(value = "ASCII код для разделителя", required = false) @RequestParam(value = "nASCI_Spliter", required = false) String nASCI_Spliter,
             @ApiParam(value = "имя исходящего файла, по умолчанию - data_BP-bpName_.txt\"", required = false) @RequestParam(value = "sFileName", required = false) String fileName,
             @ApiParam(value = "кодировка исходящего файла, по умолчанию - win1251", required = false) @RequestParam(value = "sID_Codepage", required = false, defaultValue = "win1251") String sID_Codepage,
@@ -1094,9 +1093,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "добавить заголовок с названиями полей в выходной файл, по умолчанию - false", required = false) @RequestParam(value = "bHeader", required = false, defaultValue = "false") Boolean bHeader,
             @ApiParam(value = "настраиваемые поля (название поля -- формула, issue 907", required = false) @RequestParam(value = "saFieldsCalc", required = false) String saFieldsCalc,
             @ApiParam(value = "сведение полей, которое производится над выборкой (issue 916)", required = false) @RequestParam(value = "saFieldSummary", required = false) String saFieldSummary,
-            @ApiParam(value = "Email для отправки выбранных данных", required = false) @RequestParam(value = "sMailTo", required = false) String sMailTo,
-            @ApiParam(value = "начальная дата закрытия таски", required = false) @RequestParam(value = "sTaskEndDateAt", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date sTaskEndDateAt,
-            @ApiParam(value = "конечная дата закрытия таски", required = false) @RequestParam(value = "sTaskEndDateTo", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date sTaskEndDateTo,
             HttpServletResponse httpResponse) throws IOException {
 
 //      'sID_State_BP': '',//'usertask1'
@@ -1131,14 +1127,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 .taskCreatedBefore(dEndDate);
         HistoricTaskInstanceQuery historicQuery = historyService
                 .createHistoricTaskInstanceQuery()
-                .processDefinitionKey(sID_BP);
-        if (sTaskEndDateAt != null){
-        	historicQuery.taskCompletedAfter(sTaskEndDateAt);
-        }
-        if (sTaskEndDateTo != null){
-        	historicQuery.taskCompletedBefore(sTaskEndDateTo);
-        }
-        historicQuery.taskCreatedAfter(dBeginDate)
+                .processDefinitionKey(sID_BP).taskCreatedAfter(dBeginDate)
                 .taskCreatedBefore(dEndDate).includeProcessVariables();
         if (sID_State_BP != null) {
             historicQuery.taskDefinitionKey(sID_State_BP);
@@ -1154,10 +1143,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         if (sID_State_BP != null) {
             query = query.taskDefinitionKey(sID_State_BP);
         }
-        List<Task> foundResults = new LinkedList<Task>();
-        if (sTaskEndDateAt == null && sTaskEndDateTo != null){
-        	foundResults = query.listPage(nRowStart, nRowsMax);
-        }
+        List<Task> foundResults = query.listPage(nRowStart, nRowsMax);
 
         // 3. response
         SimpleDateFormat sdfFileName = new SimpleDateFormat(
@@ -1171,43 +1157,31 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
         LOG.debug("File name to return statistics : {}", sTaskDataFileName);
 
-        CSVWriter printWriter = null;
-        PipedInputStream pi = new PipedInputStream();
-        LOG.info("!!!!!!!!!!!!!sMailTo: " + sMailTo);
-        if (sMailTo != null){
-	        PipedOutputStream po = new PipedOutputStream(pi);
-	        PrintWriter pw = new PrintWriter(po);
-	        printWriter = new CSVWriter(pw, separator.charAt(0),
-	                CSVWriter.NO_QUOTE_CHARACTER);
-        } else {
-        	httpResponse.setContentType("text/csv;charset=" + charset.name());
-                httpResponse.setHeader("Content-disposition", "attachment; filename="
-                    + sTaskDataFileName);
-                printWriter = new CSVWriter(httpResponse.getWriter(), separator.charAt(0),
+        httpResponse.setContentType("text/csv;charset=" + charset.name());
+        httpResponse.setHeader("Content-disposition", "attachment; filename="
+                + sTaskDataFileName);
+
+        CSVWriter printWriter = new CSVWriter(httpResponse.getWriter(), separator.charAt(0),
                 CSVWriter.NO_QUOTE_CHARACTER);
-        }
 
         List<Map<String, Object>> csvLines = new LinkedList<>();
 
         if (bHeader && header != null && saFieldSummary == null) {
             printWriter.writeNext(headers);
         }
-        //LOG.info("!!!!!!!!!!fillTheCSVMap...");
+
         oActionTaskService.fillTheCSVMap(sID_BP, dBeginDate, dEndDate, foundResults, sDateCreateDF,
                 csvLines, saFields, saFieldsCalc, headers);
-        //LOG.info("!!!!!!!!!!fillTheCSVMap ok");
         if (Boolean.TRUE.equals(bIncludeHistory)) {
             Set<String> tasksIdToExclude = new HashSet<>();
             for (Task task : foundResults) {
                 tasksIdToExclude.add(task.getId());
             }
-            //LOG.info("!!!!!!!!!!fillTheCSVMapHistoricTasks...");
             oActionTaskService.fillTheCSVMapHistoricTasks(sID_BP, dBeginDate, dEndDate,
                     foundHistoricResults, sDateCreateDF, csvLines, saFields,
                     tasksIdToExclude, saFieldsCalc, headers);
-            //LOG.info("!!!!!!!!!!fillTheCSVMapHistoricTasks ok");
         }
-        
+
         if (saFieldSummary != null) {
             LOG.info(">>>saFieldsSummary={}", saFieldSummary);
             try {
@@ -1238,28 +1212,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
 
         printWriter.close();
-
-        if (sMailTo != null){
-        	LOG.info("Sending email with tasks data to email {}", sMailTo);
-	        SimpleDateFormat sdf = new SimpleDateFormat("yyyy:MM:dd");
-	        String sSubject = String.format("Выборка за: (%s)-(%s) для БП: %s ", sdf.format(dBeginDate), sdf.format(dEndDate), sID_BP);
-	        String sFileExt = "csv";
-	        DataSource oDataSource = new ByteArrayDataSource(pi, sFileExt);
-	        oMail._To(sMailTo);
-	        oMail._Head(sSubject);
-	        oMail._Body(sSubject);
-	        oMail._Attach(oDataSource, sTaskDataFileName, "");
-	        try {
-				oMail.sendWithUniSender();
-			} catch (EmailException e) {
-				LOG.error("Error occured while sending tasks data to email: {}", e.getMessage());
-			}
-	        pi.close();
-
-	        httpResponse.setContentType("text/plain");
-	        httpResponse.getWriter().print("OK");
-        }
-
     }
 
     /**
