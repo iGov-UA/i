@@ -1192,20 +1192,20 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         if (bHeader && header != null && saFieldSummary == null) {
             printWriter.writeNext(headers);
         }
-        LOG.info("!!!!!!!!!!fillTheCSVMap...");
+        //LOG.info("!!!!!!!!!!fillTheCSVMap...");
         oActionTaskService.fillTheCSVMap(sID_BP, dBeginDate, dEndDate, foundResults, sDateCreateDF,
                 csvLines, saFields, saFieldsCalc, headers);
-        LOG.info("!!!!!!!!!!fillTheCSVMap ok");
+        //LOG.info("!!!!!!!!!!fillTheCSVMap ok");
         if (Boolean.TRUE.equals(bIncludeHistory)) {
             Set<String> tasksIdToExclude = new HashSet<>();
             for (Task task : foundResults) {
                 tasksIdToExclude.add(task.getId());
             }
-            LOG.info("!!!!!!!!!!fillTheCSVMapHistoricTasks...");
+            //LOG.info("!!!!!!!!!!fillTheCSVMapHistoricTasks...");
             oActionTaskService.fillTheCSVMapHistoricTasks(sID_BP, dBeginDate, dEndDate,
                     foundHistoricResults, sDateCreateDF, csvLines, saFields,
                     tasksIdToExclude, saFieldsCalc, headers);
-            LOG.info("!!!!!!!!!!fillTheCSVMapHistoricTasks ok");
+            //LOG.info("!!!!!!!!!!fillTheCSVMapHistoricTasks ok");
         }
         
         if (saFieldSummary != null) {
