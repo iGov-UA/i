@@ -8,27 +8,23 @@
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть регіональне відділення, де Ви б бажали отримати послугу" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="sNotice" name="Примітка" type="label" default="Зверніть увагу: для обраного відділення поки що не працює обробка електроних звернень. Але Ви матимете можливість пізніше оцінити роботу співробітника і залишити свій відгук, якщо натиснете 'Замовити послугу' "></activiti:formProperty>
-        
         <activiti:formProperty id="sWorkTime" name="Графік прийому громадян" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="goal" name="Оберіть потрібну Вам послугу" type="enum" required="true">
           <activiti:value id="attr1" name="одержання дозволу на зберігання та носіння мисливської вогнепальної нарізної, гладкоствольної зброї, пневматичної зброї, холодної зброї, пристроїв"></activiti:value>
           <activiti:value id="attr2" name="перереєстрації зброї, пристроїв (продовження терміну дії дозволу на їх зберігання та носіння), які придбані відповідно до законодавства"></activiti:value>
           <activiti:value id="attr3" name="одержання громадянами в органах внутрішніх справ дозволу на придбання мисливської вогнепальної нарізної, гладкоствольної зброї, пневматичної зброї, холодної зброї"></activiti:value>
         </activiti:formProperty>
-                    
-                
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sInvoice1" name=" Додаток 1(зразок)" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sZajava" name=" Додаток 2(зразок)" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sKartka" name=" Додаток 3(зразок)" type="label" default=" "></activiti:formProperty>
-        
-         <activiti:formProperty id="sPhoneOrgan" name="Телефони обраного відділення для довідок" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Телефони обраного відділення для довідок" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса регіонального відділення" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Підпис" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="sMailClerk" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_UA" name="sID_UA" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nUser" name="Users" type="long" required="string"></activiti:formProperty>
-        <activiti:formProperty id="markers" name="extended_marker" type="markers" default="${markerService.loadFromFile('mvd/common_mvd_2_1.json')}" ></activiti:formProperty>
+        <activiti:formProperty id="nUser" name="Users" type="long"></activiti:formProperty>
+        <activiti:formProperty id="markers" name="extended_marker" type="markers" default="${markerService.loadFromFile('mvd/common_mvd_2_1.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Підтягування додаткових документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -39,7 +35,7 @@
     </boundaryEvent>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow3" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
-    <userTask id="usertask1" name="Надання послуги" activiti:candidateGroups="common_mvd_2_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask1" name="Надання послуги" activiti:candidateGroups="sales">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
@@ -48,7 +44,7 @@
           <activiti:value id="attr1" name="одержання дозволу на зберігання та носіння мисливської вогнепальної нарізної, гладкоствольної зброї, пневматичної зброї, холодної зброї, пристроїв"></activiti:value>
           <activiti:value id="attr2" name="перереєстрації зброї, пристроїв (продовження терміну дії дозволу на їх зберігання та носіння), які придбані відповідно до законодавства"></activiti:value>
           <activiti:value id="attr3" name="одержання громадянами в органах внутрішніх справ дозволу на придбання мисливської вогнепальної нарізної, гладкоствольної зброї, пневматичної зброї, холодної зброї"></activiti:value>
-         </activiti:formProperty>
+        </activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса отримання послуги, обрана громадянином" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name=" e-mail; На цей e-mail буде спрямовано результат обробки звернення" type="string"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Результат надання послуги" type="enum" required="true">
@@ -88,7 +84,7 @@ ${sAddress}&lt;br /&gt;
 
  
 Графік прийому:&lt;br /&gt;
-${sWork_Time}&lt;br /&gt;
+${sWorkTime}&lt;br /&gt;
 
  &lt;/p&gt;
 
@@ -271,14 +267,14 @@ ${sMail_Signature}
         <omgdi:waypoint x="480.0" y="240.0"></omgdi:waypoint>
         <omgdi:waypoint x="480.0" y="320.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="400.0" y="259.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="64.0" x="400.0" y="259.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
         <omgdi:waypoint x="500.0" y="220.0"></omgdi:waypoint>
         <omgdi:waypoint x="591.0" y="220.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="496.0" y="200.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="68.0" x="496.0" y="200.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
@@ -293,7 +289,7 @@ ${sMail_Signature}
         <omgdi:waypoint x="480.0" y="440.0"></omgdi:waypoint>
         <omgdi:waypoint x="480.0" y="590.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="56.0" width="100.0" x="490.0" y="440.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="490.0" y="440.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
