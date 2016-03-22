@@ -52,6 +52,8 @@
         <activiti:formProperty id="file11" name="Нормативний документ, та технічна документація, у відповідності до яких виготовлений об’єкт експертизи, а також технологічна документація (процес, регламент, інструкція тощо);(за наявності)" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органа" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Час роботи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka220" name="Шапка заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="substance" name="Суть заяви" type="invisible"></activiti:formProperty>
@@ -82,36 +84,6 @@ var per4 = 'substance'
 var per5 = 'substance_2'
 var per6 = 'substance_3'
 var per7 ='term'
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'carich'){
-per1 = '20'
-per2 = 'tsar.alternatyva@gmail.com'
-per3 = 'Головному державному санітарному лікарю Царичанського, Петриківського, Магдалинівського району'
-}
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'vilnogirskT'){
-per1 = '25'
-per2 = 'cnap.vilnogirsk@gmail.com'
-per3 = 'Начальнику Головного управління Держсанепідслужби у Дніпропетровській області'
-}
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'dndzT'){
-per1 = '26'
-per2 = 'dozvildndz@ukr.net'
-per3 = 'Начальнику Дніпродзержинського міського Управління Головного управління Держсанепідслужби у Дніпропетровській області'
-}
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'vin_teplic'){
-per1 = '59'
-per2 = 'darja.grek@gmail.com'
-per3 = 'Начальнику Головного управління Держсанепідслужби у Вінницький області'
-}
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'kiev_bucha'){
-per1 = 'darja.grek@gmail.com'
-per2 = '212'
-per3 = 'Начальнику Головного управління Держсанепідслужби у Київський області'
-}
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'kiev_vish'){
-per1 = 'darja.grek@gmail.com'
-per2 = '227'
-per3 = 'Начальнику Головного управління Держсанепідслужби у Київський області'
-}
 if (execution.getVariable('vibor_service') == 'issue'){
 per4 = 'видати'
 per5 = 'Ваш висновок державної санітарно-епідеміологічної експертизи діючих об’єктів - готовий'
@@ -389,14 +361,14 @@ ${substance_2}.&lt;br /&gt;
 3. Оригінали документів, що були завантажені при подачі заяви на сайті.&lt;br/&gt;
 4. Підписані завірені печаткою заяви, які знаходяться в прикріплених файлах.
 &lt;/p&gt;
-${sPhoneOrgan},&lt;br /&gt;
+${sPhoneOrgan}&lt;br /&gt;
 &lt;br /&gt;
 Графік роботи ЦНАП:&lt;br /&gt;
-${sWorkTime},&lt;br /&gt;
+${sWorkTime}&lt;br /&gt;
 ${sAddress}&lt;br /&gt;
 &lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan},&lt;br /&gt;
+${sNameOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
