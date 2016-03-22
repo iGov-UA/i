@@ -22,12 +22,12 @@
         <activiti:formProperty id="fAgree1" name="Погодження балансоутримувача об’єкту" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="fAgree2" name="Згода власників, співвласників на переобладнання і перепланування приміщень, що перебувають у їх спільній власності; завантажте єдиним архівом" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="fProject" name="Проект переобладнання  або перепланування, погоджений в установленому порядку" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="sNameOrgan" type="string" default="."></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="sWorkTime" type="string" default="."></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan" type="string" default="."></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="sAddress" type="string" default="."></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="sMailClerk" type="string" default="."></activiti:formProperty>
-        <activiti:formProperty id="sArea" name="sArea" type="string" default="."></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="sNameOrgan" type="invisible" default="."></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="sWorkTime" type="invisible" default="."></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan" type="invisible" default="."></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="sAddress" type="invisible" default="."></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="sMailClerk" type="invisible" default="."></activiti:formProperty>
+        <activiti:formProperty id="sArea" name="sArea" type="invisible" default="."></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлу" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -40,6 +40,7 @@
         <activiti:formProperty id="sClientFIO" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="AdressWork" name=" " type="label" default="Адреса, за якою будуть проводитись роботи:" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdressWork" name=" " type="textArea" default="${sPlace}, ${sStreet} буд.${sNumHouse}, кв.${sNumFlat}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Order" name="sID_Order" type="string" default="."></activiti:formProperty>
         <activiti:formProperty id="asDecision" name="Результат обробки звернення: " type="enum" required="true">
           <activiti:value id="accept" name="Заповнені дані вірні, інформація направлена на розгляд, очікується рішення"></activiti:value>
           <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
@@ -89,13 +90,12 @@
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;
 На жаль, Ваше звернення щодо видачі дозволу на переобладнання і перепланування жилого будинку (жилого приміщення)., що знаходиться за адресою ${sAdressWork}, відхилено через недостатню або неправильну інформацію.&lt;br /&gt;&lt;br /&gt;
-${sComment}&lt;br /&gt;&lt;br /&gt;
-
-Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;
-
-[pattern/mail/_common_signature_start.html]
+Коментар держслужбовця (${sComment})&lt;br /&gt;&lt;br /&gt;
+${sNameOrgan}&lt;br /&gt;
 Адреса: ${sAddress} &lt;br /&gt;
-Графік роботи: ${sWorkTime} &lt;br /&gt;
+Графік роботи: ${sWorkTime} &lt;br /&gt; &lt;br /&gt;
+Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
+[pattern/mail/_common_signature_start.html]
 [pattern/mail/_common_signature_end.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
