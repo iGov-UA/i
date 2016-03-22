@@ -50,6 +50,7 @@ do
 shift
 done
 
+unset IFS
 sDate=`date "+%Y.%m.%d-%H.%M.%S"`
 
 if [ -z $nSecondsWait ]; then
