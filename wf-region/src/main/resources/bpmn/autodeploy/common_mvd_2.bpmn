@@ -18,15 +18,17 @@
                     
                 
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sInvoice1" name=" Додаток 1" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sZajava" name=" Додаток 2" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKartka" name=" Додаток 3" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sInvoice1" name=" Додаток 1(зразок)" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sZajava" name=" Додаток 2(зразок)" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sKartka" name=" Додаток 3(зразок)" type="label" default=" "></activiti:formProperty>
         
+         <activiti:formProperty id="sPhoneOrgan" name="Телефони обраного відділення для довідок" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса регіонального відділення" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Підпис" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="sMail_Employee" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_UA" name="sID_UA" type="string"></activiti:formProperty>
-        <activiti:formProperty id="nUser" name="nUser" type="long" required="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="sMailClerk" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA" name="sID_UA" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="nUser" name="Users" type="long" required="string"></activiti:formProperty>
+        <activiti:formProperty id="markers" name="extended_marker" type="markers" default="${markerService.loadFromFile('mvd/common_mvd_2_1.json')}" ></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Підтягування додаткових документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
