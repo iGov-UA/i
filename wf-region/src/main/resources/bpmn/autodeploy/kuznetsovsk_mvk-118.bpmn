@@ -844,11 +844,9 @@ ${sWorkTime}.&lt;br /&gt;
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow31" name="sID_Public_SubjectOrganJoin &amp;&amp; decide == 'accept" sourceRef="exclusivegateway3" targetRef="servicetask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Public_SubjectOrganJoin == 'nikopolT'||sID_Public_SubjectOrganJoin == 'dndzT'||sID_Public_SubjectOrganJoin == 'marganT') && decide == 'accept'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${(sID_Public_SubjectOrganJoin == 'nikopolT'||sID_Public_SubjectOrganJoin == 'dndzT'||sID_Public_SubjectOrganJoin == 'marganT') && decide == 'accept'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow32" sourceRef="servicetask4" targetRef="usertask4_green">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Public_SubjectOrganJoin == 'nikopolT'||sID_Public_SubjectOrganJoin == 'dndzT'||sID_Public_SubjectOrganJoin == 'marganT') && decide == 'accept'}]]></conditionExpression>
-    </sequenceFlow>
+    <sequenceFlow id="flow32" sourceRef="servicetask4" targetRef="usertask4_green"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_kuznetsovsk_mvk-118">
     <bpmndi:BPMNPlane bpmnElement="kuznetsovsk_mvk-118" id="BPMNPlane_kuznetsovsk_mvk-118">
