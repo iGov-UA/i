@@ -1046,7 +1046,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
      *                     ;bankIdPassport;bankIdlastName
      *                     ;bankIdfirstName;bankIdmiddleName;1;sDateCreate
      */
-    @ApiOperation(value = "Загрузка данных по задачам", notes = "#####  ActionCommonTaskController: Загрузка данных по задачам #####\n\n"
+      @ApiOperation(value = "Загрузка данных по задачам", notes = "#####  ActionCommonTaskController: Загрузка данных по задачам #####\n\n"
             + "HTTP Context: https://server:port/wf/service/action/task/downloadTasksData\n\n\n"
             + "Загрузка полей по задачам в виде файла.\n\n"
             + "Поля по умолчанию, которые всегда включены в выборку:\n"
@@ -1155,7 +1155,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             query = query.taskDefinitionKey(sID_State_BP);
         }
         List<Task> foundResults = new LinkedList<Task>();
-        if (sTaskEndDateAt == null && sTaskEndDateTo != null){
+        if (sTaskEndDateAt == null && sTaskEndDateTo == null){
         	foundResults = query.listPage(nRowStart, nRowsMax);
         }
 
@@ -1192,20 +1192,17 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         if (bHeader && header != null && saFieldSummary == null) {
             printWriter.writeNext(headers);
         }
-        LOG.info("!!!!!!!!!!fillTheCSVMap...");
+
         oActionTaskService.fillTheCSVMap(sID_BP, dBeginDate, dEndDate, foundResults, sDateCreateDF,
                 csvLines, saFields, saFieldsCalc, headers);
-        LOG.info("!!!!!!!!!!fillTheCSVMap ok");
         if (Boolean.TRUE.equals(bIncludeHistory)) {
             Set<String> tasksIdToExclude = new HashSet<>();
             for (Task task : foundResults) {
                 tasksIdToExclude.add(task.getId());
             }
-            LOG.info("!!!!!!!!!!fillTheCSVMapHistoricTasks...");
             oActionTaskService.fillTheCSVMapHistoricTasks(sID_BP, dBeginDate, dEndDate,
                     foundHistoricResults, sDateCreateDF, csvLines, saFields,
                     tasksIdToExclude, saFieldsCalc, headers);
-            LOG.info("!!!!!!!!!!fillTheCSVMapHistoricTasks ok");
         }
         
         if (saFieldSummary != null) {

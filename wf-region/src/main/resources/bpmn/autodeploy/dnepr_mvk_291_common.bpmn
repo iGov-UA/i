@@ -15,6 +15,19 @@
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdditionalPhone" name="Додатковий телефон" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asDistrict" name="Район Вашого проживання" type="enum" required="true">
+          <activiti:value id="sEnumAnd" name="Амур-Нижньодніпровський"></activiti:value>
+          <activiti:value id="sEnumShevch" name="Шевченківський (Бабушкінський)"></activiti:value>
+          <activiti:value id="sEnumSobor" name="Соборний (Жовтневий)"></activiti:value>
+          <activiti:value id="sEnumIndust" name="Індустріальний"></activiti:value>
+          <activiti:value id="sEnumCenter" name="Центральний (Кіровський)"></activiti:value>
+          <activiti:value id="sEnumChechel" name="Чечелівський (Красногвардійський)"></activiti:value>
+          <activiti:value id="sEnumNovoK" name="Новокодацький (Ленінський)"></activiti:value>
+          <activiti:value id="sEnumSamar" name="Самарський"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sRename" name="Зверніть увагу" type="label" default="У зв'язку з переіменуванням вулиць, під час введення нової адреси звірте назву за &lt;a href=&quot;https://docs.google.com/spreadsheets/d/16j-w5pN0erlhdmTg5xl0bs9Gob1W0U3ivjIhy0BTHsU/edit?pli=1#gid=0&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;."></activiti:formProperty>
+        <activiti:formProperty id="sAdress" name="Адреса проживання заявника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAdressProbl" name="Адреса за якої виникло питання" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDataToday" name="Вкажіть сьогоднішню дату" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="asSex" name="Стать заявника" type="enum" required="true">
           <activiti:value id="sEnumSexMen" name="Чоловіча"></activiti:value>
@@ -73,18 +86,6 @@
           <activiti:value id="sEnumSoc11" name="Особа, що позбавлена волі; особа, воля якої обмежена"></activiti:value>
           <activiti:value id="sEnumSoc12" name="Інші"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asDistrict" name="Район Вашого проживання" type="enum" required="true">
-          <activiti:value id="sEnumAnd" name="Амур-Нижньодніпровський"></activiti:value>
-          <activiti:value id="sEnumShevch" name="Шевченківський (Бабушкінський)"></activiti:value>
-          <activiti:value id="sEnumSobor" name="Соборний (Жовтневий)"></activiti:value>
-          <activiti:value id="sEnumIndust" name="Індустріальний"></activiti:value>
-          <activiti:value id="sEnumCenter" name="Центральний (Кіровський)"></activiti:value>
-          <activiti:value id="sEnumChechel" name="Чечелівський (Красногвардійський)"></activiti:value>
-          <activiti:value id="sEnumNovoK" name="Новокодацький (Ленінський)"></activiti:value>
-          <activiti:value id="sEnumSamar" name="Самарський"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sRename" name="Зверніть увагу" type="label" default="У зв'язку з переіменуванням вулиць, під час введення нової адреси звірте назву за &lt;a href=&quot;https://docs.google.com/spreadsheets/d/16j-w5pN0erlhdmTg5xl0bs9Gob1W0U3ivjIhy0BTHsU/edit?pli=1#gid=0&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;."></activiti:formProperty>
-        <activiti:formProperty id="sAdress" name="Адреса проживання заявника" type="string"></activiti:formProperty>
         <activiti:formProperty id="asTopHead" name="Оберіть тему звернення" type="enum" required="true">
           <activiti:value id="sEnumTopHead1" name="Житлове господарство"></activiti:value>
           <activiti:value id="sEnumTopHead2" name="Комунальне господарство"></activiti:value>
@@ -515,7 +516,6 @@
           <activiti:value id="sEnumTop228" name="Формування місцевих бюджетів"></activiti:value>
           <activiti:value id="sEnumTop229" name="Інші питання"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sAdressProbl" name="Адреса за якої виникло питання" type="string"></activiti:formProperty>
         <activiti:formProperty id="sReason" name="Опишіть суть звернення" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdditionalInformation" name="Додаткова інформація" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sRegistrationNumberRGA" name="Реєстраційний номер ОДА" type="string"></activiti:formProperty>
@@ -523,6 +523,7 @@
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="hideValidateFields3" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common3.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers4" name="hideShowFields4" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common4.json')}"></activiti:formProperty>
         <activiti:formProperty id="sAnswerChannel" name="Канал відповіді" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
