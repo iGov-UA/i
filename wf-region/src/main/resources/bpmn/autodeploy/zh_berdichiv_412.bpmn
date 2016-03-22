@@ -16,7 +16,7 @@
         <activiti:formProperty id="file3" name="Довідка про відсутність заборгованності від КП &quot;Бердичівтеплоенерго&quot;" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file4" name="Довідка про відсутність заборгованності від ТОВ &quot;Полісся Екосфера&quot;" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible" ></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса установи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Часи роботи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Контактний телефон" type="invisible"></activiti:formProperty>
@@ -75,7 +75,7 @@ ${sPhoneOrgan}&lt;br&gt;
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow4" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
-    <userTask id="usertask1" name="Перевірка даних" activiti:candidateGroups="cnap_zt_berdichT">
+    <userTask id="usertask1" name="Перевірка даних" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
@@ -83,10 +83,9 @@ ${sPhoneOrgan}&lt;br&gt;
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подачі заяви" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="rNumber" name="номер району" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapka409" name="Шапка заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/berdichev/berdichiv_cnap_412_print.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="result" name="Рішення держслужбовця" type="enum" required="true">
-        <activiti:formProperty id="sShapka409" name="Шапка заяви" type="invisible" ></activiti:formProperty>
           <activiti:value id="da" name="Видати дозвіл"></activiti:value>
           <activiti:value id="net" name="Відмовити у видачі дозволу"></activiti:value>
         </activiti:formProperty>
@@ -239,14 +238,14 @@ ${sPhoneOrgan}&lt;br&gt;
         <omgdi:waypoint x="750.0" y="212.0"></omgdi:waypoint>
         <omgdi:waypoint x="840.0" y="212.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="760.0" y="212.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="54.0" x="760.0" y="212.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
         <omgdi:waypoint x="730.0" y="192.0"></omgdi:waypoint>
         <omgdi:waypoint x="730.0" y="145.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="745.0" y="158.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="60.0" x="745.0" y="158.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
