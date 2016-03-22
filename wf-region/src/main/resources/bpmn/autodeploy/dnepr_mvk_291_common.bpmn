@@ -592,6 +592,7 @@
           <activiti:value id="sEnumApplication" name="Заява"></activiti:value>
           <activiti:value id="sEnumClaim" name="Скарга"></activiti:value>
           <activiti:value id="sEnumProposal" name="Пропозиція"></activiti:value>
+          <activiti:value id="sEnumTypeRequest" name="Запит про надання публічної інформації"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asHowCategory" name="Оберіть категорію до якої Ви відноситесь" type="enum">
           <activiti:value id="sEnumCat1" name="Учасник війни"></activiti:value>
@@ -1076,14 +1077,19 @@
         <activiti:formProperty id="sRegistrationNumberRGA" name="Реєстраційний номер ОДА" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPerformer" name="Виконавець" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNumberTownCouncil" name="Реєстраційний номер;(держстандарт В-1-12453/1)" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAnswerChannel" name="Канал відповіді" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sLoginUkrDoc" name="Логін працівника міськради" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="asAnswerChannel" name="Канал відповіді" type="enum">
+          <activiti:value id="sEnumAnsw1" name="Факти корупції"></activiti:value>
+          <activiti:value id="sEnumAnsw2" name="Відгуки щодо рішень органів місцевого самоврядування"></activiti:value>
+          <activiti:value id="sEnumAnsw3" name="Дії, бездіяльність посадових осіб органів місцевого самоврядування"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="asStatus" name="Обробка звернення" type="enum">
           <activiti:value id="sEnumSendEmail" name="Відправити швидку відповідь на E-mail"></activiti:value>
-          <activiti:value id="sEnumSendInEmergency" name="Відправити до Аварійної служби"></activiti:value>
+          <activiti:value id="sEnumSendInFrontOffice" name="Відправити до Фронт офісу для письмової відповіді"></activiti:value>
           <activiti:value id="sEnumSendInUkrDoc" name="Відправити до департаменту (управління)"></activiti:value>
           <activiti:value id="sEnumSendInDniprogaz" name="Відправити до Дніпрогазу"></activiti:value>
           <activiti:value id="sEnumSendInDniprooblenergo" name="Відправити до Дніпрообленерго"></activiti:value>
+          <activiti:value id="sEnumSendInCallCenter" name="Відправити на вихідний обдзвін"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sQuickAnswer" name="Швидка відповідь на звернення" type="textArea"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -1408,6 +1414,7 @@ execution.setVariable('sAnswer', res)</script>
           <activiti:value id="sEnumApplication" name="Заява"></activiti:value>
           <activiti:value id="sEnumClaim" name="Скарга"></activiti:value>
           <activiti:value id="sEnumProposal" name="Пропозиція"></activiti:value>
+          <activiti:value id="sEnumTypeRequest" name="Запит про надання публічної інформації"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asHowCategory" name="Оберіть категорію до якої Ви відноситесь" type="enum">
           <activiti:value id="sEnumCat1" name="Учасник війни"></activiti:value>
@@ -1892,7 +1899,7 @@ execution.setVariable('sAnswer', res)</script>
         <activiti:formProperty id="sRegistrationNumberRGA" name="Реєстраційний номер ОДА" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNumberTownCouncil" name="Реєстраційний номер;(держстандарт В-1-12453/1)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAnswerChannel" name="Канал відповіді" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="asStatus" name="Обробка звернення" type="enum">
+        <activiti:formProperty id="asStatus" name="Обрати спеціаліста" type="enum">
           <activiti:value id="sOperator_1" name="Оператор 1"></activiti:value>
           <activiti:value id="sOperator_2" name="Оператор 2"></activiti:value>
           <activiti:value id="sOperator_3" name="Оператор 3"></activiti:value>
@@ -1900,17 +1907,6 @@ execution.setVariable('sAnswer', res)</script>
           <activiti:value id="sOperator_5" name="Оператор 5"></activiti:value>
           <activiti:value id="sOperator_6" name="Оператор 6"></activiti:value>
           <activiti:value id="sOperator_7" name="Оператор 7"></activiti:value>
-          <activiti:value id="sOperator_8" name="Оператор 8"></activiti:value>
-          <activiti:value id="sOperator_9" name="Оператор 9"></activiti:value>
-          <activiti:value id="sOperator_10" name="Оператор 10"></activiti:value>
-          <activiti:value id="sOperator_11" name="Оператор 11"></activiti:value>
-          <activiti:value id="sOperator_12" name="Оператор 12"></activiti:value>
-          <activiti:value id="sOperator_13" name="Оператор 13"></activiti:value>
-          <activiti:value id="sOperator_14" name="Оператор 14"></activiti:value>
-          <activiti:value id="sOperator_15" name="Оператор 15"></activiti:value>
-          <activiti:value id="sOperator_16" name="Оператор 16"></activiti:value>
-          <activiti:value id="sOperator_17" name="Оператор 17"></activiti:value>
-          <activiti:value id="sOperator_18" name="Оператор 18"></activiti:value>
         </activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
