@@ -4,6 +4,20 @@ sProject=$1
 sDate=$2
 nSecondsWait=$3
 
+if [ -z $sProject ]; then
+	exit 1
+fi
+if [ -z $sDate ]; then
+	exit 1
+fi
+
+test_function ()
+{
+	echo "test of parameter: $1"
+}
+
+test_function hello_world
+
 fallback ()
 {
 	echo "Fatal error! Executing fallback task..."
@@ -46,6 +60,12 @@ backup ()
 	#Удаляем старые бекапы. Нужно написать функцию по ротации бекапов.
 	#rm -rf /sybase/.backup/configs/$sProject/tomcat_$sProject-secondary/conf
 	#rm -f /sybase/.backup/war/$sProject/tomcat_$sProject-secondary/wf.war
+	IFS=$'\n' sBackupArray=( $(ls -1rt /sybase/.backup/configs/$sProject/tomcat_${sProject} | head -$[$(ls -l /sybase/.backup/configs/$sProject/tomcat_${sProject} | wc -l)-4]) )
+	for sBackup in ${sBackupArray[@]}; do
+		echo "deleting backup $sBackup"
+		rm -rf "/sybase/.backup/configs/$sProject/tomcat_${sProject}/$sBackup"
+	done
+	unset IFS
 	#Делаем бекап конфигов
 	if [ ! -d /sybase/.backup/configs/$sProject/tomcat_${sProject}/$sDate ]; then
 		mkdir -p /sybase/.backup/configs/$sProject/tomcat_${sProject}/$sDate
@@ -81,6 +101,12 @@ if [ $sProject == "central-js" ]; then
 	if [ ! -d /sybase/.backup/$sProject ]; then
 		mkdir -p /sybase/.backup/$sProject
 	fi
+	IFS=$'\n' sBackupArray=( $(ls -1rt /sybase/.backup/$sProject | head -$[$(ls -l /sybase/.backup/$sProject | wc -l)-4]) )
+	for sBackup in ${sBackupArray[@]}; do
+		echo "deleting backup $sBackup"
+		rm -rf "/sybase/.backup/$sProject/$sBackup"
+	done
+	unset IFS
 	mv -f /sybase/central-js /sybase/.backup/$sProject/$sDate
 	#Перемещаем новую версию на место старой
 	mv -f /sybase/.upload/central-js /sybase/central-js
@@ -101,6 +127,12 @@ if [ $sProject == "dashboard-js" ]; then
 	if [ ! -d /sybase/.backup/$sProject ]; then
 		mkdir -p /sybase/.backup/$sProject
 	fi
+	IFS=$'\n' sBackupArray=( $(ls -1rt /sybase/.backup/$sProject | head -$[$(ls -l /sybase/.backup/$sProject | wc -l)-4]) )
+	for sBackup in ${sBackupArray[@]}; do
+		echo "deleting backup $sBackup"
+		rm -rf "/sybase/.backup/$sProject/$sBackup"
+	done
+	unset IFS
 	mv -f /sybase/dashboard-js /sybase/.backup/$sProject/$sDate
 	mv /sybase/.upload/dashboard-js /sybase/dashboard-js
     cp -f /sybase/.configs/dashboard-js/process.json /sybase/dashboard-js/process.json
@@ -115,6 +147,12 @@ if [ $sProject == "wf-central"  ] || [ $sProject == "wf-region" ]; then
 	#Удаляем старые бекапы. Нужно написать функцию по ротации бекапов.
 	#rm -rf /sybase/.backup/configs/$sProject/tomcat_$sProject-secondary/conf
 	#rm -f /sybase/.backup/war/$sProject/tomcat_$sProject-secondary/wf.war
+	IFS=$'\n' sBackupArray=( $(ls -1rt /sybase/.backup/configs/$sProject/tomcat_${sProject}_double | head -$[$(ls -l /sybase/.backup/configs/$sProject/tomcat_${sProject}_double | wc -l)-4]) )
+	for sBackup in ${sBackupArray[@]}; do
+		echo "deleting backup $sBackup"
+		rm -rf "/sybase/.backup/configs/$sProject/tomcat_${sProject}_double/$sBackup"
+	done
+	unset IFS
 	#Делаем бекап конфигов
 	if [ ! -d /sybase/.backup/configs/$sProject/tomcat_${sProject}_double/$sDate ]; then
 		mkdir -p /sybase/.backup/configs/$sProject/tomcat_${sProject}_double/$sDate
