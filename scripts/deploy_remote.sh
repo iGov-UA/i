@@ -2,6 +2,7 @@
 
 sProject=$1
 sDate=$2
+nSecondsWait=$3
 
 fallback ()
 {
@@ -140,11 +141,11 @@ if [ $sProject == "wf-central"  ] || [ $sProject == "wf-region" ]; then
 	sleep 15
 
 	nTimeout=0
-	until grep -q "FrameworkServlet 'dispatcher': initialization completed in" /sybase/tomcat_${sProject}_double/logs/catalina.out || [ $nTimeout -eq 180 ]; do
+	until grep -q "FrameworkServlet 'dispatcher': initialization completed in" /sybase/tomcat_${sProject}_double/logs/catalina.out || [ $nTimeout -eq $nSecondsWait ]; do
 		((nTimeout++))
 		sleep 1
 		echo "waiting for server startup $nTimeout"
-		if [ $nTimeout -ge 180 ]; then
+		if [ $nTimeout -ge $nSecondsWait ]; then
 			echo "timeout reached"
 			grep -B 3 -A 2 ERROR /sybase/tomcat_${sProject}_double/logs/catalina.out
 			#Откатываемся назад
