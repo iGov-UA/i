@@ -14,7 +14,6 @@
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Контактний e-mail" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="squer_obj" name="Площа земельної ділянки, м.кв" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="dToday" name="Укажіть сьогоднішню дату" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPlace" name="Місце розташування ділянки (адреса)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="file1" name="Копія правовстановлюючих документів на майно" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file2" name="Копія статуту" type="file" required="true"></activiti:formProperty>
@@ -67,14 +66,13 @@
         <activiti:formProperty id="sAdressOffice" name="Адреса офісу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dToday" name="Дата заповнення заяви" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="squer_obj" name="Площа земельної ділянки, м.кв" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlace" name="Місце розташування ділянки (адреса)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="squer_obj" name="Площа земельної ділянки, м.кв;;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPlace" name="Місце розташування ділянки (адреса);;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="rNumber" name="номер району" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/architecture/klopotannya_347.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asValidDocument" name="Рішення держслужбовця" type="enum" required="true">
-          <activiti:value id="OK" name="Надати земельну ділянку в оренду (або на постійне користування)"></activiti:value>
-          <activiti:value id="NO" name="Відмовити у наданні земельної ділянки в оренду (або у постійне користування)"></activiti:value>
+        <activiti:formProperty id="asValidDocument" name="Перевірка вхідних данних" type="enum" required="true">
+          <activiti:value id="OK" name="Всі дані ВІДПОВІДАЮТЬ законодавству"></activiti:value>
+          <activiti:value id="NO" name="Надані дані НЕ відповідають законодавству"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="В разі відмови в наданні послуги зазначте підставу для відмови (дані будуть надіслані громадянинові) *" type="textArea"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -168,9 +166,8 @@
         <activiti:formProperty id="sAdressOffice" name="Адреса офісу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dToday" name="Дата заповнення заяви" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="squer_obj" name="Площа земельної ділянки, м.кв" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlace" name="Місце розташування ділянки (адреса)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="squer_obj" name="Площа земельної ділянки, м.кв" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPlace" name="Місце розташування ділянки (адреса)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="rNumber" name="номер району" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/architecture/klopotannya_347.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asResult" name="Рішення держслужбовця" type="enum" required="true">
