@@ -66,6 +66,12 @@ backup ()
 		rm -rf "/sybase/.backup/configs/$sProject/tomcat_${sProject}/$sBackup"
 	done
 	unset IFS
+	IFS=$'\n' sBackupArray=( $(ls -1rt /sybase/.backup/war/$sProject/tomcat_${sProject} | head -$[$(ls -l /sybase/.backup/war/$sProject/tomcat_${sProject} | wc -l)-4]) )
+	for sBackup in ${sBackupArray[@]}; do
+		echo "deleting backup $sBackup"
+		rm -rf "/sybase/.backup/war/$sProject/tomcat_${sProject}/$sBackup"
+	done
+	unset IFS
 	#Делаем бекап конфигов
 	if [ ! -d /sybase/.backup/configs/$sProject/tomcat_${sProject}/$sDate ]; then
 		mkdir -p /sybase/.backup/configs/$sProject/tomcat_${sProject}/$sDate
@@ -151,6 +157,12 @@ if [ $sProject == "wf-central"  ] || [ $sProject == "wf-region" ]; then
 	for sBackup in ${sBackupArray[@]}; do
 		echo "deleting backup $sBackup"
 		rm -rf "/sybase/.backup/configs/$sProject/tomcat_${sProject}_double/$sBackup"
+	done
+	unset IFS
+	IFS=$'\n' sBackupArray=( $(ls -1rt /sybase/.backup/war/$sProject/tomcat_${sProject}_double | head -$[$(ls -l /sybase/.backup/war/$sProject/tomcat_${sProject}_double | wc -l)-4]) )
+	for sBackup in ${sBackupArray[@]}; do
+		echo "deleting backup $sBackup"
+		rm -rf "/sybase/.backup/war/$sProject/tomcat_${sProject}_double/$sBackup"
 	done
 	unset IFS
 	#Делаем бекап конфигов
