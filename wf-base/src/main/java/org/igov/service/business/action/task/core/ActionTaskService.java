@@ -729,6 +729,7 @@ public class ActionTaskService {
         String res = currentRow;
         for (Map.Entry<String, Object> property : data.entrySet()) {
             LOG.info(String.format("Matching property %s:%s with fieldNames", property.getKey(), property.getValue()));
+            //LOG.info("!!!!!!!!!!data: " + data);
             if (currentRow != null && res.contains("${" + property.getKey() + "}")) {
                 LOG.info(String.format("Found field with id %s in the pattern. Adding value to the result", "${" + property.getKey() + "}"));
                 if (property.getValue() != null) {
@@ -748,6 +749,7 @@ public class ActionTaskService {
         String res = currentRow;
         for (FormProperty property : data.getFormProperties()) {
             LOG.info(String.format("Matching property %s %s %s with fieldNames", property.getId(), property.getName(), property.getType().getName()));
+            //LOG.info("!!!!!!!!!!getId: " + property.getId() + " getName: " + property.getName() + " getType: " +  property.getType().getName() + " getValue: " +  property.getValue() + "!");
             if (currentRow != null && res.contains("${" + property.getId() + "}")) {
                 LOG.info(String.format("Found field with id %s in the pattern. Adding value to the result", "${" + property.getId() + "}"));
                 String sValue = getPropertyValue(property);

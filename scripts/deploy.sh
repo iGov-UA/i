@@ -7,6 +7,9 @@
 #Setting-up variables
 export LANG=en_US.UTF-8
 
+#This will cause the shell to exit immediately if a simple command exits with a nonzero exit value.
+set -e
+
 while [[ $# > 1 ]]
 do
 	sKey="$1"
@@ -31,12 +34,13 @@ do
 			bSkipTest="$2"
 			shift
 			;;
+		--deploy-timeout)
+			nSecondsWait="$2"
+			shift
+			;;
 		--compile)
-			saCompile=
-			saCompile[0]="$2"
-			saCompile[1]="$3"
-			saCompile[2]="$4"
-			shift 3
+			IFS=',' read -r -a saCompile <<< "$2"
+			shift
 			;;
 		*)
 			echo "bad option"
@@ -47,6 +51,10 @@ shift
 done
 
 sDate=`date "+%Y.%m.%d-%H.%M.%S"`
+
+if [ -z $nSecondsWait ]; then
+	nSecondsWait=185
+fi
 
 #Определяем сервер для установки
 if [[ $sVersion == "alpha" && $sProject == "central-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-central" ]]; then
@@ -189,6 +197,15 @@ build_central ()
 {
 	if [ "$bSkipBuild" == "true" ]; then
 		cd wf-central
+		if [ ! -f target/wf-central.war ]; then
+			echo "File not found! Need to rebuild application..."
+			if [ "$bSkipTest" ==  "true" ]; then
+				local sBuildArg="-DskipTests=true"
+			fi
+			build_base $saCompile
+			cd wf-central
+			mvn -P $sVersion clean install site $sBuildArg -Ddependency.locations.enabled=false
+		fi
 		rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' target/wf-central.war sybase@$sHost:/sybase/.upload/
 		return
 	fi
@@ -215,6 +232,15 @@ build_region ()
 {
 	if [ "$bSkipBuild" == "true" ]; then
 		cd wf-region
+		if [ ! -f target/wf-region.war ]; then
+			echo "File not found! Need to rebuild application..."
+			if [ "$bSkipTest" ==  "true" ]; then
+				local sBuildArg="-DskipTests=true"
+			fi
+			build_base $saCompile
+			cd wf-region
+			mvn -P $sVersion clean install site $sBuildArg -Ddependency.locations.enabled=false
+		fi
 		rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' target/wf-region.war sybase@$sHost:/sybase/.upload/
 		return
 	fi
@@ -267,5 +293,5 @@ cd $WORKSPACE
 rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' scripts/deploy_remote.sh sybase@$sHost:/sybase/
 ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $sHost << EOF
 chmod +x /sybase/deploy_remote.sh
-/sybase/deploy_remote.sh $sProject $sDate
+/sybase/deploy_remote.sh $sProject $sDate $nSecondsWait
 EOF
