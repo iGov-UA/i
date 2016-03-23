@@ -22,6 +22,12 @@
         <activiti:formProperty id="fAgree1" name="Погодження балансоутримувача об’єкту" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="fAgree2" name="Згода власників, співвласників на переобладнання і перепланування приміщень, що перебувають у їх спільній власності; завантажте єдиним архівом" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="fProject" name="Проект переобладнання  або перепланування, погоджений в установленому порядку" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="sNameOrgan" type="string" default="."></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="sWorkTime" type="string" default="."></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan" type="string" default="."></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="sAddress" type="string" default="."></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="sMailClerk" type="string" default="."></activiti:formProperty>
+        <activiti:formProperty id="sArea" name="sArea" type="string" default="."></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлу" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -29,23 +35,21 @@
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>
-    <endEvent id="endevent2" name="End"></endEvent>
-    <sequenceFlow id="flow2" sourceRef="boundaryerror1" targetRef="endevent2"></sequenceFlow>
     <userTask id="usertask1" name="Розгляд заявки та прийняття рішення про надання послуги" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sClientFIO" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="AdressWork" name=" " type="label" default="Адреса, за якою будуть проводитись роботи:"></activiti:formProperty>
-        <activiti:formProperty id="sAdressWork" name=" " type="string" default="${sPlace}, ${sStreet} буд.${sNumHouse}, кв.${sNumFlat}."></activiti:formProperty>
+        <activiti:formProperty id="AdressWork" name=" " type="label" default="Адреса, за якою будуть проводитись роботи:" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdressWork" name=" " type="textArea" default="${sPlace}, ${sStreet} буд.${sNumHouse}, кв.${sNumFlat}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asDecision" name="Результат обробки звернення: " type="enum" required="true">
           <activiti:value id="accept" name="Заповнені дані вірні, інформація направлена на розгляд, очікується рішення"></activiti:value>
           <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sComment" name="У разі відхилення звернення внесіть, будь ласка, причину" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sComment" name="У разі відхилення звернення внесіть, будь ласка, причину" type="textArea" default="Причина: "></activiti:formProperty>
         <activiti:formProperty id="oPrintApplication" name="[pattern/print/cnap_489_print.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${fOwnership},${fTechPass},${fAgree1},${fAgree2},${fProject},</activiti:expression>
+            <activiti:expression>${fProject},${fAgree2},${fAgree1},${fTechPass},${fOwnership},${bankId_scan_passport}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -84,12 +88,14 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;
-На жаль, Ваше звернення щодо видачі дозволу на переобладнання і перепланування жилого будинку (жилого приміщення)., що знаходиться за адресою ${sAdressWork}, відхилено через недостатню або неправильну інформацію.&lt;br /&gt;
+На жаль, Ваше звернення щодо видачі дозволу на переобладнання і перепланування жилого будинку (жилого приміщення)., що знаходиться за адресою ${sAdressWork}, відхилено через недостатню або неправильну інформацію.&lt;br /&gt;&lt;br /&gt;
 ${sComment}&lt;br /&gt;&lt;br /&gt;
 
 Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;
 
 [pattern/mail/_common_signature_start.html]
+Адреса: ${sAddress} &lt;br /&gt;
+Графік роботи: ${sWorkTime} &lt;br /&gt;
 [pattern/mail/_common_signature_end.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
@@ -117,9 +123,7 @@ ${sComment}&lt;br /&gt;&lt;br /&gt;
 Звернення буде опрацьовано уповноваженим органом впродовж 30 днів.&lt;br /&gt;
 &lt;br /&gt;
 Ви отримаєте додаткове повідомлення на цю адресу за результатами розгляду запиту.&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[nArea]}:5]&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[nArea]}:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
@@ -130,22 +134,21 @@ ${sComment}&lt;br /&gt;&lt;br /&gt;
     <userTask id="usertask2" name="Надання послуги" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sClientFIO" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="AdressWork" name=" " type="label" default="Адреса, за якою будуть проводитись роботи:"></activiti:formProperty>
-        <activiti:formProperty id="sAdressWork" name=" " type="string" default="${sPlace}, ${sStreet} буд.${sNumHouse}, кв.${sNumFlat}."></activiti:formProperty>
+        <activiti:formProperty id="AdressWork" name=" " type="label" default="Адреса, за якою будуть проводитись роботи: ${sPlace}, ${sStreet} буд.${sNumHouse}, кв.${sNumFlat}." writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdressWork" name=" " type="textArea" default="${sPlace}, ${sStreet} буд.${sNumHouse}, кв.${sNumFlat}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asDecisionMain" name="Результат обробки звернення: " type="enum" required="true">
-          <activiti:value id="accept" name="Заповнені дані вірні, інформація направлена на розгляд, очікується рішення"></activiti:value>
-          <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
+          <activiti:value id="acceptMain" name="Заява розглянута, прийнято позитивне рішення"></activiti:value>
+          <activiti:value id="rejectMain" name="Заява розглянута, прийнято негативне рішення"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sCommentMain" name="У разі відмови внесіть, будь ласка, причину" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sCommentMain" name="У разі відмови внесіть, будь ласка, причину" type="textArea" default="Причина: "></activiti:formProperty>
         <activiti:formProperty id="fDecisionDoc" name="Завантажте копію рішення" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="oPrintApplication" name="[pattern/print/cnap_489_print.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="fPrintApplication" name="File label;File title;pattern/print/cnap_489_print.html" type="file"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow9" sourceRef="servicetask4" targetRef="usertask2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow10" sourceRef="usertask2" targetRef="exclusivegateway2"></sequenceFlow>
-    <serviceTask id="servicetask5" name="Е-mail повідомлення заявнику про виконану заявку з негативним результатом" activiti:delegateExpression="#{MailTaskWithAttachment}">
+    <serviceTask id="servicetask5" name="Е-mail повідомлення заявнику про виконану заявку з негативним результатом" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
@@ -159,9 +162,9 @@ ${sComment}&lt;br /&gt;&lt;br /&gt;
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;
-Ваше звернення щодо видачі дозволу на переобладнання і перепланування жилого будинку (жилого приміщення)., що знаходиться за адресою ${sAdressWork}, опрацьовано і по ньому винесено рішення.&lt;br /&gt;
-Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у ЦНАПі.&lt;br /&gt;
-${comment_2}&lt;br /&gt;
+Ваше звернення щодо видачі дозволу на переобладнання і перепланування жилого будинку (жилого приміщення)., що знаходиться за адресою ${sAdressWork}, опрацьовано і по ньому винесено рішення.&lt;br /&gt;&lt;br /&gt;
+${sCommentMain}&lt;br /&gt;&lt;br /&gt;
+Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у ЦНАПі.&lt;br /&gt;&lt;br /&gt;
 При собі треба мати:&lt;br /&gt;
 1. Документ, що посвідчує особу.&lt;br /&gt;
 2. Для уповоноваженої особи - довіренність.&lt;br /&gt;
@@ -178,14 +181,14 @@ ${comment_2}&lt;br /&gt;
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${fDecisionDoc},${fPrintApplication}</activiti:expression>
+          <activiti:expression>${fDecisionDoc}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow11" name="Послуга надана - негативний результат" sourceRef="exclusivegateway2" targetRef="servicetask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecisionMain=='reject'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecisionMain=='rejectMain'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask6" name="Е-mail повідомлення заявнику про виконану заявку з позитивним результатом" activiti:delegateExpression="#{MailTaskWithAttachment}">
+    <serviceTask id="servicetask6" name="Е-mail повідомлення заявнику про виконану заявку з позитивним результатом" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
@@ -200,8 +203,7 @@ ${comment_2}&lt;br /&gt;
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;
 Ваше звернення щодо видачі дозволу на переобладнання і перепланування жилого будинку (жилого приміщення)., що знаходиться за адресою ${sAdressWork}, опрацьовано і по ньому винесено рішення.&lt;br /&gt;
-Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у ЦНАПі.&lt;br /&gt;
-${comment_2}&lt;br /&gt;
+Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у ЦНАПі.&lt;br /&gt;&lt;br /&gt;
 При собі треба мати:&lt;br /&gt;
 1. Документ, що посвідчує особу.&lt;br /&gt;
 2. Для уповоноваженої особи - довіренність.&lt;br /&gt;
@@ -211,25 +213,27 @@ ${comment_2}&lt;br /&gt;
 6. Згоду власників, співвласників (наймачів) або уповноважених ними осіб на переобладнання перепланування чи улаштування підвісного балкону приміщень, що перебувають у їх спільній власності.&lt;br /&gt;
 7. Копію технічного паспорту на приміщення (квартиру).&lt;br /&gt;
 8. Погодження балансоутримувача об’єкту.&lt;br /&gt;
-Адреса &lt;br /&gt;
-Графік роботи: &lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
+Адреса: &lt;br /&gt;
+Графік роботи: &lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_feedback.html]  
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${fDecisionDoc},${fPrintApplication}</activiti:expression>
+          <activiti:expression>${fDecisionDoc}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow12" name="Послуга надана - позитивний результат" sourceRef="exclusivegateway2" targetRef="servicetask6">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecisionMain=='accept'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecisionMain=='acceptMain'}]]></conditionExpression>
     </sequenceFlow>
     <endEvent id="endevent4" name="End"></endEvent>
     <sequenceFlow id="flow13" sourceRef="servicetask5" targetRef="endevent4"></sequenceFlow>
     <endEvent id="endevent5" name="End"></endEvent>
     <sequenceFlow id="flow14" sourceRef="servicetask6" targetRef="endevent5"></sequenceFlow>
+    <endEvent id="endevent6" name="End"></endEvent>
+    <sequenceFlow id="flow15" sourceRef="boundaryerror1" targetRef="endevent6"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_cnap_489">
     <bpmndi:BPMNPlane bpmnElement="cnap_489" id="BPMNPlane_cnap_489">
@@ -241,9 +245,6 @@ ${comment_2}&lt;br /&gt;
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
         <omgdc:Bounds height="30.0" width="30.0" x="100.0" y="70.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
-        <omgdc:Bounds height="35.0" width="35.0" x="97.0" y="207.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="55.0" width="105.0" x="350.0" y="30.0"></omgdc:Bounds>
@@ -281,13 +282,12 @@ ${comment_2}&lt;br /&gt;
       <bpmndi:BPMNShape bpmnElement="endevent5" id="BPMNShape_endevent5">
         <omgdc:Bounds height="35.0" width="35.0" x="1080.0" y="40.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent6" id="BPMNShape_endevent6">
+        <omgdc:Bounds height="35.0" width="35.0" x="97.0" y="110.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="57.0" y="57.0"></omgdi:waypoint>
         <omgdi:waypoint x="90.0" y="57.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="115.0" y="100.0"></omgdi:waypoint>
-        <omgdi:waypoint x="114.0" y="207.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="195.0" y="57.0"></omgdi:waypoint>
@@ -348,6 +348,10 @@ ${comment_2}&lt;br /&gt;
       <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
         <omgdi:waypoint x="1055.0" y="57.0"></omgdi:waypoint>
         <omgdi:waypoint x="1080.0" y="57.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
+        <omgdi:waypoint x="100.0" y="85.0"></omgdi:waypoint>
+        <omgdi:waypoint x="114.0" y="110.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

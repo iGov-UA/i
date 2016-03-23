@@ -34,7 +34,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   var currentState = $state.$current;
 
   $scope.paramsBackup = null
-  
+
   $scope.oServiceData = oServiceData;
   $scope.account = BankIDAccount; // FIXME потенційний хардкод
   $scope.activitiForm = activitiForm;
@@ -211,7 +211,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
             ErrorsFactory.logFail({sBody:"У поверненому об'єкти немае номера створеної заявки!",asParam:["soReturn: "+JSON.stringify(oReturn)]});
             return;
         }
-        
+
         var nCRC = ValidationService.getLunaValue(oReturn.id);
         var sID_Order = oServiceData.nID_Server + "-" + oReturn.id + nCRC;
         submitted.data.id = sID_Order;
@@ -219,13 +219,13 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
         submitted.data.formData = $scope.data.formData;
         $scope.isSending = false;
         $scope.$root.data = $scope.data;
-  
+
         try{
 //            ErrorsFactory.logInfoSendHide({sType:"success", sBody:"Створена заявка!",asParam:["sID_Order: "+sID_Order]});
         }catch(sError){
             console.log('[submitForm.ActivitiService]sID_Order='+sID_Order+',sError='+ sError);
         }
-        
+
         return $state.go(submitted, angular.extend($stateParams, {formID: null, signedFileID : null}));
       });
   };
@@ -272,7 +272,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
         }
         if (field.type === 'file'){
             $scope.data.formData.params[field.id].value="";
-            $scope.data.formData.params[field.id].upload = true;
+            //$scope.data.formData.params[field.id].upload = true;
             $scope.data.formData.params[field.id].scan = null;
         }
       });
@@ -435,9 +435,9 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
 
   $scope.bFilledSelfPrevious = function () {
       return $scope.paramsBackup !== null;
-      
+
   };
-  
+
   $scope.fillSelfPreviousBack = function () {
       if($scope.bFilledSelfPrevious()){
         angular.forEach($scope.data.formData.params, function (property, key) {
@@ -451,7 +451,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
         $scope.paramsBackup = null;
       }
   };
-  
+
   if($scope.selfOrdersCount.nOpened > 0){
     $scope.fillSelfPrevious();
   }
