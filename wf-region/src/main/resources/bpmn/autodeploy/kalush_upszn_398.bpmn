@@ -64,15 +64,16 @@
           <activiti:string><![CDATA[Звернення на тему "Надання статусу та видача (заміна) посвідчення «Ветеран праці» прийняте]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-				<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
-				<p> Ваше звернення щодо enum{[asType]}  було зареєстровано у системі.<br/>
-				Повідомлення про результат розгляду буде спрямоване на Ваш e-mail.</p>
-				<br />
-				[pattern/mail/_common_signature_start.html]
-				[pattern_dictonary:dnepr_soc_help.csv:234:2]<br />
-				[pattern/mail/_common_signature_end.html]
-				[pattern/mail/_common_footer.html]]]></activiti:expression>
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+&lt;p&gt; Ваше звернення щодо enum{[asType]} було зареєстровано у системі.&lt;br/&gt;
+Повідомлення про результат послуги буде спрямоване на Ваш e-mail.&lt;/p&gt;
+&lt;br /&gt;
+${sPhoneOrgan}&lt;br /&gt;
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan}&lt;br /&gt;
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -120,15 +121,18 @@
           <activiti:string><![CDATA[Інформація щодо "Надання статусу та видача (заміна) посвідчення «Ветеран праці»]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-			<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br><br>
-			<p>На жаль, Ваше звернення щодо ${asType} - відхилене.</p>
-			<p>Причина в наступному: <br>
-			${decisionComment}</p>
-			<p>Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/ target="_blank">iGov.org.ua</a></p>
-			[pattern/mail/_common_signature_start.html]
-			[pattern_dictonary:nepr_soc_help.csv:234d:2]</p>
-			[pattern/mail/_common_footer.html]]]></activiti:expression>
+          <activiti:expression>[pattern/mail/_common_header.html]
+			&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+			&lt;p&gt; На жаль, Ваше звернення щодо enum{[asType]} - відхилене.&lt;br/&gt;
+			&lt;p&gt; Причина в наступному:&lt;br/&gt;
+			&lt;p&gt;${decisionComment}&lt;/p&gt;
+&lt;p&gt;Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/ target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
+&lt;br /&gt;
+${sPhoneOrgan}&lt;br /&gt;
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan}&lt;br /&gt;
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -147,18 +151,22 @@
           <activiti:string><![CDATA[Запрошення до отримання посвідчення «Ветеран праці»]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-			<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
-			<p>Ваше звернення щодо ${asType} - розглянуте.</p>
-			<p>Запрошуємо Вас отримати нове Посвідчення за адресою:<br>
-			[pattern_dictonary:dnepr_soc_help.csv:234:3]<br>
-			[pattern_dictonary:dnepr_soc_help.csv:234:4]<br>
-			[pattern_dictonary:nepr_soc_help.csv:234:5]</p>
+          <activiti:expression>[pattern/mail/_common_header.html]
+			&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+			&lt;p&gt;Ваше звернення щодо enum{[asType]} - розглянуте.&lt;/p&gt;
+			&lt;p&gt;Запрошуємо Вас отримати нове Посвідчення за адресою:&lt;br/&gt;
+			&lt;/p&gt;
+			${sPhoneOrgan}&lt;br /&gt;
+			&lt;br /&gt;
+			&lt;br /&gt;
+			${sWorkTime}&lt;br /&gt;
+			${sAddress}&lt;br /&gt;
+			&lt;br /&gt;
 			[pattern/mail/_common_signature_start.html]
-			[pattern_dictonary:nepr_soc_help.csv:234:2],<br>
+			${sNameOrgan}&lt;br /&gt;
 			[pattern/mail/_common_signature_end.html]
 			[pattern/mail/_common_feedback.html]
-			[pattern/mail/_common_footer.html]]]></activiti:expression>
+			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
