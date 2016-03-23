@@ -151,11 +151,10 @@ if [ $sProject == "wf-central"  ] || [ $sProject == "wf-region" ]; then
 		grep -B 3 -A 2 ERROR /sybase/tomcat_${sProject}_double/logs/catalina.out
 		fallback _double
 	fi
-	
+	done
 	#Проверяем на наличие ошибок вторичный инстанс
 	if grep ERROR /sybase/tomcat_${sProject}_double/logs/catalina.out | grep -v log4j | grep -v stopServer; then
 		fallback _double
-	done
 	else
 		echo "Everything is OK. Continuing deployment ..."
 		cat /sybase/.configs/nginx/${sProject}_double_upstream.conf > /sybase/nginx/conf/sites/${sProject}_upstream.conf
