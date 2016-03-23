@@ -66,10 +66,6 @@ public class Mail extends Abstract_Mail {
     public Mail() {
     }
 
-    public void reset() throws EmailException {
-        oMultiparts = new MimeMultipart();
-    }
-
     @Override
     public void send() throws EmailException {
         LOG.info("(getFrom()={})", getFrom());
