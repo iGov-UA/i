@@ -76,7 +76,7 @@ deploy-tomcat ()
 	cd /sybase/tomcat_${sProject}$1/bin/ && ./_shutdown_force.sh
 	sleep 5
 	#Разворачиваем новые конфиги
-	cp -rf /sybase/.configs/${sProject}$1/* /sybase/tomcat_${sProject}$1/conf/
+	cp -rf /sybase/.configs/${sProject}/* /sybase/tomcat_${sProject}$1/conf/
 	#Устанавливаем новую версию приложения
 	rm -rf /sybase/tomcat_${sProject}$1/webapps/*
 	cp -p /sybase/.upload/$sProject.war /sybase/tomcat_${sProject}$1/webapps/wf.war
