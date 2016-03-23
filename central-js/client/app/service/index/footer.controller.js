@@ -135,7 +135,7 @@ angular.module('app').controller('FooterController', function ($scope) {
     var sortid;
     do {
       sortid = Math.floor(Math.random() * arr.length);
-    } while (indexes.includes(sortid) && count-- > 0);
+    } while (indexes.indexOf(sortid) >= 0 && count-- > 0);
 
     indexes.push(sortid);
     item.sortid = sortid;
