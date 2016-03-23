@@ -9,21 +9,17 @@
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть регіональне відділення, де Ви б бажали отримати послугу" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="sNotice" name="Примітка" type="label" default="Зверніть увагу: для обраного відділення поки що не працює обробка електроних звернень. Але Ви матимете можливість пізніше оцінити роботу співробітника і залишити свій відгук, якщо натиснете 'Замовити послугу' "></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Графік прийому громадян" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="goal" name="Оберіть потрібну Вам послугу" type="enum" required="true">
-          <activiti:value id="attr1" name="одержання дозволу на зберігання та носіння мисливської вогнепальної нарізної, гладкоствольної зброї, пневматичної зброї, холодної зброї, пристроїв"></activiti:value>
-          <activiti:value id="attr2" name="перереєстрації зброї, пристроїв (продовження терміну дії дозволу на їх зберігання та носіння), які придбані відповідно до законодавства"></activiti:value>
-          <activiti:value id="attr3" name="одержання громадянами в органах внутрішніх справ дозволу на придбання мисливської вогнепальної нарізної, гладкоствольної зброї, пневматичної зброї, холодної зброї"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Телефони обраного відділення для довідок" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="email" name="Ваш e-mail; для зворотнього зв'язку та оцінювання якості наданої послуги " type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sInvoice1" name=" Додаток 1(зразок)" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sZajava" name=" Додаток 2(зразок)" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sKartka" name=" Додаток 3(зразок)" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="Телефони обраного відділення для довідок" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Адреса регіонального відділення" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="Підпис" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="sAddress" name="Адреса регіонального відділення" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Підпис" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="sMailClerk" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_UA" name="sID_UA" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nUser" name="Users" type="long"></activiti:formProperty>
+        <activiti:formProperty id="nUser" name="Users" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers" name="extended_marker" type="markers" default="${markerService.loadFromFile('mvd/common_mvd_2_1.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -75,10 +71,11 @@
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 &lt;p&gt;
 Ваш запит успішно оброблено. &lt;br /&gt;
-Дата одержання довідки: &lt;br /&gt;
+
+
 ${comment}&lt;br /&gt;
 
-Оригінал довідки Ви зможете отримати за адресою  &lt;br /&gt;
+
 ${sAddress}&lt;br /&gt;
  &lt;b&gt; Увага! При собі обов'язково мати громадянський паспорт або інший документ, що посвідчує особу. &lt;/b&gt;  &lt;br /&gt;
 
@@ -91,7 +88,7 @@ ${sWorkTime}&lt;br /&gt;
  
  
 [pattern/mail/_common_signature_start.html]
-${sMail_Signature}
+${sNameOrgan}
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
@@ -124,7 +121,7 @@ ${sMail_Signature}
 
 
 [pattern/mail/_common_signature_start.html]
-${sMail_Signature}
+${sNameOrgan}
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -159,14 +156,14 @@ ${sAddress}&lt;br /&gt;
 
  
 Графік прийому:&lt;br /&gt;
-${sWork_Time}&lt;br /&gt;
+${sWorkTime}&lt;br /&gt;
 
  &lt;/p&gt;
 
  
  
 [pattern/mail/_common_signature_start.html]
-${sMail_Signature}
+${sNameOrgan}
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
