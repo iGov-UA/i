@@ -8,7 +8,7 @@
   deployConfig.$inject = ['$stateProvider'];
   function deployConfig($stateProvider) {
     $stateProvider
-      .state('deploy', {
+      .state('tools.deploy', {
         url: '/deploy',
         templateUrl: 'app/deploy/deploy.html',
         access: {
