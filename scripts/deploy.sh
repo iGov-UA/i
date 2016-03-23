@@ -58,6 +58,9 @@ if [ -z $nSecondsWait ]; then
 fi
 
 if [[ $sProject ]]; then
+	if [ -d /tmp/$sProject ]; then
+		rm -rf /tmp/$sProject
+	fi
 	mkdir /tmp/$sProject
 	export TMPDIR=/tmp/$sProject
 	export TEMP=/tmp/$sProject
