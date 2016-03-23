@@ -2,6 +2,7 @@ var request = require('request')
   , config = require('../../config/environment/index')
   , activiti = require('../../components/activiti/index')
   , url = require('url')
+  , errors = require('../../components/errors')
   , _ = require('lodash');
 
 module.exports.syncBySCodeAndHumanIDType = function (sCode_Subject, nID_SubjectHumanIdType, callback) {
@@ -27,4 +28,16 @@ module.exports.getSubjectHuman = function (nID_Subject, callback) {
 
 module.exports.getSubjectOrganJoinTaxList = function (req, res) {
   activiti.sendGetRequest(req, res, '/subject/getSubjectOrganJoinTax', req.query);
+};
+
+module.exports.getServerRegion = function (nID_Server, callback) {
+  activiti.get('/subject/getServer', {nID: nID_Server}, function (error, response, body) {
+    if (!error) {
+      callback(null, body);
+    } else {
+      callback(
+        errors.createError(errors.codes.EXTERNAL_SERVICE_ERROR,
+          'can\'t find server host name by ' + nID_Server, error), null);
+    }
+  });
 };

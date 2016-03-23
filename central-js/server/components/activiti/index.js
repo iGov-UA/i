@@ -146,8 +146,14 @@ module.exports.sendGetRequest = function (req, res, apiURL, params, callback, sH
 };
 
 module.exports.get = function (apiURL, params, callback, sHost, session) {
-  var url = this.buildGET(apiURL, params, sHost, session);
-  return request(url, callback);
+  var prepared = this.buildGET(apiURL, params, sHost, session);
+  return request(prepared, callback);
+};
+
+module.exports.post = function (apiURL, params, body, callback, sHost, session) {
+  var prepared = this.buildGET(apiURL, params, sHost, session);
+  prepared = _.extend(prepared, {body: body});
+  request.post(prepared, callback);
 };
 
 module.exports.sendPostRequest = function (req, res, apiURL, params, callback, sHost) {

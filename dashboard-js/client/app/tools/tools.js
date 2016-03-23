@@ -3,16 +3,17 @@
 
   angular
     .module('dashboardJsApp')
-    .config(['$stateProvider',
+    .config([
+      '$stateProvider',
       function ($stateProvider) {
         $stateProvider
-          .state('tools.services', {
-            url: '/services',
-            templateUrl: 'app/services/services.html',
-            controller: 'ServicesCtrl',
+          .state('tools', {
+            abstract: true,
+            templateUrl: 'app/tools/tools.html',
             access: {
               requiresLogin: true
             }
           });
-      }]);
+      }
+    ]);
 })();
