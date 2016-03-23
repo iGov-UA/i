@@ -15,7 +15,6 @@
       isTest: false,
       load: load,
       loadTaskCounters: loadTaskCounters,
-      menus: [],
       instrumentsMenus: [],
       tasksSearch: {
         value: null,
@@ -58,12 +57,12 @@
     }];
 
     service.instrumentsMenus = [
-      {state: 'users', title: 'Користувачі'},
-      {state: 'groups', title: 'Групи'},
-      {state: 'escalations', title: 'Ескалації'},
-      {state: 'reports', title: 'Звіт'},
-      {state: 'services', title: 'Розклад'},
-      {state: 'deploy', title: 'Розгортання'}
+      {state: 'tools.users', title: 'Користувачі'},
+      {state: 'tools.groups', title: 'Групи'},
+      {state: 'tools.escalations', title: 'Ескалації'},
+      {state: 'tools.reports', title: 'Звіт'},
+      {state: 'tools.services', title: 'Розклад'},
+      {state: 'tools.deploy', title: 'Розгортання'}
     ];
 
     return service;
