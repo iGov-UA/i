@@ -57,11 +57,16 @@ if [ -z $nSecondsWait ]; then
 	nSecondsWait=185
 fi
 
+if [[ $sProject ]]; then
+	mkdir /tmp/$sProject
+	export TMPDIR=/tmp/$sProject
+	export TEMP=/tmp/$sProject
+	export TMP=/tmp/$sProject
+fi
+
 #Определяем сервер для установки
 if [[ $sVersion == "alpha" && $sProject == "central-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-central" ]]; then
 		sHost="test.igov.org.ua"
-		TMP=TEMP=TMPDIR=/tmp/c_alpha && export TMPDIR TMP TEMP
-		mkdir -p $TMP
 fi
 #if [[ $sVersion == "beta" && $sProject == "central-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-central" ]]; then
 #		sHost="test-version.igov.org.ua"
@@ -72,8 +77,6 @@ fi
 
 if [[ $sVersion == "alpha" && $sProject == "dashboard-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-region" ]]; then
 		sHost="test.region.igov.org.ua"
-		TMP=TEMP=TMPDIR=/tmp/r_alpha && export TMPDIR TMP TEMP
-		mkdir -p $TMP 
 fi
 #if [[ $sVersion == "beta" && $sProject == "dashboard-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-region" ]]; then
 #		sHost="test-version.region.igov.org.ua"
@@ -91,6 +94,10 @@ build_central-js ()
 		return
 	fi
 	if [ "$bSkipDeploy" == "true" ]; then
+		while ps axg | grep -v grep | grep -q dashboard-js; do
+			echo "dashboard-js compilation is still running. we will wait until it finish."
+			sleep 5
+		done
 		cd central-js
 		npm cache clean
 		npm install
@@ -100,8 +107,13 @@ build_central-js ()
 		cd dist
 		npm install --production
 		cd ..
+		rm -rf /tmp/$sProject
 		return
 	else
+		while ps axg | grep -v grep | grep -q dashboard-js; do
+			echo "dashboard-js compilation is still running. we will wait until it finish."
+			sleep 5
+		done
 		cd central-js
 		npm cache clean
 		npm install
@@ -111,6 +123,7 @@ build_central-js ()
 		cd dist
 		npm install --production
 		cd ..
+		rm -rf /tmp/$sProject
 		rsync -az --delete -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' dist/ sybase@$sHost:/sybase/.upload/central-js/
 		cd ..
 	fi
@@ -125,6 +138,10 @@ build_dashboard-js ()
 		return
 	fi
 	if [ "$bSkipDeploy" == "true" ]; then
+		while ps axg | grep -v grep | grep -q central-js; do
+			echo "central-js compilation is still running. we will wait until it finish."
+			sleep 5
+		done
 		cd dashboard-js
 		npm install
 		npm list grunt
@@ -135,8 +152,13 @@ build_dashboard-js ()
 		cd dist
 		npm install --production
 		cd ..
+		rm -rf /tmp/$sProject
 		return
 	else
+		while ps axg | grep -v grep | grep -q central-js; do
+			echo "central-js compilation is still running. we will wait until it finish."
+			sleep 5
+		done
 		cd dashboard-js
 		npm install
 		npm list grunt
@@ -147,6 +169,7 @@ build_dashboard-js ()
 		cd dist
 		npm install --production
 		cd ..
+		rm -rf /tmp/$sProject
 		rsync -az --delete -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' dist/ sybase@$sHost:/sybase/.upload/dashboard-js/
 		cd ..
 	fi
@@ -217,6 +240,7 @@ build_central ()
 		build_base $saCompile
 		cd wf-central
 		mvn -P $sVersion clean install site $sBuildArg -Ddependency.locations.enabled=false
+		rm -rf /tmp/$sProject
 		return
 	else
 		if [ "$bSkipTest" ==  "true" ]; then
@@ -225,6 +249,7 @@ build_central ()
 		build_base $saCompile
 		cd wf-central
 		mvn -P $sVersion clean install site $sBuildArg -Ddependency.locations.enabled=false
+		rm -rf /tmp/$sProject
 		rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' target/wf-central.war sybase@$sHost:/sybase/.upload/
 	fi
 }
@@ -252,6 +277,7 @@ build_region ()
 		build_base $saCompile
 		cd wf-region
 		mvn -P $sVersion clean install site $sBuildArg -Ddependency.locations.enabled=false
+		rm -rf /tmp/$sProject
 		return
 	else
 		if [ "$bSkipTest" ==  "true" ]; then
@@ -260,6 +286,7 @@ build_region ()
 		build_base $saCompile
 		cd wf-region
 		mvn -P $sVersion clean install site $sBuildArg -Ddependency.locations.enabled=false
+		rm -rf /tmp/$sProject
 		rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' target/wf-region.war sybase@$sHost:/sybase/.upload/
 	fi
 }
