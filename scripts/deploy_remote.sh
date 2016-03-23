@@ -141,19 +141,20 @@ if [ $sProject == "wf-central"  ] || [ $sProject == "wf-region" ]; then
 	echo "Starting deploy of DOUBLE"
 	deploy-tomcat _double
 	
+	nTimeout=0
+	until grep -q "FrameworkServlet 'dispatcher': initialization completed in" /sybase/tomcat_${sProject}_double/logs/catalina.out || [ $nTimeout -eq $nSecondsWait ]; do
+	((nTimeout++))
+	sleep 1
+	echo "waiting for server startup $nTimeout"
+	if [ $nTimeout -ge $nSecondsWait ]; then
+		echo "timeout reached"
+		grep -B 3 -A 2 ERROR /sybase/tomcat_${sProject}_double/logs/catalina.out
+		fallback _double
+	fi
+	
 	#Проверяем на наличие ошибок вторичный инстанс
 	if grep ERROR /sybase/tomcat_${sProject}_double/logs/catalina.out | grep -v log4j | grep -v stopServer; then
 		fallback _double
-		nTimeout=0
-		until grep -q "FrameworkServlet 'dispatcher': initialization completed in" /sybase/tomcat_${sProject}_double/logs/catalina.out || [ $nTimeout -eq $nSecondsWait ]; do
-		((nTimeout++))
-		sleep 1
-		echo "waiting for server startup $nTimeout"
-		if [ $nTimeout -ge $nSecondsWait ]; then
-			echo "timeout reached"
-			grep -B 3 -A 2 ERROR /sybase/tomcat_${sProject}_double/logs/catalina.out
-			fallback _double
-		fi
 	done
 	else
 		echo "Everything is OK. Continuing deployment ..."
