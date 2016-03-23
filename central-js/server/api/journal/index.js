@@ -5,6 +5,6 @@ var auth = require('../../auth/auth.service.js');
 
 router.get('/', auth.isAuthenticated(), journal.getHistoryEvents);
 router.post('/', auth.isAuthenticated(), journal.setHistoryEvent);
-//router.get('/:nID', journal.getHistoryEvent);
+router.get('/:nID_HistoryEvent_Service', auth.isAuthenticated(), journal.getHistoryEvents);
 
 module.exports = router;

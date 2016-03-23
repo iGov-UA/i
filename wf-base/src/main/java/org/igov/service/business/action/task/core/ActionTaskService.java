@@ -5,28 +5,60 @@
  */
 package org.igov.service.business.action.task.core;
 
+import static org.igov.io.fs.FileSystemData.getFiles_PatternPrint;
+import static org.igov.util.Tool.sO;
+
+import java.io.File;
+import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Scanner;
+import java.util.Set;
+import java.util.TreeSet;
+
+import javax.script.ScriptException;
+
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.UserTask;
-import org.activiti.engine.*;
+import org.activiti.engine.ActivitiObjectNotFoundException;
+import org.activiti.engine.EngineServices;
+import org.activiti.engine.FormService;
+import org.activiti.engine.HistoryService;
+import org.activiti.engine.IdentityService;
+import org.activiti.engine.RepositoryService;
+import org.activiti.engine.RuntimeService;
+import org.activiti.engine.TaskService;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.TaskFormData;
-import org.activiti.engine.history.HistoricDetail;
-import org.activiti.engine.history.HistoricFormProperty;
-import org.activiti.engine.history.HistoricProcessInstance;
-import org.activiti.engine.history.HistoricTaskInstance;
+import org.activiti.engine.history.*;
 import org.activiti.engine.identity.Group;
-import org.activiti.engine.impl.persistence.entity.ExecutionEntity;
-import org.activiti.engine.impl.persistence.entity.HistoricFormPropertyEntity;
-import org.activiti.engine.impl.persistence.entity.TaskEntity;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.repository.ProcessDefinition;
-import org.activiti.engine.task.*;
+import org.activiti.engine.task.Attachment;
+import org.activiti.engine.task.IdentityLink;
+import org.activiti.engine.task.IdentityLinkType;
+import org.activiti.engine.task.NativeTaskQuery;
+import org.activiti.engine.task.Task;
+import org.activiti.engine.task.TaskInfo;
+import org.activiti.engine.task.TaskInfoQuery;
+import org.activiti.engine.task.TaskQuery;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.igov.io.GeneralConfig;
@@ -36,6 +68,7 @@ import org.igov.model.action.event.HistoryEvent_Service_StatusType;
 import org.igov.model.action.task.core.ProcessDTOCover;
 import org.igov.model.action.task.core.TaskAssigneeCover;
 import org.igov.model.action.task.core.entity.TaskAssigneeI;
+import org.igov.model.flow.FlowSlotTicket;
 import org.igov.model.flow.FlowSlotTicketDao;
 import org.igov.service.business.access.BankIDConfig;
 import org.igov.service.business.action.event.HistoryEventService;
@@ -44,10 +77,12 @@ import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.RecordNotFoundException;
 import org.igov.service.exception.TaskAlreadyUnboundException;
-import org.igov.util.JSON.JsonRestUtils;
-import org.igov.util.ToolLuna;
+import org.igov.util.ToolFS;
 import org.igov.util.ToolJS;
+import org.igov.util.ToolLuna;
 import org.igov.util.JSON.JsonDateTimeSerializer;
+import org.igov.util.cache.CachedInvocationBean;
+import org.igov.util.cache.SerializableResponseEntity;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
@@ -58,16 +93,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.script.ScriptException;
-import java.io.File;
-import java.nio.charset.Charset;
-import java.text.SimpleDateFormat;
-import java.util.*;
-
-import static org.igov.io.fs.FileSystemData.getFiles_PatternPrint;
-import org.igov.util.ToolFS;
-import static org.igov.util.Tool.sO;
-
 /**
  *
  * @author bw
@@ -75,10 +100,18 @@ import static org.igov.util.Tool.sO;
 //@Component
 @Service
 public class ActionTaskService {
-    public static final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd:HH-mm-ss", Locale.ENGLISH);
+    public static final String GET_ALL_TASK_FOR_USER_CACHE = "getAllTaskForUser";
+	public static final String GET_ALL_TICKETS_CACHE = "getAllTickets";
+	public static final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd:HH-mm-ss", Locale.ENGLISH);
     public static final String CANCEL_INFO_FIELD = "sCancelInfo";
     private static final int DEFAULT_REPORT_FIELD_SPLITTER = 59;
     private static final int MILLIS_IN_HOUR = 1000 * 60 * 60;
+    
+    static final Comparator<FlowSlotTicket> FLOW_SLOT_TICKET_ORDER_CREATE_COMPARATOR = new Comparator<FlowSlotTicket>() {
+		public int compare(FlowSlotTicket e1, FlowSlotTicket e2) {
+			return e2.getsDateStart().compareTo(e1.getsDateStart());
+		}
+	};
 
     private static final Logger LOG = LoggerFactory.getLogger(ActionTaskService.class);
     @Autowired
@@ -116,6 +149,9 @@ public class ActionTaskService {
     private GeneralConfig oGeneralConfig;
     @Autowired
     private FlowSlotTicketDao flowSlotTicketDao;
+    @Autowired
+    private CachedInvocationBean cachedInvocationBean;
+
 
     
     public static String parseEnumValue(String sEnumName) {
@@ -197,6 +233,101 @@ public class ActionTaskService {
             osTable.append("<td>").append("Значення").append("</td>");
         }
         osTable.append("<td>").append("Коментар").append("</td>");
+        osTable.append("</tr>");
+        for (int i = 0; i < aField.length(); i++) {
+            JSONObject oField = aField.getJSONObject(i);
+            /*Object oID=oField.opt("id");
+            Object oType=oField.opt("type");
+            Object oValue=oField.opt("value");
+            osTable.append("<tr>");
+            osTable.append("<td>").append(oID!=null?oID:"").append("</td>");
+            osTable.append("<td>").append(oType!=null?oType:"").append("</td>");
+            osTable.append("<td>").append(oValue!=null?oValue:"").append("</td>");*/
+        /*
+        sID: item.id,
+        sName: item.name,
+        sType: item.type,
+        sValue: item.value,
+        sValueNew: "",
+        sNotify: $scope.clarifyFields[item.id].text
+        */
+            Object sName=oField.opt("sName");
+            if(sName==null){
+                sName = oField.opt("sID");
+            }
+            if(sName==null){
+                sName = oField.opt("id");
+            }
+            Object oValue=oField.opt("sValue");
+            if(oValue==null){
+                oValue = oField.opt("value");
+            }
+            osTable.append("<tr>");
+            osTable.append("<td>").append(sName!=null?sName:"").append("</td>");
+            if(bNew){
+                Object oValueNew=oField.opt("sValueNew");
+                osTable.append("<td>").append(oValue!=null?oValue:"").append("</td>");
+                osTable.append("<td>").append(oValueNew!=null?oValueNew:"").append("</td>");
+                osTable.append("<td>").append((oValueNew+"").equals(oValue+"")?"(Не змінилось)":"(Змінилось)").append("</td>");
+            }else{
+                Object oNotify=oField.opt("sNotify");
+                osTable.append("<td>").append(oValue!=null?oValue:"").append("</td>");
+                osTable.append("<td>").append(oNotify!=null?oNotify:"").append("</td>");
+            }
+            osTable.append("</tr>");
+            /*osTable.append(record.opt("id") != null ? record.get("id") : "?")
+                    .append(" \t ")
+                    .append(record.opt("type") != null ? record.get("type").toString() : "??")
+                    .append(" \t ")
+                    .append(record.opt("value") != null ? record.get("value").toString() : "")
+                    .append(" \n");*/
+        }
+        osTable.append("</table>");
+        return osTable.toString();
+    }
+
+    public static String createTable_TaskProperties_Notification(String saField, Boolean bNew) {
+        if (saField == null || "[]".equals(saField) || "".equals(saField)) {
+            return "";
+        }
+        String sTableStyle;
+        sTableStyle = "<style>table"
+                + " { border-collapse: collapse;"
+                + " width: 100%;"
+                + " max-width: 800px;}"
+                + " table td {"
+                + " border: 1px solid #ddd;"
+                + " text-align:left;"
+                + " padding: 4px;"
+                + " height:40px;}"
+                + " table th {"
+                + " background: #65ABD0;"
+                + " vertical-align: middle;"
+                + " padding: 10px;"
+                + " width:200px;"
+                + " text-align:left;"
+                + " color:#fff;"
+                + " }"
+                + "</style>";
+        //StringBuilder tableStr = new StringBuilder("Поле \t/ Тип \t/ Поточне значення\n");
+
+        /*osTable.append("<td>").append("Поле").append("</td>");
+        osTable.append("<td>").append("Тип").append("</td>");
+        osTable.append("<td>").append("Поточне значення").append("</td>");*/
+        JSONObject oFields = new JSONObject("{ \"soData\":" + saField + "}");
+        JSONArray aField = oFields.getJSONArray("soData");
+        StringBuilder osTable = new StringBuilder();
+        osTable.append(sTableStyle);
+        osTable.append("<table>");
+        osTable.append("<tr>");
+        osTable.append("<th>").append("Поле").append("</th>");
+        if(bNew){
+            osTable.append("<th>").append("Старе значення").append("</th>");
+            osTable.append("<th>").append("Нове значення").append("</th>");
+        }else{
+            osTable.append("<th>").append("Значення").append("</th>");
+        }
+        osTable.append("<th>").append("Коментар").append("</th>");
         osTable.append("</tr>");
         for (int i = 0; i < aField.length(); i++) {
             JSONObject oField = aField.getJSONObject(i);
@@ -598,6 +729,7 @@ public class ActionTaskService {
         String res = currentRow;
         for (Map.Entry<String, Object> property : data.entrySet()) {
             LOG.info(String.format("Matching property %s:%s with fieldNames", property.getKey(), property.getValue()));
+            //LOG.info("!!!!!!!!!!data: " + data);
             if (currentRow != null && res.contains("${" + property.getKey() + "}")) {
                 LOG.info(String.format("Found field with id %s in the pattern. Adding value to the result", "${" + property.getKey() + "}"));
                 if (property.getValue() != null) {
@@ -616,7 +748,8 @@ public class ActionTaskService {
     private String replaceFormProperties(String currentRow, TaskFormData data) {
         String res = currentRow;
         for (FormProperty property : data.getFormProperties()) {
-            LOG.info(String.format("Matching property %s:%s:%s with fieldNames", property.getId(), property.getName(), property.getType().getName()));
+            LOG.info(String.format("Matching property %s %s %s with fieldNames", property.getId(), property.getName(), property.getType().getName()));
+            //LOG.info("!!!!!!!!!!getId: " + property.getId() + " getName: " + property.getName() + " getType: " +  property.getType().getName() + " getValue: " +  property.getValue() + "!");
             if (currentRow != null && res.contains("${" + property.getId() + "}")) {
                 LOG.info(String.format("Found field with id %s in the pattern. Adding value to the result", "${" + property.getId() + "}"));
                 String sValue = getPropertyValue(property);
@@ -768,7 +901,7 @@ public class ActionTaskService {
     private String getPropertyValue(FormProperty property) {
         String sValue;
         String sType = property.getType().getName();
-        LOG.info("(sType={})", sType);
+        LOG.info("getId:" + property.getId() + " getName: " + property.getName() + " getType: " + sType + " getValue: " + property.getValue());
         if ("enum".equalsIgnoreCase(sType)) {
             sValue = parseEnumProperty(property);
         } else {
@@ -940,14 +1073,6 @@ public class ActionTaskService {
 
     public List<String> getTaskIdsByProcessInstanceId(String processInstanceID) throws RecordNotFoundException {
 
-        /* issue 1131
-        List<Task> aTask = getTasksByProcessInstanceId(processInstanceID);
-        List<String> res = new ArrayList<>();
-        for (Task task : aTask) {
-            res.add(task.getId());
-        }
-        return res;
-        */
         return findTaskIDsByActiveAndHistoryProcessInstanceID(Long.parseLong(processInstanceID));
 
     }
@@ -1008,6 +1133,7 @@ public class ActionTaskService {
         }
 
         List<Map<String, String>> result = new LinkedList<>();
+        List<ProcessDefinition> resultProcessDefinitionList = new LinkedList<>();
 
         LOG.info(String.format(
                 "Selecting business processes for the user with login: %s",
@@ -1019,49 +1145,69 @@ public class ActionTaskService {
             LOG.info(String.format("Found %d active process definitions",
                     processDefinitionsList.size()));
 
-            List<Group> groups = oIdentityService.createGroupQuery().groupMember(sLogin).list();
-            if (groups != null && !groups.isEmpty()) {
-                StringBuilder sb = new StringBuilder();
-                for (Group group : groups) {
-                    sb.append(group.getId());
-                    sb.append(",");
-                }
-                LOG.info("Found {}  groups for the user {}:{}", groups.size(), sLogin, sb.toString());
-            }
-
-            for (ProcessDefinition processDef : processDefinitionsList) {
-                LOG.info("process definition id: {}", processDef.getId());
-
-                Set<String> candidateCroupsToCheck = new HashSet<>();
-                loadCandidateGroupsFromTasks(processDef, candidateCroupsToCheck);
-
-                loadCandidateStarterGroup(processDef, candidateCroupsToCheck);
-
-                findUsersGroups(groups, result, processDef, candidateCroupsToCheck);
-            }
+            resultProcessDefinitionList = getAvailabilityProcessDefinitionByLogin(sLogin, processDefinitionsList);
         } else {
             LOG.info("Have not found active process definitions.");
+        }
+
+        for (ProcessDefinition processDef : resultProcessDefinitionList){
+            Map<String, String> process = new HashMap<>();
+            process.put("sID", processDef.getKey());
+            process.put("sName", processDef.getName());
+            LOG.info(String.format("Added record to response %s", process.toString()));
+            result.add(process);
         }
 
         return result;
     }
 
-    private void findUsersGroups(List<Group> groups, List<Map<String, String>> res, ProcessDefinition processDef, Set<String> candidateCroupsToCheck) {
+    private List<ProcessDefinition> getAvailabilityProcessDefinitionByLogin(String sLogin, List<ProcessDefinition> processDefinitionsList) {
+
+        List<ProcessDefinition> resultList = new LinkedList<>();
+
+        List<Group> groups;
+        groups = oIdentityService.createGroupQuery().groupMember(sLogin).list();
+        if (groups != null && !groups.isEmpty()) {
+            StringBuilder sb = new StringBuilder();
+            for (Group group : groups) {
+                sb.append(group.getId());
+                sb.append(",");
+            }
+            LOG.info("Found {}  groups for the user {}:{}", groups.size(), sLogin, sb.toString());
+        }
+
+        for (ProcessDefinition processDef : processDefinitionsList) {
+            LOG.info("process definition id: {}", processDef.getId());
+
+            Set<String> candidateCroupsToCheck = getGroupsByProcessDefinition(processDef);
+
+            if(checkIncludeProcessDefinitionIntoGroupList(groups, candidateCroupsToCheck)){
+                resultList.add(processDef);
+            }
+        }
+        return resultList;
+    }
+
+    private Set<String> getGroupsByProcessDefinition(ProcessDefinition processDef) {
+        Set<String> candidateCroupsToCheck = new HashSet<>();
+        loadCandidateGroupsFromTasks(processDef, candidateCroupsToCheck);
+        loadCandidateStarterGroup(processDef, candidateCroupsToCheck);
+        return candidateCroupsToCheck;
+    }
+
+
+    private boolean checkIncludeProcessDefinitionIntoGroupList(List<Group> groups, Set<String> candidateCroupsToCheck){
         for (Group group : groups) {
             for (String groupFromProcess : candidateCroupsToCheck) {
                 if (groupFromProcess.contains("${")) {
                     groupFromProcess = groupFromProcess.replaceAll("\\$\\{?.*}", "(.*)");
                 }
                 if (group.getId().matches(groupFromProcess)) {
-                    Map<String, String> process = new HashMap<>();
-                    process.put("sID", processDef.getKey());
-                    process.put("sName", processDef.getName());
-                    LOG.info(String.format("Added record to response %s", process.toString()));
-                    res.add(process);
-                    return;
+                    return true;
                 }
             }
         }
+        return false;
     }
 
     
@@ -1129,7 +1275,7 @@ public class ActionTaskService {
         mParam.put("sBody", sBody);
         mParam.put("sToken", sToken);
         //params.put("sUserTaskName", sUserTaskName);
-        return oHistoryEventService.updateHistoryEvent(sID_Order, sUserTaskName, true, mParam);
+        return oHistoryEventService.updateHistoryEvent(sID_Order, sUserTaskName, true, oHistoryEvent_Service_StatusType, mParam);
     }
     
     public List<Task> getTasksForChecking(String sLogin,
@@ -1457,6 +1603,19 @@ public class ActionTaskService {
         return mReturn;
     }
 
+    public Map<String, Object> getProcessVariableValue(String nProcessID, String variableName) throws RecordNotFoundException {
+    	Map<String, Object> res = new HashMap<String, Object>();
+    	
+    	HistoricVariableInstance historicVariableInstance = oHistoryService.createHistoricVariableInstanceQuery().processInstanceId(nProcessID).variableName(variableName).singleResult();
+    	
+    	LOG.info("Retreived HistoricVariableInstance for process {} with value {}", nProcessID, historicVariableInstance);
+    	if (historicVariableInstance != null){
+    		res.put(historicVariableInstance.getVariableName(), historicVariableInstance.getValue());
+    	}
+    	
+    	return res;
+    }
+    
     public boolean deleteProcess(Long nID_Order, String sLogin, String sReason) throws Exception{
         boolean success = false;
         String nID_Process = null;
@@ -1490,7 +1649,7 @@ public class ActionTaskService {
         oHistoryEventService.updateHistoryEvent(
                 //processInstanceID,
                 sID_Order,
-                sUserTaskName, false, mParam);
+                sUserTaskName, false, oHistoryEvent_Service_StatusType.REMOVED, mParam);
 
         success = true;
         return success;
@@ -1764,38 +1923,14 @@ public class ActionTaskService {
      * @param nID_Task - Task ID
      * @return - CandidateGroup from ProcessDefinition by Task
      */
-    public Set<String> getCandidateGroupByTaskID(Long nID_Task){
+    private Set<String> getCandidateGroupByTaskID(Long nID_Task){
         Set<String> aCandidateGroup = new HashSet<>();
         ProcessDefinition processDefinition = getProcessDefinitionByTaskID(nID_Task.toString());
         loadCandidateGroupsFromTasks(processDefinition, aCandidateGroup);
         return aCandidateGroup;
     }
 
-    /**
-     * Проверяет вхождение пользователя в одну из груп, на которую распространяется тиска
-     * @param sLogin - логгин пользователя
-     * @param nID_Task - ИД-номер таски
-     * @return true - если пользователь входит в одну из групп; false - если совпадений не найдено.
-     */
-    public boolean checkAvailabilityTaskCandidateGroupsForUser(String sLogin, Long nID_Task){
-        Set<String> userGroupIDs = new HashSet<>();
-        Set<String> taskGroupIDs = getCandidateGroupByTaskID(nID_Task);
 
-        List<Group> groups = oIdentityService.createGroupQuery().groupMember(sLogin).list();
-        for (Group group : groups){
-            userGroupIDs.add(group.getId());
-        }
-
-        for (String userGroupID : userGroupIDs){
-            for (String taskGroupID : taskGroupIDs){
-                if (taskGroupID.equals(userGroupID)){
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
 
     /**
      * Возвращает список объектов Attachment, привязанных к таске
@@ -1815,4 +1950,341 @@ public class ActionTaskService {
         }
         return attachments;
     }
+    
+    /**
+     * 
+     * @param taskQuery
+     * @param nStart
+     * @param nSize
+     * @param bFilterHasTicket
+     * @param mapOfTickets
+     * @return
+     */
+    public List<TaskInfo> getTasksWithTicketsFromQuery(Object taskQuery, int nStart, int nSize, boolean bFilterHasTicket, Map<String, FlowSlotTicket> mapOfTickets){
+	    List<TaskInfo> tasks = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).listPage(nStart, nSize)
+				: (List) ((NativeTaskQuery) taskQuery).listPage(nStart, nSize);
+	
+		List<Long> taskIds = new LinkedList<Long>();
+		for (int i = 0; i < tasks.size(); i++){
+			TaskInfo currTask = tasks.get(i);
+			if (currTask.getProcessInstanceId() != null){
+				taskIds.add(Long.valueOf(currTask.getProcessInstanceId()));
+			}
+		}
+		LOG.info("Preparing to select flow slot tickets. taskIds:{}", taskIds.toString());
+		List<FlowSlotTicket> tickets  = new LinkedList<FlowSlotTicket>();
+		if (taskIds.size() == 0){
+			return tasks;
+		}
+		try {
+			tickets = flowSlotTicketDao.findAllByInValues("nID_Task_Activiti", taskIds);
+		} catch (Exception e){
+			LOG.error("Error occured while getting tickets for tasks", e);
+		}
+		LOG.info("Found {} tickets for specified list of tasks IDs", tickets.size());
+		if (tickets != null) {
+			for (FlowSlotTicket ticket : tickets) {
+				mapOfTickets.put(ticket.getnID_Task_Activiti().toString(), ticket);
+			}
+		}
+		if (bFilterHasTicket) {
+			LOG.info("Removing tasks which don't have flow slot tickets");
+			Iterator<TaskInfo> iter = tasks.iterator();
+			while (iter.hasNext()){
+				TaskInfo curr = iter.next();
+				if (!mapOfTickets.keySet().contains(curr.getProcessInstanceId())){
+					LOG.info("Removing tasks with ID {}", curr.getId());
+					iter.remove();
+				}
+			}
+		}
+		return tasks;
+    }
+    
+    public List<TaskInfo> matchTasksWithTicketsFromQuery(final String sLogin, boolean bIncludeAlienTickets, String sFilterStatus,
+    		List<TaskInfo> tasks){
+	
+		final List<Long> taskIds = new LinkedList<Long>();
+		for (int i = 0; i < tasks.size(); i++){
+			TaskInfo currTask = tasks.get(i);
+			if (currTask.getProcessInstanceId() != null){
+				taskIds.add(Long.valueOf(currTask.getProcessInstanceId()));
+			}
+		}
+		LOG.info("Preparing to select flow slot tickets. taskIds:{}", taskIds.toString());
+		if (taskIds.size() == 0){
+			return tasks;
+		}
+		SerializableResponseEntity<ArrayList<FlowSlotTicket>> entities = cachedInvocationBean
+	            .invokeUsingCache(new CachedInvocationBean.Callback<SerializableResponseEntity<ArrayList<FlowSlotTicket>>>(
+	                    GET_ALL_TICKETS_CACHE, sLogin, bIncludeAlienTickets, sFilterStatus) {
+	                @Override
+	                public SerializableResponseEntity<ArrayList<FlowSlotTicket>> execute() {
+	                	LOG.info("Loading tickets from cache for user {}", sLogin);
+
+	                	ArrayList<FlowSlotTicket> res = (ArrayList<FlowSlotTicket>) flowSlotTicketDao.findAllByInValues("nID_Task_Activiti", taskIds);
+	                    
+	                    return new SerializableResponseEntity<>(new ResponseEntity<>(res, null, HttpStatus.OK));
+	                }
+	            });
+		ArrayList<FlowSlotTicket> tickets = entities.getBody();
+		LOG.info("Found {} tickets for specified list of tasks IDs", tickets.size());
+		Map<String, FlowSlotTicket> mapOfTickets = new HashMap<String, FlowSlotTicket>();
+		if (tickets != null) {
+			for (FlowSlotTicket ticket : tickets) {
+				mapOfTickets.put(ticket.getnID_Task_Activiti().toString(), ticket);
+			}
+		}
+		LOG.info("Removing tasks which don't have flow slot tickets");
+		LinkedList<TaskInfo> res = new LinkedList<TaskInfo>();
+		Iterator<TaskInfo> iter = tasks.iterator();
+		while (iter.hasNext()){
+			TaskInfo curr = iter.next();
+			if (mapOfTickets.keySet().contains(curr.getProcessInstanceId())){
+				LOG.info("Adding tasks with ID {} to the response", curr.getId());
+				res.add(curr);
+			}
+		}
+		return res;
+    }
+    
+    public long getCountOfTasksForGroups(List<String> groupsIds) {
+		StringBuilder groupIdsSB = new StringBuilder();
+		for (int i = 0; i < groupsIds.size(); i++){
+			groupIdsSB.append("'");
+			groupIdsSB.append(groupsIds.get(i));
+			groupIdsSB.append("'");
+			if (i < groupsIds.size() - 1){
+				groupIdsSB.append(",");
+			}
+		}
+		
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT count(task.*) FROM ACT_RU_TASK task, ACT_RU_IDENTITYLINK link WHERE task.ID_ = link.TASK_ID_ AND link.GROUP_ID_ IN(");
+		sql.append(groupIdsSB.toString());
+		sql.append(") ");
+		
+		return oTaskService.createNativeTaskQuery().sql(sql.toString()).count();
+	}
+
+	public void populateResultSortedByTasksOrder(boolean bFilterHasTicket,
+			List<?> tasks, Map<String, FlowSlotTicket> mapOfTickets,
+			List<Map<String, Object>> data) {
+		LOG.info("populateResultSortedByTasksOrder. number of tasks:{} number of tickets:{} ", tasks.size(), mapOfTickets.size());
+		for (int i = 0; i < tasks.size(); i++){
+			try {
+				TaskInfo task = (TaskInfo)tasks.get(i);
+				Map<String, Object> taskInfo = populateTaskInfo(task, mapOfTickets.get(task.getProcessInstanceId()));
+				
+				data.add(taskInfo);
+			} catch (Exception e){
+				LOG.error("error: Error while populatiing task", e);
+			}
+		}
+	}
+
+	public void populateResultSortedByTicketDate(boolean bFilterHasTicket, List<?> tasks,
+			Map<String, FlowSlotTicket> mapOfTickets, List<Map<String, Object>> data) {
+		LOG.info("Sorting result by flow slot ticket create date. Number of tasks:{} number of tickets:{}", tasks.size(), mapOfTickets.size());
+		List<FlowSlotTicket> tickets = new LinkedList<FlowSlotTicket>();
+		tickets.addAll(mapOfTickets.values());
+		Collections.sort(tickets, FLOW_SLOT_TICKET_ORDER_CREATE_COMPARATOR);
+		LOG.info("Sorted tickets by order create date");
+		Map<String, TaskInfo> tasksMap = new HashMap<String, TaskInfo>();
+		for (int i = 0; i < tasks.size(); i++){
+			TaskInfo task = (TaskInfo)tasks.get(i);
+			tasksMap.put(((TaskInfo)tasks.get(i)).getProcessInstanceId(), task);
+		}
+		for (int i = 0; i < tickets.size(); i++){
+			try {
+				FlowSlotTicket ticket = tickets.get(i);
+				TaskInfo task = tasksMap.get(ticket.getnID_Task_Activiti());
+				Map<String, Object> taskInfo = populateTaskInfo(task, ticket);
+				
+				data.add(taskInfo);
+			} catch (Exception e){
+				LOG.error("error: ", e);
+			}
+		}
+	}
+    
+	public List<TaskInfo> returnTasksFromCache(final String sLogin, final String sFilterStatus, final boolean bIncludeAlienAssignedTasks,
+			final List<String> groupsIds){
+		SerializableResponseEntity<ArrayList<TaskInfo>> entity = cachedInvocationBean
+            .invokeUsingCache(new CachedInvocationBean.Callback<SerializableResponseEntity<ArrayList<TaskInfo>>>(
+                    GET_ALL_TASK_FOR_USER_CACHE, sLogin, sFilterStatus, bIncludeAlienAssignedTasks) {
+                @Override
+                public SerializableResponseEntity<ArrayList<TaskInfo>> execute() {
+                	LOG.info("Loading tasks from cache for user {} with filterStatus {} and bIncludeAlienAssignedTasks {}", sLogin, sFilterStatus, bIncludeAlienAssignedTasks);
+                	Object taskQuery = createQuery(sLogin, bIncludeAlienAssignedTasks, null, sFilterStatus, groupsIds);
+                	
+                	ArrayList<TaskInfo> res = (ArrayList<TaskInfo>) ((taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).list()
+            				: (List) ((NativeTaskQuery) taskQuery).list());
+                	
+                    LOG.info("Loaded {} tasks", res.size());
+                    return new SerializableResponseEntity<>(new ResponseEntity<>(res, null, HttpStatus.OK));
+                }
+            });
+		LOG.info("Entity {}", entity.toString());
+		return entity.getBody();
+	}
+	
+	public Object createQuery(String sLogin,
+			boolean bIncludeAlienAssignedTasks, String sOrderBy, String sFilterStatus,
+			List<String> groupsIds) {
+		Object taskQuery = null; 
+		if ("Closed".equalsIgnoreCase(sFilterStatus)){
+			taskQuery = oHistoryService.createHistoricTaskInstanceQuery().taskInvolvedUser(sLogin).finished();
+			if ("taskCreateTime".equalsIgnoreCase(sOrderBy)){
+				 ((TaskInfoQuery)taskQuery).orderByTaskCreateTime();
+			} else {
+				 ((TaskInfoQuery)taskQuery).orderByTaskId();
+			}
+			 ((TaskInfoQuery)taskQuery).asc();
+		} else {
+			if (bIncludeAlienAssignedTasks){
+				StringBuilder groupIdsSB = new StringBuilder();
+				for (int i = 0; i < groupsIds.size(); i++){
+					groupIdsSB.append("'");
+					groupIdsSB.append(groupsIds.get(i));
+					groupIdsSB.append("'");
+					if (i < groupsIds.size() - 1){
+						groupIdsSB.append(",");
+					}
+				}
+				
+				StringBuilder sql = new StringBuilder();
+				sql.append("SELECT task.* FROM ACT_RU_TASK task, ACT_RU_IDENTITYLINK link WHERE task.ID_ = link.TASK_ID_ AND link.GROUP_ID_ IN(");
+				sql.append(groupIdsSB.toString());
+				sql.append(") ");
+				
+				if ("taskCreateTime".equalsIgnoreCase(sOrderBy)){
+					 sql.append(" order by task.CREATE_TIME_ asc");
+				} else {
+					 sql.append(" order by task.ID_ asc");
+				}
+				LOG.info("Query to execute {}", sql.toString());
+				taskQuery = oTaskService.createNativeTaskQuery().sql(sql.toString());
+			}  else {
+				taskQuery = oTaskService.createTaskQuery();
+				if ("OpenedUnassigned".equalsIgnoreCase(sFilterStatus)){
+					((TaskQuery)taskQuery).taskCandidateUser(sLogin);
+				} else if ("OpenedAssigned".equalsIgnoreCase(sFilterStatus)){
+					taskQuery =  ((TaskQuery)taskQuery).taskAssignee(sLogin);
+				} else if ("Opened".equalsIgnoreCase(sFilterStatus)){
+					taskQuery = ((TaskQuery)taskQuery).taskCandidateOrAssigned(sLogin);
+				}
+				if ("taskCreateTime".equalsIgnoreCase(sOrderBy)){
+					 ((TaskQuery)taskQuery).orderByTaskCreateTime();
+				} else {
+					 ((TaskQuery)taskQuery).orderByTaskId();
+				}
+				 ((TaskQuery)taskQuery).asc();
+			}
+		}
+		return taskQuery;
+	}
+
+	public Map<String, Object> populateTaskInfo(TaskInfo task, FlowSlotTicket flowSlotTicket) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+		Map<String, Object> taskInfo = new HashMap<String, Object>();
+		taskInfo.put("id", task.getId());
+		taskInfo.put("url", oGeneralConfig.sHost() + "/wf/service/runtime/tasks/" + task.getId());
+		taskInfo.put("owner", task.getOwner());
+		taskInfo.put("assignee", task.getAssignee());
+		taskInfo.put("delegationState", (task instanceof Task) ? ((Task)task).getDelegationState() : null);
+		taskInfo.put("name", task.getName());
+		taskInfo.put("description", task.getDescription());
+		taskInfo.put("createTime", sdf.format(task.getCreateTime()));
+		taskInfo.put("dueDate", task.getDueDate() != null ? sdf.format(task.getDueDate()) : null);
+		taskInfo.put("priority", task.getPriority());
+		taskInfo.put("suspended", (task instanceof Task) ? ((Task)task).isSuspended() : null);
+		taskInfo.put("taskDefinitionKey", task.getTaskDefinitionKey());
+		taskInfo.put("tenantId", task.getTenantId());
+		taskInfo.put("category", task.getCategory());
+		taskInfo.put("formKey", task.getFormKey());
+		taskInfo.put("parentTaskId", task.getParentTaskId());
+		taskInfo.put("parentTaskUrl", "");
+		taskInfo.put("executionId", task.getExecutionId());
+		taskInfo.put("executionUrl", oGeneralConfig.sHost() + "/wf/service/runtime/executions/" + task.getExecutionId());
+		taskInfo.put("processInstanceId", task.getProcessInstanceId());
+		taskInfo.put("processInstanceUrl", oGeneralConfig.sHost() + "/wf/service/runtime/process-instances/" + task.getProcessInstanceId());
+		taskInfo.put("processDefinitionId", task.getProcessDefinitionId());
+		taskInfo.put("processDefinitionUrl", oGeneralConfig.sHost() + "/wf/service/repository/process-definitions/" + task.getProcessDefinitionId());
+		taskInfo.put("variables", new LinkedList());
+		if (flowSlotTicket != null){
+			LOG.info("Populating flow slot ticket");
+			DateTimeFormatter dtf = org.joda.time.format.DateTimeFormat.forPattern("yyyy-MM-dd_HH-mm-ss");
+			Map<String, Object> flowSlotTicketData = new HashMap<String, Object>();
+			flowSlotTicketData.put("nID", flowSlotTicket.getId());
+			flowSlotTicketData.put("nID_Subject", flowSlotTicket.getnID_Subject());
+			flowSlotTicketData.put("sDateStart", flowSlotTicket.getsDateStart() != null ? dtf.print(flowSlotTicket.getsDateStart()): null);
+			flowSlotTicketData.put("sDateFinish", flowSlotTicket.getsDateFinish() != null ? dtf.print(flowSlotTicket.getsDateFinish()): null);
+			taskInfo.put("flowSlotTicket", flowSlotTicketData);
+		}
+		return taskInfo;
+	}
+
+    /**
+     * Get sID_UserTask by nID_Task
+     * @param nID_Task
+     * @return sID_UserTask
+     */
+    public String getsIDUserTaskByTaskId(Long nID_Task){
+        return oHistoryService.createHistoricTaskInstanceQuery()
+                .taskId(nID_Task.toString()).singleResult().getTaskDefinitionKey();
+    }
+
+    /**
+     * Получить список идентификаторов отождествленных групп по таске
+     * @param nID_Task - идентификатор таски
+     * @see IdentityLink#getGroupId()
+     * @see HistoricIdentityLink#getGroupId()
+     */
+    public Set<String> getGroupIDsByTaskID(Long nID_Task){
+
+        Set<String> result = new HashSet<>();
+        List<IdentityLink> identityLinks = oTaskService.getIdentityLinksForTask(nID_Task.toString());
+        if (CollectionUtils.isNotEmpty(identityLinks)){
+            for (IdentityLink link : identityLinks){
+                result.add(link.getGroupId());
+                LOG.info(String.format("Add Group id=%s for active Task id=%s", link.getGroupId(), nID_Task));
+            }
+        } else {
+            List<HistoricIdentityLink> historicIdentityLinks = oHistoryService.getHistoricIdentityLinksForTask(nID_Task.toString());
+            if (CollectionUtils.isNotEmpty(historicIdentityLinks)){
+                for (HistoricIdentityLink link : historicIdentityLinks){
+                    result.add(link.getGroupId());
+                    LOG.info(String.format("Add Group id=%s for historic Task id=%s", link.getGroupId(), nID_Task));
+                }
+            } else {
+                LOG.info(String.format("No found Group id for Task id=%s", nID_Task));
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * Проверяет вхождение пользователя в одну из груп, на которую распространяется тиска
+     * @param sLogin - логгин пользователя
+     * @param nID_Task - ИД-номер таски
+     * @return true - если пользователь входит в одну из групп; false - если совпадений не найдено.
+     */
+    public boolean checkAvailabilityTaskGroupsForUser(String sLogin, Long nID_Task){
+
+        ProcessDefinition BP_Task = getProcessDefinitionByTaskID(nID_Task.toString());
+        List<ProcessDefinition> aBP_Task = new LinkedList<>();
+        aBP_Task.add(BP_Task);
+
+        List<ProcessDefinition> result = new LinkedList<>();
+        result = getAvailabilityProcessDefinitionByLogin(sLogin, aBP_Task);
+
+        if (CollectionUtils.isNotEmpty(result)){
+            return true;
+        }
+
+        return false;
+    }
+
 }

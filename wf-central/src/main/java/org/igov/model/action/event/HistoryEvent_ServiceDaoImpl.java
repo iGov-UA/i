@@ -160,6 +160,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
             nID_Server = Integer.parseInt(sID_Order.substring(0, dashPosition));
             nID_Order = Long.valueOf(sID_Order.substring(dashPosition + 1));*/
         } catch (Exception e) {
+            LOG.error("getOrgerByID: ", e);
             throw new IllegalArgumentException(
                     String.format("sID_Order has incorrect format! expected format:[XXX%sXXXXXX], actual value: %s",
                             DASH, sID_Order), e);
@@ -239,5 +240,23 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
         }
         return aHistoryEvent_Service;
     }
+
+	@Override
+	public List<HistoryEvent_Service> getHistoryEventPeriod(DateTime dateAt,
+			DateTime dateTo, List<Long> anID_Service_Exclude) {
+		Criteria oCriteria = getSession().createCriteria(HistoryEvent_Service.class);
+        oCriteria.add(Restrictions.gt("sDate", dateAt));
+        oCriteria.add(Restrictions.lt("sDate", dateTo));
+        if(anID_Service_Exclude != null && !anID_Service_Exclude.isEmpty()) {
+            oCriteria.add(Restrictions.not(Restrictions.in("nID_Service", anID_Service_Exclude)));
+        }
+
+        List<HistoryEvent_Service> aHistoryEvent_Service = (List<HistoryEvent_Service>) oCriteria.list();
+        if (aHistoryEvent_Service == null) {
+            aHistoryEvent_Service = new LinkedList<>();
+        }
+        
+		return aHistoryEvent_Service;
+	}
     
 }

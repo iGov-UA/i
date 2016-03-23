@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_dms_passport" name="Отримання паспорта громадянина України для виїзда за кордон" isExecutable="true">
+  <process id="dnepr_dms_passport" name="Отримання/заміна паспорта громадянина України для виїзда за кордон" isExecutable="true">
     <startEvent id="startevent1" name="Start" activiti:initiator="initiator">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
@@ -10,32 +10,24 @@
         <activiti:formProperty id="phone" name="Ваш телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваша електронна пошта" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="have_passport" name="У Вас на даний момент є закордонний паспорт?" type="enum" required="true">
-          <activiti:value id="attr1_yes" name="так, хочу подовжити"></activiti:value>
+          <activiti:value id="attr1_yes" name="так, хочу замінити"></activiti:value>
           <activiti:value id="attr2_no" name="ні, буду отримувати перший раз"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="biometrical" name="Ви бажаєте замовити біометричний паспорт?" type="enum" default="attr1_no" required="true">
           <activiti:value id="attr1_no" name="ні"></activiti:value>
           <activiti:value id="attr2_yes" name="так"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="area" name="Оберіть підрозділ міграційної служби, в якому Ви будете отримувати паспорт" type="enum" required="true">
-          <activiti:value id="dnepr1" name="Дніпропетровськ (Центральний), вул. Поля, 1"></activiti:value>
-          <activiti:value id="dnepr2" name="Дніпропетровськ (Бабушкінський), пр. Ілліча, 3"></activiti:value>
-          <activiti:value id="dnepr3" name="Дніпропетровськ (Ленінський), вул. Аверіна, 57"></activiti:value>
-          <activiti:value id="dnepr4" name="Дніпропетровськ (міський), вул. Красна, 2-А"></activiti:value>
-          <activiti:value id="dnepr5" name="Кривий Ріг, вул. Жовтнева, 12-В"></activiti:value>
-          <activiti:value id="dnepr6" name="Дніпродзержинськ, вул. Комунарна, 10-А"></activiti:value>
-          <activiti:value id="dnepr7" name="Нікополь, вул. Микитинська, 5"></activiti:value>
-          <activiti:value id="dnepr8" name="Павлоград, вул. Повстання, 77-А"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="visitDate" name="В який день Ви бажаєте звернутися до міграційної служби?" type="queueData" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть підрозділ міграційної служби, в якому Ви будете отримувати паспорт" type="select" default="0"></activiti:formProperty>
+        <activiti:formProperty id="visitDay" name="В який день Ви бажаєте звернутися до міграційної служби?" type="queueData" required="true"></activiti:formProperty>
         <activiti:formProperty id="warning1" name=" " type="label" default="Якщо Ви не знайшли у обраному підрозділі ДМС зручну дату, спробуйте обрати інший підрозділ Вашого міста."></activiti:formProperty>
-        <activiti:formProperty id="nID_Department_visitDate" name="Департамент" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="dms_center" name="dms_center" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="date_of_visit" name="дата візиту" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="notification_day" name="notification_day" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="nID_Department_visitDay" name="Департамент" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса ДМС" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNotification_day" name="sNotification_day" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible" default="Заявка актуальна"></activiti:formProperty>
+        <activiti:formProperty id="sPaymentDMS" name="Реквізити для сплати" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sDocZagran" name="Документи у регіоні" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="flow data" type="markers" default="${markerService.loadFromFile('dms/dmsZagran.json')}"></activiti:formProperty>
-        <activiti:formProperty id="warning" name="Зверніть увагу" type="label" default="Подаючи звернення, Ви підтверджуєте достовірність усіх зазначених у зверненні даних і надаєте свою згоду на обробку Ваших персональних даних"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -76,14 +68,14 @@ else
           }
      }
 var timer=year+'-'+month+'-'+day+'T'+hour+':'+minutes+':'+seconds
-execution.setVariable('notification_day', timer)</script>
+execution.setVariable('sNotification_day', timer)</script>
     </scriptTask>
     <sequenceFlow id="flow40" sourceRef="scripttask2" targetRef="parallelgateway3"></sequenceFlow>
     <parallelGateway id="parallelgateway3" name="Parallel Gateway"></parallelGateway>
     <sequenceFlow id="flow42" sourceRef="parallelgateway3" targetRef="timerintermediatecatchevent1"></sequenceFlow>
     <intermediateCatchEvent id="timerintermediatecatchevent1" name="TimerCatchEvent">
       <timerEventDefinition>
-        <timeDate>${notification_day}</timeDate>
+        <timeDate>${sNotification_day}</timeDate>
       </timerEventDefinition>
     </intermediateCatchEvent>
     <sequenceFlow id="flow36" sourceRef="timerintermediatecatchevent1" targetRef="exclusivegateway3"></sequenceFlow>
@@ -106,15 +98,14 @@ execution.setVariable('notification_day', timer)</script>
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 &lt;p&gt;
-Чекаємо Вас за адресою 
-[pattern_dictonary:dnepr_dms_passport_departments.csv:value{[dms_center]}:2]&lt;br&gt;
+Чекаємо Вас за адресою: ${sAddress}&lt;br&gt;
 для оформлення закордонного паспорта
 &lt;/p&gt;
 &lt;p&gt;
 Дата та час візиту: ${date_of_visit}.
 &lt;/p&gt;
 [pattern/mail/_common_signature_start.html]
-Державна міграційна служба у Дніпропетровській області,&lt;br&gt;
+${sNameOrgan},&lt;br&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -151,7 +142,7 @@ execution.setVariable('notification_day', timer)</script>
 								Для того щоб закінчити процедуру необхідно:&lt;br&gt;
 								&lt;ul&gt;
 								&lt;li&gt;У будь-якому банку зробити необхідні платежі та отримати квитанції про сплату.&lt;/li&gt;
-								&lt;li&gt;Прийти за адресою: [pattern_dictonary:dnepr_dms_passport_departments.csv:value{[dms_center]}:2] з необхідними документами.&lt;/li&gt;
+								&lt;li&gt;Прийти за адресою: ${sAddress} з необхідними документами.&lt;/li&gt;
 								&lt;/ul&gt;
 								&lt;/p&gt;
 								&lt;p&gt;
@@ -159,14 +150,7 @@ execution.setVariable('notification_day', timer)</script>
 									День та час - ${date_of_visit}
 								&lt;/p&gt;
 								&lt;p&gt;
-									&lt;b&gt;Реквізити&lt;/b&gt;&lt;br&gt;
-									Квитанція про сплату державного мита:&lt;br&gt;
-									Сума: [pattern_dictonary:dnepr_dms_passport_payments.csv:value{[dms_center]}:5]&lt;br&gt;
-									[pattern_dictonary:dnepr_dms_passport_payments.csv:value{[dms_center]}:2]&lt;br&gt;
-									&lt;br&gt;
-									Квитанція про сплату послуги щодо оформлення та видачі паспорта громадянина України для виїзду за кордон:&lt;br&gt;
-									Сума: [pattern_dictonary:dnepr_dms_passport_payments.csv:value{[dms_center]}:7]&lt;br&gt;
-									[pattern_dictonary:dnepr_dms_passport_payments.csv:value{[dms_center]}:3]
+									&lt;b&gt;Реквізити для сплати держмита та адміністративної послуги доступні за &lt;a href="${sPaymentDMS}" target="_blank"&gt;посиланням&lt;/a&gt;&lt;/b&gt;
 								&lt;/p&gt;
 								&lt;p&gt;
 								&lt;b&gt;Необхідні документи, які треба принести для оформлення паспорта громадянина України для виїзда за кордон:&lt;/b&gt;&lt;br&gt;
@@ -175,19 +159,19 @@ execution.setVariable('notification_day', timer)</script>
 										&lt;li&gt;паспорт громадянина України для виїзду за кордон (за наявності);&lt;/li&gt;
 										&lt;li&gt;оригінал та копію індивідуального податкового номеру (ІПН);&lt;/li&gt;
 										&lt;li&gt;квитанцію про сплату з мокрою печаткою банку, яка оформлена на Вас;&lt;/li&gt;
-										&lt;li&gt;заява на отримання паспорта (Ви можете її роздрукувати і заповнити перед візитом до міграційної служби або на місці). Заява доступна за цим &lt;a href="https://docs.google.com/document/d/1T3wK2nhCoWkbkEr-gIRFcFERKEaL5RpkB3pX-SkkKuI/edit" target="_blank"&gt;посиланням&lt;/a&gt;.&lt;/li&gt;
+										${sDocZagran}
 									&lt;/ul&gt;
 								&lt;/p&gt;
 								&lt;p&gt;	
 								&lt;b&gt;Зверніть увагу:&lt;/b&gt; 
 									&lt;ul&gt;
-										&lt;li&gt;Вам не потрібно буде реєструватись в електронній черзі на місці. Вашого запису через iGov на конкретний час достатньо. Але дуже просимо Вас не спізнюватись, бо електронна черга має доволі чіткий шаг.&lt;/li&gt;
+										&lt;li&gt;Вам не потрібно буде реєструватися у черзі на місці. Вашого запису через iGov на вказаний час достатньо. Але дуже просимо Вас не запізнюватись, бо електронна черга має доволі чіткий крок.&lt;/li&gt;
 									&lt;/ul&gt;
 								&lt;/p&gt;
 								&lt;p&gt;Після подання документів Ви зможете перевіряти готовність свого паспорта за цим &lt;a href="http://dmsu.gov.ua/perevirkastanu.php" target="_blank"&gt;посиланням&lt;/a&gt; &lt;/p&gt;          
 								&lt;p&gt;[cancelTask]&lt;/p&gt;                
 								[pattern/mail/_common_signature_start.html]
-								Державна міграційна служба у Дніпропетровській області,&lt;br&gt;
+								${sNameOrgan},&lt;br&gt;
  								[pattern/mail/_common_signature_end.html]
 								[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field> 
@@ -219,7 +203,7 @@ execution.setVariable('notification_day', timer)</script>
 								Для того щоб закінчити процедуру необхідно:&lt;br&gt;
 								&lt;ul&gt;
 								&lt;li&gt;У будь-якому банку зробити необхідні платежі та отримати квитанції про сплату.&lt;/li&gt;
-								&lt;li&gt;Прийти за адресою: [pattern_dictonary:dnepr_dms_passport_departments.csv:value{[dms_center]}:2] з необхідними документами.&lt;/li&gt;
+								&lt;li&gt;Прийти за адресою: ${sAddress} з необхідними документами.&lt;/li&gt;
 								&lt;/ul&gt;
 								&lt;/p&gt;
 								&lt;p&gt;
@@ -227,14 +211,8 @@ execution.setVariable('notification_day', timer)</script>
 										День та час - ${date_of_visit}
 									&lt;/p&gt;
 								&lt;p&gt;
-								&lt;b&gt;Реквізити&lt;/b&gt;&lt;br&gt;
-									Квитанція про сплату державного мита:&lt;br&gt;
-									Сума: [pattern_dictonary:dnepr_dms_passport_payments.csv:value{[dms_center]}:5]&lt;br&gt;
-									[pattern_dictonary:dnepr_dms_passport_payments.csv:value{[dms_center]}:2]&lt;br&gt;
-									&lt;br&gt;
-									Квитанція про сплату послуги щодо оформлення та видачі паспорта громадянина України для виїзду за кордон:&lt;br&gt;
-									Сума: [pattern_dictonary:dnepr_dms_passport_payments.csv:value{[dms_center]}:8]&lt;br&gt;
-									[pattern_dictonary:dnepr_dms_passport_payments.csv:value{[dms_center]}:4]
+								&lt;p&gt;
+									&lt;b&gt;Реквізити для сплати держмита та адміністративної послуги доступні за &lt;a href="${sPaymentDMS}" target="_blank"&gt;посиланням&lt;/a&gt;&lt;/b&gt;
 								&lt;/p&gt;
 								&lt;p&gt;
 								&lt;b&gt;Необхідні документи, які треба принести для оформлення паспорта громадянина України для виїзда за кордон:&lt;/b&gt;&lt;br&gt;
@@ -243,45 +221,45 @@ execution.setVariable('notification_day', timer)</script>
 										&lt;li&gt;паспорт громадянина України для виїзду за кордон (за наявності);&lt;/li&gt;
 										&lt;li&gt;оригінал та копію індивідуального податкового номеру (ІПН);&lt;/li&gt;
 										&lt;li&gt;квитанцію про сплату з мокрою печаткою банку, яка оформлена на Вас;&lt;/li&gt;
-										&lt;li&gt;заява на отримання паспорта (Ви можете її роздрукувати і заповнити перед візитом до міграційної служби або на місці). Заява доступна за цим &lt;a href="https://docs.google.com/document/d/1T3wK2nhCoWkbkEr-gIRFcFERKEaL5RpkB3pX-SkkKuI/edit" target="_blank"&gt;посиланням&lt;/a&gt;.&lt;/li&gt;
+										${sDocZagran}
 									&lt;/ul&gt;
 								&lt;/p&gt;
 								&lt;p&gt;	
 								&lt;b&gt;Зверніть увагу:&lt;/b&gt; 
 									&lt;ul&gt;
-										&lt;li&gt;Вам не потрібно буде реєструватись в електронній черзі на місці. Вашого запису через iGov на конкретний час достатньо. Але дуже просимо Вас не спізнюватись, бо електронна черга має доволі чіткий шаг.&lt;/li&gt;
+										&lt;li&gt;Вам не потрібно буде реєструватися у черзі на місці. Вашого запису через iGov на вказаний час достатньо. Але дуже просимо Вас не запізнюватись, бо електронна черга має доволі чіткий крок.&lt;/li&gt;
 									&lt;/ul&gt;
 								&lt;/p&gt;
 								&lt;p&gt;Після подання документів Ви зможете перевіряти готовність свого паспорта за цим &lt;a href="http://dmsu.gov.ua/perevirkastanu.php" target="_blank"&gt;посиланням&lt;/a&gt; &lt;/p&gt;          
 								&lt;p&gt;[cancelTask]&lt;/p&gt;                
 								[pattern/mail/_common_signature_start.html]
-								Державна міграційна служба у Дніпропетровській області,&lt;br&gt;
+								${sNameOrgan},&lt;br&gt;
  								[pattern/mail/_common_signature_end.html]
 								[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field> 
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow25" sourceRef="servicetask3" targetRef="usertask2"></sequenceFlow>
-    <userTask id="usertask2" name="обробка дмс" activiti:candidateGroups="dnepr_dms_passport_${area}">
+    <userTask id="usertask2" name="обробка дмс" activiti:candidateGroups="dms_zagran_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По-батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Телефон громадянина" type="string" default="+380" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="have_passport" name="Наявність у громадянина закордонного паспорту" type="enum" writable="false">
-          <activiti:value id="attr1_yes" name="вже є, буде подовжувати"></activiti:value>
+          <activiti:value id="attr1_yes" name="вже є, буде замінювати"></activiti:value>
           <activiti:value id="attr2_no" name="буде отримувати в перший раз"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="biometrical" name="Чи необхідно виготовити біометричний паспорт?" type="enum" writable="false">
           <activiti:value id="attr1_no" name="ні"></activiti:value>
           <activiti:value id="attr2_yes" name="так"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="visitDate" name="Дата та час візиту - " type="queueData" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="visitDay" name="Дата та час візиту - " type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="finish" name="Результат візиту" type="enum" required="true">
-          <activiti:value id="attr1_ok" name="Громадянин прийшов у назначений час"></activiti:value>
+          <activiti:value id="attr1_ok" name="Громадянин з'явився у призначений час"></activiti:value>
           <activiti:value id="attr2_missed" name="Громадянин не з'явився"></activiti:value>
         </activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -311,11 +289,11 @@ execution.setVariable('notification_day', timer)</script>
           <activiti:expression>[pattern/mail/_common_header.html]
                                     &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
-                                        На жаль Ви не з'явились до підрозділу ДМС у призначений день і час.&lt;br&gt;
+                                        На жаль Ви не з'явились до підрозділу ДМС у призначений день і час або скасували заявку.&lt;br&gt;
                                         При необхідності отримання паспорта громадянина України для виїзда за кордон Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;
 									&lt;/p&gt;
 									[pattern/mail/_common_signature_start.html]
-									Державна міграційна служба у Дніпропетровській області.&lt;/p&gt;
+									${sNameOrgan}.&lt;/p&gt;
 									[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
@@ -346,7 +324,7 @@ execution.setVariable('notification_day', timer)</script>
                               		Дякуємо.
 									&lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
-									Державна міграційна служба у Дніпропетровській області,&lt;br&gt;
+									${sNameOrgan},&lt;br&gt;
 									[pattern/mail/_common_signature_end.html]   
 									[pattern/mail/_common_feedback.html]
 									[pattern/mail/_common_footer.html]</activiti:expression>

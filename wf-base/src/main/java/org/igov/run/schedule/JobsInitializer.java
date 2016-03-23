@@ -11,17 +11,15 @@ import org.springframework.context.ApplicationContextAware;
 import org.igov.io.GeneralConfig;
 
 /**
- * User: goodg_000
- * Date: 27.08.2015
- * Time: 1:05
+ * User: goodg_000 Date: 27.08.2015 Time: 1:05
  */
 public class JobsInitializer implements InitializingBean, ApplicationContextAware {
 
     private final static Logger LOG = LoggerFactory.getLogger(JobsInitializer.class);
 
     @Autowired
-    GeneralConfig generalConfig; 
-    
+    GeneralConfig generalConfig;
+
     private static ApplicationContext applicationContext;
     private Scheduler scheduler;
 
@@ -44,6 +42,7 @@ public class JobsInitializer implements InitializingBean, ApplicationContextAwar
     @Override
     public void afterPropertiesSet() throws Exception {
         addEscalationJob(scheduler);
+        addBuilderFlowSlotsJob(scheduler);
     }
 
     private void addEscalationJob(Scheduler scheduler) throws SchedulerException {
@@ -61,10 +60,33 @@ public class JobsInitializer implements InitializingBean, ApplicationContextAwar
             LOG.error("FAIL: ", oException.getMessage());
             LOG.debug("FAIL: ", oException);
         }
-        if(!generalConfig.bTest()){
+        if (!generalConfig.bTest()) {
             LOG.info("scheduleJob...");
             scheduler.scheduleJob(oJobDetail_Escalation_Standart, oCronTrigger_EveryNight_Deep);
-        }else{
+        } else {
+            LOG.info("scheduleJob... SKIPED(test)!");
+        }
+    }
+
+    private void addBuilderFlowSlotsJob(Scheduler scheduler) throws SchedulerException {
+        JobDetail oJobDetail_BuilderFlowSlots_Standart = new JobDetail("oJobDetail_BuilderFlowSlots_Standart",
+                "oJobDetail_BuilderFlowSlots_Group", JobBuilderFlowSlots.class);
+
+        CronTrigger oCronTrigger_EveryNight_Deep = new CronTrigger("oCronTrigger_EveryNight_Deep",
+                "oCronTrigger_EveryNight_Group");
+        try {
+            LOG.info("oCronExpression__EveryNight_Deep...");
+            CronExpression oCronExpression__EveryNight_Deep = new CronExpression("0 0 2 1/1 * ?");
+            LOG.info("oCronExpression__EveryNight_Deep.setCronExpression...");
+            oCronTrigger_EveryNight_Deep.setCronExpression(oCronExpression__EveryNight_Deep);
+        } catch (Exception oException) {
+            LOG.error("FAIL: ", oException.getMessage());
+            LOG.debug("FAIL: ", oException);
+        }
+        if (true || !generalConfig.bTest()) {
+            LOG.info("scheduleJob...");
+            scheduler.scheduleJob(oJobDetail_BuilderFlowSlots_Standart, oCronTrigger_EveryNight_Deep);
+        } else {
             LOG.info("scheduleJob... SKIPED(test)!");
         }
     }

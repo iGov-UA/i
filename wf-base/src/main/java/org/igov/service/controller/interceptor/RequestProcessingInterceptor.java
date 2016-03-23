@@ -51,7 +51,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     private boolean bFinish = false;
     
     private static final Pattern TAG_PATTERN_PREFIX = Pattern.compile("runtime/tasks/[0-9]+$");
-    //private final String URI_SYNC_CONTACTS = "/wf/service/subject/syncContacts";
+    private final String URI_SYNC_CONTACTS = "/wf/service/subject/syncContacts";
     
     @Autowired
     protected RuntimeService runtimeService;
@@ -196,6 +196,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                     || sURL.endsWith("/service/document/getDocuments")
                     || sURL.endsWith("/service/document/setDocumentFile")
                     || sURL.contains("/service/object/file/")
+                    || sURL.contains("/service/document/getDocumentAbstract")
+                    
                     ){
             }else{
                 LOG_BIG.debug("(sResponseBody={})", sResponseBody);
@@ -211,6 +213,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 return;
             }
             if (isSaveTask(oRequest, sResponseBody)) {
+                LOG.info("saveNewTaskInfo block");
                 saveNewTaskInfo(sRequestBody, sResponseBody, mRequestParam);
             } else if (isCloseTask(oRequest, sResponseBody)) {
                 saveClosedTaskInfo(sRequestBody);
@@ -219,9 +222,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             }
         } catch (Exception ex) {
             LOG.error("Can't save service-history record: {}",ex.getMessage());
+            LOG.error("Can't save service-history record: {}" + " mRequestParam: " + mRequestParam + "sRequestBody: " + sRequestBody + " sResponseBody: " + sResponseBody, ex);
             LOG_BIG.error("Can't save service-history record: {}",ex.getMessage());
-            LOG_BIG.trace("FAIL:", ex);
-            //oLogBig_Controller.error("can't save service-history record! ", ex);
+            LOG_BIG.error("FAIL:", ex);
         }
     }
 
@@ -238,6 +241,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     }
 
     private boolean isSaveTask(HttpServletRequest oRequest, String sResponseBody) {
+        //LOG.info("(is save task sResponseBody {}, '/form/form-data' {}. Method {} )", sResponseBody, oRequest.getRequestURL().toString().indexOf("/form/form-data"),oRequest.getMethod());
         return (sResponseBody != null && !"".equals(sResponseBody))
                 && oRequest.getRequestURL().toString().indexOf("/form/form-data") > 0
                 && "POST".equalsIgnoreCase(oRequest.getMethod().trim());
@@ -250,7 +254,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         JSONObject omResponseBody = (JSONObject) oJSONParser.parse(sResponseBody);
         mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CREATED.getnID().toString());
 
-        String snID_Process = (String) omResponseBody.get("id");
+        String snID_Process = String.valueOf(omResponseBody.get("id"));
         Long nID_Process = Long.valueOf(snID_Process);
         String sID_Order = generalConfig.sID_Order_ByProcess(nID_Process);
         String snID_Subject = String.valueOf(omRequestBody.get("nID_Subject"));
@@ -273,6 +277,11 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         if (snID_Region != null) {
             mParam.put("nID_Region", snID_Region);
         }
+
+        Long nID_ServiceData = (Long) omResponseBody.get("nID_ServiceData");
+        if (nID_ServiceData != null) {
+            mParam.put("nID_ServiceData", nID_ServiceData + "");
+        }
         
         HistoricProcessInstance oHistoricProcessInstance =
                 historyService.createHistoricProcessInstanceQuery().processInstanceId(snID_Process).singleResult();
@@ -287,30 +296,36 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         String sUserTaskName = bProcessClosed ? "" : aTask.get(0).getName();//"(нет назви)"
 
         String sMailTo = JsonRequestDataResolver.getEmail(omRequestBody);
-        //LOG.info("Check if ned sendTaskCreatedInfoEmail... (sMailTo={})", sMailTo);
+        String sPhone = String.valueOf(JsonRequestDataResolver.getPhone(omRequestBody));
         if (sMailTo != null) {
             LOG.info("Send notification mail... (sMailTo={})", sMailTo);
-            /*
-            String processDefinitionId = (String)jsonObjectRequest.get("processDefinitionId");
-            if(processDefinitionId != null && processDefinitionId.indexOf("common_mreo_2") > -1){
-                LOG.info("skip send email for common_mreo_2 proccess");
-                return;
-            }
-            */
             oNotificationPatterns.sendTaskCreatedInfoEmail(sMailTo, sID_Order);
-            //LOG.info("Sent Email ok!");
         }
-        historyEventService.addHistoryEvent(sID_Order, sUserTaskName, mParam);
-        //LOG.info("ok!");
         
-        /*if(sMailTo != null)
+        if(sMailTo != null || sPhone != null)
         {
+           try
+           {
             Map<String, String> mParamSync = new HashMap<String, String>();
             mParamSync.put("snID_Subject", snID_Subject);
             mParamSync.put("sMailTo", sMailTo);
+            mParamSync.put("sPhone", sPhone);
+            LOG.info("Вносим параметры в коллекцию (sMailTo {}, snID_Subject {}, sPhone {})", sMailTo, snID_Subject, sPhone);
             String sURL = generalConfig.sHostCentral() + URI_SYNC_CONTACTS;
-            String sResponse = httpRequester.postInside(sURL, mParamSync);
-        }*/
+            LOG.info("(Подключаемся к центральному порталу)");
+            String sResponse = httpRequester.getInside(sURL, mParamSync);
+            LOG.info("(Подключение осуществлено)");
+            
+           }
+           catch(Exception ex)
+           {
+             LOG.warn("(isSaveTask exception {})", ex.getMessage());
+           }
+     
+        }
+      
+        historyEventService.addHistoryEvent(sID_Order, sUserTaskName, mParam);
+        //LOG.info("ok!");
     }
     
     private void saveClosedTaskInfo(String sRequestBody) throws Exception {
@@ -363,7 +378,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             LOG.error("Can't save service message for escalation: {}",e.getMessage());
             LOG.trace("FAIL:", e);
         }
-        historyEventService.updateHistoryEvent(sID_Order, sUserTaskName, false, mParam);//sID_Process
+        historyEventService.updateHistoryEvent(sID_Order, sUserTaskName, false, HistoryEvent_Service_StatusType.CLOSED, mParam);//sID_Process
     }
 
     private void saveUpdatedTaskInfo(String sResponseBody) throws Exception {
@@ -383,7 +398,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         LOG.info("(sID_Order={})", sID_Order);
 
         //historyEventService.updateHistoryEvent(sID_Order, sUserTaskName, false, null);
-        historyEventService.updateHistoryEvent(sID_Order, sUserTaskName, false, mParam);
+        historyEventService.updateHistoryEvent(sID_Order, sUserTaskName, false, HistoryEvent_Service_StatusType.OPENED_ASSIGNED, mParam);
         
         //
         String sProcessName = oHistoricTaskInstance.getProcessDefinitionId();

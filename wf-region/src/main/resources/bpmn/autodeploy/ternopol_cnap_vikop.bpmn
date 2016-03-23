@@ -70,7 +70,6 @@
     <sequenceFlow id="flow14" sourceRef="servicetask4" targetRef="usertask1"></sequenceFlow>
     <userTask id="usertask1" name="Перевірка даних" activiti:candidateGroups="ternopil_cnap_1">
       <extensionElements>
-        <activiti:formProperty id="info" name="На цьому етапі:" type="label" default="Ви перевіряєте дані громадянина і вирішуєте чи всі вони вірні. Якщо все добре, присвоюєте реєстраційний номер зверненню, роздруковуєте прінтформи та відправляєте документи до Управління містобудування, архітектури та кадастру. Якщо ні - відмовляєте у реєстрації звернення з обов'язковим коментарем."></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Автор звернення " type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="place_of_reg" name="Місце реєстрації" type="string" writable="false"></activiti:formProperty>
@@ -85,7 +84,7 @@
         <activiti:formProperty id="CNAPName" name="ПІБ посадової особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="vnnumb" name="Реєстраційний номер звернення" type="string"></activiti:formProperty>
         <activiti:formProperty id="privateMail" name="e-mail спеціалістів Управлінням містобудування, архітектури та кадастру" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/tern_vikop_zayava.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/tern_vikop_zayava.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -137,7 +136,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>"${privateMail}"</activiti:expression>
+          <activiti:expression>${privateMail}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Виготовлення викопіювання в масштабі 1:500, 1:2000]]></activiti:string>
@@ -158,7 +157,7 @@
 		  </activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>"${vlasn}"</activiti:expression>
+          <activiti:expression>${vlasn}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -192,7 +191,6 @@
     <sequenceFlow id="flow16" sourceRef="servicetask6" targetRef="usertask2"></sequenceFlow>  
     <userTask id="usertask2" name="Підготовка відповіді на запит: підготовка витягу" activiti:candidateGroups="ternopil_cnap_1">
       <extensionElements>
-        <activiti:formProperty id="info1" name="На цьому етапі:" type="label" default="Ви отримуєте результат розгляду звернення Управлінням містобудування, архітектури та кадастру і відповідним чином інформуєте громадянина."></activiti:formProperty>
         <activiti:formProperty id="vnnumb" name="Реєстраційний номер звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="DocumentDate" name="Дата реєстрації звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="CNAPName" name="ПІБ посадової особи" type="string" writable="false"></activiti:formProperty>
@@ -205,6 +203,7 @@
           <activiti:value id="vikop" name="Викопіювання готове"></activiti:value>
           <activiti:value id="vidm" name="Готова відмова у наданні послуги"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="result" name="Додайте викопіювання, якщо воно виготовлене" type="file"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow9" sourceRef="usertask2" targetRef="exclusivegateway2"></sequenceFlow>
@@ -282,11 +281,14 @@
 										Пт. – 9.00 – 13.00.&lt;br /&gt;
                                     &lt;p&gt;
                                     	телефон для довідок: 40-41-93.&lt;/p&gt;
-                                   За необхідності Ви можете подати ще одну заяву на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;igov.org.ua&lt;/a&gt;&lt;/p&gt;
+                                    За необхідності Ви можете подати ще одну заяву на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;igov.org.ua&lt;/a&gt;&lt;/p&gt;
 									[pattern/mail/_common_signature_start.html]
 									ЦНАП м. Тернопіль,&lt;/p&gt;
 									[pattern/mail/_common_footer.html]
 		  </activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>${result}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>

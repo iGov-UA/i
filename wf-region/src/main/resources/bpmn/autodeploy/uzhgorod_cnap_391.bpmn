@@ -1,0 +1,676 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="uzhgorod_cnap_391" name="Надання рішення міської ради про затвердження проектів землеустрою щодо відведення земельних ділянок" isExecutable="true">
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім’я" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Поштова адреса для зворотного зв’язку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна пошта (е-mail)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sLotSize" name="Загальна площа виділяємої землі; через пробіл одиниці вимірювання" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAddressPlace" name="Адреса за якою буде виділена земля" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCoustForDocument" name="Укажіть будь ласка причину виділення землі" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asValidationProject" name="У разі затвердження проекту землеустрою" type="enum" required="true">
+          <activiti:value id="sNotChange" name="без зміни цільового призначення"></activiti:value>
+          <activiti:value id="sChange" name="зі зміною цільового призначення"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="nfileProjectLand" name="Проект землеустрою щодо відведення земельної ділянки" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="lInfo" name="Зверніть увагу" type="label" default="ви можете замовити Витяг з Державного земельного кадастру &lt;a href='https://igov.org.ua/service/101/general' title='Надання відомостей з Державного земельного кадастру у формі витягу з Державного земельного кадастру про земельну ділянку'&gt; за посиланням &lt;/a&gt;"></activiti:formProperty>
+        <activiti:formProperty id="nfileExtractOfCadastr" name="Витяг з Державного земельного кадастру про земельну ділянку" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="название органа в подписи письма" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="график работы" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон для справок" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адрес органа" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="шапка принтформы" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="markersChangeProject" name="Change Project" type="markers" default="${markerService.loadFromFile('zemlja/ChangeValProjectZemlja.json')}"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <sequenceFlow id="flow27" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
+    <serviceTask id="servicetask1" name="Підтягування додаткових документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
+      <errorEventDefinition></errorEventDefinition>
+    </boundaryEvent>
+    <sequenceFlow id="flow2" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
+    <endEvent id="endevent1" name="End"></endEvent>    
+    <sequenceFlow id="flow4" sourceRef="servicetask1" targetRef="servicetask3"></sequenceFlow>
+    <serviceTask id="servicetask3" name="Інформування посадовця" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[valery.stavitsky@gmail.com]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Нове звернення по заявці на тему: Надання рішення міської ради про затвердження проектів землеустрою щодо відведення земельних ділянок]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow1" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
+    <userTask id="usertask1" name="Форма перевірки документів громадянина" activiti:candidateGroups="cnap_zak_uzgT">
+      <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім’я" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Поштова адреса для зворотного зв’язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна пошта (е-mail)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCoustForDocument" name="Документ необхідний для" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLotSize" name="Загальна площа виділяємої землі; через пробіл одиниці вимірювання" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAddressPlace" name="Адреса за якою буде виділена земля" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asValidationProject" name="У разі затвердження проекту землеустрою" type="enum" writable="false">
+          <activiti:value id="sNotChange" name="без зміни цільового призначення"></activiti:value>
+          <activiti:value id="sChange" name="зі зміною цільового призначення"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="workerDecision" name="Результат обробки звернення" type="enum" required="true">
+          <activiti:value id="accept" name="Сповістити громадянина, що документи в порядку і послуга буде оброблятись далі"></activiti:value>
+          <activiti:value id="decline" name="Відмовити в наданні послугу"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDecisionComment" name="Вкажіть причину неможливості отримання послуги(ця інформація буде відправлена на e-mail громадянина) *" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/zemlja/uzhgorod_cnap_391_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markersChangeProjectPrint" name="Change Project Print" type="markers" default="${markerService.loadFromFile('zemlja/ChangeValProjectZemljaPrint.json')}"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${nfileProjectLand},${nfileExtractOfCadastr}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>    
+    <sequenceFlow id="flow28" name="відхилення" sourceRef="exclusivegateway1" targetRef="servicetask8">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${workerDecision=='decline'}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask8" name="Лист про відмову" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+          <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[iGov: Заява на надання рішення міської ради про затвердження проектів землеустрою щодо відведення земельних ділянок]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+	<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+	<p>
+		На жаль, Вам відмовлено у надані послуги.<br>
+		При необхідності отримати <b>Рішення міської ради про затвердження проектів землеустрою щодо відведення земельних ділянок</b> Ви можете подати ще одну заявку на порталі <a href="https://igov.org.ua/">iGov.org.ua</a>, врахувавши коментар Державного службовця.
+	</p> 
+	<p>
+		Коментар Державного службовця:<br>
+			<b><i>${sDecisionComment}</i></b>
+	</p>
+	<p>
+		За додатковою інформацієї ви можете звернутись:<br>
+		<i>За адресою:</i> <br> ${sAddress}<br> 
+		<i>График работы:</i> <br> ${sWorkTime}<br>
+		<i>Телефон для справок:</i> <br>${sPhoneOrgan}<br>
+	</p>
+		[pattern/mail/_common_signature_start.html]
+		${sNameOrgan},<br>
+		[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>    
+    <sequenceFlow id="flow29" sourceRef="servicetask8" targetRef="endevent2"></sequenceFlow>
+    <endEvent id="endevent2" name="End"></endEvent>
+    <sequenceFlow id="flow8" name="документи ок" sourceRef="exclusivegateway1" targetRef="servicetask2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${workerDecision=='accept'}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask2" name="Документи ОК" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[iGov: Заява на надання рішення міської ради про затвердження проектів землеустрою щодо відведення земельних ділянок]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+    <p>
+    	Ваш запит був успішно зареєстрований у нашій системі, вхідні дані переглянуті і Ваша заявка взята в роботу.
+	</p>
+	<p>
+		Ваші дані були направлені в відділ землекористування 
+	</p>
+	[pattern/mail/_common_signature_start.html]
+		${sNameOrgan},<br>
+	[pattern/mail/_common_signature_end.html]   
+	[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow12" sourceRef="servicetask2" targetRef="usertask3"></sequenceFlow>
+    <userTask id="usertask3" name="Накладання резолюції" activiti:candidateGroups="nach_zem_zak_uzgT">
+      <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім’я" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Поштова адреса для зворотного зв’язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна пошта (е-mail)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCoustForDocument" name="Документ необхідний для" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLotSize" name="Загальна площа виділяємої землі; через пробіл одиниці вимірювання" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAddressPlace" name="Адреса за якою буде виділена земля" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asValidationProject" name="У разі затвердження проекту землеустрою" type="enum" writable="false">
+          <activiti:value id="sNotChange" name="без зміни цільового призначення"></activiti:value>
+          <activiti:value id="sChange" name="зі зміною цільового призначення"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sResolution" name="Ваша резолюція по данному питанню" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/zemlja/uzhgorod_cnap_391_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markersChangeProjectPrint" name="Change Project Print" type="markers" default="${markerService.loadFromFile('zemlja/ChangeValProjectZemljaPrint.json')}"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${nfileProjectLand},${nfileExtractOfCadastr}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow14" name="Рішення в резолюції" sourceRef="usertask3" targetRef="usertask4"></sequenceFlow>
+    <userTask id="usertask4" name="Реєстрація пакету документів та перевірка документів на відповідність вимогам чинного законодавства" activiti:candidateGroups="spec_zem_zak_uzgT">
+      <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім’я" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Поштова адреса для зворотного зв’язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна пошта (е-mail)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCoustForDocument" name="Документ необхідний для" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLotSize" name="Загальна площа виділяємої землі; через пробіл одиниці вимірювання" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAddressPlace" name="Адреса за якою буде виділена земля" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asValidationProject" name="У разі затвердження проекту землеустрою" type="enum" writable="false">
+          <activiti:value id="sNotChange" name="без зміни цільового призначення"></activiti:value>
+          <activiti:value id="sChange" name="зі зміною цільового призначення"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sResolution" name="Резолюція Начальника відділу землекористування" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="anValidDocument" name="Надні документи відповідають законодавству та позитивна резульція" type="enum" required="true">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="ssDecisionComment" name="Вкажіть причину неможливості отримання послуги (Ця інформація буде відправлена на e-mail заявника)*" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/zemlja/uzhgorod_cnap_391_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/zemlja/uzhgorod_cnap_391_print_card.html]" type="invisible" default="Реєстраційна карта" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markersChangeProjectPrint" name="Change Project Print" type="markers" default="${markerService.loadFromFile('zemlja/ChangeValProjectZemljaPrint.json')}"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${nfileProjectLand},${nfileExtractOfCadastr}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask> 
+    <sequenceFlow id="flow16" sourceRef="usertask4" targetRef="exclusivegateway2"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow17" name="Не відповідні документи" sourceRef="exclusivegateway2" targetRef="servicetask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${anValidDocument}=={'no'}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask4" name="Лист про відмову" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[iGov: Заява на надання рішення міської ради про затвердження проектів землеустрою щодо відведення земельних ділянок]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+	<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+	<p>
+		На жаль, Вам відмовлено у надані послуги.<br>
+		При необхідності отримати <b>Рішення міської ради про затвердження проектів землеустрою щодо відведення земельних ділянок</b> Ви можете подати ще одну заявку на порталі <a href="https://igov.org.ua/">iGov.org.ua</a>, врахувавши коментар Державного службовця.
+	</p> 
+	<p>
+		Коментар Державного службовця:<br>
+			<b><i>${sDecisionComment}</i></b>
+	</p>
+	<p>
+		За додатковою інформацієї ви можете звернутись:<br>
+		<i>За адресою:</i> <br> ${sAddress}<br> 
+		<i>График работы:</i> <br> ${sWorkTime}<br>
+		<i>Телефон для справок:</i> <br>${sPhoneOrgan}<br>
+	</p>
+		[pattern/mail/_common_signature_start.html]
+		${sNameOrgan},<br>
+		[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow31" sourceRef="servicetask4" targetRef="endevent3"></sequenceFlow>    
+    <endEvent id="endevent3" name="End"></endEvent>
+    <sequenceFlow id="flow18" name="Рішення передане на розгляд комісії" sourceRef="exclusivegateway2" targetRef="servicetask7">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${anValidDocument}=={'yes'}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask7" name="Лист, про резолюцію та те що документи будуть розглядатись на комісіі, а потім на сессії" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[iGov: Заява на надання рішення міської ради про затвердження проектів землеустрою щодо відведення земельних ділянок]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+    <p>
+    	Ваш заявка була успішно розглянута!<br>
+    	Резолюція Начальника відділу землекористування:   <br>
+    	${sResolution} <br>
+    	<br><br>
+    	Далі рішення буде передане на розгляд комісії з питань раціонального використання. <br>
+    	В випадку позитивного рішення комісії, документи будуть подані на розгляд міськ ради
+	</p>
+	<p>
+		Ви отримаєте рішення комісії та сесіії, пізніше
+	</p>
+	[pattern/mail/_common_signature_start.html]
+		${sNameOrgan},<br>
+	[pattern/mail/_common_signature_end.html]   
+	[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow15" sourceRef="servicetask7" targetRef="usertask5"></sequenceFlow>
+    <userTask id="usertask5" name="Підготовка рішення, роздрукування різних документів" activiti:candidateGroups="spec_zem_zak_uzgT">
+      <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім’я" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Поштова адреса для зворотного зв’язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна пошта (е-mail)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCoustForDocument" name="Документ необхідний для" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLotSize" name="Загальна площа виділяємої землі; через пробіл одиниці вимірювання" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAddressPlace" name="Адреса за якою буде виділена земля" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asValidationProject" name="У разі затвердження проекту землеустрою" type="enum" writable="false">
+          <activiti:value id="sNotChange" name="без зміни цільового призначення"></activiti:value>
+          <activiti:value id="sChange" name="зі зміною цільового призначення"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sResolution" name="Резолюція Начальника відділу землекористування" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDecisionComment" name="У разі відмови обов'язково вкажіть причину неможливості отримання послуги (Ця інформація буде відправлена на e-mail громадянина) *" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/zemlja/uzhgorod_cnap_391_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/zemlja/uzhgorod_cnap_391_print_card.html]" type="invisible" default="Реєстраційна карта" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markersChangeProjectPrint" name="Change Project Print" type="markers" default="${markerService.loadFromFile('zemlja/ChangeValProjectZemljaPrint.json')}"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${nfileProjectLand},${nfileExtractOfCadastr}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow20" name="Рішення комісії та міськ ради" sourceRef="usertask5" targetRef="usertask6"></sequenceFlow>
+    <userTask id="usertask6" name="Результат рішень комісії чи міськ ради, після підпису" activiti:candidateGroups="spec_zem_zak_uzgT">
+      <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім’я" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Поштова адреса для зворотного зв’язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна пошта (е-mail)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCoustForDocument" name="Документ необхідний для" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLotSize" name="Загальна площа виділяємої землі; через пробіл одиниці вимірювання" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAddressPlace" name="Адреса за якою буде виділена земля" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asValidationProject" name="У разі затвердження проекту землеустрою" type="enum" writable="false">
+          <activiti:value id="sNotChange" name="без зміни цільового призначення"></activiti:value>
+          <activiti:value id="sChange" name="зі зміною цільового призначення"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sResolution" name="Резолюція Начальника відділу землекористування" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="aResultCommition" name="Результат рішень комісії чи міської ради" type="enum" required="true">
+          <activiti:value id="yes" name="позитивне"></activiti:value>
+          <activiti:value id="no" name="негативне"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDecisionComment" name="У разі відмови обов'язково вкажіть причину відмови про затвердження проекту землеустрою (Ця інформація буде відправлена на e-mail громадянину *" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="nFileSolveSesion" name="Прикріпити рішення ради" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/zemlja/uzhgorod_cnap_391_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/zemlja/uzhgorod_cnap_391_print_card.html]" type="invisible" default="Реєстраційна карта" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markersChangeProjectPrint" name="Change Project Print" type="markers" default="${markerService.loadFromFile('zemlja/ChangeValProjectZemljaPrint.json')}"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${nfileProjectLand},${nfileExtractOfCadastr}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow24" name="Рішення прийняте" sourceRef="usertask6" targetRef="usertask7"></sequenceFlow>
+    <userTask id="usertask7" name="Коментар ЦНАП, коли можна забрать" activiti:candidateGroups="cnap_zak_uzgT">
+      <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім’я" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Поштова адреса для зворотного зв’язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна пошта (е-mail)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCoustForDocument" name="Документ необхідний для" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLotSize" name="Загальна площа виділяємої землі; через пробіл одиниці вимірювання" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAddressPlace" name="Адреса за якою буде виділена земля" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asValidationProject" name="У разі затвердження проекту землеустрою" type="enum" writable="false">
+          <activiti:value id="sNotChange" name="без зміни цільового призначення"></activiti:value>
+          <activiti:value id="sChange" name="зі зміною цільового призначення"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sResolution" name="Резолюція Начальника відділу землекористування" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="aResultCommition" name="Результат рішень комісії чи міськ ради" type="enum" writable="false">
+          <activiti:value id="yes" name="позитивне"></activiti:value>
+          <activiti:value id="no" name="негативне"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDecisionComment" name="Укажіть час коли можна зарати готове рішення (Ця інформація буде відправлена на e-mail громадянину) *" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/zemlja/uzhgorod_cnap_391_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markersChangeProjectPrint" name="Change Project Print" type="markers" default="${markerService.loadFromFile('zemlja/ChangeValProjectZemljaPrint.json')}"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${nfileProjectLand},${nfileExtractOfCadastr},${nFileSolveSesion}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow23" sourceRef="usertask7" targetRef="exclusivegateway4"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow25" name="Рішення позитивне" sourceRef="exclusivegateway4" targetRef="servicetask5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${aResultCommition}=={'yes'}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask5" name="Лист про виконання" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[iGov: Заява на надання рішення міської ради про затвердження проектів землеустрою щодо відведення земельних ділянок]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+	<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+	<p>
+	    Спеціалісти успішно опрацювли Вашу заяву.<br>
+		Коментар Державного службовця:<br>
+			<b><i>${aResultComment}</i></b>
+	</p>
+	<p>                                    	
+		Ви можете отримати вашу <b>Рішення міської ради про затвердження проектів землеустрою щодо відведення земельних ділянок</b> <br> 
+		<i>За адресою:</i> <br> ${sAddress}<br> 
+		<i>График работы:</i> <br> ${sWorkTime}<br>
+		<i>Телефон для справок:</i> <br>${sPhoneOrgan}<br>
+	</p>
+		[pattern/mail/_common_signature_start.html]
+		${sNameOrgan},<br>
+		[pattern/mail/_common_signature_end.html]   
+		[pattern/mail/_common_signature_end.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow33" sourceRef="servicetask5" targetRef="endevent5"></sequenceFlow>    
+    <endEvent id="endevent5" name="End"></endEvent>    
+   	<sequenceFlow id="flow30" name="Рішення негативне" sourceRef="exclusivegateway4" targetRef="servicetask9">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${aResultCommition}=={'no'}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask9" name="Лист про відмову" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+          <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[iGov: Заява на надання рішення міської ради про затвердження проектів землеустрою щодо відведення земельних ділянок]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+	<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+	<p>
+		На жаль, Вам відмовлено у надані послуги.<br>
+		При необхідності отримати <b>Рішення міської ради про затвердження проектів землеустрою щодо відведення земельних ділянок</b> Ви можете подати ще одну заявку на порталі <a href="https://igov.org.ua/">iGov.org.ua</a>, врахувавши коментар Державного службовця.
+	</p> 
+	<p>
+		Коментар Державного службовця:<br>
+			<b><i>${sDecisionComment}</i></b>
+	</p>
+	<p>
+		За додатковою інформацієї ви можете звернутись:<br>
+		<i>За адресою:</i> <br> ${sAddress}<br> 
+		<i>График работы:</i> <br> ${sWorkTime}<br>
+		<i>Телефон для справок:</i> <br>${sPhoneOrgan}<br>
+	</p>
+		[pattern/mail/_common_signature_start.html]
+		${sNameOrgan},<br>
+		[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow32" sourceRef="servicetask9" targetRef="endevent4"></sequenceFlow>    
+    <endEvent id="endevent4" name="End"></endEvent>    
+    <textAnnotation id="textannotation1">
+      <text>Начальник відділу землекомплектування</text>
+    </textAnnotation>
+    <textAnnotation id="textannotation2">
+      <text>Головний спеціаліст відділу землекомплектування</text>
+    </textAnnotation>
+    <textAnnotation id="textannotation3">
+      <text>Громадянин</text>
+    </textAnnotation>
+    <textAnnotation id="textannotation4">
+      <text>Робітник ЦНАП</text>
+    </textAnnotation>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_uzhgorod_cnap_391">
+    <bpmndi:BPMNPlane bpmnElement="uzhgorod_cnap_391" id="BPMNPlane_uzhgorod_cnap_391">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="210.0" y="65.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="71.0" width="135.0" x="160.0" y="161.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
+        <omgdc:Bounds height="30.0" width="30.0" x="265.0" y="161.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
+        <omgdc:Bounds height="58.0" width="135.0" x="160.0" y="346.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="60.0" width="131.0" x="340.0" y="345.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="385.0" y="211.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
+        <omgdc:Bounds height="55.0" width="105.0" x="679.0" y="84.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
+        <omgdc:Bounds height="64.0" width="130.0" x="496.0" y="270.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
+        <omgdc:Bounds height="67.0" width="130.0" x="496.0" y="581.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask4" id="BPMNShape_usertask4">
+        <omgdc:Bounds height="92.0" width="170.0" x="647.0" y="446.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="711.0" y="211.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
+        <omgdc:Bounds height="75.0" width="181.0" x="831.0" y="267.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask5" id="BPMNShape_usertask5">
+        <omgdc:Bounds height="81.0" width="124.0" x="860.0" y="457.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask6" id="BPMNShape_usertask6">
+        <omgdc:Bounds height="77.0" width="141.0" x="1088.0" y="459.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask7" id="BPMNShape_usertask7">
+        <omgdc:Bounds height="67.0" width="141.0" x="1088.0" y="345.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway4" id="BPMNShape_exclusivegateway4">
+        <omgdc:Bounds height="40.0" width="40.0" x="1138.0" y="224.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
+        <omgdc:Bounds height="55.0" width="124.0" x="1097.0" y="84.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="262.0" y="11.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
+        <omgdc:Bounds height="55.0" width="105.0" x="353.0" y="84.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
+        <omgdc:Bounds height="35.0" width="35.0" x="388.0" y="11.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask9" id="BPMNShape_servicetask9">
+        <omgdc:Bounds height="55.0" width="105.0" x="904.0" y="83.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
+        <omgdc:Bounds height="35.0" width="35.0" x="714.0" y="11.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent4" id="BPMNShape_endevent4">
+        <omgdc:Bounds height="35.0" width="35.0" x="939.0" y="11.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent5" id="BPMNShape_endevent5">
+        <omgdc:Bounds height="35.0" width="35.0" x="1141.0" y="11.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="textannotation1" id="BPMNShape_textannotation1">
+        <omgdc:Bounds height="83.0" width="100.0" x="347.0" y="569.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="textannotation2" id="BPMNShape_textannotation2">
+        <omgdc:Bounds height="92.0" width="100.0" x="347.0" y="446.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="textannotation3" id="BPMNShape_textannotation3">
+        <omgdc:Bounds height="301.0" width="100.0" x="50.0" y="1.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="textannotation4" id="BPMNShape_textannotation4">
+        <omgdc:Bounds height="67.0" width="100.0" x="50.0" y="341.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
+        <omgdi:waypoint x="227.0" y="100.0"></omgdi:waypoint>
+        <omgdi:waypoint x="227.0" y="161.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="280.0" y="161.0"></omgdi:waypoint>
+        <omgdi:waypoint x="279.0" y="46.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="227.0" y="232.0"></omgdi:waypoint>
+        <omgdi:waypoint x="227.0" y="346.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="295.0" y="375.0"></omgdi:waypoint>
+        <omgdi:waypoint x="340.0" y="375.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+        <omgdi:waypoint x="405.0" y="345.0"></omgdi:waypoint>
+        <omgdi:waypoint x="405.0" y="251.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
+        <omgdi:waypoint x="405.0" y="251.0"></omgdi:waypoint>
+        <omgdi:waypoint x="561.0" y="270.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="100.0" x="460.0" y="254.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
+        <omgdi:waypoint x="561.0" y="334.0"></omgdi:waypoint>
+        <omgdi:waypoint x="561.0" y="581.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
+        <omgdi:waypoint x="561.0" y="581.0"></omgdi:waypoint>
+        <omgdi:waypoint x="732.0" y="538.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="100.0" x="592.0" y="557.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
+        <omgdi:waypoint x="732.0" y="446.0"></omgdi:waypoint>
+        <omgdi:waypoint x="731.0" y="251.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
+        <omgdi:waypoint x="731.0" y="211.0"></omgdi:waypoint>
+        <omgdi:waypoint x="731.0" y="139.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="625.0" y="170.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
+        <omgdi:waypoint x="731.0" y="251.0"></omgdi:waypoint>
+        <omgdi:waypoint x="921.0" y="267.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="785.0" y="226.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
+        <omgdi:waypoint x="921.0" y="342.0"></omgdi:waypoint>
+        <omgdi:waypoint x="922.0" y="457.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
+        <omgdi:waypoint x="984.0" y="497.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1088.0" y="497.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="988.0" y="481.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
+        <omgdi:waypoint x="1158.0" y="459.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1158.0" y="412.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="91.0" x="1168.0" y="434.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
+        <omgdi:waypoint x="1158.0" y="345.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1158.0" y="264.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
+        <omgdi:waypoint x="1158.0" y="224.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1159.0" y="139.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="1168.0" y="184.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
+        <omgdi:waypoint x="405.0" y="211.0"></omgdi:waypoint>
+        <omgdi:waypoint x="405.0" y="139.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="100.0" x="420.0" y="191.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow29" id="BPMNEdge_flow29">
+        <omgdi:waypoint x="405.0" y="84.0"></omgdi:waypoint>
+        <omgdi:waypoint x="405.0" y="46.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
+        <omgdi:waypoint x="1158.0" y="224.0"></omgdi:waypoint>
+        <omgdi:waypoint x="956.0" y="138.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="991.0" y="163.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
+        <omgdi:waypoint x="731.0" y="84.0"></omgdi:waypoint>
+        <omgdi:waypoint x="731.0" y="46.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
+        <omgdi:waypoint x="956.0" y="83.0"></omgdi:waypoint>
+        <omgdi:waypoint x="956.0" y="46.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
+        <omgdi:waypoint x="1159.0" y="84.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1158.0" y="46.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

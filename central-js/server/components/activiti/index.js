@@ -7,6 +7,17 @@ var NodeCache = require("node-cache");
 var aServerCache = new NodeCache();
 
 
+module.exports.httpCallback = function (asyncCallback) {
+  return function (error, response, body) {
+    if (error) {
+      //TODO add code processing
+      asyncCallback(error, null);
+    } else {
+      asyncCallback(null, body);
+    }
+  };
+};
+
 module.exports.asErrorMessages = function (asMessageDefault, oData, onCheckMessage) {
   /*var oData = {"s":"asasas"};
    $.extend(oData,{sDTat:"dddddd"});
@@ -89,17 +100,23 @@ module.exports.getRequestUrl = function (apiURL, sHost) {
 
 module.exports.buildGET = function (apiURL, params, sHost, session) {
   var sURL = this.getRequestUrl(apiURL, sHost);
+  var qs = params;
+
+  if (params && !params.nID_Subject && session && session.subject) {
+    qs = _.extend(params, {nID_Subject: session.subject.nID});
+  }
+
   return {
     'url': sURL,
     'auth': this.getAuth(),
     'json': true,
-    'qs': _.extend(params, {nID_Subject: session && session.subject ? session.subject.nID : null})
-  };
+    'qs': qs
+  }
 };
 
 module.exports.buildRequest = function (req, apiURL, params, sHost) {
-  var nID_Subject = req.session.subject ? req.session.subject.nID : null;
-  return this.buildGET(apiURL, params, sHost, nID_Subject);
+  //var nID_Subject = req.session.subject ? req.session.subject.nID : null;
+  return this.buildGET(apiURL, params, sHost, req.session);//nID_Subject
 };
 
 module.exports.getAuth = function () {
@@ -119,7 +136,6 @@ module.exports.getDefaultCallback = function (res) {
       res.statusCode = response.statusCode;
       res.send(body);
     }
-    res.end();
   }
 };
 
@@ -130,8 +146,14 @@ module.exports.sendGetRequest = function (req, res, apiURL, params, callback, sH
 };
 
 module.exports.get = function (apiURL, params, callback, sHost, session) {
-  var url = this.buildGET(apiURL, params, sHost, session);
-  return request(url, callback);
+  var prepared = this.buildGET(apiURL, params, sHost, session);
+  return request(prepared, callback);
+};
+
+module.exports.post = function (apiURL, params, body, callback, sHost, session) {
+  var prepared = this.buildGET(apiURL, params, sHost, session);
+  prepared = _.extend(prepared, {body: body});
+  request.post(prepared, callback);
 };
 
 module.exports.sendPostRequest = function (req, res, apiURL, params, callback, sHost) {
@@ -149,28 +171,6 @@ module.exports.sendDeleteRequest = function (req, res, apiURL, params, callback,
   var url = this.buildRequest(req, apiURL, params, sHost);
   return request.del(url, _callback);
 };
-
-/*
- module.exports.buildRequestFromServer = function (sPagePath, oParams, sHost) {
- var sURL = this.getRequestUrl(sPagePath, sHost);
- return {
- 'url': sURL,
- 'auth': this.getAuth(),
- 'qs': oParams
- };
- };
-
-
- module.exports.getRegionURL = function (res, nID) {
- //var _callback = callback ? callback : this.getDefaultCallback(res);
- //var url = this.buildRequest(req, apiURL, params, sHost);
- //return request(url, _callback);
- var sURL = this.buildRequestFromServer('/subject/getServer', {nID: nID});
- var oServer = request(sURL, this.getDefaultCallback(res));
- //var oServer = this.sendGetRequest(req, res, '/subject/getServer', _.extend(req.query, {nID: nID}));
- return oServer !== null ? oServer.sURL : null;
- };
- */
 
 module.exports.getServerRegionHost = function (nID_Server, fCompleted) {
   this.getServerRegion(nID_Server, function (oServer) {

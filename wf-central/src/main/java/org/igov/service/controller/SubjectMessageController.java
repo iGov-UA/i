@@ -1,27 +1,44 @@
 package org.igov.service.controller;
 
-import com.google.common.base.Optional;
+import static org.igov.service.business.action.task.core.AbstractModelTask.getByteArrayMultipartFileFromStorageInmemory;
+import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
-import io.swagger.annotations.*;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
+import javax.servlet.http.HttpServletResponse;
+
+import org.activiti.engine.ActivitiException;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.igov.io.GeneralConfig;
+import org.igov.io.db.kv.statical.IBytesDataStorage;
 import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
+import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
 import org.igov.model.action.event.HistoryEvent_Service;
 import org.igov.model.action.event.HistoryEvent_ServiceDao;
 import org.igov.model.subject.message.SubjectMessage;
 import org.igov.model.subject.message.SubjectMessagesDao;
-import org.igov.service.business.access.AccessDataServiceImpl;
+import org.igov.service.business.access.AccessDataService;
 import org.igov.service.business.action.ActionEventService;
 import org.igov.service.business.action.task.bp.BpService;
 import org.igov.service.business.subject.SubjectMessageService;
 import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.CommonServiceException;
+import org.igov.service.exception.FileServiceIOException;
+import org.igov.util.MethodsCallRunnerUtil;
 import org.igov.util.JSON.JsonRestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,22 +52,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletResponse;
-
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import org.activiti.engine.ActivitiException;
-import org.igov.io.db.kv.statical.IBytesDataStorage;
-import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
-import org.igov.service.business.access.AccessDataService;
-import static org.igov.service.business.action.task.core.AbstractModelTask.getByteArrayMultipartFileFromStorageInmemory;
-
-import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
-import org.igov.service.exception.FileServiceIOException;
+import com.google.common.base.Optional;
 @Controller
 @Api(tags = {"SubjectMessageController"}, description = "Сообщения субьектов")
 @RequestMapping(value = "/subject/message")
@@ -82,7 +84,8 @@ public class SubjectMessageController {
     @Autowired
     private IBytesDataInmemoryStorage oBytesDataInmemoryStorage;
     
-    
+    @Autowired 
+    MethodsCallRunnerUtil methodCallRunner;
     /**
      * получение сообщения
      *
@@ -394,14 +397,9 @@ public class SubjectMessageController {
     public
     @ResponseBody
     ResponseEntity getMessages() {
-
-        List<SubjectMessage> messages = subjectMessagesDao.getMessages();
+    	 List<SubjectMessage> messages = subjectMessagesDao.getMessages();
         return JsonRestUtils.toJsonResponse(messages);
     }
-    
-  
-    
-    
     
     /**
      * получение массива сообщений по услуге
@@ -525,18 +523,19 @@ public class SubjectMessageController {
                     LOG.warn("nID_Subject is not owner of Order of messages! (nID_Subject={},oHistoryEvent_Service.getnID_Subject()={})", nID_Subject, oHistoryEvent_Service.getnID_Subject());
                     throw new Exception("nID_Subject is not Equal!");
                 }
-            }*/
+//            }*/
             
             if (StringUtils.isNotBlank(sID_File)){
-            	LOG.info("sID_File param is not null", sID_File);
-//                byte[] aByte_FileContent_Redis = oBytesDataInmemoryStorage.getBytes(sID_File);
+            	LOG.info("sID_File param is not null {}. File name is {}", sID_File, sFileName);
                 byte[] aByte_FileContent = null;
                 try {
                     byte[] aByte_FileContent_Redis = oBytesDataInmemoryStorage.getBytes(sID_File);
+                    LOG.info("Size of bytes: {}", aByte_FileContent_Redis.length);
                     ByteArrayMultipartFile oByteArrayMultipartFile = null;
                     oByteArrayMultipartFile = getByteArrayMultipartFileFromStorageInmemory(aByte_FileContent_Redis);
                     if (oByteArrayMultipartFile != null) {
                         aByte_FileContent = oByteArrayMultipartFile.getBytes();
+                        LOG.info("Size of multi part content: {}", aByte_FileContent_Redis.length);
                     } else {
                         LOG.error("oByteArrayMultipartFile==null! sID_File={}", sID_File);
                         throw new FileServiceIOException(
@@ -550,8 +549,6 @@ public class SubjectMessageController {
                     LOG.error("Error: {}", e.getMessage(), e);
                     throw new ActivitiException(e.getMessage(), e);
                 }
-                //return redisByteContentByKey;                
-                //AccessDataServiceImpl accessDataService = new AccessDataServiceImpl();
                 String sKey = accessDataDao.setAccessData(aByte_FileContent);   //accessDataService
                 LOG.info("Saved to Mongo! (sKey={},aByte_FileContent.length={})", sKey,aByte_FileContent.length);
                 JSONArray oaFile = new JSONArray();
@@ -830,37 +827,37 @@ public class SubjectMessageController {
     		try{
 	    		SubjectMessage message = subjectMessagesDao.getMessage(nID_Message);
 	    		if(message == null){
-	        		LOG.info("Message is not found by nID_Message", nID_Message);
+	        		LOG.info("Message is not found by nID_Message {}", nID_Message);
 	    			CommonServiceException newErr = new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, "Record not found");                
 	                throw newErr;
 	    		}    	    	
-	    		LOG.info("Message is recieved by nID_Message", nID_Message);    		
+	    		LOG.info("Message is recieved by nID_Message {}", nID_Message);    		
 	    		if (StringUtils.isNotBlank(sID_Order)){
 	    			HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
 	                if (oHistoryEvent_Service != null) {
                                 LOG.info("oHistoryEvent_Service.getId()={},message.getnID_HistoryEvent_Service()={}", oHistoryEvent_Service.getId(),message.getnID_HistoryEvent_Service());    		
 	                	if (oHistoryEvent_Service.getId() == null){
-	                		LOG.info("ID_HIstoryEvent_Service of the order is empty", nID_Message);
+	                		LOG.info("ID_HIstoryEvent_Service of the order is empty {}", nID_Message);
 	        				CommonServiceException newErr = new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, "Order not found");                
 	        				throw newErr;
 	                	}else if(!Objects.equals(oHistoryEvent_Service.getId(), message.getnID_HistoryEvent_Service())){
-	                		LOG.info("ID_HIstoryEvent_Service of the message is not equal to ID_HIstoryEvent_Service of the order", nID_Message);
+	                		LOG.info("ID_HIstoryEvent_Service of the message is not equal to ID_HIstoryEvent_Service of the order {}", nID_Message);
 	        				CommonServiceException newErr = new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, "Alien order");                
 	        				throw newErr;
 	                	}
 	                }
 	    		}
 	    		if (StringUtils.isNotBlank(message.getData())){
-	    			LOG.info("Field sData in message is not null", message.getData());	    			
+	    			LOG.info("Field sData in message is not null");	    			
 	    	        JSONArray sDataArrayJson = (new JSONObject(message.getData())).getJSONArray("aFile");
 	    			String sFileName = (String) ((JSONObject) sDataArrayJson.getJSONObject(0)).get("sFileName");
 	    			String sKey = (String) ((JSONObject) sDataArrayJson.getJSONObject(0)).get("sKey");
 	    			
-	    			LOG.info("sKey value",sKey);
-	    			LOG.info("sFileName value", sFileName);
+	    			LOG.info("sKey value {}",sKey);
+	    			LOG.info("sFileName value {}", sFileName);
 	    			    			    		       
                                 aByte = durableBytesDataStorage.getData(sKey);
-                                LOG.info("aByte.length=", aByte.length);
+                                LOG.info("aByte.length={}", aByte.length);
 	    		}
     		}catch(Exception e){
     			if(e instanceof CommonServiceException)

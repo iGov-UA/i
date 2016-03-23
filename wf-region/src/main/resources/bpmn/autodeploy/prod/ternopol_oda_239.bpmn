@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="ternopol_oda_239" name="Звернення до голови ОДА" isExecutable="true">
-    <documentation>адаптирован для Тернопольской ОГА (ternopil_oda_4 / 6100000000_oda_4), Николаевской ОГА (myk_oda_4 / 4800000000_oda_4), Черниговской ОГА (chern_oda_4 /7400000000_oda_4), Херсонской ОГА  (khers_oda_4 /6500000000_oda_4)</documentation>
+    <documentation>адаптирован для Тернопольской ОГА (ternopil_oda_4 / 6100000000_oda_4), Николаевской ОГА (myk_oda_4 / 4800000000_oda_4), Черниговской ОГА (chern_oda_4 /7400000000_oda_4), Херсонской ОГА  (khers_oda_4 /6500000000_oda_4), Житомирской ОГА (zhitomir_oda_4 / 1800000000_oda_4)</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
@@ -9,7 +9,7 @@
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="place_of_reg" name="Ваша адреса реєстрації" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="place_of_reg" name="Ваша адреса реєстрації;індекс, місто, вулиця, номер будинку та номер квартири" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="vid" name="Вид звернення" type="enum" required="true">
           <activiti:value id="zajava" name="заява (клопотання)"></activiti:value>
           <activiti:value id="propozicia" name="пропозиція"></activiti:value>
@@ -52,7 +52,7 @@
         <activiti:formProperty id="obl" name="назва області" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="rekv" name="адреса" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="postV" name="електронна пошта ОДА1" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="text" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
+        <activiti:formProperty id="golova" name="ПІБ голови ОДА" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Загрузка файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -68,29 +68,51 @@
 var per1 = 'Obl'
 var per2 = 'Rekv'
 var per3 = 'post1'
+var per4 = 'Fio'
 if (execution.getVariable('sID_UA') == '6100000000'){
 per1 = 'Тернопільської обласної державної адміністрації'
 per2 = 'adres'
-var per3 = 'Zg2@te.gov.ua'
+per3 = 'Zg2@te.gov.ua'
+per4 = 'Барні С.С.'
 }
 if (execution.getVariable('sID_UA') == '4800000000'){
 per1 = 'Миколаївської обласної державної адміністрації'
 per2 = 'Миколаївська обласна держана адміністрація 54001, м. Миколаїв, вул. Адміральська, 22'
-var per3 = 'zhigan.roman@gmail.com'
+per3 = 'zhigan.roman@gmail.com'
 }
 if (execution.getVariable('sID_UA') == '7400000000'){
 per1 = 'Чернігівської обласної державної адміністрації'
 per2 = 'Чернігівська обласна держана адміністрація, м. Чернігів, вул. Шевченка, 7'
-var per3 = 'svyrydenko.yulia@gmail.com, skargi@regadm.gov.ua'
+per3 = 'svyrydenko.yulia@gmail.com, skargi@regadm.gov.ua'
+per4 = 'Кулічу В.П.'
 }
 if (execution.getVariable('sID_UA') == '6500000000'){
 per1 = 'Херсонської обласної державної адміністрації'
 per2 = 'Херсонська обласна держана адміністрація, м. Херсон, пл. Свободи, 1'
+per3 = 'vd-zvern@khoda.gov.ua'
+}
+if (execution.getVariable('sID_UA') == '6800000000'){
+per1 = 'Хмельницької обласної державної адміністрації'
+per2 = 'Хмельницька обласна держана адміністрація, м. Хмельницький, майдан Незалежності, Будинок Рад'
+var per3 = 'cpl@adm.km.ua'
+per4 = ' '
+}
+if (execution.getVariable('sID_UA') == '2600000000'){
+per1 = 'Івано-Франківської обласної державної адміністрації'
+per2 = 'Івано-Франківська обласна держана адміністрація, м. Івано-Франківськ, вул. Грушевського, 21'
 var per3 = 'zhigan.roman@gmail.com'
 }
+if (execution.getVariable('sID_UA') == '1800000000'){
+per1 = 'Житомирської обласної державної адміністрації'
+per2 = 'Житомирська обласна держана адміністрація, м. Житомир, майдан С. П. Корольова, 1'
+per3 = 'zvern_ztoda@ukrpost.ua'
+per4 = 'Машковському С.О.'
+}
+
 execution.setVariable('obl', per1)
 execution.setVariable('rekv', per2)
 execution.setVariable('postV', per3)
+execution.setVariable('golova', per4)
 	  </script>
     </scriptTask>
     <sequenceFlow id="flow18" sourceRef="scripttask1" targetRef="servicetask7"></sequenceFlow>
@@ -126,8 +148,8 @@ execution.setVariable('postV', per3)
           <activiti:expression>[pattern/mail/_common_header.html]
 			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 			&lt;p&gt;
-			Ваше звернення до голови ОДА успішно зареєстроване.&lt;br /&gt;
-			Ви отримаєте відповідь протягом 1-3 робочих днів.
+			Ваше звернення до голови ОДА успішно зареєстроване.&lt;br&gt;
+			Інформацію про подальші дії щодо нього ви отримаєте протягом 1-3 робочих днів.
 			&lt;/p&gt;
 			&lt;p&gt; 
 			За наявності питань Ви можете звернутися за телефоном: [pattern_dictonary:ternopol_oda_209_mailer.csv:value{[sID_UA]}:6].
@@ -183,7 +205,7 @@ execution.setVariable('postV', per3)
           <activiti:value id="physcial" name="Отримати поштою"></activiti:value>
           <activiti:value id="digital" name="Електронна версія"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="proverka" name="Рішення про прийняття або відхилення звернення" type="enum">
+        <activiti:formProperty id="proverka" name="Рішення про прийняття або відхилення звернення" type="enum" required="true">
           <activiti:value id="accept" name="Взяти до розгляду"></activiti:value>
           <activiti:value id="reject" name="Відмовити у реєстрації звернення"></activiti:value>
         </activiti:formProperty>
@@ -191,9 +213,10 @@ execution.setVariable('postV', per3)
         <activiti:formProperty id="docID" name="Реєстраційний номер" type="string"></activiti:formProperty>
         <activiti:formProperty id="obl" name="назва області" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="rekv" name="адреса" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="golova" name="ПІБ голови ОДА" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/ternopil_oda_239zaj.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/ternopil/ternopil_oda_239_rkk.html]" type="invisible" default="Реєстраційно-контрольна карта" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_3" name="[pattern/print/ternopil/mykol_oda_239zaj.html]" type="invisible" default="Заява Миколаївська, Чернігівська, Херсонська" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_3" name="[pattern/print/ternopil/mykol_oda_239zaj.html]" type="invisible" default="Заява Миколаївська, Херсонська" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">

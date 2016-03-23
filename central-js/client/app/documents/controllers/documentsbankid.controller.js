@@ -1,13 +1,16 @@
 angular.module('documents').controller('DocumentsBankIdController', function ($scope, $state, $location, $window, BankIDService) {
   $scope.authProcess = false;
 
-  $scope.loginWithBankId = function () {
+  function getRedirectURI() {
     var stateForRedirect = $state.href('index.documents.user', {error: ''});
-    var redirectURI = $location.protocol() +
+    return $location.protocol() +
       '://' + $location.host() + ':'
       + $location.port()
       + stateForRedirect;
-    $window.location.href = './auth/bankID?link=' + redirectURI;
+  }
+
+  $scope.loginWithBankId = function () {
+    $window.location.href = './auth/bankID?link=' + getRedirectURI();
   };
 
   $scope.loginWithEds = function () {
@@ -16,20 +19,21 @@ angular.module('documents').controller('DocumentsBankIdController', function ($s
       '://' + $location.host() + ':'
       + $location.port()
       + stateForRedirect;
-    $window.location.href = './auth/eds?link=' + redirectURI;
+    $window.location.href = './auth/eds?link=' + getRedirectURI();
+  };
+
+  $scope.getRedirectUrl = getRedirectURI;
+
+  $scope.getAuthMethods = function () {
+    return "BankID,EDS,KK"
   };
 
   $scope.loginWithEmail = function () {
-    $state.go('index.auth.email.verify');
+    $state.go('index.auth.email.verify', {link: getRedirectURI()});
   };
 
   $scope.loginWithSoccard = function () {
-    var stateForRedirect = $state.href('index.documents.user', {error: ''});
-    var redirectURI = $location.protocol() +
-      '://' + $location.host() + ':'
-      + $location.port()
-      + stateForRedirect;
-    $window.location.href = './auth/soccard?link=' + redirectURI;
+    $window.location.href = './auth/soccard?link=' + getRedirectURI()();
   };
 
   if ($state.is('index.documents.bankid')) {

@@ -13,6 +13,8 @@
 
     <context:component-scan base-package="org.igov.service"/>
     <context:component-scan base-package="org.igov.io" /> <!-- TODO: move to separate context? -->
+    <context:component-scan base-package="org.igov.exchange" />
+    <context:component-scan base-package="org.igov.util"/>
 
 
     <!-- ==============================   SERVICES    ============================= -->
@@ -49,4 +51,6 @@
 
     <import resource="classpath:context-services_local.xml"/>
         
+    <!--  ==========================  Method call util =============================== -->
+    <bean id="methodCallRunner" class="org.igov.util.MethodsCallRunnerUtil"/>
 </beans>

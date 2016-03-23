@@ -16,13 +16,12 @@
         <activiti:formProperty id="sPibChild" name="Укажіть Прізвище Ім'я По-Батькові дитини по відношенню до якої бажаєте припинити опіку (піклування)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="nDateBithdayChild" name="Укажіть рік народження дитини" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="sReason" name="Укажіть причину припинення опіки (піклування); українською мовою" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="zgoda" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність"></activiti:formProperty>
         <activiti:formProperty id="rNumber" name="номер району" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="rName" name="район" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="remail" name="пошта району" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <userTask id="usertask1" name="перевірка вхідного пакету документів" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask1" name="перевірка вхідного пакету документів" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="rName" name="Район" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -52,7 +51,7 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask2" name="прийняття рішення щодо постановки на облік" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask2" name="прийняття рішення щодо постановки на облік" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="rName" name="Район" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -244,7 +243,7 @@ ${comment_1}&lt;br /&gt;
 var per1 = 'remail'
 var per2 = 'rNumber'
 var per4 = 'rName'
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'hmel_hmelT'){
+if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'cnap_hmel_hmelT'){
 per1 = 'darja.grek@gmail.com'
 per2 = '533'
 per4 = 'ЦНАП Хмельницької міськради'

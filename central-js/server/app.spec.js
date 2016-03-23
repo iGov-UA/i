@@ -1,16 +1,17 @@
 'use strict';
 
-var nock = require('nock');
-var url = require('url');
-var urlencode = require('urlencode');
-var superagent = require('superagent');
-var supertest = require('supertest-as-promised');
-var app = require('./app');
-var appData = require('./app.data.spec.js');
-var config = require('./config/environment');
-var bankidUtil = require('./auth/bankid/bankid.util.js');
-var testRequest = supertest(app);
-var loginAgent = superagent.agent();
+var nock = require('nock')
+  , url = require('url')
+  , urlencode = require('urlencode')
+  , superagent = require('superagent')
+  , supertest = require('supertest-as-promised')
+  , app = require('./app')
+  , testRequest = supertest(app)
+  , async = require('async')
+  , appData = require('./app.data.spec.js')
+  , appTests = require('./app.tests.spec.js')(testRequest)
+  , config = require('./config/environment')
+  , bankidUtil = require('./auth/bankid/bankid.util.js');
 
 
 var pathFromURL = function (urlString) {
@@ -94,51 +95,119 @@ var bankidMock = nock(baseUrls.access.base)
 
 var centralNock = nock('https://test.igov.org.ua')
   .persist()
-  .log(console.log)
-  .get('/wf/service/subject/syncSubject')
-  .query(true)
-  .reply(200, appData.syncedCustomer, {
-    'content-type': 'application/json;charset=UTF-8'
-  });
+  .log(console.log);
 
-var regionMock = nock('http://test.region.service')
+var regionMock = nock('https://test.region.igov.org.ua')
   .persist()
   .log(console.log)
   .get('/service/object/file/check_file_from_redis_sign')
-  .query({sID_File_Redis: 1, nID_Subject: 20049})
+  .query({sID_File_Redis: 1, nID_Subject: 11})
   .reply(200, appData.signCheck, {
     'Content-Type': 'application/json'
   })
   .get('/service/object/file/check_file_from_redis_sign')
-  .query({sID_File_Redis: 2, nID_Subject: 20049})
+  .query({sID_File_Redis: 2, nID_Subject: 11})
   .reply(200, appData.signCheckError, {
     'Content-Type': 'application/json'
   });
 
 
-module.exports.loginWithBankID = function(callback){
+function getAuth(urlWithQueryParams, agentCallback, done) {
   testRequest
-    .get('/auth/bankid/callback?code=11223344&?link=' + testAuthResultURL)
+    .get(urlWithQueryParams)
     .expect(302)
     .then(function (res) {
+      var loginAgent = superagent.agent();
       loginAgent.saveCookies(res);
-      callback(null, loginAgent);
+      if (agentCallback) {
+        agentCallback(loginAgent);
+      }
+      done();
     }).catch(function (err) {
-    callback(err)
+    done(err)
+  });
+}
+
+module.exports.loginWithBankID = function (done, agentCallback) {
+  getAuth('/auth/bankid/callback?code=11223344&?link=' + testAuthResultURL, agentCallback, done);
+};
+
+module.exports.loginWithEds = function (done, agentCallback) {
+  getAuth('/auth/eds/callback?code=11223344&link=' + testAuthResultURL, agentCallback, done);
+};
+
+module.exports.loginWithEmail = function (callback) {
+  var code = 'ssss111';
+  var email = 'test@test.com';
+  var link = testAuthResultURL;
+  var firstName = 'firstName';
+  var lastName = 'lastName';
+  var middleName = 'middleName';
+
+  function prepareGet(url, agent) {
+    var r = testRequest.get(url);
+    if (agent) {
+      agent.attachCookies(r);
+    }
+    return r;
+  }
+
+  function preparePost(url, agent) {
+    var r = testRequest.post(url);
+    if (agent) {
+      agent.attachCookies(r);
+    }
+    return r;
+  }
+
+  function doGet(request, asyncCallback) {
+    request
+      .expect(302)
+      .then(function (res) {
+        loginAgent.saveCookies(res);
+        asyncCallback(null, loginAgent);
+      })
+      .catch(function (err) {
+        asyncCallback(err, null);
+      });
+  }
+
+  function doPost(request, body, asyncCallback) {
+    request
+      .send(body)
+      .expect(200)
+      .then(function (res) {
+        var loginAgent = superagent.agent();
+        loginAgent.saveCookies(res);
+        asyncCallback(null, loginAgent);
+      })
+      .catch(function (err) {
+        asyncCallback(err, null);
+      });
+  }
+
+  async.waterfall([
+    function (asyncCallback) {
+      doPost(preparePost('/auth/email/verifyContactEmail'), {email: email, link: link}, asyncCallback);
+    },
+    function (agent, asyncCallback) {
+      doPost(preparePost('/auth/email/verifyContactEmailAndCode', agent), {email: email, code: code}, asyncCallback);
+    },
+    function (agent, asyncCallback) {
+      doPost(preparePost('/auth/email/editFio', agent), {
+        firstName: firstName,
+        lastName: lastName,
+        middleName: middleName
+      }, asyncCallback);
+    },
+    function (agent, asyncCallback) {
+      doGet(prepareGet('/auth/email', agent), asyncCallback);
+    }
+  ], function (error, result) {
+    callback(error, result);
   });
 };
 
-module.exports.loginWithEds = function(callback){
-  testRequest
-    .get('/auth/eds/callback?code=11223344&?link=' + testAuthResultURL)
-    .expect(302)
-    .then(function (res) {
-      loginAgent.saveCookies(res);
-      callback(null, loginAgent);
-    }).catch(function (err) {
-    callback(err)
-  });
-};
 
 module.exports.app = app;
 module.exports.bankidMock = bankidMock;
@@ -146,3 +215,4 @@ module.exports.centralNock = centralNock;
 module.exports.regionMock = regionMock;
 module.exports.authResultMock = authResultMock;
 module.exports.testRequest = testRequest;
+module.exports.tests = appTests;

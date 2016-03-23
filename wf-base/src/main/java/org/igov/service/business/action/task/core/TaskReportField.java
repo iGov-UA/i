@@ -31,7 +31,9 @@ public enum TaskReportField {
 		@Override
 		public String replaceValue(String currentRow,
 				HistoricTaskInstance curTask, SimpleDateFormat sDateFormat, GeneralConfig oGeneralConfig) {
-			return currentRow.replace(this.getPattern(), curTask.getId());
+                        Long nID_Process = new Long(curTask.getProcessInstanceId());
+                        String sID_Order = oGeneralConfig.sID_Order_ByProcess(nID_Process);
+			return currentRow.replace(this.getPattern(), sID_Order);
 		}
     },
     CREATE_DATE("2", "${sDateCreate}") {
@@ -44,6 +46,18 @@ public enum TaskReportField {
 		public String replaceValue(String currentRow,
 				HistoricTaskInstance curTask, SimpleDateFormat sDateFormat, GeneralConfig oGeneralConfig) {
 			return currentRow.replace(this.getPattern(), sDateFormat.format(curTask.getCreateTime()));
+		}
+    },
+    CLOSE_DATE("4", "${sDateClose}") {
+        @Override
+        public String replaceValue(String currentRow, Task curTask, SimpleDateFormat sDateFormat, GeneralConfig oGeneralConfig) {
+            return currentRow.replace(this.getPattern(), sDateFormat.format(curTask.getCreateTime()));
+        }
+
+		@Override
+		public String replaceValue(String currentRow,
+				HistoricTaskInstance curTask, SimpleDateFormat sDateFormat, GeneralConfig oGeneralConfig) {
+			return currentRow.replace(this.getPattern(), sDateFormat.format(curTask.getEndTime()));
 		}
     };
 

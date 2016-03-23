@@ -31,15 +31,14 @@
         <activiti:formProperty id="project" name="Проект переобладнання або перепланування, улаштування підвісного балкону, погоджений в установленому порядку" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="zgoda" name="Згода власників, співвласників (наймачів) або уповноважених ними осіб на переобладнання перепланування чи улаштування підвісного балкону приміщень, що перебувають у їх спільній власності; завантажте єдиним архівом" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="teh_passport" name="Копія технічного паспорту на приміщення (квартиру)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="text" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
-        <activiti:formProperty id="rNumber" name="номер району" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="rName" name="район" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="remail" name="пошта району" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="nArea" name="номер району" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sArea" name="район" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="пошта району" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="обробка вхідних данних" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="rName" name="Район" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sArea" name="Район" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні данні" type="string" writable="false"></activiti:formProperty>
@@ -74,7 +73,7 @@
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <userTask id="usertask3" name="рішення" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="rName" name="Район" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sArea" name="Район" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні данні" type="string" writable="false"></activiti:formProperty>
@@ -105,7 +104,7 @@
     <serviceTask id="servicetask4" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${remail}</activiti:expression>
+          <activiti:expression>${sMailClerk}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення: Видача дозволу на виконання перепланування, переобладнання та улаштування підвісного балкону]]></activiti:string>
@@ -139,12 +138,12 @@
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
 Ваше звернення щодо видачі дозволу на виконання enum{[balcony_work]} підвісного балкону enum{[balcony]}, що знаходиться за адресою ${locality} ${street} ${number_house}, отримано.&lt;br /&gt;
-Звернення буде опрацьовано управлінням архітектури, капітального будівництва та житлово-комунального господарства Вільногірської міської ради впродовж 30 календарних днів.&lt;br /&gt;
+Звернення буде опрацьовано управлінням архітектури, капітального будівництва та житлово-комунального господарства міської ради впродовж 30 календарних днів.&lt;br /&gt;
 &lt;br /&gt;
 Ви отримаєте додаткове повідомлення за результатами розгляду запиту.&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nArea]}:5]&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nArea]}:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
@@ -165,10 +164,10 @@
 &lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;
 На жаль, Ваше звернення щодо видачі дозволу на виконання enum{[balcony_work]} підвісного балкону enum{[balcony]}, що знаходиться за адресою ${locality} ${street} ${number_house}, відхилено через недостатню або неправильну інформацію.&lt;br /&gt;
 ${comment_1}&lt;br /&gt;&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nArea]}:5]&lt;br /&gt;
 Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nArea]}:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
@@ -201,23 +200,23 @@ ${comment_2}&lt;br /&gt;
 5. Проект переобладнання або перепланування, улаштування підвісного балкону жилих будинків, жилих і нежилих у жилих будинках приміщень, погоджений в установленому порядку.&lt;br /&gt;
 6. Згоду власників, співвласників (наймачів) або уповноважених ними осіб на переобладнання перепланування чи улаштування підвісного балкону приміщень, що перебувають у їх спільній власності.&lt;br /&gt;
 7. Копію технічного паспорту на приміщення (квартиру).&lt;br /&gt;
-Адреса [pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:3]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]&lt;br /&gt;
-Графік роботи: [pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:4]&lt;br /&gt;
+Адреса [pattern_dictonary:dnepr_reg_cnap.csv:value{[nArea]}:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nArea]}:3]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nArea]}:5]&lt;br /&gt;
+Графік роботи: [pattern_dictonary:dnepr_reg_cnap.csv:value{[nArea]}:4]&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2]&lt;br /&gt;	 
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[nArea]}:2]&lt;br /&gt;	 
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_feedback.html]  
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-      <scriptTask id="scripttask1" name="Script Task" activiti:autoStoreVariables="false">
-              <script>
-var per1 = 'remail'
-var per2 = 'rNumber'
-var per4 = 'rName'
+    <scriptTask id="scripttask1" name="Script Task" activiti:autoStoreVariables="false">
+      <script>
+var per1 = 'sMailClerk'
+var per2 = 'nArea'
+var per4 = 'sArea'
 if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'vilnogirskT'){
 per1 = 'darja.grek@gmail.com'
 per2 = '25'
@@ -228,11 +227,11 @@ per1 = 'darja.grek@gmail.com'
 per2 = '533'
 per4 = 'ЦНАП Хмельницької міськради'
 }
-execution.setVariable('remail', per1)
-execution.setVariable('rNumber', per2)
-execution.setVariable('rName', per4)
- </script>   
-      </scriptTask>
+execution.setVariable('sMailClerk', per1)
+execution.setVariable('nArea', per2)
+execution.setVariable('sArea', per4)
+ </script>
+    </scriptTask>
     <serviceTask id="servicetask2" name="отримання додаткових документiв" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask2">
       <errorEventDefinition></errorEventDefinition>
@@ -252,8 +251,7 @@ execution.setVariable('rName', per4)
     <sequenceFlow id="flow27" sourceRef="servicetask7" targetRef="endevent3"></sequenceFlow>
     <sequenceFlow id="flow28" sourceRef="servicetask6" targetRef="endevent3"></sequenceFlow>
     <sequenceFlow id="flow30" sourceRef="usertask3" targetRef="servicetask7"></sequenceFlow>
-  
-    <sequenceFlow id="flow33" sourceRef="servicetask2" targetRef="scripttask1"></sequenceFlow>
+    <sequenceFlow id="flow33" sourceRef="servicetask2" targetRef="servicetask4"></sequenceFlow>
     <sequenceFlow id="flow34" sourceRef="scripttask1" targetRef="servicetask4"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_263">
@@ -282,6 +280,9 @@ execution.setVariable('rName', per4)
       <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
         <omgdc:Bounds height="69.0" width="171.0" x="90.0" y="216.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="220.0" y="-47.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="81.0" width="171.0" x="90.0" y="20.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -290,9 +291,6 @@ execution.setVariable('rName', per4)
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
         <omgdc:Bounds height="35.0" width="35.0" x="158.0" y="137.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="220.0" y="-47.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
         <omgdi:waypoint x="105.0" y="104.0"></omgdi:waypoint>
@@ -342,8 +340,8 @@ execution.setVariable('rName', per4)
         <omgdi:waypoint x="261.0" y="250.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
-        <omgdi:waypoint x="175.0" y="20.0"></omgdi:waypoint>
-        <omgdi:waypoint x="272.0" y="8.0"></omgdi:waypoint>
+        <omgdi:waypoint x="261.0" y="60.0"></omgdi:waypoint>
+        <omgdi:waypoint x="284.0" y="61.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
         <omgdi:waypoint x="272.0" y="8.0"></omgdi:waypoint>

@@ -3,7 +3,7 @@ var FormData = require('form-data');
 var async = require('async');
 var _ = require('lodash');
 var config = require('../../config/environment');
-var syncSubject = require('../../api/service/syncSubject.service.js');
+var syncSubject = require('../../api/subject/subject.service.js');
 var Admin = require('../../components/admin/index');
 var url = require('url');
 var bankidUtil = require('./bankid.util.js');
@@ -133,7 +133,7 @@ module.exports.syncWithSubject = function (accessToken, done) {
         if (error) {
           callback(createError(error, response), null);
         } else {
-          result.subject = JSON.parse(body);
+          result.subject = body;
           callback(null, result);
         }
       });

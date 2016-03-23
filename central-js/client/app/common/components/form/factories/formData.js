@@ -15,6 +15,7 @@ angular.module('app').factory('FormDataFactory', function (ParameterFactory, Dat
       params[property.id] = result[0].prototype.createFactory();
       params[property.id].value = property.value;
       params[property.id].required = property.required;
+      params[property.id].writable = property.hasOwnProperty('writable') ? property.writable : true;
     }
   };
 
@@ -118,7 +119,7 @@ angular.module('app').factory('FormDataFactory', function (ParameterFactory, Dat
           angular.forEach(oValue, function (scan) {
             sFieldName = ScanFactory.prototype.getName(scan.type);
             if (self.hasParam(sFieldName)) {
-              self.params[sFieldName] = new ScanFactory();
+              self.params[sFieldName] = angular.extend(new ScanFactory(), self.params[sFieldName]);
               self.params[sFieldName].setScan(scan);
             }
           });
@@ -258,7 +259,9 @@ angular.module('app').factory('FormDataFactory', function (ParameterFactory, Dat
     };
     for (var key in this.params) {
       var param = this.params[key];
-      data.params[key] = param.get();
+      if (param.writable || param.required) {
+        data.params[key] = param.get();
+      }
     }
     return data;
   };

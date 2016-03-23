@@ -85,7 +85,8 @@ exports.index = function (req, res) {
   var user = JSON.parse(req.cookies.user);
   var query = {};
   //https://test.igov.org.ua/wf/service/runtime/tasks?size=20
-  query.size = 500;
+  query.size = 50;
+  query.start = (req.query.page || 0) * query.size;
 
   if (req.query.filterType === 'all') {
     async.waterfall([
@@ -178,6 +179,7 @@ exports.getFormFromHistory = function (req, res) {
       'taskId': req.params.taskId,
       'includeTaskLocalVariables': true,
       'includeProcessVariables': true
+      //'includeProcessVariables': false
     }
 
   };
@@ -434,14 +436,5 @@ exports.getMessageFile = function(req, res) {
     },
     json: true
   };
-
-  activiti.get(options, function (error, statusCode, body) {
-    if (error) {
-      error = errors.createError(errors.codes.EXTERNAL_SERVICE_ERROR, 'Error while loading message file', error);
-      res.status(500).send(error);
-      return;
-    }
-
-    res.status(200).send(body);
-  });
+  activiti.filedownload(req, res, options);
 };

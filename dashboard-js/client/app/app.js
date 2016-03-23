@@ -3,6 +3,7 @@ angular.module('dashboardJsApp', [
   'ngCookies',
   'ngResource',
   'ngSanitize',
+  'ui.router',
   'ngRoute',
   'ngIdle',
   'ngStorage',
@@ -11,12 +12,9 @@ angular.module('dashboardJsApp', [
   'ui.event',
   'angularMoment',
   'ngClipboard'
-]).config(function($routeProvider, $locationProvider) {
-  $routeProvider
-    .otherwise({
-      redirectTo: '/'
-    });
-
+]).config(function($urlRouterProvider, $locationProvider) {
+  $urlRouterProvider
+    .otherwise('/');
   $locationProvider.html5Mode(true);
 }).run(function(amMoment) {
   amMoment.changeLocale('uk');
