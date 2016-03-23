@@ -8,7 +8,7 @@
   usersConfig.$inject = ['$stateProvider'];
   function usersConfig($stateProvider) {
     $stateProvider
-      .state('users', {
+      .state('tools.users', {
         url: '/users',
         templateUrl: 'app/users/users.html',
         access: {

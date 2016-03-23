@@ -6,7 +6,7 @@
     .config(['$stateProvider',
       function ($stateProvider) {
         $stateProvider
-          .state('escalations', {
+          .state('tools.escalations', {
             url: '/escalations',
             templateUrl: 'app/escalations/escalations.html',
             controller: 'EscalationsCtrl',
