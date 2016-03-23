@@ -6,7 +6,7 @@
     .config(['$stateProvider',
       function ($stateProvider) {
         $stateProvider
-          .state('reports', {
+          .state('tools.reports', {
             url: '/reports',
             templateUrl: 'app/reports/reports.html',
             controller: 'ReportsCtrl'

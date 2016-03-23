@@ -109,8 +109,13 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="attr1_wait" name="З документами все гаразд, заява зареєстрована"></activiti:value>
           <activiti:value id="attr2_bad" name="Відмовити у розгляді без реєстрації у звязку з відсутністю необхідних документів"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="marker11" name="Відмова" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;comment_cnap&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;status&quot;},&quot;sCondition&quot;:&quot;[sClient]=='attr2_bad'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="comment_cnap" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression>${file1},${file2},${file3},${file4}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow5" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
@@ -204,6 +209,12 @@ ${sWorkTime}.&lt;br /&gt;
         </activiti:formProperty>
         <activiti:formProperty id="comment_cnap" name="Якщо Звернення не може бути оброблене, вкажіть причину у цьому полі" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="answer" name="Відповідь" type="file" required="true"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression>${file1},${file2},${file3},${file4}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow10" sourceRef="servicetask5" targetRef="usertask2"></sequenceFlow>
@@ -224,7 +235,7 @@ ${sWorkTime}.&lt;br /&gt;
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 &lt;p&gt;Ви подавали звернення на тему ${sPosluga_name}. &lt;br /&gt;
-Звернення не може бути оброблено. &lt;br /&gt;
+Відмова. &lt;br /&gt;
 Причина відмови: ${comment_cnap} &lt;br /&gt;
 За наявності питянь можете звернутись за телефоном: ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
