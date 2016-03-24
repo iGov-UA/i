@@ -3,6 +3,13 @@
   <process id="dnepr_cnap_561" name="Державна реєстрація рішення про припинення юридичної особи в результаті її ліквідації (припинення підприємницької діяльності фізичної особи – підприємця)" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+        <activiti:formProperty id="asSelectService" name="Оберіть яку послугу Ви бажаєте отримати : " type="enum" required="true">
+          <activiti:value id="fop" name="Державна реєстрація фізичної особи – підприємця"></activiti:value>
+          <activiti:value id="ur" name="Державна реєстрація створення юридичної особи"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="markers1" name="якщо реєструють ФОП" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;Info_fop&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectService&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fop'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="якщо реєструють ЮО" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;Info_ur&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectService&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}} "></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="якщо реєструють ЮО" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;fStatut&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectService&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}} "></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
@@ -10,7 +17,8 @@
         <activiti:formProperty id="bankIdPassport" name="Паспортні данні" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Вкажіть контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Вкажіть E-Mail адресу для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="Info_1" name="Заповніть заяву" type="label" default="Завантажте &lt;a href=&quot;https://drive.google.com/file/d/0B9UDkfHM4vkrUFVybkhqWEhhTnc/view?usp=sharing&quot; target=&quot;_blank&quot;&gt;бланк заяви&lt;/a&gt;, заповніть, обов'язково збережіть у форматі TIF (або TIFF), накладіть на нього електронно-цифровий підпис та додайте у наступному полі."></activiti:formProperty>
+        <activiti:formProperty id="Info_fop" name="Заповніть заяву" type="label" default="Завантажте &lt;a href=&quot;https://drive.google.com/file/d/0B9UDkfHM4vkrUFVybkhqWEhhTnc/view?usp=sharing&quot; target=&quot;_blank&quot;&gt;бланк заяви&lt;/a&gt;, заповніть, обов'язково збережіть у форматі TIF (або TIFF), накладіть на нього електронно-цифровий підпис та додайте у наступному полі."></activiti:formProperty>
+        <activiti:formProperty id="Info_ur" name="Заповніть заяву" type="label" default="Завантажте &lt;a href=&quot;https://drive.google.com/file/d/0B9UDkfHM4vkrUFVybkhqWEhhTnc/view?usp=sharing&quot; target=&quot;_blank&quot;&gt;бланк заяви&lt;/a&gt;, заповніть, обов'язково збережіть у форматі TIF (або TIFF), накладіть на нього електронно-цифровий підпис засновника (засновників) та додайте у наступному полі."></activiti:formProperty>
         <activiti:formProperty id="fApplication" name="Заповнена реєстраційна заява; повинна бути в форматі TIF (або TIFF), та мати Ваш електронно-цифровий підпис" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="sNameOrgan" type="invisible" default="."></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="sWorkTime" type="invisible" default="."></activiti:formProperty>
