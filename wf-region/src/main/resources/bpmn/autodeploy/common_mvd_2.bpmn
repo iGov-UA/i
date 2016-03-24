@@ -17,7 +17,7 @@
         <activiti:formProperty id="sKartka" name=" Додаток 3(зразок)" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса регіонального відділення" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Підпис" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="sMailClerk" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="sMailClerk" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_UA" name="sID_UA" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nUser" name="Users" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers" name="extended_marker" type="markers" default="${markerService.loadFromFile('mvd/common_mvd_2_1.json')}"></activiti:formProperty>
@@ -126,7 +126,7 @@ ${sNameOrgan}
     <sequenceFlow id="flow15" name="${nUser !='0'}" sourceRef="exclusivegateway2" targetRef="servicetask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${nUser !='0'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask5" name="Повідомлення громадянина про обробку звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask5" name="Оцинювання якості надання послуги ( без обробки звернення)" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -140,27 +140,18 @@ ${sNameOrgan}
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-&lt;p&gt;
-Ваш запит успішно оброблено. &lt;br /&gt;
-Дата одержання довідки: &lt;br /&gt;
-${comment}&lt;br /&gt;
 
-Оригінал довідки Ви зможете отримати за адресою  &lt;br /&gt;
-${sAddress}&lt;br /&gt;
- &lt;b&gt; Увага! При собі обов'язково мати громадянський паспорт або інший документ, що посвідчує особу. &lt;/b&gt;  &lt;br /&gt;
+Ви подавали заявку для оцінки якості надання послуги отримання дозволуна зброю. &lt;br/&gt;&lt;br/&gt;
+Адреса обраного Вами регіонального відділення: ${sAddress} &lt;br/&gt;
+Телефон для довідок: ${sPhoneOrgan} &lt;br/&gt;
+Графік прийому громадян: ${sWorkTime} &lt;br/&gt;
 
  
-Графік прийому:&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
 
- &lt;/p&gt;
-
- 
- 
+[pattern/mail/_common_feedback.html]
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
