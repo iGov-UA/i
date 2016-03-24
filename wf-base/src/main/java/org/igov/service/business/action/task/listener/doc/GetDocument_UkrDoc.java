@@ -72,37 +72,32 @@ public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListene
                 runtimeService.setVariable(execution.getProcessInstanceId(), "sBody_Document", text);
                 try {
                     LOG.info("class: " + ((JSONObject) ((JSONObject) content).get("extensions")).get("files").getClass());
-                    JSONArray files = (JSONArray)((JSONObject) ((JSONObject) content).get("extensions")).get("files");
-                    //LOG.info("class: " + ((JSONArray)((JSONArray) ((JSONObject) content).get("extensions")).get("files")).getJSONArray("view_url"));
-                    //LOG.info("class: " + ((JSONObject)((JSONObject) ((JSONObject) content).get("extensions")).get("files")).getJSONArray("view_url").getClass());
-                    //List<Map<String, Object>> files = (List<Map<String, Object>>) ((JSONObject) ((JSONObject) content).get("extensions")).get("files");
-
+                    JSONArray files = (JSONArray) ((JSONObject) ((JSONObject) content).get("extensions")).get("files");
                     //получение контента файла и прикрипление его в качестве атача к таске
                     if (files != null && files.length() > 0) {
                         StringBuilder anID_Attach_UkrDoc = new StringBuilder();
                         for (int i = 0; i < files.length(); i++) {
-                            JSONObject file = (JSONObject)files.get(i);
-                            String view_url = file.getString("view_url");//(String) (files[i].get("view_url")); ///docs/2016/10300131/files/10300000/content?type=.jpg
-                            LOG.info("view_url:" + view_url);
-                            String[] part_URI = view_url.split("/");
-                            if (part_URI.length == 6) {
-                                String fileType = part_URI[5].substring(part_URI[5].indexOf("."));
-                                String fileName = part_URI[4] + fileType;
-                                LOG.info("view_url:" + view_url + " fileName: " + fileName);
-                                resp = new RestRequest().get(generalConfig.getsUkrDocServerAddress() + view_url, MediaType.APPLICATION_JSON, StandardCharsets.UTF_8, String.class, headers);
-                                LOG.info("Ukrdoc response getContentFile:" + resp);
-                                try {
-                                    ByteArrayMultipartFile oByteArrayMultipartFile = new ByteArrayMultipartFile(resp.getBytes(), "Приложение", fileName, "content-type");
-                                    Attachment attachment = createAttachment(oByteArrayMultipartFile, dt, "Приложение", "anID_Attach_UkrDoc"); //добавить номер
-                                    if (attachment != null) {
-                                        anID_Attach_UkrDoc.append(attachment.getId()).append(",");
-                                    } //"file": "a10300000.jpg", "name": "Приложение", 
-                                } catch (Exception ex) {
-                                    java.util.logging.Logger.getLogger(GetDocument_UkrDoc.class.getName()).log(Level.SEVERE, null, ex);
-                                }
-                            } else {
-                                LOG.info("Ukrdoc response getContentFile:" + resp);
+                            JSONObject file = (JSONObject) files.get(i);
+                            String view_url = file.getString("view_url"); //docs/2016/10300131/files/10300000/content?type=.jpg
+                            String fileNameOrigin = file.getString("file"); //a10300000.jpg
+                            String fileName = file.getString("name"); //a10300000.jpg
+                            //String[] part_URI = view_url.split("/");
+                            //String fileType = part_URI[5].substring(part_URI[5].indexOf("."));
+                            //String fileName = part_URI[4] + fileType;
+                            LOG.info("view_url:" + view_url + " fileName: " + fileName);
+                            resp = new RestRequest().get(generalConfig.getsUkrDocServerAddress() + view_url, MediaType.APPLICATION_JSON,
+                                    StandardCharsets.UTF_8, String.class, headers);
+                            LOG.info("Ukrdoc response getContentFile:" + resp);
+                            try {
+                                ByteArrayMultipartFile oByteArrayMultipartFile = new ByteArrayMultipartFile(resp.getBytes(), fileName, fileNameOrigin, "content-type");
+                                Attachment attachment = createAttachment(oByteArrayMultipartFile, dt, fileName, "anID_Attach_UkrDoc"); //добавить номер
+                                if (attachment != null) {
+                                    anID_Attach_UkrDoc.append(attachment.getId()).append(",");
+                                } //"file": "a10300000.jpg", "name": "Приложение", 
+                            } catch (Exception ex) {
+                                java.util.logging.Logger.getLogger(GetDocument_UkrDoc.class.getName()).log(Level.SEVERE, null, ex);
                             }
+
                         }
                         runtimeService.setVariable(execution.getProcessInstanceId(), "anID_Attach_UkrDoc", anID_Attach_UkrDoc.toString());
                     }
