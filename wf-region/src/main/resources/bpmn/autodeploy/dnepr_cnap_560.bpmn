@@ -3,14 +3,15 @@
   <process id="dnepr_cnap_560" name="Державна реєстрація створення юридичної особи (фізичної особи – підприємця)" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+        <activiti:formProperty id="markers1" name="якщо реєструють ФОП" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;Info_fop&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectService&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fop'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="якщо реєструють ЮО" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;Info_ur&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectService&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}} "></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="якщо реєструють ЮО" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;fStatut&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectService&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}} "></activiti:formProperty>
+        <activiti:formProperty id="markers4" name="якщо реєструють ЮО (назва послуги)" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sNameService&quot;],&quot;asID_Field_sValue&quot;:[&quot;Державна реєстрація створення юридичної особи&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectService&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="asSelectService" name="Оберіть яку послугу Ви бажаєте отримати : " type="enum" required="true">
           <activiti:value id="fop" name="Державна реєстрація фізичної особи – підприємця"></activiti:value>
           <activiti:value id="ur" name="Державна реєстрація створення юридичної особи"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="markers1" name="якщо реєструють ФОП" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;Info_fop&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectService&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fop'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers2" name="якщо реєструють ЮО" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;Info_ur&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectService&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}} "></activiti:formProperty>
-        <activiti:formProperty id="markers3" name="якщо реєструють ЮО" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;fStatut&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectService&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}} "></activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" required="true"></activiti:formProperty>
@@ -27,22 +28,28 @@
         <activiti:formProperty id="sAddress" name="sAddress" type="invisible" default="."></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="sMailClerk" type="invisible" default="."></activiti:formProperty>
         <activiti:formProperty id="sArea" name="sArea" type="invisible" default="."></activiti:formProperty>
+        <activiti:formProperty id="sNameService" name="sNameService" type="invisible" default="Державна реєстрація фізичної особи – підприємця"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлу" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <userTask id="usertask1" name="Надання послуги" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sClientFIO" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні данні" type="string" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні данні" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sUniqNum" name="Унікальний номер (Код); або (Номер опису)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asDecisionMain" name="Результат обробки звернення: " type="enum" required="true">
           <activiti:value id="acceptMain" name="Заява розглянута, прийнято позитивне рішення"></activiti:value>
           <activiti:value id="rejectMain" name="Заява розглянута, прийнято негативне рішення"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sComment" name="У разі негативного рішення вкажіть, будь ласка, причину" type="textArea" default="Причина: "></activiti:formProperty>
-        <activiti:formProperty id="fDecisionDoc" name="Завантажте, при наявності, копію рішення для заявника" type="file"></activiti:formProperty>
+        <activiti:formProperty id="asHaveDecisionFile" name="В наявності копія рішення для заявника :" type="enum" required="true">
+          <activiti:value id="yes" name="Так - копія рішення готова для завантаження."></activiti:value>
+          <activiti:value id="no" name="Ні - копії рішення в наявності немає."></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="markers5" name="якщо немає копії рішення" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;fDecisionDoc&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asHaveDecisionFile&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'&quot;}}} "></activiti:formProperty>
+        <activiti:formProperty id="fDecisionDoc" name="Копія рішення для заявника:" type="file"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -123,7 +130,9 @@ ${sWorkTime} &lt;br /&gt; &lt;br /&gt;
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow8" name="Послуга надана" sourceRef="exclusivegateway1" targetRef="servicetask4"></sequenceFlow>
+    <sequenceFlow id="flow8" name="Послуга надана" sourceRef="exclusivegateway1" targetRef="servicetask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecisionMain=='acceptMain'}]]></conditionExpression>
+    </sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow7" sourceRef="servicetask3" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
