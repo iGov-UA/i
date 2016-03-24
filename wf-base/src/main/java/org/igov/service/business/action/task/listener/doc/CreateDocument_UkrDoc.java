@@ -1,4 +1,4 @@
-package org.igov.service.business.action.task.systemtask.doc;
+package org.igov.service.business.action.task.listener.doc;
 
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
@@ -23,7 +23,7 @@ import org.activiti.engine.task.Attachment;
 import org.activiti.engine.task.IdentityLink;
 import org.activiti.engine.task.Task;
 import org.igov.io.GeneralConfig;
-import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
+//import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.web.RestRequest;
 import org.igov.service.business.action.task.core.AbstractModelTask;
 import org.igov.service.business.action.task.systemtask.doc.util.UkrDocUtil;
@@ -57,8 +57,8 @@ public class CreateDocument_UkrDoc extends AbstractModelTask implements TaskList
 
     @Autowired
     TaskService taskService;
-    @Autowired
-    private IBytesDataInmemoryStorage oBytesDataInmemoryStorage;
+    //@Autowired
+    //private IBytesDataInmemoryStorage oBytesDataInmemoryStorage;
 
     @Override
     public void notify(DelegateTask delegateTask) {
