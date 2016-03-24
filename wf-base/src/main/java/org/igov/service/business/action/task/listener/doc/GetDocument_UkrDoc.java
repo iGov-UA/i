@@ -25,7 +25,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 
 @Component("GetDocument_UkrDoc")
-public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListener, JavaDelegate {
+public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListener {
 
     private final static Logger LOG = LoggerFactory.getLogger(GetDocument_UkrDoc.class);
 
