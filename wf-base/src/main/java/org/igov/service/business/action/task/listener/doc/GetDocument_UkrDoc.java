@@ -9,6 +9,7 @@ import org.activiti.engine.RuntimeService;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.Expression;
+import org.activiti.engine.delegate.JavaDelegate;
 import org.activiti.engine.delegate.TaskListener;
 import org.activiti.engine.task.Attachment;
 import org.igov.io.GeneralConfig;
@@ -24,7 +25,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 
 @Component("GetDocument_UkrDoc")
-public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListener {
+public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListener, JavaDelegate{
 
     private final static Logger LOG = LoggerFactory.getLogger(GetDocument_UkrDoc.class);
 
@@ -100,5 +101,10 @@ public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListene
             
             }
         }
+    }
+
+    @Override
+    public void execute(DelegateExecution de) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
