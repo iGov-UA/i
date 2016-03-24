@@ -105,9 +105,4 @@ public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListene
             }
         }
     }
-
-    @Override
-    public void execute(DelegateExecution de) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 }
