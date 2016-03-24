@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="zovtyvodu_cnap_430" name="Видача паспорту прив’язки тимчасової споруди" isExecutable="true">
+  <process id="zovtyvodu_cnap_430" name="Видача паспорту прив’язки тимчасової споруди, продовження терміну його дії чи внесення до нього змін" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати рішення" type="select" default="0"></activiti:formProperty>
@@ -45,17 +45,16 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:string><![CDATA[${sMailClerk}]]></activiti:string>
+          <activiti:expression>${sMailClerk}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нова заявка на видачу паспорту прив’язки тимчасової споруди]]></activiti:string>
+          <activiti:string><![CDATA[Видача паспорту прив’язки тимчасової споруди, продовження терміну його дії чи внесення до нього змін]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow2" sourceRef="servicetask10" targetRef="servicetask2"></sequenceFlow>
     <serviceTask id="servicetask3" name="Лист заявнику" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -69,15 +68,18 @@
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
-<p> Ваше звернення щодо видачі паспорту прив’язки тимчасової споруди прийнято до роботи.
-Повідомлення про результат розгляду буде спрямоване на Ваш e-mail.</p>
-<br />
-За наявності питянь можете звернутись за телефоном: ${sPhoneOrgan}.<br />
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}.<br />
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+			<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+			<p> Ваше звернення щодо видачі паспорту прив’язки тимчасової споруди прийнято до роботи.
+			Повідомлення про результат розгляду буде спрямоване на Ваш e-mail.</p>
+			<br />
+			За наявності питянь можете звернутись за наступними контактами<br>
+			<b>Адреса:</b> ${sAddress}<br>
+			<b>Графік роботи:</b> ${sWorkTime}<br>
+			<b>Телефон:</b> ${sPhoneOrgan}<br><br>
+			[pattern/mail/_common_signature_start.html]
+			${sNameOrgan}.<br />
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -97,7 +99,7 @@ ${sNameOrgan}.<br />
           <activiti:value id="continPassport" name="Продовження дії паспорта"></activiti:value>
           <activiti:value id="editPassport" name="Внесення змін до паспорта"></activiti:value>
         </activiti:formProperty>
-		<activiti:formProperty id="sNumberPassport" name="Регистрационный номер паспорта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNumberPassport" name="Регистрационный номер паспорта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="dStartPassprot" name="Укажіть дату реэстрації паспорту" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="dContine" name="Дата до якої необхідно продовжити строк дії паспорту" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="variants1" name="Результат розгляду заявки" type="enum" required="true">
@@ -111,7 +113,7 @@ ${sNameOrgan}.<br />
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile_restr_svid},${nFile_kor_zeml},${nFile_sxem_rozm},${nFile_eskiz_fasad},${nFile_ustr_terit},${nFile_ingen_merez},${nFile_Passport}</activiti:expression>
+            <activiti:expression><![CDATA[${nFile_restr_svid},${nFile_kor_zeml},${nFile_sxem_rozm},${nFile_eskiz_fasad},${nFile_ustr_terit},${nFile_ingen_merez},${nFile_Passport}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -125,20 +127,13 @@ ${sNameOrgan}.<br />
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:string><![CDATA[akylish88@gmail.com]]></activiti:string>
+        	<activiti:expression>${sArhitekture_post}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Заявка на видачу паспорту прив’язки тимчасової споруди]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<strong>Шановний(-а) колего!</strong><br /><br />
-У Вас в черзі на обробку нове звернення на видачу паспорту прив’язки тимчасової споруди.<br />
-Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}<br />
-${sSubzvern}<br />
-Опрацюйте це звернення на <a href="https://region.igov.org.ua" target="_blank">порталі</a>
-[pattern/mail/_common_signature.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -151,22 +146,25 @@ ${sSubzvern}<br />
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Заявка на видачу паспорту прив’язки тимчасової споруди]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
-<p> ЦНАП розглянув ваше звернення. Документи вірні. Відомості передані до міської ради.
-Повідомлення про результат розгляду в міській раді буде спрямоване на Ваш e-mail.</p>
-<br />
-За наявності питянь можете звернутись за телефоном: ${sPhoneOrgan}.<br />
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}.<br />
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+			<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+			<p> ЦНАП розглянув ваше звернення. Документи вірні. Відомості передані до міської ради.
+			Повідомлення про результат розгляду в міській раді буде спрямоване на Ваш e-mail.</p>
+			<br>
+			За наявності питянь можете звернутись за наступними контактами<br>
+			<b>Адреса:</b> ${sAddress}<br>
+			<b>Графік роботи:</b> ${sWorkTime}<br>
+			<b>Телефон:</b> ${sPhoneOrgan}<br><br>
+			[pattern/mail/_common_signature_start.html]
+			${sNameOrgan}.<br />
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -186,7 +184,7 @@ ${sNameOrgan}.<br />
           <activiti:value id="continPassport" name="Продовження дії паспорта"></activiti:value>
           <activiti:value id="editPassport" name="Внесення змін до паспорта"></activiti:value>
         </activiti:formProperty>
-		<activiti:formProperty id="sNumberPassport" name="Регистрационный номер паспорта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNumberPassport" name="Регистрационный номер паспорта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="dStartPassprot" name="Укажіть дату реэстрації паспорту" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="dContine" name="Дата до якої необхідно продовжити строк дії паспорту" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Komment_rishenia" name="Коментар по заявці працівника ЦНАП" type="textArea" writable="false"></activiti:formProperty>
@@ -201,7 +199,7 @@ ${sNameOrgan}.<br />
         <activiti:formProperty id="markerPassportPrin" name="Continue Passprot Prin" type="markers" default="${markerService.loadFromFile('architecture/PassportTemporaryStructures_Print.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile_restr_svid},${nFile_kor_zeml},${nFile_sxem_rozm},${nFile_eskiz_fasad},${nFile_ustr_terit},${nFile_ingen_merez},${nFile_Passport}</activiti:expression>
+            <activiti:expression><![CDATA[${nFile_restr_svid},${nFile_kor_zeml},${nFile_sxem_rozm},${nFile_eskiz_fasad},${nFile_ustr_terit},${nFile_ingen_merez},${nFile_Passport}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -222,15 +220,18 @@ ${sNameOrgan}.<br />
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
-<p> Ваше звернення щодо видачі паспорту прив’язки тимчасової споруди розглянуте. В видачі документу відмовлено.
-Причина: ${Komment_rishenia}.</p>
-<br />
-За наявності питянь можете звернутись за телефоном: ${sPhoneOrgan}.<br />
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}.<br />
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+			<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+			<p> Ваше звернення щодо видачі паспорту прив’язки тимчасової споруди розглянуте. В видачі документу відмовлено.
+			Причина: ${Komment_rishenia}.</p>
+			<br />
+			За наявності питянь можете звернутись за наступними контактами<br>
+			<b>Адреса:</b> ${sAddress}<br>
+			<b>Графік роботи:</b> ${sWorkTime}<br>
+			<b>Телефон:</b> ${sPhoneOrgan}<br><br>
+			[pattern/mail/_common_signature_start.html]
+			${sNameOrgan}.<br />
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -252,15 +253,18 @@ ${sNameOrgan}.<br />
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
-<p> Ваше звернення щодо видачі паспорту прив’язки тимчасової споруди розглянуте. В видачі документу відмовлено.
-Причина: ${Komment_rishenia2}.</p>
-<br />
-За наявності питянь можете звернутись за телефоном: ${sPhoneOrgan}.<br />
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}.<br />
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+			<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+			<p>Ваше звернення щодо видачі паспорту прив’язки тимчасової споруди розглянуте. В видачі документу відмовлено.
+			Причина: ${Komment_rishenia2}.</p>
+			<br />
+			За наявності питянь можете звернутись за наступними контактами<br>
+			<b>Адреса:</b> ${sAddress}<br>
+			<b>Графік роботи:</b> ${sWorkTime}<br>
+			<b>Телефон:</b> ${sPhoneOrgan}<br><br>
+			[pattern/mail/_common_signature_start.html]
+			${sNameOrgan}.<br />
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -281,15 +285,16 @@ ${sNameOrgan}.<br />
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
-<p> Ваше звернення щодо видачі паспорту прив’язки тимчасової споруди успішно розглянуте.
-Можете завтра прийти і отримати документ.</p>
-<br />
-За наявності питянь можете звернутись за телефоном: ${sPhoneOrgan}.<br />
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}.<br />
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+			<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+			<p> Ваше звернення щодо видачі паспорту прив’язки тимчасової споруди успішно розглянуте.
+			Можете прийти і отримати документ.</p>
+			<b>Адреса:</b> ${sAddress}<br>
+			<b>Графік роботи:</b> ${sWorkTime}<br>
+			<b>Телефон:</b> ${sPhoneOrgan}<br><br>
+			[pattern/mail/_common_signature_start.html]
+			${sNameOrgan}.<br />
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -311,7 +316,7 @@ ${sNameOrgan}.<br />
           <activiti:value id="continPassport" name="Продовження дії паспорта"></activiti:value>
           <activiti:value id="editPassport" name="Внесення змін до паспорта"></activiti:value>
         </activiti:formProperty>
-		<activiti:formProperty id="sNumberPassport" name="Регистрационный номер паспорта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNumberPassport" name="Регистрационный номер паспорта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="dStartPassprot" name="Укажіть дату реэстрації паспорту" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="dContine" name="Дата до якої необхідно продовжити строк дії паспорту" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Komment_rishenia2" name="Коментар по заявці працівника ЦНАП" type="textArea" writable="false"></activiti:formProperty>
@@ -367,8 +372,7 @@ ${sNameOrgan}.<br />
     </sequenceFlow>
     <sequenceFlow id="flow20" sourceRef="servicetask9" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow21" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
-    <serviceTask id="servicetask10" name="EnumConverTask" activiti:delegateExpression="${asPurpose}"></serviceTask>
-    <sequenceFlow id="flow22" sourceRef="servicetask1" targetRef="servicetask10"></sequenceFlow>
+    <sequenceFlow id="flow22" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_zovtyvodu_cnap_430">
     <bpmndi:BPMNPlane bpmnElement="zovtyvodu_cnap_430" id="BPMNPlane_zovtyvodu_cnap_430">
@@ -426,16 +430,9 @@ ${sNameOrgan}.<br />
       <bpmndi:BPMNShape bpmnElement="servicetask9" id="BPMNShape_servicetask9">
         <omgdc:Bounds height="55.0" width="105.0" x="188.0" y="309.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask10" id="BPMNShape_servicetask10">
-        <omgdc:Bounds height="55.0" width="105.0" x="275.0" y="20.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="128.0" y="127.0"></omgdi:waypoint>
         <omgdi:waypoint x="188.0" y="127.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="327.0" y="75.0"></omgdi:waypoint>
-        <omgdi:waypoint x="380.0" y="100.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="433.0" y="127.0"></omgdi:waypoint>
@@ -529,8 +526,8 @@ ${sNameOrgan}.<br />
         <omgdi:waypoint x="380.0" y="210.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
-        <omgdi:waypoint x="240.0" y="100.0"></omgdi:waypoint>
-        <omgdi:waypoint x="327.0" y="75.0"></omgdi:waypoint>
+        <omgdi:waypoint x="293.0" y="127.0"></omgdi:waypoint>
+        <omgdi:waypoint x="328.0" y="127.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

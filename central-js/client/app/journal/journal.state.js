@@ -58,8 +58,8 @@ angular.module('journal').config(function ($stateProvider, statesRepositoryProvi
               return $q.when(null);
             }
           },
-          events: function ($q, order, ServiceService) {
-            if (order) {
+          events: function ($q, BankIDLogin, order, ServiceService) {
+            if (order && BankIDLogin) {
               return ServiceService.getJournalEvents(order.nID);
             } else {
               return $q.when(null);

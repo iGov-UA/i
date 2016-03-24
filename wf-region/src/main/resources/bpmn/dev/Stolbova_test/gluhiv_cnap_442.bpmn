@@ -169,7 +169,7 @@
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow11" sourceRef="servicetask4" targetRef="usertask2"></sequenceFlow>
-    <serviceTask id="servicetask6" name="Відповідь громадянину  (запрошення на отримання документів)">
+    <serviceTask id="servicetask6" name="Відповідь громадянину  (запрошення на отримання документів)" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.com.ua]]></activiti:string>
@@ -187,7 +187,7 @@
 Ваше звернення щодо надання дозволу на проїзд під заборонні знаки дорожнього регулювання - опрацьовано. &lt;br /&gt;
 Ви можете отримати дозвіл особисто за адресою:&lt;br/&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:427:3]&lt;br /&gt;
-При собі треба мати документ, що посвідчує особу.
+При собі треба мати документ, що посвідчує особу (паспорт громадянина України).
 &lt;/p&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:427:5]&lt;br /&gt; 
 &lt;br /&gt;
@@ -209,7 +209,7 @@
     <sequenceFlow id="flow16" name="accept" sourceRef="exclusivegateway2" targetRef="servicetask6">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[decision == 'sDovidka_ok']]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask7" name="Відповідь громадянину  (відмова в отриманні документів)">
+    <serviceTask id="servicetask7" name="Відповідь громадянину  (відмова в отриманні документів)" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.com.ua]]></activiti:string>
@@ -225,7 +225,9 @@
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 &lt;p&gt;
 Ваше звернення щодо надання дозволу на дозволу на проїзд під заборонні знаки дорожнього регулювання опрацьовано та відхилено Управлінням житлово-комунального господарства міської ради. &lt;br /&gt;
-Відповідь у додатку доцього листа.&lt;br /&gt;
+&lt;p&gt;Причина в наступному: 
+&lt;/p&gt;
+&lt;p&gt;${sDecisionComment}&lt;/p&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:427:5]&lt;br /&gt; 
 &lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
@@ -340,7 +342,7 @@
         <omgdi:waypoint x="380.0" y="312.0"></omgdi:waypoint>
         <omgdi:waypoint x="380.0" y="360.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="390.0" y="312.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="33.0" x="390.0" y="312.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">

@@ -12,12 +12,13 @@
         <activiti:formProperty id="sRegistrationAddress" name="Адреса реєстрації" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sGoal" name="Довідка потрібна для" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Вам буде зручно отримати відповідь" type="select" default="0"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Електронна копія паспорту" type="file"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Електронна копія паспорту" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('hideStandart.json')}"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса установи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Часи роботи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Контактний телефон" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka409" name="Шапка заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPlase409" name="Назва міськвиконкому" type="invisible"></activiti:formProperty>
       </extensionElements>
@@ -65,6 +66,7 @@
 Повідомлення про результат послуги буде спрямоване на Ваш e-mail.&lt;/p&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}&lt;br&gt;
+${sPhoneOrgan}&lt;br&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -79,16 +81,16 @@ ${sNameOrgan}&lt;br&gt;
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sRegistrationAddress" name="Адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sGoal" name="Довідка потрібна для" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="adminFio" name="П.І.Б. співробітника, який прийняв заяву" type="string"></activiti:formProperty>
-        <activiti:formProperty id="number_cnap" name="Реєстраційний номер звернення" type="string"></activiti:formProperty>
+        <activiti:formProperty id="adminFio" name="П.І.Б. співробітника, який прийняв заяву" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="number_cnap" name="Реєстраційний номер звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asDecision" name="Рішення держслужбовця" type="enum" required="true">
           <activiti:value id="sDoc_ok" name="Прийняти документи для виготовлення довідки"></activiti:value>
           <activiti:value id="sDoc_bad" name="Відмовити за недостатньої кількості документів або даних"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/berdichev/berdichiv_cnap_409_print.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sShapka409" name="Шапка заяви" type="invisible" default="Заступнику міського голови &lt;br&gt; _________________"></activiti:formProperty>
-        <activiti:formProperty id="sPlase409" name="Назва міськвиконкому" type="invisible" default="Бердичівському міськвиконкомі"></activiti:formProperty>
+        <activiti:formProperty id="sShapka409" name="Шапка заяви" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPlase409" name="Назва міськвиконкому" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -122,6 +124,7 @@ ${sDecisionComment}&lt;/p&gt;
 &lt;p&gt;Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/ target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}&lt;br&gt;
+${sPhoneOrgan}&lt;br&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -152,6 +155,7 @@ ${sNameOrgan}&lt;br&gt;
 &lt;p&gt;Повідомлення про результат послуги буде спрямоване на Ваш e-mail.&lt;/p&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}&lt;br&gt;
+${sPhoneOrgan}&lt;br&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -174,8 +178,8 @@ ${sNameOrgan}&lt;br&gt;
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/berdichev/berdichiv_cnap_409_print.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sShapka409" name="Шапка заяви" type="invisible" default="Заступнику міського голови &lt;br&gt; _________________"></activiti:formProperty>
-        <activiti:formProperty id="sPlase409" name="Назва міськвиконкому" type="invisible" default="Бердичівському міськвиконкомі"></activiti:formProperty>
+        <activiti:formProperty id="sShapka409" name="Шапка заяви" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPlase409" name="Назва міськвиконкому" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -209,11 +213,11 @@ ${sNameOrgan}&lt;br&gt;
 &lt;p&gt;Ваше звернення щодо надання довідки про перебування на квартирному обліку при міськвиконкомі за місцем проживання - опрацьовано. &lt;br&gt;
 Ви можете отримати довідку особисто за адресою:&lt;br&gt;
 ${sAddress}&lt;br&gt;
-Часи роботи:
 ${sWorkTime}&lt;br&gt;
 При собі треба мати документ, що посвідчує особу.
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}&lt;br&gt;
+${sPhoneOrgan}&lt;br&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]</activiti:expression>

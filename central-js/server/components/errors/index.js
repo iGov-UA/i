@@ -7,15 +7,15 @@ module.exports.codes = {
 };
 
 module.exports.createExternalServiceError = function (error_description, error) {
-  return this.createError(this.codes.EXTERNAL_SERVICE_ERROR, error);
+  return this.createError(this.codes.EXTERNAL_SERVICE_ERROR, error_description, error);
 };
 
 module.exports.createInputParameterError = function (error_description, error) {
-  return this.createError(this.codes.INPUT_PARAMETER_ERROR, error);
+  return this.createError(this.codes.INPUT_PARAMETER_ERROR, error_description, error);
 };
 
 module.exports.createLogicServiceError = function (error_description, error) {
-  return this.createError(this.codes.LOGIC_SERVICE_ERROR, error);
+  return this.createError(this.codes.LOGIC_SERVICE_ERROR, error_description, error);
 };
 
 module.exports.createError = function (code, error_description, error) {

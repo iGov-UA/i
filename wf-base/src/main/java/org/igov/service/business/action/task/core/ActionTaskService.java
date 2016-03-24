@@ -291,24 +291,22 @@ public class ActionTaskService {
             return "";
         }
         String sTableStyle;
-        sTableStyle = "<style>table.QuestionFields"
+        sTableStyle = "<style>table"
                 + " { border-collapse: collapse;"
                 + " width: 100%;"
-                + " margin:0 auto;}"
-                + " table.QuestionFields th,td {"
+                + " max-width: 800px;}"
+                + " table td {"
                 + " border: 1px solid #ddd;"
                 + " text-align:left;"
                 + " padding: 4px;"
-                + " height:35px;}"
-                + " table.QuestionFields th {"
+                + " height:40px;}"
+                + " table th {"
                 + " background: #65ABD0;"
-                + " height: 40px;"
-                + " vertical-align: midle;"
-                + " padding: 0;"
+                + " vertical-align: middle;"
+                + " padding: 10px;"
                 + " width:200px;"
                 + " text-align:left;"
                 + " color:#fff;"
-                + " padding-left:10px;"
                 + " }"
                 + "</style>";
         //StringBuilder tableStr = new StringBuilder("Поле \t/ Тип \t/ Поточне значення\n");
@@ -320,7 +318,7 @@ public class ActionTaskService {
         JSONArray aField = oFields.getJSONArray("soData");
         StringBuilder osTable = new StringBuilder();
         osTable.append(sTableStyle);
-        osTable.append("<table class=\"QuestionFields\">");
+        osTable.append("<table>");
         osTable.append("<tr>");
         osTable.append("<th>").append("Поле").append("</th>");
         if(bNew){
@@ -731,6 +729,7 @@ public class ActionTaskService {
         String res = currentRow;
         for (Map.Entry<String, Object> property : data.entrySet()) {
             LOG.info(String.format("Matching property %s:%s with fieldNames", property.getKey(), property.getValue()));
+            //LOG.info("!!!!!!!!!!data: " + data);
             if (currentRow != null && res.contains("${" + property.getKey() + "}")) {
                 LOG.info(String.format("Found field with id %s in the pattern. Adding value to the result", "${" + property.getKey() + "}"));
                 if (property.getValue() != null) {
@@ -749,7 +748,8 @@ public class ActionTaskService {
     private String replaceFormProperties(String currentRow, TaskFormData data) {
         String res = currentRow;
         for (FormProperty property : data.getFormProperties()) {
-            LOG.info(String.format("Matching property %s:%s:%s with fieldNames", property.getId(), property.getName(), property.getType().getName()));
+            LOG.info(String.format("Matching property %s %s %s with fieldNames", property.getId(), property.getName(), property.getType().getName()));
+            //LOG.info("!!!!!!!!!!getId: " + property.getId() + " getName: " + property.getName() + " getType: " +  property.getType().getName() + " getValue: " +  property.getValue() + "!");
             if (currentRow != null && res.contains("${" + property.getId() + "}")) {
                 LOG.info(String.format("Found field with id %s in the pattern. Adding value to the result", "${" + property.getId() + "}"));
                 String sValue = getPropertyValue(property);
@@ -901,7 +901,7 @@ public class ActionTaskService {
     private String getPropertyValue(FormProperty property) {
         String sValue;
         String sType = property.getType().getName();
-        LOG.info("(sType={})", sType);
+        LOG.info("getId:" + property.getId() + " getName: " + property.getName() + " getType: " + sType + " getValue: " + property.getValue());
         if ("enum".equalsIgnoreCase(sType)) {
             sValue = parseEnumProperty(property);
         } else {

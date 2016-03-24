@@ -50,7 +50,6 @@
         <activiti:formProperty id="file7" name="Документ, який засвідчує настання підстави для переоформлення документу дозвільного характеру;(зміна найменування суб'єкта господарювання - юридичної особи або прізвища, імені, по-батькові фізисної особи - підприємця, зміна місцезнаходження суб'єкта господарювання та інші підстави, встановлені Законом)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file8" name="Бланк документу дозвільного характеру, який непридатний для використання" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file9" name="Документ дозвільного характеру, який підлягає анулюванню" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nArea" name="Регион" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
@@ -62,7 +61,7 @@
         <activiti:formProperty id="substance_3" name="Суть заяви в контексті листа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="term" name="Строк виконання" type="invisible" default="двох місяців з дня реєстрації заяви"></activiti:formProperty>
         <activiti:formProperty id="list_documents" name="Список документів" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="Видача дозволу Дніпро" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;info&quot;,&quot;file1&quot;,&quot;file3&quot;,&quot;file4&quot;,&quot;file5&quot;,&quot;file6&quot;,&quot;file11&quot;,&quot;file12&quot;,&quot;file13&quot;,&quot;file14&quot;,&quot;file15&quot;,&quot;file16&quot;,&quot;file17&quot;,&quot;file18&quot;,&quot;file19&quot;,&quot;file20&quot;,&quot;file21&quot;],&quot;asID_Field&quot;:{&quot;sClient1&quot;:&quot;vibor_service&quot;,&quot;sClient2&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sClient1] == 'issue' &amp;&amp;[sClient2] == 'prav'||[sClient1] == 'issue' &amp;&amp;[sClient2] =='lev'||[sClient1] == 'issue' &amp;&amp;[sClient2] =='dndzT'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="Видача дозволу Дніпро" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;info&quot;,&quot;file1&quot;,&quot;file3&quot;,&quot;file4&quot;,&quot;file5&quot;,&quot;file6&quot;,&quot;file11&quot;,&quot;file12&quot;,&quot;file13&quot;,&quot;file14&quot;,&quot;file15&quot;,&quot;file16&quot;,&quot;file17&quot;,&quot;file18&quot;,&quot;file19&quot;,&quot;file20&quot;,&quot;file21&quot;],&quot;asID_Field&quot;:{&quot;sClient1&quot;:&quot;vibor_service&quot;,&quot;sClient2&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sClient1] == 'issue' &amp;&amp;[sClient2] != 'don_mariupolT'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers6" name="Видача дозволу Маріуполь" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_6&quot;:{&quot;aField_ID&quot;:[&quot;info&quot;,&quot;file1&quot;,&quot;file22&quot;],&quot;asID_Field&quot;:{&quot;sClient1&quot;:&quot;vibor_service&quot;,&quot;sClient2&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sClient1] == 'issue'&amp;&amp; [sClient2]== 'don_mariupolT'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="Переоформлення дозволу" type="markers" default="{&quot;motion&quot; : {&quot;ShowFieldsOnCondition_2&quot; : {&quot;aField_ID&quot; : [&quot;file2&quot;,&quot;file7&quot;],&quot;asID_Field&quot; : {&quot;sClient&quot; : &quot;vibor_service&quot;},&quot;sCondition&quot; : &quot;[sClient] == 'restructuring'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="Видача дублікату дозволу" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_3&quot;: {&quot;aField_ID&quot;: [&quot;file8&quot;],&quot;asID_Field&quot; : {&quot;sClient&quot;: &quot;vibor_service&quot;}, &quot;sCondition&quot; : &quot;[sClient] == 'duplicate'&quot;}}}"></activiti:formProperty>
@@ -81,7 +80,6 @@
     <sequenceFlow id="flow4" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
-var per3 = 'sShapka220'
 var per4 = 'substance'
 var per5 = 'substance_2'
 var per6 = 'substance_3'
@@ -122,7 +120,6 @@ per5 = 'Рішення про анулювання документа дозві
 per6 = 'анулювання'
 per7 = 'п`яти робочих днів з дня реєстрації заяви'
 }
-execution.setVariable('sShapka220', per3)
 execution.setVariable('substance', per4)
 execution.setVariable('substance_2', per5)
 execution.setVariable('substance_3', per6)

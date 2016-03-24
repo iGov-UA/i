@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_cnap_184" name="“Отримання дозвілу/анулювання дозволу/подовження дозволу/повторного надання дозволу/переоформлення дозволу на розміщення зовнішньої реклами" isExecutable="true">
+  <process id="dnepr_cnap_184" name="Отримання, анулювання, подовження або переоформлення дозволу на розміщення зовнішньої реклами" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть центр надання адмінпослуг" type="select" default="0"></activiti:formProperty>
@@ -9,11 +9,11 @@
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="Ідентифікаційний номер фізичної особи" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорту" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорту" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="bankIdAddress" name="Адреса реєстрації" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asSubect" name="Оберіть суб'єкт підприємницької діяльності" type="enum" required="true">
           <activiti:value id="fiz" name="фізична особа-підприємець"></activiti:value>
-          <activiti:value id="ur" name="юрідична особа"></activiti:value>
+          <activiti:value id="ur" name="юридична особа"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="date_today" name="Укажіть сьогоднішню дату" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
@@ -47,7 +47,10 @@
         <activiti:formProperty id="nFile_Advert" name="Ескіз рекламного засобу з конструктивним рішенням" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_Roztashuvannya_M1_500" name="Топогеодезичні матеріали зйомки місцевості з прив'язкою місця розташування наземної рекламної конструкції (М 1:500)" type="file" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_AdvertLicense" name="Копія виписки з єдиного державного реєстру юридичних осіб та фізичних осіб" type="file" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_PravoVlasnist" name="Копія документу, що підтверджує право власності на об’єкт, де буде розміщена реклама (якщо це приватна власність)" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="nFile_Original_Dozvolu" name="Оригінал попереднього дозволу" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFile_Dogovor" name="Завантажте шаблон Договору пріоритету на місце розташування" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFile_Rekvizity" name="Завантажте рахунок на оплату за тимчасове користування місцем розташування рекламного засобу згідно Договору пріоритету" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="sClerkPost" name="пошта оргструктури (району)" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sShapka_dozvil_na_reklamu_184" name="Керівнику якого робочого органу" type="invisible" default="Начальнику управління архітектури та містобудування – головному архітектору міста"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адрес оргструктури (району)" type="invisible"></activiti:formProperty>
@@ -104,8 +107,8 @@
         <activiti:formProperty id="workPhone" name="Телефон юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sReestr_numb" name="Реєстраційний номер" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sDate_Reestr" name="Укажіть дату реєстрації звернення" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sShapka_dozvil_na_reklamu_184" name="Керівнику якого робочого органу" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPib_Admin" name="Прізвище та ініціали адміністратора" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sShapka_dozvil_na_reklamu_184" name="Керівнику якого робочого органу" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="asEnum_decision_1" name="Прийняття рішення про надання послуги" type="enum" required="true">
           <activiti:value id="accept" name="Заповнені дані вірні, інформація направлена на розгляд, очікується рішення"></activiti:value>
           <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
@@ -122,7 +125,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${nFile_PlacePhoto},${nFile_Advert},${nFile_Roztashuvannya_M1_500},${nFile_AdvertLicense},${nFile_Original_Dozvolu},${form_signed}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport},${nFile_PlacePhoto},${nFile_Advert},${nFile_Roztashuvannya_M1_500},${nFile_AdvertLicense},${nFile_PravoVlasnist},${nFile_Original_Dozvolu},${form_signed}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -169,9 +172,9 @@
         <activiti:formProperty id="sAdres_1" name="Місцезнаходження юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="workPhone" name="Телефон юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sReestr_numb" name="Реєстраційний номер" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sShapka_dozvil_na_reklamu_184" name="Керівнику якого робочого органу" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDate_Reestr" name="Укажіть дату реєстрації звернення" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPib_Admin" name="Прізвище та ініціали адміністратора" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sShapka_dozvil_na_reklamu_184" name="Керівнику якого робочого органу" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="asEnum_decision_2" name="Результат рішення" type="enum" required="true">
           <activiti:value id="decision_2_1" name="дозвіл надано"></activiti:value>
           <activiti:value id="decision_2_2" name="відмовлено у наданні дозволу"></activiti:value>
@@ -193,7 +196,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${nFile_PlacePhoto},${nFile_Advert},${nFile_Roztashuvannya_M1_500},${nFile_AdvertLicense},${nFile_Original_Dozvolu},${form_signed}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport},${nFile_PlacePhoto},${nFile_Advert},${nFile_Roztashuvannya_M1_500},${nFile_AdvertLicense},${nFile_PravoVlasnist},${nFile_Original_Dozvolu},${form_signed}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -240,9 +243,9 @@
         <activiti:formProperty id="sAdres_1" name="Місцезнаходження юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="workPhone" name="Телефон юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sReestr_numb" name="Реєстраційний номер" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sShapka_dozvil_na_reklamu_184" name="Керівнику якого робочого органу" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDate_Reestr" name="Укажіть дату реєстрації звернення" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPib_Admin" name="Прізвище та ініціали адміністратора" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sShapka_dozvil_na_reklamu_184" name="Керівнику якого робочого органу" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="asEnum_decision_2" name="Результат рішення" type="enum" required="true">
           <activiti:value id="decision_2_1" name="дозвіл надано"></activiti:value>
           <activiti:value id="decision_2_2" name="відмовлено у наданні дозволу"></activiti:value>
@@ -266,7 +269,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${nFile_PlacePhoto},${nFile_Advert},${nFile_Roztashuvannya_M1_500},${nFile_AdvertLicense},${nFile_Original_Dozvolu},${form_signed}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport},${nFile_PlacePhoto},${nFile_Advert},${nFile_Roztashuvannya_M1_500},${nFile_AdvertLicense},${nFile_PravoVlasnist},${nFile_Original_Dozvolu},${form_signed}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -277,7 +280,7 @@
           <activiti:expression>${sClerkPost}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове звернення на тему: Дозвіл на розміщення зовнішньої реклами]]></activiti:string>
+          <activiti:string><![CDATA[Нове звернення на тему: Отримання, анулювання, подовження або переоформлення дозволу на розміщення зовнішньої реклами]]></activiti:string>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -297,7 +300,7 @@
           <activiti:expression>"${email}"</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: дозвіл на розміщення зовнішньої реклами]]></activiti:string>
+          <activiti:string><![CDATA[Зареєстровано звернення на тему: Отримання, анулювання, подовження або переоформлення дозволу на розміщення зовнішньої реклами]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${PrintForm_1}</activiti:expression>
@@ -328,7 +331,7 @@ ${sAddress}&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Дозвіл на розміщення зовнішньої реклами]]></activiti:string>
+          <activiti:string><![CDATA[Відхилено звернення на тему: Отримання, анулювання, подовження або переоформлення дозволу на розміщення зовнішньої реклами]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -354,7 +357,7 @@ ${sAddress}&lt;br /&gt;
           <activiti:expression>"${email}"</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: дозвіл на розміщення зовнішньої реклами]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Отримання, анулювання, подовження або переоформлення дозволу на розміщення зовнішньої реклами]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${nFile_Rishen},${nFile_Dogovor},${nFile_Rekvizity},${PrintForm_1}</activiti:expression>
@@ -439,7 +442,7 @@ if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'mvk_lug_Novopskovsk
 per6 = "8. Топогеодезичні матеріали зйомки місцевості з прив'язкою місця розташування наземної рекламної конструкції (М 1:500)"
 }	
 if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'zhvodT'){ 
-per6 = per6 + "\n Додатково Вам потрібно \n 1. Заповнити та підписати Договор пріоритету на місце розташування, шаблон якого Вам надіслано у цьому email. \n  2. Оплатити рахунок на оплату за тимчасове користування місцем розташування рекламного засобу згідно Договору пріоритету та отсканувати сфотографувати відповідну квітанцію про сплату. \n  Після сканування підписаного договору та квітанції про оплату перейти до наступного етапу (реєстрації документів) за посиланням https://igov.org.ua/service/15/general "
+per6 = per6 + "&lt;br /&gt; Додатково Вам потрібно &lt;br /&gt;1. Заповнити та підписати Договор пріоритету на місце розташування, шаблон якого Вам надіслано у цьому email. &lt;br /&gt; 2. Оплатити рахунок на оплату за тимчасове користування місцем розташування рекламного засобу згідно Договору пріоритету та отсканувати сфотографувати відповідну квітанцію про сплату. &lt;br /&gt; Після сканування підписаного договору та квітанції про оплату перейти до наступного етапу (реєстрації документів) за посиланням https://igov.org.ua/service/1484/general"
 }		
 execution.setVariable('sLetter', per5)
 execution.setVariable('sAddPrintSpisok', per6)
@@ -474,7 +477,7 @@ execution.setVariable('sAddPrintSpisok', per6)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове звернення на тему: дозвіл на розміщення зовнішньої реклами]]></activiti:string>
+          <activiti:string><![CDATA[Нове звернення на тему: Отримання, анулювання, подовження або переоформлення дозволу на розміщення зовнішньої реклами]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]

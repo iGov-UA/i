@@ -42,182 +42,6 @@
         <activiti:formProperty id="sDistr" name="Район" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <serviceTask id="servicetask0" name="Відправка документу в УкрДок" activiti:delegateExpression="#{CreateDocument_UkrDoc}" >
-      <extensionElements>
-        <activiti:field name="sLoginAuthor">
-          <activiti:string><![CDATA[EO180277SMV]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="sHead">
-          <activiti:expression>Передача у власність земельної ділянки</activiti:expression>
-        </activiti:field>
-        <activiti:field name="sBody">
-          <activiti:expression>&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;head lang="ru"&gt;
-    &lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /&gt;
-    &lt;title&gt;Передача у власність земельної ділянки&lt;/title&gt;
-        &lt;style type="text/css"&gt;
-        html, body {margin: 0; padding: 0; height: 100%; font: 400 16px/16px 'Times New Roman';}
-
-.print_wrap {width: 705px; padding: 35px 25px 85px 35px; min-height: 100%; height: 100%; margin: 0 auto;}
-
-.ta-r {text-align: right !important;}
-.ta-l {text-align: left !important;}
-.ta-c {text-align: center !important;}
-
-.ti-15 {text-indent: 25px;}
-
-.p-right {float: right;}
-.p-left {float: left;}
-
-.xs-font {font-size: 16px; line-height: 18px;}
-.xs-font p {font-size: 16px;}
-.xs-font span {font-size: 16px;}
-
-.fw {width: 100%;}
-
-.w350 {width: 350px;}
-.w225 {width: 225px;}
-.w145 {width: 145px;}
-.w185 {width: 185px;}
-.w101 {width: 101px;}
-.w130 {width: 130px;}
-.w135 {width: 135px;}
-.w265 {width: 265px;}
-.w365 {width: 365px;}
-.w500 {width: 500px;}
-
-.b-t-0 {border-top: 0 !important;}
-.b-l-0 {border-left: 0 !important;}
-.b-r-0 {border-right: 0 !important;}
-.b-b-0 {border-bottom: 0 !important;}
-
-.hint-l-220 &gt; span {margin-left: 220px !important;}
-
-.h10 {height: 12px;}
-
-.m-t-15 {margin-top: 15px !important;}
-.m-t-25 {margin-top: 25px !important;}
-.m-t-85 {margin-top: 85px !important;}
-.m-r-12 {margin-right: 12px !important;}
-.m-l-65 {margin-left: 65px !important;}
-.m-l-120 {margin-left: 120px !important;}
-.m-l-180 {margin-left: 180px !important;}
-.m-l-250 {margin-left: 250px !important;}
-.m-l-300 {margin-left: 300px !important;}
-.m-l-380 {margin-left: 380px !important;}
-.m-t-unt {margin-top: -1px !important;}
-.m-clear {margin: 0 !important;}
-.p-clear {padding: 0 !important;}
-
-.gtp {top: -21px;}
-
-@media screen and (-webkit-min-device-pixel-ratio:0) {
-    .wb-fix {width: 135px;}
-}
-
-.line_col {}
-.under_field {height: 20px; margin: 0 0 20px 0; border-bottom: 1px solid black; position: relative; display: inline-block; clear: both;}
-.under_field &gt; i {font-style: normal;}
-.under_field &gt; span {position: absolute; left: 0; right: 0; text-align: center; color: #606060; bottom: -20px; font-size: 12px;}
-
-.under_field_line {height: 20px; margin: 0 0 15px 0; padding: 0 0 0 0; border-bottom: 1px solid black; position: relative; display: block;}
-.under_field_line.right_side {float: right;}
-.under_field_line &gt; i {height: 21px; padding: 0 5px 0 0; background: white; display: inline-block; position: relative; left: 0; font-style: normal;}
-.under_field_line &gt; span {position: absolute; left: 0; right: 0; text-align: center; color: #606060; bottom: -16px; font-size: 12px;}
-
-.wub {min-height: 20px; height: auto; border: 0; margin: 5px 0 0 0;}
-
-.month-fl {width: 225px; float: right; height: 21px; padding: 0 5px 0 10px; background: white; text-align: right;}
-.month-fl.left {float: left; padding: 0 5px 0 0;}
-.month-fl &gt; span {height: 20px; margin: 0 5px 0 0; border-bottom: 1px solid black; display: inline-block;}
-.month-fl &gt; span:nth-child(1) {width: 35px;}
-.month-fl &gt; span:nth-child(2) {width: 120px;}
-.month-fl &gt; span:nth-child(3) {width: 40px;}
-
-table.zit_v-form {border-top: 1px solid black; border-bottom: 1px solid black; border-collapse: collapse; margin: 15px 0;}
-table.zit_v-form tr td {border-bottom: 1px solid black; padding: 3px 6px;}
-table.zit_v-form tr td:nth-child(1) {border-right: 1px solid black;}
-table.zit_v-form tr td:nth-child(2) {border-right: 1px solid black;}
-table.zit_v-form tr td:nth-child(3) {border-right: 1px solid black;}
-
-table.zit_v-form2 {width: 700px; border-collapse: collapse;}
-table.zit_v-form2 tr td {border: 1px solid black; padding: 3px 8px;}
-
-.zit_v-form2--inner {border-collapse: collapse; border: 0;}
-
-.date_subm { margin: 20px 0 25px 0;}
-.date_subm .month-fl-sm {float: left;}
-.date_subm.invert .month-fl-sm {float: right;}
-.date_subm .month-fl-sm &gt; span {height: 20px; margin: 0 5px 0 0; border-bottom: 1px solid black; display: inline-block;}
-.date_subm .month-fl-sm &gt; span:nth-child(1) {width: 45px;}
-.date_subm .month-fl-sm &gt; span:nth-child(2) {width: 120px;}
-.date_subm .month-fl-sm &gt; span:nth-child(3) {width: 20px;}
-.date_subm .signature {width: 180px; height: 20px; float: right; border-bottom: 1px solid black; position: relative;}
-.date_subm.invert .signature {float: left;}
-.date_subm .signature &gt; span {position: absolute; left: 0; right: 0; text-align: center; color: #606060; bottom: -20px; font-size: 12px;}
-
-p {font-size: 14px;}
-
-.clear {clear: both;}
-&lt;/style&gt;
-&lt;/head&gt;
-&lt;body&gt;
-&lt;section class="print_wrap"&gt;
-    &lt;div class="w365 line_col ta-l p-right xs-font"&gt;
-        &lt;p&gt;&lt;b&gt;Міському голові&lt;/b&gt;&lt;/p&gt;
-        &lt;p&gt;&lt;b&gt;Філатову Б. А.&lt;/b&gt;&lt;/p&gt;
-        &lt;p &gt;${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;/p&gt;
-        &lt;p&gt;&lt;b&gt;Який (яка) мешкає (зареєстровано) за адресою:&lt;/b&gt;&lt;/p&gt;
-        &lt;p&gt;${sAdress}&lt;/p&gt;
-        &lt;p&gt;телефон: ${phone}&lt;/p&gt;
-    &lt;/div&gt;
-    &lt;div class="clear"&gt;&lt;/div&gt;
-    &lt;div class="line_col ta-c m-t-25"&gt;
-        &lt;b&gt;К л о п о т а н н я&lt;/b&gt;
-        &lt;/div&gt;
-        &lt;div class="under_field_line wub ta-l"&gt;Відповідно до ст.ст. 118, 120,121 Земельного кодексу України, прошу передати мені у власність безоплатно земельну ділянку, площею ${sSquare} га, яка розташована у м. Дніпропетровську, в ${sDistr} районі за адресою: ${sAdress2}.&lt;br&gt;
-        Зазначена ділянка сформована, кадастровий номер ${landNumb}.&lt;br&gt;
-        На ділянці розміщено – ${sListBuild}, які належать мені на праві власності.&lt;br&gt;
-        Цільове використання земельної ділянки – ${sPurpose}.&lt;br&gt;
-        Окремо ставлю до відома, що на території України земельних ділянок з цільовим призначенням (обслуговування жилого будинку господарських будівель і споруд) безоплатно у власність не отримував(ла).&lt;br&gt;
-        Також повідомляю, що несу особисту відповідальність за достовірність наданої інформації та документів, що її підтверджують, а також за будь-які наслідків, до яких може призвести її використання.&lt;br&gt;
-        Відповідно до Закону України "Про захист персональних даних" від 01.06.2010 № 2297-VI даю згоду на обробку моїх персональних даних з первинних джерел (паспортні дані, ідентифікаційний код, відомості з виданих на моє ім'я документів, з підписаних мною документів та ін.), відомостей, які надаю про себе. Зобов'язуюсь при зміні моїх персональних даних надавати у найкоротший термін відповідним службам уточнену інформацію та подавати оригінали відповідних документів.&lt;br&gt;&lt;br&gt;
-        &lt;b&gt;До клопотання додаються копії:&lt;/b&gt;
-        &lt;ul&gt;
-           &lt;li&gt;паспорта громадянина України;&lt;/li&gt;
-           &lt;li&gt;довідки про присвоєння ідентифікаційного номера;&lt;/li&gt;
-           &lt;li&gt;документ, що підтверджує наявність відомостей про земельну ділянку у Державному земельному кадастрі та містить дані про площу земельної ділянки, цільове призначення, обмеження у використанні, склад земельних угідь та інші відомості - витяг з Державного земельного кадастру про земельну ділянку;&lt;/li&gt;
-           &lt;li&gt;правовстановлюючих документів, що свідчать про державну реєстрацію права власності на нерухоме майно;&lt;/li&gt;
-           &lt;li&gt;технічного паспорта на об’єкт нерухомого майна;&lt;/li&gt;
-           &lt;li&gt;довідки з Державного земельного кадастру про наявність у Державному земельному кадастрі відомостей про отримання у власність земельної ділянки в межах норм безоплатної приватизації за певним видом її цільового призначення (використання);&lt;/li&gt;
-           &lt;li&gt;технічних матеріалів та документів, що підтверджують розмір земельної ділянки;&lt;/li&gt;
-           &lt;li&gt;довіреність, на підставі якої інтереси заявника представляє його уповноважена особа, або її копія, засвідчена у встановленому порядку (якщо клопотання подається представником).&lt;/li&gt;
-        &lt;/ul&gt;
-		&lt;/div&gt;
-        &lt;div class="date_subm m-t-85"&gt;
-                &lt;div class="signature m-l-120"&gt;&lt;span&gt;&lt;/span&gt;&lt;/div&gt;
-		&lt;!--&lt;div class="signature m-l-120"&gt;[sClFio]&lt;span&gt;(П.І.Б)&lt;/span&gt;&lt;/div&gt;--&gt;
-		&lt;div class="signature"&gt;&lt;span&gt;&lt;/span&gt;&lt;/div&gt;
-		&lt;div class="clear"&gt;&lt;/div&gt;
-	&lt;/div&gt;
-    &lt;div class="clear"&gt;&lt;/div&gt;
-&lt;/section&gt;
-&lt;/body&gt;
-&lt;/html&gt;</activiti:expression>
-        </activiti:field>
-        <activiti:field name="nID_Pattern">
-          <activiti:expression>10677</activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
-    <serviceTask id="servicetask10" name="Отриманная інформації з УкрДок" activiti:delegateExpression="#{GetDocument_UkrDoc}">
-      <extensionElements>
-        <activiti:field name="sID_Document">
-          <activiti:expression>${sID_Document_UkrDoc}</activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
     <serviceTask id="servicetask2" name="Повідомлення чиновника про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -294,16 +118,15 @@ p {font-size: 14px;}
         <activiti:formProperty id="sStatusName_UkrDoc" name="Status UkrDoc" type="string"></activiti:formProperty>
         <activiti:formProperty id="sHead_Document_UkrDoc" name="Status UkrDoc" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody_Document_UkrDoc" name="Status UkrDoc" type="invisible"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="assignment" delegateExpression="${CreateDocument_UkrDoc}">
-        <activiti:field name="sLoginAuthor">
-          <activiti:string><![CDATA[EO180277SMV]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="sHead">
-          <activiti:expression>Передача у власність земельної ділянки</activiti:expression>
-        </activiti:field>
-        <activiti:field name="sBody">
-          <activiti:expression>&lt;!DOCTYPE html&gt;
+        <activiti:taskListener event="create" delegateExpression="${CreateDocument_UkrDoc}">
+          <activiti:field name="sLoginAuthor">
+            <activiti:string><![CDATA[EO180277SMV]]></activiti:string>
+          </activiti:field>
+          <activiti:field name="sHead">
+            <activiti:expression>Передача у власність земельної ділянки</activiti:expression>
+          </activiti:field>
+          <activiti:field name="sBody">
+            <activiti:expression>&lt;!DOCTYPE html&gt;
 &lt;html&gt;
 &lt;head lang="ru"&gt;
     &lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /&gt;
@@ -457,10 +280,10 @@ p {font-size: 14px;}
 &lt;/section&gt;
 &lt;/body&gt;
 &lt;/html&gt;</activiti:expression>
-        </activiti:field>
-        <activiti:field name="nID_Pattern">
-          <activiti:expression>10677</activiti:expression>
-        </activiti:field>
+          </activiti:field>
+          <activiti:field name="nID_Pattern">
+            <activiti:expression>10677</activiti:expression>
+          </activiti:field>
         </activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -497,7 +320,7 @@ p {font-size: 14px;}
     <sequenceFlow id="flow14" sourceRef="servicetask6" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow16" sourceRef="servicetask3" targetRef="usertask2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow18" sourceRef="servicetask10" targetRef="servicetask6">
+    <sequenceFlow id="flow18" sourceRef="usertask3" targetRef="servicetask6">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sStatusName_UkrDoc == 'Исполнен'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask7" name="Відповідь з відмовою" activiti:delegateExpression="#{MailTaskWithAttachments}">
@@ -562,34 +385,57 @@ per1 = 'Самарському'
 execution.setVariable('sDistr', per1)</script>
     </scriptTask>
     <sequenceFlow id="flow27" sourceRef="usertask2" targetRef="exclusivegateway1"></sequenceFlow>
-    <sequenceFlow id="flow28" name="Исполнен" sourceRef="exclusivegateway1" targetRef="servicetask10">
+    <sequenceFlow id="flow28" name="Исполнен" sourceRef="exclusivegateway1" targetRef="usertask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sStatusName_UkrDoc == 'Исполнен'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow29" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
-    <serviceTask id="servicetask11" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}">
-     <extensionElements>
-    		<activiti:executionListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:executionListener>
-      </extensionElements>
-    </serviceTask>
+    <serviceTask id="servicetask11" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <boundaryEvent id="boundaryerror2" name="Error" attachedToRef="servicetask11">
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>
     <endEvent id="endevent5" name="End"></endEvent>
     <sequenceFlow id="flow30" sourceRef="boundaryerror2" targetRef="endevent5"></sequenceFlow>
-    <sequenceFlow id="flow31" sourceRef="servicetask0" targetRef="servicetask2"></sequenceFlow>
     <sequenceFlow id="flow32" sourceRef="scripttask1" targetRef="servicetask11"></sequenceFlow>
-    <sequenceFlow id="flow33" sourceRef="servicetask11" targetRef="servicetask0"></sequenceFlow>
+    <sequenceFlow id="flow33" sourceRef="servicetask11" targetRef="servicetask2"></sequenceFlow>
+    <userTask id="usertask3" name="Отриманная інформації з УкрДок">
+      <extensionElements>
+        <activiti:formProperty id="sClFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdress" name="Адреса реєстрації заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSquare" name="Площа, га" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDistrict" name="Район в якому розташована земельна ділянка" type="enum" writable="false">
+          <activiti:value id="and" name="Амур-Нижньодніпровському"></activiti:value>
+          <activiti:value id="bab" name="Шевченківському (Бабушкінському)"></activiti:value>
+          <activiti:value id="zhovt" name="Соборному (Жовтневому)"></activiti:value>
+          <activiti:value id="indust" name="Індустріальному"></activiti:value>
+          <activiti:value id="kirov" name="Центральному (Кіровському)"></activiti:value>
+          <activiti:value id="krasn" name="Чечелівському (Красногвардійському)"></activiti:value>
+          <activiti:value id="lenin" name="Новокодацькому (Ленінському)"></activiti:value>
+          <activiti:value id="samar" name="Самарському"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sAdress2" name="Адреса земельної ділянки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="landNumb" name="Кадастровий номер" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sListBuild" name="На ділянці розміщено" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPurpose" name="Цільове призначення ділянки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Document_UkrDoc" name="Number UkrDoc" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sStatusName_UkrDoc" name="Status UkrDoc" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sHead_Document_UkrDoc" name="Status UkrDoc" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sBody_Document_UkrDoc" name="Status UkrDoc" type="invisible"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="#{GetDocument_UkrDoc}">
+          <activiti:field name="sID_Document">
+            <activiti:expression>${sID_Document_UkrDoc}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__test_UKR_DOC">
     <bpmndi:BPMNPlane bpmnElement="_test_UKR_DOC" id="BPMNPlane__test_UKR_DOC">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="312.0" y="50.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask0" id="BPMNShape_servicetask0">
-        <omgdc:Bounds height="71.0" width="105.0" x="680.0" y="32.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask10" id="BPMNShape_servicetask10">
-        <omgdc:Bounds height="71.0" width="105.0" x="270.0" y="333.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="72.0" width="105.0" x="470.0" y="172.0"></omgdc:Bounds>
@@ -627,6 +473,9 @@ execution.setVariable('sDistr', per1)</script>
       <bpmndi:BPMNShape bpmnElement="endevent5" id="BPMNShape_endevent5">
         <omgdc:Bounds height="35.0" width="35.0" x="575.0" y="-10.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
+        <omgdc:Bounds height="66.0" width="105.0" x="277.0" y="338.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="575.0" y="208.0"></omgdi:waypoint>
         <omgdi:waypoint x="600.0" y="208.0"></omgdi:waypoint>
@@ -640,7 +489,7 @@ execution.setVariable('sDistr', per1)</script>
         <omgdi:waypoint x="652.0" y="330.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
-        <omgdi:waypoint x="270.0" y="368.0"></omgdi:waypoint>
+        <omgdi:waypoint x="277.0" y="371.0"></omgdi:waypoint>
         <omgdi:waypoint x="209.0" y="369.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
@@ -658,7 +507,7 @@ execution.setVariable('sDistr', per1)</script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
         <omgdi:waypoint x="490.0" y="370.0"></omgdi:waypoint>
-        <omgdi:waypoint x="375.0" y="368.0"></omgdi:waypoint>
+        <omgdi:waypoint x="382.0" y="371.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="14.0" width="51.0" x="392.0" y="351.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
@@ -671,19 +520,13 @@ execution.setVariable('sDistr', per1)</script>
         <omgdi:waypoint x="630.0" y="39.0"></omgdi:waypoint>
         <omgdi:waypoint x="592.0" y="25.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
-        <omgdi:waypoint x="732.0" y="103.0"></omgdi:waypoint>
-        <omgdi:waypoint x="731.0" y="133.0"></omgdi:waypoint>
-        <omgdi:waypoint x="522.0" y="133.0"></omgdi:waypoint>
-        <omgdi:waypoint x="522.0" y="172.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
         <omgdi:waypoint x="479.0" y="67.0"></omgdi:waypoint>
         <omgdi:waypoint x="540.0" y="67.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
-        <omgdi:waypoint x="645.0" y="67.0"></omgdi:waypoint>
-        <omgdi:waypoint x="680.0" y="67.0"></omgdi:waypoint>
+        <omgdi:waypoint x="592.0" y="101.0"></omgdi:waypoint>
+        <omgdi:waypoint x="522.0" y="172.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
