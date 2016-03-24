@@ -25,7 +25,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 
 @Component("GetDocument_UkrDoc")
-public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListener, JavaDelegate {
+public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListener {
 
     private final static Logger LOG = LoggerFactory.getLogger(GetDocument_UkrDoc.class);
 
@@ -104,10 +104,5 @@ public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListene
 
             }
         }
-    }
-
-    @Override
-    public void execute(DelegateExecution de) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

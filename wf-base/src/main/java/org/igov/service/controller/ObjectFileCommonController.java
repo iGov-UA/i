@@ -92,6 +92,7 @@ public class ObjectFileCommonController {
             @RequestParam(required = true, value = "file") MultipartFile file)
             throws FileServiceIOException {
         try {
+            LOG.info("file.getContentType: " + file.getContentType());
             String key = oBytesDataInmemoryStorage.putBytes(AbstractModelTask
                     .multipartFileToByteArray(file, file.getOriginalFilename())
                     .toByteArray());
