@@ -45,10 +45,10 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:string><![CDATA[${sMailClerk}]]></activiti:string>
+          <activiti:expression>${sMailClerk}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нова заявка на видачу паспорту прив’язки тимчасової споруди]]></activiti:string>
+          <activiti:string><![CDATA[Видача паспорту прив’язки тимчасової споруди, продовження терміну його дії чи внесення до нього змін]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
@@ -68,15 +68,18 @@
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
-<p> Ваше звернення щодо видачі паспорту прив’язки тимчасової споруди прийнято до роботи.
-Повідомлення про результат розгляду буде спрямоване на Ваш e-mail.</p>
-<br />
-За наявності питянь можете звернутись за телефоном: ${sPhoneOrgan}.<br />
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}.<br />
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+			<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+			<p> Ваше звернення щодо видачі паспорту прив’язки тимчасової споруди прийнято до роботи.
+			Повідомлення про результат розгляду буде спрямоване на Ваш e-mail.</p>
+			<br />
+			За наявності питянь можете звернутись за наступними контактами<br>
+			<b>Адреса:</b> ${sAddress}<br>
+			<b>Графік роботи:</b> ${sWorkTime}<br>
+			<b>Телефон:</b> ${sPhoneOrgan}<br><br>
+			[pattern/mail/_common_signature_start.html]
+			${sNameOrgan}.<br />
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -124,20 +127,13 @@ ${sNameOrgan}.<br />
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:string><![CDATA[akylish88@gmail.com]]></activiti:string>
+        	<activiti:expression>${sArhitekture_post}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Заявка на видачу паспорту прив’язки тимчасової споруди]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<strong>Шановний(-а) колего!</strong><br /><br />
-У Вас в черзі на обробку нове звернення на видачу паспорту прив’язки тимчасової споруди.<br />
-Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}<br />
-${sSubzvern}<br />
-Опрацюйте це звернення на <a href="https://region.igov.org.ua" target="_blank">порталі</a>
-[pattern/mail/_common_signature.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -150,22 +146,25 @@ ${sSubzvern}<br />
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Заявка на видачу паспорту прив’язки тимчасової споруди]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
-<p> ЦНАП розглянув ваше звернення. Документи вірні. Відомості передані до міської ради.
-Повідомлення про результат розгляду в міській раді буде спрямоване на Ваш e-mail.</p>
-<br />
-За наявності питянь можете звернутись за телефоном: ${sPhoneOrgan}.<br />
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}.<br />
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+			<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+			<p> ЦНАП розглянув ваше звернення. Документи вірні. Відомості передані до міської ради.
+			Повідомлення про результат розгляду в міській раді буде спрямоване на Ваш e-mail.</p>
+			<br>
+			За наявності питянь можете звернутись за наступними контактами<br>
+			<b>Адреса:</b> ${sAddress}<br>
+			<b>Графік роботи:</b> ${sWorkTime}<br>
+			<b>Телефон:</b> ${sPhoneOrgan}<br><br>
+			[pattern/mail/_common_signature_start.html]
+			${sNameOrgan}.<br />
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -221,15 +220,18 @@ ${sNameOrgan}.<br />
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
-<p> Ваше звернення щодо видачі паспорту прив’язки тимчасової споруди розглянуте. В видачі документу відмовлено.
-Причина: ${Komment_rishenia}.</p>
-<br />
-За наявності питянь можете звернутись за телефоном: ${sPhoneOrgan}.<br />
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}.<br />
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+			<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+			<p> Ваше звернення щодо видачі паспорту прив’язки тимчасової споруди розглянуте. В видачі документу відмовлено.
+			Причина: ${Komment_rishenia}.</p>
+			<br />
+			За наявності питянь можете звернутись за наступними контактами<br>
+			<b>Адреса:</b> ${sAddress}<br>
+			<b>Графік роботи:</b> ${sWorkTime}<br>
+			<b>Телефон:</b> ${sPhoneOrgan}<br><br>
+			[pattern/mail/_common_signature_start.html]
+			${sNameOrgan}.<br />
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -251,15 +253,18 @@ ${sNameOrgan}.<br />
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
-<p> Ваше звернення щодо видачі паспорту прив’язки тимчасової споруди розглянуте. В видачі документу відмовлено.
-Причина: ${Komment_rishenia2}.</p>
-<br />
-За наявності питянь можете звернутись за телефоном: ${sPhoneOrgan}.<br />
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}.<br />
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+			<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+			<p>Ваше звернення щодо видачі паспорту прив’язки тимчасової споруди розглянуте. В видачі документу відмовлено.
+			Причина: ${Komment_rishenia2}.</p>
+			<br />
+			За наявності питянь можете звернутись за наступними контактами<br>
+			<b>Адреса:</b> ${sAddress}<br>
+			<b>Графік роботи:</b> ${sWorkTime}<br>
+			<b>Телефон:</b> ${sPhoneOrgan}<br><br>
+			[pattern/mail/_common_signature_start.html]
+			${sNameOrgan}.<br />
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -280,15 +285,16 @@ ${sNameOrgan}.<br />
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
-<p> Ваше звернення щодо видачі паспорту прив’язки тимчасової споруди успішно розглянуте.
-Можете завтра прийти і отримати документ.</p>
-<br />
-За наявності питянь можете звернутись за телефоном: ${sPhoneOrgan}.<br />
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}.<br />
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+			<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+			<p> Ваше звернення щодо видачі паспорту прив’язки тимчасової споруди успішно розглянуте.
+			Можете прийти і отримати документ.</p>
+			<b>Адреса:</b> ${sAddress}<br>
+			<b>Графік роботи:</b> ${sWorkTime}<br>
+			<b>Телефон:</b> ${sPhoneOrgan}<br><br>
+			[pattern/mail/_common_signature_start.html]
+			${sNameOrgan}.<br />
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
