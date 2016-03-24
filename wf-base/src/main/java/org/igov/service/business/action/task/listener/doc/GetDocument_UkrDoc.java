@@ -50,7 +50,7 @@ public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListene
                 generalConfig.sURL_AuthSID_PB() + "?lang=UA");
 
         String[] documentIDs = sID_Document.split(":");
-        if (documentIDs.length > 1) { //почему больше одного?? не ошибка ли это?
+        if (documentIDs.length > 1) {
             String url = String.format("/%s/%s/content", documentIDs[1], documentIDs[0]);
 
             LOG.info("Retrieved session ID:{} and created URL to request: {}", sessionId, url);
@@ -95,12 +95,15 @@ public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListene
                             } catch (Exception ex) {
                                 java.util.logging.Logger.getLogger(GetDocument_UkrDoc.class.getName()).log(Level.SEVERE, null, ex);
                             }
-
                         }
-                        runtimeService.setVariable(execution.getProcessInstanceId(), "anID_Attach_UkrDoc", anID_Attach_UkrDoc.toString());
+                        if(anID_Attach_UkrDoc.length() > 0){
+                            runtimeService.setVariable(execution.getProcessInstanceId(), "anID_Attach_UkrDoc", 
+                                    anID_Attach_UkrDoc.deleteCharAt(anID_Attach_UkrDoc.length() - 1).toString());
+                        }
                     }
                 } catch (Exception ex) {
                     LOG.error("error getFiles: ", ex);
+                    //System.out.println("error getFiles: " + ex.getMessage());
                 }
 
             }
