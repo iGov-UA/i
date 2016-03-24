@@ -12,8 +12,8 @@
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний телефон" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAdditionalPhone" name="Додатковий телефон" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhone" name="Контактний телефон;(у форматі +380ХХХХХХХХХ)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAdditionalPhone" name="Додатковий телефон;(у форматі +380ХХХХХХХХХ)" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string"></activiti:formProperty>
         <activiti:formProperty id="asSpecialStatus" name="Маєте особливий статус" type="enum" required="true">
           <activiti:value id="sEnumStatusYes" name="Так"></activiti:value>
@@ -522,7 +522,8 @@
         <activiti:formProperty id="markers2" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="hideValidateFields3" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common3.json')}"></activiti:formProperty>
         <activiti:formProperty id="sAnswerChannel" name="Канал відповіді" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sEnumTop" name="Енам" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sEnumTop" name="Енам Подтемитіка" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -558,10 +559,10 @@
     <sequenceFlow id="flow3" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <userTask id="usertask1" name="Обробка" activiti:candidateGroups="sales">
       <extensionElements>
-        <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPhone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdditionalPhone" name="Додатковий телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asConsultTr" name="Звернення консультаційного характеру" type="enum">
@@ -1068,14 +1069,14 @@
         <activiti:formProperty id="sRegistrationNumberRGA" name="Реєстраційний номер ОДА" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhoneCall_SubjectContact_Client" name="Телефон, с которого поступил звонок" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAnswerChannel" name="Канал відповіді" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAnswer_UkrDoc" name="Відповідь УкрДок" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAnswer_UkrDoc" name="Відповідь УкрДок" type="string" variable="Відповідь УкрДок"></activiti:formProperty>
         <activiti:formProperty id="nDaysRemain" name="Ориентировочный срок ответа на обращение (дней)" type="long"></activiti:formProperty>
         <activiti:formProperty id="sAnswer" name="Ответ кол-центра" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAnswerStatus" name="Статус ответа" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sEnumTop" name="Енам" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sEnumTop" name="Енам Подтемитіка" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${SendObject_Corezoid}">
           <activiti:field name="soJSON">
-            <activiti:expression>{"sFIO_Subject_Client":"value{[clFio]}","sPhonePrivate_SubjectContact_Client":"value{[phone]}","sPhoneCall_SubjectContact_Client":"value{[sPhoneCall_SubjectContact_Client]}","sID_Order":"[sID_Order]","sDate_Order":"[sDateCreate]","sAddress":"value{[sAdressProbl]}","sCategory":"enum{[asKindTr]}","sType":"enum{[asTypeTr]}","sHead":"enum{[asTopHead]}","sHeadSub":"enum{[sEnumTop]}","sBody":"value{[sReason]}","nDaysRemain":"value{[nDaysRemain]}","sAnswer_UkrDoc":"value{[sAnswer_UkrDoc]}"}</activiti:expression>
+            <activiti:expression>{"sFIO_Subject_Client":"value{[clFio]}","sPhonePrivate_SubjectContact_Client":"value{[sPhone]}","sPhoneCall_SubjectContact_Client":"value{[sPhoneCall_SubjectContact_Client]}","sID_Order":"[sID_Order]","sDate_Order":"[sDateCreate]","sAddress":"value{[sAdressProbl]}","sCategory":"enum{[asKindTr]}","sType":"enum{[asTypeTr]}","sHead":"enum{[asTopHead]}","sHeadSub":"value{[sEnumTop]}","sBody":"value{[sReason]}","nDaysRemain":"value{[nDaysRemain]}","sAnswer_UkrDoc":"value{[sAnswer_UkrDoc]}"}</activiti:expression>
           </activiti:field>
           <activiti:field name="sID_Conveyour">
             <activiti:expression>93682</activiti:expression>
@@ -1085,9 +1086,12 @@
     </userTask>
     <sequenceFlow id="flow4" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var input = execution.getVariable(asTopHead)
-var output = 'asTop'+input
-execution.setVariable('sEnumTop', output)</script>
+      <script>var fio = execution.getVariable('bankIdlastName') + ' ' + execution.getVariable('bankIdfirstName') + ' ' + execution.getVariable('bankIdmiddleName')
+
+var t = 'Ремонт лифта, квартиры, дома'
+
+execution.setVariable('clFio', fio)
+execution.setVariable('sEnumTop', t)</script>
     </scriptTask>
     <sequenceFlow id="flow6" sourceRef="scripttask1" targetRef="servicetask2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
