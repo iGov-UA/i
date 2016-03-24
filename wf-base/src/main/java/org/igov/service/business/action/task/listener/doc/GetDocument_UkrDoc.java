@@ -69,6 +69,7 @@ public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListene
                 String text = (String) ((org.activiti.engine.impl.util.json.JSONObject) content).get("text");
                 runtimeService.setVariable(execution.getProcessInstanceId(), "sBody_Document", text);
                 try {
+                    LOG.info("class: " + ((org.activiti.engine.impl.util.json.JSONObject) content).get("extensions").getClass());
                     List<Map<String, Object>> files = (List<Map<String, Object>>) ((Map) ((org.activiti.engine.impl.util.json.JSONObject) content).get("extensions")).get("files");
 
                     //получение контента файла и прикрипление его в качестве атача к таске
