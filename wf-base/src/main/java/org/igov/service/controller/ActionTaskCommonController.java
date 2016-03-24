@@ -44,7 +44,7 @@ import org.igov.model.flow.FlowSlotTicketDao;
 import org.igov.service.business.action.event.HistoryEventService;
 import org.igov.service.business.action.task.core.AbstractModelTask;
 import org.igov.service.business.action.task.core.ActionTaskService;
-import org.igov.service.business.action.task.systemtask.doc.CreateDocument_UkrDoc;
+import org.igov.service.business.action.task.listener.doc.CreateDocument_UkrDoc;
 import org.igov.service.business.action.task.systemtask.doc.handler.UkrDocEventHandler;
 import org.igov.service.business.subject.message.MessageService;
 import org.igov.service.exception.*;
