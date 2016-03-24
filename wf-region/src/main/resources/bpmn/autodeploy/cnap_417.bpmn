@@ -37,7 +37,7 @@
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <userTask id="usertask1" name="Обробка ЦНАП Вільногірськ (1-й крок)" activiti:candidateGroups="cnap_vilnogirskT">
+    <userTask id="usertask1" name="Обробка ЦНАП Вільногірськ (1-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
@@ -89,7 +89,7 @@
     <sequenceFlow id="flow8" name="decide=='accept'" sourceRef="exclusivegateway1" targetRef="servicetask7">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='accept'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask2" name="Обробка після повернення документів від Управління архітектури, капітального будівництва та житлово-комунального господарства (2-й крок)" activiti:candidateGroups="cnap_vilnogirskT">
+    <userTask id="usertask2" name="Обробка після повернення документів від Управління архітектури, капітального будівництва та житлово-комунального господарства (2-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
