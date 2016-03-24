@@ -320,10 +320,22 @@ public abstract class AbstractModelTask {
                         } catch (ClassNotFoundException | IOException | RecordInmemoryException e1) {
                             throw new ActivitiException(e1.getMessage(), e1);
                         }
-                        Attachment oAttachment = createAttachment(oByteArrayMultipartFile, oTask, sDescription, sID_Field);
-                        if(oAttachment != null){
+                        Attachment oAttachment = createAttachment(oByteArrayMultipartFile, oTask, sDescription);
+                        if (oAttachment != null) {
+                            LOG.info("Added attachment with ID {} to the task:process {}:{}",
+                                    oAttachment.getId(), oTask.getId(), oExecution.getProcessInstanceId());
                             res.add(oAttachment);
+                            String nID_Attachment = oAttachment.getId();
+                            LOG.info("Try set variable(sID_Field={}) with the value(nID_Attachment={}), for new attachment...",
+                                    sID_Field, nID_Attachment);
+                            oExecution.getEngineServices().getRuntimeService()
+                                    .setVariable(oExecution.getProcessInstanceId(), sID_Field, nID_Attachment);
+                            LOG.info("Finished setting new value for variable with attachment (sID_Field={})",
+                                    sID_Field);
+                        } else {
+                            LOG.error("Can't add attachment to (oTask.getId()={})", oTask.getId());
                         }
+
                     } else {
                         LOG.error("asFieldName has nothing! (asFieldName={})", asFieldName);
                     }
@@ -338,7 +350,7 @@ public abstract class AbstractModelTask {
 
     }
 
-    public Attachment createAttachment(ByteArrayMultipartFile oByteArrayMultipartFile, DelegateTask oTask, String sDescription, String sID_Field) {
+    public Attachment createAttachment(ByteArrayMultipartFile oByteArrayMultipartFile, DelegateTask oTask, String sDescription) {
         DelegateExecution oExecution = oTask.getExecution();
         Attachment oAttachment = null;
         if (oByteArrayMultipartFile != null) {
@@ -362,20 +374,6 @@ public abstract class AbstractModelTask {
                     oByteArrayMultipartFile.getContentType() + ";" + oByteArrayMultipartFile.getExp(),
                     oTask.getId(), oExecution.getProcessInstanceId(), sFileName, sDescription,
                     oInputStream);
-
-            if (oAttachment != null) {
-                LOG.info("Added attachment with ID {} to the task:process {}:{}",
-                        oAttachment.getId(), oTask.getId(), oExecution.getProcessInstanceId());
-                String nID_Attachment = oAttachment.getId();
-                LOG.info("Try set variable(sID_Field={}) with the value(nID_Attachment={}), for new attachment...",
-                        sID_Field, nID_Attachment);
-                oExecution.getEngineServices().getRuntimeService()
-                        .setVariable(oExecution.getProcessInstanceId(), sID_Field, nID_Attachment);
-                LOG.info("Finished setting new value for variable with attachment (sID_Field={})",
-                        sID_Field);
-            } else {
-                LOG.error("Can't add attachment to (oTask.getId()={})", oTask.getId());
-            }
         } else {
             LOG.error("oByteArrayMultipartFile==null!!!!!!!!!!!!!");
         }
@@ -383,7 +381,7 @@ public abstract class AbstractModelTask {
     }
 
     public void scanExecutionOnQueueTickets(DelegateExecution oExecution,
-            FormData oFormData) { 
+            FormData oFormData) {
         LOG.info("SCAN:queueData");
         List<String> asFieldID = getListField_QueueDataFormType(oFormData);//startformData
         LOG.info("(asFieldID={})", asFieldID.toString());
@@ -402,7 +400,7 @@ public abstract class AbstractModelTask {
             try {
 
                 long nID_Task_Activiti = 1; //TODO set real ID!!!
-   
+
                 try {
                     nID_Task_Activiti = Long.valueOf(oExecution.getProcessInstanceId());
                     LOG.info("nID_Task_Activiti:Ok!");
