@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_cnap_184" name="Отримання дозвілу/анулювання дозволу/подовження дозволу/повторного надання дозволу/переоформлення дозволу на розміщення зовнішньої реклами" isExecutable="true">
+  <process id="dnepr_cnap_184" name="Отримання, анулювання, подовження або переоформлення дозволу на розміщення зовнішньої реклами" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть центр надання адмінпослуг" type="select" default="0"></activiti:formProperty>
@@ -47,6 +47,7 @@
         <activiti:formProperty id="nFile_Advert" name="Ескіз рекламного засобу з конструктивним рішенням" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_Roztashuvannya_M1_500" name="Топогеодезичні матеріали зйомки місцевості з прив'язкою місця розташування наземної рекламної конструкції (М 1:500)" type="file" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_AdvertLicense" name="Копія виписки з єдиного державного реєстру юридичних осіб та фізичних осіб" type="file" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_PravoVlasnist" name="Копія документу, що підтверджує право власності на об’єкт, де буде розміщена реклама (якщо це приватна власність)" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="nFile_Original_Dozvolu" name="Оригінал попереднього дозволу" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="sClerkPost" name="пошта оргструктури (району)" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sShapka_dozvil_na_reklamu_184" name="Керівнику якого робочого органу" type="invisible" default="Начальнику управління архітектури та містобудування – головному архітектору міста"></activiti:formProperty>
@@ -122,7 +123,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${nFile_PlacePhoto},${nFile_Advert},${nFile_Roztashuvannya_M1_500},${nFile_AdvertLicense},${nFile_Original_Dozvolu},${form_signed}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport},${nFile_PlacePhoto},${nFile_Advert},${nFile_Roztashuvannya_M1_500},${nFile_AdvertLicense},${nFile_PravoVlasnist},${nFile_Original_Dozvolu},${form_signed}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -193,7 +194,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${nFile_PlacePhoto},${nFile_Advert},${nFile_Roztashuvannya_M1_500},${nFile_AdvertLicense},${nFile_Original_Dozvolu},${form_signed}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport},${nFile_PlacePhoto},${nFile_Advert},${nFile_Roztashuvannya_M1_500},${nFile_AdvertLicense},${nFile_PravoVlasnist},${nFile_Original_Dozvolu},${form_signed}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -266,7 +267,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${nFile_PlacePhoto},${nFile_Advert},${nFile_Roztashuvannya_M1_500},${nFile_AdvertLicense},${nFile_Original_Dozvolu},${form_signed}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport},${nFile_PlacePhoto},${nFile_Advert},${nFile_Roztashuvannya_M1_500},${nFile_AdvertLicense},${nFile_PravoVlasnist},${nFile_Original_Dozvolu},${form_signed}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -277,7 +278,7 @@
           <activiti:expression>${sClerkPost}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове звернення на тему: Дозвіл на розміщення зовнішньої реклами]]></activiti:string>
+          <activiti:string><![CDATA[Нове звернення на тему: Отримання, анулювання, подовження або переоформлення дозволу на розміщення зовнішньої реклами]]></activiti:string>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -297,7 +298,7 @@
           <activiti:expression>"${email}"</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: дозвіл на розміщення зовнішньої реклами]]></activiti:string>
+          <activiti:string><![CDATA[Зареєстровано звернення на тему: Отримання, анулювання, подовження або переоформлення дозволу на розміщення зовнішньої реклами]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${PrintForm_1}</activiti:expression>
@@ -328,7 +329,7 @@ ${sAddress}&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Дозвіл на розміщення зовнішньої реклами]]></activiti:string>
+          <activiti:string><![CDATA[Відхилено звернення на тему: Отримання, анулювання, подовження або переоформлення дозволу на розміщення зовнішньої реклами]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -354,7 +355,7 @@ ${sAddress}&lt;br /&gt;
           <activiti:expression>"${email}"</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: дозвіл на розміщення зовнішньої реклами]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Отримання, анулювання, подовження або переоформлення дозволу на розміщення зовнішньої реклами]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${nFile_Rishen},${nFile_Dogovor},${nFile_Rekvizity},${PrintForm_1}</activiti:expression>
@@ -474,7 +475,7 @@ execution.setVariable('sAddPrintSpisok', per6)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове звернення на тему: дозвіл на розміщення зовнішньої реклами]]></activiti:string>
+          <activiti:string><![CDATA[Нове звернення на тему: Отримання, анулювання, подовження або переоформлення дозволу на розміщення зовнішньої реклами]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]

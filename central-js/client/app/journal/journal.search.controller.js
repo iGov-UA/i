@@ -15,7 +15,8 @@ angular.module('journal').controller('JournalSearchController', function (
   ErrorsFactory,
   JournalHelperService,
   DatepickerFactory,
-  ActivitiService
+  ActivitiService,
+  moment
 ) {
 
   $scope.getOrderStatusString = JournalHelperService.getOrderStatusString;
@@ -133,7 +134,7 @@ angular.module('journal').controller('JournalSearchController', function (
                 $scope.aOrderMessages = $scope.aOrderMessages.concat(events);
               }
               angular.forEach($scope.aOrderMessages, function (oOrderMessage, nIndex) {
-                oOrderMessage.sDate = new Date(oOrderMessage.sDate.replace(' ', 'T'));
+                oOrderMessage.sDate = moment(oOrderMessage.sDate).toDate();
                   if (oOrderMessage.sData) {
                     try {
                       var aField = JSON.parse(oOrderMessage.sData.replace(/'/g, '\''));

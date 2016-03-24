@@ -12,6 +12,7 @@ import static org.igov.service.business.action.task.core.ActionTaskService.creat
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,7 +30,7 @@ public class NotificationPatterns {
     GeneralConfig generalConfig;
 
     @Autowired
-    Mail oMail;
+    private ApplicationContext context;
 
     @Autowired
     private ActionTaskService oActionTaskService;
@@ -78,7 +79,7 @@ public class NotificationPatterns {
                     + "<br>Звертаємо увагу, що іноді листи потрапляють у спам або у розділ \"Реклама\" (для Gmail).";
             */
 
-            oMail.reset();
+            Mail oMail = context.getBean(Mail.class);
 
             oMail._To(sMailTo)._Head(sHead)._Body(sBody);
 
@@ -96,7 +97,7 @@ public class NotificationPatterns {
             //String sMailTo = sQuestion;
             String sHead = "Верификация адреса";
             String sBody = "Код подтверждения: " + sToken;
-            oMail.reset();
+            Mail oMail = context.getBean(Mail.class);
             oMail._To(sMailTo)
                     ._Head(sHead)
                     ._Body(sBody);
@@ -163,7 +164,7 @@ public class NotificationPatterns {
             //osBody.append("Для уточнення - перейдіть по цьому посіланню: ").append(sURL).append("<br/>");
 
             String sBody = osBody.toString();
-            oMail.reset();
+            Mail oMail = context.getBean(Mail.class);
             oMail._To(sMailTo)._Head(sHead)._Body(sBody);
             oMail.send();
         } catch (Exception oException) {
