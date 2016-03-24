@@ -1094,34 +1094,7 @@ execution.setVariable('clFio', fio)
 execution.setVariable('sEnumTop', t)</script>
     </scriptTask>
     <sequenceFlow id="flow6" sourceRef="scripttask1" targetRef="servicetask2"></sequenceFlow>
-    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow7" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
-    <serviceTask id="servicetask3" name="email отклонили результаты" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
-      <extensionElements>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:string><![CDATA[Тест "КОРЕЗОИД" (отклонили результаты)]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Тестовое письмо.&lt;br&gt;
-&lt;b&gt;Ответ Корезоида.&lt;/b&gt;
-Параметр sAnswer: ${sAnswer} &lt;br&gt; 
-Параметр sAnswerStatus: ${sAnswerStatus} &lt;br&gt;
-&lt;br&gt;
-[pattern/mail/_common_signature_start.html]
-Корезоид,&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
+    <sequenceFlow id="flow7" sourceRef="usertask1" targetRef="servicetask4"></sequenceFlow>
     <serviceTask id="servicetask4" name="email успешно" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -1131,7 +1104,7 @@ execution.setVariable('sEnumTop', t)</script>
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Тест "КОРЕЗОИД" (успешно)]]></activiti:string>
+          <activiti:string><![CDATA[Тест "КОРЕЗОИД" (ответ)]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -1148,78 +1121,8 @@ execution.setVariable('sEnumTop', t)</script>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask5" name="email недозвонились" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
-      <extensionElements>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:string><![CDATA[Тест "КОРЕЗОИД" (недозвонились)]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Тестовое письмо.&lt;br&gt;
-&lt;b&gt;Ответ Корезоида.&lt;/b&gt;
-Параметр sAnswer: ${sAnswer} &lt;br&gt; 
-Параметр sAnswerStatus: ${sAnswerStatus} &lt;br&gt;
-&lt;br&gt;
-[pattern/mail/_common_signature_start.html]
-Корезоид,&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
-    <serviceTask id="servicetask6" name="email дозванивались но поговорить не удалось" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
-      <extensionElements>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:string><![CDATA[Тест "КОРЕЗОИД" (дозванивались но поговорить не удалось)]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Тестовое письмо.&lt;br&gt;
-&lt;b&gt;Ответ Корезоида.&lt;/b&gt;
-Параметр sAnswer: ${sAnswer} &lt;br&gt; 
-Параметр sAnswerStatus: ${sAnswerStatus} &lt;br&gt;
-&lt;br&gt;
-[pattern/mail/_common_signature_start.html]
-Корезоид,&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
-    <sequenceFlow id="flow8" sourceRef="exclusivegateway1" targetRef="servicetask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sAnswerStatus=='Successfull'}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow9" sourceRef="exclusivegateway1" targetRef="servicetask3">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sAnswerStatus=='Reject'}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow10" sourceRef="exclusivegateway1" targetRef="servicetask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sAnswerStatus=='CantConnect'}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow11" sourceRef="exclusivegateway1" targetRef="servicetask6">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sAnswerStatus=='InvalidConnect'}]]></conditionExpression>
-    </sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow12" sourceRef="servicetask4" targetRef="endevent2"></sequenceFlow>
-    <endEvent id="endevent3" name="End"></endEvent>
-    <sequenceFlow id="flow13" sourceRef="servicetask3" targetRef="endevent3"></sequenceFlow>
-    <endEvent id="endevent4" name="End"></endEvent>
-    <sequenceFlow id="flow14" sourceRef="servicetask5" targetRef="endevent4"></sequenceFlow>
-    <endEvent id="endevent5" name="End"></endEvent>
-    <sequenceFlow id="flow15" sourceRef="servicetask6" targetRef="endevent5"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__test_corezoid">
     <bpmndi:BPMNPlane bpmnElement="_test_corezoid" id="BPMNPlane__test_corezoid">
@@ -1244,32 +1147,11 @@ execution.setVariable('sEnumTop', t)</script>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
         <omgdc:Bounds height="55.0" width="105.0" x="290.0" y="130.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
-        <omgdc:Bounds height="40.0" width="40.0" x="750.0" y="137.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
-        <omgdc:Bounds height="55.0" width="105.0" x="860.0" y="127.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
-        <omgdc:Bounds height="55.0" width="105.0" x="860.0" y="20.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
-        <omgdc:Bounds height="55.0" width="105.0" x="860.0" y="210.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
-        <omgdc:Bounds height="55.0" width="105.0" x="860.0" y="300.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="790.0" y="130.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
-        <omgdc:Bounds height="35.0" width="35.0" x="1010.0" y="30.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
-        <omgdc:Bounds height="35.0" width="35.0" x="1010.0" y="137.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent4" id="BPMNShape_endevent4">
-        <omgdc:Bounds height="35.0" width="35.0" x="1010.0" y="220.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent5" id="BPMNShape_endevent5">
-        <omgdc:Bounds height="35.0" width="35.0" x="1010.0" y="310.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="920.0" y="140.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="115.0" y="157.0"></omgdi:waypoint>
@@ -1293,42 +1175,11 @@ execution.setVariable('sEnumTop', t)</script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
         <omgdi:waypoint x="705.0" y="157.0"></omgdi:waypoint>
-        <omgdi:waypoint x="750.0" y="157.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
-        <omgdi:waypoint x="770.0" y="137.0"></omgdi:waypoint>
-        <omgdi:waypoint x="770.0" y="47.0"></omgdi:waypoint>
-        <omgdi:waypoint x="860.0" y="47.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
         <omgdi:waypoint x="790.0" y="157.0"></omgdi:waypoint>
-        <omgdi:waypoint x="860.0" y="154.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
-        <omgdi:waypoint x="770.0" y="177.0"></omgdi:waypoint>
-        <omgdi:waypoint x="770.0" y="237.0"></omgdi:waypoint>
-        <omgdi:waypoint x="860.0" y="237.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
-        <omgdi:waypoint x="770.0" y="177.0"></omgdi:waypoint>
-        <omgdi:waypoint x="770.0" y="327.0"></omgdi:waypoint>
-        <omgdi:waypoint x="860.0" y="327.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
-        <omgdi:waypoint x="965.0" y="47.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1010.0" y="47.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
-        <omgdi:waypoint x="965.0" y="154.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1010.0" y="154.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
-        <omgdi:waypoint x="965.0" y="237.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1010.0" y="237.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
-        <omgdi:waypoint x="965.0" y="327.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1010.0" y="327.0"></omgdi:waypoint>
+        <omgdi:waypoint x="895.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="920.0" y="157.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
