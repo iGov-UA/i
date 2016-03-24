@@ -5,50 +5,37 @@ sDate=$2
 nSecondsWait=$3
 
 if [ -z $sProject ]; then
+	echo "Empty Project variable"
 	exit 1
 fi
 if [ -z $sDate ]; then
+	echo "Empty Date variable"
 	exit 1
 fi
-
-test_function ()
-{
-	echo "test of parameter: $1"
-}
-
-test_function hello_world
 
 fallback ()
 {
 	echo "Fatal error! Executing fallback task..."
 	#Убиваем процесс. Нет смысла ждать его корректной остановки.
-	cd /sybase/tomcat_${sProject}/bin/ && ./_shutdown_force.sh
+	cd /sybase/tomcat_${sProject}$1/bin/ && ./_shutdown_force.sh
 	#Удаляем новые конфиги
-	rm -rf /sybase/tomcat_${sProject}/conf
+	rm -rf /sybase/tomcat_${sProject}$1/conf
 	#Копируем старые конфиги обратно
-	cp -rp /sybase/.backup/configs/$sProject/tomcat_${sProject}/$sDate/conf /sybase/tomcat_${sProject}/
+	cp -rp /sybase/.backup/configs/${sProject}/tomcat_${sProject}$1/$sDate/conf /sybase/tomcat_${sProject}$1/
 	#Очищаем папку с приложениями
-	rm -rf /sybase/tomcat_${sProject}/webapps/*
+	rm -rf /sybase/tomcat_${sProject}$1/webapps/*
 	#Копируем обратно старое приложение
-	cp -p /sybase/.backup/war/$sProject/tomcat_${sProject}/$sDate/wf.war /sybase/tomcat_${sProject}/webapps/
+	cp -p /sybase/.backup/war/${sProject}$1/tomcat_${sProject}$1/$sDate/wf.war /sybase/tomcat_${sProject}$1/webapps/
 	#Запускаем службу
-	cd /sybase/tomcat_${sProject}/bin/ && ./_startup.sh
+	cd /sybase/tomcat_${sProject}$1/bin/ && ./_startup.sh
 	sleep 15
 	#Проверяем статус службы. Если нашлась ошибка в логе - завершаем скрипт с критической ошибкой.
-	if grep ERROR /sybase/tomcat_${sProject}/logs/catalina.out | grep -v log4j | grep -v stopServer; then
-		echo "Fatal error found in tomcat_${sProject}/logs/catalina.out! Can't start previous configuration."
+	if grep ERROR /sybase/tomcat_${sProject}$1/logs/catalina.out | grep -v log4j | grep -v stopServer; then
+		echo "Fatal error found in tomcat_${sProject}$1/logs/catalina.out! Can't start previous configuration."
 		exit 1
 	fi
-	#Возвращаем на место основной конфиг прокси для Nginx.
-	rm -f /sybase/nginx/conf/sites/upstream.conf
-	cp -p /sybase/.configs/nginx/only_primary_upstream.conf /sybase/nginx/conf/sites/upstream.conf
+	cat /sybase/.configs/nginx/${sProject}_upstream.conf > /sybase/nginx/conf/sites/${sProject}_upstream.conf
 	sudo /sybase/nginx/sbin/nginx -s reload
-	sleep 5
-	sResponseCode=$(curl -o /dev/null --connect-timeout 5 --silent --head --write-out '%{http_code}\n' https://$sHost/)
-	if [ $sResponseCode -ne 200 ]; then
-		echo "Error. Unexpected server response code. Can't start previous configuration."
-		exit 1
-	fi
 	echo "Deployment failed. Previous configuration returned successfully."
 	exit 1
 }
@@ -57,46 +44,44 @@ fallback ()
 backup ()
 {
 	echo "Backuping tomcat_${sProject}"
-	#Удаляем старые бекапы. Нужно написать функцию по ротации бекапов.
-	#rm -rf /sybase/.backup/configs/$sProject/tomcat_$sProject-secondary/conf
-	#rm -f /sybase/.backup/war/$sProject/tomcat_$sProject-secondary/wf.war
-	IFS=$'\n' sBackupArray=( $(ls -1rt /sybase/.backup/configs/$sProject/tomcat_${sProject} | head -$[$(ls -l /sybase/.backup/configs/$sProject/tomcat_${sProject} | wc -l)-4]) )
+	#Удаляем старые бекапы.
+	IFS=$'\n' sBackupArray=( $(ls -1rt /sybase/.backup/configs/${sProject}/tomcat_${sProject}$1 | head -$[$(ls -l /sybase/.backup/configs/${sProject}/tomcat_${sProject}$1 | wc -l)-4]) )
 	for sBackup in ${sBackupArray[@]}; do
 		echo "deleting backup $sBackup"
-		rm -rf "/sybase/.backup/configs/$sProject/tomcat_${sProject}/$sBackup"
+		rm -rf "/sybase/.backup/configs/$sProject/tomcat_${sProject}$1/$sBackup"
 	done
 	unset IFS
-	IFS=$'\n' sBackupArray=( $(ls -1rt /sybase/.backup/war/$sProject/tomcat_${sProject} | head -$[$(ls -l /sybase/.backup/war/$sProject/tomcat_${sProject} | wc -l)-4]) )
+	IFS=$'\n' sBackupArray=( $(ls -1rt /sybase/.backup/war/${sProject}/tomcat_${sProject}$1 | head -$[$(ls -l /sybase/.backup/war/${sProject}/tomcat_${sProject}$1 | wc -l)-4]) )
 	for sBackup in ${sBackupArray[@]}; do
 		echo "deleting backup $sBackup"
-		rm -rf "/sybase/.backup/war/$sProject/tomcat_${sProject}/$sBackup"
+		rm -rf "/sybase/.backup/war/${sProject}/tomcat_${sProject}$1/$sBackup"
 	done
 	unset IFS
 	#Делаем бекап конфигов
-	if [ ! -d /sybase/.backup/configs/$sProject/tomcat_${sProject}/$sDate ]; then
-		mkdir -p /sybase/.backup/configs/$sProject/tomcat_${sProject}/$sDate
+	if [ ! -d /sybase/.backup/configs/$sProject/tomcat_${sProject}$1/$sDate ]; then
+		mkdir -p /sybase/.backup/configs/$sProject/tomcat_${sProject}$1/$sDate
 	fi
-	cp -rp /sybase/tomcat_${sProject}/conf /sybase/.backup/configs/$sProject/tomcat_${sProject}/$sDate/
+	cp -rp /sybase/tomcat_${sProject}$1/conf /sybase/.backup/configs/$sProject/tomcat_${sProject}$1/$sDate/
 	#Делаем бекап приложения
-	if [ ! -d /sybase/.backup/war/$sProject/tomcat_${sProject}/$sDate ]; then
-		mkdir -p /sybase/.backup/war/$sProject/tomcat_${sProject}/$sDate
+	if [ ! -d /sybase/.backup/war/$sProject/tomcat_${sProject}$1/$sDate ]; then
+		mkdir -p /sybase/.backup/war/$sProject/tomcat_${sProject}$1/$sDate
 	fi
-	cp -p /sybase/tomcat_${sProject}/webapps/wf.war /sybase/.backup/war/$sProject/tomcat_${sProject}/$sDate/
+	cp -p /sybase/tomcat_${sProject}$1/webapps/wf.war /sybase/.backup/war/$sProject/tomcat_${sProject}$1/$sDate/
 }
 	
 #Функция по деплою томката. Для первичного и вторичного инстанса действия идентичны
 deploy-tomcat ()
 {
 	#Выключаем томкат. Ротируется ли лог при выключении или старте?
-	cd /sybase/tomcat_${sProject}/bin/ && ./_shutdown_force.sh
+	cd /sybase/tomcat_${sProject}$1/bin/ && ./_shutdown_force.sh
 	sleep 5
 	#Разворачиваем новые конфиги
-	cp -rf /sybase/.configs/${sProject}/* /sybase/tomcat_${sProject}/conf/
+	cp -rf /sybase/.configs/${sProject}/* /sybase/tomcat_${sProject}$1/conf/
 	#Устанавливаем новую версию приложения
-	rm -rf /sybase/tomcat_${sProject}/webapps/*
-	cp -p /sybase/.upload/$sProject.war /sybase/tomcat_${sProject}/webapps/wf.war
+	rm -rf /sybase/tomcat_${sProject}$1/webapps/*
+	cp -p /sybase/.upload/$sProject.war /sybase/tomcat_${sProject}$1/webapps/wf.war
 	#Запускаем томкат
-	cd /sybase/tomcat_${sProject}/bin/ && ./_startup.sh
+	cd /sybase/tomcat_${sProject}$1/bin/ && ./_startup.sh
 	sleep 15
 }
 
@@ -150,115 +135,31 @@ fi
 if [ $sProject == "wf-central"  ] || [ $sProject == "wf-region" ]; then
 	#Сразу создадим бекапы
 	echo "Starting backup of DOUBLE"
-	#Удаляем старые бекапы. Нужно написать функцию по ротации бекапов.
-	#rm -rf /sybase/.backup/configs/$sProject/tomcat_$sProject-secondary/conf
-	#rm -f /sybase/.backup/war/$sProject/tomcat_$sProject-secondary/wf.war
-	IFS=$'\n' sBackupArray=( $(ls -1rt /sybase/.backup/configs/$sProject/tomcat_${sProject}_double | head -$[$(ls -l /sybase/.backup/configs/$sProject/tomcat_${sProject}_double | wc -l)-4]) )
-	for sBackup in ${sBackupArray[@]}; do
-		echo "deleting backup $sBackup"
-		rm -rf "/sybase/.backup/configs/$sProject/tomcat_${sProject}_double/$sBackup"
-	done
-	unset IFS
-	IFS=$'\n' sBackupArray=( $(ls -1rt /sybase/.backup/war/$sProject/tomcat_${sProject}_double | head -$[$(ls -l /sybase/.backup/war/$sProject/tomcat_${sProject}_double | wc -l)-4]) )
-	for sBackup in ${sBackupArray[@]}; do
-		echo "deleting backup $sBackup"
-		rm -rf "/sybase/.backup/war/$sProject/tomcat_${sProject}_double/$sBackup"
-	done
-	unset IFS
-	#Делаем бекап конфигов
-	if [ ! -d /sybase/.backup/configs/$sProject/tomcat_${sProject}_double/$sDate ]; then
-		mkdir -p /sybase/.backup/configs/$sProject/tomcat_${sProject}_double/$sDate
-	fi
-	cp -rp /sybase/tomcat_${sProject}_double/conf /sybase/.backup/configs/$sProject/tomcat_${sProject}_double/$sDate/
-	#Делаем бекап приложения
-	if [ ! -d /sybase/.backup/war/$sProject/tomcat_${sProject}_double/$sDate ]; then
-		mkdir -p /sybase/.backup/war/$sProject/tomcat_${sProject}_double/$sDate
-	fi
-	cp -p /sybase/tomcat_${sProject}_double/webapps/wf.war /sybase/.backup/war/$sProject/tomcat_${sProject}_double/$sDate/
-
+	backup _double
+	
 	#Развернем новое приложение на вторичном инстансе
 	echo "Starting deploy of DOUBLE"
-	#Выключаем томкат.
-	cd /sybase/tomcat_${sProject}_double/bin/ && ./_shutdown_force.sh
-	sleep 5
-	#Разворачиваем новые конфиги
-	cp -rf /sybase/.configs/${sProject}/* /sybase/tomcat_${sProject}_double/conf/
-	#Устанавливаем новую версию приложения
-	rm -rf /sybase/tomcat_${sProject}_double/webapps/*
-	cp -p /sybase/.upload/$sProject.war /sybase/tomcat_${sProject}_double/webapps/wf.war
-	#Запускаем томкат
-	cd /sybase/tomcat_${sProject}_double/bin/ && ./_startup.sh
-	sleep 15
-
+	deploy-tomcat _double
+	
 	nTimeout=0
 	until grep -q "FrameworkServlet 'dispatcher': initialization completed in" /sybase/tomcat_${sProject}_double/logs/catalina.out || [ $nTimeout -eq $nSecondsWait ]; do
-		((nTimeout++))
-		sleep 1
-		echo "waiting for server startup $nTimeout"
-		if [ $nTimeout -ge $nSecondsWait ]; then
-			echo "timeout reached"
-			grep -B 3 -A 2 ERROR /sybase/tomcat_${sProject}_double/logs/catalina.out
-			#Откатываемся назад
-			echo "Fatal error! Executing fallback task..."
-			#Убиваем процесс. Нет смысла ждать его корректной остановки.
-			cd /sybase/tomcat_${sProject}_double/bin/ && ./_shutdown_force.sh
-			#Удаляем новые конфиги
-			rm -rf /sybase/tomcat_${sProject}_double/conf
-			#Копируем старые конфиги обратно
-			cp -rp /sybase/.backup/configs/$sProject/tomcat_${sProject}_double/$sDate/conf /sybase/tomcat_${sProject}_double/
-			#Очищаем папку с приложениями
-			rm -rf /sybase/tomcat_${sProject}_double/webapps/*
-			#Копируем обратно старое приложение
-			cp -p /sybase/.backup/war/$sProject/tomcat_${sProject}_double/$sDate/wf.war /sybase/tomcat_${sProject}_double/webapps/
-			echo "Deploy failed previous configuration returned"
-			exit 1
-		fi
+	((nTimeout++))
+	sleep 1
+	echo "waiting for server startup $nTimeout"
+	if [ $nTimeout -ge $nSecondsWait ]; then
+		echo "timeout reached"
+		grep -B 3 -A 2 ERROR /sybase/tomcat_${sProject}_double/logs/catalina.out
+		fallback _double
+	fi
 	done
-	
 	#Проверяем на наличие ошибок вторичный инстанс
 	if grep ERROR /sybase/tomcat_${sProject}_double/logs/catalina.out | grep -v log4j | grep -v stopServer; then
-		grep -B 3 -A 2 ERROR /sybase/tomcat_${sProject}_double/logs/catalina.out
-		#Откатываемся назад
-		echo "Fatal error! Executing fallback task..."
-		#Убиваем процесс. Нет смысла ждать его корректной остановки.
-		cd /sybase/tomcat_${sProject}_double/bin/ && ./_shutdown_force.sh
-		#Удаляем новые конфиги
-		rm -rf /sybase/tomcat_${sProject}_double/conf
-		#Копируем старые конфиги обратно
-		cp -rp /sybase/.backup/configs/$sProject/tomcat_${sProject}_double/$sDate/conf /sybase/tomcat_${sProject}_double/
-		#Очищаем папку с приложениями
-		rm -rf /sybase/tomcat_${sProject}_double/webapps/*
-		#Копируем обратно старое приложение
-		cp -p /sybase/.backup/war/$sProject/tomcat_${sProject}_double/$sDate/wf.war /sybase/tomcat_${sProject}_double/webapps/
-		#Запускаем службу
-		cd /sybase/tomcat_${sProject}_double/bin/ && ./_startup.sh
-		sleep 15
-		#Проверяем статус службы. Если нашлась ошибка в логе - завершаем скрипт с критической ошибкой.
-		if grep ERROR /sybase/tomcat_${sProject}_double/logs/catalina.out | grep -v log4j | grep -v stopServer; then
-			echo "Fatal error found in tomcat_${sProject}_double/logs/catalina.out! Can't start previous configuration."
-			exit 1
-		fi
-		#Возвращаем на место основной конфиг прокси для Nginx.
-		cat /sybase/.configs/nginx/only_primary_upstream.conf > /sybase/nginx/conf/sites/upstream.conf
-		sudo /sybase/nginx/sbin/nginx -s reload
-		sleep 5
-#		sResponseCode=$(curl -o /dev/null --connect-timeout 5 --silent --head --write-out '%{http_code}\n' https://$sHost/)
-#		if [ $sResponseCode -ne 200 ]; then
-#			echo "Error. Unexpected server response code. Can't start previous configuration."
-#			exit 1
-#		fi
-		echo "Deployment failed. Previous configuration returned successfully."
-		exit 1
+		fallback _double
 	else
 		echo "Everything is OK. Continuing deployment ..."
-		cat /sybase/.configs/nginx/${sProject}_secondary_upstream.conf > /sybase/nginx/conf/sites/${sProject}_upstream.conf
+		cat /sybase/.configs/nginx/${sProject}_double_upstream.conf > /sybase/nginx/conf/sites/${sProject}_upstream.conf
 		sudo /sybase/nginx/sbin/nginx -s reload
-#		sResponseCode=$(curl -o /dev/null --connect-timeout 5 --silent --head --write-out '%{http_code}\n' https://$sHost/)
-#		if [ $sResponseCode -ne 200 ]; then
-#			echo "Error. Unexpected server response code. Returning to previous Tomcat configuration."
-#			fallback _double
-#		fi
-		
+
 		#Разворачиваем приложение в основной инстанс
 		#Сразу создадим бекапы
 		backup
@@ -273,13 +174,8 @@ if [ $sProject == "wf-central"  ] || [ $sProject == "wf-region" ]; then
 			fallback
 		else
 			echo "Everything is OK. Continuing deployment ..."
-			cat /sybase/.configs/nginx/${sProject}_primary_upstream.conf > /sybase/nginx/conf/sites/${sProject}_upstream.conf
+			cat /sybase/.configs/nginx/${sProject}_upstream.conf > /sybase/nginx/conf/sites/${sProject}_upstream.conf
 			sudo /sybase/nginx/sbin/nginx -s reload
-#			sResponseCode=$(curl -o /dev/null --connect-timeout 5 --silent --head --write-out '%{http_code}\n' https://$sHost/)
-#			if [ $sResponseCode -ne 200 ]; then
-#				echo "Error. Unexpected server response code. Returning to previous Tomcat configuration."
-#				fallback
-#			fi
 			cd /sybase/tomcat_${sProject}_double/bin/ && ./_shutdown_force.sh
 		fi
 	fi
