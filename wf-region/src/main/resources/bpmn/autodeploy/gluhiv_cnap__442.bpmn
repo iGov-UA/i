@@ -207,7 +207,7 @@
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow15" sourceRef="usertask2" targetRef="exclusivegateway2"></sequenceFlow>
     <sequenceFlow id="flow16" name="accept" sourceRef="exclusivegateway2" targetRef="servicetask6">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision == 'sDovidka_ok'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDovidka == 'sDovidka_ok'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask7" name="Відповідь громадянину  (відмова в отриманні документів)" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
@@ -238,7 +238,7 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow17" name="reject" sourceRef="exclusivegateway2" targetRef="servicetask7">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision == 'sDovidka_bad'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDovidka == 'sDovidka_bad'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow18" sourceRef="servicetask7" targetRef="endevent1"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
