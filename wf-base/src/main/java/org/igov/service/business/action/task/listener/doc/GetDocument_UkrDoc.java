@@ -90,7 +90,7 @@ public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListene
                                         new ByteArrayMultipartFile(contentStringToByte(resp), fileName, fileNameOrigin, "application/octet-stream");
                                 Attachment attachment = createAttachment(oByteArrayMultipartFile, dt, fileName);
                                 if (attachment != null) {
-                                    anID_Attach_UkrDoc.append(attachment.getId()).append(","); //убрать последнюю запятую
+                                    anID_Attach_UkrDoc.append(attachment.getId()).append(",");
                                 } 
                             } catch (Exception ex) {
                                 java.util.logging.Logger.getLogger(GetDocument_UkrDoc.class.getName()).log(Level.SEVERE, null, ex);
