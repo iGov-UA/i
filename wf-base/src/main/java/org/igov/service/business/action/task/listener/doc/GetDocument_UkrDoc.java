@@ -9,7 +9,6 @@ import org.activiti.engine.RuntimeService;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.Expression;
-import org.activiti.engine.delegate.JavaDelegate;
 import org.activiti.engine.delegate.TaskListener;
 import org.activiti.engine.task.Attachment;
 import org.igov.io.GeneralConfig;
@@ -23,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import org.activiti.engine.impl.util.json.JSONObject;
 
 @Component("GetDocument_UkrDoc")
 public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListener {
@@ -59,18 +59,20 @@ public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListene
             String resp = new RestRequest().get(generalConfig.getsUkrDocServerAddress() + url, MediaType.APPLICATION_JSON, StandardCharsets.UTF_8, String.class, headers);
 
             LOG.info("Ukrdoc response getDocument:" + resp);
-            org.activiti.engine.impl.util.json.JSONObject respJson = new org.activiti.engine.impl.util.json.JSONObject(resp);
+            JSONObject respJson = new JSONObject(resp);
             Object content = respJson.get("content");
 
             if (content != null) {
 
-                String name = (String) ((org.activiti.engine.impl.util.json.JSONObject) content).get("name");
+                String name = (String) ((JSONObject) content).get("name");
                 runtimeService.setVariable(execution.getProcessInstanceId(), "sHead_Document", name);
-                String text = (String) ((org.activiti.engine.impl.util.json.JSONObject) content).get("text");
+                String text = (String) ((JSONObject) content).get("text");
                 runtimeService.setVariable(execution.getProcessInstanceId(), "sBody_Document", text);
                 try {
-                    LOG.info("class: " + ((org.activiti.engine.impl.util.json.JSONObject) content).get("extensions").getClass());
-                    List<Map<String, Object>> files = (List<Map<String, Object>>) ((Map) ((org.activiti.engine.impl.util.json.JSONObject) content).get("extensions")).get("files");
+                    LOG.info("class: " + ((JSONObject) ((JSONObject) content).get("extensions")).get("files").getClass());
+                    LOG.info("class: " + ((JSONObject)((JSONObject) ((JSONObject) content).get("extensions")).get("files")).getJSONArray("view_url"));
+                    LOG.info("class: " + ((JSONObject)((JSONObject) ((JSONObject) content).get("extensions")).get("files")).getJSONArray("view_url").getClass());
+                    List<Map<String, Object>> files = (List<Map<String, Object>>) ((JSONObject) ((JSONObject) content).get("extensions")).get("files");
 
                     //получение контента файла и прикрипление его в качестве атача к таске
                     if (files != null && !files.isEmpty()) {
