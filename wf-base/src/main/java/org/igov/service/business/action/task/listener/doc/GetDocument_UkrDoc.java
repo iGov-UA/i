@@ -4,12 +4,14 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
+import net.sf.json.test.JSONAssert;
 
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.delegate.TaskListener;
+import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.task.Attachment;
 import org.igov.io.GeneralConfig;
 import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
@@ -70,15 +72,18 @@ public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListene
                 runtimeService.setVariable(execution.getProcessInstanceId(), "sBody_Document", text);
                 try {
                     LOG.info("class: " + ((JSONObject) ((JSONObject) content).get("extensions")).get("files").getClass());
-                    LOG.info("class: " + ((JSONObject)((JSONObject) ((JSONObject) content).get("extensions")).get("files")).getJSONArray("view_url"));
-                    LOG.info("class: " + ((JSONObject)((JSONObject) ((JSONObject) content).get("extensions")).get("files")).getJSONArray("view_url").getClass());
-                    List<Map<String, Object>> files = (List<Map<String, Object>>) ((JSONObject) ((JSONObject) content).get("extensions")).get("files");
+                    JSONArray files = (JSONArray)((JSONObject) ((JSONObject) content).get("extensions")).get("files");
+                    //LOG.info("class: " + ((JSONArray)((JSONArray) ((JSONObject) content).get("extensions")).get("files")).getJSONArray("view_url"));
+                    //LOG.info("class: " + ((JSONObject)((JSONObject) ((JSONObject) content).get("extensions")).get("files")).getJSONArray("view_url").getClass());
+                    //List<Map<String, Object>> files = (List<Map<String, Object>>) ((JSONObject) ((JSONObject) content).get("extensions")).get("files");
 
                     //получение контента файла и прикрипление его в качестве атача к таске
-                    if (files != null && !files.isEmpty()) {
+                    if (files != null && files.length() > 0) {
                         StringBuilder anID_Attach_UkrDoc = new StringBuilder();
-                        for (Map<String, Object> file : files) {
-                            String view_url = (String) file.get("view_url"); ///docs/2016/10300131/files/10300000/content?type=.jpg
+                        for (int i = 0; i < files.length(); i++) {
+                            JSONObject file = (JSONObject)files.get(i);
+                            String view_url = file.getString("view_url");//(String) (files[i].get("view_url")); ///docs/2016/10300131/files/10300000/content?type=.jpg
+                            LOG.info("view_url:" + view_url);
                             String[] part_URI = view_url.split("/");
                             if (part_URI.length == 6) {
                                 String fileType = part_URI[5].substring(part_URI[5].indexOf("."));
