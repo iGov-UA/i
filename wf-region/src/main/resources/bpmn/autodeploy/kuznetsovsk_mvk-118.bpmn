@@ -28,7 +28,7 @@
         <activiti:formProperty id="dogov" name="Копія договору оренди земельної ділянки та додаткових угод (при їх наявності); Якщо є додаткові угоди об'єднайте, будь ласка, всі файли у архів або PDF-документ" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file_kadastr" name="Витяг з державного земельного кадастру" type="file"></activiti:formProperty>
         <activiti:formProperty id="file_tumch" name="Для тимчасових споруд - паспорт прив'язки тимчасової споруди" type="file"></activiti:formProperty>
-        <activiti:formProperty id="Flag_region" name="Перемикач регіонів" type="string"></activiti:formProperty>
+        <activiti:formProperty id="Flag_region" name="Перемикач регіонів" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('CNAP_Dnepr_500.json')}"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП" type="invisible"></activiti:formProperty>
@@ -97,7 +97,7 @@ ${sWorkTime}.&lt;br /&gt;
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow16" sourceRef="servicetask8" targetRef="usertask1"></sequenceFlow>
-    <userTask id="usertask1" name="Прийняття рішення: доцільність запиту" activiti:candidateGroups="lnu_arhiv">
+    <userTask id="usertask1" name="Прийняття рішення: доцільність запиту" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="place_of_liv" name="Адреса проживання" type="string" writable="false"></activiti:formProperty>
@@ -116,7 +116,7 @@ ${sWorkTime}.&lt;br /&gt;
           <activiti:value id="reject" name="Відмовити в реєстрації звернення"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Коментар адміністратора у разі відмови у реєстрації звернення" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="spec" name="електронна адреса спеціаліста (тыльки для Кузнэцовська)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="spec" name="електронна адреса спеціаліста (тільки для Кузнєцовська)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/kuznetsovsk/kuznetsovsk_118.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -185,7 +185,6 @@ ${sWorkTime}.&lt;br /&gt;
 Ваше звернення щодо поновлення договору оренди земельної ділянки передане на розгляд профільному спеціалісту.&lt;br /&gt;
 Ви отримаєте відповідь у визначений законом термін.
 [pattern/mail/_common_signature_start.html]
-З повагою,&lt;br /&gt;
 ${sNameOrgan}.&lt;br /&gt;
 ${sPhoneOrgan}.&lt;br /&gt;
 ${sAddress}.&lt;br /&gt;
@@ -214,7 +213,6 @@ ${sWorkTime}.&lt;br /&gt;
 Попередня перевірка даних і документів проведена.
 Опрацюйте, будь ласка, це звернення на &lt;a href="https://test.region.igov.org.ua" target="_blank"&gt;порталі&lt;/a&gt;.										
 [pattern/mail/_common_signature_start.html]
-З повагою,&lt;br /&gt;
 ${sNameOrgan}.&lt;br /&gt;
 ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
@@ -223,7 +221,7 @@ ${sPhoneOrgan}.&lt;br /&gt;
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow18" sourceRef="servicetask10" targetRef="usertask2"></sequenceFlow>
-    <userTask id="usertask2" name="Обробка даних профільним спеціалістом" activiti:candidateGroups="lnu_arhiv">
+    <userTask id="usertask2" name="Обробка даних профільним спеціалістом" activiti:candidateGroups="kuznets_spec_118">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="place_of_liv" name="Адреса проживання" type="string" writable="false"></activiti:formProperty>
@@ -256,7 +254,7 @@ ${sPhoneOrgan}.&lt;br /&gt;
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow28" sourceRef="usertask2" targetRef="usertask4_green"></sequenceFlow>
-    <userTask id="usertask4_green" name="Отримання рішення від спеціаліста" activiti:candidateGroups="lnu_arhiv">
+    <userTask id="usertask4_green" name="Отримання рішення від спеціаліста" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="place_of_liv" name="Адреса проживання" type="string" writable="false"></activiti:formProperty>
@@ -402,7 +400,6 @@ ${landAddress}&lt;br /&gt;
 Коментар відповідального спеціаліста&lt;br /&gt;
 ${decisionComment}
 [pattern/mail/_common_signature_start.html]
-З повагою,&lt;br /&gt;
 ${sNameOrgan}&lt;br /&gt;
 ${sPhoneOrgan}.&lt;br /&gt;
 ${sAddress}.&lt;br /&gt;
@@ -442,7 +439,7 @@ ${sWorkTime}.&lt;br /&gt;
     <sequenceFlow id="flow31" name="sID_Public_SubjectOrganJoin &amp;&amp; decide == 'accept" sourceRef="exclusivegateway3" targetRef="servicetask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${Flag_region != 'true' && decide == 'accept'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask3" name="ЦНАП після міської ради" activiti:candidateGroups="lnu_arhiv">
+    <userTask id="usertask3" name="ЦНАП після міської ради" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="place_of_liv" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
@@ -462,7 +459,7 @@ ${sWorkTime}.&lt;br /&gt;
           <activiti:value id="reject" name="Відмовити в наданні послуги"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Коментар до рішення для громадянина, у разі відмови опишіть причину відмови" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="docToSend" name="Завантажте копію документа для відправлення заявнику" type="file"></activiti:formProperty>
+        <activiti:formProperty id="docToSend" name="Завантажте копію документа для відправлення заявнику" type="file" required="true"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
