@@ -21,10 +21,9 @@
         <activiti:formProperty id="docName" name="Назва документа" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="goal10" name="Мета отримання документа" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="text" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
         <activiti:formProperty id="docTyp" name="Тип" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="region" name="Регион" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="clerkPost" name="почта чиновника" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="почта чиновника" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sOrgan" name="Назва органу" type="invisible" default=""></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -41,7 +40,7 @@ var per2 = no[i]
 var per4 = post[i]
 break}}
 execution.setVariable('region', per2)
-execution.setVariable('clerkPost', per4)
+execution.setVariable('sMailClerk', per4)
 var per1 = "копію рішення виконавчого комітету міської ради"
 if(execution.getVariable('docType') == 'gorsovet'){
 per1 = "копію рішення міської ради"
