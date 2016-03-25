@@ -196,7 +196,7 @@ ${sPhoneOrgan}&lt;br&gt;
     <sequenceFlow id="flow17" name="довідка зроблена" sourceRef="exclusivegateway2" targetRef="servicetask6">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDovidka == 'sDovidka_ok'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask6" name="email-інформування заявника про необхідність отримання результату" activiti:delegateExpression="#{MailTaskWithAttachment}">
+    <serviceTask id="servicetask6" name="email-інформування заявника про необхідність отримання результату" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -223,7 +223,7 @@ ${sPhoneOrgan}&lt;br&gt;
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>"${sBody1}"</activiti:expression>
+          <activiti:expression>${sBody1}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
