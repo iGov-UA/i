@@ -33,8 +33,6 @@ public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListene
 
     private Expression sID_Document;
 
-    private Expression sessionId;
-
     @Autowired
     GeneralConfig generalConfig;
 
@@ -83,13 +81,6 @@ public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListene
                             String view_url = file.getString("view_url").replaceFirst("/docs", ""); //docs/2016/10300131/files/10300000/content?type=.jpg
                             String fileNameOrigin = file.getString("file"); //a10300000.jpg
                             String fileName = file.getString("name");
-
-                            String sessionIdNew = getStringFromFieldExpression(this.sessionId, execution);
-                            if (sessionIdNew != null && !"".equalsIgnoreCase(sessionIdNew) && !"1".equalsIgnoreCase(sessionIdNew)) {
-                                LOG.info("Retrieved sessionIdNew ID:{} and created URL to request: {}", sessionIdNew, url);
-                                headers = new HttpHeaders();
-                                headers.set("Authorization", "promin.privatbank.ua/EXCL " + sessionIdNew);
-                            }
 
                             LOG.info("view_url:" + generalConfig.getsUkrDocServerAddress() + view_url + " fileName: " + fileName);
                             resp = new RestRequest().get(generalConfig.getsUkrDocServerAddress() + view_url, MediaType.APPLICATION_JSON,

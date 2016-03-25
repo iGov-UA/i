@@ -10,7 +10,7 @@
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта для зворотнього звя'язку" type="string" required="true"></activiti:formProperty>
-         <activiti:formProperty id="date_today" name="Вкажіть сьогоднішню дату" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="date_today" name="Вкажіть сьогоднішню дату" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="selectEntrepreneur" name="Суб’єкт звернення" type="enum" required="true">
           <activiti:value id="attr1_self" name="Фізична особа - підприємець або громадянин України"></activiti:value>
           <activiti:value id="attr2_company" name="Юридична особа"></activiti:value>
@@ -18,11 +18,10 @@
         <activiti:formProperty id="selectReason" name="Оберіть причину розірвання договору оренди земельної ділянки" type="enum" required="true">
           <activiti:value id="attr1_sale" name="Відчуження нерухомого майна на користь нового власника"></activiti:value>
           <activiti:value id="attr2_high_house" name="Об’єкт нерухомого майна розташований у багатоповерховому житловому будинку."></activiti:value>
-          <activiti:value id="attr3_another_reason" name="Інша причина"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="comment_client" name="Якщо Ви обрали іншу причину обов'язково вкажіть її у цьому полі" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="nameCompany" name="Назва юридичної особи" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="adress" name="Юридична адреса або місце реєстрації фізичної особи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nameCompany" name="Назва юридичної особи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="adress_fiz" name="Місце реєстрації фізичної особи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="adress_ur" name="Юридична адреса" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="based" name="Документ, що посвідчує перехід права власності (наприклад: договір № ___ від ДД.ММ.РРРР)" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="square" name="Площа земельної ділянки (га)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="adress2" name="Адреса земельної ділянки" type="string" required="true"></activiti:formProperty>
@@ -33,11 +32,18 @@
         <activiti:formProperty id="bankId_scan_inn" name="Копія ІПН" type="file"></activiti:formProperty>
         <activiti:formProperty id="file1" name="Копія договору оренди земельної ділянки" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file2" name="Копія документу, що посвідчує перехід права власності на майно" type="file"></activiti:formProperty>
-        <activiti:formProperty id="file3" name="Копія свідоцтва про реєстрацію суб’єкта підприємницької діяльності" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file3" name="Копії установчих документів – для юридичних осіб, копія свідоцтва про державну реєстрацію фізичної особи – підприємця" type="file"></activiti:formProperty>
         <activiti:formProperty id="file4" name="Акт обстеження земельної ділянки" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file5" name="Для вбудованних приміщень обов'язково документ про право власності на приміщення" type="file"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="Юридична/фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;nameCompany&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;selectEntrepreneur&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'attr2_company'&quot;}}}" required="true"></activiti:formProperty>
-          </extensionElements>
+        <activiti:formProperty id="markers1" name="Фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sAdress&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;selectEntrepreneur&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'attr1_self'&quot;}}}" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="Юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;nameCompany&quot;,&quot;sAdress_ur&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;selectEntrepreneur&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'attr2_company'&quot;}}}" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса ЦНАП" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPosluga_name" name=" " type="invisible" default="Розірвання договору оренди земельної ділянки або припинення права постійного користування земельною ділянкою"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП" type="invisible"></activiti:formProperty>
+      </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <serviceTask id="servicetask2" name="Повідомленя адміністратора ЦНАПу" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -90,7 +96,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта для зворотнього звя'язку" type="string" writable="false"></activiti:formProperty>
-          <activiti:formProperty id="date_today" name="Дата заповнення заяви" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_today" name="Дата заповнення заяви" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="selectEntrepreneur" name="Суб’єкт звернення" type="enum" writable="false">
           <activiti:value id="attr1_self" name="Фізична особа - підприємець або громадянин України"></activiti:value>
           <activiti:value id="attr2_company" name="Юридична особа"></activiti:value>
@@ -98,11 +104,10 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="selectReason" name="Причина розірвання договору оренди земельної ділянки" type="enum" writable="false">
           <activiti:value id="attr1_sale" name="Відчуження нерухомого майна на користь нового власника"></activiti:value>
           <activiti:value id="attr2_high_house" name="Об’єкт нерухомого майна розташований у багатоповерховому житловому будинку."></activiti:value>
-          <activiti:value id="attr3_another_reason" name="Інша причина"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="comment_client" name="Якщо Ви обрали іншу причину обов'язково вкажіть її у цьому полі" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nameCompany" name="Назва юридичної особи" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="adress" name="Юридична адреса або місце реєстрації фізичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="adress_fiz" name="Місце реєстрації фізичної особи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="adress_ur" name="Юридична адреса" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="based" name="Документ, що посвідчує перехід права власності" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="square" name="Площа земельної ділянки (га)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adress2" name="Адреса земельної ділянки" type="string" writable="false"></activiti:formProperty>
@@ -113,7 +118,7 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="attr1_wait" name="Документи передані в Департамент комунальної власності та земельних відносин міської ради"></activiti:value>
           <activiti:value id="attr2_finish" name="Відмова громадянину у разі надання неповного пакету документів"></activiti:value>
         </activiti:formProperty>
-         <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
         <activiti:formProperty id="number_cnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string"></activiti:formProperty>
         <activiti:formProperty id="adminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string"></activiti:formProperty>
         <activiti:formProperty id="date_registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string"></activiti:formProperty>
@@ -211,11 +216,10 @@ ${sWorkTime}.&lt;br /&gt;
         <activiti:formProperty id="selectReason" name="Причина розірвання договору оренди земельної ділянки" type="enum" writable="false">
           <activiti:value id="attr1_sale" name="Відчуження нерухомого майна на користь нового власника"></activiti:value>
           <activiti:value id="attr2_high_house" name="Об’єкт нерухомого майна розташований у багатоповерховому житловому будинку."></activiti:value>
-          <activiti:value id="attr3_another_reason" name="Інша причина"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="comment_client" name="Якщо Ви обрали іншу причину обов'язково вкажіть її у цьому полі" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nameCompany" name="Назва юридичної особи" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="adress" name="Юридична адреса або місце реєстрації фізичної особи" type="string" writable="false"></activiti:formProperty>
+       <activiti:formProperty id="adress_fiz" name="Місце реєстрації фізичної особи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="adress_ur" name="Юридична адреса" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="based" name="Документ, що посвідчує перехід права власності" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="square" name="Площа земельної ділянки (га)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adress2" name="Адреса земельної ділянки" type="string" writable="false"></activiti:formProperty>
@@ -261,7 +265,7 @@ ${sWorkTime}.&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
-       <activiti:field name="saAttachmentsForSend">
+        <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${answer}</activiti:expression>
         </activiti:field>
       </extensionElements>
@@ -294,7 +298,7 @@ ${sWorkTime}.&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
-         <activiti:field name="saAttachmentsForSend">
+        <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${answer}</activiti:expression>
         </activiti:field>
       </extensionElements>
