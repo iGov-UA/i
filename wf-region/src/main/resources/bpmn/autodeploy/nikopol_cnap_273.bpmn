@@ -103,6 +103,7 @@
     </startEvent>
     <userTask id="usertask1" name="обробка вхідних данних" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
+       <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="invisible" ></activiti:formProperty>
        <activiti:formProperty id="sArea" name="Район" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
@@ -177,6 +178,7 @@
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <userTask id="usertask3" name="рішення" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
+          <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="invisible" ></activiti:formProperty>
         <activiti:formProperty id="sArea" name="Район" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
@@ -227,8 +229,8 @@
         <activiti:formProperty id="sNumberDogovor" name="Реєстраційний номер правовстановлюючого документа; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDateDogovor" name="Дата реєстрації правовстановлюючого документа; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="decision_2" name="Прийняте рішення" type="enum" required="true">
-          <activiti:value id="accept" name="надано згоду"></activiti:value>
-          <activiti:value id="reject" name="відмовлено у наданні згоди"></activiti:value>
+          <activiti:value id="accept" name="надано дозвіл"></activiti:value>
+          <activiti:value id="reject" name="відмовлено у наданні дозволу"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment_2" name="У разі відмови у наданні дозволу внесіть, будь ласка, причину" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="rishen" name="Завантажте копію рішення" type="file" required="true"></activiti:formProperty>
