@@ -28,8 +28,7 @@
         <activiti:formProperty id="dogov" name="Копія договору оренди земельної ділянки та додаткових угод (при їх наявності); Якщо є додаткові угоди об'єднайте, будь ласка, всі файли у архів або PDF-документ" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file_kadastr" name="Витяг з державного земельного кадастру" type="file"></activiti:formProperty>
         <activiti:formProperty id="file_tumch" name="Для тимчасових споруд - паспорт прив'язки тимчасової споруди" type="file"></activiti:formProperty>
-        <activiti:formProperty id="Flag_region" name="Перемикач регіонів" type="boolean" default="true"></activiti:formProperty>
-        <activiti:formProperty id="marker_region" name="Кузнєцовськ?" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;Flag_region&quot;],&quot;asID_Field_sValue&quot;:[&quot;false&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'rov_kuznT'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="Flag_region" name="Перемикач регіонів" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('CNAP_Dnepr_500.json')}"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП" type="invisible"></activiti:formProperty>
@@ -37,7 +36,6 @@
         <activiti:formProperty id="sAddress" name="Адреса ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="marker_region" name="Кузнєцовськ?" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;Flag_region&quot;],&quot;asID_Field_sValue&quot;:[&quot;false&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'rov_kuznT'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask2"></sequenceFlow>
@@ -167,7 +165,7 @@ ${sWorkTime}.&lt;br /&gt;
     <sequenceFlow id="flow7" sourceRef="servicetask7" targetRef="endevent2"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow8" name="${decide == 'accept'}" sourceRef="exclusivegateway3" targetRef="servicetask9">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${Flag_region == 'false' && decide == 'accept'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${Flag_region == 'true' && decide == 'accept'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask9" name="Повідомлення про передачу док-в в роботу" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
@@ -442,7 +440,7 @@ ${sWorkTime}.&lt;br /&gt;
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow31" name="sID_Public_SubjectOrganJoin &amp;&amp; decide == 'accept" sourceRef="exclusivegateway3" targetRef="servicetask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${Flag_region == 'true' && decide == 'accept'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${Flag_region != 'true' && decide == 'accept'}]]></conditionExpression>
     </sequenceFlow>
     <userTask id="usertask3" name="ЦНАП після міської ради" activiti:candidateGroups="lnu_arhiv">
       <extensionElements>
