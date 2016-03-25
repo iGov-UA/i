@@ -178,6 +178,7 @@ ${sPhoneOrgan}&lt;br&gt;
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/berdichev/berdichiv_cnap_409_print.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/berdichev/berdichiv_cnap_409_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sShapka409" name="Шапка заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPlase409" name="Назва міськвиконкому" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -196,7 +197,7 @@ ${sPhoneOrgan}&lt;br&gt;
     <sequenceFlow id="flow17" name="довідка зроблена" sourceRef="exclusivegateway2" targetRef="servicetask6">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDovidka == 'sDovidka_ok'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask6" name="email-інформування заявника про необхідність отримання результату" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask6" name="email-інформування заявника про необхідність отримання результату" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -221,6 +222,9 @@ ${sPhoneOrgan}&lt;br&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>${PrintForm_1}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
