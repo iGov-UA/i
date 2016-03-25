@@ -9,6 +9,7 @@
         <activiti:formProperty id="bankIdmiddleName" name="По-батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAdress" name="Адреса реєстрації суб'єкта звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Скан паспорта громадянина" type="file" required="true"></activiti:formProperty>
@@ -33,8 +34,8 @@
         <activiti:formProperty id="sAddress" name="Адреса ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPosluga_name" name=" " type="invisible" default="Видача Акту обстеження земельної ділянки на наявність зелених насаджень"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="marker31" name="Документи на видалення" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;file1&quot;,&quot;file2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;act&quot;},&quot;sCondition&quot;:&quot;[sClient]=='delete'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="marker32" name="Документи для розробки ПВЗД" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;file3&quot;,&quot;file4&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;act&quot;},&quot;sCondition&quot;:&quot;[sClient]=='rozrobka'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker31" name="Документи на видалення" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;file1&quot;,&quot;file2&quot;,&quot;PrintForm_1&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;act&quot;},&quot;sCondition&quot;:&quot;[sClient]=='delete'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker32" name="Документи для розробки ПВЗД" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;file3&quot;,&quot;file4&quot;,&quot;PrintForm_2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;act&quot;},&quot;sCondition&quot;:&quot;[sClient]=='rozrobka'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -95,6 +96,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="bankIdmiddleName" name="По-батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdress" name="Адреса реєстрації суб'єкта звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="subekt" name="Звернення подаю" type="enum" writable="false">
@@ -114,8 +116,11 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="attr2_bad" name="Відмовити у розгляді без реєстрації у звязку з відсутністю необхідних документів"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment_cnap" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sBody1" name="[pattern\print\dneprOblSnap\Synelnykove_509_print1.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody2" name="[pattern\print\dneprOblSnap\Synelnykove_509_print2.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/Synelnykove_509_print1.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/dneprOblSnap/Synelnykove_509_print2.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/dneprOblSnap/Synelnykove_509_print1.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody2" name="[pattern/print/dneprOblSnap/Synelnykove_509_print2.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -196,6 +201,7 @@ ${sWorkTime}.&lt;br /&gt;
         <activiti:formProperty id="bankIdmiddleName" name="По-батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdress" name="Адреса реєстрації суб'єкта звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="subekt" name="Звернення подаю" type="enum" writable="false">
@@ -214,6 +220,11 @@ ${sWorkTime}.&lt;br /&gt;
           <activiti:value id="attr4_rish_bad" name="Звернення не оброблене."></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment_cnap" name="Якщо Звернення не може бути оброблене, вкажіть причину у цьому полі" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/Synelnykove_509_print1.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/dneprOblSnap/Synelnykove_509_print2.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/dneprOblSnap/Synelnykove_509_print1.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody2" name="[pattern/print/dneprOblSnap/Synelnykove_509_print2.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="answer" name="Відповідь" type="file" required="true"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -285,7 +296,7 @@ ${sWorkTime}.&lt;br /&gt;
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${answer}</activiti:expression>
+          <activiti:expression>${answer},${PrintForm_1},${PrintForm_2}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
