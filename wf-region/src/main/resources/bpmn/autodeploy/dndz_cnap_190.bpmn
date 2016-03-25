@@ -32,11 +32,12 @@
         <activiti:formProperty id="bankId_scan_inn" name="Копія ІПН" type="file"></activiti:formProperty>
         <activiti:formProperty id="file1" name="Копія договору оренди земельної ділянки" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file2" name="Копія документу, що посвідчує перехід права власності на майно" type="file"></activiti:formProperty>
-        <activiti:formProperty id="file3" name="Копії установчих документів – для юридичних осіб, копія свідоцтва про державну реєстрацію фізичної особи – підприємця" type="file"></activiti:formProperty>
+        <activiti:formProperty id="file3_1" name="Копія свідоцтва про державну реєстрацію фізичної особи – підприємця (Якщо ФОП)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="file3_2" name="Копії установчих документів для юридичних осіб (Якщо більше одного, то архівом)" type="file"></activiti:formProperty>
         <activiti:formProperty id="file4" name="Акт обстеження земельної ділянки" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file5" name="Для вбудованних приміщень обов'язково документ про право власності на приміщення" type="file"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="Фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sAdress&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;selectEntrepreneur&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'attr1_self'&quot;}}}" required="true"></activiti:formProperty>
-        <activiti:formProperty id="markers2" name="Юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;nameCompany&quot;,&quot;sAdress_ur&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;selectEntrepreneur&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'attr2_company'&quot;}}}" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="Фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;adress_fiz&quot;,&quot;bankId_scan_passport&quot;,&quot;bankId_scan_inn&quot;,&quot;file3_1&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;selectEntrepreneur&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'attr1_self'&quot;}}}" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="Юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;nameCompany&quot;,&quot;adress_ur&quot;,&quot;file3_2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;selectEntrepreneur&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'attr2_company'&quot;}}}" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
@@ -106,9 +107,9 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="attr2_high_house" name="Об’єкт нерухомого майна розташований у багатоповерховому житловому будинку."></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="nameCompany" name="Назва юридичної особи" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="adress_fiz" name="Місце реєстрації фізичної особи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="adress_ur" name="Юридична адреса" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="based" name="Документ, що посвідчує перехід права власності" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="adress_fiz" name="Місце реєстрації фізичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="adress_ur" name="Юридична адреса" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="based" name="Документ, що посвідчує перехід права власності" type="string" writable="false" ></activiti:formProperty>
         <activiti:formProperty id="square" name="Площа земельної ділянки (га)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adress2" name="Адреса земельної ділянки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="newOwner" name="Новий власник нерухомого майна" type="string" writable="false"></activiti:formProperty>
@@ -218,7 +219,7 @@ ${sWorkTime}.&lt;br /&gt;
           <activiti:value id="attr2_high_house" name="Об’єкт нерухомого майна розташований у багатоповерховому житловому будинку."></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="nameCompany" name="Назва юридичної особи" type="string" writable="false"></activiti:formProperty>
-       <activiti:formProperty id="adress_fiz" name="Місце реєстрації фізичної особи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="adress_fiz" name="Місце реєстрації фізичної особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="adress_ur" name="Юридична адреса" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="based" name="Документ, що посвідчує перехід права власності" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="square" name="Площа земельної ділянки (га)" type="string" writable="false"></activiti:formProperty>
