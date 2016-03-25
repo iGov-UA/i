@@ -218,8 +218,8 @@ public class DebugCommonController {
 
                 while (!isEnoughFreeDays(nID_ServiceData, nID_SubjectOrganDepartment, oDateStart) 
                         && nStartDay < DAYS_IN_HALF_YEAR) {
-                    dateStart = dateStart.plusDays(nStartDay);
-                    dateEnd = dateStart.plusDays(nStartDay + DAYS_IN_MONTH);
+                    dateStart = oDateStart.plusDays(nStartDay);
+                    dateEnd = oDateStart.plusDays(nStartDay + DAYS_IN_MONTH);
                     LOG.info(" dateStart = {}, dateEnd = {}", dateStart, dateEnd);
 
                     List<FlowSlotVO> resFlowSlotVO = oFlowService.buildFlowSlots(nID_Flow_ServiceData, 
