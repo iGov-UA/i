@@ -54,9 +54,9 @@ html, body {margin: 0; padding: 0; height: 100%; font: 400 12px/14px 'Tahoma';}
 }
 
 .line_col {}
-.under_field {height: 15px; margin: 0 0 20px 0; border-bottom: 1px solid black; position: relative; display: inline-block; clear: both;}
+.under_field {height: 15px; margin: 0 0 15px 0; border-bottom: 1px solid black; position: relative; display: inline-block; clear: both;}
 .under_field > i {font-style: normal;}
-.under_field > span {position: absolute; left: 0; right: 0; text-align: center; color: #606060; bottom: -20px; font-size: 12px;}
+.under_field > span {position: absolute; left: 0; right: 0; text-align: center; color: #606060; bottom: -15px; font-size: 12px;}
 
 .under_field_line {height: 20px; margin: 0 0 15px 0; padding: 0 0 0 0; border-bottom: 1px solid black; position: relative; display: block;}
 .under_field_line.right_side {float: right;}
@@ -107,31 +107,46 @@ p {font-size: 11px;}
 <section class="print_wrap">
 <br />
     <div class="line_col ta-r">
-        <div class="under_field w350 ta-l"><i>До центру  надання адміністративних послуг</i><span></span></div><br />
-	    <div class="under_field w350 ta-l"><i>від [clfio]</i><span>(прізвище , ім’я, по-батькові)</span></div><br />
-		<div class="under_field w350 ta-l"><i>[adres_1]</i><span>(зареєстрований за адресою)</span></div><br />
-		<div class="under_field w350 ta-l"><i>[phone]</i><span>(контактний телефон)</span></div><br />
-		<div class="under_field w350 ta-l"><i>[bankIdPassport]</i><span>(паспортні данні)</span></div><br />
+        <div class="under_field w350 ta-l"><i>[sShapka273]</i><span></span></div><br />
+		<div class="under_field w350 ta-l"><i>Заявник [clfio]</i><span>(прізвище , ім’я, по-батькові)</span></div><br />
 		<div class="under_field w350 ta-l"><i>[bankIdinn]</i><span>(ІПН)</span></div><br />
-			</div><br />
+		<div class="under_field w350 ta-l"><i>[sAddress]</i><span>(адреса реєстрації)</span></div><br />
+		<div class="under_field w350 ta-l"><i>[phone] [email]</i><span>(контактний телефон, e-mail)</span></div><br />
+		<div class="under_field w350 ta-l"><i>[bankIdPassport]</i><span>(паспортні данні)</span></div><br />
+		</div><br />
+		
+		<div class="line_col ta-r" id='shapka_ur'>
+        <div class="under_field w350 ta-l"><i>[sNameUr]</i><span>(назва юридичної особи)</span></div><br />
+		<div class="under_field w350 ta-l"><i>Державна реєстрація суб’єкта підприємницької діяльності</i><span></span></div><br />
+		<div class="under_field w350 ta-l"><i>проведена  [sDateReestration] за № [sNumberReestration]</i><span></span></div><br />
+		<div class="under_field w350 ta-l"><i>Юридична адреса [sAdressUr]</i><span>(ІПН)</span></div><br />
+		</div><br />
+		
+		
     <div class="line_col ta-c m-t-25">
         <b>ЗАЯВА<br /></b><br />
-       	<div class="ta-l"> Прошу надати дозвіл на переведення житлового приміщення в нежитлове під розміщення об’єктів невиробничої сфери за адресою [adres_2] для [function].</div><br />
+       	<div class="ta-l"> Прошу надати дозвіл на переведення [sTypeRoom] [sObeject] [locality] [street] [number_house] яке належить [sOwner] на підставі [sNameDogovor] №[sNumberDogovor] від [sDateDogovor].<br />
+		Цільове призначення приміщення [sFunction]<br />
+				</div><br />
 		<div class="ta-l"> Документи, що додаються до заяви:<br />
-		<div class="ta-l"> 1. Завірена в установленому порядку, копію договору купівлі-продажу приміщення (квартири);<br />
-		<div class="ta-l"> 2. Копія технічного паспорту приміщення (квартири);<br />
-		<div class="ta-l"> 3. Довідка про адресу реєстрації власника квартири за місцем проживання;<br />
-		<div class="ta-l"> 4. Акт від Управління з питань наглядово-профілактичної діяльності ГУ МНС України в Дніпропетровській області про технічну можливість використання приміщення за новим призначенням;</div>
-		<div class="ta-l"> 5. Довідка від КП «Ресурсно-розрахунковий центр» міської ради щодо відсутності боргу з комунальних та експлуатаційних платежів;</div>
-		<div class="ta-l"> 6. Довідка від УАКБ та ЖКГ міської ради про технічну можливість використання приміщенням за новим призначенням;</div>
-		<div class="ta-l"> 7. Довідка від місцевої дільниці енергозбиту.</div><br />
+		[sListDocumentsPrint]<br /><br /><br />
+		<div class="ta-l" id='text'> <b>Заявнику відомо, що:</b><br />
+		<li>	у разі невиконання робіт впродовж трьох років з реконструкції (будівництва) об’єкта дозвіл на переведення жилих приміщень в нежилі під розміщення об’єктів невиробничої сфери, або нежилих приміщень у жилі приміщення, втрачає чинність і для його поновлення мені буде необхідно звернутися в Дозвільний центр Нікопольської міської ради з новою заявою;</li>
+		<li>дозвіл на переведення жилих приміщень в нежилі під розміщення об’єктів невиробничої сфери і нежилих приміщень у жилі приміщення є підставою для проектування об’єкта і не є підставою для здійснення будівельних робіт;</li>
+		<li>право на виконання будівельних робіт, підключення об’єкта будівництва до інженерних мереж та споруд надається після реєстрації повідомлення (декларації) про початок будівельних робіт (для об’єктів І – ІІІ категорії складності) або отримання дозволу на виконання будівельних робіт (для об’єктів IV – V категорії складності);</li>
+		<li>повідомлення (декларацію) про початок виконання будівельних робіт реєструє, а дозвіл на виконання будівельних робіт видає департамент Державної архітектурно-будівельної інспекції у Дніпропетровській області понеділок-середа з 9-00 до 13-00, яка розташована за адресою: м. Дніпропетровськ, Набережна Леніна, 29а, каб. 508;</li>
+		<li>впродовж 7 (семи) календарних днів з дня реєстрації повідомлення (декларації) про початок будівельних робіт або з дня видачі дозволу на виконання будівельних робіт я зобов’язаний(а) письмово поінформувати відповідні служби міста та управління житлово-комунального господарства міської ради про початок виконання будівельних робіт.</li>
+		<li>Зміст статті 38 «Знесення самочинно збудованих об’єктів містобудування» та статті 39 «Прийняття в експлуатацію закінчених будівництвом об’єктів» Закону України «Про регулювання містобудівної діяльності» мені роз’яснено.</li>
+		<li>Достовірність наданих документів та наведених у заяві відомостей гарантую. Зобов’язуюсь виготовити проектну документацію на будівництво (реконструкцію) об’єкта в установленому законодавством України порядку.</li>
+</div>
+		
 		<div class="ta-l"> Даю згоду на обробку моїх персональних даних та підтверджую їх актуальність.</div><br />
 	    <div class="date_subm m-t-45">
-		<div class="inv">[date_today]<span>(дата)</span></div>
+		<div class="inv">[sDateCreate]<span>(дата)</span></div>
 		<div class="invs"><span>(підпис)</span></div>
         <div class="signature"><font size='1'>[clfio]</font><span>(прізвище, ім’я, по батькові)</span></div>
 		<div class="clear"></div>
-    </div>
+    </div> </div> </div>
 	</section>
 </body>
 </html>

@@ -37,29 +37,6 @@
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>
     <sequenceFlow id="flow11" sourceRef="boundaryerror1" targetRef="endevent3"></sequenceFlow>
-    <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>	
-		var vPhone = execution.getVariable('sPhoneOrgan')
-		var vTime = execution.getVariable('sWorkTime')
-		var vAdress = execution.getVariable('sAddress')
-		var result = ''
-		
-		if (vAdress.length &gt; 3){
-		  result += '&lt;b&gt;Адреса:&lt;/b&gt; ' + vAdress + '&lt;br&gt;'
-		}
-		
-		if (vTime.length &gt; 3){
-		  result += '&lt;b&gt;Час роботи:&lt;/b&gt; ' + vTime + '&lt;br&gt;'
-		}
-		
-		if (vPhone.length &gt; 3){
-		  result += '&lt;b&gt;Телефон:&lt;/b&gt; ' + vPhone + '&lt;br&gt;'
-		}
-		
-		execution.setVariable('sContact', result);	
-	</script>
-    </scriptTask>
-    <sequenceFlow id="flow21" sourceRef="scripttask1" targetRef="servicetask2"></sequenceFlow>
     <serviceTask id="servicetask2" name="Повідомлення чиновника про нову заявку" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
@@ -216,22 +193,20 @@
           <activiti:expression><![CDATA[Взяття на облік громадян, які потребують поліпшення житлових умов]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[
-          	<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+          <activiti:expression><![CDATA[<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<p>
 				Ваше звернення виконано.<br>
 				<br>
 				Ви можете отримати результат<br>
 				${sContact}<br>			
 			</p>
-			${sNameOrgan},<br>
-			]]></activiti:expression>
+			${sNameOrgan},<br>]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow20" sourceRef="servicetask4" targetRef="endevent3"></sequenceFlow>
     <endEvent id="endevent3" name="End"></endEvent>
-    <sequenceFlow id="flow23" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
+    <sequenceFlow id="flow23" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
     <textAnnotation id="textannotation1">
       <text>Выбирается услуга:
       		Взяття на облік громадян, які потребують поліпшення житлових умов
@@ -253,9 +228,6 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
         <omgdc:Bounds height="30.0" width="30.0" x="23.0" y="170.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="143.0" y="54.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="70.0" width="132.0" x="197.0" y="132.0"></omgdc:Bounds>
@@ -298,10 +270,6 @@
         <omgdi:waypoint x="38.0" y="200.0"></omgdi:waypoint>
         <omgdi:waypoint x="118.0" y="288.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
-        <omgdi:waypoint x="195.0" y="109.0"></omgdi:waypoint>
-        <omgdi:waypoint x="263.0" y="132.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
         <omgdi:waypoint x="329.0" y="167.0"></omgdi:waypoint>
         <omgdi:waypoint x="372.0" y="167.0"></omgdi:waypoint>
@@ -318,7 +286,7 @@
         <omgdi:waypoint x="618.0" y="305.0"></omgdi:waypoint>
         <omgdi:waypoint x="468.0" y="306.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="519.0" y="282.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="507.0" y="285.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
@@ -347,7 +315,7 @@
         <omgdi:waypoint x="363.0" y="424.0"></omgdi:waypoint>
         <omgdi:waypoint x="189.0" y="425.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="216.0" y="405.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="94.0" x="216.0" y="405.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
@@ -355,8 +323,8 @@
         <omgdi:waypoint x="118.0" y="323.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
-        <omgdi:waypoint x="91.0" y="136.0"></omgdi:waypoint>
-        <omgdi:waypoint x="195.0" y="109.0"></omgdi:waypoint>
+        <omgdi:waypoint x="154.0" y="166.0"></omgdi:waypoint>
+        <omgdi:waypoint x="197.0" y="167.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="association1" id="BPMNEdge_association1">
         <omgdi:waypoint x="256.0" y="31.0"></omgdi:waypoint>

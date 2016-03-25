@@ -12,6 +12,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Repository;
 import org.igov.model.core.GenericEntityDao;
 import org.igov.io.GeneralConfig;
@@ -33,7 +34,7 @@ public class DocumentAccessDaoImpl extends GenericEntityDao<DocumentAccess> impl
     @Autowired
     GeneralConfig generalConfig;
     @Autowired
-    Mail oMail;
+    private ApplicationContext context;
 
     public DocumentAccessDaoImpl() {
         super(DocumentAccess.class);
@@ -91,7 +92,7 @@ public class DocumentAccessDaoImpl extends GenericEntityDao<DocumentAccess> impl
                     "<br>" +
                     "З повагою,<br>" +
                     "команда порталу державних послу iGov";
-            oMail.reset();
+            Mail oMail = context.getBean(Mail.class);
             oMail._To(saToMail)._Head(sHead)._Body(sBody);
             oMail.send();
         }
