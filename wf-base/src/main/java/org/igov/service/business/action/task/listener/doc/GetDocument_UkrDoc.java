@@ -81,12 +81,6 @@ public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListene
                             String view_url = file.getString("view_url").replaceFirst("/docs", ""); //docs/2016/10300131/files/10300000/content?type=.jpg
                             String fileNameOrigin = file.getString("file"); //a10300000.jpg
                             String fileName = file.getString("name");
-                            
-                            sessionId = UkrDocUtil.getSessionId("it200687kov", "9379992privat",
-                                    generalConfig.sURL_AuthSID_PB() + "?lang=UA");
-                            LOG.info("Retrieved my session ID:{} and created URL to request: {}", sessionId, url);
-                            headers = new HttpHeaders();
-                            headers.set("Authorization", "promin.privatbank.ua/EXCL " + sessionId);
 
                             LOG.info("view_url:" + generalConfig.getsUkrDocServerAddress() + view_url + " fileName: " + fileName);
                             resp = new RestRequest().get(generalConfig.getsUkrDocServerAddress() + view_url, MediaType.APPLICATION_JSON,

@@ -103,6 +103,7 @@
     </startEvent>
     <userTask id="usertask1" name="обробка вхідних данних" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
+       <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="invisible" ></activiti:formProperty>
        <activiti:formProperty id="sArea" name="Район" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
@@ -164,7 +165,7 @@
         <activiti:formProperty id="sListDocumentsPrint" name="перелік документів у заяву" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers12" name="принтформа якщо юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_12&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;shapka_ur&quot;,&quot;zagolovok&quot;,&quot;telo&quot;,&quot;zgoda&quot;,&quot;end&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sSubekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='ur'&quot;}}}"></activiti:formProperty>
  		<activiti:formProperty id="markers13" name="принтформа якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;telo&quot;,&quot;zgoda&quot;,&quot;end&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sSubekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='fiz'||[sCond]=='fop'&quot;}}}"></activiti:formProperty>
-  		<activiti:formProperty id="markers14" name="принтформа якщо Нікополь" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_14&quot;:{&quot;aElement_ID&quot;:[&quot;text&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sCond]=='nikopolT'&quot;}}}"></activiti:formProperty>
+  		<activiti:formProperty id="markers14" name="принтформа якщо Нікополь" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_14&quot;:{&quot;aElement_ID&quot;:[&quot;nikopol_details&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sCond]=='nikopolT'&quot;}}}"></activiti:formProperty>
   		<activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_273_print.html]" type="invisible" default="заява" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -177,14 +178,15 @@
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <userTask id="usertask3" name="рішення" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
+          <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="invisible" ></activiti:formProperty>
         <activiti:formProperty id="sArea" name="Район" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні данні" type="string" writable="false"></activiti:formProperty>
-         <activiti:formProperty id="sAdress" name="Адреса реєстрації громадянина; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string"></activiti:formProperty>
-        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTypeRoom" name="оберіть тип переведення; ;writable=false" type="enum">
+        <activiti:formProperty id="sAdress" name="Адреса реєстрації громадянина; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+       <activiti:formProperty id="sTypeRoom" name="оберіть тип переведення; ;writable=false" type="enum">
           <activiti:value id="live" name="житлових приміщень в нежитлові під розміщення об’єктів невиробничої сфери"></activiti:value>
           <activiti:value id="not_live" name="нежитлових приміщень у житлові"></activiti:value>
         </activiti:formProperty>
@@ -227,8 +229,8 @@
         <activiti:formProperty id="sNumberDogovor" name="Реєстраційний номер правовстановлюючого документа; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDateDogovor" name="Дата реєстрації правовстановлюючого документа; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="decision_2" name="Прийняте рішення" type="enum" required="true">
-          <activiti:value id="accept" name="надано згоду"></activiti:value>
-          <activiti:value id="reject" name="відмовлено у наданні згоди"></activiti:value>
+          <activiti:value id="accept" name="надано дозвіл"></activiti:value>
+          <activiti:value id="reject" name="відмовлено у наданні дозволу"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment_2" name="У разі відмови у наданні дозволу внесіть, будь ласка, причину" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="rishen" name="Завантажте копію рішення" type="file" required="true"></activiti:formProperty>
@@ -237,7 +239,7 @@
         <activiti:formProperty id="sShapka273" name="шапка у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers12" name="принтформа якщо юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_12&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;shapka_ur&quot;,&quot;zagolovok&quot;,&quot;telo&quot;,&quot;zgoda&quot;,&quot;end&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sSubekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='ur'&quot;}}}"></activiti:formProperty>
  		<activiti:formProperty id="markers13" name="принтформа якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;telo&quot;,&quot;zgoda&quot;,&quot;end&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sSubekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='fiz'||[sCond]=='fop'&quot;}}}"></activiti:formProperty>
-  		<activiti:formProperty id="markers14" name="принтформа якщо Нікополь" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_14&quot;:{&quot;aElement_ID&quot;:[&quot;text&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sCond]=='nikopolT'&quot;}}}"></activiti:formProperty>
+  		<activiti:formProperty id="markers14" name="принтформа якщо Нікополь" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_14&quot;:{&quot;aElement_ID&quot;:[&quot;nikopol_details&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sCond]=='nikopolT'&quot;}}}"></activiti:formProperty>
   	 <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_273_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_273_print.html]" type="invisible" default="заява" writable="false"></activiti:formProperty>
       </extensionElements>
@@ -332,7 +334,6 @@ ${sNameOrgan}&lt;br /&gt;
 Вам enum{[decision_2]} на переведення enum{[sTypeRoom]}.
 Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у ЦНАПі.&lt;br /&gt;
 ${comment_2}&lt;br /&gt;
-При собі треба мати:&lt;br /&gt;
 При собі треба мати:&lt;br /&gt;
 ${sListDocumentsLetter}
 ${sAddress}&lt;br /&gt;
