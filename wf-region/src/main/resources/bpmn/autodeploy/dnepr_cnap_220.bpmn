@@ -80,10 +80,67 @@
     <sequenceFlow id="flow4" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <scriptTask id="scripttask1" name="Script pulling data" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
+      var per3 = 'sShapka220'
 var per4 = 'substance'
 var per5 = 'substance_2'
 var per6 = 'substance_3'
 var per7 ='term'
+if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'petropavl'){
+per3 = 'Начальнику Управління, головному державному санітарному лікарю Петропалівського району'
+per7 = 'двох місяців з дня реєстрації заяви'
+}
+if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'nikopol'){
+per3 = 'Начальнику Управління, головному державному санітарному лікарю  Нікопольського району'
+per7 = 'двох місяців з дня реєстрації заяви'
+}
+if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'ordzonikT'){
+per3 = 'Начальнику Управління, головному державному санітарному лікарю м.Орджонікідзе'
+per7 = 'двох місяців з дня реєстрації заяви'
+}
+if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'nikopolT'){
+per3 = 'Начальнику Управління, головному державному санітарному лікарю м.Нікополь'
+per7 = 'двох місяців з дня реєстрації заяви'
+}
+if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'kiev_vish'){
+per3 = 'Начальнику Головного управління Держсанепідслужби у Київський області'
+per7 = 'двох місяців з дня реєстрації заяви'
+}
+if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'kiev_bucha'){
+per3 = 'Начальнику Головного управління Держсанепідслужби у Київський області'
+per7 = 'двох місяців з дня реєстрації заяви'
+}
+if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'vin_teplic'){
+per3 = 'Начальнику Головного управління Держсанепідслужби у Вінницький області'
+per7 = 'двох місяців з дня реєстрації заяви'
+}
+if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'carich'){
+per3 = 'Головному державному санітарному лікарю Царичанського, Петриківського, Магдалинівського району'
+per7 = 'двох місяців з дня реєстрації заяви'
+}
+if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'vilnogirskT'){
+per3 = 'Начальнику Головного управління Держсанепідслужби у Дніпропетровській області'
+per7 = 'двох місяців з дня реєстрації заяви'
+}
+if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'prav' &amp;&amp; execution.getVariable('vibor_performer') == 'head'){
+per3 = 'Головному державному санітарному лікарю Дніпропетровської області'
+per7 = 'двох місяців з дня реєстрації заяви'
+}
+if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'prav' &amp;&amp; execution.getVariable('vibor_performer') == 'rail'){
+per3 = 'Начальнику управління на Придніпровській залізниці ГУ Держсанепідслужби на залізничному транспорту'
+per7 = 'двох місяців з дня реєстрації заяви'
+}
+if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'lev' &amp;&amp; execution.getVariable('vibor_performer') == 'head'){
+per3 = 'Головному державному санітарному лікарю Дніпропетровської області'
+per7 = 'двох місяців з дня реєстрації заяви'
+}
+if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'lev' &amp;&amp; execution.getVariable('vibor_performer') == 'rail'){
+per3 = 'Начальнику управління на Придніпровській залізниці ГУ Держсанепідслужби на залізничному транспорту'
+per7 = 'двох місяців з дня реєстрації заяви'
+}
+if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'dndzT'){
+per3 = 'Начальнику Дніпродзержинського міського Управління Головного управління Держсанепідслужби у Дніпропетровській області'
+per7 = 'двох місяців з дня реєстрації заяви'
+}
 if (execution.getVariable('vibor_service') == 'issue'){
 per4 = 'видати'
 per5 = 'Ваш висновок державної санітарно-епідеміологічної експертизи діючих об’єктів - готовий'
@@ -108,6 +165,7 @@ per5 = 'Рішення про анулювання документа дозві
 per6 = 'анулювання'
 per7 = 'п`яти робочих днів'
 }
+execution.setVariable('sShapka220', per3)
 execution.setVariable('substance', per4)
 execution.setVariable('substance_2', per5)
 execution.setVariable('substance_3', per6)
