@@ -209,17 +209,21 @@ public class DebugCommonController {
                 flow = flowServiceDataDao.findByIdExpected(nID_Flow_ServiceData);
                 nID_ServiceData = flow.getnID_ServiceData();   //nID_ServiceData = 358  _test_queue_cancel, nID_ServiceData = 63L Видача/заміна паспорта громадянина для виїзду за кордон
                 nID_SubjectOrganDepartment = flow.getnID_SubjectOrganDepartment();
-                LOG.info(" nID_Flow_ServiceData = {}, nID_ServiceData = {}, nID_SubjectOrganDepartment = {}", nID_Flow_ServiceData, nID_ServiceData, nID_SubjectOrganDepartment);
+                LOG.info(" nID_Flow_ServiceData = {}, nID_ServiceData = {}, nID_SubjectOrganDepartment = {}", 
+                        nID_Flow_ServiceData, nID_ServiceData, nID_SubjectOrganDepartment);
 
                 int nStartDay = 0;
                 DateTime dateStart = oDateStart.plusDays(0);
                 DateTime dateEnd;
 
-                while (!isEnoughFreeDays(nID_ServiceData, nID_SubjectOrganDepartment, oDateStart) && nStartDay < DAYS_IN_HALF_YEAR) {
+                while (!isEnoughFreeDays(nID_ServiceData, nID_SubjectOrganDepartment, oDateStart) 
+                        && nStartDay < DAYS_IN_HALF_YEAR) {
                     dateStart = dateStart.plusDays(nStartDay);
                     dateEnd = dateStart.plusDays(nStartDay + DAYS_IN_MONTH);
+                    LOG.info(" dateStart = {}, dateEnd = {}", dateStart, dateEnd);
 
-                    List<FlowSlotVO> resFlowSlotVO = oFlowService.buildFlowSlots(nID_Flow_ServiceData, dateStart, dateEnd);
+                    List<FlowSlotVO> resFlowSlotVO = oFlowService.buildFlowSlots(nID_Flow_ServiceData, 
+                            dateStart, dateEnd); // строит четко на месяц вперед независимо от рабочих или нерабочих дней
                     LOG.info(" resFlowSlotVO.size() = {}", resFlowSlotVO.size());
 
                     nStartDay += DAYS_IN_MONTH;
@@ -234,7 +238,8 @@ public class DebugCommonController {
                 flow = flowServiceDataDao.findByIdExpected(nID_Flow_ServiceData);
                 nID_ServiceData = flow.getnID_ServiceData();   //nID_ServiceData = 358  _test_queue_cancel, nID_ServiceData = 63L Видача/заміна паспорта громадянина для виїзду за кордон
                 nID_SubjectOrganDepartment = flow.getnID_SubjectOrganDepartment();
-                LOG.info(" nID_Flow_ServiceData = {}, nID_ServiceData = {}, nID_SubjectOrganDepartment = {}", nID_Flow_ServiceData, nID_ServiceData, nID_SubjectOrganDepartment);
+                LOG.info(" nID_Flow_ServiceData = {}, nID_ServiceData = {}, nID_SubjectOrganDepartment = {}", 
+                        nID_Flow_ServiceData, nID_ServiceData, nID_SubjectOrganDepartment);
 
                 isEnoughFreeDays(nID_ServiceData, nID_SubjectOrganDepartment, oDateStart);
                 break;
@@ -285,7 +290,7 @@ public class DebugCommonController {
         LOG.info(" oDateEnd = {}", oDateEnd);
 
         Days res = oFlowService.getFlowSlots(nID_Service, nID_ServiceData, sID_BP, nID_SubjectOrganDepartment,
-                oDateStart, oDateEnd, bAll, WORK_DAYS_NEEDED);
+                oDateStart, oDateEnd, bAll, WORK_DAYS_NEEDED); //WORK_DAYS_NEEDED
         LOG.info(" Days = {}", res);
 
         nFreeWorkDaysFact = res.getaDay().size();
