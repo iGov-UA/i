@@ -81,23 +81,24 @@ public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListene
                             String view_url = file.getString("view_url").replaceFirst("/docs", ""); //docs/2016/10300131/files/10300000/content?type=.jpg
                             String fileNameOrigin = file.getString("file"); //a10300000.jpg
                             String fileName = file.getString("name");
+
                             LOG.info("view_url:" + generalConfig.getsUkrDocServerAddress() + view_url + " fileName: " + fileName);
                             resp = new RestRequest().get(generalConfig.getsUkrDocServerAddress() + view_url, MediaType.APPLICATION_JSON,
                                     StandardCharsets.UTF_8, String.class, headers);
                             LOG.info("Ukrdoc response getContentFile:" + resp);
                             try {
-                                ByteArrayMultipartFile oByteArrayMultipartFile = 
-                                        new ByteArrayMultipartFile(contentStringToByte(resp), fileName, fileNameOrigin, "application/octet-stream");
+                                ByteArrayMultipartFile oByteArrayMultipartFile
+                                        = new ByteArrayMultipartFile(contentStringToByte(resp), fileName, fileNameOrigin, "application/octet-stream");
                                 Attachment attachment = createAttachment(oByteArrayMultipartFile, dt, fileName);
                                 if (attachment != null) {
                                     anID_Attach_UkrDoc.append(attachment.getId()).append(",");
-                                } 
+                                }
                             } catch (Exception ex) {
                                 java.util.logging.Logger.getLogger(GetDocument_UkrDoc.class.getName()).log(Level.SEVERE, null, ex);
                             }
                         }
-                        if(anID_Attach_UkrDoc.length() > 0){
-                            runtimeService.setVariable(execution.getProcessInstanceId(), "anID_Attach_UkrDoc", 
+                        if (anID_Attach_UkrDoc.length() > 0) {
+                            runtimeService.setVariable(execution.getProcessInstanceId(), "anID_Attach_UkrDoc",
                                     anID_Attach_UkrDoc.deleteCharAt(anID_Attach_UkrDoc.length() - 1).toString());
                         }
                     }

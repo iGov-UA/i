@@ -51,9 +51,8 @@
         <activiti:formProperty id="sID_UA" name="sID_UA" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="obl" name="назва області" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="rekv" name="адреса" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="postV" name="електронна пошта ОДА1" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="електронна пошта ОДА1" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="golova" name="ПІБ голови ОДА" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="text" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Загрузка файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -117,7 +116,7 @@ per4 = ' '
 }
 execution.setVariable('obl', per1)
 execution.setVariable('rekv', per2)
-execution.setVariable('postV', per3)
+execution.setVariable('sMailClerk', per3)
 execution.setVariable('golova', per4)
 	  </script>
     </scriptTask>
