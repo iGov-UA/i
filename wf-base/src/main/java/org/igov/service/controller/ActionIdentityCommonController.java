@@ -128,7 +128,7 @@ public class ActionIdentityCommonController {
     @RequestMapping(value = "/getUsers", method = RequestMethod.GET)
     @ResponseBody
     public List<User> getUsers(
-            @ApiParam(value = "строка, которая содержит число, id групы, опциональный параметр", required = false) @RequestParam(value = "sID_Group", required = true) String sID_Group) {
+            @ApiParam(value = "строка, которая содержит число, id групы, опциональный параметр", required = false) @RequestParam(value = "sID_Group", required = false) String sID_Group) {
 
         log.info("Method getUsers startred");
         List<User> aoUsers = identityService.createUserQuery().memberOfGroup(sID_Group).list();
