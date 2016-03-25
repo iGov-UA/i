@@ -9,9 +9,13 @@
     <userTask id="usertask1" name="User Task">
       <extensionElements>
         <activiti:formProperty id="sID_Document" name="sID_Document" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sessionId" name="sessionId" type="string" required="true"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${GetDocument_UkrDoc}">
           <activiti:field name="sID_Document">
             <activiti:expression>${sID_Document}</activiti:expression>
+          </activiti:field>
+          <activiti:field name="sessionId">
+            <activiti:expression>${sessionId}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
