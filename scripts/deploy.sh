@@ -294,21 +294,22 @@ build_region ()
 	fi
 }
 
-if [ $sProject == "wf-central" ]; then
-	build_central
-fi
-if [ $sProject == "wf-region" ]; then
-	build_region
-fi
-if [ $sProject == "central-js" ]; then
-	build_central-js
-fi
-if [ $sProject == "dashboard-js" ]; then
-	build_dashboard-js
-fi
 if [ -z $sProject ]; then
 	build_base $saCompile
 	exit 0
+else
+	if [ $sProject == "wf-central" ]; then
+		build_central
+	fi
+	if [ $sProject == "wf-region" ]; then
+		build_region
+	fi
+	if [ $sProject == "central-js" ]; then
+		build_central-js
+	fi
+	if [ $sProject == "dashboard-js" ]; then
+		build_dashboard-js
+	fi
 fi
 if [ -z $sHost ]; then
     echo "Cloud not select host for deploy. Wrong version or project."

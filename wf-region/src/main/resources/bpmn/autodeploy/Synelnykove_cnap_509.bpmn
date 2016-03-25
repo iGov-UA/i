@@ -11,10 +11,13 @@
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Скан паспорта громадянина" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="subekt" name="Звернення подаю" type="enum" required="true">
           <activiti:value id="personally" name="особисто"></activiti:value>
           <activiti:value id="confidant" name="довірена особа"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="marker21" name="Довірена особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;file5&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient]=='confidant'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="file5" name="Скан копія Довіреності на право представляти інтереси" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="act" name="Оберіть вид послуги" type="enum" required="true">
           <activiti:value id="delete" name="АКТ ОБСТЕЖЕННЯ ЗЕЛЕНИХ НАСАДЖЕНЬ НА ВИДАЛЕННЯ АВАРІЙНИХ, СУХОСТІЙНИХ І ФАУТНИХ ЗЕЛЕНИХ НАСАДЖЕНЬ"></activiti:value>
           <activiti:value id="rozrobka" name="АКТ ОБСТЕЖЕННЯ ЗЕЛЕНИХ НАСАДЖЕНЬ ПРИ РОЗРОБЦІ ПРОЕКТУ ВИДІЛЕННЯ ЗЕМЕЛЬНОЇ ДІЛЯНКИ"></activiti:value>
@@ -72,7 +75,8 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-&lt;p&gt; Ваше звернення на тему ${sPosluga_name} прийнято в роботу. &lt;br /&gt;
+&lt;p&gt; Ви подали звернення на тему  ${sPosluga_name}. &lt;br /&gt;
+Документи прийнято на розгляд.&lt;br /&gt;
 Повідомлення про результат розгляду буде спрямоване на Ваш e-mail.&lt;/p&gt;
 &lt;br /&gt;
 За наявності питянь можете звернутись за телефоном: ${sPhoneOrgan}.&lt;br /&gt;
@@ -110,6 +114,8 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="attr2_bad" name="Відмовити у розгляді без реєстрації у звязку з відсутністю необхідних документів"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment_cnap" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern\print\dneprOblSnap\Synelnykove_509_print1.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody2" name="[pattern\print\dneprOblSnap\Synelnykove_509_print2.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -153,7 +159,7 @@ ${sWorkTime}.&lt;br /&gt;
     </sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow8" sourceRef="servicetask4" targetRef="endevent2"></sequenceFlow>
-    <serviceTask id="servicetask5" name="E-mail гомадянину про передачу документів в департамент управління житлово-комунального господарства та комунальної власності" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask5" name="E-mail гомадянину про передачу документів у відповідний департамент для обробки звернення. " activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -183,7 +189,7 @@ ${sWorkTime}.&lt;br /&gt;
     <sequenceFlow id="flow9" name="status=='attr1_wait'" sourceRef="exclusivegateway1" targetRef="servicetask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status=='attr1_wait'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask2" name="Обробка документів спеціалістом (інженер-еколог) управління житлово-комунального господарства та комунальної власност (2-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask2" name="Обробка документів спеціалістом відповідного департаменту (2-й крок)." activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
@@ -245,7 +251,7 @@ ${sWorkTime}.&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
-         <activiti:field name="saAttachmentsForSend">
+        <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${answer}</activiti:expression>
         </activiti:field>
       </extensionElements>
@@ -278,7 +284,7 @@ ${sWorkTime}.&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
-       <activiti:field name="saAttachmentsForSend">
+        <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${answer}</activiti:expression>
         </activiti:field>
       </extensionElements>
@@ -378,7 +384,7 @@ ${sWorkTime}.&lt;br /&gt;
         <omgdi:waypoint x="660.0" y="108.0"></omgdi:waypoint>
         <omgdi:waypoint x="660.0" y="150.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="95.0" x="670.0" y="108.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="95.0" x="608.0" y="127.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
