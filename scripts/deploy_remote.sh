@@ -21,7 +21,7 @@ fallback ()
 	#Удаляем новые конфиги
 	rm -rf /sybase/tomcat_${sProject}$1/conf
 	#Копируем старые конфиги обратно
-	cp -rp /sybase/.backup/configs/${sProject}$1/tomcat_${sProject}$1/$sDate/conf /sybase/tomcat_${sProject}$1/
+	cp -rp /sybase/.backup/configs/${sProject}/tomcat_${sProject}$1/$sDate/conf /sybase/tomcat_${sProject}$1/
 	#Очищаем папку с приложениями
 	rm -rf /sybase/tomcat_${sProject}$1/webapps/*
 	#Копируем обратно старое приложение
