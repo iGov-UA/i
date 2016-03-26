@@ -7,6 +7,7 @@
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження громадянина; у форматі ДД.ММ.РРРР " type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
@@ -78,9 +79,9 @@
 &lt;p&gt; Ваше звернення щодо отримання посвідчення учасника війни зареєстроване в системі.
 Повідомлення про результат розгляду буде спрямоване на Ваш e-mail.&lt;/p&gt;
 &lt;br /&gt;
-[pattern_dictonary:dnepr_soc_help.csv:228:5]&lt;br /&gt;
+[pattern_dictonary:dnepr_soc_help.csv:223:5]&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_soc_help.csv:228:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_soc_help.csv:223:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -91,10 +92,9 @@
     <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
     <userTask id="usertask1" name="Обробка та перевірка документів" activiti:candidateGroups="upszn234">
       <extensionElements>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження громадянина; у форматі ДД.ММ.РРРР " type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
@@ -113,7 +113,7 @@
           <activiti:value id="aEnamNo_Svid" name="ні, подане клопотання про опитування"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sPrich" name="Причина видачі посвідчення" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asVariants" name="Рішення щодо видачі посвідчення" type="enum">
+        <activiti:formProperty id="asVariants" name="Рішення щодо видачі посвідчення" type="enum" required="true">
           <activiti:value id="aEnamDok_ok" name="Документи правильні, видати посвідчення"></activiti:value>
           <activiti:value id="aEnamDok_bad" name="Документи невірні, відмова."></activiti:value>
         </activiti:formProperty>
@@ -147,9 +147,9 @@
 &lt;p&gt;
 Нажаль ми змушені відмовити вам в видачі посвідчення учасника війни&lt;br/&gt; 
 Причина: ${Komment_rishenia}.&lt;br/&gt; 
-[pattern_dictonary:dnepr_soc_help.csv:228:5]&lt;br /&gt;
+[pattern_dictonary:dnepr_soc_help.csv:223:5]&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_soc_help.csv:228:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_soc_help.csv:223:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
@@ -175,9 +175,9 @@
 2. Для уповоноваженої особи - довіренність.&lt;br/&gt;
 3. Оригінали документів, що були завантажені при подачі заяви на сайті.&lt;br/&gt;
 4. Фото 3 на 4. Без фото посвідчення видане не буде!&lt;br/&gt;
-[pattern_dictonary:dnepr_soc_help.csv:228:5]&lt;br /&gt;
+[pattern_dictonary:dnepr_soc_help.csv:223:5]&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_soc_help.csv:228:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_soc_help.csv:223:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
@@ -196,9 +196,7 @@
     <sequenceFlow id="flow10" sourceRef="boundaryerror1" targetRef="endevent2"></sequenceFlow>
     <userTask id="usertask2" name="Видача документа">
       <extensionElements>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження громадянина; у форматі ДД.ММ.РРРР " type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" writable="false"></activiti:formProperty>
@@ -234,9 +232,9 @@
 Дякуємо що скористались нашою послугою онлайн.&lt;br /&gt;
 Будь ласка оцініть якість наданої вам послуги. &lt;br /&gt;
 [pattern/mail/_common_feedback.html]
-[pattern_dictonary:dnepr_soc_help.csv:228:5]&lt;br /&gt;
+[pattern_dictonary:dnepr_soc_help.csv:223:5]&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_soc_help.csv:228:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_soc_help.csv:223:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
@@ -316,14 +314,14 @@
         <omgdi:waypoint x="643.0" y="318.0"></omgdi:waypoint>
         <omgdi:waypoint x="549.0" y="318.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="96.0" x="549.0" y="305.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="96.0" x="549.0" y="317.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
         <omgdi:waypoint x="663.0" y="298.0"></omgdi:waypoint>
         <omgdi:waypoint x="483.0" y="252.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="567.0" y="243.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="605.0" y="245.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
@@ -350,7 +348,7 @@
         <omgdi:waypoint x="151.0" y="298.0"></omgdi:waypoint>
         <omgdi:waypoint x="151.0" y="252.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="40.0" y="265.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="72.0" y="254.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
