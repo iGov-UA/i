@@ -1413,33 +1413,38 @@ public class ActionTaskService {
      * @param nID_Task - номер-ИД таски
      * @return DTO-объект ProcessDTOCover
      */
-    public ProcessDTOCover getProcessInfoByTaskID(Long nID_Task){
+    public ProcessDTOCover getProcessInfoByTaskID(Long nID_Task) throws RecordNotFoundException {
         LOG.info("start process getting Task Data by nID_Task = {}",  nID_Task);
+        ProcessDTOCover oProcess = null;
+        try {
 
-        HistoricTaskInstance historicTaskInstance = oHistoryService.createHistoricTaskInstanceQuery()
-                .taskId(nID_Task.toString()).singleResult();
+            HistoricTaskInstance historicTaskInstance = oHistoryService.createHistoricTaskInstanceQuery()
+                    .taskId(nID_Task.toString()).singleResult();
 
-        String sBP = historicTaskInstance.getProcessDefinitionId();
-        LOG.info("id-бизнес-процесса (БП) sBP={}", sBP);
+            String sBP = historicTaskInstance.getProcessDefinitionId();
+            LOG.info("id-бизнес-процесса (БП) sBP={}", sBP);
 
 
-        ProcessDefinition processDefinition = oRepositoryService.createProcessDefinitionQuery()
-                .processDefinitionId(sBP).singleResult();
+            ProcessDefinition processDefinition = oRepositoryService.createProcessDefinitionQuery()
+                    .processDefinitionId(sBP).singleResult();
 
-        String sName = processDefinition.getName();
-        LOG.info("название услуги (БП) sName={}", sName);
+            String sName = processDefinition.getName();
+            LOG.info("название услуги (БП) sName={}", sName);
 
-        Date oProcessInstanceStartDate = oHistoryService.createProcessInstanceHistoryLogQuery(getProcessInstanceIDByTaskID(
-                nID_Task.toString())).singleResult().getStartTime();
-        DateTimeFormatter formatter = JsonDateTimeSerializer.DATETIME_FORMATTER;
-        String sDateCreate = formatter.print(oProcessInstanceStartDate.getTime());
-        LOG.info("дата создания процесса sDateCreate={}", sDateCreate);
+            Date oProcessInstanceStartDate = oHistoryService.createProcessInstanceHistoryLogQuery(getProcessInstanceIDByTaskID(
+                    nID_Task.toString())).singleResult().getStartTime();
+            DateTimeFormatter formatter = JsonDateTimeSerializer.DATETIME_FORMATTER;
+            String sDateCreate = formatter.print(oProcessInstanceStartDate.getTime());
+            LOG.info("дата создания процесса sDateCreate={}", sDateCreate);
 
-        Long nID = Long.valueOf(historicTaskInstance.getProcessInstanceId());
-        LOG.info("id процесса (nID={})", nID.toString());
+            Long nID = Long.valueOf(historicTaskInstance.getProcessInstanceId());
+            LOG.info("id процесса (nID={})", nID.toString());
 
-        ProcessDTOCover oProcess = new ProcessDTOCover(sName, sBP, nID, sDateCreate);
-        LOG.info("Created ProcessDTOCover={}", oProcess.toString());
+            oProcess = new ProcessDTOCover(sName, sBP, nID, sDateCreate);
+            LOG.info("Created ProcessDTOCover={}", oProcess.toString());
+        } catch (NullPointerException e) {
+            throw new RecordNotFoundException(e.getMessage());
+        }
 
         return oProcess;
     }
