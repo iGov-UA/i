@@ -18,16 +18,40 @@ import org.joda.time.DateTime;
 
 /**
  * Autogeneration flow slots. This job invokes method buildFlowSlots by crone. 
- * maxline: Проверка запаса свободных слотов на срок - 20 рабочих дней. 
- * Eсли нет свободных слотов, то генеритcя на больший период, помесячно, до полугода.
+ * Проверка запаса свободных слотов в очередях. Если свободных слотов, меньше, чем 20 рабочих дней, 
+ * то генерируются новые слоты на срок от месяця до полугода вперед, пока не получим свободных слотов 
+ * на 20  рабочих дней.
  * <p/>
+ * Считаем что:
+ * - в месяце всего 30 календарных дней;
+ * - в месяце 20 рабочих дней;
+ * - полгода - 180 календарных дней
+ * Для функции автогенерации новых слотов в очереди, такое округление допустимо.
+ * 
+ * Автогенерация запускается по шедулеру ежедневно в 2 часа ночи.
+ * Автогенерация выполняется только для очередей, у которых в названии бизнес процесса есть суффикс auto.
+ * Пример: 
+ * Услуга: "176;Видача/заміна паспорта громадянина для виїзду за кордон" 
+ * Очередь: "4; ДМС, Днепр, Поля 1; 63; 11; dnepr_dms_passport_auto"
+ * 
+ * Принцип работы. Алгоритм проверяет набирается ли свободных 20 рабочих дней на периоде 
+ * (текущая дата, текущая дата + 180 дней). Если нет, то запускает построитель слотов на периоде
+ * (текущая дата, тукущая дата + 30 дней), последний день в период не входит. 
+ * Проверяет появилось ли 20 свободных рабочих дней, если да - то финиш, если нет - 
+ * запускаем построитель слотов на периоде(текущая дата + 30 дней, текущая дата + 60 дней) 
+ * последний день в период не входит. Если построили слотов на 180, и так и не набралось
+ * 20 свободных рабочих дней - то финиш.
+ *  
+ * @author maxline
  * User: maxline Date: 26.02.2016 Time: 22:34
  */
 public class JobBuilderFlowSlots extends IAutowiredSpringJob {
+
     public static final int DAYS_IN_MONTH = 30;
     public static final int WORK_DAYS_NEEDED = 20;
     public static final int DAYS_IN_HALF_YEAR = 180;
-    
+    private static final String SUFFIX_AUTO = "auto";
+
     private final static Logger LOG = LoggerFactory.getLogger(JobBuilderFlowSlots.class);
     @Autowired
     private FlowService oFlowService;
@@ -43,50 +67,59 @@ public class JobBuilderFlowSlots extends IAutowiredSpringJob {
         LOG.info("In QuartzJob - executing JOB at {} by context.getTrigger().getName()={}",
                 new Date(), context.getTrigger().getName());
 
-        // maxline: TODO запуск построения свободных слотов для всех очередей с признаком auto 
-        //            for (long nID_Flow_ServiceData : A_TESTS_ID_FLOW_SERVICE_DATA) {
-        //                строим слоты для всех очередей с признаком auto 
-        //            }
-        
         DateTime oDateStart = DateTime.now().withTimeAtStartOfDay();
         LOG.info(" oDateStart = {}", oDateStart);
 
+        List<Flow_ServiceData> aFlowServiceData = flowServiceDataDao.findAll();
+        for (Flow_ServiceData flow : aFlowServiceData) {
+            if (flow.getsID_BP().endsWith(SUFFIX_AUTO)) {
+                LOG.info(" Flow_ServiceData ID {}, sID_BP = {} ", flow.getId(), flow.getsID_BP());
+                checkAndBuildFlowSlots(flow, oDateStart);
+            }
+        }
+    }
+
+    private void checkAndBuildFlowSlots(Flow_ServiceData flow, DateTime oDateStart) {
         //Maxline: TODO добавить исключения
-        long nID_Flow_ServiceData = 12L; //_test_queue_cancel
-        Flow_ServiceData flow = flowServiceDataDao.findByIdExpected(nID_Flow_ServiceData);
-        long nID_ServiceData = flow.getnID_ServiceData();   //nID_ServiceData = 358  _test_queue_cancel, nID_ServiceData = 63L Видача/заміна паспорта громадянина для виїзду за кордон
-        LOG.info(" nID_Flow_ServiceData = {}, nID_ServiceData = {}", nID_Flow_ServiceData, nID_ServiceData);
-
+        Long nID_Flow_ServiceData = flow.getId();
+        Long nID_ServiceData = flow.getnID_ServiceData();   //nID_ServiceData = 358  _test_queue_cancel, nID_ServiceData = 63L Видача/заміна паспорта громадянина для виїзду за кордон
+        
+        Long nID_SubjectOrganDepartment = flow.getnID_SubjectOrganDepartment();
+        LOG.info(" nID_Flow_ServiceData = {}, nID_ServiceData = {}, nID_SubjectOrganDepartment = {}",
+                nID_Flow_ServiceData, nID_ServiceData, nID_SubjectOrganDepartment);
+        
         int nStartDay = 0;
-        DateTime dateStart = oDateStart.plusDays(0);
+        DateTime dateStart;// = oDateStart.plusDays(0); //maxline: todo удалить комментарий после тестирования
         DateTime dateEnd;
-
-        while (!isEnoughFreeDays(nID_ServiceData, oDateStart) && nStartDay < DAYS_IN_HALF_YEAR) {
-            dateStart = dateStart.plusDays(nStartDay);
-            dateEnd = dateStart.plusDays(nStartDay + DAYS_IN_MONTH);
-
-            List<FlowSlotVO> resFlowSlotVO = oFlowService.buildFlowSlots(nID_Flow_ServiceData, dateStart, dateEnd);
+        
+        while (!isEnoughFreeDays(nID_ServiceData, nID_SubjectOrganDepartment, oDateStart)
+                && nStartDay < DAYS_IN_HALF_YEAR) {
+            dateStart = oDateStart.plusDays(nStartDay);
+            dateEnd = oDateStart.plusDays(nStartDay + DAYS_IN_MONTH);
+            LOG.info(" dateStart = {}, dateEnd = {}", dateStart, dateEnd);
+            
+            List<FlowSlotVO> resFlowSlotVO = oFlowService.buildFlowSlots(nID_Flow_ServiceData,
+                    dateStart, dateEnd); // строит четко на месяц вперед (точнее dateStart - dateEnd) независимо от рабочих или нерабочих дней
             LOG.info(" resFlowSlotVO.size() = {}", resFlowSlotVO.size());
-
+            
             nStartDay += DAYS_IN_MONTH;
         }
-
+        
         boolean bEnoughFreeDays = nStartDay < DAYS_IN_HALF_YEAR;
         LOG.info(" bEnoughFreeDays = {}", bEnoughFreeDays);
     }
 
-    private boolean isEnoughFreeDays(Long nID_ServiceData, DateTime oDateStart) {
+    private boolean isEnoughFreeDays(Long nID_ServiceData, Long nID_SubjectOrganDepartment, DateTime oDateStart) {
         boolean bAll = false; //Получаем только свободные дни
         int nFreeWorkDaysFact;
         Long nID_Service = null; 
-        Long nID_SubjectOrganDepartment = null;
         String sID_BP = null;
 
         DateTime oDateEnd = oDateStart.plusDays(DAYS_IN_HALF_YEAR);
         LOG.info(" oDateEnd = {}", oDateEnd);
 
         Days res = oFlowService.getFlowSlots(nID_Service, nID_ServiceData, sID_BP, nID_SubjectOrganDepartment,
-                oDateStart, oDateEnd, bAll, WORK_DAYS_NEEDED);
+                oDateStart, oDateEnd, bAll, WORK_DAYS_NEEDED); //WORK_DAYS_NEEDED
         LOG.info(" Days = {}", res);
 
         nFreeWorkDaysFact = res.getaDay().size();
