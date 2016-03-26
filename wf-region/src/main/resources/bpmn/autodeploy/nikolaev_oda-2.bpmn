@@ -67,19 +67,20 @@
           <activiti:expression><![CDATA[Взяття на облік громадян, які потребують поліпшення житлових умов]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<p>
-				Дякуємо, що скористалися Інтернет-сервісом від порталу <a href="https://igov.org.ua/" target="_blank">iGov</a>.
+				Ваш запит був успішно зареєстрований у нашій системі.
 			</p>
-			<p>
-				Ваш запит був успішно зареєстрований у нашій системі. <br> 
-				За додатковими питаннямі ви можете звернутись за<br>
-				${sContact}				
-			</p>
-			<p>
-				Спеціалісти відповідального органу оброблять Вашу заявку та нададуть відповідь найближчим часом. 
-			</p>
-			${sNameOrgan}, <br>]]></activiti:expression>
+			<br />
+			За наявності питянь можете звернутись за наступними контактами<br>
+			${sAddress}<br>
+			${sWorkTime}<br>
+			${sPhoneOrgan}<br><br>
+			[pattern/mail/_common_signature_start.html]
+			${sNameOrgan}.<br />
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -129,17 +130,26 @@
           <activiti:expression><![CDATA[Взяття на облік громадян, які потребують поліпшення житлових умов]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-			<p>
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+		    <p>
 				На жаль Вам відмовлено в наданні послуги.
 			</p>
-				Підстава: ${comment}
-				<br>
-				За додатковими питаннямі ви можете звернутись за<br>
-				${sContact}<br>				
-				
-				<br>
-			${sNameOrgan}, <br>]]></activiti:expression>
+		    	Причина в наступному:<br>
+				<b><i>${comment}</i></b>
+		    </p>
+		    <p>
+		    	Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="#current-page">iGov.org.ua</a>.
+			</p>
+			<br />
+			За наявності питянь можете звернутись за наступними контактами<br>
+			${sAddress}<br>
+			${sWorkTime}<br>
+			${sPhoneOrgan}<br><br>
+			[pattern/mail/_common_signature_start.html]
+			${sNameOrgan}.<br />
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -195,14 +205,21 @@
           <activiti:expression><![CDATA[Взяття на облік громадян, які потребують поліпшення житлових умов]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-			<p>
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+			<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+			<p> 
 				Ваше звернення виконано.<br>
-				<br>
-				Ви можете отримати результат<br>
-				${sContact}<br>			
 			</p>
-			${sNameOrgan},<br>]]></activiti:expression>
+			<br>
+			Ви можете отримати результат<br>
+			${sAddress}<br>
+			${sWorkTime}<br>
+			${sPhoneOrgan}<br><br><br>			
+			[pattern/mail/_common_feedback.html]
+			[pattern/mail/_common_signature_start.html]
+			${sNameOrgan}.<br />
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
