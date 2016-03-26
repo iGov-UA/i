@@ -200,6 +200,12 @@ public class DebugCommonController {
         LOG.info(" sDateStop = {}", sDateStop);
 
         switch (sOperation) {
+            case "auto":
+                List<Flow_ServiceData> aFlowServiceData = flowServiceDataDao.findAll();
+                for(Flow_ServiceData item:aFlowServiceData){
+                    LOG.info(" Flow_ServiceData ID {}, sID_BP = {} ", item.getId(), item.getsID_BP());
+                }
+                break;
             case "checkAndBuild":
                 oDateStart = DateTime.now().withTimeAtStartOfDay();
                 LOG.info(" oDateStart = {}", oDateStart);
