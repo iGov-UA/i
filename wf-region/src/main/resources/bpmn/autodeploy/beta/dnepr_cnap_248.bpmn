@@ -58,15 +58,19 @@
         <activiti:formProperty id="file7" name="Документ, який засвідчує настання підстави для переоформлення документу дозвільного характеру;(зміна найменування суб'єкта господарювання - юридичної особи або прізвища, імені, по-батькові фізисної особи - підприємця, зміна місцезнаходження суб'єкта господарювання та інші підстави, встановлені Законом)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file8" name="Бланк документу дозвільного характеру, який непридатний для використання" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file9" name="Документ дозвільного характеру, який підлягає анулюванню" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="region" name="Регион" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="clerkPost" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="shapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органа" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Час роботи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapka220" name="Шапка заяви" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="substance" name="Суть заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="substance_2" name="Суть заяви в лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="substance_3" name="Суть заяви в контексті листа" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="term" name="Строк віконання" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="term" name="Строк виконання" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="list_documents" name="Список документів" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="Видача дозволу Дніпро " type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;info&quot;,&quot;file1&quot;,&quot;file3&quot;,&quot;info_2&quot;,&quot;file4&quot;,&quot;file5&quot;,&quot;file6&quot;,&quot;info_3&quot;,&quot;file11&quot;,&quot;file12&quot;,&quot;file13&quot;,&quot;file14&quot;,&quot;file15&quot;,&quot;file16&quot;,&quot;file17&quot;,&quot;file18&quot;,&quot;file19&quot;,&quot;info_4&quot;,&quot;file20&quot;,&quot;file21&quot;,&quot;file22&quot;,&quot;file23&quot;,&quot;file24&quot;,&quot;file25&quot;,&quot;file26&quot;],&quot;asID_Field&quot;:{&quot;sClient1&quot;:&quot;vibor_service&quot;,&quot;sClient2&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sClient1] == 'issue' &amp;&amp;[sClient2] == 'prav'||[sClient1] == 'issue' &amp;&amp;[sClient2] =='lev'||[sClient1] == 'issue' &amp;&amp;[sClient2] =='dndzT'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sRegion" name="Регион" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="Видача дозволу Дніпро " type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_10&quot;:{&quot;aField_ID&quot;:[&quot;sRegion&quot;],&quot;asID_Field_sValue&quot;:[&quot;Dnepr&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'prav'||[sClient] == 'lev'||[sClient] == 'dndzT'&quot;},&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;info&quot;,&quot;file1&quot;,&quot;file3&quot;,&quot;info_2&quot;,&quot;file4&quot;,&quot;file5&quot;,&quot;file6&quot;,&quot;info_3&quot;,&quot;file11&quot;,&quot;file12&quot;,&quot;file13&quot;,&quot;file14&quot;,&quot;file15&quot;,&quot;file16&quot;,&quot;file17&quot;,&quot;file18&quot;,&quot;file19&quot;,&quot;info_4&quot;,&quot;file20&quot;,&quot;file21&quot;,&quot;file22&quot;,&quot;file23&quot;,&quot;file24&quot;,&quot;file25&quot;,&quot;file26&quot;],&quot;asID_Field&quot;:{&quot;sClient1&quot;:&quot;vibor_service&quot;,&quot;sClient2&quot;:&quot;sRegion&quot;},&quot;sCondition&quot;:&quot;[sClient1] == 'issue' &amp;&amp;[sClient2] == 'Dnepr'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="Переоформлення дозволу" type="markers" default="{&quot;motion&quot; : {&quot;ShowFieldsOnCondition_2&quot; : {&quot;aField_ID&quot; : [&quot;file2&quot;,&quot;file7&quot;],&quot;asID_Field&quot; : {&quot;sClient&quot; : &quot;vibor_service&quot;},&quot;sCondition&quot; : &quot;[sClient] == 'restructuring'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="Видача дублікату дозволу" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_3&quot;: {&quot;aField_ID&quot;: [&quot;file8&quot;],&quot;asID_Field&quot; : {&quot;sClient&quot;: &quot;vibor_service&quot;}, &quot;sCondition&quot; : &quot;[sClient] == 'duplicate'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="Анулювання дозволу" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_4&quot;: {&quot;aField_ID&quot;: [&quot;file9&quot;],&quot;asID_Field&quot; : {&quot;sClient&quot;: &quot;vibor_service&quot;}, &quot;sCondition&quot; : &quot;[sClient] == 'cansel'&quot; }}}"></activiti:formProperty>
@@ -84,52 +88,37 @@
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow4" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var per1 = 'region'
-var per2 = 'clerkPost'
-var per3 = 'shapka'
+      <script>
+var per3 = 'sShapka220'
 var per4 = 'substance'
 var per5 = 'substance_2'
 var per6 = 'substance_3'
 var per7 ='term'
 if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'prav' &amp;&amp; execution.getVariable('vibor_performer') == 'head'){
-per1 = '23'
-per2 = 'woobraja@mail.ru'
 per3 = 'Головному державному санітарному лікарю Дніпропетровської області'
 per7 = 'двох місяців з дня реєстрації заяви'
 }
 if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'prav' &amp;&amp; execution.getVariable('vibor_performer') == 'rail'){
-per1 = '23'
-per2 = 'woobraja@mail.ru'
 per3 = 'Начальнику управління на Придніпровській залізниці ГУ Держсанепідслужби на залізничному транспорту'
 per7 = 'двох місяців з дня реєстрації заяви'
 }
 if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'lev' &amp;&amp; execution.getVariable('vibor_performer') == 'head'){
-per1 = '24'
-per2 = 'Luda17_@ukr.net'
 per3 = 'Головному державному санітарному лікарю Дніпропетровської області'
 per7 = 'двох місяців з дня реєстрації заяви'
 }
 if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'lev' &amp;&amp; execution.getVariable('vibor_performer') == 'rail'){
-per1 = '24'
-per2 = 'Luda17_@ukr.net'
 per3 = 'Начальнику управління на Придніпровській залізниці ГУ Держсанепідслужби на залізничному транспорту'
 per7 = 'двох місяців з дня реєстрації заяви'
 }
 if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'dndzT'){
-per1 = '26'
-per2 = 'dozvildndz@ukr.net'
 per3 = 'Начальнику Дніпродзержинського міського Управління Головного управління Держсанепідслужби у Дніпропетровській області'
 per7 = 'двох місяців з дня реєстрації заяви'
 }
 if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'don_mariupolT'){
-per1 = '102'
-per2 = 'dmitriy.istomin82@gmail.com'
 per3 = 'Головному державному санітарному лікарю м.Маріуполя'
 per7 = '10 робочих днів з дня одержання дозвільним органом від  адміністратора заяви та документів, що додаються до неї'
 }
 if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'hmel_hmelT'){
-per1 = '533'
-per2 = 'cnap32@rada.khmelnytsky.com, cnap35@rada.khmelnytsky.com'
 per3 = 'Головному державному санітарному лікарю м.Хмельницького'
 per7 = '10 робочих днів з дня реєстрації заяви'
 }
@@ -156,9 +145,7 @@ per5 = 'Рішення про анулювання документа дозві
 per6 = 'анулювання'
 per7 = 'п`яти робочих днів з дня реєстрації заяви'
 }
-execution.setVariable('region', per1)
-execution.setVariable('clerkPost', per2)
-execution.setVariable('shapka', per3)
+execution.setVariable('sShapka220', per3)
 execution.setVariable('substance', per4)
 execution.setVariable('substance_2', per5)
 execution.setVariable('substance_3', per6)
@@ -191,12 +178,12 @@ execution.setVariable('term', per7)</script>
         <activiti:formProperty id="adminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="number_cnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="date_registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="shapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapka220" name="Шапка заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="substance" name="Суть заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="substance_2" name="Суть заяви в лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="substance_3" name="Суть заяви в контексті листа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="document" name="Назва документу" type="invisible" default="дозвіл (санітарний паспорт) на проведення робіт з джерелами іонізуючих випромінювань в установах України"></activiti:formProperty>
-        <activiti:formProperty id="term" name="Строк віконання" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="term" name="Строк виконання" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="list_documents" name="Список документів" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="status" name="Обробка заяви" type="enum">
           <activiti:value id="attr1_wait" name="Документи передані в держсанепідслужбу"></activiti:value>
@@ -209,7 +196,7 @@ execution.setVariable('term', per7)</script>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${file1},${file2},${file3},${file4},${file5},${file6},${file7},${file8},${file9},${file11},${file12},${file13},${file14},${file15},${file16},${file17},${file18},${file19},${file20},${file21}</activiti:expression>
+            <activiti:expression><![CDATA[${file1},${file2},${file3},${file4},${file5},${file6},${file7},${file8},${file9},${file11},${file12},${file13},${file14},${file15},${file16},${file17},${file18},${file19},${file20},${file21}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -250,7 +237,7 @@ execution.setVariable('term', per7)</script>
         <activiti:formProperty id="substance" name="Суть заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="substance_2" name="Суть заяви в лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="substance_3" name="Суть заяви в контексті листа" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="term" name="Строк віконання" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="term" name="Строк виконання" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="adminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="number_cnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string" writable="false"></activiti:formProperty>
@@ -268,19 +255,19 @@ execution.setVariable('term', per7)</script>
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>tanyazol@gmail.com</activiti:expression>
+          <activiti:expression><![CDATA[tanyazol@gmail.com]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення. Дозвіл (санітарний паспорт) на проведення робіт з джерелами іонізуючих випромінювань в установах України.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а) колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-У Вас в черзі на обробку нове звернення щодо ${substance_3} дозволу (санітарний паспорт) на проведення робіт з джерелами іонізуючих випромінювань в установах України.&lt;br /&gt;
-Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
-Відпрацюйте це звернення на &lt;a href="https://region.igov.org.ua" target="_blank"&gt;порталі&lt;/a&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<strong>Шановний(-а) колего!</strong><br /><br />
+У Вас в черзі на обробку нове звернення щодо ${substance_3} дозволу (санітарний паспорт) на проведення робіт з джерелами іонізуючих випромінювань в установах України.<br />
+Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}<br />
+Відпрацюйте це звернення на <a href="https://region.igov.org.ua" target="_blank">порталі</a>
 [pattern/mail/_common_signature.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -290,22 +277,22 @@ execution.setVariable('term', per7)</script>
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Дозвіл (санітарний паспорт) на проведення робіт з джерелами іонізуючих випромінювань в установах України.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt; Ваше звернення щодо ${substance_3} дозволу (санітарний паспорт) на проведення робіт з джерелами іонізуючих випромінювань в установах України зареєстроване у системі.&lt;br/&gt;
-Повідомлення про результат послуги буде спрямоване на Ваш e-mail.&lt;/p&gt;
-&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p> Ваше звернення щодо ${substance_3} дозволу (санітарний паспорт) на проведення робіт з джерелами іонізуючих випромінювань в установах України зареєстроване у системі.<br/>
+Повідомлення про результат послуги буде спрямоване на Ваш e-mail.</p>
+<br />
+${sPhoneOrgan}<br />
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
+${sNameOrgan}<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -315,25 +302,25 @@ execution.setVariable('term', per7)</script>
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Дозвіл (санітарний паспорт) на проведення робіт з джерелами іонізуючих випромінювань в установах України.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-На жаль, Ваше звернення щодо ${substance_3} дозволу (санітарний паспорт) на проведення робіт з джерелами іонізуючих випромінювань в установах України - відхилине.&lt;/p&gt;
-&lt;p&gt;Причина в наступному: 
-                                    &lt;/p&gt;
-&lt;p&gt;${decisionComment}&lt;/p&gt;
-&lt;p&gt;Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/ target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
-&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+На жаль, Ваше звернення щодо ${substance_3} дозволу (санітарний паспорт) на проведення робіт з джерелами іонізуючих випромінювань в установах України - відхилине.</p>
+<p>Причина в наступному: 
+                                    </p>
+<p>${decisionComment}</p>
+<p>Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/ target="_blank">iGov.org.ua</a></p>
+<br />
+${sPhoneOrgan}<br />
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2],&lt;br /&gt;
+${sNameOrgan}<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -343,24 +330,24 @@ execution.setVariable('term', per7)</script>
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Дозвіл (санітарний паспорт) на проведення робіт з джерелами іонізуючих випромінювань в установах України.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;Ваше звернення щодо ${substance_3} дозволу (санітарний паспорт) на проведення робіт з джерелами іонізуючих випромінювань в установах України - відправлене в держсанепідслужбу.&lt;br /&gt;
-Спеціалісти повинні дати відповідь протягом ${term} .&lt;br /&gt; 
-&lt;p&gt;Номер Вашого замовлення: ${number_cnap}&lt;/p&gt;
-&lt;/p&gt;
-&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]&lt;br /&gt; 
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p>Ваше звернення щодо ${substance_3} дозволу (санітарний паспорт) на проведення робіт з джерелами іонізуючих випромінювань в установах України - відправлене в держсанепідслужбу.<br />
+Спеціалісти повинні дати відповідь протягом ${term} .<br /> 
+<p>Номер Вашого замовлення: ${number_cnap}</p>
+</p>
+<br />
+${sPhoneOrgan}<br />
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2],&lt;br /&gt;
+${sNameOrgan}<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -370,38 +357,39 @@ execution.setVariable('term', per7)</script>
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Дозвіл (санітарний паспорт) на проведення робіт з джерелами іонізуючих випромінювань в установах України.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;
-${substance_2}.&lt;br /&gt;
-&lt;/p&gt;
-&lt;p&gt;
-Ви або уповноважена Вами особа (при наявності довіреності) можете отримати особисто під підпис у ЦНАП.&lt;br/&gt; 
-При собі треба мати:&lt;br/&gt; 
-1. Документ, що посвідчує особу.&lt;br/&gt; 
-2. Для уповоноваженої особи - довіренність.&lt;br/&gt;
-3. Оригінали документів, що були завантажені при подачі заяви на сайті.&lt;br/&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p>
+${substance_2}.<br />
+</p>
+<p>
+Ви або уповноважена Вами особа (при наявності довіреності) можете отримати особисто під підпис у ЦНАП.<br/> 
+При собі треба мати:<br/> 
+1. Документ, що посвідчує особу.<br/> 
+2. Для уповоноваженої особи - довіренність.<br/>
+3. Оригінали документів, що були завантажені при подачі заяви на сайті.<br/>
 4. Підписані завірені печаткою заяви, які знаходяться в прикріплених файлах.
-&lt;/p&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5],&lt;br /&gt;
-&lt;br /&gt;
-Графік роботи ЦНАП-у:&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:4],&lt;br /&gt;
-&lt;br /&gt;
+</p>
+${sPhoneOrgan}<br />
+<br />
+<br />
+${sWorkTime}<br />
+${sAddress}<br />
+<br />
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2],&lt;br /&gt;
+${sNameOrgan}<br />
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${file10},${PrintForm_1}</activiti:expression>
+          <activiti:expression><![CDATA[${file10},${PrintForm_1}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -418,7 +406,8 @@ ${substance_2}.&lt;br /&gt;
     <sequenceFlow id="flow13" sourceRef="servicetask4" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow14" sourceRef="servicetask6" targetRef="endevent2"></sequenceFlow>
     <scriptTask id="scripttask2" name="Filelist" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var per1 = ' '
+      <script>
+var per1 = ' '
 var per2 = ' '
 var per3 = ' '
 var per4 = ' '
