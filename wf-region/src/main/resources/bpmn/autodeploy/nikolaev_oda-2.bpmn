@@ -20,14 +20,14 @@
         </activiti:formProperty>
         <activiti:formProperty id="lPrivilege" name="Зверніть увагу" type="label" default="Укажіть свій статус так прикрипіть один чи декілька документів:           &lt;ul&gt;            &lt;li&gt;довідка МСЕК&lt;/li&gt;            &lt;li&gt;довідка про одержання грошової допомоги одинокої матері&lt;/li&gt;            &lt;li&gt;копія посвідчення багатодітної родини&lt;/li&gt;            &lt;li&gt;довідка з місця роботи для працівник міліції&lt;/li&gt;            &lt;li&gt;довідка з місця роботи для працівників освіти&lt;/li&gt;            &lt;li&gt;посвідчення ветерана війни&lt;/li&gt;            &lt;li&gt;свідоцтво постраждалих внаслідок Чорнобильської катастрофи&lt;/li&gt;            &lt;li&gt;документ який свідчить про статус сироти&lt;/li&gt;            &lt;li&gt;копія довідки із учбового закладу про розподіл на роботу у іншу місцевість&lt;/li&gt;            &lt;li&gt;копія приказу про призначення на посаду (працівників прокуратури та суду)&lt;/li&gt;           &lt;/ul&gt; "></activiti:formProperty>
         <activiti:formProperty id="sPrivilege" name="Укажіть свій статус;якщо декілька, то указуйте через кому" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nfile_Privilege" name="Копія(ї) документа, що надає льготу для першочергового одержання житла; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="підпис" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nfile_Privilege" name="Копія(ї) документа, що надає льготу для першочергового одержання житла; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву" type="file" required="true"></activiti:formProperty>        
         <activiti:formProperty id="sPhoneOrgan" name="телефон" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sContact" name="адреса органу" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sShapkaGolova" name="підпис в шапке" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields Privilege" type="markers" default="${markerService.loadFromFile('mvk/show_fill_privilege.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -67,19 +67,20 @@
           <activiti:expression><![CDATA[Взяття на облік громадян, які потребують поліпшення житлових умов]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<p>
-				Дякуємо, що скористалися Інтернет-сервісом від порталу <a href="https://igov.org.ua/" target="_blank">iGov</a>.
+				Ваш запит був успішно зареєстрований у нашій системі.
 			</p>
-			<p>
-				Ваш запит був успішно зареєстрований у нашій системі. <br> 
-				За додатковими питаннямі ви можете звернутись за<br>
-				${sContact}				
-			</p>
-			<p>
-				Спеціалісти відповідального органу оброблять Вашу заявку та нададуть відповідь найближчим часом. 
-			</p>
-			${sNameOrgan}, <br>]]></activiti:expression>
+			<br />
+			За наявності питянь можете звернутись за наступними контактами<br>
+			${sAddress}<br>
+			${sWorkTime}<br>
+			${sPhoneOrgan}<br><br>
+			[pattern/mail/_common_signature_start.html]
+			${sNameOrgan}.<br />
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -100,8 +101,8 @@
           <activiti:value id="accept" name="Надати послугу"></activiti:value>
           <activiti:value id="reject" name="Відмовити"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="comment" name="В разі відмови в наданні послуги зазначте підставу для відмови" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="підпис" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="comment" name="В разі відмови в наданні послуги зазначте підставу для відмови" type="textArea"></activiti:formProperty>        
+        <activiti:formProperty id="sShapkaGolova" name="підпис в шапке" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/mvk/nikolaev_mvk_408_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="hide fields Status" type="markers" default="${markerService.loadFromFile('mvk/show_fill_status.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -129,17 +130,26 @@
           <activiti:expression><![CDATA[Взяття на облік громадян, які потребують поліпшення житлових умов]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-			<p>
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+		    <p>
 				На жаль Вам відмовлено в наданні послуги.
 			</p>
-				Підстава: ${comment}
-				<br>
-				За додатковими питаннямі ви можете звернутись за<br>
-				${sContact}<br>				
-				
-				<br>
-			${sNameOrgan}, <br>]]></activiti:expression>
+		    	Причина в наступному:<br>
+				<b><i>${comment}</i></b>
+		    </p>
+		    <p>
+		    	Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="#current-page">iGov.org.ua</a>.
+			</p>
+			<br />
+			За наявності питянь можете звернутись за наступними контактами<br>
+			${sAddress}<br>
+			${sWorkTime}<br>
+			${sPhoneOrgan}<br><br>
+			[pattern/mail/_common_signature_start.html]
+			${sNameOrgan}.<br />
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -164,7 +174,7 @@
           <activiti:value id="no" name="витяг не може бути наданий"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="В разі відмови в наданні послуги зазначте підставу для відмови" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="підпис" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sShapkaGolova" name="підпис в шапке" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/mvk/nikolaev_mvk_408_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="hide fields Status" type="markers" default="${markerService.loadFromFile('mvk/show_fill_status.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -195,14 +205,21 @@
           <activiti:expression><![CDATA[Взяття на облік громадян, які потребують поліпшення житлових умов]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-			<p>
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+			<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+			<p> 
 				Ваше звернення виконано.<br>
-				<br>
-				Ви можете отримати результат<br>
-				${sContact}<br>			
 			</p>
-			${sNameOrgan},<br>]]></activiti:expression>
+			<br>
+			Ви можете отримати результат<br>
+			${sAddress}<br>
+			${sWorkTime}<br>
+			${sPhoneOrgan}<br><br><br>			
+			[pattern/mail/_common_feedback.html]
+			[pattern/mail/_common_signature_start.html]
+			${sNameOrgan}.<br />
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
