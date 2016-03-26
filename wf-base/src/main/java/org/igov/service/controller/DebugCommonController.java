@@ -53,6 +53,7 @@ public class DebugCommonController {
     public static final int DAYS_IN_MONTH = 30;
     public static final int WORK_DAYS_NEEDED = 20;
     public static final int DAYS_IN_HALF_YEAR = 180;
+    private static final String SUFFIX_AUTO = "auto";
 
     @Autowired
     private FlowService oFlowService;
@@ -198,12 +199,15 @@ public class DebugCommonController {
 
         LOG.info(" sDateStart = {}", sDateStart);
         LOG.info(" sDateStop = {}", sDateStop);
+        LOG.info(" sOperation = {}", sOperation);
 
         switch (sOperation) {
             case "auto":
                 List<Flow_ServiceData> aFlowServiceData = flowServiceDataDao.findAll();
                 for(Flow_ServiceData item:aFlowServiceData){
-                    LOG.info(" Flow_ServiceData ID {}, sID_BP = {} ", item.getId(), item.getsID_BP());
+                    if (item.getsID_BP().endsWith(SUFFIX_AUTO)){
+                        LOG.info(" Flow_ServiceData ID {}, sID_BP = {} ", item.getId(), item.getsID_BP());
+                    }
                 }
                 break;
             case "checkAndBuild":
