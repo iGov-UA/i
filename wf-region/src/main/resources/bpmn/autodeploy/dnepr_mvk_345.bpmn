@@ -101,7 +101,7 @@
     </boundaryEvent>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow4" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
-    <userTask id="usertask1" name="Обробка звернення чиновником" activiti:candidateGroups="dnepr_mvk_corpor_law">
+    <userTask id="usertask1" name="Обробка звернення чиновником" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sClFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
@@ -187,7 +187,7 @@
     <sequenceFlow id="flow9" name="decision == 'doc_ok'" sourceRef="exclusivegateway1" targetRef="usertask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision == 'doc_ok'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask2" name="Обробка після прийняття рішення" activiti:candidateGroups="dnepr_mvk_corpor_law">
+    <userTask id="usertask2" name="Обробка після прийняття рішення" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sClFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
