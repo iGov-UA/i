@@ -3,6 +3,7 @@
   <process id="dnepr_mvk_345" name="Дозвіл на розроблення проекту землеустрою щодо відведення земельної ділянки" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Район в якому розташована земельна ділянка" type="select" default="0"></activiti:formProperty>        
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
@@ -10,7 +11,7 @@
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAdress" name="Адреса реєстрації заявника;(поштовий індекс, місто, вулиця, номер дому, номер квартири)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAdressClient" name="Адреса реєстрації заявника;(поштовий індекс, місто, вулиця, номер дому, номер квартири)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sChoiceObject" name="Суб'єкт звернення" type="enum" required="true">
           <activiti:value id="fiz" name="Фізична особа"></activiti:value>
           <activiti:value id="ur" name="Юридична особа"></activiti:value>
@@ -22,17 +23,7 @@
         <activiti:formProperty id="sNameCompany" name="Назва установи заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sLabel1" name=" " type="label" default="&lt;strong&gt;Характеристики земельної ділянки&lt;/strong&gt;"></activiti:formProperty>
         <activiti:formProperty id="sSquare" name="Площа, га" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="district" name="Район в якому розташована земельна ділянка" type="enum" required="true">
-          <activiti:value id="and" name="Амур-Нижньодніпровському"></activiti:value>
-          <activiti:value id="bab" name="Шевченківському (Бабушкінському)"></activiti:value>
-          <activiti:value id="zhovt" name="Соборному (Жовтневому)"></activiti:value>
-          <activiti:value id="indust" name="Індустріальному"></activiti:value>
-          <activiti:value id="kirov" name="Центральному (Кіровському)"></activiti:value>
-          <activiti:value id="krasn" name="Чечелівському (Красногвардійському)"></activiti:value>
-          <activiti:value id="lenin" name="Новокодацькому (Ленінському)"></activiti:value>
-          <activiti:value id="samar" name="Самарському"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sAdress2" name="Адреса земельної ділянки;(обов'язково вкажіть поштовий індекс)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAdressLand" name="Адреса земельної ділянки;(обов'язково вкажіть поштовий індекс)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sListBuild" name="На ділянці розміщено" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPurpose" name="Цільове призначення ділянки" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sLabel2" name="Зверніть увагу" type="label" default="&lt;strong&gt;Скан копії документів повині бути завірені належним чином&lt;/strong&gt;"></activiti:formProperty>
@@ -46,8 +37,13 @@
         <activiti:formProperty id="nFile5" name="Довіреність, на підставі якої інтереси заявника представляє його уповноважена особа, або її копія, засвідчена у встановленому порядку;(якщо клопотання подається представником)" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="nFile6" name="Довідка учасника антитерористичної операції" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sList_documents" name="Перелік документів" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="название органа в подписи письма" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="график работы" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон для справок" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адрес органа" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapkaGolova" name="шапка принтформы" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk1" name="Пошта ЦНАП" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_345_1.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sNotice" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -57,19 +53,13 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>ms@igov.org.ua</activiti:expression>
+          <activiti:expression><![CDATA[${sMailClerk1}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення. Дозвіл на розроблення проекту землеустрою щодо відведення земельної ділянки.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а) колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-У Вас в черзі на обробку нове звернення с приводу видачи дозволу на розроблення проекту землеустрою щодо відведення земельної ділянки.&lt;br /&gt;
-Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
-Відпрацюйте це звернення на &lt;a href="https://region.igov.org.ua" target="_blank"&gt;порталі&lt;/a&gt;
-[pattern/mail/_common_signature.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -85,16 +75,21 @@
           <activiti:string><![CDATA[Дозвіл на розроблення проекту землеустрою щодо відведення земельної ділянки.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt; Ваше звернення с приводу видачи дозволу на розроблення проекту землеустрою щодо відведення земельної ділянки було зареєстровано у системі.&lt;br/&gt;
-Повідомлення про результат послуги буде спрямоване на Ваш e-mail.&lt;/p&gt;
-&lt;br /&gt;
-Телефон для довідок: (056) 744-63-51&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-Департамент корпоративних прав та правового забезпечення Дніпропетровської міської ради,&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+			<p>
+				Ваше звернення с приводу видачи дозволу на розроблення проекту землеустрою щодо відведення земельної ділянки було зареєстровано у системі.<br>
+				Повідомлення про результат послуги буде спрямоване на Ваш e-mail.			
+			</p>
+			<br />
+			За наявності питянь можете звернутись за наступними контактами<br>
+			${sAddress}<br>
+			${sWorkTime}<br>
+			${sPhoneOrgan}<br><br>
+			[pattern/mail/_common_signature_start.html]
+			${sNameOrgan}.<br />
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -113,7 +108,7 @@
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAdress" name="Адреса реєстрації заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdressClient" name="Адреса реєстрації заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sChoiceObject" name="Суб'єкт звернення" type="enum" writable="false">
           <activiti:value id="fiz" name="Фізична особа"></activiti:value>
           <activiti:value id="ur" name="Юридична особа"></activiti:value>
@@ -125,17 +120,8 @@
         <activiti:formProperty id="sNameCompany" name="Назва установи заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sLabel3" name=" " type="label" default="Характеристики земельної ділянки"></activiti:formProperty>
         <activiti:formProperty id="sSquare" name="Площа, га" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="district" name="Район в якому розташована земельна ділянка" type="enum" writable="false">
-          <activiti:value id="and" name="Амур-Нижньодніпровському"></activiti:value>
-          <activiti:value id="bab" name="Шевченківському (Бабушкінському)"></activiti:value>
-          <activiti:value id="zhovt" name="Соборному (Жовтневому)"></activiti:value>
-          <activiti:value id="indust" name="Індустріальному"></activiti:value>
-          <activiti:value id="kirov" name="Центральному (Кіровському)"></activiti:value>
-          <activiti:value id="krasn" name="Чечелівському (Красногвардійському)"></activiti:value>
-          <activiti:value id="lenin" name="Новокодацькому (Ленінському)"></activiti:value>
-          <activiti:value id="samar" name="Самарському"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sAdress2" name="Адреса земельної ділянки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Район в якому розташована земельна ділянка" type="select" default="0"></activiti:formProperty>        
+        <activiti:formProperty id="sAdressLand" name="Адреса земельної ділянки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sListBuild" name="На ділянці розміщено" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPurpose" name="Цільове призначення ділянки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="list_documents" name="Перелік документів" type="invisible"></activiti:formProperty>
@@ -145,6 +131,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sList_documents" name="Перелік документів" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapkaGolova" name="шапка принтформы" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/dneprMVK/dnepr_mvk_345_print.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -169,18 +156,27 @@
           <activiti:string><![CDATA[Дозвіл на розроблення проекту землеустрою щодо відведення земельної ділянки.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-На жаль, Ваше звернення с приводу видачи дозволу на розроблення проекту землеустрою щодо відведення земельної ділянки - відхилине.&lt;/p&gt;
-&lt;p&gt;Причина в наступному:&lt;/p&gt;
-&lt;p&gt;${decisionComment}&lt;/p&gt;
-&lt;p&gt;Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="#current-page"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
-&lt;br /&gt;
-Телефон для довідок: (056) 744-63-51&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-Департамент корпоративних прав та правового забезпечення Дніпропетровської міської ради,&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+		    <p>
+		    	На жаль, Ваше звернення с приводу видачи дозволу на розроблення проекту землеустрою щодо відведення земельної ділянки - відхилине.
+		    </p>
+		    <p>
+		    	Причина в наступному:<br>
+				<b><i>${decisionComment}</i></b>
+		    </p>
+		    <p>
+		    	Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="#current-page">iGov.org.ua</a>
+			</p>
+			<br />
+			За наявності питянь можете звернутись за наступними контактами<br>
+			${sAddress}<br>
+			${sWorkTime}<br>
+			${sPhoneOrgan}<br><br>
+			[pattern/mail/_common_signature_start.html]
+			${sNameOrgan}.<br />
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -198,7 +194,7 @@
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAdress" name="Адреса реєстрації заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdressClient" name="Адреса реєстрації заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sChoiceObject" name="Суб'єкт звернення" type="enum" writable="false">
           <activiti:value id="fiz" name="Фізична особа"></activiti:value>
           <activiti:value id="ur" name="Юридична особа"></activiti:value>
@@ -210,21 +206,12 @@
         <activiti:formProperty id="sNameCompany" name="Назва установи заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sLabel4" name=" " type="label" default="Характеристики земельної ділянки"></activiti:formProperty>
         <activiti:formProperty id="sSquare" name="Площа, га" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="district" name="Район в якому розташована земельна ділянка" type="enum" writable="false">
-          <activiti:value id="and" name="Амур-Нижньодніпровському"></activiti:value>
-          <activiti:value id="bab" name="Шевченківському (Бабушкінському)"></activiti:value>
-          <activiti:value id="zhovt" name="Соборному (Жовтневому)"></activiti:value>
-          <activiti:value id="indust" name="Індустріальному"></activiti:value>
-          <activiti:value id="kirov" name="Центральному (Кіровському)"></activiti:value>
-          <activiti:value id="krasn" name="Чечелівському (Красногвардійському)"></activiti:value>
-          <activiti:value id="lenin" name="Новокодацькому (Ленінському)"></activiti:value>
-          <activiti:value id="samar" name="Самарському"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sAdress2" name="Адреса земельної ділянки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Район в якому розташована земельна ділянка" type="select" default="0"></activiti:formProperty>        
+        <activiti:formProperty id="sAdressLand" name="Адреса земельної ділянки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sListBuild" name="На ділянці розміщено" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPurpose" name="Цільове призначення ділянки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decision2" name="Відповідь після рішення сесії" type="enum" required="true">
-          <activiti:value id="dec_ok" name="Рішення прийнято. Дозвіл готов"></activiti:value>
+          <activiti:value id="dec_ok" name="Рішення прийнято. Дозвіл готовий"></activiti:value>
           <activiti:value id="dec_no" name="Відповідь надано"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="nFileDecision" name="Відскануйте та завантажте дозвіл або рішення сесії" type="file" required="true"></activiti:formProperty>
@@ -244,19 +231,22 @@
           <activiti:string><![CDATA[Дозвіл на розроблення проекту землеустрою щодо відведення земельної ділянки.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;
-Ваше звернення с приводу видачи дозволу на розроблення проекту землеустрою щодо відведення земельної ділянки - опрацьовано. &lt;br /&gt;
-Дозвіл в додатку до цього листа.
-&lt;/p&gt;
-Телефон для довідок: (056) 744-63-51&lt;br /&gt;
-&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-Департамент корпоративних прав та правового забезпечення Дніпропетровської міської ради,&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+			<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+			<p> 
+				Ваше звернення с приводу видачи дозволу на розроблення проекту землеустрою щодо відведення земельної ділянки - опрацьовано.<br>
+				Дозвіл в додатку до цього листа.
+			</p>
+			<br />
+			За наявності питянь можете звернутись за наступними контактами<br>
+			${sAddress}<br>
+			${sWorkTime}<br>
+			${sPhoneOrgan}<br><br><br>			
+			[pattern/mail/_common_feedback.html]
+			[pattern/mail/_common_signature_start.html]
+			${sNameOrgan}.<br />
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${nFileDecision}</activiti:expression>
@@ -278,18 +268,21 @@
           <activiti:string><![CDATA[Дозвіл на розроблення проекту землеустрою щодо відведення земельної ділянки.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;
-Ваше звернення с приводу видачи дозволу на розроблення проекту землеустрою щодо відведення земельної ділянки - опрацьовано.&lt;br /&gt;
-Рішення в додатку до цього листа.
-&lt;/p&gt;
-Телефон для довідок: (056) 744-63-51&lt;br /&gt;
-&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-Департамент корпоративних прав та правового забезпечення Дніпропетровської міської ради,&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+			<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br><br>
+			<p> 
+				Ваше звернення с приводу видачи дозволу на розроблення проекту землеустрою щодо відведення земельної ділянки - опрацьовано.<br>
+				Рішення в додатку до цього листа.
+			</p>
+			<br />
+			За наявності питянь можете звернутись за наступними контактами<br>
+			${sAddress}<br>
+			${sWorkTime}<br>
+			${sPhoneOrgan}<br><br>
+			[pattern/mail/_common_signature_start.html]
+			${sNameOrgan}.<br />
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${nFileDecision}</activiti:expression>
@@ -304,38 +297,40 @@
     <endEvent id="endevent3" name="End"></endEvent>
     <sequenceFlow id="flow15" sourceRef="servicetask7" targetRef="endevent3"></sequenceFlow>
     <scriptTask id="scripttask1" name="Script ListDocuments" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var per1 = ' '
+      <script>
+var per1 = ' '
 var per2 = ' '
 var per3 = ' '
 var per4 = ' '
 var per5 = ' '
 var per6 = ' '
 var per7 = ' '
+var per8 = ' '
 var res = 'res'
-if (execution.getVariable('sChoiceObject') == 'fiz' &amp;&amp; execution.getVariable('sChoiceATO') == 'yes') {
-per1 = '&lt;li&gt;копія паспорта громадянина України;&lt;/li&gt;'
-per2 = "&lt;li&gt;копія довідки про присвоєння ідентифікаційного номера;&lt;/li&gt;"
-per3 = "&lt;li&gt;довідка учасника антитерористичної операції;&lt;/li&gt;"
-per4 = "&lt;li&gt;письмова згода землекористувача, засвідчена нотаріально (у разі вилучення земельної ділянки) та копії паспорта громадянина України та довідки про присвоєння ідентифікаційного номера або копії установчих документів юридичної особи;&lt;/li&gt;"
-per5 = '&lt;li&gt;графічні матеріали, що забезпечують чітке відображення всіх елементів та написів, що містить графічне зображення земельної ділянки із зазначенням місця розташування її меж;&lt;/li&gt;'
-per6 = '&lt;li&gt;довіреність, на підставі якої інтереси заявника представляє його уповноважена особа, або її копія, засвідчена у встановленому порядку (якщо клопотання подається представником).&lt;/li&gt;'
-res = '&lt;ol&gt;'+per1+per2+per3+per4+per5+per6+'&lt;/ol&gt;'
-}
-if (execution.getVariable('sChoiceObject') == 'fiz' &amp;&amp; execution.getVariable('sChoiceATO') == 'no') {
-per1 = '&lt;li&gt;копія паспорта громадянина України;&lt;/li&gt;'
-per2 = "&lt;li&gt;копія довідки про присвоєння ідентифікаційного номера;&lt;/li&gt;"
-per3 = "&lt;li&gt;письмова згода землекористувача, засвідчена нотаріально (у разі вилучення земельної ділянки) та копії паспорта громадянина України та довідки про присвоєння ідентифікаційного номера або копії установчих документів юридичної особи;&lt;/li&gt;"
-per4 = "&lt;li&gt;правовстановлюючих документів на нерухоме майно;&lt;/li&gt;"
-per5 = "&lt;li&gt; технічного паспорта на об'єкт нерухомого майна;&lt;/li&gt;"
-per6 = '&lt;li&gt;графічні матеріали, що забезпечують чітке відображення всіх елементів та написів, що містить графічне зображення земельної ділянки із зазначенням місця розташування її меж;&lt;/li&gt;'
-per7 = '&lt;li&gt;довіреність, на підставі якої інтереси заявника представляє його уповноважена особа, або її копія, засвідчена у встановленому порядку (якщо клопотання подається представником).&lt;/li&gt;'
-res = '&lt;ol&gt;'+per1+per2+per3+per4+per5+per6+per7+'&lt;/ol&gt;'
+if (execution.getVariable('sChoiceObject') == 'fiz'){
+	per1 = '&lt;li&gt;копія паспорта громадянина України;&lt;/li&gt;'
+	per2 = "&lt;li&gt;копія довідки про присвоєння ідентифікаційного номера;&lt;/li&gt;"
+	per4 = "&lt;li&gt;письмова згода землекористувача, засвідчена нотаріально (у разі вилучення земельної ділянки) та копії паспорта громадянина України та довідки про присвоєння ідентифікаційного номера або копії установчих документів юридичної особи;&lt;/li&gt;"
+	per7 = '&lt;li&gt;графічні матеріали, що забезпечують чітке відображення всіх елементів та написів, що містить графічне зображення земельної ділянки із зазначенням місця розташування її меж;&lt;/li&gt;'
+	per8 = '&lt;li&gt;довіреність, на підставі якої інтереси заявника представляє його уповноважена особа, або її копія, засвідчена у встановленому порядку (якщо клопотання подається представником).&lt;/li&gt;'
+	
+	
+	if (execution.getVariable('sChoiceATO') == 'yes') {
+		per3 = "&lt;li&gt;довідка учасника антитерористичної операції;&lt;/li&gt;"
+	res = '&lt;ol&gt;'+per1+per2+per3+per4+per5+per6+'&lt;/ol&gt;'
+	}
+	if (execution.getVariable('sChoiceATO') == 'no') {
+		per5 = "&lt;li&gt;правовстановлюючих документів на нерухоме майно;&lt;/li&gt;"
+		per6 = "&lt;li&gt;технічного паспорта на об'єкт нерухомого майна;&lt;/li&gt;"
+	
+	}
+	res = '&lt;ol&gt;'+per1+per2+per3+per4+per5+per6+per7+per8+'&lt;/ol&gt;'
 }
 if (execution.getVariable('sChoiceObject') == 'ur') {
 per1 = '&lt;li&gt;копії установчих документів та свідоцтва про державну реєстрацію юридичної особи або виписки/витягу з Єдиного державного реєстру юридичних осіб та фізичних осіб – підприємців;&lt;/li&gt;'
 per2 = "&lt;li&gt;письмова згода землекористувача, засвідчена нотаріально (у разі вилучення земельної ділянки) та копії паспорта громадянина України та довідки про присвоєння ідентифікаційного номера або копії установчих документів юридичної особи;&lt;/li&gt;"
 per3 = "&lt;li&gt;правовстановлюючих документів на нерухоме майно;&lt;/li&gt;"
-per4 = "&lt;li&gt; технічного паспорта на об'єкт нерухомого майна;&lt;/li&gt;"
+per4 = "&lt;li&gt;технічного паспорта на об'єкт нерухомого майна;&lt;/li&gt;"
 per5 = '&lt;li&gt;графічні матеріали, що забезпечують чітке відображення всіх елементів та написів, що містить графічне зображення земельної ділянки із зазначенням місця розташування її меж;&lt;/li&gt;'
 per6 = '&lt;li&gt;довіреність, на підставі якої інтереси заявника представляє його уповноважена особа, або її копія, засвідчена у встановленому порядку (якщо клопотання подається представником).&lt;/li&gt;'
 res = '&lt;ol&gt;'+per1+per2+per3+per4+per5+per6+'&lt;/ol&gt;'
