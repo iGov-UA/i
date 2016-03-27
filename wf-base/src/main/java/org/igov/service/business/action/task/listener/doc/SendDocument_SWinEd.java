@@ -118,6 +118,9 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
 			String htin = null;
 			String passport = null;
 			String hemail = null;
+			String hstreet = null;
+			String hbuild = null;
+			String hapart = null;
 			//String hfill = Calendar.getInstance().get;
 			StartFormData startFormData = formService.getStartFormData(delegateTask.getProcessDefinitionId());
 			for (FormProperty formProperty : startFormData.getFormProperties()) {
@@ -133,6 +136,12 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
 					passport = formProperty.getValue();
 				} else if (formProperty.getId().equals("email")){
 					hemail = formProperty.getValue();
+				} else if (formProperty.getId().equals("street")){
+					hstreet = formProperty.getValue();
+				} else if (formProperty.getId().equals("building")){
+					hbuild = formProperty.getValue();
+				} else if (formProperty.getId().equals("apartment")){
+					hapart = formProperty.getValue();
 				}
 			}
 			String hpass = null;
@@ -145,8 +154,9 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
 				hpassiss = StringUtils.substringBeforeLast(hpassiss, " ");
 			}
 			
-			LOG.info("Loaded the next variables to pass to swinEd. hlname:{}, hpname:{}, hfname:{}, htin:{}, hemail:{}, hpass:{}, hpassDate:{}, hpassiss:{}",
-					hlname, hpname, hfname, htin, hemail, hpass, hpassDate, hpassiss);
+			LOG.info("Loaded the next variables to pass to swinEd. hlname:{}, hpname:{}, hfname:{}, htin:{}, hemail:{}, "
+					+ "hpass:{}, hpassDate:{}, hpassiss:{}, hstreet:{}, hbuild:{}, hapart:{}",
+					hlname, hpname, hfname, htin, hemail, hpass, hpassDate, hpassiss, hstreet, hbuild, hapart);
 			
 			DBody body = new DBody();
 			ObjectFactory factory = new ObjectFactory();
@@ -158,6 +168,10 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
 			body.setHPASS(factory.createDBodyHPASS(hpass));
 			body.setHPASSDATE(factory.createDBodyHPASSDATE(hpassDate));
 			body.setHPASSISS(factory.createDBodyHPASS(hpassiss));
+			body.setHSTREET(hstreet);
+			body.setHBUILD(hbuild);
+			body.setHAPT(factory.createDBodyHAPT(hapart));
+			body.setHCOUNTRY("Україна");
 			
 			StringWriter sw = new StringWriter();
 			JAXBContext jc = JAXBContext.newInstance(DBody.class);
