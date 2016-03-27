@@ -28,6 +28,8 @@
         <activiti:formProperty id="sAddress" name="sAddress" type="invisible" default="."></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="sMailClerk" type="invisible" default="."></activiti:formProperty>
         <activiti:formProperty id="sArea" name="sArea" type="invisible" default="."></activiti:formProperty>
+        <activiti:formProperty id="sShapka489" name="sShapka489" type="invisible" default="."></activiti:formProperty>
+        <activiti:formProperty id="sNameService" name="sNameService" type="invisible" default="Видача дозволу на переобладнання і перепланування жилого будинку (жилого приміщення)"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлу" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -39,12 +41,21 @@
       <extensionElements>
         <activiti:formProperty id="sClientFIO" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="AdressWork" name=" " type="label" default="Адреса, за якою будуть проводитись роботи:" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAdressWork" name=" " type="textArea" default="${sPlace}, ${sStreet} буд.${sNumHouse}, кв.${sNumFlat}"></activiti:formProperty>
+        <activiti:formProperty id="sAdressWork" name=" " type="textArea" default="${sPlace}, ${sStreet} буд.${sNumHouse}, кв.${sNumFlat}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asDecision" name="Результат обробки звернення: " type="enum" required="true">
           <activiti:value id="accept" name="Заповнені дані вірні, інформація направлена на розгляд, очікується рішення"></activiti:value>
           <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sComment" name="У разі відхилення звернення внесіть, будь ласка, причину" type="textArea" default="Причина: "></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні данні" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації громадянина" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Вкажіть контактний номер телефону" type="invisible" default="+380"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Вкажіть E-Mail адресу для зворотнього зв'язку" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPlace" name="найменування населеного пункту (повністю)" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sStreet" name="вулиця (повністю)" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNumHouse" name="будинок" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNumFlat" name="квартира" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapka489" name="sShapka489" type="invisible" default="."></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/cnap_489_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -64,7 +75,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[iGov - Нове звернення на тему: Видача дозволу на переобладнання і перепланування жилого будинку (жилого приміщення).]]></activiti:string>
+          <activiti:expression>iGov - Нове звернення на тему: ${sNameService}.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
@@ -83,12 +94,12 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[iGov: Ваше звернення на тему: Видача дозволу на переобладнання і перепланування жилого будинку (жилого приміщення).]]></activiti:string>
+          <activiti:expression>iGov - Ваше звернення на тему: ${sNameService}.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;
-На жаль, Ваше звернення щодо видачі дозволу на переобладнання і перепланування жилого будинку (жилого приміщення), що знаходиться за адресою ${sAdressWork}, відхилено через недостатню або неправильну інформацію.&lt;br /&gt;&lt;br /&gt;
+&lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
+На жаль, Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", що знаходиться за адресою ${sAdressWork}, відхилено через недостатню або неправильну інформацію.&lt;br /&gt;&lt;br /&gt;
 Коментар держслужбовця (${sComment})&lt;br /&gt;&lt;br /&gt;
 &lt;strong&gt;${sNameOrgan}&lt;/strong&gt;&lt;br /&gt;
 ${sAddress} &lt;br /&gt;
@@ -114,15 +125,15 @@ ${sWorkTime} &lt;br /&gt; &lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[iGov: Ваше звернення на тему: Видача дозволу на переобладнання і перепланування жилого будинку (жилого приміщення).]]></activiti:string>
+          <activiti:expression>iGov - Ваше звернення на тему: ${sNameService}.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;
-Ваше звернення щодо видачі дозволу на переобладнання і перепланування жилого будинку (жилого приміщення), що знаходиться за адресою ${sAdressWork}, отримано.&lt;br /&gt;
+&lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
+Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", що знаходиться за адресою ${sAdressWork}, отримано.&lt;br /&gt;
 Звернення буде опрацьовано уповноваженим органом впродовж 30 днів.&lt;br /&gt;
 &lt;br /&gt;
-Ви отримаєте додаткове повідомлення на цю адресу за результатами розгляду запиту.&lt;br /&gt;
+Ви отримаєте додаткове повідомлення на цю електронну адресу за результатами розгляду запиту.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
@@ -142,6 +153,15 @@ ${sWorkTime} &lt;br /&gt; &lt;br /&gt;
           <activiti:value id="rejectMain" name="Заява розглянута, прийнято негативне рішення"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sCommentMain" name="У разі відмови внесіть, будь ласка, причину" type="textArea" default="Причина: "></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні данні" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації громадянина" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Вкажіть контактний номер телефону" type="invisible" default="+380"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Вкажіть E-Mail адресу для зворотнього зв'язку" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPlace" name="найменування населеного пункту (повністю)" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sStreet" name="вулиця (повністю)" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNumHouse" name="будинок" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNumFlat" name="квартира" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapka489" name="sShapka489" type="invisible" default="."></activiti:formProperty>
         <activiti:formProperty id="fDecisionDoc" name="Завантажте копію рішення" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/cnap_489_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/cnap_489_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
@@ -159,14 +179,14 @@ ${sWorkTime} &lt;br /&gt; &lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[iGov: Ваше звернення на тему: Видача дозволу на переобладнання і перепланування жилого будинку (жилого приміщення).]]></activiti:string>
+          <activiti:expression>iGov - Ваше звернення на тему: ${sNameService}.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;
-Ваше звернення щодо видачі дозволу на переобладнання і перепланування жилого будинку (жилого приміщення), що знаходиться за адресою ${sAdressWork}, опрацьовано і по ньому винесено рішення про відмову в видачі дозволу.&lt;br /&gt;&lt;br /&gt;
+&lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
+Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", що знаходиться за адресою ${sAdressWork}, опрацьовано і по ньому винесено рішення про відмову в видачі дозволу.&lt;br /&gt;&lt;br /&gt;
 Коментар держслужбовця (${sComment})&lt;br /&gt;&lt;br /&gt;
-Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у ЦНАПі.&lt;br /&gt;&lt;br /&gt;
+Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення особисто під підпис у ЦНАПі.&lt;br /&gt;&lt;br /&gt;
 При собі треба мати:&lt;br /&gt;
 1. Документ, що посвідчує особу.&lt;br /&gt;
 2. Для уповоноваженої особи - довіренність.&lt;br /&gt;
@@ -200,13 +220,13 @@ ${sWorkTime} &lt;br /&gt; &lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[iGov: Ваше звернення на тему: Видача дозволу на переобладнання і перепланування жилого будинку (жилого приміщення).]]></activiti:string>
+          <activiti:expression>iGov - Ваше звернення на тему: ${sNameService}.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;
-Ваше звернення щодо видачі дозволу на переобладнання і перепланування жилого будинку (жилого приміщення), що знаходиться за адресою ${sAdressWork}, опрацьовано і по ньому винесено рішення надати дозвіл.&lt;br /&gt;
-Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у ЦНАПі.&lt;br /&gt;&lt;br /&gt;
+&lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
+Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", що знаходиться за адресою ${sAdressWork}, опрацьовано і по ньому винесено рішення надати дозвіл.&lt;br /&gt;
+Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення особисто під підпис у ЦНАПі.&lt;br /&gt;&lt;br /&gt;
 При собі треба мати:&lt;br /&gt;
 1. Документ, що посвідчує особу.&lt;br /&gt;
 2. Для уповоноваженої особи - довіренність.&lt;br /&gt;
