@@ -31,6 +31,8 @@ import org.igov.service.business.action.task.core.AbstractModelTask;
 import org.igov.service.business.action.task.systemtask.doc.util.UkrDocUtil;
 import org.igov.util.swind.DocumentInData;
 import org.igov.util.swind.DocumentType;
+import org.igov.util.swind.SWinEDLocator;
+import org.igov.util.swind.SWinEDSoapProxy;
 import org.igov.util.swind.SWinEDSoapStub;
 import org.igov.util.swind.holders.ProcessResultHolder;
 import org.slf4j.Logger;
@@ -135,7 +137,7 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
 	        
 	        LOG.info("Got {} attachments. Initializing soap client", attachmentsSize);
 	        
-	        SWinEDSoapStub stub = new SWinEDSoapStub();
+	        SWinEDSoapProxy soapProxy = new SWinEDSoapProxy();
 			ProcessResultHolder handler = new ProcessResultHolder();
 			IntHolder errorDocIdx = new IntHolder();
 	        
@@ -153,7 +155,7 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
 				document.setTask(Integer.valueOf(delegateTask.getProcessInstanceId()));
 				docs[i] = document;
 			}
-			stub.post(sSenderEDRPOUValue, Integer.valueOf(nSenderDeptValue), DocumentType.Original, docs, handler, errorDocIdx);
+			soapProxy.post(sSenderEDRPOUValue, Integer.valueOf(nSenderDeptValue), DocumentType.Original, docs, handler, errorDocIdx);
 			
 			LOG.info("Setting SwinEd status response variable to {} for the process {}", handler.value.getValue(), delegateTask.getProcessInstanceId());
 			runtimeService.setVariable(delegateTask.getProcessInstanceId(), SWIN_ED_ANSWER_STATUS_VARIABLE, handler.value.getValue());
