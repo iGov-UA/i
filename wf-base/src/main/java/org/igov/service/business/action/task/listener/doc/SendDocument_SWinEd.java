@@ -7,6 +7,7 @@ import java.util.Set;
 
 import javax.xml.rpc.holders.IntHolder;
 
+import org.activiti.engine.FormService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.delegate.DelegateExecution;
@@ -14,9 +15,13 @@ import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.delegate.TaskListener;
 import org.activiti.engine.form.FormData;
+import org.activiti.engine.form.FormProperty;
+import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.identity.User;
+import org.activiti.engine.impl.form.FormPropertyImpl;
 import org.activiti.engine.task.Attachment;
 import org.activiti.engine.task.IdentityLink;
+import org.activiti.engine.task.Task;
 import org.apache.axis.AxisFault;
 import org.apache.commons.codec.binary.Base64;
 import org.igov.io.GeneralConfig;
@@ -50,6 +55,9 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
     
     @Autowired
     GeneralConfig generalConfig;
+    
+    @Autowired
+    FormService formService;
     
     @Autowired
     private IBytesDataInmemoryStorage oBytesDataInmemoryStorage;
@@ -153,6 +161,27 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
 			runtimeService.setVariable(delegateTask.getProcessInstanceId(), SWIN_ED_ANSWER_STATUS_VARIABLE, handler.value.getValue());
 			LOG.info("Setting SwinEd error code response variable to {} for the process {}", errorDocIdx.value, delegateTask.getProcessInstanceId());
 			runtimeService.setVariable(delegateTask.getProcessInstanceId(), SWIN_ED_ERROR_VARIABLE, errorDocIdx.value);
+			
+			LOG.info("Looking for a new task to set form properties");
+            List<Task> tasks = taskService.createTaskQuery().processInstanceId(execution.getId()).active().list();
+            LOG.info("Get {} active tasks for the process", tasks);
+            for (Task task : tasks) {
+                TaskFormData formData = formService.getTaskFormData(task.getId());
+                for (FormProperty formProperty : formData.getFormProperties()) {
+                    if (formProperty.getId().equals(SWIN_ED_ANSWER_STATUS_VARIABLE)) {
+                        LOG.info("Found form property with the id " + SWIN_ED_ANSWER_STATUS_VARIABLE + ". Setting value {}", handler.value.getValue());
+                        if (formProperty instanceof FormPropertyImpl) {
+                            ((FormPropertyImpl) formProperty).setValue(handler.value.getValue());
+                        }
+                    }
+                    if (formProperty.getId().equals(SWIN_ED_ERROR_VARIABLE)) {
+                        LOG.info("Found form property with the id " + SWIN_ED_ERROR_VARIABLE + ". Setting value {}", errorDocIdx.value);
+                        if (formProperty instanceof FormPropertyImpl) {
+                            ((FormPropertyImpl) formProperty).setValue(String.valueOf(errorDocIdx.value));
+                        }
+                    }
+                }
+            }
 		} catch (AxisFault e) {
 			LOG.error("Error occured while constructing a call to SWinEd {}", e.getMessage());
 		} catch (NumberFormatException e) {
