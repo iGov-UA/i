@@ -105,11 +105,6 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
 
 	        LOG.info("Found attachments for the process {}: {}", attach1 != null ? attach1.size() : 0, attach2 != null ? attach2.size() : 0);
 
-	        String sessionId = UkrDocUtil.getSessionId(generalConfig.getSID_login(), generalConfig.getSID_password(),
-	                generalConfig.sURL_AuthSID_PB() + "?lang=UA");
-
-	        LOG.info("Retrieved session ID:" + sessionId);
-
 	        if (attachments.isEmpty()) {
 	            DelegateExecution oExecution = delegateTask.getExecution();
 	            // получить группу бп
