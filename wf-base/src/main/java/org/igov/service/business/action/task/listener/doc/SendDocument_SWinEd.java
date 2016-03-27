@@ -100,6 +100,7 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
     private Expression periodYearStart;
     private Expression periodKvEnd;
     private Expression periodYearEnd;
+    private Expression sID_Place;
     
     @Override
     public void notify(DelegateTask delegateTask) {
@@ -129,11 +130,12 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
         String yStart = getStringFromFieldExpression(this.periodYearStart, execution);
         String kvEnd = getStringFromFieldExpression(this.periodKvEnd, execution);
         String yEnd = getStringFromFieldExpression(this.periodYearEnd, execution);
+        String sID_Place = getStringFromFieldExpression(this.sID_Place, execution);
 
         LOG.info("Parameters of the SendDocument_SWinEd sSenderEDRPOU:{}, nSenderDept:{}, sEDRPOU:{}, nDept:{}, sDocId:{},"
-        		+ "sDocumentData:{} , sOriginalDocId:{}, nTask:{}, country:{}, kvStart:{}, yStart:{}, kvEnd:{}, yEnd:{}, ", sSenderEDRPOUValue, 
+        		+ "sDocumentData:{} , sOriginalDocId:{}, nTask:{}, country:{}, kvStart:{}, yStart:{}, kvEnd:{}, yEnd:{}, sID_Place:{}", sSenderEDRPOUValue, 
         		nSenderDeptValue, sEDRPOUValue, nDeptValue,
-        		sDocIdValue, sDocumentDataValue, sOriginalDocIdValue, nTaskValue, country, kvStart, yStart, kvEnd, yEnd);
+        		sDocIdValue, sDocumentDataValue, sOriginalDocIdValue, nTaskValue, country, kvStart, yStart, kvEnd, yEnd, sID_Place);
 
         try {
 	        
