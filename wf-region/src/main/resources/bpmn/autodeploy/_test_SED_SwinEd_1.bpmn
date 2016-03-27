@@ -12,7 +12,13 @@
         <activiti:formProperty id="street" name="Назва вулиці прописки" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="building" name="Номер будинку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="apartment" name="Номер квартири" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_Place" name="Код КОАТУУ" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="periodKvStart" name="Квартал початку періоду для виборки" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="periodYearStart" name="Рік початку періоду для виборки" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="periodKvEnd" name="Квартал закінчення періоду для виборки" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="periodYearEnd" name="Рік закінчення періоду для виборки" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdsID_Country" name="Громадянство (Code)" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="User Task с листенером" activiti:candidateGroups="sales">
@@ -22,6 +28,7 @@
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Email для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Place" name="Код КОАТУУ" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${SendDocument_SWinEd}">
           <activiti:field name="sSenderEDRPOU">
             <activiti:string><![CDATA[1234567890]]></activiti:string>
@@ -73,6 +80,24 @@
           </activiti:field>
           <activiti:field name="apartment">
             <activiti:expression><![CDATA[${apartment}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="bankIdsID_Country">
+            <activiti:expression><![CDATA[${bankIdsID_Country}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="periodKvStart">
+            <activiti:expression><![CDATA[${periodKvStart}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="periodYearStart">
+            <activiti:expression><![CDATA[${periodYearStart}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="periodKvEnd">
+            <activiti:expression><![CDATA[${periodKvEnd}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="periodYearEnd">
+            <activiti:expression><![CDATA[${periodYearEnd}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sID_Place">
+            <activiti:expression><![CDATA[${sID_Place}]]></activiti:expression>
           </activiti:field>
        </activiti:taskListener>
       </extensionElements>
