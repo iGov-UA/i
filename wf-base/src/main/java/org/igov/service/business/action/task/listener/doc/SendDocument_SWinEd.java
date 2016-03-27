@@ -133,7 +133,7 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
 			
 	        int attachmentsSize = attachments.size();
 	        
-	        LOG.info("Got {} attachments. Initializing soap client");
+	        LOG.info("Got {} attachments. Initializing soap client", attachmentsSize);
 	        
 	        SWinEDSoapStub stub = new SWinEDSoapStub();
 			ProcessResultHolder handler = new ProcessResultHolder();
