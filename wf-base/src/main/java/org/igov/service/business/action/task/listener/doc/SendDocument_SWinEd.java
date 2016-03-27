@@ -1,16 +1,29 @@
 package org.igov.service.business.action.task.listener.doc;
 
 import java.rmi.RemoteException;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 import javax.xml.rpc.holders.IntHolder;
 
 import org.activiti.engine.RuntimeService;
+import org.activiti.engine.TaskService;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.delegate.TaskListener;
+import org.activiti.engine.form.FormData;
+import org.activiti.engine.identity.User;
+import org.activiti.engine.task.Attachment;
+import org.activiti.engine.task.IdentityLink;
 import org.apache.axis.AxisFault;
+import org.apache.commons.codec.binary.Base64;
+import org.igov.io.GeneralConfig;
+import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
+import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
 import org.igov.service.business.action.task.core.AbstractModelTask;
+import org.igov.service.business.action.task.systemtask.doc.util.UkrDocUtil;
 import org.igov.util.swind.DocumentInData;
 import org.igov.util.swind.DocumentType;
 import org.igov.util.swind.SWinEDSoapStub;
@@ -31,6 +44,15 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
 
     @Autowired
     RuntimeService runtimeService;
+    
+    @Autowired
+    TaskService taskService;
+    
+    @Autowired
+    GeneralConfig generalConfig;
+    
+    @Autowired
+    private IBytesDataInmemoryStorage oBytesDataInmemoryStorage;
     
     private Expression sSenderEDRPOU;
     private Expression nSenderDept;
@@ -63,14 +85,68 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
 			SWinEDSoapStub stub = new SWinEDSoapStub();
 			ProcessResultHolder handler = new ProcessResultHolder();
 			IntHolder errorDocIdx = new IntHolder();
-			DocumentInData[] docs = new DocumentInData[1];
-			DocumentInData document = new DocumentInData();
-			document.setDept(Integer.valueOf(nDeptValue));
-			document.setDocId(sDocIdValue);
-			document.setEDRPOU(sEDRPOUValue);
-			document.setOriginalDocId(sOriginalDocIdValue);
-			document.setTask(Integer.valueOf(nTaskValue));
-			docs[0] = document;
+			
+			List<Attachment> attachments = new LinkedList<Attachment>();
+
+	        List<Attachment> attach1 = taskService.getProcessInstanceAttachments(delegateTask.getProcessInstanceId());
+	        if (attach1 != null && !attach1.isEmpty()) {
+	            attachments = attach1;
+	        }
+
+	        List<Attachment> attach2 = taskService.getTaskAttachments(delegateTask.getId());
+	        if (attach2 != null && !attach2.isEmpty()) {
+	            attachments = attach2;
+	        }
+
+	        LOG.info("Found attachments for the process {}: {}", attach1 != null ? attach1.size() : 0, attach2 != null ? attach2.size() : 0);
+
+	        String sessionId = UkrDocUtil.getSessionId(generalConfig.getSID_login(), generalConfig.getSID_password(),
+	                generalConfig.sURL_AuthSID_PB() + "?lang=UA");
+
+	        LOG.info("Retrieved session ID:" + sessionId);
+
+	        if (attachments.isEmpty()) {
+	            DelegateExecution oExecution = delegateTask.getExecution();
+	            // получить группу бп
+	            Set<IdentityLink> identityLink = delegateTask.getCandidates();
+	            // получить User группы
+	            List<User> aUser = oExecution.getEngineServices().getIdentityService()
+	                    .createUserQuery()
+	                    .memberOfGroup(identityLink.iterator().next().getGroupId())
+	                    .list();
+
+	            LOG.info("Finding any assigned user-member of group. (aUser={})", aUser);
+	            if (aUser == null || aUser.size() == 0 || aUser.get(0) == null || aUser.get(0).getId() == null) {
+	                //TODO  what to do if no user?
+	            } else {
+		            // setAuthenticatedUserId первого попавщегося
+	                //TODO Shall we implement some logic for user selection.
+	                oExecution.getEngineServices().getIdentityService().setAuthenticatedUserId(aUser.get(0).getId());
+	                // получить информацию по стартовой форме бп
+	                FormData oStartFormData = oExecution.getEngineServices().getFormService()
+	                        .getStartFormData(oExecution.getProcessDefinitionId());
+	                LOG.info("beginning of addAttachmentsToTask(startformData, task):execution.getProcessDefinitionId()={}",
+	                        oExecution.getProcessDefinitionId());
+	                attachments = addAttachmentsToTask(oStartFormData, delegateTask);
+	            }
+	        }
+			
+	        int attachmentsSize = attachments.size();
+	        
+			DocumentInData[] docs = new DocumentInData[attachmentsSize];
+			for (int i = 0; i < attachmentsSize; i++){
+				Attachment attachment = attachments.get(i);
+				LOG.info("Getting attachment's content with id {}", attachment.getId());
+				byte[] attachmentContent = oBytesDataInmemoryStorage.getBytes(attachment.getId());
+				DocumentInData document = new DocumentInData();
+				document.setDept(Integer.valueOf(nDeptValue));
+				document.setDocument(Base64.encodeBase64(attachmentContent));
+				document.setDocId(sDocIdValue);
+				document.setEDRPOU(sEDRPOUValue);
+				document.setOriginalDocId(attachment.getId());
+				document.setTask(Integer.valueOf(delegateTask.getProcessInstanceId()));
+				docs[i] = document;
+			}
 			stub.post(sSenderEDRPOUValue, Integer.valueOf(nSenderDeptValue), DocumentType.Original, docs, handler, errorDocIdx);
 			
 			LOG.info("Setting SwinEd status response variable to {} for the process {}", handler.value.getValue(), delegateTask.getProcessInstanceId());
@@ -83,6 +159,8 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
 			LOG.error("Error occured while making a call to SWinEd {}", e.getMessage());
 		} catch (RemoteException e) {
 			LOG.error("Error occured while making a call to SWinEd {}", e.getMessage());
+		} catch (RecordInmemoryException e) {
+			LOG.error("Error occured while getting attachment's content {}", e.getMessage());
 		}
     }
 

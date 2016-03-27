@@ -19,6 +19,32 @@
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Email для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${CreateDocument_UkrDoc}">
+          <activiti:field name="sSenderEDRPOU">
+            <activiti:string><![CDATA[1234567890]]></activiti:string>
+          </activiti:field>
+          <activiti:field name="nSenderDept">
+            <activiti:expression><![CDATA[1]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sEDRPOU">
+            <activiti:expression><![CDATA[1234567890]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="nDept">
+            <activiti:expression><![CDATA[1]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sDocId">
+            <activiti:expression><![CDATA[1111111111]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sDocumentData">
+            <activiti:expression><![CDATA[1234567890]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sOriginalDocId">
+            <activiti:expression><![CDATA[2222222222]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="nTask">
+            <activiti:expression><![CDATA[2222222222]]></activiti:expression>
+          </activiti:field>
+       </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="usertask1"></sequenceFlow>
