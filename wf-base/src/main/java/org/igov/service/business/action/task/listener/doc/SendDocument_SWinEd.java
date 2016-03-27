@@ -90,7 +90,7 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
     private Expression bankIdlastName;
     private Expression bankIdmiddleName;
     private Expression bankIdinn;
-    private Expression passport;
+    private Expression bankIdPassport;
     private Expression email;
     private Expression street;
     private Expression building;
@@ -114,7 +114,7 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
         String hlname = getStringFromFieldExpression(this.bankIdlastName, execution);
         String hfname = getStringFromFieldExpression(this.bankIdmiddleName, execution);
         String htin = getStringFromFieldExpression(this.bankIdinn, execution);
-        String passport = getStringFromFieldExpression(this.passport, execution);
+        String passport = getStringFromFieldExpression(this.bankIdPassport, execution);
         String hemail = getStringFromFieldExpression(this.email, execution);
         String hstreet = getStringFromFieldExpression(this.street, execution);
         String hbuild = getStringFromFieldExpression(this.building, execution);
