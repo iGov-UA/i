@@ -86,6 +86,15 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
     private Expression sDocumentData;
     private Expression sOriginalDocId;
     private Expression nTask;
+    private Expression bankIdfirstName;
+    private Expression bankIdlastName;
+    private Expression bankIdmiddleName;
+    private Expression bankIdinn;
+    private Expression passport;
+    private Expression email;
+    private Expression street;
+    private Expression building;
+    private Expression apartment;
     
     @Override
     public void notify(DelegateTask delegateTask) {
@@ -100,6 +109,16 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
         String sDocumentDataValue = getStringFromFieldExpression(this.sDocumentData, execution);
         String sOriginalDocIdValue = getStringFromFieldExpression(this.sOriginalDocId, execution);
         String nTaskValue = getStringFromFieldExpression(this.nTask, execution);
+        
+        String hpname = getStringFromFieldExpression(this.bankIdfirstName, execution);
+        String hlname = getStringFromFieldExpression(this.bankIdlastName, execution);
+        String hfname = getStringFromFieldExpression(this.bankIdmiddleName, execution);
+        String htin = getStringFromFieldExpression(this.bankIdinn, execution);
+        String passport = getStringFromFieldExpression(this.passport, execution);
+        String hemail = getStringFromFieldExpression(this.email, execution);
+        String hstreet = getStringFromFieldExpression(this.street, execution);
+        String hbuild = getStringFromFieldExpression(this.building, execution);
+        String hapart = getStringFromFieldExpression(this.apartment, execution);
 
         LOG.info("Parameters of the SendDocument_SWinEd sSenderEDRPOU:{}, nSenderDept:{}, sEDRPOU:{}, nDept:{}, sDocId:{},"
         		+ "sDocumentData:{} , sOriginalDocId:{}, nTask:{}", sSenderEDRPOUValue, nSenderDeptValue, sEDRPOUValue, nDeptValue,
@@ -111,39 +130,6 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
 			ProcessResultHolder handler = new ProcessResultHolder();
 			IntHolder errorDocIdx = new IntHolder();
 			
-			DBody dbody = new DBody();
-			String hlname = null;
-			String hpname = null;
-			String hfname = null;
-			String htin = null;
-			String passport = null;
-			String hemail = null;
-			String hstreet = null;
-			String hbuild = null;
-			String hapart = null;
-			//String hfill = Calendar.getInstance().get;
-			StartFormData startFormData = formService.getStartFormData(delegateTask.getProcessDefinitionId());
-			for (FormProperty formProperty : startFormData.getFormProperties()) {
-				if (formProperty.getId().equals("bankIdfirstName")){
-					hpname = formProperty.getValue();
-				} else if (formProperty.getId().equals("bankIdlastName")){
-					hlname = formProperty.getValue();
-				} else if (formProperty.getId().equals("bankIdmiddleName")){
-					hfname = formProperty.getValue();
-				} else if (formProperty.getId().equals("bankIdinn")){
-					htin = formProperty.getValue();
-				} else if (formProperty.getId().equals("passport")){
-					passport = formProperty.getValue();
-				} else if (formProperty.getId().equals("email")){
-					hemail = formProperty.getValue();
-				} else if (formProperty.getId().equals("street")){
-					hstreet = formProperty.getValue();
-				} else if (formProperty.getId().equals("building")){
-					hbuild = formProperty.getValue();
-				} else if (formProperty.getId().equals("apartment")){
-					hapart = formProperty.getValue();
-				}
-			}
 			String hpass = null;
 			String hpassDate = null;
 			String hpassiss = null;
