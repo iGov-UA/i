@@ -181,13 +181,13 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
                 }
             }
 		} catch (AxisFault e) {
-			LOG.error("Error occured while constructing a call to SWinEd {}", e.getMessage());
+			LOG.error("Error occured while constructing a call to SWinEd {}", e.getMessage(), e);
 		} catch (NumberFormatException e) {
-			LOG.error("Error occured while making a call to SWinEd {}", e.getMessage());
+			LOG.error("Error occured while making a call to SWinEd {}", e.getMessage(), e);
 		} catch (RemoteException e) {
-			LOG.error("Error occured while making a call to SWinEd {}", e.getMessage());
+			LOG.error("Error occured while making a call to SWinEd {}", e.getMessage(), e);
 		} catch (RecordInmemoryException e) {
-			LOG.error("Error occured while getting attachment's content {}", e.getMessage());
+			LOG.error("Error occured while getting attachment's content {}", e.getMessage(), e);
 		}
     }
 
