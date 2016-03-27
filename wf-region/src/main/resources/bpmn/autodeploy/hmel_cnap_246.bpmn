@@ -39,7 +39,7 @@
         <activiti:formProperty id="markers114" name="перефразування для принтформи по-батькові" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_114&quot;:{&quot;aField_ID&quot;:[&quot;rchange&quot;],&quot;sValue&quot;:&quot;по-батькові&quot;,&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;change&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'middle_name'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <userTask id="usertask1" name="запрошення на співбесіду" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask1" name="запрошення на співбесіду" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="rName" name="Район" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -82,7 +82,7 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask2" name="надання адміністративної послуги" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask2" name="надання адміністративної послуги" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="rName" name="Район" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -253,7 +253,7 @@ ${comment_1}&lt;br /&gt;
 var per1 = 'remail'
 var per2 = 'rNumber'
 var per4 = 'rName'
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'hmel_hmelT'){
+if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'cnap_hmel_hmelT'){
 per1 = 'darja.grek@gmail.com'
 per2 = '533'
 per4 = 'ЦНАП Хмельницької міськради'
