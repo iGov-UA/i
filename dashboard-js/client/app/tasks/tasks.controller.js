@@ -139,14 +139,16 @@
     $scope.selectedSortOrderChanged = function () {
       switch ($scope.selectedSortOrder.selected) {
         case 'datetime_asc':
-          if ($scope.$storage.menuType == tasks.filterTypes.finished) $scope.predicate = 'startTime';
-          else $scope.predicate = 'createTime';
-          $scope.reverse = false;
-          break;
-        case 'datetime_desc':
+          $scope.selectedSortOrder.selected = "datetime_desc";
           if ($scope.$storage.menuType == tasks.filterTypes.finished) $scope.predicate = 'startTime';
           else $scope.predicate = 'createTime';
           $scope.reverse = true;
+          break;
+        case 'datetime_desc':
+          $scope.selectedSortOrder.selected = "datetime_asc";
+          if ($scope.$storage.menuType == tasks.filterTypes.finished) $scope.predicate = 'startTime';
+          else $scope.predicate = 'createTime';
+          $scope.reverse = false;
           break;
       }
     };
