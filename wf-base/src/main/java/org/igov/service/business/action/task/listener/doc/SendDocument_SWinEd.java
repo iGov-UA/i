@@ -95,6 +95,11 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
     private Expression street;
     private Expression building;
     private Expression apartment;
+    private Expression bankIdsID_Country;
+    private Expression periodKvStart;
+    private Expression periodYearStart;
+    private Expression periodKvEnd;
+    private Expression periodYearEnd;
     
     @Override
     public void notify(DelegateTask delegateTask) {
@@ -119,10 +124,16 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
         String hstreet = getStringFromFieldExpression(this.street, execution);
         String hbuild = getStringFromFieldExpression(this.building, execution);
         String hapart = getStringFromFieldExpression(this.apartment, execution);
+        String country = getStringFromFieldExpression(this.bankIdsID_Country, execution);
+        String kvStart = getStringFromFieldExpression(this.periodKvStart, execution);
+        String yStart = getStringFromFieldExpression(this.periodYearStart, execution);
+        String kvEnd = getStringFromFieldExpression(this.periodKvEnd, execution);
+        String yEnd = getStringFromFieldExpression(this.periodYearEnd, execution);
 
         LOG.info("Parameters of the SendDocument_SWinEd sSenderEDRPOU:{}, nSenderDept:{}, sEDRPOU:{}, nDept:{}, sDocId:{},"
-        		+ "sDocumentData:{} , sOriginalDocId:{}, nTask:{}", sSenderEDRPOUValue, nSenderDeptValue, sEDRPOUValue, nDeptValue,
-        		sDocIdValue, sDocumentDataValue, sOriginalDocIdValue, nTaskValue);
+        		+ "sDocumentData:{} , sOriginalDocId:{}, nTask:{}, country:{}, kvStart:{}, yStart:{}, kvEnd:{}, yEnd:{}, ", sSenderEDRPOUValue, 
+        		nSenderDeptValue, sEDRPOUValue, nDeptValue,
+        		sDocIdValue, sDocumentDataValue, sOriginalDocIdValue, nTaskValue, country, kvStart, yStart, kvEnd, yEnd);
 
         try {
 	        
@@ -157,7 +168,11 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
 			body.setHSTREET(hstreet);
 			body.setHBUILD(hbuild);
 			body.setHAPT(factory.createDBodyHAPT(hapart));
-			body.setHCOUNTRY("Україна");
+			body.setHCOUNTRY(country);
+			body.setR01G01(Integer.valueOf(kvStart));
+			body.setR01G02(Integer.valueOf(yStart));
+			body.setR02G01(Integer.valueOf(kvEnd));
+			body.setR02G02(Integer.valueOf(yEnd));
 			
 			StringWriter sw = new StringWriter();
 			JAXBContext jc = JAXBContext.newInstance(DBody.class);
