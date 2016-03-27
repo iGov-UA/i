@@ -10,6 +10,7 @@
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile1" name="Якийсь документ" type="file"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="User Task с листенером" activiti:candidateGroups="sales">
@@ -19,7 +20,7 @@
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Email для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${CreateDocument_UkrDoc}">
+        <activiti:taskListener event="create" delegateExpression="${SendDocument_SWinEd}">
           <activiti:field name="sSenderEDRPOU">
             <activiti:string><![CDATA[1234567890]]></activiti:string>
           </activiti:field>
