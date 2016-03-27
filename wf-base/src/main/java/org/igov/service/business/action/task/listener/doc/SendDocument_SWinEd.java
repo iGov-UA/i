@@ -90,10 +90,7 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
         		sDocIdValue, sDocumentDataValue, sOriginalDocIdValue, nTaskValue);
 
         try {
-			SWinEDSoapStub stub = new SWinEDSoapStub();
-			ProcessResultHolder handler = new ProcessResultHolder();
-			IntHolder errorDocIdx = new IntHolder();
-			
+			LOG.info("");
 			List<Attachment> attachments = new LinkedList<Attachment>();
 
 	        List<Attachment> attach1 = taskService.getProcessInstanceAttachments(delegateTask.getProcessInstanceId());
@@ -140,6 +137,12 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
 	        }
 			
 	        int attachmentsSize = attachments.size();
+	        
+	        LOG.info("Got {} attachments. Initializing soap client");
+	        
+	        SWinEDSoapStub stub = new SWinEDSoapStub();
+			ProcessResultHolder handler = new ProcessResultHolder();
+			IntHolder errorDocIdx = new IntHolder();
 	        
 			DocumentInData[] docs = new DocumentInData[attachmentsSize];
 			for (int i = 0; i < attachmentsSize; i++){
