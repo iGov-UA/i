@@ -1,10 +1,17 @@
 package org.igov.service.business.action.task.listener.doc;
 
+import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
 import java.rmi.RemoteException;
+import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import javax.xml.rpc.holders.IntHolder;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
@@ -18,6 +25,7 @@ import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.delegate.TaskListener;
 import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.FormProperty;
+import org.activiti.engine.form.StartFormData;
 import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.identity.User;
 import org.activiti.engine.impl.form.FormPropertyImpl;
@@ -26,6 +34,7 @@ import org.activiti.engine.task.IdentityLink;
 import org.activiti.engine.task.Task;
 import org.apache.axis.AxisFault;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang3.StringUtils;
 import org.igov.io.GeneralConfig;
 import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
@@ -37,6 +46,9 @@ import org.igov.util.swind.SWinEDLocator;
 import org.igov.util.swind.SWinEDSoapProxy;
 import org.igov.util.swind.SWinEDSoapStub;
 import org.igov.util.swind.holders.ProcessResultHolder;
+import org.igov.util.swind.jaxb.DBody;
+import org.igov.util.swind.jaxb.DHead;
+import org.igov.util.swind.jaxb.ObjectFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,69 +106,78 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
         		sDocIdValue, sDocumentDataValue, sOriginalDocIdValue, nTaskValue);
 
         try {
-			LOG.info("");
-			List<Attachment> attachments = new LinkedList<Attachment>();
-
-	        List<Attachment> attach1 = taskService.getProcessInstanceAttachments(delegateTask.getProcessInstanceId());
-	        if (attach1 != null && !attach1.isEmpty()) {
-	            attachments = attach1;
-	        }
-
-	        List<Attachment> attach2 = taskService.getTaskAttachments(delegateTask.getId());
-	        if (attach2 != null && !attach2.isEmpty()) {
-	            attachments = attach2;
-	        }
-
-	        LOG.info("Found attachments for the process {}: {}", attach1 != null ? attach1.size() : 0, attach2 != null ? attach2.size() : 0);
-
-	        if (attachments.isEmpty()) {
-	            DelegateExecution oExecution = delegateTask.getExecution();
-	            // получить группу бп
-	            Set<IdentityLink> identityLink = delegateTask.getCandidates();
-	            // получить User группы
-	            List<User> aUser = oExecution.getEngineServices().getIdentityService()
-	                    .createUserQuery()
-	                    .memberOfGroup(identityLink.iterator().next().getGroupId())
-	                    .list();
-
-	            LOG.info("Finding any assigned user-member of group. (aUser={})", aUser);
-	            if (aUser == null || aUser.size() == 0 || aUser.get(0) == null || aUser.get(0).getId() == null) {
-	                //TODO  what to do if no user?
-	            } else {
-		            // setAuthenticatedUserId первого попавщегося
-	                //TODO Shall we implement some logic for user selection.
-	                oExecution.getEngineServices().getIdentityService().setAuthenticatedUserId(aUser.get(0).getId());
-	                // получить информацию по стартовой форме бп
-	                FormData oStartFormData = oExecution.getEngineServices().getFormService()
-	                        .getStartFormData(oExecution.getProcessDefinitionId());
-	                LOG.info("beginning of addAttachmentsToTask(startformData, task):execution.getProcessDefinitionId()={}",
-	                        oExecution.getProcessDefinitionId());
-	                attachments = addAttachmentsToTask(oStartFormData, delegateTask);
-	            }
-	        }
-			
-	        int attachmentsSize = attachments.size();
-	        
-	        LOG.info("Got {} attachments. Initializing soap client", attachmentsSize);
 	        
 	        SWinEDSoapProxy soapProxy = new SWinEDSoapProxy();
 			ProcessResultHolder handler = new ProcessResultHolder();
 			IntHolder errorDocIdx = new IntHolder();
-	        
-			DocumentInData[] docs = new DocumentInData[attachmentsSize];
-			for (int i = 0; i < attachmentsSize; i++){
-				Attachment attachment = attachments.get(i);
-				LOG.info("Getting attachment's content with id {}", attachment.getId());
-				byte[] attachmentContent = oBytesDataInmemoryStorage.getBytes(attachment.getId());
-				DocumentInData document = new DocumentInData();
-				document.setDept(Integer.valueOf(nDeptValue));
-				document.setDocument(Base64.encodeBase64(attachmentContent));
-				document.setDocId(sDocIdValue);
-				document.setEDRPOU(sEDRPOUValue);
-				document.setOriginalDocId(attachment.getId());
-				document.setTask(Integer.valueOf(delegateTask.getProcessInstanceId()));
-				docs[i] = document;
+			
+			DBody dbody = new DBody();
+			String hlname = null;
+			String hpname = null;
+			String hfname = null;
+			String htin = null;
+			String passport = null;
+			String hemail = null;
+			//String hfill = Calendar.getInstance().get;
+			StartFormData startFormData = formService.getStartFormData(delegateTask.getProcessDefinitionId());
+			for (FormProperty formProperty : startFormData.getFormProperties()) {
+				if (formProperty.getId().equals("bankIdfirstName")){
+					hpname = formProperty.getValue();
+				} else if (formProperty.getId().equals("bankIdlastName")){
+					hlname = formProperty.getValue();
+				} else if (formProperty.getId().equals("bankIdmiddleName")){
+					hfname = formProperty.getValue();
+				} else if (formProperty.getId().equals("bankIdinn")){
+					htin = formProperty.getValue();
+				} else if (formProperty.getId().equals("passport")){
+					passport = formProperty.getValue();
+				} else if (formProperty.getId().equals("email")){
+					hemail = formProperty.getValue();
+				}
 			}
+			String hpass = null;
+			String hpassDate = null;
+			String hpassiss = null;
+			if (passport != null){
+				hpass = StringUtils.substringBefore(passport.trim(), " ");
+				hpassDate = StringUtils.substringAfterLast(passport.trim(), " ");
+				hpassiss = StringUtils.substringAfter(passport.trim(), " ");
+				hpassiss = StringUtils.substringBeforeLast(hpassiss, " ");
+			}
+			
+			LOG.info("Loaded the next variables to pass to swinEd. hlname:{}, hpname:{}, hfname:{}, htin:{}, hemail:{}, hpass:{}, hpassDate:{}, hpassiss:{}",
+					hlname, hpname, hfname, htin, hemail, hpass, hpassDate, hpassiss);
+			
+			DBody body = new DBody();
+			ObjectFactory factory = new ObjectFactory();
+			body.setHLNAME(hlname);
+			body.setHPNAME(hpname);
+			body.setHFNAME(factory.createDBodyHFNAME(hfname));
+			body.setHTIN(htin);
+			body.setHEMAIL(hemail);
+			body.setHPASS(factory.createDBodyHPASS(hpass));
+			body.setHPASSDATE(factory.createDBodyHPASSDATE(hpassDate));
+			body.setHPASSISS(factory.createDBodyHPASS(hpassiss));
+			
+			StringWriter sw = new StringWriter();
+			JAXBContext jc = JAXBContext.newInstance(DBody.class);
+			Marshaller m = jc.createMarshaller();
+			m.marshal(body, sw);
+			
+			String bodyContent = sw.toString();
+			LOG.info("Created document with customer info to embedd to message: {}", bodyContent);
+			
+			DocumentInData document = new DocumentInData();
+			document.setDept(Integer.valueOf(nDeptValue));
+			document.setDocument(Base64.encodeBase64(bodyContent.getBytes("UTF-8")));
+			document.setDocId(sDocIdValue);
+			document.setEDRPOU(sEDRPOUValue);
+			document.setOriginalDocId(sOriginalDocIdValue);
+			document.setTask(Integer.valueOf(delegateTask.getProcessInstanceId()));
+			
+			DocumentInData[] docs = new DocumentInData[1];
+			docs[0] = document;
+			
 			LOG.info("Sending document to SwinEd with parameters. SenderEDRPOU:{}, nSenderDept:{}, DocumentType:{}, docs:{}", sSenderEDRPOUValue, nSenderDeptValue, DocumentType.Original, docs);
 			soapProxy.post(sSenderEDRPOUValue, Integer.valueOf(nSenderDeptValue), DocumentType.Original, docs, handler, errorDocIdx);
 			
@@ -191,8 +212,10 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
 			LOG.error("Error occured while making a call to SWinEd {}", e.getMessage(), e);
 		} catch (RemoteException e) {
 			LOG.error("Error occured while making a call to SWinEd {}", e.getMessage(), e);
-		} catch (RecordInmemoryException e) {
-			LOG.error("Error occured while getting attachment's content {}", e.getMessage(), e);
+		} catch (JAXBException e) {
+			LOG.error("Error occured while creating xml message to send {}", e.getMessage(), e);
+		} catch (UnsupportedEncodingException e) {
+			LOG.error("Error occured while creating xml message to send {}", e.getMessage(), e);
 		}
     }
 
