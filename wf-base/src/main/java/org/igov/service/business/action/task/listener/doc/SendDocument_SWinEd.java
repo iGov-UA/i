@@ -1,11 +1,20 @@
 package org.igov.service.business.action.task.listener.doc;
 
+import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
 import java.rmi.RemoteException;
+import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import javax.xml.rpc.holders.IntHolder;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
 
 import org.activiti.engine.FormService;
 import org.activiti.engine.RuntimeService;
@@ -16,6 +25,7 @@ import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.delegate.TaskListener;
 import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.FormProperty;
+import org.activiti.engine.form.StartFormData;
 import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.identity.User;
 import org.activiti.engine.impl.form.FormPropertyImpl;
@@ -24,6 +34,7 @@ import org.activiti.engine.task.IdentityLink;
 import org.activiti.engine.task.Task;
 import org.apache.axis.AxisFault;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang3.StringUtils;
 import org.igov.io.GeneralConfig;
 import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
@@ -35,6 +46,9 @@ import org.igov.util.swind.SWinEDLocator;
 import org.igov.util.swind.SWinEDSoapProxy;
 import org.igov.util.swind.SWinEDSoapStub;
 import org.igov.util.swind.holders.ProcessResultHolder;
+import org.igov.util.swind.jaxb.DBody;
+import org.igov.util.swind.jaxb.DHead;
+import org.igov.util.swind.jaxb.ObjectFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,6 +86,21 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
     private Expression sDocumentData;
     private Expression sOriginalDocId;
     private Expression nTask;
+    private Expression bankIdfirstName;
+    private Expression bankIdlastName;
+    private Expression bankIdmiddleName;
+    private Expression bankIdinn;
+    private Expression bankIdPassport;
+    private Expression email;
+    private Expression street;
+    private Expression building;
+    private Expression apartment;
+    private Expression bankIdsID_Country;
+    private Expression periodKvStart;
+    private Expression periodYearStart;
+    private Expression periodKvEnd;
+    private Expression periodYearEnd;
+    private Expression sID_Place;
     
     @Override
     public void notify(DelegateTask delegateTask) {
@@ -86,75 +115,87 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
         String sDocumentDataValue = getStringFromFieldExpression(this.sDocumentData, execution);
         String sOriginalDocIdValue = getStringFromFieldExpression(this.sOriginalDocId, execution);
         String nTaskValue = getStringFromFieldExpression(this.nTask, execution);
+        
+        String hpname = getStringFromFieldExpression(this.bankIdfirstName, execution);
+        String hlname = getStringFromFieldExpression(this.bankIdlastName, execution);
+        String hfname = getStringFromFieldExpression(this.bankIdmiddleName, execution);
+        String htin = getStringFromFieldExpression(this.bankIdinn, execution);
+        String passport = getStringFromFieldExpression(this.bankIdPassport, execution);
+        String hemail = getStringFromFieldExpression(this.email, execution);
+        String hstreet = getStringFromFieldExpression(this.street, execution);
+        String hbuild = getStringFromFieldExpression(this.building, execution);
+        String hapart = getStringFromFieldExpression(this.apartment, execution);
+        String country = getStringFromFieldExpression(this.bankIdsID_Country, execution);
+        String kvStart = getStringFromFieldExpression(this.periodKvStart, execution);
+        String yStart = getStringFromFieldExpression(this.periodYearStart, execution);
+        String kvEnd = getStringFromFieldExpression(this.periodKvEnd, execution);
+        String yEnd = getStringFromFieldExpression(this.periodYearEnd, execution);
+        String sID_Place = getStringFromFieldExpression(this.sID_Place, execution);
 
         LOG.info("Parameters of the SendDocument_SWinEd sSenderEDRPOU:{}, nSenderDept:{}, sEDRPOU:{}, nDept:{}, sDocId:{},"
-        		+ "sDocumentData:{} , sOriginalDocId:{}, nTask:{}", sSenderEDRPOUValue, nSenderDeptValue, sEDRPOUValue, nDeptValue,
-        		sDocIdValue, sDocumentDataValue, sOriginalDocIdValue, nTaskValue);
+        		+ "sDocumentData:{} , sOriginalDocId:{}, nTask:{}, country:{}, kvStart:{}, yStart:{}, kvEnd:{}, yEnd:{}, sID_Place:{}", sSenderEDRPOUValue, 
+        		nSenderDeptValue, sEDRPOUValue, nDeptValue,
+        		sDocIdValue, sDocumentDataValue, sOriginalDocIdValue, nTaskValue, country, kvStart, yStart, kvEnd, yEnd, sID_Place);
 
         try {
-			LOG.info("");
-			List<Attachment> attachments = new LinkedList<Attachment>();
-
-	        List<Attachment> attach1 = taskService.getProcessInstanceAttachments(delegateTask.getProcessInstanceId());
-	        if (attach1 != null && !attach1.isEmpty()) {
-	            attachments = attach1;
-	        }
-
-	        List<Attachment> attach2 = taskService.getTaskAttachments(delegateTask.getId());
-	        if (attach2 != null && !attach2.isEmpty()) {
-	            attachments = attach2;
-	        }
-
-	        LOG.info("Found attachments for the process {}: {}", attach1 != null ? attach1.size() : 0, attach2 != null ? attach2.size() : 0);
-
-	        if (attachments.isEmpty()) {
-	            DelegateExecution oExecution = delegateTask.getExecution();
-	            // получить группу бп
-	            Set<IdentityLink> identityLink = delegateTask.getCandidates();
-	            // получить User группы
-	            List<User> aUser = oExecution.getEngineServices().getIdentityService()
-	                    .createUserQuery()
-	                    .memberOfGroup(identityLink.iterator().next().getGroupId())
-	                    .list();
-
-	            LOG.info("Finding any assigned user-member of group. (aUser={})", aUser);
-	            if (aUser == null || aUser.size() == 0 || aUser.get(0) == null || aUser.get(0).getId() == null) {
-	                //TODO  what to do if no user?
-	            } else {
-		            // setAuthenticatedUserId первого попавщегося
-	                //TODO Shall we implement some logic for user selection.
-	                oExecution.getEngineServices().getIdentityService().setAuthenticatedUserId(aUser.get(0).getId());
-	                // получить информацию по стартовой форме бп
-	                FormData oStartFormData = oExecution.getEngineServices().getFormService()
-	                        .getStartFormData(oExecution.getProcessDefinitionId());
-	                LOG.info("beginning of addAttachmentsToTask(startformData, task):execution.getProcessDefinitionId()={}",
-	                        oExecution.getProcessDefinitionId());
-	                attachments = addAttachmentsToTask(oStartFormData, delegateTask);
-	            }
-	        }
-			
-	        int attachmentsSize = attachments.size();
-	        
-	        LOG.info("Got {} attachments. Initializing soap client", attachmentsSize);
 	        
 	        SWinEDSoapProxy soapProxy = new SWinEDSoapProxy();
 			ProcessResultHolder handler = new ProcessResultHolder();
 			IntHolder errorDocIdx = new IntHolder();
-	        
-			DocumentInData[] docs = new DocumentInData[attachmentsSize];
-			for (int i = 0; i < attachmentsSize; i++){
-				Attachment attachment = attachments.get(i);
-				LOG.info("Getting attachment's content with id {}", attachment.getId());
-				byte[] attachmentContent = oBytesDataInmemoryStorage.getBytes(attachment.getId());
-				DocumentInData document = new DocumentInData();
-				document.setDept(Integer.valueOf(nDeptValue));
-				document.setDocument(Base64.encodeBase64(attachmentContent));
-				document.setDocId(sDocIdValue);
-				document.setEDRPOU(sEDRPOUValue);
-				document.setOriginalDocId(attachment.getId());
-				document.setTask(Integer.valueOf(delegateTask.getProcessInstanceId()));
-				docs[i] = document;
+			
+			String hpass = null;
+			String hpassDate = null;
+			String hpassiss = null;
+			if (passport != null){
+				hpass = StringUtils.substringBefore(passport.trim(), " ");
+				hpassDate = StringUtils.substringAfterLast(passport.trim(), " ");
+				hpassiss = StringUtils.substringAfter(passport.trim(), " ");
+				hpassiss = StringUtils.substringBeforeLast(hpassiss, " ");
 			}
+			
+			LOG.info("Loaded the next variables to pass to swinEd. hlname:{}, hpname:{}, hfname:{}, htin:{}, hemail:{}, "
+					+ "hpass:{}, hpassDate:{}, hpassiss:{}, hstreet:{}, hbuild:{}, hapart:{}",
+					hlname, hpname, hfname, htin, hemail, hpass, hpassDate, hpassiss, hstreet, hbuild, hapart);
+			
+			DBody body = new DBody();
+			ObjectFactory factory = new ObjectFactory();
+			body.setHLNAME(hlname);
+			body.setHPNAME(hpname);
+			body.setHFNAME(factory.createDBodyHFNAME(hfname));
+			body.setHTIN(htin);
+			body.setHEMAIL(hemail);
+			body.setHPASS(factory.createDBodyHPASS(hpass));
+			body.setHPASSDATE(factory.createDBodyHPASSDATE(hpassDate));
+			body.setHPASSISS(factory.createDBodyHPASS(hpassiss));
+			body.setHSTREET(hstreet);
+			body.setHBUILD(hbuild);
+			body.setHAPT(factory.createDBodyHAPT(hapart));
+			body.setHCOUNTRY(country);
+			body.setR01G01(Integer.valueOf(kvStart));
+			body.setR01G02(Integer.valueOf(yStart));
+			body.setR02G01(Integer.valueOf(kvEnd));
+			body.setR02G02(Integer.valueOf(yEnd));
+			
+			StringWriter sw = new StringWriter();
+			JAXBContext jc = JAXBContext.newInstance(DBody.class);
+			Marshaller m = jc.createMarshaller();
+			m.marshal(body, sw);
+			
+			String bodyContent = sw.toString();
+			LOG.info("Created document with customer info to embedd to message: {}", bodyContent);
+			
+			DocumentInData document = new DocumentInData();
+			document.setDept(Integer.valueOf(nDeptValue));
+			document.setDocument(Base64.encodeBase64(bodyContent.getBytes("UTF-8")));
+			document.setDocId(sDocIdValue);
+			document.setEDRPOU(sEDRPOUValue);
+			document.setOriginalDocId(sOriginalDocIdValue);
+			document.setTask(Integer.valueOf(delegateTask.getProcessInstanceId()));
+			
+			DocumentInData[] docs = new DocumentInData[1];
+			docs[0] = document;
+			
+			LOG.info("Sending document to SwinEd with parameters. SenderEDRPOU:{}, nSenderDept:{}, DocumentType:{}, docs:{}", sSenderEDRPOUValue, nSenderDeptValue, DocumentType.Original, docs);
 			soapProxy.post(sSenderEDRPOUValue, Integer.valueOf(nSenderDeptValue), DocumentType.Original, docs, handler, errorDocIdx);
 			
 			LOG.info("Setting SwinEd status response variable to {} for the process {}", handler.value.getValue(), delegateTask.getProcessInstanceId());
@@ -188,8 +229,10 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
 			LOG.error("Error occured while making a call to SWinEd {}", e.getMessage(), e);
 		} catch (RemoteException e) {
 			LOG.error("Error occured while making a call to SWinEd {}", e.getMessage(), e);
-		} catch (RecordInmemoryException e) {
-			LOG.error("Error occured while getting attachment's content {}", e.getMessage(), e);
+		} catch (JAXBException e) {
+			LOG.error("Error occured while creating xml message to send {}", e.getMessage(), e);
+		} catch (UnsupportedEncodingException e) {
+			LOG.error("Error occured while creating xml message to send {}", e.getMessage(), e);
 		}
     }
 
