@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Set;
 
 import javax.xml.rpc.holders.IntHolder;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
 
 import org.activiti.engine.FormService;
 import org.activiti.engine.RuntimeService;
@@ -155,6 +157,7 @@ public class SendDocument_SWinEd extends AbstractModelTask implements TaskListen
 				document.setTask(Integer.valueOf(delegateTask.getProcessInstanceId()));
 				docs[i] = document;
 			}
+			LOG.info("Sending document to SwinEd with parameters. SenderEDRPOU:{}, nSenderDept:{}, DocumentType:{}, docs:{}", sSenderEDRPOUValue, nSenderDeptValue, DocumentType.Original, docs);
 			soapProxy.post(sSenderEDRPOUValue, Integer.valueOf(nSenderDeptValue), DocumentType.Original, docs, handler, errorDocIdx);
 			
 			LOG.info("Setting SwinEd status response variable to {} for the process {}", handler.value.getValue(), delegateTask.getProcessInstanceId());
