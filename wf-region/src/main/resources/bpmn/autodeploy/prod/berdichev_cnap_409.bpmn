@@ -7,6 +7,7 @@
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспорті дані" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="privatePhone" name="Телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта; для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sRegistrationAddress" name="Адреса реєстрації" type="string" required="true"></activiti:formProperty>
@@ -77,6 +78,7 @@ ${sPhoneOrgan}&lt;br&gt;
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true" writable="false"></activiti:formProperty>
         <activiti:formProperty id="privatePhone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sRegistrationAddress" name="Адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
@@ -168,6 +170,7 @@ ${sPhoneOrgan}&lt;br&gt;
         <activiti:formProperty id="number_cnap" name="Реєстраційний номер звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true" writable="false"></activiti:formProperty>
         <activiti:formProperty id="privatePhone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sRegistrationAddress" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
@@ -177,6 +180,7 @@ ${sPhoneOrgan}&lt;br&gt;
           <activiti:value id="sDovidka_bad" name="Відмовлено у наданні довідки"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="file10" name="Завантажте скановану копію довідки" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/berdichev/berdichiv_cnap_409_print1.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/berdichev/berdichiv_cnap_409_print1.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sShapka409" name="Шапка заяви" type="invisible"></activiti:formProperty>
@@ -224,7 +228,7 @@ ${sPhoneOrgan}&lt;br&gt;
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${PrintForm_1}</activiti:expression>
+          <activiti:expression>${PrintForm_1},${file10}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
