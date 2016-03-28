@@ -1,12 +1,10 @@
 package org.igov.service.business.action.task.listener.doc;
 
 import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
-import net.sf.json.test.JSONAssert;
 
 import org.activiti.engine.RuntimeService;
+import org.activiti.engine.TaskService;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.Expression;
@@ -39,9 +37,12 @@ public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListene
     @Autowired
     RuntimeService runtimeService;
 
+    @Autowired
+    private TaskService taskService;
+
     @Override
-    public void notify(DelegateTask dt) {
-        DelegateExecution execution = dt.getExecution();
+    public void notify(DelegateTask delegateTask) {
+        DelegateExecution execution = delegateTask.getExecution();
         String sID_Document = getStringFromFieldExpression(this.sID_Document, execution);
 
         LOG.info("Parameters of the task sID_Document:{}", sID_Document);
@@ -89,9 +90,17 @@ public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListene
                             try {
                                 ByteArrayMultipartFile oByteArrayMultipartFile
                                         = new ByteArrayMultipartFile(contentStringToByte(resp), fileName, fileNameOrigin, "application/octet-stream");
-                                Attachment attachment = createAttachment(oByteArrayMultipartFile, dt, fileName);
+                                //Attachment attachment = createAttachment(oByteArrayMultipartFile, delegateTask, fileName);
+                                //Attachment attachment = ((org.igov.service.conf.TaskServiceImpl) taskService)
+                                //        .createAttachment("application/octet-stream", delegateTask.getId(), execution.getProcessInstanceId(),
+                                //                fileNameOrigin, fileName, oByteArrayMultipartFile.getInputStream());
+                                Attachment attachment = taskService.createAttachment(oByteArrayMultipartFile.getContentType() + ";" + oByteArrayMultipartFile.getExp(), 
+                                        delegateTask.getId(), execution.getProcessInstanceId(), 
+                                        fileNameOrigin, fileName, oByteArrayMultipartFile.getInputStream());
+                          
                                 if (attachment != null) {
                                     anID_Attach_UkrDoc.append(attachment.getId()).append(",");
+                                    LOG.info("attachment: " + attachment.getId());
                                 }
                             } catch (Exception ex) {
                                 java.util.logging.Logger.getLogger(GetDocument_UkrDoc.class.getName()).log(Level.SEVERE, null, ex);
@@ -104,7 +113,6 @@ public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListene
                     }
                 } catch (Exception ex) {
                     LOG.error("error getFiles: ", ex);
-                    //System.out.println("error getFiles: " + ex.getMessage());
                 }
 
             }

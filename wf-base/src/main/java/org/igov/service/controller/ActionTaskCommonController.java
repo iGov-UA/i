@@ -595,7 +595,13 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
         Map<String, Object> response = new HashMap<>();
 
-        response.put("oProcess", oActionTaskService.getProcessInfoByTaskID(nID_Task));
+        try {
+            response.put("oProcess", oActionTaskService.getProcessInfoByTaskID(nID_Task));
+        } catch (NullPointerException e) {
+            String message = String.format("Incorrect Task ID [id = %s]. Record not found.", nID_Task);
+            LOG.info(message);
+            throw new RecordNotFoundException(message);
+        }
 
         List<FormProperty> aField = null;
         try{
@@ -1133,9 +1139,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 .createHistoricTaskInstanceQuery()
                 .processDefinitionKey(sID_BP);
         if (sTaskEndDateAt != null){
+        	LOG.info("Selecting tasks which were completed after {}", sTaskEndDateAt);
         	historicQuery.taskCompletedAfter(sTaskEndDateAt);
         }
         if (sTaskEndDateTo != null){
+        	LOG.info("Selecting tasks which were completed after {}", sTaskEndDateTo);
         	historicQuery.taskCompletedBefore(sTaskEndDateTo);
         }
         historicQuery.taskCreatedAfter(dBeginDate)
@@ -1155,9 +1163,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             query = query.taskDefinitionKey(sID_State_BP);
         }
         List<Task> foundResults = new LinkedList<Task>();
-        if (sTaskEndDateAt == null && sTaskEndDateTo == null){
+//        if (sTaskEndDateAt == null && sTaskEndDateTo == null){
         	foundResults = query.listPage(nRowStart, nRowsMax);
-        }
+//        }
 
         // 3. response
         SimpleDateFormat sdfFileName = new SimpleDateFormat(

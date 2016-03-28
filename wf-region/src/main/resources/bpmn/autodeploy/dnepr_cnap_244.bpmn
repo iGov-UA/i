@@ -79,21 +79,58 @@
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow4" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var per3 = 'sShapka220'
+      <script>
+var per3 = 'sShapka220'
 var per4 = 'substance'
 var per5 = 'substance_2'
 var per6 = 'substance_3'
 var per7 ='term'
+if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'prav' &amp;&amp; execution.getVariable('vibor_performer') == 'head'){
+per3 = 'Головному державному санітарному лікарю Дніпропетровської області'
+per7 = 'двох місяців з дня реєстрації заяви'
+}
 if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'prav' &amp;&amp; execution.getVariable('vibor_performer') == 'rail'){
 per3 = 'Начальнику управління на Придніпровській залізниці ГУ Держсанепідслужби на залізничному транспорту'
+per7 = 'двох місяців з дня реєстрації заяви'
+}
+if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'lev' &amp;&amp; execution.getVariable('vibor_performer') == 'head'){
+per3 = 'Головному державному санітарному лікарю Дніпропетровської області'
+per7 = 'двох місяців з дня реєстрації заяви'
 }
 if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'lev' &amp;&amp; execution.getVariable('vibor_performer') == 'rail'){
 per3 = 'Начальнику управління на Придніпровській залізниці ГУ Держсанепідслужби на залізничному транспорту'
+per7 = 'двох місяців з дня реєстрації заяви'
+}
+if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'dndzT'){
+per3 = 'Начальнику Дніпродзержинського міського Управління Головного управління Держсанепідслужби у Дніпропетровській області'
+per7 = 'двох місяців з дня реєстрації заяви'
+}
+if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'pavlogradT'){
+per3 = 'Головному державному санітарному лікарю м.Павлоград'
+per7 = 'двох місяців з дня реєстрації заяви'
+}
+if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'pavlograd'){
+per3 = 'Головному державному санітарному лікарю Павлоградського району'
+per7 = 'двох місяців з дня реєстрації заяви'
+}
+if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'sineln'){
+per3 = 'Головному державному санітарному лікарю Синельниківського району'
+per7 = 'двох місяців з дня реєстрації заяви'
+}
+if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'sinelnT'){
+per3 = 'Головному державному санітарному лікарю м.Синельникове'
+per7 = 'двох місяців з дня реєстрації заяви'
+}
+if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'jurivsk'){
+per3 = "Головному державному санітарному лікарю Юр'ївського району"
+per7 = 'двох місяців з дня реєстрації заяви'
 }
 if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'don_mariupolT'){
+per3 = 'Головному державному санітарному лікарю м.Маріуполя'
 per7 = '10 робочих днів з дня одержання дозвільним органом від  адміністратора заяви та документів, що додаються до неї'
 }
 if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'hmel_hmelT'){
+per3 = 'Головному державному санітарному лікарю м.Хмельницького'
 per7 = '10 робочих днів з дня реєстрації заяви'
 }
 if (execution.getVariable('vibor_service') == 'issue'){

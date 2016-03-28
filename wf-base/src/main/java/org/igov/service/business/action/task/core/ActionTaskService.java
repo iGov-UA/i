@@ -1413,8 +1413,8 @@ public class ActionTaskService {
      * @param nID_Task - номер-ИД таски
      * @return DTO-объект ProcessDTOCover
      */
-    public ProcessDTOCover getProcessInfoByTaskID(Long nID_Task){
-        LOG.info("start process getting Task Data by nID_Task = {}",  nID_Task);
+    public ProcessDTOCover getProcessInfoByTaskID(Long nID_Task) {
+        LOG.info("start process getting Task Data by nID_Task = {}", nID_Task);
 
         HistoricTaskInstance historicTaskInstance = oHistoryService.createHistoricTaskInstanceQuery()
                 .taskId(nID_Task.toString()).singleResult();
@@ -2242,20 +2242,32 @@ public class ActionTaskService {
      * @see HistoricIdentityLink#getGroupId()
      */
     public Set<String> getGroupIDsByTaskID(Long nID_Task){
-
+        LOG.info(String.format("Start extraction Group IDs for Task [id=%s]", nID_Task));
         Set<String> result = new HashSet<>();
         List<IdentityLink> identityLinks = oTaskService.getIdentityLinksForTask(nID_Task.toString());
         if (CollectionUtils.isNotEmpty(identityLinks)){
             for (IdentityLink link : identityLinks){
-                result.add(link.getGroupId());
-                LOG.info(String.format("Add Group id=%s for active Task id=%s", link.getGroupId(), nID_Task));
+                LOG.info(String.format("Extraction Group ID from IdentityLink %s", link.toString()));
+                if(link.getGroupId() == null || link.getGroupId().isEmpty()){
+                    LOG.info(String.format("Not found Group in IdentityLink %s", link.toString()));
+                } else {
+                    result.add(link.getGroupId());
+                    LOG.info(String.format("Add Group id=%s for active Task id=%s from IdentityLink %s",
+                            link.getGroupId(), nID_Task, link.toString()));
+                }
             }
         } else {
             List<HistoricIdentityLink> historicIdentityLinks = oHistoryService.getHistoricIdentityLinksForTask(nID_Task.toString());
             if (CollectionUtils.isNotEmpty(historicIdentityLinks)){
                 for (HistoricIdentityLink link : historicIdentityLinks){
-                    result.add(link.getGroupId());
-                    LOG.info(String.format("Add Group id=%s for historic Task id=%s", link.getGroupId(), nID_Task));
+                    LOG.info(String.format("Extraction Group ID from HistoricIdentityLink %s", link.toString()));
+                    if(link.getGroupId() == null || link.getGroupId().isEmpty()){
+                        LOG.info(String.format("Not found Group in HistoricIdentityLink %s", link.toString()));
+                    } else {
+                        result.add(link.getGroupId());
+                        LOG.info(String.format("Add Group id=%s for historic Task id=%s from HistoricIdentityLink %s",
+                                link.getGroupId(), nID_Task, link.toString()));
+                    }
                 }
             } else {
                 LOG.info(String.format("No found Group id for Task id=%s", nID_Task));

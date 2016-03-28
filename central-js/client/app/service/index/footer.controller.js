@@ -126,6 +126,13 @@ angular.module('app').controller('FooterController', function ($scope) {
       height: 50
     }
     
+    ,{
+      url: 'http://oyy.com.ua',
+      alt: 'oyy',
+      image: 'assets/images/ads/oyy.png',
+      height: 50
+    }
+    
     
   ];
 
