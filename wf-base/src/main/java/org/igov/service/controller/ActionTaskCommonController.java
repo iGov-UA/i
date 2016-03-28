@@ -1160,7 +1160,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         saFields = oActionTaskService.processSaFields(saFields, foundHistoricResults);
 
         if (sID_State_BP != null) {
-            query = query.taskDefinitionKey(sID_State_BP);
+            query = query.taskDefinitionKey(sID_State_BP).includeTaskLocalVariables();
         }
         List<Task> foundResults = new LinkedList<Task>();
 //        if (sTaskEndDateAt == null && sTaskEndDateTo == null){
