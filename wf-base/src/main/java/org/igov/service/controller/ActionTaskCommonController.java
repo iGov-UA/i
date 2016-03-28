@@ -595,7 +595,13 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
         Map<String, Object> response = new HashMap<>();
 
-        response.put("oProcess", oActionTaskService.getProcessInfoByTaskID(nID_Task));
+        try {
+            response.put("oProcess", oActionTaskService.getProcessInfoByTaskID(nID_Task));
+        } catch (NullPointerException e) {
+            String message = String.format("Incorrect Task ID [id = %s]. Record not found.", nID_Task);
+            LOG.info(message);
+            throw new RecordNotFoundException(message);
+        }
 
         List<FormProperty> aField = null;
         try{
