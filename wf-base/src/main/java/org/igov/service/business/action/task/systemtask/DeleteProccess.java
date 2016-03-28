@@ -14,6 +14,7 @@ import org.activiti.engine.RuntimeService;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.JavaDelegate;
 import org.activiti.engine.runtime.ProcessInstance;
+import org.igov.io.GeneralConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -23,12 +24,17 @@ public class DeleteProccess implements JavaDelegate {
     @Autowired
     private RuntimeService runtimeService;
 
+    @Autowired
+    GeneralConfig generalConfig;
+
     @Override
     public void execute(DelegateExecution execution) throws Exception {
-        List<ProcessInstance> processInstances = runtimeService.createProcessInstanceQuery().list();
-        for(ProcessInstance processInstance : processInstances){
-            runtimeService.deleteProcessInstance(processInstance.getProcessInstanceId(), "deprecated");
-        } 
+        if (generalConfig.bTest()) {
+            List<ProcessInstance> processInstances = runtimeService.createProcessInstanceQuery().list();
+            for (ProcessInstance processInstance : processInstances) {
+                runtimeService.deleteProcessInstance(processInstance.getProcessInstanceId(), "deprecated");
+            }
+        }
     }
 
 }
