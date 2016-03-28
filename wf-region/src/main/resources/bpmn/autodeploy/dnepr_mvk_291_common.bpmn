@@ -7,6 +7,10 @@
           <activiti:value id="sEnumConsYes" name="Так"></activiti:value>
           <activiti:value id="sEnumConsNo" name="Ні"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="asEmergencySituation" name="Аварійне питання" type="enum">
+          <activiti:value id="sEnumEmergYes" name="Так"></activiti:value>
+          <activiti:value id="sEnumEmergNo" name="Ні"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
@@ -594,6 +598,10 @@
           <activiti:value id="sEnumConsYes" name="Так"></activiti:value>
           <activiti:value id="sEnumConsNo" name="Ні"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="asEmergencySituation" name="Аварійне питання" type="enum">
+          <activiti:value id="sEnumEmergYes" name="Так"></activiti:value>
+          <activiti:value id="sEnumEmergNo" name="Ні"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="asSpecialStatus" name="Маєте особливий статус" type="enum">
           <activiti:value id="sEnumStatusYes" name="Так"></activiti:value>
           <activiti:value id="sEnumStatusNo" name="Ні"></activiti:value>
@@ -1098,7 +1106,7 @@
         <activiti:formProperty id="sLoginUkrDoc" name="Логін працівника міськради" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneCall_SubjectContact_Client" name="Телефон, з якого був здійснен дзвінок" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDataReglament" name="Кінцева дата вирішення питання (згідно регламенту)" type="date"></activiti:formProperty>
-        <activiti:formProperty id="nDaysRemain" name="Ориентировочный срок ответа на обращение (дней)" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nDaysRemain" name="Ориентировочный срок ответа на обращение (дней)" type="invisible" default="10"></activiti:formProperty>
         <activiti:formProperty id="asAnswerChannel" name="Канал відповіді" type="enum">
           <activiti:value id="sEnumAnsw1" name="Письмова відповідь"></activiti:value>
           <activiti:value id="sEnumAnsw2" name="Відповідь колл-центр"></activiti:value>
@@ -1122,12 +1130,12 @@
         <activiti:formProperty id="sEnumTop" name="Енам подтематика" type="invisible" default="В РАЗРАБОТКЕ"></activiti:formProperty>
         <activiti:formProperty id="sNameDepartment" name="Назва управлиння (департаменту)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="asStatus" name="Обробка звернення" type="enum">
-          <activiti:value id="sEnumSendEmail" name="Відправити швидку відповідь на E-mail"></activiti:value>
-          <activiti:value id="sEnumSendInFrontOffice" name="Відправити до Фронт офісу для письмової відповіді"></activiti:value>
+          <activiti:value id="sEnumSendEmail" name="Відправити швидку відповідь на е-mail"></activiti:value>
+          <activiti:value id="sEnumSendInFrontOffice" name="Відправити до фронт-офісу для письмової відповіді"></activiti:value>
           <activiti:value id="sEnumSendInUkrDoc" name="Відправити до департаменту (управління)"></activiti:value>
           <activiti:value id="sEnumSendInDniprogaz" name="Відправити до Дніпрогазу"></activiti:value>
           <activiti:value id="sEnumSendInDniprooblenergo" name="Відправити до Дніпрообленерго"></activiti:value>
-          <activiti:value id="sEnumSendInCallCenter" name="Відправити на вихідний обдзвін"></activiti:value>
+          <activiti:value id="sEnumSendInCallCenter" name="Відправити для вихідного дзвінка"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprMVK/dnepr_mvk_291_common_print.html" type="file"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -2444,7 +2452,7 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sEnumInput3" name="Електронна"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sQuickAnswer" name="Відповідь на звернення" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="nDaysRemain" name="Ориентировочный срок ответа на обращение (дней)" type="long"></activiti:formProperty>
+        <activiti:formProperty id="nDaysRemain" name="Ориентировочный срок ответа на обращение (дней)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAnswer" name="Ответ кол-центра" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAnswerStatus" name="Статус ответа" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEnumTop" name="Енам подтематика" type="invisible"></activiti:formProperty>
@@ -2483,6 +2491,10 @@ execution.setVariable('sAnswerEmail', res)</script>
         <activiti:formProperty id="asConsultTr" name="Звернення консультаційного характеру" type="enum">
           <activiti:value id="sEnumConsYes" name="Так"></activiti:value>
           <activiti:value id="sEnumConsNo" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asEmergencySituation" name="Аварійне питання" type="enum">
+          <activiti:value id="sEnumEmergYes" name="Так"></activiti:value>
+          <activiti:value id="sEnumEmergNo" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asSpecialStatus" name="Маєте особливий статус" type="enum">
           <activiti:value id="sEnumStatusYes" name="Так"></activiti:value>
@@ -2988,7 +3000,7 @@ execution.setVariable('sAnswerEmail', res)</script>
         <activiti:formProperty id="sPerformer" name="Виконавець" type="string"></activiti:formProperty>
         <activiti:formProperty id="sLoginUkrDoc" name="Логін працівника міськради" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDataReglament" name="Кінцева дата вирішення питання (згідно регламенту)" type="date"></activiti:formProperty>
-        <activiti:formProperty id="nDaysRemain" name="Ориентировочный срок ответа на обращение (дней)" type="long"></activiti:formProperty>
+        <activiti:formProperty id="nDaysRemain" name="Ориентировочный срок ответа на обращение (дней)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="asAnswerChannel" name="Канал відповіді" type="enum">
           <activiti:value id="sEnumAnsw1" name="Письмова відповідь"></activiti:value>
           <activiti:value id="sEnumAnsw2" name="Відповідь колл-центр"></activiti:value>
