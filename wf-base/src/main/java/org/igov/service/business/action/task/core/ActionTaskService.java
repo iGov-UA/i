@@ -665,6 +665,7 @@ public class ActionTaskService {
             	variables.putAll(curTask.getTaskLocalVariables());
             	List<HistoricDetail> historiDetails = oHistoryService.createHistoricDetailQuery()
             	  .formProperties().taskId(curTask.getId()).list();
+            	LOG.info("Loaded historic details {}", historiDetails);
             	for (HistoricDetail historicDetail : historiDetails){
             		if (historicDetail instanceof HistoricFormPropertyEntity){
             			variables.put(((HistoricFormPropertyEntity)historicDetail).getPropertyId(), 
