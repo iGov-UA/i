@@ -660,6 +660,7 @@ public class ActionTaskService {
             String currentRow = pattern;
             Map<String, Object> variables = curTask.getProcessVariables();
             if (sID_State_BP != null){
+            	LOG.info("Adding local task varables to consider {}", curTask.getTaskLocalVariables());
             	variables.putAll(curTask.getTaskLocalVariables());
             }
             LOG.info("Loaded historic variables for the task {}|{}", curTask.getId(), variables);
@@ -689,7 +690,7 @@ public class ActionTaskService {
             }
             Map<String, Object> currRow = new HashMap<>();
             for (int i = 0; i < headers.length; i++) {
-                currRow.put(headers[i], values[i]);
+                currRow.put(headers[i], i < values.length ? values[i] : "");
             }
             csvLines.add(currRow);
         }
