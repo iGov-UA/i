@@ -1210,7 +1210,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             }
             oActionTaskService.fillTheCSVMapHistoricTasks(sID_BP, dBeginDate, dEndDate,
                     foundHistoricResults, sDateCreateDF, csvLines, saFields,
-                    tasksIdToExclude, saFieldsCalc, headers);
+                    tasksIdToExclude, saFieldsCalc, headers, sID_State_BP);
         }
         
         if (saFieldSummary != null) {
