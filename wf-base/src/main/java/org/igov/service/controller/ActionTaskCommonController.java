@@ -1149,7 +1149,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         historicQuery.taskCreatedAfter(dBeginDate)
                 .taskCreatedBefore(dEndDate).includeProcessVariables();
         if (sID_State_BP != null) {
-            historicQuery.taskDefinitionKey(sID_State_BP);
+            historicQuery.taskDefinitionKey(sID_State_BP).includeTaskLocalVariables();
         }
         List<HistoricTaskInstance> foundHistoricResults = historicQuery
                 .listPage(nRowStart, nRowsMax);
