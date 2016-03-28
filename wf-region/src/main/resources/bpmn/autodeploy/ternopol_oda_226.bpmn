@@ -82,7 +82,7 @@
         <activiti:formProperty id="phone" name="Телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio1" name="ПІБ того, кто прийде на прийом" type="string" default="${lastName_UA1} ${firstName_UA1} ${middleName_UA1}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPosadaVid" name="До кого саме записується на прийом громадянин" type="enum" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPosadaVid" name="До кого саме записується на прийом громадянин" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="Бажаний день прийому" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="proverka" name="Рішення про прийняття або відхилення заяви" type="enum">
           <activiti:value id="accept" name="Записати громадянина"></activiti:value>
@@ -168,7 +168,7 @@
     <sequenceFlow id="flow12" sourceRef="servicetask3" targetRef="usertask2"></sequenceFlow>
     <userTask id="usertask2" name="Візит громадянина" activiti:candidateGroups="priyom_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="sPosadaVid" name="До кого саме записується на прийом громадянин" type="enum" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPosadaVid" name="До кого саме записується на прийом громадянин" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="visitDay1" name="День прийому" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="NumbPers" name="Номер особи в черзі" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio1" name="ПІБ того, кто прийде на прийом" type="string" default="${lastName_UA1} ${firstName_UA1} ${middleName_UA1}" writable="false"></activiti:formProperty>
