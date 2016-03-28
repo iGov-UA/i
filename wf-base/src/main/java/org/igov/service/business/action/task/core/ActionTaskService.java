@@ -2259,8 +2259,8 @@ public class ActionTaskService {
     public Set<String> getGroupIDsByTaskID(Long nID_Task){
         LOG.info(String.format("Start extraction Group IDs for Task [id=%s]", nID_Task));
         Set<String> result = new HashSet<>();
-        List<IdentityLink> identityLinks = oTaskService.getIdentityLinksForTask(nID_Task.toString());
-        if (CollectionUtils.isNotEmpty(identityLinks)){
+        try {
+            List<IdentityLink> identityLinks = oTaskService.getIdentityLinksForTask(nID_Task.toString());
             for (IdentityLink link : identityLinks){
                 LOG.info(String.format("Extraction Group ID from IdentityLink %s", link.toString()));
                 if(link.getGroupId() == null || link.getGroupId().isEmpty()){
@@ -2271,9 +2271,9 @@ public class ActionTaskService {
                             link.getGroupId(), nID_Task, link.toString()));
                 }
             }
-        } else {
-            List<HistoricIdentityLink> historicIdentityLinks = oHistoryService.getHistoricIdentityLinksForTask(nID_Task.toString());
-            if (CollectionUtils.isNotEmpty(historicIdentityLinks)){
+        } catch (NullPointerException e) {
+            try {
+                List<HistoricIdentityLink> historicIdentityLinks = oHistoryService.getHistoricIdentityLinksForTask(nID_Task.toString());
                 for (HistoricIdentityLink link : historicIdentityLinks){
                     LOG.info(String.format("Extraction Group ID from HistoricIdentityLink %s", link.toString()));
                     if(link.getGroupId() == null || link.getGroupId().isEmpty()){
@@ -2284,7 +2284,7 @@ public class ActionTaskService {
                                 link.getGroupId(), nID_Task, link.toString()));
                     }
                 }
-            } else {
+            } catch (NullPointerException eh) {
                 LOG.info(String.format("No found Group id for Task id=%s", nID_Task));
             }
         }
