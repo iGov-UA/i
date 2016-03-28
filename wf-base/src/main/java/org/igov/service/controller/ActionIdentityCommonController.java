@@ -1,6 +1,6 @@
 package org.igov.service.controller;
 
-import java.util.List;
+import java.util.*;
 
 import io.swagger.annotations.*;
 import org.activiti.engine.IdentityService;
@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.context.WebApplicationContext;
 
 @Controller
 @Api(tags = { "ActionIdentityCommonController" })
@@ -127,23 +126,25 @@ public class ActionIdentityCommonController {
                     + " возвращает всех существующие пользователей.")
     @RequestMapping(value = "/getUsers", method = RequestMethod.GET)
     @ResponseBody
-    public List<User> getUsers(
+    public List<Map<String, String>> getUsers(
             @ApiParam(value = "строка, которая содержит число, id групы, опциональный параметр", required = false) @RequestParam(value = "sID_Group", required = false) String sID_Group) {
 
         log.info("Method getUsers startred");
-        List<User> aoUsers = identityService.createUserQuery().memberOfGroup(sID_Group).list();
+        List<Map<String, String>> amsUsers = new ArrayList<>(); // для возвращения результата, ибо возникает JsonMappingException и NullPointerException при записи картинки
+        List<User> aoUsers = sID_Group != null ?
+                identityService.createUserQuery().memberOfGroup(sID_Group).list() :
+                identityService.createUserQuery().list();
+
         for (User oUser : aoUsers) {
-            if (oUser.getFirstName() == null) {
-                oUser.setFirstName("");
-            }
-            if (oUser.getLastName() == null) {
-                oUser.setLastName("");
-            }
-            if (oUser.getEmail() == null) {
-                oUser.setEmail("");
-            }
+            Map<String, String> mUserInfo = new LinkedHashMap();
+
+            mUserInfo.put("FirstName", oUser.getFirstName() == null ? "" : oUser.getFirstName());
+            mUserInfo.put("LastName", oUser.getLastName() == null ? "" : oUser.getLastName());
+            mUserInfo.put("Email", oUser.getEmail() == null ? "" : oUser.getEmail());
+            mUserInfo.put("Picture", null); // Временно ставим картинку null, позже будет изменение на Base64 или ссылка
+            amsUsers.add(mUserInfo);
         }
-        return aoUsers;
+        return amsUsers;
     }
 
     /**
@@ -157,6 +158,7 @@ public class ActionIdentityCommonController {
     public void removeUser(
             @ApiParam(value = "строка текст, логин пользователя, которого необходимо удалить", required = true) @RequestParam(value = "sLogin", required = true) String sLogin)
             throws Exception {
+
         identityService.deleteUser(sLogin);
     }
 
@@ -179,19 +181,22 @@ public class ActionIdentityCommonController {
         log.info("Method removeGroup startred");
         List<User> aoUsers = identityService.createUserQuery().memberOfGroup(sID).list();
         if (aoUsers.size() != 0) {
-            log.warn("Can not remove group { } because it contains users { }", sID, aoUsers);
+            List<String> asLogins = new ArrayList<>();
+            aoUsers.forEach(u -> asLogins.add(u.getId()));
+            log.warn("Can not remove group { } because it contains users { }", sID, asLogins);
             throw new CommonServiceException(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Can not remove group " + sID +
-                    "because it contains users " + aoUsers);
+                    " because it contains users " + asLogins);
         }
         List<Task> aoTasks = taskService.createTaskQuery().taskCandidateGroup(sID).list();
         if (aoTasks.size() != 0) {
+            List<String> asTasks = new ArrayList<>();
+            aoTasks.forEach(t -> asTasks.add(t.getId()));
             log.warn("Can not remove group { } because it has accessible tasks { }", sID, aoTasks);
             throw new CommonServiceException(HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                    "Can not remove group " + sID + "because it has accessible tasks " + aoTasks);
+                    "Can not remove group " + sID + " because it has accessible tasks " + aoTasks);
         }
 
         identityService.deleteGroup(sID);
-
     }
 
 }
