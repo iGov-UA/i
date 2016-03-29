@@ -1,10 +1,12 @@
-var passport = require('passport');
-var OAuth2Strategy = require('passport-oauth2');
-var crypto = require('crypto');
-var url = require('url');
-var bankidUtil = require('./bankid.util.js');
+var passport = require('passport')
+  , OAuth2Strategy = require('passport-oauth2')
+  , crypto = require('crypto')
+  , url = require('url')
+  , bankidUtil = require('./bankid.util.js')
+  , bankidService = require('./bankid.service.js');
 
-exports.setup = function (config, accountService) {
+
+exports.setup = function (config) {
     function BankIDAuth() {
 
     }
@@ -43,7 +45,7 @@ exports.setup = function (config, accountService) {
     };
 
     BankIDAuth.prototype.userProfile = function(accessToken, done){
-        return accountService.syncWithSubject(accessToken, function (err, profile) {
+        return bankidService.syncWithSubject(accessToken, function (err, profile) {
             done(err, profile);
         });
     };
