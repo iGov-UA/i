@@ -98,7 +98,9 @@ angular.module('app').directive('dropdownOrgan', function (OrganListFactory, $ht
                                 console.log("oProperty.enumValues="+oProperty.enumValues);
 //                                console.log("scope.activitiForm.formProperties[n].enumValues="+scope.activitiForm.formProperties[n].enumValues);
                                 //if(scope.formData.params[attr.sName].enumValues!==a){
-                                if(oProperty.enumValues!==a && oProperty && oProperty !== null && oProperty.enumValues.length === 0 ){
+                                //if(oProperty.enumValues!==a && oProperty && oProperty !== null && oProperty.enumValues.length === 0 ){
+                                if(oProperty && oProperty !== null || oProperty.enumValues.length === 0){
+
                                     console.log("<>");
                                     //scope.formData.params[attr.sName].enumValues = a;
                                     //if(oProperty.type === "enum" && oProperty.bVariable && oProperty.bVariable !== null && oProperty.bVariable === true){//oProperty.id === attr.sName &&
