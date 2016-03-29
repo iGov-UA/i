@@ -663,9 +663,9 @@ public class ActionTaskService {
             if (sID_State_BP != null){
             	LOG.info("Adding local task varables to consider {}", curTask.getTaskLocalVariables());
             	variables.putAll(curTask.getTaskLocalVariables());
-            	LOG.info("trying to load properties for the process instance {}", curTask.getProcessInstanceId());
+            	LOG.info("trying to load properties for the task is {}", curTask.getId());
             	List<HistoricDetail> historiDetails = oHistoryService.createHistoricDetailQuery()
-            	  .formProperties().processInstanceId(curTask.getProcessInstanceId()).list();
+            	  .formProperties().taskId(curTask.getId()).list();
             	LOG.info("Loaded historic details {}", historiDetails);
             	for (HistoricDetail historicDetail : historiDetails){
             		if (historicDetail instanceof HistoricFormPropertyEntity){
