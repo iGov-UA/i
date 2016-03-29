@@ -93,20 +93,17 @@ angular.module('app').directive('dropdownOrgan', function (OrganListFactory, $ht
                                           name: "на рахунок у банку"*/
                                     nItem++;
                                 });
-                                console.log("????????????????? a="+a);
                                 //console.log("scope.formData.params[attr.sName].enumValues="+scope.formData.params[attr.sName].enumValues);
                                 console.log("oProperty.enumValues="+oProperty.enumValues);
 //                                console.log("scope.activitiForm.formProperties[n].enumValues="+scope.activitiForm.formProperties[n].enumValues);
                                 //if(scope.formData.params[attr.sName].enumValues!==a){
                                 //if(oProperty.enumValues!==a && oProperty && oProperty !== null && oProperty.enumValues.length === 0 ){
-                                if(oProperty && oProperty !== null || oProperty.enumValues.length === 0){
+                                if(oProperty.enumValues){
 
                                     console.log("<>");
                                     //scope.formData.params[attr.sName].enumValues = a;
                                     //if(oProperty.type === "enum" && oProperty.bVariable && oProperty.bVariable !== null && oProperty.bVariable === true){//oProperty.id === attr.sName &&
                                     oProperty.bVariable = true;
-
-                                  console.log("???????!!!!!!!!!!!?????????? a="+a);
 
                                     oProperty.enumValues = a;
 //                                    scope.activitiForm.formProperties[n].bVariable = true;
@@ -135,12 +132,7 @@ angular.module('app').directive('dropdownOrgan', function (OrganListFactory, $ht
 
       angular.forEach(Object.keys(scope.formData.params), function (key) {
         scope.$watch('formData.params.' + key + '.value', function () {
-          console.log('!!!!!!!!!!!!scope.ngModel',scope.ngModel);
-          console.log('!!!!!!!!!!!!scope.ngModel.length',scope.ngModel.length);
-          console.log('!!!!!!!!!!!!attributesApplying',attributesApplying);
-          //if (scope.ngModel !== null && scope.ngModel !== '0' && scope.ngModel.length > 0 && !attributesApplying)
-          if (scope.ngModel !== null && scope.ngModel !== '0' && scope.ngModel.length > 0){
-            console.log('!!!!!!!!!!!! loadAttributesData performs');
+          if (scope.ngModel !== null && scope.ngModel !== '0' && scope.ngModel.length > 0 && !attributesApplying){
               loadAttributesData(key);
           }
         });
