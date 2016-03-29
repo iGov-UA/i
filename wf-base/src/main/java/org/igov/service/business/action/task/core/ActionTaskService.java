@@ -48,6 +48,7 @@ import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.history.*;
 import org.activiti.engine.identity.Group;
+import org.activiti.engine.impl.persistence.entity.HistoricFormPropertyEntity;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.repository.ProcessDefinition;
@@ -659,10 +660,6 @@ public class ActionTaskService {
             }
             String currentRow = pattern;
             Map<String, Object> variables = curTask.getProcessVariables();
-            if (sID_State_BP != null){
-            	LOG.info("Adding local task varables to consider {}", curTask.getTaskLocalVariables());
-            	variables.putAll(curTask.getTaskLocalVariables());
-            }
             LOG.info("Loaded historic variables for the task {}|{}", curTask.getId(), variables);
             currentRow = replaceFormProperties(currentRow, variables);
             if (saFieldsCalc != null) {
@@ -2249,8 +2246,8 @@ public class ActionTaskService {
     public Set<String> getGroupIDsByTaskID(Long nID_Task){
         LOG.info(String.format("Start extraction Group IDs for Task [id=%s]", nID_Task));
         Set<String> result = new HashSet<>();
-        List<IdentityLink> identityLinks = oTaskService.getIdentityLinksForTask(nID_Task.toString());
-        if (CollectionUtils.isNotEmpty(identityLinks)){
+        try {
+            List<IdentityLink> identityLinks = oTaskService.getIdentityLinksForTask(nID_Task.toString());
             for (IdentityLink link : identityLinks){
                 LOG.info(String.format("Extraction Group ID from IdentityLink %s", link.toString()));
                 if(link.getGroupId() == null || link.getGroupId().isEmpty()){
@@ -2261,9 +2258,9 @@ public class ActionTaskService {
                             link.getGroupId(), nID_Task, link.toString()));
                 }
             }
-        } else {
-            List<HistoricIdentityLink> historicIdentityLinks = oHistoryService.getHistoricIdentityLinksForTask(nID_Task.toString());
-            if (CollectionUtils.isNotEmpty(historicIdentityLinks)){
+        } catch (NullPointerException e) {
+            try {
+                List<HistoricIdentityLink> historicIdentityLinks = oHistoryService.getHistoricIdentityLinksForTask(nID_Task.toString());
                 for (HistoricIdentityLink link : historicIdentityLinks){
                     LOG.info(String.format("Extraction Group ID from HistoricIdentityLink %s", link.toString()));
                     if(link.getGroupId() == null || link.getGroupId().isEmpty()){
@@ -2274,7 +2271,7 @@ public class ActionTaskService {
                                 link.getGroupId(), nID_Task, link.toString()));
                     }
                 }
-            } else {
+            } catch (NullPointerException eh) {
                 LOG.info(String.format("No found Group id for Task id=%s", nID_Task));
             }
         }

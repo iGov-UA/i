@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="ternopol_oda_239" name="Звернення до голови ОДА" isExecutable="true">
+  <process id="ternopol_oda_239" name="Звернення до ОДА" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
@@ -9,6 +9,9 @@
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPlace_of_reg" name="Ваша адреса реєстрації;індекс, місто, вулиця, номер будинку та номер квартири" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, до якого подається звернення" type="select" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sPosada" name="До кого саме Ви подаєте звернення" type="enum"></activiti:formProperty>
+        <activiti:formProperty id="sPosadaVid" name="До кого саме Ви подаєте звернення11" type="string"></activiti:formProperty>
         <activiti:formProperty id="asVid" name="Вид звернення" type="enum" required="true">
           <activiti:value id="zajava" name="заява (клопотання)"></activiti:value>
           <activiti:value id="propozicia" name="пропозиція"></activiti:value>
@@ -42,11 +45,12 @@
         </activiti:formProperty>
         <activiti:formProperty id="asTema_det" name="Деталізація теми" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sMessageText" name="Текст Заяви" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asSpecialStatus" name="Маєте особливий статус" type="enum" required="true">
+        <activiti:formProperty id="asSpecialStatus" name="Чи маєте Ви особливий статус" type="enum" required="true">
           <activiti:value id="sEnumStatusYes" name="Так"></activiti:value>
           <activiti:value id="sEnumStatusNo" name="Ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asHowCategory" name="Оберіть категорію до якої Ви відноситесь" type="enum" required="true">
+        <activiti:formProperty id="asHowCategory" name="Оберіть категорію до якої Ви відноситесь" type="enum" default="sNo1" required="true">
+          <activiti:value id="sNo1" name=" "></activiti:value>
           <activiti:value id="sEnumCat1" name="Учасник війни"></activiti:value>
           <activiti:value id="sEnumCat2" name="Дитина війни"></activiti:value>
           <activiti:value id="sEnumCat3" name="Інвалід Великої Вітчизняної війни"></activiti:value>
@@ -87,12 +91,14 @@
           <activiti:value id="digital" name="Електронна версія"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="addFile" name="Додати документ; Якщо документів більше 1-го - об'єднайте їх у pdf-файл або ZIP-архів" type="file"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('ternopil/ODA239.json')}"></activiti:formProperty>
         <activiti:formProperty id="sID_UA" name="sID_UA" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sOblast" name="назва області" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sArea" name="назва області" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="електронна пошта ОДА" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sGolova" name="ПІБ голови ОДА" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Загрузка файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -102,7 +108,7 @@
     </boundaryEvent>
     <sequenceFlow id="flow6" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
-    <sequenceFlow id="flow15" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
+    <sequenceFlow id="flow15" sourceRef="servicetask1" targetRef="servicetask7"></sequenceFlow>
     <scriptTask id="scripttask1" name="Передача значений" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
 var per1 = 'Obl'
@@ -154,7 +160,7 @@ per2 = 'Полтавська обласна держана адміністра�
 per3 = 'zvg@adm-pl.gov.ua'
 per4 = ' '
 }
-execution.setVariable('sOblast', per1)
+execution.setVariable('sArea', per1)
 execution.setVariable('sAddress', per2)
 execution.setVariable('sMailClerk', per3)
 execution.setVariable('sGolova', per4)
@@ -170,7 +176,7 @@ execution.setVariable('sGolova', per4)
           <activiti:expression>zhigan.roman@gmail.com</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Нове звернення до голови ОДА</activiti:expression>
+          <activiti:expression>Нове звернення до ${sPosadaVid}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
@@ -187,13 +193,13 @@ execution.setVariable('sGolova', per4)
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Звернення до голови ОДА</activiti:expression>
+          <activiti:expression>Звернення до ${sPosadaVid}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 			&lt;p&gt;
-			Ваше звернення до голови ОДА успішно зареєстроване.&lt;br&gt;
+			Ваше звернення до ${sPosadaVid} успішно зареєстроване.&lt;br&gt;
 			Інформацію про подальші дії щодо нього ви отримаєте протягом 1-3 робочих днів.
 			&lt;/p&gt;
 			&lt;p&gt; 
@@ -255,6 +261,7 @@ execution.setVariable('sGolova', per4)
           <activiti:value id="sEnumStatusNo" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asHowCategory" name="Оберіть категорію до якої Ви відноситесь" type="enum" writable="false">
+          <activiti:value id="sNo1" name=" "></activiti:value>
           <activiti:value id="sEnumCat1" name="Учасник війни"></activiti:value>
           <activiti:value id="sEnumCat2" name="Дитина війни"></activiti:value>
           <activiti:value id="sEnumCat3" name="Інвалід Великої Вітчизняної війни"></activiti:value>
@@ -296,9 +303,10 @@ execution.setVariable('sGolova', per4)
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо звернення відхилене, вкажіть причину у цьому полі" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="docID" name="Реєстраційний номер" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sOblast" name="назва області" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sArea" name="назва області" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sGolova" name="ПІБ голови ОДА" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPosadaVid" name="До кого саме подається звернення" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/ternopil_oda_239zaj.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/ternopil/ternopil_oda_239_rkk.html]" type="invisible" default="Реєстраційно-контрольна карта" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_3" name="[pattern/print/ternopil/mykol_oda_239zaj.html]" type="invisible" default="Заява Миколаївська, Херсонська" writable="false"></activiti:formProperty>
@@ -325,13 +333,13 @@ execution.setVariable('sGolova', per4)
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Звернення до голови ОДА</activiti:expression>
+          <activiti:expression>Звернення до ${sPosadaVid}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 		    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 			&lt;p&gt;
-			&lt;p&gt;Ваше звернення до голови ОДА відхилене.
+			&lt;p&gt;Ваше звернення до ${sPosadaVid} відхилене.
 			&lt;/p&gt;
 			&lt;p&gt;
 				Причина у наступному:&lt;br&gt;
@@ -357,12 +365,12 @@ execution.setVariable('sGolova', per4)
           <activiti:expression>"${email}"</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Звернення до голови ОДА</activiti:expression>
+          <activiti:expression>Звернення до ${sPosadaVid}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-			&lt;p&gt;Ваше звернення до голови ОДА передане на опрацювання.&lt;br&gt;
+			&lt;p&gt;Ваше звернення до ${sPosadaVid} передане на опрацювання.&lt;br&gt;
 			Ви отримаєте відповідь у визначений законом термін.
 			&lt;/p&gt; 
 			&lt;p&gt;
@@ -393,7 +401,7 @@ execution.setVariable('sGolova', per4)
         <omgdc:Bounds height="35.0" width="35.0" x="70.0" y="80.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="180.0" y="143.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="180.0" y="40.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
         <omgdc:Bounds height="60.0" width="105.0" x="296.0" y="141.0"></omgdc:Bounds>
@@ -429,11 +437,11 @@ execution.setVariable('sGolova', per4)
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
         <omgdi:waypoint x="161.0" y="169.0"></omgdi:waypoint>
-        <omgdi:waypoint x="180.0" y="170.0"></omgdi:waypoint>
+        <omgdi:waypoint x="296.0" y="171.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
-        <omgdi:waypoint x="285.0" y="170.0"></omgdi:waypoint>
-        <omgdi:waypoint x="296.0" y="171.0"></omgdi:waypoint>
+        <omgdi:waypoint x="232.0" y="95.0"></omgdi:waypoint>
+        <omgdi:waypoint x="348.0" y="141.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
         <omgdi:waypoint x="401.0" y="171.0"></omgdi:waypoint>

@@ -93,16 +93,18 @@ angular.module('app').directive('dropdownOrgan', function (OrganListFactory, $ht
                                           name: "на рахунок у банку"*/
                                     nItem++;
                                 });
-                                console.log("a="+a);
                                 //console.log("scope.formData.params[attr.sName].enumValues="+scope.formData.params[attr.sName].enumValues);
                                 console.log("oProperty.enumValues="+oProperty.enumValues);
 //                                console.log("scope.activitiForm.formProperties[n].enumValues="+scope.activitiForm.formProperties[n].enumValues);
                                 //if(scope.formData.params[attr.sName].enumValues!==a){
-                                if(oProperty.enumValues!==a && oProperty && oProperty !== null && oProperty.enumValues.length === 0 ){
+                                //if(oProperty.enumValues!==a && oProperty && oProperty !== null && oProperty.enumValues.length === 0 ){
+                                if(oProperty.enumValues){
+
                                     console.log("<>");
                                     //scope.formData.params[attr.sName].enumValues = a;
                                     //if(oProperty.type === "enum" && oProperty.bVariable && oProperty.bVariable !== null && oProperty.bVariable === true){//oProperty.id === attr.sName &&
                                     oProperty.bVariable = true;
+
                                     oProperty.enumValues = a;
 //                                    scope.activitiForm.formProperties[n].bVariable = true;
 //                                    scope.activitiForm.formProperties[n].enumValues = a;
@@ -110,6 +112,8 @@ angular.module('app').directive('dropdownOrgan', function (OrganListFactory, $ht
                                     //scope.activitiForm.formProperties[n].sCustomType
 //                                    scope.formData.params[attr.sName].sCustomType = "enum";
 
+                                }else{
+                                  oProperty.enumValues = [];
                                 }
                             }
                             n++;
@@ -120,6 +124,7 @@ angular.module('app').directive('dropdownOrgan', function (OrganListFactory, $ht
                 //console.log("isDefined,attr.sValue="+attr.sValue+",scope.formData.params[attr.sName].type="+scope.formData.params[attr.sName].type );
                 console.log("isDefined,attr.sValue="+attr.sValue );
                 scope.formData.params[attr.sName].value = attr.sValue || "";
+                //oProperty.enumValues = [];
             }
           });
           $timeout(function(){
@@ -130,9 +135,10 @@ angular.module('app').directive('dropdownOrgan', function (OrganListFactory, $ht
 
       angular.forEach(Object.keys(scope.formData.params), function (key) {
         scope.$watch('formData.params.' + key + '.value', function () {
-          if (scope.ngModel !== null && scope.ngModel !== '0' && scope.ngModel.length > 0 && !attributesApplying)
-            loadAttributesData(key);
-        })
+          if (scope.ngModel !== null && scope.ngModel !== '0' && scope.ngModel.length > 0 && !attributesApplying){
+              loadAttributesData(key);
+          }
+        });
       });
     }
   };

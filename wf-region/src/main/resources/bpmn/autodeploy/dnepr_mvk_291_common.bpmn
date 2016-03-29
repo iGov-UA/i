@@ -8,7 +8,7 @@
           <activiti:value id="sEnumConsNo" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asEmergencySituation" name="Аварійне питання" type="enum">
-          <activiti:value id="sEnumEmergYes" name="Так"></activiti:value>
+          <activiti:value id="sEnumEmergYes" name="Аварійна ситуація"></activiti:value>
           <activiti:value id="sEnumEmergNo" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
@@ -558,21 +558,21 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення до Управління житлового господарства міської ради.]]></activiti:string>
+          <activiti:string><![CDATA[Звернення до Дніпропетровської міської ради.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt; Ваше звернення до міської ради було зареєстровано у системі.&lt;br/&gt;
-Повідомлення про результат послуги буде спрямоване на Ваш e-mail.&lt;/p&gt;
-Телефон для довідок: (056) 745-10-49&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p> Ваше звернення до міської ради було зареєстровано у системі.<br/>
+Повідомлення про результат послуги буде спрямоване на Ваш e-mail.</p>
+Телефон для довідок: (056) 745-10-49<br />
 [pattern/mail/_common_signature_start.html]
-Канцелярія Дніпропетровської міської ради,&lt;br /&gt;
+Канцелярія Дніпропетровської міської ради,<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -599,10 +599,10 @@
           <activiti:value id="sEnumConsNo" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asEmergencySituation" name="Аварійне питання" type="enum">
-          <activiti:value id="sEnumEmergYes" name="Так"></activiti:value>
+          <activiti:value id="sEnumEmergYes" name="Аварійна ситуація"></activiti:value>
           <activiti:value id="sEnumEmergNo" name="Ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asSpecialStatus" name="Маєте особливий статус" type="enum">
+        <activiti:formProperty id="asSpecialStatus" name="Особливий статус" type="enum">
           <activiti:value id="sEnumStatusYes" name="Так"></activiti:value>
           <activiti:value id="sEnumStatusNo" name="Ні"></activiti:value>
         </activiti:formProperty>
@@ -620,7 +620,7 @@
           <activiti:value id="sEnumProposal" name="Пропозиція"></activiti:value>
           <activiti:value id="sEnumTypeRequest" name="Запит про надання публічної інформації"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asHowCategory" name="Оберіть категорію до якої Ви відноситесь" type="enum">
+        <activiti:formProperty id="asHowCategory" name="Категорію до якої відноситься заявник" type="enum">
           <activiti:value id="sEnumCat1" name="Учасник війни"></activiti:value>
           <activiti:value id="sEnumCat2" name="Дитина війни"></activiti:value>
           <activiti:value id="sEnumCat3" name="Інвалід Великої Вітчизняної війни"></activiti:value>
@@ -642,7 +642,7 @@
           <activiti:value id="sEnumCat19" name="Дитина"></activiti:value>
           <activiti:value id="sEnumCat20" name="Інші категорії"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asHowSocStatus" name="Оберіть соціальний стан" type="enum">
+        <activiti:formProperty id="asHowSocStatus" name="Соціальний стан заявника" type="enum">
           <activiti:value id="sEnumSoc1" name="Пенсіонер"></activiti:value>
           <activiti:value id="sEnumSoc2" name="Робітник"></activiti:value>
           <activiti:value id="sEnumSoc3" name="Селянин"></activiti:value>
@@ -656,7 +656,7 @@
           <activiti:value id="sEnumSoc11" name="Особа, що позбавлена волі; особа, воля якої обмежена"></activiti:value>
           <activiti:value id="sEnumSoc12" name="Інші"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asDistrict" name="Район Вашого проживання" type="enum">
+        <activiti:formProperty id="asDistrict" name="Район проживання заявника" type="enum">
           <activiti:value id="sEnumAnd" name="Амур-Нижньодніпровський"></activiti:value>
           <activiti:value id="sEnumShevch" name="Шевченківський (Бабушкінський)"></activiti:value>
           <activiti:value id="sEnumSobor" name="Соборний (Жовтневий)"></activiti:value>
@@ -667,7 +667,7 @@
           <activiti:value id="sEnumSamar" name="Самарський"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Адреса проживання заявника" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asTopHead" name="Оберіть тему звернення" type="enum">
+        <activiti:formProperty id="asTopHead" name="Тема звернення" type="enum">
           <activiti:value id="sEnumTopHead1" name="Житлове господарство"></activiti:value>
           <activiti:value id="sEnumTopHead2" name="Комунальне господарство"></activiti:value>
           <activiti:value id="sEnumTopHead3" name="Промислова політика"></activiti:value>
@@ -692,7 +692,7 @@
           <activiti:value id="sEnumTopHead22" name="Діяльність місцевого самоврядування"></activiti:value>
           <activiti:value id="sEnumTopHead23" name="Інше"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asTop1" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum">
+        <activiti:formProperty id="asTop1" name="Підтема звернення" type="enum">
           <activiti:value id="sEnumTop11" name="Ремонт ліфта"></activiti:value>
           <activiti:value id="sEnumTop12" name="Ремонт під'їзду"></activiti:value>
           <activiti:value id="sEnumTop13" name="Ремонт підвального приміщення"></activiti:value>
@@ -732,7 +732,7 @@
           <activiti:value id="sEnumTop137" name="Створення та діяльність ОССБ"></activiti:value>
           <activiti:value id="sEnumTop138" name="Інші питання"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asTop2" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum">
+        <activiti:formProperty id="asTop2" name="Підтема звернення" type="enum">
           <activiti:value id="sEnumTop21" name="Видалення, обрізка дерев, корчування пнів, покос газонів"></activiti:value>
           <activiti:value id="sEnumTop22" name="Утримання та поточний ремонт мереж зовнішнього освітлення"></activiti:value>
           <activiti:value id="sEnumTop23" name="Ритуальні послуги та утримання кладовищ"></activiti:value>
@@ -775,7 +775,7 @@
           <activiti:value id="sEnumTop240" name="Встановлення та повірка лічильника"></activiti:value>
           <activiti:value id="sEnumTop241" name="Інші питання"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asTop3" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum">
+        <activiti:formProperty id="asTop3" name="Підтема звернення" type="enum">
           <activiti:value id="sEnumTop31" name="Невиплата заробітної плати на промисловому підприємстві"></activiti:value>
           <activiti:value id="sEnumTop32" name="Відключення від електромереж або газу"></activiti:value>
           <activiti:value id="sEnumTop33" name="Діяльність промислових підприємств"></activiti:value>
@@ -785,7 +785,7 @@
           <activiti:value id="sEnumTop37" name="Підприємницька діяльність"></activiti:value>
           <activiti:value id="sEnumTop38" name="Інші питання"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asTop4" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum">
+        <activiti:formProperty id="asTop4" name="Підтема звернення" type="enum">
           <activiti:value id="sEnumTop41" name="Робота маршрутних таксі"></activiti:value>
           <activiti:value id="sEnumTop42" name="Робота міського електротранспорту"></activiti:value>
           <activiti:value id="sEnumTop43" name="Робота автостоянок, парковок"></activiti:value>
@@ -815,7 +815,7 @@
           <activiti:value id="sEnumTop427" name="Скарга на кондукторів трамваїв"></activiti:value>
           <activiti:value id="sEnumTop428" name="Інші питання"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asTop5" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum">
+        <activiti:formProperty id="asTop5" name="Підтема звернення" type="enum">
           <activiti:value id="sEnumTop51" name="Погодження історико-містобудівних обґрунтувань"></activiti:value>
           <activiti:value id="sEnumTop52" name="Надання інформації щодо історико-культурної цінності будівлі (споруди)"></activiti:value>
           <activiti:value id="sEnumTop53" name="Погодження  ескізних проектів реставрації, реабілітації, консервації, пристосування об'єктів культурної спадщини (на щойно виявлені об'єкти культурної спадщини та памяток місцевого значення)"></activiti:value>
@@ -839,7 +839,7 @@
           <activiti:value id="sEnumTop521" name="Відчуження і оренда комунальної власності"></activiti:value>
           <activiti:value id="sEnumTop522" name="Інші питання"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asTop6" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum">
+        <activiti:formProperty id="asTop6" name="Підтема звернення" type="enum">
           <activiti:value id="sEnumTop61" name="Санітарно-епідеміологічний стан. Проведення дезінфекції, дезінсекції, дератизації"></activiti:value>
           <activiti:value id="sEnumTop62" name="Загальні питання охорони здоров'я"></activiti:value>
           <activiti:value id="sEnumTop63" name="Робота МСЕК"></activiti:value>
@@ -851,7 +851,7 @@
           <activiti:value id="sEnumTop69" name="Фінансування медицини, вартість медичних послуг, медичне страхування"></activiti:value>
           <activiti:value id="sEnumTop610" name="Інші питання "></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asTop7" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum">
+        <activiti:formProperty id="asTop7" name="Підтема звернення" type="enum">
           <activiti:value id="sEnumTop71" name="Строк отримання матеріальної допомоги різних категорій громадян, отримання допомоги за померлого отримувача"></activiti:value>
           <activiti:value id="sEnumTop72" name="Строк відправлення відомостей на виплату матер. допомоги на  Укрпошту  та банки"></activiti:value>
           <activiti:value id="sEnumTop73" name="Роз`яснення, реформування законодавства із соціального захисту"></activiti:value>
@@ -878,7 +878,7 @@
           <activiti:value id="sEnumTop724" name="Надання допомоги у вирішенні питань соціально-трудових відносин"></activiti:value>
           <activiti:value id="sEnumTop725" name="Інші питання"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asTop8" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum">
+        <activiti:formProperty id="asTop8" name="Підтема звернення" type="enum">
           <activiti:value id="sEnumTop81" name="Невиконання батьками або особами, які їх замінюють, обов`язків щодо утримання дітей"></activiti:value>
           <activiti:value id="sEnumTop82" name="Участь одного із батьків (бабусі, дідуся) у вихованні дитини"></activiti:value>
           <activiti:value id="sEnumTop83" name="Усиновлення дітей ,встановлення опіки над дітьми-сиротами та дітьми, позбавленими батьківського піклування, створення прийомної сім`ї, дитячого будинку сімейного типу"></activiti:value>
@@ -887,7 +887,7 @@
           <activiti:value id="sEnumTop86" name="Порядок позбавлення (поновлення) батьківських прав"></activiti:value>
           <activiti:value id="sEnumTop87" name="Інші питання"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asTop9" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum">
+        <activiti:formProperty id="asTop9" name="Підтема звернення" type="enum">
           <activiti:value id="sEnumTop91" name="Питання про забруднення атмосферного повітря або водойм"></activiti:value>
           <activiti:value id="sEnumTop92" name="Використання природних ресурсів"></activiti:value>
           <activiti:value id="sEnumTop93" name="Забруднення навколишнього середовища"></activiti:value>
@@ -900,7 +900,7 @@
           <activiti:value id="sEnumTop910" name="Надання інформації щодо діяльності КП ЕкоДніпро Дніпропетровської міської ради і міського полігону твердих побутових відходів"></activiti:value>
           <activiti:value id="sEnumTop911" name="Інші питання"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asTop10" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum">
+        <activiti:formProperty id="asTop10" name="Підтема звернення" type="enum">
           <activiti:value id="sEnumTop101" name="Дотримання правил торгівлі в роздрібній мережі, на підприємствах ресторанного господарства"></activiti:value>
           <activiti:value id="sEnumTop102" name="Демонтаж малих архітектурних форм (робота без дозвільних документів на пішохідній зоні)"></activiti:value>
           <activiti:value id="sEnumTop103" name="Порушення правил торгівлі, питання ціноутворення, підвищений рівень шуму від роботи літніх майданчиків в літню пору"></activiti:value>
@@ -916,7 +916,7 @@
           <activiti:value id="sEnumTop1013" name="Побутове обслуговування"></activiti:value>
           <activiti:value id="sEnumTop1014" name="Інші питання"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asTop11" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum">
+        <activiti:formProperty id="asTop11" name="Підтема звернення" type="enum">
           <activiti:value id="sEnumTop111" name="Звернення з приводу встановлення або ремонту обладнання дитячих, тренажерних та футбольних майданчиків"></activiti:value>
           <activiti:value id="sEnumTop112" name="Проведення спортивних змагань"></activiti:value>
           <activiti:value id="sEnumTop113" name="Фізична культура та спорт"></activiti:value>
@@ -926,7 +926,7 @@
           <activiti:value id="sEnumTop117" name="Звернення з приводу оздоровлення дітей пільгових категорій"></activiti:value>
           <activiti:value id="sEnumTop118" name="Інші питання"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asTop12" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum">
+        <activiti:formProperty id="asTop12" name="Підтема звернення" type="enum">
           <activiti:value id="sEnumTop121" name="Питання організації навчально-виховного процесу в загальноосвітніх навчальних закладах, харчування учнів"></activiti:value>
           <activiti:value id="sEnumTop122" name="Питання організації виховного процесу у дошкільних навчальних закладах, харчування вихованців, реєстрація дітей до навчальних закладів, влаштування дітей у дошкільні навчальні заклади"></activiti:value>
           <activiti:value id="sEnumTop123" name="Конфліктні ситуації в педагогічних колективах навчальних закладів, кадрові питання"></activiti:value>
@@ -944,7 +944,7 @@
           <activiti:value id="sEnumTop1215" name="Виплата заробітної плати, фінансові питання"></activiti:value>
           <activiti:value id="sEnumTop1216" name="Інші питання"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asTop13" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum">
+        <activiti:formProperty id="asTop13" name="Підтема звернення" type="enum">
           <activiti:value id="sEnumTop131" name="Фінансова допомога у підтримці належного стану книг"></activiti:value>
           <activiti:value id="sEnumTop132" name="Питання стосовно встановлення меморіальних дощок та пам`ятних знаків"></activiti:value>
           <activiti:value id="sEnumTop133" name="Узгодження проведення заходів у закладах культури міського підпорядкування"></activiti:value>
@@ -958,7 +958,7 @@
           <activiti:value id="sEnumTop1311" name="Розвиток культури, збереження культурної cпадщини"></activiti:value>
           <activiti:value id="sEnumTop1312" name="Інші питання"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asTop14" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum">
+        <activiti:formProperty id="asTop14" name="Підтема звернення" type="enum">
           <activiti:value id="sEnumTop141" name="Пошкодження чи знищення елементів благоустрою (з подальшим їх відновленням)"></activiti:value>
           <activiti:value id="sEnumTop142" name="Ускладнення руху пішоходів і транспорту, обмеження доступу до об'єктів благоустрою"></activiti:value>
           <activiti:value id="sEnumTop143" name="Погіршення існуючого стану об'єктів благоустрою і внесення змін до них"></activiti:value>
@@ -966,7 +966,7 @@
           <activiti:value id="sEnumTop145" name="Перевірка дотримання підприємствами, установами, організаціями, фізичними особами - підприємцями та громадянами вимог правил благоустрою території міста"></activiti:value>
           <activiti:value id="sEnumTop146" name="Інші питання"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asTop15" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum">
+        <activiti:formProperty id="asTop15" name="Підтема звернення" type="enum">
           <activiti:value id="sEnumTop151" name="Розміщення тимчасових споруд для здійснення підприємницької дільності"></activiti:value>
           <activiti:value id="sEnumTop152" name="Розміщення тимчасових гаражів"></activiti:value>
           <activiti:value id="sEnumTop153" name="Будівництво в приватному секторі"></activiti:value>
@@ -987,7 +987,7 @@
           <activiti:value id="sEnumTop1518" name="Інформація стосовно адміністративно-територіальної належності об'єкту"></activiti:value>
           <activiti:value id="sEnumTop1519" name="Інші питання"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asTop16" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum">
+        <activiti:formProperty id="asTop16" name="Підтема звернення" type="enum">
           <activiti:value id="sEnumTop161" name="Ліквідація несанкціонованої вуличної торгівлі"></activiti:value>
           <activiti:value id="sEnumTop162" name="Демонтаж тимчасових споруд (МАФ) для провадження підприємницької діяльності (тільки в частині охорони громадського порядку)"></activiti:value>
           <activiti:value id="sEnumTop163" name="Побутові конфлікти, порушення громадського порядку, кримінальні правопорушення"></activiti:value>
@@ -1013,7 +1013,7 @@
           <activiti:value id="sEnumTop1623" name="Протидія захопленню підприємств (рейдерство)"></activiti:value>
           <activiti:value id="sEnumTop1624" name="Інші питання"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asTop17" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum">
+        <activiti:formProperty id="asTop17" name="Підтема звернення" type="enum">
           <activiti:value id="sEnumTop171" name="Поліпшення умов проживання"></activiti:value>
           <activiti:value id="sEnumTop172" name="Відселення сім'ї заявника з аварійного будинку"></activiti:value>
           <activiti:value id="sEnumTop173" name="Розподіл квартир"></activiti:value>
@@ -1051,7 +1051,7 @@
           <activiti:value id="sEnumTop1735" name="Фінансування органів місцевого самоврядування та інших видатків"></activiti:value>
           <activiti:value id="sEnumTop1736" name="Інші питання"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asTop18" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum">
+        <activiti:formProperty id="asTop18" name="Підтема звернення" type="enum">
           <activiti:value id="sEnumTop182" name="Установка (перевірка, заміна) лічильника"></activiti:value>
           <activiti:value id="sEnumTop183" name="Відсутність газифікації"></activiti:value>
           <activiti:value id="sEnumTop184" name="Газифікація будинку"></activiti:value>
@@ -1061,7 +1061,7 @@
           <activiti:value id="sEnumTop188" name="Фінансування робіт"></activiti:value>
           <activiti:value id="sEnumTop189" name="Ремонт газового обладнення"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asTop19" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum">
+        <activiti:formProperty id="asTop19" name="Підтема звернення" type="enum">
           <activiti:value id="sEnumTop191" name="Загальні питання електропостачання"></activiti:value>
           <activiti:value id="sEnumTop192" name="Установка (перевірка, заміна) лічильника"></activiti:value>
           <activiti:value id="sEnumTop193" name="Відсутність електропостачання"></activiti:value>
@@ -1069,7 +1069,7 @@
           <activiti:value id="sEnumTop195" name="Ремонт електричного обладнення"></activiti:value>
           <activiti:value id="sEnumTop196" name="Інші питання"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asTop20" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum">
+        <activiti:formProperty id="asTop20" name="Підтема звернення" type="enum">
           <activiti:value id="sEnumTop201" name="Висвітлення у ЗМІ діяльності органів влади та місцевого самоврядування"></activiti:value>
           <activiti:value id="sEnumTop202" name="Діяльність ЗМІ"></activiti:value>
           <activiti:value id="sEnumTop203" name="Інформаційні системи та їх розвиток"></activiti:value>
@@ -1077,7 +1077,7 @@
           <activiti:value id="sEnumTop205" name="Комунікація влади та громадськості"></activiti:value>
           <activiti:value id="sEnumTop206" name="Інші питання"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asTop21" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum">
+        <activiti:formProperty id="asTop21" name="Підтема звернення" type="enum">
           <activiti:value id="sEnumTop211" name="Загальні питання діяльності благодійних фондів, громадських організацій"></activiti:value>
           <activiti:value id="sEnumTop212" name="Діяльність політичних партій"></activiti:value>
           <activiti:value id="sEnumTop213" name="Діяльність профспілок"></activiti:value>
@@ -1086,7 +1086,7 @@
           <activiti:value id="sEnumTop216" name="Питання, що стосуються офіційного інтернет-портала ДМР www.dniprocity.dp.ua"></activiti:value>
           <activiti:value id="sEnumTop217" name="Інші питання"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asTop22" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum">
+        <activiti:formProperty id="asTop22" name="Підтема звернення" type="enum">
           <activiti:value id="sEnumTop221" name="Факти корупції"></activiti:value>
           <activiti:value id="sEnumTop222" name="Відгуки щодо рішень органів місцевого самоврядування"></activiti:value>
           <activiti:value id="sEnumTop223" name="Дії, бездіяльність посадових осіб органів місцевого самоврядування"></activiti:value>
@@ -1141,7 +1141,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile1}</activiti:expression>
+            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -1154,26 +1154,26 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення в міську раду.]]></activiti:string>
+          <activiti:string><![CDATA[Звернення до Дніпропетровської міської ради.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення до Дніпропетровської міської ради - опрацьовано.&lt;/p&gt;
-&lt;p&gt;Відповідь:&lt;br&gt;
-&lt;i&gt;${sQuickAnswer}&lt;/i&gt;
-&lt;/p&gt;
-&lt;p&gt;Також відповідь в прикріпленому файлі.&lt;/p&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+Ваше звернення до Дніпропетровської міської ради - опрацьовано.</p>
+<p>Відповідь:<br>
+<i>${sQuickAnswer}</i>
+</p>
+<p>Також відповідь в прикріпленому файлі.</p>
 [pattern/mail/_common_signature_start.html]
-Дніпропетровська міська рада,&lt;br /&gt;
+Дніпропетровська міська рада,<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${PrintForm_1}</activiti:expression>
+          <activiti:expression><![CDATA[${PrintForm_1}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -1723,21 +1723,21 @@
         <activiti:formProperty id="sBody_Document_UkrDoc" name="Status UkrDoc" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${CreateDocument_UkrDoc}">
           <activiti:field name="sLoginAuthor">
-            <activiti:expression>${sLoginUkrDoc}</activiti:expression>
+            <activiti:expression><![CDATA[${sLoginUkrDoc}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="nID_Pattern">
-            <activiti:expression>10677</activiti:expression>
+            <activiti:expression><![CDATA[10677]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sHead">
             <activiti:string><![CDATA[Нове звернення громадян.]]></activiti:string>
           </activiti:field>
           <activiti:field name="sBody">
-            <activiti:expression>&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;head lang="ru"&gt;
-    &lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /&gt;
-    &lt;title&gt;&lt;/title&gt;
-        &lt;style type="text/css"&gt;
+            <activiti:expression><![CDATA[<!DOCTYPE html>
+<html>
+<head lang="ru">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title></title>
+        <style type="text/css">
         html, body {margin: 0; padding: 0; height: 100%; font: 400 16px/16px 'Times New Roman';}
 
 .print_wrap {width: 705px; padding: 35px 25px 85px 35px; min-height: 100%; height: 100%; margin: 0 auto;}
@@ -1773,7 +1773,7 @@
 .b-r-0 {border-right: 0 !important;}
 .b-b-0 {border-bottom: 0 !important;}
 
-.hint-l-220 &gt; span {margin-left: 220px !important;}
+.hint-l-220 > span {margin-left: 220px !important;}
 
 .h10 {height: 12px;}
 
@@ -1799,22 +1799,22 @@
 
 .line_col {}
 .under_field {height: 20px; margin: 0 0 20px 0; border-bottom: 1px solid black; position: relative; display: inline-block; clear: both;}
-.under_field &gt; i {font-style: normal;}
-.under_field &gt; span {position: absolute; left: 0; right: 0; text-align: center; color: #606060; bottom: -20px; font-size: 12px;}
+.under_field > i {font-style: normal;}
+.under_field > span {position: absolute; left: 0; right: 0; text-align: center; color: #606060; bottom: -20px; font-size: 12px;}
 
 .under_field_line {height: 20px; margin: 0 0 15px 0; padding: 0 0 0 0; border-bottom: 1px solid black; position: relative; display: block;}
 .under_field_line.right_side {float: right;}
-.under_field_line &gt; i {height: 21px; padding: 0 5px 0 0; background: white; display: inline-block; position: relative; left: 0; font-style: normal;}
-.under_field_line &gt; span {position: absolute; left: 0; right: 0; text-align: center; color: #606060; bottom: -16px; font-size: 12px;}
+.under_field_line > i {height: 21px; padding: 0 5px 0 0; background: white; display: inline-block; position: relative; left: 0; font-style: normal;}
+.under_field_line > span {position: absolute; left: 0; right: 0; text-align: center; color: #606060; bottom: -16px; font-size: 12px;}
 
 .wub {min-height: 20px; height: auto; border: 0; margin: 5px 0 0 0;}
 
 .month-fl {width: 225px; float: right; height: 21px; padding: 0 5px 0 10px; background: white; text-align: right;}
 .month-fl.left {float: left; padding: 0 5px 0 0;}
-.month-fl &gt; span {height: 20px; margin: 0 5px 0 0; border-bottom: 1px solid black; display: inline-block;}
-.month-fl &gt; span:nth-child(1) {width: 35px;}
-.month-fl &gt; span:nth-child(2) {width: 120px;}
-.month-fl &gt; span:nth-child(3) {width: 40px;}
+.month-fl > span {height: 20px; margin: 0 5px 0 0; border-bottom: 1px solid black; display: inline-block;}
+.month-fl > span:nth-child(1) {width: 35px;}
+.month-fl > span:nth-child(2) {width: 120px;}
+.month-fl > span:nth-child(3) {width: 40px;}
 
 table.zit_v-form {border-top: 1px solid black; border-bottom: 1px solid black; border-collapse: collapse; margin: 15px 0;}
 table.zit_v-form tr td {border-bottom: 1px solid black; padding: 3px 6px;}
@@ -1830,40 +1830,47 @@ table.zit_v-form2 tr td {border: 1px solid black; padding: 3px 8px;}
 .date_subm { margin: 20px 0 25px 0;}
 .date_subm .month-fl-sm {float: left;}
 .date_subm.invert .month-fl-sm {float: right;}
-.date_subm .month-fl-sm &gt; span {height: 20px; margin: 0 5px 0 0; border-bottom: 1px solid black; display: inline-block;}
-.date_subm .month-fl-sm &gt; span:nth-child(1) {width: 45px;}
-.date_subm .month-fl-sm &gt; span:nth-child(2) {width: 120px;}
-.date_subm .month-fl-sm &gt; span:nth-child(3) {width: 20px;}
+.date_subm .month-fl-sm > span {height: 20px; margin: 0 5px 0 0; border-bottom: 1px solid black; display: inline-block;}
+.date_subm .month-fl-sm > span:nth-child(1) {width: 45px;}
+.date_subm .month-fl-sm > span:nth-child(2) {width: 120px;}
+.date_subm .month-fl-sm > span:nth-child(3) {width: 20px;}
 .date_subm .signature {width: 180px; height: 20px; float: right; border-bottom: 1px solid black; position: relative;}
 .date_subm.invert .signature {float: left;}
-.date_subm .signature &gt; span {position: absolute; left: 0; right: 0; text-align: center; color: #606060; bottom: -20px; font-size: 12px;}
+.date_subm .signature > span {position: absolute; left: 0; right: 0; text-align: center; color: #606060; bottom: -20px; font-size: 12px;}
 
 p {font-size: 14px;}
 
 .clear {clear: both;}
-&lt;/style&gt;
-&lt;/head&gt;
-&lt;body&gt;
-&lt;section class="print_wrap"&gt;
-    &lt;div class="w365 line_col ta-l p-right xs-font"&gt;
-        &lt;p&gt;&lt;b&gt;${sNameDepartment}&lt;/b&gt;&lt;/p&gt;
-        &lt;p&gt;&lt;b&gt;&lt;/b&gt;&lt;/p&gt;
-        &lt;p &gt;${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;/p&gt;
-        &lt;p&gt;&lt;b&gt;Який (яка) мешкає (зареєстровано) за адресою:&lt;/b&gt;&lt;/p&gt;
-        &lt;p&gt;${sAdress}&lt;/p&gt;
-        &lt;p&gt;телефон: ${sPhone}&lt;/p&gt;
-    &lt;/div&gt;
-    &lt;div class="clear"&gt;&lt;/div&gt;
-    &lt;div class="line_col ta-c m-t-25"&gt;
-        &lt;b&gt;Зверення&lt;/b&gt;
-        &lt;/div&gt;
-        &lt;div class="under_field_line wub ta-l"&gt;Суть звернення: ${sReason}.&lt;br&gt;
-        Додаткова інформація: ${sAdditionalInformation}.&lt;br&gt;
-		&lt;/div&gt;
-    &lt;div class="clear"&gt;&lt;/div&gt;
-&lt;/section&gt;
-&lt;/body&gt;
-&lt;/html&gt;</activiti:expression>
+</style>
+</head>
+<body>
+<section class="print_wrap">
+    <div class="w365 line_col ta-l p-right xs-font">
+        <p><b>${sNameDepartment}</b></p>
+        <p><b></b></p>
+        <p >${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}</p>
+        <p><b>Який (яка) мешкає (зареєстровано) за адресою:</b></p>
+        <p>${sAdress}</p>
+        <p>телефон: ${sPhone}</p>
+        <p>Номер звернення iGov: </p>
+    </div>
+    <div class="clear"></div>
+    <div class="line_col ta-c m-t-25">
+        <b>Зверення</b>
+        </div>
+        <div class="under_field_line wub ta-l">Суть звернення: ${sReason}.<br>
+        Додаткова інформація: ${sAdditionalInformation}.<br>
+		</div>
+    <div class="clear"></div>
+</section>
+</body>
+</html>]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sID_Order_GovPublic">
+            <activiti:expression><![CDATA[${sID_Order}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sSourceChannel">
+            <activiti:expression><![CDATA[${asChannelAppeals}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -1874,26 +1881,27 @@ p {font-size: 14px;}
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення до міської ради.]]></activiti:string>
+          <activiti:string><![CDATA[Звернення до Дніпропетровської міської ради.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;
-Ваше звернення до Дніпропетровської міської ради - опрацьовано. &lt;br /&gt;
-Статус документа: ${sStatusName_UkrDoc}&lt;br&gt;
-Номер документа: ${sID_Document_UkrDoc}&lt;br&gt;
-&lt;/p&gt;
-Телефон для довідок: (056) 744-63-51&lt;br /&gt;
-&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p>
+Ваше звернення до Дніпропетровської міської ради - опрацьовано. <br />
+Статус документа: ${sStatusName_UkrDoc}<br>
+Номер документа: ${sID_Document_UkrDoc}<br>
+Аттач: ${anID_Attach_UkrDoc}<br>
+</p>
+Телефон для довідок: (056) 744-63-51<br />
+<br />
 [pattern/mail/_common_signature_start.html]
-Дніпропетровська міська рада,&lt;br /&gt;
+Дніпропетровська міська рада,<br />
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -2458,10 +2466,10 @@ execution.setVariable('sAnswerEmail', res)</script>
         <activiti:formProperty id="sEnumTop" name="Енам подтематика" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${SendObject_Corezoid}">
           <activiti:field name="soJSON">
-            <activiti:expression>{"sFIO_Subject_Client":"value{[clFio]}","sPhonePrivate_SubjectContact_Client":"value{[sPhone]}","sPhoneCall_SubjectContact_Client":"value{[sPhoneCall_SubjectContact_Client]}","sID_Order":"[sID_Order]","sDate_Order":"[sDateCreate]","sAddress":"value{[sAdressProbl]}","sCategory":"enum{[asKindTr]}","sType":"enum{[asTypeTr]}","sHead":"enum{[asTopHead]}","sHeadSub":"value{[sEnumTop]}","sBody":"value{[sReason]}","nDaysRemain":"value{[nDaysRemain]}","sAnswer_UkrDoc":"value{[sQuickAnswer]}"}</activiti:expression>
+            <activiti:expression><![CDATA[{"sFIO_Subject_Client":"value{[clFio]}","sPhonePrivate_SubjectContact_Client":"value{[sPhone]}","sPhoneCall_SubjectContact_Client":"value{[sPhoneCall_SubjectContact_Client]}","sID_Order":"[sID_Order]","sDate_Order":"[sDateCreate]","sAddress":"value{[sAdressProbl]}","sCategory":"enum{[asKindTr]}","sType":"enum{[asTypeTr]}","sHead":"enum{[asTopHead]}","sHeadSub":"value{[sEnumTop]}","sBody":"value{[sReason]}","nDaysRemain":"value{[nDaysRemain]}","sAnswer_UkrDoc":"value{[sQuickAnswer]}"}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sID_Conveyour">
-            <activiti:expression>93682</activiti:expression>
+            <activiti:expression><![CDATA[93682]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -2472,8 +2480,8 @@ execution.setVariable('sAnswerEmail', res)</script>
     <endEvent id="endevent7" name="End"></endEvent>
     <sequenceFlow id="flow31" sourceRef="usertask3" targetRef="exclusivegateway4"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow32" name="sAnswerStatus=='Successfull'" sourceRef="exclusivegateway4" targetRef="endevent7">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sAnswerStatus=='Successfull'}]]></conditionExpression>
+    <sequenceFlow id="flow32" name="sAnswerStatus=='Successfull'||asAnswerChannel=='sEnumAnsw2'" sourceRef="exclusivegateway4" targetRef="endevent7">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sAnswerStatus=='Successfull'||asAnswerChannel=='sEnumAnsw2'}]]></conditionExpression>
     </sequenceFlow>
     <userTask id="usertask4" name="Обробка звернення супервайзером" activiti:candidateGroups="sales">
       <extensionElements>
@@ -2493,10 +2501,10 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sEnumConsNo" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asEmergencySituation" name="Аварійне питання" type="enum">
-          <activiti:value id="sEnumEmergYes" name="Так"></activiti:value>
+          <activiti:value id="sEnumEmergYes" name="Аварійна ситуація"></activiti:value>
           <activiti:value id="sEnumEmergNo" name="Ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asSpecialStatus" name="Маєте особливий статус" type="enum">
+        <activiti:formProperty id="asSpecialStatus" name="Особливий статус" type="enum">
           <activiti:value id="sEnumStatusYes" name="Так"></activiti:value>
           <activiti:value id="sEnumStatusNo" name="Ні"></activiti:value>
         </activiti:formProperty>
@@ -2514,7 +2522,7 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sEnumProposal" name="Пропозиція"></activiti:value>
           <activiti:value id="sEnumTypeRequest" name="Запит про надання публічної інформації"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asHowCategory" name="Оберіть категорію до якої Ви відноситесь" type="enum">
+        <activiti:formProperty id="asHowCategory" name="Категорія заявника" type="enum">
           <activiti:value id="sEnumCat1" name="Учасник війни"></activiti:value>
           <activiti:value id="sEnumCat2" name="Дитина війни"></activiti:value>
           <activiti:value id="sEnumCat3" name="Інвалід Великої Вітчизняної війни"></activiti:value>
@@ -2536,7 +2544,7 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sEnumCat19" name="Дитина"></activiti:value>
           <activiti:value id="sEnumCat20" name="Інші категорії"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asHowSocStatus" name="Оберіть соціальний стан" type="enum">
+        <activiti:formProperty id="asHowSocStatus" name="Соціальний стан заявника" type="enum">
           <activiti:value id="sEnumSoc1" name="Пенсіонер"></activiti:value>
           <activiti:value id="sEnumSoc2" name="Робітник"></activiti:value>
           <activiti:value id="sEnumSoc3" name="Селянин"></activiti:value>
@@ -2550,7 +2558,7 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sEnumSoc11" name="Особа, що позбавлена волі; особа, воля якої обмежена"></activiti:value>
           <activiti:value id="sEnumSoc12" name="Інші"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asDistrict" name="Район Вашого проживання" type="enum">
+        <activiti:formProperty id="asDistrict" name="Район проживання заявника" type="enum">
           <activiti:value id="sEnumAnd" name="Амур-Нижньодніпровський"></activiti:value>
           <activiti:value id="sEnumShevch" name="Шевченківський (Бабушкінський)"></activiti:value>
           <activiti:value id="sEnumSobor" name="Соборний (Жовтневий)"></activiti:value>
@@ -2561,7 +2569,7 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sEnumSamar" name="Самарський"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Адреса проживання заявника" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asTopHead" name="Оберіть тему звернення" type="enum">
+        <activiti:formProperty id="asTopHead" name="Тема звернення" type="enum">
           <activiti:value id="sEnumTopHead1" name="Житлове господарство"></activiti:value>
           <activiti:value id="sEnumTopHead2" name="Комунальне господарство"></activiti:value>
           <activiti:value id="sEnumTopHead3" name="Промислова політика"></activiti:value>
@@ -2586,7 +2594,7 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sEnumTopHead22" name="Діяльність місцевого самоврядування"></activiti:value>
           <activiti:value id="sEnumTopHead23" name="Інше"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asTop1" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum">
+        <activiti:formProperty id="asTop1" name="Підтема звернення" type="enum">
           <activiti:value id="sEnumTop11" name="Ремонт ліфта"></activiti:value>
           <activiti:value id="sEnumTop12" name="Ремонт під'їзду"></activiti:value>
           <activiti:value id="sEnumTop13" name="Ремонт підвального приміщення"></activiti:value>
@@ -2626,7 +2634,7 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sEnumTop137" name="Створення та діяльність ОССБ"></activiti:value>
           <activiti:value id="sEnumTop138" name="Інші питання"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asTop2" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum">
+        <activiti:formProperty id="asTop2" name="Підтема звернення" type="enum">
           <activiti:value id="sEnumTop21" name="Видалення, обрізка дерев, корчування пнів, покос газонів"></activiti:value>
           <activiti:value id="sEnumTop22" name="Утримання та поточний ремонт мереж зовнішнього освітлення"></activiti:value>
           <activiti:value id="sEnumTop23" name="Ритуальні послуги та утримання кладовищ"></activiti:value>
@@ -2669,7 +2677,7 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sEnumTop240" name="Встановлення та повірка лічильника"></activiti:value>
           <activiti:value id="sEnumTop241" name="Інші питання"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asTop3" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum">
+        <activiti:formProperty id="asTop3" name="Підтема звернення" type="enum">
           <activiti:value id="sEnumTop31" name="Невиплата заробітної плати на промисловому підприємстві"></activiti:value>
           <activiti:value id="sEnumTop32" name="Відключення від електромереж або газу"></activiti:value>
           <activiti:value id="sEnumTop33" name="Діяльність промислових підприємств"></activiti:value>
@@ -2679,7 +2687,7 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sEnumTop37" name="Підприємницька діяльність"></activiti:value>
           <activiti:value id="sEnumTop38" name="Інші питання"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asTop4" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum">
+        <activiti:formProperty id="asTop4" name="Підтема звернення" type="enum">
           <activiti:value id="sEnumTop41" name="Робота маршрутних таксі"></activiti:value>
           <activiti:value id="sEnumTop42" name="Робота міського електротранспорту"></activiti:value>
           <activiti:value id="sEnumTop43" name="Робота автостоянок, парковок"></activiti:value>
@@ -2709,7 +2717,7 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sEnumTop427" name="Скарга на кондукторів трамваїв"></activiti:value>
           <activiti:value id="sEnumTop428" name="Інші питання"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asTop5" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum">
+        <activiti:formProperty id="asTop5" name="Підтема звернення" type="enum">
           <activiti:value id="sEnumTop51" name="Погодження історико-містобудівних обґрунтувань"></activiti:value>
           <activiti:value id="sEnumTop52" name="Надання інформації щодо історико-культурної цінності будівлі (споруди)"></activiti:value>
           <activiti:value id="sEnumTop53" name="Погодження  ескізних проектів реставрації, реабілітації, консервації, пристосування об'єктів культурної спадщини (на щойно виявлені об'єкти культурної спадщини та памяток місцевого значення)"></activiti:value>
@@ -2733,7 +2741,7 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sEnumTop521" name="Відчуження і оренда комунальної власності"></activiti:value>
           <activiti:value id="sEnumTop522" name="Інші питання"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asTop6" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum">
+        <activiti:formProperty id="asTop6" name="Підтема звернення" type="enum">
           <activiti:value id="sEnumTop61" name="Санітарно-епідеміологічний стан. Проведення дезінфекції, дезінсекції, дератизації"></activiti:value>
           <activiti:value id="sEnumTop62" name="Загальні питання охорони здоров'я"></activiti:value>
           <activiti:value id="sEnumTop63" name="Робота МСЕК"></activiti:value>
@@ -2745,7 +2753,7 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sEnumTop69" name="Фінансування медицини, вартість медичних послуг, медичне страхування"></activiti:value>
           <activiti:value id="sEnumTop610" name="Інші питання "></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asTop7" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum">
+        <activiti:formProperty id="asTop7" name="Підтема звернення" type="enum">
           <activiti:value id="sEnumTop71" name="Строк отримання матеріальної допомоги різних категорій громадян, отримання допомоги за померлого отримувача"></activiti:value>
           <activiti:value id="sEnumTop72" name="Строк відправлення відомостей на виплату матер. допомоги на  Укрпошту  та банки"></activiti:value>
           <activiti:value id="sEnumTop73" name="Роз`яснення, реформування законодавства із соціального захисту"></activiti:value>
@@ -2772,7 +2780,7 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sEnumTop724" name="Надання допомоги у вирішенні питань соціально-трудових відносин"></activiti:value>
           <activiti:value id="sEnumTop725" name="Інші питання"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asTop8" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum">
+        <activiti:formProperty id="asTop8" name="Підтема звернення" type="enum">
           <activiti:value id="sEnumTop81" name="Невиконання батьками або особами, які їх замінюють, обов`язків щодо утримання дітей"></activiti:value>
           <activiti:value id="sEnumTop82" name="Участь одного із батьків (бабусі, дідуся) у вихованні дитини"></activiti:value>
           <activiti:value id="sEnumTop83" name="Усиновлення дітей ,встановлення опіки над дітьми-сиротами та дітьми, позбавленими батьківського піклування, створення прийомної сім`ї, дитячого будинку сімейного типу"></activiti:value>
@@ -2781,7 +2789,7 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sEnumTop86" name="Порядок позбавлення (поновлення) батьківських прав"></activiti:value>
           <activiti:value id="sEnumTop87" name="Інші питання"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asTop9" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum">
+        <activiti:formProperty id="asTop9" name="Підтема звернення" type="enum">
           <activiti:value id="sEnumTop91" name="Питання про забруднення атмосферного повітря або водойм"></activiti:value>
           <activiti:value id="sEnumTop92" name="Використання природних ресурсів"></activiti:value>
           <activiti:value id="sEnumTop93" name="Забруднення навколишнього середовища"></activiti:value>
@@ -2794,7 +2802,7 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sEnumTop910" name="Надання інформації щодо діяльності КП ЕкоДніпро Дніпропетровської міської ради і міського полігону твердих побутових відходів"></activiti:value>
           <activiti:value id="sEnumTop911" name="Інші питання"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asTop10" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum">
+        <activiti:formProperty id="asTop10" name="Підтема звернення" type="enum">
           <activiti:value id="sEnumTop101" name="Дотримання правил торгівлі в роздрібній мережі, на підприємствах ресторанного господарства"></activiti:value>
           <activiti:value id="sEnumTop102" name="Демонтаж малих архітектурних форм (робота без дозвільних документів на пішохідній зоні)"></activiti:value>
           <activiti:value id="sEnumTop103" name="Порушення правил торгівлі, питання ціноутворення, підвищений рівень шуму від роботи літніх майданчиків в літню пору"></activiti:value>
@@ -2810,7 +2818,7 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sEnumTop1013" name="Побутове обслуговування"></activiti:value>
           <activiti:value id="sEnumTop1014" name="Інші питання"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asTop11" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum">
+        <activiti:formProperty id="asTop11" name="Підтема звернення" type="enum">
           <activiti:value id="sEnumTop111" name="Звернення з приводу встановлення або ремонту обладнання дитячих, тренажерних та футбольних майданчиків"></activiti:value>
           <activiti:value id="sEnumTop112" name="Проведення спортивних змагань"></activiti:value>
           <activiti:value id="sEnumTop113" name="Фізична культура та спорт"></activiti:value>
@@ -2820,7 +2828,7 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sEnumTop117" name="Звернення з приводу оздоровлення дітей пільгових категорій"></activiti:value>
           <activiti:value id="sEnumTop118" name="Інші питання"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asTop12" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum">
+        <activiti:formProperty id="asTop12" name="Підтема звернення" type="enum">
           <activiti:value id="sEnumTop121" name="Питання організації навчально-виховного процесу в загальноосвітніх навчальних закладах, харчування учнів"></activiti:value>
           <activiti:value id="sEnumTop122" name="Питання організації виховного процесу у дошкільних навчальних закладах, харчування вихованців, реєстрація дітей до навчальних закладів, влаштування дітей у дошкільні навчальні заклади"></activiti:value>
           <activiti:value id="sEnumTop123" name="Конфліктні ситуації в педагогічних колективах навчальних закладів, кадрові питання"></activiti:value>
@@ -2838,7 +2846,7 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sEnumTop1215" name="Виплата заробітної плати, фінансові питання"></activiti:value>
           <activiti:value id="sEnumTop1216" name="Інші питання"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asTop13" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum">
+        <activiti:formProperty id="asTop13" name="Підтема звернення" type="enum">
           <activiti:value id="sEnumTop131" name="Фінансова допомога у підтримці належного стану книг"></activiti:value>
           <activiti:value id="sEnumTop132" name="Питання стосовно встановлення меморіальних дощок та пам`ятних знаків"></activiti:value>
           <activiti:value id="sEnumTop133" name="Узгодження проведення заходів у закладах культури міського підпорядкування"></activiti:value>
@@ -2852,7 +2860,7 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sEnumTop1311" name="Розвиток культури, збереження культурної cпадщини"></activiti:value>
           <activiti:value id="sEnumTop1312" name="Інші питання"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asTop14" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum">
+        <activiti:formProperty id="asTop14" name="Підтема звернення" type="enum">
           <activiti:value id="sEnumTop141" name="Пошкодження чи знищення елементів благоустрою (з подальшим їх відновленням)"></activiti:value>
           <activiti:value id="sEnumTop142" name="Ускладнення руху пішоходів і транспорту, обмеження доступу до об'єктів благоустрою"></activiti:value>
           <activiti:value id="sEnumTop143" name="Погіршення існуючого стану об'єктів благоустрою і внесення змін до них"></activiti:value>
@@ -2860,7 +2868,7 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sEnumTop145" name="Перевірка дотримання підприємствами, установами, організаціями, фізичними особами - підприємцями та громадянами вимог правил благоустрою території міста"></activiti:value>
           <activiti:value id="sEnumTop146" name="Інші питання"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asTop15" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum">
+        <activiti:formProperty id="asTop15" name="Підтема звернення" type="enum">
           <activiti:value id="sEnumTop151" name="Розміщення тимчасових споруд для здійснення підприємницької дільності"></activiti:value>
           <activiti:value id="sEnumTop152" name="Розміщення тимчасових гаражів"></activiti:value>
           <activiti:value id="sEnumTop153" name="Будівництво в приватному секторі"></activiti:value>
@@ -2881,7 +2889,7 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sEnumTop1518" name="Інформація стосовно адміністративно-територіальної належності об'єкту"></activiti:value>
           <activiti:value id="sEnumTop1519" name="Інші питання"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asTop16" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum">
+        <activiti:formProperty id="asTop16" name="Підтема звернення" type="enum">
           <activiti:value id="sEnumTop161" name="Ліквідація несанкціонованої вуличної торгівлі"></activiti:value>
           <activiti:value id="sEnumTop162" name="Демонтаж тимчасових споруд (МАФ) для провадження підприємницької діяльності (тільки в частині охорони громадського порядку)"></activiti:value>
           <activiti:value id="sEnumTop163" name="Побутові конфлікти, порушення громадського порядку, кримінальні правопорушення"></activiti:value>
@@ -2907,7 +2915,7 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sEnumTop1623" name="Протидія захопленню підприємств (рейдерство)"></activiti:value>
           <activiti:value id="sEnumTop1624" name="Інші питання"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asTop17" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum">
+        <activiti:formProperty id="asTop17" name="Підтема звернення" type="enum">
           <activiti:value id="sEnumTop171" name="Поліпшення умов проживання"></activiti:value>
           <activiti:value id="sEnumTop172" name="Відселення сім'ї заявника з аварійного будинку"></activiti:value>
           <activiti:value id="sEnumTop173" name="Розподіл квартир"></activiti:value>
@@ -2945,7 +2953,7 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sEnumTop1735" name="Фінансування органів місцевого самоврядування та інших видатків"></activiti:value>
           <activiti:value id="sEnumTop1736" name="Інші питання"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asTop18" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum">
+        <activiti:formProperty id="asTop18" name="Підтема звернення" type="enum">
           <activiti:value id="sEnumTop182" name="Установка (перевірка, заміна) лічильника"></activiti:value>
           <activiti:value id="sEnumTop183" name="Відсутність газифікації"></activiti:value>
           <activiti:value id="sEnumTop184" name="Газифікація будинку"></activiti:value>
@@ -2955,7 +2963,7 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sEnumTop188" name="Фінансування робіт"></activiti:value>
           <activiti:value id="sEnumTop189" name="Ремонт газового обладнення"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asTop19" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum">
+        <activiti:formProperty id="asTop19" name="Підтема звернення" type="enum">
           <activiti:value id="sEnumTop191" name="Загальні питання електропостачання"></activiti:value>
           <activiti:value id="sEnumTop192" name="Установка (перевірка, заміна) лічильника"></activiti:value>
           <activiti:value id="sEnumTop193" name="Відсутність електропостачання"></activiti:value>
@@ -2963,7 +2971,7 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sEnumTop195" name="Ремонт електричного обладнення"></activiti:value>
           <activiti:value id="sEnumTop196" name="Інші питання"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asTop20" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum">
+        <activiti:formProperty id="asTop20" name="Підтема звернення" type="enum">
           <activiti:value id="sEnumTop201" name="Висвітлення у ЗМІ діяльності органів влади та місцевого самоврядування"></activiti:value>
           <activiti:value id="sEnumTop202" name="Діяльність ЗМІ"></activiti:value>
           <activiti:value id="sEnumTop203" name="Інформаційні системи та їх розвиток"></activiti:value>
@@ -2971,7 +2979,7 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sEnumTop205" name="Комунікація влади та громадськості"></activiti:value>
           <activiti:value id="sEnumTop206" name="Інші питання"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asTop21" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum">
+        <activiti:formProperty id="asTop21" name="Підтема звернення" type="enum">
           <activiti:value id="sEnumTop211" name="Загальні питання діяльності благодійних фондів, громадських організацій"></activiti:value>
           <activiti:value id="sEnumTop212" name="Діяльність політичних партій"></activiti:value>
           <activiti:value id="sEnumTop213" name="Діяльність профспілок"></activiti:value>
@@ -2980,7 +2988,7 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sEnumTop216" name="Питання, що стосуються офіційного інтернет-портала ДМР www.dniprocity.dp.ua"></activiti:value>
           <activiti:value id="sEnumTop217" name="Інші питання"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asTop22" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum">
+        <activiti:formProperty id="asTop22" name="Підтема звернення" type="enum">
           <activiti:value id="sEnumTop221" name="Факти корупції"></activiti:value>
           <activiti:value id="sEnumTop222" name="Відгуки щодо рішень органів місцевого самоврядування"></activiti:value>
           <activiti:value id="sEnumTop223" name="Дії, бездіяльність посадових осіб органів місцевого самоврядування"></activiti:value>
@@ -3031,7 +3039,7 @@ execution.setVariable('sAnswerEmail', res)</script>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile1}</activiti:expression>
+            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -3085,7 +3093,6 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sEnumDep7" name="ВЕС – 3"></activiti:value>
           <activiti:value id="sEnumDep8" name="ВЕУ – 4"></activiti:value>
           <activiti:value id="sEnumDep9" name="Управління інформаційних систем та технологій"></activiti:value>
-          <activiti:value id="sEnumExit" name="Відмовити громадянину"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment" name="Якщо ви відмовляєте заявнику у реєстрації звернення, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sDateControl" name="Контрольна дата (у форматі ДД/ММ/РРРР)" type="string"></activiti:formProperty>
@@ -3093,7 +3100,7 @@ execution.setVariable('sAnswerEmail', res)</script>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile1}</activiti:expression>
+            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -3146,12 +3153,14 @@ execution.setVariable('sAnswerEmail', res)</script>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile1},${nFileAnswer}</activiti:expression>
+            <activiti:expression><![CDATA[${nFile1},${nFileAnswer}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow36" sourceRef="usertask5" targetRef="usertask6"></sequenceFlow>
+    <sequenceFlow id="flow36" sourceRef="usertask5" targetRef="usertask6">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asStatus=='sEnumDep1'||asStatus=='sEnumDep2'||asStatus=='sEnumDep3'||asStatus=='sEnumDep4'||asStatus=='sEnumDep5'||asStatus=='sEnumDep6'||asStatus=='sEnumDep7'||asStatus=='sEnumDep8'||asStatus=='sEnumDep9'}]]></conditionExpression>
+    </sequenceFlow>
     <sequenceFlow id="flow37" name="asStatus=='sEnumAnswer'" sourceRef="exclusivegateway5" targetRef="usertask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asStatus=='sEnumAnswer'}]]></conditionExpression>
     </sequenceFlow>
@@ -3212,7 +3221,7 @@ execution.setVariable('sAnswerEmail', res)</script>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFileAnswer}</activiti:expression>
+            <activiti:expression><![CDATA[${nFileAnswer}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -3263,7 +3272,7 @@ execution.setVariable('sAnswerEmail', res)</script>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile1}</activiti:expression>
+            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -3272,8 +3281,8 @@ execution.setVariable('sAnswerEmail', res)</script>
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asStatus=='sEnumSendInDniprooblenergo'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow42" sourceRef="usertask8" targetRef="usertask4"></sequenceFlow>
-    <sequenceFlow id="flow43" name="sAnswerStatus=='Reject'" sourceRef="exclusivegateway4" targetRef="usertask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sAnswerStatus=='Reject'}]]></conditionExpression>
+    <sequenceFlow id="flow43" name="sAnswerStatus=='Reject'||sAnswerStatus=='CantConnect'||sAnswerStatus=='InvalidConnect'" sourceRef="exclusivegateway4" targetRef="usertask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sAnswerStatus=='Reject'||sAnswerStatus=='CantConnect'||sAnswerStatus=='InvalidConnect'}]]></conditionExpression>
     </sequenceFlow>
     <scriptTask id="scripttask2" name="Script автоадресація в відділ" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var depart = ["sEnumTopHead1","sEnumTopHead2","sEnumTopHead3","sEnumTopHead4","sEnumTopHead5","sEnumTopHead6","sEnumTopHead7","sEnumTopHead8","sEnumTopHead9","sEnumTopHead10","sEnumTopHead11","sEnumTopHead12","sEnumTopHead13","sEnumTopHead14","sEnumTopHead15","sEnumTopHead16","sEnumTopHead17","sEnumTopHead18","sEnumTopHead19","sEnumTopHead20","sEnumTopHead21","sEnumTopHead22"]
@@ -3292,7 +3301,6 @@ execution.setVariable('sNameDepartment', per2)</script>
     </scriptTask>
     <sequenceFlow id="flow44" sourceRef="usertask1" targetRef="scripttask2"></sequenceFlow>
     <sequenceFlow id="flow46" sourceRef="scripttask2" targetRef="exclusivegateway1"></sequenceFlow>
-    <sequenceFlow id="flow47" sourceRef="exclusivegateway2" targetRef="usertask2"></sequenceFlow>
     <userTask id="usertask9" name="Формування письмової відповіді (Фронт офіс)" activiti:candidateGroups="sales">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -3830,7 +3838,7 @@ execution.setVariable('sNameDepartment', per2)</script>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile1}</activiti:expression>
+            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -3841,7 +3849,9 @@ execution.setVariable('sNameDepartment', per2)</script>
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asStatus=='sEnumSendInFrontOffice'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow50" sourceRef="exclusivegateway2" targetRef="usertask9"></sequenceFlow>
-    <sequenceFlow id="flow51" sourceRef="exclusivegateway4" targetRef="usertask9"></sequenceFlow>
+    <sequenceFlow id="flow51" name="sAnswerStatus=='Successfull'||asAnswerChannel=='sEnumAnsw1'" sourceRef="exclusivegateway4" targetRef="usertask9">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sAnswerStatus=='Successfull'||asAnswerChannel=='sEnumAnsw1'}]]></conditionExpression>
+    </sequenceFlow>
     <exclusiveGateway id="exclusivegateway6" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow53" sourceRef="scripttask1" targetRef="exclusivegateway3"></sequenceFlow>
     <sequenceFlow id="flow54" sourceRef="exclusivegateway6" targetRef="servicetask1">
@@ -3851,7 +3861,7 @@ execution.setVariable('sNameDepartment', per2)</script>
     <sequenceFlow id="flow55" sourceRef="exclusivegateway6" targetRef="endevent9">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asConsultTr=='sEnumConsYes'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask10" name="Отримання відповіді">
+    <userTask id="usertask10" name="Отримання відповіді" activiti:candidateGroups="sales">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
@@ -4386,6 +4396,13 @@ execution.setVariable('sNameDepartment', per2)</script>
         <activiti:formProperty id="sStatusName_UkrDoc" name="Status UkrDoc" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sHead_Document_UkrDoc" name="Head UkrDoc" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody_Document_UkrDoc" name="Body UkrDoc" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_Document" name="sID_Document" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="anID_Attach_UkrDoc" name="anID_Attach_UkrDoc" type="string" required="true"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${GetDocument_UkrDoc}">
+          <activiti:field name="sID_Document">
+            <activiti:expression><![CDATA[${sID_Document}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow56" sourceRef="exclusivegateway2" targetRef="usertask10"></sequenceFlow>
@@ -4504,7 +4521,7 @@ execution.setVariable('sNameDepartment', per2)</script>
         <omgdi:waypoint x="730.0" y="555.0"></omgdi:waypoint>
         <omgdi:waypoint x="615.0" y="555.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="632.0" y="534.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="632.0" y="534.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
@@ -4516,7 +4533,7 @@ execution.setVariable('sNameDepartment', per2)</script>
         <omgdi:waypoint x="890.0" y="554.0"></omgdi:waypoint>
         <omgdi:waypoint x="906.0" y="555.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="779.0" y="536.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="779.0" y="536.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
@@ -4531,21 +4548,21 @@ execution.setVariable('sNameDepartment', per2)</script>
         <omgdi:waypoint x="590.0" y="137.0"></omgdi:waypoint>
         <omgdi:waypoint x="590.0" y="113.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="480.0" y="113.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="480.0" y="113.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
         <omgdi:waypoint x="610.0" y="157.0"></omgdi:waypoint>
         <omgdi:waypoint x="699.0" y="157.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="607.0" y="162.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="607.0" y="162.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
         <omgdi:waypoint x="750.0" y="575.0"></omgdi:waypoint>
         <omgdi:waypoint x="590.0" y="651.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="652.0" y="603.0"></omgdc:Bounds>
+          <omgdc:Bounds height="64.0" width="100.0" x="652.0" y="603.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
@@ -4556,7 +4573,7 @@ execution.setVariable('sNameDepartment', per2)</script>
         <omgdi:waypoint x="419.0" y="696.0"></omgdi:waypoint>
         <omgdi:waypoint x="346.0" y="696.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="313.0" y="697.0"></omgdc:Bounds>
+          <omgdc:Bounds height="80.0" width="100.0" x="313.0" y="697.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
@@ -4567,7 +4584,7 @@ execution.setVariable('sNameDepartment', per2)</script>
         <omgdi:waypoint x="750.0" y="535.0"></omgdi:waypoint>
         <omgdi:waypoint x="958.0" y="311.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="816.0" y="325.0"></omgdc:Bounds>
+          <omgdc:Bounds height="64.0" width="100.0" x="816.0" y="325.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow36" id="BPMNEdge_flow36">
@@ -4579,7 +4596,7 @@ execution.setVariable('sNameDepartment', per2)</script>
         <omgdi:waypoint x="1365.0" y="157.0"></omgdi:waypoint>
         <omgdi:waypoint x="804.0" y="157.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="1051.0" y="141.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="1051.0" y="141.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
@@ -4596,14 +4613,14 @@ execution.setVariable('sNameDepartment', per2)</script>
         <omgdi:waypoint x="1105.0" y="375.0"></omgdi:waypoint>
         <omgdi:waypoint x="1105.0" y="313.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="1179.0" y="349.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="1179.0" y="349.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow41" id="BPMNEdge_flow41">
         <omgdi:waypoint x="750.0" y="535.0"></omgdi:waypoint>
         <omgdi:waypoint x="958.0" y="481.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="56.0" width="100.0" x="783.0" y="464.0"></omgdc:Bounds>
+          <omgdc:Bounds height="64.0" width="100.0" x="783.0" y="464.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">
@@ -4618,7 +4635,7 @@ execution.setVariable('sNameDepartment', per2)</script>
         <omgdi:waypoint x="439.0" y="300.0"></omgdi:waypoint>
         <omgdi:waypoint x="751.0" y="193.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="390.0" y="463.0"></omgdc:Bounds>
+          <omgdc:Bounds height="112.0" width="100.0" x="399.0" y="375.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
@@ -4629,12 +4646,6 @@ execution.setVariable('sNameDepartment', per2)</script>
         <omgdi:waypoint x="749.0" y="461.0"></omgdi:waypoint>
         <omgdi:waypoint x="750.0" y="535.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow47" id="BPMNEdge_flow47">
-        <omgdi:waypoint x="1099.0" y="534.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1098.0" y="470.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1024.0" y="470.0"></omgdi:waypoint>
-        <omgdi:waypoint x="958.0" y="509.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow48" id="BPMNEdge_flow48">
         <omgdi:waypoint x="1011.0" y="697.0"></omgdi:waypoint>
         <omgdi:waypoint x="1056.0" y="697.0"></omgdi:waypoint>
@@ -4643,7 +4654,7 @@ execution.setVariable('sNameDepartment', per2)</script>
         <omgdi:waypoint x="750.0" y="575.0"></omgdi:waypoint>
         <omgdi:waypoint x="958.0" y="660.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="770.0" y="604.0"></omgdc:Bounds>
+          <omgdc:Bounds height="64.0" width="100.0" x="770.0" y="604.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow50" id="BPMNEdge_flow50">
@@ -4657,6 +4668,9 @@ execution.setVariable('sNameDepartment', per2)</script>
         <omgdi:waypoint x="438.0" y="782.0"></omgdi:waypoint>
         <omgdi:waypoint x="958.0" y="782.0"></omgdi:waypoint>
         <omgdi:waypoint x="958.0" y="734.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="80.0" width="100.0" x="711.0" y="749.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow53" id="BPMNEdge_flow53">
         <omgdi:waypoint x="481.0" y="161.0"></omgdi:waypoint>
