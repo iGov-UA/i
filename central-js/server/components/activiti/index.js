@@ -1,11 +1,11 @@
+var request = require('request')
+  , _ = require('lodash')
+  , NodeCache = require("node-cache")
+  , FormData = require('form-data')
+  , StringDecoder = require('string_decoder').StringDecoder
+  , aServerCache = new NodeCache();
+
 var options;
-var request = require('request');
-var _ = require('lodash');
-
-var NodeCache = require("node-cache");
-
-var aServerCache = new NodeCache();
-
 
 module.exports.httpCallback = function (asyncCallback) {
   return function (error, response, body) {
@@ -155,6 +155,41 @@ module.exports.post = function (apiURL, params, body, callback, sHost, session) 
   prepared = _.extend(prepared, {body: body});
   request.post(prepared, callback);
 };
+
+module.exports.upload = function (apiURL, params, fileName, content, callback, sHost, session) {
+  var form = new FormData();
+  form.append('file', content, {
+    filename: fileName
+  });
+
+  var uploadRequest = this.buildGET(apiURL, params, sHost, session);
+  _.extend(uploadRequest, { headers: form.getHeaders()});
+  _.extend(uploadRequest.headers, {'Accept': 'application/json'});
+
+
+  pipeFormDataToRequest(form, uploadRequest, function (result) {
+    //TODO handle errors
+    callback(null, result.reponse, result.data);
+  });
+};
+
+function pipeFormDataToRequest(form, uploadRequest, callback) {
+  var decoder = new StringDecoder('utf8');
+  var result = {};
+  form.pipe(request.post(uploadRequest))
+    .on('response', function (response) {
+      result.reponse = response;
+    }).on('data', function (chunk) {
+    if (result.data) {
+      result.data += decoder.write(chunk);
+    } else {
+      result.data = decoder.write(chunk);
+    }
+  }).on('end', function () {
+    callback(result);
+  });
+}
+
 
 module.exports.sendPostRequest = function (req, res, apiURL, params, callback, sHost) {
   var apiReq = this.buildRequest(req, apiURL, params, sHost);

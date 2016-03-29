@@ -1,12 +1,13 @@
-var request = require('request');
-var FormData = require('form-data');
-var async = require('async');
-var _ = require('lodash');
-var config = require('../../config/environment');
-var syncSubject = require('../../api/subject/subject.service.js');
-var Admin = require('../../components/admin/index');
-var url = require('url');
-var bankidUtil = require('./bankid.util.js');
+var request = require('request')
+  , FormData = require('form-data')
+  , async = require('async')
+  , _ = require('lodash')
+  , config = require('../../config/environment')
+  , syncSubject = require('../../api/subject/subject.service.js')
+  , Admin = require('../../components/admin/index')
+  , url = require('url')
+  , bankidUtil = require('./bankid.util.js')
+  , activiti = require('../../components/activiti');
 
 var createError = function (error, error_description, response) {
   return {
@@ -113,10 +114,16 @@ module.exports.prepareScanContentRequest = function (documentScanLink, accessTok
   return request.get(o);
 };
 
+module.exports.cacheCustomer = function (customer, callback) {
+  var url = '/object/file/upload_file_to_redis';
+  activiti.upload(url, {}, 'customerData.json', JSON.stringify(customer), callback);
+};
+
 module.exports.syncWithSubject = function (accessToken, done) {
+  var self = this;
   async.waterfall([
     function (callback) {
-      module.exports.index(accessToken, function (error, response, body) {
+      self.index(accessToken, function (error, response, body) {
         if (error || body.error || !body.customer) {
           callback(createError(error || body.error || body, body.error_description, response), null);
         } else {
@@ -137,6 +144,17 @@ module.exports.syncWithSubject = function (accessToken, done) {
           callback(null, result);
         }
       });
+    },
+
+    function(result, callback){
+      self.cacheCustomer(result, function(error, reponse, body){
+        if (error || body.code) {
+          callback(createError(body, 'error while caching data. ' + body.message, response), null);
+        } else {
+          result.usercacheid = body;
+          callback(null, result);
+        }
+      })
     }
   ], function (err, result) {
     done(err, result);
