@@ -671,9 +671,13 @@ public class ActionTaskService {
             		if (historicDetail instanceof HistoricFormPropertyEntity){
             			String propertyId = ((HistoricFormPropertyEntity)historicDetail).getPropertyId();
             			String value = ((HistoricFormPropertyEntity)historicDetail).getPropertyValue();
-            			LOG.info("Processing form property with id {} and avlue {}", propertyId, value);
+            			LOG.info("Processing form property with id {} and value {}", propertyId, value);
+            			if (!variables.containsKey(propertyId)){
             			variables.put(propertyId, 
             					value != null ? value : "");
+            			} else {
+            				LOG.info("Skipping property id {} as it already exists in the map", propertyId);
+            			}
             		}
             	}
             }
