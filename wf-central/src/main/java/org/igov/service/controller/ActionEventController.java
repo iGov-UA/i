@@ -15,6 +15,7 @@ import org.igov.model.subject.ServerDao;
 import org.igov.model.subject.message.SubjectMessage;
 import org.igov.model.subject.message.SubjectMessagesDao;
 import org.igov.service.business.action.ActionEventService;
+import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.RecordNotFoundException;
 import org.joda.time.DateTime;
@@ -79,7 +80,7 @@ public class ActionEventController {
                     + "вторая часть -- nID_Protected, ид задачи + контрольная сумма по алгоритму Луна", required = true) @RequestParam(value = "sID_Order", required = true) String sID_Order
             //, @ApiParam(value = "номер-ид субьекта", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject
             //, @ApiParam(value = "токен", required = false) @RequestParam(value = "sToken", required = false) String sToken
-            ) throws CommonServiceException {
+            ) throws CommonServiceException, CRCInvalidException {
 
         return oActionEventService.getHistoryEventService(sID_Order);
     }
