@@ -48,6 +48,7 @@ import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.history.*;
 import org.activiti.engine.identity.Group;
+import org.activiti.engine.impl.persistence.entity.HistoricFormPropertyEntity;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.repository.ProcessDefinition;
@@ -639,7 +640,8 @@ public class ActionTaskService {
         return attachmentRequested;
     }
 
-    public void fillTheCSVMapHistoricTasks(String sID_BP, Date dateAt, Date dateTo, List<HistoricTaskInstance> foundResults, SimpleDateFormat sDateCreateDF, List<Map<String, Object>> csvLines, String pattern, Set<String> tasksIdToExclude, String saFieldsCalc, String[] headers) {
+    public void fillTheCSVMapHistoricTasks(String sID_BP, Date dateAt, Date dateTo, List<HistoricTaskInstance> foundResults, SimpleDateFormat sDateCreateDF, List<Map<String, Object>> csvLines, String pattern, 
+    		Set<String> tasksIdToExclude, String saFieldsCalc, String[] headers, String sID_State_BP) {
         if (CollectionUtils.isEmpty(foundResults)) {
             LOG.info(String.format("No historic tasks found for business process %s for date period %s - %s", sID_BP, DATE_TIME_FORMAT.format(dateAt), DATE_TIME_FORMAT.format(dateTo)));
             return;
@@ -658,6 +660,27 @@ public class ActionTaskService {
             }
             String currentRow = pattern;
             Map<String, Object> variables = curTask.getProcessVariables();
+            if (sID_State_BP != null){
+            	LOG.info("Adding local task varables to consider {}", curTask.getTaskLocalVariables());
+            	variables.putAll(curTask.getTaskLocalVariables());
+            	LOG.info("trying to load properties for the process instance {}", curTask.getProcessInstanceId());
+            	List<HistoricDetail> historiDetails = oHistoryService.createHistoricDetailQuery()
+            	  .formProperties().processInstanceId(curTask.getProcessInstanceId()).list();
+            	LOG.info("Loaded historic details {}", historiDetails);
+            	for (HistoricDetail historicDetail : historiDetails){
+            		if (historicDetail instanceof HistoricFormPropertyEntity){
+            			String propertyId = ((HistoricFormPropertyEntity)historicDetail).getPropertyId();
+            			String value = ((HistoricFormPropertyEntity)historicDetail).getPropertyValue();
+            			LOG.info("Processing form property with id {} and value {}", propertyId, value);
+            			if (!variables.containsKey(propertyId)){
+            			variables.put(propertyId, 
+            					value != null ? value : "");
+            			} else {
+            				LOG.info("Skipping property id {} as it already exists in the map", propertyId);
+            			}
+            		}
+            	}
+            }
             LOG.info("Loaded historic variables for the task {}|{}", curTask.getId(), variables);
             currentRow = replaceFormProperties(currentRow, variables);
             if (saFieldsCalc != null) {
@@ -685,7 +708,7 @@ public class ActionTaskService {
             }
             Map<String, Object> currRow = new HashMap<>();
             for (int i = 0; i < headers.length; i++) {
-                currRow.put(headers[i], values[i]);
+                currRow.put(headers[i], i < values.length ? values[i] : "");
             }
             csvLines.add(currRow);
         }
@@ -2244,8 +2267,8 @@ public class ActionTaskService {
     public Set<String> getGroupIDsByTaskID(Long nID_Task){
         LOG.info(String.format("Start extraction Group IDs for Task [id=%s]", nID_Task));
         Set<String> result = new HashSet<>();
-        List<IdentityLink> identityLinks = oTaskService.getIdentityLinksForTask(nID_Task.toString());
-        if (CollectionUtils.isNotEmpty(identityLinks)){
+        try {
+            List<IdentityLink> identityLinks = oTaskService.getIdentityLinksForTask(nID_Task.toString());
             for (IdentityLink link : identityLinks){
                 LOG.info(String.format("Extraction Group ID from IdentityLink %s", link.toString()));
                 if(link.getGroupId() == null || link.getGroupId().isEmpty()){
@@ -2256,9 +2279,9 @@ public class ActionTaskService {
                             link.getGroupId(), nID_Task, link.toString()));
                 }
             }
-        } else {
-            List<HistoricIdentityLink> historicIdentityLinks = oHistoryService.getHistoricIdentityLinksForTask(nID_Task.toString());
-            if (CollectionUtils.isNotEmpty(historicIdentityLinks)){
+        } catch (NullPointerException e) {
+            try {
+                List<HistoricIdentityLink> historicIdentityLinks = oHistoryService.getHistoricIdentityLinksForTask(nID_Task.toString());
                 for (HistoricIdentityLink link : historicIdentityLinks){
                     LOG.info(String.format("Extraction Group ID from HistoricIdentityLink %s", link.toString()));
                     if(link.getGroupId() == null || link.getGroupId().isEmpty()){
@@ -2269,7 +2292,7 @@ public class ActionTaskService {
                                 link.getGroupId(), nID_Task, link.toString()));
                     }
                 }
-            } else {
+            } catch (NullPointerException eh) {
                 LOG.info(String.format("No found Group id for Task id=%s", nID_Task));
             }
         }

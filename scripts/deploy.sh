@@ -34,6 +34,10 @@ do
 			bSkipTest="$2"
 			shift
 			;;
+		--skip-doc)
+			bSkipDoc="$2"
+			shift
+			;;
 		--deploy-timeout)
 			nSecondsWait="$2"
 			shift
@@ -65,6 +69,9 @@ if [[ $sProject ]]; then
 	export TMPDIR=/tmp/$sProject
 	export TEMP=/tmp/$sProject
 	export TMP=/tmp/$sProject
+fi
+if [ "$bSkipDoc" == "true" ]; then
+	sBuildDoc="site"
 fi
 
 #Определяем сервер для установки
@@ -201,7 +208,7 @@ build_base ()
 		wf-base)
 			echo  "will build $sArrComponent"
 			cd wf-base
-			mvn -P $sVersion clean install site $sBuildArg -Ddependency.locations.enabled=false
+			mvn -P $sVersion clean install $sBuildDoc $sBuildArg -Ddependency.locations.enabled=false
 			cd ..
 			;;
 		"*")
@@ -213,7 +220,7 @@ build_base ()
 			mvn -P $sVersion clean install $sBuildArg
 			cd ..
 			cd wf-base
-			mvn -P $sVersion clean install site $sBuildArg -Ddependency.locations.enabled=false
+			mvn -P $sVersion clean install $sBuildDoc $sBuildArg -Ddependency.locations.enabled=false
 			cd ..
 		   ;;
 		esac
@@ -231,7 +238,7 @@ build_central ()
 			fi
 			build_base $saCompile
 			cd wf-central
-			mvn -P $sVersion clean install site $sBuildArg -Ddependency.locations.enabled=false
+			mvn -P $sVersion clean install $sBuildDoc $sBuildArg -Ddependency.locations.enabled=false
 		fi
 		rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' target/wf-central.war sybase@$sHost:/sybase/.upload/
 		return
@@ -242,7 +249,7 @@ build_central ()
 		fi
 		build_base $saCompile
 		cd wf-central
-		mvn -P $sVersion clean install site $sBuildArg -Ddependency.locations.enabled=false
+		mvn -P $sVersion clean install $sBuildDoc $sBuildArg -Ddependency.locations.enabled=false
 		rm -rf /tmp/$sProject
 		return
 	else
@@ -251,7 +258,7 @@ build_central ()
 		fi
 		build_base $saCompile
 		cd wf-central
-		mvn -P $sVersion clean install site $sBuildArg -Ddependency.locations.enabled=false
+		mvn -P $sVersion clean install $sBuildDoc $sBuildArg -Ddependency.locations.enabled=false
 		rm -rf /tmp/$sProject
 		rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' target/wf-central.war sybase@$sHost:/sybase/.upload/
 	fi
@@ -268,7 +275,7 @@ build_region ()
 			fi
 			build_base $saCompile
 			cd wf-region
-			mvn -P $sVersion clean install site $sBuildArg -Ddependency.locations.enabled=false
+			mvn -P $sVersion clean install $sBuildDoc $sBuildArg -Ddependency.locations.enabled=false
 		fi
 		rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' target/wf-region.war sybase@$sHost:/sybase/.upload/
 		return
@@ -279,7 +286,7 @@ build_region ()
 		fi
 		build_base $saCompile
 		cd wf-region
-		mvn -P $sVersion clean install site $sBuildArg -Ddependency.locations.enabled=false
+		mvn -P $sVersion clean install $sBuildDoc $sBuildArg -Ddependency.locations.enabled=false
 		rm -rf /tmp/$sProject
 		return
 	else
@@ -288,7 +295,7 @@ build_region ()
 		fi
 		build_base $saCompile
 		cd wf-region
-		mvn -P $sVersion clean install site $sBuildArg -Ddependency.locations.enabled=false
+		mvn -P $sVersion clean install $sBuildDoc $sBuildArg -Ddependency.locations.enabled=false
 		rm -rf /tmp/$sProject
 		rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' target/wf-region.war sybase@$sHost:/sybase/.upload/
 	fi

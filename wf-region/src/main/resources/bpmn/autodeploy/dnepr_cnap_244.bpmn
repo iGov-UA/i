@@ -15,9 +15,9 @@
           <activiti:value id="cansel" name="Анулювання дозволу (санітарного паспорту)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="info" name="Зверніть увагу: ця послуга є платною (в розмірі 40,89грн. без ПДВ за один висновок державної санітарно-епідеміологічної експертизи), при заповненні полів треба буде завантажити документ, що засвідчує внесення плати. Ви можете завантажити єлектронну квітанцію, сформовану в інтернет-банку, або платіжне доручення з відміткою банку." type="label" default="Детальні реквізити для оплати знаходяться за &lt;a href=&quot;https://docs.google.com/spreadsheets/d/1aEcQdKrWD2RxOb-gjqBpvEwE1BuO0LsRf7tGd6gYVZA/edit#gid=0&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;"></activiti:formProperty>
-        <activiti:formProperty id="vibor_performer" name="Оберіть виконавця" type="enum" required="true">
-          <activiti:value id="head" name="Головне управління Держсанепідслужби у Дніпропетровській області"></activiti:value>
-          <activiti:value id="rail" name="Управління на Придніпровській залізниці Головного управління Держсанепідслужби на залізничному транспорті"></activiti:value>
+        <activiti:formProperty id="anVibor_performer" name="Оберіть виконавця" type="enum" required="true">
+          <activiti:value id="1" name="Головне управління Держсанепідслужби у Дніпропетровській області"></activiti:value>
+          <activiti:value id="2" name="Управління на Придніпровській залізниці Головного управління Держсанепідслужби на залізничному транспорті"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="adress" name="Місцезнаходження юридичної особи / місце проживання фізичної особи - підприємця" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
@@ -66,7 +66,7 @@
         <activiti:formProperty id="markers2" name="Переоформлення дозволу" type="markers" default="{&quot;motion&quot; : {&quot;ShowFieldsOnCondition_2&quot; : {&quot;aField_ID&quot; : [&quot;file2&quot;,&quot;file7&quot;],&quot;asID_Field&quot; : {&quot;sClient&quot; : &quot;vibor_service&quot;},&quot;sCondition&quot; : &quot;[sClient] == 'restructuring'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="Видача дублікату дозволу" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_3&quot;: {&quot;aField_ID&quot;: [&quot;file8&quot;],&quot;asID_Field&quot; : {&quot;sClient&quot;: &quot;vibor_service&quot;}, &quot;sCondition&quot; : &quot;[sClient] == 'duplicate'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="Анулювання дозволу" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_4&quot;: {&quot;aField_ID&quot;: [&quot;file9&quot;],&quot;asID_Field&quot; : {&quot;sClient&quot;: &quot;vibor_service&quot;}, &quot;sCondition&quot; : &quot;[sClient] == 'cansel'&quot; }}}"></activiti:formProperty>
-        <activiti:formProperty id="markers5" name="Показати виконавця" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_5&quot;: {&quot;aField_ID&quot;: [&quot;vibor_performer&quot;],&quot;asID_Field&quot; : {&quot;sClient&quot;: &quot;sID_Public_SubjectOrganJoin&quot;}, &quot;sCondition&quot; : &quot;[sClient] == 'prav'||[sClient] == 'lev'&quot; }}}"></activiti:formProperty>
+        <activiti:formProperty id="markers5" name="Показати виконавця" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_5&quot;: {&quot;aField_ID&quot;: [&quot;anVibor_performer&quot;],&quot;asID_Field&quot; : {&quot;sClient&quot;: &quot;sID_Public_SubjectOrganJoin&quot;}, &quot;sCondition&quot; : &quot;[sClient] == 'prav'||[sClient] == 'lev'&quot; }}}"></activiti:formProperty>
         <activiti:formProperty id="markers7" name="Видача дозволу Хмельницький" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_7&quot;:{&quot;aField_ID&quot;:[&quot;info&quot;,&quot;file1&quot;,&quot;file22&quot;,&quot;file3&quot;,&quot;file4&quot;,&quot;file5&quot;,&quot;file6&quot;,&quot;file11&quot;,&quot;file12&quot;,&quot;file13&quot;,&quot;file15&quot;,&quot;file16&quot;,&quot;file17&quot;,&quot;file18&quot;,&quot;file19&quot;,&quot;file20&quot;,&quot;file21&quot;],&quot;asID_Field&quot;:{&quot;sClient1&quot;:&quot;vibor_service&quot;,&quot;sClient2&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sClient1] == 'issue' &amp;&amp; [sClient2] == ('hmel_hmelT')&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -160,9 +160,9 @@ execution.setVariable('term', per7)
           <activiti:value id="duplicate" name="Видача дублікату дозволу (санітарного паспорту)"></activiti:value>
           <activiti:value id="cansel" name="Анулювання дозволу (санітарного паспорту)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="vibor_performer" name="Виконавець" type="enum" writable="false">
-          <activiti:value id="head" name="Головне управління Держсанепідслужби у Дніпропетровській області"></activiti:value>
-          <activiti:value id="rail" name="Управління на Придніпровській залізниці Головного управління Держсанепідслужби на залізничному транспорті"></activiti:value>
+        <activiti:formProperty id="anVibor_performer" name="Виконавець" type="enum" writable="false">
+          <activiti:value id="1" name="Головне управління Держсанепідслужби у Дніпропетровській області"></activiti:value>
+          <activiti:value id="2" name="Управління на Придніпровській залізниці Головного управління Держсанепідслужби на залізничному транспорті"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подачи заяви; ;writable=false" type="date"></activiti:formProperty>
         <activiti:formProperty id="name_object" name="Об'єкт, на який видається документ; ;writable=false" type="string"></activiti:formProperty>
@@ -219,9 +219,9 @@ execution.setVariable('term', per7)
           <activiti:value id="duplicate" name="Видача дублікату дозволу (санітарного паспорту)"></activiti:value>
           <activiti:value id="cansel" name="Анулювання дозволу (санітарного паспорту)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="vibor_performer" name="Виконавець" type="enum" writable="false">
-          <activiti:value id="head" name="Головне управління Держсанепідслужби у Дніпропетровській області"></activiti:value>
-          <activiti:value id="rail" name="Управління на Придніпровській залізниці Головного управління Держсанепідслужби на залізничному транспорті"></activiti:value>
+        <activiti:formProperty id="anVibor_performer" name="Виконавець" type="enum" writable="false">
+          <activiti:value id="1" name="Головне управління Держсанепідслужби у Дніпропетровській області"></activiti:value>
+          <activiti:value id="2" name="Управління на Придніпровській залізниці Головного управління Держсанепідслужби на залізничному транспорті"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подачи заяви" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="name_object" name="Об'єкт, на який видається документ; ;writable=false" type="string"></activiti:formProperty>
@@ -242,7 +242,7 @@ execution.setVariable('term', per7)
           <activiti:value id="attr4_finish" name="Відмова громадянину у видачі висновку держсанепідслужбой"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="file10" name="Завантажте скановану копию дозволу (або рішення) держсанепідслужби" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="file10" name="Завантажте скановану копію дозволу (або рішення) держсанепідслужби" type="file" default=" "></activiti:formProperty>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask2" name="Повідомлення адміністратора ЦНАПу" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
