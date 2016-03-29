@@ -46,7 +46,8 @@ angular.module('app')
       function getIDPlaces() {
         var result;
         if ($scope.bShowExtSearch && $scope.data.region !== null) {
-          var places = [$scope.data.region].concat($scope.data.city === null ? $scope.data.region.aCity : $scope.data.city)
+          var places = [$scope.data.city === null ? $scope.data.region : ''].concat($scope.data.city === null ? $scope.data.region.aCity : $scope.data.city);
+
           result = places.map(function(e) { return e.sID_UA; });
         } else {
           result = statesRepository.getIDPlaces();
