@@ -112,6 +112,8 @@ angular.module('app').directive('dropdownOrgan', function (OrganListFactory, $ht
                                     //scope.activitiForm.formProperties[n].sCustomType
 //                                    scope.formData.params[attr.sName].sCustomType = "enum";
 
+                                }else{
+                                  oProperty.enumValues = [];
                                 }
                             }
                             n++;
