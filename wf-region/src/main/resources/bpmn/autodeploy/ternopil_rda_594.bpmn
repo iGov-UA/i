@@ -1,0 +1,478 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="ternopil_rda_594" name="Надання дозволу органу опіки та піклування на вчинення правочину з майном, що перебуває у власності неповнолітніх" isExecutable="true">
+    <startEvent id="startevent1" name="Start" activiti:initiator="initiator">
+      <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні данні" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="date_today" name="Вкажіть сьогоднішню дату" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="adres_1" name="Адреса реєстрації громадянина" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Телефон" type="string" default="+380"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Ваш e-mail; на цей e-mail Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="lastName_UA1" name="Прізвище; другого з батьків (опікуна, піклувальника)" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="firstName_UA1" name="Ім'я; другого з батьків (опікуна, піклувальника)" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="middleName_UA1" name="По Батькові; другого з батьків (опікуна, піклувальника)" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="privatePhone" name="Телефон" type="string" default="+380"></activiti:formProperty>
+        <activiti:formProperty id="sChildren" name="Укажіть кількість дітей; стосовно майна який необхідно дозвіл" type="enum" required="true">
+          <activiti:value id="one" name="1"></activiti:value>
+          <activiti:value id="two" name="2"></activiti:value>
+          <activiti:value id="three" name="3"></activiti:value>
+          <activiti:value id="four" name="4"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="pib_child_1" name="ПІБ дитини" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="date_child_1" name="Дата народження дитини" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="pib_child_2" name="ПІБ другої дитини" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="date_child_2" name="Дата народження другої дитини" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="pib_child_3" name="ПІБ третьої дитини" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="date_child_3" name="Дата народження третьої дитини" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="pib_child_4" name="ПІБ четвертої дитини" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="date_child_4" name="Дата народження четвертої дитини" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="asPravochyn" name="Оберіть вид правочину на який Ви хочете отримати дозвіл" type="enum" default=" " required="true">
+          <activiti:value id="sVidchuzh" name="на відчуження (заставу, міну, придбання житла, прийняття в дар, продаж акцій) майна, право власності (користування) на яке має малолітня (неповнолітня ) дитина"></activiti:value>
+          <activiti:value id="sAvto" name="на перереєстрацію автомобіля, який належить малолітній (неповнолітній ) дитині"></activiti:value>
+          <activiti:value id="sMayno" name="на виділення частки майна у спільній сумісній власності малолітньої (неповнолітньої ) дитини"></activiti:value>
+          <activiti:value id="sHroshi" name="на зняття грошових заощаджень від імені малолітньої (неповнолітньої) дитини"></activiti:value>
+          <activiti:value id="sZemlya" name="на видачу державного акту на право власності на земельну ділянку на ім’я малолітніх (неповнолітніх) дітей"></activiti:value>
+          <activiti:value id="sInshe" name="інше"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="inshi" name="На що саме Ви хочете отримати дозвіл?" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="prychyna" name="Вкажіть причину вчинення правочину" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="address_mayno" name="Вкажіть адресу квартири (майна) на відчуження; " type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="adress_kvart" name="Вкажіть адресу квартири, якою дитина забезпечується взамін; у разі відчуження житла" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="data_mayno" name="Дата, до якої буде надано підтверджуючі документи на нове житло дитини; повинні бути надані органу опіки та піклування у місяцний строк" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="avto_marka" name="Вкажіть марку авто" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="avto_numb" name="Вкажіть номерний знак авто" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bank_kasa" name="Вкажіть назву банку, ощадної каси в якій знаходяться грошові заощадження" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="ploshcha" name="Вкажіть площу земельної ділянки" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="adress_Zemlya" name="Вкажіть адресу земельної ділянки" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="passport" name="Копії паспорта другого з батьків (опікунів, піклувальників)" type="file" ></activiti:formProperty>
+        <activiti:formProperty id="kod" name="Копія довідки про присвоєння реєстраційних номерів облікової картки платника податків другого з батьків (опікунів, піклувальників)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="svidotstvo" name="Копія свідотства про народження дитини (дітей); у разі декількох дітей прохання завантажувати одним архівом" type="file"></activiti:formProperty>
+        <activiti:formProperty id="dovidka" name="Довідка з місця проживання, про склад сім'ї та реєстрацію (Форма-3) або витяг з домової книги" type="file"></activiti:formProperty>
+        <activiti:formProperty id="rishennya_mkv_opikun" name="Копія рішення виконавчого комітету міської ради про встановлення опіки над дитиною (для опікунів, піклувальників)" type="file" ></activiti:formProperty>
+        <activiti:formProperty id="rishennya_mkv_mayno" name="Копія рішення виконавчого комітету міської ради про встановлення опіки над майном дитини (для опікунів, піклувальників)" type="file" ></activiti:formProperty>
+        <activiti:formProperty id="sviditstvo_odr" name="Копія свідоцтва про укладення або розірвання шлюбу між батьками дитини (у разі наявності)" type="file" ></activiti:formProperty>
+        <activiti:formProperty id="doc_mayno" name="Документи на право власності на відчужуване майно, де малолітні (неповнолітні) діти мають право власності (користування)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="doc_vytyag" name="Витяг з реєстру прав власності на нерухоме відчужуване майно, виданий відповідно до законодавства; у разі наявності" type="file"></activiti:formProperty>
+        <activiti:formProperty id="doc_avto" name="Документ, що підтверджеє право власності на автомобіль" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="doc_hroshi" name="Документ, що підтверджує право володіння дитини грошовими заощадженнями" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="doc_zemlya" name="Документ, що підтверджує право власності (кориcтування) на земельну ділянку" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="document" name="Документ, що підтверджує право власності, володіння або користування на дитини; стосовно чого вчинятиметься правочин" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('ternopil/tern_594.json')}"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <sequenceFlow id="flow64" sourceRef="startevent1" targetRef="servicetask8"></sequenceFlow>
+    <serviceTask id="servicetask8" name="Повідомлення про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>sofia.danylevych@gmail.com</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення громадянина: Надання дозволу органу опіки та піклування на вчинення правочину з майном, що перебуває у власності неповнолітніх]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow68" sourceRef="servicetask8" targetRef="servicetask6"></sequenceFlow>
+    <serviceTask id="servicetask6" name="Повідомлення успішне замовлення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення: Надання дозволу органу опіки та піклування на вчинення правочину з майном, що перебуває у власності неповнолітніх]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+ &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+&lt;p&gt;
+Ваш запит був успішно зареєстрований.&lt;br&gt; 	
+Ви отримаєте додаткове повідомлення за результатами розгляду Вашого звернення.
+&lt;/p&gt;
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan},&lt;br&gt;
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow65" sourceRef="servicetask6" targetRef="usertask1"></sequenceFlow>
+    <userTask id="usertask1" name="Перевірка документів операціоністом" activiti:candidateGroups="pravochyny_${sID_Public_SubjectOrganJoin}">
+      <extensionElements>
+        <activiti:formProperty id="clFio" name="ПІБ заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="adres_1" name="Адреса реєстрації громадянина" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Телефон" type="string" default="+380" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Ваш e-mail; на цей e-mail Ви отримаєте результат обробки Вашого звернення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="lastName_UA1" name="Прізвище; другого з батьків (опікуна, піклувальника)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="firstName_UA1" name="Ім'я; другого з батьків (опікуна, піклувальника)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="middleName_UA1" name="По Батькові; другого з батьків (опікуна, піклувальника)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="privatePhone" name="Телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sChildren" name="Укажіть кількість дітей; стосовно майна який необхідно дозвіл" type="enum" writable="false">
+          <activiti:value id="three" name="1"></activiti:value>
+          <activiti:value id="four" name="2"></activiti:value>
+          <activiti:value id="five" name="3"></activiti:value>
+          <activiti:value id="six" name="4"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="pib_child_1" name="ПІБ дитини" type="string" writable="false" required="true"></activiti:formProperty>
+        <activiti:formProperty id="date_child_1" name="Дата народження дитини" type="string" writable="false" required="true"></activiti:formProperty>
+        <activiti:formProperty id="pib_child_2" name="ПІБ другої дитини" type="string" writable="false" required="true"></activiti:formProperty>
+        <activiti:formProperty id="date_child_2" name="Дата народження другої дитини" type="string" writable="false" required="true"></activiti:formProperty>
+        <activiti:formProperty id="pib_child_3" name="ПІБ третьої дитини" type="string" writable="false" required="true"></activiti:formProperty>
+        <activiti:formProperty id="date_child_3" name="Дата народження третьої дитини" type="string" writable="false" required="true"></activiti:formProperty>
+        <activiti:formProperty id="pib_child_4" name="ПІБ четвертої дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_child_4" name="Дата народження четвертої дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asPravochyn" name="Оберіть вид правочину на який Ви хочете отримати дозвіл" type="enum" writable="false" required="true">
+          <activiti:value id="sVidchuzh" name="на відчуження (заставу, міну, придбання житла, прийняття в дар, продаж акцій) майна, право власності (користування) на яке має малолітня (неповнолітня ) дитина"></activiti:value>
+          <activiti:value id="sAvto" name="на перереєстрацію автомобіля, який належить малолітній (неповнолітній ) дитині"></activiti:value>
+          <activiti:value id="sMayno" name="на виділення частки майна у спільній сумісній власності малолітньої (неповнолітньої ) дитини"></activiti:value>
+          <activiti:value id="sHroshi" name="на зняття грошових заощаджень від імені малолітньої (неповнолітньої) дитини"></activiti:value>
+          <activiti:value id="sZemlya" name="на видачу державного акту на право власності на земельну ділянку на ім’я малолітніх (неповнолітніх) дітей"></activiti:value>
+          <activiti:value id="sInshe" name="інше"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sInshi" name="На що саме Ви хочете отримати дозвіл?" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPrychyna" name="Вкажіть причину вчинення правочину" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAddress_mayno" name="Вкажіть адресу квартири (майна) на відчуження; " type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdress_kvart" name="Вкажіть адресу квартири, якою дитина забезпечується взамін; у разі відчуження житла" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sData_mayno" name="Дата, до якої буде надано підтверджуючі документи на нове житло дитини; повинні бути надані органу опіки та піклування у місяцний строк" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAvto_marka" name="Вкажіть марку авто" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAvto_numb" name="Вкажіть номерний знак авто" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBank_kasa" name="Вкажіть назву банку, ощадної каси в якій знаходяться грошові заощадження" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPloshcha" name="Вкажіть площу земельної ділянки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdress_Zemlya" name="Вкажіть адресу земельної ділянки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="passport" name="Копії паспорта другого з батьків (опікунів, піклувальників)" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="kod" name="Копія довідки про присвоєння реєстраційних номерів облікової картки платника податків другого з батьків (опікунів, піклувальників)" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="svidotstvo" name="Копія свідотства про народження дитини (дітей); у разі декількох дітей прохання завантажувати одним архівом" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="dovidka" name="Довідка з місця проживання, про склад сім'ї та реєстрацію (Форма-3) або витяг з домової книги" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="rishennya_mkv_opikun" name="Копія рішення виконавчого комітету міської ради про встановлення опіки над дитиною (для опікунів, піклувальників)" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="rishennya_mkv_mayno" name="Копія рішення виконавчого комітету міської ради про встановлення опіки над майном дитини (для опікунів, піклувальників)" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sviditstvo_odr" name="Копія свідоцтва про укладення або розірвання шлюбу між батьками дитини (у разі наявності)" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="doc_mayno" name="Документи на право власності на відчужуване майно, де малолітні (неповнолітні) діти мають право власності (користування)" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="doc_vytyag" name="Витяг з реєстру прав власності на нерухоме відчужуване майно, виданий відповідно до законодавства; у разі наявності" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="doc_avto" name="Документ, що підтверджеє право власності на автомобіль" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="doc_hroshi" name="Документ, що підтверджує право володіння дитини грошовими заощадженнями" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="doc_zemlya" name="Документ, що підтверджує право власності (коритування) на земельну ділянку" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asWorkerDecision" name="Рішення операціоніста" type="enum" required="true">
+          <activiti:value id="accept" name="Прийняти документи для розгляду"></activiti:value>
+          <activiti:value id="decline" name="Відмовити у реєстрації звернення"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у реєстрації звернення, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="docID" name="Реєстраційний номер" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/ternopil_oda_209.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow50" sourceRef="usertask1" targetRef="exclusivegateway2"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow57" name="${asWorkerDecision=='decline'}" sourceRef="exclusivegateway2" targetRef="servicetask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asWorkerDecision=='decline'}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask4" name="Email - відмова" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення на тему: Надання дозволу органу опіки та піклування на вчинення правочину з майном, що перебуває у власності неповнолітніх]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+&lt;p&gt;На жаль змушені Вам відмовити у реєстрації звернення.&lt;/p&gt;
+&lt;p&gt;Причина в наступному:&lt;br&gt;
+${decisionComment}&lt;/p&gt;
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan},&lt;br&gt;
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow58" sourceRef="servicetask4" targetRef="endevent2"></sequenceFlow>
+    <endEvent id="endevent2" name="End"></endEvent>
+    <sequenceFlow id="flow59" name="${asWorkerDecision=='accept'} " sourceRef="exclusivegateway2" targetRef="servicetask5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asWorkerDecision=='accept'}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask5" name="Звернення передане на розгляд" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення на тему: Надання дозволу органу опіки та піклування на вчинення правочину з майном, що перебуває у власності неповнолітніх]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+                                    &lt;p&gt;
+                                        Ваш запит щодо отримання дозволу органу опіки та піклування на вчинення правочину з майном, що перебуває у власності неповнолітніх переданий на розгляд Службі у справах дітей.&lt;br /&gt;
+                                    	Ви отримаєте відповідь відповідно до законодавства.
+                                    &lt;/p&gt;
+									[pattern/mail/_common_signature_start.html]
+									${sNameOrgan},&lt;p&gt;
+									[pattern/mail/_common_signature_end.html]
+									[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow60" sourceRef="servicetask5" targetRef="usertask2"></sequenceFlow>
+    <userTask id="usertask2" name="Результат розгляду запиту" activiti:candidateGroups="pravochyny_${sID_Public_SubjectOrganJoin}">
+      <extensionElements>
+        <activiti:formProperty id="docID" name="Реєстраційний номер" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clFio" name="ПІБ заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="adres_1" name="Адреса реєстрації громадянина" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Телефон" type="string" default="+380" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Ваш e-mail; на цей e-mail Ви отримаєте результат обробки Вашого звернення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="lastName_UA1" name="Прізвище; другого з батьків (опікуна, піклувальника)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="firstName_UA1" name="Ім'я; другого з батьків (опікуна, піклувальника)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="middleName_UA1" name="По Батькові; другого з батьків (опікуна, піклувальника)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="privatePhone" name="Телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sChildren" name="Укажіть кількість дітей; стосовно майна який необхідно дозвіл" type="enum" writable="false">
+          <activiti:value id="three" name="1"></activiti:value>
+          <activiti:value id="four" name="2"></activiti:value>
+          <activiti:value id="five" name="3"></activiti:value>
+          <activiti:value id="six" name="4"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="pib_child_1" name="ПІБ дитини" type="string" writable="false" required="true"></activiti:formProperty>
+        <activiti:formProperty id="date_child_1" name="Дата народження дитини" type="string" writable="false" required="true"></activiti:formProperty>
+        <activiti:formProperty id="pib_child_2" name="ПІБ другої дитини" type="string" writable="false" required="true"></activiti:formProperty>
+        <activiti:formProperty id="date_child_2" name="Дата народження другої дитини" type="string" writable="false" required="true"></activiti:formProperty>
+        <activiti:formProperty id="pib_child_3" name="ПІБ третьої дитини" type="string" writable="false" required="true"></activiti:formProperty>
+        <activiti:formProperty id="date_child_3" name="Дата народження третьої дитини" type="string" writable="false" required="true"></activiti:formProperty>
+        <activiti:formProperty id="pib_child_4" name="ПІБ четвертої дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_child_4" name="Дата народження четвертої дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asPravochyn" name="Оберіть вид правочину на який Ви хочете отримати дозвіл" type="enum" writable="false" required="true">
+          <activiti:value id="sVidchuzh" name="на відчуження (заставу, міну, придбання житла, прийняття в дар, продаж акцій) майна, право власності (користування) на яке має малолітня (неповнолітня ) дитина"></activiti:value>
+          <activiti:value id="sAvto" name="на перереєстрацію автомобіля, який належить малолітній (неповнолітній ) дитині"></activiti:value>
+          <activiti:value id="sMayno" name="на виділення частки майна у спільній сумісній власності малолітньої (неповнолітньої ) дитини"></activiti:value>
+          <activiti:value id="sHroshi" name="на зняття грошових заощаджень від імені малолітньої (неповнолітньої) дитини"></activiti:value>
+          <activiti:value id="sZemlya" name="на видачу державного акту на право власності на земельну ділянку на ім’я малолітніх (неповнолітніх) дітей"></activiti:value>
+          <activiti:value id="sInshe" name="інше"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sInshi" name="На що саме Ви хочете отримати дозвіл?" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPrychyna" name="Вкажіть причину вчинення правочину" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAddress_mayno" name="Вкажіть адресу квартири (майна) на відчуження; " type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdress_kvart" name="Вкажіть адресу квартири, якою дитина забезпечується взамін; у разі відчуження житла" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sData_mayno" name="Дата, до якої буде надано підтверджуючі документи на нове житло дитини; повинні бути надані органу опіки та піклування у місяцний строк" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAvto_marka" name="Вкажіть марку авто" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAvto_numb" name="Вкажіть номерний знак авто" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBank_kasa" name="Вкажіть назву банку, ощадної каси в якій знаходяться грошові заощадження" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPloshcha" name="Вкажіть площу земельної ділянки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdress_Zemlya" name="Вкажіть адресу земельної ділянки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="passport" name="Копії паспорта другого з батьків (опікунів, піклувальників)" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="kod" name="Копія довідки про присвоєння реєстраційних номерів облікової картки платника податків другого з батьків (опікунів, піклувальників)" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="svidotstvo" name="Копія свідотства про народження дитини (дітей); у разі декількох дітей прохання завантажувати одним архівом" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="dovidka" name="Довідка з місця проживання, про склад сім'ї та реєстрацію (Форма-3) або витяг з домової книги" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="rishennya_mkv_opikun" name="Копія рішення виконавчого комітету міської ради про встановлення опіки над дитиною (для опікунів, піклувальників)" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="rishennya_mkv_mayno" name="Копія рішення виконавчого комітету міської ради про встановлення опіки над майном дитини (для опікунів, піклувальників)" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sviditstvo_odr" name="Копія свідоцтва про укладення або розірвання шлюбу між батьками дитини (у разі наявності)" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="doc_mayno" name="Документи на право власності на відчужуване майно, де малолітні (неповнолітні) діти мають право власності (користування)" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="doc_vytyag" name="Витяг з реєстру прав власності на нерухоме відчужуване майно, виданий відповідно до законодавства; у разі наявності" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="doc_avto" name="Документ, що підтверджеє право власності на автомобіль" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="doc_hroshi" name="Документ, що підтверджує право володіння дитини грошовими заощадженнями" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="doc_zemlya" name="Документ, що підтверджує право власності (коритування) на земельну ділянку" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asWorkerDecision1" name="За результатом розгляду" type="enum" required="true">
+          <activiti:value id="rezscan" name="Дозвіл готовий"></activiti:value>
+          <activiti:value id="rezpost" name="Готова відмова у видачі дозволу"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="decisionComment1" name="Якщо неможливо надати відповідь на запит громадянина, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="docFile" name="Додати скан-копію офіційної відповіді" type="file"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow61" sourceRef="usertask2" targetRef="exclusivegateway1"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow52" name="${asWorkerDecision1=='rezscan'}" sourceRef="exclusivegateway1" targetRef="servicetask1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asWorkerDecision1=='rezscan'}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask1" name="Е-мейл з готовим дозволом" activiti:delegateExpression="#{MailTaskWithAttachments}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення на тему: Надання дозволу органу опіки та піклування на вчинення правочину з майном, що перебуває у власності неповнолітніх]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+          							&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+                                    &lt;p&gt;
+                                        Ваш запит щодо отримання дозволу органу опіки та піклування на вчинення правочину з майном, що перебуває у власності неповнолітніх опрацьовано.&lt;br /&gt;
+                                    	Ви можете знайти офіційну скан-копію відповідь у додатках до листа.
+                                    &lt;/p&gt;
+                                    &lt;p&gt;
+									Будь ласка, оцініть якість надання послуги за допомогою форми нижче.
+                                    &lt;/p&gt;
+                                    [pattern/mail/_common_signature_start.html]
+                                    ${sNameOrgan},&lt;br&gt;
+                                    [pattern/mail/_common_signature_end.html]
+									[pattern/mail/_common_feedback.html]
+									[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>"${docFile}</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow51" sourceRef="servicetask1" targetRef="endevent1"></sequenceFlow>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <sequenceFlow id="flow53" name="${asWorkerDecision1=='rezpost'}" sourceRef="exclusivegateway1" targetRef="servicetask2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asWorkerDecision1=='rezpost'}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask2" name="Е-мейл з відмовою у наданні дозволу" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення на тему: Надання дозволу органу опіки та піклування на вчинення правочину з майном, що перебуває у власності неповнолітніх]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+                                    &lt;p&gt;
+                                        Ваш запит щодо дозволу органу опіки та піклування на вчинення правочину з майном, що перебуває у власності неповнолітніх опрацьовано.&lt;br /&gt;
+                                    	Відповідь буде надіслана Вам на адресу ${bankIdAddress}.
+                                    &lt;/p&gt;
+                                    &lt;p&gt;
+									Будь ласка, оцініть якість надання послуги за допомогою форми нижче.
+                                    &lt;/p&gt;
+                                    [pattern/mail/_common_signature_start.html]
+                                    ${sNameOrgan},&lt;br&gt;
+                                    [pattern/mail/_common_signature_end.html]
+									[pattern/mail/_common_feedback.html]
+									[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow54" sourceRef="servicetask2" targetRef="endevent1"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_ternopil_rda_594">
+    <bpmndi:BPMNPlane bpmnElement="ternopil_rda_594" id="BPMNPlane_ternopil_rda_594">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="114.0" y="60.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
+        <omgdc:Bounds height="64.0" width="131.0" x="66.0" y="122.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
+        <omgdc:Bounds height="74.0" width="105.0" x="79.0" y="219.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="64.0" width="145.0" x="59.0" y="343.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="111.0" y="431.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
+        <omgdc:Bounds height="61.0" width="105.0" x="344.0" y="421.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
+        <omgdc:Bounds height="35.0" width="35.0" x="560.0" y="434.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
+        <omgdc:Bounds height="64.0" width="105.0" x="79.0" y="481.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
+        <omgdc:Bounds height="64.0" width="105.0" x="79.0" y="570.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="240.0" y="581.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="97.0" width="105.0" x="344.0" y="661.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="560.0" y="608.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
+        <omgdc:Bounds height="97.0" width="105.0" x="344.0" y="512.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow64" id="BPMNEdge_flow64">
+        <omgdi:waypoint x="131.0" y="95.0"></omgdi:waypoint>
+        <omgdi:waypoint x="131.0" y="122.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow68" id="BPMNEdge_flow68">
+        <omgdi:waypoint x="131.0" y="186.0"></omgdi:waypoint>
+        <omgdi:waypoint x="131.0" y="219.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow65" id="BPMNEdge_flow65">
+        <omgdi:waypoint x="131.0" y="293.0"></omgdi:waypoint>
+        <omgdi:waypoint x="131.0" y="343.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow50" id="BPMNEdge_flow50">
+        <omgdi:waypoint x="131.0" y="407.0"></omgdi:waypoint>
+        <omgdi:waypoint x="131.0" y="431.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow57" id="BPMNEdge_flow57">
+        <omgdi:waypoint x="151.0" y="451.0"></omgdi:waypoint>
+        <omgdi:waypoint x="344.0" y="451.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="6.0" y="468.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow58" id="BPMNEdge_flow58">
+        <omgdi:waypoint x="449.0" y="451.0"></omgdi:waypoint>
+        <omgdi:waypoint x="560.0" y="451.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow59" id="BPMNEdge_flow59">
+        <omgdi:waypoint x="111.0" y="451.0"></omgdi:waypoint>
+        <omgdi:waypoint x="131.0" y="481.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="80.0" y="368.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow60" id="BPMNEdge_flow60">
+        <omgdi:waypoint x="131.0" y="545.0"></omgdi:waypoint>
+        <omgdi:waypoint x="131.0" y="570.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow61" id="BPMNEdge_flow61">
+        <omgdi:waypoint x="184.0" y="602.0"></omgdi:waypoint>
+        <omgdi:waypoint x="240.0" y="601.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow52" id="BPMNEdge_flow52">
+        <omgdi:waypoint x="260.0" y="621.0"></omgdi:waypoint>
+        <omgdi:waypoint x="396.0" y="661.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="80.0" y="620.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow51" id="BPMNEdge_flow51">
+        <omgdi:waypoint x="396.0" y="661.0"></omgdi:waypoint>
+        <omgdi:waypoint x="577.0" y="643.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow53" id="BPMNEdge_flow53">
+        <omgdi:waypoint x="280.0" y="601.0"></omgdi:waypoint>
+        <omgdi:waypoint x="344.0" y="560.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="390.0" y="597.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow54" id="BPMNEdge_flow54">
+        <omgdi:waypoint x="449.0" y="560.0"></omgdi:waypoint>
+        <omgdi:waypoint x="577.0" y="608.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
