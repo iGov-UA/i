@@ -1726,7 +1726,7 @@ public class ActionTaskService {
         Long nID_Task;
         ArrayList<String> taskIDsList = new ArrayList<>();
         List<String> resultTaskIDs = null;
-        if (sID_Order != null) {
+        if (sID_Order != null && !sID_Order.isEmpty() && !sID_Order.equals("")) {
             LOG.info("start process getting Task Data by sID_Order={}", sID_Order);
             Long ProtectedID = getIDProtectedFromIDOrder(sID_Order);
             String snID_Process = getOriginalProcessInstanceId(ProtectedID);
