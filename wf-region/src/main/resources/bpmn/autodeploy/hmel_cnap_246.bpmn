@@ -33,6 +33,7 @@
         <activiti:formProperty id="remail" name="пошта району" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="rmail" name="пошти" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="rchange" name="зміни для принтформи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="rshapka" name="шапка принт форми" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers112" name="перефразування для принтформи прізвища" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_112&quot;:{&quot;aField_ID&quot;:[&quot;rchange&quot;],&quot;sValue&quot;:&quot;прізвище&quot;,&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;change&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'last_name'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers113" name="перефразування для принтформи імені" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_113&quot;:{&quot;aField_ID&quot;:[&quot;rchange&quot;],&quot;sValue&quot;:&quot;ім'я&quot;,&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;change&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'first_name'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers114" name="перефразування для принтформи по-батькові" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_114&quot;:{&quot;aField_ID&quot;:[&quot;rchange&quot;],&quot;sValue&quot;:&quot;по-батькові&quot;,&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;change&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'middle_name'&quot;}}}"></activiti:formProperty>
@@ -67,12 +68,12 @@
         <activiti:formProperty id="room" name="Укажіть кабінет, де буде проводитися співбесіда" type="string"></activiti:formProperty>
         <activiti:formProperty id="pib_posadovec" name="П.І.Б. посадової особи, що проводитиме співбесіду" type="string"></activiti:formProperty>
         <activiti:formProperty id="comment_3" name="Додаткові відомості щодо візиту (заповніть у разі необхідності)" type="string"></activiti:formProperty>
-       
         <activiti:formProperty id="comment_1" name="У разі відхилення звернення внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="comment_5" name="Якщо назви якогось документу не вистачає у переліку в заяві - впишіть його назву у це поле" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/khmelnitsky/hmel_cnap_246_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/khmelnitsky/hmel_cnap_246_print.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
         <activiti:formProperty id="rchange" name="зміни для принтформи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="rshapka" name="шапка принт форми" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -251,15 +252,18 @@ ${comment_1}&lt;br /&gt;
       <script>
 var per1 = 'remail'
 var per2 = 'rNumber'
+var per3 = 'rshapka'
 var per4 = 'rName'
 if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'cnap_hmel_hmelT'){
 per1 = 'darja.grek@gmail.com'
 per2 = '533'
+per3 = 'До центру надання адміністративних послуг'
 per4 = 'ЦНАП Хмельницької міськради'
 }
 if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'Children_Tern'){
 per1 = 'darja.grek@gmail.com'
 per2 = '640'
+per3 = 'Службі у справах дітей Тернопільсокї РДА'
 per4 = 'Служба у справах дітей Тернопільської РДА'
 }
 execution.setVariable('remail', per1)
