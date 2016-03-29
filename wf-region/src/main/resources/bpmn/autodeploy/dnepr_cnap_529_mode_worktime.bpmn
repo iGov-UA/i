@@ -20,9 +20,10 @@
         <activiti:formProperty id="sTime_Full" name="Початок та закінчення роботи (з .. до ..)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sTime_Break" name="Перерва (з .. до ..)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sWeekend" name="Вихідні дні" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sSpecialConditions" name="Особливі умови роботи" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSpecialConditions" name="Особливі умови роботи" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="nFileDerzReestration" name="Копія документа про державну реєстрацію суб’єкта господарювання" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFileOwnership" name="Копія документа, що засвідчує право власності на приміщення, де буде здійснюватись торгівля (надання послуг) або договору оренди приміщення (у разі оренди)" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFileDozvilSanEpedimSluzbi" name="Дозвіл Санепідслужби; Для закладів громадського харчування" type="file"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Центр надання адмінпослуг" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="пошта оргструктури (району)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адрес оргструктури (району)" type="invisible"></activiti:formProperty>
@@ -59,11 +60,12 @@
           <activiti:value id="reject" name="Відмовити у розгляду погодження"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_1" name="У разі відмови внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="markers21" name="Настроювання принтформи " type="markers" default="${markerService.loadFromFile('dnepr_cnap_529_mode_worktime_2_Print.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody" name="[pattern/print/skv/dnepr_cnap_529_mode_worktime_print.html]" type="invisible" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFileDerzReestration}, ${nFileOwnership}</activiti:expression>
+            <activiti:expression>${nFileDerzReestration}, ${nFileOwnership}, ${nFileDozvilSanEpedimSluzbi}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -92,7 +94,9 @@
           <activiti:value id="accept" name="Погодження режиму роботи здійснено, очікуємо суб`єкта звернення"></activiti:value>
           <activiti:value id="reject" name="У погодженні режиму роботи відмовлено"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="nFile_Report" name="Сканкопія погодженого режиму роботи або відмови" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Report" name="Сканкопія погодженого режиму роботи або відмови" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markers21" name="Настроювання принтформи " type="markers" default="${markerService.loadFromFile('dnepr_cnap_529_mode_worktime_2_Print.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern/print/skv/dnepr_cnap_529_mode_worktime_print.html]" type="invisible" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask2" name="Відпрвка e-mail з відмовою" activiti:delegateExpression="#{MailTaskWithAttachments}">

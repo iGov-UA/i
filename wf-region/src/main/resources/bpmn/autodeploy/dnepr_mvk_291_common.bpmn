@@ -561,7 +561,7 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення до Управління житлового господарства міської ради.]]></activiti:string>
+          <activiti:string><![CDATA[Звернення до Дніпропетровської міської ради.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -1157,7 +1157,7 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення в міську раду.]]></activiti:string>
+          <activiti:string><![CDATA[Звернення до Дніпропетровської міської ради.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -1852,6 +1852,7 @@ p {font-size: 14px;}
         &lt;p&gt;&lt;b&gt;Який (яка) мешкає (зареєстровано) за адресою:&lt;/b&gt;&lt;/p&gt;
         &lt;p&gt;${sAdress}&lt;/p&gt;
         &lt;p&gt;телефон: ${sPhone}&lt;/p&gt;
+        &lt;p&gt;Номер звернення iGov: ${sID_Order}&lt;/p&gt;
     &lt;/div&gt;
     &lt;div class="clear"&gt;&lt;/div&gt;
     &lt;div class="line_col ta-c m-t-25"&gt;
@@ -1877,7 +1878,7 @@ p {font-size: 14px;}
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення до міської ради.]]></activiti:string>
+          <activiti:string><![CDATA[Звернення до Дніпропетровської міської ради.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -1886,6 +1887,7 @@ p {font-size: 14px;}
 Ваше звернення до Дніпропетровської міської ради - опрацьовано. &lt;br /&gt;
 Статус документа: ${sStatusName_UkrDoc}&lt;br&gt;
 Номер документа: ${sID_Document_UkrDoc}&lt;br&gt;
+Аттач: ${anID_Attach_UkrDoc}&lt;br&gt;
 &lt;/p&gt;
 Телефон для довідок: (056) 744-63-51&lt;br /&gt;
 &lt;br /&gt;
@@ -4386,6 +4388,13 @@ execution.setVariable('sNameDepartment', per2)</script>
         <activiti:formProperty id="sStatusName_UkrDoc" name="Status UkrDoc" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sHead_Document_UkrDoc" name="Head UkrDoc" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody_Document_UkrDoc" name="Body UkrDoc" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_Document" name="sID_Document" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="anID_Attach_UkrDoc" name="anID_Attach_UkrDoc" type="string" required="true"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${GetDocument_UkrDoc}">
+          <activiti:field name="sID_Document">
+            <activiti:expression>${sID_Document}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow56" sourceRef="exclusivegateway2" targetRef="usertask10"></sequenceFlow>
