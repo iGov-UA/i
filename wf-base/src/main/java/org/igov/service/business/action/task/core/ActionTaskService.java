@@ -664,16 +664,18 @@ public class ActionTaskService {
             	LOG.info("Adding local task varables to consider {}", curTask.getTaskLocalVariables());
             	variables.putAll(curTask.getTaskLocalVariables());
             	LOG.info("trying to load properties for the process instance {}", curTask.getProcessInstanceId());
-//            	List<HistoricDetail> historiDetails = oHistoryService.createHistoricDetailQuery()
-//            	  .formProperties().processInstanceId(curTask.getProcessInstanceId()).list();
-//            	LOG.info("Loaded historic details {}", historiDetails);
-//            	for (HistoricDetail historicDetail : historiDetails){
-//            		if (historicDetail instanceof HistoricFormPropertyEntity){
-//            			variables.put(((HistoricFormPropertyEntity)historicDetail).getPropertyId(), 
-//            					((HistoricFormPropertyEntity)historicDetail).getPropertyValue() != null ?
-//            							((HistoricFormPropertyEntity)historicDetail).getPropertyValue() : "");
-//            		}
-//            	}
+            	List<HistoricDetail> historiDetails = oHistoryService.createHistoricDetailQuery()
+            	  .formProperties().processInstanceId(curTask.getProcessInstanceId()).list();
+            	LOG.info("Loaded historic details {}", historiDetails);
+            	for (HistoricDetail historicDetail : historiDetails){
+            		if (historicDetail instanceof HistoricFormPropertyEntity){
+            			String propertyId = ((HistoricFormPropertyEntity)historicDetail).getPropertyId();
+            			String value = ((HistoricFormPropertyEntity)historicDetail).getPropertyValue();
+            			LOG.info("Processing form property with id {} and avlue {}", propertyId, value);
+            			variables.put(propertyId, 
+            					value != null ? value : "");
+            		}
+            	}
             }
             LOG.info("Loaded historic variables for the task {}|{}", curTask.getId(), variables);
             currentRow = replaceFormProperties(currentRow, variables);
