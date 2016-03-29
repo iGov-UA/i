@@ -35,7 +35,9 @@ module.exports.getHistoryEvents = function(req, res) {
             'password': options.password
         },
         'qs': {
-            'nID_Subject': req.session.subject.nID
+            'nID_Subject': req.session.subject.nID,
+            'nID_HistoryEvent_Service': req.params.nID_HistoryEvent_Service,
+            'bGrouped': req.params.nID_HistoryEvent_Service ? false : true
         }
     }, callback);
 };

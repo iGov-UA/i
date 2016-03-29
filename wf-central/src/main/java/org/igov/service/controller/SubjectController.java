@@ -672,18 +672,7 @@ public class SubjectController {
                     HttpStatus.BAD_REQUEST);
         }
 
-        // Если задан nID_SubjectAccountType то сначала находим сущность SubjectAccountType
-        SubjectAccountType subjectAccountType = null;
-        if (nID_SubjectAccountType != null) {
-            subjectAccountType = subjectAccountTypeDao.findByIdExpected(nID_SubjectAccountType);
-            if (subjectAccountType == null) {
-                throw new CommonServiceException(
-                        ExceptionCommonController.BUSINESS_ERROR_CODE,
-                        "Error! Не найдена тип аккаунта для id=" + nID_SubjectAccountType, HttpStatus.NOT_FOUND);
-            }
-        }
-
-        subjectAccounts = subjectAccountDao.findSubjectAccounts(nID_Subject, sLogin, nID_Server, subjectAccountType);
+        subjectAccounts = subjectAccountDao.findSubjectAccounts(nID_Subject, sLogin, nID_Server, nID_SubjectAccountType);
         if (subjectAccounts == null || subjectAccounts.size() == 0) {
             throw new CommonServiceException(
                     ExceptionCommonController.BUSINESS_ERROR_CODE,
@@ -777,20 +766,9 @@ public class SubjectController {
                     HttpStatus.BAD_REQUEST);
         }
 
-        // Если задан nID_SubjectAccountType то сначала находим сущность SubjectAccountType
-        SubjectAccountType subjectAccountType = null;
-        if (nID_SubjectAccountType != null) {
-            subjectAccountType = subjectAccountTypeDao.findByIdExpected(nID_SubjectAccountType);
-            if (subjectAccountType == null) {
-                throw new CommonServiceException(
-                        ExceptionCommonController.BUSINESS_ERROR_CODE,
-                        "Error! Не найдена тип аккаунта для id=" + nID_SubjectAccountType, HttpStatus.NOT_FOUND);
-            }
-        }
-
         SubjectAccount subjectAccountRet = null;
         try {
-            subjectAccountRet = subjectAccountDao.setSubjectAccount(nID, nID_Subject, sLogin, nID_Server, subjectAccountType, sNote);
+            subjectAccountRet = subjectAccountDao.setSubjectAccount(nID, nID_Subject, sLogin, nID_Server, nID_SubjectAccountType, sNote);
         } catch (org.hibernate.exception.ConstraintViolationException e) {
             throw new CommonServiceException(
                     ExceptionCommonController.BUSINESS_ERROR_CODE,
@@ -803,6 +781,8 @@ public class SubjectController {
     @ApiOperation(value = "Получение полного набора данных по субъектам", notes = "Получаем полный набор данных по субъектам. "
             + "Пример:\n"
             + "https://test.igov.org.ua/wf/service/subject/getSubjectsByAccount\n\n"
+            +"что-бы протестировать эту чать кода надо 1) запустить проэкт 2)ввести дефолтные парольи логин из 'нашего хозяйства' "
+            +" 3)ввести в адресную строку типа этой (без слешей)http://localhost:8080/service/subject/getSubjectsByAccount?nID_Server=0&saLogin=[\"Barmaley\",\"GrekD\"] 4)ввести вторые логин и пароль из 'нашего хозяйства' "
             + "Ответ:\n"
             + "\n```\n")
     @RequestMapping(value = "/getSubjectsByAccount", method = RequestMethod.GET, headers = {JSON_TYPE})
@@ -810,29 +790,34 @@ public class SubjectController {
     Map<String, Map<String, Subject>> getSubjectsByAccount(
             @ApiParam(value = "Массив с логинами чиновников в виде json", required = false) @RequestParam(value = "saLogin", required = false) String saLogin,
             @ApiParam(value = "Массив с логинами групп в виде json", required = false) @RequestParam(value = "saGroup", required = false) String saGroup,
-            @ApiParam(value = "Ид сервера", required = true) @RequestParam(value = "nID_Server", required = true) Long nID_Server) throws CommonServiceException {
-
+            @ApiParam(value = "Ид сервера", required = false) @RequestParam(value = "nID_Server", required = false) Long nID_Server,
+            @ApiParam(value = "Массив с внешними логинами  в виде json", required = false) @RequestParam(value = "saLoginExternal", required = false) String saLoginExternal,
+            @ApiParam(value = "Массив с типами аакаунтов  в виде json", required = false) @RequestParam(value = "nID_SubjectAccountType", required = false) Long nID_SubjectAccountType) throws CommonServiceException {
         Map<String, Map<String, Subject>> result = new HashMap();
-        // Если не задали ни один параметр в запросе - ошибка
-        if (saLogin == null && saGroup == null) {
+
+        if (saLogin == null && saGroup == null&& nID_Server == null&& saLoginExternal == null&& nID_SubjectAccountType == null) {
             throw new CommonServiceException(
                     ExceptionCommonController.BUSINESS_ERROR_CODE,
-                    "Ошибка! Укажите хотя бы один из параметров: saLogin, saGroup",
+                    "Ошибка! Укажите хотя бы параметры: saLogin,nID_Server",
                     HttpStatus.BAD_REQUEST);
         } else {
-            // находим сущность SubjectAccountType
-            SubjectAccountType subjectAccountType = subjectAccountTypeDao.findByIdExpected(Long.valueOf(1));
+            // находим сущность SubjectAccountType если не налл
+            SubjectAccountType subjectAccountType = new SubjectAccountType();
+            if(nID_SubjectAccountType!=null ) {
+                subjectAccountType = subjectAccountTypeDao.findByIdExpected(nID_SubjectAccountType);
+            }
             if (subjectAccountType == null) {
                 throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
                         "Error! SubjectAccountType not founf for id=" + 1, HttpStatus.NOT_FOUND);
             }
-            result.put("users", getSubject(saLogin, subjectAccountType, nID_Server));
-            result.put("organs", getSubject(saGroup, subjectAccountType, nID_Server));  
+            result.put("users", getSubject(saLogin, 1L, nID_Server));
+            result.put("externalUsers", getSubject(saLoginExternal, 1L, nID_Server));
+            result.put("organs", getSubject(saGroup, 1L, nID_Server));
         }
         return result;
     }
 
-    private Map<String, Subject> getSubject(String saLogin, SubjectAccountType subjectAccountType, Long nID_Server) {
+    private Map<String, Subject> getSubject(String saLogin, Long nID_SubjectAccountType, Long nID_Server) {
         Map<String, Subject> subjects = new HashMap();
         Long nID_Subject;
         Subject subject;
@@ -840,7 +825,7 @@ public class SubjectController {
             Set<String> asLogin = JsonRestUtils.readObject(saLogin, Set.class);
             LOG.info("asLogin: " + asLogin);
             for (String login : asLogin) {
-                List<SubjectAccount> subjectAccounts = subjectAccountDao.findSubjectAccounts(null, login, nID_Server, subjectAccountType);
+                List<SubjectAccount> subjectAccounts = subjectAccountDao.findSubjectAccounts(null, login, nID_Server, nID_SubjectAccountType);
                 if (subjectAccounts != null && !subjectAccounts.isEmpty()) {
                     nID_Subject = subjectAccounts.get(0).getnID_Subject();
                     subject = subjectDao.getSubject(nID_Subject);

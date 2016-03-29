@@ -1,0 +1,1188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="_test_corezoid" name="Интеграция с корезоид" isExecutable="true">
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="asConsultTr" name="Звернення консультаційного характеру" type="enum">
+          <activiti:value id="sEnumConsYes" name="Так"></activiti:value>
+          <activiti:value id="sEnumConsNo" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhone" name="Контактний телефон;(у форматі +380ХХХХХХХХХ)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAdditionalPhone" name="Додатковий телефон;(у форматі +380ХХХХХХХХХ)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asSpecialStatus" name="Маєте особливий статус" type="enum" required="true">
+          <activiti:value id="sEnumStatusYes" name="Так"></activiti:value>
+          <activiti:value id="sEnumStatusNo" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asHowCategory" name="Оберіть категорію до якої Ви відноситесь" type="enum" required="true">
+          <activiti:value id="sEnumCat1" name="Учасник війни"></activiti:value>
+          <activiti:value id="sEnumCat2" name="Дитина війни"></activiti:value>
+          <activiti:value id="sEnumCat3" name="Інвалід Великої Вітчизняної війни"></activiti:value>
+          <activiti:value id="sEnumCat4" name="Інвалід війни"></activiti:value>
+          <activiti:value id="sEnumCat5" name="Учасник бойових дій"></activiti:value>
+          <activiti:value id="sEnumCat6" name="Ветеран праці"></activiti:value>
+          <activiti:value id="sEnumCat7" name="Інвалід I групи"></activiti:value>
+          <activiti:value id="sEnumCat8" name="Інвалід II групи"></activiti:value>
+          <activiti:value id="sEnumCat9" name="Інвалід III групи"></activiti:value>
+          <activiti:value id="sEnumCat10" name="Дитина-інвалід"></activiti:value>
+          <activiti:value id="sEnumCat11" name="Одинока мати"></activiti:value>
+          <activiti:value id="sEnumCat12" name="Мати-героїня"></activiti:value>
+          <activiti:value id="sEnumCat13" name="Багатодітна сім'я"></activiti:value>
+          <activiti:value id="sEnumCat14" name="Особа, що потерпіла від Чорнобильської катастрофи"></activiti:value>
+          <activiti:value id="sEnumCat15" name="Учасник ліквідації наслідків аварії на Чорнобильській АЕС"></activiti:value>
+          <activiti:value id="sEnumCat16" name="Герой України"></activiti:value>
+          <activiti:value id="sEnumCat17" name="Герой Радянського Союзу"></activiti:value>
+          <activiti:value id="sEnumCat18" name="Герой Соціалістичної Праці"></activiti:value>
+          <activiti:value id="sEnumCat19" name="Дитина"></activiti:value>
+          <activiti:value id="sEnumCat20" name="Інші категорії"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asKindTr" name="Вид звернення" type="enum">
+          <activiti:value id="sEnumSelf" name="Індівідуальне"></activiti:value>
+          <activiti:value id="sEnumCollect" name="Колективне"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asAnonymousTr" name="Звернення анонімне" type="enum">
+          <activiti:value id="sEnumAnonymYes" name="Так"></activiti:value>
+          <activiti:value id="sEnumAnonymNo" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asTypeTr" name="Тип звернення" type="enum">
+          <activiti:value id="sEnumApplication" name="Заява"></activiti:value>
+          <activiti:value id="sEnumClaim" name="Скарга"></activiti:value>
+          <activiti:value id="sEnumProposal" name="Пропозиція"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asHowSocStatus" name="Оберіть соціальний стан" type="enum" required="true">
+          <activiti:value id="sEnumSoc1" name="Пенсіонер"></activiti:value>
+          <activiti:value id="sEnumSoc2" name="Робітник"></activiti:value>
+          <activiti:value id="sEnumSoc3" name="Селянин"></activiti:value>
+          <activiti:value id="sEnumSoc4" name="Працівник бюджетної сфери"></activiti:value>
+          <activiti:value id="sEnumSoc5" name="Державний службовець"></activiti:value>
+          <activiti:value id="sEnumSoc6" name="Військовослужбовець"></activiti:value>
+          <activiti:value id="sEnumSoc7" name="Підприємець"></activiti:value>
+          <activiti:value id="sEnumSoc8" name="Безробітний"></activiti:value>
+          <activiti:value id="sEnumSoc9" name="Учень, студент"></activiti:value>
+          <activiti:value id="sEnumSoc10" name="Служитель релігійної організації"></activiti:value>
+          <activiti:value id="sEnumSoc11" name="Особа, що позбавлена волі; особа, воля якої обмежена"></activiti:value>
+          <activiti:value id="sEnumSoc12" name="Інші"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asDistrict" name="Район Вашого проживання" type="enum" required="true">
+          <activiti:value id="sEnumAnd" name="Амур-Нижньодніпровський"></activiti:value>
+          <activiti:value id="sEnumShevch" name="Шевченківський (Бабушкінський)"></activiti:value>
+          <activiti:value id="sEnumSobor" name="Соборний (Жовтневий)"></activiti:value>
+          <activiti:value id="sEnumIndust" name="Індустріальний"></activiti:value>
+          <activiti:value id="sEnumCenter" name="Центральний (Кіровський)"></activiti:value>
+          <activiti:value id="sEnumChechel" name="Чечелівський (Красногвардійський)"></activiti:value>
+          <activiti:value id="sEnumNovoK" name="Новокодацький (Ленінський)"></activiti:value>
+          <activiti:value id="sEnumSamar" name="Самарський"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sRename" name="Зверніть увагу" type="label" default="У зв'язку з переіменуванням вулиць, під час введення нової адреси звірте назву за &lt;a href=&quot;https://docs.google.com/spreadsheets/d/16j-w5pN0erlhdmTg5xl0bs9Gob1W0U3ivjIhy0BTHsU/edit?pli=1#gid=0&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;."></activiti:formProperty>
+        <activiti:formProperty id="sAdress" name="Адреса проживання заявника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asTopHead" name="Оберіть тему звернення" type="enum" required="true">
+          <activiti:value id="sEnumTopHead1" name="Житлове господарство"></activiti:value>
+          <activiti:value id="sEnumTopHead2" name="Комунальне господарство"></activiti:value>
+          <activiti:value id="sEnumTopHead3" name="Промислова політика"></activiti:value>
+          <activiti:value id="sEnumTopHead4" name="Транспорт і зв'язок"></activiti:value>
+          <activiti:value id="sEnumTopHead5" name="Аграрна політика і земельні відносини"></activiti:value>
+          <activiti:value id="sEnumTopHead6" name="Охорона здоров'я"></activiti:value>
+          <activiti:value id="sEnumTopHead7" name="Соціальний захист, праця і заробітна плата"></activiti:value>
+          <activiti:value id="sEnumTopHead8" name="Сім'я та діти"></activiti:value>
+          <activiti:value id="sEnumTopHead9" name="Екологія та природні ресурси"></activiti:value>
+          <activiti:value id="sEnumTopHead10" name="Торгівля"></activiti:value>
+          <activiti:value id="sEnumTopHead11" name="Молодь, ґендерна рівність, фізична культура і спорт"></activiti:value>
+          <activiti:value id="sEnumTopHead12" name="Освіта, наукова, науково-технічна, інноваційна діяльність та інтелектуальна власність"></activiti:value>
+          <activiti:value id="sEnumTopHead13" name="Культура та культурна спадщина, туризм"></activiti:value>
+          <activiti:value id="sEnumTopHead14" name="Благоустрій міста"></activiti:value>
+          <activiti:value id="sEnumTopHead15" name="Державне будівництво, адміністративно-територіальний устрій"></activiti:value>
+          <activiti:value id="sEnumTopHead16" name="Забезпечення дотримання законності та охорони правопорядку, реалізація прав і свобод громадян"></activiti:value>
+          <activiti:value id="sEnumTopHead17" name="Фінансова, податкова, митна політика"></activiti:value>
+          <activiti:value id="sEnumTopHead18" name="Комунальне господарство. Газифікація"></activiti:value>
+          <activiti:value id="sEnumTopHead19" name="Комунальне господарство. Електропостачання"></activiti:value>
+          <activiti:value id="sEnumTopHead20" name="Інформаційна політика, діяльність ЗМІ"></activiti:value>
+          <activiti:value id="sEnumTopHead21" name="Діяльність об'єднань громадян, релігія та міжконфесійні відносини"></activiti:value>
+          <activiti:value id="sEnumTopHead22" name="Діяльність місцевого самоврядування"></activiti:value>
+          <activiti:value id="sEnumTopHead23" name="Інше"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asTop1" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum" required="true">
+          <activiti:value id="sEnumTop11" name="Ремонт ліфта"></activiti:value>
+          <activiti:value id="sEnumTop12" name="Ремонт під'їзду"></activiti:value>
+          <activiti:value id="sEnumTop13" name="Ремонт підвального приміщення"></activiti:value>
+          <activiti:value id="sEnumTop14" name="Ремонт покрівлі будівлі, міжпанельних швів"></activiti:value>
+          <activiti:value id="sEnumTop15" name="Ремонт фасаду будинку,відмостки"></activiti:value>
+          <activiti:value id="sEnumTop16" name="Прибирання прибудинкової території"></activiti:value>
+          <activiti:value id="sEnumTop17" name="Налагодження опалення"></activiti:value>
+          <activiti:value id="sEnumTop18" name="Ремонт труб зовнішнього зливостоку"></activiti:value>
+          <activiti:value id="sEnumTop19" name="Ремонт каналізації"></activiti:value>
+          <activiti:value id="sEnumTop110" name="Освітлення у квартирі та під`їзді"></activiti:value>
+          <activiti:value id="sEnumTop111" name="Утримання сміттєпроводу у будинку"></activiti:value>
+          <activiti:value id="sEnumTop112" name="Поновлення роботи вентиляційної системи"></activiti:value>
+          <activiti:value id="sEnumTop113" name="Підтоплення будинку. Залиття приміщень"></activiti:value>
+          <activiti:value id="sEnumTop114" name="Ремонт ХВС ( холодного водопостачання),сантехніка"></activiti:value>
+          <activiti:value id="sEnumTop115" name="Ремонт санітарно-технічних систем у підвалі"></activiti:value>
+          <activiti:value id="sEnumTop116" name="Передача житлових будинків, гуртожитків до комунальної власності"></activiti:value>
+          <activiti:value id="sEnumTop117" name="Утримання гуртожитків"></activiti:value>
+          <activiti:value id="sEnumTop118" name="Ремонт балкону"></activiti:value>
+          <activiti:value id="sEnumTop119" name="Ремон квартири"></activiti:value>
+          <activiti:value id="sEnumTop120" name="Ремонт будинку"></activiti:value>
+          <activiti:value id="sEnumTop121" name="Облаштування пандусу"></activiti:value>
+          <activiti:value id="sEnumTop122" name="Питання тарифів на послуги з утримання будинків та прибудинкової території"></activiti:value>
+          <activiti:value id="sEnumTop123" name="Питання ліфтового обслуговування"></activiti:value>
+          <activiti:value id="sEnumTop124" name="Питання щодо нераціонального використання бомбосховищ в якості підвальних приміщень"></activiti:value>
+          <activiti:value id="sEnumTop125" name="Інформаційні запити громадян"></activiti:value>
+          <activiti:value id="sEnumTop126" name="Скарги громадян на роботу ЖЕК"></activiti:value>
+          <activiti:value id="sEnumTop127" name="Скарги громадян на роботу Аварійної служби"></activiti:value>
+          <activiti:value id="sEnumTop128" name="Приватизація квартир, що знаходяться у комунальній власності міста"></activiti:value>
+          <activiti:value id="sEnumTop129" name="Приватизація житлового приміщення у гуртожитках"></activiti:value>
+          <activiti:value id="sEnumTop130" name="Виключення квартири з житлового фонду"></activiti:value>
+          <activiti:value id="sEnumTop131" name="Встановлення (підключення) домофону"></activiti:value>
+          <activiti:value id="sEnumTop132" name="Утримання бомобосховищ"></activiti:value>
+          <activiti:value id="sEnumTop133" name="Порядок оформлення дублікатів свідотств про право власності на житло у разі його втрати"></activiti:value>
+          <activiti:value id="sEnumTop134" name="Фінансування робіт ремонту будинків"></activiti:value>
+          <activiti:value id="sEnumTop135" name="Заселення у гуртожиток. Отримання ордеру"></activiti:value>
+          <activiti:value id="sEnumTop136" name="Упорядкування проживання у гуртожитку"></activiti:value>
+          <activiti:value id="sEnumTop137" name="Створення та діяльність ОССБ"></activiti:value>
+          <activiti:value id="sEnumTop138" name="Інші питання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asTop2" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum" required="true">
+          <activiti:value id="sEnumTop21" name="Видалення, обрізка дерев, корчування пнів, покос газонів"></activiti:value>
+          <activiti:value id="sEnumTop22" name="Утримання та поточний ремонт мереж зовнішнього освітлення"></activiti:value>
+          <activiti:value id="sEnumTop23" name="Ритуальні послуги та утримання кладовищ"></activiti:value>
+          <activiti:value id="sEnumTop24" name="Послуги з підбору трупів тварин"></activiti:value>
+          <activiti:value id="sEnumTop25" name="Прочищення та ремонт дощової каналізації, інженерний захист території міста"></activiti:value>
+          <activiti:value id="sEnumTop26" name="Поточний ремонт та утримання фонтанів"></activiti:value>
+          <activiti:value id="sEnumTop27" name="Встановлення лавок, урн та контейнерів"></activiti:value>
+          <activiti:value id="sEnumTop28" name="Погашення боргів за комунальні послуги"></activiti:value>
+          <activiti:value id="sEnumTop29" name="Розчищення доріг від снігу"></activiti:value>
+          <activiti:value id="sEnumTop210" name="Видалення карантинних рослин"></activiti:value>
+          <activiti:value id="sEnumTop211" name="Фінансування комунальних робіт"></activiti:value>
+          <activiti:value id="sEnumTop212" name="Влаштування дитячого майданчика"></activiti:value>
+          <activiti:value id="sEnumTop213" name="Тарифи житолово-комунальних послуг, питання щодо нарахування коштів за надані послуги"></activiti:value>
+          <activiti:value id="sEnumTop214" name="Послуги з ремонту доріг"></activiti:value>
+          <activiti:value id="sEnumTop215" name="Послуги з літнього та зимового утримання доріг"></activiti:value>
+          <activiti:value id="sEnumTop216" name="Поточний ремонт та утримання мостів і шляхопроводів, підземних переходів"></activiti:value>
+          <activiti:value id="sEnumTop217" name="Питання пов’язані з проведенням тендерних процедур"></activiti:value>
+          <activiti:value id="sEnumTop218" name="Зсуви грунту"></activiti:value>
+          <activiti:value id="sEnumTop219" name="Підтоплення територій міста"></activiti:value>
+          <activiti:value id="sEnumTop220" name="Провалля"></activiti:value>
+          <activiti:value id="sEnumTop221" name="Відсутність водопостачання у будинок"></activiti:value>
+          <activiti:value id="sEnumTop222" name="Відсутність каналізаційних кришок"></activiti:value>
+          <activiti:value id="sEnumTop223" name="Забита каналізація водовідведення"></activiti:value>
+          <activiti:value id="sEnumTop224" name="Перевірка лічильників водоканалу"></activiti:value>
+          <activiti:value id="sEnumTop225" name="Пориви водоканалу"></activiti:value>
+          <activiti:value id="sEnumTop226" name="Відсутність гарячої води"></activiti:value>
+          <activiti:value id="sEnumTop227" name="Питання на рахування за надані послуги"></activiti:value>
+          <activiti:value id="sEnumTop228" name="Запити інформації, якою володіють комунальні підприємства"></activiti:value>
+          <activiti:value id="sEnumTop229" name="Тарифи теплопостачання, питання щодо нарахування коштів за надані послуги"></activiti:value>
+          <activiti:value id="sEnumTop230" name="Скарга на якість обсуговування на послуги теплопостачання"></activiti:value>
+          <activiti:value id="sEnumTop231" name="Ізоляція теплотрас"></activiti:value>
+          <activiti:value id="sEnumTop232" name="Ремонт теплотрас"></activiti:value>
+          <activiti:value id="sEnumTop233" name="Відсутність теплопостачання у будинку"></activiti:value>
+          <activiti:value id="sEnumTop234" name="Відсутність люків на оглядових колодязях"></activiti:value>
+          <activiti:value id="sEnumTop235" name="Відсутність гарячої води"></activiti:value>
+          <activiti:value id="sEnumTop236" name="Встановлення індивідуальних систем опалення"></activiti:value>
+          <activiti:value id="sEnumTop237" name="Відключення від центрального опалення"></activiti:value>
+          <activiti:value id="sEnumTop238" name="Недотримання теплового режиму"></activiti:value>
+          <activiti:value id="sEnumTop239" name="Неякісне надання послуг теплопостачання"></activiti:value>
+          <activiti:value id="sEnumTop240" name="Встановлення та повірка лічильника"></activiti:value>
+          <activiti:value id="sEnumTop241" name="Інші питання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asTop3" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum" required="true">
+          <activiti:value id="sEnumTop31" name="Невиплата заробітної плати на промисловому підприємстві"></activiti:value>
+          <activiti:value id="sEnumTop32" name="Відключення від електромереж або газу"></activiti:value>
+          <activiti:value id="sEnumTop33" name="Діяльність промислових підприємств"></activiti:value>
+          <activiti:value id="sEnumTop34" name="Діяльність пунктів прийому виробів з металу"></activiti:value>
+          <activiti:value id="sEnumTop35" name="Діяльність пунктів прийому склотари, макулатури та інше"></activiti:value>
+          <activiti:value id="sEnumTop36" name="Енергозбереження, робота галузей ПЕК"></activiti:value>
+          <activiti:value id="sEnumTop37" name="Підприємницька діяльність"></activiti:value>
+          <activiti:value id="sEnumTop38" name="Інші питання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asTop4" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum" required="true">
+          <activiti:value id="sEnumTop41" name="Робота маршрутних таксі"></activiti:value>
+          <activiti:value id="sEnumTop42" name="Робота міського електротранспорту"></activiti:value>
+          <activiti:value id="sEnumTop43" name="Робота автостоянок, парковок"></activiti:value>
+          <activiti:value id="sEnumTop44" name="Надання поштових послуг"></activiti:value>
+          <activiti:value id="sEnumTop45" name="Ремонт, встановлення стаціонарного телефону, тарифи на послуги зв'язку, інше"></activiti:value>
+          <activiti:value id="sEnumTop46" name="Робота радіо, телебачення (кабельне ТВ), послуги інтернет"></activiti:value>
+          <activiti:value id="sEnumTop47" name="Узгодження тарифів на проїзд на міських автобусних маршрутах"></activiti:value>
+          <activiti:value id="sEnumTop48" name="Автомобільний транспорт та автошляхи"></activiti:value>
+          <activiti:value id="sEnumTop49" name="Облаштуваня зупинок"></activiti:value>
+          <activiti:value id="sEnumTop410" name="Надання (позбавлення) пільг на проїзд в транспорті"></activiti:value>
+          <activiti:value id="sEnumTop411" name="Водний транспорт"></activiti:value>
+          <activiti:value id="sEnumTop412" name="Залізничний транспорт та залізничні шляхи"></activiti:value>
+          <activiti:value id="sEnumTop413" name="Робота станцій стільникового зв`язку"></activiti:value>
+          <activiti:value id="sEnumTop414" name="Робота метрополітену"></activiti:value>
+          <activiti:value id="sEnumTop415" name="Внесення змін до існуючої маршрутної мережі. Узгодження паспортів маршрутів у частині розкладу руху"></activiti:value>
+          <activiti:value id="sEnumTop416" name="Запити щодо діяльності комунальних підприємств, підпорядкованих департаменту транспорту та зв'язку"></activiti:value>
+          <activiti:value id="sEnumTop417" name="Підготовка проектів рішень міської ради, виконкому міської ради з питань пасажирських перевезень"></activiti:value>
+          <activiti:value id="sEnumTop418" name="Скарга на підвищення шуму під час руху трамваїв"></activiti:value>
+          <activiti:value id="sEnumTop419" name="Скарга на незадовільний рух трамваїв"></activiti:value>
+          <activiti:value id="sEnumTop420" name="Скарга на незадовільний рух тролейбусів"></activiti:value>
+          <activiti:value id="sEnumTop421" name="Скарга на водіїв трамваїв"></activiti:value>
+          <activiti:value id="sEnumTop422" name="Скарга на незадовільний стан трамваїв"></activiti:value>
+          <activiti:value id="sEnumTop423" name="Скарга на відсутність кондукторів в трамвайних маршрутах"></activiti:value>
+          <activiti:value id="sEnumTop424" name="Пропозиція ввести анонімних пасажирів на маршрутах електротранспорту"></activiti:value>
+          <activiti:value id="sEnumTop425" name="Скарга на велику швидкість трамваїв"></activiti:value>
+          <activiti:value id="sEnumTop426" name="Скарга на невиплату заробітної плати"></activiti:value>
+          <activiti:value id="sEnumTop427" name="Скарга на кондукторів трамваїв"></activiti:value>
+          <activiti:value id="sEnumTop428" name="Інші питання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asTop5" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum" required="true">
+          <activiti:value id="sEnumTop51" name="Погодження історико-містобудівних обґрунтувань"></activiti:value>
+          <activiti:value id="sEnumTop52" name="Надання інформації щодо історико-культурної цінності будівлі (споруди)"></activiti:value>
+          <activiti:value id="sEnumTop53" name="Погодження  ескізних проектів реставрації, реабілітації, консервації, пристосування об'єктів культурної спадщини (на щойно виявлені об'єкти культурної спадщини та памяток місцевого значення)"></activiti:value>
+          <activiti:value id="sEnumTop54" name="Розгляд та погодження облікової документації на об'єкти культурної спадщини "></activiti:value>
+          <activiti:value id="sEnumTop55" name="Укладення охоронних договорів на об'єкти культурної спадщини"></activiti:value>
+          <activiti:value id="sEnumTop56" name="Виділення земельної ділянки учаснику АТО"></activiti:value>
+          <activiti:value id="sEnumTop57" name="Земельні конфлікти"></activiti:value>
+          <activiti:value id="sEnumTop58" name="Землекористування"></activiti:value>
+          <activiti:value id="sEnumTop59" name="Приватизація землі"></activiti:value>
+          <activiti:value id="sEnumTop510" name="Отримання державних актів на землю"></activiti:value>
+          <activiti:value id="sEnumTop511" name="Утримання садоводчих товариств"></activiti:value>
+          <activiti:value id="sEnumTop512" name="Успадкування землі"></activiti:value>
+          <activiti:value id="sEnumTop513" name="Підготовка земельних ділянок до земельних торгів"></activiti:value>
+          <activiti:value id="sEnumTop514" name="Підготовка земельних ділянок до продажу по фактичному розміщенню нерухомого майна"></activiti:value>
+          <activiti:value id="sEnumTop515" name="Координація роботи по веденню квартирного обліку"></activiti:value>
+          <activiti:value id="sEnumTop516" name="Ведення обліково-звітної документації та загальний облік житлової площі, яка надходить у комун.влсність та підлягає розподілу"></activiti:value>
+          <activiti:value id="sEnumTop517" name="Розподіл житлової площі"></activiti:value>
+          <activiti:value id="sEnumTop518" name="Підготовка рішень щодо видачі ордерів на житлові приміщення"></activiti:value>
+          <activiti:value id="sEnumTop519" name="Розгляд звернень громадян щодо надання житлової площі"></activiti:value>
+          <activiti:value id="sEnumTop520" name="Збір та узагальнення інформації щодо ведення квартирного обліку, яка надходить від районних рад "></activiti:value>
+          <activiti:value id="sEnumTop521" name="Відчуження і оренда комунальної власності"></activiti:value>
+          <activiti:value id="sEnumTop522" name="Інші питання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asTop6" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum" required="true">
+          <activiti:value id="sEnumTop61" name="Санітарно-епідеміологічний стан. Проведення дезінфекції, дезінсекції, дератизації"></activiti:value>
+          <activiti:value id="sEnumTop62" name="Загальні питання охорони здоров'я"></activiti:value>
+          <activiti:value id="sEnumTop63" name="Робота МСЕК"></activiti:value>
+          <activiti:value id="sEnumTop64" name="Діяльність медичних закладів та установ"></activiti:value>
+          <activiti:value id="sEnumTop65" name="Допомога в лікуванні, протезування"></activiti:value>
+          <activiti:value id="sEnumTop66" name="Направлення на лікування до медичних установ"></activiti:value>
+          <activiti:value id="sEnumTop67" name="Надання путівки на оздоровлення"></activiti:value>
+          <activiti:value id="sEnumTop68" name="Робота аптек"></activiti:value>
+          <activiti:value id="sEnumTop69" name="Фінансування медицини, вартість медичних послуг, медичне страхування"></activiti:value>
+          <activiti:value id="sEnumTop610" name="Інші питання "></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asTop7" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum" required="true">
+          <activiti:value id="sEnumTop71" name="Строк отримання матеріальної допомоги різних категорій громадян, отримання допомоги за померлого отримувача"></activiti:value>
+          <activiti:value id="sEnumTop72" name="Строк відправлення відомостей на виплату матер. допомоги на  Укрпошту  та банки"></activiti:value>
+          <activiti:value id="sEnumTop73" name="Роз`яснення, реформування законодавства із соціального захисту"></activiti:value>
+          <activiti:value id="sEnumTop74" name="Визначення соціального статусу"></activiti:value>
+          <activiti:value id="sEnumTop75" name="Отримання соціальних виплат"></activiti:value>
+          <activiti:value id="sEnumTop76" name="Реабілітація та соціальний захист громадян, які потребують підтримки (забезпечення різноманітними засобами реабілітації, спеціальними транспортними засобами)"></activiti:value>
+          <activiti:value id="sEnumTop77" name="Умови, організація і охорона праці"></activiti:value>
+          <activiti:value id="sEnumTop78" name="Роз`яснення щодо нарахування індексації"></activiti:value>
+          <activiti:value id="sEnumTop79" name="Інформаційні запити з питань бухгалтерського обліку та звітності"></activiti:value>
+          <activiti:value id="sEnumTop710" name="Питання оздоровлення осіб постраждалих внаслідок ЧАЕС"></activiti:value>
+          <activiti:value id="sEnumTop711" name="Питання допомоги у вирішенні соціальних та побутових питань особам, звільнених з місць позбавлення волі"></activiti:value>
+          <activiti:value id="sEnumTop712" name="Питання призначення субсидій"></activiti:value>
+          <activiti:value id="sEnumTop713" name="Питання пенсійного забезпечення громадянам міста"></activiti:value>
+          <activiti:value id="sEnumTop714" name="Порушення трудового законодавства (неправомірне звільнення, порушення графіку робочого дня)"></activiti:value>
+          <activiti:value id="sEnumTop715" name="Порушення законодавства про оплату праці (невиплата розрахункових та відпускних коштів, лікарняних, питання, стосовно індексації заробітної плати)"></activiti:value>
+          <activiti:value id="sEnumTop716" name="Питання заборгованості з виплати заробітної плати"></activiti:value>
+          <activiti:value id="sEnumTop717" name="Сприяння у працевлаштуванні незайнятій категорії населення міста, особам з обмеженими фізичними можливостями, учасників АТО та переселенців з зони АТО, питання щодо надання матеріальної допомоги громадянам міста"></activiti:value>
+          <activiti:value id="sEnumTop718" name="Порядок надання пільг, призначення і виплата державної допомоги сім'ям з дітьми, малозабезпеченим сім'ям, дітям інвалідам, гуманітарної допомоги"></activiti:value>
+          <activiti:value id="sEnumTop719" name="Надання матеріальної допомоги сім’ям загиблих військовослужбовців ЗСУ, інших військових формувань, які брали участь в АТО"></activiti:value>
+          <activiti:value id="sEnumTop720" name="Надання адресної матеріальної допомоги на оздоровлення та реабілітацію особам, які брали безпосередню  участь  в АТО"></activiti:value>
+          <activiti:value id="sEnumTop721" name="Проведення безоплатних капітальних ремонтів власних житлових будинків та квартир, осіб що мають право на таку пільгу"></activiti:value>
+          <activiti:value id="sEnumTop722" name="Надання матеріальної допомоги"></activiti:value>
+          <activiti:value id="sEnumTop723" name="Соціальний захист переселенців із зони АТО"></activiti:value>
+          <activiti:value id="sEnumTop724" name="Надання допомоги у вирішенні питань соціально-трудових відносин"></activiti:value>
+          <activiti:value id="sEnumTop725" name="Інші питання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asTop8" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum" required="true">
+          <activiti:value id="sEnumTop81" name="Невиконання батьками або особами, які їх замінюють, обов`язків щодо утримання дітей"></activiti:value>
+          <activiti:value id="sEnumTop82" name="Участь одного із батьків (бабусі, дідуся) у вихованні дитини"></activiti:value>
+          <activiti:value id="sEnumTop83" name="Усиновлення дітей ,встановлення опіки над дітьми-сиротами та дітьми, позбавленими батьківського піклування, створення прийомної сім`ї, дитячого будинку сімейного типу"></activiti:value>
+          <activiti:value id="sEnumTop84" name="Захист житлових та майнових прав дітей-сиріт та дітей, позбавлених батьківського піклування, дітей, які опинились в складних життєвих обставинах"></activiti:value>
+          <activiti:value id="sEnumTop85" name="Соціальний захист дітей, які опинились в складних життєвих обставинах"></activiti:value>
+          <activiti:value id="sEnumTop86" name="Порядок позбавлення (поновлення) батьківських прав"></activiti:value>
+          <activiti:value id="sEnumTop87" name="Інші питання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asTop9" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum" required="true">
+          <activiti:value id="sEnumTop91" name="Питання про забруднення атмосферного повітря або водойм"></activiti:value>
+          <activiti:value id="sEnumTop92" name="Використання природних ресурсів"></activiti:value>
+          <activiti:value id="sEnumTop93" name="Забруднення навколишнього середовища"></activiti:value>
+          <activiti:value id="sEnumTop94" name="Ліквідація наслідків надзвичайних ситуацій"></activiti:value>
+          <activiti:value id="sEnumTop95" name="Питання вивезення побутових і негабаритних відходів"></activiti:value>
+          <activiti:value id="sEnumTop96" name="Питання стосовно місця розташування контейнерів для збору побутових відходів"></activiti:value>
+          <activiti:value id="sEnumTop97" name="Питання стосовно повернення розрахункових коштів підприємством-перевізником побутових відходів у разі переплати"></activiti:value>
+          <activiti:value id="sEnumTop98" name="Укладання договорів на надання послуг з вивезення побутових відходів"></activiti:value>
+          <activiti:value id="sEnumTop99" name="Надання інформації про затверджені норми утворення побутових відходів і тарифи на послуги з вивезення побутових відходів"></activiti:value>
+          <activiti:value id="sEnumTop910" name="Надання інформації щодо діяльності КП ЕкоДніпро Дніпропетровської міської ради і міського полігону твердих побутових відходів"></activiti:value>
+          <activiti:value id="sEnumTop911" name="Інші питання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asTop10" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum" required="true">
+          <activiti:value id="sEnumTop101" name="Дотримання правил торгівлі в роздрібній мережі, на підприємствах ресторанного господарства"></activiti:value>
+          <activiti:value id="sEnumTop102" name="Демонтаж малих архітектурних форм (робота без дозвільних документів на пішохідній зоні)"></activiti:value>
+          <activiti:value id="sEnumTop103" name="Порушення правил торгівлі, питання ціноутворення, підвищений рівень шуму від роботи літніх майданчиків в літню пору"></activiti:value>
+          <activiti:value id="sEnumTop104" name="Робота торгових об'єктів в парках, реалізація алкогольних напоїв та тютюнових виробів неповнолітнім"></activiti:value>
+          <activiti:value id="sEnumTop105" name="Обслуговування населення підприємствами сфери побуту"></activiti:value>
+          <activiti:value id="sEnumTop106" name="Прийом і обробка документів на розміщення МАФ на території міста і ведення електронного обліку підприємств торгівлі, ресторанного господарства, сфери послуг і харчової промисловості"></activiti:value>
+          <activiti:value id="sEnumTop107" name="Видача картки обліку об'єкта торговельного призначення, сфери послуг і виробництва продуктів харчування"></activiti:value>
+          <activiti:value id="sEnumTop108" name="Діяльність гральних закладів"></activiti:value>
+          <activiti:value id="sEnumTop109" name="Діяльність дитячих атракціонів"></activiti:value>
+          <activiti:value id="sEnumTop1010" name="Робота кафе"></activiti:value>
+          <activiti:value id="sEnumTop1011" name="Робота ринків"></activiti:value>
+          <activiti:value id="sEnumTop1012" name="Робота магазинів"></activiti:value>
+          <activiti:value id="sEnumTop1013" name="Побутове обслуговування"></activiti:value>
+          <activiti:value id="sEnumTop1014" name="Інші питання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asTop11" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum" required="true">
+          <activiti:value id="sEnumTop111" name="Звернення з приводу встановлення або ремонту обладнання дитячих, тренажерних та футбольних майданчиків"></activiti:value>
+          <activiti:value id="sEnumTop112" name="Проведення спортивних змагань"></activiti:value>
+          <activiti:value id="sEnumTop113" name="Фізична культура та спорт"></activiti:value>
+          <activiti:value id="sEnumTop114" name="Звернення з приводу внесення до переліку організацій, яким надається право безкоштовного користування спортивних баз загальноосвітніх навчальних закладів та приміщень нежитлового фонду міста, пристосованих для занять фізичною культурою та спортом, спортивних споруд комунальних підприємств дитячо-юнацьким спортивним школам і громадським організаціям"></activiti:value>
+          <activiti:value id="sEnumTop115" name="Надання інформації щодо видачі посвідченнь багатодітної родини"></activiti:value>
+          <activiti:value id="sEnumTop116" name="Надання роз’ясненнь щодо пільг багатодітної родини"></activiti:value>
+          <activiti:value id="sEnumTop117" name="Звернення з приводу оздоровлення дітей пільгових категорій"></activiti:value>
+          <activiti:value id="sEnumTop118" name="Інші питання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asTop12" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum" required="true">
+          <activiti:value id="sEnumTop121" name="Питання організації навчально-виховного процесу в загальноосвітніх навчальних закладах, харчування учнів"></activiti:value>
+          <activiti:value id="sEnumTop122" name="Питання організації виховного процесу у дошкільних навчальних закладах, харчування вихованців, реєстрація дітей до навчальних закладів, влаштування дітей у дошкільні навчальні заклади"></activiti:value>
+          <activiti:value id="sEnumTop123" name="Конфліктні ситуації в педагогічних колективах навчальних закладів, кадрові питання"></activiti:value>
+          <activiti:value id="sEnumTop124" name="Питання організації виховного процесу в загальноосвітніх навчальних закладах, співробітництво з громадськими організаціями з питань виховання учнів"></activiti:value>
+          <activiti:value id="sEnumTop125" name="Захист інтелектуальної власності, реєстрація, патентування, впровадження винаходів"></activiti:value>
+          <activiti:value id="sEnumTop126" name="Здобуття вищої освіти (бюджетне, контрактне)"></activiti:value>
+          <activiti:value id="sEnumTop127" name="Інноваційна діяльність (фінансування та впровадження нових технологій)"></activiti:value>
+          <activiti:value id="sEnumTop128" name="Розвиток науки"></activiti:value>
+          <activiti:value id="sEnumTop129" name="Позашкільна освіта та діяльність позашкільних закладів"></activiti:value>
+          <activiti:value id="sEnumTop1210" name="Питання організації навчально-виховного процесу в навчальних закладах інтернатного типу, дитячих будинках, спеціальних навчальних закладах, питання пов’язані з оздоровленням, з інклюзивним навчанням"></activiti:value>
+          <activiti:value id="sEnumTop1211" name="Питання травмування учнів, питання санітарного стану території навчальних закладів, безпека життєдіяльності"></activiti:value>
+          <activiti:value id="sEnumTop1212" name="Економічні, фінансові питання, ремонтні роботи, питання облаштування, санітарного стану навчальних закладів"></activiti:value>
+          <activiti:value id="sEnumTop1213" name="Питання пов’язані з вищими та професійно-технічними навчальними закладами"></activiti:value>
+          <activiti:value id="sEnumTop1214" name="Ремонти та опалювання закладів"></activiti:value>
+          <activiti:value id="sEnumTop1215" name="Виплата заробітної плати, фінансові питання"></activiti:value>
+          <activiti:value id="sEnumTop1216" name="Інші питання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asTop13" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum" required="true">
+          <activiti:value id="sEnumTop131" name="Фінансова допомога у підтримці належного стану книг"></activiti:value>
+          <activiti:value id="sEnumTop132" name="Питання стосовно встановлення меморіальних дощок та пам`ятних знаків"></activiti:value>
+          <activiti:value id="sEnumTop133" name="Узгодження проведення заходів у закладах культури міського підпорядкування"></activiti:value>
+          <activiti:value id="sEnumTop134" name="Зверенення міських організацій щрдо проведення міських заходів"></activiti:value>
+          <activiti:value id="sEnumTop135" name="Зверенення по питанням роботи підвідомчих закладів культури"></activiti:value>
+          <activiti:value id="sEnumTop136" name="Загальні питання культури та туризму"></activiti:value>
+          <activiti:value id="sEnumTop137" name="Туризм та зони відпочинку. Утримання парків"></activiti:value>
+          <activiti:value id="sEnumTop138" name="Туризм та зони відпочинку. Діяльність закладів культури"></activiti:value>
+          <activiti:value id="sEnumTop139" name="Кіно, театр, виставки та інші види мистецтв"></activiti:value>
+          <activiti:value id="sEnumTop1310" name="Мовна політика"></activiti:value>
+          <activiti:value id="sEnumTop1311" name="Розвиток культури, збереження культурної cпадщини"></activiti:value>
+          <activiti:value id="sEnumTop1312" name="Інші питання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asTop14" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum" required="true">
+          <activiti:value id="sEnumTop141" name="Пошкодження чи знищення елементів благоустрою (з подальшим їх відновленням)"></activiti:value>
+          <activiti:value id="sEnumTop142" name="Ускладнення руху пішоходів і транспорту, обмеження доступу до об'єктів благоустрою"></activiti:value>
+          <activiti:value id="sEnumTop143" name="Погіршення існуючого стану об'єктів благоустрою і внесення змін до них"></activiti:value>
+          <activiti:value id="sEnumTop144" name="Тимчасове обмеження використання території загального призначення для безпечного проведення робіт по ремонту і реконструкції будівель , їх елементів і приміщень"></activiti:value>
+          <activiti:value id="sEnumTop145" name="Перевірка дотримання підприємствами, установами, організаціями, фізичними особами - підприємцями та громадянами вимог правил благоустрою території міста"></activiti:value>
+          <activiti:value id="sEnumTop146" name="Інші питання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asTop15" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum" required="true">
+          <activiti:value id="sEnumTop151" name="Розміщення тимчасових споруд для здійснення підприємницької дільності"></activiti:value>
+          <activiti:value id="sEnumTop152" name="Розміщення тимчасових гаражів"></activiti:value>
+          <activiti:value id="sEnumTop153" name="Будівництво в приватному секторі"></activiti:value>
+          <activiti:value id="sEnumTop154" name="Будівництво та реконструкція об'єктів більше 300 м2"></activiti:value>
+          <activiti:value id="sEnumTop155" name="Реконструкція квартир та площ загального користування у житлових будинках"></activiti:value>
+          <activiti:value id="sEnumTop156" name="Надання інформації про об'єкт будівництва"></activiti:value>
+          <activiti:value id="sEnumTop157" name="Вимога про припинення будівництва"></activiti:value>
+          <activiti:value id="sEnumTop158" name="Інформаційні запити з проханням прийняти об'єкт в експлуатацію (збудований до 01.01.2008 року)"></activiti:value>
+          <activiti:value id="sEnumTop159" name="Інформаційні запити з проханням прийняти об'єкт в експлуатацію (збудований після 01.01.2008 року)"></activiti:value>
+          <activiti:value id="sEnumTop1510" name="Інформаційні запити про порушення прав сусідів"></activiti:value>
+          <activiti:value id="sEnumTop1511" name="Відповідність розміщення об'єктів будівництва містобудівним умовам"></activiti:value>
+          <activiti:value id="sEnumTop1512" name="Надання інформаціі стосовно підготовки Головним архітектурно-планувальним управлінням м.Дніпропетровськ рішень виконкому та міської ради"></activiti:value>
+          <activiti:value id="sEnumTop1513" name="Запити стосовно процедури оформлення паспортів прив'язки, містобудівних умов та обмежень та будівельних паспортів"></activiti:value>
+          <activiti:value id="sEnumTop1514" name="Запити стосовно зелених зон"></activiti:value>
+          <activiti:value id="sEnumTop1515" name="Запити стосовно планів будівництва та реконструкції"></activiti:value>
+          <activiti:value id="sEnumTop1516" name="Інформація щодо присвоєння (зміни) адреси нерухомого майна"></activiti:value>
+          <activiti:value id="sEnumTop1517" name="Інформація щодо найменування (перейменування) проїздів"></activiti:value>
+          <activiti:value id="sEnumTop1518" name="Інформація стосовно адміністративно-територіальної належності об'єкту"></activiti:value>
+          <activiti:value id="sEnumTop1519" name="Інші питання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asTop16" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum" required="true">
+          <activiti:value id="sEnumTop161" name="Ліквідація несанкціонованої вуличної торгівлі"></activiti:value>
+          <activiti:value id="sEnumTop162" name="Демонтаж тимчасових споруд (МАФ) для провадження підприємницької діяльності (тільки в частині охорони громадського порядку)"></activiti:value>
+          <activiti:value id="sEnumTop163" name="Побутові конфлікти, порушення громадського порядку, кримінальні правопорушення"></activiti:value>
+          <activiti:value id="sEnumTop164" name="Питання стосовно реєстрація за місцем проживання"></activiti:value>
+          <activiti:value id="sEnumTop165" name="Питання стосовно виконання судових рішень"></activiti:value>
+          <activiti:value id="sEnumTop166" name="Встановлення дорожніх знаків і світлофорів, нанесення дорожньої розмітки, організація безпеки дорожнього руху"></activiti:value>
+          <activiti:value id="sEnumTop167" name="Безпека дорожнього руху"></activiti:value>
+          <activiti:value id="sEnumTop168" name="Громадянство, помилування"></activiti:value>
+          <activiti:value id="sEnumTop169" name="Забезпечення виборчих прав. Скарги на органи влади"></activiti:value>
+          <activiti:value id="sEnumTop1610" name="Забезпечення виборчих прав. Скарги на учасників виборчого процесу"></activiti:value>
+          <activiti:value id="sEnumTop1611" name="Захист прав споживачів"></activiti:value>
+          <activiti:value id="sEnumTop1612" name="Корупційні діяння (зловживання владою або службовим становищем)"></activiti:value>
+          <activiti:value id="sEnumTop1613" name="Порядок розгляду звернень громадян"></activiti:value>
+          <activiti:value id="sEnumTop1614" name="Правозахисна діяльність (адвокатура)"></activiti:value>
+          <activiti:value id="sEnumTop1615" name="Робота правоохоронних органів"></activiti:value>
+          <activiti:value id="sEnumTop1616" name="Робота правоохоронних органів. Робота органів МВС (розслідування злочинів, профілактика правопорушень, реєстрація фізичних осіб, видача паспорта)"></activiti:value>
+          <activiti:value id="sEnumTop1617" name="Робота правоохоронних органів. Робота органів прокуратури"></activiti:value>
+          <activiti:value id="sEnumTop1618" name="Робота правоохоронних органів. Робота органів юстиції (виконання рішень суду, реєстрація актів громадського стану,нотаріальні дії)"></activiti:value>
+          <activiti:value id="sEnumTop1619" name="Робота правоохоронних органів. Робота установ виконання покарань (умов утримання, дострокове звільнення)"></activiti:value>
+          <activiti:value id="sEnumTop1620" name="Робота правоохоронних органів. Реєстрація за місцем проживання"></activiti:value>
+          <activiti:value id="sEnumTop1621" name="Робота правоохоронних органів. Підтримання громадського порядку"></activiti:value>
+          <activiti:value id="sEnumTop1622" name="Робота правоохоронних органів. Інші питання забезпечення законодавства"></activiti:value>
+          <activiti:value id="sEnumTop1623" name="Протидія захопленню підприємств (рейдерство)"></activiti:value>
+          <activiti:value id="sEnumTop1624" name="Інші питання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asTop17" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum" required="true">
+          <activiti:value id="sEnumTop171" name="Поліпшення умов проживання"></activiti:value>
+          <activiti:value id="sEnumTop172" name="Відселення сім'ї заявника з аварійного будинку"></activiti:value>
+          <activiti:value id="sEnumTop173" name="Розподіл квартир"></activiti:value>
+          <activiti:value id="sEnumTop174" name="Надання допомоги у поверенні коштів, розміщених на депозитних рахунках банків"></activiti:value>
+          <activiti:value id="sEnumTop175" name="Надання відстрочки по оплаті відсотків та реструктуризації кредитної заборгованості банку"></activiti:value>
+          <activiti:value id="sEnumTop176" name="Надання роз'яснень стосовно порядку розрахунку доходів від підприємницької діяльності фізичних осіб для заповнення декларацій"></activiti:value>
+          <activiti:value id="sEnumTop177" name="Страхові виплати"></activiti:value>
+          <activiti:value id="sEnumTop178" name="Надання допомоги у погашенні кредиту в іноземній валюті"></activiti:value>
+          <activiti:value id="sEnumTop179" name="Відкриття в АТ Ощадбанк платіжної картки"></activiti:value>
+          <activiti:value id="sEnumTop1710" name="Надання допомоги у вирішенні питання повернення знецінених грошових заощаджень, розміщених в Ощадбанку"></activiti:value>
+          <activiti:value id="sEnumTop1711" name="Надання роз'яснень щодо підстав для стягнення комісії при сплаті комунальних платежів"></activiti:value>
+          <activiti:value id="sEnumTop1712" name="Отримання нарахувань, відшкодувань за вкладами у банківских установах України, їх діяльність"></activiti:value>
+          <activiti:value id="sEnumTop1713" name="Отримання позики"></activiti:value>
+          <activiti:value id="sEnumTop1714" name="Повренення заощаджень, страхових внесків, коштів за облігаціями державної позики СРСР"></activiti:value>
+          <activiti:value id="sEnumTop1715" name="Податок на нерухомість, спадщину, землю тощо"></activiti:value>
+          <activiti:value id="sEnumTop1716" name="Поновлення роботи відділення АТ Ощадбанк"></activiti:value>
+          <activiti:value id="sEnumTop1717" name="Відмови працівників Єдиного абонентського відділу у видачі довідки про склад сім'ї"></activiti:value>
+          <activiti:value id="sEnumTop1718" name="Відшкодування плати за проїзд у зв'язку із скасуванням пільг на проїзд у громадському транспорті"></activiti:value>
+          <activiti:value id="sEnumTop1719" name="Виділення коштів на проведення проектно-вишукувальнихт робіт"></activiti:value>
+          <activiti:value id="sEnumTop1720" name="Виділення коштів на встановлення приладів обліку енергоносіїв"></activiti:value>
+          <activiti:value id="sEnumTop1721" name="Вирішення питання з погашення заборгованості з виплати заробітної плати"></activiti:value>
+          <activiti:value id="sEnumTop1722" name="Відновлення рейсів теплоходів, в ході погашення заборгованості за пільговий проїзд окремих категорій громадян"></activiti:value>
+          <activiti:value id="sEnumTop1723" name="Виділення коштів з міського бюджету на надання матеріальної допомоги"></activiti:value>
+          <activiti:value id="sEnumTop1724" name="Виділення коштів на фінансування робіт із заміни ліфта у житлових будинках"></activiti:value>
+          <activiti:value id="sEnumTop1725" name="Реконструкції водопровідної мережі"></activiti:value>
+          <activiti:value id="sEnumTop1726" name="Реконструкції гуртожитків"></activiti:value>
+          <activiti:value id="sEnumTop1727" name="Надання пільгового кредиту на будівництво житлового будинку"></activiti:value>
+          <activiti:value id="sEnumTop1728" name="Виділення коштів з міського бюджету для будівництва водопроводу"></activiti:value>
+          <activiti:value id="sEnumTop1729" name="Включення до міського бюджету коштів на будівництво багатоповерхового будинку"></activiti:value>
+          <activiti:value id="sEnumTop1730" name="Зменшення тарифів на оплату житлово-комунальних послуг"></activiti:value>
+          <activiti:value id="sEnumTop1731" name="Питання щодо неможливості отримання інформації про оплату житлово-комунальних послуг на веб-сайті КП Міські комунальні платежі"></activiti:value>
+          <activiti:value id="sEnumTop1732" name="Оздоровлення дітей-інвалідів у 2015 році"></activiti:value>
+          <activiti:value id="sEnumTop1733" name="Надання фінансової допомоги на реконструкцію храму"></activiti:value>
+          <activiti:value id="sEnumTop1734" name="Порядок нарахування індексації заробітної плати"></activiti:value>
+          <activiti:value id="sEnumTop1735" name="Фінансування органів місцевого самоврядування та інших видатків"></activiti:value>
+          <activiti:value id="sEnumTop1736" name="Інші питання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asTop18" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum" required="true">
+          <activiti:value id="sEnumTop182" name="Установка (перевірка, заміна) лічильника"></activiti:value>
+          <activiti:value id="sEnumTop183" name="Відсутність газифікації"></activiti:value>
+          <activiti:value id="sEnumTop184" name="Газифікація будинку"></activiti:value>
+          <activiti:value id="sEnumTop185" name="Інши питання"></activiti:value>
+          <activiti:value id="sEnumTop186" name="Підключення газу"></activiti:value>
+          <activiti:value id="sEnumTop187" name="Ремонт (заміни) газової колоки"></activiti:value>
+          <activiti:value id="sEnumTop188" name="Фінансування робіт"></activiti:value>
+          <activiti:value id="sEnumTop189" name="Ремонт газового обладнення"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asTop19" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum" required="true">
+          <activiti:value id="sEnumTop191" name="Загальні питання електропостачання"></activiti:value>
+          <activiti:value id="sEnumTop192" name="Установка (перевірка, заміна) лічильника"></activiti:value>
+          <activiti:value id="sEnumTop193" name="Відсутність електропостачання"></activiti:value>
+          <activiti:value id="sEnumTop194" name="Неякісне електропостачання"></activiti:value>
+          <activiti:value id="sEnumTop195" name="Ремонт електричного обладнення"></activiti:value>
+          <activiti:value id="sEnumTop196" name="Інші питання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asTop20" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum" required="true">
+          <activiti:value id="sEnumTop201" name="Висвітлення у ЗМІ діяльності органів влади та місцевого самоврядування"></activiti:value>
+          <activiti:value id="sEnumTop202" name="Діяльність ЗМІ"></activiti:value>
+          <activiti:value id="sEnumTop203" name="Інформаційні системи та їх розвиток"></activiti:value>
+          <activiti:value id="sEnumTop204" name="Книговидавництво"></activiti:value>
+          <activiti:value id="sEnumTop205" name="Комунікація влади та громадськості"></activiti:value>
+          <activiti:value id="sEnumTop206" name="Інші питання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asTop21" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum" required="true">
+          <activiti:value id="sEnumTop211" name="Загальні питання діяльності благодійних фондів, громадських організацій"></activiti:value>
+          <activiti:value id="sEnumTop212" name="Діяльність політичних партій"></activiti:value>
+          <activiti:value id="sEnumTop213" name="Діяльність профспілок"></activiti:value>
+          <activiti:value id="sEnumTop214" name="Діяльність релігійних громад, віросповідання"></activiti:value>
+          <activiti:value id="sEnumTop215" name="Інші питання діяльності об'єднань громадян, релігії та міжконфесійних відносин"></activiti:value>
+          <activiti:value id="sEnumTop216" name="Питання, що стосуються офіційного інтернет-портала ДМР www.dniprocity.dp.ua"></activiti:value>
+          <activiti:value id="sEnumTop217" name="Інші питання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asTop22" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum" required="true">
+          <activiti:value id="sEnumTop221" name="Факти корупції"></activiti:value>
+          <activiti:value id="sEnumTop222" name="Відгуки щодо рішень органів місцевого самоврядування"></activiti:value>
+          <activiti:value id="sEnumTop223" name="Дії, бездіяльність посадових осіб органів місцевого самоврядування"></activiti:value>
+          <activiti:value id="sEnumTop224" name="Затвердження програм, зокрема, соціально-економічного та культурного розвитку"></activiti:value>
+          <activiti:value id="sEnumTop225" name="Проведення місцевих референдумів. Проведення громадських слухань,заходів"></activiti:value>
+          <activiti:value id="sEnumTop226" name="Передача (отримання) документів до архіву"></activiti:value>
+          <activiti:value id="sEnumTop227" name="Розташування рекламних засобів"></activiti:value>
+          <activiti:value id="sEnumTop228" name="Формування місцевих бюджетів"></activiti:value>
+          <activiti:value id="sEnumTop229" name="Інші питання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sAdressProbl" name="Адреса за якої виникло питання" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReason" name="Опишіть суть звернення" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAdditionalInformation" name="Додаткова інформація" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sRegistrationNumberRGA" name="Реєстраційний номер ОДА" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAnswer_UkrDoc" name="Відповідь УкрДок" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nDaysRemain" name="Ориентировочный срок ответа на обращение (дней)" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneCall_SubjectContact_Client" name="Телефон, с которого поступил звонок" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nFile1" name="Завантажте матеріал стосовно Вашого звернення, якщо є;(фото або відсканований документ що стосується звернення)" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common2.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="hideValidateFields3" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common3.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sAnswerChannel" name="Канал відповіді" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAnswer" name="Ответ кол-центра" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAnswerStatus" name="Статус ответа" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sEnumTop" name="Енам Подтемитіка" type="invisible"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <serviceTask id="servicetask2" name="Письмо" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Тест корезоид]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+&lt;p&gt; Ваше звернення до міської ради було зареєстровано у системі.&lt;br/&gt;
+Повідомлення про результат послуги буде спрямоване на Ваш e-mail.&lt;/p&gt;
+[pattern/mail/_common_signature_start.html]
+Канцелярія Дніпропетровської міської ради,&lt;br /&gt;
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
+    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
+    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
+      <errorEventDefinition></errorEventDefinition>
+    </boundaryEvent>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <sequenceFlow id="flow3" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
+    <userTask id="usertask1" name="Обробка" activiti:candidateGroups="sales">
+      <extensionElements>
+        <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPhone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdditionalPhone" name="Додатковий телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asConsultTr" name="Звернення консультаційного характеру" type="enum">
+          <activiti:value id="sEnumConsYes" name="Так"></activiti:value>
+          <activiti:value id="sEnumConsNo" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asSpecialStatus" name="Особливий статус" type="enum">
+          <activiti:value id="sEnumStatusYes" name="Так"></activiti:value>
+          <activiti:value id="sEnumStatusNo" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asHowCategory" name="Категорія заявника" type="enum">
+          <activiti:value id="sEnumCat1" name="Учасник війни"></activiti:value>
+          <activiti:value id="sEnumCat2" name="Дитина війни"></activiti:value>
+          <activiti:value id="sEnumCat3" name="Інвалід Великої Вітчизняної війни"></activiti:value>
+          <activiti:value id="sEnumCat4" name="Інвалід війни"></activiti:value>
+          <activiti:value id="sEnumCat5" name="Учасник бойових дій"></activiti:value>
+          <activiti:value id="sEnumCat6" name="Ветеран праці"></activiti:value>
+          <activiti:value id="sEnumCat7" name="Інвалід I групи"></activiti:value>
+          <activiti:value id="sEnumCat8" name="Інвалід II групи"></activiti:value>
+          <activiti:value id="sEnumCat9" name="Інвалід III групи"></activiti:value>
+          <activiti:value id="sEnumCat10" name="Дитина-інвалід"></activiti:value>
+          <activiti:value id="sEnumCat11" name="Одинока мати"></activiti:value>
+          <activiti:value id="sEnumCat12" name="Мати-героїня"></activiti:value>
+          <activiti:value id="sEnumCat13" name="Багатодітна сім'я"></activiti:value>
+          <activiti:value id="sEnumCat14" name="Особа, що потерпіла від Чорнобильської катастрофи"></activiti:value>
+          <activiti:value id="sEnumCat15" name="Учасник ліквідації наслідків аварії на Чорнобильській АЕС"></activiti:value>
+          <activiti:value id="sEnumCat16" name="Герой України"></activiti:value>
+          <activiti:value id="sEnumCat17" name="Герой Радянського Союзу"></activiti:value>
+          <activiti:value id="sEnumCat18" name="Герой Соціалістичної Праці"></activiti:value>
+          <activiti:value id="sEnumCat19" name="Дитина"></activiti:value>
+          <activiti:value id="sEnumCat20" name="Інші категорії"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asKindTr" name="Вид звернення" type="enum">
+          <activiti:value id="sEnumSelf" name="Індівідуальне"></activiti:value>
+          <activiti:value id="sEnumCollect" name="Колективне"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asAnonymousTr" name="Звернення анонімне" type="enum">
+          <activiti:value id="sEnumAnonymYes" name="Так"></activiti:value>
+          <activiti:value id="sEnumAnonymNo" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asTypeTr" name="Тип звернення" type="enum">
+          <activiti:value id="sEnumApplication" name="Заява"></activiti:value>
+          <activiti:value id="sEnumClaim" name="Скарга"></activiti:value>
+          <activiti:value id="sEnumProposal" name="Пропозиція"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asHowSocStatus" name="Соціальний стан" type="enum">
+          <activiti:value id="sEnumSoc1" name="Пенсіонер"></activiti:value>
+          <activiti:value id="sEnumSoc2" name="Робітник"></activiti:value>
+          <activiti:value id="sEnumSoc3" name="Селянин"></activiti:value>
+          <activiti:value id="sEnumSoc4" name="Працівник бюджетної сфери"></activiti:value>
+          <activiti:value id="sEnumSoc5" name="Державний службовець"></activiti:value>
+          <activiti:value id="sEnumSoc6" name="Військовослужбовець"></activiti:value>
+          <activiti:value id="sEnumSoc7" name="Підприємець"></activiti:value>
+          <activiti:value id="sEnumSoc8" name="Безробітний"></activiti:value>
+          <activiti:value id="sEnumSoc9" name="Учень, студент"></activiti:value>
+          <activiti:value id="sEnumSoc10" name="Служитель релігійної організації"></activiti:value>
+          <activiti:value id="sEnumSoc11" name="Особа, що позбавлена волі; особа, воля якої обмежена"></activiti:value>
+          <activiti:value id="sEnumSoc12" name="Інші"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asDistrict" name="Район проживання" type="enum">
+          <activiti:value id="sEnumAnd" name="Амур-Нижньодніпровський"></activiti:value>
+          <activiti:value id="sEnumShevch" name="Шевченківський (Бабушкінський)"></activiti:value>
+          <activiti:value id="sEnumSobor" name="Соборний (Жовтневий)"></activiti:value>
+          <activiti:value id="sEnumIndust" name="Індустріальний"></activiti:value>
+          <activiti:value id="sEnumCenter" name="Центральний (Кіровський)"></activiti:value>
+          <activiti:value id="sEnumChechel" name="Чечелівський (Красногвардійський)"></activiti:value>
+          <activiti:value id="sEnumNovoK" name="Новокодацький (Ленінський)"></activiti:value>
+          <activiti:value id="sEnumSamar" name="Самарський"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sAdress" name="Адреса проживання заявника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asTopHead" name="Тема звернення" type="enum">
+          <activiti:value id="sEnumTopHead1" name="Житлове господарство"></activiti:value>
+          <activiti:value id="sEnumTopHead2" name="Комунальне господарство"></activiti:value>
+          <activiti:value id="sEnumTopHead3" name="Промислова політика"></activiti:value>
+          <activiti:value id="sEnumTopHead4" name="Транспорт і зв'язок"></activiti:value>
+          <activiti:value id="sEnumTopHead5" name="Аграрна політика і земельні відносини"></activiti:value>
+          <activiti:value id="sEnumTopHead6" name="Охорона здоров'я"></activiti:value>
+          <activiti:value id="sEnumTopHead7" name="Соціальний захист, праця і заробітна плата"></activiti:value>
+          <activiti:value id="sEnumTopHead8" name="Сім'я та діти"></activiti:value>
+          <activiti:value id="sEnumTopHead9" name="Екологія та природні ресурси"></activiti:value>
+          <activiti:value id="sEnumTopHead10" name="Торгівля"></activiti:value>
+          <activiti:value id="sEnumTopHead11" name="Молодь, ґендерна рівність, фізична культура і спорт"></activiti:value>
+          <activiti:value id="sEnumTopHead12" name="Освіта, наукова, науково-технічна, інноваційна діяльність та інтелектуальна власність"></activiti:value>
+          <activiti:value id="sEnumTopHead13" name="Культура та культурна спадщина, туризм"></activiti:value>
+          <activiti:value id="sEnumTopHead14" name="Благоустрій міста"></activiti:value>
+          <activiti:value id="sEnumTopHead15" name="Державне будівництво, адміністративно-територіальний устрій"></activiti:value>
+          <activiti:value id="sEnumTopHead16" name="Забезпечення дотримання законності та охорони правопорядку, реалізація прав і свобод громадян"></activiti:value>
+          <activiti:value id="sEnumTopHead17" name="Фінансова, податкова, митна політика"></activiti:value>
+          <activiti:value id="sEnumTopHead18" name="Комунальне господарство. Газифікація"></activiti:value>
+          <activiti:value id="sEnumTopHead19" name="Комунальне господарство. Електропостачання"></activiti:value>
+          <activiti:value id="sEnumTopHead20" name="Інформаційна політика, діяльність ЗМІ"></activiti:value>
+          <activiti:value id="sEnumTopHead21" name="Діяльність об'єднань громадян, релігія та міжконфесійні відносини"></activiti:value>
+          <activiti:value id="sEnumTopHead22" name="Діяльність місцевого самоврядування"></activiti:value>
+          <activiti:value id="sEnumTopHead23" name="Інше"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asTop1" name="Підтематика звернення" type="enum">
+          <activiti:value id="sEnumTop11" name="Ремонт ліфта"></activiti:value>
+          <activiti:value id="sEnumTop12" name="Ремонт під'їзду"></activiti:value>
+          <activiti:value id="sEnumTop13" name="Ремонт підвального приміщення"></activiti:value>
+          <activiti:value id="sEnumTop14" name="Ремонт покрівлі будівлі, міжпанельних швів"></activiti:value>
+          <activiti:value id="sEnumTop15" name="Ремонт фасаду будинку,відмостки"></activiti:value>
+          <activiti:value id="sEnumTop16" name="Прибирання прибудинкової території"></activiti:value>
+          <activiti:value id="sEnumTop17" name="Налагодження опалення"></activiti:value>
+          <activiti:value id="sEnumTop18" name="Ремонт труб зовнішнього зливостоку"></activiti:value>
+          <activiti:value id="sEnumTop19" name="Ремонт каналізації"></activiti:value>
+          <activiti:value id="sEnumTop110" name="Освітлення у квартирі та під`їзді"></activiti:value>
+          <activiti:value id="sEnumTop111" name="Утримання сміттєпроводу у будинку"></activiti:value>
+          <activiti:value id="sEnumTop112" name="Поновлення роботи вентиляційної системи"></activiti:value>
+          <activiti:value id="sEnumTop113" name="Підтоплення будинку. Залиття приміщень"></activiti:value>
+          <activiti:value id="sEnumTop114" name="Ремонт ХВС ( холодного водопостачання),сантехніка"></activiti:value>
+          <activiti:value id="sEnumTop115" name="Ремонт санітарно-технічних систем у підвалі"></activiti:value>
+          <activiti:value id="sEnumTop116" name="Передача житлових будинків, гуртожитків до комунальної власності"></activiti:value>
+          <activiti:value id="sEnumTop117" name="Утримання гуртожитків"></activiti:value>
+          <activiti:value id="sEnumTop118" name="Ремонт балкону"></activiti:value>
+          <activiti:value id="sEnumTop119" name="Ремон квартири"></activiti:value>
+          <activiti:value id="sEnumTop120" name="Ремонт будинку"></activiti:value>
+          <activiti:value id="sEnumTop121" name="Облаштування пандусу"></activiti:value>
+          <activiti:value id="sEnumTop122" name="Питання тарифів на послуги з утримання будинків та прибудинкової території"></activiti:value>
+          <activiti:value id="sEnumTop123" name="Питання ліфтового обслуговування"></activiti:value>
+          <activiti:value id="sEnumTop124" name="Питання щодо нераціонального використання бомбосховищ в якості підвальних приміщень"></activiti:value>
+          <activiti:value id="sEnumTop125" name="Інформаційні запити громадян"></activiti:value>
+          <activiti:value id="sEnumTop126" name="Скарги громадян на роботу ЖЕК"></activiti:value>
+          <activiti:value id="sEnumTop127" name="Скарги громадян на роботу Аварійної служби"></activiti:value>
+          <activiti:value id="sEnumTop128" name="Приватизація квартир, що знаходяться у комунальній власності міста"></activiti:value>
+          <activiti:value id="sEnumTop129" name="Приватизація житлового приміщення у гуртожитках"></activiti:value>
+          <activiti:value id="sEnumTop130" name="Виключення квартири з житлового фонду"></activiti:value>
+          <activiti:value id="sEnumTop131" name="Встановлення (підключення) домофону"></activiti:value>
+          <activiti:value id="sEnumTop132" name="Утримання бомобосховищ"></activiti:value>
+          <activiti:value id="sEnumTop133" name="Порядок оформлення дублікатів свідотств про право власності на житло у разі його втрати"></activiti:value>
+          <activiti:value id="sEnumTop134" name="Фінансування робіт ремонту будинків"></activiti:value>
+          <activiti:value id="sEnumTop135" name="Заселення у гуртожиток. Отримання ордеру"></activiti:value>
+          <activiti:value id="sEnumTop136" name="Упорядкування проживання у гуртожитку"></activiti:value>
+          <activiti:value id="sEnumTop137" name="Створення та діяльність ОССБ"></activiti:value>
+          <activiti:value id="sEnumTop138" name="Інші питання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asTop2" name="Підтематика звернення" type="enum">
+          <activiti:value id="sEnumTop21" name="Видалення, обрізка дерев, корчування пнів, покос газонів"></activiti:value>
+          <activiti:value id="sEnumTop22" name="Утримання та поточний ремонт мереж зовнішнього освітлення"></activiti:value>
+          <activiti:value id="sEnumTop23" name="Ритуальні послуги та утримання кладовищ"></activiti:value>
+          <activiti:value id="sEnumTop24" name="Послуги з підбору трупів тварин"></activiti:value>
+          <activiti:value id="sEnumTop25" name="Прочищення та ремонт дощової каналізації, інженерний захист території міста"></activiti:value>
+          <activiti:value id="sEnumTop26" name="Поточний ремонт та утримання фонтанів"></activiti:value>
+          <activiti:value id="sEnumTop27" name="Встановлення лавок, урн та контейнерів"></activiti:value>
+          <activiti:value id="sEnumTop28" name="Погашення боргів за комунальні послуги"></activiti:value>
+          <activiti:value id="sEnumTop29" name="Розчищення доріг від снігу"></activiti:value>
+          <activiti:value id="sEnumTop210" name="Видалення карантинних рослин"></activiti:value>
+          <activiti:value id="sEnumTop211" name="Фінансування комунальних робіт"></activiti:value>
+          <activiti:value id="sEnumTop212" name="Влаштування дитячого майданчика"></activiti:value>
+          <activiti:value id="sEnumTop213" name="Тарифи житолово-комунальних послуг, питання щодо нарахування коштів за надані послуги"></activiti:value>
+          <activiti:value id="sEnumTop214" name="Послуги з ремонту доріг"></activiti:value>
+          <activiti:value id="sEnumTop215" name="Послуги з літнього та зимового утримання доріг"></activiti:value>
+          <activiti:value id="sEnumTop216" name="Поточний ремонт та утримання мостів і шляхопроводів, підземних переходів"></activiti:value>
+          <activiti:value id="sEnumTop217" name="Питання пов’язані з проведенням тендерних процедур"></activiti:value>
+          <activiti:value id="sEnumTop218" name="Зсуви грунту"></activiti:value>
+          <activiti:value id="sEnumTop219" name="Підтоплення територій міста"></activiti:value>
+          <activiti:value id="sEnumTop220" name="Провалля"></activiti:value>
+          <activiti:value id="sEnumTop221" name="Відсутність водопостачання у будинок"></activiti:value>
+          <activiti:value id="sEnumTop222" name="Відсутність каналізаційних кришок"></activiti:value>
+          <activiti:value id="sEnumTop223" name="Забита каналізація водовідведення"></activiti:value>
+          <activiti:value id="sEnumTop224" name="Перевірка лічильників водоканалу"></activiti:value>
+          <activiti:value id="sEnumTop225" name="Пориви водоканалу"></activiti:value>
+          <activiti:value id="sEnumTop226" name="Відсутність гарячої води"></activiti:value>
+          <activiti:value id="sEnumTop227" name="Питання на рахування за надані послуги"></activiti:value>
+          <activiti:value id="sEnumTop228" name="Запити інформації, якою володіють комунальні підприємства"></activiti:value>
+          <activiti:value id="sEnumTop229" name="Тарифи теплопостачання, питання щодо нарахування коштів за надані послуги"></activiti:value>
+          <activiti:value id="sEnumTop230" name="Скарга на якість обсуговування на послуги теплопостачання"></activiti:value>
+          <activiti:value id="sEnumTop231" name="Ізоляція теплотрас"></activiti:value>
+          <activiti:value id="sEnumTop232" name="Ремонт теплотрас"></activiti:value>
+          <activiti:value id="sEnumTop233" name="Відсутність теплопостачання у будинку"></activiti:value>
+          <activiti:value id="sEnumTop234" name="Відсутність люків на оглядових колодязях"></activiti:value>
+          <activiti:value id="sEnumTop235" name="Відсутність гарячої води"></activiti:value>
+          <activiti:value id="sEnumTop236" name="Встановлення індивідуальних систем опалення"></activiti:value>
+          <activiti:value id="sEnumTop237" name="Відключення від центрального опалення"></activiti:value>
+          <activiti:value id="sEnumTop238" name="Недотримання теплового режиму"></activiti:value>
+          <activiti:value id="sEnumTop239" name="Неякісне надання послуг теплопостачання"></activiti:value>
+          <activiti:value id="sEnumTop240" name="Встановлення та повірка лічильника"></activiti:value>
+          <activiti:value id="sEnumTop241" name="Інші питання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asTop3" name="Підтематика звернення" type="enum">
+          <activiti:value id="sEnumTop31" name="Невиплата заробітної плати на промисловому підприємстві"></activiti:value>
+          <activiti:value id="sEnumTop32" name="Відключення від електромереж або газу"></activiti:value>
+          <activiti:value id="sEnumTop33" name="Діяльність промислових підприємств"></activiti:value>
+          <activiti:value id="sEnumTop34" name="Діяльність пунктів прийому виробів з металу"></activiti:value>
+          <activiti:value id="sEnumTop35" name="Діяльність пунктів прийому склотари, макулатури та інше"></activiti:value>
+          <activiti:value id="sEnumTop36" name="Енергозбереження, робота галузей ПЕК"></activiti:value>
+          <activiti:value id="sEnumTop37" name="Підприємницька діяльність"></activiti:value>
+          <activiti:value id="sEnumTop38" name="Інші питання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asTop4" name="Підтематика звернення" type="enum">
+          <activiti:value id="sEnumTop41" name="Робота маршрутних таксі"></activiti:value>
+          <activiti:value id="sEnumTop42" name="Робота міського електротранспорту"></activiti:value>
+          <activiti:value id="sEnumTop43" name="Робота автостоянок, парковок"></activiti:value>
+          <activiti:value id="sEnumTop44" name="Надання поштових послуг"></activiti:value>
+          <activiti:value id="sEnumTop45" name="Ремонт, встановлення стаціонарного телефону, тарифи на послуги зв'язку, інше"></activiti:value>
+          <activiti:value id="sEnumTop46" name="Робота радіо, телебачення (кабельне ТВ), послуги інтернет"></activiti:value>
+          <activiti:value id="sEnumTop47" name="Узгодження тарифів на проїзд на міських автобусних маршрутах"></activiti:value>
+          <activiti:value id="sEnumTop48" name="Автомобільний транспорт та автошляхи"></activiti:value>
+          <activiti:value id="sEnumTop49" name="Облаштуваня зупинок"></activiti:value>
+          <activiti:value id="sEnumTop410" name="Надання (позбавлення) пільг на проїзд в транспорті"></activiti:value>
+          <activiti:value id="sEnumTop411" name="Водний транспорт"></activiti:value>
+          <activiti:value id="sEnumTop412" name="Залізничний транспорт та залізничні шляхи"></activiti:value>
+          <activiti:value id="sEnumTop413" name="Робота станцій стільникового зв`язку"></activiti:value>
+          <activiti:value id="sEnumTop414" name="Робота метрополітену"></activiti:value>
+          <activiti:value id="sEnumTop415" name="Внесення змін до існуючої маршрутної мережі. Узгодження паспортів маршрутів у частині розкладу руху"></activiti:value>
+          <activiti:value id="sEnumTop416" name="Запити щодо діяльності комунальних підприємств, підпорядкованих департаменту транспорту та зв'язку"></activiti:value>
+          <activiti:value id="sEnumTop417" name="Підготовка проектів рішень міської ради, виконкому міської ради з питань пасажирських перевезень"></activiti:value>
+          <activiti:value id="sEnumTop418" name="Скарга на підвищення шуму під час руху трамваїв"></activiti:value>
+          <activiti:value id="sEnumTop419" name="Скарга на незадовільний рух трамваїв"></activiti:value>
+          <activiti:value id="sEnumTop420" name="Скарга на незадовільний рух тролейбусів"></activiti:value>
+          <activiti:value id="sEnumTop421" name="Скарга на водіїв трамваїв"></activiti:value>
+          <activiti:value id="sEnumTop422" name="Скарга на незадовільний стан трамваїв"></activiti:value>
+          <activiti:value id="sEnumTop423" name="Скарга на відсутність кондукторів в трамвайних маршрутах"></activiti:value>
+          <activiti:value id="sEnumTop424" name="Пропозиція ввести анонімних пасажирів на маршрутах електротранспорту"></activiti:value>
+          <activiti:value id="sEnumTop425" name="Скарга на велику швидкість трамваїв"></activiti:value>
+          <activiti:value id="sEnumTop426" name="Скарга на невиплату заробітної плати"></activiti:value>
+          <activiti:value id="sEnumTop427" name="Скарга на кондукторів трамваїв"></activiti:value>
+          <activiti:value id="sEnumTop428" name="Інші питання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asTop5" name="Підтематика звернення" type="enum">
+          <activiti:value id="sEnumTop51" name="Погодження історико-містобудівних обґрунтувань"></activiti:value>
+          <activiti:value id="sEnumTop52" name="Надання інформації щодо історико-культурної цінності будівлі (споруди)"></activiti:value>
+          <activiti:value id="sEnumTop53" name="Погодження  ескізних проектів реставрації, реабілітації, консервації, пристосування об'єктів культурної спадщини (на щойно виявлені об'єкти культурної спадщини та памяток місцевого значення)"></activiti:value>
+          <activiti:value id="sEnumTop54" name="Розгляд та погодження облікової документації на об'єкти культурної спадщини "></activiti:value>
+          <activiti:value id="sEnumTop55" name="Укладення охоронних договорів на об'єкти культурної спадщини"></activiti:value>
+          <activiti:value id="sEnumTop56" name="Виділення земельної ділянки учаснику АТО"></activiti:value>
+          <activiti:value id="sEnumTop57" name="Земельні конфлікти"></activiti:value>
+          <activiti:value id="sEnumTop58" name="Землекористування"></activiti:value>
+          <activiti:value id="sEnumTop59" name="Приватизація землі"></activiti:value>
+          <activiti:value id="sEnumTop510" name="Отримання державних актів на землю"></activiti:value>
+          <activiti:value id="sEnumTop511" name="Утримання садоводчих товариств"></activiti:value>
+          <activiti:value id="sEnumTop512" name="Успадкування землі"></activiti:value>
+          <activiti:value id="sEnumTop513" name="Підготовка земельних ділянок до земельних торгів"></activiti:value>
+          <activiti:value id="sEnumTop514" name="Підготовка земельних ділянок до продажу по фактичному розміщенню нерухомого майна"></activiti:value>
+          <activiti:value id="sEnumTop515" name="Координація роботи по веденню квартирного обліку"></activiti:value>
+          <activiti:value id="sEnumTop516" name="Ведення обліково-звітної документації та загальний облік житлової площі, яка надходить у комун.влсність та підлягає розподілу"></activiti:value>
+          <activiti:value id="sEnumTop517" name="Розподіл житлової площі"></activiti:value>
+          <activiti:value id="sEnumTop518" name="Підготовка рішень щодо видачі ордерів на житлові приміщення"></activiti:value>
+          <activiti:value id="sEnumTop519" name="Розгляд звернень громадян щодо надання житлової площі"></activiti:value>
+          <activiti:value id="sEnumTop520" name="Збір та узагальнення інформації щодо ведення квартирного обліку, яка надходить від районних рад "></activiti:value>
+          <activiti:value id="sEnumTop521" name="Відчуження і оренда комунальної власності"></activiti:value>
+          <activiti:value id="sEnumTop522" name="Інші питання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asTop6" name="Підтематика звернення" type="enum">
+          <activiti:value id="sEnumTop61" name="Санітарно-епідеміологічний стан. Проведення дезінфекції, дезінсекції, дератизації"></activiti:value>
+          <activiti:value id="sEnumTop62" name="Загальні питання охорони здоров'я"></activiti:value>
+          <activiti:value id="sEnumTop63" name="Робота МСЕК"></activiti:value>
+          <activiti:value id="sEnumTop64" name="Діяльність медичних закладів та установ"></activiti:value>
+          <activiti:value id="sEnumTop65" name="Допомога в лікуванні, протезування"></activiti:value>
+          <activiti:value id="sEnumTop66" name="Направлення на лікування до медичних установ"></activiti:value>
+          <activiti:value id="sEnumTop67" name="Надання путівки на оздоровлення"></activiti:value>
+          <activiti:value id="sEnumTop68" name="Робота аптек"></activiti:value>
+          <activiti:value id="sEnumTop69" name="Фінансування медицини, вартість медичних послуг, медичне страхування"></activiti:value>
+          <activiti:value id="sEnumTop610" name="Інші питання "></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asTop7" name="Підтематика звернення" type="enum">
+          <activiti:value id="sEnumTop71" name="Строк отримання матеріальної допомоги різних категорій громадян, отримання допомоги за померлого отримувача"></activiti:value>
+          <activiti:value id="sEnumTop72" name="Строк відправлення відомостей на виплату матер. допомоги на  Укрпошту  та банки"></activiti:value>
+          <activiti:value id="sEnumTop73" name="Роз`яснення, реформування законодавства із соціального захисту"></activiti:value>
+          <activiti:value id="sEnumTop74" name="Визначення соціального статусу"></activiti:value>
+          <activiti:value id="sEnumTop75" name="Отримання соціальних виплат"></activiti:value>
+          <activiti:value id="sEnumTop76" name="Реабілітація та соціальний захист громадян, які потребують підтримки (забезпечення різноманітними засобами реабілітації, спеціальними транспортними засобами)"></activiti:value>
+          <activiti:value id="sEnumTop77" name="Умови, організація і охорона праці"></activiti:value>
+          <activiti:value id="sEnumTop78" name="Роз`яснення щодо нарахування індексації"></activiti:value>
+          <activiti:value id="sEnumTop79" name="Інформаційні запити з питань бухгалтерського обліку та звітності"></activiti:value>
+          <activiti:value id="sEnumTop710" name="Питання оздоровлення осіб постраждалих внаслідок ЧАЕС"></activiti:value>
+          <activiti:value id="sEnumTop711" name="Питання допомоги у вирішенні соціальних та побутових питань особам, звільнених з місць позбавлення волі"></activiti:value>
+          <activiti:value id="sEnumTop712" name="Питання призначення субсидій"></activiti:value>
+          <activiti:value id="sEnumTop713" name="Питання пенсійного забезпечення громадянам міста"></activiti:value>
+          <activiti:value id="sEnumTop714" name="Порушення трудового законодавства (неправомірне звільнення, порушення графіку робочого дня)"></activiti:value>
+          <activiti:value id="sEnumTop715" name="Порушення законодавства про оплату праці (невиплата розрахункових та відпускних коштів, лікарняних, питання, стосовно індексації заробітної плати)"></activiti:value>
+          <activiti:value id="sEnumTop716" name="Питання заборгованості з виплати заробітної плати"></activiti:value>
+          <activiti:value id="sEnumTop717" name="Сприяння у працевлаштуванні незайнятій категорії населення міста, особам з обмеженими фізичними можливостями, учасників АТО та переселенців з зони АТО, питання щодо надання матеріальної допомоги громадянам міста"></activiti:value>
+          <activiti:value id="sEnumTop718" name="Порядок надання пільг, призначення і виплата державної допомоги сім'ям з дітьми, малозабезпеченим сім'ям, дітям інвалідам, гуманітарної допомоги"></activiti:value>
+          <activiti:value id="sEnumTop719" name="Надання матеріальної допомоги сім’ям загиблих військовослужбовців ЗСУ, інших військових формувань, які брали участь в АТО"></activiti:value>
+          <activiti:value id="sEnumTop720" name="Надання адресної матеріальної допомоги на оздоровлення та реабілітацію особам, які брали безпосередню  участь  в АТО"></activiti:value>
+          <activiti:value id="sEnumTop721" name="Проведення безоплатних капітальних ремонтів власних житлових будинків та квартир, осіб що мають право на таку пільгу"></activiti:value>
+          <activiti:value id="sEnumTop722" name="Надання матеріальної допомоги"></activiti:value>
+          <activiti:value id="sEnumTop723" name="Соціальний захист переселенців із зони АТО"></activiti:value>
+          <activiti:value id="sEnumTop724" name="Надання допомоги у вирішенні питань соціально-трудових відносин"></activiti:value>
+          <activiti:value id="sEnumTop725" name="Інші питання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asTop8" name="Підтематика звернення" type="enum">
+          <activiti:value id="sEnumTop81" name="Невиконання батьками або особами, які їх замінюють, обов`язків щодо утримання дітей"></activiti:value>
+          <activiti:value id="sEnumTop82" name="Участь одного із батьків (бабусі, дідуся) у вихованні дитини"></activiti:value>
+          <activiti:value id="sEnumTop83" name="Усиновлення дітей ,встановлення опіки над дітьми-сиротами та дітьми, позбавленими батьківського піклування, створення прийомної сім`ї, дитячого будинку сімейного типу"></activiti:value>
+          <activiti:value id="sEnumTop84" name="Захист житлових та майнових прав дітей-сиріт та дітей, позбавлених батьківського піклування, дітей, які опинились в складних життєвих обставинах"></activiti:value>
+          <activiti:value id="sEnumTop85" name="Соціальний захист дітей, які опинились в складних життєвих обставинах"></activiti:value>
+          <activiti:value id="sEnumTop86" name="Порядок позбавлення (поновлення) батьківських прав"></activiti:value>
+          <activiti:value id="sEnumTop87" name="Інші питання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asTop9" name="Підтематика звернення" type="enum">
+          <activiti:value id="sEnumTop91" name="Питання про забруднення атмосферного повітря або водойм"></activiti:value>
+          <activiti:value id="sEnumTop92" name="Використання природних ресурсів"></activiti:value>
+          <activiti:value id="sEnumTop93" name="Забруднення навколишнього середовища"></activiti:value>
+          <activiti:value id="sEnumTop94" name="Ліквідація наслідків надзвичайних ситуацій"></activiti:value>
+          <activiti:value id="sEnumTop95" name="Питання вивезення побутових і негабаритних відходів"></activiti:value>
+          <activiti:value id="sEnumTop96" name="Питання стосовно місця розташування контейнерів для збору побутових відходів"></activiti:value>
+          <activiti:value id="sEnumTop97" name="Питання стосовно повернення розрахункових коштів підприємством-перевізником побутових відходів у разі переплати"></activiti:value>
+          <activiti:value id="sEnumTop98" name="Укладання договорів на надання послуг з вивезення побутових відходів"></activiti:value>
+          <activiti:value id="sEnumTop99" name="Надання інформації про затверджені норми утворення побутових відходів і тарифи на послуги з вивезення побутових відходів"></activiti:value>
+          <activiti:value id="sEnumTop910" name="Надання інформації щодо діяльності КП ЕкоДніпро Дніпропетровської міської ради і міського полігону твердих побутових відходів"></activiti:value>
+          <activiti:value id="sEnumTop911" name="Інші питання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asTop10" name="Підтематика звернення" type="enum">
+          <activiti:value id="sEnumTop101" name="Дотримання правил торгівлі в роздрібній мережі, на підприємствах ресторанного господарства"></activiti:value>
+          <activiti:value id="sEnumTop102" name="Демонтаж малих архітектурних форм (робота без дозвільних документів на пішохідній зоні)"></activiti:value>
+          <activiti:value id="sEnumTop103" name="Порушення правил торгівлі, питання ціноутворення, підвищений рівень шуму від роботи літніх майданчиків в літню пору"></activiti:value>
+          <activiti:value id="sEnumTop104" name="Робота торгових об'єктів в парках, реалізація алкогольних напоїв та тютюнових виробів неповнолітнім"></activiti:value>
+          <activiti:value id="sEnumTop105" name="Обслуговування населення підприємствами сфери побуту"></activiti:value>
+          <activiti:value id="sEnumTop106" name="Прийом і обробка документів на розміщення МАФ на території міста і ведення електронного обліку підприємств торгівлі, ресторанного господарства, сфери послуг і харчової промисловості"></activiti:value>
+          <activiti:value id="sEnumTop107" name="Видача картки обліку об'єкта торговельного призначення, сфери послуг і виробництва продуктів харчування"></activiti:value>
+          <activiti:value id="sEnumTop108" name="Діяльність гральних закладів"></activiti:value>
+          <activiti:value id="sEnumTop109" name="Діяльність дитячих атракціонів"></activiti:value>
+          <activiti:value id="sEnumTop1010" name="Робота кафе"></activiti:value>
+          <activiti:value id="sEnumTop1011" name="Робота ринків"></activiti:value>
+          <activiti:value id="sEnumTop1012" name="Робота магазинів"></activiti:value>
+          <activiti:value id="sEnumTop1013" name="Побутове обслуговування"></activiti:value>
+          <activiti:value id="sEnumTop1014" name="Інші питання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asTop11" name="Підтематика звернення" type="enum">
+          <activiti:value id="sEnumTop111" name="Звернення з приводу встановлення або ремонту обладнання дитячих, тренажерних та футбольних майданчиків"></activiti:value>
+          <activiti:value id="sEnumTop112" name="Проведення спортивних змагань"></activiti:value>
+          <activiti:value id="sEnumTop113" name="Фізична культура та спорт"></activiti:value>
+          <activiti:value id="sEnumTop114" name="Звернення з приводу внесення до переліку організацій, яким надається право безкоштовного користування спортивних баз загальноосвітніх навчальних закладів та приміщень нежитлового фонду міста, пристосованих для занять фізичною культурою та спортом, спортивних споруд комунальних підприємств дитячо-юнацьким спортивним школам і громадським організаціям"></activiti:value>
+          <activiti:value id="sEnumTop115" name="Надання інформації щодо видачі посвідченнь багатодітної родини"></activiti:value>
+          <activiti:value id="sEnumTop116" name="Надання роз’ясненнь щодо пільг багатодітної родини"></activiti:value>
+          <activiti:value id="sEnumTop117" name="Звернення з приводу оздоровлення дітей пільгових категорій"></activiti:value>
+          <activiti:value id="sEnumTop118" name="Інші питання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asTop12" name="Підтематика звернення" type="enum">
+          <activiti:value id="sEnumTop121" name="Питання організації навчально-виховного процесу в загальноосвітніх навчальних закладах, харчування учнів"></activiti:value>
+          <activiti:value id="sEnumTop122" name="Питання організації виховного процесу у дошкільних навчальних закладах, харчування вихованців, реєстрація дітей до навчальних закладів, влаштування дітей у дошкільні навчальні заклади"></activiti:value>
+          <activiti:value id="sEnumTop123" name="Конфліктні ситуації в педагогічних колективах навчальних закладів, кадрові питання"></activiti:value>
+          <activiti:value id="sEnumTop124" name="Питання організації виховного процесу в загальноосвітніх навчальних закладах, співробітництво з громадськими організаціями з питань виховання учнів"></activiti:value>
+          <activiti:value id="sEnumTop125" name="Захист інтелектуальної власності, реєстрація, патентування, впровадження винаходів"></activiti:value>
+          <activiti:value id="sEnumTop126" name="Здобуття вищої освіти (бюджетне, контрактне)"></activiti:value>
+          <activiti:value id="sEnumTop127" name="Інноваційна діяльність (фінансування та впровадження нових технологій)"></activiti:value>
+          <activiti:value id="sEnumTop128" name="Розвиток науки"></activiti:value>
+          <activiti:value id="sEnumTop129" name="Позашкільна освіта та діяльність позашкільних закладів"></activiti:value>
+          <activiti:value id="sEnumTop1210" name="Питання організації навчально-виховного процесу в навчальних закладах інтернатного типу, дитячих будинках, спеціальних навчальних закладах, питання пов’язані з оздоровленням, з інклюзивним навчанням"></activiti:value>
+          <activiti:value id="sEnumTop1211" name="Питання травмування учнів, питання санітарного стану території навчальних закладів, безпека життєдіяльності"></activiti:value>
+          <activiti:value id="sEnumTop1212" name="Економічні, фінансові питання, ремонтні роботи, питання облаштування, санітарного стану навчальних закладів"></activiti:value>
+          <activiti:value id="sEnumTop1213" name="Питання пов’язані з вищими та професійно-технічними навчальними закладами"></activiti:value>
+          <activiti:value id="sEnumTop1214" name="Ремонти та опалювання закладів"></activiti:value>
+          <activiti:value id="sEnumTop1215" name="Виплата заробітної плати, фінансові питання"></activiti:value>
+          <activiti:value id="sEnumTop1216" name="Інші питання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asTop13" name="Підтематика звернення" type="enum">
+          <activiti:value id="sEnumTop131" name="Фінансова допомога у підтримці належного стану книг"></activiti:value>
+          <activiti:value id="sEnumTop132" name="Питання стосовно встановлення меморіальних дощок та пам`ятних знаків"></activiti:value>
+          <activiti:value id="sEnumTop133" name="Узгодження проведення заходів у закладах культури міського підпорядкування"></activiti:value>
+          <activiti:value id="sEnumTop134" name="Зверенення міських організацій щрдо проведення міських заходів"></activiti:value>
+          <activiti:value id="sEnumTop135" name="Зверенення по питанням роботи підвідомчих закладів культури"></activiti:value>
+          <activiti:value id="sEnumTop136" name="Загальні питання культури та туризму"></activiti:value>
+          <activiti:value id="sEnumTop137" name="Туризм та зони відпочинку. Утримання парків"></activiti:value>
+          <activiti:value id="sEnumTop138" name="Туризм та зони відпочинку. Діяльність закладів культури"></activiti:value>
+          <activiti:value id="sEnumTop139" name="Кіно, театр, виставки та інші види мистецтв"></activiti:value>
+          <activiti:value id="sEnumTop1310" name="Мовна політика"></activiti:value>
+          <activiti:value id="sEnumTop1311" name="Розвиток культури, збереження культурної cпадщини"></activiti:value>
+          <activiti:value id="sEnumTop1312" name="Інші питання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asTop14" name="Підтематика звернення" type="enum">
+          <activiti:value id="sEnumTop141" name="Пошкодження чи знищення елементів благоустрою (з подальшим їх відновленням)"></activiti:value>
+          <activiti:value id="sEnumTop142" name="Ускладнення руху пішоходів і транспорту, обмеження доступу до об'єктів благоустрою"></activiti:value>
+          <activiti:value id="sEnumTop143" name="Погіршення існуючого стану об'єктів благоустрою і внесення змін до них"></activiti:value>
+          <activiti:value id="sEnumTop144" name="Тимчасове обмеження використання території загального призначення для безпечного проведення робіт по ремонту і реконструкції будівель , їх елементів і приміщень"></activiti:value>
+          <activiti:value id="sEnumTop145" name="Перевірка дотримання підприємствами, установами, організаціями, фізичними особами - підприємцями та громадянами вимог правил благоустрою території міста"></activiti:value>
+          <activiti:value id="sEnumTop146" name="Інші питання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asTop15" name="Підтематика звернення" type="enum">
+          <activiti:value id="sEnumTop151" name="Розміщення тимчасових споруд для здійснення підприємницької дільності"></activiti:value>
+          <activiti:value id="sEnumTop152" name="Розміщення тимчасових гаражів"></activiti:value>
+          <activiti:value id="sEnumTop153" name="Будівництво в приватному секторі"></activiti:value>
+          <activiti:value id="sEnumTop154" name="Будівництво та реконструкція об'єктів більше 300 м2"></activiti:value>
+          <activiti:value id="sEnumTop155" name="Реконструкція квартир та площ загального користування у житлових будинках"></activiti:value>
+          <activiti:value id="sEnumTop156" name="Надання інформації про об'єкт будівництва"></activiti:value>
+          <activiti:value id="sEnumTop157" name="Вимога про припинення будівництва"></activiti:value>
+          <activiti:value id="sEnumTop158" name="Інформаційні запити з проханням прийняти об'єкт в експлуатацію (збудований до 01.01.2008 року)"></activiti:value>
+          <activiti:value id="sEnumTop159" name="Інформаційні запити з проханням прийняти об'єкт в експлуатацію (збудований після 01.01.2008 року)"></activiti:value>
+          <activiti:value id="sEnumTop1510" name="Інформаційні запити про порушення прав сусідів"></activiti:value>
+          <activiti:value id="sEnumTop1511" name="Відповідність розміщення об'єктів будівництва містобудівним умовам"></activiti:value>
+          <activiti:value id="sEnumTop1512" name="Надання інформаціі стосовно підготовки Головним архітектурно-планувальним управлінням м.Дніпропетровськ рішень виконкому та міської ради"></activiti:value>
+          <activiti:value id="sEnumTop1513" name="Запити стосовно процедури оформлення паспортів прив'язки, містобудівних умов та обмежень та будівельних паспортів"></activiti:value>
+          <activiti:value id="sEnumTop1514" name="Запити стосовно зелених зон"></activiti:value>
+          <activiti:value id="sEnumTop1515" name="Запити стосовно планів будівництва та реконструкції"></activiti:value>
+          <activiti:value id="sEnumTop1516" name="Інформація щодо присвоєння (зміни) адреси нерухомого майна"></activiti:value>
+          <activiti:value id="sEnumTop1517" name="Інформація щодо найменування (перейменування) проїздів"></activiti:value>
+          <activiti:value id="sEnumTop1518" name="Інформація стосовно адміністративно-територіальної належності об'єкту"></activiti:value>
+          <activiti:value id="sEnumTop1519" name="Інші питання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asTop16" name="Підтематика звернення" type="enum">
+          <activiti:value id="sEnumTop161" name="Ліквідація несанкціонованої вуличної торгівлі"></activiti:value>
+          <activiti:value id="sEnumTop162" name="Демонтаж тимчасових споруд (МАФ) для провадження підприємницької діяльності (тільки в частині охорони громадського порядку)"></activiti:value>
+          <activiti:value id="sEnumTop163" name="Побутові конфлікти, порушення громадського порядку, кримінальні правопорушення"></activiti:value>
+          <activiti:value id="sEnumTop164" name="Питання стосовно реєстрація за місцем проживання"></activiti:value>
+          <activiti:value id="sEnumTop165" name="Питання стосовно виконання судових рішень"></activiti:value>
+          <activiti:value id="sEnumTop166" name="Встановлення дорожніх знаків і світлофорів, нанесення дорожньої розмітки, організація безпеки дорожнього руху"></activiti:value>
+          <activiti:value id="sEnumTop167" name="Безпека дорожнього руху"></activiti:value>
+          <activiti:value id="sEnumTop168" name="Громадянство, помилування"></activiti:value>
+          <activiti:value id="sEnumTop169" name="Забезпечення виборчих прав. Скарги на органи влади"></activiti:value>
+          <activiti:value id="sEnumTop1610" name="Забезпечення виборчих прав. Скарги на учасників виборчого процесу"></activiti:value>
+          <activiti:value id="sEnumTop1611" name="Захист прав споживачів"></activiti:value>
+          <activiti:value id="sEnumTop1612" name="Корупційні діяння (зловживання владою або службовим становищем)"></activiti:value>
+          <activiti:value id="sEnumTop1613" name="Порядок розгляду звернень громадян"></activiti:value>
+          <activiti:value id="sEnumTop1614" name="Правозахисна діяльність (адвокатура)"></activiti:value>
+          <activiti:value id="sEnumTop1615" name="Робота правоохоронних органів"></activiti:value>
+          <activiti:value id="sEnumTop1616" name="Робота правоохоронних органів. Робота органів МВС (розслідування злочинів, профілактика правопорушень, реєстрація фізичних осіб, видача паспорта)"></activiti:value>
+          <activiti:value id="sEnumTop1617" name="Робота правоохоронних органів. Робота органів прокуратури"></activiti:value>
+          <activiti:value id="sEnumTop1618" name="Робота правоохоронних органів. Робота органів юстиції (виконання рішень суду, реєстрація актів громадського стану,нотаріальні дії)"></activiti:value>
+          <activiti:value id="sEnumTop1619" name="Робота правоохоронних органів. Робота установ виконання покарань (умов утримання, дострокове звільнення)"></activiti:value>
+          <activiti:value id="sEnumTop1620" name="Робота правоохоронних органів. Реєстрація за місцем проживання"></activiti:value>
+          <activiti:value id="sEnumTop1621" name="Робота правоохоронних органів. Підтримання громадського порядку"></activiti:value>
+          <activiti:value id="sEnumTop1622" name="Робота правоохоронних органів. Інші питання забезпечення законодавства"></activiti:value>
+          <activiti:value id="sEnumTop1623" name="Протидія захопленню підприємств (рейдерство)"></activiti:value>
+          <activiti:value id="sEnumTop1624" name="Інші питання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asTop17" name="Підтематика звернення" type="enum">
+          <activiti:value id="sEnumTop171" name="Поліпшення умов проживання"></activiti:value>
+          <activiti:value id="sEnumTop172" name="Відселення сім'ї заявника з аварійного будинку"></activiti:value>
+          <activiti:value id="sEnumTop173" name="Розподіл квартир"></activiti:value>
+          <activiti:value id="sEnumTop174" name="Надання допомоги у поверенні коштів, розміщених на депозитних рахунках банків"></activiti:value>
+          <activiti:value id="sEnumTop175" name="Надання відстрочки по оплаті відсотків та реструктуризації кредитної заборгованості банку"></activiti:value>
+          <activiti:value id="sEnumTop176" name="Надання роз'яснень стосовно порядку розрахунку доходів від підприємницької діяльності фізичних осіб для заповнення декларацій"></activiti:value>
+          <activiti:value id="sEnumTop177" name="Страхові виплати"></activiti:value>
+          <activiti:value id="sEnumTop178" name="Надання допомоги у погашенні кредиту в іноземній валюті"></activiti:value>
+          <activiti:value id="sEnumTop179" name="Відкриття в АТ Ощадбанк платіжної картки"></activiti:value>
+          <activiti:value id="sEnumTop1710" name="Надання допомоги у вирішенні питання повернення знецінених грошових заощаджень, розміщених в Ощадбанку"></activiti:value>
+          <activiti:value id="sEnumTop1711" name="Надання роз'яснень щодо підстав для стягнення комісії при сплаті комунальних платежів"></activiti:value>
+          <activiti:value id="sEnumTop1712" name="Отримання нарахувань, відшкодувань за вкладами у банківских установах України, їх діяльність"></activiti:value>
+          <activiti:value id="sEnumTop1713" name="Отримання позики"></activiti:value>
+          <activiti:value id="sEnumTop1714" name="Повренення заощаджень, страхових внесків, коштів за облігаціями державної позики СРСР"></activiti:value>
+          <activiti:value id="sEnumTop1715" name="Податок на нерухомість, спадщину, землю тощо"></activiti:value>
+          <activiti:value id="sEnumTop1716" name="Поновлення роботи відділення АТ Ощадбанк"></activiti:value>
+          <activiti:value id="sEnumTop1717" name="Відмови працівників Єдиного абонентського відділу у видачі довідки про склад сім'ї"></activiti:value>
+          <activiti:value id="sEnumTop1718" name="Відшкодування плати за проїзд у зв'язку із скасуванням пільг на проїзд у громадському транспорті"></activiti:value>
+          <activiti:value id="sEnumTop1719" name="Виділення коштів на проведення проектно-вишукувальнихт робіт"></activiti:value>
+          <activiti:value id="sEnumTop1720" name="Виділення коштів на встановлення приладів обліку енергоносіїв"></activiti:value>
+          <activiti:value id="sEnumTop1721" name="Вирішення питання з погашення заборгованості з виплати заробітної плати"></activiti:value>
+          <activiti:value id="sEnumTop1722" name="Відновлення рейсів теплоходів, в ході погашення заборгованості за пільговий проїзд окремих категорій громадян"></activiti:value>
+          <activiti:value id="sEnumTop1723" name="Виділення коштів з міського бюджету на надання матеріальної допомоги"></activiti:value>
+          <activiti:value id="sEnumTop1724" name="Виділення коштів на фінансування робіт із заміни ліфта у житлових будинках"></activiti:value>
+          <activiti:value id="sEnumTop1725" name="Реконструкції водопровідної мережі"></activiti:value>
+          <activiti:value id="sEnumTop1726" name="Реконструкції гуртожитків"></activiti:value>
+          <activiti:value id="sEnumTop1727" name="Надання пільгового кредиту на будівництво житлового будинку"></activiti:value>
+          <activiti:value id="sEnumTop1728" name="Виділення коштів з міського бюджету для будівництва водопроводу"></activiti:value>
+          <activiti:value id="sEnumTop1729" name="Включення до міського бюджету коштів на будівництво багатоповерхового будинку"></activiti:value>
+          <activiti:value id="sEnumTop1730" name="Зменшення тарифів на оплату житлово-комунальних послуг"></activiti:value>
+          <activiti:value id="sEnumTop1731" name="Питання щодо неможливості отримання інформації про оплату житлово-комунальних послуг на веб-сайті КП Міські комунальні платежі"></activiti:value>
+          <activiti:value id="sEnumTop1732" name="Оздоровлення дітей-інвалідів у 2015 році"></activiti:value>
+          <activiti:value id="sEnumTop1733" name="Надання фінансової допомоги на реконструкцію храму"></activiti:value>
+          <activiti:value id="sEnumTop1734" name="Порядок нарахування індексації заробітної плати"></activiti:value>
+          <activiti:value id="sEnumTop1735" name="Фінансування органів місцевого самоврядування та інших видатків"></activiti:value>
+          <activiti:value id="sEnumTop1736" name="Інші питання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asTop18" name="Підтематика звернення" type="enum">
+          <activiti:value id="sEnumTop182" name="Установка (перевірка, заміна) лічильника"></activiti:value>
+          <activiti:value id="sEnumTop183" name="Відсутність газифікації"></activiti:value>
+          <activiti:value id="sEnumTop184" name="Газифікація будинку"></activiti:value>
+          <activiti:value id="sEnumTop185" name="Інши питання"></activiti:value>
+          <activiti:value id="sEnumTop186" name="Підключення газу"></activiti:value>
+          <activiti:value id="sEnumTop187" name="Ремонт (заміни) газової колоки"></activiti:value>
+          <activiti:value id="sEnumTop188" name="Фінансування робіт"></activiti:value>
+          <activiti:value id="sEnumTop189" name="Ремонт газового обладнення"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asTop19" name="Підтематика звернення" type="enum">
+          <activiti:value id="sEnumTop191" name="Загальні питання електропостачання"></activiti:value>
+          <activiti:value id="sEnumTop192" name="Установка (перевірка, заміна) лічильника"></activiti:value>
+          <activiti:value id="sEnumTop193" name="Відсутність електропостачання"></activiti:value>
+          <activiti:value id="sEnumTop194" name="Неякісне електропостачання"></activiti:value>
+          <activiti:value id="sEnumTop195" name="Ремонт електричного обладнення"></activiti:value>
+          <activiti:value id="sEnumTop196" name="Інші питання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asTop20" name="Підтематика звернення" type="enum">
+          <activiti:value id="sEnumTop201" name="Висвітлення у ЗМІ діяльності органів влади та місцевого самоврядування"></activiti:value>
+          <activiti:value id="sEnumTop202" name="Діяльність ЗМІ"></activiti:value>
+          <activiti:value id="sEnumTop203" name="Інформаційні системи та їх розвиток"></activiti:value>
+          <activiti:value id="sEnumTop204" name="Книговидавництво"></activiti:value>
+          <activiti:value id="sEnumTop205" name="Комунікація влади та громадськості"></activiti:value>
+          <activiti:value id="sEnumTop206" name="Інші питання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asTop21" name="Підтематика звернення" type="enum">
+          <activiti:value id="sEnumTop211" name="Загальні питання діяльності благодійних фондів, громадських організацій"></activiti:value>
+          <activiti:value id="sEnumTop212" name="Діяльність політичних партій"></activiti:value>
+          <activiti:value id="sEnumTop213" name="Діяльність профспілок"></activiti:value>
+          <activiti:value id="sEnumTop214" name="Діяльність релігійних громад, віросповідання"></activiti:value>
+          <activiti:value id="sEnumTop215" name="Інші питання діяльності об'єднань громадян, релігії та міжконфесійних відносин"></activiti:value>
+          <activiti:value id="sEnumTop216" name="Питання, що стосуються офіційного інтернет-портала ДМР www.dniprocity.dp.ua"></activiti:value>
+          <activiti:value id="sEnumTop217" name="Інші питання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asTop22" name="Підтематика звернення" type="enum">
+          <activiti:value id="sEnumTop221" name="Факти корупції"></activiti:value>
+          <activiti:value id="sEnumTop222" name="Відгуки щодо рішень органів місцевого самоврядування"></activiti:value>
+          <activiti:value id="sEnumTop223" name="Дії, бездіяльність посадових осіб органів місцевого самоврядування"></activiti:value>
+          <activiti:value id="sEnumTop224" name="Затвердження програм, зокрема, соціально-економічного та культурного розвитку"></activiti:value>
+          <activiti:value id="sEnumTop225" name="Проведення місцевих референдумів. Проведення громадських слухань,заходів"></activiti:value>
+          <activiti:value id="sEnumTop226" name="Передача (отримання) документів до архіву"></activiti:value>
+          <activiti:value id="sEnumTop227" name="Розташування рекламних засобів"></activiti:value>
+          <activiti:value id="sEnumTop228" name="Формування місцевих бюджетів"></activiti:value>
+          <activiti:value id="sEnumTop229" name="Інші питання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sAdressProbl" name="Адреса за якої виникло питання" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReason" name="Суть звернення" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sAdditionalInformation" name="Додаткова інформація" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sRegistrationNumberRGA" name="Реєстраційний номер ОДА" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneCall_SubjectContact_Client" name="Телефон, с которого поступил звонок" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAnswerChannel" name="Канал відповіді" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAnswer_UkrDoc" name="Відповідь УкрДок" type="string" variable="Відповідь УкрДок"></activiti:formProperty>
+        <activiti:formProperty id="nDaysRemain" name="Ориентировочный срок ответа на обращение (дней)" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sAnswer" name="Ответ кол-центра" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAnswerStatus" name="Статус ответа" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sEnumTop" name="Енам Подтемитіка" type="invisible"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${SendObject_Corezoid}">
+          <activiti:field name="soJSON">
+            <activiti:expression>{"sFIO_Subject_Client":"value{[clFio]}","sPhonePrivate_SubjectContact_Client":"value{[sPhone]}","sPhoneCall_SubjectContact_Client":"value{[sPhoneCall_SubjectContact_Client]}","sID_Order":"[sID_Order]","sDate_Order":"[sDateCreate]","sAddress":"value{[sAdressProbl]}","sCategory":"enum{[asKindTr]}","sType":"enum{[asTypeTr]}","sHead":"enum{[asTopHead]}","sHeadSub":"value{[sEnumTop]}","sBody":"value{[sReason]}","nDaysRemain":"value{[nDaysRemain]}","sAnswer_UkrDoc":"value{[sAnswer_UkrDoc]}"}</activiti:expression>
+          </activiti:field>
+          <activiti:field name="sID_Conveyour">
+            <activiti:expression>93682</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow4" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
+    <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var fio = execution.getVariable('bankIdlastName') + ' ' + execution.getVariable('bankIdfirstName') + ' ' + execution.getVariable('bankIdmiddleName')
+
+var t = 'Ремонт лифта, квартиры, дома'
+
+execution.setVariable('clFio', fio)
+execution.setVariable('sEnumTop', t)</script>
+    </scriptTask>
+    <sequenceFlow id="flow6" sourceRef="scripttask1" targetRef="servicetask2"></sequenceFlow>
+    <sequenceFlow id="flow7" sourceRef="usertask1" targetRef="servicetask4"></sequenceFlow>
+    <serviceTask id="servicetask4" name="email успешно" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Тест "КОРЕЗОИД" (ответ)]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+Тестовое письмо.&lt;br&gt;
+&lt;b&gt;Ответ Корезоида.&lt;/b&gt;
+Параметр sAnswer: ${sAnswer} &lt;br&gt; 
+Параметр sAnswerStatus: ${sAnswerStatus} &lt;br&gt;
+&lt;br&gt;
+[pattern/mail/_common_signature_start.html]
+Корезоид,&lt;br /&gt;
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <endEvent id="endevent2" name="End"></endEvent>
+    <sequenceFlow id="flow12" sourceRef="servicetask4" targetRef="endevent2"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram__test_corezoid">
+    <bpmndi:BPMNPlane bpmnElement="_test_corezoid" id="BPMNPlane__test_corezoid">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="80.0" y="140.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="61.0" width="105.0" x="150.0" y="127.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
+        <omgdc:Bounds height="30.0" width="30.0" x="220.0" y="157.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
+        <omgdc:Bounds height="61.0" width="105.0" x="450.0" y="127.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="217.0" y="210.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="600.0" y="130.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="290.0" y="130.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
+        <omgdc:Bounds height="55.0" width="105.0" x="790.0" y="130.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
+        <omgdc:Bounds height="35.0" width="35.0" x="920.0" y="140.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="115.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="150.0" y="157.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="255.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="290.0" y="157.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="235.0" y="187.0"></omgdi:waypoint>
+        <omgdi:waypoint x="234.0" y="210.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="555.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="600.0" y="157.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+        <omgdi:waypoint x="395.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="450.0" y="157.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
+        <omgdi:waypoint x="705.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="790.0" y="157.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
+        <omgdi:waypoint x="895.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="920.0" y="157.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

@@ -1,17 +1,24 @@
 package org.igov.service.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+
 import io.swagger.annotations.*;
 import liquibase.util.csv.CSVWriter;
+
+import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.engine.*;
+import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.history.HistoricTaskInstanceQuery;
 import org.activiti.engine.identity.Group;
 import org.activiti.engine.identity.User;
+import org.activiti.engine.impl.form.FormPropertyImpl;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
+import org.activiti.engine.repository.DiagramLayout;
+import org.activiti.engine.repository.Model;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
@@ -19,10 +26,12 @@ import org.activiti.engine.task.TaskInfo;
 import org.activiti.engine.task.TaskInfoQuery;
 import org.activiti.engine.task.TaskQuery;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.mail.ByteArrayDataSource;
 import org.apache.commons.mail.EmailException;
 import org.igov.io.GeneralConfig;
+import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
 import org.igov.io.mail.Mail;
 import org.igov.io.mail.NotificationPatterns;
 import org.igov.io.web.HttpRequester;
@@ -33,8 +42,9 @@ import org.igov.model.action.task.core.entity.Process;
 import org.igov.model.flow.FlowSlotTicket;
 import org.igov.model.flow.FlowSlotTicketDao;
 import org.igov.service.business.action.event.HistoryEventService;
+import org.igov.service.business.action.task.core.AbstractModelTask;
 import org.igov.service.business.action.task.core.ActionTaskService;
-import org.igov.service.business.action.task.systemtask.doc.CreateDocument_UkrDoc;
+import org.igov.service.business.action.task.listener.doc.CreateDocument_UkrDoc;
 import org.igov.service.business.action.task.systemtask.doc.handler.UkrDocEventHandler;
 import org.igov.service.business.subject.message.MessageService;
 import org.igov.service.exception.*;
@@ -42,6 +52,7 @@ import org.igov.util.JSON.JsonDateTimeSerializer;
 import org.igov.util.JSON.JsonRestUtils;
 import org.igov.util.Tool;
 import org.igov.util.ToolCellSum;
+import org.igov.util.VariableMultipartFile;
 import org.json.simple.JSONValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,14 +62,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.activation.DataSource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
-import java.io.PrintWriter;
+
+import java.io.*;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -78,10 +90,10 @@ import static org.igov.util.Tool.sO;
 public class ActionTaskCommonController {//extends ExecutionBaseResource
 
     private static final Logger LOG = LoggerFactory.getLogger(ActionTaskCommonController.class);
-    
+
     @Autowired
     private HttpRequester httpRequester;
-    
+
     @Autowired
     public GeneralConfig generalConfig;
     @Autowired
@@ -117,7 +129,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     }*/
     @Autowired
     private ActionTaskService oActionTaskService;
-    
+
     @Autowired
     private FlowSlotTicketDao flowSlotTicketDao;
 
@@ -126,7 +138,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
     @Autowired
     private MessageService oMessageService;
-    
+
     @Autowired
     private Mail oMail;
 
@@ -169,7 +181,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
         return oActionTaskService.getTasksByAssignee(assignee);
     }
-    
+
      /**
      *
      * @param group ИД авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)
@@ -184,7 +196,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
     /**
      * Получение списка ID пользовательских тасок по номеру заявки
-     * 
+     *
      * @param nID_Order число номер заявки, в котором, все цифры кроме последней - ID процесса в activiti. А последняя цифра - его контрольная сумма зашифрованная по алгоритму Луна.
      */
     @ApiOperation(value = "Получение списка ID пользовательских тасок по номеру заявки", notes =  "##### Примеры:\n"
@@ -222,7 +234,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
     /**
      * Поиск заявок по тексту (в значениях полей без учета регистра)
-     * 
+     *
      * @param sFind строка текст для поиска в полях заявки.
      * @param sLogin строка необязательный параметр. При указании выбираются только таски, которые могут быть заассайнены или заассайнены на пользователя sLogin
      * @param bAssigned булево значение необязательный параметр. Указывает, что нужно искать по незаассайненным таскам (bAssigned=false) и по заассайненным таскам(bAssigned=true) на пользователя sLogin
@@ -282,15 +294,15 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
         return res;
     }
-    
+
     /**
      * Отмена задачи (в т.ч. электронной очереди)
-     * 
+     *
      * @param nID_Order  номер-ИД процесса (с контрольной суммой)
      * @param sInfo      Строка с информацией (причиной отмены)
-     * 
+     *
      */
-    
+
     @ApiOperation(value = "Отмена задачи (в т.ч. электронной очереди)")
     @RequestMapping(value = "/cancelTask", method = { RequestMethod.GET, RequestMethod.POST }, produces = "text/plain;charset=UTF-8")
     public
@@ -438,7 +450,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
     /**
      * Удаление назначенного пользователя с задачи по ИД.
-     * 
+     *
      * @param nID_UserTask номер-ИД задачи, для которой нужно удалить назначенного пользователя.
      */
     @ApiOperation(value = "Удаление назначенного пользователя с задачи по ИД.", notes = "#####  Request:\n"
@@ -583,7 +595,13 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
         Map<String, Object> response = new HashMap<>();
 
-        response.put("oProcess", oActionTaskService.getProcessInfoByTaskID(nID_Task));
+        try {
+            response.put("oProcess", oActionTaskService.getProcessInfoByTaskID(nID_Task));
+        } catch (NullPointerException e) {
+            String message = String.format("Incorrect Task ID [id = %s]. Record not found.", nID_Task);
+            LOG.info(message);
+            throw new RecordNotFoundException(message);
+        }
 
         List<FormProperty> aField = null;
         try{
@@ -638,8 +656,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
     }*/
 
-    
-    
+
+
 //@RequestMapping("/web")
 //public class StartWebController {
     /*private final Logger LOG = LoggerFactory
@@ -736,14 +754,14 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     ProcessI startProcessByKey(
             @ApiParam(value = "Ключ процесса", required = true) @PathVariable("key") String key,
             @ApiParam(value = "Орган", required = false) @RequestParam(value = "organ", required = false) String organ) {
-        
+
         ProcessInstance pi;
         if(organ != null){
             Map<String, Object> variables = new HashMap<String, Object>();
             variables.put("organ", organ);
             pi = runtimeService.startProcessInstanceByKey(key, variables);
         } else{
-            pi = runtimeService.startProcessInstanceByKey(key); 
+            pi = runtimeService.startProcessInstanceByKey(key);
         }
         if (pi == null || pi.getId() == null) {
             throw new IllegalArgumentException(String.format(
@@ -751,7 +769,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
         return new Process(pi.getProcessInstanceId());
     }
-    
+
 
 //    @RequestMapping(value = "/getTasks", method = RequestMethod.GET)
 //    @ResponseBody
@@ -901,7 +919,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             + "\"5215055\",\"dn200986zda\",\"2015-09-25:13-05-22\",\"1565056\",\"0\",\"обробка дмс\",\"АМ765369 ЖОВТНЕВИМ РВ ДМУ УМВС УКРАЇНИ В ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ 18.03.2002\",\"ДМИТРО\",\"ДУБІЛЕТ\",\"ОЛЕКСАНДРОВИЧ\",\"attr1_no\",\"2015-09-28 08:15:00.00\",\"dd.MM.yyyy HH:MI\",\"dmitrij.zabrudskij@privatbank.ua\",\"attr2_missed\",\"attr1_yes\",\"\",\"38\",\"attr1_no\",\"{\"\"nID_FlowSlotTicket\"\":27768,\"\"sDate\"\":\"\"2015-09-28 08:15:00.00\"\"}\",\"0.0\",\"0.0\"\n"
             + "\n```\n")
     @Deprecated
-    @RequestMapping(value = "/download_bp_timing", method = RequestMethod.GET)
+    @RequestMapping(value = "/download_bp_timing", method = RequestMethod.GET, produces = "application/vnd.ms-excel")
     @Transactional
     public void getTimingForBusinessProcessNew(
             @ApiParam(value = "ИД бизнес процесса", required = true) @RequestParam(value = "sID_BP_Name") String sID_BP_Name,
@@ -924,14 +942,15 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
         SimpleDateFormat sdfFileName = new SimpleDateFormat(
                 "yyyy-MM-ddHH-mm-ss", Locale.ENGLISH);
-        String fileName = sID_BP_Name + "_"
-                + sdfFileName.format(Calendar.getInstance().getTime()) + ".csv";
+        String fileName = "!" + sID_BP_Name + "_"
+                + sdfFileName.format(Calendar.getInstance().getTime()) + ".xlsx";
         LOG.debug("File name for statistics : {%s}", fileName);
         boolean isByFieldsSummary = saFieldSummary != null
                 && !saFieldSummary.isEmpty();
-        httpResponse.setContentType("text/csv;charset=UTF-8");
-        httpResponse.setHeader("Content-disposition", "attachment; filename="
-                + fileName);
+        //httpResponse.setContentType("text/csv;charset=UTF-8");
+        httpResponse.setContentType("application/vnd.ms-excel; charset=UTF-8");
+        httpResponse.setCharacterEncoding("UTF-8");
+        httpResponse.setHeader("Content-disposition", "attachment; filename=" + fileName);
 
         List<HistoricTaskInstance> foundResults = historyService
                 .createHistoricTaskInstanceQuery().taskCompletedAfter(dateAt)
@@ -1033,7 +1052,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
      *                     ;bankIdPassport;bankIdlastName
      *                     ;bankIdfirstName;bankIdmiddleName;1;sDateCreate
      */
-    @ApiOperation(value = "Загрузка данных по задачам", notes = "#####  ActionCommonTaskController: Загрузка данных по задачам #####\n\n"
+      @ApiOperation(value = "Загрузка данных по задачам", notes = "#####  ActionCommonTaskController: Загрузка данных по задачам #####\n\n"
             + "HTTP Context: https://server:port/wf/service/action/task/downloadTasksData\n\n\n"
             + "Загрузка полей по задачам в виде файла.\n\n"
             + "Поля по умолчанию, которые всегда включены в выборку:\n"
@@ -1067,7 +1086,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public void downloadTasksData(
             @ApiParam(value = "название бизнесс процесса", required = true) @RequestParam(value = "sID_BP", required = true) String sID_BP,
             @ApiParam(value = "состояние задачи, по умолчанию исключается из фильтра Берется из поля taskDefinitionKey задачи", required = false) @RequestParam(value = "sID_State_BP", required = false) String sID_State_BP,
-            @ApiParam(value = "имена полей для выборкы разделенных через ';', чтобы добавить все поля можно использовать - '*' или не передевать параметр в запросе. Поле также может содержать названия колонок. Например, saFields=Passport\\=${passport};{email}", required = false) @RequestParam(value = "saFields", required = false, defaultValue = "*") String saFields,
+            @ApiParam(value = "имена полей для выборкы разделенных через ';', чтобы добавить все поля можно использовать - '*' или не передевать параметр в запросе. "
+                    + "Поле также может содержать названия колонок. Например, saFields=Passport\\=${passport};{email}", required = false) @RequestParam(value = "saFields", required = false, defaultValue = "*") String saFields,
             @ApiParam(value = "ASCII код для разделителя", required = false) @RequestParam(value = "nASCI_Spliter", required = false) String nASCI_Spliter,
             @ApiParam(value = "имя исходящего файла, по умолчанию - data_BP-bpName_.txt\"", required = false) @RequestParam(value = "sFileName", required = false) String fileName,
             @ApiParam(value = "кодировка исходящего файла, по умолчанию - win1251", required = false) @RequestParam(value = "sID_Codepage", required = false, defaultValue = "win1251") String sID_Codepage,
@@ -1119,15 +1139,17 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 .createHistoricTaskInstanceQuery()
                 .processDefinitionKey(sID_BP);
         if (sTaskEndDateAt != null){
+        	LOG.info("Selecting tasks which were completed after {}", sTaskEndDateAt);
         	historicQuery.taskCompletedAfter(sTaskEndDateAt);
         }
         if (sTaskEndDateTo != null){
+        	LOG.info("Selecting tasks which were completed after {}", sTaskEndDateTo);
         	historicQuery.taskCompletedBefore(sTaskEndDateTo);
         }
         historicQuery.taskCreatedAfter(dBeginDate)
                 .taskCreatedBefore(dEndDate).includeProcessVariables();
         if (sID_State_BP != null) {
-            historicQuery.taskDefinitionKey(sID_State_BP);
+            historicQuery.taskDefinitionKey(sID_State_BP).includeTaskLocalVariables();
         }
         List<HistoricTaskInstance> foundHistoricResults = historicQuery
                 .listPage(nRowStart, nRowsMax);
@@ -1138,12 +1160,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         saFields = oActionTaskService.processSaFields(saFields, foundHistoricResults);
 
         if (sID_State_BP != null) {
-            query = query.taskDefinitionKey(sID_State_BP);
+            query = query.taskDefinitionKey(sID_State_BP).includeTaskLocalVariables();
         }
         List<Task> foundResults = new LinkedList<Task>();
-        if (sTaskEndDateAt == null && sTaskEndDateTo != null){
+//        if (sTaskEndDateAt == null && sTaskEndDateTo == null){
         	foundResults = query.listPage(nRowStart, nRowsMax);
-        }
+//        }
 
         // 3. response
         SimpleDateFormat sdfFileName = new SimpleDateFormat(
@@ -1159,18 +1181,18 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
         CSVWriter printWriter = null;
         PipedInputStream pi = new PipedInputStream();
-        
+        LOG.info("!!!!!!!!!!!!!sMailTo: " + sMailTo);
         if (sMailTo != null){
 	        PipedOutputStream po = new PipedOutputStream(pi);
 	        PrintWriter pw = new PrintWriter(po);
 	        printWriter = new CSVWriter(pw, separator.charAt(0),
 	                CSVWriter.NO_QUOTE_CHARACTER);
         } else {
-        	printWriter = new CSVWriter(httpResponse.getWriter(), separator.charAt(0),
-                CSVWriter.NO_QUOTE_CHARACTER);
         	httpResponse.setContentType("text/csv;charset=" + charset.name());
-            httpResponse.setHeader("Content-disposition", "attachment; filename="
+                httpResponse.setHeader("Content-disposition", "attachment; filename="
                     + sTaskDataFileName);
+                printWriter = new CSVWriter(httpResponse.getWriter(), separator.charAt(0),
+                CSVWriter.NO_QUOTE_CHARACTER);
         }
 
         List<Map<String, Object>> csvLines = new LinkedList<>();
@@ -1188,9 +1210,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             }
             oActionTaskService.fillTheCSVMapHistoricTasks(sID_BP, dBeginDate, dEndDate,
                     foundHistoricResults, sDateCreateDF, csvLines, saFields,
-                    tasksIdToExclude, saFieldsCalc, headers);
+                    tasksIdToExclude, saFieldsCalc, headers, sID_State_BP);
         }
-
+        
         if (saFieldSummary != null) {
             LOG.info(">>>saFieldsSummary={}", saFieldSummary);
             try {
@@ -1221,7 +1243,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
 
         printWriter.close();
-        
+
         if (sMailTo != null){
         	LOG.info("Sending email with tasks data to email {}", sMailTo);
 	        SimpleDateFormat sdf = new SimpleDateFormat("yyyy:MM:dd");
@@ -1238,11 +1260,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 				LOG.error("Error occured while sending tasks data to email: {}", e.getMessage());
 			}
 	        pi.close();
-	        
+
 	        httpResponse.setContentType("text/plain");
 	        httpResponse.getWriter().print("OK");
         }
-        
+
     }
 
     /**
@@ -1488,7 +1510,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             throws CommonServiceException {
 
         return oActionTaskService.sendProccessToGRESInternal(nID_Task);
-        
+
     }
 
     @ApiOperation(value = "GetTaskFormData", notes = "#####  ActionCommonTaskController: описания нет #####\n\n")
@@ -1496,7 +1518,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public
     @ResponseBody
     Map<String, String> getTaskFormData(@ApiParam(value = "номер-ИД задачи", required = true) @RequestParam(value = "nID_Task") Long nID_Task) throws CommonServiceException {
-
         return oActionTaskService.getTaskFormDataInternal(nID_Task);
     }
 
@@ -1543,8 +1564,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     ExceptionCommonController.BUSINESS_ERROR_CODE,
                     "Can't get: " + oException.getMessage(), oException, HttpStatus.FORBIDDEN);
         }
-    }    
-    
+    }
+
     @ApiOperation(value = "getTasks", notes = "#####  ActionCommonTaskController: Получение списка всех тасок, которые могут быть доступны указанному логину #####\n\n"
             + "HTTP Context: https://test.region.igov.org.ua/wf/service/action/task/getTasks?sLogin=[sLogin]\n\n\n"
             + "- Возвращает список всех тасок, которые могут быть доступны указанному логину [sLogin] и которые уже заняты другими логинами, входящими во все те-же группы, в которые входит данный логин\n\n"
@@ -1574,10 +1595,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     		@ApiParam(value = "bFilterHasTicket", required = false) @RequestParam(value = "bFilterHasTicket", defaultValue="false", required=false) boolean bFilterHasTicket) throws CommonServiceException {
 
     	Map<String, Object> res = new HashMap<String, Object>();
-    	
+
     	try {
         List<Group> groups = identityService.createGroupQuery().groupMember(sLogin).list();
-        
+
 			if (groups != null && !groups.isEmpty()) {
 				List<String> groupsIds = new LinkedList<String>();
 				for (Group group : groups) {
@@ -1589,12 +1610,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 				long totalNumber = 0;
 				Object taskQuery = oActionTaskService.createQuery(sLogin, bIncludeAlienAssignedTasks, sOrderBy, sFilterStatus,
 						groupsIds);
-				
+
 				totalNumber = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery)taskQuery).count() : oActionTaskService.getCountOfTasksForGroups(groupsIds);
 				LOG.info("Total number of tasks:{}", totalNumber);
 				int nStartBunch = nStart;
 				List<TaskInfo> tasks = new LinkedList<TaskInfo>();
-				
+
 				// this while is intended to work until we either pass through all the tasks or select needed number of tickets
 				long sizeOfTasksToSelect = nSize;
 				if (bFilterHasTicket){
@@ -1606,14 +1627,14 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 					LOG.info("Populating response with results. nStartFrom:{} nSize:{}", nStartBunch, nSize);
 					List<TaskInfo> currTasks = oActionTaskService.getTasksWithTicketsFromQuery(taskQuery, nStartBunch, nSize, bFilterHasTicket, mapOfTickets);
 					tasks.addAll(currTasks);
-					
+
 					nStartBunch += nSize;
-					
+
 					if (!bFilterHasTicket){
 						break;
 					}
 				}
-				
+
 				int tasksSize = tasks.size();
 				if (bFilterHasTicket){
 					totalNumber = tasksSize;
@@ -1626,13 +1647,13 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 						tasks.clear();
 					}
 				}
-				
+
 				List<Map<String, Object>> data = new LinkedList<Map<String, Object>>();
 				if ("ticketCreateDate".equalsIgnoreCase(sOrderBy)) {
 					oActionTaskService.populateResultSortedByTicketDate(bFilterHasTicket, tasks, mapOfTickets, data);
 				} else {
 					oActionTaskService.populateResultSortedByTasksOrder(bFilterHasTicket, tasks, mapOfTickets, data);
-				}				
+				}
 
 				res.put("data", data);
 				res.put("size", nSize);
@@ -1672,26 +1693,26 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     List<Map<String, Object>> getCountTask(@ApiParam(value = "sLogin", required = true) @RequestParam(value = "sLogin") String sLogin,
     		@ApiParam(value = "amFilter", required = true) @RequestParam(value = "amFilter") String amFilter) throws CommonServiceException {
     	List<Map<String, Object>> res = new LinkedList<Map<String,Object>>();
-		
+
     	List<String> groupsIds = new LinkedList<String>();
     	List<Group> groups = identityService.createGroupQuery().groupMember(sLogin).list();
-        
+
 		if (groups != null && !groups.isEmpty()) {
 			for (Group group : groups) {
 				groupsIds.add(group.getId());
 			}
 			LOG.info("Got list of groups for current user {} : {}", sLogin, groupsIds);
 		}
-    	
+
     	JSONArray jsonArray = new JSONArray(amFilter);
-    	
+
     	for (int i = 0; i < jsonArray.length(); i++){
     		JSONObject elem = (JSONObject) jsonArray.get(i);
-    		
+
 			String sFilterStatus = null;
 			boolean bFilterHasTicket = false;
 			boolean bIncludeAlienAssignedTasks = false;
-			
+
 			LOG.info("Current element {}", elem.toString());
 			if (elem.has("sFilterStatus")) {
 				sFilterStatus = (String) elem.get("sFilterStatus");
@@ -1705,34 +1726,34 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 			if (elem.has("bIncludeAlienAssignedTasks")) {
 				bIncludeAlienAssignedTasks = (Boolean)elem.get("bIncludeAlienAssignedTasks");
 			}
-			
+
 			LOG.info("Selecting tasks sLogin:{} sFilterStatus:{} bIncludeAlienAssignedTasks:{}", sLogin, sFilterStatus, bIncludeAlienAssignedTasks);
 			List<TaskInfo> taskQuery = oActionTaskService.returnTasksFromCache(sLogin, sFilterStatus, bIncludeAlienAssignedTasks, groupsIds);
-			
+
 			long totalNumber = taskQuery.size();
 			LOG.info("Retreived {} tasks", taskQuery.size());
-			
+
 			if (bFilterHasTicket){
 				LOG.info("Removing tasks which don't have tickets");
 				List<TaskInfo> tasks = oActionTaskService.matchTasksWithTicketsFromQuery(sLogin, bFilterHasTicket, sFilterStatus, taskQuery);
 				totalNumber = tasks.size();
 			}
-			
+
 			Map<String, Object> currRes = new HashMap<String, Object>();
-			currRes.put("nCount", totalNumber);	 
+			currRes.put("nCount", totalNumber);
 			res.add(currRes);
     	}
-    	
+
     	return res;
     }
-    
-    
+
+
     /** Региональный сервис получения контента файла
-     * 
      *
-     * @param nID_Message - номер-ИД сообщения  
-     * @param nID_Process - номер-ИД процесса 
-     * @throws CommonServiceException 
+     *
+     * @param nID_Message - номер-ИД сообщения
+     * @param nID_Process - номер-ИД процесса
+     * @throws CommonServiceException
      */
     @ApiOperation(value = " Центральный сервис получения контента файла", notes = "")
     @RequestMapping(value = "/getMessageFile_Local", method = { RequestMethod.GET })
@@ -1749,13 +1770,13 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             params.put("nID_Message", nID_Message);
             String sURL = generalConfig.sHostCentral() + "/wf/service/subject/message/getMessageFile";
             byte[] soResponse = httpRequester.getInsideBytes(sURL, params);
-            
+
             LOG.info("Size of file {}", soResponse.length);
             httpResponse.setContentType("application/octet-stream");
             httpResponse.setHeader("Content-disposition", "attachment");
             httpResponse.getOutputStream().write(soResponse);
             httpResponse.flushBuffer();
-            
+
         } catch (Exception oException) {
             LOG.error("Can't get: {}", oException.getMessage());
             throw new CommonServiceException(
@@ -1763,8 +1784,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     "Can't get: " + oException.getMessage(), oException, HttpStatus.FORBIDDEN);
         }
     }
-    
-    
+
+
 
     @ApiOperation(value = "Получения обьекта-записи линка", notes = "#####  ActionCommonTaskController: Сервис получения обьекта-записи линка #####\n\n"
             + "Request:\n\n"
@@ -1805,7 +1826,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
         return actionTaskLinkDao.setActionTaskLink(nID_Process, sKey, nID_Subject_Holder);
     }
-    
+
     @ApiOperation(value = "Обработка изменения статуса документа в УкрДок", notes = "#####  ActionCommonTaskController: Обработка изменения статуса документа в УкрДок #####\n\n"
             + "Request:\n\n"
             + "https://test.igov.org.ua/wf/service/action/task/callback/ukrdoc\n\n\n"
@@ -1815,7 +1836,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 	    + " - ищет процесс, с которым связан данный документ используя сущность ActionTaskLink. Если сущности такой еще нет - то производится поиск "
 	    + " по переменной процесса sID_Document, которая устанавливается при отправке документа в УкрДок, и осуществляется сохранение сущности ActionTaskLink\n"
 	    + " - после нахождения текущей активной задачи статус из УкрДока записывается в переменную sID_Document_UkrDoc задачи\n"
-	    + " - завершает текущую задачу. для следующей активной задачи ответственным назначает пользователя завершенной задачи. Если пользователя не было - то задача остается без активного пользователя\n"	    
+	    + " - завершает текущую задачу. для следующей активной задачи ответственным назначает пользователя завершенной задачи. Если пользователя не было - то задача остается без активного пользователя\n"
             + "В теле запроса передается объект с информацией об изменении:\n"
 	    + "Образец документа:\n"
 	    + "\n```json\n"
@@ -1908,19 +1929,19 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @RequestMapping(value = "/callback/ukrdoc", method = {RequestMethod.POST})
     public @ResponseBody
     ResponseEntity processUkrDocCallBack(@RequestBody String event){
-    	
+
     	UkrDocEventHandler eventHandler = new UkrDocEventHandler();
     	eventHandler.processEvent(event);
-    	
+
     	LOG.info("Parsed document ID:{} and status:{} from event", eventHandler.getDocumentId(), eventHandler.getStatus());
-    	
+
     	String documentId = eventHandler.getDocumentId();
     	String documentIdFromPkSection = eventHandler.getDocumentId();
     	String year = eventHandler.getYear();
     	String status = eventHandler.getStatus();
-    	
+
     	String sKey = documentId + ":" + year;
-    	
+
     	//subject
 		long ukrDocSubjectId = 1l;
 		ActionTaskLink actionTaskLink = actionTaskLinkDao.getByCriteria(null, sKey, ukrDocSubjectId);
@@ -1933,14 +1954,14 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 	    	if (processes.size() > 0){
 		    	processInstance = processes.get(0);
 				LOG.info("ActionTaskLink is not found. Creating a new one");
-				
+
 				actionTaskLinkDao.setActionTaskLink(Long.valueOf(processInstance.getId()), sKey, ukrDocSubjectId);
 	    	}
 		} else {
 			LOG.info("Found ActionTaskLink. Process Id is {}", actionTaskLink.getnIdProcess());
 			processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(actionTaskLink.getnIdProcess().toString()).singleResult();
 		}
-    	
+
     	if (processInstance != null){
 			List<Task> tasks =  taskService.createTaskQuery().processInstanceId(processInstance.getId()).active().list();
 			if (tasks != null){
@@ -1956,16 +1977,33 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 					taskService.complete(task.getId());
 					LOG.info("Completed task {}", task.getId());
 				}
-				if (assignee != null){
-					LOG.info("Looking for a new task to claim it to the user {}", assignee);
+
+					LOG.info("Looking for a new task to set form properties and claim it to the user {}", assignee);
 					tasks = taskService.createTaskQuery().processInstanceId(processInstance.getId()).active().list();
+					LOG.info("Get {} active tasks for the process", tasks);
 					for (Task task : tasks){
-						taskService.claim(task.getId(), assignee);
-						LOG.info("Claimed task {} for the user {}", task.getId(), assignee);
+						TaskFormData formData = formService.getTaskFormData(task.getId());
+						for (FormProperty formProperty : formData.getFormProperties()){
+							if (formProperty.getId().equals("sID_Document_UkrDoc")){
+								LOG.info("Found form property with the id sID_Document_UkrDoc. Setting value {}", sKey);
+								if (formProperty instanceof FormPropertyImpl){
+									((FormPropertyImpl)formProperty).setValue(sKey);
+								}
+							} else if (formProperty.getId().equals("sStatusName_UkrDoc")){
+								LOG.info("Found form property with the id sStatusName_UkrDoc. Setting value {}", status);
+								if (formProperty instanceof FormPropertyImpl){
+									((FormPropertyImpl)formProperty).setValue(status);
+								}
+							}
+						}
+						if (assignee != null){
+							taskService.claim(task.getId(), assignee);
+							LOG.info("Claimed task {} for the user {}", task.getId(), assignee);
+						} else {
+							LOG.info("Task was not assigned");
+						}
 					}
-				} else {
-					LOG.info("Task was not assigned");
-				}
+
 			} else {
 				LOG.info("Active tasks have not found for the process {}", processInstance.getId());
 			}
@@ -1977,8 +2015,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
         return JsonRestUtils.toJsonResponse(response);
     }
- 
-    
+
+
     @ApiOperation(value = "Сервис получения значения переменной процесса", notes = "#####  ActionCommonTaskController: Сервис получения значения переменной процесса #####\n\n"
             + "Request:\n\n"
             + "https://test.region.igov.org.ua/wf/service/action/task/getProcessVariableValue?nID_Process=[nID_Process]&sVariableName=[sVariableName]\n\n\n"
@@ -1997,18 +2035,18 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
         return JSONValue.toJSONString(oActionTaskService.getProcessVariableValue(nID_Process, sVariableName));
     }
-    
-    
+
+
     /**
-     * 
+     *
      * @param sLogin                     - Строка логин пользователя, меняющего пароль
      * @param sPasswordOld               - Строка старый пароль
      * @param sPasswordNew               - Строка новый пароль
      * @return
      * @throws CommonServiceException
-     * @throws RuntimeException         
+     * @throws RuntimeException
      */
-    
+
     @ApiOperation(value = "Сервис смены пароля пользователя в Activity", notes = "#### Примеры \n"
             + "Request: \n"
             + "https://test.igov.org.ua/wf/service/action/task/changePassword\n"
@@ -2053,7 +2091,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             + "}\n"
             + "\n```\n")
     @RequestMapping(value = "/changePassword", method = {RequestMethod.POST, RequestMethod.GET})
-    public 
+    public
     @ResponseBody
     String changePassword(
     @ApiParam(value="Строка логин пользователя, меняющего пароль", required = true) @RequestParam(value="sLoginOwner", required = true) String sLogin,
@@ -2064,10 +2102,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
       ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
       IdentityService identityService = processEngine.getIdentityService();
       User user = null;
-     
+
       LOG.info("User will be found by sLoginOwner {}", sLogin);
       user = identityService.createUserQuery().userId(sLogin).singleResult();
-    
+
       if(user == null)
       {
          LOG.warn("Error! user has not been found");
@@ -2075,12 +2113,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             ExceptionCommonController.BUSINESS_ERROR_CODE,
             "Error! user has not been found",
             HttpStatus.FORBIDDEN
-         );  
+         );
       }
-         
-         
-    
-     
+
+
+
+
       if(!user.getPassword().equals(sPasswordOld))
       {
           LOG.warn("The sPasswordOld parameter is not equal the user's password: {}");
@@ -2089,10 +2127,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
              "Password " + sPasswordOld +" is wrong",
              HttpStatus.FORBIDDEN
              );
-          
+
       }
       user.setPassword(sPasswordNew);
-      
+
       try
       {
          identityService.saveUser(user);
@@ -2102,10 +2140,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
            LOG.warn("User with such name already exists in base: {}", e.getMessage());
            throw new RuntimeException(e);
       }
-      
+
       try
       {
-         user = identityService.createUserQuery().userId(user.getId()).singleResult();   
+         user = identityService.createUserQuery().userId(user.getId()).singleResult();
       }
       catch(Exception e)
       {
@@ -2120,8 +2158,221 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
               + "\"userEmail\" : \""+user.getEmail()+"\", "
               + "\"userFirstName\":\""+user.getFirstName()+"\", "
               + "\"userLastName\":\""+ user.getLastName()+"\"}";
-      
+
       return userData;
     }
+
+
+    /**
+	 * установить/задеплоить новый БП
+	 *
+	 * @param sFileName
+	 * @param file
+	 * @return
+	 * @throws IOException
+     */
+	@RequestMapping(value = "/setBP", method = RequestMethod.POST)
+	@ResponseBody
+	public String setBP(@ApiParam(value = "Cтрока-название файла", required = true) @RequestParam(value = "sFileName", required = true) String sFileName,
+						@ApiParam(value = "Новий БП") @RequestParam("file") MultipartFile file,
+						HttpServletRequest req) throws IOException {
+
+		try {
+			InputStream inputStream = file.getInputStream();
+			repositoryService.createDeployment().addInputStream(sFileName, inputStream).deploy();
+			return "SUCCESS";
+		} catch (Exception e) {
+			throw new IllegalArgumentException("Deployment is broken");
+		}
+
+	}
+
+	/**
+	 * получить загруженный БП
+	 *
+	 * @param sID
+	 * @param response
+	 * @throws IOException
+     */
+	@RequestMapping(value = "/getBP", method = RequestMethod.GET)
+	@ResponseBody
+	public void getBP(@ApiParam(value = "строка-ID БП", required = true) @RequestParam(value = "sID", required = true) String sID,
+					  HttpServletResponse response)
+			throws IOException {
+
+		InputStream is = repositoryService.getProcessModel(sID);
+		response.setContentType("application/xml; charset=UTF-8");
+		response.setCharacterEncoding("UTF-8");
+		response.setHeader("Content-Disposition", "attachment; filename=\""
+				+ "testName.bpmn" + "\"");
+
+		FileCopyUtils.copy(is, response.getOutputStream());
+		is.close();
+		response.getOutputStream().close();
+	}
+
+	/**
+	 * получить список БП с версиями (массив объектов)
+	 *
+	 * @param sID_BP		строка-ИД БП
+	 * @param sFieldType	строка-типа поля
+	 * @param sID_Field		строка-ИД поля
+     * @return				список БП
+     */
+	@RequestMapping(value = "/getListBP", method = RequestMethod.GET)
+	@ResponseBody
+	public List<ProcDefinitionI> getListBP(@ApiParam(value = "строка-ИД БП //опциональный фильтр, иначе все", required = false)
+								@RequestParam(value = "sID_BP", required = false) String sID_BP,
+							@ApiParam(value = "строка-типа поля //опциональный фильтр, иначе все", required = false)
+							    @RequestParam(value = "sFieldType", required = false) String sFieldType,
+							@ApiParam(value = "строка-ИД поля //опциональный фильтр, иначе все", required = false)
+								@RequestParam(value = "sID_Field", required = false) String sID_Field)
+	{
+		List<ProcessDefinition> processDefinitions = repositoryService
+				.createProcessDefinitionQuery().processDefinitionId(sID_BP).list();
+
+		List<ProcDefinitionI> procDefinitions = new ArrayList<>();
+		ProcessDefinitionCover adapter = new ProcessDefinitionCover();
+
+		if (sFieldType != null || sID_Field != null) {
+			for (ProcessDefinition pd : processDefinitions) {
+
+				String id = pd.getId();
+				FormData formData = null;
+					//formService.getStartFormData(id) produces NullPointerException
+				try {
+					formData = formService.getStartFormData(id);
+					List<FormProperty> formProperties = formData.getFormProperties();
+					for (FormProperty fp : formProperties) {
+						String idFp = fp.getId();
+						String type = fp.getType().getName();
+						if (sFieldType != null && sID_Field != null) {
+							if (sFieldType.equalsIgnoreCase(type) && sID_Field.equalsIgnoreCase(idFp)) {
+								procDefinitions.add(adapter.apply(pd));
+								break;
+							}
+						} else if (sFieldType == null && sID_Field != null) {
+							if (sID_Field.equalsIgnoreCase(idFp)) {
+								procDefinitions.add(adapter.apply(pd));
+								break;
+							}
+						} else {
+							if (sFieldType.equalsIgnoreCase(type)) {
+								procDefinitions.add(adapter.apply(pd));
+								break;
+							}
+						}
+					}
+				} catch (Exception e) {
+					LOG.debug(e.getMessage());
+				}
+			}
+		} else {
+			for (ProcessDefinition processDefinition : processDefinitions) {
+				procDefinitions.add(adapter.apply(processDefinition));
+			}
+		}
+		return procDefinitions;
+	}
+
+	/**
+	 * удалить список БП с версиями (массив объектов)
+	 *
+	 * @param sID_BP 		строка-ИД БП
+	 * @param sFieldType 	строка-типа поля
+	 * @param sID_Field		строка-ИД поля
+	 * @param sVersion		строка-версия БП
+     * @return				количество удаленных БП
+     */
+	@RequestMapping(value = "/removeListBP", method = RequestMethod.GET)
+	@ResponseBody
+	public String removeListBP(@ApiParam(value = "строка-ИД БП //опциональный фильтр, иначе все", required = false)
+								   @RequestParam(value = "sID_BP", required = false) String sID_BP,
+							   @ApiParam(value = "строка-типа поля //опциональный фильтр, иначе все", required = false)
+							       @RequestParam(value = "sFieldType", required = false) String sFieldType,
+							   @ApiParam(value = "строка-ИД поля //опциональный фильтр, иначе все", required = false)
+								   @RequestParam(value = "sID_Field", required = false) String sID_Field,
+							   @ApiParam(value = "строка-версия БП //опциональный фильтр, иначе все", required = false)
+								   @RequestParam(value = "sVersion", required = false) String sVersion)
+	{
+			List<ProcessDefinition> processDefinitions = repositoryService
+					.createProcessDefinitionQuery().processDefinitionId(sID_BP).list();
+
+			for (ProcessDefinition pd : processDefinitions) {
+				removeBP(pd, sFieldType, sID_Field, sVersion);
+			}
+			List<ProcessDefinition> afterRemove = repositoryService
+				.createProcessDefinitionQuery().processDefinitionId(sID_BP).list();
+		int diff = processDefinitions.size() - afterRemove.size();
+
+		return diff + " BP have been removed";
+	}
+
+	/**
+	 * Удаляет процес если он попадает по параметрам
+	 * @param pd
+	 * @param sFieldType
+	 * @param sID_Field
+	 * @param sVersion
+     */
+	private void removeBP(ProcessDefinition pd, String sFieldType, String sID_Field, String sVersion) {
+		if (sFieldType == null && sID_Field == null) {
+			if (sVersion == null) {
+				repositoryService.deleteDeployment(pd.getDeploymentId());
+			} else {
+				if (pd.getVersion() == Integer.parseInt(sVersion)) {
+					repositoryService.deleteDeployment(pd.getDeploymentId());
+				}
+			}
+		}
+		try {
+			FormData formData = formService.getStartFormData(pd.getId());
+			List<FormProperty> formProperties = formData.getFormProperties();
+			for (FormProperty fp : formProperties) {
+				String idFp = fp.getId();
+				String type = fp.getType().getName();
+				if (sVersion == null) {
+					if (sFieldType != null && sID_Field != null) {
+						if (sFieldType.equalsIgnoreCase(type) && sID_Field.equalsIgnoreCase(idFp)) {
+							repositoryService.deleteDeployment(pd.getDeploymentId());
+							break;
+						}
+					} else if (sFieldType == null && sID_Field != null) {
+						if (sID_Field.equalsIgnoreCase(idFp)) {
+							repositoryService.deleteDeployment(pd.getDeploymentId());
+							break;
+						}
+					} else {
+						if (sFieldType.equalsIgnoreCase(type)) {
+							repositoryService.deleteDeployment(pd.getDeploymentId());
+							break;
+						}
+					}
+				} else if (pd.getVersion() == Integer.parseInt(sVersion)) {
+					if (sFieldType != null && sID_Field != null) {
+						if (sFieldType.equalsIgnoreCase(type) && sID_Field.equalsIgnoreCase(idFp)) {
+							repositoryService.deleteDeployment(pd.getDeploymentId());
+							break;
+						}
+					} else if (sFieldType == null && sID_Field != null) {
+						if (sID_Field.equalsIgnoreCase(idFp)) {
+							repositoryService.deleteDeployment(pd.getDeploymentId());
+							break;
+						}
+					} else if (sFieldType != null && sID_Field == null) {
+						if (sFieldType.equalsIgnoreCase(idFp)) {
+							repositoryService.deleteDeployment(pd.getDeploymentId());
+							break;
+						}
+					}
+				}
+
+			}
+		} catch (Exception e) {
+			LOG.debug(e.getMessage());
+		}
+	}
+
+
 
 }

@@ -46,7 +46,7 @@ angular.module('app').controller('FooterController', function ($scope) {
     ,{
       url: 'http://bdo.com.ua',
       alt: 'bdo',
-      image: 'assets/images/ads/bdo.jpg',
+      image: 'assets/images/ads/bdo.png',
       height: 50
     }
     ,{
@@ -58,7 +58,7 @@ angular.module('app').controller('FooterController', function ($scope) {
     ,{
       url: 'http://avante.com.ua',
       alt: 'avante',
-      image: 'assets/images/ads/avante.jpg',
+      image: 'assets/images/ads/avante.png',
       height: 50
     }
     ,{
@@ -91,6 +91,48 @@ angular.module('app').controller('FooterController', function ($scope) {
       image: 'assets/images/ads/tribobra.png',
       height: 50
     }
+    ,{
+      url: 'https://webmoney.ua',
+      alt: 'webmoneyua',
+      image: 'assets/images/ads/webmoneyua.png',
+      height: 50
+    }
+    
+    ,{
+      url: 'https://leogaming.net',
+      alt: 'leogaming',
+      image: 'assets/images/ads/leo.png',
+      height: 50
+    }
+    
+    ,{
+      url: 'https://www.facebook.com/%D0%A4%D1%83%D0%BD%D1%82-%D0%9A%D0%B0%D0%B2%D0%B8-209303262475013/',
+      alt: 'funtkavy',
+      image: 'assets/images/ads/funtkavy.png',
+      height: 50
+    }
+    
+    ,{
+      url: 'https://privatbank.ua',
+      alt: 'privatbank',
+      image: 'assets/images/ads/privatbank.png',
+      height: 50
+    }
+    
+    ,{
+      url: 'https://www.ria.com',
+      alt: 'ria',
+      image: 'assets/images/ads/ria.png',
+      height: 50
+    }
+    
+    ,{
+      url: 'http://oyy.com.ua',
+      alt: 'oyy',
+      image: 'assets/images/ads/oyy.png',
+      height: 50
+    }
+    
     
   ];
 
@@ -100,7 +142,7 @@ angular.module('app').controller('FooterController', function ($scope) {
     var sortid;
     do {
       sortid = Math.floor(Math.random() * arr.length);
-    } while (indexes.includes(sortid) && count-- > 0);
+    } while (indexes.indexOf(sortid) >= 0 && count-- > 0);
 
     indexes.push(sortid);
     item.sortid = sortid;

@@ -48,6 +48,7 @@ import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.history.*;
 import org.activiti.engine.identity.Group;
+import org.activiti.engine.impl.persistence.entity.HistoricFormPropertyEntity;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.repository.ProcessDefinition;
@@ -233,6 +234,101 @@ public class ActionTaskService {
             osTable.append("<td>").append("Значення").append("</td>");
         }
         osTable.append("<td>").append("Коментар").append("</td>");
+        osTable.append("</tr>");
+        for (int i = 0; i < aField.length(); i++) {
+            JSONObject oField = aField.getJSONObject(i);
+            /*Object oID=oField.opt("id");
+            Object oType=oField.opt("type");
+            Object oValue=oField.opt("value");
+            osTable.append("<tr>");
+            osTable.append("<td>").append(oID!=null?oID:"").append("</td>");
+            osTable.append("<td>").append(oType!=null?oType:"").append("</td>");
+            osTable.append("<td>").append(oValue!=null?oValue:"").append("</td>");*/
+        /*
+        sID: item.id,
+        sName: item.name,
+        sType: item.type,
+        sValue: item.value,
+        sValueNew: "",
+        sNotify: $scope.clarifyFields[item.id].text
+        */
+            Object sName=oField.opt("sName");
+            if(sName==null){
+                sName = oField.opt("sID");
+            }
+            if(sName==null){
+                sName = oField.opt("id");
+            }
+            Object oValue=oField.opt("sValue");
+            if(oValue==null){
+                oValue = oField.opt("value");
+            }
+            osTable.append("<tr>");
+            osTable.append("<td>").append(sName!=null?sName:"").append("</td>");
+            if(bNew){
+                Object oValueNew=oField.opt("sValueNew");
+                osTable.append("<td>").append(oValue!=null?oValue:"").append("</td>");
+                osTable.append("<td>").append(oValueNew!=null?oValueNew:"").append("</td>");
+                osTable.append("<td>").append((oValueNew+"").equals(oValue+"")?"(Не змінилось)":"(Змінилось)").append("</td>");
+            }else{
+                Object oNotify=oField.opt("sNotify");
+                osTable.append("<td>").append(oValue!=null?oValue:"").append("</td>");
+                osTable.append("<td>").append(oNotify!=null?oNotify:"").append("</td>");
+            }
+            osTable.append("</tr>");
+            /*osTable.append(record.opt("id") != null ? record.get("id") : "?")
+                    .append(" \t ")
+                    .append(record.opt("type") != null ? record.get("type").toString() : "??")
+                    .append(" \t ")
+                    .append(record.opt("value") != null ? record.get("value").toString() : "")
+                    .append(" \n");*/
+        }
+        osTable.append("</table>");
+        return osTable.toString();
+    }
+
+    public static String createTable_TaskProperties_Notification(String saField, Boolean bNew) {
+        if (saField == null || "[]".equals(saField) || "".equals(saField)) {
+            return "";
+        }
+        String sTableStyle;
+        sTableStyle = "<style>table"
+                + " { border-collapse: collapse;"
+                + " width: 100%;"
+                + " max-width: 800px;}"
+                + " table td {"
+                + " border: 1px solid #ddd;"
+                + " text-align:left;"
+                + " padding: 4px;"
+                + " height:40px;}"
+                + " table th {"
+                + " background: #65ABD0;"
+                + " vertical-align: middle;"
+                + " padding: 10px;"
+                + " width:200px;"
+                + " text-align:left;"
+                + " color:#fff;"
+                + " }"
+                + "</style>";
+        //StringBuilder tableStr = new StringBuilder("Поле \t/ Тип \t/ Поточне значення\n");
+
+        /*osTable.append("<td>").append("Поле").append("</td>");
+        osTable.append("<td>").append("Тип").append("</td>");
+        osTable.append("<td>").append("Поточне значення").append("</td>");*/
+        JSONObject oFields = new JSONObject("{ \"soData\":" + saField + "}");
+        JSONArray aField = oFields.getJSONArray("soData");
+        StringBuilder osTable = new StringBuilder();
+        osTable.append(sTableStyle);
+        osTable.append("<table>");
+        osTable.append("<tr>");
+        osTable.append("<th>").append("Поле").append("</th>");
+        if(bNew){
+            osTable.append("<th>").append("Старе значення").append("</th>");
+            osTable.append("<th>").append("Нове значення").append("</th>");
+        }else{
+            osTable.append("<th>").append("Значення").append("</th>");
+        }
+        osTable.append("<th>").append("Коментар").append("</th>");
         osTable.append("</tr>");
         for (int i = 0; i < aField.length(); i++) {
             JSONObject oField = aField.getJSONObject(i);
@@ -544,7 +640,8 @@ public class ActionTaskService {
         return attachmentRequested;
     }
 
-    public void fillTheCSVMapHistoricTasks(String sID_BP, Date dateAt, Date dateTo, List<HistoricTaskInstance> foundResults, SimpleDateFormat sDateCreateDF, List<Map<String, Object>> csvLines, String pattern, Set<String> tasksIdToExclude, String saFieldsCalc, String[] headers) {
+    public void fillTheCSVMapHistoricTasks(String sID_BP, Date dateAt, Date dateTo, List<HistoricTaskInstance> foundResults, SimpleDateFormat sDateCreateDF, List<Map<String, Object>> csvLines, String pattern, 
+    		Set<String> tasksIdToExclude, String saFieldsCalc, String[] headers, String sID_State_BP) {
         if (CollectionUtils.isEmpty(foundResults)) {
             LOG.info(String.format("No historic tasks found for business process %s for date period %s - %s", sID_BP, DATE_TIME_FORMAT.format(dateAt), DATE_TIME_FORMAT.format(dateTo)));
             return;
@@ -563,6 +660,27 @@ public class ActionTaskService {
             }
             String currentRow = pattern;
             Map<String, Object> variables = curTask.getProcessVariables();
+            if (sID_State_BP != null){
+            	LOG.info("Adding local task varables to consider {}", curTask.getTaskLocalVariables());
+            	variables.putAll(curTask.getTaskLocalVariables());
+            	LOG.info("trying to load properties for the process instance {}", curTask.getProcessInstanceId());
+            	List<HistoricDetail> historiDetails = oHistoryService.createHistoricDetailQuery()
+            	  .formProperties().processInstanceId(curTask.getProcessInstanceId()).list();
+            	LOG.info("Loaded historic details {}", historiDetails);
+            	for (HistoricDetail historicDetail : historiDetails){
+            		if (historicDetail instanceof HistoricFormPropertyEntity){
+            			String propertyId = ((HistoricFormPropertyEntity)historicDetail).getPropertyId();
+            			String value = ((HistoricFormPropertyEntity)historicDetail).getPropertyValue();
+            			LOG.info("Processing form property with id {} and value {}", propertyId, value);
+            			if (!variables.containsKey(propertyId)){
+            			variables.put(propertyId, 
+            					value != null ? value : "");
+            			} else {
+            				LOG.info("Skipping property id {} as it already exists in the map", propertyId);
+            			}
+            		}
+            	}
+            }
             LOG.info("Loaded historic variables for the task {}|{}", curTask.getId(), variables);
             currentRow = replaceFormProperties(currentRow, variables);
             if (saFieldsCalc != null) {
@@ -590,7 +708,7 @@ public class ActionTaskService {
             }
             Map<String, Object> currRow = new HashMap<>();
             for (int i = 0; i < headers.length; i++) {
-                currRow.put(headers[i], values[i]);
+                currRow.put(headers[i], i < values.length ? values[i] : "");
             }
             csvLines.add(currRow);
         }
@@ -634,6 +752,7 @@ public class ActionTaskService {
         String res = currentRow;
         for (Map.Entry<String, Object> property : data.entrySet()) {
             LOG.info(String.format("Matching property %s:%s with fieldNames", property.getKey(), property.getValue()));
+            //LOG.info("!!!!!!!!!!data: " + data);
             if (currentRow != null && res.contains("${" + property.getKey() + "}")) {
                 LOG.info(String.format("Found field with id %s in the pattern. Adding value to the result", "${" + property.getKey() + "}"));
                 if (property.getValue() != null) {
@@ -652,7 +771,8 @@ public class ActionTaskService {
     private String replaceFormProperties(String currentRow, TaskFormData data) {
         String res = currentRow;
         for (FormProperty property : data.getFormProperties()) {
-            LOG.info(String.format("Matching property %s:%s:%s with fieldNames", property.getId(), property.getName(), property.getType().getName()));
+            LOG.info(String.format("Matching property %s %s %s with fieldNames", property.getId(), property.getName(), property.getType().getName()));
+            //LOG.info("!!!!!!!!!!getId: " + property.getId() + " getName: " + property.getName() + " getType: " +  property.getType().getName() + " getValue: " +  property.getValue() + "!");
             if (currentRow != null && res.contains("${" + property.getId() + "}")) {
                 LOG.info(String.format("Found field with id %s in the pattern. Adding value to the result", "${" + property.getId() + "}"));
                 String sValue = getPropertyValue(property);
@@ -804,7 +924,7 @@ public class ActionTaskService {
     private String getPropertyValue(FormProperty property) {
         String sValue;
         String sType = property.getType().getName();
-        LOG.info("(sType={})", sType);
+        LOG.info("getId:" + property.getId() + " getName: " + property.getName() + " getType: " + sType + " getValue: " + property.getValue());
         if ("enum".equalsIgnoreCase(sType)) {
             sValue = parseEnumProperty(property);
         } else {
@@ -1316,8 +1436,8 @@ public class ActionTaskService {
      * @param nID_Task - номер-ИД таски
      * @return DTO-объект ProcessDTOCover
      */
-    public ProcessDTOCover getProcessInfoByTaskID(Long nID_Task){
-        LOG.info("start process getting Task Data by nID_Task = {}",  nID_Task);
+    public ProcessDTOCover getProcessInfoByTaskID(Long nID_Task) {
+        LOG.info("start process getting Task Data by nID_Task = {}", nID_Task);
 
         HistoricTaskInstance historicTaskInstance = oHistoryService.createHistoricTaskInstanceQuery()
                 .taskId(nID_Task.toString()).singleResult();
@@ -2145,22 +2265,34 @@ public class ActionTaskService {
      * @see HistoricIdentityLink#getGroupId()
      */
     public Set<String> getGroupIDsByTaskID(Long nID_Task){
-
+        LOG.info(String.format("Start extraction Group IDs for Task [id=%s]", nID_Task));
         Set<String> result = new HashSet<>();
-        List<IdentityLink> identityLinks = oTaskService.getIdentityLinksForTask(nID_Task.toString());
-        if (CollectionUtils.isNotEmpty(identityLinks)){
+        try {
+            List<IdentityLink> identityLinks = oTaskService.getIdentityLinksForTask(nID_Task.toString());
             for (IdentityLink link : identityLinks){
-                result.add(link.getGroupId());
-                LOG.info(String.format("Add Group id=%s for active Task id=%s", link.getGroupId(), nID_Task));
-            }
-        } else {
-            List<HistoricIdentityLink> historicIdentityLinks = oHistoryService.getHistoricIdentityLinksForTask(nID_Task.toString());
-            if (CollectionUtils.isNotEmpty(historicIdentityLinks)){
-                for (HistoricIdentityLink link : historicIdentityLinks){
+                LOG.info(String.format("Extraction Group ID from IdentityLink %s", link.toString()));
+                if(link.getGroupId() == null || link.getGroupId().isEmpty()){
+                    LOG.info(String.format("Not found Group in IdentityLink %s", link.toString()));
+                } else {
                     result.add(link.getGroupId());
-                    LOG.info(String.format("Add Group id=%s for historic Task id=%s", link.getGroupId(), nID_Task));
+                    LOG.info(String.format("Add Group id=%s for active Task id=%s from IdentityLink %s",
+                            link.getGroupId(), nID_Task, link.toString()));
                 }
-            } else {
+            }
+        } catch (NullPointerException e) {
+            try {
+                List<HistoricIdentityLink> historicIdentityLinks = oHistoryService.getHistoricIdentityLinksForTask(nID_Task.toString());
+                for (HistoricIdentityLink link : historicIdentityLinks){
+                    LOG.info(String.format("Extraction Group ID from HistoricIdentityLink %s", link.toString()));
+                    if(link.getGroupId() == null || link.getGroupId().isEmpty()){
+                        LOG.info(String.format("Not found Group in HistoricIdentityLink %s", link.toString()));
+                    } else {
+                        result.add(link.getGroupId());
+                        LOG.info(String.format("Add Group id=%s for historic Task id=%s from HistoricIdentityLink %s",
+                                link.getGroupId(), nID_Task, link.toString()));
+                    }
+                }
+            } catch (NullPointerException eh) {
                 LOG.info(String.format("No found Group id for Task id=%s", nID_Task));
             }
         }

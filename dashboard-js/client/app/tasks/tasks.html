@@ -1,4 +1,4 @@
-﻿<div ng-include="'components/navbar/navbar.html'" class="navbar-fixed-top"></div>
+﻿<div ng-include="'components/navbar/navbar.html'" class="navbar-fixed-top" style="max-height: 51px"></div>
 <div class="row navbar-fixed-top i-gov-navbar-fillter" ng-if="sSelectedTask!='tickets' && sSelectedTask!='tickets'">
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <div>
@@ -92,15 +92,16 @@
         <div class="task-list-header">
           <div class="task-list-header-row">
             <div class="right-aligned task-list-header-cell">
-              Сортувати:
-              <select ng-options="option.value as option.text for option in sortOrderOptions"
-                      ng-model="selectedSortOrder.selected"
-                      ng-change="selectedSortOrderChanged()">
-              </select>
-              <!--<select>
-                <option onselect="sortorder('createTime',true)">Від найдавніших</option>
-                <option onselect="order('createTime',false)">Від найновіших</option>
-              </select>-->
+              <div ng-click="selectedSortOrderChanged()" style="cursor: pointer">
+                <span title="Увімкнено сортування від найдавніших"
+                      ng-if="selectedSortOrder.selected === 'datetime_asc'">
+                  Дата &#9660;
+                </span>
+                <span title="Увімкнено сортування від найновіших"
+                      ng-if="selectedSortOrder.selected === 'datetime_desc'">
+                  Дата &#9650;
+                </span>
+              </div>
             </div>
           </div>
         </div>

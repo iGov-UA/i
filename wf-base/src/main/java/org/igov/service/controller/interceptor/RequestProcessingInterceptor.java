@@ -196,6 +196,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                     || sURL.endsWith("/service/document/getDocuments")
                     || sURL.endsWith("/service/document/setDocumentFile")
                     || sURL.contains("/service/object/file/")
+                    || sURL.contains("/service/document/getDocumentAbstract")
+                    
                     ){
             }else{
                 LOG_BIG.debug("(sResponseBody={})", sResponseBody);
@@ -220,9 +222,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             }
         } catch (Exception ex) {
             LOG.error("Can't save service-history record: {}",ex.getMessage());
+            LOG.error("Can't save service-history record: {}" + " mRequestParam: " + mRequestParam + "sRequestBody: " + sRequestBody + " sResponseBody: " + sResponseBody, ex);
             LOG_BIG.error("Can't save service-history record: {}",ex.getMessage());
             LOG_BIG.error("FAIL:", ex);
-            //oLogBig_Controller.error("can't save service-history record! ", ex);
         }
     }
 
@@ -239,7 +241,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     }
 
     private boolean isSaveTask(HttpServletRequest oRequest, String sResponseBody) {
-        LOG.info("(is save task sResponseBody {}, '/form/form-data' {}. Method {} )", sResponseBody, oRequest.getRequestURL().toString().indexOf("/form/form-data"),oRequest.getMethod());
+        //LOG.info("(is save task sResponseBody {}, '/form/form-data' {}. Method {} )", sResponseBody, oRequest.getRequestURL().toString().indexOf("/form/form-data"),oRequest.getMethod());
         return (sResponseBody != null && !"".equals(sResponseBody))
                 && oRequest.getRequestURL().toString().indexOf("/form/form-data") > 0
                 && "POST".equalsIgnoreCase(oRequest.getMethod().trim());
@@ -252,7 +254,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         JSONObject omResponseBody = (JSONObject) oJSONParser.parse(sResponseBody);
         mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CREATED.getnID().toString());
 
-        String snID_Process = (String) omResponseBody.get("id");
+        String snID_Process = String.valueOf(omResponseBody.get("id"));
         Long nID_Process = Long.valueOf(snID_Process);
         String sID_Order = generalConfig.sID_Order_ByProcess(nID_Process);
         String snID_Subject = String.valueOf(omRequestBody.get("nID_Subject"));
@@ -294,21 +296,10 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         String sUserTaskName = bProcessClosed ? "" : aTask.get(0).getName();//"(нет назви)"
 
         String sMailTo = JsonRequestDataResolver.getEmail(omRequestBody);
-        String sPhone = JsonRequestDataResolver.getPhone(omRequestBody);
-        //LOG.info("Check if ned sendTaskCreatedInfoEmail... (sMailTo={})", sMailTo);
+        String sPhone = String.valueOf(JsonRequestDataResolver.getPhone(omRequestBody));
         if (sMailTo != null) {
             LOG.info("Send notification mail... (sMailTo={})", sMailTo);
-            /*
-            String processDefinitionId = (String)jsonObjectRequest.get("processDefinitionId");
-            if(processDefinitionId != null && processDefinitionId.indexOf("common_mreo_2") > -1){
-                LOG.info("skip send email for common_mreo_2 proccess");
-                return;
-            }
-            */
-            
-         
             oNotificationPatterns.sendTaskCreatedInfoEmail(sMailTo, sID_Order);
-            //LOG.info("Sent Email ok!");
         }
         
         if(sMailTo != null || sPhone != null)
@@ -335,8 +326,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
       
         historyEventService.addHistoryEvent(sID_Order, sUserTaskName, mParam);
         //LOG.info("ok!");
-        
-      
     }
     
     private void saveClosedTaskInfo(String sRequestBody) throws Exception {
@@ -362,10 +351,13 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         try {
             if (bProcessClosed && sProcessName.indexOf("system") != 0) {//issue 962
                 //LOG.info(String.format("start process feedback for process with snID_Process=%s", snID_Process));
-                String snID_Proccess_Feedback = bpHandler.startFeedbackProcess(snID_Task, snID_Process, sProcessName);
-                mParam.put("nID_Proccess_Feedback", snID_Proccess_Feedback);
-                //LOG.info("nID_Proccess_Feedback={}", mParam.get("nID_Proccess_Feedback"));
-                LOG.info("Create escalation process! (sProcessName={}, nID_Proccess_Feedback={})", sProcessName, snID_Proccess_Feedback);
+                if (!generalConfig.bTest()) {
+                    String snID_Proccess_Feedback = bpHandler.startFeedbackProcess(snID_Task, snID_Process, sProcessName);
+                    mParam.put("nID_Proccess_Feedback", snID_Proccess_Feedback);
+                    LOG.info("Create escalation process! (sProcessName={}, nID_Proccess_Feedback={})", sProcessName, snID_Proccess_Feedback);
+                } else {
+                    LOG.info("SKIPED(test)!!! Create escalation process! (sProcessName={})", sProcessName);
+                }
             }
         } catch (Exception e) {
             LOG.error("Can't create escalation process: {}",e.getMessage());

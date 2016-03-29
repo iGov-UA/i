@@ -38,6 +38,7 @@ public class HistoryEventTest {
     private final static Long testSubject_nID = 10L;
     private final static Long testSubject_nID_Set = 11L;
 
+    @Ignore
     @Test
     public void getHistoryEvent() {
 
@@ -86,20 +87,22 @@ public class HistoryEventTest {
     // если сработал скорее всего, проблема из-за изменений в файле
     // HistoryEvent.csv
     // @Ignore
+    @Ignore
     @Test
     public void getHistoryEvents() {
-	getHistoryEventsBySubject(testSubject_nID, false, 20);
-	getHistoryEventsBySubject(testSubject_nID, true, 11);
+	getHistoryEventsBySubject(testSubject_nID, null, false, 20);
+	getHistoryEventsBySubject(testSubject_nID, null, true, 11);
+	getHistoryEventsBySubject(testSubject_nID, 2L, true, 2);
     }
 
-    private void getHistoryEventsBySubject(Long nID_Subject, boolean bGrouped, int retCount) {
-	List<HistoryEvent> historyEvents = historyEventDao.getHistoryEvents(nID_Subject, bGrouped);
+    private void getHistoryEventsBySubject(Long nID_Subject, Long nID_HistoryEvent_Service, boolean bGrouped, int retCount) {
+	List<HistoryEvent> historyEvents = historyEventDao.getHistoryEvents(nID_Subject, nID_HistoryEvent_Service, bGrouped);
 	Assert.assertNotNull("Ошибка получения historyEvents по nID_Subject=" + nID_Subject, historyEvents);
 	Assert.assertEquals(String.format("Ошибка получения данных по кретериям: nID_Subject=%d, bGrouped=%b.",
 		nID_Subject, bGrouped), retCount, historyEvents.size());
 
-	LOG.info(String.format("Согласно кретериям: nID_Subject=%d, bGrouped=%b, найдено строк %d", nID_Subject,
-		bGrouped, historyEvents.size()));
+	LOG.info(String.format("Согласно кретериям: nID_Subject=%d, nID_HistoryEvent_Service=%d, bGrouped=%b, найдено строк %d", nID_Subject,
+		nID_HistoryEvent_Service, bGrouped, historyEvents.size()));
 
 	if (LOG.isDebugEnabled()) {
 	    String sHesId;

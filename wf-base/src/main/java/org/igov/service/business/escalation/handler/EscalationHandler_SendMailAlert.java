@@ -3,6 +3,7 @@ package org.igov.service.business.escalation.handler;
 import org.apache.commons.mail.EmailException;
 import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import org.igov.io.GeneralConfig;
 import org.igov.io.mail.Mail;
@@ -19,7 +20,7 @@ public class EscalationHandler_SendMailAlert implements EscalationHandler {
     @Autowired
     GeneralConfig oGeneralConfig;
     @Autowired
-    private Mail oMail;
+    private ApplicationContext context;
 
     @Override
     public void execute(Map<String, Object> mParam, String[] asRecipientMail, String sPatternFile) throws Exception {
@@ -82,7 +83,7 @@ public class EscalationHandler_SendMailAlert implements EscalationHandler {
 
     private void sendEmail(String sHead, String sBody, String recipient) throws EmailException {
 
-        oMail.reset();
+        Mail oMail = context.getBean(Mail.class);
         oMail
                 ._To(recipient)
                 ._Head(sHead)
