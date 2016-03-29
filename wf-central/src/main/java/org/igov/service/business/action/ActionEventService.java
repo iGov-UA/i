@@ -313,18 +313,12 @@ public class ActionEventService {
         }
     }
 
-    public HistoryEvent_Service getHistoryEventService(String sID_Order) throws CommonServiceException {
+    public HistoryEvent_Service getHistoryEventService(String sID_Order)
+            throws CommonServiceException, CRCInvalidException {
 
         HistoryEvent_Service historyEventService;
-        try {
-            historyEventService = historyEventServiceDao.getOrgerByID(sID_Order);
-        } catch (CRCInvalidException | EntityNotFoundException e) {
-            LOG.error("getHistoryEventService: ", e);
-            throw new CommonServiceException(
-                    ExceptionCommonController.BUSINESS_ERROR_CODE,
-                    e.getMessage(), e,
-                    HttpStatus.FORBIDDEN);
-        }
+        historyEventService = historyEventServiceDao.getOrgerByID(sID_Order);
+
         return historyEventService;
     }
 
@@ -369,8 +363,13 @@ public class ActionEventService {
             sID_Order = "0-" + sID_Order;
             LOG.warn("Old format of parameter! (sID_Order={})",sID_Order);
         }*/
-        HistoryEvent_Service oHistoryEvent_Service = getHistoryEventService(sID_Order);
-        
+        HistoryEvent_Service oHistoryEvent_Service = null;
+        try {
+            oHistoryEvent_Service = getHistoryEventService(sID_Order);
+        } catch (CRCInvalidException e) {
+            e.printStackTrace();
+        }
+
         HistoryEvent_Service_StatusType oHistoryEvent_Service_StatusType = HistoryEvent_Service_StatusType.getInstance(nID_StatusType);
 
         boolean isChanged = false;
