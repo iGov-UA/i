@@ -124,7 +124,7 @@ angular.module('app').directive('dropdownOrgan', function (OrganListFactory, $ht
                 //console.log("isDefined,attr.sValue="+attr.sValue+",scope.formData.params[attr.sName].type="+scope.formData.params[attr.sName].type );
                 console.log("isDefined,attr.sValue="+attr.sValue );
                 scope.formData.params[attr.sName].value = attr.sValue || "";
-                oProperty.enumValues = [];
+                //oProperty.enumValues = [];
             }
           });
           $timeout(function(){
