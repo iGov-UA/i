@@ -137,9 +137,10 @@ angular.module('app').directive('dropdownOrgan', function (OrganListFactory, $ht
           console.log('!!!!!!!!!!!!scope.ngModel.length',scope.ngModel.length);
           console.log('!!!!!!!!!!!!attributesApplying',attributesApplying);
           //if (scope.ngModel !== null && scope.ngModel !== '0' && scope.ngModel.length > 0 && !attributesApplying)
-          if (scope.ngModel !== null && scope.ngModel !== '0' && scope.ngModel.length > 0)
+          if (scope.ngModel !== null && scope.ngModel !== '0' && scope.ngModel.length > 0){
             console.log('!!!!!!!!!!!! loadAttributesData performs');
               loadAttributesData(key);
+          }
         });
       });
     }
