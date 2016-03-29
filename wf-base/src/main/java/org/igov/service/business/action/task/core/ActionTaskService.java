@@ -660,27 +660,27 @@ public class ActionTaskService {
             }
             String currentRow = pattern;
             Map<String, Object> variables = curTask.getProcessVariables();
-            if (sID_State_BP != null){
-            	LOG.info("Adding local task varables to consider {}", curTask.getTaskLocalVariables());
-            	variables.putAll(curTask.getTaskLocalVariables());
-            	LOG.info("trying to load properties for the task is {}", curTask.getId());
-            	List<HistoricDetail> historiDetails = oHistoryService.createHistoricDetailQuery()
-            	  .formProperties().taskId(curTask.getId()).list();
-            	LOG.info("Loaded historic details {}", historiDetails);
-            	for (HistoricDetail historicDetail : historiDetails){
-            		if (historicDetail instanceof HistoricFormPropertyEntity){
-            			String propertyId = ((HistoricFormPropertyEntity)historicDetail).getPropertyId();
-            			String value = ((HistoricFormPropertyEntity)historicDetail).getPropertyValue();
-            			LOG.info("Processing form property with id {} and value {}", propertyId, value);
-            			if (!variables.containsKey(propertyId)){
-            			variables.put(propertyId, 
-            					value != null ? value : "");
-            			} else {
-            				LOG.info("Skipping property id {} as it already exists in the map", propertyId);
-            			}
-            		}
-            	}
-            }
+//            if (sID_State_BP != null){
+//            	LOG.info("Adding local task varables to consider {}", curTask.getTaskLocalVariables());
+//            	variables.putAll(curTask.getTaskLocalVariables());
+//            	LOG.info("trying to load properties for the task is {}", curTask.getId());
+//            	List<HistoricDetail> historiDetails = oHistoryService.createHistoricDetailQuery()
+//            	  .formProperties().taskId(curTask.getId()).list();
+//            	LOG.info("Loaded historic details {}", historiDetails);
+//            	for (HistoricDetail historicDetail : historiDetails){
+//            		if (historicDetail instanceof HistoricFormPropertyEntity){
+//            			String propertyId = ((HistoricFormPropertyEntity)historicDetail).getPropertyId();
+//            			String value = ((HistoricFormPropertyEntity)historicDetail).getPropertyValue();
+//            			LOG.info("Processing form property with id {} and value {}", propertyId, value);
+//            			if (!variables.containsKey(propertyId)){
+//            			variables.put(propertyId, 
+//            					value != null ? value : "");
+//            			} else {
+//            				LOG.info("Skipping property id {} as it already exists in the map", propertyId);
+//            			}
+//            		}
+//            	}
+//            }
             LOG.info("Loaded historic variables for the task {}|{}", curTask.getId(), variables);
             currentRow = replaceFormProperties(currentRow, variables);
             if (saFieldsCalc != null) {

@@ -1164,6 +1164,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
         List<Task> foundResults = new LinkedList<Task>();
         if (sTaskEndDateAt == null && sTaskEndDateTo == null){
+        	// we need to call runtime query only when non completed tasks are selected.
+        	// if only completed tasks are selected - results of historic query will be used
         	foundResults = query.listPage(nRowStart, nRowsMax);
         }
 
