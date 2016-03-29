@@ -93,7 +93,7 @@ angular.module('app').directive('dropdownOrgan', function (OrganListFactory, $ht
                                           name: "на рахунок у банку"*/
                                     nItem++;
                                 });
-                                console.log("a="+a);
+                                console.log("????????????????? a="+a);
                                 //console.log("scope.formData.params[attr.sName].enumValues="+scope.formData.params[attr.sName].enumValues);
                                 console.log("oProperty.enumValues="+oProperty.enumValues);
 //                                console.log("scope.activitiForm.formProperties[n].enumValues="+scope.activitiForm.formProperties[n].enumValues);
@@ -103,6 +103,9 @@ angular.module('app').directive('dropdownOrgan', function (OrganListFactory, $ht
                                     //scope.formData.params[attr.sName].enumValues = a;
                                     //if(oProperty.type === "enum" && oProperty.bVariable && oProperty.bVariable !== null && oProperty.bVariable === true){//oProperty.id === attr.sName &&
                                     oProperty.bVariable = true;
+
+                                  console.log("???????!!!!!!!!!!!?????????? a="+a);
+
                                     oProperty.enumValues = a;
 //                                    scope.activitiForm.formProperties[n].bVariable = true;
 //                                    scope.activitiForm.formProperties[n].enumValues = a;
@@ -133,10 +136,9 @@ angular.module('app').directive('dropdownOrgan', function (OrganListFactory, $ht
           console.log('!!!!!!!!!!!!scope.ngModel',scope.ngModel);
           console.log('!!!!!!!!!!!!scope.ngModel.length',scope.ngModel.length);
           console.log('!!!!!!!!!!!!attributesApplying',attributesApplying);
-
           //if (scope.ngModel !== null && scope.ngModel !== '0' && scope.ngModel.length > 0 && !attributesApplying)
           if (scope.ngModel !== null && scope.ngModel !== '0' && scope.ngModel.length > 0)
-
+            console.log('!!!!!!!!!!!! loadAttributesData performs');
               loadAttributesData(key);
         });
       });
