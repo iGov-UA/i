@@ -15,7 +15,7 @@
 <b>Статичный (более конпактно):</b></br>
 - <a href="https://jenkins-new.igov.org.ua//view/new/job/central_alpha/ws/wf-base/target/site/apidocs/index.html">wf-base</a>
 - <a href="https://jenkins-new.igov.org.ua//view/new/job/central_alpha/ws/wf-central/target/site/apidocs/index.html">wf-central</a>
-- 
+
 </br>
 <b>Динамичный (Swagger online):</b></br>
 - https://test.igov.org.ua/wf/service/api-docs/swagger-ui.html
