@@ -198,7 +198,6 @@ angular.module('journal').controller('JournalSearchController', function (
           try {
             MessagesService.postServiceMessage(sID_Order, $scope.sOrderCommentNew, sToken, $scope.uploadedFile)
               .then(function(response) {
-                console.log('!!!!???? then');
                 $scope.sOrderCommentNew = "";
                 $scope.loadMessages(sID_Order, sToken);
               });
