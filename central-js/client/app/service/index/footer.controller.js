@@ -126,6 +126,20 @@ angular.module('app').controller('FooterController', function ($scope) {
       height: 50
     }
     
+    ,{
+      url: 'http://oyy.com.ua',
+      alt: 'oyy',
+      image: 'assets/images/ads/oyy.png',
+      height: 50
+    }
+    
+    ,{
+      url: 'https://zakupki.prom.ua',
+      alt: 'zakupki.prom.ua',
+      image: 'assets/images/ads/zakupki-prom-ua.png',
+      height: 50
+    }
+    
     
   ];
 
@@ -135,7 +149,7 @@ angular.module('app').controller('FooterController', function ($scope) {
     var sortid;
     do {
       sortid = Math.floor(Math.random() * arr.length);
-    } while (indexes.includes(sortid) && count-- > 0);
+    } while (indexes.indexOf(sortid) >= 0 && count-- > 0);
 
     indexes.push(sortid);
     item.sortid = sortid;

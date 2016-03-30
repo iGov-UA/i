@@ -1067,7 +1067,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
      *                     ;bankIdPassport;bankIdlastName
      *                     ;bankIdfirstName;bankIdmiddleName;1;sDateCreate
      */
-    @ApiOperation(value = "Загрузка данных по задачам", notes = "#####  ActionCommonTaskController: Загрузка данных по задачам #####\n\n"
+      @ApiOperation(value = "Загрузка данных по задачам", notes = "#####  ActionCommonTaskController: Загрузка данных по задачам #####\n\n"
             + "HTTP Context: https://server:port/wf/service/action/task/downloadTasksData\n\n\n"
             + "Загрузка полей по задачам в виде файла.\n\n"
             + "Поля по умолчанию, которые всегда включены в выборку:\n"
@@ -1101,7 +1101,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public void downloadTasksData(
             @ApiParam(value = "название бизнесс процесса", required = true) @RequestParam(value = "sID_BP", required = true) String sID_BP,
             @ApiParam(value = "состояние задачи, по умолчанию исключается из фильтра Берется из поля taskDefinitionKey задачи", required = false) @RequestParam(value = "sID_State_BP", required = false) String sID_State_BP,
-            @ApiParam(value = "имена полей для выборкы разделенных через ';', чтобы добавить все поля можно использовать - '*' или не передевать параметр в запросе. Поле также может содержать названия колонок. Например, saFields=Passport\\=${passport};{email}", required = false) @RequestParam(value = "saFields", required = false, defaultValue = "*") String saFields,
+            @ApiParam(value = "имена полей для выборкы разделенных через ';', чтобы добавить все поля можно использовать - '*' или не передевать параметр в запросе. "
+                    + "Поле также может содержать названия колонок. Например, saFields=Passport\\=${passport};{email}", required = false) @RequestParam(value = "saFields", required = false, defaultValue = "*") String saFields,
             @ApiParam(value = "ASCII код для разделителя", required = false) @RequestParam(value = "nASCI_Spliter", required = false) String nASCI_Spliter,
             @ApiParam(value = "имя исходящего файла, по умолчанию - data_BP-bpName_.txt\"", required = false) @RequestParam(value = "sFileName", required = false) String fileName,
             @ApiParam(value = "кодировка исходящего файла, по умолчанию - win1251", required = false) @RequestParam(value = "sID_Codepage", required = false, defaultValue = "win1251") String sID_Codepage,
@@ -1147,21 +1148,29 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
         // 2. query
         TaskQuery query = taskService.createTaskQuery()
-                .processDefinitionKey(sID_BP).taskCreatedAfter(dBeginDate)
-                .taskCreatedBefore(dEndDate);
+                .processDefinitionKey(sID_BP);
         HistoricTaskInstanceQuery historicQuery = historyService
                 .createHistoricTaskInstanceQuery()
                 .processDefinitionKey(sID_BP);
         if (sTaskEndDateAt != null){
+        	LOG.info("Selecting tasks which were completed after {}", sTaskEndDateAt);
         	historicQuery.taskCompletedAfter(sTaskEndDateAt);
         }
         if (sTaskEndDateTo != null){
+        	LOG.info("Selecting tasks which were completed after {}", sTaskEndDateTo);
         	historicQuery.taskCompletedBefore(sTaskEndDateTo);
         }
-        historicQuery.taskCreatedAfter(dBeginDate)
-                .taskCreatedBefore(dEndDate).includeProcessVariables();
+        if (dateAt != null){
+        	query = query.taskCreatedAfter(dBeginDate);
+        	historicQuery = historicQuery.taskCreatedAfter(dBeginDate);
+        }
+        if (dateTo != null){
+        	query = query.taskCreatedBefore(dEndDate);
+        	historicQuery = historicQuery.taskCreatedBefore(dEndDate);
+        }
+        historicQuery.includeProcessVariables();
         if (sID_State_BP != null) {
-            historicQuery.taskDefinitionKey(sID_State_BP);
+            historicQuery.taskDefinitionKey(sID_State_BP).includeTaskLocalVariables();
         }
         List<HistoricTaskInstance> foundHistoricResults = historicQuery
                 .listPage(nRowStart, nRowsMax);
@@ -1172,10 +1181,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         saFields = oActionTaskService.processSaFields(saFields, foundHistoricResults);
 
         if (sID_State_BP != null) {
-            query = query.taskDefinitionKey(sID_State_BP);
+            query = query.taskDefinitionKey(sID_State_BP).includeTaskLocalVariables();
         }
         List<Task> foundResults = new LinkedList<Task>();
         if (sTaskEndDateAt == null && sTaskEndDateTo == null){
+        	// we need to call runtime query only when non completed tasks are selected.
+        	// if only completed tasks are selected - results of historic query will be used
         	foundResults = query.listPage(nRowStart, nRowsMax);
         }
 
@@ -1193,7 +1204,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
         CSVWriter printWriter = null;
         PipedInputStream pi = new PipedInputStream();
-        
+        LOG.info("!!!!!!!!!!!!!sMailTo: " + sMailTo);
         if (sMailTo != null){
 	        PipedOutputStream po = new PipedOutputStream(pi);
 	        PrintWriter pw = new PrintWriter(po);
@@ -1222,9 +1233,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             }
             oActionTaskService.fillTheCSVMapHistoricTasks(sID_BP, dBeginDate, dEndDate,
                     foundHistoricResults, sDateCreateDF, csvLines, saFields,
-                    tasksIdToExclude, saFieldsCalc, headers);
+                    tasksIdToExclude, saFieldsCalc, headers, sID_State_BP);
         }
-
+        
         if (saFieldSummary != null) {
             LOG.info(">>>saFieldsSummary={}", saFieldSummary);
             try {
@@ -1255,7 +1266,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
 
         printWriter.close();
-        
+
         if (sMailTo != null){
         	LOG.info("Sending email with tasks data to email {}", sMailTo);
 	        SimpleDateFormat sdf = new SimpleDateFormat("yyyy:MM:dd");
@@ -1272,11 +1283,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 				LOG.error("Error occured while sending tasks data to email: {}", e.getMessage());
 			}
 	        pi.close();
-	        
+
 	        httpResponse.setContentType("text/plain");
 	        httpResponse.getWriter().print("OK");
         }
-        
+
     }
 
     /**
