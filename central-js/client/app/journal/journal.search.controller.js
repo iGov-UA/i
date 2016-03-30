@@ -200,6 +200,7 @@ angular.module('journal').controller('JournalSearchController', function (
               .then(function(response) {
                 $scope.sOrderCommentNew = "";
                 $scope.loadMessages(sID_Order, sToken);
+                
               });
           } catch (sError) {
             ErrorsFactory.addFail({
