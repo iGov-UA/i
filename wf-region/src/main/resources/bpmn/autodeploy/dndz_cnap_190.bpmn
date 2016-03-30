@@ -21,8 +21,8 @@
         </activiti:formProperty>
         <activiti:formProperty id="sNameCompany" name="Назва юридичної особи" type="string"></activiti:formProperty>
         <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно з ЄДРПОУ; тільки цифрові позначення" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAdressReestrFiz" name="Місце реєстрації фізичної особи" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdressCompany" name="Юридична адреса" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAdressReestrFiz" name="Місце реєстрації фізичної особи" type="string"></activiti:formProperty>
         <activiti:formProperty id="nFile_AdvertLicense" name="Копія виписки з єдиного державного реєстру юридичних осіб та фізичних осіб-підприємців" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="asEnumSelectType_How" name="Спосіб подання документів" type="enum" default="sEnumElement_Personally">
           <activiti:value id="sEnumElement_Personally" name="особисто"></activiti:value>
@@ -66,7 +66,7 @@
     <userTask id="usertask1" name="[Етап I] Реєстрація звернення, результат обробки вхідних данних (1-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="Центр надання адмінпослуг" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта для зворотнього звя'язку" type="string" writable="false"></activiti:formProperty>
@@ -76,6 +76,10 @@
           <activiti:value id="sEnumElement_Company" name="Юридична особа"></activiti:value>
           <activiti:value id="sEnumElement_FIZ" name="Фізична особа - громадянин України"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sNameCompany" name="Назва юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно з ЄДРПОУ; тільки цифрові позначення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdressCompany" name="Юридична адреса" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdressReestrFiz" name="Місце реєстрації фізичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asEnumSelectType_How" name="Спосіб подання документів" type="enum" writable="false">
           <activiti:value id="sEnumElement_Personally" name="особисто"></activiti:value>
           <activiti:value id="sEnumElement_Confidant" name="через уповноважену особу (за дорученням)"></activiti:value>
@@ -92,10 +96,6 @@
           <activiti:value id="sEnumElement_AgreementPartner" name="Розірвання договору оренди земельної ділянки за взаємною згодою сторін"></activiti:value>
           <activiti:value id="sEnumElement_DecisionLaw" name="На підставі рішення суду"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sNameCompany" name="Назва юридичної особи" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно з ЄДРПОУ; тільки цифрові позначення" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAdressReestrFiz" name="Місце реєстрації фізичної особи" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAdressCompany" name="Юридична адреса" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBasedDocument" name="Документ, що посвідчує перехід права власності" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nSquare" name="Площа земельної ділянки (га)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdressZemelDilyanki" name="Адреса земельної ділянки" type="string" writable="false"></activiti:formProperty>
@@ -111,7 +111,7 @@
         <activiti:formProperty id="sDate_Registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFioAdmin" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers21" name="Настроювання принтформи" type="markers" default="${markerService.loadFromFile('dneprCnap/dnepr_cnap_190_21_Print.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sBody1" name="[pattern/print/dndz_cnap_190_print_all.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/skv/dndz_cnap_190_print_all.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -123,7 +123,7 @@
     <userTask id="usertask2" name="[Етап II] Підготовка відповіді після рішення департаменту комунальної власності та земельних відносин міської ради (2-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="Центр надання адмінпослуг" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта для зворотнього звя'язку" type="string" writable="false"></activiti:formProperty>
@@ -169,7 +169,7 @@
         <activiti:formProperty id="sDecision_2_Comment" name="У разі відмови внесіть, будь ласка, коментар (підставу) у цьому полі" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="nFile_Rishennya" name="Завантажте копію рішення" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="markers31" name="Настроювання принтформи" type="markers" default="${markerService.loadFromFile('dneprCnap/dnepr_cnap_190_21_Print.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sBody1" name="[pattern/print/dndz_cnap_190_print_all.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/skv/dndz_cnap_190_print_all.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
