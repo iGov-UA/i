@@ -1133,8 +1133,13 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
         // 2. query
         TaskQuery query = taskService.createTaskQuery()
-                .processDefinitionKey(sID_BP).taskCreatedAfter(dBeginDate)
-                .taskCreatedBefore(dEndDate);
+                .processDefinitionKey(sID_BP);
+        if (dateAt != null){
+        	query = query.taskCreatedAfter(dBeginDate);
+        }
+        if (dateTo != null){
+        	query = query.taskCreatedBefore(dEndDate);
+        }
         HistoricTaskInstanceQuery historicQuery = historyService
                 .createHistoricTaskInstanceQuery()
                 .processDefinitionKey(sID_BP);
