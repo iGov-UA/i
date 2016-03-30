@@ -111,12 +111,10 @@ ${sNameOrgan},&lt;br&gt;
     <userTask id="usertask1" name="Перевірка документів операціоністом" activiti:candidateGroups="pravochyny_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="ПІБ заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clFio_1" name="ПІБ другого з батьків, опікунів, піклувальників" type="string" default="${lastName_UA1} ${firstName_UA1} ${middleName_UA1}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adres_1" name="Адреса реєстрації громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Телефон" type="string" default="+380" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; на цей e-mail Ви отримаєте результат обробки Вашого звернення" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="lastName_UA1" name="Прізвище; другого з батьків (опікуна, піклувальника)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="firstName_UA1" name="Ім'я; другого з батьків (опікуна, піклувальника)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="middleName_UA1" name="По Батькові; другого з батьків (опікуна, піклувальника)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="privatePhone" name="Телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sChildren" name="Укажіть кількість дітей; стосовно майна який необхідно дозвіл" type="enum" writable="false">
           <activiti:value id="three" name="1"></activiti:value>
@@ -169,6 +167,7 @@ ${sNameOrgan},&lt;br&gt;
         <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у реєстрації звернення, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
         <activiti:formProperty id="docID" name="Реєстраційний номер" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="markers21" name="Настроювання принтформи " type="markers" default="${markerService.loadFromFile('dnepr_cnap_184_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/ternopil_oda_209.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
@@ -236,12 +235,10 @@ ${sNameOrgan},&lt;br&gt;
       <extensionElements>
         <activiti:formProperty id="docID" name="Реєстраційний номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="ПІБ заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clFio_1" name="ПІБ другого з батьків, опікунів, піклувальників" type="string" default="${lastName_UA1} ${firstName_UA1} ${middleName_UA1}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adres_1" name="Адреса реєстрації громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Телефон" type="string" default="+380" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; на цей e-mail Ви отримаєте результат обробки Вашого звернення" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="lastName_UA1" name="Прізвище; другого з батьків (опікуна, піклувальника)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="firstName_UA1" name="Ім'я; другого з батьків (опікуна, піклувальника)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="middleName_UA1" name="По Батькові; другого з батьків (опікуна, піклувальника)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="privatePhone" name="Телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sChildren" name="Укажіть кількість дітей; стосовно майна який необхідно дозвіл" type="enum" writable="false">
           <activiti:value id="three" name="1"></activiti:value>
