@@ -196,9 +196,12 @@ angular.module('journal').controller('JournalSearchController', function (
       if ($scope.bOrderOwner) {
         if (bExistNotSpace(sID_Order)) {
           try {
-            MessagesService.postServiceMessage(sID_Order, $scope.sOrderCommentNew, sToken, $scope.uploadedFile);
-            $scope.sOrderCommentNew = "";
-            $scope.loadMessages(sID_Order, sToken);
+            MessagesService.postServiceMessage(sID_Order, $scope.sOrderCommentNew, sToken, $scope.uploadedFile)
+              .then(function(response) {
+                console.log('!!!!???? then');
+                $scope.sOrderCommentNew = "";
+                $scope.loadMessages(sID_Order, sToken);
+              });
           } catch (sError) {
             ErrorsFactory.addFail({
               sBody: 'Невідома помилка сервісу!',
