@@ -11,6 +11,7 @@
 </br>
 </br>
 <b>Альтернативный вариант</b></br>
+
 <b>Статичный (более конпактно):</b></br>
 - <a href="https://jenkins-new.igov.org.ua//view/new/job/central_alpha/ws/wf-base/target/site/apidocs/index.html">wf-base</a>
 - <a href="https://jenkins-new.igov.org.ua//view/new/job/central_alpha/ws/wf-central/target/site/apidocs/index.html">wf-central</a>
