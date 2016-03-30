@@ -1852,7 +1852,7 @@ p {font-size: 14px;}
         &lt;p&gt;&lt;b&gt;Який (яка) мешкає (зареєстровано) за адресою:&lt;/b&gt;&lt;/p&gt;
         &lt;p&gt;${sAdress}&lt;/p&gt;
         &lt;p&gt;телефон: ${sPhone}&lt;/p&gt;
-        &lt;p&gt;Номер звернення iGov: ${sID_Order}&lt;/p&gt;
+        &lt;p&gt;Номер звернення iGov: &lt;/p&gt;
     &lt;/div&gt;
     &lt;div class="clear"&gt;&lt;/div&gt;
     &lt;div class="line_col ta-c m-t-25"&gt;
@@ -1865,6 +1865,12 @@ p {font-size: 14px;}
 &lt;/section&gt;
 &lt;/body&gt;
 &lt;/html&gt;</activiti:expression>
+          </activiti:field>
+          <activiti:field name="sID_Order_GovPublic">
+            <activiti:expression>${sID_Order}</activiti:expression>
+          </activiti:field>
+          <activiti:field name="sSourceChannel">
+            <activiti:expression>${asChannelAppeals}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -1905,7 +1911,7 @@ p {font-size: 14px;}
     <sequenceFlow id="flow19" name="asStatus=='sEnumSendInUkrDoc'" sourceRef="exclusivegateway1" targetRef="usertask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asStatus=='sEnumSendInUkrDoc'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow20" sourceRef="usertask2" targetRef="exclusivegateway2"></sequenceFlow>
+    <sequenceFlow id="flow20" sourceRef="usertask2" targetRef="usertask10"></sequenceFlow>
     <scriptTask id="scripttask1" name="Script Email" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var res = 'res'
 if(execution.getVariable('email') != null){
@@ -2474,8 +2480,8 @@ execution.setVariable('sAnswerEmail', res)</script>
     <endEvent id="endevent7" name="End"></endEvent>
     <sequenceFlow id="flow31" sourceRef="usertask3" targetRef="exclusivegateway4"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow32" name="sAnswerStatus=='Successfull'" sourceRef="exclusivegateway4" targetRef="endevent7">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sAnswerStatus=='Successfull'}]]></conditionExpression>
+    <sequenceFlow id="flow32" name="sAnswerStatus=='Successfull'||asAnswerChannel=='sEnumAnsw2'" sourceRef="exclusivegateway4" targetRef="endevent7">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sAnswerStatus=='Successfull'||asAnswerChannel=='sEnumAnsw2'}]]></conditionExpression>
     </sequenceFlow>
     <userTask id="usertask4" name="Обробка звернення супервайзером" activiti:candidateGroups="sales">
       <extensionElements>
@@ -3087,7 +3093,6 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sEnumDep7" name="ВЕС – 3"></activiti:value>
           <activiti:value id="sEnumDep8" name="ВЕУ – 4"></activiti:value>
           <activiti:value id="sEnumDep9" name="Управління інформаційних систем та технологій"></activiti:value>
-          <activiti:value id="sEnumExit" name="Відмовити громадянину"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment" name="Якщо ви відмовляєте заявнику у реєстрації звернення, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sDateControl" name="Контрольна дата (у форматі ДД/ММ/РРРР)" type="string"></activiti:formProperty>
@@ -3153,7 +3158,9 @@ execution.setVariable('sAnswerEmail', res)</script>
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow36" sourceRef="usertask5" targetRef="usertask6"></sequenceFlow>
+    <sequenceFlow id="flow36" sourceRef="usertask5" targetRef="usertask6">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asStatus=='sEnumDep1'||asStatus=='sEnumDep2'||asStatus=='sEnumDep3'||asStatus=='sEnumDep4'||asStatus=='sEnumDep5'||asStatus=='sEnumDep6'||asStatus=='sEnumDep7'||asStatus=='sEnumDep8'||asStatus=='sEnumDep9'}]]></conditionExpression>
+    </sequenceFlow>
     <sequenceFlow id="flow37" name="asStatus=='sEnumAnswer'" sourceRef="exclusivegateway5" targetRef="usertask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asStatus=='sEnumAnswer'}]]></conditionExpression>
     </sequenceFlow>
@@ -3274,8 +3281,8 @@ execution.setVariable('sAnswerEmail', res)</script>
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asStatus=='sEnumSendInDniprooblenergo'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow42" sourceRef="usertask8" targetRef="usertask4"></sequenceFlow>
-    <sequenceFlow id="flow43" name="sAnswerStatus=='Reject'" sourceRef="exclusivegateway4" targetRef="usertask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sAnswerStatus=='Reject'}]]></conditionExpression>
+    <sequenceFlow id="flow43" name="sAnswerStatus=='Reject'||sAnswerStatus=='CantConnect'||sAnswerStatus=='InvalidConnect'" sourceRef="exclusivegateway4" targetRef="usertask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sAnswerStatus=='Reject'||sAnswerStatus=='CantConnect'||sAnswerStatus=='InvalidConnect'}]]></conditionExpression>
     </sequenceFlow>
     <scriptTask id="scripttask2" name="Script автоадресація в відділ" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var depart = ["sEnumTopHead1","sEnumTopHead2","sEnumTopHead3","sEnumTopHead4","sEnumTopHead5","sEnumTopHead6","sEnumTopHead7","sEnumTopHead8","sEnumTopHead9","sEnumTopHead10","sEnumTopHead11","sEnumTopHead12","sEnumTopHead13","sEnumTopHead14","sEnumTopHead15","sEnumTopHead16","sEnumTopHead17","sEnumTopHead18","sEnumTopHead19","sEnumTopHead20","sEnumTopHead21","sEnumTopHead22"]
@@ -3294,7 +3301,6 @@ execution.setVariable('sNameDepartment', per2)</script>
     </scriptTask>
     <sequenceFlow id="flow44" sourceRef="usertask1" targetRef="scripttask2"></sequenceFlow>
     <sequenceFlow id="flow46" sourceRef="scripttask2" targetRef="exclusivegateway1"></sequenceFlow>
-    <sequenceFlow id="flow47" sourceRef="exclusivegateway2" targetRef="usertask2"></sequenceFlow>
     <userTask id="usertask9" name="Формування письмової відповіді (Фронт офіс)" activiti:candidateGroups="sales">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -3842,8 +3848,12 @@ execution.setVariable('sNameDepartment', per2)</script>
     <sequenceFlow id="flow49" name="asStatus=='sEnumSendInFrontOffice'" sourceRef="exclusivegateway1" targetRef="usertask9">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asStatus=='sEnumSendInFrontOffice'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow50" sourceRef="exclusivegateway2" targetRef="usertask9"></sequenceFlow>
-    <sequenceFlow id="flow51" sourceRef="exclusivegateway4" targetRef="usertask9"></sequenceFlow>
+    <sequenceFlow id="flow50" name="asAnswerChannel=='sEnumAnsw3'" sourceRef="exclusivegateway2" targetRef="usertask9">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asAnswerChannel=='sEnumAnsw3'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow51" name="sAnswerStatus=='Successfull'||asAnswerChannel=='sEnumAnsw1'" sourceRef="exclusivegateway4" targetRef="usertask9">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sAnswerStatus=='Successfull'||asAnswerChannel=='sEnumAnsw1'}]]></conditionExpression>
+    </sequenceFlow>
     <exclusiveGateway id="exclusivegateway6" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow53" sourceRef="scripttask1" targetRef="exclusivegateway3"></sequenceFlow>
     <sequenceFlow id="flow54" sourceRef="exclusivegateway6" targetRef="servicetask1">
@@ -3853,7 +3863,7 @@ execution.setVariable('sNameDepartment', per2)</script>
     <sequenceFlow id="flow55" sourceRef="exclusivegateway6" targetRef="endevent9">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asConsultTr=='sEnumConsYes'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask10" name="Отримання відповіді">
+    <userTask id="usertask10" name="Отримання відповіді" activiti:candidateGroups="sales">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
@@ -4397,8 +4407,13 @@ execution.setVariable('sNameDepartment', per2)</script>
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow56" sourceRef="exclusivegateway2" targetRef="usertask10"></sequenceFlow>
-    <sequenceFlow id="flow57" sourceRef="usertask10" targetRef="servicetask6"></sequenceFlow>
+    <sequenceFlow id="flow57" name="asAnswerChannel=='sEnumAnsw3'" sourceRef="exclusivegateway2" targetRef="servicetask6">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asAnswerChannel=='sEnumAnsw3'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow58" sourceRef="usertask10" targetRef="exclusivegateway2"></sequenceFlow>
+    <sequenceFlow id="flow59" name="asAnswerChannel=='sEnumAnsw2'" sourceRef="exclusivegateway2" targetRef="usertask3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asAnswerChannel=='sEnumAnsw2'}]]></conditionExpression>
+    </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_mvk_291_common">
     <bpmndi:BPMNPlane bpmnElement="dnepr_mvk_291_common" id="BPMNPlane_dnepr_mvk_291_common">
@@ -4436,7 +4451,7 @@ execution.setVariable('sNameDepartment', per2)</script>
         <omgdc:Bounds height="35.0" width="35.0" x="1480.0" y="538.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
-        <omgdc:Bounds height="40.0" width="40.0" x="1079.0" y="534.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="1228.0" y="534.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
         <omgdc:Bounds height="90.0" width="105.0" x="376.0" y="116.0"></omgdc:Bounds>
@@ -4490,7 +4505,7 @@ execution.setVariable('sNameDepartment', per2)</script>
         <omgdc:Bounds height="35.0" width="35.0" x="123.0" y="74.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask10" id="BPMNShape_usertask10">
-        <omgdc:Bounds height="74.0" width="105.0" x="1176.0" y="519.0"></omgdc:Bounds>
+        <omgdc:Bounds height="83.0" width="105.0" x="1075.0" y="513.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="75.0" y="163.0"></omgdi:waypoint>
@@ -4530,7 +4545,7 @@ execution.setVariable('sNameDepartment', per2)</script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
         <omgdi:waypoint x="1011.0" y="555.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1079.0" y="554.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1075.0" y="554.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
         <omgdi:waypoint x="510.0" y="555.0"></omgdi:waypoint>
@@ -4565,7 +4580,7 @@ execution.setVariable('sNameDepartment', per2)</script>
         <omgdi:waypoint x="419.0" y="696.0"></omgdi:waypoint>
         <omgdi:waypoint x="346.0" y="696.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="313.0" y="697.0"></omgdc:Bounds>
+          <omgdc:Bounds height="70.0" width="100.0" x="313.0" y="697.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
@@ -4627,7 +4642,7 @@ execution.setVariable('sNameDepartment', per2)</script>
         <omgdi:waypoint x="439.0" y="300.0"></omgdi:waypoint>
         <omgdi:waypoint x="751.0" y="193.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="390.0" y="463.0"></omgdc:Bounds>
+          <omgdc:Bounds height="84.0" width="100.0" x="399.0" y="375.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
@@ -4637,12 +4652,6 @@ execution.setVariable('sNameDepartment', per2)</script>
       <bpmndi:BPMNEdge bpmnElement="flow46" id="BPMNEdge_flow46">
         <omgdi:waypoint x="749.0" y="461.0"></omgdi:waypoint>
         <omgdi:waypoint x="750.0" y="535.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow47" id="BPMNEdge_flow47">
-        <omgdi:waypoint x="1099.0" y="534.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1098.0" y="470.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1024.0" y="470.0"></omgdi:waypoint>
-        <omgdi:waypoint x="958.0" y="509.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow48" id="BPMNEdge_flow48">
         <omgdi:waypoint x="1011.0" y="697.0"></omgdi:waypoint>
@@ -4656,16 +4665,22 @@ execution.setVariable('sNameDepartment', per2)</script>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow50" id="BPMNEdge_flow50">
-        <omgdi:waypoint x="1099.0" y="574.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1098.0" y="619.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1248.0" y="574.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1248.0" y="619.0"></omgdi:waypoint>
         <omgdi:waypoint x="958.0" y="619.0"></omgdi:waypoint>
         <omgdi:waypoint x="958.0" y="660.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="1010.0" y="597.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow51" id="BPMNEdge_flow51">
         <omgdi:waypoint x="439.0" y="716.0"></omgdi:waypoint>
         <omgdi:waypoint x="438.0" y="782.0"></omgdi:waypoint>
         <omgdi:waypoint x="958.0" y="782.0"></omgdi:waypoint>
         <omgdi:waypoint x="958.0" y="734.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="70.0" width="100.0" x="711.0" y="749.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow53" id="BPMNEdge_flow53">
         <omgdi:waypoint x="481.0" y="161.0"></omgdi:waypoint>
@@ -4679,13 +4694,26 @@ execution.setVariable('sNameDepartment', per2)</script>
         <omgdi:waypoint x="140.0" y="143.0"></omgdi:waypoint>
         <omgdi:waypoint x="140.0" y="109.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow56" id="BPMNEdge_flow56">
-        <omgdi:waypoint x="1119.0" y="554.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1176.0" y="556.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow57" id="BPMNEdge_flow57">
-        <omgdi:waypoint x="1281.0" y="556.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1268.0" y="554.0"></omgdi:waypoint>
         <omgdi:waypoint x="1346.0" y="554.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="1246.0" y="510.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow58" id="BPMNEdge_flow58">
+        <omgdi:waypoint x="1180.0" y="554.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1228.0" y="554.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow59" id="BPMNEdge_flow59">
+        <omgdi:waypoint x="1248.0" y="574.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1333.0" y="648.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1333.0" y="844.0"></omgdi:waypoint>
+        <omgdi:waypoint x="590.0" y="844.0"></omgdi:waypoint>
+        <omgdi:waypoint x="590.0" y="743.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="1006.0" y="820.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

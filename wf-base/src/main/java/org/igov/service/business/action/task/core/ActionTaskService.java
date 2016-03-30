@@ -660,27 +660,6 @@ public class ActionTaskService {
             }
             String currentRow = pattern;
             Map<String, Object> variables = curTask.getProcessVariables();
-            if (sID_State_BP != null){
-            	LOG.info("Adding local task varables to consider {}", curTask.getTaskLocalVariables());
-            	variables.putAll(curTask.getTaskLocalVariables());
-            	LOG.info("trying to load properties for the process instance {}", curTask.getProcessInstanceId());
-            	List<HistoricDetail> historiDetails = oHistoryService.createHistoricDetailQuery()
-            	  .formProperties().processInstanceId(curTask.getProcessInstanceId()).list();
-            	LOG.info("Loaded historic details {}", historiDetails);
-            	for (HistoricDetail historicDetail : historiDetails){
-            		if (historicDetail instanceof HistoricFormPropertyEntity){
-            			String propertyId = ((HistoricFormPropertyEntity)historicDetail).getPropertyId();
-            			String value = ((HistoricFormPropertyEntity)historicDetail).getPropertyValue();
-            			LOG.info("Processing form property with id {} and value {}", propertyId, value);
-            			if (!variables.containsKey(propertyId)){
-            			variables.put(propertyId, 
-            					value != null ? value : "");
-            			} else {
-            				LOG.info("Skipping property id {} as it already exists in the map", propertyId);
-            			}
-            		}
-            	}
-            }
             LOG.info("Loaded historic variables for the task {}|{}", curTask.getId(), variables);
             currentRow = replaceFormProperties(currentRow, variables);
             if (saFieldsCalc != null) {
@@ -1747,7 +1726,7 @@ public class ActionTaskService {
         Long nID_Task;
         ArrayList<String> taskIDsList = new ArrayList<>();
         List<String> resultTaskIDs = null;
-        if (sID_Order != null) {
+        if (sID_Order != null && !sID_Order.isEmpty() && !sID_Order.equals("")) {
             LOG.info("start process getting Task Data by sID_Order={}", sID_Order);
             Long ProtectedID = getIDProtectedFromIDOrder(sID_Order);
             String snID_Process = getOriginalProcessInstanceId(ProtectedID);
