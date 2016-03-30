@@ -23,15 +23,15 @@
         <div ng-hide="bAdmin == null || !bAdmin" style="/*display:none;*/" class="col-md-6 pull-right">
         <!--div ng-if="bAdmin" style="/*display:none;*/" class="col-md-6 pull-right"-->
         <label for="ref" class="pull-right"> Заповнення референтом</label>
-        <input type="checkbox" ng-model="referent" ng-click="onReferent()" id="ref" class="pull-right">
+        <input type="checkbox" ng-model="data.formData.params.bReferent.value" ng-change="onReferent" id="ref" class="pull-right">
       </div>
     </div>
-    <div class="row" ng-if="referent">
+    <div class="row" ng-if="data.formData.params.bReferent.value">
       <div class="col-md-12">
         <div class="highlight-yellow">
           <div class="row"
                ng-repeat="property in activitiForm.formProperties track by property.id"
-               ng-if="referent && property.id.startsWith('bankId')">
+               ng-if="data.formData.params.bReferent.value && property.id.startsWith('bankId')">
 
             <div class="col-md-5"
                  ng-if="property.type!='invisible' && property.type!='markers' && property.type != 'file'">
@@ -270,7 +270,7 @@
                   <input type="checkbox"
                          ng-model="sign.checked"
                          name="{{data.formData.getSignFieldID()}}">
-                </label> 
+                </label>
                   <!--label  ng-if="isSignNeededRequired ? true : sign.checked">Після натискання "Замовити послугу"-->
                          <!--ng-model="isSignNeededRequired ? true : sign.checked"-->
 
