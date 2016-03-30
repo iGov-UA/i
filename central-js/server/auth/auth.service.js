@@ -71,8 +71,9 @@ function createSessionObject(type, user, access) {
       lastName: user.customer.lastName
     },
     subject: user.subject,
-    access: access
-  };
+    access: access,
+    usercacheid: user.usercacheid
+  }
 }
 
 exports.isAuthenticated = isAuthenticated;

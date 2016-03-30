@@ -11,8 +11,8 @@
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Серія та номер паспорту" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Cканована копія паспорту" type="file"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" required="true" default="+380"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Cканована копія паспорту" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Укажіть сьогоднішню дату" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="asSubekt" name="Оберіть суб'єкт підприємницької діяльності" type="enum" required="true">
@@ -32,7 +32,7 @@
         <activiti:formProperty id="sPib_ur" name="П.І.Б. керівника юридичної особи або уповноваженої особи" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sPib_fiz" name="П.І.Б. фізичної особи–підприємця" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sAdres_1" name="Місцезнаходження юридичної особи" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="workPhone" name="Телефон юридичної особи" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="workPhone" name="Телефон юридичної особи" type="string" default=" +380"></activiti:formProperty>
         <activiti:formProperty id="sFile1" name="Документ, що підтверджує внесення плати за комплексне вивчення документів та підготовку проекту висновку державної санітарно-епідеміологічної експертизи" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sFood" name="Перелік харчових продуктів, що виробляються, переробляються, або реалізуються, за підписом заявника" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sBuild_doc" name="Копія документу, який підтверджує прийняття в експлуатацію закінченого об’єкта будівництва " type="file" required="true"></activiti:formProperty>
@@ -41,6 +41,8 @@
         <activiti:formProperty id="sMailClerk" name="пошта району" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Час роботи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapkaVet" name="Начальнику управління ветеринарної медицини в " type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Якщо  юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sImya_ur&quot;,&quot;edrpou&quot;,&quot;sPib_ur&quot;, &quot;sAdres_1&quot;,&quot;sAdres_1&quot;,&quot;workPhone&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSubekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumUr'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers11" name="Якщо  фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_11&quot;:{&quot;aField_ID&quot;:[&quot;sAdres_0&quot;,&quot;sPib_fiz&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSubekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumFiz'&quot;}}}"></activiti:formProperty>
       </extensionElements>
@@ -78,22 +80,22 @@
         <activiti:formProperty id="sPib_fiz" name="П.І.Б. фізичної особи–підприємця" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdres_1" name="Місцезнаходження юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="workPhone" name="Телефон юридичної особи" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nReestr" name="Реєстраційний номер" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sReestrDate" name="Укажіть дату реєстрації звернення" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sPib_admin" name="Прізвище та ініціали адміністратора" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nReestr" name="Реєстраційний номер" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sReestrDate" name="Укажіть дату реєстрації звернення" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPib_admin" name="Прізвище та ініціали адміністратора" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sShapkaVet" name="Начальнику управління ветеринарної медицини в " type="invisible"></activiti:formProperty>
         <activiti:formProperty id="decision_1" name="Прийняття рішення про надання послуги" type="enum" required="true">
           <activiti:value id="accept" name="Заповнені дані вірні, інформація направлена на розгляд, очікується рішення"></activiti:value>
           <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відхилення запиту внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="opis" name="Завантажте опис прийнятих документів " type="file"></activiti:formProperty>
         <activiti:formProperty id="markers12" name="принтформа якщо юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_12&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;obect_pf&quot;,&quot;obect_2_pf&quot;,&quot;sAdres_2_pf&quot;,&quot;sImya_ur_pf&quot;,&quot;kved_pf&quot;,&quot;edrpou_pf&quot;,&quot;sPib_ur_pf&quot;,&quot;sAdres_1_pf&quot;,&quot;tel_pf&quot;,&quot;person_pf&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asSubekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnumUr'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers13" name="принтформа якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;obect_pf&quot;,&quot;obect_2_pf&quot;,&quot;sAdres_2_pf&quot;,&quot;sPib_fiz_pf&quot;,&quot;kved_pf&quot;,&quot;bankIdinn_pf&quot;,&quot;sAdres_0_pf&quot;,&quot;phone_pf&quot;,&quot;person_pf&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asSubekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnumFiz'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_256_print.html]" type="invisible" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport}, ${sFood},${sBuild_doc},${sProtocols},${sFile1}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport},${sFood},${sBuild_doc},${sProtocols},${sFile1}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -154,7 +156,7 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask2" name=" успішне подання зверенння" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask2" name=" успішне подання зверенння" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -165,15 +167,12 @@
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення на тему: Експлуатаційний дозвіл для провадження діяльності на потужностях (об’єктах)]]></activiti:string>
         </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${opis}</activiti:expression>
-        </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 Ваше звернення щодо надання експлуатаційного дозволу для провадження діяльності на потужностях (об’єктах) що здійснюють виробництво харчових продуктів, підконтрольних ветеринарній службі, та для агропродовольчих ринків успішно зареєстровано і буде опрацьовано управлінням ветеринарної медицини впродовж 30 календарних днів.&lt;br /&gt;&lt;br /&gt;
 Реєстраційний номер заяви: ${nReestr};&lt;br /&gt;
-До листа додається опис наданих Вами документів.&lt;br /&gt;
+&lt;br /&gt;
 &lt;br /&gt;
 Ви отримаєте додаткове повідомлення за результатами розгляду зверення.&lt;br /&gt;
 &lt;br /&gt;

@@ -1,12 +1,13 @@
-var request = require('request');
-var FormData = require('form-data');
-var async = require('async');
-var _ = require('lodash');
-var config = require('../../config/environment');
-var syncSubject = require('../../api/subject/subject.service.js');
-var Admin = require('../../components/admin/index');
-var url = require('url');
-var bankidUtil = require('./bankid.util.js');
+var request = require('request')
+  , FormData = require('form-data')
+  , async = require('async')
+  , _ = require('lodash')
+  , config = require('../../config/environment')
+  , syncSubject = require('../../api/subject/subject.service.js')
+  , Admin = require('../../components/admin/index')
+  , url = require('url')
+  , bankidUtil = require('./bankid.util.js')
+  , activiti = require('../../components/activiti');
 
 var createError = function (error, error_description, response) {
   return {
@@ -18,19 +19,10 @@ var createError = function (error, error_description, response) {
   };
 };
 
-var decryptCallback = function (callback) {
-  return function (error, response, body) {
-    if (config.bankid.enableCipher && body && body.customer && body.customer.signature) {
-      bankidUtil.decryptData(body.customer);
-    }
-    callback(error, response, body);
-  }
-};
-
-module.exports.index = function (accessToken, callback) {
+module.exports.index = function (accessToken, callback, disableDecryption) {
   var url = bankidUtil.getInfoURL(config);
 
-  var adminCheckCallback = function (error, response, body) {
+  function adminCheckCallback(error, response, body) {
     if (body.customer && Admin.isAdminInn(body.customer.inn)) {
       body.admin = {
         inn: body.customer.inn,
@@ -38,7 +30,15 @@ module.exports.index = function (accessToken, callback) {
       };
     }
     callback(error, response, body);
-  };
+  }
+
+  var resultCallback;
+
+  if(disableDecryption){
+    resultCallback = adminCheckCallback;
+  } else {
+    resultCallback = bankidUtil.decryptCallback(adminCheckCallback);
+  }
 
   return request.post({
     'url': url,
@@ -76,7 +76,7 @@ module.exports.index = function (accessToken, callback) {
         "fields": ["link", "dateCreate", "extension"]
       }]
     }
-  }, decryptCallback(adminCheckCallback));
+  }, resultCallback);
 };
 
 module.exports.scansRequest = function (accessToken, callback) {
@@ -100,7 +100,7 @@ module.exports.scansRequest = function (accessToken, callback) {
         "fields": ["link", "dateCreate", "extension"]
       }]
     }
-  }, decryptCallback(callback));
+  }, bankidUtil.decryptCallback(callback));
 };
 
 module.exports.prepareScanContentRequest = function (documentScanLink, accessToken) {
@@ -113,10 +113,18 @@ module.exports.prepareScanContentRequest = function (documentScanLink, accessTok
   return request.get(o);
 };
 
+module.exports.cacheCustomer = function (customer, callback) {
+  var url = '/object/file/upload_file_to_redis';
+  activiti.upload(url, {}, 'customerData.json', JSON.stringify(customer), callback);
+};
+
 module.exports.syncWithSubject = function (accessToken, done) {
+  var self = this;
+  var disableDecryption = true;
+
   async.waterfall([
     function (callback) {
-      module.exports.index(accessToken, function (error, response, body) {
+      self.index(accessToken, function (error, response, body) {
         if (error || body.error || !body.customer) {
           callback(createError(error || body.error || body, body.error_description, response), null);
         } else {
@@ -125,11 +133,11 @@ module.exports.syncWithSubject = function (accessToken, done) {
             admin: body.admin
           });
         }
-      });
+      }, disableDecryption);
     },
 
     function (result, callback) {
-      syncSubject.sync(result.customer.inn, function (error, response, body) {
+      syncSubject.sync(bankidUtil.decryptField(result.customer.inn), function (error, response, body) {
         if (error) {
           callback(createError(error, response), null);
         } else {
@@ -137,6 +145,31 @@ module.exports.syncWithSubject = function (accessToken, done) {
           callback(null, result);
         }
       });
+    },
+
+    function(result, callback){
+      self.cacheCustomer(result, function(error, reponse, body){
+        if (error || body.code) {
+          callback(createError(body, 'error while caching data. ' + body.message, response), null);
+        } else {
+          result.usercacheid = body;
+
+          if(result.customer.inn){
+            result.customer.inn = bankidUtil.decryptField(result.customer.inn);
+          }
+          if(result.customer.firstName){
+            result.customer.firstName = bankidUtil.decryptField(result.customer.firstName);
+          }
+          if(result.customer.middleName){
+            result.customer.middleName = bankidUtil.decryptField(result.customer.middleName);
+          }
+          if(result.customer.lastName){
+            result.customer.lastName = bankidUtil.decryptField(result.customer.lastName);
+          }
+
+          callback(null, result);
+        }
+      })
     }
   ], function (err, result) {
     done(err, result);
