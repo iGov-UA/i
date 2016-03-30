@@ -5,7 +5,7 @@
 - [wf-central ( igov )](https://jenkins-new.igov.org.ua/job/central_alpha/ws/wf-central/target/generated-docs/central-igov.html)
 </br>
 
-<b>Вспомогательная (расширенная сервисами Активити):</b></br>
+Вспомогательная (расширенная сервисами Активити):</br>
 - [wf-base( igov + Activiti )](https://jenkins-new.igov.org.ua/job/central_alpha/ws/wf-base/target/generated-docs/base-default.html)
 - [wf-central ( igov + Activiti )](https://jenkins-new.igov.org.ua/job/central_alpha/ws/wf-central/target/generated-docs/central-default.html)
 
