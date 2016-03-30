@@ -582,7 +582,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public
     @ResponseBody
     ResponseEntity getTaskData(
-            @ApiParam(value = "номер-ИД таски (обязательный)", required = true) @RequestParam(value = "nID_Task", required = true) Long nID_Task,
+            @ApiParam(value = "номер-ИД таски (не обязательный)", required = false) @RequestParam(value = "nID_Task", required = false) Long nID_Task,
             @ApiParam(value = "номер-ИД процесса (опциональный, но обязательный если не задан nID_Task и sID_Order)", required = false) @RequestParam(value = "nID_Process", required = false) Long nID_Process,
             @ApiParam(value = "номер-ИД заявки (опциональный, но обязательный если не задан nID_Task и nID_Process)", required = false) @RequestParam(value = "sID_Order", required = false) String sID_Order,
             @ApiParam(value = "(опциональный) логин, по которому проверяется вхождение пользователя в одну из групп, на которые распространяется данная задача", required = false) @RequestParam(value = "sLogin", required = false) String sLogin,
