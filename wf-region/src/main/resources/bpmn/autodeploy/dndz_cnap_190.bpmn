@@ -104,7 +104,7 @@
         <activiti:formProperty id="oContractDate" name="Дата договору оренди земельної ділянки;(у форматі ДД.ММ.РРРР)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asEnumSelect_Decision_1" name="Обробка заяви (1-й етап)" type="enum">
           <activiti:value id="sEnumElement_Decision_1_Wait" name="Документи передані в Департамент комунальної власності та земельних відносин міської ради"></activiti:value>
-          <activiti:value id="sEnumElement_Decision_1_Сancel" name="Відмова громадянину у наданні послуги"></activiti:value>
+          <activiti:value id="sEnumElement_Decision_1_Canc" name="Відмова громадянину у наданні послуги"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecision_1_Comment" name="У разі відмови внесіть, будь ласка, коментар (підставу відмови)" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sExtension_Number" name="Реєстраційний номер" type="string"></activiti:formProperty>
@@ -279,7 +279,7 @@ ${sAddress}&lt;br /&gt;
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow6" name="Отказано в наданні послуги" sourceRef="exclusivegateway1" targetRef="servicetask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asEnumSelect_Decision_1=='sEnumElement_Decision_1_Сancel'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asEnumSelect_Decision_1=='sEnumElement_Decision_1_Canc'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow7" name="Взято до обробки" sourceRef="exclusivegateway1" targetRef="servicetask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asEnumSelect_Decision_1=='sEnumElement_Decision_1_Wait'}]]></conditionExpression>
