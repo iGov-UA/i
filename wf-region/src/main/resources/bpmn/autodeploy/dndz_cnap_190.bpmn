@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dndz_cnap_190" name="Розірвання договору оренди земельної ділянки або припинення права постійного користування земельною ділянкою" isExecutable="true">
+    <documentation>Смоктій К.В. Последние правки: 30.03.2016</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть центр надання адмінпослуг" type="select" default="0"></activiti:formProperty>
@@ -8,44 +9,169 @@
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По-батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорту" type="file"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_inn" name="Скан-копія ІПН" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта для зворотнього звя'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Вкажіть сьогоднішню дату" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="selectEntrepreneur" name="Суб’єкт звернення" type="enum" required="true">
-          <activiti:value id="attr1_self" name="Фізична особа - підприємець або громадянин України"></activiti:value>
-          <activiti:value id="attr2_company" name="Юридична особа"></activiti:value>
+        <activiti:formProperty id="asEnumSelectTypeContragent" name="Суб’єкт звернення" type="enum" required="true">
+          <activiti:value id="sEnumElement_FOP" name="Фізична особа - підприємець"></activiti:value>
+          <activiti:value id="sEnumElement_Company" name="Юридична особа"></activiti:value>
+          <activiti:value id="sEnumElement_FIZ" name="Фізична особа - громадянин України"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="selectReason" name="Оберіть причину розірвання договору оренди земельної ділянки" type="enum" required="true">
-          <activiti:value id="attr1_sale" name="Відчуження нерухомого майна на користь нового власника"></activiti:value>
-          <activiti:value id="attr2_high_house" name="Об’єкт нерухомого майна розташований у багатоповерховому житловому будинку."></activiti:value>
+        <activiti:formProperty id="asEnumSelectType_How" name="Спосіб подання документів" type="enum" default="sEnumElement_Personally">
+          <activiti:value id="sEnumElement_Personally" name="особисто"></activiti:value>
+          <activiti:value id="sEnumElement_Confidant" name="через уповноважену особу (за дорученням)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="nameCompany" name="Назва юридичної особи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="adress_fiz" name="Місце реєстрації фізичної особи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="adress_ur" name="Юридична адреса" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="based" name="Документ, що посвідчує перехід права власності (наприклад: договір № ___ від ДД.ММ.РРРР)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="square" name="Площа земельної ділянки (га)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="adress2" name="Адреса земельної ділянки" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="newOwner" name="Новий власник нерухомого майна(П.І.Б.)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="contractNumber" name="Номер договору оренди земельної ділянки" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="contractDate" name="Дата договору оренди земельної ділянки (у форматі ДД.ММ.РРРР)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта" type="file"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_inn" name="Копія ІПН" type="file"></activiti:formProperty>
-        <activiti:formProperty id="file1" name="Копія договору оренди земельної ділянки" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file2" name="Копія документу, що посвідчує перехід права власності на майно" type="file"></activiti:formProperty>
-        <activiti:formProperty id="file3_1" name="Копія свідоцтва про державну реєстрацію фізичної особи – підприємця (Якщо ФОП)" type="file"></activiti:formProperty>
-        <activiti:formProperty id="file3_2" name="Копії установчих документів для юридичних осіб (Якщо більше одного, то архівом)" type="file"></activiti:formProperty>
-        <activiti:formProperty id="file4" name="Акт обстеження земельної ділянки" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file5" name="Для вбудованних приміщень обов'язково документ про право власності на приміщення" type="file"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="Фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;adress_fiz&quot;,&quot;bankId_scan_passport&quot;,&quot;bankId_scan_inn&quot;,&quot;file3_1&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;selectEntrepreneur&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'attr1_self'&quot;}}}" required="true"></activiti:formProperty>
-        <activiti:formProperty id="markers2" name="Юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;nameCompany&quot;,&quot;adress_ur&quot;,&quot;file3_2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;selectEntrepreneur&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'attr2_company'&quot;}}}" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sConfidant_lastName" name="Прізвище уповноваженої особи" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sConfidant_firstName" name="Ім'я уповноваженої особи" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sConfidant_middleName" name="По-батькові уповноваженої особи" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFile_DovirenistConfidant" name="Скан-копія довіреності на уповноважену особу" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFile_PassportConfidant" name="Скан-копія паспорту уповноваженої особи" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="asEnumSelectTypeReason" name="Оберіть причину розірвання договору оренди земельної ділянки" type="enum" required="true">
+          <activiti:value id="sEnumElement_Sale" name="Відчуження нерухомого майна на користь нового власника"></activiti:value>
+          <activiti:value id="sEnumElement_high_house" name="Об’єкт нерухомого майна розташований у багатоповерховому житловому будинку"></activiti:value>
+          <activiti:value id="sEnumElement_End_Of_Period" name="Закінчення строку, на який було укладено договір"></activiti:value>
+          <activiti:value id="sEnumElement_UnionOwnerArendar" name="Поєднання в одній особі власника земельної ділянки та орендаря"></activiti:value>
+          <activiti:value id="sEnumElement_DeathArendar" name="Смерть фізичної особи-орендаря або засудження його до позбавлення волі"></activiti:value>
+          <activiti:value id="sEnumElement_BreakCompany" name="Ліквідація юридичної особи-орендаря"></activiti:value>
+          <activiti:value id="sEnumElement_Buyout" name="Примусовий викуп (вилучення) земельної ділянки з мотивів суспільної необхідності"></activiti:value>
+          <activiti:value id="sEnumElement_AgreementPartner" name="Розірвання договору оренди земельної ділянки за взаємною згодою сторін"></activiti:value>
+          <activiti:value id="sEnumElement_DecisionLaw" name="На підставі рішення суду"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sNameCompany" name="Назва юридичної особи" type="string"></activiti:formProperty>
+        <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно з ЄДРПОУ; тільки цифрові позначення" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAdressReestrFiz" name="Місце реєстрації фізичної особи" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAdressCompany" name="Юридична адреса" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nFile_AdvertLicense" name="Копія виписки з єдиного державного реєстру юридичних осіб та фізичних осіб-підприємців" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sBasedDocument" name="Документ, що посвідчує перехід права власності; формат: договір № ___ від ДД.ММ.РРРР)" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nSquare" name="Площа земельної ділянки (га)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAdressZemelDilyanki" name="Адреса земельної ділянки" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFioNewOwner" name="Новий власник нерухомого майна(П.І.Б.)" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sContractNumber" name="Номер договору оренди земельної ділянки" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="oContractDate" name="Дата договору оренди земельної ділянки; у форматі ДД.ММ.РРРР" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_ContarctArenda" name="Копія договіру оренди земельної ділянки або державний акт на право постійного користування земельною ділянкою" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_DovidkaProVidsutnistDolgaArendi" name="Копія довідки про відсутність заборгованості по орендній платі" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile_ReasonDocument" name="Копія документу, який підтверджує підстави щодо розірвання договору оренди земельної ділянки" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_AktObstezennya" name="Копія Акт обстеження земельної ділянки" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile_OwnershipInsideBuildings" name="Для вбудованних приміщень обов'язково документ про право власності на приміщення" type="file"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="Розкриття атрібутів щодо специфіки вводу" type="markers" default="${markerService.loadFromFile('dneprCnap/dnepr_cnap_190_11.json')}"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса ЦНАП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPosluga_name" name=" " type="invisible" default="Розірвання договору оренди земельної ділянки або припинення права постійного користування земельною ділянкою"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
+    <userTask id="usertask1" name="[Етап I] Реєстрація звернення, результат обробки вхідних данних (1-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
+      <extensionElements>
+        <activiti:formProperty id="sNameOrgan" name="Центр надання адмінпослуг" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна пошта для зворотнього звя'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_today" name="Дата заповнення заяви" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asEnumSelectTypeContragent" name="Суб’єкт звернення" type="enum" writable="false">
+          <activiti:value id="sEnumElement_FOP" name="Фізична особа - підприємець"></activiti:value>
+          <activiti:value id="sEnumElement_Company" name="Юридична особа"></activiti:value>
+          <activiti:value id="sEnumElement_FIZ" name="Фізична особа - громадянин України"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asEnumSelectType_How" name="Спосіб подання документів" type="enum" writable="false">
+          <activiti:value id="sEnumElement_Personally" name="особисто"></activiti:value>
+          <activiti:value id="sEnumElement_Confidant" name="через уповноважену особу (за дорученням)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sFioConfidant" name="Уповноважена особа" type="string" default="${sConfidant_lastName} ${sConfidant_firstName} ${sConfidant_middleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asEnumSelectTypeReason" name="Причина розірвання договору оренди земельної ділянки" type="enum" writable="false">
+          <activiti:value id="sEnumElement_Sale" name="Відчуження нерухомого майна на користь нового власника"></activiti:value>
+          <activiti:value id="sEnumElement_high_house" name="Об’єкт нерухомого майна розташований у багатоповерховому житловому будинку"></activiti:value>
+          <activiti:value id="sEnumElement_End_Of_Period" name="Закінчення строку, на який було укладено договір"></activiti:value>
+          <activiti:value id="sEnumElement_UnionOwnerArendar" name="Поєднання в одній особі власника земельної ділянки та орендаря"></activiti:value>
+          <activiti:value id="sEnumElement_DeathArendar" name="Смерть фізичної особи-орендаря або засудження його до позбавлення волі"></activiti:value>
+          <activiti:value id="sEnumElement_BreakCompany" name="Ліквідація юридичної особи-орендаря"></activiti:value>
+          <activiti:value id="sEnumElement_Buyout" name="Примусовий викуп (вилучення) земельної ділянки з мотивів суспільної необхідності"></activiti:value>
+          <activiti:value id="sEnumElement_AgreementPartner" name="Розірвання договору оренди земельної ділянки за взаємною згодою сторін"></activiti:value>
+          <activiti:value id="sEnumElement_DecisionLaw" name="На підставі рішення суду"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sNameCompany" name="Назва юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно з ЄДРПОУ; тільки цифрові позначення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdressReestrFiz" name="Місце реєстрації фізичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdressCompany" name="Юридична адреса" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBasedDocument" name="Документ, що посвідчує перехід права власності" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nSquare" name="Площа земельної ділянки (га)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdressZemelDilyanki" name="Адреса земельної ділянки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFioNewOwner" name="Новий власник нерухомого майна" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sContractNumber" name="Номер договору оренди земельної ділянки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="oContractDate" name="Дата договору оренди земельної ділянки;(у форматі ДД.ММ.РРРР)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asEnumSelect_Decision_1" name="Обробка заяви (1-й етап)" type="enum">
+          <activiti:value id="sEnumElement_Decision_1_Wait" name="Документи передані в Департамент комунальної власності та земельних відносин міської ради"></activiti:value>
+          <activiti:value id="sEnumElement_Decision_1_Canc" name="Відмова громадянину у наданні послуги"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDecision_1_Comment" name="У разі відмови внесіть, будь ласка, коментар (підставу відмови)" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sExtension_Number" name="Реєстраційний номер" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDate_Registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sFioAdmin" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markers21" name="Настроювання принтформи" type="markers" default="${markerService.loadFromFile('dneprCnap/dnepr_cnap_190_21_Print.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/dndz_cnap_190_print_all.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression>${bankId_scan_passport},${bankId_scan_inn},${nFile_DovirenistConfidant},${nFile_PassportConfidant},${nFile_ContarctArenda}, ${nFile_AdvertLicense}, ${nFile_DovidkaProVidsutnistDolgaArendi}, ${nFile_ReasonDocument}, ${nFile_AktObstezennya}, ${nFile_OwnershipInsideBuildings}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <userTask id="usertask2" name="[Етап II] Підготовка відповіді після рішення департаменту комунальної власності та земельних відносин міської ради (2-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
+      <extensionElements>
+        <activiti:formProperty id="sNameOrgan" name="Центр надання адмінпослуг" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна пошта для зворотнього звя'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_today" name="Дата заповнення заяви" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asEnumSelectTypeContragent" name="Суб’єкт звернення" type="enum" writable="false">
+          <activiti:value id="sEnumElement_FOP" name="Фізична особа - підприємець"></activiti:value>
+          <activiti:value id="sEnumElement_Company" name="Юридична особа"></activiti:value>
+          <activiti:value id="sEnumElement_FIZ" name="Фізична особа - громадянин України"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asEnumSelectType_How" name="Спосіб подання документів" type="enum" writable="false">
+          <activiti:value id="sEnumElement_Personally" name="особисто"></activiti:value>
+          <activiti:value id="sEnumElement_Confidant" name="через уповноважену особу (за дорученням)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sFioConfidant" name="Уповноважена особа" type="string" default="${sConfidant_lastName} ${sConfidant_firstName} ${sConfidant_middleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asEnumSelectTypeReason" name="Причина розірвання договору оренди земельної ділянки" type="enum" writable="false">
+          <activiti:value id="sEnumElement_Sale" name="Відчуження нерухомого майна на користь нового власника"></activiti:value>
+          <activiti:value id="sEnumElement_high_house" name="Об’єкт нерухомого майна розташований у багатоповерховому житловому будинку"></activiti:value>
+          <activiti:value id="sEnumElement_End_Of_Period" name="Закінчення строку, на який було укладено договір"></activiti:value>
+          <activiti:value id="sEnumElement_UnionOwnerArendar" name="Поєднання в одній особі власника земельної ділянки та орендаря"></activiti:value>
+          <activiti:value id="sEnumElement_DeathArendar" name="Смерть фізичної особи-орендаря або засудження його до позбавлення волі"></activiti:value>
+          <activiti:value id="sEnumElement_BreakCompany" name="Ліквідація юридичної особи-орендаря"></activiti:value>
+          <activiti:value id="sEnumElement_Buyout" name="Примусовий викуп (вилучення) земельної ділянки з мотивів суспільної необхідності"></activiti:value>
+          <activiti:value id="sEnumElement_AgreementPartner" name="Розірвання договору оренди земельної ділянки за взаємною згодою сторін"></activiti:value>
+          <activiti:value id="sEnumElement_DecisionLaw" name="На підставі рішення суду"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sNameCompany" name="Назва юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно з ЄДРПОУ; тільки цифрові позначення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdressReestrFiz" name="Місце реєстрації фізичної особи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAdressCompany" name="Юридична адреса" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sBasedDocument" name="Документ, що посвідчує перехід права власності" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nSquare" name="Площа земельної ділянки (га)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdressZemelDilyanki" name="Адреса земельної ділянки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFioNewOwner" name="Новий власник нерухомого майна" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sContractNumber" name="Номер договору оренди земельної ділянки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="oContractDate" name="Дата договору оренди земельної ділянки;(у форматі ДД.ММ.РРРР)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sExtension_Number" name="Реєстраційний номер" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDate_Registrastion" name="Дата реєстрації (у форматі ДД/ММ/РРРР)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFioAdmin" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asEnumSelect_StatusDecision_2" name="Статус рішення департаменту" type="enum" required="true">
+          <activiti:value id="sEnumElement_Decision_2_ready" name="Рішення готове. Надіслати e-mail про необхідність отримання результату"></activiti:value>
+          <activiti:value id="sEnumElement_Decision_2_failure" name="Відмова в видачі рішення"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDecision_2_Comment" name="У разі відмови внесіть, будь ласка, коментар (підставу) у цьому полі" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Rishennya" name="Завантажте копію рішення" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markers31" name="Настроювання принтформи" type="markers" default="${markerService.loadFromFile('dneprCnap/dnepr_cnap_190_21_Print.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/dndz_cnap_190_print_all.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <serviceTask id="servicetask2" name="Повідомленя адміністратора ЦНАПу" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
@@ -53,10 +179,10 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>esdnepr@gmail.com</activiti:expression>
+          <activiti:expression>${sMailClerk}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Нове звернення на тему ${sPosluga_name}</activiti:expression>
+          <activiti:string><![CDATA[Нове звернення на тему: розірвання договору оренди земельної ділянки або припинення права постійного користування земельною ділянкою]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
@@ -74,66 +200,25 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Звернення на тему ${sPosluga_name}</activiti:expression>
+          <activiti:string><![CDATA[Додано звернення на тему: розірвання договору оренди земельної ділянки або припинення права постійного користування земельною ділянкою]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-&lt;p&gt; Ваше звернення на тему ${sPosluga_name} прийнято в роботу. &lt;br /&gt;
+&lt;p&gt; Ваше звернення щодо розірвання договору оренди земельної ділянки або припинення права постійного користування земельною ділянкою  успішно зареєстровано і буде опрацьовано впродовж визначений Законом термін.&lt;br /&gt;
 Повідомлення про результат розгляду буде спрямоване на Ваш e-mail.&lt;/p&gt;
 &lt;br /&gt;
-За наявності питянь можете звернутись за телефоном: ${sPhoneOrgan}.&lt;br /&gt;
+${sNameOrgan}&lt;br /&gt;
+${sWorkTime}&lt;br /&gt;
+${sPhoneOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}.&lt;br /&gt;
+${sAddress}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
-    <userTask id="usertask1" name="Обробка документів ЦНАП (1-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
-      <extensionElements>
-        <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Електронна пошта для зворотнього звя'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="Дата заповнення заяви" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="selectEntrepreneur" name="Суб’єкт звернення" type="enum" writable="false">
-          <activiti:value id="attr1_self" name="Фізична особа - підприємець або громадянин України"></activiti:value>
-          <activiti:value id="attr2_company" name="Юридична особа"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="selectReason" name="Причина розірвання договору оренди земельної ділянки" type="enum" writable="false">
-          <activiti:value id="attr1_sale" name="Відчуження нерухомого майна на користь нового власника"></activiti:value>
-          <activiti:value id="attr2_high_house" name="Об’єкт нерухомого майна розташований у багатоповерховому житловому будинку."></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="nameCompany" name="Назва юридичної особи" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="adress_fiz" name="Місце реєстрації фізичної особи" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="adress_ur" name="Юридична адреса" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="based" name="Документ, що посвідчує перехід права власності" type="string" writable="false" ></activiti:formProperty>
-        <activiti:formProperty id="square" name="Площа земельної ділянки (га)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="adress2" name="Адреса земельної ділянки" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="newOwner" name="Новий власник нерухомого майна" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="contractNumber" name="Номер договору оренди земельної ділянки" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="contractDate" name="Дата договору оренди земельної ділянки;(у форматі ДД.ММ.РРРР)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="status" name="Обробка заяви (1-й етап)" type="enum">
-          <activiti:value id="attr1_wait" name="Документи передані в Департамент комунальної власності та земельних відносин міської ради"></activiti:value>
-          <activiti:value id="attr2_finish" name="Відмова громадянину у разі надання неповного пакету документів"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="number_cnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string"></activiti:formProperty>
-        <activiti:formProperty id="adminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string"></activiti:formProperty>
-        <activiti:formProperty id="date_registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sBody1" name="[pattern/print/dndz_cnap_190_print1.html]" type="invisible" default="Заява - фізична особа" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody2" name="[pattern/print/dndz_cnap_190_print2.html]" type="invisible" default="Клопотання - юридична особа" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody3" name="[pattern/print/dndz_cnap_190_print3.html]" type="invisible" default="Заява - багатоповерховий будинок" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${bankId_scan_inn}, ${file1}, ${file2}, ${file3}, ${file4}, ${file5}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
-      </extensionElements>
-    </userTask>
     <sequenceFlow id="flow4" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow5" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
@@ -146,19 +231,19 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Звернення на тему ${sPosluga_name}</activiti:expression>
+		<activiti:string><![CDATA[Відхилено звернення на тему: розірвання договору оренди земельної ділянки або припинення права постійного користування земельною ділянкою]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-&lt;p&gt; Ваше звернення на тему ${sPosluga_name} не прийнято в роботу. &lt;br /&gt;
-Документи оформлені НЕ вірно. Відмова. &lt;br /&gt;
-Причина відмови: ${comment_cnap} &lt;br /&gt;
-За наявності питянь можете звернутись за телефоном: ${sPhoneOrgan}.&lt;br /&gt;
+&lt;p&gt; На жаль, Ваше звернення, щодо розірвання договору оренди земельної ділянки або припинення права постійного користування земельною ділянкою не прийнято в роботу. &lt;br /&gt;
+Причина відмови: ${sDecision_1_Comment} &lt;br /&gt;
+&lt;br /&gt;
+${sNameOrgan}&lt;br /&gt;
+${sPhoneOrgan}&lt;br /&gt;
+${sWorkTime}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}.&lt;br /&gt;
-${sAddress}.&lt;br /&gt;
-${sWorkTime}.&lt;br /&gt;
+${sAddress}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -173,29 +258,31 @@ ${sWorkTime}.&lt;br /&gt;
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Звернення на тему ${sPosluga_name}</activiti:expression>
+          <activiti:string><![CDATA[Зареєстровано звернення на тему: розірвання договору оренди земельної ділянки або припинення права постійного користування земельною ділянкою]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-&lt;p&gt;Ви подавали звернення на тему ${sPosluga_name}.&lt;br /&gt;
-&lt;p&gt;Послуга успішно замовлена.&lt;/p&gt;
-&lt;p&gt;Ви отримаєте відповідь у визначений законом термін на цю email-адресу.&lt;/p&gt;
-За наявності питянь можете звернутись за телефоном: ${sPhoneOrgan}.&lt;br /&gt;
+&lt;p&gt;Ви подавали звернення, щодо розірвання договору оренди земельної ділянки або припинення права постійного користування земельною ділянкою.&lt;br /&gt;
+&lt;p&gt;Послуга успішно зареєстрована.&lt;/p&gt;
+&lt;p&gt;Номер Вашого замовлення: ${sExtension_Number} від ${sDate_Registrastion}. &lt;/p&gt; &lt;br /&gt;.
+&lt;p&gt;Ви отримаєте відповідь у визначений Законом термін на цю email-адресу.&lt;/p&gt;
+&lt;br /&gt;
+${sNameOrgan}&lt;br /&gt;
+${sPhoneOrgan}&lt;br /&gt;
+${sWorkTime}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}.&lt;br /&gt;
-${sAddress}.&lt;br /&gt;
-${sWorkTime}.&lt;br /&gt;
+${sAddress}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow6" name="status=='attr2_finish'" sourceRef="exclusivegateway1" targetRef="servicetask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status=='attr2_finish'}]]></conditionExpression>
+    <sequenceFlow id="flow6" name="Отказано в наданні послуги" sourceRef="exclusivegateway1" targetRef="servicetask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asEnumSelect_Decision_1=='sEnumElement_Decision_1_Canc'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow7" name="status=='attr1_wait'" sourceRef="exclusivegateway1" targetRef="servicetask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status=='attr1_wait'}]]></conditionExpression>
+    <sequenceFlow id="flow7" name="Взято до обробки" sourceRef="exclusivegateway1" targetRef="servicetask5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asEnumSelect_Decision_1=='sEnumElement_Decision_1_Wait'}]]></conditionExpression>
     </sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow8" sourceRef="servicetask4" targetRef="endevent1"></sequenceFlow>
@@ -204,45 +291,10 @@ ${sWorkTime}.&lt;br /&gt;
     </boundaryEvent>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow9" sourceRef="boundaryerror1" targetRef="endevent2"></sequenceFlow>
-    <userTask id="usertask2" name="Підготовка відповіді після рішення департаменту комунальної власності та земельних відносин міської ради (2-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
-      <extensionElements>
-        <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Електронна пошта для зворотнього звя'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="selectEntrepreneur" name="Суб’єкт звернення" type="enum" writable="false">
-          <activiti:value id="attr1_self" name="Фізична особа - підприємець або громадянин України"></activiti:value>
-          <activiti:value id="attr2_company" name="Юридична особа"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="selectReason" name="Причина розірвання договору оренди земельної ділянки" type="enum" writable="false">
-          <activiti:value id="attr1_sale" name="Відчуження нерухомого майна на користь нового власника"></activiti:value>
-          <activiti:value id="attr2_high_house" name="Об’єкт нерухомого майна розташований у багатоповерховому житловому будинку."></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="nameCompany" name="Назва юридичної особи" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="adress_fiz" name="Місце реєстрації фізичної особи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="adress_ur" name="Юридична адреса" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="based" name="Документ, що посвідчує перехід права власності" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="square" name="Площа земельної ділянки (га)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="adress2" name="Адреса земельної ділянки" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="newOwner" name="Новий власник нерухомого майна" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="contractNumber" name="Номер договору оренди земельної ділянки" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="contractDate" name="Дата договору оренди земельної ділянки;(у форматі ДД.ММ.РРРР)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="Дата заповнення заяви" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="number_cnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="adminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="date_registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="status_decision" name="Статус рішення департаменту" type="enum" required="true">
-          <activiti:value id="attr1_ready" name="Рішення готове. Надіслати e-mail про необхідність отримання результату"></activiti:value>
-          <activiti:value id="attr2_failure" name="Відмова в видачі рішення"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="decisionComment2" name="Якщо відмова замовнику, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="answer" name="Відповідь" type="file" required="true"></activiti:formProperty>
-      </extensionElements>
-    </userTask>
     <sequenceFlow id="flow10" sourceRef="servicetask5" targetRef="usertask2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow11" sourceRef="usertask2" targetRef="exclusivegateway2"></sequenceFlow>
-    <serviceTask id="servicetask6" name="Інформування заявника про необхідність отримання позитивного результату" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask6" name="Інформування заявника про отримання позитивного результату" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -251,28 +303,32 @@ ${sWorkTime}.&lt;br /&gt;
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Звернення на тему ${sPosluga_name}</activiti:expression>
+          <activiti:string><![CDATA[Звернення опрацьовано: розірвання договору оренди земельної ділянки або припинення права постійного користування земельною ділянкою]]></activiti:string>
         </activiti:field>
-        <activiti:field name="text">
+    	<activiti:field name="saAttachmentsForSend">
+          <activiti:expression>${nFile_Rishennya}</activiti:expression>
+        </activiti:field>
+            <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-&lt;p&gt;Ви подавали звернення на тему ${sPosluga_name}. &lt;br /&gt;
-Звернення оброблено. &lt;br /&gt;
-За наявності питянь можете звернутись за телефоном: ${sPhoneOrgan}.&lt;br /&gt;
+&lt;p&gt;Ви подавали звернення щодо розірвання договору оренди земельної ділянки або припинення права постійного користування земельною ділянкою. &lt;br /&gt;
+Рішення міської ради отримано, звернення оброблено. &lt;br /&gt;
+Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у ЦНАПі.&lt;br /&gt;
+${sNameOrgan}&lt;br /&gt;
+${sPhoneOrgan}&lt;br /&gt;
+${sWorkTime}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}.&lt;br /&gt;
-${sAddress}.&lt;br /&gt;
-${sWorkTime}.&lt;br /&gt;
+${sAddress}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${answer}</activiti:expression>
+          <activiti:expression>${nFile_Rishennya}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow12" name="status_decision=='attr1_ready'" sourceRef="exclusivegateway2" targetRef="servicetask6">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status_decision=='attr1_ready'}]]></conditionExpression>
+    <sequenceFlow id="flow12" name="Рішення готове" sourceRef="exclusivegateway2" targetRef="servicetask6">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asEnumSelect_StatusDecision_2=='sEnumElement_Decision_2_ready'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask7" name="Інформування заявника про відмову департаменту" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
@@ -283,38 +339,43 @@ ${sWorkTime}.&lt;br /&gt;
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Звернення на тему ${sPosluga_name}</activiti:expression>
+          <activiti:string><![CDATA[Відмова в видачі рішення на тему: розірвання договору оренди земельної ділянки або припинення права постійного користування земельною ділянкою]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-&lt;p&gt;Ви подавали звернення на тему ${sPosluga_name}. &lt;br /&gt;
-Звернення було розглянуто. Відмова. &lt;br /&gt;
-Причина відмови: ${comment_cnap} &lt;br /&gt;
-За наявності питянь можете звернутись за телефоном: ${sPhoneOrgan}.&lt;br /&gt;
+&lt;p&gt;На жаль Вам відмовлено в видачі рішення щодо розірвання договору оренди земельної ділянки або припинення права постійного користування земельною ділянкою. &lt;br /&gt;
+Причина відмови: ${sDecision_2_Comment} &lt;br /&gt;
+
+${sNameOrgan}&lt;br /&gt;
+${sPhoneOrgan}&lt;br /&gt;
+${sWorkTime}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}.&lt;br /&gt;
-${sAddress}.&lt;br /&gt;
-${sWorkTime}.&lt;br /&gt;
+${sAddress}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${answer}</activiti:expression>
+          <activiti:expression>${nFile_Rishennya}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow13" name="status_decision=='attr2_failure'" sourceRef="exclusivegateway2" targetRef="servicetask7">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status_decision=='attr2_failure'}]]></conditionExpression>
+    <sequenceFlow id="flow13" name="Відмовлено" sourceRef="exclusivegateway2" targetRef="servicetask7">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asEnumSelect_StatusDecision_2=='sEnumElement_Decision_2_failure'}]]></conditionExpression>
     </sequenceFlow>
-    <endEvent id="endevent3" name="End"></endEvent>
-    <sequenceFlow id="flow14" sourceRef="servicetask7" targetRef="endevent3"></sequenceFlow>
-    <sequenceFlow id="flow15" sourceRef="servicetask6" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow14" sourceRef="servicetask7" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow15" sourceRef="servicetask6" targetRef="endevent2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dndz_cnap_190">
     <bpmndi:BPMNPlane bpmnElement="dndz_cnap_190" id="BPMNPlane_dndz_cnap_190">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="50.0" y="188.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="91.0" width="141.0" x="540.0" y="160.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
+        <omgdc:Bounds height="103.0" width="150.0" x="685.0" y="368.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
         <omgdc:Bounds height="91.0" width="105.0" x="120.0" y="160.0"></omgdc:Bounds>
@@ -328,38 +389,29 @@ ${sWorkTime}.&lt;br /&gt;
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
         <omgdc:Bounds height="91.0" width="105.0" x="400.0" y="160.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
-        <omgdc:Bounds height="91.0" width="105.0" x="540.0" y="160.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
-        <omgdc:Bounds height="40.0" width="40.0" x="680.0" y="185.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="740.0" y="185.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
-        <omgdc:Bounds height="90.0" width="105.0" x="810.0" y="161.0"></omgdc:Bounds>
+        <omgdc:Bounds height="90.0" width="105.0" x="885.0" y="161.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
-        <omgdc:Bounds height="91.0" width="105.0" x="648.0" y="280.0"></omgdc:Bounds>
+        <omgdc:Bounds height="91.0" width="105.0" x="707.0" y="259.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="845.0" y="355.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="920.0" y="338.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="187.0" y="280.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
-        <omgdc:Bounds height="121.0" width="105.0" x="648.0" y="400.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
-        <omgdc:Bounds height="40.0" width="40.0" x="680.0" y="549.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="739.0" y="500.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
-        <omgdc:Bounds height="121.0" width="105.0" x="810.0" y="509.0"></omgdc:Bounds>
+        <omgdc:Bounds height="121.0" width="105.0" x="490.0" y="460.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
-        <omgdc:Bounds height="121.0" width="105.0" x="490.0" y="509.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
-        <omgdc:Bounds height="35.0" width="35.0" x="410.0" y="552.0"></omgdc:Bounds>
+        <omgdc:Bounds height="121.0" width="105.0" x="885.0" y="460.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="85.0" y="205.0"></omgdi:waypoint>
@@ -378,60 +430,60 @@ ${sWorkTime}.&lt;br /&gt;
         <omgdi:waypoint x="540.0" y="205.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
-        <omgdi:waypoint x="645.0" y="205.0"></omgdi:waypoint>
-        <omgdi:waypoint x="680.0" y="205.0"></omgdi:waypoint>
+        <omgdi:waypoint x="681.0" y="205.0"></omgdi:waypoint>
+        <omgdi:waypoint x="740.0" y="205.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
-        <omgdi:waypoint x="720.0" y="205.0"></omgdi:waypoint>
-        <omgdi:waypoint x="810.0" y="206.0"></omgdi:waypoint>
+        <omgdi:waypoint x="780.0" y="205.0"></omgdi:waypoint>
+        <omgdi:waypoint x="885.0" y="206.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="709.0" y="164.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="779.0" y="161.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
-        <omgdi:waypoint x="700.0" y="225.0"></omgdi:waypoint>
-        <omgdi:waypoint x="700.0" y="280.0"></omgdi:waypoint>
+        <omgdi:waypoint x="760.0" y="225.0"></omgdi:waypoint>
+        <omgdi:waypoint x="759.0" y="259.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="95.0" x="661.0" y="245.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="100.0" x="721.0" y="227.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
-        <omgdi:waypoint x="862.0" y="251.0"></omgdi:waypoint>
-        <omgdi:waypoint x="862.0" y="355.0"></omgdi:waypoint>
+        <omgdi:waypoint x="937.0" y="251.0"></omgdi:waypoint>
+        <omgdi:waypoint x="937.0" y="338.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
         <omgdi:waypoint x="205.0" y="250.0"></omgdi:waypoint>
         <omgdi:waypoint x="204.0" y="280.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
-        <omgdi:waypoint x="700.0" y="371.0"></omgdi:waypoint>
-        <omgdi:waypoint x="700.0" y="400.0"></omgdi:waypoint>
+        <omgdi:waypoint x="759.0" y="350.0"></omgdi:waypoint>
+        <omgdi:waypoint x="760.0" y="368.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
-        <omgdi:waypoint x="700.0" y="521.0"></omgdi:waypoint>
-        <omgdi:waypoint x="700.0" y="549.0"></omgdi:waypoint>
+        <omgdi:waypoint x="760.0" y="471.0"></omgdi:waypoint>
+        <omgdi:waypoint x="759.0" y="500.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
-        <omgdi:waypoint x="720.0" y="569.0"></omgdi:waypoint>
-        <omgdi:waypoint x="810.0" y="569.0"></omgdi:waypoint>
+        <omgdi:waypoint x="739.0" y="520.0"></omgdi:waypoint>
+        <omgdi:waypoint x="595.0" y="520.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="719.0" y="569.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="100.0" x="622.0" y="527.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
-        <omgdi:waypoint x="680.0" y="569.0"></omgdi:waypoint>
-        <omgdi:waypoint x="595.0" y="569.0"></omgdi:waypoint>
+        <omgdi:waypoint x="779.0" y="520.0"></omgdi:waypoint>
+        <omgdi:waypoint x="885.0" y="520.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="601.0" y="569.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="100.0" x="780.0" y="529.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
-        <omgdi:waypoint x="490.0" y="569.0"></omgdi:waypoint>
-        <omgdi:waypoint x="445.0" y="569.0"></omgdi:waypoint>
+        <omgdi:waypoint x="937.0" y="460.0"></omgdi:waypoint>
+        <omgdi:waypoint x="937.0" y="373.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
-        <omgdi:waypoint x="862.0" y="509.0"></omgdi:waypoint>
-        <omgdi:waypoint x="862.0" y="390.0"></omgdi:waypoint>
+        <omgdi:waypoint x="542.0" y="460.0"></omgdi:waypoint>
+        <omgdi:waypoint x="204.0" y="315.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
