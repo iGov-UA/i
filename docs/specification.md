@@ -12,12 +12,11 @@
 </br>
 <b>Альтернативный вариант</b></br>
 
-<b>Статичный (более конпактно):</b></br>
+Статичный (более конпактно):</br>
 - <a href="https://jenkins-new.igov.org.ua//view/new/job/central_alpha/ws/wf-base/target/site/apidocs/index.html">wf-base</a>
 - <a href="https://jenkins-new.igov.org.ua//view/new/job/central_alpha/ws/wf-central/target/site/apidocs/index.html">wf-central</a>
 
-</br>
-<b>Динамичный (Swagger online):</b></br>
+Динамичный (Swagger online):</br>
 - https://test.igov.org.ua/wf/service/api-docs/swagger-ui.html
 - https://test.region.igov.org.ua/wf/service/api-docs/swagger-ui.html
 
