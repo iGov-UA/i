@@ -274,7 +274,6 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   }
 
   $scope.onReferent = function (oldV, newV){
-    console.log('onRender', oldV, newV);
     if ($scope.data.formData.params.bReferent.value){
 
       angular.forEach($scope.activitiForm.formProperties, function (field){
