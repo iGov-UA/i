@@ -64,4 +64,17 @@ public class SubjectServerControllerScenario {
                 andExpect(status().is5xxServerError());
     }
 
+    @Test
+    public void shouldReturnJsonWithoutDublicate() throws Exception {
+
+        Long testServerId = 0L;
+
+        String jsonData = mockMvc.perform(get("/subject/getSubjectsBy")
+                .param("saLoginExternal", "[\"Barmaley\"]")
+                .param("nID_SubjectAccountType", "1")).
+                andReturn().getResponse().getContentAsString();
+
+        System.out.println("Barmaley = " + jsonData);
+    }
+
 }
