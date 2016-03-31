@@ -1,38 +1,27 @@
 package org.igov.service.controller;
 
+import com.google.common.base.Optional;
 import io.swagger.annotations.*;
 import org.activiti.engine.ActivitiObjectNotFoundException;
 import org.apache.commons.lang3.StringUtils;
 import org.igov.model.subject.*;
+import org.igov.model.subject.organ.*;
+import org.igov.service.business.subject.SubjectService;
+import org.igov.service.exception.CommonServiceException;
+import org.igov.service.exception.RecordNotFoundException;
+import org.igov.util.JSON.JsonRestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.igov.model.subject.organ.SubjectOrganDao;
-import org.igov.model.subject.organ.SubjectOrgan;
-
-import com.google.common.base.Optional;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
-import org.igov.model.core.NamedEntity;
-import org.igov.model.subject.organ.SubjectOrganJoin;
-import org.igov.model.subject.organ.SubjectOrganJoinAttribute;
-import org.igov.model.subject.organ.SubjectOrganJoinAttributeDao;
-import org.igov.model.subject.organ.SubjectOrganJoinTax;
-import org.igov.model.subject.organ.SubjectOrganJoinTaxDao;
-import org.igov.service.business.subject.SubjectService;
-import org.igov.service.exception.CommonServiceException;
-import org.igov.service.exception.RecordNotFoundException;
+import java.util.*;
+
 import static org.igov.util.ToolJS.getCalculatedFormulaValue;
-import org.igov.util.JSON.JsonRestUtils;
-import org.springframework.http.ResponseEntity;
 
 @Controller
 @Api(tags = {"SubjectController - субъекты  и смежные сущности"})
@@ -837,13 +826,13 @@ public class SubjectController {
             + "\n```\n")
     @RequestMapping(value = "/getSubjectsBy", method = RequestMethod.GET, headers = {JSON_TYPE})
     public @ResponseBody
-    Map<String, Map<String, NewSubject>> getSubjectsBy(
+    Map<String, Set<NewSubject>> getSubjectsBy(
             @ApiParam(value = "Массив с логинами чиновников в виде json", required = false) @RequestParam(value = "saLogin", required = false) String saLogin,
             @ApiParam(value = "Массив с логинами групп в виде json", required = false) @RequestParam(value = "saGroup", required = false) String saGroup,
             @ApiParam(value = "Ид сервера", required = false) @RequestParam(value = "nID_Server", required = false) Long nID_Server,
             @ApiParam(value = "Массив с внешними логинами  в виде json", required = false) @RequestParam(value = "saLoginExternal", required = false) String saLoginExternal,
             @ApiParam(value = "Массив с типами аакаунтов  в виде json", required = false) @RequestParam(value = "nID_SubjectAccountType", required = false) Long nID_SubjectAccountType) throws CommonServiceException {
-        Map<String, Map<String, NewSubject>> result = new HashMap();
+        Map<String, Set<NewSubject>> result = new HashMap<>();
 
         if (saLogin == null && saGroup == null&& nID_Server == null&& saLoginExternal == null&& nID_SubjectAccountType == null) {
             throw new CommonServiceException(
@@ -860,15 +849,16 @@ public class SubjectController {
                 throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
                         "Error! SubjectAccountType not founf for id=" + 1, HttpStatus.NOT_FOUND);
             }
-            result.put("users", getSubjectBy(saLogin, 1L, nID_Server));
-            result.put("externalUsers", getSubjectBy(saLoginExternal, 1L, nID_Server));
-            result.put("organs", getSubjectBy(saGroup, 1L, nID_Server));
+
+            result.put("aSubjectAccount", getSubjectBy(saLoginExternal, 1L, nID_Server));
+            result.get("aSubjectAccount").addAll(getSubjectBy(saLogin, 1L, nID_Server));
+            result.get("aSubjectAccount").addAll(getSubjectBy(saGroup, 1L, nID_Server));
         }
         return result;
     }
 
-    private Map<String, NewSubject> getSubjectBy(String saLogin, Long nID_SubjectAccountType, Long nID_Server) {
-        Map<String, NewSubject> subjects = new HashMap();
+    private  Set<NewSubject>getSubjectBy(String saLogin, Long nID_SubjectAccountType, Long nID_Server) {
+        Set<NewSubject> newSubjectSet = new HashSet<>();
         Long nID_Subject;
         Subject subject;
         if (saLogin != null) {
@@ -882,11 +872,11 @@ public class SubjectController {
                     List<SubjectContact> subjectContacts = subjectContactDao.findContacts(subject);
                     LOG.info("subjectContacts: " + subjectContacts);
                     subject.setaSubjectAccountContact(subjectContacts);
-                    subjects.put(login, Subject.getNewSubject(subject));
+                    newSubjectSet.add(Subject.getNewSubject(subject,login));
                 }
             }
         }
-        return subjects;
+        return newSubjectSet;
     }
 
 }

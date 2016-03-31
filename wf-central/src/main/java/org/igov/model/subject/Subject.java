@@ -1,12 +1,11 @@
 package org.igov.model.subject;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.util.ArrayList;
-import java.util.List;
 import org.igov.model.core.Entity;
 
 import javax.persistence.Column;
+import java.util.ArrayList;
+import java.util.List;
 
 @javax.persistence.Entity
 public class Subject extends Entity {
@@ -26,8 +25,9 @@ public class Subject extends Entity {
     @JsonProperty(value = "aSubjectAccountContact")
     private transient List<SubjectContact> aSubjectAccountContact;
 
-    public static NewSubject getNewSubject(Subject subject){
+    public static NewSubject getNewSubject(Subject subject, String login){
         NewSubject newSubject = new NewSubject();
+        newSubject.setaSubjectLogin(login);
         NewSubjectHuman newSubjectHuman = new NewSubjectHuman();
         newSubjectHuman.setsLabelShort(subject.sLabelShort);
         newSubjectHuman.setsLabel(subject.getsLabel());

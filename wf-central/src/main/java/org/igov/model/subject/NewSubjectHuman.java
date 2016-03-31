@@ -4,19 +4,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.igov.model.core.Entity;
 
 import javax.persistence.Column;
-
-public class NewSubjectHuman extends Entity {
+/**
+ * User: lyashenkoGS
+ * Date: 31.03.2016
+ * Time: 21:40
+ */
+public class NewSubjectHuman  {
 
     @JsonProperty(value = "sID")
-    @Column(name = "sID", nullable = true)
     private String sID;
 
     @JsonProperty(value = "sLabel")
-    @Column(name = "sLabel", nullable = true)
     private String sLabel;
 
     @JsonProperty(value = "sLabelShort")
-    @Column(name = "sLabelShort", nullable = true)
     private String sLabelShort;
 
     public String getsID() {

@@ -1,39 +1,27 @@
 package org.igov.model.subject;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.igov.model.core.Entity;
-
-import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import org.hibernate.annotations.Type;
-import org.joda.time.DateTime;
 import org.igov.util.JSON.JsonDateTimeDeserializer;
 import org.igov.util.JSON.JsonDateTimeSerializer;
+import org.joda.time.DateTime;
 
 /**
- * User: goodg_000
- * Date: 27.12.2015
- * Time: 13:34
+ * User: lyashenkoGS
+ * Date: 31.03.2016
+ * Time: 21:40
  */
-@javax.persistence.Entity
 public class NewSubjectContact extends Entity {
 
-    @ManyToOne
-    @JoinColumn(name = "nID_SubjectContactType")
     private SubjectContactType subjectContactType;
 
-    @Column
     private String sValue;
 
     @JsonProperty(value="sDate")
     @JsonSerialize(using=JsonDateTimeSerializer.class)
     @JsonDeserialize(using=JsonDateTimeDeserializer.class)
-    @Type(type=DATETIME_TYPE)
-    @Column(name="sDate")
     private DateTime sDate;
 
 
