@@ -76,7 +76,7 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow1" sourceRef="servicetask5" targetRef="parallelgateway1"></sequenceFlow>
+    <sequenceFlow id="flow1" sourceRef="servicetask5" targetRef="exclusivegateway4"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow2" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
     <sequenceFlow id="flow3" name="decide=='reject'" sourceRef="exclusivegateway1" targetRef="servicetask6">
@@ -182,7 +182,6 @@ ${sWorkTime}.&lt;br /&gt;
 &lt;p&gt;
 На жаль, Ваше звернення щодо отримання рішення міської ради про надання дозволу на розробку технічної документації із землеустрою - відхилено Управлінням архітектури, капітального будівництва та житлово-комунального господарства Вільногірської міської ради.&lt;br /&gt;
 Вам надіслано в прикріпленому файлі рішення з вказаною причиною. &lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:25:5]&lt;br /&gt;
 &lt;/p&gt;
 &lt;br /&gt;
 ${sPhoneOrgan}.&lt;br /&gt;
@@ -216,13 +215,7 @@ ${sWorkTime}.&lt;br /&gt;
           <activiti:string><![CDATA[Нове звернення. Рішення міської ради про надання дозволу на розробку технічної документації із землеустрою щодо поділу (об’єднання) земельних ділянок.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а) колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-У Вас в черзі на обробку нове звернення щодо отримання рішення міської ради про надання дозволу на розробку технічної документації із землеустрою.&lt;br /&gt;
-Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
-Відпрацюйте це звернення на &lt;a href="https://region.igov.org.ua" target="_blank"&gt;порталі&lt;/a&gt;
-[pattern/mail/_common_signature.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -348,12 +341,12 @@ ${sWorkTime}.&lt;br /&gt;
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <parallelGateway id="parallelgateway1" name="Parallel Gateway"></parallelGateway>
-    <sequenceFlow id="flow16" name="Не Новопсков" sourceRef="parallelgateway1" targetRef="usertask1">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Public_SubjectOrganJoin != 'lug_newpsc'}]]></conditionExpression>
+    <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow16" name="Не Новопсков" sourceRef="exclusivegateway4" targetRef="usertask1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Public_SubjectOrganJoin!='lug_newpsc'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow17" name="Новопсков" sourceRef="parallelgateway1" targetRef="usertask3">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Public_SubjectOrganJoin == 'lug_newpsc'}]]></conditionExpression>
+    <sequenceFlow id="flow17" name="Новопсков" sourceRef="exclusivegateway4" targetRef="usertask3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Public_SubjectOrganJoin=='lug_newpsc'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow18" sourceRef="usertask3" targetRef="exclusivegateway1"></sequenceFlow>
   </process>
@@ -410,7 +403,7 @@ ${sWorkTime}.&lt;br /&gt;
       <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
         <omgdc:Bounds height="69.0" width="105.0" x="488.0" y="132.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="parallelgateway1" id="BPMNShape_parallelgateway1">
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway4" id="BPMNShape_exclusivegateway4">
         <omgdc:Bounds height="40.0" width="40.0" x="392.0" y="50.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">

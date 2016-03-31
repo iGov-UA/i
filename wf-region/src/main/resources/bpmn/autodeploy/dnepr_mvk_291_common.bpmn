@@ -3,13 +3,10 @@
   <process id="dnepr_mvk_291_common" name="Звернення громадян до міської ради" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="asConsultTr" name="Звернення консультаційного характеру" type="enum">
-          <activiti:value id="sEnumConsYes" name="Так"></activiti:value>
-          <activiti:value id="sEnumConsNo" name="Ні"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asEmergencySituation" name="Аварійне питання" type="enum">
-          <activiti:value id="sEnumEmergYes" name="Аварійна ситуація"></activiti:value>
-          <activiti:value id="sEnumEmergNo" name="Ні"></activiti:value>
+        <activiti:formProperty id="asAppealCharacter" name="Характер звернення" type="enum">
+          <activiti:value id="sEnumEmergency" name="Аварійне"></activiti:value>
+          <activiti:value id="sEnumConsult" name="Консультаційне"></activiti:value>
+          <activiti:value id="sEnumStandard" name="Стандартне"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
@@ -558,21 +555,21 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення до Дніпропетровської міської ради.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt; Ваше звернення до міської ради було зареєстровано у системі.&lt;br/&gt;
-Повідомлення про результат послуги буде спрямоване на Ваш e-mail.&lt;/p&gt;
-Телефон для довідок: (056) 745-10-49&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p> Ваше звернення до Дніпропетровської міської ради було зареєстровано у системі.<br/>
+Повідомлення про результат послуги буде спрямоване на Ваш e-mail.</p>
+Телефон для довідок: 0-800-501-174<br />
 [pattern/mail/_common_signature_start.html]
-Канцелярія Дніпропетровської міської ради,&lt;br /&gt;
+Дніпропетровська міська рада,<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -594,13 +591,10 @@
           <activiti:value id="sEnumSexMen" name="Чоловіча"></activiti:value>
           <activiti:value id="sEnumSexWoman" name="Жіноча"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asConsultTr" name="Звернення консультаційного характеру" type="enum">
-          <activiti:value id="sEnumConsYes" name="Так"></activiti:value>
-          <activiti:value id="sEnumConsNo" name="Ні"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asEmergencySituation" name="Аварійне питання" type="enum">
-          <activiti:value id="sEnumEmergYes" name="Аварійна ситуація"></activiti:value>
-          <activiti:value id="sEnumEmergNo" name="Ні"></activiti:value>
+        <activiti:formProperty id="asAppealCharacter" name="Характер звернення" type="enum">
+          <activiti:value id="sEnumEmergency" name="Аварійне"></activiti:value>
+          <activiti:value id="sEnumConsult" name="Консультаційне"></activiti:value>
+          <activiti:value id="sEnumStandard" name="Стандартне"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asSpecialStatus" name="Особливий статус" type="enum">
           <activiti:value id="sEnumStatusYes" name="Так"></activiti:value>
@@ -1142,7 +1136,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile1}</activiti:expression>
+            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -1155,26 +1149,26 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення до Дніпропетровської міської ради.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення до Дніпропетровської міської ради - опрацьовано.&lt;/p&gt;
-&lt;p&gt;Відповідь:&lt;br&gt;
-&lt;i&gt;${sQuickAnswer}&lt;/i&gt;
-&lt;/p&gt;
-&lt;p&gt;Також відповідь в прикріпленому файлі.&lt;/p&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+Ваше звернення до Дніпропетровської міської ради - опрацьовано.</p>
+<p>Відповідь:<br>
+<i>${sQuickAnswer}</i>
+</p>
+<p>Якщо Ви бажаєте зберегти копію відповіді у письмовому вигляді, Вам необхідно роздрукувати електронний документ прикріплений до листа.</p>
 [pattern/mail/_common_signature_start.html]
-Дніпропетровська міська рада,&lt;br /&gt;
+Дніпропетровська міська рада,<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${PrintForm_1}</activiti:expression>
+          <activiti:expression><![CDATA[${PrintForm_1}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -1194,9 +1188,10 @@
           <activiti:value id="sEnumSexMen" name="Чоловіча"></activiti:value>
           <activiti:value id="sEnumSexWoman" name="Жіноча"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asConsultTr" name="Звернення консультаційного характеру" type="enum">
-          <activiti:value id="sEnumConsYes" name="Так"></activiti:value>
-          <activiti:value id="sEnumConsNo" name="Ні"></activiti:value>
+        <activiti:formProperty id="asAppealCharacter" name="Характер звернення" type="enum">
+          <activiti:value id="sEnumEmergency" name="Аварійне"></activiti:value>
+          <activiti:value id="sEnumConsult" name="Консультаційне"></activiti:value>
+          <activiti:value id="sEnumStandard" name="Стандартне"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asSpecialStatus" name="Маєте особливий статус" type="enum">
           <activiti:value id="sEnumStatusYes" name="Так"></activiti:value>
@@ -1724,21 +1719,21 @@
         <activiti:formProperty id="sBody_Document_UkrDoc" name="Status UkrDoc" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${CreateDocument_UkrDoc}">
           <activiti:field name="sLoginAuthor">
-            <activiti:expression>${sLoginUkrDoc}</activiti:expression>
+            <activiti:expression><![CDATA[${sLoginUkrDoc}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="nID_Pattern">
-            <activiti:expression>10677</activiti:expression>
+            <activiti:expression><![CDATA[10677]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sHead">
             <activiti:string><![CDATA[Нове звернення громадян.]]></activiti:string>
           </activiti:field>
           <activiti:field name="sBody">
-            <activiti:expression>&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;head lang="ru"&gt;
-    &lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /&gt;
-    &lt;title&gt;&lt;/title&gt;
-        &lt;style type="text/css"&gt;
+            <activiti:expression><![CDATA[<!DOCTYPE html>
+<html>
+<head lang="ru">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title></title>
+        <style type="text/css">
         html, body {margin: 0; padding: 0; height: 100%; font: 400 16px/16px 'Times New Roman';}
 
 .print_wrap {width: 705px; padding: 35px 25px 85px 35px; min-height: 100%; height: 100%; margin: 0 auto;}
@@ -1774,7 +1769,7 @@
 .b-r-0 {border-right: 0 !important;}
 .b-b-0 {border-bottom: 0 !important;}
 
-.hint-l-220 &gt; span {margin-left: 220px !important;}
+.hint-l-220 > span {margin-left: 220px !important;}
 
 .h10 {height: 12px;}
 
@@ -1800,22 +1795,22 @@
 
 .line_col {}
 .under_field {height: 20px; margin: 0 0 20px 0; border-bottom: 1px solid black; position: relative; display: inline-block; clear: both;}
-.under_field &gt; i {font-style: normal;}
-.under_field &gt; span {position: absolute; left: 0; right: 0; text-align: center; color: #606060; bottom: -20px; font-size: 12px;}
+.under_field > i {font-style: normal;}
+.under_field > span {position: absolute; left: 0; right: 0; text-align: center; color: #606060; bottom: -20px; font-size: 12px;}
 
 .under_field_line {height: 20px; margin: 0 0 15px 0; padding: 0 0 0 0; border-bottom: 1px solid black; position: relative; display: block;}
 .under_field_line.right_side {float: right;}
-.under_field_line &gt; i {height: 21px; padding: 0 5px 0 0; background: white; display: inline-block; position: relative; left: 0; font-style: normal;}
-.under_field_line &gt; span {position: absolute; left: 0; right: 0; text-align: center; color: #606060; bottom: -16px; font-size: 12px;}
+.under_field_line > i {height: 21px; padding: 0 5px 0 0; background: white; display: inline-block; position: relative; left: 0; font-style: normal;}
+.under_field_line > span {position: absolute; left: 0; right: 0; text-align: center; color: #606060; bottom: -16px; font-size: 12px;}
 
 .wub {min-height: 20px; height: auto; border: 0; margin: 5px 0 0 0;}
 
 .month-fl {width: 225px; float: right; height: 21px; padding: 0 5px 0 10px; background: white; text-align: right;}
 .month-fl.left {float: left; padding: 0 5px 0 0;}
-.month-fl &gt; span {height: 20px; margin: 0 5px 0 0; border-bottom: 1px solid black; display: inline-block;}
-.month-fl &gt; span:nth-child(1) {width: 35px;}
-.month-fl &gt; span:nth-child(2) {width: 120px;}
-.month-fl &gt; span:nth-child(3) {width: 40px;}
+.month-fl > span {height: 20px; margin: 0 5px 0 0; border-bottom: 1px solid black; display: inline-block;}
+.month-fl > span:nth-child(1) {width: 35px;}
+.month-fl > span:nth-child(2) {width: 120px;}
+.month-fl > span:nth-child(3) {width: 40px;}
 
 table.zit_v-form {border-top: 1px solid black; border-bottom: 1px solid black; border-collapse: collapse; margin: 15px 0;}
 table.zit_v-form tr td {border-bottom: 1px solid black; padding: 3px 6px;}
@@ -1831,47 +1826,47 @@ table.zit_v-form2 tr td {border: 1px solid black; padding: 3px 8px;}
 .date_subm { margin: 20px 0 25px 0;}
 .date_subm .month-fl-sm {float: left;}
 .date_subm.invert .month-fl-sm {float: right;}
-.date_subm .month-fl-sm &gt; span {height: 20px; margin: 0 5px 0 0; border-bottom: 1px solid black; display: inline-block;}
-.date_subm .month-fl-sm &gt; span:nth-child(1) {width: 45px;}
-.date_subm .month-fl-sm &gt; span:nth-child(2) {width: 120px;}
-.date_subm .month-fl-sm &gt; span:nth-child(3) {width: 20px;}
+.date_subm .month-fl-sm > span {height: 20px; margin: 0 5px 0 0; border-bottom: 1px solid black; display: inline-block;}
+.date_subm .month-fl-sm > span:nth-child(1) {width: 45px;}
+.date_subm .month-fl-sm > span:nth-child(2) {width: 120px;}
+.date_subm .month-fl-sm > span:nth-child(3) {width: 20px;}
 .date_subm .signature {width: 180px; height: 20px; float: right; border-bottom: 1px solid black; position: relative;}
 .date_subm.invert .signature {float: left;}
-.date_subm .signature &gt; span {position: absolute; left: 0; right: 0; text-align: center; color: #606060; bottom: -20px; font-size: 12px;}
+.date_subm .signature > span {position: absolute; left: 0; right: 0; text-align: center; color: #606060; bottom: -20px; font-size: 12px;}
 
 p {font-size: 14px;}
 
 .clear {clear: both;}
-&lt;/style&gt;
-&lt;/head&gt;
-&lt;body&gt;
-&lt;section class="print_wrap"&gt;
-    &lt;div class="w365 line_col ta-l p-right xs-font"&gt;
-        &lt;p&gt;&lt;b&gt;${sNameDepartment}&lt;/b&gt;&lt;/p&gt;
-        &lt;p&gt;&lt;b&gt;&lt;/b&gt;&lt;/p&gt;
-        &lt;p &gt;${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;/p&gt;
-        &lt;p&gt;&lt;b&gt;Який (яка) мешкає (зареєстровано) за адресою:&lt;/b&gt;&lt;/p&gt;
-        &lt;p&gt;${sAdress}&lt;/p&gt;
-        &lt;p&gt;телефон: ${sPhone}&lt;/p&gt;
-        &lt;p&gt;Номер звернення iGov: &lt;/p&gt;
-    &lt;/div&gt;
-    &lt;div class="clear"&gt;&lt;/div&gt;
-    &lt;div class="line_col ta-c m-t-25"&gt;
-        &lt;b&gt;Зверення&lt;/b&gt;
-        &lt;/div&gt;
-        &lt;div class="under_field_line wub ta-l"&gt;Суть звернення: ${sReason}.&lt;br&gt;
-        Додаткова інформація: ${sAdditionalInformation}.&lt;br&gt;
-		&lt;/div&gt;
-    &lt;div class="clear"&gt;&lt;/div&gt;
-&lt;/section&gt;
-&lt;/body&gt;
-&lt;/html&gt;</activiti:expression>
+</style>
+</head>
+<body>
+<section class="print_wrap">
+    <div class="w365 line_col ta-l p-right xs-font">
+        <p><b>${sNameDepartment}</b></p>
+        <p><b></b></p>
+        <p >${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}</p>
+        <p><b>Який (яка) мешкає (зареєстровано) за адресою:</b></p>
+        <p>${sAdress}</p>
+        <p>телефон: ${sPhone}</p>
+        <p>Номер звернення iGov: </p>
+    </div>
+    <div class="clear"></div>
+    <div class="line_col ta-c m-t-25">
+        <b>Зверення</b>
+        </div>
+        <div class="under_field_line wub ta-l">Суть звернення: ${sReason}.<br>
+        Додаткова інформація: ${sAdditionalInformation}.<br>
+		</div>
+    <div class="clear"></div>
+</section>
+</body>
+</html>]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sID_Order_GovPublic">
-            <activiti:expression>${sID_Order}</activiti:expression>
+            <activiti:string><![CDATA[В-0-00000/0]]></activiti:string>
           </activiti:field>
           <activiti:field name="sSourceChannel">
-            <activiti:expression>${asChannelAppeals}</activiti:expression>
+            <activiti:expression><![CDATA[${asChannelAppeals}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -1882,27 +1877,27 @@ p {font-size: 14px;}
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення до Дніпропетровської міської ради.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;
-Ваше звернення до Дніпропетровської міської ради - опрацьовано. &lt;br /&gt;
-Статус документа: ${sStatusName_UkrDoc}&lt;br&gt;
-Номер документа: ${sID_Document_UkrDoc}&lt;br&gt;
-Аттач: ${anID_Attach_UkrDoc}&lt;br&gt;
-&lt;/p&gt;
-Телефон для довідок: (056) 744-63-51&lt;br /&gt;
-&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p>
+Ваше звернення до Дніпропетровської міської ради - опрацьовано. <br />
+Статус документа: ${sStatusName_UkrDoc}<br>
+Номер документа: ${sID_Document_UkrDoc}<br>
+Аттач: ${anID_Attach_UkrDoc}<br>
+</p>
+Телефон для довідок: <br />
+<br />
 [pattern/mail/_common_signature_start.html]
-Дніпропетровська міська рада,&lt;br /&gt;
+Дніпропетровська міська рада,<br />
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -1940,9 +1935,10 @@ execution.setVariable('sAnswerEmail', res)</script>
         <activiti:formProperty id="sPhone" name="Контактний телефон" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdditionalPhone" name="Додатковий телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asConsultTr" name="Звернення консультаційного характеру" type="enum">
-          <activiti:value id="sEnumConsYes" name="Так"></activiti:value>
-          <activiti:value id="sEnumConsNo" name="Ні"></activiti:value>
+        <activiti:formProperty id="asAppealCharacter" name="Характер звернення" type="enum">
+          <activiti:value id="sEnumEmergency" name="Аварійне"></activiti:value>
+          <activiti:value id="sEnumConsult" name="Консультаційне"></activiti:value>
+          <activiti:value id="sEnumStandard" name="Стандартне"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asSpecialStatus" name="Особливий статус" type="enum">
           <activiti:value id="sEnumStatusYes" name="Так"></activiti:value>
@@ -2467,10 +2463,10 @@ execution.setVariable('sAnswerEmail', res)</script>
         <activiti:formProperty id="sEnumTop" name="Енам подтематика" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${SendObject_Corezoid}">
           <activiti:field name="soJSON">
-            <activiti:expression>{"sFIO_Subject_Client":"value{[clFio]}","sPhonePrivate_SubjectContact_Client":"value{[sPhone]}","sPhoneCall_SubjectContact_Client":"value{[sPhoneCall_SubjectContact_Client]}","sID_Order":"[sID_Order]","sDate_Order":"[sDateCreate]","sAddress":"value{[sAdressProbl]}","sCategory":"enum{[asKindTr]}","sType":"enum{[asTypeTr]}","sHead":"enum{[asTopHead]}","sHeadSub":"value{[sEnumTop]}","sBody":"value{[sReason]}","nDaysRemain":"value{[nDaysRemain]}","sAnswer_UkrDoc":"value{[sQuickAnswer]}"}</activiti:expression>
+            <activiti:expression><![CDATA[{"sFIO_Subject_Client":"value{[clFio]}","sPhonePrivate_SubjectContact_Client":"value{[sPhone]}","sPhoneCall_SubjectContact_Client":"value{[sPhoneCall_SubjectContact_Client]}","sID_Order":"[sID_Order]","sDate_Order":"[sDateCreate]","sAddress":"value{[sAdressProbl]}","sCategory":"enum{[asKindTr]}","sType":"enum{[asTypeTr]}","sHead":"enum{[asTopHead]}","sHeadSub":"value{[sEnumTop]}","sBody":"value{[sReason]}","nDaysRemain":"value{[nDaysRemain]}","sAnswer_UkrDoc":"value{[sQuickAnswer]}"}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sID_Conveyour">
-            <activiti:expression>93682</activiti:expression>
+            <activiti:expression><![CDATA[93682]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -2497,13 +2493,10 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sEnumSexMen" name="Чоловіча"></activiti:value>
           <activiti:value id="sEnumSexWoman" name="Жіноча"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asConsultTr" name="Звернення консультаційного характеру" type="enum">
-          <activiti:value id="sEnumConsYes" name="Так"></activiti:value>
-          <activiti:value id="sEnumConsNo" name="Ні"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asEmergencySituation" name="Аварійне питання" type="enum">
-          <activiti:value id="sEnumEmergYes" name="Аварійна ситуація"></activiti:value>
-          <activiti:value id="sEnumEmergNo" name="Ні"></activiti:value>
+        <activiti:formProperty id="asAppealCharacter" name="Характер звернення" type="enum">
+          <activiti:value id="sEnumEmergency" name="Аварійне"></activiti:value>
+          <activiti:value id="sEnumConsult" name="Консультаційне"></activiti:value>
+          <activiti:value id="sEnumStandard" name="Стандартне"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asSpecialStatus" name="Особливий статус" type="enum">
           <activiti:value id="sEnumStatusYes" name="Так"></activiti:value>
@@ -3040,7 +3033,7 @@ execution.setVariable('sAnswerEmail', res)</script>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile1}</activiti:expression>
+            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -3100,7 +3093,7 @@ execution.setVariable('sAnswerEmail', res)</script>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile1}</activiti:expression>
+            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -3153,7 +3146,7 @@ execution.setVariable('sAnswerEmail', res)</script>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile1},${nFileAnswer}</activiti:expression>
+            <activiti:expression><![CDATA[${nFile1},${nFileAnswer}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -3221,7 +3214,7 @@ execution.setVariable('sAnswerEmail', res)</script>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFileAnswer}</activiti:expression>
+            <activiti:expression><![CDATA[${nFileAnswer}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -3272,7 +3265,7 @@ execution.setVariable('sAnswerEmail', res)</script>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile1}</activiti:expression>
+            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -3314,9 +3307,10 @@ execution.setVariable('sNameDepartment', per2)</script>
           <activiti:value id="sEnumSexMen" name="Чоловіча"></activiti:value>
           <activiti:value id="sEnumSexWoman" name="Жіноча"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asConsultTr" name="Звернення консультаційного характеру" type="enum">
-          <activiti:value id="sEnumConsYes" name="Так"></activiti:value>
-          <activiti:value id="sEnumConsNo" name="Ні"></activiti:value>
+        <activiti:formProperty id="asAppealCharacter" name="Характер звернення" type="enum">
+          <activiti:value id="sEnumEmergency" name="Аварійне"></activiti:value>
+          <activiti:value id="sEnumConsult" name="Консультаційне"></activiti:value>
+          <activiti:value id="sEnumStandard" name="Стандартне"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asSpecialStatus" name="Маєте особливий статус" type="enum">
           <activiti:value id="sEnumStatusYes" name="Так"></activiti:value>
@@ -3838,7 +3832,7 @@ execution.setVariable('sNameDepartment', per2)</script>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile1}</activiti:expression>
+            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -3857,11 +3851,11 @@ execution.setVariable('sNameDepartment', per2)</script>
     <exclusiveGateway id="exclusivegateway6" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow53" sourceRef="scripttask1" targetRef="exclusivegateway3"></sequenceFlow>
     <sequenceFlow id="flow54" sourceRef="exclusivegateway6" targetRef="servicetask1">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asConsultTr=='sEnumConsNo'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asAppealCharacter=='sEnumEmergency'||asAppealCharacter=='sEnumStandard'}]]></conditionExpression>
     </sequenceFlow>
     <endEvent id="endevent9" name="End"></endEvent>
     <sequenceFlow id="flow55" sourceRef="exclusivegateway6" targetRef="endevent9">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asConsultTr=='sEnumConsYes'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asAppealCharacter=='sEnumConsult'}]]></conditionExpression>
     </sequenceFlow>
     <userTask id="usertask10" name="Отримання відповіді" activiti:candidateGroups="sales">
       <extensionElements>
@@ -3876,9 +3870,10 @@ execution.setVariable('sNameDepartment', per2)</script>
           <activiti:value id="sEnumSexMen" name="Чоловіча"></activiti:value>
           <activiti:value id="sEnumSexWoman" name="Жіноча"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asConsultTr" name="Звернення консультаційного характеру" type="enum">
-          <activiti:value id="sEnumConsYes" name="Так"></activiti:value>
-          <activiti:value id="sEnumConsNo" name="Ні"></activiti:value>
+        <activiti:formProperty id="asAppealCharacter" name="Характер звернення" type="enum">
+          <activiti:value id="sEnumEmergency" name="Аварійне"></activiti:value>
+          <activiti:value id="sEnumConsult" name="Консультаційне"></activiti:value>
+          <activiti:value id="sEnumStandard" name="Стандартне"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asSpecialStatus" name="Маєте особливий статус" type="enum">
           <activiti:value id="sEnumStatusYes" name="Так"></activiti:value>
@@ -4402,7 +4397,7 @@ execution.setVariable('sNameDepartment', per2)</script>
         <activiti:formProperty id="anID_Attach_UkrDoc" name="anID_Attach_UkrDoc" type="string" required="true"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${GetDocument_UkrDoc}">
           <activiti:field name="sID_Document">
-            <activiti:expression>${sID_Document}</activiti:expression>
+            <activiti:expression><![CDATA[${sID_Document}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -4536,7 +4531,7 @@ execution.setVariable('sNameDepartment', per2)</script>
         <omgdi:waypoint x="731.0" y="555.0"></omgdi:waypoint>
         <omgdi:waypoint x="615.0" y="555.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="633.0" y="534.0"></omgdc:Bounds>
+          <omgdc:Bounds height="64.0" width="100.0" x="633.0" y="534.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
@@ -4548,7 +4543,7 @@ execution.setVariable('sNameDepartment', per2)</script>
         <omgdi:waypoint x="890.0" y="554.0"></omgdi:waypoint>
         <omgdi:waypoint x="906.0" y="555.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="56.0" width="100.0" x="790.0" y="535.0"></omgdc:Bounds>
+          <omgdc:Bounds height="64.0" width="100.0" x="790.0" y="535.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
@@ -4563,21 +4558,21 @@ execution.setVariable('sNameDepartment', per2)</script>
         <omgdi:waypoint x="590.0" y="137.0"></omgdi:waypoint>
         <omgdi:waypoint x="590.0" y="113.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="480.0" y="113.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="480.0" y="113.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
         <omgdi:waypoint x="610.0" y="157.0"></omgdi:waypoint>
         <omgdi:waypoint x="699.0" y="157.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="604.0" y="136.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="604.0" y="136.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
         <omgdi:waypoint x="751.0" y="575.0"></omgdi:waypoint>
         <omgdi:waypoint x="590.0" y="651.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="56.0" width="100.0" x="653.0" y="603.0"></omgdc:Bounds>
+          <omgdc:Bounds height="64.0" width="100.0" x="653.0" y="603.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
@@ -4588,14 +4583,14 @@ execution.setVariable('sNameDepartment', per2)</script>
         <omgdi:waypoint x="419.0" y="696.0"></omgdi:waypoint>
         <omgdi:waypoint x="346.0" y="696.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="70.0" width="100.0" x="313.0" y="697.0"></omgdc:Bounds>
+          <omgdc:Bounds height="80.0" width="100.0" x="313.0" y="697.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
         <omgdi:waypoint x="751.0" y="535.0"></omgdi:waypoint>
         <omgdi:waypoint x="958.0" y="311.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="56.0" width="100.0" x="817.0" y="325.0"></omgdc:Bounds>
+          <omgdc:Bounds height="64.0" width="100.0" x="817.0" y="325.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow36" id="BPMNEdge_flow36">
@@ -4607,7 +4602,7 @@ execution.setVariable('sNameDepartment', per2)</script>
         <omgdi:waypoint x="1365.0" y="157.0"></omgdi:waypoint>
         <omgdi:waypoint x="804.0" y="157.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="1081.0" y="137.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="1081.0" y="137.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
@@ -4624,14 +4619,14 @@ execution.setVariable('sNameDepartment', per2)</script>
         <omgdi:waypoint x="1105.0" y="375.0"></omgdi:waypoint>
         <omgdi:waypoint x="1105.0" y="313.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="1179.0" y="349.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="1179.0" y="349.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow41" id="BPMNEdge_flow41">
         <omgdi:waypoint x="751.0" y="535.0"></omgdi:waypoint>
         <omgdi:waypoint x="958.0" y="481.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="56.0" width="100.0" x="784.0" y="464.0"></omgdc:Bounds>
+          <omgdc:Bounds height="64.0" width="100.0" x="784.0" y="464.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">
@@ -4646,7 +4641,7 @@ execution.setVariable('sNameDepartment', per2)</script>
         <omgdi:waypoint x="439.0" y="245.0"></omgdi:waypoint>
         <omgdi:waypoint x="751.0" y="193.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="84.0" width="100.0" x="399.0" y="375.0"></omgdc:Bounds>
+          <omgdc:Bounds height="112.0" width="100.0" x="399.0" y="375.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
@@ -4665,7 +4660,7 @@ execution.setVariable('sNameDepartment', per2)</script>
         <omgdi:waypoint x="751.0" y="575.0"></omgdi:waypoint>
         <omgdi:waypoint x="958.0" y="660.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="56.0" width="100.0" x="771.0" y="604.0"></omgdc:Bounds>
+          <omgdc:Bounds height="64.0" width="100.0" x="771.0" y="604.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow50" id="BPMNEdge_flow50">
@@ -4674,7 +4669,7 @@ execution.setVariable('sNameDepartment', per2)</script>
         <omgdi:waypoint x="958.0" y="619.0"></omgdi:waypoint>
         <omgdi:waypoint x="958.0" y="660.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="1010.0" y="597.0"></omgdc:Bounds>
+          <omgdc:Bounds height="64.0" width="100.0" x="1010.0" y="597.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow51" id="BPMNEdge_flow51">
@@ -4684,7 +4679,7 @@ execution.setVariable('sNameDepartment', per2)</script>
         <omgdi:waypoint x="858.0" y="696.0"></omgdi:waypoint>
         <omgdi:waypoint x="906.0" y="697.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="70.0" width="100.0" x="711.0" y="749.0"></omgdc:Bounds>
+          <omgdc:Bounds height="80.0" width="100.0" x="711.0" y="749.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow53" id="BPMNEdge_flow53">
@@ -4703,7 +4698,7 @@ execution.setVariable('sNameDepartment', per2)</script>
         <omgdi:waypoint x="1268.0" y="554.0"></omgdi:waypoint>
         <omgdi:waypoint x="1346.0" y="554.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="1246.0" y="510.0"></omgdc:Bounds>
+          <omgdc:Bounds height="64.0" width="100.0" x="1246.0" y="510.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow58" id="BPMNEdge_flow58">
@@ -4717,14 +4712,14 @@ execution.setVariable('sNameDepartment', per2)</script>
         <omgdi:waypoint x="590.0" y="844.0"></omgdi:waypoint>
         <omgdi:waypoint x="590.0" y="743.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="1006.0" y="820.0"></omgdc:Bounds>
+          <omgdc:Bounds height="64.0" width="100.0" x="1006.0" y="820.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow62" id="BPMNEdge_flow62">
         <omgdi:waypoint x="751.0" y="575.0"></omgdi:waypoint>
         <omgdi:waypoint x="751.0" y="680.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="712.0" y="638.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="712.0" y="638.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow63" id="BPMNEdge_flow63">

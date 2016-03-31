@@ -1,4 +1,5 @@
 var async = require('async')
+  , bankidUtil = require('./../../auth/bankid/bankid.util')
   , bankidService = require('../../auth/bankid/bankid.service.js')
   , soccardService = require('../../auth/soccard/soccard.service.js')
   , emailService = require('../../auth/email/email.service.js')
@@ -30,14 +31,17 @@ module.exports.tryCache = function (req, res, next) {
   var type = req.session.type;
   if (type === 'bankid' || type === 'eds') {
     if (req.session.usercacheid) {
-      activiti.get('/object/file/download_file_from_redis_bytes', {
-        key: req.session.usercacheid
-      }, function (error, response, body) {
+
+      var callback = bankidUtil.decryptCallback(function (error, response, body) {
         var err = null;
         //TODO error handling
         //TODO if no cache kill session and force authorization again ???
         finishRequest(req, res, err, body, type);
       });
+
+      activiti.get('/object/file/download_file_from_redis_bytes', {
+        key: req.session.usercacheid
+      }, callback);
     } else {
       next();
     }
