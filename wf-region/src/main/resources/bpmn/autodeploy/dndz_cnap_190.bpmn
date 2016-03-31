@@ -50,7 +50,7 @@
         <activiti:formProperty id="sFioNewOwner" name="Новий власник нерухомого майна(П.І.Б.)" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sContractNumber" name="Номер договору оренди земельної ділянки" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="oContractDate" name="Дата договору оренди земельної ділянки; у форматі ДД.ММ.РРРР" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile_ContarctArenda" name="Копія договіру оренди земельної ділянки або державний акт на право постійного користування земельною ділянкою" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_ContarctArenda" name="Копія договору оренди земельної ділянки або державний акт на право постійного користування земельною ділянкою" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_DovidkaProVidsutnistDolgaArendi" name="Копія довідки про відсутність заборгованості по орендній платі" type="file"></activiti:formProperty>
         <activiti:formProperty id="nFile_ReasonDocument" name="Копія документу, який підтверджує підстави щодо розірвання договору оренди земельної ділянки" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_AktObstezennya" name="Копія Акт обстеження земельної ділянки" type="file"></activiti:formProperty>
@@ -111,7 +111,7 @@
         <activiti:formProperty id="sDate_Registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFioAdmin" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers21" name="Настроювання принтформи" type="markers" default="${markerService.loadFromFile('dneprCnap/dnepr_cnap_190_21_Print.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sBody1" name="[pattern/print/skv/dndz_cnap_190_print_all.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/skv/dndz_cnap_190_print.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -169,7 +169,7 @@
         <activiti:formProperty id="sDecision_2_Comment" name="У разі відмови внесіть, будь ласка, коментар (підставу) у цьому полі" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="nFile_Rishennya" name="Завантажте копію рішення" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="markers31" name="Настроювання принтформи" type="markers" default="${markerService.loadFromFile('dneprCnap/dnepr_cnap_190_21_Print.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sBody1" name="[pattern/print/skv/dndz_cnap_190_print_all.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/skv/dndz_cnap_190_print.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
