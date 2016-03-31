@@ -11,8 +11,8 @@ import java.util.List;
  */
 public class NewSubject {
 
-    @JsonProperty(value="aSubjectLogin")
-    private String aSubjectLogin;
+    @JsonProperty(value="sLogin")
+    private String sLogin;
 
     @JsonProperty(value="aSubjectHuman")
     private NewSubjectHuman aSubjectHuman;
@@ -37,11 +37,11 @@ public class NewSubject {
     }
 
     public String getaSubjectLogin() {
-        return aSubjectLogin;
+        return sLogin;
     }
 
     public void setaSubjectLogin(String aSubjectLogin) {
-        this.aSubjectLogin = aSubjectLogin;
+        this.sLogin = aSubjectLogin;
     }
 
     @Override
@@ -53,12 +53,12 @@ public class NewSubject {
 
         NewSubject that = (NewSubject) o;
 
-        return !(aSubjectLogin != null ? !aSubjectLogin.equals(that.aSubjectLogin) : that.aSubjectLogin != null);
+        return !(sLogin != null ? !sLogin.equals(that.sLogin) : that.sLogin != null);
 
     }
 
     @Override
     public int hashCode() {
-        return aSubjectLogin != null ? aSubjectLogin.hashCode() : 0;
+        return sLogin != null ? sLogin.hashCode() : 0;
     }
 }
