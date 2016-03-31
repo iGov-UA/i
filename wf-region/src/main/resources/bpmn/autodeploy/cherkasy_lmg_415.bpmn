@@ -9,7 +9,7 @@
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Адреса електронної пошти" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdphone" name="Телефон" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Телефон" type="string" required="true" default="+380"></activiti:formProperty>
         <activiti:formProperty id="asType" name="Оберіть тип звернення:" type="enum" required="true">
           <activiti:value id="sEnumCertif" name="Видача Посвідчення мисливця"></activiti:value>
           <activiti:value id="sEnumCard" name="Видача Контрольної картки обліку добутої дичини та порушень правил полювання"></activiti:value>
@@ -194,10 +194,10 @@
      <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок" type="invisible"></activiti:formProperty>
      <activiti:formProperty id="sAddress" name="Адреса" type="invisible"></activiti:formProperty>
      <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
-      	<activiti:formProperty id="markers1" name="extended_marker1" type="markers" default="${markerService.loadFromFile('forest/cherkasy_lmg_415_1.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers2" name="extended_marker2" type="markers" default="${markerService.loadFromFile('forest/cherkasy_lmg_415_2.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers3" name="extended_marker3" type="markers" default="${markerService.loadFromFile('forest/cherkasy_lmg_415_3.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers4" name="extended_marker4" type="markers" default="${markerService.loadFromFile('forest/cherkasy_lmg_415_4.json')}"></activiti:formProperty>
+      	<activiti:formProperty id="markers1" name="extended_marker1" type="markers" default="${markerService.loadFromFile('ulmg/cherkasy_lmg_415_1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="extended_marker2" type="markers" default="${markerService.loadFromFile('ulmg/cherkasy_lmg_415_2.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="extended_marker3" type="markers" default="${markerService.loadFromFile('ulmg/cherkasy_lmg_415_3.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers4" name="extended_marker4" type="markers" default="${markerService.loadFromFile('ulmg/cherkasy_lmg_415_4.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -241,10 +241,9 @@
         </activiti:field>
       </extensionElements>
       </serviceTask>    
-    <userTask id="usertask1" name="Розгляд документів" activiti:candidateGroups="ulmg_${sID_Public_SubjectOrganJoin}">
-    <activiti:formProperty id="bankIdlastName" name="Прізвище " type="string"  writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"  writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"  writable="false"></activiti:formProperty>
+    <userTask id="usertask1" name="Розгляд документів" activiti:candidateGroups="{sID_Public_SubjectOrganJoin}">
+    	<extensionElements>
+    	<activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Адреса електронної пошти" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdphone" name="Телефон" type="string" writable="false"></activiti:formProperty>
@@ -387,8 +386,9 @@
             <activiti:expression>${bankId_scan_passport}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
+        </extensionElements>
       </userTask>         
-    <serviceTask id="servicetask4" name="Лист-відмова" activiti:delegateExpression="#{MailTaskWithoutAttachment}"></serviceTask>
+    <serviceTask id="servicetask4" name="Лист-відмова" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
     <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -412,7 +412,8 @@
 			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
-    <serviceTask id="servicetask5" name="Лист-запрошення" activiti:delegateExpression="#{MailTaskWithAttachments}"></serviceTask>
+      </serviceTask>
+    <serviceTask id="servicetask5" name="Лист-запрошення" activiti:delegateExpression="#{MailTaskWithAttachments}">
     <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -442,6 +443,7 @@
 			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
+      </serviceTask>
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>
