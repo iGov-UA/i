@@ -9,7 +9,7 @@
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Адреса електронної пошти" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Телефон" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Телефон" type="string" required="true" default="+380"></activiti:formProperty>
         <activiti:formProperty id="asType" name="Оберіть тип звернення:" type="enum" required="true">
           <activiti:value id="sEnumCertif" name="Видача Посвідчення мисливця"></activiti:value>
           <activiti:value id="sEnumCard" name="Видача Контрольної картки обліку добутої дичини та порушень правил полювання"></activiti:value>
@@ -194,10 +194,10 @@
      <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок" type="invisible"></activiti:formProperty>
      <activiti:formProperty id="sAddress" name="Адреса" type="invisible"></activiti:formProperty>
      <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
-      	<activiti:formProperty id="markers1" name="extended_marker1" type="markers" default="${markerService.loadFromFile('forest/cherkasy_lmg_415_1.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers2" name="extended_marker2" type="markers" default="${markerService.loadFromFile('forest/cherkasy_lmg_415_2.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers3" name="extended_marker3" type="markers" default="${markerService.loadFromFile('forest/cherkasy_lmg_415_3.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers4" name="extended_marker4" type="markers" default="${markerService.loadFromFile('forest/cherkasy_lmg_415_4.json')}"></activiti:formProperty>
+      	<activiti:formProperty id="markers1" name="extended_marker1" type="markers" default="${markerService.loadFromFile('ulmg/cherkasy_lmg_415_1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="extended_marker2" type="markers" default="${markerService.loadFromFile('ulmg/cherkasy_lmg_415_2.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="extended_marker3" type="markers" default="${markerService.loadFromFile('ulmg/cherkasy_lmg_415_3.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers4" name="extended_marker4" type="markers" default="${markerService.loadFromFile('ulmg/cherkasy_lmg_415_4.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
