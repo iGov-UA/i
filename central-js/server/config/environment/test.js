@@ -15,8 +15,11 @@ module.exports = {
     /**
      * should be used only as pair for private key in tests
      */
-    publicKey: (__dirname + '/local/iGov_sgn_cert.pem'),
-    privateKey: (__dirname + '/local/iGov_sgn.pem'),
+    //publicKey: (__dirname + '/local/iGov_sgn_cert.pem'),
+    //privateKey: (__dirname + '/local/iGov_sgn.pem'),
+    publicKey: ('../../../iGov_sgn_cert.pem'),
+    privateKey: ('../../../iGov_sgn.pem'),
+
     privateKeyPassphrase: '1234567899'
   },
 
