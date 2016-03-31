@@ -4,6 +4,10 @@
    <documentation>https://github.com/e-government-ua/iBP/issues/265</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+        <activiti:formProperty id="area" name="Оберіть область" type="enum" required="true">
+          <activiti:value id="dn" name="Дніпропетровська"></activiti:value>
+          <activiti:value id="cs" name="Черкаська"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="info" name="Зверніть увагу: ця послуга є платною, при заповненні полів треба буде завантажити документ, що засвідчує внесення плати." type="label" default="Ви можете здійснити оплату зручним для Вас способом за  &lt;a href=&quot;https://docs.google.com/document/d/1yiEIf6rFHUJ1Xv0qaTyvWOG_pDvHjyBN4O5W3SgILnA/edit&quot; target=&quot;_blank&quot;&gt;реквізитами&lt;/a&gt; "></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
@@ -14,10 +18,6 @@
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Укажіть сьогоднішню дату" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="area" name="Оберіть ЦНАП у якому буде зручніше забрати оригінал ліцензії" type="enum" required="true">
-          <activiti:value id="prav" name="ЦНАП «Правобережний» (просп. Карла Маркса, 75)"></activiti:value>
-          <activiti:value id="lev" name="ЦНАП «Лівобережний» (просп. Газети «Правда», 42)"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="forma_lic" name="Оберіть форму ліцензування" type="enum" required="true">
           <activiti:value id="avto" name="автоматична"></activiti:value>
           <activiti:value id="notavto" name="не автоматична"></activiti:value>
@@ -182,16 +182,16 @@
     </startEvent>
     <userTask id="usertask1" name="перевірка вхідних данних, прийняття рішення про надання послуги" activiti:candidateGroups="zed_${group}">
       <extensionElements>
+        <activiti:formProperty id="area" name="Оберіть область" type="enum" writable="false">
+          <activiti:value id="dn" name="Дніпропетровська"></activiti:value>
+          <activiti:value id="cs" name="Черкаська"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Серія та номер паспорту" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подання звернення" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="area" name="Оберіть ЦНАП у якому буде зручніше забрати оригінал ліцензії" type="enum" writable="false">
-          <activiti:value id="prav" name="ЦНАП «Правобережний» (просп. Карла Маркса, 75)"></activiti:value>
-          <activiti:value id="lev" name="ЦНАП «Лівобережний» (просп. Газети «Правда», 42)"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="forma_lic" name="Оберіть форму ліцензування" type="enum" writable="false">
           <activiti:value id="avto" name="автоматична"></activiti:value>
           <activiti:value id="notavto" name="не автоматична"></activiti:value>
@@ -353,16 +353,16 @@
     </userTask>
     <userTask id="usertask2" name="рішення" activiti:candidateGroups="zed_${group}">
       <extensionElements>
+        <activiti:formProperty id="area" name="Оберіть область" type="enum" writable="false">
+          <activiti:value id="dn" name="Дніпропетровська"></activiti:value>
+          <activiti:value id="cs" name="Черкаська"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Серія та номер паспорту" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подання звернення" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="area" name="Оберіть ЦНАП у якому буде зручніше забрати оригінал ліцензії" type="enum" writable="false">
-          <activiti:value id="prav" name="ЦНАП «Правобережний» (просп. Карла Маркса, 75)"></activiti:value>
-          <activiti:value id="lev" name="ЦНАП «Лівобережний» (просп. Газети «Правда», 42)"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="forma_lic" name="Оберіть форму ліцензування" type="enum" writable="false">
           <activiti:value id="avto" name="автоматична"></activiti:value>
           <activiti:value id="notavto" name="не автоматична"></activiti:value>
@@ -636,19 +636,19 @@ var per3 = 'sAdress'
 var per4 = ' '
 var per6 = 'sWorkTime'
 var per7 = 'group'
-if (execution.getVariable('area') == 'prav'){
+if (execution.getVariable('area') == 'dn'){
 per1 = 'darja.grek@gmail.com'
 per2 = 'Департамент економічного розвитку Дніпропетровської обласної державної адміністрації'
 per3 = 'м. Дніпропетровськ, просп. Карла Маркса, 75'
 per6 = "Режим роботи: Понеділок, середа з 9.00 до 18.00&lt;br /&gt; Вівторок, четвер з 9.00 до 20.00&lt;br /&gt; П'ятниця з 9.00 до 16.45&lt;br /&gt; Субота з 10.00 до 16.00&lt;br /&gt; Вихідний - Неділя&lt;br /&gt;"
 per7 = 'dnepr'
 }
-if (execution.getVariable('area') == 'lev'){
+if (execution.getVariable('area') == 'cs'){
 per1 = 'darja.grek@gmail.com'
-per2 = 'Департамент економічного розвитку Дніпропетровської обласної державної адміністрації'
-per3 = 'м. Дніпропетровськ, просп. Карла Маркса, 75'
-per6 = "Режим роботи: Понеділок, середа з 9.00 до 18.00&lt;br /&gt; Вівторок, четвер з 9.00 до 20.00&lt;br /&gt; П'ятниця з 9.00 до 16.45&lt;br /&gt; Субота з 10.00 до 16.00&lt;br /&gt; Вихідний - Неділя&lt;br /&gt;"
-per7 = 'dnepr'
+per2 = 'Департамент регіонального розвитку Черкаської обласної державної адміністрації'
+per3 = 'м. Черкаси, бул. Шевченка 185, каб. 403.'
+per6 = "Режим роботи: Понеділок-Четверг з 09:00 - 18:15&lt;br /&gt;Пятниця з 09:00 - 17:00&lt;br /&gt; Обідня перерва: 13:00 - 14:00&lt;br /&gt; Вихідні дні: субота, неділя&lt;br /&gt;"
+per7 = 'chercassi'
 }
 if(execution.getVariable('visnovok') != null){
 per4 = "3. Експертний висновок з визначенням країни походження та коду товару."
