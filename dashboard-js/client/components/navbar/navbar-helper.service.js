@@ -78,7 +78,11 @@
           service.currentTab = 'tickets';
       }
       else {
-        service.areInstrumentsVisible = true;
+        if(path.indexOf('/profile') === 0){
+          service.areInstrumentsVisible = false;
+        } else {
+          service.areInstrumentsVisible = true;
+        }
         service.currentTab = path;
       }
     }

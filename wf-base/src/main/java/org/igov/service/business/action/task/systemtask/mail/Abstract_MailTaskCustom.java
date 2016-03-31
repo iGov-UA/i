@@ -41,6 +41,7 @@ import org.igov.util.JSON.JsonDateTimeSerializer;
 import static org.igov.util.ToolLuna.getProtectedNumber;
 import org.igov.util.ToolWeb;
 import org.joda.time.format.DateTimeFormatter;
+import org.springframework.context.ApplicationContext;
 
 public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 
@@ -103,7 +104,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
     @Autowired
     GeneralConfig generalConfig;
     @Autowired
-    Mail oMail;
+    private ApplicationContext context;
     //@Autowired
     //AccessDataService accessDataDao;
     @Autowired
@@ -501,7 +502,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
         String sBodySource = getStringFromFieldExpression(this.text, oExecution);
         String sBody = replaceTags(sBodySource, oExecution);
 
-        oMail.reset();
+        Mail oMail = context.getBean(Mail.class);
 
         oMail._From(mailAddressNoreplay)._To(saToMail)._Head(sHead)
                 ._Body(sBody)._AuthUser(mailServerUsername)

@@ -44,7 +44,7 @@ import org.igov.model.flow.FlowSlotTicketDao;
 import org.igov.service.business.action.event.HistoryEventService;
 import org.igov.service.business.action.task.core.AbstractModelTask;
 import org.igov.service.business.action.task.core.ActionTaskService;
-import org.igov.service.business.action.task.systemtask.doc.CreateDocument_UkrDoc;
+import org.igov.service.business.action.task.listener.doc.CreateDocument_UkrDoc;
 import org.igov.service.business.action.task.systemtask.doc.handler.UkrDocEventHandler;
 import org.igov.service.business.subject.message.MessageService;
 import org.igov.service.exception.*;
@@ -560,7 +560,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public
     @ResponseBody
     ResponseEntity getTaskData(
-            @ApiParam(value = "номер-ИД таски (обязательный)", required = true) @RequestParam(value = "nID_Task", required = true) Long nID_Task,
+            @ApiParam(value = "номер-ИД таски (обязательный)", required = false) @RequestParam(value = "nID_Task", required = false) Long nID_Task,
             @ApiParam(value = "номер-ИД процесса (опциональный, но обязательный если не задан nID_Task и sID_Order)", required = false) @RequestParam(value = "nID_Process", required = false) Long nID_Process,
             @ApiParam(value = "номер-ИД заявки (опциональный, но обязательный если не задан nID_Task и nID_Process)", required = false) @RequestParam(value = "sID_Order", required = false) String sID_Order,
             @ApiParam(value = "(опциональный) логин, по которому проверяется вхождение пользователя в одну из групп, на которые распространяется данная задача", required = false) @RequestParam(value = "sLogin", required = false) String sLogin,
@@ -595,7 +595,13 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
         Map<String, Object> response = new HashMap<>();
 
-        response.put("oProcess", oActionTaskService.getProcessInfoByTaskID(nID_Task));
+        try {
+            response.put("oProcess", oActionTaskService.getProcessInfoByTaskID(nID_Task));
+        } catch (NullPointerException e) {
+            String message = String.format("Incorrect Task ID [id = %s]. Record not found.", nID_Task);
+            LOG.info(message);
+            throw new RecordNotFoundException(message);
+        }
 
         List<FormProperty> aField = null;
         try{
@@ -1127,21 +1133,29 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
         // 2. query
         TaskQuery query = taskService.createTaskQuery()
-                .processDefinitionKey(sID_BP).taskCreatedAfter(dBeginDate)
-                .taskCreatedBefore(dEndDate);
+                .processDefinitionKey(sID_BP);
         HistoricTaskInstanceQuery historicQuery = historyService
                 .createHistoricTaskInstanceQuery()
                 .processDefinitionKey(sID_BP);
         if (sTaskEndDateAt != null){
+        	LOG.info("Selecting tasks which were completed after {}", sTaskEndDateAt);
         	historicQuery.taskCompletedAfter(sTaskEndDateAt);
         }
         if (sTaskEndDateTo != null){
+        	LOG.info("Selecting tasks which were completed after {}", sTaskEndDateTo);
         	historicQuery.taskCompletedBefore(sTaskEndDateTo);
         }
-        historicQuery.taskCreatedAfter(dBeginDate)
-                .taskCreatedBefore(dEndDate).includeProcessVariables();
+        if (dateAt != null){
+        	query = query.taskCreatedAfter(dBeginDate);
+        	historicQuery = historicQuery.taskCreatedAfter(dBeginDate);
+        }
+        if (dateTo != null){
+        	query = query.taskCreatedBefore(dEndDate);
+        	historicQuery = historicQuery.taskCreatedBefore(dEndDate);
+        }
+        historicQuery.includeProcessVariables();
         if (sID_State_BP != null) {
-            historicQuery.taskDefinitionKey(sID_State_BP);
+            historicQuery.taskDefinitionKey(sID_State_BP).includeTaskLocalVariables();
         }
         List<HistoricTaskInstance> foundHistoricResults = historicQuery
                 .listPage(nRowStart, nRowsMax);
@@ -1152,10 +1166,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         saFields = oActionTaskService.processSaFields(saFields, foundHistoricResults);
 
         if (sID_State_BP != null) {
-            query = query.taskDefinitionKey(sID_State_BP);
+            query = query.taskDefinitionKey(sID_State_BP).includeTaskLocalVariables();
         }
         List<Task> foundResults = new LinkedList<Task>();
         if (sTaskEndDateAt == null && sTaskEndDateTo == null){
+        	// we need to call runtime query only when non completed tasks are selected.
+        	// if only completed tasks are selected - results of historic query will be used
         	foundResults = query.listPage(nRowStart, nRowsMax);
         }
 
@@ -1202,7 +1218,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             }
             oActionTaskService.fillTheCSVMapHistoricTasks(sID_BP, dBeginDate, dEndDate,
                     foundHistoricResults, sDateCreateDF, csvLines, saFields,
-                    tasksIdToExclude, saFieldsCalc, headers);
+                    tasksIdToExclude, saFieldsCalc, headers, sID_State_BP);
         }
         
         if (saFieldSummary != null) {

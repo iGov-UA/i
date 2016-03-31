@@ -8,7 +8,8 @@
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні данні" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Сканований паспорт громадянина" type="file"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Сканований паспорт громадянина" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації громадянина" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Вкажіть контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Вкажіть E-Mail адресу для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
@@ -22,12 +23,14 @@
         <activiti:formProperty id="fAgree1" name="Погодження балансоутримувача об’єкту" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="fAgree2" name="Згода власників, співвласників на переобладнання і перепланування приміщень, що перебувають у їх спільній власності; завантажте єдиним архівом" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="fProject" name="Проект переобладнання  або перепланування, погоджений в установленому порядку" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="sNameOrgan" type="string" default="."></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="sWorkTime" type="string" default="."></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan" type="string" default="."></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="sAddress" type="string" default="."></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="sMailClerk" type="string" default="."></activiti:formProperty>
-        <activiti:formProperty id="sArea" name="sArea" type="string" default="."></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="sNameOrgan" type="invisible" default="."></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="sWorkTime" type="invisible" default="."></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan" type="invisible" default="."></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="sAddress" type="invisible" default="."></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="sMailClerk" type="invisible" default="."></activiti:formProperty>
+        <activiti:formProperty id="sArea" name="sArea" type="invisible" default="."></activiti:formProperty>
+        <activiti:formProperty id="sShapka489" name="sShapka489" type="invisible" default="."></activiti:formProperty>
+        <activiti:formProperty id="sNameService" name="sNameService" type="invisible" default="Видача дозволу на переобладнання і перепланування жилого будинку (жилого приміщення)"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлу" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -38,6 +41,7 @@
     <userTask id="usertask1" name="Розгляд заявки та прийняття рішення про надання послуги" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sClientFIO" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="AdressWork" name=" " type="label" default="Адреса, за якою будуть проводитись роботи:" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdressWork" name=" " type="textArea" default="${sPlace}, ${sStreet} буд.${sNumHouse}, кв.${sNumFlat}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asDecision" name="Результат обробки звернення: " type="enum" required="true">
@@ -45,7 +49,16 @@
           <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sComment" name="У разі відхилення звернення внесіть, будь ласка, причину" type="textArea" default="Причина: "></activiti:formProperty>
-        <activiti:formProperty id="oPrintApplication" name="[pattern/print/cnap_489_print.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні данні" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації громадянина" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Вкажіть контактний номер телефону" type="invisible" default="+380"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Вкажіть E-Mail адресу для зворотнього зв'язку" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPlace" name="найменування населеного пункту (повністю)" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sStreet" name="вулиця (повністю)" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNumHouse" name="будинок" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNumFlat" name="квартира" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapka489" name="sShapka489" type="invisible" default="."></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/cnap_489_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -58,13 +71,13 @@
     <serviceTask id="servicetask2" name="Е-mail повідомлення урядовцеві про зареєстровану заявку" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:string><![CDATA[agerman.ua@gmail.com]]></activiti:string>
+          <activiti:string><![CDATA[august_@i.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[iGov - Нове звернення на тему: Видача дозволу на переобладнання і перепланування жилого будинку (жилого приміщення).]]></activiti:string>
+          <activiti:expression>iGov - Нове звернення на тему: ${sNameService}.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
@@ -83,20 +96,20 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[iGov: Ваше звернення на тему: Видача дозволу на переобладнання і перепланування жилого будинку (жилого приміщення).]]></activiti:string>
+          <activiti:expression>iGov - Ваше звернення на тему: ${sNameService}.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;
-На жаль, Ваше звернення щодо видачі дозволу на переобладнання і перепланування жилого будинку (жилого приміщення)., що знаходиться за адресою ${sAdressWork}, відхилено через недостатню або неправильну інформацію.&lt;br /&gt;&lt;br /&gt;
-${sComment}&lt;br /&gt;&lt;br /&gt;
-
-Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;
-
+&lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
+На жаль, Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", що знаходиться за адресою ${sAdressWork}, відхилено через недостатню або неправильну інформацію.&lt;br /&gt;&lt;br /&gt;
+Коментар держслужбовця (${sComment})&lt;br /&gt;&lt;br /&gt;
+&lt;strong&gt;${sNameOrgan}&lt;/strong&gt;&lt;br /&gt;
+${sAddress} &lt;br /&gt;
+${sWorkTime} &lt;br /&gt; &lt;br /&gt;
+Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-Адреса: ${sAddress} &lt;br /&gt;
-Графік роботи: ${sWorkTime} &lt;br /&gt;
-[pattern/mail/_common_signature_end.html]</activiti:expression>
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -114,17 +127,18 @@ ${sComment}&lt;br /&gt;&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[iGov: Ваше звернення на тему: Видача дозволу на переобладнання і перепланування жилого будинку (жилого приміщення).]]></activiti:string>
+          <activiti:expression>iGov - Ваше звернення на тему: ${sNameService}.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;
-Ваше звернення щодо видачі дозволу на переобладнання і перепланування жилого будинку (жилого приміщення)., що знаходиться за адресою ${sAdressWork}, отримано.&lt;br /&gt;
+&lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
+Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", що знаходиться за адресою ${sAdressWork}, отримано.&lt;br /&gt;
 Звернення буде опрацьовано уповноваженим органом впродовж 30 днів.&lt;br /&gt;
 &lt;br /&gt;
-Ви отримаєте додаткове повідомлення на цю адресу за результатами розгляду запиту.&lt;br /&gt;
+Ви отримаєте додаткове повідомлення на цю електронну адресу за результатами розгляду запиту.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern/mail/_common_signature_end.html]</activiti:expression>
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -134,6 +148,7 @@ ${sComment}&lt;br /&gt;&lt;br /&gt;
     <userTask id="usertask2" name="Надання послуги" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sClientFIO" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="AdressWork" name=" " type="label" default="Адреса, за якою будуть проводитись роботи: ${sPlace}, ${sStreet} буд.${sNumHouse}, кв.${sNumFlat}." writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdressWork" name=" " type="textArea" default="${sPlace}, ${sStreet} буд.${sNumHouse}, кв.${sNumFlat}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asDecisionMain" name="Результат обробки звернення: " type="enum" required="true">
@@ -141,8 +156,18 @@ ${sComment}&lt;br /&gt;&lt;br /&gt;
           <activiti:value id="rejectMain" name="Заява розглянута, прийнято негативне рішення"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sCommentMain" name="У разі відмови внесіть, будь ласка, причину" type="textArea" default="Причина: "></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні данні" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації громадянина" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Вкажіть контактний номер телефону" type="invisible" default="+380"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Вкажіть E-Mail адресу для зворотнього зв'язку" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPlace" name="найменування населеного пункту (повністю)" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sStreet" name="вулиця (повністю)" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNumHouse" name="будинок" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNumFlat" name="квартира" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapka489" name="sShapka489" type="invisible" default="."></activiti:formProperty>
         <activiti:formProperty id="fDecisionDoc" name="Завантажте копію рішення" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="oPrintApplication" name="[pattern/print/cnap_489_print.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/cnap_489_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/cnap_489_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow9" sourceRef="servicetask4" targetRef="usertask2"></sequenceFlow>
@@ -157,14 +182,14 @@ ${sComment}&lt;br /&gt;&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[iGov: Ваше звернення на тему: Видача дозволу на переобладнання і перепланування жилого будинку (жилого приміщення).]]></activiti:string>
+          <activiti:expression>iGov - Ваше звернення на тему: ${sNameService}.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;
-Ваше звернення щодо видачі дозволу на переобладнання і перепланування жилого будинку (жилого приміщення)., що знаходиться за адресою ${sAdressWork}, опрацьовано і по ньому винесено рішення.&lt;br /&gt;&lt;br /&gt;
-${sCommentMain}&lt;br /&gt;&lt;br /&gt;
-Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у ЦНАПі.&lt;br /&gt;&lt;br /&gt;
+&lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
+Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", що знаходиться за адресою ${sAdressWork}, опрацьовано і по ньому винесено рішення про відмову в видачі дозволу.&lt;br /&gt;&lt;br /&gt;
+Коментар держслужбовця (${sComment})&lt;br /&gt;&lt;br /&gt;
+Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення особисто під підпис у ЦНАПі.&lt;br /&gt;&lt;br /&gt;
 При собі треба мати:&lt;br /&gt;
 1. Документ, що посвідчує особу.&lt;br /&gt;
 2. Для уповоноваженої особи - довіренність.&lt;br /&gt;
@@ -173,15 +198,16 @@ ${sCommentMain}&lt;br /&gt;&lt;br /&gt;
 5. Проект переобладнання або перепланування, улаштування підвісного балкону жилих будинків, жилих і нежилих у жилих будинках приміщень, погоджений в установленому порядку.&lt;br /&gt;
 6. Згоду власників, співвласників (наймачів) або уповноважених ними осіб на переобладнання перепланування чи улаштування підвісного балкону приміщень, що перебувають у їх спільній власності.&lt;br /&gt;
 7. Копію технічного паспорту на приміщення (квартиру).&lt;br /&gt;
-8. Погодження балансоутримувача об’єкту.&lt;br /&gt;
-Адреса &lt;br /&gt;
-Графік роботи: &lt;br /&gt;
+8. Погодження балансоутримувача об’єкту.&lt;br /&gt;&lt;br /&gt;
+&lt;strong&gt;${sNameOrgan}&lt;/strong&gt;&lt;br /&gt;
+${sAddress} &lt;br /&gt;
+${sWorkTime} &lt;br /&gt; &lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${fDecisionDoc}</activiti:expression>
+          <activiti:expression>${fDecisionDoc},${PrintForm_1}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -197,13 +223,13 @@ ${sCommentMain}&lt;br /&gt;&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[iGov: Ваше звернення на тему: Видача дозволу на переобладнання і перепланування жилого будинку (жилого приміщення).]]></activiti:string>
+          <activiti:expression>iGov - Ваше звернення на тему: ${sNameService}.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;
-Ваше звернення щодо видачі дозволу на переобладнання і перепланування жилого будинку (жилого приміщення)., що знаходиться за адресою ${sAdressWork}, опрацьовано і по ньому винесено рішення.&lt;br /&gt;
-Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у ЦНАПі.&lt;br /&gt;&lt;br /&gt;
+&lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
+Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", що знаходиться за адресою ${sAdressWork}, опрацьовано і по ньому винесено рішення надати дозвіл.&lt;br /&gt;
+Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення особисто під підпис у ЦНАПі.&lt;br /&gt;&lt;br /&gt;
 При собі треба мати:&lt;br /&gt;
 1. Документ, що посвідчує особу.&lt;br /&gt;
 2. Для уповоноваженої особи - довіренність.&lt;br /&gt;
@@ -212,16 +238,17 @@ ${sCommentMain}&lt;br /&gt;&lt;br /&gt;
 5. Проект переобладнання або перепланування, улаштування підвісного балкону жилих будинків, жилих і нежилих у жилих будинках приміщень, погоджений в установленому порядку.&lt;br /&gt;
 6. Згоду власників, співвласників (наймачів) або уповноважених ними осіб на переобладнання перепланування чи улаштування підвісного балкону приміщень, що перебувають у їх спільній власності.&lt;br /&gt;
 7. Копію технічного паспорту на приміщення (квартиру).&lt;br /&gt;
-8. Погодження балансоутримувача об’єкту.&lt;br /&gt;
+8. Погодження балансоутримувача об’єкту.&lt;br /&gt;&lt;br /&gt;
+&lt;strong&gt;${sNameOrgan}&lt;/strong&gt;&lt;br /&gt;
+${sAddress} &lt;br /&gt;
+${sWorkTime} &lt;br /&gt; &lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-Адреса: &lt;br /&gt;
-Графік роботи: &lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_feedback.html]  
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${fDecisionDoc}</activiti:expression>
+          <activiti:expression>${fDecisionDoc},${PrintForm_1}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>

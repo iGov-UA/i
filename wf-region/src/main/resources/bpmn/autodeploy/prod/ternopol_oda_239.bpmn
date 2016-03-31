@@ -51,9 +51,9 @@
         <activiti:formProperty id="sID_UA" name="sID_UA" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="obl" name="назва області" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="rekv" name="адреса" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="postV" name="електронна пошта ОДА1" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="електронна пошта ОДА1" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="golova" name="ПІБ голови ОДА" type="invisible"></activiti:formProperty>
-      </extensionElements>
+        </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Загрузка файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <sequenceFlow id="flow5" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -108,10 +108,15 @@ per2 = 'Житомирська обласна держана адміністр�
 per3 = 'zvern_ztoda@ukrpost.ua'
 per4 = 'Машковському С.О.'
 }
-
+if (execution.getVariable('sID_UA') == '5300000000'){
+per1 = 'Полтавської обласної державної адміністрації'
+per2 = 'Полтавська обласна держана адміністрація, м. Полтава, вул. Жовтнева, 45'
+per3 = 'zvg@adm-pl.gov.ua'
+per4 = ' '
+}
 execution.setVariable('obl', per1)
 execution.setVariable('rekv', per2)
-execution.setVariable('postV', per3)
+execution.setVariable('sMailClerk', per3)
 execution.setVariable('golova', per4)
 	  </script>
     </scriptTask>
@@ -122,7 +127,7 @@ execution.setVariable('golova', per4)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${postV}</activiti:expression>
+          <activiti:expression>${sMailClerk}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression>Нове звернення до голови ОДА</activiti:expression>

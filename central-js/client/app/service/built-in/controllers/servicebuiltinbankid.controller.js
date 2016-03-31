@@ -25,6 +25,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   MarkersFactory,
   service,
   FieldMotionService,
+  ParameterFactory,
   $modal
   ,ErrorsFactory
     ) {
@@ -83,12 +84,23 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
 
   if ( !$scope.data.formData ) {
     initializeFormData();
+    $scope.data.formData.params.bReferent = new ParameterFactory;
+    angular.extend($scope.data.formData.params.bReferent, {
+      "id": "bReferent",
+      "name": "Referent",
+      "type": "invisible",
+      "value": false,
+      "readable": true,
+      "writable": true,
+      "required": false,
+      "datePattern":null,
+      "enumValues":[]
+    });
   }
 
   $scope.markers = ValidationService.getValidationMarkers();
   var aID_FieldPhoneUA = $scope.markers.validate.PhoneUA.aField_ID;
 
-  $scope.referent = false;
   angular.forEach($scope.activitiForm.formProperties, function(field) {
 
     var sFieldName = field.name || '';
@@ -128,6 +140,9 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
           }
         });
       }
+    }
+    if (field.id === 'bReferent') {
+      angular.extend($scope.data.formData.params.bReferent, field);
     }
   });
   MarkersFactory.validateMarkers();
@@ -244,7 +259,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   $scope.isSending = false;
 
   function getFieldProps(property) {
-    if ($scope.referent && property.id.startsWith('bankId')){
+    if ($scope.data.formData.params.bReferent.value && property.id.startsWith('bankId')){
       return {
         mentionedInWritable: true,
         fieldES: 1, //EDITABLE
@@ -258,8 +273,8 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     };
   }
 
-  $scope.onReferent = function (){
-    if ($scope.referent){
+  $scope.onReferent = function (oldV, newV){
+    if ($scope.data.formData.params.bReferent.value){
 
       angular.forEach($scope.activitiForm.formProperties, function (field){
         //if (field.id.startsWith('bankId') && field.type !== 'file'){
@@ -291,7 +306,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
 
   $scope.showFormField = function(property) {
     var p = getFieldProps(property);
-    if ($scope.referent && property.id.startsWith('bankId')){
+    if ($scope.data.formData.params.bReferent.value && property.id.startsWith('bankId')){
       return true;
     }
     if (p.mentionedInWritable)
@@ -305,7 +320,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   };
 
   $scope.renderAsLabel = function(property) {
-    if ($scope.referent && property.id.startsWith('bankId')){
+    if ($scope.data.formData.params.bReferent.value && property.id.startsWith('bankId')){
       return false;
     }
     var p = getFieldProps(property);
@@ -323,7 +338,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   };
 
   $scope.isFieldRequired = function(property) {
-    if ($scope.referent && property.id == 'bankId_scan_passport'){
+    if ($scope.data.formData.params.bReferent.value && property.id == 'bankId_scan_passport'){
       return true;
     }
     var b=FieldMotionService.FieldMentioned.inRequired(property.id) ?

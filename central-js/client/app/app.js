@@ -36,10 +36,8 @@ angular.module('app', [
 }).run(function ($rootScope, $state) {
   $rootScope.state = $state;
   $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
-     console.error('stateChangeError', error.data);
+     //console.error('stateChangeError', error.data);
      //TODO: Заменить на нормальный див-диалог из ErrorFactory
-     alert("Невідома помилка: " + error.data);
+     //alert("Невідома помилка: " + error.data);
   });
 });
-
-

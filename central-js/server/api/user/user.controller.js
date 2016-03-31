@@ -1,7 +1,10 @@
-var accountService = require('../../auth/bankid/bankid.service.js');
-var soccardService = require('../../auth/soccard/soccard.service.js');
-var emailService = require('../../auth/email/email.service.js');
-var userConvert = require('./user.convert');
+var async = require('async')
+  , bankidUtil = require('./../../auth/bankid/bankid.util')
+  , bankidService = require('../../auth/bankid/bankid.service.js')
+  , soccardService = require('../../auth/soccard/soccard.service.js')
+  , emailService = require('../../auth/email/email.service.js')
+  , userConvert = require('./user.convert')
+  , activiti = require('../../components/activiti');
 
 var finishRequest = function (req, res, err, result, type) {
   if (err) {
@@ -24,29 +27,50 @@ module.exports.fio = function (req, res) {
   res.send({firstName: account.firstName, middleName: account.middleName, lastName: account.lastName});
 };
 
+module.exports.tryCache = function (req, res, next) {
+  var type = req.session.type;
+  if (type === 'bankid' || type === 'eds') {
+    if (req.session.usercacheid) {
+
+      var callback = bankidUtil.decryptCallback(function (error, response, body) {
+        var err = null;
+        //TODO error handling
+        //TODO if no cache kill session and force authorization again ???
+        finishRequest(req, res, err, body, type);
+      });
+
+      activiti.get('/object/file/download_file_from_redis_bytes', {
+        key: req.session.usercacheid
+      }, callback);
+    } else {
+      next();
+    }
+  }
+};
+
 module.exports.index = function (req, res) {
   var config = require('../../config/environment');
   var type = req.session.type;
   if (type === 'bankid' || type === 'eds') {
-    accountService.syncWithSubject(req.session.access.accessToken, function (err, result) {
+    bankidService.syncWithSubject(req.session.access.accessToken, function (err, result) {
       finishRequest(req, res, err, result, type);
     });
   } else if (type === 'soccard') {
     soccardService.syncWithSubject(req.session.access.accessToken, function (err, result) {
       finishRequest(req, res, err, result, type);
     });
-  } else if(type === 'email'){
+  } else if (type === 'email') {
     emailService.syncWithSubject(req.session.access.email, function (err, result) {
-      if(!result.customer.firstName){
+      if (!result.customer.firstName) {
         result.customer.firstName = req.session.account.firstName;
       }
-      if(!result.customer.lastName){
+      if (!result.customer.lastName) {
         result.customer.lastName = req.session.account.lastName;
       }
-      if(!result.customer.middleName){
+      if (!result.customer.middleName) {
         result.customer.middleName = req.session.account.middleName;
       }
-      if(!result.customer.email){
+      if (!result.customer.email) {
         result.customer.email = req.session.access.email;
       }
       finishRequest(req, res, err, result, type);

@@ -70,8 +70,10 @@ function FieldMotionService(MarkersFactory) {
       var fId = entry.asID_Field[alias];
       if (!fId) console.log('Cant resolve original fieldId by alias:' + alias);
       var result = '';
-      if (formData[fId] && formData[fId].value)
+      if (formData[fId] && formData[fId].value instanceof String)
         result = formData[fId].value.replace(/'/g, "\\'");
+      else
+        result = formData[fId].value;
       switch(alias.charAt(0)) {
         case 's': result = "'" + result + "'"; break;
         case 'n': result = result ? parseFloat(result) : 0; break;

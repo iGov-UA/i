@@ -34,6 +34,10 @@ do
 			bSkipTest="$2"
 			shift
 			;;
+		--skip-doc)
+			bSkipDoc="$2"
+			shift
+			;;
 		--deploy-timeout)
 			nSecondsWait="$2"
 			shift
@@ -57,11 +61,22 @@ if [ -z $nSecondsWait ]; then
 	nSecondsWait=185
 fi
 
+if [[ $sProject ]]; then
+	if [ -d /tmp/$sProject ]; then
+		rm -rf /tmp/$sProject
+	fi
+	mkdir /tmp/$sProject
+	export TMPDIR=/tmp/$sProject
+	export TEMP=/tmp/$sProject
+	export TMP=/tmp/$sProject
+fi
+if [ "$bSkipDoc" == "true" ]; then
+	sBuildDoc="site"
+fi
+
 #Определяем сервер для установки
 if [[ $sVersion == "alpha" && $sProject == "central-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-central" ]]; then
 		sHost="test.igov.org.ua"
-		TMP=TEMP=TMPDIR=/tmp/c_alpha && export TMPDIR TMP TEMP
-		mkdir -p $TMP
 fi
 #if [[ $sVersion == "beta" && $sProject == "central-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-central" ]]; then
 #		sHost="test-version.igov.org.ua"
@@ -72,8 +87,6 @@ fi
 
 if [[ $sVersion == "alpha" && $sProject == "dashboard-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-region" ]]; then
 		sHost="test.region.igov.org.ua"
-		TMP=TEMP=TMPDIR=/tmp/r_alpha && export TMPDIR TMP TEMP
-		mkdir -p $TMP 
 fi
 #if [[ $sVersion == "beta" && $sProject == "dashboard-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-region" ]]; then
 #		sHost="test-version.region.igov.org.ua"
@@ -91,6 +104,10 @@ build_central-js ()
 		return
 	fi
 	if [ "$bSkipDeploy" == "true" ]; then
+		while ps axg | grep -v grep | grep -q dashboard-js; do
+			echo "dashboard-js compilation is still running. we will wait until it finish."
+			sleep 5
+		done
 		cd central-js
 		npm cache clean
 		npm install
@@ -100,8 +117,13 @@ build_central-js ()
 		cd dist
 		npm install --production
 		cd ..
+		rm -rf /tmp/$sProject
 		return
 	else
+		while ps axg | grep -v grep | grep -q dashboard-js; do
+			echo "dashboard-js compilation is still running. we will wait until it finish."
+			sleep 5
+		done
 		cd central-js
 		npm cache clean
 		npm install
@@ -111,6 +133,7 @@ build_central-js ()
 		cd dist
 		npm install --production
 		cd ..
+		rm -rf /tmp/$sProject
 		rsync -az --delete -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' dist/ sybase@$sHost:/sybase/.upload/central-js/
 		cd ..
 	fi
@@ -125,6 +148,10 @@ build_dashboard-js ()
 		return
 	fi
 	if [ "$bSkipDeploy" == "true" ]; then
+		while ps axg | grep -v grep | grep -q central-js; do
+			echo "central-js compilation is still running. we will wait until it finish."
+			sleep 5
+		done
 		cd dashboard-js
 		npm install
 		npm list grunt
@@ -135,8 +162,13 @@ build_dashboard-js ()
 		cd dist
 		npm install --production
 		cd ..
+		rm -rf /tmp/$sProject
 		return
 	else
+		while ps axg | grep -v grep | grep -q central-js; do
+			echo "central-js compilation is still running. we will wait until it finish."
+			sleep 5
+		done
 		cd dashboard-js
 		npm install
 		npm list grunt
@@ -147,6 +179,7 @@ build_dashboard-js ()
 		cd dist
 		npm install --production
 		cd ..
+		rm -rf /tmp/$sProject
 		rsync -az --delete -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' dist/ sybase@$sHost:/sybase/.upload/dashboard-js/
 		cd ..
 	fi
@@ -175,7 +208,7 @@ build_base ()
 		wf-base)
 			echo  "will build $sArrComponent"
 			cd wf-base
-			mvn -P $sVersion clean install site $sBuildArg -Ddependency.locations.enabled=false
+			mvn -P $sVersion clean install $sBuildDoc $sBuildArg -Ddependency.locations.enabled=false
 			cd ..
 			;;
 		"*")
@@ -187,7 +220,7 @@ build_base ()
 			mvn -P $sVersion clean install $sBuildArg
 			cd ..
 			cd wf-base
-			mvn -P $sVersion clean install site $sBuildArg -Ddependency.locations.enabled=false
+			mvn -P $sVersion clean install $sBuildDoc $sBuildArg -Ddependency.locations.enabled=false
 			cd ..
 		   ;;
 		esac
@@ -205,7 +238,7 @@ build_central ()
 			fi
 			build_base $saCompile
 			cd wf-central
-			mvn -P $sVersion clean install site $sBuildArg -Ddependency.locations.enabled=false
+			mvn -P $sVersion clean install $sBuildDoc $sBuildArg -Ddependency.locations.enabled=false
 		fi
 		rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' target/wf-central.war sybase@$sHost:/sybase/.upload/
 		return
@@ -216,7 +249,8 @@ build_central ()
 		fi
 		build_base $saCompile
 		cd wf-central
-		mvn -P $sVersion clean install site $sBuildArg -Ddependency.locations.enabled=false
+		mvn -P $sVersion clean install $sBuildDoc $sBuildArg -Ddependency.locations.enabled=false
+		rm -rf /tmp/$sProject
 		return
 	else
 		if [ "$bSkipTest" ==  "true" ]; then
@@ -224,7 +258,8 @@ build_central ()
 		fi
 		build_base $saCompile
 		cd wf-central
-		mvn -P $sVersion clean install site $sBuildArg -Ddependency.locations.enabled=false
+		mvn -P $sVersion clean install $sBuildDoc $sBuildArg -Ddependency.locations.enabled=false
+		rm -rf /tmp/$sProject
 		rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' target/wf-central.war sybase@$sHost:/sybase/.upload/
 	fi
 }
@@ -240,7 +275,7 @@ build_region ()
 			fi
 			build_base $saCompile
 			cd wf-region
-			mvn -P $sVersion clean install site $sBuildArg -Ddependency.locations.enabled=false
+			mvn -P $sVersion clean install $sBuildDoc $sBuildArg -Ddependency.locations.enabled=false
 		fi
 		rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' target/wf-region.war sybase@$sHost:/sybase/.upload/
 		return
@@ -251,7 +286,8 @@ build_region ()
 		fi
 		build_base $saCompile
 		cd wf-region
-		mvn -P $sVersion clean install site $sBuildArg -Ddependency.locations.enabled=false
+		mvn -P $sVersion clean install $sBuildDoc $sBuildArg -Ddependency.locations.enabled=false
+		rm -rf /tmp/$sProject
 		return
 	else
 		if [ "$bSkipTest" ==  "true" ]; then
@@ -259,26 +295,28 @@ build_region ()
 		fi
 		build_base $saCompile
 		cd wf-region
-		mvn -P $sVersion clean install site $sBuildArg -Ddependency.locations.enabled=false
+		mvn -P $sVersion clean install $sBuildDoc $sBuildArg -Ddependency.locations.enabled=false
+		rm -rf /tmp/$sProject
 		rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' target/wf-region.war sybase@$sHost:/sybase/.upload/
 	fi
 }
 
-if [ $sProject == "wf-central" ]; then
-	build_central
-fi
-if [ $sProject == "wf-region" ]; then
-	build_region
-fi
-if [ $sProject == "central-js" ]; then
-	build_central-js
-fi
-if [ $sProject == "dashboard-js" ]; then
-	build_dashboard-js
-fi
 if [ -z $sProject ]; then
 	build_base $saCompile
 	exit 0
+else
+	if [ $sProject == "wf-central" ]; then
+		build_central
+	fi
+	if [ $sProject == "wf-region" ]; then
+		build_region
+	fi
+	if [ $sProject == "central-js" ]; then
+		build_central-js
+	fi
+	if [ $sProject == "dashboard-js" ]; then
+		build_dashboard-js
+	fi
 fi
 if [ -z $sHost ]; then
     echo "Cloud not select host for deploy. Wrong version or project."

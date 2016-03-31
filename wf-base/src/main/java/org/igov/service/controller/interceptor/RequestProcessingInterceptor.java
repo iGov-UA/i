@@ -351,10 +351,13 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         try {
             if (bProcessClosed && sProcessName.indexOf("system") != 0) {//issue 962
                 //LOG.info(String.format("start process feedback for process with snID_Process=%s", snID_Process));
-                String snID_Proccess_Feedback = bpHandler.startFeedbackProcess(snID_Task, snID_Process, sProcessName);
-                mParam.put("nID_Proccess_Feedback", snID_Proccess_Feedback);
-                //LOG.info("nID_Proccess_Feedback={}", mParam.get("nID_Proccess_Feedback"));
-                LOG.info("Create escalation process! (sProcessName={}, nID_Proccess_Feedback={})", sProcessName, snID_Proccess_Feedback);
+                if (!generalConfig.bTest()) {
+                    String snID_Proccess_Feedback = bpHandler.startFeedbackProcess(snID_Task, snID_Process, sProcessName);
+                    mParam.put("nID_Proccess_Feedback", snID_Proccess_Feedback);
+                    LOG.info("Create escalation process! (sProcessName={}, nID_Proccess_Feedback={})", sProcessName, snID_Proccess_Feedback);
+                } else {
+                    LOG.info("SKIPED(test)!!! Create escalation process! (sProcessName={})", sProcessName);
+                }
             }
         } catch (Exception e) {
             LOG.error("Can't create escalation process: {}",e.getMessage());
