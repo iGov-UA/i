@@ -10,7 +10,8 @@ var nock = require('nock')
   , async = require('async')
   , appData = require('./app.data.spec.js')
   , appTests = require('./app.tests.spec.js')(testRequest)
-  , config = require('./config/environment')
+  //, config = require('./config/environment')
+  , config = require('./config')
   , bankidUtil = require('./auth/bankid/bankid.util.js');
 
 

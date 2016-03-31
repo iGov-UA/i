@@ -277,7 +277,9 @@ function sendGetRequest(req, res, apiURL, params, callback) {
 }
 
 function getBankIDOptions(accessToken) {
-  var config = require('../../config/environment');
+  //var config = require('../../config/environment');
+  var config = require('../../config');
+
   var bankid = config.bankid;
 
   return {
@@ -292,7 +294,8 @@ function getBankIDOptions(accessToken) {
 }
 
 function getOptions() {
-  var config = require('../../config/environment');
+  //var config = require('../../config/environment');
+  var config = require('../../config');
   var activiti = config.activiti;
 
   return {

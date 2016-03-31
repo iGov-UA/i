@@ -1,7 +1,8 @@
 var request = require('request')
   , async = require('async')
   , soccardUtil = require('./soccard.util')
-  , config = require('../../config/environment')
+  //, config = require('../../config/environment')
+  , config = require('../../config')
   , syncSubject = require('../../api/subject/subject.service.js')
   , errors = require('../../components/errors');
 
