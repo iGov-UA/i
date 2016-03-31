@@ -1,6 +1,7 @@
 var request = require('request')
   , async = require('async')
-  , config = require('../../config/environment')
+  //, config = require('../../config/environment')
+  , config = require('../../config')
   , syncSubject = require('../../api/subject/subject.service.js')
   , userConvert = require('../../api/user/user.convert')
   , activiti = require('../../components/activiti')

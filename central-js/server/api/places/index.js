@@ -4,8 +4,10 @@ var arrayQuery = require('array-query');
 
 router.use(function(req, res, next) {
 
-	var config = require('../../config/environment');
-	var activiti = config.activiti;
+	//var config = require('../../config/environment');
+  var config = require('../../config');
+
+  var activiti = config.activiti;
 
 	var options = {
 		protocol: activiti.protocol,

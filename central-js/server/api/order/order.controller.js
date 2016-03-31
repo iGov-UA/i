@@ -1,5 +1,7 @@
 var request = require('request');
-var config = require('../../config/environment');
+//var config = require('../../config/environment');
+var config = require('../../config');
+
 var _ = require('lodash');
 var activiti = require('../../components/activiti');
 var oAuth = require('../../components/admin');
@@ -21,7 +23,7 @@ function getOptions() {
 }
 
 module.exports.searchOrderBySID = function (req, res) {
-    
+
     var nID_Subject = (oUtil.bExist(req.session) && req.session.hasOwnProperty('subject') && req.session.subject.hasOwnProperty('nID')) ? req.session.subject.nID : null;
 
     //TODO: Temporary (back compatibility)
@@ -46,12 +48,12 @@ module.exports.searchOrderBySID = function (req, res) {
         bAdmin=oAuth.isAdminInn(req.session.subject.sID);
         console.log("[searchOrderBySID]:bAdmin="+bAdmin);
     }
-    
-    
+
+
     /*if(sID_Order.indexOf("-")<0){
         sID_Order="0-"+sID_Order;
     }*/
-    
+
     var oDateNew = {
         'sID_Order': sID_Order,
         'bAuth': !bAdmin
@@ -64,12 +66,12 @@ module.exports.searchOrderBySID = function (req, res) {
     if(oUtil.bExist(nID_Subject)){
         oDateNew = $.extend(oDateNew,{nID_Subject: nID_Subject});
     }*/
-    
+
     var options = getOptions();
     var sURL = getUrl('/action/event/getHistoryEvent_Service');
     var callback = function(error, response, body) {
         var oData = JSON.parse(body);
-        
+
         var nID_Subject_Auth = null;
         if(oUtil.bExist(sToken)){
             if(sToken===oData.sToken){
@@ -90,11 +92,11 @@ module.exports.searchOrderBySID = function (req, res) {
             oData.soData="[]";
             oData.sBody=null;
         }
-        
+
         res.send(oData);
         res.end();
     };
-    
+
     return request.get({
         'url': sURL,
         'auth': {
@@ -163,7 +165,7 @@ module.exports.setEventSystem = function(req, res) {
   oParams = _.extend(oParams, req.query);
   oParams = _.extend(oParams, req.params);
   oParams = _.extend(oParams, {'nID_Server':1,'nID_Subject':nID_Subject});
-  oParams = _.extend(oParams, req.body.oParams); 
+  oParams = _.extend(oParams, req.body.oParams);
   var apiReq = activiti.buildRequest(req, '/action/event/setEventSystem', oParams);
   apiReq.body = req.body.oBody;
   apiReq.json = true;
@@ -171,7 +173,7 @@ module.exports.setEventSystem = function(req, res) {
   apiReq.headers['content-type'] = 'application/json;charset=UTF-8';
       //response.headers['content-type'] = 'application/octet-stream';
     //'content-type': 'application/json;charset=UTF-8'
-  
+
   activiti.executePostRequest(apiReq, res);
 };
 

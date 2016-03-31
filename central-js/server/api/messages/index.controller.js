@@ -5,8 +5,10 @@ var oUtil = require('../../components/activiti');
 var oAuth = require('../../components/admin');
 
 function getOptions(req) {
-    var config = require('../../config/environment');
-    var activiti = config.activiti;
+  //var config = require('../../config/environment');
+  var config = require('../../config');
+
+  var activiti = config.activiti;
 
     return {
         protocol: activiti.protocol,
