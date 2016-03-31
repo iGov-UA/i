@@ -3,6 +3,7 @@
   <process id="ternopil_rda_594" name="Надання дозволу органу опіки та піклування на вчинення правочину з майном, що перебуває у власності неповнолітніх" isExecutable="true">
     <startEvent id="startevent1" name="Start" activiti:initiator="initiator">
       <extensionElements>
+      <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган у якому Ви бажаєте отримати відповідь" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Служба у справах дітей Тернопільської РДА" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
@@ -10,7 +11,7 @@
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні данні" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Вкажіть сьогоднішню дату" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="adres_1" name="Адреса реєстрації громадянина" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAdres_1" name="Адреса реєстрації громадянина" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Телефон" type="string" default="+380"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; на цей e-mail Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="lastName_UA1" name="Прізвище; другого з батьків (опікуна, піклувальника)" type="string" default=" "></activiti:formProperty>
@@ -25,12 +26,12 @@
         </activiti:formProperty>
         <activiti:formProperty id="sPib_child_1" name="ПІБ дитини" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sDate_child_1" name="Дата народження дитини" type="string" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPib_child_2" name="ПІБ другої дитини" type="string" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDate_child_2" name="Дата народження другої дитини" type="string" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPib_child_3" name="ПІБ третьої дитини" type="string" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDate_child_3" name="Дата народження третьої дитини" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPib_child_2" name="ПІБ другої дитини" type="string" default=" " ></activiti:formProperty>
+        <activiti:formProperty id="sDate_child_2" name="Дата народження другої дитини" type="string" default=" " ></activiti:formProperty>
+        <activiti:formProperty id="sPib_child_3" name="ПІБ третьої дитини" type="string" default=" " ></activiti:formProperty>
+        <activiti:formProperty id="sDate_child_3" name="Дата народження третьої дитини" type="string" default=" " ></activiti:formProperty>
         <activiti:formProperty id="sPib_child_4" name="ПІБ четвертої дитини" type="string" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDate_child_4" name="Дата народження четвертої дитини" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDate_child_4" name="Дата народження четвертої дитини" type="string" default=" " ></activiti:formProperty>
         <activiti:formProperty id="asPravochyn" name="Оберіть вид правочину на який Ви хочете отримати дозвіл" type="enum" default=" " required="true">
           <activiti:value id="sVidchuzh" name="на відчуження (заставу, міну, придбання житла, прийняття в дар, продаж акцій) майна, право власності (користування) на яке має малолітня (неповнолітня ) дитина"></activiti:value>
           <activiti:value id="sAvto" name="на перереєстрацію автомобіля, який належить малолітній (неповнолітній ) дитині"></activiti:value>
@@ -49,19 +50,19 @@
         <activiti:formProperty id="sBank_kasa" name="Вкажіть назву банку, ощадної каси в якій знаходяться грошові заощадження" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPloshcha" name="Вкажіть площу земельної ділянки" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdress_Zemlya" name="Вкажіть адресу земельної ділянки" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="oPassport" name="Копія паспорта другого з батьків; опікунів, піклувальників" type="file" ></activiti:formProperty>
-        <activiti:formProperty id="oKod" name="Копія ІПН другого з батьків; опікунів, піклувальників" type="file"></activiti:formProperty>
-        <activiti:formProperty id="oSvidotstvo" name="Копія свідоцтва про народження дитини (дітей); у разі декількох дітей прохання завантажувати одним архівом" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="oDovidka" name="Довідка з місця проживання, про склад сім'ї та реєстрацію (Форма-3) або витяг з домової книги" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="oRishennya_mkv_opikun" name="Копія рішення виконавчого комітету міської ради про встановлення опіки над дитиною; для опікунів, піклувальників" type="file" ></activiti:formProperty>
-        <activiti:formProperty id="oRishennya_mkv_mayno" name="Копія рішення виконавчого комітету міської ради про встановлення опіки над майном дитини; для опікунів, піклувальників" type="file" ></activiti:formProperty>
-        <activiti:formProperty id="oSviditstvo_odr" name="Копія свідоцтва про укладення або розірвання шлюбу між батьками дитини; у разі наявності" type="file" ></activiti:formProperty>
-        <activiti:formProperty id="oDoc_mayno" name="Документи на право власності на відчужуване майно, де малолітні (неповнолітні) діти мають право власності (користування)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="oDoc_vytyag" name="Витяг з реєстру прав власності на нерухоме відчужуване майно, виданий відповідно до законодавства; у разі наявності" type="file"></activiti:formProperty>
-        <activiti:formProperty id="oDoc_avto" name="Документ, що підтверджує право власності на автомобіль" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="oDoc_hroshi" name="Документ, що підтверджує право володіння дитини грошовими заощадженнями" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="oDoc_zemlya" name="Документ, що підтверджує право власності (кориcтування) на земельну ділянку" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="oDocument" name="Документ, що підтверджує право власності, володіння або користування на дитини; стосовно чого вчинятиметься правочин" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nPassport" name="Копія паспорта другого з батьків; опікунів, піклувальників" type="file" ></activiti:formProperty>
+        <activiti:formProperty id="nKod" name="Копія ІПН другого з батьків; опікунів, піклувальників" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nSvidotstvo" name="Копія свідоцтва про народження дитини (дітей); у разі декількох дітей прохання завантажувати одним архівом" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nDovidka" name="Довідка з місця проживання, про склад сім'ї та реєстрацію (Форма-3) або витяг з домової книги" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nRishennya_mkv_opikun" name="Копія рішення виконавчого комітету міської ради про встановлення опіки над дитиною; для опікунів, піклувальників" type="file" ></activiti:formProperty>
+        <activiti:formProperty id="nRishennya_mkv_mayno" name="Копія рішення виконавчого комітету міської ради про встановлення опіки над майном дитини; для опікунів, піклувальників" type="file" ></activiti:formProperty>
+        <activiti:formProperty id="nSviditstvo_odr" name="Копія свідоцтва про укладення або розірвання шлюбу між батьками дитини; у разі наявності" type="file" ></activiti:formProperty>
+        <activiti:formProperty id="nDoc_mayno" name="Документи на право власності на відчужуване майно, де малолітні (неповнолітні) діти мають право власності (користування)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nDoc_vytyag" name="Витяг з реєстру прав власності на нерухоме відчужуване майно, виданий відповідно до законодавства; у разі наявності" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nDoc_avto" name="Документ, що підтверджує право власності на автомобіль" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nDoc_hroshi" name="Документ, що підтверджує право володіння дитини грошовими заощадженнями" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nDoc_zemlya" name="Документ, що підтверджує право власності (кориcтування) на земельну ділянку" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nDocument" name="Документ, що підтверджує право власності, володіння або користування дитини; стосовно чого вчинятиметься правочин" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('ternopil/tern_594.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -113,7 +114,7 @@ ${sNameOrgan},&lt;br&gt;
       <extensionElements>
         <activiti:formProperty id="clFio" name="ПІБ заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio_1" name="ПІБ другого з батьків, опікунів, піклувальників" type="string" default="${lastName_UA1} ${firstName_UA1} ${middleName_UA1}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="adres_1" name="Адреса реєстрації громадянина" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdres_1" name="Адреса реєстрації громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Телефон" type="string" default="+380" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; на цей e-mail Ви отримаєте результат обробки Вашого звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="privatePhone" name="Телефон" type="string" writable="false"></activiti:formProperty>
@@ -123,15 +124,15 @@ ${sNameOrgan},&lt;br&gt;
           <activiti:value id="five" name="3"></activiti:value>
           <activiti:value id="six" name="4"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sPib_child_1" name="ПІБ дитини" type="string" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDate_child_1" name="Дата народження дитини" type="string" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPib_child_2" name="ПІБ другої дитини" type="string" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDdate_child_2" name="Дата народження другої дитини" type="string" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPib_child_3" name="ПІБ третьої дитини" type="string" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDate_child_3" name="Дата народження третьої дитини" type="string" writable="false" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPib_child_1" name="ПІБ дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDate_child_1" name="Дата народження дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPib_child_2" name="ПІБ другої дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDdate_child_2" name="Дата народження другої дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPib_child_3" name="ПІБ третьої дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDate_child_3" name="Дата народження третьої дитини" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPib_child_4" name="ПІБ четвертої дитини" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDate_child_4" name="Дата народження четвертої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asPravochyn" name="Оберіть вид правочину на який Ви хочете отримати дозвіл" type="enum" writable="false" required="true">
+        <activiti:formProperty id="asPravochyn" name="Оберіть вид правочину на який Ви хочете отримати дозвіл" type="enum" writable="false" >
           <activiti:value id="sVidchuzh" name="на відчуження (заставу, міну, придбання житла, прийняття в дар, продаж акцій) майна, право власності (користування) на яке має малолітня (неповнолітня ) дитина"></activiti:value>
           <activiti:value id="sAvto" name="на перереєстрацію автомобіля, який належить малолітній (неповнолітній ) дитині"></activiti:value>
           <activiti:value id="sMayno" name="на виділення частки майна у спільній сумісній власності малолітньої (неповнолітньої ) дитини"></activiti:value>
@@ -145,23 +146,23 @@ ${sNameOrgan},&lt;br&gt;
         <activiti:formProperty id="sAdress_kvart" name="Вкажіть адресу квартири, якою дитина забезпечується взамін; у разі відчуження житла" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sData_mayno" name="Дата, до якої буде надано підтверджуючі документи на нове житло дитини; повинні бути надані органу опіки та піклування у місяцний строк" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAvto_marka" name="Вкажіть марку авто" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAvto_numb" name="Вкажіть номерний знак авто" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAvto_numb" name="Вкажіть номерний знак авто; вказати  всі дані автомобіля згідно із записами в технічному паспорті" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBank_kasa" name="Вкажіть назву банку, ощадної каси в якій знаходяться грошові заощадження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPloshcha" name="Вкажіть площу земельної ділянки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdress_Zemlya" name="Вкажіть адресу земельної ділянки" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="oPassport" name="Копії паспорта другого з батьків (опікунів, піклувальників)" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="oKod" name="Копія довідки про присвоєння реєстраційних номерів облікової картки платника податків другого з батьків (опікунів, піклувальників)" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="oSvidotstvo" name="Копія свідотства про народження дитини (дітей); у разі декількох дітей прохання завантажувати одним архівом" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="oDovidka" name="Довідка з місця проживання, про склад сім'ї та реєстрацію (Форма-3) або витяг з домової книги" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="oRishennya_mkv_opikun" name="Копія рішення виконавчого комітету міської ради про встановлення опіки над дитиною (для опікунів, піклувальників)" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="oRishennya_mkv_mayno" name="Копія рішення виконавчого комітету міської ради про встановлення опіки над майном дитини (для опікунів, піклувальників)" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="oSviditstvo_odr" name="Копія свідоцтва про укладення або розірвання шлюбу між батьками дитини (у разі наявності)" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="oDoc_mayno" name="Документи на право власності на відчужуване майно, де малолітні (неповнолітні) діти мають право власності (користування)" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="oDoc_vytyag" name="Витяг з реєстру прав власності на нерухоме відчужуване майно, виданий відповідно до законодавства; у разі наявності" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="oDoc_avto" name="Документ, що підтверджеє право власності на автомобіль" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="oDoc_hroshi" name="Документ, що підтверджує право володіння дитини грошовими заощадженнями" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="oDoc_zemlya" name="Документ, що підтверджує право власності (коритування) на земельну ділянку" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="oDocument" name="Документ, що підтверджує право власності, володіння або користування на дитини; стосовно чого вчинятиметься правочин" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nPassport" name="Копії паспорта другого з батьків (опікунів, піклувальників)" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nKod" name="Копія довідки про присвоєння реєстраційних номерів облікової картки платника податків другого з батьків (опікунів, піклувальників)" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nSvidotstvo" name="Копія свідотства про народження дитини (дітей); у разі декількох дітей прохання завантажувати одним архівом" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nDovidka" name="Довідка з місця проживання, про склад сім'ї та реєстрацію (Форма-3) або витяг з домової книги" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nRishennya_mkv_opikun" name="Копія рішення виконавчого комітету міської ради про встановлення опіки над дитиною (для опікунів, піклувальників)" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nRishennya_mkv_mayno" name="Копія рішення виконавчого комітету міської ради про встановлення опіки над майном дитини (для опікунів, піклувальників)" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nSviditstvo_odr" name="Копія свідоцтва про укладення або розірвання шлюбу між батьками дитини (у разі наявності)" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nDoc_mayno" name="Документи на право власності на відчужуване майно, де малолітні (неповнолітні) діти мають право власності (користування)" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nDoc_vytyag" name="Витяг з реєстру прав власності на нерухоме відчужуване майно, виданий відповідно до законодавства; у разі наявності" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nDoc_avto" name="Документ, що підтверджеє право власності на автомобіль" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nDoc_hroshi" name="Документ, що підтверджує право володіння дитини грошовими заощадженнями" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nDoc_zemlya" name="Документ, що підтверджує право власності (коритування) на земельну ділянку" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nDocument" name="Документ, що підтверджує право власності, володіння або користування дитини; стосовно чого вчинятиметься правочин" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asWorkerDecision" name="Рішення операціоніста" type="enum" required="true">
           <activiti:value id="accept" name="Прийняти документи для розгляду"></activiti:value>
           <activiti:value id="decline" name="Відмовити у реєстрації звернення"></activiti:value>
@@ -169,7 +170,7 @@ ${sNameOrgan},&lt;br&gt;
         <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у реєстрації звернення, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
         <activiti:formProperty id="docID" name="Реєстраційний номер" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers21" name="Настроювання принтформи " type="markers" default="${markerService.loadFromFile('tern_594__cont1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers21" name="Настроювання принтформи " type="markers" default="${markerService.loadFromFile('ternopil/tern_594_cont1.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/tern_rda_594.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
@@ -238,7 +239,7 @@ ${sNameOrgan},&lt;br&gt;
         <activiti:formProperty id="docID" name="Реєстраційний номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="ПІБ заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio_1" name="ПІБ другого з батьків, опікунів, піклувальників" type="string" default="${lastName_UA1} ${firstName_UA1} ${middleName_UA1}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="adres_1" name="Адреса реєстрації громадянина" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdres_1" name="Адреса реєстрації громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Телефон" type="string" default="+380" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; на цей e-mail Ви отримаєте результат обробки Вашого звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="privatePhone" name="Телефон" type="string" writable="false"></activiti:formProperty>
@@ -248,15 +249,15 @@ ${sNameOrgan},&lt;br&gt;
           <activiti:value id="five" name="3"></activiti:value>
           <activiti:value id="six" name="4"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sPib_child_1" name="ПІБ дитини" type="string" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDate_child_1" name="Дата народження дитини" type="string" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPib_child_2" name="ПІБ другої дитини" type="string" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDate_child_2" name="Дата народження другої дитини" type="string" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPib_child_3" name="ПІБ третьої дитини" type="string" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDate_child_3" name="Дата народження третьої дитини" type="string" writable="false" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPib_child_1" name="ПІБ дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDate_child_1" name="Дата народження дитини" type="string" writable="false" ></activiti:formProperty>
+        <activiti:formProperty id="sPib_child_2" name="ПІБ другої дитини" type="string" writable="false" ></activiti:formProperty>
+        <activiti:formProperty id="sDate_child_2" name="Дата народження другої дитини" type="string" writable="false" ></activiti:formProperty>
+        <activiti:formProperty id="sPib_child_3" name="ПІБ третьої дитини" type="string" writable="false" ></activiti:formProperty>
+        <activiti:formProperty id="sDate_child_3" name="Дата народження третьої дитини" type="string" writable="false" ></activiti:formProperty>
         <activiti:formProperty id="sPib_child_4" name="ПІБ четвертої дитини" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDate_child_4" name="Дата народження четвертої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asPravochyn" name="Оберіть вид правочину на який Ви хочете отримати дозвіл" type="enum" writable="false" required="true">
+        <activiti:formProperty id="asPravochyn" name="Оберіть вид правочину на який Ви хочете отримати дозвіл" type="enum" writable="false" >
           <activiti:value id="sVidchuzh" name="на відчуження (заставу, міну, придбання житла, прийняття в дар, продаж акцій) майна, право власності (користування) на яке має малолітня (неповнолітня ) дитина"></activiti:value>
           <activiti:value id="sAvto" name="на перереєстрацію автомобіля, який належить малолітній (неповнолітній ) дитині"></activiti:value>
           <activiti:value id="sMayno" name="на виділення частки майна у спільній сумісній власності малолітньої (неповнолітньої ) дитини"></activiti:value>
@@ -274,24 +275,24 @@ ${sNameOrgan},&lt;br&gt;
         <activiti:formProperty id="sBank_kasa" name="Вкажіть назву банку, ощадної каси в якій знаходяться грошові заощадження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPloshcha" name="Вкажіть площу земельної ділянки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdress_Zemlya" name="Вкажіть адресу земельної ділянки" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="oPassport" name="Копії паспорта другого з батьків (опікунів, піклувальників)" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="oKod" name="Копія довідки про присвоєння реєстраційних номерів облікової картки платника податків другого з батьків (опікунів, піклувальників)" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="oSvidotstvo" name="Копія свідотства про народження дитини (дітей); у разі декількох дітей прохання завантажувати одним архівом" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="oDovidka" name="Довідка з місця проживання, про склад сім'ї та реєстрацію (Форма-3) або витяг з домової книги" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="oRishennya_mkv_opikun" name="Копія рішення виконавчого комітету міської ради про встановлення опіки над дитиною (для опікунів, піклувальників)" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="oRishennya_mkv_mayno" name="Копія рішення виконавчого комітету міської ради про встановлення опіки над майном дитини (для опікунів, піклувальників)" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="oSviditstvo_odr" name="Копія свідоцтва про укладення або розірвання шлюбу між батьками дитини (у разі наявності)" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="oDoc_mayno" name="Документи на право власності на відчужуване майно, де малолітні (неповнолітні) діти мають право власності (користування)" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="oDoc_vytyag" name="Витяг з реєстру прав власності на нерухоме відчужуване майно, виданий відповідно до законодавства; у разі наявності" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="oDoc_avto" name="Документ, що підтверджеє право власності на автомобіль" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="oDoc_hroshi" name="Документ, що підтверджує право володіння дитини грошовими заощадженнями" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="oDoc_zemlya" name="Документ, що підтверджує право власності (коритування) на земельну ділянку" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="oDocument" name="Документ, що підтверджує право власності, володіння або користування на дитини; стосовно чого вчинятиметься правочин" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nPassport" name="Копії паспорта другого з батьків (опікунів, піклувальників)" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nKod" name="Копія довідки про присвоєння реєстраційних номерів облікової картки платника податків другого з батьків (опікунів, піклувальників)" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nSvidotstvo" name="Копія свідотства про народження дитини (дітей); у разі декількох дітей прохання завантажувати одним архівом" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nDovidka" name="Довідка з місця проживання, про склад сім'ї та реєстрацію (Форма-3) або витяг з домової книги" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nRishennya_mkv_opikun" name="Копія рішення виконавчого комітету міської ради про встановлення опіки над дитиною (для опікунів, піклувальників)" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nRishennya_mkv_mayno" name="Копія рішення виконавчого комітету міської ради про встановлення опіки над майном дитини (для опікунів, піклувальників)" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nSviditstvo_odr" name="Копія свідоцтва про укладення або розірвання шлюбу між батьками дитини (у разі наявності)" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nDoc_mayno" name="Документи на право власності на відчужуване майно, де малолітні (неповнолітні) діти мають право власності (користування)" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nDoc_vytyag" name="Витяг з реєстру прав власності на нерухоме відчужуване майно, виданий відповідно до законодавства; у разі наявності" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nDoc_avto" name="Документ, що підтверджеє право власності на автомобіль" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nDoc_hroshi" name="Документ, що підтверджує право володіння дитини грошовими заощадженнями" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nDoc_zemlya" name="Документ, що підтверджує право власності (коритування) на земельну ділянку" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nDocument" name="Документ, що підтверджує право власності, володіння або користування дитини; стосовно чого вчинятиметься правочин" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asWorkerDecision1" name="За результатом розгляду" type="enum" required="true">
           <activiti:value id="rezscan" name="Дозвіл готовий"></activiti:value>
           <activiti:value id="rezpost" name="Готова відмова у видачі дозволу"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="decisionComment1" name="Якщо неможливо надати відповідь на запит громадянина, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="decisionComment1" name="Якщо громадянину відмовлено у наданні дозволу вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
         <activiti:formProperty id="docFile" name="Додати скан-копію офіційної відповіді" type="file"></activiti:formProperty>
       </extensionElements>
     </userTask>
