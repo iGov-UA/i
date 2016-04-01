@@ -1,6 +1,6 @@
 var request = require('request');
-//var config = require('../../config/environment');
-var config = require('../../config');
+var config = require('../../config/environment');
+//var config = require('../../config');
 
 var _ = require('lodash');
 var activiti = require('../../components/activiti');
