@@ -1,8 +1,10 @@
 package org.igov.service.controller;
 
 import org.igov.model.subject.Server;
+import org.igov.util.JSON.JsonRestUtils;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +15,10 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import org.igov.util.JSON.JsonRestUtils;
 
-import static org.hamcrest.Matchers.*;
-import org.junit.Ignore;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.not;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebAppConfiguration
@@ -63,5 +64,4 @@ public class SubjectServerControllerScenario {
                 .param("nID", wrongServerId.toString())).
                 andExpect(status().is5xxServerError());
     }
-
 }
