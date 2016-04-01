@@ -9,7 +9,8 @@ var keypair = require('keypair')
   , bankidUtil = require('./bankid.util')
   , should = require('should')
   , assert = require('assert')
-  , config = require('../../config/environment');
+  //, config = require('../../config/environment');
+  , config = require('../../config');
 
 describe('decrypt object fields', function () {
   before(function (done) {
