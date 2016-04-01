@@ -182,7 +182,8 @@
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<p>
-				ЦНАП розглянув ваше звернення. Документи вірні. Відомості передані до міської ради. <br>
+				ЦНАП розглянув ваше звернення щодо enum{[asPurpose]} прив’язки тимчасової споруди.<br>
+				Документи вірні. Відомості передані до міської ради. <br>
 				Повідомлення про результат розгляду в міській раді буде спрямоване на Ваш e-mail.
 			</p>
 			<br>
@@ -409,11 +410,11 @@
         <activiti:formProperty id="sNumberPassport" name="Реєстраційний номер паспорта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="dStartPassprot" name="Укажіть дату реєстрації паспорту" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="dContine" name="Дата до якої необхідно продовжити строк дії паспорту" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="decide" name="Результат рішення" type="enum" required="true">
-          <activiti:value id="accept" name="Надати паспорт"></activiti:value>
-          <activiti:value id="reject" name="Відмовити"></activiti:value>
+        <activiti:formProperty id="variants4" name="Результат рішення" type="enum" required="true">
+          <activiti:value id="dok_ok4" name="Надати паспорт"></activiti:value>
+          <activiti:value id="dok_bad4" name="Відмовити"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="comment" name="В разі відмови в наданні послуги зазначте підставу для відмови" type="textArea"></activiti:formProperty>        
+        <activiti:formProperty id="comment" name="В разі відмови в наданні послуги зазначте підставу для відмови" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="супровідний текст1" type="invisible" default="Якщо заявка опрацьовано вона буде передана до ЦНАП.Також вам необхідно як найшвидше передати в ЦНАП паспорт прив'язки тимчасової споруди. У разі відмови робота по цій заявці завершена."></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/architecture/zovtyvodu_cnap_430_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markerPassportPrin" name="Continue Passprot Prin" type="markers" default="${markerService.loadFromFile('architecture/PassportTemporaryStructures_Print.json')}"></activiti:formProperty>
@@ -427,10 +428,10 @@
     <sequenceFlow id="flow27" sourceRef="usertask4_green" targetRef="exclusivegateway7"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway7" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow29" name="відмовлено" sourceRef="exclusivegateway7" targetRef="servicetask7">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'reject'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${variants4 == 'dok_bad4'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow28" name="Рішення готове" sourceRef="exclusivegateway7" targetRef="servicetask11">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'accept'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${variants4 == 'dok_ok4'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask11" name="Лист з позитивним рішенням" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
@@ -667,7 +668,7 @@
         <omgdi:waypoint x="500.0" y="442.0"></omgdi:waypoint>
         <omgdi:waypoint x="433.0" y="442.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="60.0" x="433.0" y="422.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="100.0" x="433.0" y="422.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
