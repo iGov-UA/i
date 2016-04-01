@@ -14,8 +14,10 @@ router.post(function (req, res, next) {
 
 
 function getOptions(req) {
-    var config = require('../../../config/environment');
-    var activiti = config.activiti;
+    //var config = require('../../../config/environment');
+  var config = require('../../../config');
+
+  var activiti = config.activiti;
     return {
         protocol: activiti.protocol,
         hostname: activiti.hostname,

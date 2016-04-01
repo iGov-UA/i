@@ -1,5 +1,6 @@
 var request = require('request')
-  , config = require('../../config/environment/index')
+  //, config = require('../../config/environment/index')
+  , config = require('../../config/index')
   , activiti = require('../../components/activiti/index')
   , url = require('url')
   , errors = require('../../components/errors')

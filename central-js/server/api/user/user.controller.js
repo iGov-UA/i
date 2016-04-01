@@ -49,7 +49,9 @@ module.exports.tryCache = function (req, res, next) {
 };
 
 module.exports.index = function (req, res) {
-  var config = require('../../config/environment');
+  //var config = require('../../config/environment');
+  var config = require('../../config');
+
   var type = req.session.type;
   if (type === 'bankid' || type === 'eds') {
     bankidService.syncWithSubject(req.session.access.accessToken, function (err, result) {
