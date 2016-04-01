@@ -1,8 +1,8 @@
 'use strict';
 
 var fs = require('fs');
-//var config = require('./environment');
-var config = require('./index.js');
+var config = require('./environment');
+//var config = require('./index.js');
 var request = require('request');
 
 module.exports = function (app) {

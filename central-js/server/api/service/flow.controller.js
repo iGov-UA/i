@@ -2,8 +2,8 @@
 
 var activiti = require('../../components/activiti');
 
-//var config = require('../../config/environment');
-var config = require('../../config');
+var config = require('../../config/environment');
+//var config = require('../../config');
 
 /*
 var sHostPrefix = config.server.sServerRegion;

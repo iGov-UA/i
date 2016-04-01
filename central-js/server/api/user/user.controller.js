@@ -49,8 +49,8 @@ module.exports.tryCache = function (req, res, next) {
 };
 
 module.exports.index = function (req, res) {
-  //var config = require('../../config/environment');
-  var config = require('../../config');
+  var config = require('../../config/environment');
+  //var config = require('../../config');
 
   var type = req.session.type;
   if (type === 'bankid' || type === 'eds') {

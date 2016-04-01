@@ -13,8 +13,8 @@ var methodOverride = require('method-override');
 var cookieParser = require('cookie-parser');
 var errorHandler = require('errorhandler');
 var path = require('path');
-//var config = require('./environment');
-var config = require('./index.js');
+var config = require('./environment');
+//var config = require('./index.js');
 var session = require('cookie-session');
 
 module.exports = function (app) {
@@ -36,16 +36,16 @@ module.exports = function (app) {
   app.use(methodOverride());
   app.use(cookieParser());
 
-  //if ('prod' === env || 'test-alpha' === env || 'test-beta' === env) {
-  if(!config.bCompile){
+  if ('prod' === env || 'test-alpha' === env || 'test-beta' === env) {
+  //if(config.bCompile){
     app.use(favicon(path.join(config.root, 'public', 'favicon.ico')));
     app.use(express.static(path.join(config.root, 'public')));
     app.set('appPath', config.root + '/public');
     app.use(morgan('dev'));
   }
 
-  //if ('local' === env || 'test' === env) {
-  if (config.bCompile) {
+  if ('local' === env || 'test' === env) {
+  //if (!config.bCompile) {
     app.use(require('connect-livereload')());
     app.use(express.static(path.join(config.root, '.tmp')));
     app.use(express.static(path.join(config.root, 'client')));
