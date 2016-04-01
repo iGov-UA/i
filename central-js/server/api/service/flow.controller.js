@@ -2,7 +2,8 @@
 
 var activiti = require('../../components/activiti');
 
-var config = require('../../config/environment');
+//var config = require('../../config/environment');
+var config = require('../../config');
 
 /*
 var sHostPrefix = config.server.sServerRegion;
@@ -23,7 +24,7 @@ module.exports.getFlowSlots_ServiceData = function (req, res) {
 //          nID_Service: (scope && scope.service && scope.service!==null ? scope.service.nID : null)
 //        };
 //        return $http.get('/api/service/flow/' + scope.serviceData.nID, {params:data}).then(function(response) {
-    
+
     var nID_Server = req.query.nID_Server;
     activiti.getServerRegionHost(nID_Server, function(sHost){
     //  sHost = sHost+'/service';
@@ -39,10 +40,10 @@ module.exports.getFlowSlots_ServiceData = function (req, res) {
 };
 
 module.exports.setFlowSlot_ServiceData = function (req, res) {
-    
+
 //          //$http.post('/api/service/flow/set/' + newValue.nID + '?sURL=' + scope.serviceData.sURL).then(function(response) {
 //          $http.post('/api/service/flow/set/' + newValue.nID + '?nID_Server=' + scope.serviceData.nID_Server).then(function(response) {
-  
+
     var nID_Server = req.query.nID_Server;
     activiti.getServerRegionHost(nID_Server, function(sHost){
         //var sURL = sHost+'/service/object/file/upload_file_to_redis';

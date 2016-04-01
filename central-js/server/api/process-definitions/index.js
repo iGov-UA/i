@@ -5,8 +5,10 @@ router.use(function(req, res, next) {
 	process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 	var processDefinitions = require('./index.controller');
 
-	var config = require('../../config/environment');
-	var activiti = config.activiti;
+	//var config = require('../../config/environment');
+  var config = require('../../config');
+
+  var activiti = config.activiti;
 
         console.log("req.query.nID_Server="+req.query.nID_Server);
         //activiti.getServerRegionURL(req.query.nID_Server);

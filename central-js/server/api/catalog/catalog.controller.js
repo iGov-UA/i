@@ -3,7 +3,8 @@
 var request = require('request')
   , _ = require('lodash')
   , NodeCache = require("node-cache")
-  , config = require('../../config/environment')
+  //, config = require('../../config/environment')
+  , config = require('../../config')
   , activiti = config.activiti
   , errors = require('../../components/errors');
 
