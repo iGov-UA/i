@@ -293,7 +293,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
         List<Task> aTask = taskService.createTaskQuery().processInstanceId(snID_Process).list();
         boolean bProcessClosed = aTask == null || aTask.size() == 0;
-        String sUserTaskName = bProcessClosed ? "" : aTask.get(0).getName();//"(нет назви)"
+        String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();//"(нет назви)"
 
         String sMailTo = JsonRequestDataResolver.getEmail(omRequestBody);
         String sPhone = String.valueOf(JsonRequestDataResolver.getPhone(omRequestBody));
@@ -345,7 +345,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
         List<Task> aTask = taskService.createTaskQuery().processInstanceId(snID_Process).list();
         boolean bProcessClosed = aTask == null || aTask.isEmpty();
-        String sUserTaskName = bProcessClosed ? "" : aTask.get(0).getName();
+        String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();
 
         String sProcessName = oHistoricTaskInstance.getProcessDefinitionId();
         try {

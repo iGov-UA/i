@@ -12,7 +12,7 @@
         <activiti:formProperty id="phone" name="Мобільний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdress_obj" name="Адреса розміщення тимчасової споруди для провадження підприємницької діяльності" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asPurpose" name="Мета звернення" type="enum" writable="false">
+        <activiti:formProperty id="asPurpose" name="Мета звернення" type="enum" required="true">
           <activiti:value id="getPassport" name="Видача паспорта"></activiti:value>
           <activiti:value id="continPassport" name="Продовження дії паспорта"></activiti:value>
           <activiti:value id="editPassport" name="Внесення змін до паспорта"></activiti:value>
@@ -113,7 +113,7 @@
           <activiti:value id="dok_ok" name="Заявку оформлено вірно, передати на опрацювання до міської ради"></activiti:value>
           <activiti:value id="dok_bad" name="Заявка оформлена не вірно відмова."></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="Komment_rishenia" name="Коментар по розгляду заявки;(Вкажіть реєстраційний номер заявки та іншу корисну для міської ради інформацію, в разі відмови поясніть причину відмови)" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="Komment_rishenia" name="Коментар по розгляду заявки;(Вкажіть реєстраційний номер заявки та іншу корисну для міської ради інформацію, в разі відмови поясніть причину відмови)" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="супровідний текст" type="invisible" default="Якщо заявка прийнята, вона буде передана на опрацювання до міської ради. У разі відмови робота по цій заявці завершена."></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/architecture/zovtyvodu_cnap_430_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markerPassportPrin" name="Continue Passprot Prin" type="markers" default="${markerService.loadFromFile('architecture/PassportTemporaryStructures_Print.json')}"></activiti:formProperty>
@@ -409,12 +409,11 @@
         <activiti:formProperty id="sNumberPassport" name="Реєстраційний номер паспорта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="dStartPassprot" name="Укажіть дату реєстрації паспорту" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="dContine" name="Дата до якої необхідно продовжити строк дії паспорту" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="variants4" name="Результат рішення" type="enum" required="true">
+        <activiti:formProperty id="decide" name="Результат рішення" type="enum" required="true">
           <activiti:value id="accept" name="Надати паспорт"></activiti:value>
           <activiti:value id="reject" name="Відмовити"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="comment" name="В разі відмови в наданні послуги зазначте підставу для відмови" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="file_arhitectura" name="Завантажте відповідь" type="file"></activiti:formProperty>
+        <activiti:formProperty id="comment" name="В разі відмови в наданні послуги зазначте підставу для відмови" type="textArea"></activiti:formProperty>        
         <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="супровідний текст1" type="invisible" default="Якщо заявка опрацьовано вона буде передана до ЦНАП.Також вам необхідно як найшвидше передати в ЦНАП паспорт прив'язки тимчасової споруди. У разі відмови робота по цій заявці завершена."></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/architecture/zovtyvodu_cnap_430_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markerPassportPrin" name="Continue Passprot Prin" type="markers" default="${markerService.loadFromFile('architecture/PassportTemporaryStructures_Print.json')}"></activiti:formProperty>
@@ -428,10 +427,10 @@
     <sequenceFlow id="flow27" sourceRef="usertask4_green" targetRef="exclusivegateway7"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway7" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow29" name="відмовлено" sourceRef="exclusivegateway7" targetRef="servicetask7">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${variants4 == 'reject'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'reject'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow28" name="Рішення готове" sourceRef="exclusivegateway7" targetRef="servicetask11">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${variants4 == 'accept'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'accept'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask11" name="Лист з позитивним рішенням" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
