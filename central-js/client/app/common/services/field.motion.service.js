@@ -75,9 +75,9 @@ function FieldMotionService(MarkersFactory) {
       else
         result = formData[fId].value;
       switch(alias.charAt(0)) {
+        case 'b': result = result.toString();
         case 's': result = "'" + result + "'"; break;
         case 'n': result = result ? parseFloat(result) : 0; break;
-        case 'b': result = result.toString();
         default: console.log('invalid alias format, alias:' + alias);
       }
       return result;
