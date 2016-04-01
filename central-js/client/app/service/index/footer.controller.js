@@ -133,7 +133,13 @@ angular.module('app').controller('FooterController', function ($scope) {
       height: 50
     }
     
-    
+    ,{
+      url: 'https://zakupki.prom.ua',
+      alt: 'zakupki.prom.ua',
+      image: 'assets/images/ads/zakupki-prom-ua.png',
+      height: 50
+    }
+      
   ];
 
   function randomizeIndexes(indexes, item, arr) {

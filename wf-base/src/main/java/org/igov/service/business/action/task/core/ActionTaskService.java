@@ -286,101 +286,6 @@ public class ActionTaskService {
         return osTable.toString();
     }
 
-    public static String createTable_TaskProperties_Notification(String saField, Boolean bNew) {
-        if (saField == null || "[]".equals(saField) || "".equals(saField)) {
-            return "";
-        }
-        String sTableStyle;
-        sTableStyle = "<style>table"
-                + " { border-collapse: collapse;"
-                + " width: 100%;"
-                + " max-width: 800px;}"
-                + " table td {"
-                + " border: 1px solid #ddd;"
-                + " text-align:left;"
-                + " padding: 4px;"
-                + " height:40px;}"
-                + " table th {"
-                + " background: #65ABD0;"
-                + " vertical-align: middle;"
-                + " padding: 10px;"
-                + " width:200px;"
-                + " text-align:left;"
-                + " color:#fff;"
-                + " }"
-                + "</style>";
-        //StringBuilder tableStr = new StringBuilder("Поле \t/ Тип \t/ Поточне значення\n");
-
-        /*osTable.append("<td>").append("Поле").append("</td>");
-        osTable.append("<td>").append("Тип").append("</td>");
-        osTable.append("<td>").append("Поточне значення").append("</td>");*/
-        JSONObject oFields = new JSONObject("{ \"soData\":" + saField + "}");
-        JSONArray aField = oFields.getJSONArray("soData");
-        StringBuilder osTable = new StringBuilder();
-        osTable.append(sTableStyle);
-        osTable.append("<table>");
-        osTable.append("<tr>");
-        osTable.append("<th>").append("Поле").append("</th>");
-        if(bNew){
-            osTable.append("<th>").append("Старе значення").append("</th>");
-            osTable.append("<th>").append("Нове значення").append("</th>");
-        }else{
-            osTable.append("<th>").append("Значення").append("</th>");
-        }
-        osTable.append("<th>").append("Коментар").append("</th>");
-        osTable.append("</tr>");
-        for (int i = 0; i < aField.length(); i++) {
-            JSONObject oField = aField.getJSONObject(i);
-            /*Object oID=oField.opt("id");
-            Object oType=oField.opt("type");
-            Object oValue=oField.opt("value");
-            osTable.append("<tr>");
-            osTable.append("<td>").append(oID!=null?oID:"").append("</td>");
-            osTable.append("<td>").append(oType!=null?oType:"").append("</td>");
-            osTable.append("<td>").append(oValue!=null?oValue:"").append("</td>");*/
-        /*
-        sID: item.id,
-        sName: item.name,
-        sType: item.type,
-        sValue: item.value,
-        sValueNew: "",
-        sNotify: $scope.clarifyFields[item.id].text
-        */
-            Object sName=oField.opt("sName");
-            if(sName==null){
-                sName = oField.opt("sID");
-            }
-            if(sName==null){
-                sName = oField.opt("id");
-            }
-            Object oValue=oField.opt("sValue");
-            if(oValue==null){
-                oValue = oField.opt("value");
-            }
-            osTable.append("<tr>");
-            osTable.append("<td>").append(sName!=null?sName:"").append("</td>");
-            if(bNew){
-                Object oValueNew=oField.opt("sValueNew");
-                osTable.append("<td>").append(oValue!=null?oValue:"").append("</td>");
-                osTable.append("<td>").append(oValueNew!=null?oValueNew:"").append("</td>");
-                osTable.append("<td>").append((oValueNew+"").equals(oValue+"")?"(Не змінилось)":"(Змінилось)").append("</td>");
-            }else{
-                Object oNotify=oField.opt("sNotify");
-                osTable.append("<td>").append(oValue!=null?oValue:"").append("</td>");
-                osTable.append("<td>").append(oNotify!=null?oNotify:"").append("</td>");
-            }
-            osTable.append("</tr>");
-            /*osTable.append(record.opt("id") != null ? record.get("id") : "?")
-                    .append(" \t ")
-                    .append(record.opt("type") != null ? record.get("type").toString() : "??")
-                    .append(" \t ")
-                    .append(record.opt("value") != null ? record.get("value").toString() : "")
-                    .append(" \n");*/
-        }
-        osTable.append("</table>");
-        return osTable.toString();
-    }
-
     public TaskQuery buildTaskQuery(String sLogin, String bAssigned) {
         TaskQuery taskQuery = oTaskService.createTaskQuery();
         if (bAssigned != null) {
@@ -639,7 +544,8 @@ public class ActionTaskService {
         return attachmentRequested;
     }
 
-    public void fillTheCSVMapHistoricTasks(String sID_BP, Date dateAt, Date dateTo, List<HistoricTaskInstance> foundResults, SimpleDateFormat sDateCreateDF, List<Map<String, Object>> csvLines, String pattern, Set<String> tasksIdToExclude, String saFieldsCalc, String[] headers) {
+    public void fillTheCSVMapHistoricTasks(String sID_BP, Date dateAt, Date dateTo, List<HistoricTaskInstance> foundResults, SimpleDateFormat sDateCreateDF, List<Map<String, Object>> csvLines, String pattern, 
+    		Set<String> tasksIdToExclude, String saFieldsCalc, String[] headers, String sID_State_BP) {
         if (CollectionUtils.isEmpty(foundResults)) {
             LOG.info(String.format("No historic tasks found for business process %s for date period %s - %s", sID_BP, DATE_TIME_FORMAT.format(dateAt), DATE_TIME_FORMAT.format(dateTo)));
             return;
@@ -685,7 +591,7 @@ public class ActionTaskService {
             }
             Map<String, Object> currRow = new HashMap<>();
             for (int i = 0; i < headers.length; i++) {
-                currRow.put(headers[i], values[i]);
+                currRow.put(headers[i], i < values.length ? values[i] : "");
             }
             csvLines.add(currRow);
         }
@@ -729,7 +635,6 @@ public class ActionTaskService {
         String res = currentRow;
         for (Map.Entry<String, Object> property : data.entrySet()) {
             LOG.info(String.format("Matching property %s:%s with fieldNames", property.getKey(), property.getValue()));
-            //LOG.info("!!!!!!!!!!data: " + data);
             if (currentRow != null && res.contains("${" + property.getKey() + "}")) {
                 LOG.info(String.format("Found field with id %s in the pattern. Adding value to the result", "${" + property.getKey() + "}"));
                 if (property.getValue() != null) {
@@ -748,8 +653,7 @@ public class ActionTaskService {
     private String replaceFormProperties(String currentRow, TaskFormData data) {
         String res = currentRow;
         for (FormProperty property : data.getFormProperties()) {
-            LOG.info(String.format("Matching property %s %s %s with fieldNames", property.getId(), property.getName(), property.getType().getName()));
-            //LOG.info("!!!!!!!!!!getId: " + property.getId() + " getName: " + property.getName() + " getType: " +  property.getType().getName() + " getValue: " +  property.getValue() + "!");
+            LOG.info(String.format("Matching property %s:%s:%s with fieldNames", property.getId(), property.getName(), property.getType().getName()));
             if (currentRow != null && res.contains("${" + property.getId() + "}")) {
                 LOG.info(String.format("Found field with id %s in the pattern. Adding value to the result", "${" + property.getId() + "}"));
                 String sValue = getPropertyValue(property);
@@ -901,7 +805,7 @@ public class ActionTaskService {
     private String getPropertyValue(FormProperty property) {
         String sValue;
         String sType = property.getType().getName();
-        LOG.info("getId:" + property.getId() + " getName: " + property.getName() + " getType: " + sType + " getValue: " + property.getValue());
+        LOG.info("(sType={})", sType);
         if ("enum".equalsIgnoreCase(sType)) {
             sValue = parseEnumProperty(property);
         } else {

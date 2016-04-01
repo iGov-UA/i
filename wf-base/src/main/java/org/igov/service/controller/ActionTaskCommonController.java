@@ -1127,21 +1127,29 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
         // 2. query
         TaskQuery query = taskService.createTaskQuery()
-                .processDefinitionKey(sID_BP).taskCreatedAfter(dBeginDate)
-                .taskCreatedBefore(dEndDate);
+                .processDefinitionKey(sID_BP);
         HistoricTaskInstanceQuery historicQuery = historyService
                 .createHistoricTaskInstanceQuery()
                 .processDefinitionKey(sID_BP);
         if (sTaskEndDateAt != null){
+        	LOG.info("Selecting tasks which were completed after {}", sTaskEndDateAt);
         	historicQuery.taskCompletedAfter(sTaskEndDateAt);
         }
         if (sTaskEndDateTo != null){
+        	LOG.info("Selecting tasks which were completed after {}", sTaskEndDateTo);
         	historicQuery.taskCompletedBefore(sTaskEndDateTo);
         }
-        historicQuery.taskCreatedAfter(dBeginDate)
-                .taskCreatedBefore(dEndDate).includeProcessVariables();
+        if (dateAt != null){
+        	query = query.taskCreatedAfter(dBeginDate);
+        	historicQuery = historicQuery.taskCreatedAfter(dBeginDate);
+        }
+        if (dateTo != null){
+        	query = query.taskCreatedBefore(dEndDate);
+        	historicQuery = historicQuery.taskCreatedBefore(dEndDate);
+        }
+        historicQuery.includeProcessVariables();
         if (sID_State_BP != null) {
-            historicQuery.taskDefinitionKey(sID_State_BP);
+            historicQuery.taskDefinitionKey(sID_State_BP).includeTaskLocalVariables();
         }
         List<HistoricTaskInstance> foundHistoricResults = historicQuery
                 .listPage(nRowStart, nRowsMax);
@@ -1152,10 +1160,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         saFields = oActionTaskService.processSaFields(saFields, foundHistoricResults);
 
         if (sID_State_BP != null) {
-            query = query.taskDefinitionKey(sID_State_BP);
+            query = query.taskDefinitionKey(sID_State_BP).includeTaskLocalVariables();
         }
         List<Task> foundResults = new LinkedList<Task>();
         if (sTaskEndDateAt == null && sTaskEndDateTo == null){
+        	// we need to call runtime query only when non completed tasks are selected.
+        	// if only completed tasks are selected - results of historic query will be used
         	foundResults = query.listPage(nRowStart, nRowsMax);
         }
 
@@ -1202,7 +1212,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             }
             oActionTaskService.fillTheCSVMapHistoricTasks(sID_BP, dBeginDate, dEndDate,
                     foundHistoricResults, sDateCreateDF, csvLines, saFields,
-                    tasksIdToExclude, saFieldsCalc, headers);
+                    tasksIdToExclude, saFieldsCalc, headers, sID_State_BP);
         }
         
         if (saFieldSummary != null) {
