@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="common_cristmas" name="(Загальна послуга) - Звернення до Діда Мороза, Святого Миколая, Санта Клауса" isExecutable="true">
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Ваше прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ваше ім'я" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="Індивідуальний податковий номер" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте відповідь" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="reqType" name="Оберіть кому Ви бажаєте відправити повідомлення " type="enum" required="true">
+          <activiti:value id="1" name="Діду Морозу"></activiti:value>
+          <activiti:value id="2" name="Святому Миколаю"></activiti:value>
+          <activiti:value id="3" name="Санта Клаусу"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="reqDetail" name="Ваше звернення:" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markers" name="markersForValidations" type="markers" default="{}"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <serviceTask id="servicetask12" name="Повідомлення громадянину про обробку заяви" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string>noreply@igov.org.ua</activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string>Ваше звернення до Діда Мороза</activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+ &lt;h3&gt;Хо-хо-хо!&lt;br&gt; &lt;br&gt;
+Вітаю тебе з Новим Роком, ${bankIdfirstName} ${bankIdlastName}!&lt;/h3&gt;
+
+ 
+
+&lt;p&gt;Твоє звернення було ретельно розглянуто нашою спеціальною чарівною комісією! &lt;br&gt; 
+Якщо минулого року ти добре поводився, то твої побажання обов’язково збудуться!*&lt;/p&gt;
+
+&lt;p&gt;У наступному році поводь себе добре, плати податки, хабарів не давай та усіляко сприяй запуску державних послуг України в електронній формі! (наприклад, 
+&lt;a href="https://docs.google.com/presentation/d/1oNZnLxTh7WP15lRidb7JokXFpZAcUAEgQOwgDq_hexw/edit#slide=id.p" target="blank"&gt;ставши Волонтером iGov &lt;/a&gt;)&lt;/p&gt;
+
+
+
+
+                           
+
+&lt;hr style="width: 100%; height: 0; margin: 30px 0 15px 0; background: #dddddd; border: 0; border-bottom: 1px solid #dddddd;" /&gt;
+                                    &lt;p&gt;
+                                        З повагою та любов'ю&lt;br /&gt;
+Дід Мороз&lt;br /&gt;&lt;br /&gt;
+
+                                      *за умови, що нам вистачить фінансування – відверто кажучи, Верховна Рада майже нічого не заклала у наш бюджет!
+                                        &lt;/p&gt;
+                                       
+                                &lt;/td&gt;
+                            &lt;/tr&gt;
+
+
+[pattern/mail/_common_feedback.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask13" name="Повідомлення громадянину про обробку заяви" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string>noreply@igov.org.ua</activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string>Ваше звернення до Святого Миколая</activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+ &lt;h3&gt;Хо-хо-хо!&lt;br&gt; &lt;br&gt;
+Вітаю тебе з Новим Роком, ${bankIdfirstName} ${bankIdlastName}!&lt;/h3&gt;
+
+&lt;p&gt;Твоє звернення було ретельно розглянуто нашою спеціальною чарівною комісією! &lt;br&gt; 
+Якщо минулого року ти добре поводився, то твої побажання обов’язково збудуться!*&lt;/p&gt;
+
+&lt;p&gt;У наступному році поводь себе добре, плати податки, хабарів не давай та усіляко сприяй запуску державних послуг України в електронній формі! (наприклад, 
+&lt;a href="https://docs.google.com/presentation/d/1oNZnLxTh7WP15lRidb7JokXFpZAcUAEgQOwgDq_hexw/edit#slide=id.p" target="blank"&gt;ставши Волонтером iGov &lt;/a&gt;)&lt;/p&gt;
+
+
+
+
+                           
+                           
+
+&lt;hr style="width: 100%; height: 0; margin: 30px 0 15px 0; background: #dddddd; border: 0; border-bottom: 1px solid #dddddd;" /&gt;
+                                    &lt;p&gt;
+                                        З повагою та любов'ю&lt;br /&gt;
+Святий Миколай&lt;br /&gt;&lt;br /&gt;
+
+                                      *за умови, що нам вистачить фінансування – відверто кажучи, Верховна Рада майже нічого не заклала у наш бюджет!
+                                        &lt;/p&gt;
+                                       
+                                &lt;/td&gt;
+                            &lt;/tr&gt;
+
+[pattern/mail/_common_feedback.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask14" name="Повідомлення громадянину про обробку заяви" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string>noreply@igov.org.ua</activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string>Ваше звернення до Санта Клауса</activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+ &lt;h3&gt;Хо-хо-хо!&lt;br&gt; &lt;br&gt;
+Вітаю тебе з Новим Роком, ${bankIdfirstName} ${bankIdlastName}!&lt;/h3&gt;
+
+
+&lt;p&gt;Твоє звернення було ретельно розглянуто нашою спеціальною чарівною комісією! &lt;br&gt; 
+Якщо минулого року ти добре поводився, то твої побажання обов’язково збудуться!*&lt;/p&gt;
+
+&lt;p&gt;У наступному році поводь себе добре, плати податки, хабарів не давай та усіляко сприяй запуску державних послуг України в електронній формі! (наприклад, 
+&lt;a href="https://docs.google.com/presentation/d/1oNZnLxTh7WP15lRidb7JokXFpZAcUAEgQOwgDq_hexw/edit#slide=id.p" target="blank"&gt;ставши Волонтером iGov &lt;/a&gt;)&lt;/p&gt;
+
+
+
+
+                           
+                       
+&lt;hr style="width: 100%; height: 0; margin: 30px 0 15px 0; background: #dddddd; border: 0; border-bottom: 1px solid #dddddd;" /&gt;
+                                    &lt;p&gt;
+                                        З повагою та любов'ю&lt;br /&gt;
+Санта Клаус&lt;br /&gt;&lt;br /&gt;
+
+                                      *за умови, що нам вистачить фінансування – відверто кажучи, Верховна Рада майже нічого не заклала у наш бюджет!
+                                        &lt;/p&gt;
+                                       
+                                &lt;/td&gt;
+                            &lt;/tr&gt;
+
+[pattern/mail/_common_feedback.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow62" name="${reqType=='1'}" sourceRef="exclusivegateway1" targetRef="servicetask12">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${reqType=='1'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow63" name="${reqType=='2'}" sourceRef="exclusivegateway1" targetRef="servicetask13">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${reqType=='2'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow64" name="${reqType=='3'}" sourceRef="exclusivegateway1" targetRef="servicetask14">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${reqType=='3'}]]></conditionExpression>
+    </sequenceFlow>
+    <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
+    <serviceTask id="servicetask15" name="Повідомлення громадянину про обробку заяви" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string>noreply@igov.org.ua</activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string>Звернення до Діда Мороза</activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;&lt;br /&gt;
+
+&lt;p&gt;
+
+&lt;/p&gt;                                 
+
+[pattern/mail/_common_signature_start.html]
+Снігуронька і Сніговик  &lt;br /&gt;
+[pattern/mail/_common_signature_end.html]
+
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask16" name="Повідомлення громадянину про обробку заяви" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string>noreply@igov.org.ua</activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string>Звернення до Санта Клауса</activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;&lt;br /&gt;
+&lt;p&gt;
+
+&lt;/p&gt;                                 
+
+[pattern/mail/_common_signature_start.html]
+головний єльф канцелярії Санти і зграйка святкових оленів &lt;br /&gt;
+[pattern/mail/_common_signature_end.html]
+
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask17" name="Повідомлення громадянину про обробку заяви" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string>noreply@igov.org.ua</activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string>Звернення до Святого Миколая</activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;&lt;br /&gt;
+&lt;p&gt;
+
+&lt;/p&gt;                                 
+
+[pattern/mail/_common_signature_start.html]
+Веселий Віслючок Святого Миколая &lt;br /&gt;
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow69" name="${reqType=='1'}" sourceRef="exclusivegateway2" targetRef="servicetask15">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${reqType=='1'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow70" name="${reqType=='2'}" sourceRef="exclusivegateway2" targetRef="servicetask17">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${reqType=='2'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow71" name="${reqType=='3'}" sourceRef="exclusivegateway2" targetRef="servicetask16">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${reqType=='3'}]]></conditionExpression>
+    </sequenceFlow>
+    <intermediateCatchEvent id="timerintermediatecatchevent1" name="TimerCatchEvent">
+      <timerEventDefinition>
+        <timeDuration>PT12H</timeDuration>
+      </timerEventDefinition>
+    </intermediateCatchEvent>
+    <sequenceFlow id="flow75" sourceRef="timerintermediatecatchevent1" targetRef="exclusivegateway2"></sequenceFlow>
+    <intermediateCatchEvent id="timerintermediatecatchevent2" name="TimerCatchEvent">
+      <timerEventDefinition>
+        <timeDate>2016-01-01T00:01:00</timeDate>
+      </timerEventDefinition>
+    </intermediateCatchEvent>
+    <sequenceFlow id="flow77" sourceRef="timerintermediatecatchevent2" targetRef="exclusivegateway1"></sequenceFlow>
+    <parallelGateway id="parallelgateway1" name="Parallel Gateway"></parallelGateway>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <sequenceFlow id="flow79" sourceRef="servicetask15" targetRef="parallelgateway1"></sequenceFlow>
+    <sequenceFlow id="flow80" sourceRef="servicetask17" targetRef="parallelgateway1"></sequenceFlow>
+    <sequenceFlow id="flow81" sourceRef="servicetask16" targetRef="parallelgateway1"></sequenceFlow>
+    <parallelGateway id="parallelgateway2" name="Parallel Gateway"></parallelGateway>
+    <sequenceFlow id="flow85" sourceRef="parallelgateway2" targetRef="timerintermediatecatchevent1"></sequenceFlow>
+    <sequenceFlow id="flow87" sourceRef="startevent1" targetRef="timerintermediatecatchevent2"></sequenceFlow>
+    <sequenceFlow id="flow88" sourceRef="servicetask12" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow89" sourceRef="servicetask13" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow90" sourceRef="servicetask14" targetRef="endevent1"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_common_cristmas">
+    <bpmndi:BPMNPlane bpmnElement="common_cristmas" id="BPMNPlane_common_cristmas">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="1463.0" y="-230.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="1460.0" y="-93.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask12" id="BPMNShape_servicetask12">
+        <omgdc:Bounds height="64.0" width="185.0" x="1262.0" y="13.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask13" id="BPMNShape_servicetask13">
+        <omgdc:Bounds height="64.0" width="185.0" x="1480.0" y="13.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask14" id="BPMNShape_servicetask14">
+        <omgdc:Bounds height="64.0" width="185.0" x="1690.0" y="13.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="780.0" y="-93.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask15" id="BPMNShape_servicetask15">
+        <omgdc:Bounds height="64.0" width="185.0" x="567.0" y="20.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask16" id="BPMNShape_servicetask16">
+        <omgdc:Bounds height="64.0" width="185.0" x="1010.0" y="20.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask17" id="BPMNShape_servicetask17">
+        <omgdc:Bounds height="64.0" width="185.0" x="800.0" y="20.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="timerintermediatecatchevent1" id="BPMNShape_timerintermediatecatchevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="783.0" y="-157.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="timerintermediatecatchevent2" id="BPMNShape_timerintermediatecatchevent2">
+        <omgdc:Bounds height="35.0" width="35.0" x="1463.0" y="-157.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="parallelgateway1" id="BPMNShape_parallelgateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="1230.0" y="170.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="1555.0" y="210.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="parallelgateway2" id="BPMNShape_parallelgateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="1230.0" y="-160.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow62" id="BPMNEdge_flow62">
+        <omgdi:waypoint x="1480.0" y="-53.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1354.0" y="-34.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1354.0" y="13.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="76.0" x="5.0" y="12.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow63" id="BPMNEdge_flow63">
+        <omgdi:waypoint x="1480.0" y="-53.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1572.0" y="-30.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1572.0" y="13.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="76.0" x="45.0" y="-7.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow64" id="BPMNEdge_flow64">
+        <omgdi:waypoint x="1500.0" y="-73.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1782.0" y="-73.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1782.0" y="13.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="76.0" x="190.0" y="7.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow69" id="BPMNEdge_flow69">
+        <omgdi:waypoint x="800.0" y="-53.0"></omgdi:waypoint>
+        <omgdi:waypoint x="659.0" y="-25.0"></omgdi:waypoint>
+        <omgdi:waypoint x="659.0" y="20.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="76.0" x="-116.0" y="-7.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow70" id="BPMNEdge_flow70">
+        <omgdi:waypoint x="800.0" y="-53.0"></omgdi:waypoint>
+        <omgdi:waypoint x="894.0" y="-29.0"></omgdi:waypoint>
+        <omgdi:waypoint x="892.0" y="20.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="76.0" x="-79.0" y="4.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow71" id="BPMNEdge_flow71">
+        <omgdi:waypoint x="820.0" y="-73.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1102.0" y="-73.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1102.0" y="20.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="76.0" x="3.0" y="28.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow75" id="BPMNEdge_flow75">
+        <omgdi:waypoint x="800.0" y="-122.0"></omgdi:waypoint>
+        <omgdi:waypoint x="800.0" y="-93.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow77" id="BPMNEdge_flow77">
+        <omgdi:waypoint x="1480.0" y="-122.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1480.0" y="-93.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow79" id="BPMNEdge_flow79">
+        <omgdi:waypoint x="659.0" y="84.0"></omgdi:waypoint>
+        <omgdi:waypoint x="659.0" y="189.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1230.0" y="190.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow80" id="BPMNEdge_flow80">
+        <omgdi:waypoint x="892.0" y="84.0"></omgdi:waypoint>
+        <omgdi:waypoint x="892.0" y="189.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1230.0" y="190.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow81" id="BPMNEdge_flow81">
+        <omgdi:waypoint x="1102.0" y="84.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1102.0" y="189.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1230.0" y="190.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow85" id="BPMNEdge_flow85">
+        <omgdi:waypoint x="1230.0" y="-140.0"></omgdi:waypoint>
+        <omgdi:waypoint x="818.0" y="-140.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow87" id="BPMNEdge_flow87">
+        <omgdi:waypoint x="1480.0" y="-195.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1480.0" y="-157.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow88" id="BPMNEdge_flow88">
+        <omgdi:waypoint x="1354.0" y="77.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1354.0" y="227.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1555.0" y="227.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow89" id="BPMNEdge_flow89">
+        <omgdi:waypoint x="1572.0" y="77.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1572.0" y="210.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow90" id="BPMNEdge_flow90">
+        <omgdi:waypoint x="1782.0" y="77.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1782.0" y="227.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1590.0" y="227.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
