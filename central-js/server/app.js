@@ -5,14 +5,14 @@
 'use strict';
 
 // Set default node environment to development
-//process.env.NODE_ENV = process.env.NODE_ENV || 'local';
-process.env.NODE_ENV = process.env.NODE_ENV || './';
+process.env.NODE_ENV = process.env.NODE_ENV || 'local';
+//process.env.NODE_ENV = process.env.NODE_ENV || './';
 
 
 var express = require('express');
+var config = require('./config/environment');
 //var config = require('./config/environment');
-//var config = require('./config/environment');
-var config = require('./config');
+//var config = require('./config');
 
 //var nock = require('nock');
 
