@@ -15,9 +15,9 @@
           <activiti:value id="cansel" name="Анулювання висновку"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="info" name="Зверніть увагу: ця послуга є платною (в розмірі 200,00грн. без ПДВ за один висновок державної санітарно-епідеміологічної експертизи), при заповненні полів треба буде завантажити документ, що засвідчує внесення плати. Ви можете завантажити єлектронну квитанцію, сформовану в інтернет-банку, або скан-копію платіжного доручення з відміткою банку." type="label" default="Детальні реквізити для оплати знаходяться за &lt;a href=&quot;https://drive.google.com/open?id=13jTNTqeUdZArOwDDanwtUAqJcu9UTWrEOVyk9qXIZDE&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;"></activiti:formProperty>
-        <activiti:formProperty id="vibor_performer" name="Оберіть виконавця" type="enum" required="true">
-          <activiti:value id="head" name="Головне управління Держсанепідслужби у Дніпропетровській області"></activiti:value>
-          <activiti:value id="rail" name="Управління на Придніпровській залізниці Головного управління Держсанепідслужби на залізничному транспорті"></activiti:value>
+        <activiti:formProperty id="anVibor_performer" name="Оберіть виконавця" type="enum" required="true">
+          <activiti:value id="1" name="Головне управління Держсанепідслужби у Дніпропетровській області"></activiti:value>
+          <activiti:value id="2" name="Управління на Придніпровській залізниці Головного управління Держсанепідслужби на залізничному транспорті"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="adress" name="Місцезнаходження юридичної особи / місце проживання фізичної особи - підприємця;(у форматі индекс, область, місто (село), вулиця, будинок, квартира)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
@@ -45,11 +45,11 @@
         <activiti:formProperty id="file3" name="Спеціфікація (довідка про повний склад об'єкта експертизи та показники його ідентифікації)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file4" name="Документ власника, що декларує відповідність об'єкта експертизи визначеним в Україні вимогам щодо їх безпеки для здоров'я людини;(документ, що містить дані про показники безпечності)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file5" name="Протоколи досліджень об'єкта експертизи за показниками якості та безпеки, у тому числі якщо дослідження проводились раніше, в іншій лабораторії (установі)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file6" name="Акт про обстеження підприємства (за наявності), висновки галузевих експертиз або фахівців та інші матеріали, що характеризують підприємство" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="file6" name="Акт про обстеження підприємства (за наявності), висновки галузевих експертиз або фахівців та інші матеріали, що характеризують підприємство" type="file"></activiti:formProperty>
         <activiti:formProperty id="file7" name="Документ, який засвідчує настання підстави для переоформлення документу дозвільного характеру;(зміна найменування суб'єкта господарювання - юридичної особи або прізвища, імені, по-батькові фізисної особи - підприємця, зміна місцезнаходження суб'єкта господарювання та інші підстави, встановлені Законом)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file8" name="Бланк документу дозвільного характеру, який непридатний для використання" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file9" name="Документ дозвільного характеру, який підлягає анулюванню" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file11" name="Нормативний документ, та технічна документація, у відповідності до яких виготовлений об’єкт експертизи, а також технологічна документація (процес, регламент, інструкція тощо);(за наявності)" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="file11" name="Нормативний документ, та технічна документація, у відповідності до яких виготовлений об’єкт експертизи, а також технологічна документація (процес, регламент, інструкція тощо);(за наявності)" type="file"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса" type="invisible"></activiti:formProperty>
@@ -60,6 +60,7 @@
         <activiti:formProperty id="substance_2" name="Суть заяви в лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="substance_3" name="Суть заяви в контексті листа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="term" name="Строк виконання" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sRegion" name="регион - Днепр область" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers101" name="Видача висновку" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_1&quot;: {&quot;aField_ID&quot;: [&quot;info&quot;,&quot;scope&quot;,&quot;article&quot;,&quot;country_origin&quot;,&quot;producer&quot;,&quot;requisites_produser&quot;,&quot;data_contract&quot;,&quot;name_applicant&quot;,&quot;country_applicant&quot;,&quot;requisites_applicant&quot;,&quot;contract&quot;,&quot;file1&quot;,&quot;file3&quot;,&quot;file4&quot;,&quot;file5&quot;,&quot;file6&quot;], &quot;asID_Field&quot;: {&quot;sClient&quot;: &quot;vibor_service&quot;},&quot;sCondition&quot;: &quot;[sClient] == 'issue'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers102" name="Переоформлення висновку" type="markers" default="{&quot;motion&quot; : {&quot;ShowFieldsOnCondition_2&quot; : {&quot;aField_ID&quot; : [&quot;file2&quot;,&quot;file7&quot;],&quot;asID_Field&quot; : {&quot;sClient&quot; : &quot;vibor_service&quot;},&quot;sCondition&quot; : &quot;[sClient] == 'restructuring'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers103" name="Видача дублікату висновку" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_3&quot;: {&quot;aField_ID&quot;: [&quot;file8&quot;],&quot;asID_Field&quot; : {&quot;sClient&quot;: &quot;vibor_service&quot;}, &quot;sCondition&quot; : &quot;[sClient] == 'duplicate'&quot;}}}"></activiti:formProperty>
@@ -80,65 +81,41 @@
     <sequenceFlow id="flow4" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <scriptTask id="scripttask1" name="Script pulling data" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
-      var per3 = 'sShapka220'
 var per4 = 'substance'
 var per5 = 'substance_2'
 var per6 = 'substance_3'
 var per7 ='term'
 if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'petropavl'){
-per3 = 'Начальнику Управління, головному державному санітарному лікарю Петропалівського району'
 per7 = 'двох місяців з дня реєстрації заяви'
 }
 if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'nikopol'){
-per3 = 'Начальнику Управління, головному державному санітарному лікарю  Нікопольського району'
 per7 = 'двох місяців з дня реєстрації заяви'
 }
 if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'ordzonikT'){
-per3 = 'Начальнику Управління, головному державному санітарному лікарю м.Орджонікідзе'
 per7 = 'двох місяців з дня реєстрації заяви'
 }
 if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'nikopolT'){
-per3 = 'Начальнику Управління, головному державному санітарному лікарю м.Нікополь'
 per7 = 'двох місяців з дня реєстрації заяви'
 }
 if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'kiev_vish'){
-per3 = 'Начальнику Головного управління Держсанепідслужби у Київський області'
 per7 = 'двох місяців з дня реєстрації заяви'
 }
 if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'kiev_bucha'){
-per3 = 'Начальнику Головного управління Держсанепідслужби у Київський області'
 per7 = 'двох місяців з дня реєстрації заяви'
 }
 if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'vin_teplic'){
-per3 = 'Начальнику Головного управління Держсанепідслужби у Вінницький області'
 per7 = 'двох місяців з дня реєстрації заяви'
 }
 if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'carich'){
-per3 = 'Головному державному санітарному лікарю Царичанського, Петриківського, Магдалинівського району'
 per7 = 'двох місяців з дня реєстрації заяви'
 }
 if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'vilnogirskT'){
-per3 = 'Начальнику Головного управління Держсанепідслужби у Дніпропетровській області'
 per7 = 'двох місяців з дня реєстрації заяви'
 }
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'prav' &amp;&amp; execution.getVariable('vibor_performer') == 'head'){
-per3 = 'Головному державному санітарному лікарю Дніпропетровської області'
+if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'prav'){
 per7 = 'двох місяців з дня реєстрації заяви'
 }
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'prav' &amp;&amp; execution.getVariable('vibor_performer') == 'rail'){
-per3 = 'Начальнику управління на Придніпровській залізниці ГУ Держсанепідслужби на залізничному транспорту'
-per7 = 'двох місяців з дня реєстрації заяви'
-}
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'lev' &amp;&amp; execution.getVariable('vibor_performer') == 'head'){
-per3 = 'Головному державному санітарному лікарю Дніпропетровської області'
-per7 = 'двох місяців з дня реєстрації заяви'
-}
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'lev' &amp;&amp; execution.getVariable('vibor_performer') == 'rail'){
-per3 = 'Начальнику управління на Придніпровській залізниці ГУ Держсанепідслужби на залізничному транспорту'
-per7 = 'двох місяців з дня реєстрації заяви'
-}
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'dndzT'){
-per3 = 'Начальнику Дніпродзержинського міського Управління Головного управління Держсанепідслужби у Дніпропетровській області'
+if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'lev'){
 per7 = 'двох місяців з дня реєстрації заяви'
 }
 if (execution.getVariable('vibor_service') == 'issue'){
@@ -165,7 +142,6 @@ per5 = 'Рішення про анулювання документа дозві
 per6 = 'анулювання'
 per7 = 'п`яти робочих днів'
 }
-execution.setVariable('sShapka220', per3)
 execution.setVariable('substance', per4)
 execution.setVariable('substance_2', per5)
 execution.setVariable('substance_3', per6)
@@ -202,9 +178,9 @@ execution.setVariable('term', per7)
         <activiti:formProperty id="country_applicant" name="Країна реєстрації заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="requisites_applicant" name="Реквізити заявника;(місцезнаходження, телефон, факс, E-mail, WWW)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="contract" name="Документ про повноваження заявника представляти виробника (власника);(договір, контракт, доручення)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="vibor_performer" name="Виконавець" type="enum" writable="false">
-          <activiti:value id="head" name="Головне управління Держсанепідслужби у Дніпропетровській області"></activiti:value>
-          <activiti:value id="rail" name="Управління на Придніпровській залізниці Головного управління Держсанепідслужби на залізничному транспорті"></activiti:value>
+        <activiti:formProperty id="anVibor_performer" name="Оберіть виконавця" type="enum"  writable="false">
+          <activiti:value id="1" name="Головне управління Держсанепідслужби у Дніпропетровській області"></activiti:value>
+          <activiti:value id="2" name="Управління на Придніпровській залізниці Головного управління Держсанепідслужби на залізничному транспорті"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="adminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="number_cnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string" required="true"></activiti:formProperty>
@@ -277,9 +253,9 @@ execution.setVariable('term', per7)
         <activiti:formProperty id="substance_2" name="Суть заяви в лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="substance_3" name="Суть заяви в контексті листа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="term" name="Строк виконання" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="vibor_performer" name="Виконавець" type="enum" writable="false">
-          <activiti:value id="head" name="Головне управління Держсанепідслужби у Дніпропетровській області"></activiti:value>
-          <activiti:value id="rail" name="Управління на Придніпровській залізниці Головного управління Держсанепідслужби на залізничному транспорті"></activiti:value>
+        <activiti:formProperty id="anVibor_performer" name="Оберіть виконавця" type="enum" writable="false">
+          <activiti:value id="1" name="Головне управління Держсанепідслужби у Дніпропетровській області"></activiti:value>
+          <activiti:value id="2" name="Управління на Придніпровській залізниці Головного управління Держсанепідслужби на залізничному транспорті"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="adminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="number_cnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string" writable="false"></activiti:formProperty>
@@ -298,7 +274,7 @@ execution.setVariable('term', per7)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>msvidran@gmail.com</activiti:expression>
+          <activiti:expression>tanyazol@gmail.com</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення. Висновок державної санітарно-епідеміологічної експертизи діючих об’єктів.]]></activiti:string>
