@@ -52,15 +52,18 @@
         <activiti:formProperty id="oContractDate" name="Дата договору оренди земельної ділянки; у форматі ДД.ММ.РРРР" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_ContarctArenda" name="Копія договору оренди земельної ділянки або державний акт на право постійного користування земельною ділянкою" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_DovidkaProVidsutnistDolgaArendi" name="Копія довідки про відсутність заборгованості по орендній платі" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile_DPI_DovidkaProVidsutnistDolgaArendi" name="Копія довідки з ДПІ про плату за землю та  відсутність заборгованості" type="file"></activiti:formProperty>
         <activiti:formProperty id="nFile_ReasonDocument" name="Копія документу, який підтверджує підстави щодо розірвання договору оренди земельної ділянки" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_AktObstezennya" name="Копія Акт обстеження земельної ділянки" type="file"></activiti:formProperty>
         <activiti:formProperty id="nFile_OwnershipInsideBuildings" name="Для вбудованних приміщень обов'язково документ про право власності на приміщення" type="file"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Розкриття атрібутів щодо специфіки вводу" type="markers" default="${markerService.loadFromFile('dneprCnap/dnepr_cnap_190_11.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="Розкриття атрібутів щодо специфіки вводу" type="markers" default="${markerService.loadFromFile('dneprCnap/dnepr_cnap_190_12.json')}"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapka_190" name="На кого пишеться заява" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="[Етап I] Реєстрація звернення, результат обробки вхідних данних (1-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
@@ -102,7 +105,7 @@
         <activiti:formProperty id="sFioNewOwner" name="Новий власник нерухомого майна" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sContractNumber" name="Номер договору оренди земельної ділянки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="oContractDate" name="Дата договору оренди земельної ділянки;(у форматі ДД.ММ.РРРР)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asEnumSelect_Decision_1" name="Обробка заяви (1-й етап)" type="enum">
+        <activiti:formProperty id="asEnumSelect_Decision_1" name="Обробка заяви (1-й етап)" type="enum" required="true">
           <activiti:value id="sEnumElement_Decision_1_Wait" name="Документи передані в Департамент комунальної власності та земельних відносин міської ради"></activiti:value>
           <activiti:value id="sEnumElement_Decision_1_Canc" name="Відмова громадянину у наданні послуги"></activiti:value>
         </activiti:formProperty>
@@ -110,12 +113,13 @@
         <activiti:formProperty id="sExtension_Number" name="Реєстраційний номер" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDate_Registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFioAdmin" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapka_190" name="Керівнику якого робочого органу" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="markers21" name="Настроювання принтформи" type="markers" default="${markerService.loadFromFile('dneprCnap/dnepr_cnap_190_21_Print.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/skv/dndz_cnap_190_print.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${bankId_scan_inn},${nFile_DovirenistConfidant},${nFile_PassportConfidant},${nFile_ContarctArenda}, ${nFile_AdvertLicense}, ${nFile_DovidkaProVidsutnistDolgaArendi}, ${nFile_ReasonDocument}, ${nFile_AktObstezennya}, ${nFile_OwnershipInsideBuildings}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport},${bankId_scan_inn},${nFile_DovirenistConfidant},${nFile_PassportConfidant},${nFile_ContarctArenda}, ${nFile_AdvertLicense}, ${nFile_DovidkaProVidsutnistDolgaArendi}, ${nFile_DPI_DovidkaProVidsutnistDolgaArendi}, ${nFile_ReasonDocument}, ${nFile_AktObstezennya}, ${nFile_OwnershipInsideBuildings}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -162,6 +166,7 @@
         <activiti:formProperty id="sExtension_Number" name="Реєстраційний номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDate_Registrastion" name="Дата реєстрації (у форматі ДД/ММ/РРРР)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFioAdmin" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sShapka_190" name="Керівнику якого робочого органу" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asEnumSelect_StatusDecision_2" name="Статус рішення департаменту" type="enum" required="true">
           <activiti:value id="sEnumElement_Decision_2_ready" name="Рішення готове. Надіслати e-mail про необхідність отримання результату"></activiti:value>
           <activiti:value id="sEnumElement_Decision_2_failure" name="Відмова в видачі рішення"></activiti:value>
