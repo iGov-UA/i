@@ -99,16 +99,16 @@
     <serviceTask id="servicetask3" name="Повідомлення про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>valery.stavitsky@gmail.com</activiti:expression>
+          <activiti:expression><![CDATA[valery.stavitsky@gmail.com]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Нове звернення громадян на тему: ${sTopic}</activiti:expression>
+          <activiti:expression><![CDATA[Нове звернення громадян на тему: ${sTopic}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -116,13 +116,13 @@
     <serviceTask id="servicetask2" name="E-Mail підтвердження отримання запиту" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Звернення на тему: ${sTopic}</activiti:expression>
+          <activiti:expression><![CDATA[Звернення на тему: ${sTopic}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
@@ -219,7 +219,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile},${nFile1},${nFile2},${nFile3}</activiti:expression>
+            <activiti:expression><![CDATA[${nFile},${nFile1},${nFile2},${nFile3}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -235,10 +235,10 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>"${email}"</activiti:expression>
+          <activiti:expression><![CDATA["${email}"]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Звернення на тему: ${sTopic}</activiti:expression>
+          <activiti:expression><![CDATA[Звернення на тему: ${sTopic}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
@@ -331,7 +331,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile},${nFile1},${nFile2},${nFile3}</activiti:expression>
+            <activiti:expression><![CDATA[${nFile},${nFile1},${nFile2},${nFile3}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -343,36 +343,36 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>"${email}"</activiti:expression>
+          <activiti:expression><![CDATA["${email}"]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Звернення на тему: ${sTopic}</activiti:expression>
+          <activiti:expression><![CDATA[Звернення на тему: ${sTopic}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>"${nDocFile}"</activiti:expression>
+          <activiti:expression><![CDATA["${nDocFile}"]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-                                        Ваше звернення на тему: ${sTopic} розглянуте.&lt;br&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+                                    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+                                    <p>
+                                        Ваше звернення на тему: ${sTopic} розглянуте.<br>
                                         Скан-копія рішення знаходиться у додатках до цього листа.
-                                    &lt;/p&gt;
-                                    &lt;p&gt;
+                                    </p>
+                                    <p>
 										Якщо Ви бажаєте отримати фізичну копію цього документа - зверніться до відповідального органу.
-                                    &lt;/p&gt;
-                                    &lt;p&gt;
-                                        ${sAddress},&lt;br&gt;
+                                    </p>
+                                    <p>
+                                        ${sAddress},<br>
 										${sWorkTime}
-									&lt;/p&gt;
-                                    &lt;p&gt;
-									&lt;i&gt;${decisionComment}&lt;/i&gt;
-									&lt;/p&gt;
+									</p>
+                                    <p>
+									<i>${decisionComment}</i>
+									</p>
                                     [pattern/mail/_common_signature_start.html]
-									${sNameOrgan},&lt;br&gt;
+									${sNameOrgan},<br>
 									[pattern/mail/_common_signature_end.html]
 									[pattern/mail/_common_feedback.html]
-                                    [pattern/mail/_common_footer.html]</activiti:expression>
+                                    [pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -455,7 +455,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile},${nFile1},${nFile2},${nFile3}</activiti:expression>
+            <activiti:expression><![CDATA[${nFile},${nFile1},${nFile2},${nFile3}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -544,7 +544,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile},${nFile1},${nFile2},${nFile3}</activiti:expression>
+            <activiti:expression><![CDATA[${nFile},${nFile1},${nFile2},${nFile3}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -630,7 +630,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile},${nFile1},${nFile2},${nFile3}</activiti:expression>
+            <activiti:expression><![CDATA[${nFile},${nFile1},${nFile2},${nFile3}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -639,13 +639,13 @@
     <serviceTask id="servicetask8" name="Сповістити громадянина про прийняте рішення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Звернення на тему: ${sTopic}</activiti:expression>
+          <activiti:expression><![CDATA[Звернення на тему: ${sTopic}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
@@ -759,7 +759,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile},${nFile1},${nFile2},${nFile3}</activiti:expression>
+            <activiti:expression><![CDATA[${nFile},${nFile1},${nFile2},${nFile3}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -772,29 +772,29 @@
     <serviceTask id="servicetask9" name="E-Mail громадянину про успішне виконання рішення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Звернення на тему: ${sTopic}</activiti:expression>
+          <activiti:expression><![CDATA[Звернення на тему: ${sTopic}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+                                    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+                                    <p>
 										Ваш запит був успішно виконаний. 
-								    &lt;/p&gt;
+								    </p>
 									[pattern/mail/_common_signature_start.html]
-									${sNameOrgan},&lt;br&gt;
+									${sNameOrgan},<br>
 									[pattern/mail/_common_signature_end.html]   
-									[pattern/mail/_common_footer.html]</activiti:expression>
+									[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow52" name="Не виконано" sourceRef="exclusivegateway4" targetRef="servicetask10">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResult=='sEnumResult_2' || asResult=='sEnumResult_3' || asResult=='sEnumResult_4' || asResult=='sEnumResult_5'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResult=='sEnumResult_5'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow58" sourceRef="servicetask9" targetRef="endevent4"></sequenceFlow>
     <sequenceFlow id="flow61" name="Відмовити" sourceRef="exclusivegateway6" targetRef="servicetask10">
@@ -803,29 +803,29 @@
     <serviceTask id="servicetask10" name="E-Mail  громадянину про не можливість виконання рішення" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Звернення на тему: ${sTopic}</activiti:expression>
+          <activiti:expression><![CDATA[Звернення на тему: ${sTopic}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+                                    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+                                    <p>
 										Ваш запит не виконано. 
-								    &lt;/p&gt;
-									&lt;p&gt;
+								    </p>
+									<p>
 										В звязку з
 										Коментар держслужбовця:
 										${decisionComment} 
-									&lt;/p&gt;
+									</p>
 									[pattern/mail/_common_signature_start.html]
-									${sNameOrgan},&lt;br&gt;
+									${sNameOrgan},<br>
 									[pattern/mail/_common_signature_end.html]   
-									[pattern/mail/_common_footer.html]</activiti:expression>
+									[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -837,6 +837,15 @@
     </sequenceFlow>
     <exclusiveGateway id="exclusivegateway5" name="Parallel Gateway"></exclusiveGateway>
     <exclusiveGateway id="exclusivegateway6" name="Parallel Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow64" sourceRef="exclusivegateway4" targetRef="servicetask10">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResult=='sEnumResult_2'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow65" sourceRef="exclusivegateway4" targetRef="servicetask10">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResult=='sEnumResult_4'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow66" sourceRef="exclusivegateway4" targetRef="servicetask10">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResult=='sEnumResult_3'}]]></conditionExpression>
+    </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_rda_360">
     <bpmndi:BPMNPlane bpmnElement="rda_360" id="BPMNPlane_rda_360">
@@ -984,7 +993,7 @@
         <omgdi:waypoint x="460.0" y="317.0"></omgdi:waypoint>
         <omgdi:waypoint x="345.0" y="318.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="54.0" x="362.0" y="297.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="100.0" x="362.0" y="297.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow46" id="BPMNEdge_flow46">
@@ -1011,11 +1020,11 @@
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow52" id="BPMNEdge_flow52">
-        <omgdi:waypoint x="94.0" y="490.0"></omgdi:waypoint>
-        <omgdi:waypoint x="227.0" y="472.0"></omgdi:waypoint>
+        <omgdi:waypoint x="74.0" y="470.0"></omgdi:waypoint>
+        <omgdi:waypoint x="217.0" y="439.0"></omgdi:waypoint>
         <omgdi:waypoint x="282.0" y="360.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="64.0" x="148.0" y="462.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="100.0" x="128.0" y="442.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow58" id="BPMNEdge_flow58">
@@ -1027,7 +1036,7 @@
         <omgdi:waypoint x="313.0" y="471.0"></omgdi:waypoint>
         <omgdi:waypoint x="282.0" y="360.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="54.0" x="327.0" y="462.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="100.0" x="327.0" y="462.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow57" id="BPMNEdge_flow57">
@@ -1044,6 +1053,20 @@
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="14.0" width="79.0" x="489.0" y="519.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow64" id="BPMNEdge_flow64">
+        <omgdi:waypoint x="74.0" y="470.0"></omgdi:waypoint>
+        <omgdi:waypoint x="175.0" y="379.0"></omgdi:waypoint>
+        <omgdi:waypoint x="282.0" y="360.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow65" id="BPMNEdge_flow65">
+        <omgdi:waypoint x="74.0" y="470.0"></omgdi:waypoint>
+        <omgdi:waypoint x="200.0" y="421.0"></omgdi:waypoint>
+        <omgdi:waypoint x="282.0" y="360.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow66" id="BPMNEdge_flow66">
+        <omgdi:waypoint x="74.0" y="470.0"></omgdi:waypoint>
+        <omgdi:waypoint x="282.0" y="360.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
