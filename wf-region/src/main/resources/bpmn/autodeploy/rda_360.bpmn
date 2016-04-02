@@ -78,7 +78,7 @@
         <activiti:formProperty id="nFile2" name="Додати документ" type="file"></activiti:formProperty>
         <activiti:formProperty id="nFile3" name="Додати документ" type="file"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('newField.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers2" name="hide fields fro Bogoduhiv" type="markers" default="${markerService.loadFromFile('bogoduhov/zvernenja_do_golovu.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="hide fields from Bogoduhiv" type="markers" default="${markerService.loadFromFile('bogoduhov/zvernenja_do_golovu.json')}"></activiti:formProperty>
         <activiti:formProperty id="sOrgan" name="назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
@@ -134,7 +134,7 @@
 				Спеціалісти відповідального органу оброблять Вашу заявку та нададуть відповідь найближчим часом. 
 			</p>
 			<br>
-			Якщо у Вас є додаткові питаня, Ви можете звернутись за наступними контактами:<br>
+			Якщо у Вас є додаткові питання, Ви можете звернутись за наступними контактами:<br>
 			${sAddress}<br>
 			${sWorkTime}<br>
 			${sPhoneOrgan}<br><br>
@@ -252,7 +252,7 @@
 				<i>{decisionComment}</i>
 			</p>
 			<br>
-			Якщо у Вас є додаткові питаня, Ви можете звернутись за наступними контактами:<br>
+			Якщо у Вас є додаткові питання, Ви можете звернутись за наступними контактами:<br>
 			${sAddress}<br>
 			${sWorkTime}<br>
 			${sPhoneOrgan}<br><br>
@@ -661,7 +661,7 @@
 				${dExecution}										
 			</p>
 			<br>
-			Якщо у Вас є додаткові питаня, Ви можете звернутись за наступними контактами:<br>
+			Якщо у Вас є додаткові питання, Ви можете звернутись за наступними контактами:<br>
 			${sAddress}<br>
 			${sWorkTime}<br>
 			${sPhoneOrgan}<br><br>
@@ -749,10 +749,12 @@
           <activiti:value id="sEnumResult_4" name="залишено без розгляду"></activiti:value>
           <activiti:value id="sEnumResult_5" name="надіслано за належністю"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="aResult" name="Результат розгляду звернення;інформація буде надіслана на електронну пошту громадянина" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="decisionComment" name="Результат розгляду звернення;інформація буде надіслана на електронну пошту громадянина" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sOrgan" name="назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sHeadFIO" name="адреса органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bResult" name="адреса органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="select finish solve from Bogoduhiv" type="markers" default="${markerService.loadFromFile('bogoduhov/zvernenja_do_golovu_finish.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/rda_360.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBodycontrolCard_1" name="[pattern/print/bogoduhiv/bogoduhiv_zvern_354_print.html]" type="invisible" default="Реєстраційно-контрольна карта(Лицьовий бік)" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBodycontrolCard_2" name="[pattern/print/bogoduhiv/bogoduhiv_zvern_354_back_print.html]" type="invisible" default="Реєстраційно-контрольна карта(Зворотний бік)" writable="false"></activiti:formProperty>
@@ -767,7 +769,7 @@
     <sequenceFlow id="flow50" sourceRef="usertask6" targetRef="exclusivegateway4"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow51" name="Виконано" sourceRef="exclusivegateway4" targetRef="servicetask9">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResult=='sEnumResult_1'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bResult=='true'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask9" name="E-Mail громадянину про успішне виконання рішення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
@@ -782,19 +784,24 @@
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-                                    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-                                    <p>
-										Ваш запит був успішно виконаний. 
-								    </p>
-									[pattern/mail/_common_signature_start.html]
-									${sNameOrgan},<br>
-									[pattern/mail/_common_signature_end.html]   
-									[pattern/mail/_common_footer.html]]]></activiti:expression>
+            <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+            <p>
+				Ваш запит був успішно виконаний. 
+			</p>
+			<br>
+			Якщо у Вас є додаткові питання, Ви можете звернутись за наступними контактами:<br>
+			${sAddress}<br>
+			${sWorkTime}<br>
+			${sPhoneOrgan}<br><br>
+			[pattern/mail/_common_signature_start.html]
+			${sNameOrgan}.<br>
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow52" name="Не виконано" sourceRef="exclusivegateway4" targetRef="servicetask10">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResult=='sEnumResult_5'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bResult=='false'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow58" sourceRef="servicetask9" targetRef="endevent4"></sequenceFlow>
     <sequenceFlow id="flow61" name="Відмовити" sourceRef="exclusivegateway6" targetRef="servicetask10">
@@ -813,19 +820,24 @@
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-                                    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-                                    <p>
-										Ваш запит не виконано. 
-								    </p>
-									<p>
-										В звязку з
-										Коментар держслужбовця:
-										${decisionComment} 
-									</p>
-									[pattern/mail/_common_signature_start.html]
-									${sNameOrgan},<br>
-									[pattern/mail/_common_signature_end.html]   
-									[pattern/mail/_common_footer.html]]]></activiti:expression>
+			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+			<p>
+				Ваш запит не виконано. 
+		   	</p>
+			<p>
+				В звязку з
+				Коментар держслужбовця:
+				${decisionComment} 
+			</p>
+			<br>
+			Якщо у Вас є додаткові питання, Ви можете звернутись за наступними контактами:<br>
+			${sAddress}<br>
+			${sWorkTime}<br>
+			${sPhoneOrgan}<br><br>
+			[pattern/mail/_common_signature_start.html]
+			${sNameOrgan}.<br>
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -837,15 +849,6 @@
     </sequenceFlow>
     <exclusiveGateway id="exclusivegateway5" name="Parallel Gateway"></exclusiveGateway>
     <exclusiveGateway id="exclusivegateway6" name="Parallel Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow64" sourceRef="exclusivegateway4" targetRef="servicetask10">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResult=='sEnumResult_2'}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow65" sourceRef="exclusivegateway4" targetRef="servicetask10">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResult=='sEnumResult_4'}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow66" sourceRef="exclusivegateway4" targetRef="servicetask10">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResult=='sEnumResult_3'}]]></conditionExpression>
-    </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_rda_360">
     <bpmndi:BPMNPlane bpmnElement="rda_360" id="BPMNPlane_rda_360">
@@ -993,7 +996,7 @@
         <omgdi:waypoint x="460.0" y="317.0"></omgdi:waypoint>
         <omgdi:waypoint x="345.0" y="318.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="362.0" y="297.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="54.0" x="362.0" y="297.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow46" id="BPMNEdge_flow46">
@@ -1016,12 +1019,12 @@
         <omgdi:waypoint x="74.0" y="470.0"></omgdi:waypoint>
         <omgdi:waypoint x="74.0" y="433.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="48.0" x="13.0" y="460.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="100.0" x="13.0" y="460.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow52" id="BPMNEdge_flow52">
         <omgdi:waypoint x="74.0" y="470.0"></omgdi:waypoint>
-        <omgdi:waypoint x="217.0" y="439.0"></omgdi:waypoint>
+        <omgdi:waypoint x="241.0" y="463.0"></omgdi:waypoint>
         <omgdi:waypoint x="282.0" y="360.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="14.0" width="100.0" x="128.0" y="442.0"></omgdc:Bounds>
@@ -1051,22 +1054,8 @@
         <omgdi:waypoint x="480.0" y="510.0"></omgdi:waypoint>
         <omgdi:waypoint x="480.0" y="550.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="79.0" x="489.0" y="519.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="100.0" x="489.0" y="519.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow64" id="BPMNEdge_flow64">
-        <omgdi:waypoint x="74.0" y="470.0"></omgdi:waypoint>
-        <omgdi:waypoint x="175.0" y="379.0"></omgdi:waypoint>
-        <omgdi:waypoint x="282.0" y="360.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow65" id="BPMNEdge_flow65">
-        <omgdi:waypoint x="74.0" y="470.0"></omgdi:waypoint>
-        <omgdi:waypoint x="200.0" y="421.0"></omgdi:waypoint>
-        <omgdi:waypoint x="282.0" y="360.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow66" id="BPMNEdge_flow66">
-        <omgdi:waypoint x="74.0" y="470.0"></omgdi:waypoint>
-        <omgdi:waypoint x="282.0" y="360.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
