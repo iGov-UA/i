@@ -429,7 +429,7 @@ public class ActionTaskService {
 
     private String addCalculatedFields(String saFieldsCalc, TaskInfo curTask, String currentRow) {
         HistoricTaskInstance details = oHistoryService.createHistoricTaskInstanceQuery().includeProcessVariables().taskId(curTask.getId()).singleResult();
-        LOG.info("Process variables of the task {}:{}", curTask.getId(), details.getProcessVariables());
+        LOG.info("Process variables of the task {}:{}: {}", curTask.getId(), saFieldsCalc, details.getProcessVariables());
         if (details != null && details.getProcessVariables() != null) {
             Set<String> headersExtra = new HashSet<>();
             for (String key : details.getProcessVariables().keySet()) {
@@ -440,6 +440,7 @@ public class ActionTaskService {
             saFieldsCalc = StringUtils.substringAfter(saFieldsCalc, "\"");
             saFieldsCalc = StringUtils.substringBeforeLast(saFieldsCalc, "\"");
             for (String expression : saFieldsCalc.split(";")) {
+            	LOG.info("Processing expression: {}", expression);
                 String variableName = StringUtils.substringBefore(expression, "=");
                 String condition = StringUtils.substringAfter(expression, "=");
                 LOG.info("Checking variable with (name={}, condition={}, expression={}) ", variableName, condition, expression);
