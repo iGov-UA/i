@@ -1,7 +1,9 @@
 package org.igov.model.subject;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.igov.model.core.Entity;
 
+import javax.persistence.Column;
 import java.util.List;
 
 /**
@@ -11,14 +13,47 @@ import java.util.List;
  */
 public class NewSubject {
 
-    @JsonProperty(value="sLogin")
-    private String sLogin;
+    @JsonProperty(value = "sID")
+    private String sID;
 
-    @JsonProperty(value="aSubjectHuman")
-    private NewSubjectHuman aSubjectHuman;
+    @JsonProperty(value = "sLabel")
+    private String sLabel;
+
+    @JsonProperty(value = "sLabelShort")
+    private String sLabelShort;
 
     @JsonProperty(value = "aSubjectAccountContact")
     private transient List<NewSubjectContact> aSubjectAccountContact;
+
+    @JsonProperty(value = "oSubjectHuman")
+    private transient NewSubjectHuman oSubjectHuman;
+
+    @JsonProperty(value = "oSubjectOrgan")
+    private transient NewSubjectOrgan oSubjectOrgan;
+
+    public String getsID() {
+        return sID;
+    }
+
+    public void setsID(String sID) {
+        this.sID = sID;
+    }
+
+    public String getsLabel() {
+        return sLabel;
+    }
+
+    public void setsLabel(String sLabel) {
+        this.sLabel = sLabel;
+    }
+
+    public String getsLabelShort() {
+        return sLabelShort;
+    }
+
+    public void setsLabelShort(String sLabelShort) {
+        this.sLabelShort = sLabelShort;
+    }
 
     public List<NewSubjectContact> getaSubjectAccountContact() {
         return aSubjectAccountContact;
@@ -28,37 +63,19 @@ public class NewSubject {
         this.aSubjectAccountContact = aSubjectAccountContact;
     }
 
-    public NewSubjectHuman getaSubjectHuman() {
-        return aSubjectHuman;
+    public NewSubjectHuman getoSubjectHuman() {
+        return oSubjectHuman;
     }
 
-    public void setaSubjectHuman(NewSubjectHuman aSubjectHuman) {
-        this.aSubjectHuman = aSubjectHuman;
+    public void setoSubjectHuman(NewSubjectHuman oSubjectHuman) {
+        this.oSubjectHuman = oSubjectHuman;
     }
 
-    public String getaSubjectLogin() {
-        return sLogin;
+    public NewSubjectOrgan getoSubjectOrgan() {
+        return oSubjectOrgan;
     }
 
-    public void setaSubjectLogin(String aSubjectLogin) {
-        this.sLogin = aSubjectLogin;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
-
-        NewSubject that = (NewSubject) o;
-
-        return !(sLogin != null ? !sLogin.equals(that.sLogin) : that.sLogin != null);
-
-    }
-
-    @Override
-    public int hashCode() {
-        return sLogin != null ? sLogin.hashCode() : 0;
+    public void setoSubjectOrgan(NewSubjectOrgan oSubjectOrgan) {
+        this.oSubjectOrgan = oSubjectOrgan;
     }
 }
