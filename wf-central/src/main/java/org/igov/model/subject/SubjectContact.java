@@ -1,6 +1,5 @@
 package org.igov.model.subject;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -47,7 +46,7 @@ public class SubjectContact extends Entity {
 public static NewSubjectContact getNewSubjectContact(SubjectContact subjectContact){
     NewSubjectContact newSubjectContact = new NewSubjectContact();
     newSubjectContact.setsValue(subjectContact.getsValue());
-    newSubjectContact.setSubjectContactType(subjectContact.getSubjectContactType());
+    newSubjectContact.setoSubjectContactType(subjectContact.getSubjectContactType());
     newSubjectContact.setId(subjectContact.getId());
     newSubjectContact.setsDate(subjectContact.getsDate());
     return  newSubjectContact;

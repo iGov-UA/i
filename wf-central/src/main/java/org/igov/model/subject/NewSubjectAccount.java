@@ -17,9 +17,6 @@ public class NewSubjectAccount {
     @JsonProperty(value="oSubject")
     private NewSubject oSubject;
 
-
-
-
     public NewSubject getoSubject() {
         return oSubject;
     }
