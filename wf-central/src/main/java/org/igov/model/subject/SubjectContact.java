@@ -41,7 +41,14 @@ public class SubjectContact extends Entity {
     @Column(name="sDate")
     private DateTime sDate;
    
-
+public static NewSubjectContact getNewSubjectContact(SubjectContact subjectContact){
+    NewSubjectContact newSubjectContact = new NewSubjectContact();
+    newSubjectContact.setsValue(subjectContact.getsValue());
+    newSubjectContact.setSubjectContactType(subjectContact.getSubjectContactType());
+    newSubjectContact.setId(subjectContact.getId());
+    newSubjectContact.setsDate(subjectContact.getsDate());
+    return  newSubjectContact;
+}
     public Subject getSubject() {
         return subject;
     }

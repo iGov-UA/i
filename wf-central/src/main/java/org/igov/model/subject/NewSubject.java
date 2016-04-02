@@ -25,6 +25,9 @@ public class NewSubject {
     @JsonProperty(value = "aSubjectAccountContact")
     private transient List<NewSubjectContact> aSubjectAccountContact;
 
+    @JsonProperty(value = "oSubjectHuman")
+    private transient NewSubjectHuman oSubjectHuman;
+
     public String getsID() {
         return sID;
     }
@@ -55,5 +58,13 @@ public class NewSubject {
 
     public void setaSubjectAccountContact(List<NewSubjectContact> aSubjectAccountContact) {
         this.aSubjectAccountContact = aSubjectAccountContact;
+    }
+
+    public NewSubjectHuman getoSubjectHuman() {
+        return oSubjectHuman;
+    }
+
+    public void setoSubjectHuman(NewSubjectHuman oSubjectHuman) {
+        this.oSubjectHuman = oSubjectHuman;
     }
 }
