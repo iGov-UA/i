@@ -14,6 +14,9 @@ import org.joda.time.DateTime;
 import org.igov.util.JSON.JsonDateTimeDeserializer;
 import org.igov.util.JSON.JsonDateTimeSerializer;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * User: goodg_000
  * Date: 27.12.2015
@@ -48,6 +51,14 @@ public static NewSubjectContact getNewSubjectContact(SubjectContact subjectConta
     newSubjectContact.setId(subjectContact.getId());
     newSubjectContact.setsDate(subjectContact.getsDate());
     return  newSubjectContact;
+}
+    public static List<NewSubjectContact> getNewSubjectContact(List<SubjectContact> subjectContactList){
+        List<NewSubjectContact> newSubjectContactList = new LinkedList<>();
+        for (SubjectContact subjectContact : subjectContactList) {
+            NewSubjectContact newSubjectContact = getNewSubjectContact(subjectContact);
+            newSubjectContactList.add(newSubjectContact);
+        }
+      return  newSubjectContactList;
 }
     public Subject getSubject() {
         return subject;

@@ -28,6 +28,9 @@ public class NewSubject {
     @JsonProperty(value = "oSubjectHuman")
     private transient NewSubjectHuman oSubjectHuman;
 
+    @JsonProperty(value = "oSubjectOrgan")
+    private transient NewSubjectOrgan oSubjectOrgan;
+
     public String getsID() {
         return sID;
     }
@@ -66,5 +69,13 @@ public class NewSubject {
 
     public void setoSubjectHuman(NewSubjectHuman oSubjectHuman) {
         this.oSubjectHuman = oSubjectHuman;
+    }
+
+    public NewSubjectOrgan getoSubjectOrgan() {
+        return oSubjectOrgan;
+    }
+
+    public void setoSubjectOrgan(NewSubjectOrgan oSubjectOrgan) {
+        this.oSubjectOrgan = oSubjectOrgan;
     }
 }

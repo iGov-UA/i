@@ -829,7 +829,9 @@ public class SubjectController {
     Map<String, Set<NewSubjectAccount>> getSubjectsBy(
             @ApiParam(value = "Массив с логинами чиновников в виде json", required = false) @RequestParam(value = "saAccount", required = false) String saAccount,
             @ApiParam(value = "Ид сервера", required = false) @RequestParam(value = "nID_Server", required = false) Long nID_Server,
+            @ApiParam(value = "Не показывать подробности про организации и чиновников", required = false, defaultValue = "false") @RequestParam(value = "bSkipDetails", required = false ,defaultValue = "false") boolean bSkipDetails,
             @ApiParam(value = "Массив с типами аакаунтов  в виде json", required = false) @RequestParam(value = "nID_SubjectAccountType", required = false) Long nID_SubjectAccountType) throws CommonServiceException {
+
         Map<String, Set<NewSubjectAccount>> result = new HashMap<>();
 
         if (saAccount == null&& nID_Server == null&& nID_SubjectAccountType == null) {
@@ -848,12 +850,12 @@ public class SubjectController {
                         "Error! SubjectAccountType not found for id=" + 1, HttpStatus.NOT_FOUND);
             }
 
-            result.put("aSubjectAccount", getSubjectBy(saAccount, 1L, nID_Server));
+            result.put("aSubjectAccount", getSubjectBy(saAccount, 1L, nID_Server,bSkipDetails));
         }
         return result;
     }
 
-    private  Set<NewSubjectAccount>getSubjectBy(String saLogin, Long nID_SubjectAccountType, Long nID_Server) {
+    private  Set<NewSubjectAccount>getSubjectBy(String saLogin, Long nID_SubjectAccountType, Long nID_Server, boolean bSkipDetails) {
         Set<NewSubjectAccount> newSubjectSet = new HashSet<>();
         Long nID_Subject;
         Subject subject;
@@ -868,7 +870,7 @@ public class SubjectController {
                     List<SubjectContact> subjectContacts = subjectContactDao.findContacts(subject);
                     LOG.info("subjectContacts: " + subjectContacts);
                     subject.setaSubjectAccountContact(subjectContacts);
-                    newSubjectSet.add(Subject.getNewSubjectAccount(subject, login, subjectHumanDao.getSubjectHuman(subject)));
+                    newSubjectSet.add(Subject.getNewSubjectAccount(bSkipDetails,subject, login, subjectHumanDao.getSubjectHuman(subject), subjectOrganDao.getSubjectOrgan(subject)));
                 }
             }
         }

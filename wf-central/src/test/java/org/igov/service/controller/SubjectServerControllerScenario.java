@@ -65,14 +65,20 @@ public class SubjectServerControllerScenario {
                 andExpect(status().is5xxServerError());
     }
 
+    @Ignore
     @Test
-    public void shouldReturnJsonWithoutDuplications() throws Exception {
+    public void shouldReturnJsonWithoutLoginDuplications() throws Exception {
+        String withDetails = mockMvc.perform(get("/subject/getSubjectsBy")
+                .param("saAccount", "[\"Barmaley\",\"GrekD\"]")
+                .param("nID_SubjectAccountType", "1"))
+                .andReturn().getResponse().getContentAsString();
+        System.out.println(withDetails);
 
-        String jsonData = mockMvc.perform(get("/subject/getSubjectsBy")
-                .param("saAccount", "[\"Barmaley\"]")
-                .param("nID_SubjectAccountType", "1")).
-                andReturn().getResponse().getContentAsString();
-
-        System.out.println(jsonData);
+        String outputWithoutDetails = mockMvc.perform(get("/subject/getSubjectsBy")
+                .param("saAccount", "[\"Barmaley\",\"GrekD\"]")
+                .param("nID_SubjectAccountType", "1")
+                .param("bSkipDetails", "true"))
+                .andReturn().getResponse().getContentAsString();
+        System.out.println(outputWithoutDetails);
     }
 }

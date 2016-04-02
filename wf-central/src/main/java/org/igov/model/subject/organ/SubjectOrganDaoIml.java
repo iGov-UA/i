@@ -2,6 +2,7 @@ package org.igov.model.subject.organ;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
+import org.igov.model.subject.SubjectHuman;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
@@ -48,6 +49,14 @@ public class SubjectOrganDaoIml extends GenericEntityDao<SubjectOrgan> implement
     @Override
     public SubjectOrgan getSubjectOrgan(Long nID) {
         return findById(nID).orNull();
+    }
+
+    @Override
+    public SubjectOrgan getSubjectOrgan(Subject subject) {
+        Long subjectId = subject.getId();
+        Criteria criteria = createCriteria();
+        criteria.createCriteria("oSubject").add(Restrictions.eq("id", subjectId));
+        return (SubjectOrgan) criteria.uniqueResult();
     }
 
     @SuppressWarnings("unchecked" /* православно тут все... */)

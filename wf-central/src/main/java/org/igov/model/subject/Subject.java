@@ -2,6 +2,7 @@ package org.igov.model.subject;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.igov.model.core.Entity;
+import org.igov.model.subject.organ.SubjectOrgan;
 
 import javax.persistence.Column;
 import java.util.ArrayList;
@@ -21,31 +22,30 @@ public class Subject extends Entity {
     @JsonProperty(value = "sLabelShort")
     @Column(name = "sLabelShort", nullable = true)
     private String sLabelShort;
-    
+
     @JsonProperty(value = "aSubjectAccountContact")
     private transient List<SubjectContact> aSubjectAccountContact;
 
-    public static NewSubjectAccount getNewSubjectAccount(Subject subject, String login,SubjectHuman subjectHuman){
-        NewSubjectAccount newSubjectAccount = new NewSubjectAccount();
-        newSubjectAccount.setsLogin(login);
+    public static NewSubjectAccount getNewSubjectAccount(boolean bSkipDetails,Subject subject, String login, SubjectHuman subjectHuman,
+            SubjectOrgan subjectOrgan) {
         NewSubject newSubject = new NewSubject();
         newSubject.setsLabelShort(subject.getsLabelShort());
         newSubject.setsLabel(subject.getsLabel());
         newSubject.setsID(subject.getsID());
-        newSubject.setoSubjectHuman(SubjectHuman
-                .getNewSubjectHuman(subjectHuman));
+
+        List<SubjectContact> subjectContactList = subject.getaSubjectAccountContact();
+        newSubject.setaSubjectAccountContact(SubjectContact.getNewSubjectContact(subjectContactList));
+
+        if(!bSkipDetails){
+        if(subjectHuman!=null){
+        newSubject.setoSubjectHuman(SubjectHuman.getNewSubjectHuman(subjectHuman));}
+        if(subjectOrgan!=null){
+        newSubject.setoSubjectOrgan(SubjectOrgan.getNewSubjectOrgan(subjectOrgan));}}
+
+        NewSubjectAccount newSubjectAccount = new NewSubjectAccount();
+        newSubjectAccount.setsLogin(login);
         newSubjectAccount.setoSubject(newSubject);
-        newSubjectAccount.getoSubject()
-                .setaSubjectAccountContact(Subject.getNewSubjectAccountContacts(subject));
         return newSubjectAccount;
-    }
-    private static List<NewSubjectContact> getNewSubjectAccountContacts(Subject subject){
-        List<NewSubjectContact> newSubjectContactsList = new ArrayList<>();
-        for (SubjectContact subjectContact : subject.getaSubjectAccountContact()) {
-            NewSubjectContact newSubjectContact = SubjectContact.getNewSubjectContact(subjectContact);
-            newSubjectContactsList.add(newSubjectContact);
-        }
-        return newSubjectContactsList;
     }
 
     public String getsID() {
