@@ -821,20 +821,18 @@ public class SubjectController {
             + "Пример:\n"
             + "https://test.igov.org.ua/wf/service/subject/getSubjectsBy\n\n"
             +"что-бы протестировать эту чать кода надо 1) запустить проэкт 2)ввести дефолтные парольи логин из 'нашего хозяйства' "
-            +" 3)ввести в адресную строку типа этой (без слешей)http://localhost:8080/service/subject/getSubjectsBy?nID_Server=0&saLogin=[\"Barmaley\",\"GrekD\"] 4)ввести вторые логин и пароль из 'нашего хозяйства' "
+            +" 3)ввести в адресную строку типа этой (без слешей)http://localhost:8080/service/subject/getSubjectsBy?nID_Server=0&saAccount=[\"Barmaley\",\"GrekD\"] 4)ввести вторые логин и пароль из 'нашего хозяйства' "
             + "Ответ:\n"
             + "\n```\n")
     @RequestMapping(value = "/getSubjectsBy", method = RequestMethod.GET, headers = {JSON_TYPE})
     public @ResponseBody
-    Map<String, Set<NewSubject>> getSubjectsBy(
-            @ApiParam(value = "Массив с логинами чиновников в виде json", required = false) @RequestParam(value = "saLogin", required = false) String saLogin,
-            @ApiParam(value = "Массив с логинами групп в виде json", required = false) @RequestParam(value = "saGroup", required = false) String saGroup,
+    Map<String, Set<NewSubjectAccount>> getSubjectsBy(
+            @ApiParam(value = "Массив с логинами чиновников в виде json", required = false) @RequestParam(value = "saAccount", required = false) String saAccount,
             @ApiParam(value = "Ид сервера", required = false) @RequestParam(value = "nID_Server", required = false) Long nID_Server,
-            @ApiParam(value = "Массив с внешними логинами  в виде json", required = false) @RequestParam(value = "saLoginExternal", required = false) String saLoginExternal,
             @ApiParam(value = "Массив с типами аакаунтов  в виде json", required = false) @RequestParam(value = "nID_SubjectAccountType", required = false) Long nID_SubjectAccountType) throws CommonServiceException {
-        Map<String, Set<NewSubject>> result = new HashMap<>();
+        Map<String, Set<NewSubjectAccount>> result = new HashMap<>();
 
-        if (saLogin == null && saGroup == null&& nID_Server == null&& saLoginExternal == null&& nID_SubjectAccountType == null) {
+        if (saAccount == null&& nID_Server == null&& nID_SubjectAccountType == null) {
             throw new CommonServiceException(
                     ExceptionCommonController.BUSINESS_ERROR_CODE,
                     "Ошибка! Укажите хотя бы параметры: saLogin,nID_Server",
@@ -847,18 +845,16 @@ public class SubjectController {
             }
             if (subjectAccountType == null) {
                 throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
-                        "Error! SubjectAccountType not founf for id=" + 1, HttpStatus.NOT_FOUND);
+                        "Error! SubjectAccountType not found for id=" + 1, HttpStatus.NOT_FOUND);
             }
 
-            result.put("aSubjectAccount", getSubjectBy(saLoginExternal, 1L, nID_Server));
-            result.get("aSubjectAccount").addAll(getSubjectBy(saLogin, 1L, nID_Server));
-            result.get("aSubjectAccount").addAll(getSubjectBy(saGroup, 1L, nID_Server));
+            result.put("aSubjectAccount", getSubjectBy(saAccount, 1L, nID_Server));
         }
         return result;
     }
 
-    private  Set<NewSubject>getSubjectBy(String saLogin, Long nID_SubjectAccountType, Long nID_Server) {
-        Set<NewSubject> newSubjectSet = new HashSet<>();
+    private  Set<NewSubjectAccount>getSubjectBy(String saLogin, Long nID_SubjectAccountType, Long nID_Server) {
+        Set<NewSubjectAccount> newSubjectSet = new HashSet<>();
         Long nID_Subject;
         Subject subject;
         if (saLogin != null) {
@@ -872,7 +868,7 @@ public class SubjectController {
                     List<SubjectContact> subjectContacts = subjectContactDao.findContacts(subject);
                     LOG.info("subjectContacts: " + subjectContacts);
                     subject.setaSubjectAccountContact(subjectContacts);
-                    newSubjectSet.add(Subject.getNewSubject(subject,login));
+                    newSubjectSet.add(Subject.getNewSubjectAccount(subject, login));
                 }
             }
         }

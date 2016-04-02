@@ -25,17 +25,17 @@ public class Subject extends Entity {
     @JsonProperty(value = "aSubjectAccountContact")
     private transient List<SubjectContact> aSubjectAccountContact;
 
-    public static NewSubject getNewSubject(Subject subject, String login){
+    public static NewSubjectAccount getNewSubjectAccount(Subject subject, String login){
+        NewSubjectAccount newSubjectAccount = new NewSubjectAccount();
+        newSubjectAccount.setsLogin(login);
         NewSubject newSubject = new NewSubject();
-        newSubject.setaSubjectLogin(login);
-        NewSubjectHuman newSubjectHuman = new NewSubjectHuman();
-        newSubjectHuman.setsLabelShort(subject.sLabelShort);
-        newSubjectHuman.setsLabel(subject.getsLabel());
-        newSubjectHuman.setsID(subject.getsID());
-        newSubject.setaSubjectHuman(newSubjectHuman);
-        newSubject.setaSubjectAccountContact(Subject.getNewSubjectAccountContacts(subject));
+        newSubject.setsLabelShort(subject.getsLabelShort());
+        newSubject.setsLabel(subject.getsLabel());
+        newSubject.setsID(subject.getsID());
+        newSubjectAccount.setoSubject(newSubject);
+        newSubjectAccount.getoSubject().setaSubjectAccountContact(Subject.getNewSubjectAccountContacts(subject));
 
-        return newSubject;
+        return newSubjectAccount;
     }
     private static List<NewSubjectContact> getNewSubjectAccountContacts(Subject subject){
         List<NewSubjectContact> newSubjectContactsList = new ArrayList<>();
