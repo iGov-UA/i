@@ -102,14 +102,14 @@ angular.module('app').config(function($stateProvider) {
             return {
               loggedIn: true
             };
-          }).catch(function() {
-            return $q.reject(null);
+          }).catch(function(error) {
+            return $q.reject('Пользователь не авторизован');
           });
         },
         BankIDAccount: function($q, BankIDService) {
           return BankIDService.account().then(function(result){
             if(!result){
-              return $q.reject(null);
+              return $q.reject('Отсутствуют данные пользователя');
             } else {
               return result;
             }
@@ -171,7 +171,7 @@ angular.module('app').config(function($stateProvider) {
          var nLimit = oService.nOpenedLimit;
          //console.log('[allowOrder]countOrder.nOpened='+countOrder.nOpened+",nLimit="+nLimit);
          if (nLimit === 0) { return true; }
- 
+
           //console.log('[allowOrder]countOrder.nOpened='+countOrder.nOpened+",nLimit="+nLimit);
           return nLimit !== countOrder.nOpened;
         },
