@@ -6,7 +6,9 @@ router.use(function(req, res, next) {
 	var processDefinitions = require('./index.controller');
 
 	var config = require('../../config/environment');
-	var activiti = config.activiti;
+  //var config = require('../../config');
+
+  var activiti = config.activiti;
 
         console.log("req.query.nID_Server="+req.query.nID_Server);
         //activiti.getServerRegionURL(req.query.nID_Server);

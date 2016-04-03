@@ -10,52 +10,57 @@
         <activiti:formProperty id="email" name="E-Mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPlase_of_reg" name="Ваша адреса реєстрації" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asVid" name="Вид звернення" type="enum" required="true">
+          <activiti:value id="zajava" name="заява (клопотання)"></activiti:value>
+          <activiti:value id="propozicia" name="пропозиція"></activiti:value>
+          <activiti:value id="skarga" name="скарга"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sTopic" name="Тема звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sMessageText" name="Текст Заяви" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sReplyForm" name="Форма відповіді" type="enum" required="true">
+        <activiti:formProperty id="asSpecialStatus" name="Чи маєте Ви особливий статус" type="enum" required="true">
+          <activiti:value id="sEnumStatusYes" name="Так"></activiti:value>
+          <activiti:value id="sEnumStatusNo" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asHowCategory" name="Оберіть категорію до якої Ви відноситесь" type="enum" default="sNo1" required="true">
+          <activiti:value id="sNo1" name=" "></activiti:value>
+          <activiti:value id="sEnumCat1" name="Учасник війни"></activiti:value>
+          <activiti:value id="sEnumCat2" name="Дитина війни"></activiti:value>
+          <activiti:value id="sEnumCat3" name="Інвалід Великої Вітчизняної війни"></activiti:value>
+          <activiti:value id="sEnumCat4" name="Інвалід війни"></activiti:value>
+          <activiti:value id="sEnumCat5" name="Учасник бойових дій"></activiti:value>
+          <activiti:value id="sEnumCat6" name="Ветеран праці"></activiti:value>
+          <activiti:value id="sEnumCat7" name="Інвалід I групи"></activiti:value>
+          <activiti:value id="sEnumCat8" name="Інвалід II групи"></activiti:value>
+          <activiti:value id="sEnumCat9" name="Інвалід III групи"></activiti:value>
+          <activiti:value id="sEnumCat10" name="Дитина-інвалід"></activiti:value>
+          <activiti:value id="sEnumCat11" name="Одинока мати"></activiti:value>
+          <activiti:value id="sEnumCat12" name="Мати-героїня"></activiti:value>
+          <activiti:value id="sEnumCat13" name="Багатодітна сім'я"></activiti:value>
+          <activiti:value id="sEnumCat14" name="Особа, що потерпіла від Чорнобильської катастрофи"></activiti:value>
+          <activiti:value id="sEnumCat15" name="Учасник ліквідації наслідків аварії на Чорнобильській АЕС"></activiti:value>
+          <activiti:value id="sEnumCat16" name="Герой України"></activiti:value>
+          <activiti:value id="sEnumCat17" name="Герой Радянського Союзу"></activiti:value>
+          <activiti:value id="sEnumCat18" name="Герой Соціалістичної Праці"></activiti:value>
+          <activiti:value id="sEnumCat19" name="Дитина"></activiti:value>
+          <activiti:value id="sEnumCat20" name="Інші категорії"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asHowSocStatus" name="Оберіть соціальний стан" type="enum" required="true">
+          <activiti:value id="sEnumSoc1" name="Пенсіонер"></activiti:value>
+          <activiti:value id="sEnumSoc2" name="Робітник"></activiti:value>
+          <activiti:value id="sEnumSoc3" name="Селянин"></activiti:value>
+          <activiti:value id="sEnumSoc4" name="Працівник бюджетної сфери"></activiti:value>
+          <activiti:value id="sEnumSoc5" name="Державний службовець"></activiti:value>
+          <activiti:value id="sEnumSoc6" name="Військовослужбовець"></activiti:value>
+          <activiti:value id="sEnumSoc7" name="Підприємець"></activiti:value>
+          <activiti:value id="sEnumSoc8" name="Безробітний"></activiti:value>
+          <activiti:value id="sEnumSoc9" name="Учень, студент"></activiti:value>
+          <activiti:value id="sEnumSoc10" name="Служитель релігійної організації"></activiti:value>
+          <activiti:value id="sEnumSoc11" name="Особа, що позбавлена волі; особа, воля якої обмежена"></activiti:value>
+          <activiti:value id="sEnumSoc12" name="Інші"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asResultWay" name="Форма відповіді" type="enum" required="true">
           <activiti:value id="physcial" name="Фізична копія"></activiti:value>
           <activiti:value id="digital" name="Електронна версія"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asKindHandling" name="Вид звернення" type="enum" required="true">
-          <activiti:value id="sEnumKind_1" name="пропозиція (зауваження)"></activiti:value>
-          <activiti:value id="sEnumKind_2" name="заява (клопотання)"></activiti:value>
-          <activiti:value id="sEnumKind_3" name="скарга"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asCategory" name="За категоріями авторів звернень" type="enum" default="sEnumCategory_0">
-          <activiti:value id="sEnumCategory_0" name="Інші категорії"></activiti:value>
-          <activiti:value id="sEnumCategory_1" name="Учасник війни"></activiti:value>
-          <activiti:value id="sEnumCategory_2" name="Дитина війни"></activiti:value>
-          <activiti:value id="sEnumCategory_3" name="Інвалід Великої Вітчизняної війни"></activiti:value>
-          <activiti:value id="sEnumCategory_4" name="Інвалід війни"></activiti:value>
-          <activiti:value id="sEnumCategory_5" name="Учасник бойових дій"></activiti:value>
-          <activiti:value id="sEnumCategory_6" name="Ветеран праці"></activiti:value>
-          <activiti:value id="sEnumCategory_7" name="Інвалід I групи"></activiti:value>
-          <activiti:value id="sEnumCategory_8" name="Інвалід II групи"></activiti:value>
-          <activiti:value id="sEnumCategory_9" name="Інвалід III групи"></activiti:value>
-          <activiti:value id="sEnumCategory_10" name="Дитина-інвалід"></activiti:value>
-          <activiti:value id="sEnumCategory_11" name="Одинока мати"></activiti:value>
-          <activiti:value id="sEnumCategory_12" name="Мати-героїня"></activiti:value>
-          <activiti:value id="sEnumCategory_13" name="Багатодітна сім'я"></activiti:value>
-          <activiti:value id="sEnumCategory_14" name="Особа, що потерпіла від Чорнобильської катастрофи"></activiti:value>
-          <activiti:value id="sEnumCategory_15" name="Учасник ліквідації наслідків аварії  на  Чорнобильській АЄС"></activiti:value>
-          <activiti:value id="sEnumCategory_16" name="Герой України"></activiti:value>
-          <activiti:value id="sEnumCategory_17" name="Герой Радянського Союзу"></activiti:value>
-          <activiti:value id="sEnumCategory_18" name="Герой Соціалістичної Праці"></activiti:value>
-          <activiti:value id="sEnumCategory_19" name="Дитина"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asSocial" name="За соціальним станом авторів звернень" type="enum" default="sEnumSoc_0">
-          <activiti:value id="sEnumSoc_0" name="Інші"></activiti:value>
-          <activiti:value id="sEnumSoc_1" name="Пенсіонер"></activiti:value>
-          <activiti:value id="sEnumSoc_2" name="Робітник"></activiti:value>
-          <activiti:value id="sEnumSoc_3" name="Селянин"></activiti:value>
-          <activiti:value id="sEnumSoc_4" name="Працівник бюджетної сфери"></activiti:value>
-          <activiti:value id="sEnumSoc_5" name="Державний службовець"></activiti:value>
-          <activiti:value id="sEnumSoc_6" name="Військовослужбовець"></activiti:value>
-          <activiti:value id="sEnumSoc_7" name="Підприємець"></activiti:value>
-          <activiti:value id="sEnumSoc_8" name="Безробітний"></activiti:value>
-          <activiti:value id="sEnumSoc_9" name="Учень, студент"></activiti:value>
-          <activiti:value id="sEnumSoc_10" name="Служитель релігійної організації"></activiti:value>
-          <activiti:value id="sEnumSoc_11" name="Особа, що позбавлена волі; особа, воля якої обмежена"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asNumber" name="Це перше звернення?" type="enum" default="sFirst">
           <activiti:value id="sFirst" name="первинне"></activiti:value>
@@ -73,13 +78,15 @@
         <activiti:formProperty id="nFile2" name="Додати документ" type="file"></activiti:formProperty>
         <activiti:formProperty id="nFile3" name="Додати документ" type="file"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('newField.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers2" name="hide fields fro Bogoduhiv" type="markers" default="${markerService.loadFromFile('bogoduhov/zvernenja_do_golovu.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="hide fields from Bogoduhiv" type="markers" default="${markerService.loadFromFile('bogoduhov/zvernenja_do_golovu.json')}"></activiti:formProperty>
         <activiti:formProperty id="sOrgan" name="назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sHeadFIO" name="Голова" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи ЦНАП" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон для справок" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bFlagRda360" name="Флаг процесса" type="invisible" default="easy"></activiti:formProperty>
         <activiti:formProperty id="flag" name="Флаг таймера" type="invisible" default="false"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -92,16 +99,16 @@
     <serviceTask id="servicetask3" name="Повідомлення про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>valery.stavitsky@gmail.com</activiti:expression>
+          <activiti:expression><![CDATA[valery.stavitsky@gmail.com]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Нове звернення громадян на тему: ${sTopic}</activiti:expression>
+          <activiti:expression><![CDATA[Нове звернення громадян на тему: ${sTopic}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -109,34 +116,39 @@
     <serviceTask id="servicetask2" name="E-Mail підтвердження отримання запиту" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Звернення на тему: ${sTopic}</activiti:expression>
+          <activiti:expression><![CDATA[Звернення на тему: ${sTopic}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-										Ваш запит був успішно зареєстрований у нашій системі. 
-								    &lt;/p&gt;
-									&lt;p&gt;
-										Спеціалісти відповідального органу оброблять Вашу заявку та нададуть відповідь найближчим часом. 
-									&lt;/p&gt;
-									[pattern/mail/_common_signature_start.html]
-									${sNameOrgan},&lt;br&gt;
-									[pattern/mail/_common_signature_end.html]   
-									[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+			<p>
+				Ваш запит був успішно зареєстрований у нашій системі. 
+		    </p>
+			<p>
+				Спеціалісти відповідального органу оброблять Вашу заявку та нададуть відповідь найближчим часом. 
+			</p>
+			<br>
+			Якщо у Вас є додаткові питання, Ви можете звернутись за наступними контактами:<br>
+			${sAddress}<br>
+			${sWorkTime}<br>
+			${sPhoneOrgan}<br><br>
+			[pattern/mail/_common_signature_start.html]
+			${sNameOrgan}.<br>
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow15" sourceRef="servicetask2" targetRef="exclusivegateway2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow41" name="Старий процесс" sourceRef="exclusivegateway2" targetRef="usertask1">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Public_SubjectOrganJoin!='khar_bogod'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bFlagRda360=='easy'}]]></conditionExpression>
     </sequenceFlow>
     <userTask id="usertask1" name="Первинна перевірка даних" activiti:candidateGroups="rda_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
@@ -144,9 +156,55 @@
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPlase_of_reg" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asVid" name="Вид звернення" type="enum" writable="false">
+          <activiti:value id="zajava" name="заява (клопотання)"></activiti:value>
+          <activiti:value id="propozicia" name="пропозиція"></activiti:value>
+          <activiti:value id="skarga" name="скарга"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sTopic" name="Тема звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sMessageText" name="Текст Заяви" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sReplyForm" name="Форма відповіді" type="enum" writable="false">
+        <activiti:formProperty id="asSpecialStatus" name="Чи має громадянин особливий статус" type="enum" writable="false">
+          <activiti:value id="sEnumStatusYes" name="Так"></activiti:value>
+          <activiti:value id="sEnumStatusNo" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asHowCategory" name="Категорія громадянина" type="enum" writable="false">
+          <activiti:value id="sNo1" name=" "></activiti:value>
+          <activiti:value id="sEnumCat1" name="Учасник війни"></activiti:value>
+          <activiti:value id="sEnumCat2" name="Дитина війни"></activiti:value>
+          <activiti:value id="sEnumCat3" name="Інвалід Великої Вітчизняної війни"></activiti:value>
+          <activiti:value id="sEnumCat4" name="Інвалід війни"></activiti:value>
+          <activiti:value id="sEnumCat5" name="Учасник бойових дій"></activiti:value>
+          <activiti:value id="sEnumCat6" name="Ветеран праці"></activiti:value>
+          <activiti:value id="sEnumCat7" name="Інвалід I групи"></activiti:value>
+          <activiti:value id="sEnumCat8" name="Інвалід II групи"></activiti:value>
+          <activiti:value id="sEnumCat9" name="Інвалід III групи"></activiti:value>
+          <activiti:value id="sEnumCat10" name="Дитина-інвалід"></activiti:value>
+          <activiti:value id="sEnumCat11" name="Одинока мати"></activiti:value>
+          <activiti:value id="sEnumCat12" name="Мати-героїня"></activiti:value>
+          <activiti:value id="sEnumCat13" name="Багатодітна сім'я"></activiti:value>
+          <activiti:value id="sEnumCat14" name="Особа, що потерпіла від Чорнобильської катастрофи"></activiti:value>
+          <activiti:value id="sEnumCat15" name="Учасник ліквідації наслідків аварії на Чорнобильській АЕС"></activiti:value>
+          <activiti:value id="sEnumCat16" name="Герой України"></activiti:value>
+          <activiti:value id="sEnumCat17" name="Герой Радянського Союзу"></activiti:value>
+          <activiti:value id="sEnumCat18" name="Герой Соціалістичної Праці"></activiti:value>
+          <activiti:value id="sEnumCat19" name="Дитина"></activiti:value>
+          <activiti:value id="sEnumCat20" name="Інші категорії"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asHowSocStatus" name="Соціальний стан громадянина" type="enum" writable="false">
+          <activiti:value id="sEnumSoc1" name="Пенсіонер"></activiti:value>
+          <activiti:value id="sEnumSoc2" name="Робітник"></activiti:value>
+          <activiti:value id="sEnumSoc3" name="Селянин"></activiti:value>
+          <activiti:value id="sEnumSoc4" name="Працівник бюджетної сфери"></activiti:value>
+          <activiti:value id="sEnumSoc5" name="Державний службовець"></activiti:value>
+          <activiti:value id="sEnumSoc6" name="Військовослужбовець"></activiti:value>
+          <activiti:value id="sEnumSoc7" name="Підприємець"></activiti:value>
+          <activiti:value id="sEnumSoc8" name="Безробітний"></activiti:value>
+          <activiti:value id="sEnumSoc9" name="Учень, студент"></activiti:value>
+          <activiti:value id="sEnumSoc10" name="Служитель релігійної організації"></activiti:value>
+          <activiti:value id="sEnumSoc11" name="Особа, що позбавлена волі; особа, воля якої обмежена"></activiti:value>
+          <activiti:value id="sEnumSoc12" name="Інші"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asResultWay" name="Форма відповіді" type="enum" writable="false">
           <activiti:value id="physcial" name="Фізична копія"></activiti:value>
           <activiti:value id="digital" name="Електронна версія"></activiti:value>
         </activiti:formProperty>
@@ -161,7 +219,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile},${nFile1},${nFile2},${nFile3}</activiti:expression>
+            <activiti:expression><![CDATA[${nFile},${nFile1},${nFile2},${nFile3}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -177,25 +235,31 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>"${email}"</activiti:expression>
+          <activiti:expression><![CDATA["${email}"]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Звернення на тему: ${sTopic}</activiti:expression>
+          <activiti:expression><![CDATA[Звернення на тему: ${sTopic}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-                                        Ваше звернення на тему: ${sTopic} розглянуте.&lt;br&gt;
-                                        На жаль змушені відмовити Вам у реєстрації звернення.
-                                    &lt;/p&gt;
-                                    &lt;p&gt;
-									Коментар державного службовця: &lt;br&gt;
-									&lt;i&gt;${decisionComment}&lt;/i&gt;
-									&lt;/p&gt;
-                                    [pattern/mail/_common_signature_start.html]
-									${sNameOrgan}.&lt;/p&gt;
-                                    [pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+			<p>
+	            Ваше звернення на тему: ${sTopic} розглянуте.<br>
+	            На жаль змушені відмовити Вам у реєстрації звернення.
+		    </p>
+			<p>
+				Коментар державного службовця: <br>
+				<i>{decisionComment}</i>
+			</p>
+			<br>
+			Якщо у Вас є додаткові питання, Ви можете звернутись за наступними контактами:<br>
+			${sAddress}<br>
+			${sWorkTime}<br>
+			${sPhoneOrgan}<br><br>
+			[pattern/mail/_common_signature_start.html]
+			${sNameOrgan}.<br>
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -210,9 +274,55 @@
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPlase_of_reg" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asVid" name="Вид звернення" type="enum" writable="false">
+          <activiti:value id="zajava" name="заява (клопотання)"></activiti:value>
+          <activiti:value id="propozicia" name="пропозиція"></activiti:value>
+          <activiti:value id="skarga" name="скарга"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sTopic" name="Тема звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sMessageText" name="Текст Заяви" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sReplyForm" name="Форма відповіді" type="enum" writable="false">
+        <activiti:formProperty id="asSpecialStatus" name="Чи має громадянин особливий статус" type="enum" writable="false">
+          <activiti:value id="sEnumStatusYes" name="Так"></activiti:value>
+          <activiti:value id="sEnumStatusNo" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asHowCategory" name="Категорія громадянина" type="enum" writable="false">
+          <activiti:value id="sNo1" name=" "></activiti:value>
+          <activiti:value id="sEnumCat1" name="Учасник війни"></activiti:value>
+          <activiti:value id="sEnumCat2" name="Дитина війни"></activiti:value>
+          <activiti:value id="sEnumCat3" name="Інвалід Великої Вітчизняної війни"></activiti:value>
+          <activiti:value id="sEnumCat4" name="Інвалід війни"></activiti:value>
+          <activiti:value id="sEnumCat5" name="Учасник бойових дій"></activiti:value>
+          <activiti:value id="sEnumCat6" name="Ветеран праці"></activiti:value>
+          <activiti:value id="sEnumCat7" name="Інвалід I групи"></activiti:value>
+          <activiti:value id="sEnumCat8" name="Інвалід II групи"></activiti:value>
+          <activiti:value id="sEnumCat9" name="Інвалід III групи"></activiti:value>
+          <activiti:value id="sEnumCat10" name="Дитина-інвалід"></activiti:value>
+          <activiti:value id="sEnumCat11" name="Одинока мати"></activiti:value>
+          <activiti:value id="sEnumCat12" name="Мати-героїня"></activiti:value>
+          <activiti:value id="sEnumCat13" name="Багатодітна сім'я"></activiti:value>
+          <activiti:value id="sEnumCat14" name="Особа, що потерпіла від Чорнобильської катастрофи"></activiti:value>
+          <activiti:value id="sEnumCat15" name="Учасник ліквідації наслідків аварії на Чорнобильській АЕС"></activiti:value>
+          <activiti:value id="sEnumCat16" name="Герой України"></activiti:value>
+          <activiti:value id="sEnumCat17" name="Герой Радянського Союзу"></activiti:value>
+          <activiti:value id="sEnumCat18" name="Герой Соціалістичної Праці"></activiti:value>
+          <activiti:value id="sEnumCat19" name="Дитина"></activiti:value>
+          <activiti:value id="sEnumCat20" name="Інші категорії"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asHowSocStatus" name="Соціальний стан громадянина" type="enum" writable="false">
+          <activiti:value id="sEnumSoc1" name="Пенсіонер"></activiti:value>
+          <activiti:value id="sEnumSoc2" name="Робітник"></activiti:value>
+          <activiti:value id="sEnumSoc3" name="Селянин"></activiti:value>
+          <activiti:value id="sEnumSoc4" name="Працівник бюджетної сфери"></activiti:value>
+          <activiti:value id="sEnumSoc5" name="Державний службовець"></activiti:value>
+          <activiti:value id="sEnumSoc6" name="Військовослужбовець"></activiti:value>
+          <activiti:value id="sEnumSoc7" name="Підприємець"></activiti:value>
+          <activiti:value id="sEnumSoc8" name="Безробітний"></activiti:value>
+          <activiti:value id="sEnumSoc9" name="Учень, студент"></activiti:value>
+          <activiti:value id="sEnumSoc10" name="Служитель релігійної організації"></activiti:value>
+          <activiti:value id="sEnumSoc11" name="Особа, що позбавлена волі; особа, воля якої обмежена"></activiti:value>
+          <activiti:value id="sEnumSoc12" name="Інші"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asResultWay" name="Форма відповіді" type="enum" writable="false">
           <activiti:value id="physcial" name="Фізична копія"></activiti:value>
           <activiti:value id="digital" name="Електронна версія"></activiti:value>
         </activiti:formProperty>
@@ -221,7 +331,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile},${nFile1},${nFile2},${nFile3}</activiti:expression>
+            <activiti:expression><![CDATA[${nFile},${nFile1},${nFile2},${nFile3}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -233,42 +343,42 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>"${email}"</activiti:expression>
+          <activiti:expression><![CDATA["${email}"]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Звернення на тему: ${sTopic}</activiti:expression>
+          <activiti:expression><![CDATA[Звернення на тему: ${sTopic}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>"${nDocFile}"</activiti:expression>
+          <activiti:expression><![CDATA["${nDocFile}"]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-                                        Ваше звернення на тему: ${sTopic} розглянуте.&lt;br&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+                                    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+                                    <p>
+                                        Ваше звернення на тему: ${sTopic} розглянуте.<br>
                                         Скан-копія рішення знаходиться у додатках до цього листа.
-                                    &lt;/p&gt;
-                                    &lt;p&gt;
+                                    </p>
+                                    <p>
 										Якщо Ви бажаєте отримати фізичну копію цього документа - зверніться до відповідального органу.
-                                    &lt;/p&gt;
-                                    &lt;p&gt;
-                                        ${sAddress},&lt;br&gt;
+                                    </p>
+                                    <p>
+                                        ${sAddress},<br>
 										${sWorkTime}
-									&lt;/p&gt;
-                                    &lt;p&gt;
-									&lt;i&gt;${decisionComment}&lt;/i&gt;
-									&lt;/p&gt;
+									</p>
+                                    <p>
+									<i>${decisionComment}</i>
+									</p>
                                     [pattern/mail/_common_signature_start.html]
-									${sNameOrgan},&lt;br&gt;
+									${sNameOrgan},<br>
 									[pattern/mail/_common_signature_end.html]
 									[pattern/mail/_common_feedback.html]
-                                    [pattern/mail/_common_footer.html]</activiti:expression>
+                                    [pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow43" sourceRef="servicetask7" targetRef="endevent3"></sequenceFlow>
     <sequenceFlow id="flow63" name="Для богодухова" sourceRef="exclusivegateway2" targetRef="usertask3">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Public_SubjectOrganJoin=='khar_bogod'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bFlagRda360=='hard'}]]></conditionExpression>
     </sequenceFlow>
     <userTask id="usertask3" name="Первинна перевірка данних наданих громадянином" activiti:candidateGroups="rda_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
@@ -276,52 +386,57 @@
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPlase_of_reg" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asVid" name="Вид звернення" type="enum" writable="false">
+          <activiti:value id="zajava" name="заява (клопотання)"></activiti:value>
+          <activiti:value id="propozicia" name="пропозиція"></activiti:value>
+          <activiti:value id="skarga" name="скарга"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sTopic" name="Тема звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sMessageText" name="Текст Заяви" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sReplyForm" name="Форма відповіді" type="enum" writable="false">
+        <activiti:formProperty id="asSpecialStatus" name="Чи має громадянин особливий статус" type="enum" writable="false">
+          <activiti:value id="sEnumStatusYes" name="Так"></activiti:value>
+          <activiti:value id="sEnumStatusNo" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asHowCategory" name="Категорія громадянина" type="enum" writable="false">
+          <activiti:value id="sNo1" name=" "></activiti:value>
+          <activiti:value id="sEnumCat1" name="Учасник війни"></activiti:value>
+          <activiti:value id="sEnumCat2" name="Дитина війни"></activiti:value>
+          <activiti:value id="sEnumCat3" name="Інвалід Великої Вітчизняної війни"></activiti:value>
+          <activiti:value id="sEnumCat4" name="Інвалід війни"></activiti:value>
+          <activiti:value id="sEnumCat5" name="Учасник бойових дій"></activiti:value>
+          <activiti:value id="sEnumCat6" name="Ветеран праці"></activiti:value>
+          <activiti:value id="sEnumCat7" name="Інвалід I групи"></activiti:value>
+          <activiti:value id="sEnumCat8" name="Інвалід II групи"></activiti:value>
+          <activiti:value id="sEnumCat9" name="Інвалід III групи"></activiti:value>
+          <activiti:value id="sEnumCat10" name="Дитина-інвалід"></activiti:value>
+          <activiti:value id="sEnumCat11" name="Одинока мати"></activiti:value>
+          <activiti:value id="sEnumCat12" name="Мати-героїня"></activiti:value>
+          <activiti:value id="sEnumCat13" name="Багатодітна сім'я"></activiti:value>
+          <activiti:value id="sEnumCat14" name="Особа, що потерпіла від Чорнобильської катастрофи"></activiti:value>
+          <activiti:value id="sEnumCat15" name="Учасник ліквідації наслідків аварії на Чорнобильській АЕС"></activiti:value>
+          <activiti:value id="sEnumCat16" name="Герой України"></activiti:value>
+          <activiti:value id="sEnumCat17" name="Герой Радянського Союзу"></activiti:value>
+          <activiti:value id="sEnumCat18" name="Герой Соціалістичної Праці"></activiti:value>
+          <activiti:value id="sEnumCat19" name="Дитина"></activiti:value>
+          <activiti:value id="sEnumCat20" name="Інші категорії"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asHowSocStatus" name="Соціальний стан громадянина" type="enum" writable="false">
+          <activiti:value id="sEnumSoc1" name="Пенсіонер"></activiti:value>
+          <activiti:value id="sEnumSoc2" name="Робітник"></activiti:value>
+          <activiti:value id="sEnumSoc3" name="Селянин"></activiti:value>
+          <activiti:value id="sEnumSoc4" name="Працівник бюджетної сфери"></activiti:value>
+          <activiti:value id="sEnumSoc5" name="Державний службовець"></activiti:value>
+          <activiti:value id="sEnumSoc6" name="Військовослужбовець"></activiti:value>
+          <activiti:value id="sEnumSoc7" name="Підприємець"></activiti:value>
+          <activiti:value id="sEnumSoc8" name="Безробітний"></activiti:value>
+          <activiti:value id="sEnumSoc9" name="Учень, студент"></activiti:value>
+          <activiti:value id="sEnumSoc10" name="Служитель релігійної організації"></activiti:value>
+          <activiti:value id="sEnumSoc11" name="Особа, що позбавлена волі; особа, воля якої обмежена"></activiti:value>
+          <activiti:value id="sEnumSoc12" name="Інші"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asResultWay" name="Форма відповіді" type="enum" writable="false">
           <activiti:value id="physcial" name="Фізична копія"></activiti:value>
           <activiti:value id="digital" name="Електронна версія"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asKindHandling" name="Вид звернення" type="enum" writable="false">
-          <activiti:value id="sEnumKind_1" name="пропозиція (зауваження)"></activiti:value>
-          <activiti:value id="sEnumKind_2" name="заява (клопотання)"></activiti:value>
-          <activiti:value id="sEnumKind_3" name="скарга"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asCategory" name="За категоріями авторів звернень" type="enum" default="sEnumCategory_0" writable="false">
-          <activiti:value id="sEnumCategory_0" name="Інші категорії"></activiti:value>
-          <activiti:value id="sEnumCategory_1" name="Учасник війни"></activiti:value>
-          <activiti:value id="sEnumCategory_2" name="Дитина війни"></activiti:value>
-          <activiti:value id="sEnumCategory_3" name="Інвалід Великої Вітчизняної війни"></activiti:value>
-          <activiti:value id="sEnumCategory_4" name="Інвалід війни"></activiti:value>
-          <activiti:value id="sEnumCategory_5" name="Учасник бойових дій"></activiti:value>
-          <activiti:value id="sEnumCategory_6" name="Ветеран праці"></activiti:value>
-          <activiti:value id="sEnumCategory_7" name="Інвалід I групи"></activiti:value>
-          <activiti:value id="sEnumCategory_8" name="Інвалід II групи"></activiti:value>
-          <activiti:value id="sEnumCategory_9" name="Інвалід III групи"></activiti:value>
-          <activiti:value id="sEnumCategory_10" name="Дитина-інвалід"></activiti:value>
-          <activiti:value id="sEnumCategory_11" name="Одинока мати"></activiti:value>
-          <activiti:value id="sEnumCategory_12" name="Мати-героїня"></activiti:value>
-          <activiti:value id="sEnumCategory_13" name="Багатодітна сім'я"></activiti:value>
-          <activiti:value id="sEnumCategory_14" name="Особа, що потерпіла від Чорнобильської катастрофи"></activiti:value>
-          <activiti:value id="sEnumCategory_15" name="Учасник ліквідації наслідків аварії  на  Чорнобильській АЄС"></activiti:value>
-          <activiti:value id="sEnumCategory_16" name="Герой України"></activiti:value>
-          <activiti:value id="sEnumCategory_17" name="Герой Радянського Союзу"></activiti:value>
-          <activiti:value id="sEnumCategory_18" name="Герой Соціалістичної Праці"></activiti:value>
-          <activiti:value id="sEnumCategory_19" name="Дитина"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asSocial" name="За соціальним станом авторів звернень" type="enum" default="sEnumSoc_0" writable="false">
-          <activiti:value id="sEnumSoc_0" name="Інші"></activiti:value>
-          <activiti:value id="sEnumSoc_1" name="Пенсіонер"></activiti:value>
-          <activiti:value id="sEnumSoc_2" name="Робітник"></activiti:value>
-          <activiti:value id="sEnumSoc_3" name="Селянин"></activiti:value>
-          <activiti:value id="sEnumSoc_4" name="Працівник бюджетної сфери"></activiti:value>
-          <activiti:value id="sEnumSoc_5" name="Державний службовець"></activiti:value>
-          <activiti:value id="sEnumSoc_6" name="Військовослужбовець"></activiti:value>
-          <activiti:value id="sEnumSoc_7" name="Підприємець"></activiti:value>
-          <activiti:value id="sEnumSoc_8" name="Безробітний"></activiti:value>
-          <activiti:value id="sEnumSoc_9" name="Учень, студент"></activiti:value>
-          <activiti:value id="sEnumSoc_10" name="Служитель релігійної організації"></activiti:value>
-          <activiti:value id="sEnumSoc_11" name="Особа, що позбавлена волі; особа, воля якої обмежена"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asNumber" name="Ознака надходження" type="enum" default="sFirst" writable="false">
           <activiti:value id="sFirst" name="первинне"></activiti:value>
@@ -340,7 +455,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile},${nFile1},${nFile2},${nFile3}</activiti:expression>
+            <activiti:expression><![CDATA[${nFile},${nFile1},${nFile2},${nFile3}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -358,52 +473,57 @@
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPlase_of_reg" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asVid" name="Вид звернення" type="enum" writable="false">
+          <activiti:value id="zajava" name="заява (клопотання)"></activiti:value>
+          <activiti:value id="propozicia" name="пропозиція"></activiti:value>
+          <activiti:value id="skarga" name="скарга"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sTopic" name="Тема звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sMessageText" name="Текст Заяви" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sReplyForm" name="Форма відповіді" type="enum" writable="false">
+        <activiti:formProperty id="asSpecialStatus" name="Чи має громадянин особливий статус" type="enum" writable="false">
+          <activiti:value id="sEnumStatusYes" name="Так"></activiti:value>
+          <activiti:value id="sEnumStatusNo" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asHowCategory" name="Категорія громадянина" type="enum" writable="false">
+          <activiti:value id="sNo1" name=" "></activiti:value>
+          <activiti:value id="sEnumCat1" name="Учасник війни"></activiti:value>
+          <activiti:value id="sEnumCat2" name="Дитина війни"></activiti:value>
+          <activiti:value id="sEnumCat3" name="Інвалід Великої Вітчизняної війни"></activiti:value>
+          <activiti:value id="sEnumCat4" name="Інвалід війни"></activiti:value>
+          <activiti:value id="sEnumCat5" name="Учасник бойових дій"></activiti:value>
+          <activiti:value id="sEnumCat6" name="Ветеран праці"></activiti:value>
+          <activiti:value id="sEnumCat7" name="Інвалід I групи"></activiti:value>
+          <activiti:value id="sEnumCat8" name="Інвалід II групи"></activiti:value>
+          <activiti:value id="sEnumCat9" name="Інвалід III групи"></activiti:value>
+          <activiti:value id="sEnumCat10" name="Дитина-інвалід"></activiti:value>
+          <activiti:value id="sEnumCat11" name="Одинока мати"></activiti:value>
+          <activiti:value id="sEnumCat12" name="Мати-героїня"></activiti:value>
+          <activiti:value id="sEnumCat13" name="Багатодітна сім'я"></activiti:value>
+          <activiti:value id="sEnumCat14" name="Особа, що потерпіла від Чорнобильської катастрофи"></activiti:value>
+          <activiti:value id="sEnumCat15" name="Учасник ліквідації наслідків аварії на Чорнобильській АЕС"></activiti:value>
+          <activiti:value id="sEnumCat16" name="Герой України"></activiti:value>
+          <activiti:value id="sEnumCat17" name="Герой Радянського Союзу"></activiti:value>
+          <activiti:value id="sEnumCat18" name="Герой Соціалістичної Праці"></activiti:value>
+          <activiti:value id="sEnumCat19" name="Дитина"></activiti:value>
+          <activiti:value id="sEnumCat20" name="Інші категорії"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asHowSocStatus" name="Соціальний стан громадянина" type="enum" writable="false">
+          <activiti:value id="sEnumSoc1" name="Пенсіонер"></activiti:value>
+          <activiti:value id="sEnumSoc2" name="Робітник"></activiti:value>
+          <activiti:value id="sEnumSoc3" name="Селянин"></activiti:value>
+          <activiti:value id="sEnumSoc4" name="Працівник бюджетної сфери"></activiti:value>
+          <activiti:value id="sEnumSoc5" name="Державний службовець"></activiti:value>
+          <activiti:value id="sEnumSoc6" name="Військовослужбовець"></activiti:value>
+          <activiti:value id="sEnumSoc7" name="Підприємець"></activiti:value>
+          <activiti:value id="sEnumSoc8" name="Безробітний"></activiti:value>
+          <activiti:value id="sEnumSoc9" name="Учень, студент"></activiti:value>
+          <activiti:value id="sEnumSoc10" name="Служитель релігійної організації"></activiti:value>
+          <activiti:value id="sEnumSoc11" name="Особа, що позбавлена волі; особа, воля якої обмежена"></activiti:value>
+          <activiti:value id="sEnumSoc12" name="Інші"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asResultWay" name="Форма відповіді" type="enum" writable="false">
           <activiti:value id="physcial" name="Фізична копія"></activiti:value>
           <activiti:value id="digital" name="Електронна версія"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asKindHandling" name="Вид звернення" type="enum" writable="false">
-          <activiti:value id="sEnumKind_1" name="пропозиція (зауваження)"></activiti:value>
-          <activiti:value id="sEnumKind_2" name="заява (клопотання)"></activiti:value>
-          <activiti:value id="sEnumKind_3" name="скарга"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asCategory" name="За категоріями авторів звернень" type="enum" default="sEnumCategory_0" writable="false">
-          <activiti:value id="sEnumCategory_0" name="Інші категорії"></activiti:value>
-          <activiti:value id="sEnumCategory_1" name="Учасник війни"></activiti:value>
-          <activiti:value id="sEnumCategory_2" name="Дитина війни"></activiti:value>
-          <activiti:value id="sEnumCategory_3" name="Інвалід Великої Вітчизняної війни"></activiti:value>
-          <activiti:value id="sEnumCategory_4" name="Інвалід війни"></activiti:value>
-          <activiti:value id="sEnumCategory_5" name="Учасник бойових дій"></activiti:value>
-          <activiti:value id="sEnumCategory_6" name="Ветеран праці"></activiti:value>
-          <activiti:value id="sEnumCategory_7" name="Інвалід I групи"></activiti:value>
-          <activiti:value id="sEnumCategory_8" name="Інвалід II групи"></activiti:value>
-          <activiti:value id="sEnumCategory_9" name="Інвалід III групи"></activiti:value>
-          <activiti:value id="sEnumCategory_10" name="Дитина-інвалід"></activiti:value>
-          <activiti:value id="sEnumCategory_11" name="Одинока мати"></activiti:value>
-          <activiti:value id="sEnumCategory_12" name="Мати-героїня"></activiti:value>
-          <activiti:value id="sEnumCategory_13" name="Багатодітна сім'я"></activiti:value>
-          <activiti:value id="sEnumCategory_14" name="Особа, що потерпіла від Чорнобильської катастрофи"></activiti:value>
-          <activiti:value id="sEnumCategory_15" name="Учасник ліквідації наслідків аварії  на  Чорнобильській АЄС"></activiti:value>
-          <activiti:value id="sEnumCategory_16" name="Герой України"></activiti:value>
-          <activiti:value id="sEnumCategory_17" name="Герой Радянського Союзу"></activiti:value>
-          <activiti:value id="sEnumCategory_18" name="Герой Соціалістичної Праці"></activiti:value>
-          <activiti:value id="sEnumCategory_19" name="Дитина"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asSocial" name="За соціальним станом авторів звернень" type="enum" default="sEnumSoc_0" writable="false">
-          <activiti:value id="sEnumSoc_0" name="Інші"></activiti:value>
-          <activiti:value id="sEnumSoc_1" name="Пенсіонер"></activiti:value>
-          <activiti:value id="sEnumSoc_2" name="Робітник"></activiti:value>
-          <activiti:value id="sEnumSoc_3" name="Селянин"></activiti:value>
-          <activiti:value id="sEnumSoc_4" name="Працівник бюджетної сфери"></activiti:value>
-          <activiti:value id="sEnumSoc_5" name="Державний службовець"></activiti:value>
-          <activiti:value id="sEnumSoc_6" name="Військовослужбовець"></activiti:value>
-          <activiti:value id="sEnumSoc_7" name="Підприємець"></activiti:value>
-          <activiti:value id="sEnumSoc_8" name="Безробітний"></activiti:value>
-          <activiti:value id="sEnumSoc_9" name="Учень, студент"></activiti:value>
-          <activiti:value id="sEnumSoc_10" name="Служитель релігійної організації"></activiti:value>
-          <activiti:value id="sEnumSoc_11" name="Особа, що позбавлена волі; особа, воля якої обмежена"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asNumber" name="Ознака надходження" type="enum" default="sFirst" writable="false">
           <activiti:value id="sFirst" name="первинне"></activiti:value>
@@ -424,7 +544,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile},${nFile1},${nFile2},${nFile3}</activiti:expression>
+            <activiti:expression><![CDATA[${nFile},${nFile1},${nFile2},${nFile3}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -436,52 +556,57 @@
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPlase_of_reg" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asVid" name="Вид звернення" type="enum" writable="false">
+          <activiti:value id="zajava" name="заява (клопотання)"></activiti:value>
+          <activiti:value id="propozicia" name="пропозиція"></activiti:value>
+          <activiti:value id="skarga" name="скарга"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sTopic" name="Тема звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sMessageText" name="Текст Заяви" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sReplyForm" name="Форма відповіді" type="enum" writable="false">
+        <activiti:formProperty id="asSpecialStatus" name="Чи має громадянин особливий статус" type="enum" writable="false">
+          <activiti:value id="sEnumStatusYes" name="Так"></activiti:value>
+          <activiti:value id="sEnumStatusNo" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asHowCategory" name="Категорія громадянина" type="enum" writable="false">
+          <activiti:value id="sNo1" name=" "></activiti:value>
+          <activiti:value id="sEnumCat1" name="Учасник війни"></activiti:value>
+          <activiti:value id="sEnumCat2" name="Дитина війни"></activiti:value>
+          <activiti:value id="sEnumCat3" name="Інвалід Великої Вітчизняної війни"></activiti:value>
+          <activiti:value id="sEnumCat4" name="Інвалід війни"></activiti:value>
+          <activiti:value id="sEnumCat5" name="Учасник бойових дій"></activiti:value>
+          <activiti:value id="sEnumCat6" name="Ветеран праці"></activiti:value>
+          <activiti:value id="sEnumCat7" name="Інвалід I групи"></activiti:value>
+          <activiti:value id="sEnumCat8" name="Інвалід II групи"></activiti:value>
+          <activiti:value id="sEnumCat9" name="Інвалід III групи"></activiti:value>
+          <activiti:value id="sEnumCat10" name="Дитина-інвалід"></activiti:value>
+          <activiti:value id="sEnumCat11" name="Одинока мати"></activiti:value>
+          <activiti:value id="sEnumCat12" name="Мати-героїня"></activiti:value>
+          <activiti:value id="sEnumCat13" name="Багатодітна сім'я"></activiti:value>
+          <activiti:value id="sEnumCat14" name="Особа, що потерпіла від Чорнобильської катастрофи"></activiti:value>
+          <activiti:value id="sEnumCat15" name="Учасник ліквідації наслідків аварії на Чорнобильській АЕС"></activiti:value>
+          <activiti:value id="sEnumCat16" name="Герой України"></activiti:value>
+          <activiti:value id="sEnumCat17" name="Герой Радянського Союзу"></activiti:value>
+          <activiti:value id="sEnumCat18" name="Герой Соціалістичної Праці"></activiti:value>
+          <activiti:value id="sEnumCat19" name="Дитина"></activiti:value>
+          <activiti:value id="sEnumCat20" name="Інші категорії"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asHowSocStatus" name="Соціальний стан громадянина" type="enum" writable="false">
+          <activiti:value id="sEnumSoc1" name="Пенсіонер"></activiti:value>
+          <activiti:value id="sEnumSoc2" name="Робітник"></activiti:value>
+          <activiti:value id="sEnumSoc3" name="Селянин"></activiti:value>
+          <activiti:value id="sEnumSoc4" name="Працівник бюджетної сфери"></activiti:value>
+          <activiti:value id="sEnumSoc5" name="Державний службовець"></activiti:value>
+          <activiti:value id="sEnumSoc6" name="Військовослужбовець"></activiti:value>
+          <activiti:value id="sEnumSoc7" name="Підприємець"></activiti:value>
+          <activiti:value id="sEnumSoc8" name="Безробітний"></activiti:value>
+          <activiti:value id="sEnumSoc9" name="Учень, студент"></activiti:value>
+          <activiti:value id="sEnumSoc10" name="Служитель релігійної організації"></activiti:value>
+          <activiti:value id="sEnumSoc11" name="Особа, що позбавлена волі; особа, воля якої обмежена"></activiti:value>
+          <activiti:value id="sEnumSoc12" name="Інші"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asResultWay" name="Форма відповіді" type="enum" writable="false">
           <activiti:value id="physcial" name="Фізична копія"></activiti:value>
           <activiti:value id="digital" name="Електронна версія"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asKindHandling" name="Вид звернення" type="enum" writable="false">
-          <activiti:value id="sEnumKind_1" name="пропозиція (зауваження)"></activiti:value>
-          <activiti:value id="sEnumKind_2" name="заява (клопотання)"></activiti:value>
-          <activiti:value id="sEnumKind_3" name="скарга"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asCategory" name="За категоріями авторів звернень" type="enum" default="sEnumCategory_0" writable="false">
-          <activiti:value id="sEnumCategory_0" name="Інші категорії"></activiti:value>
-          <activiti:value id="sEnumCategory_1" name="Учасник війни"></activiti:value>
-          <activiti:value id="sEnumCategory_2" name="Дитина війни"></activiti:value>
-          <activiti:value id="sEnumCategory_3" name="Інвалід Великої Вітчизняної війни"></activiti:value>
-          <activiti:value id="sEnumCategory_4" name="Інвалід війни"></activiti:value>
-          <activiti:value id="sEnumCategory_5" name="Учасник бойових дій"></activiti:value>
-          <activiti:value id="sEnumCategory_6" name="Ветеран праці"></activiti:value>
-          <activiti:value id="sEnumCategory_7" name="Інвалід I групи"></activiti:value>
-          <activiti:value id="sEnumCategory_8" name="Інвалід II групи"></activiti:value>
-          <activiti:value id="sEnumCategory_9" name="Інвалід III групи"></activiti:value>
-          <activiti:value id="sEnumCategory_10" name="Дитина-інвалід"></activiti:value>
-          <activiti:value id="sEnumCategory_11" name="Одинока мати"></activiti:value>
-          <activiti:value id="sEnumCategory_12" name="Мати-героїня"></activiti:value>
-          <activiti:value id="sEnumCategory_13" name="Багатодітна сім'я"></activiti:value>
-          <activiti:value id="sEnumCategory_14" name="Особа, що потерпіла від Чорнобильської катастрофи"></activiti:value>
-          <activiti:value id="sEnumCategory_15" name="Учасник ліквідації наслідків аварії  на  Чорнобильській АЄС"></activiti:value>
-          <activiti:value id="sEnumCategory_16" name="Герой України"></activiti:value>
-          <activiti:value id="sEnumCategory_17" name="Герой Радянського Союзу"></activiti:value>
-          <activiti:value id="sEnumCategory_18" name="Герой Соціалістичної Праці"></activiti:value>
-          <activiti:value id="sEnumCategory_19" name="Дитина"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asSocial" name="За соціальним станом авторів звернень" type="enum" default="sEnumSoc_0" writable="false">
-          <activiti:value id="sEnumSoc_0" name="Інші"></activiti:value>
-          <activiti:value id="sEnumSoc_1" name="Пенсіонер"></activiti:value>
-          <activiti:value id="sEnumSoc_2" name="Робітник"></activiti:value>
-          <activiti:value id="sEnumSoc_3" name="Селянин"></activiti:value>
-          <activiti:value id="sEnumSoc_4" name="Працівник бюджетної сфери"></activiti:value>
-          <activiti:value id="sEnumSoc_5" name="Державний службовець"></activiti:value>
-          <activiti:value id="sEnumSoc_6" name="Військовослужбовець"></activiti:value>
-          <activiti:value id="sEnumSoc_7" name="Підприємець"></activiti:value>
-          <activiti:value id="sEnumSoc_8" name="Безробітний"></activiti:value>
-          <activiti:value id="sEnumSoc_9" name="Учень, студент"></activiti:value>
-          <activiti:value id="sEnumSoc_10" name="Служитель релігійної організації"></activiti:value>
-          <activiti:value id="sEnumSoc_11" name="Особа, що позбавлена волі; особа, воля якої обмежена"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asNumber" name="Ознака надходження" type="enum" default="sFirst" writable="false">
           <activiti:value id="sFirst" name="первинне"></activiti:value>
@@ -505,7 +630,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile},${nFile1},${nFile2},${nFile3}</activiti:expression>
+            <activiti:expression><![CDATA[${nFile},${nFile1},${nFile2},${nFile3}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -514,31 +639,36 @@
     <serviceTask id="servicetask8" name="Сповістити громадянина про прийняте рішення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Звернення на тему: ${sTopic}</activiti:expression>
+          <activiti:expression><![CDATA[Звернення на тему: ${sTopic}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-										Ваше звернення було зареєстроване та взяте в роботу. 
-								    &lt;/p&gt;
-									&lt;p&gt;
-										Виконавець: &lt;br&gt;  
-										${sNameExecutorExtended}
-										&lt;br&gt;  &lt;br&gt;
-										Строк виконання:  &lt;br&gt; 
-										${dExecution}										
-									&lt;/p&gt;
-									[pattern/mail/_common_signature_start.html]
-									${sNameOrgan},&lt;br&gt;
-									[pattern/mail/_common_signature_end.html]   
-									[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+			<p>
+				Ваше звернення було зареєстроване та взяте в роботу. 
+		    </p>
+			<p>
+				Виконавець:<br>  
+				${sNameExecutorExtended}
+				<br><br>
+				Строк виконання:<br> 
+				${dExecution}										
+			</p>
+			<br>
+			Якщо у Вас є додаткові питання, Ви можете звернутись за наступними контактами:<br>
+			${sAddress}<br>
+			${sWorkTime}<br>
+			${sPhoneOrgan}<br><br>
+			[pattern/mail/_common_signature_start.html]
+			${sNameOrgan}.<br>
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -549,52 +679,57 @@
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPlase_of_reg" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asVid" name="Вид звернення" type="enum" writable="false">
+          <activiti:value id="zajava" name="заява (клопотання)"></activiti:value>
+          <activiti:value id="propozicia" name="пропозиція"></activiti:value>
+          <activiti:value id="skarga" name="скарга"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sTopic" name="Тема звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sMessageText" name="Текст Заяви" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sReplyForm" name="Форма відповіді" type="enum" writable="false">
+        <activiti:formProperty id="asSpecialStatus" name="Чи має громадянин особливий статус" type="enum" writable="false">
+          <activiti:value id="sEnumStatusYes" name="Так"></activiti:value>
+          <activiti:value id="sEnumStatusNo" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asHowCategory" name="Категорія громадянина" type="enum" writable="false">
+          <activiti:value id="sNo1" name=" "></activiti:value>
+          <activiti:value id="sEnumCat1" name="Учасник війни"></activiti:value>
+          <activiti:value id="sEnumCat2" name="Дитина війни"></activiti:value>
+          <activiti:value id="sEnumCat3" name="Інвалід Великої Вітчизняної війни"></activiti:value>
+          <activiti:value id="sEnumCat4" name="Інвалід війни"></activiti:value>
+          <activiti:value id="sEnumCat5" name="Учасник бойових дій"></activiti:value>
+          <activiti:value id="sEnumCat6" name="Ветеран праці"></activiti:value>
+          <activiti:value id="sEnumCat7" name="Інвалід I групи"></activiti:value>
+          <activiti:value id="sEnumCat8" name="Інвалід II групи"></activiti:value>
+          <activiti:value id="sEnumCat9" name="Інвалід III групи"></activiti:value>
+          <activiti:value id="sEnumCat10" name="Дитина-інвалід"></activiti:value>
+          <activiti:value id="sEnumCat11" name="Одинока мати"></activiti:value>
+          <activiti:value id="sEnumCat12" name="Мати-героїня"></activiti:value>
+          <activiti:value id="sEnumCat13" name="Багатодітна сім'я"></activiti:value>
+          <activiti:value id="sEnumCat14" name="Особа, що потерпіла від Чорнобильської катастрофи"></activiti:value>
+          <activiti:value id="sEnumCat15" name="Учасник ліквідації наслідків аварії на Чорнобильській АЕС"></activiti:value>
+          <activiti:value id="sEnumCat16" name="Герой України"></activiti:value>
+          <activiti:value id="sEnumCat17" name="Герой Радянського Союзу"></activiti:value>
+          <activiti:value id="sEnumCat18" name="Герой Соціалістичної Праці"></activiti:value>
+          <activiti:value id="sEnumCat19" name="Дитина"></activiti:value>
+          <activiti:value id="sEnumCat20" name="Інші категорії"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asHowSocStatus" name="Соціальний стан громадянина" type="enum" writable="false">
+          <activiti:value id="sEnumSoc1" name="Пенсіонер"></activiti:value>
+          <activiti:value id="sEnumSoc2" name="Робітник"></activiti:value>
+          <activiti:value id="sEnumSoc3" name="Селянин"></activiti:value>
+          <activiti:value id="sEnumSoc4" name="Працівник бюджетної сфери"></activiti:value>
+          <activiti:value id="sEnumSoc5" name="Державний службовець"></activiti:value>
+          <activiti:value id="sEnumSoc6" name="Військовослужбовець"></activiti:value>
+          <activiti:value id="sEnumSoc7" name="Підприємець"></activiti:value>
+          <activiti:value id="sEnumSoc8" name="Безробітний"></activiti:value>
+          <activiti:value id="sEnumSoc9" name="Учень, студент"></activiti:value>
+          <activiti:value id="sEnumSoc10" name="Служитель релігійної організації"></activiti:value>
+          <activiti:value id="sEnumSoc11" name="Особа, що позбавлена волі; особа, воля якої обмежена"></activiti:value>
+          <activiti:value id="sEnumSoc12" name="Інші"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asResultWay" name="Форма відповіді" type="enum" writable="false">
           <activiti:value id="physcial" name="Фізична копія"></activiti:value>
           <activiti:value id="digital" name="Електронна версія"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asKindHandling" name="Вид звернення" type="enum" writable="false">
-          <activiti:value id="sEnumKind_1" name="пропозиція (зауваження)"></activiti:value>
-          <activiti:value id="sEnumKind_2" name="заява (клопотання)"></activiti:value>
-          <activiti:value id="sEnumKind_3" name="скарга"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asCategory" name="За категоріями авторів звернень" type="enum" default="sEnumCategory_0" writable="false">
-          <activiti:value id="sEnumCategory_0" name="Інші категорії"></activiti:value>
-          <activiti:value id="sEnumCategory_1" name="Учасник війни"></activiti:value>
-          <activiti:value id="sEnumCategory_2" name="Дитина війни"></activiti:value>
-          <activiti:value id="sEnumCategory_3" name="Інвалід Великої Вітчизняної війни"></activiti:value>
-          <activiti:value id="sEnumCategory_4" name="Інвалід війни"></activiti:value>
-          <activiti:value id="sEnumCategory_5" name="Учасник бойових дій"></activiti:value>
-          <activiti:value id="sEnumCategory_6" name="Ветеран праці"></activiti:value>
-          <activiti:value id="sEnumCategory_7" name="Інвалід I групи"></activiti:value>
-          <activiti:value id="sEnumCategory_8" name="Інвалід II групи"></activiti:value>
-          <activiti:value id="sEnumCategory_9" name="Інвалід III групи"></activiti:value>
-          <activiti:value id="sEnumCategory_10" name="Дитина-інвалід"></activiti:value>
-          <activiti:value id="sEnumCategory_11" name="Одинока мати"></activiti:value>
-          <activiti:value id="sEnumCategory_12" name="Мати-героїня"></activiti:value>
-          <activiti:value id="sEnumCategory_13" name="Багатодітна сім'я"></activiti:value>
-          <activiti:value id="sEnumCategory_14" name="Особа, що потерпіла від Чорнобильської катастрофи"></activiti:value>
-          <activiti:value id="sEnumCategory_15" name="Учасник ліквідації наслідків аварії  на  Чорнобильській АЄС"></activiti:value>
-          <activiti:value id="sEnumCategory_16" name="Герой України"></activiti:value>
-          <activiti:value id="sEnumCategory_17" name="Герой Радянського Союзу"></activiti:value>
-          <activiti:value id="sEnumCategory_18" name="Герой Соціалістичної Праці"></activiti:value>
-          <activiti:value id="sEnumCategory_19" name="Дитина"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asSocial" name="За соціальним станом авторів звернень" type="enum" default="sEnumSoc_0" writable="false">
-          <activiti:value id="sEnumSoc_0" name="Інші"></activiti:value>
-          <activiti:value id="sEnumSoc_1" name="Пенсіонер"></activiti:value>
-          <activiti:value id="sEnumSoc_2" name="Робітник"></activiti:value>
-          <activiti:value id="sEnumSoc_3" name="Селянин"></activiti:value>
-          <activiti:value id="sEnumSoc_4" name="Працівник бюджетної сфери"></activiti:value>
-          <activiti:value id="sEnumSoc_5" name="Державний службовець"></activiti:value>
-          <activiti:value id="sEnumSoc_6" name="Військовослужбовець"></activiti:value>
-          <activiti:value id="sEnumSoc_7" name="Підприємець"></activiti:value>
-          <activiti:value id="sEnumSoc_8" name="Безробітний"></activiti:value>
-          <activiti:value id="sEnumSoc_9" name="Учень, студент"></activiti:value>
-          <activiti:value id="sEnumSoc_10" name="Служитель релігійної організації"></activiti:value>
-          <activiti:value id="sEnumSoc_11" name="Особа, що позбавлена волі; особа, воля якої обмежена"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asNumber" name="Ознака надходження" type="enum" default="sFirst" writable="false">
           <activiti:value id="sFirst" name="первинне"></activiti:value>
@@ -614,17 +749,19 @@
           <activiti:value id="sEnumResult_4" name="залишено без розгляду"></activiti:value>
           <activiti:value id="sEnumResult_5" name="надіслано за належністю"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="aResult" name="Результат розгляду звернення;інформація буде надіслана на електронну пошту громадянина" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="decisionComment" name="Результат розгляду звернення;інформація буде надіслана на електронну пошту громадянина" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sOrgan" name="назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sHeadFIO" name="адреса органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bResult" name="адреса органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="select finish solve from Bogoduhiv" type="markers" default="${markerService.loadFromFile('bogoduhov/zvernenja_do_golovu_finish.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/rda_360.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBodycontrolCard_1" name="[pattern/print/bogoduhiv/bogoduhiv_zvern_354_print.html]" type="invisible" default="Реєстраційно-контрольна карта(Лицьовий бік)" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBodycontrolCard_2" name="[pattern/print/bogoduhiv/bogoduhiv_zvern_354_back_print.html]" type="invisible" default="Реєстраційно-контрольна карта(Зворотний бік)" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile},${nFile1},${nFile2},${nFile3}</activiti:expression>
+            <activiti:expression><![CDATA[${nFile},${nFile1},${nFile2},${nFile3}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -632,34 +769,39 @@
     <sequenceFlow id="flow50" sourceRef="usertask6" targetRef="exclusivegateway4"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow51" name="Виконано" sourceRef="exclusivegateway4" targetRef="servicetask9">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResult=='sEnumResult_1'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bResult=='true'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask9" name="E-Mail громадянину про успішне виконання рішення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Звернення на тему: ${sTopic}</activiti:expression>
+          <activiti:expression><![CDATA[Звернення на тему: ${sTopic}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-										Ваш запит був успішно виконаний. 
-								    &lt;/p&gt;
-									[pattern/mail/_common_signature_start.html]
-									${sNameOrgan},&lt;br&gt;
-									[pattern/mail/_common_signature_end.html]   
-									[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+            <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+            <p>
+				Ваш запит був успішно виконаний. 
+			</p>
+			<br>
+			Якщо у Вас є додаткові питання, Ви можете звернутись за наступними контактами:<br>
+			${sAddress}<br>
+			${sWorkTime}<br>
+			${sPhoneOrgan}<br><br>
+			[pattern/mail/_common_signature_start.html]
+			${sNameOrgan}.<br>
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow52" name="Не виконано" sourceRef="exclusivegateway4" targetRef="servicetask10">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResult=='sEnumResult_2' || asResult=='sEnumResult_3' || asResult=='sEnumResult_4' || asResult=='sEnumResult_5'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bResult=='false'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow58" sourceRef="servicetask9" targetRef="endevent4"></sequenceFlow>
     <sequenceFlow id="flow61" name="Відмовити" sourceRef="exclusivegateway6" targetRef="servicetask10">
@@ -668,29 +810,34 @@
     <serviceTask id="servicetask10" name="E-Mail  громадянину про не можливість виконання рішення" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Звернення на тему: ${sTopic}</activiti:expression>
+          <activiti:expression><![CDATA[Звернення на тему: ${sTopic}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-										Ваш запит не виконано. 
-								    &lt;/p&gt;
-									&lt;p&gt;
-										В звязку з
-										Коментар держслужбовця:
-										${decisionComment} 
-									&lt;/p&gt;
-									[pattern/mail/_common_signature_start.html]
-									${sNameOrgan},&lt;br&gt;
-									[pattern/mail/_common_signature_end.html]   
-									[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+			<p>
+				Ваш запит не виконано. 
+		   	</p>
+			<p>
+				В звязку з
+				Коментар держслужбовця:
+				${decisionComment} 
+			</p>
+			<br>
+			Якщо у Вас є додаткові питання, Ви можете звернутись за наступними контактами:<br>
+			${sAddress}<br>
+			${sWorkTime}<br>
+			${sPhoneOrgan}<br><br>
+			[pattern/mail/_common_signature_start.html]
+			${sNameOrgan}.<br>
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -872,15 +1019,15 @@
         <omgdi:waypoint x="74.0" y="470.0"></omgdi:waypoint>
         <omgdi:waypoint x="74.0" y="433.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="48.0" x="13.0" y="460.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="100.0" x="13.0" y="460.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow52" id="BPMNEdge_flow52">
-        <omgdi:waypoint x="94.0" y="490.0"></omgdi:waypoint>
-        <omgdi:waypoint x="227.0" y="472.0"></omgdi:waypoint>
+        <omgdi:waypoint x="74.0" y="470.0"></omgdi:waypoint>
+        <omgdi:waypoint x="241.0" y="463.0"></omgdi:waypoint>
         <omgdi:waypoint x="282.0" y="360.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="64.0" x="148.0" y="462.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="100.0" x="128.0" y="442.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow58" id="BPMNEdge_flow58">
@@ -892,7 +1039,7 @@
         <omgdi:waypoint x="313.0" y="471.0"></omgdi:waypoint>
         <omgdi:waypoint x="282.0" y="360.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="54.0" x="327.0" y="462.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="100.0" x="327.0" y="462.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow57" id="BPMNEdge_flow57">
@@ -907,7 +1054,7 @@
         <omgdi:waypoint x="480.0" y="510.0"></omgdi:waypoint>
         <omgdi:waypoint x="480.0" y="550.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="79.0" x="489.0" y="519.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="100.0" x="489.0" y="519.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>

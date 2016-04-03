@@ -79,6 +79,7 @@ module.exports.getConfigOptions = function () {
     return options;
 
   var config = require('../../config/environment');
+  //var config = require('../../config');
   var activiti = config.activiti;
 
   options = {

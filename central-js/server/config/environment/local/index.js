@@ -14,6 +14,7 @@ module.exports = {
     client_id: 'testIgov',//testIgovEncrypt use to force test bank id  returns encrypted data
     client_secret: 'testIgovSecret',
     privateKey: (__dirname + '/iGov_sgn.pem'),
+    //privateKey: ('../../../../iGov_sgn.pem'),
     privateKeyPassphrase: '1234567899'
   },
 

@@ -42,6 +42,7 @@
         <activiti:formProperty id="sWorkTime" name="Час роботи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka220" name="Шапка заяви" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="anVibor_performer" name="Техническая переменная, для работы sShapka220, не удалять!" type="invisible" default="1" ></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Видача дозволу" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_1&quot;: {&quot;aField_ID&quot;: [&quot;file1&quot;,&quot;file2&quot;,&quot;file3&quot;], &quot;asID_Field&quot;: {&quot;sClient&quot;: &quot;vibor_service&quot;},&quot;sCondition&quot;: &quot;[sClient] == 'issue'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="Переоформлення дозволу" type="markers" default="{&quot;motion&quot; : {&quot;ShowFieldsOnCondition_2&quot; : {&quot;aField_ID&quot; : [&quot;file6&quot;,&quot;file7&quot;],&quot;asID_Field&quot; : {&quot;sClient&quot; : &quot;vibor_service&quot;},&quot;sCondition&quot; : &quot;[sClient] == 'restructuring'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="Видача дублікату дозволу" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_3&quot;: {&quot;aField_ID&quot;: [&quot;file8&quot;],&quot;asID_Field&quot; : {&quot;sClient&quot;: &quot;vibor_service&quot;}, &quot;sCondition&quot; : &quot;[sClient] == 'duplicate'&quot;}}}"></activiti:formProperty>
@@ -152,19 +153,13 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:string><![CDATA[tanyazol@gmail.com]]></activiti:string>
+          <activiti:expression>tanyazol@gmail.com</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення. Дозвіл на всі види досліджень та експериментальні роботи з мікроорганізмами ІІІ-IV групи патогенності (небезпеки) або матеріалом підозрілим на їх вміст.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а) колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-У Вас в черзі на обробку нове звернення щодо ${substance_3} дозволу на всі види досліджень та експериментальні роботи з мікроорганізмами ІІІ-IV групи патогенності (небезпеки) або матеріалом підозрілим на їх вміст.&lt;br /&gt;
-Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
-Відпрацюйте це звернення на &lt;a href="https://region.igov.org.ua" target="_blank"&gt;порталі&lt;/a&gt;
-[pattern/mail/_common_signature.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>

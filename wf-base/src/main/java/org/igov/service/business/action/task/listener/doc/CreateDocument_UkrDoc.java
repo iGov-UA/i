@@ -165,7 +165,7 @@ public class CreateDocument_UkrDoc extends AbstractModelTask implements TaskList
                         }
                     }
                 }
-                StartFormData startFormData = formService.getStartFormData(execution.getId());
+                StartFormData startFormData = formService.getStartFormData(execution.getProcessDefinitionId());
                 for (FormProperty formProperty : startFormData.getFormProperties()) {
                     if (formProperty.getId().equals("sID_Document_UkrDoc")) {
                         LOG.info("Found start form property with the id " + "sID_Document_UkrDoc" + ". Setting value {}", documentId);
