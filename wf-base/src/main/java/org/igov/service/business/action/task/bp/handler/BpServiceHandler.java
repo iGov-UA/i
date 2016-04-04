@@ -269,7 +269,9 @@ public class BpServiceHandler {
         try {
             Set<String> accounts = new HashSet<>();
             Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
-            accounts.add(task.getAssignee());
+            if(task.getAssignee() != null){
+                accounts.add(task.getAssignee());
+            }
             accounts.addAll(getCandidateGroups(sProcessName, taskId, processVariables, ""));
             LOG.info("accounts: " + accounts);
             Map<String, Map<String, Map>> result = subjectCover.getSubjectsBy(accounts);
@@ -296,11 +298,12 @@ public class BpServiceHandler {
         LOG.info("!!!aSubjectAccountContact: " + aSubjectAccountContact);
         if (aSubjectAccountContact != null && !aSubjectAccountContact.isEmpty()) {
             for (Map subjectAccountContact : aSubjectAccountContact) {
-                //LOG.info("!!!contact: " + contact);
-                if (subjectAccountContact != null && !subjectAccountContact.isEmpty() && subjectAccountContact.get("sValue") != null
-                        && subjectAccountContact.get("subjectContactType") != null
-                        && "Phone".equalsIgnoreCase((String) ((Map) subjectAccountContact.get("subjectContactType")).get("sName_EN"))) {
-                    //LOG.info("!!!sValue: " + contact.get("sValue"));
+                LOG.info("!!!subjectAccountContact: " + subjectAccountContact);
+                if (subjectAccountContact != null && !subjectAccountContact.isEmpty() 
+                        && subjectAccountContact.get("sValue") != null
+                        && subjectAccountContact.get("oSubjectContactType") != null
+                        && "Phone".equalsIgnoreCase((String) ((Map) subjectAccountContact.get("oSubjectContactType")).get("sName_EN"))) {
+                    LOG.info("!!!sValue: " + subjectAccountContact.get("sValue"));
                     sbContact.append(subjectAccountContact.get("sValue")).append("; ");
                 }
             }
