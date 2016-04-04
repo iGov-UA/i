@@ -1,9 +1,6 @@
 package org.igov.model.subject;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.igov.model.core.Entity;
-
-import javax.persistence.Column;
 import java.util.List;
 
 /**

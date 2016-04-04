@@ -10,8 +10,8 @@ import org.igov.model.subject.organ.SubjectOrgan;
  */
 public class NewSubjectAccount {
 
-    @JsonProperty(value = "sLogin")
-    private String sLogin;
+    @JsonProperty(value = "sAccount")
+    private String sAccount;
 
     @JsonProperty(value = "oSubject")
     private NewSubject oSubject;
@@ -24,15 +24,15 @@ public class NewSubjectAccount {
         this.oSubject = oSubject;
     }
 
-    public String getsLogin() {
-        return sLogin;
+    public String getsAccount() {
+        return sAccount;
     }
 
-    public void setsLogin(String sLogin) {
-        this.sLogin = sLogin;
+    public void setsAccount(String sAccount) {
+        this.sAccount = sAccount;
     }
 
-    public static NewSubjectAccount getNewSubjectAccount(boolean bSkipDetails, Subject subject, String login, SubjectHuman subjectHuman,
+    public static NewSubjectAccount getNewSubjectAccount(boolean bSkipDetails, Subject subject, String account, SubjectHuman subjectHuman,
             SubjectOrgan subjectOrgan) {
         
         NewSubject newSubject = new NewSubject();
@@ -53,7 +53,7 @@ public class NewSubjectAccount {
         }
 
         NewSubjectAccount newSubjectAccount = new NewSubjectAccount();
-        newSubjectAccount.setsLogin(login);
+        newSubjectAccount.setsAccount(account);
         newSubjectAccount.setoSubject(newSubject);
         return newSubjectAccount;
     }
