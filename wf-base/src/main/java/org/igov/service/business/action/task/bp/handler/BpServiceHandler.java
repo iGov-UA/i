@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import javax.security.auth.Subject;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.task.Task;
 import org.igov.service.exchange.SubjectCover;
@@ -266,29 +267,21 @@ public class BpServiceHandler {
 
     public void setSubjectParams(String taskId, String sProcessName, Map<String, Object> mParam, Map processVariables) {
         try {
-
-            Set<String> currentAssignLogins = new HashSet<>();
+            Set<String> accounts = new HashSet<>();
             Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
-            currentAssignLogins.add(task.getAssignee());
-            Set<String> currentCadidateGroup = getCandidateGroups(sProcessName, taskId, processVariables, "");
-            LOG.info("currentAssignLogins: " + currentAssignLogins + " currentCadidateGroup: " + currentCadidateGroup);
-            Map<String, Map<String, Map>> result = subjectCover.getSubjects(currentAssignLogins, currentCadidateGroup);
+            accounts.add(task.getAssignee());
+            accounts.addAll(getCandidateGroups(sProcessName, taskId, processVariables, ""));
+            LOG.info("accounts: " + accounts);
+            Map<String, Map<String, Map>> result = subjectCover.getSubjectsBy(accounts);
             if (result != null && !result.isEmpty()) {
                 StringBuilder sb = new StringBuilder();
                 LOG.info("result: " + result);
-                String organLabels = getSubjectLabel(result.get("organs"));
-                if (organLabels != null) {
-                    mParam.put("organLabels", organLabels);
-                    String organContacts = getContact(result.get("organs"));
-                    mParam.put("organContacts", organContacts);
-                    sb.append(organLabels).append(" (").append(organContacts).append(")");
-                }
-                String userLabels = getSubjectLabel(result.get("users"));
-                if (userLabels != null && !"".equals(userLabels.trim())) {
-                    mParam.put("userLabels", userLabels);
-                    String userContacts = getContact(result.get("users"));
-                    mParam.put("userContacts", userContacts);
-                    sb.append(" ").append(userLabels).append(" (").append(userContacts).append(")");
+                List<Map<String, Object>> aSubjectAccount = (List<Map<String, Object>>) result.get("aSubjectAccount");
+                for (Map<String, Object> subjectAccount : aSubjectAccount) {
+                    Map<String, Object> subject = (Map<String, Object>) subjectAccount.get("oSubject");
+                    String label = (String)subject.get("sLabel");
+                    String accountContacts = getContact((List<Map>) subject.get("aSubjectAccountContact"));
+                    sb.append(" ").append(label).append(" (").append(accountContacts).append(")");
                 }
                 LOG.info("sEmployeeContacts: " + sb.toString());
                 mParam.put("sEmployeeContacts", sb.toString());
@@ -298,36 +291,17 @@ public class BpServiceHandler {
         }
     }
 
-    private String getSubjectLabel(Map<String, Map> subjects) {
-        StringBuilder sbSubject = new StringBuilder();
-        if (subjects != null && !subjects.isEmpty()) {
-            for (Map user : subjects.values()) {
-                if (user != null && !user.isEmpty()) {
-                    sbSubject.append(user.get("sLabel")).append("  ");
-                }
-            }
-        }
-        return sbSubject.toString();
-    }
-
-    private String getContact(Map<String, Map> subjects) {
+    private String getContact(List<Map> aSubjectAccountContact) {
         StringBuilder sbContact = new StringBuilder();
-        if (subjects != null && !subjects.isEmpty()) {
-            for (Map user : subjects.values()) {
-                if (user != null && !user.isEmpty() && user.get("aSubjectAccountContact") != null) {
-                    List<Map> contacts = (List<Map>) user.get("aSubjectAccountContact");
-                    //LOG.info("!!!aSubjectAccountContact: " + contacts);
-                    if (contacts != null && !contacts.isEmpty()) {
-                        for (Map contact : contacts) {
-                            //LOG.info("!!!contact: " + contact);
-                            if (contact != null && !contact.isEmpty() && contact.get("sValue") != null
-                                    && contact.get("subjectContactType") != null
-                                    && "Phone".equalsIgnoreCase((String) ((Map) contact.get("subjectContactType")).get("sName_EN"))) {
-                                //LOG.info("!!!sValue: " + contact.get("sValue"));
-                                sbContact.append(contact.get("sValue")).append("; ");
-                            }
-                        }
-                    }
+        LOG.info("!!!aSubjectAccountContact: " + aSubjectAccountContact);
+        if (aSubjectAccountContact != null && !aSubjectAccountContact.isEmpty()) {
+            for (Map subjectAccountContact : aSubjectAccountContact) {
+                //LOG.info("!!!contact: " + contact);
+                if (subjectAccountContact != null && !subjectAccountContact.isEmpty() && subjectAccountContact.get("sValue") != null
+                        && subjectAccountContact.get("subjectContactType") != null
+                        && "Phone".equalsIgnoreCase((String) ((Map) subjectAccountContact.get("subjectContactType")).get("sName_EN"))) {
+                    //LOG.info("!!!sValue: " + contact.get("sValue"));
+                    sbContact.append(subjectAccountContact.get("sValue")).append("; ");
                 }
             }
         }
