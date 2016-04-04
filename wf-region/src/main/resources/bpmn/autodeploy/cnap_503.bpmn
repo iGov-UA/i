@@ -38,6 +38,15 @@
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення. Надання згоди на перенесення поховання.]]></activiti:string>
         </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;strong&gt;Шановний(-а) колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
+У Вас в черзі на обробку нове звернення щодо надання згоди на перенесення поховання.&lt;br /&gt;
+Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
+Відпрацюйте це звернення на &lt;a href="https://region.igov.org.ua" target="_blank"&gt;порталі&lt;/a&gt;
+[pattern/mail/_common_signature.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
       </extensionElements>
     </serviceTask>
     <serviceTask id="servicetask3" name="Повідомлення громадянину" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -345,7 +354,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <omgdi:waypoint x="662.0" y="306.0"></omgdi:waypoint>
         <omgdi:waypoint x="595.0" y="307.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="595.0" y="286.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="75.0" x="595.0" y="286.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
@@ -356,7 +365,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <omgdi:waypoint x="682.0" y="326.0"></omgdi:waypoint>
         <omgdi:waypoint x="682.0" y="390.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="643.0" y="349.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="81.0" x="643.0" y="349.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
