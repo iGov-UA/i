@@ -47,8 +47,8 @@
         </activiti:formProperty>
         <activiti:formProperty id="sShip" type="label" default="Дані щодо судна"></activiti:formProperty>
         <activiti:formProperty id="sShipName" name="Назва судна;відповідно до Свідоцтва про право плавання під прапором України або Суднового білета" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sShipNumb" name="Регістровий номер;наприклад SRU123459" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sShipNumb1" name="Номер ІМО / ЄІН" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sShipNumb" name="Регістровий номер;наприклад SRU123459" type="string" default="SRU" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sShipNumb1" name="Номер ІМО / ЄІН" type="string"></activiti:formProperty>
         <activiti:formProperty id="asOwnerType" name="Власник судна" type="enum" required="true">
           <activiti:value id="sCompany" name="юридична особа"></activiti:value>
           <activiti:value id="sMan" name="фізична особа"></activiti:value>
@@ -84,6 +84,9 @@
           <activiti:value id="sOtherPay" name="Інший"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="nPayDoc" name="Документ із зазначенням платника послуги" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="lastName_UA3" name="Прізвище платника послуги" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="firstName_UA3" name="Ім'я платника послуги" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="middleName_UA3" name="По батькові платника послуги" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="asChange" name="Чи були з останнього огляду конструктивні зміни корпусу, механізмів, систем, пристроїв, суднового обладнання, забезпечення" type="enum" required="true">
           <activiti:value id="sYes1" name="Так"></activiti:value>
           <activiti:value id="sNo3" name="Ні"></activiti:value>
@@ -97,6 +100,7 @@
           <activiti:value id="sNo5" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('infrastr/infrastr_1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="validate" type="markers" default="${markerService.loadFromFile('infrastr/infrastr_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="param" name="Информация про заявителя в принтформе" type="invisible" default="щорічний / проміжний"></activiti:formProperty>
         <activiti:formProperty id="og1" name="Информация про заявителя в принтформе" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="og2" name="Информация про заявителя в принтформе" type="invisible" default=" "></activiti:formProperty>
@@ -192,7 +196,7 @@ if(execution.getVariable('asBrakeMash') == 'sYes3'){execution.setVariable('yes5'
     <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
     <userTask id="usertask1" name="Прийняття рішення: доцільність запиту" activiti:candidateGroups="infr_registr_1">
       <extensionElements>
-        <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний  телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Е-mail" type="string" writable="false"></activiti:formProperty>
@@ -267,6 +271,7 @@ if(execution.getVariable('asBrakeMash') == 'sYes3'){execution.setVariable('yes5'
           <activiti:value id="sManPay" name="Пред’явник судна"></activiti:value>
           <activiti:value id="sOtherPay" name="Інший"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sFioOtherPay" name="ПІБ платника послуги (якщо ним є інша особа)" type="string" default="${lastName_UA3} ${firstName_UA3} ${middleName_UA3}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asChange" name="Чи були з останнього огляду конструктивні зміни корпусу, механізмів, систем, пристроїв, суднового обладнання, забезпечення" type="enum" writable="false">
           <activiti:value id="sYes1" name="Так"></activiti:value>
           <activiti:value id="sNo3" name="Ні"></activiti:value>
