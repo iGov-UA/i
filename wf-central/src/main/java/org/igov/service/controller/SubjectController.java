@@ -870,7 +870,9 @@ public class SubjectController {
                         List<SubjectContact> subjectContacts = subjectContactDao.findContacts(subject);
                         LOG.info("subjectContacts: " + subjectContacts);
                         subject.setaSubjectAccountContact(subjectContacts);
-                        newSubjectSet.add(Subject.getNewSubjectAccount(bSkipDetails, subject, login, subjectHumanDao.getSubjectHuman(subject), subjectOrganDao.getSubjectOrgan(subject)));
+                        SubjectHuman subjectHuman = subjectHumanDao.getSubjectHuman(subject);
+                        SubjectOrgan subjectOrgan = subjectOrganDao.getSubjectOrgan(subject);
+                        newSubjectSet.add(NewSubjectAccount.getNewSubjectAccount(bSkipDetails, subject, login, subjectHuman, subjectOrgan));
                     }
                 }
             }
