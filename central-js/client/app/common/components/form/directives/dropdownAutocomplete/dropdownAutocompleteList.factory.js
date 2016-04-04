@@ -1,43 +1,40 @@
-angular.module('app').factory('dropdownAutocompleteListFactory', function ($http, $filter, TypeaheadFactory, DropdownFactory) {
-  var dropdownAutocompleteListFactory = function (autocompleteData) {
-    this.autocompleteData = autocompleteData;
-    this.typeahead = new TypeaheadFactory();
-    this.dropdown = new DropdownFactory();
+angular.module('app').controller('dropdownAutocompleteController', function ($scope, $http, $filter, TypeaheadFactory, DropdownFactory) {
+  var self = this;
+  $scope.typeahead = new TypeaheadFactory();
+  $scope.dropdown = new DropdownFactory();
+  $scope.$watch('dropdown.isOpen === true', this.load);
+
+  this.initialize = function (list) {
+    $scope.typeahead.initialize(list);
+    $scope.dropdown.initialize(list);
   };
 
-  dropdownAutocompleteListFactory.prototype.initialize = function (list) {
-    this.typeahead.initialize(list);
-    this.dropdown.initialize(list);
+  this.select = function ($item, $model, $label) {
+    $scope.typeahead.select($item, $model, $label);
+    $scope.dropdown.select($item);
   };
 
-  dropdownAutocompleteListFactory.prototype.select = function ($item, $model, $label) {
-    this.typeahead.select($item, $model, $label);
-    this.dropdown.select($item);
-  };
-
-  dropdownAutocompleteListFactory.prototype.load = function (oServiceData, search, params) {
-    var self = this;
+  this.load = function (oServiceData, search, params) {
     if (!params)
       params = {};
 
-    return this.typeahead.load(self.autocompleteData.apiUrl, search, params).then(function (data) {
+    return $scope.typeahead.load($scope.autocompleteData.apiUrl, search, params).then(function (data) {
       if (search && search.length > 0 && search !== '[$empty$]') {
         var filter = {};
-        filter[self.autocompleteData.titleProperty] = search;
+        filter[$scope.autocompleteData.titleProperty] = search;
         return $filter('filter')(data, filter);
       } else
         return data;
     }).then(function (regions) {
-      self.typeahead.list = regions;
-      self.dropdown.list = regions;
+      $scope.typeahead.list = regions;
+      $scope.dropdown.list = regions;
       return regions;
     });
   };
 
-  dropdownAutocompleteListFactory.prototype.reset = function () {
-    this.typeahead.reset();
-    this.dropdown.reset();
+  this.reset = function () {
+    $scope.typeahead.reset();
+    $scope.dropdown.reset();
   };
 
-  return dropdownAutocompleteListFactory;
 });

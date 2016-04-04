@@ -1,4 +1,4 @@
-angular.module('app').directive('dropdownAutocomplete', function (dropdownAutocompleteListFactory) {
+angular.module('app').directive('dropdownAutocomplete', function ($controller) {
   return {
     restrict: 'EA',
     templateUrl: 'app/common/components/form/directives/dropdownAutocomplete/dropdownAutocomplete.html',
@@ -10,10 +10,11 @@ angular.module('app').directive('dropdownAutocomplete', function (dropdownAutoco
       autocompleteName: '=',
       formData: "="
     },
-    link: function (scope) {
-      scope.dataList = new dropdownAutocompleteListFactory(scope.autocompleteData);
+    controller: 'dropdownAutocompleteController',
+    link: function (scope, element, attrs, controller, transcludeFn) {
+      console.log(controller);
       scope.loadDataList = function (search) {
-        return scope.dataList.load(scope.serviceData, search);
+        return controller.load(scope.serviceData, search);
       };
       var getAdditionalPropertyName = function() {
         return (scope.autocompleteData.additionalValueProperty ? scope.autocompleteData.additionalValueProperty : scope.autocompleteData.valueProperty) + '_' + scope.autocompleteName;
@@ -23,19 +24,19 @@ angular.module('app').directive('dropdownAutocomplete', function (dropdownAutoco
         var additionalPropertyName = getAdditionalPropertyName();
         if (scope.formData.params[additionalPropertyName])
           scope.formData.params[additionalPropertyName].value = item[scope.autocompleteData.valueProperty];
-        scope.dataList.typeahead.model = item[scope.autocompleteData.titleProperty];
+        controller.typeahead.model = item[scope.autocompleteData.titleProperty];
       };
-      scope.dataList.reset();
-      scope.dataList.initialize();
+      controller.reset();
+      controller.initialize();
       if (scope.autocompleteData.link)
         scope.autocompleteData.link(scope);
       else {
-        scope.dataList.load(scope.serviceData, null).then(function (regions) {
-          scope.dataList.initialize(regions);
+        controller.load(scope.serviceData, null).then(function (regions) {
+          controller.initialize(regions);
         });
       }
       scope.resetAutoComplete = function() {
-        scope.dataList.reset();
+        controller.reset();
         var additionalPropertyName = getAdditionalPropertyName();
         if (scope.formData.params[additionalPropertyName])
           scope.formData.params[additionalPropertyName].value = null;
