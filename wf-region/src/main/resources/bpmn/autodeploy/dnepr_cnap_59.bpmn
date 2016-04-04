@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_cnap_59" name="Дніпропетровськ_ЦНАП_Декларація відповідності матеріально-технічної бази суб’єкта господарювання вимогам законодавства" isExecutable="true">
+  <process id="dnepr_cnap_59" name="Декларація відповідності матеріально-технічної бази суб’єкта господарювання вимогам законодавства" isExecutable="true">
     <documentation>https://github.com/e-government-ua/iBP/issues/59</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім`я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
@@ -21,16 +22,12 @@
         <activiti:formProperty id="strahovka" name=" Інформація про наявність договору страхування цивільної відповідальності перед третіми особами стосовно відшкодування наслідків можливої шкоди;найменування страхової компанії, строк дії страхового полісу, номер і дата видачі" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта заявника" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="vibor" name="Як би ви бажали отримати оригінал довідки?" type="enum" required="true">
-          <activiti:value id="lev" name="ЦНАП &quot;Лівобережний&quot; (м. Дніпропетровськ, пр. ім. газ. &quot;Правда&quot;, 42)"></activiti:value>
-          <activiti:value id="prav" name="ЦНАП &quot;Правобережний&quot; (м. Дніпропетровськ, пр. К. Маркса, 75)"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="region" name="Регион" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="clerkPost" name="Регион" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="marker23" name="Правобережний ЦНАП" type="markers" default="{&quot;motion&quot;: {&quot;ValuesFieldsOnCondition_23&quot;: {&quot;aField_ID&quot;:[&quot;region&quot;,&quot;clerkPost&quot;],&quot;asID_Field_sValue&quot;:[&quot;23&quot;, &quot;woobraja@mail.ru&quot;], &quot;asID_Field&quot;: {&quot;sReason&quot;:&quot;vibor&quot;}, &quot;sCondition&quot;:&quot;[sReason] == 'prav'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="marker24" name="Лівобережний ЦНАП" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_24&quot;:{&quot;aField_ID&quot;:[&quot;region&quot;,&quot;clerkPost&quot;],&quot;asID_Field_sValue&quot;:[&quot;24&quot;,&quot;Luda17_@ukr.net&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;vibor&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'lev'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="text" name="Зверніть увагу" type="label" default="Замовляючи послугу, Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
-      </extensionElements>
+        <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органа" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Час роботи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
+        </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Service Task" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -38,7 +35,7 @@
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>
     <sequenceFlow id="flow2" sourceRef="boundaryerror1" targetRef="endevent2"></sequenceFlow>
-    <userTask id="usertask2" name="Перевірка даних службою" activiti:candidateGroups="dnepr_cnap_${vibor}">
+    <userTask id="usertask2" name="Перевірка даних службою" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="per2" name="На цьому етапі натисніть &quot;взяти в роботу&quot;." type="label" default="Ви можете сповістити заявника чи оброблено його заяву. Після цього натисніть &quot;Опрацювати&quot;"></activiti:formProperty>
         <activiti:formProperty id="clFIO" name="Прізвище, ім`я, по-батькові заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -55,10 +52,6 @@
         <activiti:formProperty id="work" name="Перелік робіт (послуг), що виконуватимуться (надаватимуться), а також виробів, що виготовлятимуться" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="strahovka" name="Інформація про наявність договору страхування цивільної відповідальності перед третіми особами стосовно відшкодування наслідків можливої шкоди;найменування страхової компанії, строк дії страхового полісу, номер і дата видачі" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="vibor" name="Заявник бажає отримати оригінал довідки в" type="enum" writable="false">
-          <activiti:value id="lev" name="ЦНАП &quot;Лівобережний&quot; (м. Дніпропетровськ, пр. ім. газ. &quot;Правда&quot;, 42)"></activiti:value>
-          <activiti:value id="prav" name="ЦНАП &quot;Правобережний&quot; (м. Дніпропетровськ, пр. К. Маркса, 75)"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="admin" name="Прізвище адміністратора, що прийняв документи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="reestr" name="Номер реєстрації про прийняття документів" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="proverka" name="Рішення про прийняття або відхилення заяви" type="enum" required="true">
@@ -90,14 +83,18 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;h3&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
- &lt;p&gt;Надану Вами "Декларацію відповідності матеріально-технічної бази суб’єкта господарювання вимогам законодавства" зареєстровано. Ви можете отримати її з відміткою про реєстрацію у  [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;/p&gt;
-&lt;p&gt;[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:3]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:4]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]&lt;/p&gt;
+ &lt;p&gt;Надану Вами "Декларацію відповідності матеріально-технічної бази суб’єкта господарювання вимогам законодавства" зареєстровано. Ви можете отримати її з відміткою про реєстрацію у  ${sNameOrgan}&lt;br /&gt;
+&lt;/p&gt;
+${sPhoneOrgan}&lt;br /&gt;
+${sWorkTime}&lt;br /&gt;
+${sAddress}&lt;br /&gt;
+&lt;br /&gt;
 &lt;p&gt;Для отримання зареєстрованої Декларації потрібно особисто звернутися до адміністратора ЦНАП з документом, що посвідчує особу (паспорт).&lt;br/&gt;
 Звертаємо увагу на те, що Ви власноруч підписуєте зареєстровану Декларацію та проставляєте на ній печатку (у разі наявності) в присутності адміністратора в приміщенні ЦНАП &lt;/p&gt;
+&lt;br /&gt;
+&lt;br /&gt;
  [pattern/mail/_common_signature_start.html]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
+${sNameOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]   
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
@@ -126,7 +123,7 @@
 &lt;p&gt;Ваше звернення щодо "Декларації відповідності матеріально-технічної бази суб’єкта господарювання вимогам законодавства" успішно зареєстроване.&lt;/p&gt;
 &lt;p&gt;Ви отримаєте відповідь протягом п'яти робочих днів. &lt;/p&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
+${sNameOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -192,10 +189,11 @@
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;&lt;br /&gt;
 &lt;p&gt;Ваше звернення опрацьоване адміністратором ЦНАП, за декілька днів Ви отримаєте результат розгляду Вашого звернення.&lt;br/&gt;
 Ви можете ознайомитись з копією заяви і описом прийнятих документів, що приєднані до цього листа.&lt;/p&gt;
-&lt;p&gt;Якщо у Вас з`явились питання, Ви можете звернутись до [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:3]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:4]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]&lt;/p&gt;
+&lt;p&gt;Якщо у Вас з`явились питання, Ви можете звернутись до ${sNameOrgan}&lt;br /&gt;
+${sPhoneOrgan}&lt;br /&gt;
+&lt;br /&gt;
+${sWorkTime}&lt;br /&gt;
+${sAddress}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]&lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
@@ -230,12 +228,13 @@
 На жаль, вашу заяву відхилено.&lt;br&gt;
 ${comPer1} &lt;br&gt;
 Ви можете подати ще одну заяву на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;igov.org.ua&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Якщо у Вас з`явились питання, Ви можете звернутись до [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:3]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:4]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]&lt;/p&gt;
+&lt;p&gt;Якщо у Вас з`явились питання, Ви можете звернутись до ${sNameOrgan}&lt;br /&gt;
+${sPhoneOrgan}&lt;br /&gt;
+&lt;br /&gt;
+${sWorkTime}&lt;br /&gt;
+${sAddress}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
+${sNameOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -266,15 +265,15 @@ ${comPer1} &lt;br&gt;
 &lt;p&gt;Щодо Вашого запиту на реєстрацію "Декларації відповідності матеріально-технічної бази суб’єкта господарювання вимогам законодавства".&lt;br&gt;
 На жаль, вашу заяву відхилено.&lt;br&gt;
 ${comment} &lt;br&gt;
-Ви можете забрати оригінал документа про відмову у [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;/p&gt;
+Ви можете забрати оригінал документа про відмову у  ${sNameOrgan}&lt;br /&gt;
 &lt;p&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:3]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:4]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]&lt;/p&gt;
-&lt;p&gt;Документ видається за наявності паспорта&lt;/p&gt;
+${sPhoneOrgan}&lt;br /&gt;
+&lt;br /&gt;
+${sWorkTime}&lt;br /&gt;
+${sAddress}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]   
+${sNameOrgan}&lt;br /&gt;
+[pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
