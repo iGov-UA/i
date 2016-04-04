@@ -301,6 +301,7 @@ public class BpServiceHandler {
                 LOG.info("!!!subjectAccountContact: " + subjectAccountContact);
                 if (subjectAccountContact != null && !subjectAccountContact.isEmpty() 
                         && subjectAccountContact.get("sValue") != null
+                        && !"".equals(subjectAccountContact.get("sValue"))
                         && subjectAccountContact.get("oSubjectContactType") != null
                         && "Phone".equalsIgnoreCase((String) ((Map) subjectAccountContact.get("oSubjectContactType")).get("sName_EN"))) {
                     LOG.info("!!!sValue: " + subjectAccountContact.get("sValue"));
