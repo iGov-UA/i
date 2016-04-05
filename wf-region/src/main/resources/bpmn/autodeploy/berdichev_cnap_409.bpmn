@@ -105,7 +105,7 @@ ${sNameOrgan}&lt;br&gt;
     <sequenceFlow id="flow7" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow10" name="Документи не відповідають вимогам" sourceRef="exclusivegateway1" targetRef="servicetask1">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision == 'sDoc_bad'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision == 'sEnumDoc_bad'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask1" name="email-Відмова громадянину у подальшому розгляді" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
@@ -136,7 +136,7 @@ ${sNameOrgan}&lt;br&gt;
     <sequenceFlow id="flow13" sourceRef="servicetask1" targetRef="endevent2"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow12" name="Документи відповідають вимогам" sourceRef="exclusivegateway1" targetRef="servicetask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision == 'sDoc_ok' && Flag_region != 'true'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision == 'sEmumDoc_ok' && Flag_region != 'true'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask5" name="email-підтверждення громадянину про прийняття документів" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
@@ -197,10 +197,10 @@ ${sNameOrgan}&lt;br&gt;
     <sequenceFlow id="flow15" sourceRef="usertask2" targetRef="exclusivegateway2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow16" name="у довідці відмовлено" sourceRef="exclusivegateway2" targetRef="servicetask1">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDovidka == 'sDovidka_bad'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDovidka == 'sEnumDovidka_bad'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow17" name="довідка зроблена" sourceRef="exclusivegateway2" targetRef="servicetask6">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDovidka == 'sDovidka_ok'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDovidka == 'sEnumDovidka_ok'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask6" name="email-інформування заявника про необхідність отримання результату" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
@@ -235,7 +235,7 @@ ${sNameOrgan}&lt;br&gt;
     </serviceTask>
     <sequenceFlow id="flow18" sourceRef="servicetask6" targetRef="endevent1"></sequenceFlow>
      <sequenceFlow id="flow25" name="Документи відповідають вимогам, Жовті Води" sourceRef="exclusivegateway1" targetRef="servicetask7">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision == 'sDoc_ok' && Flag_region == 'true'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision == 'sEnumDoc_ok' && Flag_region == 'true'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask7" name="email-оповіщення співробітника ЖКГ" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
