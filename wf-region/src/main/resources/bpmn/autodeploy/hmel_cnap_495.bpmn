@@ -30,7 +30,8 @@
         <activiti:formProperty id="sMailClerk" name="пошта посадовця" type="invisible" default="darja.grek@gmail.com"></activiti:formProperty>
         <activiti:formProperty id="sShapka495" name="шапка у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="якщо неповнолітня особа працює за трудовим договором" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sDocWork&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sWhy&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sWantWork'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers2" name="якщо неповнолітня особа працює за трудовим договором" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;sDocParent&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sWhy&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sBecameParent'&quot;}}}"></activiti:formProperty>  </extensionElements>
+        <activiti:formProperty id="markers2" name="якщо неповнолітня особа працює за трудовим договором" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;sDocParent&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sWhy&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sBecameParent'&quot;}}}"></activiti:formProperty>
+      </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="запрошення на співбесіду" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
       <extensionElements>
@@ -39,7 +40,7 @@
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні данні" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdres" name="Адреса реєстрації громадянина; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Укажіть контактний номер телефону; ;writable=false" type="string" ></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Укажіть контактний номер телефону; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPibChild" name="Укажіть Прізвище Ім'я По-Батькові неповнолітній особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWhy" name="У зв'язку з чим потребується надання неповнолітній особі повної цивільної дієздатності?" type="enum" writable="false">
@@ -50,7 +51,6 @@
           <activiti:value id="accept" name="Заповнені дані вірні, запросити громадян на співбесіду"></activiti:value>
           <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
         </activiti:formProperty>
-        
         <activiti:formProperty id="sDateVisit" name="Укажіть дату - коли прийти громадянам (у форматі дд.мм.рррр)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTimeVisit" name="Укажіть час - о котрій прийти громадянам (наприклад 15:00)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sRoom" name="Укажіть точну адресу і кабінет, де буде проводитися співбесіда" type="string"></activiti:formProperty>
@@ -62,7 +62,7 @@
         <activiti:formProperty id="comment_1" name="У разі відхилення звернення внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWhyPrint" name="мета у принтформу" type="invisible"></activiti:formProperty>
-         <activiti:formProperty id="sShapka495" name="шапка у принтформу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapka495" name="шапка у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/khmelnitsky/hmel_cnap_495_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/khmelnitsky/hmel_cnap_495_print.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -75,12 +75,12 @@
     </userTask>
     <userTask id="usertask2" name="надання адміністративної послуги" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-          <activiti:formProperty id="sNameOrgan" name="Район" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Район" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні данні" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdres" name="Адреса реєстрації громадянина; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Укажіть контактний номер телефону; ;writable=false" type="string" ></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Укажіть контактний номер телефону; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPibChild" name="Укажіть Прізвище Ім'я По-Батькові неповнолітній особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWhy" name="У зв'язку з чим потребується надання неповнолітній особі повної цивільної дієздатності?" type="enum" writable="false">
@@ -101,7 +101,7 @@
         <activiti:formProperty id="rishen" name="Завантажте копію документа" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/khmelnitsky/hmel_cnap_495_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/khmelnitsky/hmel_cnap_495_print.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
-        </extensionElements>
+      </extensionElements>
     </userTask>
     <serviceTask id="servicetask4" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
@@ -236,7 +236,7 @@ ${sNameOrgan}&lt;br /&gt;
       </extensionElements>
     </serviceTask>
     <scriptTask id="scripttask1" name="Передача значений" scriptFormat="javascript" activiti:autoStoreVariables="false">
-       <script>
+      <script>
 var per1 = " "
 var per2 = " "
 var per3 = " "
@@ -291,10 +291,10 @@ execution.setVariable('sWhyPrint', per5)
     <sequenceFlow id="flow32" sourceRef="servicetask5" targetRef="usertask2"></sequenceFlow>
     <sequenceFlow id="flow33" sourceRef="usertask2" targetRef="servicetask2"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_hmel_cnap_246">
-    <bpmndi:BPMNPlane bpmnElement="hmel_cnap_246" id="BPMNPlane_hmel_cnap_246">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_hmel_cnap_495">
+    <bpmndi:BPMNPlane bpmnElement="hmel_cnap_495" id="BPMNPlane_hmel_cnap_495">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="125.0" y="36.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="130.0" y="49.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="55.0" width="105.0" x="480.0" y="190.0"></omgdc:Bounds>
@@ -341,7 +341,7 @@ execution.setVariable('sWhyPrint', per5)
         <omgdi:waypoint x="532.0" y="102.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
-        <omgdi:waypoint x="160.0" y="53.0"></omgdi:waypoint>
+        <omgdi:waypoint x="165.0" y="66.0"></omgdi:waypoint>
         <omgdi:waypoint x="200.0" y="53.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
@@ -387,4 +387,3 @@ execution.setVariable('sWhyPrint', per5)
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
 </definitions>
-
