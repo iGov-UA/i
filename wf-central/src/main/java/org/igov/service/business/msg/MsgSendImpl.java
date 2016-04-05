@@ -29,18 +29,20 @@ import com.pb.util.gsv.net.HTTPClient;
  * 
  *         Пример использования:
  * 
- *         MsgSend msgSend = new MsgSendImpl("INTERNAL_ERROR",
- *         "getFunctionsForMeat"); IMsgObjR msg =
- *         msgSend.addnID_Server(nID_Server).addnID_Subject(nID_Server).addsBody
- *         (sBody) .addsError(sError).addsHead(sHead).addsmData(smData).save();
+ *         IMsgObjR msg = new MsgSendImpl(sType, sFunction).addnID_Server(nID_Server).
+ *                addnID_Subject(nID_Server).addsBody(sBody).addsError(sError).addsHead(sHead).
+ *                addsmData(smData).save();
  * 
  *         Обязательные параметры: sType и sFunction
  * 
- *         sType - тип сообщения, может принимать значения: ACCES_DENIED_ERROR -
- *         Ошибка доступа(авторизация) EXTERNAL_ERROR - Внешняя ошибка
- *         INF_MESSAGE - Информационное сообщение INTERNAL_ERROR - Внутренняя
- *         ошибка VALIDATION_ERROR - Ошибка валидации входящих данных WARNING -
- *         Предупреждение
+ *         sType - тип сообщения, может принимать значения:
+ *          
+ *           ACCES_DENIED_ERROR - Ошибка доступа(авторизация) 
+ *           EXTERNAL_ERROR - Внешняя ошибка
+ *           INF_MESSAGE - Информационное сообщение 
+ *           INTERNAL_ERROR - Внутренняя ошибка 
+ *           VALIDATION_ERROR - Ошибка валидации входящих данных 
+ *           WARNING - Предупреждение
  * 
  *         Если тип сообщения указать некорректно (например WARNING2 ), то
  *         принимается тип INF_MESSAGE
@@ -60,14 +62,14 @@ import com.pb.util.gsv.net.HTTPClient;
  *         Для гибкой настройки может используется файл параметров
  *         msg.properties, где:
  * 
- *         MsgURL=MsgURL=http://msg.igov.org.ua/MSG // url Сервиса Хранения
- *         Ошибок sBusId=TEST // иденификатор Бизнес процесса
+ *         MsgURL=MsgURL=http://msg.igov.org.ua/MSG // url Сервиса Хранения Ошибок 
+ *         sBusId=TEST // иденификатор Бизнес процесса
  * 
  */
 public class MsgSendImpl implements MsgSend {
     private static final Logger LOG = LoggerFactory.getLogger(MsgSendImpl.class);
 
-    private static final String MSG_URL_DEFAULT = "http://msg.igov.org.ua/MSG";
+    public static final String MSG_URL;
     private static final String TemplateMsgId = "HMXHVKM80002M0";
     private static final String TemplateMsgIdJSON = "\",\"TemplateMsgId\":\"" + TemplateMsgId + "\"}}]}";
 
@@ -82,15 +84,17 @@ public class MsgSendImpl implements MsgSend {
 	String sBusId;
 	try {
 	    prop.load(inputStream);
-	    MsgURL = prop.getProperty("MsgURL", MSG_URL_DEFAULT);
+	    
+	    MsgURL = prop.getProperty("MsgURL",  "http://msg.igov.org.ua/MSG");
 	    sBusId = prop.getProperty("sBusId", "TEST");
 	} catch (IOException e) {
-	    MsgURL = MSG_URL_DEFAULT;
+	    MsgURL =  "http://msg.igov.org.ua/MSG";
 	    sBusId = "TEST";
 	}
 
+	MSG_URL = MsgURL; 
 	sBusId_DEFAULT = sBusId;
-	System.setProperty("MsgURL", MsgURL);
+	System.setProperty("MsgURL", MSG_URL);
 
     }
 
@@ -116,15 +120,15 @@ public class MsgSendImpl implements MsgSend {
     private String smDataMisc = null;
 
     /**
-     * @param String
-     *            sType - тип сообщения, может принимать значения:
-     *            ACCES_DENIED_ERROR - Ошибка доступа(авторизация)
-     *            EXTERNAL_ERROR - Внешняя ошибка INF_MESSAGE - Информационное
-     *            сообщение INTERNAL_ERROR - Внутренняя ошибка VALIDATION_ERROR
-     *            - Ошибка валидации входящих данных WARNING - Предупреждение
+     * @param sType - тип сообщения, может принимать значения:
+     *           ACCES_DENIED_ERROR - Ошибка доступа(авторизация) 
+     *           EXTERNAL_ERROR - Внешняя ошибка
+     *           INF_MESSAGE - Информационное сообщение 
+     *           INTERNAL_ERROR - Внутренняя ошибка 
+     *           VALIDATION_ERROR - Ошибка валидации входящих данных 
+     *           WARNING - Предупреждение
      * 
-     * @param String
-     *            sFunction - строка с именем функции где произошла ошибка
+     * @param sFunction - строка с именем функции где произошла ошибка
      * 
      */
     public MsgSendImpl(String sType, String sFunction) {
@@ -182,12 +186,11 @@ public class MsgSendImpl implements MsgSend {
      * Соответствующие поля структуры запоминаются в отделных переменных, для
      * последующего сохранения в атрибутах Сервиса Хранения Ошибок
      * 
-     * @param String
-     *            smData - JSON структура следующего фоормата:
+     * @param smData - JSON структура следующего фоормата:
      * 
-     *            { "asParam": ["par1", "par2", "par3"], "oResponse": {
-     *            "sMessage": "value sMessage", "sCode": "value sCode",
-     *            "soData": "value soData" }, "sDate": "value sDate" }
+     *  { "asParam": ["par1", "par2", "par3"], "oResponse": {
+     *  "sMessage": "value sMessage", "sCode": "value sCode",
+     *  "soData": "value soData" }, "sDate": "value sDate" }
      */
     public MsgSend addsmData(String smData) {
 	String sResponseMessage = null;
@@ -254,12 +257,14 @@ public class MsgSendImpl implements MsgSend {
 
     /**
      * Формирование JSON структуры для создание шаблона сообщения с новым кодом.
-     * Вид структуры: { "r" : [ { _type_comment" : "Создание сообщения", "type"
+     * 
+     * Вид структуры: 
+     * { "r" : [ { _type_comment" : "Создание сообщения", "type"
      * : "MSG_ADD", "sid" : "${sid}", "s" : { "Type" : "${Тип сообщения}",
      * "MsgCode" : "${Код сообщения}", "BusId" : "${Id бизнеспроцесса}", "Descr"
      * : "${Описание сообщения}", "TemplateMsgId" : "${Id шаблона}" } }] }
      * 
-     * @return String Возвращает JSON структуру создания шаблона сообщения в
+     * @return Возвращает JSON структуру создания шаблона сообщения в
      *         виде строки
      */
     private String buildJSON() {

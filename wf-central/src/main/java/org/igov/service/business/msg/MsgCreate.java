@@ -11,11 +11,34 @@ import java.net.URL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * 
+ * @author kr110666kai
+ * 
+ * Создание шаблона сообщения на основании JSON запроса вида:
+ * 
+ * { "r" : 
+ *   [ 
+ *     { 
+ *       "_type_comment" : "Создание сообщения", 
+ *       "type" : "MSG_ADD", 
+ *       "sid" : "${sid}",
+ *        "s" : { 
+ *                "Type" : "${Тип сообщения}",
+ *                "MsgCode" : "${Код сообщения}",
+ *                "BusId" : "${Id бизнеспроцесса}",
+ *                "Descr" : "${Описание сообщения}",
+ *                "TemplateMsgId" : "${Id шаблона}" 
+ *               }
+ *      }
+ *   ]
+ * }
+ *
+ */
 public class MsgCreate {
     private static final Logger LOG = LoggerFactory.getLogger(MsgCreate.class);
 
     private String reqest = null;
-    private static final String MSG_URL_ADD = "http://msg.igov.org.ua/MSG";
 
     public MsgCreate(String reqest) {
 	LOG.debug("reqest={}", reqest);
@@ -29,7 +52,7 @@ public class MsgCreate {
 
 	try {
 
-	    URL url = new URL(MSG_URL_ADD);
+	    URL url = new URL(MsgSendImpl.MSG_URL);
 	    conn = (HttpURLConnection) url.openConnection();
 	    conn.setDoOutput(true);
 	    conn.setRequestMethod("POST");
