@@ -56,6 +56,7 @@
         <activiti:formProperty id="nFile_ReasonDocument" name="Копія документу, який підтверджує підстави щодо розірвання договору оренди земельної ділянки" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_AktObstezennya" name="Копія Акт обстеження земельної ділянки" type="file"></activiti:formProperty>
         <activiti:formProperty id="nFile_OwnershipInsideBuildings" name="Для вбудованних приміщень обов'язково документ про право власності на приміщення" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile_UstanovchiDocumenti" name="Копії установчих документів (для суб’єктів господарювання)" type="file"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Розкриття атрібутів щодо специфіки вводу" type="markers" default="${markerService.loadFromFile('dneprCnap/dnepr_cnap_190_11.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="Розкриття атрібутів щодо специфіки вводу" type="markers" default="${markerService.loadFromFile('dneprCnap/dnepr_cnap_190_12.json')}"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible"></activiti:formProperty>
@@ -119,7 +120,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${bankId_scan_inn},${nFile_DovirenistConfidant},${nFile_PassportConfidant},${nFile_ContarctArenda}, ${nFile_AdvertLicense}, ${nFile_DovidkaProVidsutnistDolgaArendi}, ${nFile_DPI_DovidkaProVidsutnistDolgaArendi}, ${nFile_ReasonDocument}, ${nFile_AktObstezennya}, ${nFile_OwnershipInsideBuildings}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport},${bankId_scan_inn},${nFile_DovirenistConfidant},${nFile_PassportConfidant},${nFile_ContarctArenda}, ${nFile_AdvertLicense}, ${nFile_DovidkaProVidsutnistDolgaArendi}, ${nFile_DPI_DovidkaProVidsutnistDolgaArendi}, ${nFile_ReasonDocument}, ${nFile_AktObstezennya}, ${nFile_OwnershipInsideBuildings}, ${nFile_UstanovchiDocumenti}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
