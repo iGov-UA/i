@@ -215,14 +215,14 @@ public class MsgSendImpl implements MsgSend {
 	return null;
     }
 
-    public static void main(String[] args) throws IOException {
-	MsgSend msgSend = new MsgSendImpl("warning", "function");
-	IMsgObjR msg = msgSend.addnID_Server(1L).addnID_Subject(1L).addsBody("text body").addsError("text error")
-		.addsHead("text head 22").save();
-
-	System.out.println("msg = " + msg);
-
-    }
+//    public static void main(String[] args) throws IOException {
+//	MsgSend msgSend = new MsgSendImpl("warning", "function");
+//	IMsgObjR msg = msgSend.addnID_Server(1L).addnID_Subject(1L).addsBody("text body").addsError("text error")
+//		.addsHead("text head 22").save();
+//
+//	System.out.println("msg = " + msg);
+//
+//    }
 
     @Override
     public IMsgObjR save() {
