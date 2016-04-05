@@ -382,6 +382,23 @@
             $scope.taskForm.taskData = taskData;
           });
         }
+
+        // autofocus on searched task
+        if(iGovNavbarHelper.tasksSearch.autofocusOnTask){
+          var oHtmlDomTasksList = document.getElementById("tasks-list");
+          var aHtmlDomTasks = oHtmlDomTasksList.getElementsByTagName("a");
+          var oHtmlDomTaskActive;
+          for(var i = 0, max = aHtmlDomTasks.length; i < max; i++){
+            var el = aHtmlDomTasks.item(i);
+            var elClassName = el.getAttribute("class");
+            if (elClassName.search("active") != -1){
+              oHtmlDomTaskActive = el;
+              break;
+            }
+          }
+          oHtmlDomTaskActive.scrollIntoView(true);
+          iGovNavbarHelper.tasksSearch.autofocusOnTask = false;
+        }
       };
 
       if (oTask.endTime) {

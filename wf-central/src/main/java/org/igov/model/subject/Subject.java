@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.igov.model.core.Entity;
 
 import javax.persistence.Column;
-import java.util.ArrayList;
 import java.util.List;
 
 @javax.persistence.Entity
@@ -21,35 +20,9 @@ public class Subject extends Entity {
     @JsonProperty(value = "sLabelShort")
     @Column(name = "sLabelShort", nullable = true)
     private String sLabelShort;
-    
+
     @JsonProperty(value = "aSubjectAccountContact")
     private transient List<SubjectContact> aSubjectAccountContact;
-
-    public static NewSubject getNewSubject(Subject subject, String login){
-        NewSubject newSubject = new NewSubject();
-        newSubject.setaSubjectLogin(login);
-        NewSubjectHuman newSubjectHuman = new NewSubjectHuman();
-        newSubjectHuman.setsLabelShort(subject.sLabelShort);
-        newSubjectHuman.setsLabel(subject.getsLabel());
-        newSubjectHuman.setsID(subject.getsID());
-        newSubject.setaSubjectHuman(newSubjectHuman);
-        newSubject.setaSubjectAccountContact(Subject.getNewSubjectAccountContacts(subject));
-
-        return newSubject;
-    }
-    private static List<NewSubjectContact> getNewSubjectAccountContacts(Subject subject){
-        List<NewSubjectContact> newSubjectContactsList = new ArrayList<>();
-        for (SubjectContact subjectContact : subject.getaSubjectAccountContact()) {
-            NewSubjectContact newSubjectContact = new NewSubjectContact();
-            newSubjectContact.setsDate(subjectContact.getsDate());
-            newSubjectContact.setSubjectContactType(subjectContact.getSubjectContactType());
-            newSubjectContact.setsValue(subjectContact.getsValue());
-            newSubjectContact.setId(subject.getId());
-            newSubjectContactsList.add(newSubjectContact);
-
-        }
-        return newSubjectContactsList;
-    }
 
     public String getsID() {
         return sID;

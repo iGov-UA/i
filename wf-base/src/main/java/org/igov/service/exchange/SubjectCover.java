@@ -28,7 +28,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class SubjectCover {
     
-    private final String URI_GET_GetSubjects = "/wf/service/subject/getSubjectsByAccount";
+    private final String URI_GET_GetSubjects = "/wf/service/subject/getSubjectsBy";
 
     private static final Logger LOG = LoggerFactory.getLogger(SubjectCover.class);
     @Autowired
@@ -37,15 +37,14 @@ public class SubjectCover {
     private GeneralConfig generalConfig;
     
     
-    public Map getSubjects(Set<String> logins, Set<String> groups) {
+    public Map getSubjectsBy(Set<String> accounts) {
         Map<String, Map> result = null;
-        String URL = String.format(URI_GET_GetSubjects, logins, groups, generalConfig.nID_Server());
-        Map<String, String> param = new HashMap();
+        //String URL = String.format(URI_GET_GetSubjects, accounts, generalConfig.nID_Server());
         try {
-            param.put("saLogin", JsonRestUtils.toJson(logins));
-            param.put("saGroup", JsonRestUtils.toJson(groups));
+            Map<String, String> param = new HashMap();
+            param.put("saAccount", JsonRestUtils.toJson(accounts));
             param.put("nID_Server", String.valueOf(generalConfig.nID_Server())); 
-            String responce = doRemoteRequest(URL, param);
+            String responce = doRemoteRequest(URI_GET_GetSubjects, param);
             result = JsonRestUtils.readObject(responce, Map.class); 
         } catch (JsonProcessingException ex) {
             java.util.logging.Logger.getLogger(SubjectCover.class.getName()).log(Level.SEVERE, null, ex);
