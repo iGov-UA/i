@@ -19,8 +19,8 @@
         </activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Сканований паспорт громадянина" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocBithday" name="Копія свідоцтва про народження неповнолітньої особи" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="info" name=" " type="label" default="&lt;a href=&quot;https://drive.google.com/open?id=0B6mOkUg9oq1zM3pBc2swWDBXeWs&quot; target=&quot;_blank&quot;&gt;приклад заяви&lt;/a&gt; "></activiti:formProperty>
         <activiti:formProperty id="sDocChild" name="Заява, підписана неповнолітньою особою" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="info" name=" " type="label" default="&lt;a href=&quot;https://drive.google.com/drive/u/0/folders/0B6mOkUg9oq1zWDNPdlktVjhiVjQ&quot; target=&quot;_blank&quot;&gt;приклад заяви&lt;/a&gt; "></activiti:formProperty>
         <activiti:formProperty id="sDocWork" name="Копія трудового договору" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocParent" name="Довідка відділу державної реєстрації актів цивільного стану про запис особи батьком (матір'ю) дитини" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу" type="invisible"></activiti:formProperty>
@@ -42,7 +42,7 @@
         <activiti:formProperty id="phone" name="Укажіть контактний номер телефону; ;writable=false" type="string" ></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPibChild" name="Укажіть Прізвище Ім'я По-Батькові неповнолітній особи; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sWhy" name="У зв'язку з чим потребується надання неповнолітній особі повної цивільної дієздатності?" type="enum">
+        <activiti:formProperty id="sWhy" name="У зв'язку з чим потребується надання неповнолітній особі повної цивільної дієздатності?" type="enum" writable="false">
           <activiti:value id="sWantWork" name="неповнолітня особа працює за трудовим договором"></activiti:value>
           <activiti:value id="sBecameParent" name="неповнолітня особа записана матір’ю або батьком дитини"></activiti:value>
         </activiti:formProperty>
@@ -53,7 +53,7 @@
         
         <activiti:formProperty id="sDateVisit" name="Укажіть дату - коли прийти громадянам (у форматі дд.мм.рррр)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTimeVisit" name="Укажіть час - о котрій прийти громадянам (наприклад 15:00)" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sRoom" name="Укажіть кабінет, де буде проводитися співбесіда" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sRoom" name="Укажіть точну адресу і кабінет, де буде проводитися співбесіда" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPibPosadovec" name="П.І.Б. посадової особи, що проводитиме співбесіду" type="string"></activiti:formProperty>
         <activiti:formProperty id="comment_3" name="Додаткові відомості щодо візиту (заповніть у разі необхідності)" type="string"></activiti:formProperty>
         <activiti:formProperty id="reestr_numb" name="Реєстраційний номер" type="string" default=" "></activiti:formProperty>
@@ -62,6 +62,7 @@
         <activiti:formProperty id="comment_1" name="У разі відхилення звернення внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWhyPrint" name="мета у принтформу" type="invisible"></activiti:formProperty>
+         <activiti:formProperty id="sShapka495" name="шапка у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/khmelnitsky/hmel_cnap_495_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/khmelnitsky/hmel_cnap_495_print.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -82,7 +83,7 @@
         <activiti:formProperty id="phone" name="Укажіть контактний номер телефону; ;writable=false" type="string" ></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPibChild" name="Укажіть Прізвище Ім'я По-Батькові неповнолітній особи; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sWhy" name="У зв'язку з чим потребується надання неповнолітній особі повної цивільної дієздатності?" type="enum">
+        <activiti:formProperty id="sWhy" name="У зв'язку з чим потребується надання неповнолітній особі повної цивільної дієздатності?" type="enum" writable="false">
           <activiti:value id="sWantWork" name="неповнолітня особа працює за трудовим договором"></activiti:value>
           <activiti:value id="sBecameParent" name="неповнолітня особа записана матір’ю або батьком дитини"></activiti:value>
         </activiti:formProperty>
@@ -96,6 +97,7 @@
         <activiti:formProperty id="comment_1" name="У разі відмови в наданні рішення внесіть, будь ласка, причину" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWhyPrint" name="мета у принтформу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapka495" name="шапка у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="rishen" name="Завантажте копію документа" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/khmelnitsky/hmel_cnap_495_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/khmelnitsky/hmel_cnap_495_print.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
@@ -163,9 +165,8 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}!&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Вам призначено дату та час візиту для співбесіди щодо надання фізичній особі повної цивільної дієздатності: ${sDateVisit} ${sTimeVisit}&lt;br /&gt;
-Адреса: ${sAddress}&lt;br /&gt;
-Номер кабінету: ${sRoom}&lt;br /&gt;
+Вам призначено дату та час візиту для співбесіди щодо надання фізичній особі ${sPibChild} повної цивільної дієздатності: ${sDateVisit} ${sTimeVisit}&lt;br /&gt;
+Адреса: ${sRoom}&lt;br /&gt;
 П.І.Б. посадової особи, що проводитиме співбесіду: ${sPibPosadovec}&lt;br /&gt;
 На співбесіді повинні бути присутні батьки і дитина.&lt;br /&gt;
 ${comment_3}&lt;br /&gt;
@@ -219,10 +220,10 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Щодо Вашого зверенення - enum{[decision_2]}.&lt;br /&gt;
+enum{[decision_2]}.&lt;br /&gt;
 ${comment_1}&lt;br /&gt;
-Копія рішення знаходиться у додатку до листа.&lt;br /&gt;
-Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у центрі надання адміністративних послуг за адресою:
+Копія рішення знаходиться у додатку до листа.&lt;br /&gt;&lt;br /&gt;
+Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у центрі надання адміністративних послуг.&lt;br /&gt;
 ${sAddress}&lt;br /&gt;
 ${sPhoneOrgan}&lt;br /&gt;
 ${sWorkTime}&lt;br /&gt;
@@ -255,10 +256,10 @@ if(execution.getVariable('sDocChild') != null){
 per4 = "&lt;li&gt;Довідка відділу державної реєстрації актів цивільного стану про запис особи батьком (матір'ю) дитини.&lt;/li&gt;"
 }
 if(execution.getVariable('sWhy') == "sWantWork"){
-per5 = "&lt;li&gt;роботою за трудовим договором.&lt;/li&gt;"
+per5 = "роботою за трудовим договором."
 }
 if(execution.getVariable('sWhy') == "sBecameParent"){
-per5 = "&lt;li&gt;записом матір'ю або батьком дитини.&lt;/li&gt;"
+per5 = "записом матір'ю або батьком дитини."
 }
 res = '&lt;ol&gt;'+per1+per2+per3+per4+'&lt;/ol&gt;'
 execution.setVariable('sListDocumentsPrint', res)
