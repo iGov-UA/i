@@ -12,6 +12,7 @@
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Адреса проживання" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNameDead" name="ПІБ померлого" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameCemetryOut" name="Назва кладовища, № сектору з якого буде здійснено перепоховання" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameCemetryIn" name="Назва кладовища, № сектору на яке буде здійснено перепоховання" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sReason" name="Причина перепоховання" type="string" required="true"></activiti:formProperty>
@@ -37,6 +38,15 @@
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення. Надання згоди на перенесення поховання.]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;strong&gt;Шановний(-а) колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
+У Вас в черзі на обробку нове звернення щодо надання згоди на перенесення поховання.&lt;br /&gt;
+Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
+Відпрацюйте це звернення на &lt;a href="https://region.igov.org.ua" target="_blank"&gt;порталі&lt;/a&gt;
+[pattern/mail/_common_signature.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -76,6 +86,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Адреса проживання заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameDead" name="ПІБ померлого" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameCemetryOut" name="Назва кладовища, № сектору з якого буде здійснено перепоховання" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameCemetryIn" name="Назва кладовища, № сектору на яке буде здійснено перепоховання" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sReason" name="Причина перепоховання" type="string" writable="false"></activiti:formProperty>
@@ -88,8 +99,7 @@ ${sNameOrgan}.&lt;br /&gt;
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка для прінтформи" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody" name="[pattern/print/dneprOblSnap/cnap_417_print.html]" type="invisible" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/cnap_417_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern/print/dneprOblSnap/cnap_503_print.html]" type="invisible" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -173,6 +183,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Адреса проживання заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameDead" name="ПІБ померлого" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameCemetryOut" name="Назва кладовища, № сектору з якого буде здійснено перепоховання" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameCemetryIn" name="Назва кладовища, № сектору на яке буде здійснено перепоховання" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sReason" name="Причина перепоховання" type="string" writable="false"></activiti:formProperty>
@@ -210,7 +221,7 @@ ${sNameOrgan}.&lt;br /&gt;
 1. Документ, що посвідчує особу.&lt;br/&gt; 
 2. Для уповоноваженої особи - довіренність.&lt;br/&gt;
 3. Оригінали документів, що були завантажені при подачі заяви на сайті.&lt;br/&gt;
-4. Підписану завірену печаткою заяву, яка знаходиться в прикріпленому файлі.&lt;/p&gt;
+&lt;/p&gt;
 &lt;br /&gt;
 ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
@@ -345,7 +356,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <omgdi:waypoint x="662.0" y="306.0"></omgdi:waypoint>
         <omgdi:waypoint x="595.0" y="307.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="595.0" y="286.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="75.0" x="595.0" y="286.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
@@ -356,7 +367,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <omgdi:waypoint x="682.0" y="326.0"></omgdi:waypoint>
         <omgdi:waypoint x="682.0" y="390.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="643.0" y="349.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="81.0" x="643.0" y="349.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
