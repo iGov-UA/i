@@ -826,31 +826,20 @@ public class SubjectController {
     @RequestMapping(value = "/getSubjectsBy", method = RequestMethod.GET, headers = {JSON_TYPE})
     public @ResponseBody
     Map<String, List<NewSubjectAccount>> getSubjectsBy(
-            @ApiParam(value = "Массив с логинами чиновников в виде json", required = false) @RequestParam(value = "saAccount", required = false) String saAccount,
-            @ApiParam(value = "Ид сервера", required = false) @RequestParam(value = "nID_Server", required = false) Long nID_Server,
+            @ApiParam(value = "Массив с логинами чиновников в виде json", required = false) @RequestParam(value = "saAccount", required = true) String saAccount,
+            @ApiParam(value = "Ид сервера", required = false) @RequestParam(value = "nID_Server", required = false, defaultValue = "0") Long nID_Server,
             @ApiParam(value = "Не показывать подробности про организации и чиновников", required = false, defaultValue = "false") @RequestParam(value = "bSkipDetails", required = false, defaultValue = "false") boolean bSkipDetails,
-            @ApiParam(value = "Массив с типами аакаунтов  в виде json", required = false) @RequestParam(value = "nID_SubjectAccountType", required = false) Long nID_SubjectAccountType) throws CommonServiceException {
+            @ApiParam(value = "Массив с типами аакаунтов  в виде json", required = false) @RequestParam(value = "nID_SubjectAccountType", required = false, defaultValue = "1") Long nID_SubjectAccountType) throws CommonServiceException {
 
         Map<String, List<NewSubjectAccount>> result = new HashMap<>();
-
-        if (saAccount == null && nID_Server == null && nID_SubjectAccountType == null) {
-            throw new CommonServiceException(
-                    ExceptionCommonController.BUSINESS_ERROR_CODE,
-                    "Ошибка! Укажите хотя бы параметры: saLogin,nID_Server",
-                    HttpStatus.BAD_REQUEST);
+        SubjectAccountType subjectAccountType = subjectAccountTypeDao.findByIdExpected(nID_SubjectAccountType);
+        if (subjectAccountType == null) {
+            throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
+                    "Error! SubjectAccountType not found for id=" + nID_SubjectAccountType, HttpStatus.NOT_FOUND);
         } else {
-            // находим сущность SubjectAccountType если не налл
-            SubjectAccountType subjectAccountType = new SubjectAccountType();
-            if (nID_SubjectAccountType != null) {
-                subjectAccountType = subjectAccountTypeDao.findByIdExpected(nID_SubjectAccountType);
-            }
-            if (subjectAccountType == null) {
-                throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
-                        "Error! SubjectAccountType not found for id=" + 1, HttpStatus.NOT_FOUND);
-            }
             result.put("aSubjectAccount", getSubjectBy(saAccount, subjectAccountType.getId(), nID_Server, bSkipDetails));
+            return result;
         }
-        return result;
     }
 
     private List<NewSubjectAccount> getSubjectBy(String saLogin, Long nID_SubjectAccountType, Long nID_Server, boolean bSkipDetails) {
