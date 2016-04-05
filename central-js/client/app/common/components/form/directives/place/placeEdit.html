@@ -1,0 +1,56 @@
+<div class="list-group-item" ng-if="bAdmin">
+  <div class="spacer10"></div>
+  <div class="row">
+
+    <div class="col-md-6 col-md-offset-3" ng-show="showAddCountryService()">
+      <button class="btn btn-default btn-block"
+              href=""
+              ng-click="add()"
+              title="Додати послугу в цьому регіоні або населенному пункті">
+        <i class="glyphicon glyphicon-plus-sign"></i>&nbsp;Додати послугу для усієї України
+      </button>
+    </div>
+    <div class="col-md-12 text-center" ng-show="showCountryMessage()">
+      Неможливо додати послугу на рівні країни оскільки вже додано послугу на рівні одного з регіонів або міст
+    </div>
+
+    <div class="col-md-6 col-md-offset-3" ng-show="showAddRegionService()">
+      <button class="btn btn-default btn-block"
+              href=""
+              ng-click="add()"
+              title="Додати послугу в цьому регіоні або населенному пункті">
+        <i class="glyphicon glyphicon-plus-sign"></i>&nbsp;Додати послугу в цьому регіоні
+      </button>
+    </div>
+    <div class="col-md-12 text-center" ng-show="showRegionMessage()">
+      Неможливо додати послугу на рівні області оскільки вже додано послугу на рівні одного з міст області
+    </div>
+
+    <div class="col-md-6 col-md-offset-3" ng-show="showAddCityService()">
+      <button class="btn btn-default btn-block"
+         href=""
+         ng-click="add()"
+         title="Додати послугу в цьому регіоні або населенному пункті">
+        <i class="glyphicon glyphicon-plus-sign"></i>&nbsp;Додати послугу в цьому населенному пункті
+      </button>
+    </div>
+    <div ng-show="serviceIsAvailable()">
+      <div class="col-md-6">
+        <button class="btn btn-default btn-block"
+                href=""
+                title="Редагувати послугу в цьому регіоні або населенному пункті"
+                ng-click="edit()">
+          <i class="glyphicon glyphicon-edit"></i>&nbsp;Редагувати послугу в цьому регіоні або населенному пункті
+        </button>
+      </div>
+      <div class="col-md-6">
+        <button class="btn btn-default btn-block col-md-6"
+                href=""
+                title="Видалити послугу в цьому регіоні або населенному пункті"
+                ng-click="remove()">
+          <i class="glyphicon glyphicon-trash"></i>&nbsp;Видалити послугу в цьому регіоні або населенному пункті
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

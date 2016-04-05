@@ -1,0 +1,99 @@
+<div class="modal-header">
+  <h3 class="modal-title" ng-if="!isNew">Редагування послуги</h3>
+  <h3 class="modal-title" ng-if="isNew">Додання послуги</h3>
+</div>
+<form class="form-horizontal" name="serviceEditForm" novalidate>
+  <div class="modal-body">
+    <div class="form-group"
+         ng-class="{ 'has-error': serviceEditForm.auth.$dirty && serviceEditForm.auth.$invalid }">
+      <label class="col-md-3 col-xs-3 control-label">
+        Тип аутентифікації
+      </label>
+      <div class="col-md-9 col-xs-9" >
+        <input class="form-control"
+               type="text"
+               name="auth"
+               ng-model="serviceData.asAuth"
+               placeholder="Введіть тип аутентифікації, будь ласка"
+               required>
+      </div>
+    </div>
+
+    <div class="form-group"
+         ng-class="{ 'has-error': serviceEditForm.server.$dirty && serviceEditForm.server.$invalid }">
+      <label class="col-md-3 col-xs-3 control-label">
+        Номер сервера
+      </label>
+      <div class="col-md-9 col-xs-9" >
+        <input class="form-control"
+               type="number"
+               name="server"
+               ng-model="serviceData.nID_Server"
+               placeholder="Введіть номер сервера, будь ласка"
+               required>
+      </div>
+    </div>
+
+    <div class="form-group"
+         ng-class="{ 'has-error': serviceEditForm.url.$dirty && serviceEditForm.url.$invalid }">
+      <label class="col-md-3 col-xs-3 control-label">
+        URL
+      </label>
+      <div class="col-md-9 col-xs-9" >
+        <input class="form-control"
+               type="url"
+               name="url"
+               ng-model="serviceData.sURL"
+               placeholder="Введіть URL, будь ласка"
+               required>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-md-3 col-xs-3 control-label">
+        Коментар до URL
+      </label>
+      <div class="col-md-9 col-xs-9" >
+        <div text-angular ng-model="serviceData.sNote"></div>
+      </div>
+    </div>
+
+    <div class="form-group"
+         ng-class="{ 'has-error': serviceEditForm.type.$dirty && serviceEditForm.type.$invalid  }">
+      <label class="col-md-3 col-xs-3 control-label">
+        Тип послуги
+      </label>
+      <div class="col-md-9 col-xs-9" >
+        <select class="form-control"
+                name="type"
+                ng-model="serviceData.nID_ServiceType"
+                ng-options="serviceType as serviceType.sName for serviceType in serviceTypes"
+                required>
+          <option value="" ng-disabled="true">Оберіть тип послуги</option>
+        </select>
+        <span class="help-block">{{serviceData.nID_ServiceType.sNote}}</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-md-3 col-xs-3 control-label">
+        Редагування об'єкта з даними
+      </label>
+      <div class="col-md-9 col-xs-9" style="height: 400px;">
+        <jsoneditor options="jsoneditorOptions"
+                    json="serviceData.oData">
+        </jsoneditor>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-primary" ng-disabled="serviceEditForm.$invalid" ng-click="save()">
+      Сохранити
+    </button>
+    <button class="btn btn-warning" type="button" ng-click="cancel()">
+      Відмінити
+    </button>
+  </div>
+</form>
+
+

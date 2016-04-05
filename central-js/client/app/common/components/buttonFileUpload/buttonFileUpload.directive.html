@@ -1,0 +1,11 @@
+<button-file-select on-file-select="onFileSelect($files)" ng-disabled="file.isUploading">
+  <ng-transclude></ng-transclude>
+
+  <span class="small-loading" ng-if="file.isUploading"></span>
+</button-file-select>
+
+<label ng-if="file.value">Файл: {{file.fileName}}</label>
+
+<label ng-if="file.value && file.value.signInfo">
+  Підпис: {{file.value.signInfo.name}}
+</label>

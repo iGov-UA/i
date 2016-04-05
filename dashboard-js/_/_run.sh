@@ -1,0 +1,3 @@
+grunt serve
+
+cd ./_

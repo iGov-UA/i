@@ -1,0 +1,17 @@
+<div class="input-group">
+  <input datetimepicker1
+         class="form-control date-picker"
+    ng-disabled="isFormPropertyDisabled(item)" 
+    ng-required="item.required" 
+    ng-model="item.value"
+    format="'DD/MM/YYYY'"
+    ng-class="{submitted:isTaskSubmitted()}"
+  />
+  <!--     format="{{'dd/MM/yyyy'}}" -->
+    <!--format="{{item.datePattern ? item.datePattern : 'DD.MM.YYYY'}}"-->
+  <span class="input-group-addon" 
+    ng-if="isFormPropertyDisabled(item)" 
+    clip-copy="item.value">
+    <i class="glyphicon glyphicon-copy"></i>
+  </span>
+</div>

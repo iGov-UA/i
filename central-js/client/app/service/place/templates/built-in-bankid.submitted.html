@@ -1,0 +1,31 @@
+<div class="list-group">
+
+    <place></place>
+
+    <div class="list-group-item disabled">
+        <div class="row no-margin-bottom">
+            <div class="col-md-11">Крок 2. Ви увійшли як {{account.customer.firstName}} {{account.customer.middleName}} {{account.customer.lastName}}
+            </div>
+            <div class="col-md-1" ng-if="authControlIsComplete()">
+                <div class="link-button">
+                    <a ng-click="editBankId()">Змінити</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="list-group-item">
+        <div class="row no-margin-bottom">
+            <div ng-if="!data.formData.params.response.value" class="text-center">
+                <h3 class="text-center">Шановний(-а) {{account.customer.firstName}} {{account.customer.middleName}}!</h3>
+                <div class="text-center">Ваше звернення <a href="/order/search?sID_Order={{data.id}}">{{data.id}}</a> успішно зареєстровано</div>
+                <div ng-if="data.formData.params.email.value" class="text-center"> (номер також відправлено Вам електронною поштою на Ваш e-mail {{data.formData.params.email.value}}) Результати будуть спрямовані також на email.</div>
+                <div ng-if="data.formData.params.email.value" class="text-center">Звертаємо увагу, що Іноді листи потрапляють у спам або у розділ "Реклама" (для Gmail).</div>
+            </div>
+            <div ng-if="data.formData.params.response.value" class="text-center" ng-bind-html="getHtml(data.formData.params.response.value)"></div>
+        </div>
+    </div>
+
+    <place-edit></place-edit>
+
+</div>

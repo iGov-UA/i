@@ -1,0 +1,37 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-5">
+          <p>Для перегляду історії обробки, зазначте номер звернення</p><br />
+          <form name="oFormSearch"
+                role="form"
+                ng-submit="oFormSearch.$valid && searchOrder(sID_Order,sToken)"
+                style="text-align:left;"
+              >
+            <div class="ord-inner-addon">
+                <span class="glyphicon glyphicon-search al-left"
+                      aria-hidden="true"></span>
+                <input type="text"
+                       class="form-control"
+                       placeholder="Номер звернення"
+                       ng-model="sID_Order">
+                <a href="#"><span class="glyphicon glyphicon-triangle-bottom al-right"
+                                  aria-hidden="false"></span></a>
+            </div>
+          </form>
+        </div>
+        <div class="col-md-7">
+          <div class="row">
+            <div class="text-center">
+              <p>... або увійдіть в систему для перегляду подій щодо усіх Ваших звернень та документів</p><br />
+              <div service-auth-block
+                redirect-uri="{{getRedirectUrl()}}"
+                auth-methods="{{getAuthMethods()}}">
+              </div>
+            </div>
+            <div class="text-center" ng-show="error">
+              <p>{{error}}</p>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,67 @@
+<div class="row">
+  <form class="form-horizontal" name="serviceAuthByEmailForm" novalidate>
+    <div class="form-group">
+      <label for="inputEmail" class="col-sm-2 control-label">Электронна адреса:</label>
+
+      <div class="col-sm-10">
+        <input type="email" class="form-control" id="inputEmail" placeholder="email" required
+               ng-model="authByEmail.email" ng-disabled="true">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="inputCode" class="col-sm-2 control-label">Код верифікації:</label>
+
+      <div class="col-sm-10">
+        <input type="password" class="form-control" id="inputCode" placeholder="Password" ng-disabled="true">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="lastName" class="col-sm-2 control-label">Прізвище:</label>
+
+      <div class="col-sm-10"
+           ng-class="{ 'has-error': serviceAuthByEmailForm.authEmail.$dirty && serviceAuthByEmailForm.authEmail.$invalid }">
+        <input type="text" class="form-control" id="lastName" placeholder="Введіть прізвище" required
+               ng-model="authByEmail.lastName">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="firstName" class="col-sm-2 control-label">Ім'я:</label>
+
+      <div class="col-sm-10"
+           ng-class="{ 'has-error': serviceAuthByEmailForm.authEmail.$dirty && serviceAuthByEmailForm.authEmail.$invalid }">
+        <input type="text" class="form-control" id="firstName" placeholder="Введіть ім'я" required
+               ng-model="authByEmail.firstName">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="middleName" class="col-sm-2 control-label">По батькові:</label>
+
+      <div class="col-sm-10"
+           ng-class="{ 'has-error': serviceAuthByEmailForm.authEmail.$dirty && serviceAuthByEmailForm.authEmail.$invalid }">
+        <input type="text" class="form-control" id="middleName" placeholder="Введіть ім'я по батькові" required
+               ng-model="authByEmail.middleName">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <button type="submit" class="btn btn-primary" ng-disabled="isDisabled(serviceAuthByEmailForm)"
+                ng-click="editNamesInEmailAuth(authByEmail)">
+          Увійти
+        </button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <button type="submit" class="btn btn-primary"
+                ng-click="editEmail(authByEmail)">
+          Змінити єлектронну адресу
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

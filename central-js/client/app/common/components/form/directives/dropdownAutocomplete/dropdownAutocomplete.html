@@ -1,0 +1,33 @@
+<div style="position:relative"
+     dropdown
+     is-open="dataList.dropdown.isOpen">
+
+  <div class="input-group">
+
+    <input autocomplete="off"
+           class="form-control"
+           type="text"
+           ng-model="dataList.typeahead.model"
+           typeahead="data as data[autocompleteData.titleProperty] for data in loadDataList($viewValue) | orderBy:autocompleteData.titleProperty"
+           typeahead-on-select="onSelectDataList($item)"
+           typeahead-empty
+           ng-required="ngRequired"/>
+
+    <span class="input-group-btn">
+      <button class="btn btn-default"
+              type="button"
+              dropdown-toggle>
+        <span class="caret"></span>
+      </button>
+    </span>
+
+  </div>
+
+  <ul class="dropdown-menu"
+      role="menu">
+    <li ng-repeat="data in dataList.dropdown.list | orderBy:autocompleteData.titleProperty">
+      <a ng-click="onSelectDataList(data)">{{data[autocompleteData.titleProperty]}}</a>
+    </li>
+  </ul>
+
+</div>
