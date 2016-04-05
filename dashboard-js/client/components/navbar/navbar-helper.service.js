@@ -20,7 +20,8 @@
         value: null,
         count: 0,
         loading: false,
-        submited: false
+        submited: false,
+        autofocusOnTask: false
       }
     };
 

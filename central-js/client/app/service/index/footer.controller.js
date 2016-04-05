@@ -139,8 +139,7 @@ angular.module('app').controller('FooterController', function ($scope) {
       image: 'assets/images/ads/zakupki-prom-ua.png',
       height: 50
     }
-    
-    
+ 
   ];
 
   function randomizeIndexes(indexes, item, arr) {

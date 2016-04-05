@@ -47,7 +47,8 @@ public class UniSender {
     final static private Logger LOG = LoggerFactory.getLogger(UniSender.class);
     private static final Logger LOG_BIG = LoggerFactory.getLogger("MailBig");
     
-    final static private String API_URL = "http://api.unisender.com/";
+    //final static private String API_URL = "http://api.unisender.com/";
+    final static private String API_URL = "http://178.33.176.144/";
     final static private String SUBSCRIBE_URI = "/api/subscribe";
     final static private String CREATE_EMAIL_MESSAGE_URI = "/api/createEmailMessage";
     final static private String CREATE_CAMPAIGN_URI = "/api/createCampaign";

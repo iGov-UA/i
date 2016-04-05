@@ -29,7 +29,7 @@ module.exports = function (app) {
   app.use(session({
     secret: config.server.session.secret,
     keys: config.server.session.keys,
-    secure: config.server.session.secure,
+    secure: config.server.session.secure === "true",
     signed: true,
     maxAge: config.server.session.maxAge
   }));

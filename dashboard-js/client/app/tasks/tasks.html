@@ -22,6 +22,7 @@
       <span ng-if="model.taskDefinition.id == 'all' && model.userProcess.sID == 'all' && model.strictTaskDefinition.id == 'all'">не налаштовано</span>
     </div>
     <a ng-click="isFillterFormOpen = !isFillterFormOpen" class="tiggle-filter">Налаштувати фільтр</a>
+
     <div ng-show="isFillterFormOpen" class="isFillterFormOpen">
       <form class="form-horizontal">
         <div class="form-group">
@@ -107,7 +108,7 @@
         </div>
       </div>
       <div class="list-group">
-        <div ng-if="filteredTasks.length>0">
+        <div ng-if="filteredTasks.length>0" id="tasks-list">
 
           <div ng-if="sSelectedTask=='tickets'">
             <a class="list-group-item task {{sSelectedTask}}_{{task.id}}" href="" title="Слот №{{task.nID_FlowSlot}} (Задача №{{task.nID_Task_Activiti}}, Процесс №{{task.nID_Instance}})"

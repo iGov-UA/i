@@ -26,15 +26,15 @@
         <activiti:formProperty id="nFile_eskiz_fasad" name="Ескізи фасадів  ТС  у кольорі М 1:50 (для стаціонарних ТС)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_ustr_terit" name="Схема благоустрою  прилеглої  території" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_ingen_merez" name="Технічні умови щодо інженерного забезпечення (за наявності), отримані  замовником  у  балансоутримувача  відповідних інженерних мереж." type="file"></activiti:formProperty>
-        <activiti:formProperty id="nFile_Passport" name="Копія паспорта" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="название органа в подписи письма" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Passport" name="Копія паспорта прив’язки тимчасової споруди" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="название органа в подписи письма" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="график работы" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для справок" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адрес органа" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="шапка принтформы" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapkaGolova" name="шапка принтформы" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="bFlagZhovtyVoduCnap340" name="Флаг процесса" type="invisible" default="easy"></activiti:formProperty>
         <activiti:formProperty id="sMailCler1k" name="Пошта ЦНАП" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerkArchitec1t" name="Пошта архітектури" type="invisible" default="vma.zhv@gmail.com"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerkArchitec1t" name="Пошта архітектури" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
         <activiti:formProperty id="markerPassport" name="Continue Passprot" type="markers" default="${markerService.loadFromFile('architecture/PassportTemporaryStructures.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -98,7 +98,7 @@
         <activiti:formProperty id="sClFio" name="Прізвище, Ім'я, По батькові" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdressRegistration" name="Адреса реєстрації суб'єкта звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSubzvern" name="Суб'єкт звернення (повна назва юридичної особи або фізичної-особи підприємця)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Мобільний телефон" type="string" default="+380" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Мобільний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdress_obj" name="Адреса розміщення тимчасової споруди для провадження підприємницької діяльності" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asPurpose" name="Мета звернення" type="enum" writable="false">
@@ -114,7 +114,8 @@
           <activiti:value id="dok_bad" name="Заявка оформлена не вірно відмова."></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="Komment_rishenia" name="Коментар по розгляду заявки;(Вкажіть реєстраційний номер заявки та іншу корисну для міської ради інформацію, в разі відмови поясніть причину відмови)" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="супровідний текст" type="invisible" default="Якщо заявка прийнята, вона буде передана на опрацювання до міської ради. У разі відмови робота по цій заявці завершена."></activiti:formProperty>
+        <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="супровідний текст" type="invisible" default="Форму надіслано"></activiti:formProperty>
+        <activiti:formProperty id="sShapkaGolova" name="шапка принтформы" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/architecture/zovtyvodu_cnap_430_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markerPassportPrin" name="Continue Passprot Prin" type="markers" default="${markerService.loadFromFile('architecture/PassportTemporaryStructures_Print.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker2" name="marker for AfterSubmit" type="markers" default="${markerService.loadFromFile('architecture/archAfterSubmit.json')}"></activiti:formProperty>
@@ -182,7 +183,8 @@
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<p>
-				ЦНАП розглянув ваше звернення. Документи вірні. Відомості передані до міської ради. <br>
+				ЦНАП розглянув ваше звернення щодо enum{[asPurpose]} прив’язки тимчасової споруди.<br>
+				Документи вірні. Відомості передані до міської ради. <br>
 				Повідомлення про результат розгляду в міській раді буде спрямоване на Ваш e-mail.
 			</p>
 			<br>
@@ -224,7 +226,7 @@
         <activiti:formProperty id="sClFio" name="Прізвище, Ім'я, По батькові" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdressRegistration" name="Адреса реєстрації суб'єкта звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSubzvern" name="Суб'єкт звернення:;(повна назва юридичної особи або фізичної-особи підприємця)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Мобільний телефон" type="string" default="+380" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Мобільний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdress_obj" name="Адреса розміщення тимчасової споруди для провадження підприємницької діяльності:" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asPurpose" name="Мета звернення" type="enum" writable="false">
@@ -243,6 +245,7 @@
         <activiti:formProperty id="Komment_rishenia2" name="Коментар по розгляду заявки;(Вкажіть корисні для ЦНАПу та заявника данні, в разі відмови поясніть причину відмови)" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="file_arhitectura" name="Завантажте відповідь" type="file"></activiti:formProperty>
         <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="супровідний текст1" type="invisible" default="Якщо заявка опрацьовано вона буде передана до ЦНАП.Також вам необхідно як найшвидше передати в ЦНАП паспорт прив'язки тимчасової споруди. У разі відмови робота по цій заявці завершена."></activiti:formProperty>
+        <activiti:formProperty id="sShapkaGolova" name="шапка принтформы" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/architecture/zovtyvodu_cnap_430_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markerPassportPrin" name="Continue Passprot Prin" type="markers" default="${markerService.loadFromFile('architecture/PassportTemporaryStructures_Print.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -327,7 +330,7 @@
         <activiti:formProperty id="sClFio" name="Прізвище, Ім'я, По батькові" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSubzvern" name="Суб'єкт звернення:;(повна назва юридичної особи або фізичної-особи підприємця)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdressRegistration" name="Адреса реєстрації суб'єкта звернення" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Мобільний телефон" type="string" default="+380" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Мобільний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdress_obj" name="Адреса розміщення тимчасової споруди для провадження підприємницької діяльності:" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asPurpose" name="Мета звернення" type="enum" writable="false">
@@ -343,6 +346,7 @@
           <activiti:value id="dok_ok3" name="Заявник отримав паспорт на розміщення тимчасової споруди"></activiti:value>
           <activiti:value id="dok_bad3" name="Заявник не з'явився"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sShapkaGolova" name="шапка принтформы" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/architecture/zovtyvodu_cnap_430_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markerPassportPrin" name="Continue Passprot Prin" type="markers" default="${markerService.loadFromFile('architecture/PassportTemporaryStructures_Print.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -398,7 +402,7 @@
         <activiti:formProperty id="sClFio" name="Прізвище, Ім'я, По батькові" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdressRegistration" name="Адреса реєстрації суб'єкта звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSubzvern" name="Суб'єкт звернення:;(повна назва юридичної особи або фізичної-особи підприємця)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Мобільний телефон" type="string" default="+380" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Мобільний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdress_obj" name="Адреса розміщення тимчасової споруди для провадження підприємницької діяльності:" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asPurpose" name="Мета звернення" type="enum" writable="false">
@@ -409,12 +413,12 @@
         <activiti:formProperty id="sNumberPassport" name="Реєстраційний номер паспорта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="dStartPassprot" name="Укажіть дату реєстрації паспорту" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="dContine" name="Дата до якої необхідно продовжити строк дії паспорту" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="decide" name="Результат рішення" type="enum" required="true">
-          <activiti:value id="accept" name="Надати паспорт"></activiti:value>
-          <activiti:value id="reject" name="Відмовити"></activiti:value>
+        <activiti:formProperty id="asDiscus" name="Результат рішення" type="enum" required="true">
+          <activiti:value id="Ok" name="Надати паспорт"></activiti:value>
+          <activiti:value id="No" name="Відмовити"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="comment" name="В разі відмови в наданні послуги зазначте підставу для відмови" type="textArea"></activiti:formProperty>        
-        <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="супровідний текст1" type="invisible" default="Якщо заявка опрацьовано вона буде передана до ЦНАП.Також вам необхідно як найшвидше передати в ЦНАП паспорт прив'язки тимчасової споруди. У разі відмови робота по цій заявці завершена."></activiti:formProperty>
+        <activiti:formProperty id="Komment_rishenia4" name="В разі відмови в наданні послуги зазначте підставу для відмови" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sShapkaGolova" name="шапка принтформы" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/architecture/zovtyvodu_cnap_430_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markerPassportPrin" name="Continue Passprot Prin" type="markers" default="${markerService.loadFromFile('architecture/PassportTemporaryStructures_Print.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -426,11 +430,8 @@
     </userTask>
     <sequenceFlow id="flow27" sourceRef="usertask4_green" targetRef="exclusivegateway7"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway7" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow29" name="відмовлено" sourceRef="exclusivegateway7" targetRef="servicetask7">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'reject'}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow28" name="Рішення готове" sourceRef="exclusivegateway7" targetRef="servicetask11">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'accept'}]]></conditionExpression>
+    <sequenceFlow id="flow28" name="asDiscus == 'Ok'" sourceRef="exclusivegateway7" targetRef="servicetask11">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDiscus == 'Ok'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask11" name="Лист з позитивним рішенням" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
@@ -462,8 +463,44 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow30" sourceRef="servicetask11" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow29" name="asDiscus == 'No'" sourceRef="exclusivegateway7" targetRef="servicetask12">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDiscus == 'No'}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask12" name="відмова" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Заявка на видачу/заміну/продовження паспорту прив’язки тимчасової споруди]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+			<p> 
+				Ваше звернення розглянуте. В наданні enum{[asPurpose]} відмовлено.<br>
+				Причина: <br>
+				<i><b>${Komment_rishenia4}</b></i>
+			</p>
+			<br>
+			За наявності питянь можете звернутись за наступними контактами<br>
+			${sAddress}<br>
+			${sWorkTime}<br>
+			${sPhoneOrgan}<br><br>
+			[pattern/mail/_common_signature_start.html]
+			${sNameOrgan}.<br />
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
     <endEvent id="endevent1" name="End"></endEvent>
+    <endEvent id="endevent2" name="End"></endEvent>
+    <sequenceFlow id="flow33" sourceRef="servicetask12" targetRef="endevent2"></sequenceFlow>
+    <sequenceFlow id="flow34" sourceRef="servicetask11" targetRef="endevent2"></sequenceFlow>
     <textAnnotation id="textannotation2">
       <text>Спрощений варіант</text>
     </textAnnotation>
@@ -513,7 +550,7 @@
         <omgdc:Bounds height="40.0" width="40.0" x="360.0" y="507.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
-        <omgdc:Bounds height="55.0" width="105.0" x="328.0" y="415.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="328.0" y="413.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
         <omgdc:Bounds height="55.0" width="105.0" x="188.0" y="500.0"></omgdc:Bounds>
@@ -522,28 +559,34 @@
         <omgdc:Bounds height="55.0" width="105.0" x="58.0" y="500.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
-        <omgdc:Bounds height="40.0" width="40.0" x="90.0" y="422.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="90.0" y="420.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask9" id="BPMNShape_servicetask9">
-        <omgdc:Bounds height="55.0" width="105.0" x="188.0" y="415.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="186.0" y="413.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask4_green" id="BPMNShape_usertask4_green">
-        <omgdc:Bounds height="55.0" width="105.0" x="629.0" y="300.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="784.0" y="403.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway7" id="BPMNShape_exclusivegateway7">
-        <omgdc:Bounds height="40.0" width="40.0" x="500.0" y="422.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="969.0" y="412.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask11" id="BPMNShape_servicetask11">
-        <omgdc:Bounds height="55.0" width="105.0" x="468.0" y="300.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="1102.0" y="320.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask12" id="BPMNShape_servicetask12">
+        <omgdc:Bounds height="55.0" width="105.0" x="1102.0" y="485.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="363.0" y="210.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
+        <omgdc:Bounds height="35.0" width="35.0" x="1137.0" y="413.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="textannotation2" id="BPMNShape_textannotation2">
-        <omgdc:Bounds height="61.0" width="100.0" x="900.0" y="297.0"></omgdc:Bounds>
+        <omgdc:Bounds height="50.0" width="100.0" x="1020.0" y="408.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="textannotation3" id="BPMNShape_textannotation3">
-        <omgdc:Bounds height="50.0" width="101.0" x="909.0" y="503.0"></omgdc:Bounds>
+        <omgdc:Bounds height="50.0" width="101.0" x="450.0" y="307.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="128.0" y="127.0"></omgdi:waypoint>
@@ -592,11 +635,11 @@
         <omgdi:waypoint x="836.0" y="307.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
-        <omgdi:waypoint x="836.0" y="347.0"></omgdi:waypoint>
-        <omgdi:waypoint x="835.0" y="527.0"></omgdi:waypoint>
-        <omgdi:waypoint x="744.0" y="527.0"></omgdi:waypoint>
+        <omgdi:waypoint x="816.0" y="327.0"></omgdi:waypoint>
+        <omgdi:waypoint x="691.0" y="327.0"></omgdi:waypoint>
+        <omgdi:waypoint x="691.0" y="500.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="837.0" y="440.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="604.0" y="347.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
@@ -609,13 +652,13 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
         <omgdi:waypoint x="380.0" y="507.0"></omgdi:waypoint>
-        <omgdi:waypoint x="380.0" y="470.0"></omgdi:waypoint>
+        <omgdi:waypoint x="380.0" y="468.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="60.0" x="389.0" y="472.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="60.0" x="359.0" y="486.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
-        <omgdi:waypoint x="380.0" y="415.0"></omgdi:waypoint>
+        <omgdi:waypoint x="380.0" y="413.0"></omgdi:waypoint>
         <omgdi:waypoint x="380.0" y="245.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
@@ -631,55 +674,62 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
         <omgdi:waypoint x="110.0" y="500.0"></omgdi:waypoint>
-        <omgdi:waypoint x="110.0" y="462.0"></omgdi:waypoint>
+        <omgdi:waypoint x="110.0" y="460.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
-        <omgdi:waypoint x="110.0" y="422.0"></omgdi:waypoint>
+        <omgdi:waypoint x="110.0" y="420.0"></omgdi:waypoint>
         <omgdi:waypoint x="109.0" y="227.0"></omgdi:waypoint>
         <omgdi:waypoint x="363.0" y="227.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="42.0" x="110.0" y="294.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="42.0" x="110.0" y="292.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
-        <omgdi:waypoint x="130.0" y="442.0"></omgdi:waypoint>
-        <omgdi:waypoint x="188.0" y="442.0"></omgdi:waypoint>
+        <omgdi:waypoint x="130.0" y="440.0"></omgdi:waypoint>
+        <omgdi:waypoint x="186.0" y="440.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="54.0" x="137.0" y="428.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="54.0" x="137.0" y="426.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
-        <omgdi:waypoint x="240.0" y="415.0"></omgdi:waypoint>
+        <omgdi:waypoint x="238.0" y="413.0"></omgdi:waypoint>
+        <omgdi:waypoint x="242.0" y="310.0"></omgdi:waypoint>
         <omgdi:waypoint x="380.0" y="245.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
-        <omgdi:waypoint x="816.0" y="327.0"></omgdi:waypoint>
-        <omgdi:waypoint x="734.0" y="327.0"></omgdi:waypoint>
+        <omgdi:waypoint x="836.0" y="347.0"></omgdi:waypoint>
+        <omgdi:waypoint x="836.0" y="403.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="734.0" y="335.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="754.0" y="355.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
-        <omgdi:waypoint x="681.0" y="355.0"></omgdi:waypoint>
-        <omgdi:waypoint x="520.0" y="422.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow29" id="BPMNEdge_flow29">
-        <omgdi:waypoint x="500.0" y="442.0"></omgdi:waypoint>
-        <omgdi:waypoint x="433.0" y="442.0"></omgdi:waypoint>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="60.0" x="433.0" y="422.0"></omgdc:Bounds>
-        </bpmndi:BPMNLabel>
+        <omgdi:waypoint x="889.0" y="430.0"></omgdi:waypoint>
+        <omgdi:waypoint x="969.0" y="432.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
-        <omgdi:waypoint x="520.0" y="422.0"></omgdi:waypoint>
-        <omgdi:waypoint x="520.0" y="355.0"></omgdi:waypoint>
+        <omgdi:waypoint x="989.0" y="412.0"></omgdi:waypoint>
+        <omgdi:waypoint x="989.0" y="347.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1102.0" y="347.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="78.0" x="480.0" y="364.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="80.0" x="1009.0" y="326.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
-        <omgdi:waypoint x="520.0" y="300.0"></omgdi:waypoint>
-        <omgdi:waypoint x="380.0" y="245.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow29" id="BPMNEdge_flow29">
+        <omgdi:waypoint x="989.0" y="452.0"></omgdi:waypoint>
+        <omgdi:waypoint x="989.0" y="512.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1102.0" y="512.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="80.0" x="1000.0" y="520.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
+        <omgdi:waypoint x="1154.0" y="485.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1154.0" y="448.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
+        <omgdi:waypoint x="1154.0" y="375.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1154.0" y="413.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

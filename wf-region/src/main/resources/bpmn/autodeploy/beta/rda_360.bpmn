@@ -84,7 +84,9 @@
         <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sHeadFIO" name="Голова" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи ЦНАП" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон для справок" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bFlagRda360" name="Флаг процесса" type="invisible" default="easy"></activiti:formProperty>
         <activiti:formProperty id="flag" name="Флаг таймера" type="invisible" default="false"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -123,25 +125,30 @@
           <activiti:expression>Звернення на тему: ${sTopic}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-										Ваш запит був успішно зареєстрований у нашій системі. 
-								    &lt;/p&gt;
-									&lt;p&gt;
-										Спеціалісти відповідального органу оброблять Вашу заявку та нададуть відповідь найближчим часом. 
-									&lt;/p&gt;
-									[pattern/mail/_common_signature_start.html]
-									${sNameOrgan},&lt;br&gt;
-									[pattern/mail/_common_signature_end.html]   
-									[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+			<p>
+				Ваш запит був успішно зареєстрований у нашій системі. 
+		    </p>
+			<p>
+				Спеціалісти відповідального органу оброблять Вашу заявку та нададуть відповідь найближчим часом. 
+			</p>
+			<br>
+			Якщо у Вас є додаткові питаня, Ви можете звернутись за наступними контактами:<br>
+			${sAddress}<br>
+			${sWorkTime}<br>
+			${sPhoneOrgan}<br><br>
+			[pattern/mail/_common_signature_start.html]
+			${sNameOrgan}.<br>
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow15" sourceRef="servicetask2" targetRef="exclusivegateway2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow41" name="Старий процесс" sourceRef="exclusivegateway2" targetRef="usertask1">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Public_SubjectOrganJoin!='khar_bogod'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bFlagRda360=='easy'}]]></conditionExpression>
     </sequenceFlow>
     <userTask id="usertask1" name="Первинна перевірка даних" activiti:candidateGroups="rda_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
@@ -234,19 +241,25 @@
           <activiti:expression>Звернення на тему: ${sTopic}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-                                        Ваше звернення на тему: ${sTopic} розглянуте.&lt;br&gt;
-                                        На жаль змушені відмовити Вам у реєстрації звернення.
-                                    &lt;/p&gt;
-                                    &lt;p&gt;
-									Коментар державного службовця: &lt;br&gt;
-									&lt;i&gt;${decisionComment}&lt;/i&gt;
-									&lt;/p&gt;
-                                    [pattern/mail/_common_signature_start.html]
-									${sNameOrgan}.&lt;/p&gt;
-                                    [pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+			<p>
+	            Ваше звернення на тему: ${sTopic} розглянуте.<br>
+	            На жаль змушені відмовити Вам у реєстрації звернення.
+		    </p>
+			<p>
+				Коментар державного службовця: <br>
+				<i>{decisionComment}</i>
+			</p>
+			<br>
+			Якщо у Вас є додаткові питаня, Ви можете звернутись за наступними контактами:<br>
+			${sAddress}<br>
+			${sWorkTime}<br>
+			${sPhoneOrgan}<br><br>
+			[pattern/mail/_common_signature_start.html]
+			${sNameOrgan}.<br>
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -365,7 +378,7 @@
     </serviceTask>
     <sequenceFlow id="flow43" sourceRef="servicetask7" targetRef="endevent3"></sequenceFlow>
     <sequenceFlow id="flow63" name="Для богодухова" sourceRef="exclusivegateway2" targetRef="usertask3">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Public_SubjectOrganJoin=='khar_bogod'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bFlagRda360=='hard'}]]></conditionExpression>
     </sequenceFlow>
     <userTask id="usertask3" name="Первинна перевірка данних наданих громадянином" activiti:candidateGroups="rda_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
@@ -635,22 +648,28 @@
           <activiti:expression>Звернення на тему: ${sTopic}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-										Ваше звернення було зареєстроване та взяте в роботу. 
-								    &lt;/p&gt;
-									&lt;p&gt;
-										Виконавець: &lt;br&gt;  
-										${sNameExecutorExtended}
-										&lt;br&gt;  &lt;br&gt;
-										Строк виконання:  &lt;br&gt; 
-										${dExecution}										
-									&lt;/p&gt;
-									[pattern/mail/_common_signature_start.html]
-									${sNameOrgan},&lt;br&gt;
-									[pattern/mail/_common_signature_end.html]   
-									[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+			<p>
+				Ваше звернення було зареєстроване та взяте в роботу. 
+		    </p>
+			<p>
+				Виконавець:<br>  
+				${sNameExecutorExtended}
+				<br><br>
+				Строк виконання:<br> 
+				${dExecution}										
+			</p>
+			<br>
+			Якщо у Вас є додаткові питаня, Ви можете звернутись за наступними контактами:<br>
+			${sAddress}<br>
+			${sWorkTime}<br>
+			${sPhoneOrgan}<br><br>
+			[pattern/mail/_common_signature_start.html]
+			${sNameOrgan}.<br>
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
+>>>>>>> refs/remotes/origin/test-version
         </activiti:field>
       </extensionElements>
     </serviceTask>
