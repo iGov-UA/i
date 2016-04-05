@@ -19,7 +19,47 @@ import com.pb.ksv.msgcore.data.enums.MsgAttrMode;
 import com.pb.ksv.msgcore.data.enums.MsgLevel;
 import com.pb.ksv.msgcore.user.Msg;
 import com.pb.util.gsv.net.HTTPClient;
-
+/**
+ * 
+ * @author kr110666kai
+ *
+ * Реализация Интерфеса отсылки сообщений в Сервис Хранения Ошибок http://msg.igov.org.ua
+ *  
+ *   Пример использования:
+ *       
+ *   MsgSend msgSend = new MsgSendImpl("INTERNAL_ERROR", "getFunctionsForMeat");
+ *   IMsgObjR msg = msgSend.addnID_Server(nID_Server).addnID_Subject(nID_Server).addsBody(sBody)
+ *   			   .addsError(sError).addsHead(sHead).addsmData(smData).save();
+ *   
+ *  Обязательные параметры: sType и sFunction
+ *  
+ *   sType - тип сообщения, может принимать значения:
+ *     ACCES_DENIED_ERROR - Ошибка доступа(авторизация)
+ *     EXTERNAL_ERROR     - Внешняя ошибка
+ *     INF_MESSAGE        - Информационное сообщение
+ *     INTERNAL_ERROR     - Внутренняя ошибка
+ *     VALIDATION_ERROR   - Ошибка валидации входящих данных
+ *     WARNING            - Предупреждение
+ *     
+ *   Если тип сообщения указать некорректно (например WARNING2 ), то принимается тип INF_MESSAGE
+ *   
+ *   sFunction - строка с именем функции где произошла ошибка
+ *  
+ *   
+ *  На основании типа сообщения и имени функции формируется код сообщения в Сервисе Хранения Ошибок
+ *  При вызове MsgSendImpl("WARNING", "getFunctionMeat") код будет WR_GETFUNCTIONMEAT
+ *  
+ *  Примечание: длина кода сообщения 25 символов, т.е. имя функции желательно уместить в 22 символа, 
+ *  т.к. остальные символы будут игнорироваться 
+ * 
+ * 
+ *  Для гибкой настройки может используется файл параметров msg.properties, где:
+ *  
+ *    MsgURL=MsgURL=http://msg.igov.org.ua/MSG  // url Сервиса Хранения Ошибок
+ *    sBusId=TEST				// иденификатор Бизнес процесса
+ *    
+ *  
+ */
 public class MsgSendImpl implements MsgSend {
     private static final Logger LOG = LoggerFactory.getLogger(MsgSendImpl.class);
 
