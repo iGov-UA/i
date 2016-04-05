@@ -2,6 +2,7 @@ var url = require('url')
   , request = require('request')
   , FormData = require('form-data')
   , config = require('../../config/environment')
+  //, config = require('../../config')
   , accountService = require('../../auth/bankid/bankid.service.js')
   , _ = require('lodash')
   , StringDecoder = require('string_decoder').StringDecoder
@@ -456,6 +457,8 @@ var originalURL = function (req, options) {
 
 function getOptions() {
   var config = require('../../config/environment');
+  //var config = require('../../config');
+
   var oConfigServerExternal = config.activiti;
 
   return {

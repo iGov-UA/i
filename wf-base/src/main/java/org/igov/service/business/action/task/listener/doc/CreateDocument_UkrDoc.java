@@ -45,6 +45,9 @@ public class CreateDocument_UkrDoc extends AbstractModelTask implements TaskList
     private Expression sHead;
     private Expression sBody;
     private Expression nID_Pattern;
+    private Expression sID_Order_GovPublic;
+    private Expression sSourceChannel;
+    
 
     @Autowired
     GeneralConfig generalConfig;
@@ -69,7 +72,9 @@ public class CreateDocument_UkrDoc extends AbstractModelTask implements TaskList
         String sHeadValue = getStringFromFieldExpression(this.sHead, execution);
         String sBodyValue = getStringFromFieldExpression(this.sBody, execution);
         String nID_PatternValue = getStringFromFieldExpression(this.nID_Pattern, execution);
-
+        String sID_Order_GovPublicValue = getStringFromFieldExpression(this.sID_Order_GovPublic, execution);
+        String sSourceChannelValue = getStringFromFieldExpression(this.sSourceChannel, execution);
+        
         LOG.info("Parameters of the task sLogin:{}, sHead:{}, sBody:{}, nId_PatternValue:{}", sLoginAuthorValue, sHeadValue,
                 sBodyValue, nID_PatternValue);
 
@@ -121,7 +126,7 @@ public class CreateDocument_UkrDoc extends AbstractModelTask implements TaskList
         LOG.info("Processing {} attachments", attachments.size());
 
         Map<String, Object> urkDocRequest = UkrDocUtil.makeJsonRequestObject(sHeadValue, sBodyValue, sLoginAuthorValue, nID_PatternValue,
-                attachments, execution.getId(), generalConfig);
+                attachments, execution.getId(), generalConfig, sID_Order_GovPublicValue, sSourceChannelValue);
 
         JSONObject json = new JSONObject();
         json.putAll(urkDocRequest);
@@ -160,7 +165,7 @@ public class CreateDocument_UkrDoc extends AbstractModelTask implements TaskList
                         }
                     }
                 }
-                StartFormData startFormData = formService.getStartFormData(execution.getId());
+                StartFormData startFormData = formService.getStartFormData(execution.getProcessDefinitionId());
                 for (FormProperty formProperty : startFormData.getFormProperties()) {
                     if (formProperty.getId().equals("sID_Document_UkrDoc")) {
                         LOG.info("Found start form property with the id " + "sID_Document_UkrDoc" + ". Setting value {}", documentId);

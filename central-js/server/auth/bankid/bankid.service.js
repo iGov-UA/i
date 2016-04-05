@@ -3,6 +3,7 @@ var request = require('request')
   , async = require('async')
   , _ = require('lodash')
   , config = require('../../config/environment')
+  //, config = require('../../config')
   , syncSubject = require('../../api/subject/subject.service.js')
   , Admin = require('../../components/admin/index')
   , url = require('url')
@@ -19,19 +20,10 @@ var createError = function (error, error_description, response) {
   };
 };
 
-var decryptCallback = function (callback) {
-  return function (error, response, body) {
-    if (config.bankid.enableCipher && body && body.customer && body.customer.signature) {
-      bankidUtil.decryptData(body.customer);
-    }
-    callback(error, response, body);
-  }
-};
-
-module.exports.index = function (accessToken, callback) {
+module.exports.index = function (accessToken, callback, disableDecryption) {
   var url = bankidUtil.getInfoURL(config);
 
-  var adminCheckCallback = function (error, response, body) {
+  function adminCheckCallback(error, response, body) {
     if (body.customer && Admin.isAdminInn(body.customer.inn)) {
       body.admin = {
         inn: body.customer.inn,
@@ -39,7 +31,15 @@ module.exports.index = function (accessToken, callback) {
       };
     }
     callback(error, response, body);
-  };
+  }
+
+  var resultCallback;
+
+  if(disableDecryption){
+    resultCallback = adminCheckCallback;
+  } else {
+    resultCallback = bankidUtil.decryptCallback(adminCheckCallback);
+  }
 
   return request.post({
     'url': url,
@@ -77,7 +77,7 @@ module.exports.index = function (accessToken, callback) {
         "fields": ["link", "dateCreate", "extension"]
       }]
     }
-  }, decryptCallback(adminCheckCallback));
+  }, resultCallback);
 };
 
 module.exports.scansRequest = function (accessToken, callback) {
@@ -101,7 +101,7 @@ module.exports.scansRequest = function (accessToken, callback) {
         "fields": ["link", "dateCreate", "extension"]
       }]
     }
-  }, decryptCallback(callback));
+  }, bankidUtil.decryptCallback(callback));
 };
 
 module.exports.prepareScanContentRequest = function (documentScanLink, accessToken) {
@@ -121,6 +121,8 @@ module.exports.cacheCustomer = function (customer, callback) {
 
 module.exports.syncWithSubject = function (accessToken, done) {
   var self = this;
+  var disableDecryption = true;
+
   async.waterfall([
     function (callback) {
       self.index(accessToken, function (error, response, body) {
@@ -132,11 +134,11 @@ module.exports.syncWithSubject = function (accessToken, done) {
             admin: body.admin
           });
         }
-      });
+      }, disableDecryption);
     },
 
     function (result, callback) {
-      syncSubject.sync(result.customer.inn, function (error, response, body) {
+      syncSubject.sync(bankidUtil.decryptField(result.customer.inn), function (error, response, body) {
         if (error) {
           callback(createError(error, response), null);
         } else {
@@ -152,6 +154,20 @@ module.exports.syncWithSubject = function (accessToken, done) {
           callback(createError(body, 'error while caching data. ' + body.message, response), null);
         } else {
           result.usercacheid = body;
+
+          if(result.customer.inn){
+            result.customer.inn = bankidUtil.decryptField(result.customer.inn);
+          }
+          if(result.customer.firstName){
+            result.customer.firstName = bankidUtil.decryptField(result.customer.firstName);
+          }
+          if(result.customer.middleName){
+            result.customer.middleName = bankidUtil.decryptField(result.customer.middleName);
+          }
+          if(result.customer.lastName){
+            result.customer.lastName = bankidUtil.decryptField(result.customer.lastName);
+          }
+
           callback(null, result);
         }
       })

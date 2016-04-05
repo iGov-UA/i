@@ -1,6 +1,5 @@
 package org.igov.model.subject;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -13,6 +12,9 @@ import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 import org.igov.util.JSON.JsonDateTimeDeserializer;
 import org.igov.util.JSON.JsonDateTimeSerializer;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * User: goodg_000
@@ -41,7 +43,22 @@ public class SubjectContact extends Entity {
     @Column(name="sDate")
     private DateTime sDate;
    
-
+public static NewSubjectContact getNewSubjectContact(SubjectContact subjectContact){
+    NewSubjectContact newSubjectContact = new NewSubjectContact();
+    newSubjectContact.setsValue(subjectContact.getsValue());
+    newSubjectContact.setoSubjectContactType(subjectContact.getSubjectContactType());
+    newSubjectContact.setId(subjectContact.getId());
+    newSubjectContact.setsDate(subjectContact.getsDate());
+    return  newSubjectContact;
+}
+    public static List<NewSubjectContact> getNewSubjectContact(List<SubjectContact> subjectContactList){
+        List<NewSubjectContact> newSubjectContactList = new LinkedList<>();
+        for (SubjectContact subjectContact : subjectContactList) {
+            NewSubjectContact newSubjectContact = getNewSubjectContact(subjectContact);
+            newSubjectContactList.add(newSubjectContact);
+        }
+      return  newSubjectContactList;
+}
     public Subject getSubject() {
         return subject;
     }

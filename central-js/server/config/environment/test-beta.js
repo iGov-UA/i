@@ -9,6 +9,7 @@ module.exports = {
     sProtocol_ResourceService_BankID: 'https',
     sHost_ResourceService_BankID: 'bankid.privatbank.ua',
     privateKey: (__dirname + '/local/iGov_sgn.pem'),
+    //privateKey: ('../../../iGov_sgn.pem'),
     privateKeyPassphrase: '1234567899'
   },
 
@@ -20,7 +21,7 @@ module.exports = {
 
   server: {
     session: {
-      secure: true,
+      secure: 'true',
       maxAge: 14400000 // 4h*60m*60s*1000ms*/
     }
   }

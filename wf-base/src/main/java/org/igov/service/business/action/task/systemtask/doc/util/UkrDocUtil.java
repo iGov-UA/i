@@ -71,7 +71,7 @@ public class UkrDocUtil {
     }
 	
 	public static Map<String, Object> makeJsonRequestObject(String sHeadValue, String sBodyValue, String sLoginAuthorValue, 
-			String nID_PatternValue, List<Attachment> attachmentsIds, String taskId, GeneralConfig generalConfig) {
+			String nID_PatternValue, List<Attachment> attachmentsIds, String taskId, GeneralConfig generalConfig, String sID_Order_GovPublicValue, String sSourceChannelValue) {
 		Map<String, Object> res = new LinkedHashMap<String, Object>();
 		
 		Map<String, Object> content = new LinkedHashMap<String, Object>();
@@ -83,6 +83,8 @@ public class UkrDocUtil {
 		
 		Map<String, String> attributes = new HashMap<String, String>();
 		attributes.put("Автор", sLoginAuthorValue);
+		attributes.put("Регистрационный номер заявки", sID_Order_GovPublicValue);
+		attributes.put("Название канала", sSourceChannelValue);
 		Map<String, Object> extensions = new HashMap<String, Object>();
 		if (attachmentsIds != null && !attachmentsIds.isEmpty()){
 			Map<String, List<?>> tables = new HashMap<String, List<?>>();

@@ -193,6 +193,7 @@
      <activiti:formProperty id="sWorkTime" name="Час роботи" type="invisible"></activiti:formProperty>
      <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок" type="invisible"></activiti:formProperty>
      <activiti:formProperty id="sAddress" name="Адреса" type="invisible"></activiti:formProperty>
+     <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
       	<activiti:formProperty id="markers1" name="extended_marker1" type="markers" default="${markerService.loadFromFile('forest/cherkasy_lmg_415_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="extended_marker2" type="markers" default="${markerService.loadFromFile('forest/cherkasy_lmg_415_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="extended_marker3" type="markers" default="${markerService.loadFromFile('forest/cherkasy_lmg_415_3.json')}"></activiti:formProperty>
@@ -234,7 +235,7 @@
 				Повідомлення про результат розгляду буде спрямоване на Ваш e-mail.&lt;/p&gt;
 				&lt;br /&gt;
 				[pattern/mail/_common_signature_start.html]
-				[pattern_dictonary:dnepr_soc_help.csv:234:2]&lt;br /&gt; <!-- ЗАМЕНИТЬ 234 на создать черкассы  -->
+				${sNameOrgan}
 				[pattern/mail/_common_signature_end.html]
 				[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -405,8 +406,9 @@
 			&lt;p&gt;Причина в наступному: &lt;br&gt;
 			${sDecisionComment}&lt;/p&gt;
 			&lt;p&gt;Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/ target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
+			 &lt;br&gt; ${sPhoneOrgan} &lt;br&gt;
 			[pattern/mail/_common_signature_start.html]
-			[pattern_dictonary:dnepr_reg_cnap.csv:234:2]&lt;/p&gt;
+			${sNameOrgan}&lt;/p&gt;
 			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
@@ -426,15 +428,15 @@
 			&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 			&lt;p&gt;Ваше звернення щодо ${asType} - успішно розглянуте.&lt;/p&gt;
 			&lt;p&gt;Запрошуємо Вас отримати документи за адресою:&lt;br&gt;
-			[pattern_dictonary:dnepr_reg_cnap.csv:234:3]&lt;br&gt;
-			[pattern_dictonary:dnepr_reg_cnap.csv:234:4]&lt;br&gt;
-			[pattern_dictonary:dnepr_reg_cnap.csv:234:5]&lt;/p&gt;
+			${sAddress}&lt;br&gt;
+			&lt;/p&gt;
 			При собі необхідно мати:
 			1. Для отримання Контрольної картки обліку добутої дичини та порушень правил полювання - Картку за попередній період 
 			2. Для отримання Посвідчення мисливця (або дубліката) - паспорт громадянина України та фотокартки (2 шт. 3х4 см)
-									
+			&lt;br&gt;${sWorkTime}&lt;br&gt;	
+			&lt;br&gt;${sPhoneOrgan}&lt;br&gt;						
 			[pattern/mail/_common_signature_start.html]
-			[pattern_dictonary:dnepr_reg_cnap.csv:234:2],&lt;br&gt;
+			${sNameOrgan}&lt;br&gt;
 			[pattern/mail/_common_signature_end.html]
 			[pattern/mail/_common_feedback.html]
 			[pattern/mail/_common_footer.html]</activiti:expression>

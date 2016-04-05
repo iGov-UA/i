@@ -1,4 +1,5 @@
 var async = require('async')
+  , bankidUtil = require('./../../auth/bankid/bankid.util')
   , bankidService = require('../../auth/bankid/bankid.service.js')
   , soccardService = require('../../auth/soccard/soccard.service.js')
   , emailService = require('../../auth/email/email.service.js')
@@ -13,9 +14,13 @@ var finishRequest = function (req, res, err, result, type) {
   } else {
     req.session.subject = result.subject;
     req.session.bAdmin = result.admin;
+
+    var customer = userConvert.convertToCanonical(type, result.customer);
+    var admin = result.admin;
+
     res.send({
-      customer: userConvert.convertToCanonical(type, result.customer),
-      admin: result.admin
+      customer: customer,
+      admin: admin
     });
     res.end();
   }
@@ -30,14 +35,17 @@ module.exports.tryCache = function (req, res, next) {
   var type = req.session.type;
   if (type === 'bankid' || type === 'eds') {
     if (req.session.usercacheid) {
-      activiti.get('/object/file/download_file_from_redis_bytes', {
-        key: req.session.usercacheid
-      }, function (error, response, body) {
+
+      var callback = bankidUtil.decryptCallback(function (error, response, body) {
         var err = null;
         //TODO error handling
         //TODO if no cache kill session and force authorization again ???
         finishRequest(req, res, err, body, type);
       });
+
+      activiti.get('/object/file/download_file_from_redis_bytes', {
+        key: req.session.usercacheid
+      }, callback);
     } else {
       next();
     }
@@ -46,6 +54,8 @@ module.exports.tryCache = function (req, res, next) {
 
 module.exports.index = function (req, res) {
   var config = require('../../config/environment');
+  //var config = require('../../config');
+
   var type = req.session.type;
   if (type === 'bankid' || type === 'eds') {
     bankidService.syncWithSubject(req.session.access.accessToken, function (err, result) {
