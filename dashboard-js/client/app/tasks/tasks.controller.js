@@ -384,7 +384,7 @@
         }
 
         // autofocus on searched task
-        if(iGovNavbarHelper.tasksSearch.count > 0){
+        if(iGovNavbarHelper.tasksSearch.autofocusOnTask){
           var oHtmlDomTasksList = document.getElementById("tasks-list");
           var aHtmlDomTasks = oHtmlDomTasksList.getElementsByTagName("a");
           var oHtmlDomTaskActive;
@@ -397,6 +397,7 @@
             }
           }
           oHtmlDomTaskActive.scrollIntoView(true);
+          iGovNavbarHelper.tasksSearch.autofocusOnTask = false;
         }
       };
 
