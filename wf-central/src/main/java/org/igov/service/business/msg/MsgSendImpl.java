@@ -19,46 +19,50 @@ import com.pb.ksv.msgcore.data.enums.MsgAttrMode;
 import com.pb.ksv.msgcore.data.enums.MsgLevel;
 import com.pb.ksv.msgcore.user.Msg;
 import com.pb.util.gsv.net.HTTPClient;
+
 /**
  * 
  * @author kr110666kai
  *
- * Реализация Интерфеса отсылки сообщений в Сервис Хранения Ошибок http://msg.igov.org.ua
- *  
- *   Пример использования:
- *       
- *   MsgSend msgSend = new MsgSendImpl("INTERNAL_ERROR", "getFunctionsForMeat");
- *   IMsgObjR msg = msgSend.addnID_Server(nID_Server).addnID_Subject(nID_Server).addsBody(sBody)
- *   			   .addsError(sError).addsHead(sHead).addsmData(smData).save();
- *   
- *  Обязательные параметры: sType и sFunction
- *  
- *   sType - тип сообщения, может принимать значения:
- *     ACCES_DENIED_ERROR - Ошибка доступа(авторизация)
- *     EXTERNAL_ERROR     - Внешняя ошибка
- *     INF_MESSAGE        - Информационное сообщение
- *     INTERNAL_ERROR     - Внутренняя ошибка
- *     VALIDATION_ERROR   - Ошибка валидации входящих данных
- *     WARNING            - Предупреждение
- *     
- *   Если тип сообщения указать некорректно (например WARNING2 ), то принимается тип INF_MESSAGE
- *   
- *   sFunction - строка с именем функции где произошла ошибка
- *  
- *   
- *  На основании типа сообщения и имени функции формируется код сообщения в Сервисе Хранения Ошибок
- *  При вызове MsgSendImpl("WARNING", "getFunctionMeat") код будет WR_GETFUNCTIONMEAT
- *  
- *  Примечание: длина кода сообщения 25 символов, т.е. имя функции желательно уместить в 22 символа, 
- *  т.к. остальные символы будут игнорироваться 
+ *         Реализация Интерфеса отсылки сообщений в Сервис Хранения Ошибок
+ *         http://msg.igov.org.ua
+ * 
+ *         Пример использования:
+ * 
+ *         MsgSend msgSend = new MsgSendImpl("INTERNAL_ERROR",
+ *         "getFunctionsForMeat"); IMsgObjR msg =
+ *         msgSend.addnID_Server(nID_Server).addnID_Subject(nID_Server).addsBody
+ *         (sBody) .addsError(sError).addsHead(sHead).addsmData(smData).save();
+ * 
+ *         Обязательные параметры: sType и sFunction
+ * 
+ *         sType - тип сообщения, может принимать значения: ACCES_DENIED_ERROR -
+ *         Ошибка доступа(авторизация) EXTERNAL_ERROR - Внешняя ошибка
+ *         INF_MESSAGE - Информационное сообщение INTERNAL_ERROR - Внутренняя
+ *         ошибка VALIDATION_ERROR - Ошибка валидации входящих данных WARNING -
+ *         Предупреждение
+ * 
+ *         Если тип сообщения указать некорректно (например WARNING2 ), то
+ *         принимается тип INF_MESSAGE
+ * 
+ *         sFunction - строка с именем функции где произошла ошибка
  * 
  * 
- *  Для гибкой настройки может используется файл параметров msg.properties, где:
- *  
- *    MsgURL=MsgURL=http://msg.igov.org.ua/MSG  // url Сервиса Хранения Ошибок
- *    sBusId=TEST				// иденификатор Бизнес процесса
- *    
- *  
+ *         На основании типа сообщения и имени функции формируется код шаблона
+ *         сообщения в Сервисе Хранения Ошибок При вызове MsgSendImpl("WARNING",
+ *         "getFunctionMeat") код будет WR_GETFUNCTIONMEAT
+ * 
+ *         Примечание: длина кода сообщения 25 символов, т.е. имя функции
+ *         желательно уместить в 22 символа, т.к. остальные символы будут
+ *         игнорироваться
+ * 
+ * 
+ *         Для гибкой настройки может используется файл параметров
+ *         msg.properties, где:
+ * 
+ *         MsgURL=MsgURL=http://msg.igov.org.ua/MSG // url Сервиса Хранения
+ *         Ошибок sBusId=TEST // иденификатор Бизнес процесса
+ * 
  */
 public class MsgSendImpl implements MsgSend {
     private static final Logger LOG = LoggerFactory.getLogger(MsgSendImpl.class);
@@ -68,6 +72,7 @@ public class MsgSendImpl implements MsgSend {
     private static final String TemplateMsgIdJSON = "\",\"TemplateMsgId\":\"" + TemplateMsgId + "\"}}]}";
 
     private static final Properties prop = new Properties();
+
     private static InputStream inputStream = MsgSendImpl.class.getClassLoader().getResourceAsStream("msg.properties");
 
     private static final String sBusId_DEFAULT;
@@ -110,6 +115,18 @@ public class MsgSendImpl implements MsgSend {
 
     private String smDataMisc = null;
 
+    /**
+     * @param String
+     *            sType - тип сообщения, может принимать значения:
+     *            ACCES_DENIED_ERROR - Ошибка доступа(авторизация)
+     *            EXTERNAL_ERROR - Внешняя ошибка INF_MESSAGE - Информационное
+     *            сообщение INTERNAL_ERROR - Внутренняя ошибка VALIDATION_ERROR
+     *            - Ошибка валидации входящих данных WARNING - Предупреждение
+     * 
+     * @param String
+     *            sFunction - строка с именем функции где произошла ошибка
+     * 
+     */
     public MsgSendImpl(String sType, String sFunction) {
 	LOG.debug("Send message sType={}, sFunction={}", sType, sFunction);
 
@@ -160,6 +177,18 @@ public class MsgSendImpl implements MsgSend {
     }
 
     @SuppressWarnings("unchecked")
+    /**
+     * Разбирается структура smData с дополнительными данными по ошибке.
+     * Соответствующие поля структуры запоминаются в отделных переменных, для
+     * последующего сохранения в атрибутах Сервиса Хранения Ошибок
+     * 
+     * @param String
+     *            smData - JSON структура следующего фоормата:
+     * 
+     *            { "asParam": ["par1", "par2", "par3"], "oResponse": {
+     *            "sMessage": "value sMessage", "sCode": "value sCode",
+     *            "soData": "value soData" }, "sDate": "value sDate" }
+     */
     public MsgSend addsmData(String smData) {
 	String sResponseMessage = null;
 	String sResponseCode = null;
@@ -223,9 +252,20 @@ public class MsgSendImpl implements MsgSend {
 	return this;
     }
 
+    /**
+     * Формирование JSON структуры для создание шаблона сообщения с новым кодом.
+     * Вид структуры: { "r" : [ { _type_comment" : "Создание сообщения", "type"
+     * : "MSG_ADD", "sid" : "${sid}", "s" : { "Type" : "${Тип сообщения}",
+     * "MsgCode" : "${Код сообщения}", "BusId" : "${Id бизнеспроцесса}", "Descr"
+     * : "${Описание сообщения}", "TemplateMsgId" : "${Id шаблона}" } }] }
+     * 
+     * @return String Возвращает JSON структуру создания шаблона сообщения в
+     *         виде строки
+     */
     private String buildJSON() {
 	StringBuilder sb = new StringBuilder(500);
-	sb.append("{\"r\":[{\"_type_comment\" : \"Создание сообщения\",\"type\":\"MSG_ADD\",\"sid\" : \"\",\"s\":{\"Type\":\"");
+	sb.append(
+		"{\"r\":[{\"_type_comment\" : \"Создание сообщения\",\"type\":\"MSG_ADD\",\"sid\" : \"\",\"s\":{\"Type\":\"");
 	sb.append(msgType.name());
 	sb.append("\",\"MsgCode\":\"");
 	sb.append(sMsgCode);
@@ -244,6 +284,9 @@ public class MsgSendImpl implements MsgSend {
 	return sb.toString();
     }
 
+    /**
+     * Создание шаблона сообщения с новым кодом
+     */
     private IMsgObjR createMsg() {
 	MsgCreate msgCreate = new MsgCreate(buildJSON());
 	try {
@@ -255,16 +298,24 @@ public class MsgSendImpl implements MsgSend {
 	return null;
     }
 
-//    public static void main(String[] args) throws IOException {
-//	MsgSend msgSend = new MsgSendImpl("warning", "function");
-//	IMsgObjR msg = msgSend.addnID_Server(1L).addnID_Subject(1L).addsBody("text body").addsError("text error")
-//		.addsHead("text head 22").save();
-//
-//	System.out.println("msg = " + msg);
-//
-//    }
+    // public static void main(String[] args) throws IOException {
+    // MsgSend msgSend = new MsgSendImpl("warning", "function");
+    // IMsgObjR msg =
+    // msgSend.addnID_Server(1L).addnID_Subject(1L).addsBody("text
+    // body").addsError("text error")
+    // .addsHead("text head 22").save();
+    //
+    // System.out.println("msg = " + msg);
+    //
+    // }
 
     @Override
+    /**
+     * Сохранение сообщения. Если в Сервисе Хранения Ошибок нет шаблона
+     * сообщения с таким кодом, то оно сохраняется в шаблоне сообщении с кодом
+     * DEFAULT В этом случае программа пытается добавить новый шаблон сообщения
+     * с этим кодом в Сервис Хранения Ошибок
+     */
     public IMsgObjR save() {
 	IMsgObjR retMsg = doMsg();
 	LOG.debug("retMsg={}", retMsg);
@@ -279,6 +330,8 @@ public class MsgSendImpl implements MsgSend {
     }
 
     // Запрос на сохранение сообщения
+    // Вынес из save на тот случай, если понадобиться повторный вызов после
+    // создания нового шаблона сообщения
     private IMsgObjR doMsg() {
 	MAttrs mAttrs = new MAttrs();
 
