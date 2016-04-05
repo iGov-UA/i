@@ -185,12 +185,7 @@ public class MsgSendImpl implements MsgSend {
 
     private String buildJSON() {
 	StringBuilder sb = new StringBuilder(500);
-	sb.append("{\"r\":[{");
-	sb.append("\"_type_comment\" : \"Создание сообщения\",");
-	sb.append("\"type\":\"MSG_ADD\",");
-	sb.append("\"sid\" : \"429594d55bdde7f83f7f894812b4318c745a8855\",");
-	sb.append("\"s\":{");
-	sb.append("\"Type\":\"");
+	sb.append("{\"r\":[{\"_type_comment\" : \"Создание сообщения\",\"type\":\"MSG_ADD\",\"sid\" : \"\",\"s\":{\"Type\":\"");
 	sb.append(msgType.name());
 	sb.append("\",\"MsgCode\":\"");
 	sb.append(sMsgCode);
@@ -220,14 +215,14 @@ public class MsgSendImpl implements MsgSend {
 	return null;
     }
 
-//    public static void main(String[] args) throws IOException {
-//	MsgSend msgSend = new MsgSendImpl("warning", "function");
-//	IMsgObjR msg = msgSend.addnID_Server(1L).addnID_Subject(1L).addsBody("text body").addsError("text error")
-//		.addsHead("text head 22").save();
-//
-//	System.out.println("msg = " + msg);
-//
-//    }
+    public static void main(String[] args) throws IOException {
+	MsgSend msgSend = new MsgSendImpl("warning", "function");
+	IMsgObjR msg = msgSend.addnID_Server(1L).addnID_Subject(1L).addsBody("text body").addsError("text error")
+		.addsHead("text head 22").save();
+
+	System.out.println("msg = " + msg);
+
+    }
 
     @Override
     public IMsgObjR save() {
