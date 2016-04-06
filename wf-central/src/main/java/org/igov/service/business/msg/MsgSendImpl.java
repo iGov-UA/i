@@ -297,7 +297,8 @@ public class MsgSendImpl implements MsgSend {
 	try {
 	    msgCreate.doReqest();
 	} catch (Exception e) {
-	    e.printStackTrace();
+	    LOG.error(e.getMessage());
+//	    e.printStackTrace();
 	}
 
 	return null;
@@ -327,7 +328,7 @@ public class MsgSendImpl implements MsgSend {
 
 	// Создать сообщение если его не было раньше
 	if (retMsg.getMsgCode().equals(MSG_DEFAULT) && !sMsgCode.equals(MSG_DEFAULT)) {
-	    LOG.debug("Сообщения с кодом {} не найдено. Попытка его создать.", this.sMsgCode);
+	    LOG.warn("Сообщения с кодом {} не найдено. Попытка его создать.", this.sMsgCode);
 	    createMsg();
 	}
 

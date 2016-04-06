@@ -38,12 +38,12 @@ import org.slf4j.LoggerFactory;
 public class MsgCreate {
     private static final Logger LOG = LoggerFactory.getLogger(MsgCreate.class);
 
-    private String reqest = null;
+    private String sBodyRequest = null;
 
-    public MsgCreate(String reqest) {
-	LOG.debug("reqest={}", reqest);
+    public MsgCreate(String sBodyRequest) {
+	LOG.debug("reqest={}", sBodyRequest);
 
-	this.reqest = reqest;
+	this.sBodyRequest = sBodyRequest;
     }
 
     public String doReqest() throws Exception {
@@ -59,7 +59,7 @@ public class MsgCreate {
 	    conn.setRequestProperty("Content-Type", "application/json");
 
 	    OutputStream os = conn.getOutputStream();
-	    os.write(reqest.getBytes());
+	    os.write(sBodyRequest.getBytes());
 	    os.flush();
 
 	    BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
@@ -72,16 +72,18 @@ public class MsgCreate {
 
 	    if (conn.getResponseCode() != HttpURLConnection.HTTP_CREATED) {
 		throw new Exception(
-			"Failed : HTTP error code : " + conn.getResponseCode() + "\nResponseBody:\n" + ret.toString());
+			"Ошибка при создании шаблона сообщения : HTTP error code : " + conn.getResponseCode() + "\nResponseBody:\n" + ret.toString());
 	    }
 
 	    LOG.debug("response={}", conn.getResponseCode());
 	    LOG.debug("nResponseBody={}", ret.toString());
 
 	} catch (MalformedURLException e) {
-	    e.printStackTrace();
+	    LOG.error("Ошибка при создании шаблона сообщения. Тело запроса:\n{}\n Ошибка:{}",sBodyRequest,e.getMessage());
+//	    e.printStackTrace();
 	} catch (IOException e) {
-	    e.printStackTrace();
+	    LOG.error("Ошибка при создании шаблона сообщения. Тело запроса:\n{}\n Ошибка:{}",sBodyRequest,e.getMessage());
+//	    e.printStackTrace();
 	} finally {
 	    conn.disconnect();
 	}
