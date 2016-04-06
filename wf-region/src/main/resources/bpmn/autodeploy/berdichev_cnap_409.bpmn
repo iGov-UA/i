@@ -12,17 +12,17 @@
         <activiti:formProperty id="email" name="Електронна пошта; для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sRegistrationAddress" name="Адреса реєстрації" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sGoal" name="Довідка потрібна для" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Вам буде зручно отримати відповідь" type="select" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin"  name="Оберіть орган, у якому Вам буде зручно отримати відповідь" type="select" required="true" default="0"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Електронна копія паспорту" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="Flag_region" name="Перемикач регіонів" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('berdichiv_409.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Адреса установи" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="Часи роботи" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="Контактний телефон" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sShapka409" name="Шапка заяви" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPlase409" name="Назва міськвиконкому" type="invisible"></activiti:formProperty>
+         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('berdichiv_409.json')}"></activiti:formProperty>
+        <activiti:formProperty id="bFlag_region" name="Перемикач регіонів" type="string" default="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта органу" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса установи" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Часи роботи" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Контактний телефон" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapka409" name="Шапка заяви" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPlase409" name="Назва міськвиконкому" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow3" sourceRef="startevent1" targetRef="servicetask3"></sequenceFlow>
@@ -136,7 +136,7 @@ ${sNameOrgan}&lt;br&gt;
     <sequenceFlow id="flow13" sourceRef="servicetask1" targetRef="endevent2"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow12" name="Документи відповідають вимогам" sourceRef="exclusivegateway1" targetRef="servicetask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision == 'sEmumDoc_ok' && Flag_region != 'true'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision == 'sEmumDoc_ok' && bFlag_region != 'true'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask5" name="email-підтверждення громадянину про прийняття документів" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
@@ -235,7 +235,7 @@ ${sNameOrgan}&lt;br&gt;
     </serviceTask>
     <sequenceFlow id="flow18" sourceRef="servicetask6" targetRef="endevent1"></sequenceFlow>
      <sequenceFlow id="flow25" name="Документи відповідають вимогам, Жовті Води" sourceRef="exclusivegateway1" targetRef="servicetask7">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision == 'sEnumDoc_ok' && Flag_region == 'true'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision == 'sEnumDoc_ok' && bFlag_region == 'true'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask7" name="email-оповіщення співробітника ЖКГ" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
@@ -328,6 +328,7 @@ ${sNameOrgan}&lt;br&gt;
         <activiti:formProperty id="sDecisionComment2" name="Коментар для працівника ЦНАП" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="file10" name="Завантажте скановану копію довідки" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/berdichev/berdichiv_cnap_409_print1.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/berdichev/berdichiv_cnap_409_print1.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sShapka409" name="Шапка заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPlase409" name="Назва міськвиконкому" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
