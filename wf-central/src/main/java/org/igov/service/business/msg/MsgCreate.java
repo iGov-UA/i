@@ -73,12 +73,14 @@ public class MsgCreate {
 	    if (conn.getResponseCode() != HttpURLConnection.HTTP_CREATED) {
 		
 		StringBuffer berr = new StringBuffer(500);
-		berr.append("Ошибка при создании шаблона сообщения\nsBodyRequest:\n");
+		berr.append("Ошибка при работе с сервисом :");
+		berr.append(url);
+		berr.append("\nBodyRequest:\n");
 		berr.append(sBodyRequest);
-		berr.append("\nHTTP error code : ");
-		berr.append(conn.getResponseCode());
 		berr.append("\nResponseBody:\n");
 		berr.append(ret);
+		berr.append("\nHTTP error code : ");
+		berr.append(conn.getResponseCode());
 		
 		throw new Exception(berr.toString());
 	    }
