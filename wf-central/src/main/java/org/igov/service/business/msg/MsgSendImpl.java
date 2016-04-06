@@ -12,6 +12,7 @@ import org.igov.util.JSON.JsonRestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.pb.ksv.msgcore.data.IMsgObjR;
 import com.pb.ksv.msgcore.data.MAttrs;
 import com.pb.ksv.msgcore.data.MFilter;
@@ -29,40 +30,36 @@ import com.pb.util.gsv.net.HTTPClient;
  * 
  *         Пример использования:
  * 
- *         IMsgObjR msg = new MsgSendImpl(sType, sFunction).addnID_Server(nID_Server).
- *                addnID_Subject(nID_Server).addsBody(sBody).addsError(sError).addsHead(sHead).
- *                addsmData(smData).save();
+ *         IMsgObjR msg = new MsgSendImpl(sType, sFunction).addnID_Server(nID_Server).addnID_Subject(nID_Server).addsBody(sBody).
+ *         	addsError(sError).addsHead(sHead). addsmData(smData).save();
  * 
  *         Обязательные параметры: sType и sFunction
  * 
  *         sType - тип сообщения, может принимать значения:
- *          
- *           ACCES_DENIED_ERROR - Ошибка доступа(авторизация) 
- *           EXTERNAL_ERROR - Внешняя ошибка
- *           INF_MESSAGE - Информационное сообщение 
+ * 
+ *           ACCES_DENIED_ERROR - Ошибка доступа(авторизация)
+ *           EXTERNAL_ERROR - Внешняя ошибка 
+ *           INF_MESSAGE - Информационное сообщение
  *           INTERNAL_ERROR - Внутренняя ошибка 
  *           VALIDATION_ERROR - Ошибка валидации входящих данных 
  *           WARNING - Предупреждение
  * 
- *         Если тип сообщения указать некорректно (например WARNING2 ), то
- *         принимается тип INF_MESSAGE
+ *         Если тип сообщения указать некорректно (например WARNING2 ), то принимается тип INF_MESSAGE
  * 
  *         sFunction - строка с именем функции где произошла ошибка
  * 
  * 
- *         На основании типа сообщения и имени функции формируется код шаблона
- *         сообщения в Сервисе Хранения Ошибок При вызове MsgSendImpl("WARNING",
- *         "getFunctionMeat") код будет WR_GETFUNCTIONMEAT
+ *         На основании типа сообщения и имени функции формируется код шаблона сообщения в Сервисе Хранения Ошибок 
+ *         При вызове MsgSendImpl("WARNING","getFunctionMeat") код будет WR_GETFUNCTIONMEAT
  * 
- *         Примечание: длина кода сообщения 25 символов, т.е. имя функции
- *         желательно уместить в 22 символа, т.к. остальные символы будут
- *         игнорироваться
+ *         Примечание: длина кода сообщения 25 символов, т.е. имя функции желательно уместить в 22 символа, 
+ *         т.к. остальные символы будут игнорироваться
  * 
  * 
  *         Для гибкой настройки может используется файл параметров
  *         msg.properties, где:
  * 
- *         MsgURL=MsgURL=http://msg.igov.org.ua/MSG // url Сервиса Хранения Ошибок 
+ *         MsgURL=http://msg.igov.org.ua/MSG  // url Сервиса Хранения Ошибок 
  *         sBusId=TEST // иденификатор Бизнес процесса
  * 
  */
@@ -84,15 +81,15 @@ public class MsgSendImpl implements MsgSend {
 	String sBusId;
 	try {
 	    prop.load(inputStream);
-	    
-	    MsgURL = prop.getProperty("MsgURL",  "http://msg.igov.org.ua/MSG");
+
+	    MsgURL = prop.getProperty("MsgURL", "http://msg.igov.org.ua/MSG");
 	    sBusId = prop.getProperty("sBusId", "TEST");
 	} catch (IOException e) {
-	    MsgURL =  "http://msg.igov.org.ua/MSG";
+	    MsgURL = "http://msg.igov.org.ua/MSG";
 	    sBusId = "TEST";
 	}
 
-	MSG_URL = MsgURL; 
+	MSG_URL = MsgURL;
 	sBusId_DEFAULT = sBusId;
 	System.setProperty("MsgURL", MSG_URL);
 
@@ -120,13 +117,7 @@ public class MsgSendImpl implements MsgSend {
     private String smDataMisc = null;
 
     /**
-     * @param sType - тип сообщения, может принимать значения:
-     *           ACCES_DENIED_ERROR - Ошибка доступа(авторизация) 
-     *           EXTERNAL_ERROR - Внешняя ошибка
-     *           INF_MESSAGE - Информационное сообщение 
-     *           INTERNAL_ERROR - Внутренняя ошибка 
-     *           VALIDATION_ERROR - Ошибка валидации входящих данных 
-     *           WARNING - Предупреждение
+     * @param sType - тип сообщения
      * 
      * @param sFunction - строка с именем функции где произошла ошибка
      * 
@@ -134,7 +125,7 @@ public class MsgSendImpl implements MsgSend {
     public MsgSendImpl(String sType, String sFunction) {
 	LOG.debug("Send message sType={}, sFunction={}", sType, sFunction);
 	LOG.debug("MSG URL={}, BusID={}", MSG_URL, sBusId_DEFAULT);
-	
+
 	if (sType == null || sFunction == null) {
 	    throw new IllegalArgumentException("Constructor parameters: sType=" + sType + ", sFunction=" + sFunction);
 	}
@@ -153,31 +144,37 @@ public class MsgSendImpl implements MsgSend {
 
     public MsgSend addBusId(String sBusId) {
 	this.sBusId = sBusId;
+	LOG.debug("set sBusId={}", this.sBusId);
 	return this;
     }
 
     public MsgSend addsHead(String sHead) {
 	this.sHead = sHead;
+	LOG.debug("set sHead={}", this.sHead);
 	return this;
     }
 
     public MsgSend addsBody(String sBody) {
 	this.sBody = sBody;
+	LOG.debug("set sBody={}", this.sBody);
 	return this;
     }
 
     public MsgSend addsError(String sError) {
 	this.sError = sError;
+	LOG.debug("set sError={}", this.sError);
 	return this;
     }
 
     public MsgSend addnID_Subject(Long nID_Subject) {
 	this.nID_Subject = nID_Subject;
+	LOG.debug("set nID_Subject={}", this.nID_Subject);
 	return this;
     }
 
     public MsgSend addnID_Server(Long nID_Server) {
 	this.nID_Server = nID_Server;
+	LOG.debug("set nID_Server={}", this.nID_Server);
 	return this;
     }
 
@@ -187,21 +184,37 @@ public class MsgSendImpl implements MsgSend {
      * Соответствующие поля структуры запоминаются в отделных переменных, для
      * последующего сохранения в атрибутах Сервиса Хранения Ошибок
      * 
-     * @param smData - JSON структура следующего фоормата:
+     * @param smData
+     *            - JSON структура следующего фоормата:
      * 
-     *  { "asParam": ["par1", "par2", "par3"], "oResponse": {
-     *  "sMessage": "value sMessage", "sCode": "value sCode",
-     *  "soData": "value soData" }, "sDate": "value sDate" }
+     *            { "asParam": ["par1", "par2", "par3"], "oResponse": {
+     *            "sMessage": "value sMessage", "sCode": "value sCode",
+     *            "soData": "value soData" }, "sDate": "value sDate" }
      */
     public MsgSend addsmData(String smData) {
+	smData = smData.trim();
+
+	LOG.debug("set smData=[{}]", smData);
+
+	if (smData.isEmpty()) {
+	    LOG.debug("set smData is Empty");
+	    return this;
+	}
+
 	String sResponseMessage = null;
 	String sResponseCode = null;
 	String soResponseData = null;
 	StringBuffer smDataMisc = new StringBuffer();
 	if (smData != null) {
-	    asParam = new LinkedList<String>();
 
-	    Map<String, Object> moData = JsonRestUtils.readObject(smData, Map.class);
+	    asParam = new LinkedList<String>();
+	    Map<String, Object> moData = null;
+	    try {
+		moData = JsonRestUtils.readObject(smData, Map.class);
+	    } catch (Exception e1) {
+		this.smDataMisc = "Error parse JSON smData";
+	    }
+
 	    if (moData != null) {
 		if (moData.containsKey("asParam")) {
 		    asParam = (List<String>) moData.get("asParam");
@@ -231,6 +244,7 @@ public class MsgSendImpl implements MsgSend {
 		    sDate = (String) moData.get("sDate");
 		}
 	    }
+
 	}
 
 	return this;
@@ -243,30 +257,32 @@ public class MsgSendImpl implements MsgSend {
     }
 
     public MsgSend addLangFilter(String lang) {
+	LOG.debug("check set lang={}", lang);
 	try {
 	    this.msgLang = MsgLang.valueOf(lang.trim().toUpperCase());
 	} catch (final IllegalArgumentException e) {
 	    this.msgLang = MsgLang.UKR;
 	}
+	LOG.debug("set lang={}", this.msgLang);
 	return this;
     }
 
     public MsgSend addMsgLevel(MsgLevel msgLevel) {
 	this.msgLevel = msgLevel;
+	LOG.debug("set msgLevel={}", this.msgLevel);
 	return this;
     }
 
     /**
      * Формирование JSON структуры для создание шаблона сообщения с новым кодом.
      * 
-     * Вид структуры: 
-     * { "r" : [ { _type_comment" : "Создание сообщения", "type"
+     * Вид структуры: { "r" : [ { _type_comment" : "Создание сообщения", "type"
      * : "MSG_ADD", "sid" : "${sid}", "s" : { "Type" : "${Тип сообщения}",
      * "MsgCode" : "${Код сообщения}", "BusId" : "${Id бизнеспроцесса}", "Descr"
      * : "${Описание сообщения}", "TemplateMsgId" : "${Id шаблона}" } }] }
      * 
-     * @return Возвращает JSON структуру создания шаблона сообщения в
-     *         виде строки
+     * @return Возвращает JSON структуру создания шаблона сообщения в виде
+     *         строки
      */
     private String buildJSON() {
 	StringBuilder sb = new StringBuilder(500);
@@ -287,22 +303,18 @@ public class MsgSendImpl implements MsgSend {
 	sb.append(sFunction);
 	sb.append(TemplateMsgIdJSON);
 
+	LOG.debug("set msgLevel={}", sb.toString());
+
 	return sb.toString();
     }
 
     /**
      * Создание шаблона сообщения с новым кодом
+     * @throws Exception 
      */
-    private IMsgObjR createMsg() {
+    private void createMsg() throws Exception {
 	MsgCreate msgCreate = new MsgCreate(buildJSON());
-	try {
-	    msgCreate.doReqest();
-	} catch (Exception e) {
-	    LOG.error(e.getMessage());
-//	    e.printStackTrace();
-	}
-
-	return null;
+	msgCreate.doReqest();
     }
 
     // public static void main(String[] args) throws IOException {
@@ -323,9 +335,9 @@ public class MsgSendImpl implements MsgSend {
      * DEFAULT В этом случае программа пытается добавить новый шаблон сообщения
      * с этим кодом в Сервис Хранения Ошибок
      */
-    public IMsgObjR save() {
+    public IMsgObjR save() throws Exception {
 	IMsgObjR retMsg = doMsg();
-	LOG.debug("retMsg={}", retMsg);
+	LOG.debug("Ответ на запрос о сохраниении сообщения:\n{}", retMsg);
 
 	// Создать сообщение если его не было раньше
 	if (retMsg.getMsgCode().equals(MSG_DEFAULT) && !sMsgCode.equals(MSG_DEFAULT)) {
