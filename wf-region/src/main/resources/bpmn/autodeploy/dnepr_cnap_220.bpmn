@@ -481,13 +481,17 @@ execution.setVariable('list_documents', res)</script>
         <activiti:formProperty id="sSesFio" name="П.І.Б. працівника СЕС, який прийняв заяву" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="number_ses" name="Реєстраційний номер у відповідності до внутрішньої документації СЕС" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="date_registrastion_ses" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="status3" name="Статус висновку" type="enum" required="true">
-          <activiti:value id="attr5_finish" name="Висновок (або рішення) готове"></activiti:value>
-          <activiti:value id="attr6_finish" name="Відмова громадянину у видачі висновку"></activiti:value>
+        <activiti:formProperty id="status2" name="Статус висновку" type="enum" required="true">
+          <activiti:value id="attr3_finish" name="Висновок (або рішення) готове"></activiti:value>
+          <activiti:value id="attr4_finish" name="Відмова громадянину у видачі висновку"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="ses_decisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
         <activiti:formProperty id="Per3" name="Перевірте подані громадянином дані, заповніть всі необхідні поля (П.І.Б адміністратора, дату реєстрації, реєстраційний номер та рішення про надання послуги) - потім роздрукуйте форму заяви." type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="file10" name="Завантажте скановану копию висновку (або рішення) держсанепідслужби" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sShapka220" name="Шапка заяви" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="document" name="Назва документу" type="invisible" default="висновок державної санітарно-епідеміологічної експертизи діючих об’єктів"></activiti:formProperty>
+        <activiti:formProperty id="term" name="Строк виконання" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="list_documents" name="Список документів" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_220_print1.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_220_print2.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/dneprOblSnap/dnepr_cnap_220_print1.html]" type="invisible" default="Форма заяви громадянина 1" writable="false"></activiti:formProperty>
@@ -567,14 +571,11 @@ execution.setVariable('list_documents', res)</script>
         <activiti:formProperty id="adminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="number_cnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="status3" name="Статус висновку" type="enum" writable="false">
-          <activiti:value id="attr5_finish" name="Висновок (або рішення) готове"></activiti:value>
-          <activiti:value id="attr6_finish" name="Відмова громадянину у видачі висновку"></activiti:value>
+        <activiti:formProperty id="status2" name="Статус висновку" type="enum" writable="false">
+          <activiti:value id="attr3_finish" name="Висновок (або рішення) готове"></activiti:value>
+          <activiti:value id="attr4_finish" name="Відмова громадянину у видачі висновку"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="status2" name="Статус Заявки" type="enum" required="true">
-          <activiti:value id="attr3_finish" name="Запросити громадянина отримати висновок"></activiti:value>
-          <activiti:value id="attr4_finish" name="Повідомити громадянина про відмву СЕС"></activiti:value>
-        </activiti:formProperty>
+        <activiti:formProperty id="ses_decisionComment" name="Коментар СЕС" type="textArea" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
