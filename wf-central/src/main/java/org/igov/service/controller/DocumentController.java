@@ -5,16 +5,25 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.gridfs.GridFSDBFile;
+import io.swagger.annotations.*;
+import org.activiti.engine.ActivitiObjectNotFoundException;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.task.Attachment;
 import org.activiti.engine.task.Task;
 import org.apache.commons.collections.IteratorUtils;
+import org.igov.io.GeneralConfig;
 import org.igov.io.db.kv.statical.impl.FileStorage;
+import org.igov.model.action.event.HistoryEventType;
 import org.igov.model.document.*;
-import org.igov.service.business.action.ActionEventService;
-import org.igov.service.business.subject.SubjectService;
 import org.igov.model.subject.Subject;
-import org.activiti.engine.ActivitiObjectNotFoundException;
+import org.igov.service.business.access.BankIDConfig;
+import org.igov.service.business.access.BankIDUtils;
+import org.igov.service.business.action.ActionEventService;
+import org.igov.service.business.document.access.handler.HandlerFactory;
+import org.igov.service.business.subject.SubjectService;
+import org.igov.service.exception.CommonServiceException;
+import org.igov.util.JSON.JsonRestUtils;
+import org.igov.util.ToolWeb;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,32 +39,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.igov.util.JSON.JsonRestUtils;
-import org.igov.model.action.event.HistoryEventType;
-import org.igov.service.business.document.access.handler.HandlerFactory;
-import org.igov.service.business.access.BankIDConfig;
-import org.igov.service.business.access.BankIDUtils;
-import org.igov.io.GeneralConfig;
-import org.igov.util.ToolWeb;
-
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponses;
-import io.swagger.annotations.ApiResponse;
-import org.igov.service.exception.CommonServiceException;
-import static org.igov.util.ToolFS.getFileExp;
 import static org.igov.util.JSON.JsonRestUtils.REASON_HEADER;
 import static org.igov.util.JSON.JsonRestUtils.toJsonErrorResponse;
+import static org.igov.util.ToolFS.getFileExp;
 
 @Controller
-@Api(tags = {"DocumentController"}, description = "Документы и смежные сущности")
+@Api(tags = { "DocumentController -- Документы и смежные сущности" })
 @RequestMapping(value = "/document")
 public class DocumentController {
 
@@ -69,7 +64,14 @@ public class DocumentController {
     GeneralConfig generalConfig;
     @Autowired
     BankIDConfig bankIDConfig;
-
+    @Autowired
+    ActionEventService actionEventService;
+    @Autowired
+    FileStorage durableFileStorage;
+    @Autowired
+    DocumentDaoImpl entityDao;
+    @Autowired
+    MongoTemplate mongoTemplate;
     @Autowired
     private DocumentDao documentDao;
     @Autowired
@@ -79,7 +81,9 @@ public class DocumentController {
     @Autowired
     private HandlerFactory handlerFactory;
     @Autowired
-    ActionEventService actionEventService;
+    private GridFsTemplate oGridFsTemplate;
+    @Autowired
+    private TaskService taskService;
 
     /**
      * получение документа по ид документа
@@ -88,10 +92,9 @@ public class DocumentController {
      * @param nID_Subject ID авторизированого субъекта (добавляется в запрос
      * автоматически после аутентификации пользователя)
      */
-    @ApiOperation(value = "Получение документа по ид документа", notes = "##### DocumentController - Документы и смежные сущности. Получение документа по ид документа #####\n\n"
-            + "HTTP Context: http://server:port/wf/service/document/getDocument\n\n\n"
-            + "Пример: https://test.igov.org.ua/wf/service/document/getDocument?nID=1\n\n"
-            + "Response\n\n"
+    @ApiOperation(value = "Получение документа по ид документа", notes = ""
+            + "Пример: https://test.igov.org.ua/wf/service/document/getDocument?nID=1\n"
+            + "Response\n"
             + "\n```json\n"
             + "{\n"
             + "    \"sDate_Upload\":\"2015-01-01\",\n"
@@ -127,10 +130,9 @@ public class DocumentController {
     /**
      * получение всех операторов(органов) которые имею право доступа к документу
      */
-    @ApiOperation(value = "Получение всех операторов(органов) которые имею право доступа к документу", notes = "##### DocumentController - Документы и смежные сущности. Получение всех операторов(органов) которые имею право доступа к документу #####\n\n"
-            + "HTTP Context: http://server:port/wf/service/document/getDocumentOperators\n\n\n"
-            + "Примеры: https://test.igov.org.ua/wf/service/document/getDocumentOperators\n\n"
-            + "Response\n\n"
+    @ApiOperation(value = "Получение всех операторов(органов) которые имею право доступа к документу", notes = ""
+            + "Примеры: https://test.igov.org.ua/wf/service/document/getDocumentOperators\n"
+            + "Response\n"
             + "\n```json\n"
             + "[\n"
             + "    {\n"
@@ -156,14 +158,15 @@ public class DocumentController {
      * @param nID_Subject ID авторизированого субъекта (добавляется в запрос
      * автоматически после аутентификации пользователя)
      */
-    @ApiOperation(value = "Получение контента документа по ид документа", notes = "##### DocumentController - Документы и смежные сущности. Получение контента документа по ид документа #####\n\n"
-            + "HTTP Context: http://server:port/wf/service/document/getDocumentContent\n\n\n"
-            + "Пример: https://test.igov.org.ua/wf/service/document/getDocumentContent?nID=1\n\n"
+    @ApiOperation(value = "Получение контента документа по ид документа", notes = ""
+            + "Пример: https://test.igov.org.ua/wf/service/document/getDocumentContent?nID=1\n"
             + "Response КОНТЕНТ ДОКУМЕНТА В ВИДЕ СТРОКИ\n")
     @RequestMapping(value = "/getDocumentContent", method = RequestMethod.GET)
     public @ResponseBody
-    String getDocumentContent(@ApiParam(value = "ИД-номер документа", required = true) @RequestParam(value = "nID") Long id,
-            @ApiParam(value = "ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)", required = true) @RequestParam(value = "nID_Subject") long nID_Subject) throws CommonServiceException {
+    String getDocumentContent(
+            @ApiParam(value = "ИД-номер документа", required = true) @RequestParam(value = "nID") Long id,
+            @ApiParam(value = "номер-ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)", required = true) @RequestParam(value = "nID_Subject") long nID_Subject)
+            throws CommonServiceException {
         Document document = documentDao.getDocument(id);
         if (nID_Subject != document.getSubject().getId()) {
             throw new CommonServiceException(UNAUTHORIZED_ERROR_CODE, NO_ACCESS_MESSAGE);
@@ -172,6 +175,8 @@ public class DocumentController {
         }
     }
 
+    //################ DocumentType services ###################
+
     /**
      * получение документа в виде файла по ид документа
      *
@@ -179,15 +184,15 @@ public class DocumentController {
      * @param nID_Subject ID авторизированого субъекта (добавляется в запрос
      * автоматически после аутентификации пользователя)
      */
-    @ApiOperation(value = "Получение документа в виде файла по ид документа", notes = "##### DocumentController - Документы и смежные сущности. Получение документа в виде файла по ид документа #####\n\n"
-            + "HTTP Context: http://server:port/wf/service/document/getDocumentFile\n\n\n"
-            + "Пример: https://test.igov.org.ua/wf/service/document/getDocumentFile?nID=1\n\n"
+    @ApiOperation(value = "Получение документа в виде файла по ид документа", notes = ""
+            + "Пример: https://test.igov.org.ua/wf/service/document/getDocumentFile?nID=1\n"
             + "Response ЗАГРУЖЕННЫЙ ФАЙЛ\n")
     @RequestMapping(value = "/getDocumentFile", method = RequestMethod.GET)
-    public @ResponseBody
+    public
+    @ResponseBody
     byte[] getDocumentFile(
             @ApiParam(value = "ИД-номер документа", required = true) @RequestParam(value = "nID") Long id,
-            @ApiParam(value = "ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)", required = true) @RequestParam(value = "nID_Subject") Long nID_Subject,
+            @ApiParam(value = "ID-номер авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)", required = true) @RequestParam(value = "nID_Subject") Long nID_Subject,
             HttpServletResponse httpResponse) throws CommonServiceException {
         Document document = documentDao.getDocument(id);
         if (!nID_Subject.equals(document.getSubject().getId())) {
@@ -217,18 +222,17 @@ public class DocumentController {
      * опционален)
      * @param password пароль (параметр опционален)
      */
-    @ApiOperation(value = "Получение документа в виде файла", notes = "##### DocumentController - Документы и смежные сущности. Получение документа в виде файла #####\n\n"
-            + "HTTP Context: http://server:port/wf/service/document/getDocumentAbstract\n\n\n"
-            + "Пример: https://test.igov.org.ua/wf/service/document/getDocumentAbstract?sID=150826SV7733A36E803B\n\n"
+    @ApiOperation(value = "Получение документа в виде файла", notes = ""
+            + "Пример: https://test.igov.org.ua/wf/service/document/getDocumentAbstract?sID=150826SV7733A36E803B\n"
             + "Response ЗАГРУЖЕННЫЙ ФАЙЛ\n")
     @RequestMapping(value = "/getDocumentAbstract", method = RequestMethod.GET)
     public @ResponseBody
     byte[] getDocumentAbstract(
-            @ApiParam(value = "ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя) ", required = false) @RequestParam(value = "nID_Subject", required = false, defaultValue = "1") Long nID_Subject,
+            @ApiParam(value = "ID-номер авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя) ", required = false) @RequestParam(value = "nID_Subject", required = false, defaultValue = "1") Long nID_Subject,
             @ApiParam(value = "строковой ID документа", required = false) @RequestParam(value = "sID", required = false) String sID,
-            @ApiParam(value = "определяет класс хэндлера который будет обрабатывать запрос", required = false) @RequestParam(value = "nID_DocumentOperator_SubjectOrgan", required = false) Long organID,
-            @ApiParam(value = "определяет тип документа, например 0 - \"Квитанція про сплату\", 1 - \"Довідка про рух по картці (для візових центрів)\"", required = false) @RequestParam(value = "nID_DocumentType", required = false) Long docTypeID,
-            @ApiParam(value = "пароль", required = false) @RequestParam(value = "sPass", required = false) String password,
+            @ApiParam(value = "номер ид -- определяет класс хэндлера который будет обрабатывать запрос", required = false) @RequestParam(value = "nID_DocumentOperator_SubjectOrgan", required = false) Long organID,
+            @ApiParam(value = "число ид -- определяет тип документа, например 0 - \"Квитанція про сплату\", 1 - \"Довідка про рух по картці (для візових центрів)\"", required = false) @RequestParam(value = "nID_DocumentType", required = false) Long docTypeID,
+            @ApiParam(value = "строка-пароль", required = false) @RequestParam(value = "sPass", required = false) String password,
             HttpServletResponse httpResponse)
             throws CommonServiceException {
 
@@ -264,11 +268,9 @@ public class DocumentController {
      * @param nID_Subject ID авторизированого субъекта (добавляется в запрос
      * автоматически после аутентификации пользователя)
      */
-    @ApiOperation(value = "Получение списка загруженных субъектом документов", notes = "##### DocumentController - Документы и смежные сущности. Получение списка загруженных субъектом документов #####\n\n"
-            + "HTTP Context: http://server:port/wf/service/document/getDocuments\n\n\n"
-            + "- nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n\n"
-            + "Пример: https://test.igov.org.ua/wf/service/document/getDocuments?nID_Subject=2\n\n"
-            + "Response\n\n"
+    @ApiOperation(value = "Получение списка загруженных субъектом документов", notes = ""
+            + "Пример: https://test.igov.org.ua/wf/service/document/getDocuments?nID_Subject=2\n"
+            + "Response\n"
             + "\n```json\n"
             + "[\n"
             + "  {\n"
@@ -308,31 +310,18 @@ public class DocumentController {
     @RequestMapping(value = "/getDocuments", method = RequestMethod.GET)
     public @ResponseBody
     List<Document> getDocuments(
-            @ApiParam(value = "ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)", required = true) @RequestParam(value = "nID_Subject") long nID_Subject) {
+            @ApiParam(value = "ID-номер авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)", required = true) @RequestParam(value = "nID_Subject") long nID_Subject) {
         return documentDao.getDocuments(nID_Subject);
     }
 
-    /**
-     * сохранение документа
-     *
-     * @param sID_Subject_Upload ИД-строка субъекта, который загрузил документ
-     * @param sSubjectName_Upload строка-название субъекта, который загрузил
-     * документ (временный парметр, будет убран)
-     * @param sName строка-название документа
-     * @param sFile строка-название и расширение файла
-     * @param nID_DocumentType ИД-номер типа документа
-     * @param documentContentTypeName строка-тип контента документа
-     * @param sContent контект в виде строки-обьекта
-     * @param nID_Subject ИД-номер субъекта документа (владельца)
-     * ????????????????????????????????????
-     */
-    @ApiOperation(value = "Сохранение документа", notes = "##### DocumentController - Документы и смежные сущности. Сохранение документа #####\n\n"
-            + "HTTP Context: http://server:port/wf/service/document/setDocument\n\n\n"
-            + "Пример:\n"
+    //################ DocumentContentType services ###################
+
+    @ApiOperation(value = "Сохранение документа", notes = "Пример:\n"
             + "https://test.igov.org.ua/wf/service/document/setDocument?sID_Subject_Upload=123&sSubjectName_Upload=Vasia&sName=Pasport&sFile=file.txt&nID_DocumentType=1&sDocumentContentType=application/zip&soDocumentContent=ffffffffffffffffff&nID_Subject=1\n\n"
             + "Response ИД ДОКУМЕНТА\n")
     @RequestMapping(value = "/setDocument", method = RequestMethod.GET)
-    public @ResponseBody
+    public
+    @ResponseBody
     Long setDocument(
             @ApiParam(value = "ИД-номер субъекта документа (владельца)", required = false) @RequestParam(value = "nID_Subject", required = false) long nID_Subject,
             @ApiParam(value = "ИД-строка субъекта, который загрузил документ", required = true) @RequestParam(value = "sID_Subject_Upload") String sID_Subject_Upload,
@@ -351,9 +340,9 @@ public class DocumentController {
 
         documentContentTypeName
                 = request.getHeader(CONTENT_TYPE_HEADER) != null
-                        ? request.getHeader("filename")
-                        : documentContentTypeName;
-        DocumentContentType documentContentType = null;
+                ? request.getHeader("filename")
+                : documentContentTypeName;
+        DocumentContentType documentContentType;
         if (documentContentTypeName != null) {
             documentContentType = documentContentTypeDao.getDocumentContentType(documentContentTypeName);
             if (documentContentType == null) {
@@ -386,25 +375,11 @@ public class DocumentController {
 
     }
 
-    /**
-     * сохранение документа в виде файла
-     *
-     * @param sID_Subject_Upload ИД-строка субъекта, который загрузил документ
-     * @param sSubjectName_Upload строка-название субъекта, который загрузил
-     * документ (временный парметр, нужно убрать его)
-     * @param sName строка-название документа
-     * @param nID_DocumentType ИД-номер типа документа
-     * @param sDocumentContentType строка-тип контента документа
-     * @param soDocumentContent контент в виде строки-обьекта
-     * @param nID_Subject ИД-номер субъекта документа
-     * (владельца)????????????????????????????????????
-     * @param oFile обьект файла (тип MultipartFile)
-     */
-    @ApiOperation(value = "Сохранение документа в виде файла (контент файла шлется в теле запроса)", notes = "##### DocumentController - Документы и смежные сущности. Сохранение документа в виде файла (контент файла шлется в теле запроса) #####\n\n"
-            + "HTTP Context: http://server:port/wf/service/document/setDocumentFile\n\n\n"
+    @ApiOperation(value = "Сохранение документа в виде файла (контент файла шлется в теле запроса)", notes = ""
             + "Response ИД ДОКУМЕНТА\n")
     @RequestMapping(value = "/setDocumentFile", method = RequestMethod.POST)
-    public @ResponseBody
+    public
+    @ResponseBody
     Long setDocumentFile(
             @ApiParam(value = "ИД-номер субъекта документа (владельца)", required = false) @RequestParam(value = "nID_Subject", required = false) long nID_Subject,
             @ApiParam(value = "ИД-строка субъекта, который загрузил документ", required = true) @RequestParam(value = "sID_Subject_Upload") String sID_Subject_Upload,
@@ -478,15 +453,12 @@ public class DocumentController {
         return nID_Document;
     }
 
-    //################ DocumentType services ###################
     /**
      * получение списка всех "нескрытых" типов документов, т.е. у которых поле
      * bHidden=false
      */
-    @ApiOperation(value = "Получение списка всех \"нескрытых\" типов документов", notes = "##### DocumentController - Документы и смежные сущности. ТИПЫ ДОКУМЕНТОВ. Получение списка всех \"нескрытых\" типов документов #####\n\n"
-            + "HTTP Context: http://server:port/wf/service/document/getDocumentTypes\n\n\n"
-            + "получение списка всех \"нескрытых\" типов документов, т.е. у которых поле bHidden=false\n\n"
-            + "Пример: https://test.igov.org.ua/wf/service/document/getDocumentTypes\n\n"
+    @ApiOperation(value = "Получение списка всех \"нескрытых\" типов документов", notes = ""
+            + "Пример: https://test.igov.org.ua/wf/service/document/getDocumentTypes\n"
             + "Response\n"
             + "\n```json\n"
             + "[\n"
@@ -496,7 +468,8 @@ public class DocumentController {
             + "]\n"
             + "\n```\n")
     @RequestMapping(value = "/getDocumentTypes", method = RequestMethod.GET)
-    public @ResponseBody
+    public
+    @ResponseBody
     List<DocumentType> getDocumentTypes() throws Exception {
         return documentTypeDao.getDocumentTypes();
     }
@@ -509,26 +482,24 @@ public class DocumentController {
      * @param bHidden скрывать/не скрывать (при отдаче списка всех записей,
      * булевское, по умолчанию = false)
      */
-    @ApiOperation(value = "Добавить/изменить запись типа документа", notes = "##### DocumentController - Документы и смежные сущности. ТИПЫ ДОКУМЕНТОВ. Добавить/изменить запись типа документа #####\n\n"
-            + "HTTP Context: http://server:port/wf/service/document/setDocumentType\n\n\n"
-            + "Если запись с ид=nID не будет найдена, то создастся новая запись (с автогенерируемым nID), иначе -- обновится текущая.\n\n"
-            + "примеры:\n\n"
-            + "создать новый тип: https://test.igov.org.ua/wf/service/document/setDocumentType?nID=100&sName=test\n\n"
+    @ApiOperation(value = "Добавить/изменить запись типа документа", notes = "примеры:\n"
+            + "создать новый тип: https://test.igov.org.ua/wf/service/document/setDocumentType?nID=100&sName=test\n"
             + "ответ: \n"
             + "\n```json\n"
             + "{\"nID\":20314,\"sName\":\"test\", , \"bHidden\":false}\n"
             + "\n```\n"
-            + "изменить (взять ид из предыдущего ответа): https://test.igov.org.ua/wf/service/document/setDocumentType?nID=20314&sName=test2\n\n"
+            + "изменить (взять ид из предыдущего ответа): https://test.igov.org.ua/wf/service/document/setDocumentType?nID=20314&sName=test2\n"
             + "ответ: \n"
             + "\n```json\n"
             + "{\"nID\":20314,\"sName\":\"test2\", \"bHidden\":false}\n"
             + "\n```\n")
     @RequestMapping(value = "/setDocumentType", method = RequestMethod.GET)
-    public @ResponseBody
+    public
+    @ResponseBody
     ResponseEntity setDocumentType(
-            @ApiParam(value = "ид записи", required = true) @RequestParam(value = "nID") Long nID,
-            @ApiParam(value = "название записи", required = true) @RequestParam(value = "sName") String sName,
-            @ApiParam(value = "скрывать/не скрывать (при отдаче списка всех записей, булевское, по умолчанию = false)", required = false) @RequestParam(value = "bHidden", required = false) Boolean bHidden) {
+            @ApiParam(value = "ид-номер записи", required = true) @RequestParam(value = "nID") Long nID,
+            @ApiParam(value = "строка-название записи", required = true) @RequestParam(value = "sName") String sName,
+            @ApiParam(value = "флаг скрывать/не скрывать (при отдаче списка всех записей, булевское, по умолчанию = false)", required = false) @RequestParam(value = "bHidden", required = false) Boolean bHidden) {
         ResponseEntity result;
         try {
             DocumentType documentType = documentTypeDao.setDocumentType(nID, sName, bHidden);
@@ -546,17 +517,17 @@ public class DocumentController {
      *
      * @param nID ид записи
      */
-    @ApiOperation(value = "Удаление записи по ее ид", notes = "##### DocumentController - Документы и смежные сущности. ТИПЫ ДОКУМЕНТОВ. Удаление записи по ее ид#####\n\n"
-            + "HTTP Context: http://server:port/wf/service/document/removeDocumentType\n\n\n"
-            + "Если запись с ид=nID не будет найдена, то вернется ошибка 403. Record not found, иначе -- запись удалится.\n\n"
-            + "пример: https://test.igov.org.ua/wf/service/document/removeDocumentType?nID=20314\n\n"
+    @ApiOperation(value = "Удаление записи по ее ид", notes = ""
+            + "Если запись с ид=nID не будет найдена, то вернется ошибка 403. Record not found, иначе -- запись удалится.\n"
+            + "пример: https://test.igov.org.ua/wf/service/document/removeDocumentType?nID=20314\n"
             + "ответ: 200 ok\n")
     @ApiResponses(value = {
-        @ApiResponse(code = 403, message = "Record not found")})
+            @ApiResponse(code = 403, message = "Record not found") })
     @RequestMapping(value = "/removeDocumentType", method = RequestMethod.GET)
-    public @ResponseBody
+    public
+    @ResponseBody
     void removeDocumentType(
-            @ApiParam(value = "ид записи", required = true) @RequestParam(value = "nID") Long nID,
+            @ApiParam(value = "ид-номер записи", required = true) @RequestParam(value = "nID") Long nID,
             HttpServletResponse response) {
         try {
             documentTypeDao.removeDocumentType(nID);
@@ -568,13 +539,11 @@ public class DocumentController {
         }
     }
 
-    //################ DocumentContentType services ###################
     /**
      * получение списка типов контента документов
      */
-    @ApiOperation(value = "Получение списка типов контента документов", notes = "##### DocumentController - Документы и смежные сущности. ТИПЫ КОНТЕНТА ДОКУМЕНТОВ. Получение списка типов контента документов #####\n\n"
-            + "HTTP Context: http://server:port/wf/service/document/getDocumentContentTypes\n\n\n"
-            + "Пример: https://test.igov.org.ua/wf/service/document/getDocumentContentTypes\n\n"
+    @ApiOperation(value = "Получение списка типов контента документов", notes = ""
+            + "Пример: https://test.igov.org.ua/wf/service/document/getDocumentContentTypes\n"
             + "Response\n"
             + "\n```json\n"
             + "[\n"
@@ -585,7 +554,8 @@ public class DocumentController {
             + "]\n"
             + "\n```\n")
     @RequestMapping(value = "/getDocumentContentTypes", method = RequestMethod.GET)
-    public @ResponseBody
+    public
+    @ResponseBody
     List<DocumentContentType> getDocumentContentTypes() {
         return documentContentTypeDao.getDocumentContentTypes();
     }
@@ -593,11 +563,10 @@ public class DocumentController {
     /**
      * добавить/изменить запись типа контента документа
      *
-     * @param nID ид записи
+     * @param nID   ид записи
      * @param sName название записи
      */
-    @ApiOperation(value = "Добавить/изменить запись типа контента документа", notes = "##### DocumentController - Документы и смежные сущности. ТИПЫ КОНТЕНТА ДОКУМЕНТОВ. Добавить/изменить запись типа контента документа #####\n\n"
-            + "HTTP Context: http://server:port/wf/service/document/setDocumentContentType\n\n\n"
+    @ApiOperation(value = "Добавить/изменить запись типа контента документа", notes = ""
             + "Если запись с ид=nID не будет найдена, то создастся новая запись (с автогенерируемым nID), иначе -- обновится текущая.\n\n"
             + "Примеры:\n\n"
             + "создать новый тип: \n"
@@ -613,10 +582,11 @@ public class DocumentController {
             + "{\"nID\":20311,\"sName\":\"test2\"}\n"
             + "\n```\n")
     @RequestMapping(value = "/setDocumentContentType", method = RequestMethod.GET)
-    public @ResponseBody
+    public
+    @ResponseBody
     ResponseEntity setDocumentContentType(
-            @ApiParam(value = "ид записи", required = true) @RequestParam(value = "nID") Long nID,
-            @ApiParam(value = "название записи", required = true) @RequestParam(value = "sName") String sName) {
+            @ApiParam(value = "ид-номер записи", required = true) @RequestParam(value = "nID") Long nID,
+            @ApiParam(value = "строка-название записи", required = true) @RequestParam(value = "sName") String sName) {
         ResponseEntity result;
         try {
             DocumentContentType documentType = documentContentTypeDao.setDocumentContentType(nID, sName);
@@ -634,8 +604,7 @@ public class DocumentController {
      *
      * @param nID ид записи
      */
-    @ApiOperation(value = "Удаление записи по ее ид", notes = "##### DocumentController - Документы и смежные сущности. ТИПЫ КОНТЕНТА ДОКУМЕНТОВ. Удаление записи по ее ид #####\n\n"
-            + "HTTP Context: http://server:port/wf/service/document/removeDocumentContentType\n\n"
+    @ApiOperation(value = "Удаление записи по ее ид", notes = ""
             + "Если запись с ид=nID не будет найдена, то вернется ошибка 403. Record not found, иначе -- запись удалится.\n\n"
             + "пример:\n"
             + "https://test.igov.org.ua/wf/service/document/removeDocumentContentType?nID=20311\n\n"
@@ -643,9 +612,10 @@ public class DocumentController {
     @ApiResponses(value = {
         @ApiResponse(code = 403, message = "Record not found")})
     @RequestMapping(value = "/removeDocumentContentType", method = RequestMethod.GET)
-    public @ResponseBody
+    public
+    @ResponseBody
     void removeDocumentContentType(
-            @ApiParam(value = "ид записи", required = true) @RequestParam(value = "nID") Long nID,
+            @ApiParam(value = "ид-номер записи", required = true) @RequestParam(value = "nID") Long nID,
             HttpServletResponse response) {
         try {
             documentContentTypeDao.removeDocumentContentType(nID);
@@ -656,24 +626,6 @@ public class DocumentController {
             response.setHeader(REASON_HEADER, e.getMessage());
         }
     }
-
-    
-
-
-    @Autowired
-    FileStorage durableFileStorage;
-
-    @Autowired
-    private GridFsTemplate oGridFsTemplate;
-
-    @Autowired
-    DocumentDaoImpl entityDao;
-
-    @Autowired
-    MongoTemplate mongoTemplate;
-
-    @Autowired
-    private TaskService taskService;
 
     @ApiOperation(value = "Удалить все записи в mongo, на ключ которых не ссылается ни одна запись"
             + "в сущности Document,  не ссылается ни одна запись в Attach-ах тасок Активити, "
