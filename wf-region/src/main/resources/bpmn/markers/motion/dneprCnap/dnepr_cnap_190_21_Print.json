@@ -1,41 +1,97 @@
 {
 	"motion": 
 	{
-		"ShowElementsOnTrue_21": 
+		"ShowElementsOnTrue_1": 
 		{
-			"aElement_ID":	["FOP_osoba","FOP_FIZ_osoba","FOP_osoba_Z"],
+			"aElement_ID":	["FOP_osoba"],
 			"asID_Field":	{"sClient":"asEnumSelectTypeContragent"},
-			"sCondition":	"[sClient] == 'sEnumElement_FOP' || [sClient] == 'sEnumElement_FIZ' "
+			"sCondition":	"[sClient] == 'sEnumElement_FOP' || [sClient] == 'sEnumElement_FIZ'"
 		},
-		"ShowElementsOnTrue_22": 
+		"ShowElementsOnTrue_2": 
 		{
-			"aElement_ID":	["UR_osoba","UR_osoba_Z"],
+			"aElement_ID":	["UR_osoba"],
 			"asID_Field":	{"sClient":"asEnumSelectTypeContragent"},
 			"sCondition":	"[sClient] == 'sEnumElement_Company'"
 		},
-		"ShowElementsOnTrue_23": 
+		"ShowElementsOnTrue_3": 
+		{
+			"sNote":		["Only_For_nikopolT"],
+			"aElement_ID":	["ZayavaNikopol"],
+			"asID_Field":	{"sClient":"sID_Public_SubjectOrganJoin"},
+			"sCondition":	"[sClient]=='nikopolT'"
+		},
+		"ShowElementsOnTrue_31": 
+		{
+			"sNote":		["Only_For_nikopolT_ADD_FOP"],
+			"aElement_ID":	["ZayavaNikopol_FOP"],
+			"asID_Field":	{"sClientData":"asEnumSelectTypeReason"},
+			"sCondition":	"[sClientData] == 'sEnumElement_FOP' || [sClientData] == 'sEnumElement_FIZ'"
+		},
+		"ShowElementsOnTrue_4": 
+		{
+			"aElement_ID":	["ZayavaNotNikopol"],
+			"asID_Field":	{"sClient":"sID_Public_SubjectOrganJoin"},
+			"sCondition":	"[sClient]!='nikopolT'"
+		},
+		"ShowElementsOnTrue_5": 
+		{
+			"aElement_ID":	["FOP_osoba_Z"],
+			"asID_Field":	{"sClientData":"asEnumSelectTypeReason"},
+			"sCondition":	"[sClientData] == 'sEnumElement_FOP' || [sClientData] == 'sEnumElement_FIZ'"
+		},
+		"ShowElementsOnTrue_6": 
+		{
+			"aElement_ID":	["UR_osoba_Z"],
+			"asID_Field":	{"sClientData":"asEnumSelectTypeReason"},
+			"sCondition":	"[sClientData] == 'sEnumElement_Company'"
+		},
+		"ShowElementsOnTrue_7": 
 		{
 			"aElement_ID":	["zayava1"],
-			"asID_Field":	{"sClient":"asEnumSelectTypeReason"},
-			"sCondition":	"[sClient] == 'sEnumElement_Sale' || [sClient] == 'sEnumElement_UnionOwnerArendar' "
+			"asID_Field":	{"sClient":"sID_Public_SubjectOrganJoin","sClientData":"asEnumSelectTypeReason"},
+			"sCondition":	"[sClientData] == 'sEnumElement_Sale' || [sClientData] == 'sEnumElement_UnionOwnerArendar'"
 		},
-		"ShowElementsOnTrue_24": 
+		"ShowElementsOnTrue_8": 
 		{
 			"aElement_ID":	["zayava2"],
-			"asID_Field":	{"sClient":"asEnumSelectTypeReason"},
-			"sCondition":	"[sClient] == 'sEnumElement_high_house'"
+			"asID_Field":	{"sClient":"sID_Public_SubjectOrganJoin","sClientData":"asEnumSelectTypeReason"},
+			"sCondition":	"[sClientData] == 'sEnumElement_high_house'"
 		},
-		"ShowElementsOnTrue_25": 
+		"ShowElementsOnTrue_9": 
 		{
 			"aElement_ID":	["zayava3"],
-			"asID_Field":	{"sClient":"asEnumSelectTypeReason"},
-			"sCondition":	"[sClient] == 'sEnumElement_End_Of_Period' || [sClient] == 'sEnumElement_DeathArendar' || [sClient] == 'sEnumElement_BreakCompany' || [sClient] == 'sEnumElement_Buyout' || [sClient] == 'sEnumElement_AgreementPartner' || [sClient] == 'sEnumElement_DecisionLaw'"
+			"asID_Field":	{"sClient":"sID_Public_SubjectOrganJoin","sClientData":"asEnumSelectTypeReason"},
+			"sCondition":	"[sClientData] == 'sEnumElement_End_Of_Period' || [sClientData] == 'sEnumElement_DeathArendar' || [sClientData] == 'sEnumElement_BreakCompany' || [sClientData] == 'sEnumElement_Buyout' || [sClientData] == 'sEnumElement_AgreementPartner' || [sClientData] == 'sEnumElement_DecisionLaw'"
 		},
-		"ShowElementsOnTrue_26": 
+		"ShowElementsOnTrue_10": 
 		{
-			"aElement_ID":	["hmel_hmelT"],
+			"aElement_ID":	["hmel_hmelT1"],
+			"asID_Field":	{"sClient":"sID_Public_SubjectOrganJoin","sClientData":"asEnumSelectTypeReason"},
+			"sCondition":	"[sClient] == 'hmel_hmelT' && ([sClientData] == 'sEnumElement_Sale' || [sClientData] == 'sEnumElement_UnionOwnerArendar')"
+		},
+		"ShowElementsOnTrue_11": 
+		{
+			"aElement_ID":	["hmel_hmelT2"],
+			"asID_Field":	{"sClient":"sID_Public_SubjectOrganJoin","sClientData":"asEnumSelectTypeReason"},
+			"sCondition":	"[sClient] == 'hmel_hmelT' && [sClientData] == 'sEnumElement_high_house'"
+		},
+		"ShowElementsOnTrue_12": 
+		{
+			"aElement_ID":	["hmel_hmelT3"],
+			"asID_Field":	{"sClient":"sID_Public_SubjectOrganJoin","sClientData":"asEnumSelectTypeReason"},
+			"sCondition":	"[sClient] == 'hmel_hmelT' && ([sClientData] == 'sEnumElement_End_Of_Period' || [sClientData] == 'sEnumElement_DeathArendar' || [sClientData] == 'sEnumElement_BreakCompany' || [sClientData] == 'sEnumElement_Buyout' || [sClientData] == 'sEnumElement_AgreementPartner' || [sClientData] == 'sEnumElement_DecisionLaw')"
+		},
+		"ShowElementsOnTrue_13": 
+		{
+			"aElement_ID":	["FOP_FIZ"],
+			"asID_Field":	{"sClientData":"asEnumSelectTypeReason"},
+			"sCondition":	"[sClientData] == 'sEnumElement_FOP' || [sClientData] == 'sEnumElement_FIZ'"
+		},
+		"ShowElementsOnTrue_14": 
+		{
+			"aElement_ID":	["Pidpis"],
 			"asID_Field":	{"sClient":"sID_Public_SubjectOrganJoin"},
-			"sCondition":	"[sClient] == 'hmel_hmelT'"
+			"sCondition":	"[sClient] !='nikopolT'"
 		}
 	}
 }

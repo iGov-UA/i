@@ -139,6 +139,13 @@ angular.module('app').controller('FooterController', function ($scope) {
       image: 'assets/images/ads/zakupki-prom-ua.png',
       height: 50
     }
+    
+    ,{
+      url: 'http://besplatka.ua',
+      alt: 'besplatka.ua',
+      image: 'assets/images/ads/besplatka_ua.png',
+      height: 50
+    }
  
   ];
 
