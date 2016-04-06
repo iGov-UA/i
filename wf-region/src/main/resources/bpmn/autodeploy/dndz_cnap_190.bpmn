@@ -117,8 +117,8 @@
         <activiti:formProperty id="sFioAdmin" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string"></activiti:formProperty>
         <activiti:formProperty id="sShapka_190" name="Керівнику якого робочого органу" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть центр надання адмінпослуг" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers21" name="Настроювання принтформи" type="markers" default="${markerService.loadFromFile('dneprCnap/${sVarNameMarkerPrintForm}')}"></activiti:formProperty>
-        <activiti:formProperty id="sBody1" name="[pattern/print/skv/${sVarNamePrintForm}]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers21" name="Настроювання принтформи" type="markers" default="${markerService.loadFromFile('dneprCnap/dnepr_cnap_190_Test_Print.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/skv/dndz_cnap_190_test_print.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -199,7 +199,6 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <serviceTask id="servicetask3" name="Повідомлення про доставку замовлення до ЦНАПу" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -374,15 +373,7 @@ ${sAddress}&lt;br /&gt;
     </sequenceFlow>
     <sequenceFlow id="flow14" sourceRef="servicetask7" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow15" sourceRef="servicetask6" targetRef="endevent2"></sequenceFlow>
-    <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>        
-      var per1 = 'dndz_cnap_190_test_print.html'
-      var per2 = 'dnepr_cnap_190_Test_Print.json'
-      execution.setVariable('sVarNamePrintForm', per1)
-      execution.setVariable('sVarNameMarkerPrintForm', per2)
-	  </script>
-    </scriptTask>
-    <sequenceFlow id="flow16" sourceRef="scripttask1" targetRef="servicetask2"></sequenceFlow>
+    <sequenceFlow id="flow16" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dndz_cnap_190">
     <bpmndi:BPMNPlane bpmnElement="dndz_cnap_190" id="BPMNPlane_dndz_cnap_190">
@@ -431,16 +422,9 @@ ${sAddress}&lt;br /&gt;
       <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
         <omgdc:Bounds height="121.0" width="105.0" x="885.0" y="460.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="250.0" y="80.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="85.0" y="205.0"></omgdi:waypoint>
         <omgdi:waypoint x="120.0" y="205.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="172.0" y="160.0"></omgdi:waypoint>
-        <omgdi:waypoint x="302.0" y="135.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="375.0" y="205.0"></omgdi:waypoint>
@@ -507,8 +491,8 @@ ${sAddress}&lt;br /&gt;
         <omgdi:waypoint x="204.0" y="315.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
-        <omgdi:waypoint x="302.0" y="135.0"></omgdi:waypoint>
-        <omgdi:waypoint x="322.0" y="160.0"></omgdi:waypoint>
+        <omgdi:waypoint x="225.0" y="205.0"></omgdi:waypoint>
+        <omgdi:waypoint x="270.0" y="205.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
