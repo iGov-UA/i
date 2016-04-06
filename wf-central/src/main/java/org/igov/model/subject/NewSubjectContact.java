@@ -14,23 +14,22 @@ import org.joda.time.DateTime;
  * Time: 21:40
  */
 public class NewSubjectContact extends Entity {
-
-    private SubjectContactType subjectContactType;
+    @JsonProperty(value = "oSubjectContactType")
+    private SubjectContactType oSubjectContactType;
 
     private String sValue;
 
-    @JsonProperty(value="sDate")
-    @JsonSerialize(using=JsonDateTimeSerializer.class)
-    @JsonDeserialize(using=JsonDateTimeDeserializer.class)
+    @JsonProperty(value = "sDate")
+    @JsonSerialize(using = JsonDateTimeSerializer.class)
+    @JsonDeserialize(using = JsonDateTimeDeserializer.class)
     private DateTime sDate;
 
-
-    public SubjectContactType getSubjectContactType() {
-        return subjectContactType;
+    public SubjectContactType getoSubjectContactType() {
+        return oSubjectContactType;
     }
 
-    public void setSubjectContactType(SubjectContactType subjectContactType) {
-        this.subjectContactType = subjectContactType;
+    public void setoSubjectContactType(SubjectContactType oSubjectContactType) {
+        this.oSubjectContactType = oSubjectContactType;
     }
 
     public String getsValue() {

@@ -8,6 +8,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.List;
+
 import org.junit.Ignore;
 
 /**
@@ -25,6 +26,14 @@ public class SubjectHumanDaoTest {
     @Autowired
     private SubjectContactDao subjectContactDao;
 
+    @Test
+    public void testGetSubjectHumanBySubjectId() {
+        final Long subjectId=24l;
+        Subject subject = new Subject();
+        subject.setId(subjectId);
+        SubjectHuman subjectHuman=subjectHumanDao.getSubjectHuman(subject);
+        Assert.assertEquals(subjectHuman.getoSubject().getId(),subjectId);
+    }
 
     @Test
     public void testSetSubjectHumanWithEmail() {

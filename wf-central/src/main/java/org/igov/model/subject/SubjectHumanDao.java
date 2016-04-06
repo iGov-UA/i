@@ -6,6 +6,8 @@ public interface SubjectHumanDao extends EntityDao<SubjectHuman> {
 
     SubjectHuman getSubjectHuman(String sINN);
 
+    SubjectHuman getSubjectHuman(Subject subject);
+
     SubjectHuman saveSubjectHuman(String sINN);
 
     SubjectHuman getSubjectHuman(SubjectHumanIdType subjectHumanIdType, String sCode_Subject);

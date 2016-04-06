@@ -26,6 +26,14 @@ public class SubjectHumanDaoImpl extends GenericEntityDao<SubjectHuman> implemen
         return findBy("sINN", sINN).orNull();
     }
 
+
+    public SubjectHuman getSubjectHuman(Subject subject) {
+        Long subjectId = subject.getId();
+        Criteria criteria = createCriteria();
+        criteria.createCriteria("oSubject").add(Restrictions.eq("id", subjectId));
+        return (SubjectHuman) criteria.uniqueResult();
+    }
+
     public SubjectHuman getSubjectHuman(SubjectHumanIdType subjectHumanIdType, String sCode_Subject) {
         String subjectId = SubjectHuman.getSubjectId(subjectHumanIdType, sCode_Subject);
         Criteria criteria = createCriteria();
@@ -44,8 +52,7 @@ public class SubjectHumanDaoImpl extends GenericEntityDao<SubjectHuman> implemen
 
         if (SubjectHumanIdType.INN == subjectHumanIdType) {
             oSubjectHuman.setsINN(sCode_Subject);
-        }
-        else if (Arrays.asList(SubjectHumanIdType.Phone, SubjectHumanIdType.Email).contains(subjectHumanIdType)) {
+        } else if (Arrays.asList(SubjectHumanIdType.Phone, SubjectHumanIdType.Email).contains(subjectHumanIdType)) {
             SubjectContact subjectContact = new SubjectContact();
             subjectContact.setSubject(subject);
             subjectContact.setsValue(sCode_Subject);
@@ -54,8 +61,7 @@ public class SubjectHumanDaoImpl extends GenericEntityDao<SubjectHuman> implemen
             if (isPhone) {
                 subjectContact.setSubjectContactType(contactTypeDao.getPhoneType());
                 oSubjectHuman.setDefaultPhone(subjectContact);
-            }
-            else {
+            } else {
                 subjectContact.setSubjectContactType(contactTypeDao.getEmailType());
                 oSubjectHuman.setDefaultEmail(subjectContact);
             }

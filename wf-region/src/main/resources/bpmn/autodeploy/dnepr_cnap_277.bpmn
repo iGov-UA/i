@@ -27,33 +27,33 @@
         <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса адміністративного органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="пошта посадовця" type="invisible" default="darja.grek@gmail.com"></activiti:formProperty>
-        <activiti:formProperty id="sArea" name="назва населеного пункту" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nArea" name="номер з довідника населеного пункту" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sShapka_" name="шапка у принтформу" type="invisible" default="Начальнику управління архітектури та містобудування"></activiti:formProperty>
-        </extensionElements>
+        <activiti:formProperty id="sShapka277" name="шапка у принтформу" type="invisible"></activiti:formProperty>
+      </extensionElements>
     </startEvent>
-    <userTask id="usertask3" name="рішення" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask3" name="рішення" activiti:candidateGroups="zed_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="sArea" name="назва органу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва органу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні данні" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNameHead" name="ПІП керівника суб'єкта зовнішньоекономічної діяльності України - учасника договору (контракту), якому доручено ведення спільних справ учасників " type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPostHead" name="Посада керівника суб'єкта зовнішньоекономічної діяльності України - учасника договору (контракту), якому доручено ведення спільних справ учасників" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNumberDogovor" name="Укажіть номер договору" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateDogovor" name="Укажіть дату укладання договору" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNameParner" name="Найменування суб’єкта зовнішньоекономічної діяльності України – учасника договору;якщо декілька - вкажіть через кому" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNameInvestor" name="Найменування іноземного інвестора - учасника договору;якщо декілька - вкажіть через кому" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNameAdmOrgan" name="Укажіть найменування органу, який здійснив державну реєстрацію договору" type="string"></activiti:formProperty>
-      
+        <activiti:formProperty id="sNameHead" name="ПІП керівника суб'єкта зовнішньоекономічної діяльності України - учасника договору (контракту), якому доручено ведення спільних справ учасників; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPostHead" name="Посада керівника суб'єкта зовнішньоекономічної діяльності України - учасника договору (контракту), якому доручено ведення спільних справ учасників; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNumberDogovor" name="Укажіть номер договору; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateDogovor" name="Укажіть дату укладання договору; ;writable=false" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sNameParner" name="Найменування суб’єкта зовнішньоекономічної діяльності України – учасника договору; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sNameInvestor" name="Найменування іноземного інвестора - учасника договору; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sNameAdmOrgan" name="Укажіть найменування органу, який здійснив державну реєстрацію договору; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="decision_2" name="прийняте рішення" type="enum" required="true">
           <activiti:value id="accept" name="дублікат готов"></activiti:value>
           <activiti:value id="reject" name="відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment_2" name="У разі відхилення внесіть, будь ласка, причину" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="rishen" name="Завантажте копію дубліката" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sShapka277" name="шапка у принтформу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dnepr_cnap_277_print.html]" type="invisible" default="Заявка на одержання ліцензії на імпорт" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_277_print.html" type="file"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -65,7 +65,7 @@
     <serviceTask id="servicetask4" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${remail}</activiti:expression>
+          <activiti:expression>${sMailClerk}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення: Отримання дубліката картки державної реєстрації договорів (контрактів) про спільну інвестиційну діяльність за участю іноземного інвестора]]></activiti:string>
@@ -78,7 +78,6 @@
 &lt;strong&gt;Шановний(-а) колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
 У Вас в черзі на обробку нове звернення.&lt;br /&gt;
 Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
-Район: enum{[area]}&lt;br /&gt;
 Відпрацюйте це звернення на &lt;a href="https://region.igov.org.ua" target="_blank"&gt;порталі&lt;/a&gt;
 [pattern/mail/_common_signature.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
@@ -101,10 +100,10 @@
 &lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;
 На жаль, Ваше звернення щодо отримання дубліката картки державної реєстрації договорів (контрактів) про спільну інвестиційну діяльність за участю іноземного інвестора відхилено через недостатню або неправильну інформацію.&lt;br /&gt;
 ${comment_2}&lt;br /&gt;&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]&lt;br /&gt;
+${sPhoneOrgan}&lt;br /&gt;
 Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2]&lt;br /&gt;
+${sNameOrgan}&lt;br /&gt;	   
 [pattern/mail/_common_signature_end.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
@@ -115,13 +114,13 @@ ${comment_2}&lt;br /&gt;&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>"${email}"</activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення на тему: Отримання дубліката картки державної реєстрації договорів (контрактів) про спільну інвестиційну діяльність за участю іноземного інвестора]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${rishen}</activiti:expression>
+          <activiti:expression>${rishen},${PrintForm_1}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -133,46 +132,19 @@ ${comment_2}&lt;br /&gt;&lt;br /&gt;
 1. Документ, що посвідчує особу.&lt;br /&gt;
 2. Для уповоноваженої особи - довіренність.&lt;br /&gt;
 3. Роздруковану заяву (знаходиться у додатку до листа), яку ви подавали в електронному вигляді, засвідчену особистим  підписом  керівника  юридичної  особи, фізичної особи - підприємця  або  уповноваженої  ними  особи.&lt;br /&gt;
-&lt;br /&gt;
-4. Опубліковану в офіційній пресі об’ява про визнання недійсною втраченої картки державної реєстрації договору (контракту).&lt;br /&gt;
-5. Оригінал документу, що засвідчує сплату збору за видачу картки і дубліката картки державної реєстрації договору (контракту).&lt;br /&gt;
-Адреса [pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:3]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]&lt;br /&gt;
-Графік роботи: [pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:4]&lt;br /&gt;
+4. Опубліковану в офіційній пресі об’яву про визнання недійсною втраченої картки державної реєстрації договору (контракту).&lt;br /&gt;
+5. Оригінал документу, що засвідчує сплату збору за видачу картки і дубліката картки державної реєстрації договору (контракту).&lt;br /&gt;&lt;br /&gt;
+${sAddress}&lt;br /&gt;
+${sPhoneOrgan}&lt;br /&gt;
+${sWorkTime}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2]&lt;br /&gt;	   
+${sNameOrgan}&lt;br /&gt;	   
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <scriptTask id="scripttask1" name="Передача значений" scriptFormat="groovy" activiti:autoStoreVariables="false">
-      <script>
-var per1 = 'remail'
-var per2 = 'rNumber'
-var per3 = 'group'
-var per4 = 'rName'
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'prav'){
-per1 = 'darja.grek@gmail.com'
-per2 = '23'
-per3 = 'dnepr_cnap_prav'
-per4 = 'ЦНАП «Правобережний» (просп. Карла Маркса, 75)'
-}
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'lev'){
-per1 = 'darja.grek@gmail.com'
-per2 = '24'
-per3 = 'dnepr_cnap_lev'
-per4 = 'ЦНАП «Лівобережний» (просп. Газети «Правда», 42)'
-}
-
-execution.setVariable('remail', per1)
-execution.setVariable('rNumber', per2)
-execution.setVariable('group', per3)
-execution.setVariable('rName', per4)
-	  </script>
-    </scriptTask>
     <serviceTask id="servicetask2" name="отримання додаткових документiв" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask2">
       <errorEventDefinition></errorEventDefinition>
@@ -191,8 +163,7 @@ execution.setVariable('rName', per4)
     <sequenceFlow id="flow34" sourceRef="servicetask4" targetRef="usertask3"></sequenceFlow>
     <sequenceFlow id="flow35" sourceRef="servicetask7" targetRef="endevent3"></sequenceFlow>
     <sequenceFlow id="flow36" sourceRef="boundaryerror1" targetRef="endevent3"></sequenceFlow>
-    <sequenceFlow id="flow37" sourceRef="servicetask2" targetRef="scripttask1"></sequenceFlow>
-    <sequenceFlow id="flow38" sourceRef="scripttask1" targetRef="servicetask4"></sequenceFlow>
+    <sequenceFlow id="flow37" sourceRef="servicetask2" targetRef="servicetask4"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_277">
     <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_277" id="BPMNPlane_dnepr_cnap_277">
@@ -203,16 +174,13 @@ execution.setVariable('rName', per4)
         <omgdc:Bounds height="69.0" width="166.0" x="486.0" y="120.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
-        <omgdc:Bounds height="58.0" width="177.0" x="480.0" y="43.0"></omgdc:Bounds>
+        <omgdc:Bounds height="58.0" width="177.0" x="332.0" y="43.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
         <omgdc:Bounds height="69.0" width="171.0" x="160.0" y="120.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
         <omgdc:Bounds height="69.0" width="171.0" x="160.0" y="200.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="58.0" width="171.0" x="287.0" y="43.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="58.0" width="171.0" x="90.0" y="43.0"></omgdc:Bounds>
@@ -248,7 +216,8 @@ execution.setVariable('rName', per4)
         <omgdi:waypoint x="122.0" y="154.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
-        <omgdi:waypoint x="568.0" y="101.0"></omgdi:waypoint>
+        <omgdi:waypoint x="509.0" y="72.0"></omgdi:waypoint>
+        <omgdi:waypoint x="568.0" y="71.0"></omgdi:waypoint>
         <omgdi:waypoint x="569.0" y="120.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
@@ -262,11 +231,7 @@ execution.setVariable('rName', per4)
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow37" id="BPMNEdge_flow37">
         <omgdi:waypoint x="261.0" y="72.0"></omgdi:waypoint>
-        <omgdi:waypoint x="287.0" y="72.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
-        <omgdi:waypoint x="458.0" y="72.0"></omgdi:waypoint>
-        <omgdi:waypoint x="480.0" y="72.0"></omgdi:waypoint>
+        <omgdi:waypoint x="332.0" y="72.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
