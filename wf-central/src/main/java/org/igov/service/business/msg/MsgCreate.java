@@ -80,10 +80,10 @@ public class MsgCreate {
 
 	} catch (MalformedURLException e) {
 	    LOG.error("Ошибка при создании шаблона сообщения. Тело запроса:\n{}\n Ошибка:{}",sBodyRequest,e.getMessage());
-//	    e.printStackTrace();
+	    e.printStackTrace();
 	} catch (IOException e) {
 	    LOG.error("Ошибка при создании шаблона сообщения. Тело запроса:\n{}\n Ошибка:{}",sBodyRequest,e.getMessage());
-//	    e.printStackTrace();
+	    e.printStackTrace();
 	} finally {
 	    conn.disconnect();
 	}

@@ -242,9 +242,12 @@ public class DebugCentralController {
         //List subjectMessages;
         try {
             
+//            MsgSend msgSend = new MsgSendImpl(sType, sFunction);
+//            IMsgObjR msg = msgSend.addnID_Server(nID_Server).addnID_Subject(nID_Server).addsBody(sBody).
+//        	    addsError(sError).addsHead(sHead).addsmData(smData).save();
             IMsgObjR msg = new MsgSendImpl(sType, sFunction).addnID_Server(nID_Server).addnID_Subject(nID_Server).addsBody(sBody).
         	    addsError(sError).addsHead(sHead).addsmData(smData).save();
-            
+                        
             //oLog_External.info("sType={},nID_Subject={},nID_Server={},sFunction={},sHead={},sBody={},sError={},smData={}",sType,nID_Subject,nID_Server,sFunction,sHead,sBody,sError,smData);
             //LOG_MIN.info("sType={},nID_Subject={},sFunction={},sHead={},sBody={},sError={}",sType,nID_Subject,sFunction,sHead,sBody,sError);
             List<String> asParam = new LinkedList();
