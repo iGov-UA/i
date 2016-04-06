@@ -30,40 +30,37 @@ import com.pb.util.gsv.net.HTTPClient;
  * 
  *         Пример использования:
  * 
- *         IMsgObjR msg = new MsgSendImpl(sType,
- *         sFunction).addnID_Server(nID_Server).
- *         addnID_Subject(nID_Server).addsBody(sBody).addsError(sError).addsHead
- *         (sHead). addsmData(smData).save();
+ *         IMsgObjR msg = new MsgSendImpl(sType, sFunction).addnID_Server(nID_Server).addnID_Subject(nID_Server).addsBody(sBody).
+ *         	addsError(sError).addsHead(sHead). addsmData(smData).save();
  * 
  *         Обязательные параметры: sType и sFunction
  * 
  *         sType - тип сообщения, может принимать значения:
  * 
- *         ACCES_DENIED_ERROR - Ошибка доступа(авторизация) EXTERNAL_ERROR -
- *         Внешняя ошибка INF_MESSAGE - Информационное сообщение INTERNAL_ERROR
- *         - Внутренняя ошибка VALIDATION_ERROR - Ошибка валидации входящих
- *         данных WARNING - Предупреждение
+ *           ACCES_DENIED_ERROR - Ошибка доступа(авторизация)
+ *           EXTERNAL_ERROR - Внешняя ошибка 
+ *           INF_MESSAGE - Информационное сообщение
+ *           INTERNAL_ERROR - Внутренняя ошибка 
+ *           VALIDATION_ERROR - Ошибка валидации входящих данных 
+ *           WARNING - Предупреждение
  * 
- *         Если тип сообщения указать некорректно (например WARNING2 ), то
- *         принимается тип INF_MESSAGE
+ *         Если тип сообщения указать некорректно (например WARNING2 ), то принимается тип INF_MESSAGE
  * 
  *         sFunction - строка с именем функции где произошла ошибка
  * 
  * 
- *         На основании типа сообщения и имени функции формируется код шаблона
- *         сообщения в Сервисе Хранения Ошибок При вызове MsgSendImpl("WARNING",
- *         "getFunctionMeat") код будет WR_GETFUNCTIONMEAT
+ *         На основании типа сообщения и имени функции формируется код шаблона сообщения в Сервисе Хранения Ошибок 
+ *         При вызове MsgSendImpl("WARNING","getFunctionMeat") код будет WR_GETFUNCTIONMEAT
  * 
- *         Примечание: длина кода сообщения 25 символов, т.е. имя функции
- *         желательно уместить в 22 символа, т.к. остальные символы будут
- *         игнорироваться
+ *         Примечание: длина кода сообщения 25 символов, т.е. имя функции желательно уместить в 22 символа, 
+ *         т.к. остальные символы будут игнорироваться
  * 
  * 
  *         Для гибкой настройки может используется файл параметров
  *         msg.properties, где:
  * 
- *         MsgURL=MsgURL=http://msg.igov.org.ua/MSG // url Сервиса Хранения
- *         Ошибок sBusId=TEST // иденификатор Бизнес процесса
+ *         MsgURL=http://msg.igov.org.ua/MSG  // url Сервиса Хранения Ошибок 
+ *         sBusId=TEST // иденификатор Бизнес процесса
  * 
  */
 public class MsgSendImpl implements MsgSend {
@@ -120,15 +117,9 @@ public class MsgSendImpl implements MsgSend {
     private String smDataMisc = null;
 
     /**
-     * @param sType
-     *            - тип сообщения, может принимать значения: ACCES_DENIED_ERROR
-     *            - Ошибка доступа(авторизация) EXTERNAL_ERROR - Внешняя ошибка
-     *            INF_MESSAGE - Информационное сообщение INTERNAL_ERROR -
-     *            Внутренняя ошибка VALIDATION_ERROR - Ошибка валидации входящих
-     *            данных WARNING - Предупреждение
+     * @param sType - тип сообщения
      * 
-     * @param sFunction
-     *            - строка с именем функции где произошла ошибка
+     * @param sFunction - строка с именем функции где произошла ошибка
      * 
      */
     public MsgSendImpl(String sType, String sFunction) {
@@ -319,17 +310,11 @@ public class MsgSendImpl implements MsgSend {
 
     /**
      * Создание шаблона сообщения с новым кодом
+     * @throws Exception 
      */
-    private IMsgObjR createMsg() {
+    private void createMsg() throws Exception {
 	MsgCreate msgCreate = new MsgCreate(buildJSON());
-	try {
-	    msgCreate.doReqest();
-	} catch (Exception e) {
-	    LOG.error(e.getMessage());
-	    e.printStackTrace();
-	}
-
-	return null;
+	msgCreate.doReqest();
     }
 
     // public static void main(String[] args) throws IOException {
@@ -350,9 +335,9 @@ public class MsgSendImpl implements MsgSend {
      * DEFAULT В этом случае программа пытается добавить новый шаблон сообщения
      * с этим кодом в Сервис Хранения Ошибок
      */
-    public IMsgObjR save() {
+    public IMsgObjR save() throws Exception {
 	IMsgObjR retMsg = doMsg();
-	LOG.debug("retMsg={}", retMsg);
+	LOG.debug("Ответ на запрос о сохраниении сообщения:\n{}", retMsg);
 
 	// Создать сообщение если его не было раньше
 	if (retMsg.getMsgCode().equals(MSG_DEFAULT) && !sMsgCode.equals(MSG_DEFAULT)) {
