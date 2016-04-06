@@ -93,9 +93,8 @@
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="fields for name change" type="markers" default="${markerService.loadFromFile('mvd/common_mvd.json')}"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса сервісного центру" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMail_Signature" name="Підпис" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMail_Employee" name="sMail_Employee" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sID_UA" name="sID_UA" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMail_Signature" name="Підпис" type="invisible" default=" "></activiti:formProperty>
+
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Підтягування додаткових документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -108,6 +107,7 @@
     <sequenceFlow id="flow3" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <userTask id="usertask1" name="Надання послуги" activiti:candidateGroups="common_mvd_1centr">
       <extensionElements>
+          
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFamily_RU" name="Фамилия (рус.)" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
@@ -191,14 +191,15 @@
           <activiti:value id="attr1" name="Так, перевірка потрібна"></activiti:value>
           <activiti:value id="attr2" name="Ні, перевірка не потрібна"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Адреса отримання послуги, обрана громадянином" type="string"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний телефон; у форматі +380...." type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="ID відділення для отримання послуги, обрано громадянином" type="string" ></activiti:formProperty>
+        
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name=" e-mail; На цей e-mail буде спрямовано результат обробки звернення" type="string"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Результат обробки звернення" type="enum" required="true">
           <activiti:value id="accept" name="Сповістити громадянина про дату отримання довідки"></activiti:value>
           <activiti:value id="reject" name="Сповістити громадянина, що довідка не може бути надана"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="comment" name="Зазначте дату отримання довідки або причину неможливості отримання послуги. Ця інформація буде відправлена на e-mail заявника" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="comment" name="Зазначте дату та адресу отримання довідки або причину неможливості отримання послуги. Ця інформація буде відправлена на e-mail заявника" type="textArea" required="true"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -225,17 +226,14 @@
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 &lt;p&gt;
 Ваш запит успішно оброблено. &lt;br /&gt;
-Дата одержання довідки: &lt;br /&gt;
+Дата / адреса одержання довідки: &lt;br /&gt;
 ${comment}&lt;br /&gt;
 
-Оригінал довідки Ви зможете отримати за адресою  &lt;br /&gt;
-${sAddress}&lt;br /&gt;
 &lt;br /&gt;
  &lt;b&gt; Увага! При собі обов'язково мати паспорт громадянина України  або інший документ, що посвідчує особу. &lt;/b&gt;  &lt;br /&gt;
 
  
-Графік прийому:&lt;br /&gt;
-${sWork_Time}&lt;br /&gt;
+
 
  &lt;/p&gt;
 

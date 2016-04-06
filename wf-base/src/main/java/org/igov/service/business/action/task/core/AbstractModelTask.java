@@ -390,61 +390,62 @@ public abstract class AbstractModelTask {
         if (!asFieldValue.isEmpty()) {
             String sValue = asFieldValue.get(0);
             LOG.info("(sValue={})", sValue);
-            long nID_FlowSlotTicket = 0;
-            Map<String, Object> m = QueueDataFormType.parseQueueData(sValue);
-            nID_FlowSlotTicket = QueueDataFormType.get_nID_FlowSlotTicket(m);
-            LOG.info("(nID_FlowSlotTicket={})", nID_FlowSlotTicket);
-            String sDate = (String) m.get(QueueDataFormType.sDate);
-            LOG.info("(sDate={})", sDate);
-
-            try {
-
-                long nID_Task_Activiti = 1; //TODO set real ID!!!
+            if(sValue!=null && !"".equals(sValue.trim())){
+                long nID_FlowSlotTicket = 0;
+                Map<String, Object> m = QueueDataFormType.parseQueueData(sValue);
+                nID_FlowSlotTicket = QueueDataFormType.get_nID_FlowSlotTicket(m);
+                LOG.info("(nID_FlowSlotTicket={})", nID_FlowSlotTicket);
+                String sDate = (String) m.get(QueueDataFormType.sDate);
+                LOG.info("(sDate={})", sDate);
 
                 try {
-                    nID_Task_Activiti = Long.valueOf(oExecution.getProcessInstanceId());
-                    LOG.info("nID_Task_Activiti:Ok!");
-                } catch (Exception oException) {
-                    LOG.error("nID_Task_Activiti:Fail! :{}", oException.getMessage());
-                    LOG.debug("FAIL:", oException);
-                }
-                LOG.info("nID_Task_Activiti=" + nID_Task_Activiti);
 
-                FlowSlotTicket oFlowSlotTicket = oFlowSlotTicketDao.findById(nID_FlowSlotTicket).orNull();
-                if (oFlowSlotTicket == null) {
-                    String sError = "FlowSlotTicket with id=" + nID_FlowSlotTicket + " is not found!";
-                    LOG.error(sError);
-                    throw new Exception(sError);
-                } else if (oFlowSlotTicket.getnID_Task_Activiti() != null) {
-                    if (nID_Task_Activiti == oFlowSlotTicket.getnID_Task_Activiti()) {
-                        String sWarn = "FlowSlotTicket with id=" + nID_FlowSlotTicket
-                                + " has assigned same getnID_Task_Activiti()=" + oFlowSlotTicket.getnID_Task_Activiti();
-                        LOG.warn(sWarn);
-                    } else {
-                        String sError
-                                = "FlowSlotTicket with id=" + nID_FlowSlotTicket + " has assigned getnID_Task_Activiti()="
-                                + oFlowSlotTicket.getnID_Task_Activiti();
+                    long nID_Task_Activiti = 1; //TODO set real ID!!!
+
+                    try {
+                        nID_Task_Activiti = Long.valueOf(oExecution.getProcessInstanceId());
+                        LOG.info("nID_Task_Activiti:Ok!");
+                    } catch (Exception oException) {
+                        LOG.error("nID_Task_Activiti:Fail! :{}", oException.getMessage());
+                        LOG.debug("FAIL:", oException);
+                    }
+                    LOG.info("nID_Task_Activiti=" + nID_Task_Activiti);
+
+                    FlowSlotTicket oFlowSlotTicket = oFlowSlotTicketDao.findById(nID_FlowSlotTicket).orNull();
+                    if (oFlowSlotTicket == null) {
+                        String sError = "FlowSlotTicket with id=" + nID_FlowSlotTicket + " is not found!";
                         LOG.error(sError);
                         throw new Exception(sError);
+                    } else if (oFlowSlotTicket.getnID_Task_Activiti() != null) {
+                        if (nID_Task_Activiti == oFlowSlotTicket.getnID_Task_Activiti()) {
+                            String sWarn = "FlowSlotTicket with id=" + nID_FlowSlotTicket
+                                    + " has assigned same getnID_Task_Activiti()=" + oFlowSlotTicket.getnID_Task_Activiti();
+                            LOG.warn(sWarn);
+                        } else {
+                            String sError
+                                    = "FlowSlotTicket with id=" + nID_FlowSlotTicket + " has assigned getnID_Task_Activiti()="
+                                    + oFlowSlotTicket.getnID_Task_Activiti();
+                            LOG.error(sError);
+                            throw new Exception(sError);
+                        }
+                    } else {
+                        long nID_FlowSlot = oFlowSlotTicket.getoFlowSlot().getId();
+                        LOG.info("(nID_FlowSlot={})", nID_FlowSlot);
+                        long nID_Subject = oFlowSlotTicket.getnID_Subject();
+                        LOG.info("(nID_Subject={})", nID_Subject);
+
+                        oFlowSlotTicket.setnID_Task_Activiti(nID_Task_Activiti);
+                        oFlowSlotTicketDao.saveOrUpdate(oFlowSlotTicket);
+                        LOG.info("(JSON={})", JsonRestUtils
+                                .toJsonResponse(new SaveFlowSlotTicketResponse(oFlowSlotTicket.getId())));
+                        oExecution.setVariable("date_of_visit", sDate);
+                        LOG.info("(date_of_visit={})", sDate);
                     }
-                } else {
-                    long nID_FlowSlot = oFlowSlotTicket.getoFlowSlot().getId();
-                    LOG.info("(nID_FlowSlot={})", nID_FlowSlot);
-                    long nID_Subject = oFlowSlotTicket.getnID_Subject();
-                    LOG.info("(nID_Subject={})", nID_Subject);
-
-                    oFlowSlotTicket.setnID_Task_Activiti(nID_Task_Activiti);
-                    oFlowSlotTicketDao.saveOrUpdate(oFlowSlotTicket);
-                    LOG.info("(JSON={})", JsonRestUtils
-                            .toJsonResponse(new SaveFlowSlotTicketResponse(oFlowSlotTicket.getId())));
-                    oExecution.setVariable("date_of_visit", sDate);
-                    LOG.info("(date_of_visit={})", sDate);
-                }
-            } catch (Exception oException) {
-                LOG.error("Error scanExecutionOnQueueTickets: {}", oException.getMessage());
-                LOG.debug("FAIL:", oException);
+                } catch (Exception oException) {
+                    LOG.error("Error scanExecutionOnQueueTickets: {}", oException.getMessage());
+                    LOG.debug("FAIL:", oException);
+                }                
             }
-
         }
 
     }

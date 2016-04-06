@@ -38,6 +38,11 @@
         <activiti:formProperty id="sClerkPost" name="почта чиновника" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Копія документа, що посвідчує особу (паспорт)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_inn" name="Копія документа про присвоєння податкового номера" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва ЦНАП" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса ЦНАП" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="marker" name="mShowFields" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_m&quot;:{&quot;aField_ID&quot;:[&quot;zapit&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;pidstavi&quot;},&quot;sCondition&quot;:&quot;[sReason]=='z2'&quot;}}}"></activiti:formProperty>
     </extensionElements>
     </startEvent>
@@ -67,8 +72,9 @@
 			Ваше звернення щодо надання відомостей з Державного земельного кадастру у формі витягу з Державного земельного кадастру про обмеження у використанні земель успішно зареєстроване.&lt;br /&gt;
 			Ви отримаєте відповідь протягом 10 робочих днів.
 			&lt;/p&gt;
-			[pattern/mail/_common_signature_start.html]
-			[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:2]&lt;br /&gt;
+			${sPhoneOrgan}.&lt;br /&gt;
+            [pattern/mail/_common_signature_start.html]
+            ${sNameOrgan}.&lt;br /&gt;
 			[pattern/mail/_common_signature_end.html]
 			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -81,7 +87,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>crow79@online.ua</activiti:expression>
+          <activiti:expression>akylish88@gmail.com</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression>Нове звернення на порталі igov.org.ua на тему: Надання відомостей з Державного земельного кадастру у формі витягу з Державного земельного кадастру про обмеження у використанні земель. Заявник ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}</activiti:expression>
@@ -157,13 +163,13 @@
           <activiti:expression>[pattern/mail/_common_header.html]
 			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 			&lt;p&gt;Ваше звернення опрацьоване.&lt;br /&gt;
-			Ви можете завантажити копію витягу з Державного земельного кадастру з додатку до цього листа, та отримати оригінал у [pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:2]&lt;/p&gt;
-&lt;p&gt;[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:3]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:4]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:5]&lt;/p&gt;
+			Ви можете завантажити копію витягу з Державного земельного кадастру з додатку до цього листа, та отримати оригінал у ${sAddress}&lt;/p&gt;
 &lt;p&gt;Для отримання довідки потрібно особисто звернутися до адміністратора ЦНАП з документом, що посвідчує особу (паспорт) та оригіналом документу про оплату послуг. &lt;/p&gt;
- [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:2]&lt;br /&gt;
+${sPhoneOrgan}.&lt;br /&gt;
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan}.&lt;br /&gt;
+${sAddress}.&lt;br /&gt;
+${sWorkTime}.&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]   
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
@@ -196,13 +202,11 @@
 			&lt;p&gt;На жаль, Ваш запит відхилено.&lt;/p&gt;
 			&lt;p&gt;${comment}&lt;/p&gt;
 			За необхідності Ви можете подати ще одне звернення на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;igov.org.ua&lt;/a&gt;
-			&lt;p&gt;Якщо у вас виникли питання, Ви можете звернутись до [pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:2]&lt;/p&gt;
+			&lt;p&gt;Якщо у вас виникли питання, Ви можете звернутись до ${sAddress}:2]&lt;/p&gt;
 &lt;p&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:3]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:4]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:5]&lt;/p&gt;
+${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:2]&lt;br /&gt;
+${sNameOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]   
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -273,12 +277,11 @@
           <activiti:expression>[pattern/mail/_common_header.html]
 			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 			&lt;p&gt;Ваше звернення пройшло попередню перевірку адміністратором ЦНАП і передано для опрацювання відповідальній особі. За кілька днів ви отримаєте результат опрацювання на цей email.&lt;br /&gt;Ви можете роздрукувати своє повідомлення з прикріплення до цього листа.&lt;br /&gt;
-			&lt;p&gt;Якщо у Вас з`явились питання, Ви можете звернутись до [pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:2]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:3]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:4]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:5]&lt;/p&gt;
+			&lt;p&gt;Якщо у Вас з`явились питання, Ви можете звернутись до ${sAddress}&lt;br /&gt;
+${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:2]&lt;br /&gt;
+${sNameOrgan}.&lt;br /&gt;
+${sWorkTime}.&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -307,12 +310,11 @@
 			&lt;p&gt;На жаль, Ваше звернення відхилене. &lt;/p&gt;
 			&lt;p&gt;${comment1}&lt;/p&gt;
 			За необхідності Ви можете подати ще одну заяву на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;igov.org.ua&lt;/a&gt;&lt;/p&gt;
-			&lt;p&gt;Якщо у Вас з`явились питання, Ви можете звернутись до [pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:2]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:3]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:4]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:5]&lt;/p&gt;
+			&lt;p&gt;Якщо у Вас з`явились питання, Ви можете звернутись до ${sAddress}&lt;br /&gt;
+${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[nRegion]}:2]&lt;br /&gt;
+${sNameOrgan}.&lt;br /&gt;
+${sWorkTime}.&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
