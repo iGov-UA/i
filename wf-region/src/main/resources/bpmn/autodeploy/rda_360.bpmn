@@ -3,7 +3,7 @@
   <process id="rda_360" name="Звернення до голови РДА" isExecutable="true">
     <startEvent id="startevent1" name="Start" activiti:initiator="initiator">
       <extensionElements>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати рішення" type="select" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати рішення" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" required="true"></activiti:formProperty>
@@ -802,13 +802,13 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow52" name="Не виконано" sourceRef="exclusivegateway4" targetRef="servicetask10">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${(asResult=="sEnumResult_2") || (asResult=="sEnumResult_3")}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${(asResult=="sEnumResult_2") || (asResult=="sEnumResult_3") || (asResult=="sEnumResult_4") || (asResult=="sEnumResult_5")}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow58" sourceRef="servicetask9" targetRef="endevent4"></sequenceFlow>
     <sequenceFlow id="flow61" name="Відмовити" sourceRef="exclusivegateway6" targetRef="servicetask10">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='reject'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask10" name="E-Mail  громадянину про не можливість виконання рішення" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask10" name="E-Mail  громадянину про не можливість виконання рішення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
