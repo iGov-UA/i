@@ -214,7 +214,7 @@ public class MsgSendImpl implements MsgSend {
 	LOG.debug("set smData=[{}]", smData);
 
 	if (smData.isEmpty()) {
-	    LOG.debug("set smData is Empty");
+	    LOG.debug("smData is Empty");
 	    return this;
 	}
 

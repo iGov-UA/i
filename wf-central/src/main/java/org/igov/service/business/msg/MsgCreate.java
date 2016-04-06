@@ -70,6 +70,9 @@ public class MsgCreate {
 		}
 	    }
 
+	    LOG.debug("response={}", conn.getResponseCode());
+	    LOG.debug("nResponseBody={}", ret.toString());
+
 	    if (conn.getResponseCode() != HttpURLConnection.HTTP_CREATED) {
 		
 		StringBuffer berr = new StringBuffer(500);
@@ -84,9 +87,6 @@ public class MsgCreate {
 		
 		throw new Exception(berr.toString());
 	    }
-
-	    LOG.debug("response={}", conn.getResponseCode());
-	    LOG.debug("nResponseBody={}", ret.toString());
 
 	} catch (MalformedURLException e) {
 	    LOG.error("Ошибка при создании шаблона сообщения. Тело запроса:\n{}\n Ошибка:{}",sBodyRequest,e.getMessage());
