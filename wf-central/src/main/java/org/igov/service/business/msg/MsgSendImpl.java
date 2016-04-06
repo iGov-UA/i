@@ -133,7 +133,8 @@ public class MsgSendImpl implements MsgSend {
      */
     public MsgSendImpl(String sType, String sFunction) {
 	LOG.debug("Send message sType={}, sFunction={}", sType, sFunction);
-
+	LOG.debug("MSG URL={}, BusID={}", MSG_URL, sBusId_DEFAULT);
+	
 	if (sType == null || sFunction == null) {
 	    throw new IllegalArgumentException("Constructor parameters: sType=" + sType + ", sFunction=" + sFunction);
 	}
