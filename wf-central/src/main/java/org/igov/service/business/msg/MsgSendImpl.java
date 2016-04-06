@@ -12,7 +12,6 @@ import org.igov.util.JSON.JsonRestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.pb.ksv.msgcore.data.IMsgObjR;
 import com.pb.ksv.msgcore.data.MAttrs;
 import com.pb.ksv.msgcore.data.MFilter;
@@ -25,13 +24,18 @@ import com.pb.util.gsv.net.HTTPClient;
  * 
  * @author kr110666kai
  *
- *         Реализация Интерфеса отсылки сообщений в Сервис Хранения Ошибок
- *         http://msg.igov.org.ua
+ *         Реализация Интерфеса отсылки сообщений в Сервис Хранения Ошибок http://msg.igov.org.ua/MSG
  * 
  *         Пример использования:
  * 
- *         IMsgObjR msg = new MsgSendImpl(sType, sFunction).addnID_Server(nID_Server).addnID_Subject(nID_Server).addsBody(sBody).
- *         	addsError(sError).addsHead(sHead). addsmData(smData).save();
+ *         IMsgObjR msg = new MsgSendImpl(sType, sFunction).
+ *         			addnID_Server(nID_Server).
+ *         			addnID_Subject(nID_Subject).
+ *         			addsBody(sBody).
+ *         	         	addsError(sError).
+ *         			addsHead(sHead).
+ *         			addsmData(smData).
+ *         			save();
  * 
  *         Обязательные параметры: sType и sFunction
  * 
@@ -50,56 +54,61 @@ import com.pb.util.gsv.net.HTTPClient;
  * 
  * 
  *         На основании типа сообщения и имени функции формируется код шаблона сообщения в Сервисе Хранения Ошибок 
- *         При вызове MsgSendImpl("WARNING","getFunctionMeat") код будет WR_GETFUNCTIONMEAT
+ *         При вызове MsgSendImpl("WARNING","getFunctionMeat") код будет WR-GETFUNCTIONMEAT
  * 
  *         Примечание: длина кода сообщения 25 символов, т.е. имя функции желательно уместить в 22 символа, 
  *         т.к. остальные символы будут игнорироваться
  * 
  * 
- *         Для гибкой настройки может используется файл параметров
- *         msg.properties, где:
+ *         Для гибкой настройки может использоваться файл параметров msg.properties, где:
  * 
- *         MsgURL=http://msg.igov.org.ua/MSG  // url Сервиса Хранения Ошибок 
- *         sBusId=TEST // иденификатор Бизнес процесса
+ *         MsgURL=http://msg.igov.org.ua/MSG  	// url Сервиса Хранения Ошибок 
+ *         sBusId=TEST 				// иденификатор Бизнес процесса
+ *         TemplateMsgId=HMXHVKM70002M0		// код пустого шаблона
  * 
  */
 public class MsgSendImpl implements MsgSend {
     private static final Logger LOG = LoggerFactory.getLogger(MsgSendImpl.class);
 
     public static final String MSG_URL;
-    private static final String TemplateMsgId = "HMXHVKM80002M0";
-    private static final String TemplateMsgIdJSON = "\",\"TemplateMsgId\":\"" + TemplateMsgId + "\"}}]}";
+
+    private static final String TemplateMsgId;
+    private static final String sBusId_DEFAULT;
+    private static final String MSG_DEFAULT = "DEFAULT";
 
     private static final Properties prop = new Properties();
-
     private static InputStream inputStream = MsgSendImpl.class.getClassLoader().getResourceAsStream("msg.properties");
-
-    private static final String sBusId_DEFAULT;
 
     static {
 	String MsgURL;
 	String sBusId;
+	String propTemplateMsgId;
 	try {
 	    prop.load(inputStream);
 
 	    MsgURL = prop.getProperty("MsgURL", "http://msg.igov.org.ua/MSG");
 	    sBusId = prop.getProperty("sBusId", "TEST");
+	    propTemplateMsgId = prop.getProperty("TemplateMsgId", "HMXHVKM80002M0");
 	} catch (IOException e) {
 	    MsgURL = "http://msg.igov.org.ua/MSG";
 	    sBusId = "TEST";
+	    propTemplateMsgId = "HMXHVKM80002M0";
 	}
 
 	MSG_URL = MsgURL;
 	sBusId_DEFAULT = sBusId;
+	TemplateMsgId = propTemplateMsgId; 
+	
 	System.setProperty("MsgURL", MSG_URL);
 
     }
+
+    private static final String TemplateMsgIdJSON = "\",\"TemplateMsgId\":\"" + TemplateMsgId + "\"}}]}";
 
     public static final HTTPClient httpClient = new HTTPClient();
 
     private String sBusId = sBusId_DEFAULT;
     private String sMsgCode = null;
-    private String MSG_DEFAULT = "DEFAULT";
     private MsgType msgType = null;
     private MsgLevel msgLevel = MsgLevel.DEVELOPER;
     private MsgLang msgLang = MsgLang.UKR;
@@ -184,12 +193,20 @@ public class MsgSendImpl implements MsgSend {
      * Соответствующие поля структуры запоминаются в отделных переменных, для
      * последующего сохранения в атрибутах Сервиса Хранения Ошибок
      * 
-     * @param smData
-     *            - JSON структура следующего фоормата:
-     * 
-     *            { "asParam": ["par1", "par2", "par3"], "oResponse": {
-     *            "sMessage": "value sMessage", "sCode": "value sCode",
-     *            "soData": "value soData" }, "sDate": "value sDate" }
+     * @param smData - JSON структура следующего формата:
+     *	{
+     *    "asParam": [
+     *      "par1",
+     *      "par2",
+     *      "par3"
+     *    ],
+     *    "oResponse": {
+     *      "sMessage": "value sMessage",
+     *      "sCode": "value sCode",
+     *      "soData": "value soData"
+     *    },
+     *    "sDate": "value sDate"
+     *  }            
      */
     public MsgSend addsmData(String smData) {
 	smData = smData.trim();
@@ -197,7 +214,7 @@ public class MsgSendImpl implements MsgSend {
 	LOG.debug("set smData=[{}]", smData);
 
 	if (smData.isEmpty()) {
-	    LOG.debug("set smData is Empty");
+	    LOG.debug("smData is Empty");
 	    return this;
 	}
 
@@ -276,18 +293,32 @@ public class MsgSendImpl implements MsgSend {
     /**
      * Формирование JSON структуры для создание шаблона сообщения с новым кодом.
      * 
-     * Вид структуры: { "r" : [ { _type_comment" : "Создание сообщения", "type"
-     * : "MSG_ADD", "sid" : "${sid}", "s" : { "Type" : "${Тип сообщения}",
-     * "MsgCode" : "${Код сообщения}", "BusId" : "${Id бизнеспроцесса}", "Descr"
-     * : "${Описание сообщения}", "TemplateMsgId" : "${Id шаблона}" } }] }
+     *{
+     *  "r": [
+     *    {
+     *      "_type_comment": "Создание сообщения",
+     *      "type": "MSG_ADD",
+     *      "sid": "",
+     *      "s": {
+     *        "Type": "WARNING",
+     *        "MsgCode": "WR-GETMESSAGEIMPL",
+     *        "BusId": "TEST",
+     *        "Title": "getMessageImpl",
+     *        "Descr": "getMessageImpl",
+     *        "Text": "getMessageImpl",
+     *        "FullText": "getMessageImpl",
+     *        "TemplateMsgId": "HMXHVKM80002M0"
+     *      }
+     *    }
+     *  ]
+     *}
      * 
      * @return Возвращает JSON структуру создания шаблона сообщения в виде
      *         строки
      */
     private String buildJSON() {
 	StringBuilder sb = new StringBuilder(500);
-	sb.append(
-		"{\"r\":[{\"_type_comment\" : \"Создание сообщения\",\"type\":\"MSG_ADD\",\"sid\" : \"\",\"s\":{\"Type\":\"");
+	sb.append("{\"r\":[{\"_type_comment\" : \"Создание сообщения\",\"type\":\"MSG_ADD\",\"sid\" : \"\",\"s\":{\"Type\":\"");
 	sb.append(msgType.name());
 	sb.append("\",\"MsgCode\":\"");
 	sb.append(sMsgCode);
@@ -343,6 +374,9 @@ public class MsgSendImpl implements MsgSend {
 	if (retMsg.getMsgCode().equals(MSG_DEFAULT) && !sMsgCode.equals(MSG_DEFAULT)) {
 	    LOG.warn("Сообщения с кодом {} не найдено. Попытка его создать.", this.sMsgCode);
 	    createMsg();
+	    
+	    // Cохранить сообщение во вновь созданном шаблоне
+//	    retMsg = doMsg();
 	}
 
 	return retMsg;
