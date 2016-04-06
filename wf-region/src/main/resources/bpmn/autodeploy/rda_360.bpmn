@@ -377,10 +377,10 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow43" sourceRef="servicetask7" targetRef="endevent3"></sequenceFlow>
-    <sequenceFlow id="flow63" name="Для богодухова" sourceRef="exclusivegateway2" targetRef="usertask3">
+    <sequenceFlow id="flow63" name="Для богодухова" sourceRef="exclusivegateway2" targetRef="usertask3_red">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bFlagRda360=='hard'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask3" name="Первинна перевірка данних наданих громадянином" activiti:candidateGroups="rda_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask3_red" name="Первинна перевірка данних наданих громадянином" activiti:candidateGroups="rda_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFIO" name="Прізвище, ім`я, по-батькові громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
@@ -460,14 +460,14 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow56" sourceRef="usertask3" targetRef="exclusivegateway5"></sequenceFlow>
-    <sequenceFlow id="flow45" name="Взяти в роботу" sourceRef="exclusivegateway5" targetRef="usertask4">
+    <sequenceFlow id="flow56" sourceRef="usertask3_red" targetRef="exclusivegateway5"></sequenceFlow>
+    <sequenceFlow id="flow45" name="Взяти в роботу" sourceRef="exclusivegateway5" targetRef="usertask4_first">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='accept'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow55" name="Відмовити" sourceRef="exclusivegateway5" targetRef="servicetask10">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='reject'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask4" name="Рішення голови" activiti:candidateGroups="golova_rda_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask4_first" name="Рішення голови" activiti:candidateGroups="golova_rda_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFIO" name="Прізвище, ім`я, по-батькові громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
@@ -549,8 +549,8 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow46" sourceRef="usertask4" targetRef="exclusivegateway6"></sequenceFlow>
-    <userTask id="usertask5" name="Рішення направити виконавцю" activiti:candidateGroups="rda_${sID_Public_SubjectOrganJoin}">
+    <sequenceFlow id="flow46" sourceRef="usertask4_first" targetRef="exclusivegateway6"></sequenceFlow>
+    <userTask id="usertask5_yellow" name="Рішення направити виконавцю" activiti:candidateGroups="rda_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFIO" name="Прізвище, ім`я, по-батькові громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
@@ -635,7 +635,7 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow47" sourceRef="usertask5" targetRef="servicetask8"></sequenceFlow>
+    <sequenceFlow id="flow47" sourceRef="usertask5_yellow" targetRef="servicetask8"></sequenceFlow>
     <serviceTask id="servicetask8" name="Сповістити громадянина про прийняте рішення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
@@ -672,8 +672,8 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow49" sourceRef="servicetask8" targetRef="usertask6"></sequenceFlow>
-    <userTask id="usertask6" name="Зняття з контролю" activiti:candidateGroups="rda_${sID_Public_SubjectOrganJoin}">
+    <sequenceFlow id="flow49" sourceRef="servicetask8" targetRef="usertask6_green"></sequenceFlow>
+    <userTask id="usertask6_green" name="Зняття з контролю" activiti:candidateGroups="rda_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFIO" name="Прізвище, ім`я, по-батькові громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
@@ -749,7 +749,7 @@
           <activiti:value id="sEnumResult_4" name="залишено без розгляду"></activiti:value>
           <activiti:value id="sEnumResult_5" name="надіслано за належністю"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="decisionComment" name="Результат розгляду звернення;інформація буде надіслана на електронну пошту громадянина" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="decisionComment" name="Результат розгляду звернення(інформація буде надіслана на електронну пошту громадянина)" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sOrgan" name="назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sHeadFIO" name="адреса органу" type="invisible"></activiti:formProperty>
@@ -766,10 +766,10 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow50" sourceRef="usertask6" targetRef="exclusivegateway4"></sequenceFlow>
+    <sequenceFlow id="flow50" sourceRef="usertask6_green" targetRef="exclusivegateway4"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow51" name="Виконано" sourceRef="exclusivegateway4" targetRef="servicetask9">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bResult=='true'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResult=='sEnumResult_1'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask9" name="E-Mail громадянину про успішне виконання рішення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
@@ -792,7 +792,8 @@
 			Якщо у Вас є додаткові питання, Ви можете звернутись за наступними контактами:<br>
 			${sAddress}<br>
 			${sWorkTime}<br>
-			${sPhoneOrgan}<br><br>
+			${sPhoneOrgan}<br><br><br>			
+			[pattern/mail/_common_feedback.html]
 			[pattern/mail/_common_signature_start.html]
 			${sNameOrgan}.<br>
 			[pattern/mail/_common_signature_end.html]
@@ -801,7 +802,7 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow52" name="Не виконано" sourceRef="exclusivegateway4" targetRef="servicetask10">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bResult=='false'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResult=='sEnumResult_2'||asResult=='sEnumResult_3'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow58" sourceRef="servicetask9" targetRef="endevent4"></sequenceFlow>
     <sequenceFlow id="flow61" name="Відмовити" sourceRef="exclusivegateway6" targetRef="servicetask10">
@@ -844,7 +845,7 @@
     <sequenceFlow id="flow57" sourceRef="servicetask10" targetRef="endevent4"></sequenceFlow>
     <sequenceFlow id="flow59" sourceRef="boundaryerror1" targetRef="endevent4"></sequenceFlow>
     <endEvent id="endevent4" name="End"></endEvent>
-    <sequenceFlow id="flow62" name="Взяти в роботу" sourceRef="exclusivegateway6" targetRef="usertask5">
+    <sequenceFlow id="flow62" name="Взяти в роботу" sourceRef="exclusivegateway6" targetRef="usertask5_yellow">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='accept'}]]></conditionExpression>
     </sequenceFlow>
     <exclusiveGateway id="exclusivegateway5" name="Parallel Gateway"></exclusiveGateway>
@@ -888,19 +889,19 @@
       <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
         <omgdc:Bounds height="61.0" width="105.0" x="746.0" y="307.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
+      <bpmndi:BPMNShape bpmnElement="usertask3_red" id="BPMNShape_usertask3_red">
         <omgdc:Bounds height="71.0" width="131.0" x="415.0" y="194.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask4" id="BPMNShape_usertask4">
+      <bpmndi:BPMNShape bpmnElement="usertask4_first" id="BPMNShape_usertask4_first">
         <omgdc:Bounds height="55.0" width="105.0" x="428.0" y="369.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask5" id="BPMNShape_usertask5">
+      <bpmndi:BPMNShape bpmnElement="usertask5_yellow" id="BPMNShape_usertask5_yellow">
         <omgdc:Bounds height="61.0" width="133.0" x="414.0" y="550.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
         <omgdc:Bounds height="68.0" width="142.0" x="220.0" y="547.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask6" id="BPMNShape_usertask6">
+      <bpmndi:BPMNShape bpmnElement="usertask6_green" id="BPMNShape_usertask6_green">
         <omgdc:Bounds height="55.0" width="105.0" x="22.0" y="553.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway4" id="BPMNShape_exclusivegateway4">
@@ -1019,7 +1020,7 @@
         <omgdi:waypoint x="74.0" y="470.0"></omgdi:waypoint>
         <omgdi:waypoint x="74.0" y="433.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="13.0" y="460.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="48.0" x="13.0" y="460.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow52" id="BPMNEdge_flow52">
@@ -1027,7 +1028,7 @@
         <omgdi:waypoint x="241.0" y="463.0"></omgdi:waypoint>
         <omgdi:waypoint x="282.0" y="360.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="128.0" y="442.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="64.0" x="128.0" y="442.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow58" id="BPMNEdge_flow58">
@@ -1039,7 +1040,7 @@
         <omgdi:waypoint x="313.0" y="471.0"></omgdi:waypoint>
         <omgdi:waypoint x="282.0" y="360.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="327.0" y="462.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="54.0" x="327.0" y="462.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow57" id="BPMNEdge_flow57">
@@ -1054,7 +1055,7 @@
         <omgdi:waypoint x="480.0" y="510.0"></omgdi:waypoint>
         <omgdi:waypoint x="480.0" y="550.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="489.0" y="519.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="79.0" x="489.0" y="519.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
