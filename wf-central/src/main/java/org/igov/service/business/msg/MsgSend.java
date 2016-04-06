@@ -12,5 +12,5 @@ public interface MsgSend {
     public MsgSend addnID_Server(Long nID_Server);   
     public MsgSend addsmData(String smData);
     public MsgSend addMsgLevel(MsgLevel msgLevel);
-    public IMsgObjR save();
+    public IMsgObjR save() throws Exception;
 }
