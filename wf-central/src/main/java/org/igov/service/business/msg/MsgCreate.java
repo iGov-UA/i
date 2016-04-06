@@ -11,16 +11,39 @@ import java.net.URL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * 
+ * @author kr110666kai
+ * 
+ * Создание шаблона сообщения на основании JSON запроса вида:
+ * 
+ * { "r" : 
+ *   [ 
+ *     { 
+ *       "_type_comment" : "Создание сообщения", 
+ *       "type" : "MSG_ADD", 
+ *       "sid" : "${sid}",
+ *        "s" : { 
+ *                "Type" : "${Тип сообщения}",
+ *                "MsgCode" : "${Код сообщения}",
+ *                "BusId" : "${Id бизнеспроцесса}",
+ *                "Descr" : "${Описание сообщения}",
+ *                "TemplateMsgId" : "${Id шаблона}" 
+ *               }
+ *      }
+ *   ]
+ * }
+ *
+ */
 public class MsgCreate {
     private static final Logger LOG = LoggerFactory.getLogger(MsgCreate.class);
 
-    private String reqest = null;
-    private static final String MSG_URL_ADD = "http://msg.igov.org.ua/MSG";
+    private String sBodyRequest = null;
 
-    public MsgCreate(String reqest) {
-	LOG.debug("reqest={}", reqest);
+    public MsgCreate(String sBodyRequest) {
+	LOG.debug("reqest={}", sBodyRequest);
 
-	this.reqest = reqest;
+	this.sBodyRequest = sBodyRequest;
     }
 
     public String doReqest() throws Exception {
@@ -29,14 +52,14 @@ public class MsgCreate {
 
 	try {
 
-	    URL url = new URL(MSG_URL_ADD);
+	    URL url = new URL(MsgSendImpl.MSG_URL);
 	    conn = (HttpURLConnection) url.openConnection();
 	    conn.setDoOutput(true);
 	    conn.setRequestMethod("POST");
 	    conn.setRequestProperty("Content-Type", "application/json");
 
 	    OutputStream os = conn.getOutputStream();
-	    os.write(reqest.getBytes());
+	    os.write(sBodyRequest.getBytes());
 	    os.flush();
 
 	    BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
@@ -49,16 +72,18 @@ public class MsgCreate {
 
 	    if (conn.getResponseCode() != HttpURLConnection.HTTP_CREATED) {
 		throw new Exception(
-			"Failed : HTTP error code : " + conn.getResponseCode() + "\nResponseBody:\n" + ret.toString());
+			"Ошибка при создании шаблона сообщения : HTTP error code : " + conn.getResponseCode() + "\nResponseBody:\n" + ret.toString());
 	    }
 
 	    LOG.debug("response={}", conn.getResponseCode());
 	    LOG.debug("nResponseBody={}", ret.toString());
-	    
+
 	} catch (MalformedURLException e) {
-	    e.printStackTrace();
+	    LOG.error("Ошибка при создании шаблона сообщения. Тело запроса:\n{}\n Ошибка:{}",sBodyRequest,e.getMessage());
+//	    e.printStackTrace();
 	} catch (IOException e) {
-	    e.printStackTrace();
+	    LOG.error("Ошибка при создании шаблона сообщения. Тело запроса:\n{}\n Ошибка:{}",sBodyRequest,e.getMessage());
+//	    e.printStackTrace();
 	} finally {
 	    conn.disconnect();
 	}
