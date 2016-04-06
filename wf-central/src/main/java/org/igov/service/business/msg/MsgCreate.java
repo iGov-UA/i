@@ -71,8 +71,16 @@ public class MsgCreate {
 	    }
 
 	    if (conn.getResponseCode() != HttpURLConnection.HTTP_CREATED) {
-		throw new Exception(
-			"Ошибка при создании шаблона сообщения : HTTP error code : " + conn.getResponseCode() + "\nResponseBody:\n" + ret.toString());
+		
+		StringBuffer berr = new StringBuffer(500);
+		berr.append("Ошибка при создании шаблона сообщения\nsBodyRequest:\n");
+		berr.append(sBodyRequest);
+		berr.append("\nHTTP error code : ");
+		berr.append(conn.getResponseCode());
+		berr.append("\nResponseBody:\n");
+		berr.append(ret);
+		
+		throw new Exception(berr.toString());
 	    }
 
 	    LOG.debug("response={}", conn.getResponseCode());
