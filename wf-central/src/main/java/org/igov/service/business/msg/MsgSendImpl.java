@@ -317,40 +317,40 @@ public class MsgSendImpl implements MsgSend {
      *         строки
      */
     private String buildJSON() {
-//	StringBuilder sb = new StringBuilder(500);
-//	sb.append("{\"r\":[{\"_type_comment\" : \"Создание сообщения\",\"type\":\"MSG_ADD\",\"sid\" : \"\",\"s\":{\"Type\":\"");
-//	sb.append(msgType.name());
-//	sb.append("\",\"MsgCode\":\"");
-//	sb.append(sMsgCode);
-//	sb.append("\",\"BusId\":\"");
-//	sb.append(sBusId);
-//	sb.append("\",\"Descr\":\"");
-//	sb.append(sFunction);
-//	sb.append("\",\"TemplateMsgId\":\"" + TemplateMsgId + "\",\"LocalMsg\":{\"Level\":\"");
-//	sb.append(this.msgLevel);
-//	sb.append("\",\"Lang\":\"");
-//	sb.append(this.msgLang.name());
-//	sb.append("\",\"Text\":\"");
-//	sb.append(sFunction);
-//	sb.append("\",\"FullText\":\"\"}}}]}");
-	  StringBuilder sb = new StringBuilder(500);
-	  sb.append("{\"r\":[{\"_type_comment\" : \"Создание сообщения\",\"type\":\"MSG_ADD\",\"sid\" : \"\",\"s\":{\"Type\":\"");
-	  sb.append(msgType.name());
-	  sb.append("\",\"MsgCode\":\"");
-	  sb.append(sMsgCode);
-	  sb.append("\",\"BusId\":\"");
-	  sb.append(sBusId);
-	//  sb.append("\",\"Title\":\"");
-	//  sb.append(sFunction);
-	  sb.append("\",\"Descr\":\"");
-	  sb.append(sFunction);
-	//  sb.append("\",\"Text\":\"");
-	//  sb.append(sFunction);
-	//  sb.append("\",\"FullText\":\"");
-	//  sb.append(sFunction);
-	  sb.append(TemplateMsgIdJSON);
+	StringBuilder sb = new StringBuilder(500);
+	sb.append("{\"r\":[{\"_type_comment\" : \"Создание сообщения\",\"type\":\"MSG_ADD\",\"sid\" : \"\",\"s\":{\"Type\":\"");
+	sb.append(msgType.name());
+	sb.append("\",\"MsgCode\":\"");
+	sb.append(sMsgCode);
+	sb.append("\",\"BusId\":\"");
+	sb.append(sBusId);
+	sb.append("\",\"Descr\":\"");
+	sb.append(sFunction);
+	sb.append("\",\"TemplateMsgId\":\"" + TemplateMsgId + "\",\"LocalMsg\":{\"Level\":\"");
+	sb.append(this.msgLevel);
+	sb.append("\",\"Lang\":\"");
+	sb.append(this.msgLang.name());
+	sb.append("\",\"Text\":\"");
+	sb.append(sFunction);
+	sb.append("\",\"FullText\":\"\"}}}]}");
+//	  StringBuilder sb = new StringBuilder(500);
+//	  sb.append("{\"r\":[{\"_type_comment\" : \"Создание сообщения\",\"type\":\"MSG_ADD\",\"sid\" : \"\",\"s\":{\"Type\":\"");
+//	  sb.append(msgType.name());
+//	  sb.append("\",\"MsgCode\":\"");
+//	  sb.append(sMsgCode);
+//	  sb.append("\",\"BusId\":\"");
+//	  sb.append(sBusId);
+//	//  sb.append("\",\"Title\":\"");
+//	//  sb.append(sFunction);
+//	  sb.append("\",\"Descr\":\"");
+//	  sb.append(sFunction);
+//	//  sb.append("\",\"Text\":\"");
+//	//  sb.append(sFunction);
+//	//  sb.append("\",\"FullText\":\"");
+//	//  sb.append(sFunction);
+//	  sb.append(TemplateMsgIdJSON);
 
-	LOG.debug("Create MSG JSON={}", sb.toString());
+	LOG.trace("MSG JSON={}", sb.toString());
 
 	return sb.toString();
     }
@@ -373,7 +373,7 @@ public class MsgSendImpl implements MsgSend {
 	sb.append(sFunction);
 	sb.append("\"/></s></r></doc>");
 
-	LOG.debug("Create MSG XML={}", sb.toString());
+	LOG.trace("MSG XML={}", sb.toString());
 
 	return sb.toString();
 	
@@ -385,8 +385,8 @@ public class MsgSendImpl implements MsgSend {
      * @throws Exception 
      */
     private void createMsg() throws Exception {
-	MsgCreate msgCreate = new MsgCreate(buildXML());
-//	MsgCreate msgCreate = new MsgCreate(buildJSON());
+//	MsgCreate msgCreate = new MsgCreate(buildXML());
+	MsgCreate msgCreate = new MsgCreate(buildJSON());
 	msgCreate.doReqest();
     }
 
@@ -413,6 +413,7 @@ public class MsgSendImpl implements MsgSend {
 	if (retMsg.getMsgCode().equals(MSG_DEFAULT) && !sMsgCode.equals(MSG_DEFAULT)) {
 	    LOG.warn("Сообщения с кодом {} не найдено. Попытка его создать.", this.sMsgCode);
 	    createMsg();
+	    LOG.info("Создано cообщения с кодом : {}", this.sMsgCode);
 	    
 	    // Cохранить сообщение во вновь созданном шаблоне
 //	    retMsg = doMsg();
