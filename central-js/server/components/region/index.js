@@ -20,10 +20,7 @@ function _searchForHost (req, res, next) {
     nID_Server = req.body.nID_Server;
   }
 
-  if (nID_Server === undefined && nID_Server === null && nID_Server === "") {
-    console.log(JSON.stringify(req.body));
-    res.status(400).json(errors.createInputParameterError('nID_Server parameter should be specified for current request'));
-  } else {
+  if (nID_Server !== undefined && nID_Server !== null && nID_Server !== "") {
     serversCache.get(nID_Server, function (err, value) {
       if (!err) {
         if (!value) {
@@ -49,6 +46,8 @@ function _searchForHost (req, res, next) {
         res.status(400).json(errors.createExternalServiceError('Can\' find server host by nID_Server=' + value, err));
       }
     });
+  } else {
+    next();
   }
 }
 
