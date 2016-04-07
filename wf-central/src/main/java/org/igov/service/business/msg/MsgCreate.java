@@ -41,7 +41,7 @@ public class MsgCreate {
     private String sBodyRequest = null;
 
     public MsgCreate(String sBodyRequest) {
-	LOG.debug("reqest={}", sBodyRequest);
+	LOG.debug("BodyRequest:\n{}", sBodyRequest);
 
 	this.sBodyRequest = sBodyRequest;
     }
@@ -56,8 +56,9 @@ public class MsgCreate {
 	    conn = (HttpURLConnection) url.openConnection();
 	    conn.setDoOutput(true);
 	    conn.setRequestMethod("POST");
-	    conn.setRequestProperty("Content-Type", "application/json");
-
+//	    conn.setRequestProperty("Content-Type", "application/json");
+	    conn.setRequestProperty("Content-Type", "application/xml");
+	    
 	    OutputStream os = conn.getOutputStream();
 	    os.write(sBodyRequest.getBytes());
 	    os.flush();
@@ -70,8 +71,8 @@ public class MsgCreate {
 		}
 	    }
 
-	    LOG.debug("response={}", conn.getResponseCode());
-	    LOG.debug("nResponseBody={}", ret.toString());
+	    LOG.debug("HTTP code:{}", conn.getResponseCode());
+	    LOG.debug("\nResponseBody:{}\n", ret.toString());
 
 	    if (conn.getResponseCode() != HttpURLConnection.HTTP_CREATED) {
 		

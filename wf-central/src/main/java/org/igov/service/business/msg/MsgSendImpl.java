@@ -350,17 +350,43 @@ public class MsgSendImpl implements MsgSend {
 	//  sb.append(sFunction);
 	  sb.append(TemplateMsgIdJSON);
 
-	LOG.debug("set msgLevel={}", sb.toString());
+	LOG.debug("Create MSG JSON={}", sb.toString());
 
 	return sb.toString();
     }
 
+    private String buildXML() {
+	StringBuilder sb = new StringBuilder(500);
+	sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><doc><r cntr=\"UA\" key=\"0\" sid=\"\" t=\"MSG_ADD\"><s Type=\"");
+	sb.append(msgType.name());
+	sb.append("\" MsgCode=\"");
+	sb.append(sMsgCode);
+	sb.append("\" BusId=\"");
+	sb.append(sBusId);
+	sb.append("\" Descr=\"");
+	sb.append(sFunction);
+	sb.append("\" TemplateMsgId=\"" + TemplateMsgId +"\"><LocalMsg  Level=\"");
+	sb.append(this.msgLevel);
+	sb.append("\" Lang=\"");
+	sb.append(this.msgLang.name());
+	sb.append("\" Text=\"");
+	sb.append(sFunction);
+	sb.append("\"/></s></r></doc>");
+
+	LOG.debug("Create MSG XML={}", sb.toString());
+
+	return sb.toString();
+	
+    }
+    
+    
     /**
      * Создание шаблона сообщения с новым кодом
      * @throws Exception 
      */
     private void createMsg() throws Exception {
-	MsgCreate msgCreate = new MsgCreate(buildJSON());
+	MsgCreate msgCreate = new MsgCreate(buildXML());
+//	MsgCreate msgCreate = new MsgCreate(buildJSON());
 	msgCreate.doReqest();
     }
 
@@ -430,7 +456,7 @@ public class MsgSendImpl implements MsgSend {
 	filter.setAttrs(mAttrs);
 	filter.setStack(sError);
 	filter.setSource(sFunction);
-	filter.setLevelFilter(msgLevel);
+	filter.setLevelFilter(msgLevel.name());
 	filter.setMsgId(filter.getMsgId());
 
 	LOG.debug("filter={}", filter);
