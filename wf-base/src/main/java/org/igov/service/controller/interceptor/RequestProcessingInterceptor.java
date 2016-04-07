@@ -334,7 +334,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CLOSED.getnID().toString());
         
         String snID_Task = (String) omRequestBody.get("taskId");
-        HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery().taskId(snID_Task).singleResult();
+        
+        if(snID_Task != null){
+            HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery().taskId(snID_Task).singleResult();
 
         String snID_Process = oHistoricTaskInstance.getProcessInstanceId();
         Long nID_Process = Long.valueOf(snID_Process);
@@ -382,6 +384,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             LOG.trace("FAIL:", e);
         }
         historyEventService.updateHistoryEvent(sID_Order, sUserTaskName, false, HistoryEvent_Service_StatusType.CLOSED, mParam);//sID_Process
+      }       
     }
 
     private void saveUpdatedTaskInfo(String sResponseBody) throws Exception {
