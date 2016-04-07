@@ -56,8 +56,8 @@ public class MsgCreate {
 	    conn = (HttpURLConnection) url.openConnection();
 	    conn.setDoOutput(true);
 	    conn.setRequestMethod("POST");
-//	    conn.setRequestProperty("Content-Type", "application/json");
-	    conn.setRequestProperty("Content-Type", "application/xml");
+	    conn.setRequestProperty("Content-Type", "application/json");
+//	    conn.setRequestProperty("Content-Type", "application/xml");
 	    
 	    OutputStream os = conn.getOutputStream();
 	    os.write(sBodyRequest.getBytes());
@@ -71,8 +71,6 @@ public class MsgCreate {
 		}
 	    }
 
-	    LOG.debug("HTTP code:{}", conn.getResponseCode());
-	    LOG.debug("\nResponseBody:{}\n", ret.toString());
 
 	    if (conn.getResponseCode() != HttpURLConnection.HTTP_CREATED) {
 		
@@ -85,10 +83,15 @@ public class MsgCreate {
 		berr.append(ret);
 		berr.append("\nHTTP error code : ");
 		berr.append(conn.getResponseCode());
+
+		LOG.error(berr.toString());
 		
 		throw new Exception(berr.toString());
 	    }
 
+	    LOG.debug("HTTP code:{}", conn.getResponseCode());
+	    LOG.debug("\nResponseBody:{}\n", ret.toString());
+	    
 	} catch (MalformedURLException e) {
 	    LOG.error("Ошибка при создании шаблона сообщения. Тело запроса:\n{}\n Ошибка:{}",sBodyRequest,e.getMessage());
 	    e.printStackTrace();
