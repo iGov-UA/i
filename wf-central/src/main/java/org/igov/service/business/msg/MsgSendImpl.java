@@ -324,15 +324,15 @@ public class MsgSendImpl implements MsgSend {
 	sb.append(sMsgCode);
 	sb.append("\",\"BusId\":\"");
 	sb.append(sBusId);
-	sb.append("\",\"Title\":\"");
-	sb.append(sFunction);
 	sb.append("\",\"Descr\":\"");
 	sb.append(sFunction);
+	sb.append("\",\"TemplateMsgId\":\"" + TemplateMsgId + "\",\"LocalMsg\":{\"Level\":\"");
+	sb.append(this.msgLevel);
+	sb.append("\",\"Lang\":\"");
+	sb.append(this.msgLang.name());
 	sb.append("\",\"Text\":\"");
 	sb.append(sFunction);
-	sb.append("\",\"FullText\":\"");
-	sb.append(sFunction);
-	sb.append(TemplateMsgIdJSON);
+	sb.append("\",\"FullText\":\"\"}}}]}");
 
 	LOG.debug("set msgLevel={}", sb.toString());
 
@@ -348,16 +348,13 @@ public class MsgSendImpl implements MsgSend {
 	msgCreate.doReqest();
     }
 
-    // public static void main(String[] args) throws IOException {
-    // MsgSend msgSend = new MsgSendImpl("warning", "function");
-    // IMsgObjR msg =
-    // msgSend.addnID_Server(1L).addnID_Subject(1L).addsBody("text
-    // body").addsError("text error")
-    // .addsHead("text head 22").save();
-    //
-    // System.out.println("msg = " + msg);
-    //
-    // }
+//     public static void main(String[] args) throws IOException {
+//         try {
+//	    IMsgObjR msg = new MsgSendImpl("WARNING", "getFunction").save();
+//	} catch (Exception e) {
+//	    e.printStackTrace();
+//	}
+//     }
 
     @Override
     /**
