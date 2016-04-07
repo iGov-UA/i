@@ -20,7 +20,6 @@
           <activiti:value id="tf003" name="Модельний статут"></activiti:value>
         </activiti:formProperty>
 
-
         <activiti:formProperty id="asSelectOPF" name="Організаційно-правова форма юридичної особи" type="enum" required="true">
           <activiti:value id="tf120" name="Адвокатське бюро"></activiti:value>
           <activiti:value id="tf119" name="Адвокатське об'єднання"></activiti:value>
@@ -95,6 +94,8 @@
         <activiti:formProperty id="sVarUrNameShort" name="Скорочене найменування юридичної особи (за наявності)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sVarUrNameEn" name="Найменування юридичної особи англійською мовою або мовою національної меншини (за наявності)" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sVarUrNameEnShort" name="Скорочене найменування юридичної особи англійською мовою або мовою національної меншини (за наявності)" type="string" required="true"></activiti:formProperty>
+
+<!-- Начало копирования -->
 
         <activiti:formProperty id="InfoLabel100" name="Місцезнаходження юридичної особи" type="label" default=" "></activiti:formProperty>
         
@@ -183,7 +184,7 @@
         <activiti:formProperty id="lastName_UA1" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="firstName_UA1" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA1" name="По Батькові" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="date_of_birth" name="Дата народження" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sVarDatDenN01" name="Дата народження;(формат дд.мм.рррр)" type="string" required="true"></activiti:formProperty>
 
         <activiti:formProperty id="asSelectInn" name="Особа через свої релігійні або інші переконання відмовилася від прийняття реєстраційного номера облікової картки платника податків" type="enum" required="true">
           <activiti:value id="tf801" name="Так"></activiti:value>
@@ -253,7 +254,7 @@
         <activiti:formProperty id="sVarRajOblNam02" name="Введіть назву району області/Автономної Республіки Крим" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sVarRajObl301Plus02" name="Район області/Автономної Республіки Крим +" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="markers1501_1" name="поставити + Район області/Автономної Республіки Крим" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_1501_1&quot;:{&quot;aField_ID&quot;:[&quot;sVarRajObl301Plus02&quot;],&quot;asID_Field_sValue&quot;:[&quot;+&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectRajOblKr&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf301'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers1501_2" name="показати район для вводу" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1501_2&quot;:{&quot;aField_ID&quot;:[&quot;sVarRajOblNam&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectRajOblKr&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf301'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers1501_2" name="показати район для вводу" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1501_2&quot;:{&quot;aField_ID&quot;:[&quot;sVarRajOblNam02&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectRajOblKr02&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf301'&quot;}}}"></activiti:formProperty>
 
         <activiti:formProperty id="asSelectTypePlace02" name="Оберіть тип населеного пункту" type="enum" required="true">
           <activiti:value id="tf401" name="Місто"></activiti:value>
@@ -299,25 +300,110 @@
         <activiti:formProperty id="sVarSum02" name="Розмір частки статутного (складеного) капіталу (пайового фонду) (грн)" type="string" required="true"></activiti:formProperty>
 
         <activiti:formProperty id="sNameService" type="invisible" default="Державна реєстрація створення юридичної особи"></activiti:formProperty>
-
-
-
-
-
-
+        <activiti:formProperty id="sNameOrgan" name="sNameOrgan" type="invisible" default="."></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="sWorkTime" type="invisible" default="."></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="sAddress" type="invisible" default="."></activiti:formProperty>
 
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлу" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <userTask id="usertask1" name="Надання послуги" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="sArea" type="label"></activiti:formProperty>
-        <activiti:formProperty id="sNameService" type="label"></activiti:formProperty>
+
+        <activiti:formProperty id="sNameService" name="Найменування замовленої послуги" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Орган - виконавець" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="sAddress" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="sWorkTime" type="invisible"></activiti:formProperty>
+
+        <activiti:formProperty id="asSelectUstDoc" name="Вид установчого документа" type="enum" writable="false"> 
+          <activiti:value id="tf001" name="Статут"></activiti:value>
+          <activiti:value id="tf002" name="Засновницький договір"></activiti:value>
+          <activiti:value id="tf003" name="Модельний статут"></activiti:value>
+        </activiti:formProperty>
+
+        <activiti:formProperty id="asSelectOPF" name="Організаційно-правова форма юридичної особи" type="enum" writable="false">
+          <activiti:value id="tf120" name="Адвокатське бюро"></activiti:value>
+          <activiti:value id="tf119" name="Адвокатське об'єднання"></activiti:value>
+          <activiti:value id="tf111" name="Акціонерне товариство"></activiti:value>
+          <activiti:value id="tf151" name="Асоціації органів місцевого самоврядування та їх добровільні об'єднання"></activiti:value>
+          <activiti:value id="tf135" name="Асоціація"></activiti:value>
+          <activiti:value id="tf159" name="Благодійна організація"></activiti:value>
+          <activiti:value id="tf121" name="Виробничий кооператив"></activiti:value>
+          <activiti:value id="tf145" name="Вища кваліфікаційна комісія суддів України"></activiti:value>
+          <activiti:value id="tf154" name="Громадська організація"></activiti:value>
+          <activiti:value id="tf155" name="Громадська спілка"></activiti:value>
+          <activiti:value id="tf131" name="Державна організація (установа, заклад)"></activiti:value>
+          <activiti:value id="tf113" name="Державна холдингова компанія"></activiti:value>
+          <activiti:value id="tf112" name="Державне акціонерне товариство"></activiti:value>
+          <activiti:value id="tf104" name="Державне підприємство"></activiti:value>
+          <activiti:value id="tf107" name="Дочірнє підприємство"></activiti:value>
+          <activiti:value id="tf108" name="Іноземне підприємство"></activiti:value>
+          <activiti:value id="tf140" name="Інші об’єднання юридичних осіб"></activiti:value>
+          <activiti:value id="tf167" name="Інші організаційно-правові форми"></activiti:value>
+          <activiti:value id="tf149" name="Інші професійні організації та об'єднання"></activiti:value>
+          <activiti:value id="tf105" name="Казенне підприємство"></activiti:value>
+          <activiti:value id="tf103" name="Колективне підприємство"></activiti:value>
+          <activiti:value id="tf118" name="Командитне товариство"></activiti:value>
+          <activiti:value id="tf132" name="Комунальна організація (установа, заклад)"></activiti:value>
+          <activiti:value id="tf106" name="Комунальне підприємство"></activiti:value>
+          <activiti:value id="tf137" name="Консорціум"></activiti:value>
+          <activiti:value id="tf138" name="Концерн"></activiti:value>
+          <activiti:value id="tf136" name="Корпорація"></activiti:value>
+          <activiti:value id="tf165" name="Кредитна спілка"></activiti:value>
+          <activiti:value id="tf166" name="Недержавний пенсійний фонд"></activiti:value>
+          <activiti:value id="tf158" name="Об’єднання профспілок"></activiti:value>
+          <activiti:value id="tf161" name="Об’єднання співвласників багатоквартирного будинку"></activiti:value>
+          <activiti:value id="tf122" name="Обслуговуючий кооператив"></activiti:value>
+          <activiti:value id="tf128" name="Орган державної влади"></activiti:value>
+          <activiti:value id="tf130" name="Орган місцевого самоврядування"></activiti:value>
+          <activiti:value id="tf162" name="Орган самоорганізації населення"></activiti:value>
+          <activiti:value id="tf143" name="Органи адвокатського самоврядування"></activiti:value>
+          <activiti:value id="tf144" name="Органи суддівського самоврядування"></activiti:value>
+          <activiti:value id="tf134" name="Організація (установа, заклад) громадського об’єднання  (релігійної організації, профспілки, споживчої кооперації тощо)"></activiti:value>
+          <activiti:value id="tf160" name="Організація роботодавців"></activiti:value>
+          <activiti:value id="tf109" name="Підприємство громадського об’єднання (релігійної організації, профспілки)"></activiti:value>
+          <activiti:value id="tf110" name="Підприємство споживчої кооперації"></activiti:value>
+          <activiti:value id="tf117" name="Повне товариство"></activiti:value>
+          <activiti:value id="tf153" name="Політична партія"></activiti:value>
+          <activiti:value id="tf142" name="Представництво"></activiti:value>
+          <activiti:value id="tf133" name="Приватна організація (установа, заклад)"></activiti:value>
+          <activiti:value id="tf102" name="Приватне підприємство"></activiti:value>
+          <activiti:value id="tf157" name="Профспілка"></activiti:value>
+          <activiti:value id="tf156" name="Релігійна організація"></activiti:value>
+          <activiti:value id="tf150" name="Саморегулівна організація"></activiti:value>
+          <activiti:value id="tf125" name="Сільськогосподарський виробничий кооператив"></activiti:value>
+          <activiti:value id="tf126" name="Сільськогосподарський кооператив"></activiti:value>
+          <activiti:value id="tf127" name="Сільськогосподарський обслуговуючий кооператив"></activiti:value>
+          <activiti:value id="tf139" name="Спілка споживчих товариств"></activiti:value>
+          <activiti:value id="tf124" name="Споживче товариство"></activiti:value>
+          <activiti:value id="tf123" name="Споживчий кооператив "></activiti:value>
+          <activiti:value id="tf129" name="Судова система"></activiti:value>
+          <activiti:value id="tf148" name="Творча спілка"></activiti:value>
+          <activiti:value id="tf116" name="Товариство з додатковою відповідальністю"></activiti:value>
+          <activiti:value id="tf115" name="Товариство з обмеженою відповідальністю"></activiti:value>
+          <activiti:value id="tf164" name="Товарна біржа"></activiti:value>
+          <activiti:value id="tf152" name="Торгово-промислова палата"></activiti:value>
+          <activiti:value id="tf101" name="Фермерське господарство"></activiti:value>
+          <activiti:value id="tf163" name="Фізична особа-підприємець"></activiti:value>
+          <activiti:value id="tf141" name="Філія (інший відокремлений підрозділ)"></activiti:value>
+          <activiti:value id="tf147" name="Фонд фінансування будівництва"></activiti:value>
+          <activiti:value id="tf146" name="Фонди соціального страхування"></activiti:value>
+          <activiti:value id="tf114" name="Холдингова компанія"></activiti:value>
+        </activiti:formProperty>
+
+        <activiti:formProperty id="sVarUrName" name="Назва юридичної особи" type="textArea" required="true" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sVarUrNameShort" name="Скорочене найменування юридичної особи (за наявності)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sVarUrNameEn" name="Найменування юридичної особи англійською мовою або мовою національної меншини (за наявності)" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sVarUrNameEnShort" name="Скорочене найменування юридичної особи англійською мовою або мовою національної меншини (за наявності)" type="string" writable="false"></activiti:formProperty>
+
+
+<!--  Вставка  -->
+
+
         <activiti:formProperty id="sClientFIO" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-		
 		
 		
         <activiti:formProperty id="asDecisionMain" name="Результат обробки звернення: " type="enum" required="true">
@@ -337,7 +423,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${fDecisionDoc}, ${fApplication}</activiti:expression>
+            <activiti:expression>${fDecisionDoc}, ${fVarDod2}, ${fVarDod1}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
