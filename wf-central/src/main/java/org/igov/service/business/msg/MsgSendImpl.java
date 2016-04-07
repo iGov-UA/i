@@ -317,22 +317,38 @@ public class MsgSendImpl implements MsgSend {
      *         строки
      */
     private String buildJSON() {
-	StringBuilder sb = new StringBuilder(500);
-	sb.append("{\"r\":[{\"_type_comment\" : \"Создание сообщения\",\"type\":\"MSG_ADD\",\"sid\" : \"\",\"s\":{\"Type\":\"");
-	sb.append(msgType.name());
-	sb.append("\",\"MsgCode\":\"");
-	sb.append(sMsgCode);
-	sb.append("\",\"BusId\":\"");
-	sb.append(sBusId);
-	sb.append("\",\"Descr\":\"");
-	sb.append(sFunction);
-	sb.append("\",\"TemplateMsgId\":\"" + TemplateMsgId + "\",\"LocalMsg\":{\"Level\":\"");
-	sb.append(this.msgLevel);
-	sb.append("\",\"Lang\":\"");
-	sb.append(this.msgLang.name());
-	sb.append("\",\"Text\":\"");
-	sb.append(sFunction);
-	sb.append("\",\"FullText\":\"\"}}}]}");
+//	StringBuilder sb = new StringBuilder(500);
+//	sb.append("{\"r\":[{\"_type_comment\" : \"Создание сообщения\",\"type\":\"MSG_ADD\",\"sid\" : \"\",\"s\":{\"Type\":\"");
+//	sb.append(msgType.name());
+//	sb.append("\",\"MsgCode\":\"");
+//	sb.append(sMsgCode);
+//	sb.append("\",\"BusId\":\"");
+//	sb.append(sBusId);
+//	sb.append("\",\"Descr\":\"");
+//	sb.append(sFunction);
+//	sb.append("\",\"TemplateMsgId\":\"" + TemplateMsgId + "\",\"LocalMsg\":{\"Level\":\"");
+//	sb.append(this.msgLevel);
+//	sb.append("\",\"Lang\":\"");
+//	sb.append(this.msgLang.name());
+//	sb.append("\",\"Text\":\"");
+//	sb.append(sFunction);
+//	sb.append("\",\"FullText\":\"\"}}}]}");
+	  StringBuilder sb = new StringBuilder(500);
+	  sb.append("{\"r\":[{\"_type_comment\" : \"Создание сообщения\",\"type\":\"MSG_ADD\",\"sid\" : \"\",\"s\":{\"Type\":\"");
+	  sb.append(msgType.name());
+	  sb.append("\",\"MsgCode\":\"");
+	  sb.append(sMsgCode);
+	  sb.append("\",\"BusId\":\"");
+	  sb.append(sBusId);
+	//  sb.append("\",\"Title\":\"");
+	//  sb.append(sFunction);
+	  sb.append("\",\"Descr\":\"");
+	  sb.append(sFunction);
+	//  sb.append("\",\"Text\":\"");
+	//  sb.append(sFunction);
+	//  sb.append("\",\"FullText\":\"");
+	//  sb.append(sFunction);
+	  sb.append(TemplateMsgIdJSON);
 
 	LOG.debug("set msgLevel={}", sb.toString());
 
