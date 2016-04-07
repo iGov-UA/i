@@ -14,9 +14,13 @@ var finishRequest = function (req, res, err, result, type) {
   } else {
     req.session.subject = result.subject;
     req.session.bAdmin = result.admin;
+
+    var customer = userConvert.convertToCanonical(type, result.customer);
+    var admin = result.admin;
+
     res.send({
-      customer: userConvert.convertToCanonical(type, result.customer),
-      admin: result.admin
+      customer: customer,
+      admin: admin
     });
     res.end();
   }
