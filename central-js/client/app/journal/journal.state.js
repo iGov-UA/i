@@ -11,8 +11,8 @@ angular.module('journal').config(function ($stateProvider, statesRepositoryProvi
           }
         },
         resolve: {
-          BankIDLogin: function ($q, $state, $location, $stateParams, BankIDService) {
-             return BankIDService.isLoggedIn()
+          BankIDLogin: function ($q, $state, $location, $stateParams, UserService) {
+             return UserService.isLoggedIn()
                .catch(function () {
                  return false;
                });
@@ -65,8 +65,8 @@ angular.module('journal').config(function ($stateProvider, statesRepositoryProvi
               return $q.when(null);
             }
           },
-          BankIDLogin: function ($q, $state, $location, $stateParams, BankIDService) {
-             return BankIDService.isLoggedIn()
+          BankIDLogin: function ($q, $state, $location, $stateParams, UserService) {
+             return UserService.isLoggedIn()
                .catch(function () {
                  return false;
                });
