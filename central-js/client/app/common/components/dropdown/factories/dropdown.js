@@ -19,19 +19,5 @@ angular.module('app').factory('DropdownFactory', function($timeout) {
     this.list = null;
   };
 
-  dropdown.prototype.get = function (index, count, success) {
-    if (this.isOpen) {
-  		$timeout(function () {
-  			var result = [];
-  			for (var i = index; i <= index + count - 1; i++) {
-  				result.push("item #" + i);
-  			}
-  			success(result);
-  		}, 100);
-    } else {
-      success([]);
-    }
-  };
-
   return dropdown;
 });

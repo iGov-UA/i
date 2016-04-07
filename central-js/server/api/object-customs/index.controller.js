@@ -42,10 +42,12 @@ module.exports.getObjectCustomsList = function (req, res) {
     res.setHeader('ETag', resTag);
     var reducePattern = req.query.sName_UA.split('').length > resourceId.length ?
       new RegExp(escapeRegExp(req.query.sName_UA)) : false;
-    var items = response.slice(skip, stop);
-    items.forEach(function (item) {
-      if (!reducePattern || reducePattern.test(item.sName_UA)) {
-        outputStream.write(item);
+    var selectedCount = 0;
+    var cursor = 0;
+    response.filter(function (item, index) {
+      if ((!reducePattern || reducePattern.test(item.sName_UA))
+            && (cursor++ >= skip) && (selectedCount++ < req.query.count)) {
+          outputStream.write(item);
       }
     });
     outputStream.end();
