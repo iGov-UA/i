@@ -57,7 +57,7 @@ public class ObjectPlaceController {
 
         @ApiOperation(value = "Получить иерархию объектов вниз начиная с указанного узла", notes = "Примеры\n"
             + "Параметыр nID\n\n"
-            + "https://test.igov.org.ua/wf/service/object/place/getPlacesTree?nID=459\n\n\n"
+                + "https://test.igov.org.ua/wf/service/object/place/getPlacesTree?nID=459\n"
             + "Ответ\n"
             + "\n```json\n"
             + "{\n"
@@ -86,7 +86,7 @@ public class ObjectPlaceController {
             + "    ]\n"
             + "}\n"
             + "\n```\n"
-            + "Примечание: по умолчанию возвращаются иерархия с ограниченным уровнем вложенности детей (поле nDeep, по умолчанию равно 1)\n\n"
+                + "Примечание: по умолчанию возвращаются иерархия с ограниченным уровнем вложенности детей (поле nDeep, по умолчанию равно 1)\n"
             + "Получить иерархию объектов вниз начиная с указанного узла (параметр nID) и количества уровней вниз (параметр nDeep).\n"
             + "https://test.igov.org.ua/wf/service/object/place/getPlacesTree?nID=459&nDeep=4\n"
             + "Ответ:\n"
@@ -288,8 +288,8 @@ public class ObjectPlaceController {
             + "    \"a\": []\n"
             + "}\n"
             + "\n```\n"
-            + "Примечание: по умолчанию возвращаются иерархия с ограниченным уровнем (только 1 уровень)\n\n"
-            + "Получить иерархию объектов вверх начиная с указанного узла (параметр nID). Для активации выборки по полной иерархии необходимо указать параметр bTree.\n\n"
+                + "Примечание: по умолчанию возвращаются иерархия с ограниченным уровнем (только 1 уровень)\n"
+                + "Получить иерархию объектов вверх начиная с указанного узла (параметр nID). Для активации выборки по полной иерархии необходимо указать параметр bTree.\n"
             + "https://test.igov.org.ua/wf-central/service/object/place/getPlace?nID=462&bTree=true\n"
             + "Ответ (возвращает иерархию объектов снизу вверх, напр. от деревни к району/области)\n"
             + "\n```json\n"
@@ -333,7 +333,7 @@ public class ObjectPlaceController {
             + "}\n"
             + "\n```\n"
             + "Получить иерархию объектов вверх начиная с указанного узла (параметр sUA_ID).\n"
-            + "https://test.igov.org.ua/wf-central/service/object/place/getPlace?sID_UA=5923555102\n\n"
+                + "https://test.igov.org.ua/wf-central/service/object/place/getPlace?sID_UA=5923555102\n"
             + "Получить иерархию объектов вверх начиная с указанного узла (параметр sUA_ID). Для активации выборки по полной иерархии необходимо указать параметр bTree.\n"
             + "https://test.igov.org.ua/wf-central/service/object/place/getPlace?sID_UA=5923555102&bTree=true")
     @RequestMapping(value = "/getPlace",
@@ -440,7 +440,7 @@ public class ObjectPlaceController {
             + "https://test.igov.org.ua/wf-central/service/object/place/removePlace?nID=22830\n"
             + "Результат\n"
             + "HTTP code = 200 OK\n\n"
-            + "GET запрос по адресу https://test.igov.org.ua/wf-central/service/object/place/getPlaceEntity?nID=22830 должен вернуть cообщение об ошибке:\n\n"
+                + "GET запрос по адресу https://test.igov.org.ua/wf-central/service/object/place/getPlaceEntity?nID=22830 должен вернуть cообщение об ошибке:\n"
             + "\n```json\n"
             + "{\n"
             + "    \"code\": \"SYSTEM_ERR\",\n"
@@ -829,9 +829,9 @@ public class ObjectPlaceController {
 
         @ApiOperation(value = "Возвращает объект Страны по первому из 4х ключей (nID, nID_UA, sID_Two, sID_Three)", notes =
                 ""
-            + "Если нет ни одного параметра возвращает ошибку 403. required at least one of parameters (nID, nID_UA, sID_Two, sID_Three)!\n\n"
-            + "Eсли задано два ключа от разных записей -- вернется та, ключ который \"первее\" в таком порядке: nID, nID_UA, sID_Two, sID_Three.\n\n"
-            + "пример: https://test.igov.org.ua/wf/service/object/place/getCountry?nID_UA=123\n\n"
+                        + "Если нет ни одного параметра возвращает ошибку 403. required at least one of parameters (nID, nID_UA, sID_Two, sID_Three)!\n"
+                        + "Eсли задано два ключа от разных записей -- вернется та, ключ который \"первее\" в таком порядке: nID, nID_UA, sID_Two, sID_Three.\n"
+                        + "пример: https://test.igov.org.ua/wf/service/object/place/getCountry?nID_UA=123\n"
             + "Ответ:\n"
             + "\n```json\n"
             + "{\n"
@@ -875,7 +875,7 @@ public class ObjectPlaceController {
     }
 
         @ApiOperation(value = "Изменить объект \"Cтрана\"", notes = ""
-            + "апдейтит элемент (если задан один из уникальных ключей) или вставляет (если не задан nID), и отдает экземпляр нового объекта.\n\n"
+                + "апдейтит элемент (если задан один из уникальных ключей) или вставляет (если не задан nID), и отдает экземпляр нового объекта.\n"
             + "Если нет ни одного параметра возвращает ошибку 403. All args are null! Если есть один из уникальных ключей, но запись"
             + " не найдена -- ошибка 403. Record not found! Если кидать \"новую\" запись с одним из уже существующих ключей nID_UA -- то обновится существующая запись по ключу nID_UA, если будет дублироваться другой ключ -- ошибка 403. Could not execute statement (из-за уникальных констрейнтов)")
     @ApiResponses(value = {
