@@ -8,7 +8,8 @@ angular.module('app').factory('autocompletesDataFactory', function () {
     ObjectCustoms: {
       valueProperty: 'sID_UA',
       titleProperty: 'sName_UA',
-      apiUrl: './api/object-customs?sName_UA'
+      apiUrl: './api/object-customs',
+      hasPaging: true
     },
     SubjectOrganJoinTax: {
       valueProperty: 'sID_UA',
