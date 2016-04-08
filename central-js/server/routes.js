@@ -11,14 +11,20 @@ var errors = require('./components/errors')
 
 module.exports = function (app) {
   // Insert routes below
+
   app.use('/auth', require('./auth'));
+
+  // check api call for nID_Server and get region host
+  app.all('/api/*', region.searchForHost());
+
+  // routes
   app.use('/api/user', require('./api/user'));
   app.use('/api/documents', require('./api/documents'));
   app.use('/api/journal', require('./api/journal'));
   app.use('/api/order', require('./api/order'));
   app.use('/api/places', require('./api/places/index'));
   app.use('/api/process-definitions', require('./api/process-definitions/index'));
-  app.use('/api/process-form', auth.isAuthenticated(), region.searchForHost(), require('./api/process-form'));
+  app.use('/api/process-form', auth.isAuthenticated(), require('./api/process-form'));
   app.use('/api/service', require('./api/service/index'));
   app.use('/api/service/flow', require('./api/service/flow'));
   app.use('/api/messages', require('./api/messages/index'));

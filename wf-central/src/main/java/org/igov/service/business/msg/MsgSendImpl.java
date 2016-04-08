@@ -28,12 +28,12 @@ import com.pb.util.gsv.net.HTTPClient;
  * 
  *         Пример использования:
  * 
- *         IMsgObjR msg = new MsgSendImpl(sType, sFunction).
- *         			addnID_Server(nID_Server).
- *         			addnID_Subject(nID_Subject).
- *         			addsBody(sBody).
- *         	         	addsError(sError).
- *         			addsHead(sHead).
+ *         IMsgObjR msg = new MsgSendImpl("WARNING", "org.igov.getManyMoney").
+ *         			addnID_Server(1L).
+ *         			addnID_Subject(1L).
+ *         			addsBody("sBody").
+ *         	         	addsError("sError").
+ *         			addsHead("sHead").
  *         			addsmData(smData).
  *         			save();
  * 
@@ -51,29 +51,40 @@ import com.pb.util.gsv.net.HTTPClient;
  *         Если тип сообщения указать некорректно (например WARNING2 ), то принимается тип INF_MESSAGE
  * 
  *         sFunction - строка с именем функции где произошла ошибка
+ *         
+ *         
+ *              В Сервисе Хранения Ошибок все отсылаемые данные привязываются к определенному СООБЩЕНИЮ, которое должно быть
+ *         заведено на сервисе заранее ( в нашем случае это делает данная программа). 
+ *         
+ *              СООБЩЕНИЕ - это сущность, содержащая в себе информацию, включающую атрибуты сообщения и набор представлений 
+ *         (для данного языка и уровня сообщения). Характеризуется Кодом СООБЩЕНИЯ который может быть определен пользователем 
+ *         при создании сообщения. Код уникален в рамках бизнес процесса и не может быть изменен после создания сообщения.
+ *         
+ *              Все данные в Сервисе Хранения Ошибок привязываются к СООБЩЕНИЮ по его коду. Код СООБЩЕНИЯ - набор латинских 
+ *         символов и цифр, например: IGOV-MAIN77.
+ *          
+ *              Если СООБЩЕНИЯ с заданным кодом нет, то передаваемые данные привязываются к СООБЩЕНИЮ с кодом DEFAULT. 
+ *         В этом случае, программа попытается создать на сервисе новое СООБЩЕНИЕ с новым кодом. 
+ *                 
+ *             Для задач igov мы приняли следующий шаблон формирования Кода СООБЩЕНИЯ:  АББРЕВИАТУРА_ТИПА_СООБЩЕНИЯ-ИМЯ_ФУНКЦИИ
+ *         Например при вызове MsgSendImpl("WARNING","org.igov.getFunctionMeat"), Код СООБЩЕНИЯ будет WR-ORG.IGOV.GETFUNCTIONMEAT
  * 
- * 
- *         На основании типа сообщения и имени функции формируется код шаблона сообщения в Сервисе Хранения Ошибок 
- *         При вызове MsgSendImpl("WARNING","getFunctionMeat") код будет WR-GETFUNCTIONMEAT
- * 
- *         Примечание: длина кода сообщения 25 символов, т.е. имя функции желательно уместить в 22 символа, 
- *         т.к. остальные символы будут игнорироваться
- * 
- * 
- *         Для гибкой настройки может использоваться файл параметров msg.properties, где:
+ *         
+ *         Для гибкой настройки программы может использоваться файл параметров msg.properties, где:
  * 
  *         MsgURL=http://msg.igov.org.ua/MSG  	// url Сервиса Хранения Ошибок 
- *         sBusId=TEST 				// иденификатор Бизнес процесса
- *         TemplateMsgId=HMXHVKM70002M0		// код пустого шаблона
- * 
+ *         BusId=TEST 				// иденификатор Бизнес процесса
+ *         TemplateMsgId=HMXHVKM70002M0		// код пустого шаблона СООБЩЕНИЯ
+ *         
  */
 public class MsgSendImpl implements MsgSend {
     private static final Logger LOG = LoggerFactory.getLogger(MsgSendImpl.class);
 
     public static final String MSG_URL;
-
     private static final String TemplateMsgId;
-    private static final String sBusId_DEFAULT;
+    private static final String BusId_DEFAULT;
+    private static final String MSG_LOGIN;
+    
     private static final String MSG_DEFAULT = "DEFAULT";
 
     private static final Properties prop = new Properties();
@@ -83,31 +94,33 @@ public class MsgSendImpl implements MsgSend {
 	String MsgURL;
 	String sBusId;
 	String propTemplateMsgId;
+	String msgLogin;
 	try {
 	    prop.load(inputStream);
 
 	    MsgURL = prop.getProperty("MsgURL", "http://msg.igov.org.ua/MSG");
-	    sBusId = prop.getProperty("sBusId", "TEST");
+	    sBusId = prop.getProperty("BusId", "TEST");
 	    propTemplateMsgId = prop.getProperty("TemplateMsgId", "HMXHVKM80002M0");
+	    msgLogin = prop.getProperty("MsgLogin", "");
 	} catch (IOException e) {
 	    MsgURL = "http://msg.igov.org.ua/MSG";
 	    sBusId = "TEST";
 	    propTemplateMsgId = "HMXHVKM80002M0";
+	    msgLogin = "";
 	}
 
 	MSG_URL = MsgURL;
-	sBusId_DEFAULT = sBusId;
+	BusId_DEFAULT = sBusId;
 	TemplateMsgId = propTemplateMsgId; 
+	MSG_LOGIN = msgLogin;
 	
 	System.setProperty("MsgURL", MSG_URL);
 
     }
 
-    private static final String TemplateMsgIdJSON = "\",\"TemplateMsgId\":\"" + TemplateMsgId + "\"}}]}";
-
     public static final HTTPClient httpClient = new HTTPClient();
 
-    private String sBusId = sBusId_DEFAULT;
+    private String sBusId = BusId_DEFAULT;
     private String sMsgCode = null;
     private MsgType msgType = null;
     private MsgLevel msgLevel = MsgLevel.DEVELOPER;
@@ -126,14 +139,13 @@ public class MsgSendImpl implements MsgSend {
     private String smDataMisc = null;
 
     /**
-     * @param sType - тип сообщения
+     * @param sType - тип СООБЩЕНИЯ
      * 
      * @param sFunction - строка с именем функции где произошла ошибка
      * 
      */
     public MsgSendImpl(String sType, String sFunction) {
-	LOG.debug("Send message sType={}, sFunction={}", sType, sFunction);
-	LOG.debug("MSG URL={}, BusID={}", MSG_URL, sBusId_DEFAULT);
+	LOG.debug("ServiceURL={}, BusID={}, sType={}, sFunction={}", MSG_URL, sBusId, sType, sFunction);
 
 	if (sType == null || sFunction == null) {
 	    throw new IllegalArgumentException("Constructor parameters: sType=" + sType + ", sFunction=" + sFunction);
@@ -148,7 +160,7 @@ public class MsgSendImpl implements MsgSend {
 	this.sMsgCode = msgType.getAbbr() + "-" + sFunction.trim().toUpperCase();
 	this.sFunction = sFunction;
 
-	LOG.debug("Send message sMsgCode={}", this.sMsgCode);
+	LOG.debug("MsgCode={}", this.sMsgCode);
     }
 
     public MsgSend addBusId(String sBusId) {
@@ -274,24 +286,23 @@ public class MsgSendImpl implements MsgSend {
     }
 
     public MsgSend addLangFilter(String lang) {
-	LOG.debug("check set lang={}", lang);
 	try {
 	    this.msgLang = MsgLang.valueOf(lang.trim().toUpperCase());
 	} catch (final IllegalArgumentException e) {
 	    this.msgLang = MsgLang.UKR;
 	}
-	LOG.debug("set lang={}", this.msgLang);
+	LOG.debug("Received lang={}, set lang={}", lang, this.msgLang);
 	return this;
     }
 
     public MsgSend addMsgLevel(MsgLevel msgLevel) {
 	this.msgLevel = msgLevel;
-	LOG.debug("set msgLevel={}", this.msgLevel);
+	LOG.debug("set level={}", this.msgLevel);
 	return this;
     }
 
     /**
-     * Формирование JSON структуры для создание шаблона сообщения с новым кодом.
+     * Формирование JSON структуры для создание СООБЩЕНИЯ с новым кодом.
      * 
      *{
      *  "r": [
@@ -303,12 +314,17 @@ public class MsgSendImpl implements MsgSend {
      *        "Type": "WARNING",
      *        "MsgCode": "WR-GETMESSAGEIMPL",
      *        "BusId": "TEST",
-     *        "Title": "getMessageImpl",
      *        "Descr": "getMessageImpl",
-     *        "Text": "getMessageImpl",
-     *        "FullText": "getMessageImpl",
-     *        "TemplateMsgId": "HMXHVKM80002M0"
-     *      }
+     *        "TemplateMsgId": "HMXHVKM80002M0",
+     *        "ext": {
+     *                "LocalMsg": [{
+     *              	            "Level": "DEVELOPER",
+     *                         	    "Lang": "UKR",
+     *                              "Text": "getMessageImpl",
+     *                              "FullText": ""
+     *                             }]
+     *               }
+     *       }
      *    }
      *  ]
      *}
@@ -317,40 +333,26 @@ public class MsgSendImpl implements MsgSend {
      *         строки
      */
     private String buildJSON() {
-//	StringBuilder sb = new StringBuilder(500);
-//	sb.append("{\"r\":[{\"_type_comment\" : \"Создание сообщения\",\"type\":\"MSG_ADD\",\"sid\" : \"\",\"s\":{\"Type\":\"");
-//	sb.append(msgType.name());
-//	sb.append("\",\"MsgCode\":\"");
-//	sb.append(sMsgCode);
-//	sb.append("\",\"BusId\":\"");
-//	sb.append(sBusId);
-//	sb.append("\",\"Descr\":\"");
-//	sb.append(sFunction);
-//	sb.append("\",\"TemplateMsgId\":\"" + TemplateMsgId + "\",\"LocalMsg\":{\"Level\":\"");
-//	sb.append(this.msgLevel);
-//	sb.append("\",\"Lang\":\"");
-//	sb.append(this.msgLang.name());
-//	sb.append("\",\"Text\":\"");
-//	sb.append(sFunction);
-//	sb.append("\",\"FullText\":\"\"}}}]}");
-	  StringBuilder sb = new StringBuilder(500);
-	  sb.append("{\"r\":[{\"_type_comment\" : \"Создание сообщения\",\"type\":\"MSG_ADD\",\"sid\" : \"\",\"s\":{\"Type\":\"");
-	  sb.append(msgType.name());
-	  sb.append("\",\"MsgCode\":\"");
-	  sb.append(sMsgCode);
-	  sb.append("\",\"BusId\":\"");
-	  sb.append(sBusId);
-	//  sb.append("\",\"Title\":\"");
-	//  sb.append(sFunction);
-	  sb.append("\",\"Descr\":\"");
-	  sb.append(sFunction);
-	//  sb.append("\",\"Text\":\"");
-	//  sb.append(sFunction);
-	//  sb.append("\",\"FullText\":\"");
-	//  sb.append(sFunction);
-	  sb.append(TemplateMsgIdJSON);
+	StringBuilder sb = new StringBuilder(500);
+	sb.append("{\"r\":[{\"_type_comment\" : \"Создание сообщения\",\"type\":\"MSG_ADD\",\"sid\" : \"\", \"login\":\"");
+	sb.append(MSG_LOGIN);
+	sb.append("\", \"s\":{\"Type\":\"");
+	sb.append(msgType.name());
+	sb.append("\",\"MsgCode\":\"");
+	sb.append(sMsgCode);
+	sb.append("\",\"BusId\":\"");
+	sb.append(sBusId);
+	sb.append("\",\"Descr\":\"");
+	sb.append(sFunction);
+	sb.append("\",\"TemplateMsgId\":\"" + TemplateMsgId + "\", \"ext\":{\"LocalMsg\":[{\"Level\":\"");
+	sb.append(this.msgLevel);
+	sb.append("\",\"Lang\":\"");
+	sb.append(this.msgLang.name());
+	sb.append("\",\"Text\":\"");
+	sb.append(sFunction);
+	sb.append("\",\"FullText\":\"\"}]}}}]}");
 
-	LOG.debug("set msgLevel={}", sb.toString());
+	LOG.trace("MSG JSON={}", sb.toString());
 
 	return sb.toString();
     }
@@ -374,28 +376,27 @@ public class MsgSendImpl implements MsgSend {
 
     @Override
     /**
-     * Сохранение сообщения. Если в Сервисе Хранения Ошибок нет шаблона
-     * сообщения с таким кодом, то оно сохраняется в шаблоне сообщении с кодом
-     * DEFAULT В этом случае программа пытается добавить новый шаблон сообщения
-     * с этим кодом в Сервис Хранения Ошибок
+     * Сохранение данных. Если в Сервисе Хранения Ошибок нет СООБЩЕНИЯ с заданным кодом, то передаваемые данные привязываются
+     *  к СООБЩЕНИЮ с кодом DEFAULT. В этом случае, программа попытается создать на сервисе новое СООБЩЕНИЕ с новым кодом. 
      */
     public IMsgObjR save() throws Exception {
 	IMsgObjR retMsg = doMsg();
-	LOG.debug("Ответ на запрос о сохраниении сообщения:\n{}", retMsg);
+	LOG.debug("Ответ:\n{}", retMsg);
 
 	// Создать сообщение если его не было раньше
 	if (retMsg.getMsgCode().equals(MSG_DEFAULT) && !sMsgCode.equals(MSG_DEFAULT)) {
-	    LOG.warn("Сообщения с кодом {} не найдено. Попытка его создать.", this.sMsgCode);
+	    LOG.warn("Сообщение с кодом {} не найдено, попытка его создания.", this.sMsgCode);
 	    createMsg();
+	    LOG.info("Созданно сообщение с кодом : {}", this.sMsgCode);
 	    
-	    // Cохранить сообщение во вновь созданном шаблоне
+	    // Cохранить данные во вновь созданном СООБЩЕНИИ
 //	    retMsg = doMsg();
 	}
 
 	return retMsg;
     }
 
-    // Запрос на сохранение сообщения
+    // Запрос на сохранение СООБЩЕНИЯ
     // Вынес из save на тот случай, если понадобиться повторный вызов после
     // создания нового шаблона сообщения
     private IMsgObjR doMsg() {
@@ -430,10 +431,10 @@ public class MsgSendImpl implements MsgSend {
 	filter.setAttrs(mAttrs);
 	filter.setStack(sError);
 	filter.setSource(sFunction);
-	filter.setLevelFilter(msgLevel);
+	filter.setLevelFilter(msgLevel.name());
 	filter.setMsgId(filter.getMsgId());
 
-	LOG.debug("filter={}", filter);
+	LOG.debug("filter:\n{}", filter);
 
 	return Msg.getMsg(filter);
     }

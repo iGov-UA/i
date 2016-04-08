@@ -719,8 +719,8 @@ public class ObjectFactory {
      * Create an instance of {@link DGKodСausesOperation6Column }
      * 
      */
-    public DGKodСausesOperation6Column createDGKodСausesOperation6Column() {
-        return new DGKodСausesOperation6Column();
+    public DGKodCausesOperation6Column createDGKodCausesOperation6Column() {
+        return new DGKodCausesOperation6Column();
     }
 
     /**
