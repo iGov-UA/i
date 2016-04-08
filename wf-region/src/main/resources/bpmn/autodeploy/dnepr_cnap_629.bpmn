@@ -96,7 +96,9 @@
         <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dnepr_cnap_629_print.html]" type="invisible" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:formProperty id="markers12" name="принтформа якщо юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_12&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;shapka_ur&quot;,&quot;zagolovok&quot;,&quot;telo_ur&quot;,&quot;spisok_doc&quot;,&quot;data_ur&quot;,&quot;obrobka&quot;,&quot;end&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asSubekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='ur'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers13" name="принтформа якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;telo_fiz&quot;,&quot;spisok_doc&quot;,&quot;data_fiz&quot;,&quot;obrobka&quot;,&quot;end&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asSubekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='fiz'&quot;}}}"></activiti:formProperty>
+               <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression>${bankId_scan_passport}, ${sDocShow},${sDocConfidant}</activiti:expression>
@@ -147,6 +149,8 @@
         <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka628" name="шапка у принтформу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="markers12" name="принтформа якщо юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_12&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;shapka_ur&quot;,&quot;zagolovok&quot;,&quot;telo_ur&quot;,&quot;spisok_doc&quot;,&quot;data_ur&quot;,&quot;obrobka&quot;,&quot;end&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asSubekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='ur'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers13" name="принтформа якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;telo_fiz&quot;,&quot;spisok_doc&quot;,&quot;data_fiz&quot;,&quot;obrobka&quot;,&quot;end&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asSubekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='fiz'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_629_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dnepr_cnap_629_print.html]" type="invisible" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
       </extensionElements>
@@ -270,10 +274,6 @@ var per3 = " "
 var per4 = " "
 var per5 = " "
 var per7 = "res2"
-var per8 = "res8"
-var per9 = "res9"
-var per10 = "res10"
-var per11= "res11"
 if(execution.getVariable('sDocShow') != null){
 per3 = "&lt;li&gt;Копія акта про прийняття в експлуатацію новозбудованого, реконструйованого або переоснащеного кінотеатру, відеозалу, кіноустановки, відеоустановки міжвідомчою комісією.&lt;/li&gt;"
 }
@@ -281,10 +281,10 @@ if(execution.getVariable('sDocConfidant') != null){
 per5 = "&lt;li&gt;Довіреність на право представляти інтереси субʼєкта господарювання в органах місцевого самоврядування.&lt;/li&gt;"
 }
 if(execution.getVariable('asDirection') == 'production'){
-per4 = "Відомості щодо виробництва фільмів - наявність власної або найманої (орендованої) виробничої бази для знімання фільмів: "+res8+"&lt;br /&gt;Данні про види фільмів, способи їх знімання та виготовлення оригіналів фільмових матеріалів на кіноплівці, магнітних чи інших електронних носіях: "+ res9
+per4 = "Відомості щодо виробництва фільмів - наявність власної або найманої (орендованої) виробничої бази для знімання фільмів: "+execution.getVariable('sProductionBase')+"&lt;br /&gt;Данні про види фільмів, способи їх знімання та виготовлення оригіналів фільмових матеріалів на кіноплівці, магнітних чи інших електронних носіях: "+ execution.getVariable('sProductionType')
 }
 if(execution.getVariable('asDirection') == 'spread'){
-per4 = "Відомості щодо розповсюдження фільмів - наявність власної або найманої (орендованої) виробничої бази для тиражування фільмів на кіноплівці, магнітних чи інших електронних носіях: "+res10+"&lt;br /&gt;види розповсюдження: "+ res11
+per4 = "Відомості щодо розповсюдження фільмів - наявність власної або найманої (орендованої) виробничої бази для тиражування фільмів на кіноплівці, магнітних чи інших електронних носіях: "+execution.getVariable('sSpreadBase')+"&lt;br /&gt;види розповсюдження: "+ execution.getVariable('sSpreadType')
 }
 if(execution.getVariable('asDirection') == 'show'){
 per4 = "Відомості щодо демонстрування фільмів - до заяви додаєтся копія акта про прийняття в експлуатацію новозбудованого, реконструйованого або переоснащеного кінотеатру, відеозалу, кіноустановки, відеоустановки міжвідомчою комісією.&lt;/li&gt;"
@@ -292,10 +292,6 @@ per4 = "Відомості щодо демонстрування фільмів 
 res2 = '&lt;ol&gt;'+per1+per2+per3+per5+'&lt;/ol&gt;'
 execution.setVariable('sListDocumentsLetter', res2)
 execution.setVariable('sListDocumentsPrint', per4)
-execution.getVariable('sProductionBase', res8)
-execution.getVariable('sProductionType', res9)
-execution.getVariable('sSpreadBase', res10)
-execution.getVariable('sSpreadType', res11)
  </script>
     </scriptTask>
     <sequenceFlow id="flow12" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
