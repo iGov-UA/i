@@ -6,7 +6,7 @@ var _ = require('lodash');
 var processProps;
 try {
 
-  processProps = require(__dirname + '/../../..'+'/process-custom_.json').env;
+  processProps = require(__dirname + '/../../..'+'/process-custom.json').env;
 
 } catch (e) {
   processProps = _.merge({}, process.env);
