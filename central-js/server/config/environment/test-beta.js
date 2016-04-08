@@ -21,7 +21,7 @@ module.exports = {
 
   server: {
     session: {
-      secure: true,
+      secure: 'true',
       maxAge: 14400000 // 4h*60m*60s*1000ms*/
     }
   }

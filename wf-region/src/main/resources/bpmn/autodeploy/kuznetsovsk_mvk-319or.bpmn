@@ -150,7 +150,7 @@
     <sequenceFlow id="flow7" sourceRef="servicetask6" targetRef="endevent2"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow8" name="${decide == 'accept'}" sourceRef="exclusivegateway3" targetRef="servicetask7">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Public_SubjectOrganJoin == 'hmel_netishT'&&decide == 'accept'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Public_SubjectOrganJoin != 'hmel_netishT'&&decide == 'accept'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask7" name="Повідомлення про передачу док-в в роботу" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
