@@ -2,12 +2,15 @@ angular.module('app').controller('dropdownAutocompleteCtrl', function ($scope, $
 
   var hasNextChunk = true,
       queryString = '',
-      skip = 0, count = 30;
+      skip = 0, count = 30,
+      tempCollection;
 
   function getInfinityScrollChunk() {
     $scope.isRequestMoreItems = true;
-    return $http.get($scope.autocompleteData.apiUrl + '=' + queryString,
-            {params: {count: count, skip: skip}});
+    var params = $scope.autocompleteData.hasPaging ? {count: count, skip: skip} : {};
+    hasNextChunk = $scope.autocompleteData.hasPaging ? hasNextChunk : false;
+    params[$scope.autocompleteData.titleProperty] = queryString;
+    return $http.get($scope.autocompleteData.apiUrl, {params: params});
   }
 
   var getAdditionalPropertyName = function() {
@@ -28,7 +31,8 @@ angular.module('app').controller('dropdownAutocompleteCtrl', function ($scope, $
 
       return ($scope.autocompleteData ? getInfinityScrollChunk() : $timeout(getInfinityScrollChunk, 200))
           .then(function(response) {
-            Array.prototype.push.apply(collection, response.data);
+            Array.prototype.push.apply(collection, $scope.autocompleteData.hasPaging ? response.data :
+              $filter('orderBy')(response.data, $scope.autocompleteData.titleProperty));
             if (response.data.lenght < count) {
               hasNextChunk = false;
             }
@@ -42,6 +46,17 @@ angular.module('app').controller('dropdownAutocompleteCtrl', function ($scope, $
   };
 
   $scope.refreshList = function(query) {
+    if (!$scope.autocompleteData.hasPaging && !hasNextChunk) {
+      tempCollection = tempCollection || $scope.$select.items;
+      if (query.length) {
+        var params = {};
+        params[$scope.autocompleteData.titleProperty] = query;
+        $scope.$select.items = $filter('filter')(tempCollection, params);
+      } else {
+        $scope.$select.items = tempCollection;
+      }
+      return;
+    }
     if (queryString !== query || query === '') {
       queryString = query;
       skip = 0;

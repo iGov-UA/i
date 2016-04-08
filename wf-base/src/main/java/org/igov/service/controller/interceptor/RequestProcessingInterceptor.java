@@ -150,6 +150,12 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             //TODO temp
         }
         String sURL = oRequest.getRequestURL().toString();
+        String snTaskId = null;
+        //getting task id from URL, if URL matches runtime/tasks/{taskId} (#1234)
+        if (TAG_PATTERN_PREFIX.matcher(oRequest.getRequestURL()).find())
+        {
+            snTaskId = sURL.substring(sURL.lastIndexOf("/")+1);
+        }
         
         String sRequestBody = osRequestBody.toString();
         if(!bFinish){
@@ -216,7 +222,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 LOG.info("saveNewTaskInfo block");
                 saveNewTaskInfo(sRequestBody, sResponseBody, mRequestParam);
             } else if (isCloseTask(oRequest, sResponseBody)) {
-                saveClosedTaskInfo(sRequestBody);
+                saveClosedTaskInfo(sRequestBody, snTaskId);
             } else if (isUpdateTask(oRequest)) {
                 saveUpdatedTaskInfo(sResponseBody);
             }
@@ -327,13 +333,18 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         historyEventService.addHistoryEvent(sID_Order, sUserTaskName, mParam);
         //LOG.info("ok!");
     }
-    
-    private void saveClosedTaskInfo(String sRequestBody) throws Exception {
+
+        //(#1234) added additional parameter snClosedTaskId
+        private void saveClosedTaskInfo(String sRequestBody, String snClosedTaskId) throws Exception {
         Map<String, String> mParam = new HashMap<>();
         JSONObject omRequestBody = (JSONObject) oJSONParser.parse(sRequestBody);
         mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CLOSED.getnID().toString());
-        
+
         String snID_Task = (String) omRequestBody.get("taskId");
+        if ((snID_Task == null) && (snClosedTaskId != null))
+        {
+        snID_Task = snClosedTaskId;
+        }
         
         if(snID_Task != null){
             HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery().taskId(snID_Task).singleResult();
