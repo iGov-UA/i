@@ -18,6 +18,7 @@ var config = require('./environment');
 var session = require('cookie-session');
 
 module.exports = function (app) {
+  app.set('env', config.env);
   var env = app.get('env');
 
   app.set('views', config.root + '/server/views');
@@ -36,16 +37,15 @@ module.exports = function (app) {
   app.use(methodOverride());
   app.use(cookieParser());
 
-  if ('prod' === env || 'test-alpha' === env || 'test-beta' === env) {
-  //if(config.bCompile){
+  //if ('prod' === env || 'test-alpha' === env || 'test-beta' === env) {
+  if(config.bCompile){
     app.use(favicon(path.join(config.root, 'public', 'favicon.ico')));
     app.use(express.static(path.join(config.root, 'public')));
     app.set('appPath', config.root + '/public');
     app.use(morgan('dev'));
   }
 
-  if ('local' === env || 'test' === env) {
-  //if (!config.bCompile) {
+  if (!config.bCompile || 'local' === env || 'test' === env) {
     app.use(require('connect-livereload')());
     app.use(express.static(path.join(config.root, '.tmp')));
     app.use(express.static(path.join(config.root, 'client')));
