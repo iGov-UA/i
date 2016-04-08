@@ -66,8 +66,11 @@ import com.pb.util.gsv.net.HTTPClient;
  *              Если СООБЩЕНИЯ с заданным кодом нет, то передаваемые данные привязываются к СООБЩЕНИЮ с кодом DEFAULT. 
  *         В этом случае, программа попытается создать на сервисе новое СООБЩЕНИЕ с новым кодом. 
  *                 
- *             Для задач igov мы приняли следующий шаблон формирования Кода СООБЩЕНИЯ:  АББРЕВИАТУРА_ТИПА_СООБЩЕНИЯ-ИМЯ_ФУНКЦИИ
- *         Например при вызове MsgSendImpl("WARNING","org.igov.getFunctionMeat"), Код СООБЩЕНИЯ будет WR-ORG.IGOV.GETFUNCTIONMEAT
+ *             Для задач igov мы приняли следующий шаблон формирования Кода СООБЩЕНИЯ:  АББРЕВИАТУРА_ТИПА_СООБЩЕНИЯ-ИМЯ_ФУНКЦИИ, 
+ *         длина кода сообщения не более 30символов. При превышении этой длины название функции обрезается слева.
+ *         Например при вызове MsgSendImpl("WARNING","org.igov.controller.getFunction"), Код СООБЩЕНИЯ будет: 
+ *         WR-IGOV.CONTROLLER.GETFUNCTION
+ *         123456789012345678901234567890 
  * 
  *         
  *         Для гибкой настройки программы может использоваться файл параметров msg.properties, где:
@@ -118,6 +121,8 @@ public class MsgSendImpl implements MsgSend {
 
     }
 
+    private static final int MSG_CODE_LENGTH = 30 - 3;
+    
     public static final HTTPClient httpClient = new HTTPClient();
 
     private String sBusId = BusId_DEFAULT;
@@ -156,8 +161,13 @@ public class MsgSendImpl implements MsgSend {
 	} catch (final IllegalArgumentException e) {
 	    msgType = MsgType.INF_MESSAGE;
 	}
+	
+	String sf = sFunction.trim().toUpperCase();
+	if ( sf.length() > MSG_CODE_LENGTH ) {
+	    sf = sf.substring(sf.length() - MSG_CODE_LENGTH);
+	}
 
-	this.sMsgCode = msgType.getAbbr() + "-" + sFunction.trim().toUpperCase();
+	this.sMsgCode = msgType.getAbbr() + "-" + sf;
 	this.sFunction = sFunction;
 
 	LOG.debug("MsgCode={}", this.sMsgCode);
@@ -390,7 +400,7 @@ public class MsgSendImpl implements MsgSend {
 	    LOG.info("Созданно сообщение с кодом : {}", this.sMsgCode);
 	    
 	    // Cохранить данные во вновь созданном СООБЩЕНИИ
-//	    retMsg = doMsg();
+	    retMsg = doMsg();
 	}
 
 	return retMsg;
