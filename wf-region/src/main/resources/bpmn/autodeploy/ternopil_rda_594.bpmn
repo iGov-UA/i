@@ -110,7 +110,7 @@ ${sNameOrgan},&lt;br&gt;
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow65" sourceRef="servicetask6" targetRef="usertask1"></sequenceFlow>
-    <userTask id="usertask1" name="Перевірка документів операціоністом" activiti:candidateGroups="pravochyny_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask1" name="Перше коло запрошення на співбесіду" activiti:candidateGroups="pravochyny_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="ПІБ заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio_1" name="ПІБ другого з батьків, опікунів, піклувальників" type="string" default="${lastName_UA1} ${firstName_UA1} ${middleName_UA1}" writable="false"></activiti:formProperty>
@@ -164,12 +164,17 @@ ${sNameOrgan},&lt;br&gt;
         <activiti:formProperty id="nDoc_hroshi" name="Документ, що підтверджує право володіння дитини грошовими заощадженнями" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nDoc_zemlya" name="Документ, що підтверджує право власності (коритування) на земельну ділянку" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nDocument" name="Документ, що підтверджує право власності, володіння або користування дитини; стосовно чого вчинятиметься правочин" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asWorkerDecision" name="Рішення операціоніста" type="enum" required="true">
-          <activiti:value id="accept" name="Прийняти документи для розгляду"></activiti:value>
-          <activiti:value id="decline" name="Відмовити у реєстрації звернення"></activiti:value>
+        <activiti:formProperty id="decision_1" name="результат обробки вхідних данних" type="enum" required="true">
+          <activiti:value id="accept" name="Заповнені дані вірні, запросити громадян на співбесіду"></activiti:value>
+          <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у реєстрації звернення, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="docID" name="Реєстраційний номер" type="string"></activiti:formProperty>
+        <activiti:formProperty id="date_visit" name="Укажіть дату - коли прийти громадянам (у форматі дд.мм.рррр)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="time_visit" name="Укажіть час - о котрій прийти громадянам (наприклад 15:00)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="room" name="Укажіть кабінет, де буде проводитися співбесіда" type="string"></activiti:formProperty>
+        <activiti:formProperty id="pib_posadovec" name="П.І.Б. посадової особи, що проводитиме співбесіду" type="string"></activiti:formProperty>
+        <activiti:formProperty id="comment_3" name="Додаткові відомості щодо візиту (заповніть у разі необхідності)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="comment_1" name="У разі відхилення звернення внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="comment_5" name="Якщо назви якогось документу не вистачає у переліку в заяві - впишіть його назву у це поле" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers21" name="Настроювання принтформи " type="markers" default="${markerService.loadFromFile('ternopil/tern_594_cont1.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/tern_rda_594.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
@@ -209,7 +214,7 @@ ${sNameOrgan},&lt;br&gt;
     <sequenceFlow id="flow59" name="${asWorkerDecision=='accept'} " sourceRef="exclusivegateway2" targetRef="servicetask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asWorkerDecision=='accept'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask5" name="Звернення передане на розгляд" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask5" name="Звернення на розгляді" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
@@ -235,7 +240,7 @@ ${sNameOrgan},&lt;br&gt;
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow60" sourceRef="servicetask5" targetRef="usertask2"></sequenceFlow>
-    <userTask id="usertask2" name="Результат розгляду запиту" activiti:candidateGroups="pravochyny_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask2" name="Результат розгляду" activiti:candidateGroups="pravochyny_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="docID" name="Реєстраційний номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="ПІБ заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -319,7 +324,7 @@ ${sNameOrgan},&lt;br&gt;
           							&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
                                         Ваш запит щодо отримання дозволу органу опіки та піклування на вчинення правочину з майном, що перебуває у власності неповнолітніх опрацьовано.&lt;br /&gt;
-                                    	Ви можете знайти офіційну скан-копію відповідь у додатках до листа.
+                                    	Ви можете знайти офіційну скан-копію відповіді у додатках до листа.
                                     &lt;/p&gt;
                                     &lt;p&gt;
 									Будь ласка, оцініть якість надання послуги за допомогою форми нижче.

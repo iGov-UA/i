@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="cnap_469" name="Видача акту обстеження та ордеру на видалення зелених насаджень" isExecutable="true">
+  <process id="cnap_638" name="Видача актів обстеження зелених насаджень на земельній ділянці" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати рішення" type="select" default="0"></activiti:formProperty>
@@ -27,10 +27,9 @@
         <activiti:formProperty id="sAdress2" name="Адреса находження зелених насаджень" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорту" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_inn" name="Скан-копія ІПН" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile1" name="Документи, що підтверджують право користування земельною ділянкою" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile2" name="Схема розташування зелених насаджень" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile3" name="Документ про сплату відновної вартості після рішення виконавчого комітету" type="file"></activiti:formProperty>
-       <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('dneprCnap/cnap_469.json')}"></activiti:formProperty>
+        <activiti:formProperty id="nFile1" name="Копія рішення сесії міської ради про надання  дозволу на складання проекту відведення земельної ділянки" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile2" name="Копія акту відведення та обстеження земельної ділянки разом з додатком (схема забудови)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('dneprCnap/cnap_638.json')}"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
@@ -49,12 +48,12 @@
           <activiti:expression>msvidran@gmail.com</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове звернення. Видача акту обстеження та ордеру на видалення зелених насаджень.]]></activiti:string>
+          <activiti:string><![CDATA[Нове звернення. Видача актів обстеження зелених насаджень на земельній ділянці.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;strong&gt;Шановний(-а) колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-У Вас в черзі на обробку нове звернення щодо видачи акту обстеження та ордеру на видалення зелених насаджень.&lt;br /&gt;
+У Вас в черзі на обробку нове звернення щодо видачи акту обстеження зелених насаджень на земельній ділянці.&lt;br /&gt;
 Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
 Відпрацюйте це звернення на &lt;a href="https://region.igov.org.ua" target="_blank"&gt;порталі&lt;/a&gt;
 [pattern/mail/_common_signature.html]
@@ -71,12 +70,12 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Видача акту обстеження та ордеру на видалення зелених насаджень.]]></activiti:string>
+          <activiti:string><![CDATA[Видача актів обстеження зелених насаджень на земельній ділянці.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;Ваше звернення щодо видачи акту обстеження та ордеру на видалення зелених насаджень зареєстровано у системі.&lt;br/&gt;
+&lt;p&gt;Ваше звернення щодо видачи акту обстеження зелених насаджень на земельній ділянці зареєстровано у системі.&lt;br/&gt;
 Повідомлення про результат послуги буде спрямоване на Ваш e-mail.&lt;/p&gt;
 &lt;br /&gt;
 ${sPhoneOrgan}.&lt;br /&gt;
@@ -122,11 +121,11 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="sShapkaGolova" name="Шапка для прінтформи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers12" name="принтформа якщо юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_12&quot;:{&quot;aElement_ID&quot;:[&quot;ur_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asChoiceObject&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnumUr'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers13" name="принтформа якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;fiz_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asChoiceObject&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnumFiz'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sBody" name="[pattern/print/dneprOblSnap/cnap_469_print.html]" type="invisible" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern/print/dneprOblSnap/cnap_638_print.html]" type="invisible" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile1},${nFile2},${nFile3},${bankId_scan_passport},${bankId_scan_inn}</activiti:expression>
+            <activiti:expression>${nFile1},${nFile2},${bankId_scan_passport},${bankId_scan_inn}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -148,12 +147,12 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Видача акту обстеження та ордеру на видалення зелених насаджень.]]></activiti:string>
+          <activiti:string><![CDATA[Видача актів обстеження зелених насаджень на земельній ділянці.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-На жаль, Ваше звернення щодо видачи акту обстеження та ордеру на видалення зелених насаджень - відхилине.&lt;/p&gt;
+На жаль, Ваше звернення щодо видачи акту обстеження зелених насаджень на земельній ділянці - відхилине.&lt;/p&gt;
 &lt;p&gt;Причина в наступному:&lt;/p&gt;
 &lt;p&gt;${comment}&lt;/p&gt;
 &lt;p&gt;Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="#current-page"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
@@ -178,12 +177,12 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Видача акту обстеження та ордеру на видалення зелених насаджень.]]></activiti:string>
+          <activiti:string><![CDATA[Видача актів обстеження зелених насаджень на земельній ділянці.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення щодо видачи акту обстеження та ордеру на видалення зелених насаджень - відправлене у профільний відділ міської ради.&lt;br /&gt;
+Ваше звернення щодо видачи акту обстеження зелених насаджень на земельній ділянці - відправлене у профільний відділ міської ради.&lt;br /&gt;
 Спеціалісти з органу місцевого самоврядування повинні дати відповідь протягом 50-ти календарних днів з дня реєстрації заяви.&lt;br /&gt; 
 &lt;p&gt;Номер Вашого замовлення: ${sExtensionNumber}&lt;/p&gt;&lt;br /&gt; 
 ${sPhoneOrgan}.&lt;br /&gt;
@@ -241,13 +240,13 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Видача акту обстеження та ордеру на видалення зелених насаджень.]]></activiti:string>
+          <activiti:string><![CDATA[Видача актів обстеження зелених насаджень на земельній ділянці.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 &lt;p&gt;
-Ваше звернення щодо видачи акту обстеження та ордеру на видалення зелених насаджень - опрацьовано. &lt;br /&gt;
+Ваше звернення щодо видачи акту обстеження зелених насаджень на земельній ділянці - опрацьовано. &lt;br /&gt;
 Ви або уповноважена Вами особа (при наявності довіреності) можете отримати акт обстеження та ордер особисто під підпис у ЦНАП.&lt;br/&gt; 
 При собі треба мати:&lt;br/&gt; 
 1. Документ, що посвідчує особу.&lt;br/&gt; 
@@ -278,13 +277,13 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Видача акту обстеження та ордеру на видалення зелених насаджень.]]></activiti:string>
+          <activiti:string><![CDATA[Видача актів обстеження зелених насаджень на земельній ділянці.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 &lt;p&gt;
-На жаль, Ваше звернення щодо видачи акту обстеження та ордеру на видалення зелених насаджень - відхилено.&lt;br /&gt;
+На жаль, Ваше звернення щодо видачи акту обстеження зелених насаджень на земельній ділянці - відхилено.&lt;br /&gt;
 Вам надіслано в прикріпленому файлі рішення з вказаною причиною. &lt;br /&gt;
 &lt;/p&gt;
 &lt;br /&gt;
@@ -310,8 +309,8 @@ ${sNameOrgan}.&lt;br /&gt;
     <endEvent id="endevent3" name="End"></endEvent>
     <sequenceFlow id="flow15" sourceRef="servicetask7" targetRef="endevent3"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_cnap_469">
-    <bpmndi:BPMNPlane bpmnElement="cnap_469" id="BPMNPlane_cnap_469">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_cnap_638">
+    <bpmndi:BPMNPlane bpmnElement="cnap_638" id="BPMNPlane_cnap_638">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="140.0" y="168.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>

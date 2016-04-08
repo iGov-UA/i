@@ -70,10 +70,10 @@
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('newField.json')}"></activiti:formProperty>
         <activiti:formProperty id="sOrgan" name="назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sSignCnap" name="підпис" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneCnap" name="телефон ЦНАП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sRozklad" name="графік роботи ЦНАП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPostV" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="графік роботи ЦНАП" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="flag" name="Флаг таймера" type="invisible" default="false"></activiti:formProperty>
         </extensionElements>
     </startEvent>
@@ -88,7 +88,7 @@
     <serviceTask id="servicetask3" name="Повідомлення про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>zhigan.roman@gmail.com</activiti:expression>
+          <activiti:expression>klimkovichy@gmail.com</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -123,10 +123,10 @@
 										Спеціалісти відповідального органу оброблять Вашу заявку та нададуть відповідь найближчим часом. 
 									&lt;/p&gt;
 									&lt;p&gt;
-									За наявності питянь можете звернутись за телефоном: ${sPhoneCnap}.
+									${sPhoneOrgan}.
 									&lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
-									${sSignCnap},&lt;br&gt;
+									${sNameOrgan},&lt;br&gt;
 									[pattern/mail/_common_signature_end.html]   
 									[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -230,10 +230,10 @@
 									&lt;i&gt;${decisionComment}&lt;/i&gt;
 									&lt;/p&gt;
                                     &lt;p&gt;
-									За наявності питань можете звернутись за телефоном: ${sPhoneCnap}.
+									${sPhoneOrgan}.
 									&lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
-									${sSignCnap}.&lt;/p&gt;
+									${sNameOrgan}.&lt;/p&gt;
                                     [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
@@ -319,10 +319,10 @@ execution.setVariable('notification_day', timer)</script>
 										Ваше звернення знаходиться в обробці. Чекайте на кінцевий результат. 
 								    &lt;/p&gt;
 									&lt;p&gt;
-									За наявності питянь можете звернутись за телефоном: ${sPhoneCnap}.
+									${sPhoneOrgan}.
 									&lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
-									${sSignCnap},&lt;br&gt;
+									${sNameOrgan},&lt;br&gt;
 									[pattern/mail/_common_signature_end.html]   
 									[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -426,14 +426,14 @@ execution.setVariable('flag', src)</script>
                                     &lt;/p&gt;
                                     &lt;p&gt;
 										Адреса: &lt;br /&gt;
-										${sRozklad}
-										Телефон: ${sPhoneCnap}
+										${sWorkTime}
+										 ${sPhoneOrgan}
                                     &lt;/p&gt;
                                     &lt;p&gt;
 									&lt;i&gt;${decisionComment}&lt;/i&gt;
 									&lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
-									${sSignCnap},&lt;br&gt;
+									${sNameOrgan},&lt;br&gt;
 									[pattern/mail/_common_signature_end.html]
 									[pattern/mail/_common_feedback.html]
                                     [pattern/mail/_common_footer.html]</activiti:expression>
