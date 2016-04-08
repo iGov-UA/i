@@ -9,17 +9,19 @@
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Ваш телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваша електронна пошта" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="have_passport" name="У Вас на даний момент є закордонний паспорт?" type="enum" required="true">
-          <activiti:value id="attr1_yes" name="так, хочу замінити"></activiti:value>
-          <activiti:value id="attr2_no" name="ні, буду отримувати перший раз"></activiti:value>
+        <activiti:formProperty id="asHave_passport" name="У Вас на даний момент є закордонний паспорт?" type="enum" required="true">
+          <activiti:value id="sPaspNo" name="ні, буду отримувати перший раз"></activiti:value>
+          <activiti:value id="sPaspChange" name="так, хочу замінити"></activiti:value>
+          <activiti:value id="sPaspMore" name="так, потрібно отримати другий"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="biometrical" name="Ви бажаєте замовити біометричний паспорт?" type="enum" default="attr1_no" required="true">
-          <activiti:value id="attr1_no" name="ні"></activiti:value>
-          <activiti:value id="attr2_yes" name="так"></activiti:value>
+        <activiti:formProperty id="sWarning2" name=" " type="label" default="Для отримання другого закордонного паспорту перший повинен бути діючим, та потреба у другому має бути обргунтована"></activiti:formProperty>
+        <activiti:formProperty id="asBiometrical" name="Ви бажаєте замовити біометричний паспорт?" type="enum" default="sBiomNo" required="true">
+          <activiti:value id="sBiomNo" name="ні"></activiti:value>
+          <activiti:value id="sBiomYes" name="так"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть підрозділ міграційної служби, в якому Ви будете отримувати паспорт" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="В який день Ви бажаєте звернутися до міграційної служби?" type="queueData" required="true"></activiti:formProperty>
-        <activiti:formProperty id="warning1" name=" " type="label" default="Якщо Ви не знайшли у обраному підрозділі ДМС зручну дату, спробуйте обрати інший підрозділ Вашого міста."></activiti:formProperty>
+        <activiti:formProperty id="sWarning1" name=" " type="label" default="Якщо Ви не знайшли у обраному підрозділі ДМС зручну дату, спробуйте обрати інший підрозділ Вашого міста."></activiti:formProperty>
         <activiti:formProperty id="nID_Department_visitDay" name="Департамент" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса ДМС" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNotification_day" name="sNotification_day" type="invisible"></activiti:formProperty>
@@ -118,7 +120,7 @@ ${sNameOrgan},&lt;br&gt;
     <sequenceFlow id="flow41" sourceRef="parallelgateway3" targetRef="exclusivegateway2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow21" sourceRef="exclusivegateway2" targetRef="servicetask2">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${biometrical=='attr1_no'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asBiometrical=='sBiomNo'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask2" name="звичайний не терміновий" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
@@ -179,7 +181,7 @@ ${sNameOrgan},&lt;br&gt;
     </serviceTask>
     <sequenceFlow id="flow26" sourceRef="servicetask2" targetRef="usertask2"></sequenceFlow>
     <sequenceFlow id="flow17" sourceRef="exclusivegateway2" targetRef="servicetask3">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${biometrical=='attr2_yes'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asBiometrical=='sBiomYes'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask3" name="біометричний не терміновий" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
@@ -249,13 +251,14 @@ ${sNameOrgan},&lt;br&gt;
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта громадянина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="have_passport" name="Наявність у громадянина закордонного паспорту" type="enum" writable="false">
-          <activiti:value id="attr1_yes" name="вже є, буде замінювати"></activiti:value>
-          <activiti:value id="attr2_no" name="буде отримувати в перший раз"></activiti:value>
+        <activiti:formProperty id="asHave_passport" name="Наявність у громадянина закордонного паспорту" type="enum" writable="false">
+          <activiti:value id="sPaspChange" name="вже є, буде замінювати"></activiti:value>
+          <activiti:value id="sPaspNo" name="буде отримувати в перший раз"></activiti:value>
+          <activiti:value id="sPaspMore" name="так, потрібно отримати другий"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="biometrical" name="Чи необхідно виготовити біометричний паспорт?" type="enum" writable="false">
-          <activiti:value id="attr1_no" name="ні"></activiti:value>
-          <activiti:value id="attr2_yes" name="так"></activiti:value>
+        <activiti:formProperty id="asBiometrical" name="Чи необхідно виготовити біометричний паспорт?" type="enum" writable="false">
+          <activiti:value id="sBiomNo" name="ні"></activiti:value>
+          <activiti:value id="sBiomYes" name="так"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="visitDay" name="Дата та час візиту - " type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="finish" name="Результат візиту" type="enum" required="true">
