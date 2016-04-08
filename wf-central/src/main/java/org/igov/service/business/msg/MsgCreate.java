@@ -81,7 +81,7 @@ public class MsgCreate {
 	    if (conn.getResponseCode() != HttpURLConnection.HTTP_CREATED) {
 		
 		StringBuffer berr = new StringBuffer(500);
-		berr.append("Ошибка при работе с сервисом :");
+		berr.append("Ошибка при работе с сервисом ");
 		berr.append(url);
 		berr.append("\nBodyRequest:\n");
 		berr.append(sBodyRequest);
