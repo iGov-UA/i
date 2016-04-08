@@ -28,12 +28,12 @@ import com.pb.util.gsv.net.HTTPClient;
  * 
  *         Пример использования:
  * 
- *         IMsgObjR msg = new MsgSendImpl(sType, sFunction).
- *         			addnID_Server(nID_Server).
- *         			addnID_Subject(nID_Subject).
- *         			addsBody(sBody).
- *         	         	addsError(sError).
- *         			addsHead(sHead).
+ *         IMsgObjR msg = new MsgSendImpl("WARNING", "org.igov.getManyMoney").
+ *         			addnID_Server(1L).
+ *         			addnID_Subject(1L).
+ *         			addsBody("sBody").
+ *         	         	addsError("sError").
+ *         			addsHead("sHead").
  *         			addsmData(smData).
  *         			save();
  * 
@@ -53,21 +53,29 @@ import com.pb.util.gsv.net.HTTPClient;
  *         sFunction - строка с именем функции где произошла ошибка
  *         
  *         
- *         В Сервисе Хранения Ошибок все отсылаемые данные привязываются к определенному СООБЩЕНИЮ, которое должно быть
- *         заведено на сервисе заранее. Данные привязываются к СООБЩЕНИЮ по его коду. Код СООБЩЕНИЯ - набор латинских символов 
- *         и цифр в верхнем регистре, например: IGOV-MAIN. 
- *         Если СООБЩЕНИЯ с заданным кодом нет, то передаваемые данные привязываются к СООБЩЕНИЮ с кодом DEFAULT. В этом случае, 
- *         программа попытается создать на сервисе новое СООБЩЕНИЕ с новым кодом. 
+ *              В Сервисе Хранения Ошибок все отсылаемые данные привязываются к определенному СООБЩЕНИЮ, которое должно быть
+ *         заведено на сервисе заранее ( в нашем случае это делает данная программа). 
+ *         
+ *              СООБЩЕНИЕ - это сущность, содержащая в себе информацию, включающую атрибуты сообщения и набор представлений 
+ *         (для данного языка и уровня сообщения). Характеризуется Кодом СООБЩЕНИЯ который может быть определен пользователем 
+ *         при создании сообщения. Код уникален в рамках бизнес процесса и не может быть изменен после создания сообщения.
+ *         
+ *              Все данные в Сервисе Хранения Ошибок привязываются к СООБЩЕНИЮ по его коду. Код СООБЩЕНИЯ - набор латинских 
+ *         символов и цифр, например: IGOV-MAIN77.
+ *          
+ *              Если СООБЩЕНИЯ с заданным кодом нет, то передаваемые данные привязываются к СООБЩЕНИЮ с кодом DEFAULT. 
+ *         В этом случае, программа попытается создать на сервисе новое СООБЩЕНИЕ с новым кодом. 
  *                 
- *         Для задач igov мы приняли следующий шаблон Кода СООБЩЕНИЯ:  АББРЕВИАТУРА_ТИПА_СООБЩЕНИЯ-ИМЯ_ФУНКЦИИ
- *         Например при вызове MsgSendImpl("WARNING","org.igov.getFunctionMeat")  Код СООБЩЕНИЯ будет WR-ORG.IGOV.GETFUNCTIONMEAT
+ *             Для задач igov мы приняли следующий шаблон формирования Кода СООБЩЕНИЯ:  АББРЕВИАТУРА_ТИПА_СООБЩЕНИЯ-ИМЯ_ФУНКЦИИ
+ *         Например при вызове MsgSendImpl("WARNING","org.igov.getFunctionMeat"), Код СООБЩЕНИЯ будет WR-ORG.IGOV.GETFUNCTIONMEAT
  * 
  *         
- *         Для гибкой настройки может использоваться файл параметров msg.properties, где:
+ *         Для гибкой настройки программы может использоваться файл параметров msg.properties, где:
  * 
  *         MsgURL=http://msg.igov.org.ua/MSG  	// url Сервиса Хранения Ошибок 
  *         BusId=TEST 				// иденификатор Бизнес процесса
  *         TemplateMsgId=HMXHVKM70002M0		// код пустого шаблона СООБЩЕНИЯ
+ *         
  */
 public class MsgSendImpl implements MsgSend {
     private static final Logger LOG = LoggerFactory.getLogger(MsgSendImpl.class);
@@ -132,8 +140,7 @@ public class MsgSendImpl implements MsgSend {
      * 
      */
     public MsgSendImpl(String sType, String sFunction) {
-	LOG.debug("Send msg. sType={}, sFunction={}", sType, sFunction);
-	LOG.debug("ServiceURL={}, BusID={}", MSG_URL, sBusId);
+	LOG.debug("ServiceURL={}, BusID={}, sType={}, sFunction={}", MSG_URL, sBusId, sType, sFunction);
 
 	if (sType == null || sFunction == null) {
 	    throw new IllegalArgumentException("Constructor parameters: sType=" + sType + ", sFunction=" + sFunction);
@@ -148,7 +155,7 @@ public class MsgSendImpl implements MsgSend {
 	this.sMsgCode = msgType.getAbbr() + "-" + sFunction.trim().toUpperCase();
 	this.sFunction = sFunction;
 
-	LOG.debug("Send message sMsgCode={}", this.sMsgCode);
+	LOG.debug("MsgCode={}", this.sMsgCode);
     }
 
     public MsgSend addBusId(String sBusId) {
@@ -420,7 +427,7 @@ public class MsgSendImpl implements MsgSend {
 	filter.setLevelFilter(msgLevel.name());
 	filter.setMsgId(filter.getMsgId());
 
-	LOG.debug("filter={}", filter);
+	LOG.debug("filter:\n{}", filter);
 
 	return Msg.getMsg(filter);
     }
