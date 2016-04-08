@@ -14,26 +14,30 @@ angular.module('order').config(function ($stateProvider, statesRepositoryProvide
       .state('index.order.search', {
         url: '/search?sID_Order&sToken&nID',
         parent: 'index.order',
-        resolve: {
-          order: function($q, $stateParams, ServiceService) {
-            if($stateParams.sID_Order) {
-              return ServiceService.searchOrder($stateParams.sID_Order, $stateParams.sToken);
-            }else if($stateParams.nID) {
-              return ServiceService.searchOrder($stateParams.nID, $stateParams.sToken);
-            };
-
-            var deffered = $q.defer();
-            deffered.resolve(null);
-            return deffered.promise;
-          }
-        },
-        views: {
-          'content': {
-            templateUrl: 'app/order/search.html',
-            controller: 'OrderSearchController'
-          }
+        // resolve: {
+        //   order: function($q, $stateParams, ServiceService) {
+        //     if($stateParams.sID_Order) {
+        //       return ServiceService.searchOrder($stateParams.sID_Order, $stateParams.sToken);
+        //     }else if($stateParams.nID) {
+        //       return ServiceService.searchOrder($stateParams.nID, $stateParams.sToken);
+        //     };
+        //
+        //     var deffered = $q.defer();
+        //     deffered.resolve(null);
+        //     return deffered.promise;
+        //   }
+        // },
+        // views: {
+        //   'content': {
+        //     templateUrl: 'app/order/search.html',
+        //     controller: 'OrderSearchController'
+        //   }
+        // }
+        onEnter: function ($state, $stateParams, $q) {
+          $q.when($stateParams.transition).then(function () {
+            $state.go('index.search', $stateParams);
+          });
         }
       });
 //  }
 });
-

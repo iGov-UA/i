@@ -243,11 +243,14 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_S
 
 	@Override
 	public List<HistoryEvent_Service> getHistoryEventPeriod(DateTime dateAt,
-			DateTime dateTo) {
+			DateTime dateTo, List<Long> anID_Service_Exclude) {
 		Criteria oCriteria = getSession().createCriteria(HistoryEvent_Service.class);
         oCriteria.add(Restrictions.gt("sDate", dateAt));
         oCriteria.add(Restrictions.lt("sDate", dateTo));
-        
+        if(anID_Service_Exclude != null && !anID_Service_Exclude.isEmpty()) {
+            oCriteria.add(Restrictions.not(Restrictions.in("nID_Service", anID_Service_Exclude)));
+        }
+
         List<HistoryEvent_Service> aHistoryEvent_Service = (List<HistoryEvent_Service>) oCriteria.list();
         if (aHistoryEvent_Service == null) {
             aHistoryEvent_Service = new LinkedList<>();

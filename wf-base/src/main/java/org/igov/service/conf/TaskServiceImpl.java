@@ -52,5 +52,10 @@ public class TaskServiceImpl extends org.activiti.engine.impl.TaskServiceImpl {
 		LOG.info("Calling org.igov.service.conf.TaskServiceImpl.deleteAttachment(String)");
 		commandExecutor.execute(new MongoDeleteAttachmentCmd(attachmentId, durableBytesDataStorage));
 	}
+	
+	public InputStream getAttachmentContentByMongoID(String contentId) {
+		LOG.info("Calling org.igov.service.conf.TaskServiceImpl.getAttachmentContent(String)");
+		return commandExecutor.execute(new MongoGetAttachmentContentByMongoIDCmd(contentId, durableBytesDataStorage));
+	}
 
 }

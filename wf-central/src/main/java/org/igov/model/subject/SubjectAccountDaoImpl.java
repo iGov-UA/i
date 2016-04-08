@@ -25,7 +25,7 @@ public class SubjectAccountDaoImpl extends GenericEntityDao<SubjectAccount> impl
     @SuppressWarnings("unchecked")
     @Override
     public List<SubjectAccount> findSubjectAccounts(Long nID_Subject, String sLogin, Long nID_Server,
-	    SubjectAccountType subjectAccountType) {
+	    Long nID_SubjectAccountType) {
 	if (nID_Subject == null && sLogin == null) {
 	    return null;
 	}
@@ -42,8 +42,8 @@ public class SubjectAccountDaoImpl extends GenericEntityDao<SubjectAccount> impl
 	    oCriteria.add(Restrictions.eq("nID_Server", nID_Server));
 	}
 
-	if (subjectAccountType != null) {
-	    oCriteria.add(Restrictions.eq("subjectAccountType", subjectAccountType));
+	if (nID_SubjectAccountType != null) {
+	    oCriteria.add(Restrictions.eq("nID_SubjectAccountType", nID_SubjectAccountType));
 	}
 
 	List<SubjectAccount> subjectAccounts = oCriteria.list();
@@ -58,7 +58,7 @@ public class SubjectAccountDaoImpl extends GenericEntityDao<SubjectAccount> impl
      */
     @Override
     public SubjectAccount setSubjectAccount(Long nID, Long nID_Subject, String sLogin, Long nID_Server,
-	    SubjectAccountType subjectAccountType, String sNote) {
+	    Long nID_SubjectAccountType, String sNote) {
 
 	SubjectAccount subjectAccount = null;
 
@@ -77,8 +77,8 @@ public class SubjectAccountDaoImpl extends GenericEntityDao<SubjectAccount> impl
 	if (nID_Server != null) {
 	    subjectAccount.setnID_Server(nID_Server);
 	}
-	if (subjectAccountType != null) {
-	    subjectAccount.setSubjectAccountType(subjectAccountType);
+	if (nID_SubjectAccountType != null) {
+	    subjectAccount.setnID_SubjectAccountType(nID_SubjectAccountType);
 	}
 	if (nID_Subject != null) {
 	    subjectAccount.setnID_Subject(nID_Subject);

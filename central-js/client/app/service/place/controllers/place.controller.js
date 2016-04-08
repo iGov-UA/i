@@ -10,7 +10,7 @@ angular.module('app').controller('PlaceController',
             LocalityListFactory,
             PlacesService,
             ServiceService,
-            BankIDService,
+            UserService,
             regions,
             service) {
 

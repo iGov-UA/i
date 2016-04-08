@@ -2,6 +2,7 @@
 
 var compose = require('composable-middleware');
 var config = require('../config/environment');
+//var config = require('../config');
 var documents = require('../api/documents/documents.controller.js');
 
 function isAuthenticationInProgress(type) {
@@ -71,8 +72,9 @@ function createSessionObject(type, user, access) {
       lastName: user.customer.lastName
     },
     subject: user.subject,
-    access: access
-  };
+    access: access,
+    usercacheid: user.usercacheid
+  }
 }
 
 exports.isAuthenticated = isAuthenticated;

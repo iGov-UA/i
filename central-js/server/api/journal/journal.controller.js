@@ -2,7 +2,9 @@ var request = require('request');
 
 function getOptions(req) {
     var config = require('../../config/environment');
-    var activiti = config.activiti;
+  //var config = require('../../config');
+
+  var activiti = config.activiti;
 
     return {
         protocol: activiti.protocol,
@@ -35,7 +37,9 @@ module.exports.getHistoryEvents = function(req, res) {
             'password': options.password
         },
         'qs': {
-            'nID_Subject': req.session.subject.nID
+            'nID_Subject': req.session.subject.nID,
+            'nID_HistoryEvent_Service': req.params.nID_HistoryEvent_Service,
+            'bGrouped': req.params.nID_HistoryEvent_Service ? false : true
         }
     }, callback);
 };

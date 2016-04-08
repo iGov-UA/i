@@ -6,7 +6,7 @@
     .config(['$stateProvider',
       function ($stateProvider) {
         $stateProvider
-          .state('services', {
+          .state('tools.services', {
             url: '/services',
             templateUrl: 'app/services/services.html',
             controller: 'ServicesCtrl',

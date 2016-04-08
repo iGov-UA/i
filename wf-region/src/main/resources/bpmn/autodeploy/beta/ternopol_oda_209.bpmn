@@ -16,10 +16,9 @@
           <activiti:value id="sOpost" name="На поштову адресу"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sPlase_of_reg" name="Поштова адреса" type="string"></activiti:formProperty>
-        <activiti:formProperty id="text" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
         <activiti:formProperty id="marker1" name="Поштова адреса" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;bankIdAddress&quot;],&quot;asID_Field&quot;:{&quot;sService&quot;:&quot;asResultWay&quot;},&quot;sCondition&quot;:&quot;[sService]=='На поштову адресу'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sPostV" name="електронна пошта" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sSignCnap" name="підпис" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="електронна пошта" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <scriptTask id="scripttask1" name="Передача значений" scriptFormat="javascript" activiti:autoStoreVariables="false">
@@ -83,10 +82,10 @@ execution.setVariable('group', per2)
  &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 &lt;p&gt;
 Ваш запит був успішно зареєстрований.&lt;br&gt; 	
-Спеціалісти ОДА нададуть відповідь найближчим часом.
+Спеціалісти відповідального підрозділу нададуть відповідь найближчим часом.
 &lt;/p&gt;
 [pattern/mail/_common_signature_start.html]
-${sSignCnap},&lt;br&gt;
+${sNameOrgan},&lt;br&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -110,6 +109,8 @@ ${sSignCnap},&lt;br&gt;
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у реєстрації звернення, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
         <activiti:formProperty id="docID" name="Реєстраційний номер" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/ternopil_oda_209.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow50" sourceRef="usertask1" targetRef="exclusivegateway2"></sequenceFlow>
@@ -135,7 +136,7 @@ ${sSignCnap},&lt;br&gt;
 &lt;p&gt;Причина в наступному:&lt;br&gt;
 ${decisionComment}&lt;/p&gt;
 [pattern/mail/_common_signature_start.html]
-${sSignCnap},&lt;br&gt;
+${sNameOrgan},&lt;br&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -165,7 +166,7 @@ ${sSignCnap},&lt;br&gt;
                                     	Ви отримаєте відповідь найближчім часом.
                                     &lt;/p&gt;
 									[pattern/mail/_common_signature_start.html]
-									${sSignCnap},&lt;p&gt;
+									${sNameOrgan},&lt;p&gt;
 									[pattern/mail/_common_signature_end.html]
 									[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -220,7 +221,7 @@ ${sSignCnap},&lt;br&gt;
 									Будь ласка, оцініть якість надання послуги за допомогою форми нижче.
                                     &lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
-                                    ${sSignCnap},&lt;br&gt;
+                                    ${sNameOrgan},&lt;br&gt;
                                     [pattern/mail/_common_signature_end.html]
 									[pattern/mail/_common_feedback.html]
 									[pattern/mail/_common_footer.html]</activiti:expression>
@@ -257,7 +258,7 @@ ${sSignCnap},&lt;br&gt;
 									Будь ласка, оцініть якість надання послуги за допомогою форми нижче.
                                     &lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
-                                    ${sSignCnap},&lt;br&gt;
+                                    ${sNameOrgan},&lt;br&gt;
                                     [pattern/mail/_common_signature_end.html]
 									[pattern/mail/_common_feedback.html]
 									[pattern/mail/_common_footer.html]</activiti:expression>
@@ -291,7 +292,7 @@ ${sSignCnap},&lt;br&gt;
 										${decisionComment1}
 									&lt;/p&gt;
 									[pattern/mail/_common_signature_start.html]
-									${sSignCnap},&lt;br&gt;
+									${sNameOrgan},&lt;br&gt;
 									[pattern/mail/_common_signature_end.html]
 									[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>

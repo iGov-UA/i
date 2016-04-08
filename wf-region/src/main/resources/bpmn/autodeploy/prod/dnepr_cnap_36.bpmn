@@ -3,7 +3,7 @@
   <process id="dnepr_cnap_36" name="Копії рішень міської ради про продаж земельних ділянок державної та комунальної власності" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати рішення" type="select" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть ЦНАП, у якому Ви бажаєте отримати рішення" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" required="true"></activiti:formProperty>
@@ -18,9 +18,10 @@
         <activiti:formProperty id="edrpou_inn" name="Ідентифікаційний код згідно з ЄДРПОУ або ідентифікаційний номер фізичної особи – підприємця" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="sRukov" name="П.І.Б. керівника юридичної особи / фізичної особи  – підприємця" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sOrgAdress" name="Місцезнаходження юридичної особи / місце проживання фізичної особи – підприємця; Індекс, Область, Місто, Вулиця, Будинок, Квартира або Офіс" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sSignCnap" name="підпис" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sRozklad" name="графік роботи ЦНАП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPostV" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameObject" name="підпис у листі" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sWork_Time" name="графік роботи органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sClerkPost" name="Пошта органу" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -34,7 +35,7 @@
     <serviceTask id="servicetask3" name="Повідомлення про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${sPostV}</activiti:expression>
+          <activiti:expression>${sClerkPost}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -67,7 +68,7 @@
                                       Спеціалісти Центру надання адміністративних послуг повинні дати відповідь найближчім часом.
 									</p>
                                     [pattern/mail/_common_signature_start.html]
-									${sSignCnap},<br>
+									${sNameObject},<br>
                                     [pattern/mail/_common_signature_end.html]   
 									[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
@@ -130,7 +131,7 @@
                                     	${comment}
 									</p>
 									[pattern/mail/_common_signature_start.html]
-									${sSignCnap}.</p>   
+									${sNameObject}.</p>   
 									[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
@@ -159,7 +160,7 @@
                                       Спеціалісти державного Органу повинні дати відповідь протягом 10 робочіх днів.
 									</p>
                                     [pattern/mail/_common_signature_start.html]
-									${sSignCnap},<br>
+									${sNameObject},<br>
                                     [pattern/mail/_common_signature_end.html]   
 									[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
@@ -219,11 +220,11 @@
 									3. Роздруковану заяву, яку ви подавали в електронному вигляді (знаходиться у додатку), засвідчену особистим підписом керівника юридичної особи, фізичної особи - підприємця або уповноваженої ними особи.
 									</p>
 									<p>
-                             		Отримати документ можна за адресою:<br>
-                             		${sRozklad}
+                             		Отримати документ можна:<br>
+                             		${sAddress}<br>${sWork_Time}
                              		</p>
                             		[pattern/mail/_common_signature_start.html]
-									${sSignCnap},<br>
+									${sNameObject},<br>
 									[pattern/mail/_common_signature_end.html]   
 									[pattern/mail/_common_feedback.html]
 									[pattern/mail/_common_footer.html]]]></activiti:expression>
@@ -262,11 +263,11 @@
 									3. Роздруковану заяву, яку ви подавали в електронному вигляді (знаходиться у додатку), засвідчену особистим підписом керівника юридичної особи, фізичної особи - підприємця або уповноваженої ними особи.
 									</p>
 									<p>
-									Отримати документ можна за адресою:<br>
-                             		${sRozklad}
+									Отримати документ можна:<br>
+                             		${sAddress}<br>${sWork_Time}
                              		</p>
                             		[pattern/mail/_common_signature_start.html]
-									${sSignCnap},<br>
+									${sNameObject},<br>
 									[pattern/mail/_common_signature_end.html]   
 									[pattern/mail/_common_feedback.html]
 									[pattern/mail/_common_footer.html]]]></activiti:expression>

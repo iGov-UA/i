@@ -1,10 +1,10 @@
 package org.igov.model.subject;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 import org.igov.model.core.Entity;
 
 import javax.persistence.Column;
+import java.util.List;
 
 @javax.persistence.Entity
 public class Subject extends Entity {
@@ -20,7 +20,7 @@ public class Subject extends Entity {
     @JsonProperty(value = "sLabelShort")
     @Column(name = "sLabelShort", nullable = true)
     private String sLabelShort;
-    
+
     @JsonProperty(value = "aSubjectAccountContact")
     private transient List<SubjectContact> aSubjectAccountContact;
 

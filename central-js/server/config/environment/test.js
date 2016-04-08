@@ -17,6 +17,9 @@ module.exports = {
      */
     publicKey: (__dirname + '/local/iGov_sgn_cert.pem'),
     privateKey: (__dirname + '/local/iGov_sgn.pem'),
+    //publicKey: ('../../../iGov_sgn_cert.pem'),
+    //privateKey: ('../../../iGov_sgn.pem'),
+
     privateKeyPassphrase: '1234567899'
   },
 
@@ -26,7 +29,7 @@ module.exports = {
     session: {
       secret: 'put yor session secret here',
       key: ['solt for session 1', 'solt for session 2'],
-      secure: false,
+      secure: 'false',
       maxAge: 14400000 // 4h*60m*60s*1000ms*/
     }
   },

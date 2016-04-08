@@ -119,7 +119,7 @@ angular.module('app').factory('FormDataFactory', function (ParameterFactory, Dat
           angular.forEach(oValue, function (scan) {
             sFieldName = ScanFactory.prototype.getName(scan.type);
             if (self.hasParam(sFieldName)) {
-              self.params[sFieldName] = new ScanFactory();
+              self.params[sFieldName] = angular.extend(new ScanFactory(), self.params[sFieldName]);
               self.params[sFieldName].setScan(scan);
             }
           });
@@ -259,7 +259,7 @@ angular.module('app').factory('FormDataFactory', function (ParameterFactory, Dat
     };
     for (var key in this.params) {
       var param = this.params[key];
-      if (param.writable) {
+      if (param.writable || param.required) {
         data.params[key] = param.get();
       }
     }

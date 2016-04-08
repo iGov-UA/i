@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="windows-1251"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:annotation>
+		<xs:documentation>Запит щодо отримання відомостей з Державного реєстру фізичних осіб – платників податків про суми виплачених доходів та утриманих податків* для заповнення податкової декларації про майновий стан і доходи/декларації про доходи та витрати осіб, які звернулись за призначенням житлових субсидій
+		</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="common_types.xsd"/>
+	<xs:element name="DECLAR" type="DeclarContent"/>
+	<xs:complexType name="DeclarContent">
+		<xs:sequence>
+			<xs:element name="DECLARHEAD" type="DHead" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="DECLARBODY" type="DBody" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DHead">
+		<xs:sequence>
+			<xs:element name="TIN" type="DGLong"/>
+			<xs:element name="C_DOC" type="xs:string" fixed="F13"/>
+			<xs:element name="C_DOC_SUB" type="xs:string" fixed="018"/>
+			<xs:element name="C_DOC_VER" type="xs:string" fixed="1"/>
+			<xs:element name="C_DOC_TYPE" type="xs:nonNegativeInteger"/>
+			<xs:element name="C_DOC_CNT" type="xs:nonNegativeInteger"/>
+			<xs:element name="C_REG" type="DGsti"/>
+			<xs:element name="C_RAJ" type="DGsti"/>
+			<xs:element name="PERIOD_MONTH" type="DGMonth"/>
+			<xs:element name="PERIOD_TYPE" type="DGPType"/>
+			<xs:element name="PERIOD_YEAR" type="DGYear"/>
+			<xs:element name="C_STI_ORIG" type="DGc_dpi"/>
+			<xs:element name="C_DOC_STAN" type="DGSTAN"/>
+			<xs:element name="LINKED_DOCS" nillable="true" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="DOC" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="C_DOC" type="DGC_DOC"/>
+									<xs:element name="C_DOC_SUB" type="DGC_DOC_SUB"/>
+									<xs:element name="C_DOC_VER" type="DGC_DOC_VER"/>
+									<xs:element name="C_DOC_TYPE" type="xs:nonNegativeInteger"/>
+									<xs:element name="C_DOC_CNT" type="xs:nonNegativeInteger"/>
+									<xs:element name="C_DOC_STAN" type="DGSTAN"/>
+									<xs:element name="FILENAME" type="DGFilename"/>
+								</xs:sequence>
+								<xs:attribute name="NUM" type="xs:nonNegativeInteger"/>
+								<xs:attribute name="TYPE" type="DGTypeLinkDoc"/>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+				<xs:unique name="UH_DOC_NUM">
+					<xs:selector xpath="DOC"/>
+					<xs:field xpath="@NUM"/>
+				</xs:unique>
+			</xs:element>
+			<xs:element name="D_FILL" type="DGDate"/>
+			<xs:element name="SOFTWARE" type="xs:string" nillable="true" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DBody">
+		<xs:sequence>
+			<!--HEAD-->
+			<xs:element name="HLNAME" type="xs:string"/>
+			<xs:element name="HPNAME" type="xs:string"/>
+			<xs:element name="HFNAME" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="HTIN" type="DGHTINF"/>
+			<xs:element name="HKSTI" type="DGc_dpi"/>
+			<xs:element name="HSTI" type="DGHSTI"/>
+			<xs:element name="HEMAIL" type="DGHEMAIL"/>
+			<xs:element name="HCOUNTRY" type="xs:string"/>
+			<xs:element name="HREG" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="HRAJ" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="HCITY" type="xs:string"/>
+			<xs:element name="HSTREET" type="xs:string"/>
+			<xs:element name="HBUILD" type="xs:string"/>
+			<xs:element name="HSHOT" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="HCORP" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="HAPT" type="xs:string" nillable="true" minOccurs="0"/>
+			<xs:element name="HPASS" type="DGPass" nillable="true" minOccurs="0"/>
+			<xs:element name="HPASSDATE" type="DGDate" nillable="true" minOccurs="0"/>
+			<xs:element name="HPASSISS" type="xs:string" nillable="true" minOccurs="0"/>
+			<!--BODY-->
+			<xs:element name="R01G01" type="DGKv"/>
+			<xs:element name="R01G02" type="DGNYear"/>
+			<xs:element name="R02G01" type="DGKv"/>
+			<xs:element name="R02G02" type="DGNYear"/>
+			<!--FOOTER-->
+			<xs:element name="HFILL" type="DGDate"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

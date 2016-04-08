@@ -1,10 +1,14 @@
 package org.igov.model.subject;
 
 import javax.persistence.Column;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import org.igov.model.core.Entity;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @javax.persistence.Entity
 public class SubjectAccount extends Entity {
@@ -15,10 +19,15 @@ public class SubjectAccount extends Entity {
     @Column
     private String sNote;
 
-    @ManyToOne
-    @JoinColumn(name = "nID_SubjectAccountType")
+    @JsonProperty(value = "subjectAccountType")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "nID_SubjectAccountType", insertable = false, updatable = false)
     private SubjectAccountType subjectAccountType;
 
+    @JsonIgnore
+    @Column(name = "nID_SubjectAccountType", nullable = true)
+    private Long nID_SubjectAccountType;
+    
     @Column
     private Long nID_Server;
 
@@ -53,8 +62,8 @@ public class SubjectAccount extends Entity {
 	return subjectAccountType;
     }
 
-    public void setSubjectAccountType(SubjectAccountType subjectAccountType) {
-	this.subjectAccountType = subjectAccountType;
+    public void setnID_SubjectAccountType(Long nID_SubjectAccountType) {
+        this.nID_SubjectAccountType = nID_SubjectAccountType;
     }
 
     public Long getnID_Subject() {

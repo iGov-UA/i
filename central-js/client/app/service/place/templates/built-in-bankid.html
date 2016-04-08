@@ -1,6 +1,20 @@
 <div class="list-group">
-
   <place></place>
+
+  <style>
+    .ui-select-match-text {
+      overflow: hidden;
+      width: inherit;
+      padding-right: 10px;
+    }
+    .ui-select-match-text * {
+      overflow: hidden;
+      display: block;
+    }
+    .form-control.ui-select-search {
+      width: 100% !important;
+    }
+  </style>
 
   <div class="list-group-item disabled">
     <div class="row no-margin-bottom">
@@ -20,18 +34,18 @@
       <div class="col-md-6 pull-left">Крок 3.
         {{data.formData.params["processName"].name==null?"":data.formData.params["processName"].name}}
       </div>
-        <div ng-hide="bAdmin == null || !bAdmin" style="/*display:none;*/" class="col-md-6 pull-right">
+        <div ng-show="bAdmin || visibleBReferent" class="col-md-6 pull-right">
         <!--div ng-if="bAdmin" style="/*display:none;*/" class="col-md-6 pull-right"-->
         <label for="ref" class="pull-right"> Заповнення референтом</label>
-        <input type="checkbox" ng-model="referent" ng-click="onReferent()" id="ref" class="pull-right">
+        <input type="checkbox" ng-model="data.formData.params.bReferent.value" ng-change="onReferent" id="ref" class="pull-right">
       </div>
     </div>
-    <div class="row" ng-if="referent">
+    <div class="row" ng-if="data.formData.params.bReferent.value">
       <div class="col-md-12">
         <div class="highlight-yellow">
           <div class="row"
                ng-repeat="property in activitiForm.formProperties track by property.id"
-               ng-if="referent && property.id.startsWith('bankId')">
+               ng-if="data.formData.params.bReferent.value && property.id.startsWith('bankId')">
 
             <div class="col-md-5"
                  ng-if="property.type!='invisible' && property.type!='markers' && property.type != 'file'">
@@ -206,25 +220,37 @@
                              form-data="data.formData"
                              property="property"
                              ng-required="isFieldRequired(property)"></slot-picker>
+                <div ng-switch-when="select">
+                  <dropdown-organ ng-if="property.id==='sID_Public_SubjectOrganJoin'"
+                                  ng-model="data.formData.params[property.id].value"
+                                  form-data-property="data.formData.params[property.id]"
+                                  service-data="oServiceData"
+                                  activiti-form="activitiForm"
+                                  ng-required="isFieldRequired(property)"
+                                  form-data="data.formData"></dropdown-organ>
 
-                <dropdown-organ ng-switch-when="select"
-                                ng-if="property.id==='sID_Public_SubjectOrganJoin'"
-                                ng-model="data.formData.params[property.id].value"
-                                form-data-property="data.formData.params[property.id]"
-                                service-data="oServiceData"
-                                activiti-form="activitiForm"
-                                ng-required="isFieldRequired(property)"
-                                form-data="data.formData"></dropdown-organ>
+                  <ui-select dropdown-autocomplete ng-if="property.selectType=='autocomplete'"
+                             ng-model="data.formData.params[property.id].value"
+                             service-data="oServiceData"
+                             ng-required="isFieldRequired(property)"
+                             autocomplete-data="property.autocompleteData"
+                             autocomplete-name="property.autocompleteName"
+                             form-data="data.formData"
+                             reach-infinity="requestMoreItems($select.items)"
+                             on-select="onSelectDataList($item)">
 
-                <dropdown-autocomplete ng-switch-when="select"
-                                       ng-if="property.selectType=='autocomplete'"
-                                       ng-model="data.formData.params[property.id].value"
-                                       service-data="oServiceData"
-                                       ng-required="isFieldRequired(property)"
-                                       autocomplete-data="property.autocompleteData"
-                                       autocomplete-name="property.autocompleteName"
-                                       form-data="data.formData"></dropdown-autocomplete>
-
+                             <ui-select-match>
+                               {{::$select.selected[property.autocompleteData.titleProperty]}}
+                             </ui-select-match>
+                             <ui-select-choices refresh="refreshList($select.search)"
+                                                refresh-delay="50"
+                                                repeat="item[property.autocompleteData.titleProperty] as item in items track by item.nID">
+                               <span title="{{::item[property.autocompleteData.titleProperty]}}">
+                                 {{::item[property.autocompleteData.titleProperty]}}
+                               </span>
+                             </ui-select-choices>
+                  </ui-select>
+                </div>
               </div>
 
               <div class="col-md-3" ng-if="renderAsLabel(property)" ng-hide="property.type === 'file'"
@@ -270,7 +296,7 @@
                   <input type="checkbox"
                          ng-model="sign.checked"
                          name="{{data.formData.getSignFieldID()}}">
-                </label> 
+                </label>
                   <!--label  ng-if="isSignNeededRequired ? true : sign.checked">Після натискання "Замовити послугу"-->
                          <!--ng-model="isSignNeededRequired ? true : sign.checked"-->
 

@@ -1,7 +1,9 @@
 package org.igov.model.subject;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
+
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.igov.model.core.NamedEntity;
@@ -21,6 +23,20 @@ public class SubjectHuman extends NamedEntity {
         return res;
     }
 
+    public static NewSubjectHuman getNewSubjectHuman(SubjectHuman subjectHuman) {
+        NewSubjectHuman newSubjectHuman = new NewSubjectHuman();
+        newSubjectHuman.setsSurname(subjectHuman.getsSurname());
+        newSubjectHuman.setsFamily(subjectHuman.getsFamily());
+        newSubjectHuman.setsINN(subjectHuman.getsINN());
+        newSubjectHuman.setsSB(subjectHuman.getsSB());
+        newSubjectHuman.setsPassportSeria(subjectHuman.getsPassportSeria());
+        newSubjectHuman.setsPassportNumber(subjectHuman.getsPassportNumber());
+        newSubjectHuman.setDefaultEmail(SubjectContact
+                .getNewSubjectContact(subjectHuman.getDefaultEmail()));
+        newSubjectHuman.setDefaultPhone(SubjectContact
+                .getNewSubjectContact(subjectHuman.getDefaultPhone()));
+        return newSubjectHuman;
+    }
 
     @JsonProperty(value = "oSubject")
     @OneToOne
@@ -67,7 +83,7 @@ public class SubjectHuman extends NamedEntity {
     @JoinColumn(name = "nID_SubjectContact_DefaultPhone")
     @Cascade({ CascadeType.SAVE_UPDATE })
     private SubjectContact defaultPhone;
-    
+
     private transient List<SubjectContact> aContact;
 
     public Subject getoSubject() {

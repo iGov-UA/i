@@ -1,6 +1,7 @@
 'use strict';
 
 var config = require('../../config/environment')
+//var config = require('../../config')
   , fs = require('fs')
   , crypto = require('crypto')
   , constants = require('constants')
@@ -8,7 +9,11 @@ var config = require('../../config/environment')
 
 var privateKeyFromConfigs;
 
-var initPrivateKey = function() {
+function isCipherEnabled (){
+  return config.bankid.enableCipher === 'true' || config.bankid.enableCipher === true;
+}
+
+var initPrivateKey = function () {
   if (config.bankid.enableCipher === 'true' && config.bankid.privateKey && !privateKeyFromConfigs) {
     try {
       var key = fs.readFileSync(config.bankid.privateKey);
@@ -90,6 +95,26 @@ module.exports.getAuth = function (accessToken) {
   return 'Bearer ' + accessToken + ', Id ' + config.bankid.client_id;
 };
 
+module.exports.decryptField = function (value, privateKey) {
+  var self = this;
+  if (isCipherEnabled()) {
+    return decryptValue(value, privateKey ? privateKey : privateKeyFromConfigs);
+  } else {
+    return value;
+  }
+};
+
+module.exports.decryptCallback = function (callback) {
+  var self = this;
+
+  return function (error, response, body) {
+    if (isCipherEnabled() && body && body.customer && body.customer.signature) {
+      self.decryptData(body.customer);
+    }
+    callback(error, response, body);
+  }
+};
+
 var noEncryptionFields = ['number', 'type', 'signature'];
 
 function isEncrypted(value, key) {
@@ -105,13 +130,17 @@ function isEncrypted(value, key) {
   }
 }
 
+function decryptValue(value, privateKey){
+  try {
+    return crypto.privateDecrypt(privateKey, new Buffer(value, 'base64')).toString('utf8');
+  } catch (err) {
+    throw new Error("can't decrypt value " + value + " field " + key + " because of\n" + err.message);
+  }
+}
+
 function decrypt(value, key, privateKey) {
   if (isEncrypted(value, key)) {
-    try {
-      return crypto.privateDecrypt(privateKey, new Buffer(value, 'base64')).toString('utf8');
-    } catch (err) {
-      throw new Error("can't decrypt value " + value + " field " + key + " because of\n" + err.message);
-    }
+    return decryptValue(value, privateKey);
   } else {
     return value;
   }

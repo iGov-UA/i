@@ -3,25 +3,27 @@
   <process id="dnepr_dms-294" name="Видача довідки про реєстрацію місця проживання/перебування особи" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть підрозділ ДМС або ЦНАП району (міста), до якого належить Ваше місце реєстрації" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="warning2" name="Зверніть увагу" type="label" default="&lt;b&gt;Дана довідка засвідчує лише місце реєстрації особи, яка подає заявку.&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="warning1" name="Зверніть увагу" type="label" default="&lt;b&gt;Ваші дані, завантажені з BankID, повинні бути актуальними та заповненими українською мовою.&lt;/b&gt; Якщо це не так - зверніться у службу підтримки Вашого банку."></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="Date_of_birth" name="Дата народження; Формат - ДД.ММ.PPPP" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="Areabirth" name="Місце народження; Країна, область, район і населений пункт" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть підрозділ ДМС або ЦНАП району (міста), до якого належить Ваше місце реєстрації" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="RegistrationAddress" name="Місце реєстрації;Область, Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорта; у форматі pdf" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="viddil" name="Відділ ДМС" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="postV" name="Пошта відділу ДМС" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="districtS" name="район/місто звернення" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sOrganType" name="Тип органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Телефон органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Тип органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKab89" name="Номер кабінету" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sArea" name="район/місто звернення" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="Registrationservice" name="Відділ ДМС" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('dms/passport.json')}"></activiti:formProperty>
-        <activiti:formProperty id="warning" name="Зверніть увагу" type="label" default="Подаючи звернення, Ви підтверджуєте достовірність усіх зазначених у зверненні даних і надаєте свою згоду на обробку Ваших персональних даних"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow2" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -47,9 +49,9 @@ var per2 = no[i]
 var per3 = region[i]
 var per4 = Regservice[i]
 break}}
-execution.setVariable('postV', per1)
+execution.setVariable('sMailClerk', per1)
 execution.setVariable('viddil', per2)
-execution.setVariable('districtS', per3)
+execution.setVariable('sArea', per3)
 execution.setVariable('Registrationservice', per4)
 	  </script>
     </scriptTask>
@@ -89,10 +91,10 @@ execution.setVariable('Registrationservice', per4)
 										Ваш запит був успішно зареєстрований у нашій системі. 
 								    &lt;/p&gt;
 									&lt;p&gt;
-										Спеціалісти [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:3] оброблять Вашу заявку протягом 1-3 днів та надішлють Вам email з підтвердженням та запрошенням прийти до [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:3] у обраний час. 
+										Спеціалісти ${sOrganType} оброблять Вашу заявку протягом 1-3 днів та надішлють Вам email з підтвердженням та запрошенням прийти до ${sOrganType} у обраний час. 
 									&lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
-									[pattern_dictonary:dnepr_dms.csv:value{[viddil]}:2],&lt;br /&gt;
+									${sNameOrgan},&lt;br /&gt;
 									[pattern/mail/_common_signature_end.html]   
 									[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -109,7 +111,7 @@ execution.setVariable('Registrationservice', per4)
         <activiti:formProperty id="Date_of_birth" name="Дата народження громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Areabirth" name="Місце народження громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="RegistrationAddress" name="Місце реєстрації; Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="districtS" name="Місто або район, до якого належить місце проживання громадянина" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sArea" name="Місто або район, до якого належить місце проживання громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="workerDecision" name="Рішення держслужбовця" type="enum" required="true">
           <activiti:value id="accept" name="Призначити зустріч у відділенні"></activiti:value>
           <activiti:value id="decline" name="Відмовити в наданні послуги"></activiti:value>
@@ -152,10 +154,10 @@ execution.setVariable('Registrationservice', per4)
 									&lt;/p&gt;
 									&lt;p&gt;
 										При вниникненні питань Ви можете звернутися до чергового:&lt;br /&gt;
-										тел. [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:5]
+										${sPhoneOrgan}
 									&lt;/p&gt;
 									[pattern/mail/_common_signature_start.html]
-                                    [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:2].&lt;/p&gt;
+                                    ${sNameOrgan}.&lt;/p&gt;
                                     [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
@@ -182,14 +184,14 @@ execution.setVariable('Registrationservice', per4)
           <activiti:expression>[pattern/mail/_common_header.html]
                                     &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
-                                        Спеціалісти [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:3] успішно опрацювли Вашу заяву.&lt;br /&gt;
+                                        Спеціалісти ${sOrganType} успішно опрацювли Вашу заяву.&lt;br /&gt;
 										Для отримання довідки про реєстрацію місця проживання/перебування особи необхідно:&lt;br /&gt;
 										&lt;ul&gt;
-										&lt;li&gt;Прийти протягом 10 робочіх днів до [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:3] за адресою: [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:4] з необхідними документами та звернутись до [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:9].&lt;/li&gt;
+										&lt;li&gt;Прийти протягом 10 робочіх днів до ${sOrganType} за адресою: ${sAddress} з необхідними документами та звернутись до ${sKab89}.&lt;/li&gt;
 										&lt;/ul&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
-										&lt;b&gt;Необхідні документи, які треба принести до [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:3] для отримання довідки про реєстрацію місця проживання/перебування особи:&lt;/b&gt;&lt;br/&gt;
+										&lt;b&gt;Необхідні документи, які треба принести до ${sOrganType} для отримання довідки про реєстрацію місця проживання/перебування особи:&lt;/b&gt;&lt;br/&gt;
 										&lt;ul&gt;
 										&lt;li&gt;паспорт громадянина України;&lt;/li&gt;
 										&lt;/ul&gt;
@@ -200,10 +202,10 @@ execution.setVariable('Registrationservice', per4)
 									&lt;/p&gt;
 									&lt;p&gt;
 										При вниникненні питань Ви можете звернутися до чергового:&lt;br /&gt;
-										тел. [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:5]
+										${sPhoneOrgan}
 									&lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
-									[pattern_dictonary:dnepr_dms.csv:value{[viddil]}:2],&lt;br /&gt;
+									${sNameOrgan},&lt;br /&gt;
 									[pattern/mail/_common_signature_end.html]   
 									[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -222,7 +224,7 @@ execution.setVariable('Registrationservice', per4)
         <activiti:formProperty id="Date_of_birth" name="Дата народження громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Areabirth" name="Місце народження громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="RegistrationAddress" name="Місце реєстрації; Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="districtS" name="Місто або район, до якого належить місце проживання громадянина" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sArea" name="Місто або район, до якого належить місце проживання громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Registrationservice" name="Орган, який видає довідку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="result" name="Результат зустрічі" type="enum">
           <activiti:value id="reestr" name="Громадянин отримав довідку"></activiti:value>
@@ -261,15 +263,15 @@ execution.setVariable('Registrationservice', per4)
           <activiti:expression>[pattern/mail/_common_header.html]
                                     &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
-                                        На жаль Ви не з'явились до [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:3] протягом 10 робочіх днів.&lt;br /&gt;
+                                        На жаль Ви не з'явились до ${sOrganType} протягом 10 робочіх днів.&lt;br /&gt;
                                         При необхідності отримання довідки про реєстрацію місця проживання/перебування особи Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
 										При вниникненні питань Ви можете звернутися до чергового:&lt;br /&gt;
-										тел. [pattern_dictonary:dnepr_dms.csv:value{[viddil]}:5]
+										${sPhoneOrgan}
                                     &lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
-									[pattern_dictonary:dnepr_dms.csv:value{[viddil]}:2].&lt;/p&gt;
+									${sNameOrgan}.&lt;/p&gt;
 									[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
@@ -300,7 +302,7 @@ execution.setVariable('Registrationservice', per4)
                               		Дякуємо.
 									&lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
-									[pattern_dictonary:dnepr_dms.csv:value{[viddil]}:2],&lt;br /&gt;
+									${sNameOrgan},&lt;br /&gt;
 									[pattern/mail/_common_signature_end.html]   
 									[pattern/mail/_common_feedback.html]
 									[pattern/mail/_common_footer.html]</activiti:expression>

@@ -3,6 +3,7 @@
 var request = require('request')
   , async = require('async')
   , config = require('../../config/environment')
+  //, config = require('../../config')
   , activiti = require('../../components/activiti')
   , authService = require('../auth.service')
   , emailService = require('./email.service')

@@ -1,5 +1,5 @@
-<div class="row">
-  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+<div class="row" style="max-height: 51px">
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="max-height: 51px">
     <div class="navbar navbar-default navbar-static-top i-gov-navbar" ng-controller="NavbarCtrl">
 
       <div ng-if="iGovNavbarHelper.auth.isLoggedIn()" class="navbar-header i-gov-navbar-instruments-container">
@@ -13,7 +13,11 @@
 
         <ul class="nav navbar-nav" ng-show="!iGovNavbarHelper.areInstrumentsVisible" ng-init="iGovNavbarHelper.load()">
           <li class="navbar-search">
-            <input type="text" ng-keyup="searchInputKeyup($event)" ng-model="tasksSearch.value" placeholder="Пошук" />
+            <span class="find-field-tooltip">
+              <input type="text" ng-keyup="searchInputKeyup($event)" ng-model="tasksSearch.value" placeholder="Пошук" />
+              <span class="find-field-tooltip-text">Для пошуку введіть номер звернення або текст</span>
+            </span>
+
 
             <span class="label label-info" ng-if="tasksSearch.value && !tasksSearch.loading && tasksSearch.submited"
               ng-bind="tasksSearch.count"></span>
@@ -24,11 +28,11 @@
           <li ng-repeat="menu in iGovNavbarHelper.menus"
               ng-show="isVisible(menu.type)"
               ng-class="{active: isTaskFilterActive(menu.type)}">
-            <a ng-if="!applyTaskFilter" ng-attr-id="{{menu.type}}" ng-click="goToTasks(menu.tab)">{{menu.title}}
+            <a class="navbar-nav-tab" ng-if="!applyTaskFilter" ng-attr-id="{{menu.type}}" ng-click="goToTasks(menu.tab)">{{menu.title}}
               <span ng-if="menu.showCount" class="label label-info">{{menu.count}}</span>
             </a>
 
-            <a ng-if="applyTaskFilter" ng-attr-id="{{menu.type}}" ng-click="!!tasksLoading || goToTasks(menu.tab)">{{menu.title}}
+            <a class="navbar-nav-tab" ng-if="applyTaskFilter" ng-attr-id="{{menu.type}}" ng-click="!!tasksLoading || goToTasks(menu.tab)">{{menu.title}}
               <span ng-if="menu.showCount" class="label label-info">{{menu.count}}</span>
             </a>
           </li>

@@ -1,4 +1,4 @@
-angular.module('documents').controller('DocumentsBankIdController', function ($scope, $state, $location, $window, BankIDService) {
+angular.module('documents').controller('DocumentsBankIdController', function ($scope, $state, $location, $window, UserService) {
   $scope.authProcess = false;
 
   function getRedirectURI() {
@@ -38,10 +38,11 @@ angular.module('documents').controller('DocumentsBankIdController', function ($s
 
   if ($state.is('index.documents.bankid')) {
     if (!$state.params.error) {
-      BankIDService.isLoggedIn().then(function () {
+      UserService.isLoggedIn().then(function () {
         $scope.authProcess = true;
         return $state.go('index.documents.content').catch(function (fallback) {
-          throw new Error(fallback.error);
+          //throw new Error(fallback.error);
+          $scope.authProcess = false;
         }).finally(function () {
           $scope.authProcess = false;
         });

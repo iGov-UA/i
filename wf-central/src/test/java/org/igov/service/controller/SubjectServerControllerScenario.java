@@ -1,8 +1,10 @@
 package org.igov.service.controller;
 
 import org.igov.model.subject.Server;
+import org.igov.util.JSON.JsonRestUtils;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +15,10 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import org.igov.util.JSON.JsonRestUtils;
 
-import static org.hamcrest.Matchers.*;
-import org.junit.Ignore;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.not;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebAppConfiguration
@@ -64,4 +65,20 @@ public class SubjectServerControllerScenario {
                 andExpect(status().is5xxServerError());
     }
 
+    @Ignore
+    @Test
+    public void shouldReturnJsonWithoutLoginDuplications() throws Exception {
+        String withDetails = mockMvc.perform(get("/subject/getSubjectsBy")
+                .param("saAccount", "[\"Barmaley\",\"GrekD\"]")
+                .param("nID_SubjectAccountType", "1"))
+                .andReturn().getResponse().getContentAsString();
+        System.out.println(withDetails);
+
+        String outputWithoutDetails = mockMvc.perform(get("/subject/getSubjectsBy")
+                .param("saAccount", "[\"Barmaley\",\"GrekD\"]")
+                .param("nID_SubjectAccountType", "1")
+                .param("bSkipDetails", "true"))
+                .andReturn().getResponse().getContentAsString();
+        System.out.println(outputWithoutDetails);
+    }
 }

@@ -47,6 +47,15 @@ public class SubjectAccountTest {
     private static final Long test_nID_SubjectAccountType1 = 1L;
     private static final Long test_nID_SubjectAccountType2 = 2L;
 
+    private static final Long test_nID_SubjectAccountTypeError = 7777777777L;
+
+    @Test(expected = org.springframework.dao.DataIntegrityViolationException.class )
+    public void testSaveSubjectAccountError() {
+	SubjectAccount subjectAccount = subjectAccountDao.findByIdExpected(1L);	
+	subjectAccount.setnID_SubjectAccountType(test_nID_SubjectAccountTypeError);
+	subjectAccountDao.saveOrUpdate(subjectAccount);
+    }
+    
     @Test
     public void testSaveAndUpdateSubjectAccount() {
 	// Проверили получение типов Аккаунтов
@@ -62,7 +71,7 @@ public class SubjectAccountTest {
 	subjectAccount.setnID_Subject(test_nID_Subject1);
 	subjectAccount.setsLogin(test_sLogin1);
 	subjectAccount.setsNote(test_sNote1);
-	subjectAccount.setSubjectAccountType(testSubjectAccountType1);
+	subjectAccount.setnID_SubjectAccountType(testSubjectAccountType1.getId());
 	saveAndUpdateSubjectAccount(subjectAccount, " Добавление новой записи");
 
 	SubjectAccountType testSubjectAccountType2 = subjectAccountTypeDao
@@ -73,7 +82,7 @@ public class SubjectAccountTest {
 	subjectAccount.setnID_Subject(test_nID_Subject2);
 	subjectAccount.setsLogin(test_sLogin2);
 	subjectAccount.setsNote(test_sNote2);
-	subjectAccount.setSubjectAccountType(testSubjectAccountType2);
+	subjectAccount.setnID_SubjectAccountType(testSubjectAccountType2.getId());
 	saveAndUpdateSubjectAccount(subjectAccount, " Добавление новой записи");
 
 	// Проверяем добавление новой записи, изменен только логин
@@ -82,7 +91,7 @@ public class SubjectAccountTest {
 	subjectAccount.setnID_Subject(test_nID_Subject2);
 	subjectAccount.setsLogin(test_sLogin1);
 	subjectAccount.setsNote(test_sNote2);
-	subjectAccount.setSubjectAccountType(testSubjectAccountType2);
+	subjectAccount.setnID_SubjectAccountType(testSubjectAccountType2.getId());
 	saveAndUpdateSubjectAccount(subjectAccount, " Добавление новой записи, изменен только логин");
 
 	// Проверяем добавление новой записи, изменен только тип логина
@@ -91,7 +100,7 @@ public class SubjectAccountTest {
 	subjectAccount.setnID_Subject(test_nID_Subject2);
 	subjectAccount.setsLogin(test_sLogin2);
 	subjectAccount.setsNote(test_sNote2);
-	subjectAccount.setSubjectAccountType(testSubjectAccountType1);
+	subjectAccount.setnID_SubjectAccountType(testSubjectAccountType1.getId());
 	saveAndUpdateSubjectAccount(subjectAccount, " Добавление новой записи, изменен только тип логина");
 
 	// Проверяем добавление новой записи, изменен только id-сервера
@@ -100,7 +109,7 @@ public class SubjectAccountTest {
 	subjectAccount.setnID_Subject(test_nID_Subject2);
 	subjectAccount.setsLogin(test_sLogin2);
 	subjectAccount.setsNote(test_sNote2);
-	subjectAccount.setSubjectAccountType(testSubjectAccountType2);
+	subjectAccount.setnID_SubjectAccountType(testSubjectAccountType2.getId());
 	saveAndUpdateSubjectAccount(subjectAccount, " Добавление новой записи, изменен только id-сервера");
 
 	// Проверяем добавление новой записи, изменен только id-subject
@@ -109,7 +118,7 @@ public class SubjectAccountTest {
 	subjectAccount.setnID_Subject(test_nID_Subject1);
 	subjectAccount.setsLogin(test_sLogin2);
 	subjectAccount.setsNote(test_sNote2);
-	subjectAccount.setSubjectAccountType(testSubjectAccountType2);
+	subjectAccount.setnID_SubjectAccountType(testSubjectAccountType2.getId());
 	saveAndUpdateSubjectAccount(subjectAccount, " Добавление новой записи, изменен только id-subject");
     }
 
@@ -127,7 +136,7 @@ public class SubjectAccountTest {
 	subjectAccount.setnID_Subject(test_nID_Subject3);
 	subjectAccount.setsLogin(test_sLogin3);
 	subjectAccount.setsNote(test_sNote3);
-	subjectAccount.setSubjectAccountType(testSubjectAccountType);
+	subjectAccount.setnID_SubjectAccountType(testSubjectAccountType.getId());
 	subjectAccountDao.saveOrUpdate(subjectAccount);
 
 	// Пробуем добавить вторую запись: должна быть ошибка
@@ -136,7 +145,7 @@ public class SubjectAccountTest {
 	subjectAccount.setnID_Subject(test_nID_Subject3);
 	subjectAccount.setsLogin(test_sLogin3);
 	subjectAccount.setsNote(test_sNote1);
-	subjectAccount.setSubjectAccountType(testSubjectAccountType);
+	subjectAccount.setnID_SubjectAccountType(testSubjectAccountType.getId());
 	subjectAccountDao.saveOrUpdate(subjectAccount);
 
 	fail("Expected exception was missing. Ошибка проверки ограничения на уникальность полей sLogin, nID_SubjectAccountType, nID_Server, nID_Subject");
@@ -153,7 +162,7 @@ public class SubjectAccountTest {
 	subjectAccount.setnID_Subject(test_nID_SubjectError);
 	subjectAccount.setsLogin(test_sLogin1);
 	subjectAccount.setsNote(test_sNote1);
-	subjectAccount.setSubjectAccountType(testSubjectAccountType1);
+	subjectAccount.setnID_SubjectAccountType(testSubjectAccountType1.getId());
 	saveAndUpdateSubjectAccount(subjectAccount, " Добавление новой записи");
 
     }
@@ -169,7 +178,7 @@ public class SubjectAccountTest {
 	getSubjectAccounts(1L, "Логин01", null, null, 5);
 	getSubjectAccounts(null, "Логин01", null, null, 3);
 	getSubjectAccounts(1L, null, 1L, null, 2);
-	getSubjectAccounts(1L, null, 1L, testSubjectAccountType2, 1);
+	getSubjectAccounts(1L, null, 1L, testSubjectAccountType2.getId(), 1);
     }
 
     private void saveAndUpdateSubjectAccount(SubjectAccount subjectAccount, String msg) {
@@ -179,7 +188,7 @@ public class SubjectAccountTest {
     }
 
     private void getSubjectAccounts(Long nID_Subject, String sLogin, Long nID_Server,
-	    SubjectAccountType nID_SubjectAccountType, int retCount) {
+	    Long nID_SubjectAccountType, int retCount) {
 
 	List<SubjectAccount> subjectAccountRet;
 	subjectAccountRet = subjectAccountDao.findSubjectAccounts(nID_Subject, sLogin, nID_Server,

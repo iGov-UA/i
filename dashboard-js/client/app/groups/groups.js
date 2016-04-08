@@ -8,7 +8,7 @@
   groupsConfig.$inject = ['$stateProvider'];
   function groupsConfig($stateProvider) {
     $stateProvider
-      .state('groups', {
+      .state('tools.groups', {
         url: '/groups',
         templateUrl: 'app/groups/groups.html',
         access: {

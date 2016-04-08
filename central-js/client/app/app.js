@@ -5,9 +5,11 @@ angular.module('appBoilerPlate', ['ngCookies',
   'ngSanitize',
   'ui.router',
   'ui.bootstrap',
+  'ui.scroll',
   'ngMessages',
   'ui.uploader',
   'ui.event',
+  'ui.select',
   'angularMoment',
   'ngClipboard',
   'ngJsonEditor',
@@ -35,10 +37,15 @@ angular.module('app', [
   $locationProvider.html5Mode(true);
 }).run(function ($rootScope, $state) {
   $rootScope.state = $state;
-  $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
-     console.error('stateChangeError', error.data);
-     //TODO: Заменить на нормальный див-диалог из ErrorFactory
-     alert("Невідома помилка: " + error.data);
+  $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
+    if (error && error.data) {
+      console.error('stateChangeError', error.data);
+      //TODO: Заменить на нормальный див-диалог из ErrorFactory
+      alert("Невідома помилка: " + error.data);
+    } else {
+      console.error('stateChangeError', error);
+      alert("Невідома помилка: " + error);
+    }
   });
 });
 

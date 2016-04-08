@@ -37,6 +37,7 @@
     <!-- bower:css -->
     <link rel="stylesheet" href="bower_components/angular-dialog-service/dist/dialogs.min.css" />
     <link rel="stylesheet" href="bower_components/jsoneditor/dist/jsoneditor.min.css" />
+    <link rel="stylesheet" href="bower_components/ui-select/dist/select.css" />
     <link rel="stylesheet" href="bower_components/intl-tel-input/build/css/intlTelInput.css" />
     <link rel="stylesheet" href="bower_components/textAngular/dist/textAngular.css" />
     <!-- endbower -->
@@ -126,6 +127,8 @@
 <script src="bower_components/angular-ui-event/dist/event.js"></script>
 <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
 <script src="bower_components/angular-ui-uploader/dist/uploader.js"></script>
+<script src="bower_components/angular-ui-scroll/dist/ui-scroll.js"></script>
+<script src="bower_components/ui-select/dist/select.js"></script>
 <script src="bower_components/intl-tel-input/build/js/intlTelInput.min.js"></script>
 <script src="bower_components/intl-tel-input/lib/libphonenumber/build/utils.js"></script>
 <script src="bower_components/jquery.cookie/jquery.cookie.js"></script>
@@ -164,8 +167,9 @@
 <script src="app/common/components/errors/factories/errors.factory.js"></script>
 <script src="app/common/components/errors/factories/errorsSimple.factory.js"></script>
 <script src="app/common/components/errors/modal/errorsModal.controller.js"></script>
+<script src="app/common/components/form/directives/dropdownAutocomplete/dropdownAutocomplete.controller.js"></script>
 <script src="app/common/components/form/directives/dropdownAutocomplete/dropdownAutocomplete.js"></script>
-<script src="app/common/components/form/directives/dropdownAutocomplete/dropdownAutocompleteList.factory.js"></script>
+<script src="app/common/components/form/directives/dropdownAutocomplete/reachInfinity.js"></script>
 <script src="app/common/components/form/directives/dropdownCountry/dropdownCountry.js"></script>
 <script src="app/common/components/form/directives/dropdownOrgan/dropdownOrgan.js"></script>
 <script src="app/common/components/form/directives/file.js"></script>
@@ -197,7 +201,6 @@
 <script src="app/common/factories/regionlist.factory.js"></script>
 <script src="app/common/services/activiti.service.js"></script>
 <script src="app/common/services/admin.service.js"></script>
-<script src="app/common/services/bankid.service.js"></script>
 <script src="app/common/services/catalog.service.js"></script>
 <script src="app/common/services/country.service.js"></script>
 <script src="app/common/services/feedback.service.js"></script>
@@ -208,6 +211,7 @@
 <script src="app/common/services/places.service.js"></script>
 <script src="app/common/services/service.service.js"></script>
 <script src="app/common/services/stateStorage.service.js"></script>
+<script src="app/common/services/user.service.js"></script>
 <script src="app/common/services/validation.service.js"></script>
 <script src="app/common/states/statesRepository.provider.js"></script>
 <script src="app/documents/controllers/documents.controller.js"></script>
@@ -224,9 +228,10 @@
 <script src="app/documents/factories/bankiddocumentspassport.factory.js"></script>
 <script src="app/feedback/controllers/feedback.controller.js"></script>
 <script src="app/feedback/feedback.js"></script>
-<script src="app/journal/journal.auth.controller.js"></script>
 <script src="app/journal/journal.content.controller.js"></script>
+<script src="app/journal/journal.helper.service.js"></script>
 <script src="app/journal/journal.index.controller.js"></script>
+<script src="app/journal/journal.search.controller.js"></script>
 <script src="app/journal/journal.state.js"></script>
 <script src="app/order/controllers/order.controller.js"></script>
 <script src="app/order/controllers/ordersearch.controller.js"></script>

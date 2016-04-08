@@ -4,20 +4,27 @@
 
 'use strict';
 
-var errors = require('./components/errors');
-var path = require('path');
+var errors = require('./components/errors')
+  , region = require('./components/region')
+  , auth = require('./auth/auth.service.js')
+  , path = require('path');
 
-module.exports = function(app) {
-
+module.exports = function (app) {
   // Insert routes below
+
   app.use('/auth', require('./auth'));
+
+  // check api call for nID_Server and get region host
+  app.all('/api/*', region.searchForHost());
+
+  // routes
   app.use('/api/user', require('./api/user'));
   app.use('/api/documents', require('./api/documents'));
   app.use('/api/journal', require('./api/journal'));
   app.use('/api/order', require('./api/order'));
   app.use('/api/places', require('./api/places/index'));
   app.use('/api/process-definitions', require('./api/process-definitions/index'));
-  app.use('/api/process-form', require('./api/process-form'));
+  app.use('/api/process-form', auth.isAuthenticated(), require('./api/process-form'));
   app.use('/api/service', require('./api/service/index'));
   app.use('/api/service/flow', require('./api/service/flow'));
   app.use('/api/messages', require('./api/messages/index'));
@@ -31,12 +38,12 @@ module.exports = function(app) {
   app.use('/api/markers', require('./api/markers'));
   // All undefined asset or api routes should return a 404
   app.route('/:url(api|auth|components|app|bower_components|assets)/*')
-   .get(errors[404]);
+    .get(errors[404]);
 
   // All other routes should redirect to the index.html
   var indexHtml = app.get('appPath') + '/index.html';
   app.route('/*')
-    .get(function(req, res) {
+    .get(function (req, res) {
       res.sendFile(indexHtml);
     });
 };

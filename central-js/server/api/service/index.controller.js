@@ -2,6 +2,8 @@
 var _ = require('lodash');
 var activiti = require('../../components/activiti');
 var environmentConfig = require('../../config/environment');
+//var environmentConfig = require('../../config');
+
 var config = environmentConfig.activiti;
 var request = require('request');
 var catalogController = require('../catalog/catalog.controller.js');

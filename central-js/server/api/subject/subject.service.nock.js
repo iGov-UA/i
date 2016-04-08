@@ -24,3 +24,9 @@ appTest
   .get('/wf/service/subject/getSubjectHuman')
   .query(true)
   .reply(200, subjectServiceTest.testData.subjectHuman, headers);
+
+appTest
+  .centralNock
+  .get('/wf/service/subject/getServer')
+  .query(true)
+  .reply(200, subjectServiceTest.testData.sHost, headers);

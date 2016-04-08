@@ -8,10 +8,21 @@ module.exports.testData = {
     nID: 11
   },
 
+  sHost: {
+    nID: 0,
+    sID: "Common_Region",
+    sType: "Region",
+    sURL: "https://test.region.igov.org.ua/wf",
+    sURL_Alpha: "",
+    sURL_Beta: "",
+    sURL_Omega: ""
+  },
+
   subjectHuman: {
     "oSubject": {
       "sID": "2111111111", "sLabel": "Тестев Тест Тестович", "sLabelShort": "Тестев Т. Т.", "nID": 2
-    },
+    }
+    ,
     "sINN": "2222222222",
     "sSB": "333333333333333",
     "sPassportSeria": "ТТ",
@@ -20,7 +31,8 @@ module.exports.testData = {
     "sSurname": "Тестович",
     "nID": 1,
     "sName": "Тест"
-  },
+  }
+  ,
 
   subjectOrgan: {
     "oSubject": {
@@ -29,5 +41,6 @@ module.exports.testData = {
     ,
     "sOKPO": "011111", "sFormPrivacy": "ПАО", "sNameFull": "Банк Тест", "nID": 1, "sName": "ТестБанк"
   }
-};
+}
+;
 

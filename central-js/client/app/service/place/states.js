@@ -97,19 +97,19 @@ angular.module('app').config(function($stateProvider) {
           }
           return oServiceData;
         },
-        BankIDLogin: function($q, $state, $location, $stateParams, BankIDService) {
-          return BankIDService.isLoggedIn().then(function() {
+        BankIDLogin: function($q, $state, $location, $stateParams, UserService) {
+          return UserService.isLoggedIn().then(function() {
             return {
               loggedIn: true
             };
-          }).catch(function() {
-            return $q.reject(null);
+          }).catch(function(error) {
+            return $q.reject('Пользователь не авторизован');
           });
         },
-        BankIDAccount: function($q, BankIDService) {
-          return BankIDService.account().then(function(result){
+        BankIDAccount: function($q, UserService) {
+          return UserService.account().then(function(result){
             if(!result){
-              return $q.reject(null);
+              return $q.reject('Отсутствуют данные пользователя');
             } else {
               return result;
             }
@@ -171,7 +171,7 @@ angular.module('app').config(function($stateProvider) {
          var nLimit = oService.nOpenedLimit;
          //console.log('[allowOrder]countOrder.nOpened='+countOrder.nOpened+",nLimit="+nLimit);
          if (nLimit === 0) { return true; }
- 
+
           //console.log('[allowOrder]countOrder.nOpened='+countOrder.nOpened+",nLimit="+nLimit);
           return nLimit !== countOrder.nOpened;
         },
@@ -201,8 +201,8 @@ angular.module('app').config(function($stateProvider) {
         }
       },
       resolve: {
-        BankIDAccount: function(BankIDService) {
-          return BankIDService.account();
+        BankIDAccount: function(UserService) {
+          return UserService.account();
         }
       }
     });

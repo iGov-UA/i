@@ -1,4 +1,4 @@
-angular.module('order').controller('OrderSearchController', function ($rootScope, $scope, $location, $window, $state, $stateParams, ServiceService, MessagesService, BankIDService, order, $http, ErrorsFactory, DatepickerFactory, ActivitiService) {
+angular.module('order').controller('OrderSearchController', function ($rootScope, $scope, $location, $window, $state, $stateParams, ServiceService, MessagesService, UserService, order, $http, ErrorsFactory, DatepickerFactory, ActivitiService) {
 
   $scope.aOrderMessage = [];
   $scope.sServerReturnOnAnswer = '';
@@ -10,7 +10,7 @@ angular.module('order').controller('OrderSearchController', function ($rootScope
   $scope.sOrderCommentNew = '';
   $scope.sOrderAnswerCommentNew = '';
 
-  $scope.bAuth = BankIDService.isLoggedIn().then(function () {
+  $scope.bAuth = UserService.isLoggedIn().then(function () {
     $scope.bAuth = true;
   }).catch(function () {
     $scope.bAuth = false;
@@ -100,6 +100,8 @@ angular.module('order').controller('OrderSearchController', function ($rootScope
                 doMerge(oThis, {sType: "warning", sBody: 'Невірний формат заявки!'});
               } else if (sMessage.indexOf(['Record not found']) > -1) {
                 doMerge(oThis, {sType: "warning", sBody: 'Заявку не знайдено!'});
+              } else if (sMessage.indexOf(['Transaction rolled back']) > -1) {
+                doMerge(oThis, {sType: "warning", sBody: 'Заявку не знайдено!'});
               }
             })) {
             if (oResponse.soData) {
@@ -164,7 +166,7 @@ angular.module('order').controller('OrderSearchController', function ($rootScope
     var oFuncNote = {sHead: "Завантаженя історії та коментарів", sFunc: "loadMessages"};
     ErrorsFactory.init(oFuncNote, {asParam: ['sID_Order: ' + sID_Order, 'sToken: ' + sToken]});
     $scope.aOrderMessage = [];
-    BankIDService.isLoggedIn().then(function () {
+    UserService.isLoggedIn().then(function () {
       $scope.bAuth = true;
       if ($scope.bOrderOwner) {
         MessagesService.getServiceMessages(sID_Order, sToken).then(function (oResponse) {

@@ -51,7 +51,7 @@ module.exports = function (grunt) {
     },
     open: {
       server: {
-        url: 'http://localhost:<%= express.options.port %>'
+        url: localConfig.SERVER_PROTOCOL + '://localhost:<%= express.options.port %>'
       }
     },
     watch: {

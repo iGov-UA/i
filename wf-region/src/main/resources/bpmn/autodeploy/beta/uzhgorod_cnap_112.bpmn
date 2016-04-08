@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="uzhgorod_cnap_112" name="Ужгород - ЦНАП - Надання рішення міської ради про надання дозволів на розробку проектів землеустрою щодо відведення земельних ділянок" isExecutable="true">
+  <process id="uzhgorod_cnap_112" name="ЦНАП - Надання рішення міської ради про надання дозволів на розробку проектів землеустрою щодо відведення земельних ділянок" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати послугу" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По-батькові" type="string"></activiti:formProperty>
@@ -35,7 +36,12 @@
         <activiti:formProperty id="file9" name="Копії документів, що посвідчують право користування земельною ділянкою;(за наявності)" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="file10" name="Копії рішень уповноважених органів про передачу (надання) земельної ділянки в користування;(за наявності)" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="file11" name="Рішення (протокол) Загальних зборів ОСББ, ЖБК, ОК про необхідність оформлення права власності або користування земельною ділянкою" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="notice" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва ЦНАП" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса ЦНАП" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="Шапка" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="marker1" name="Фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;bankId_scan_passport&quot;,&quot;scan_inn&quot;,&quot;graphics&quot;,&quot;right&quot;,&quot;coordination&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;subject_of_appeal&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'attr1'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="marker2" name="Юридична особа або фізична особа - підприємець" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;copy_vytyag&quot;,&quot;graphics&quot;,&quot;right&quot;,&quot;coordination&quot;],&quot;asID_Field&quot;:{&quot;sReason1&quot;:&quot;subject_of_appeal&quot;},&quot;sCondition&quot;:&quot;[sReason1] == 'attr2'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="marker3" name="ОСББ, ЖБК, ОК" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;file1&quot;,&quot;file2&quot;,&quot;file3&quot;,&quot;file4&quot;,&quot;file5&quot;,&quot;file6&quot;,&quot;file7&quot;,&quot;file8&quot;,&quot;file9&quot;,&quot;file10&quot;,&quot;file11&quot;],&quot;asID_Field&quot;:{&quot;sReason2&quot;:&quot;subject_of_appeal&quot;},&quot;sCondition&quot;:&quot;[sReason2] == 'attr3'&quot;}}}"></activiti:formProperty>
@@ -48,7 +54,7 @@
     </boundaryEvent>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow2" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
-    <userTask id="usertask1" name="Обробка ЦНАП Ужгород (1-й крок)" activiti:candidateGroups="uzhgorod_cnap_112">
+    <userTask id="usertask1" name="Обробка ЦНАП (1-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Автор звернення " type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
@@ -66,12 +72,13 @@
         <activiti:formProperty id="number_cnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string"></activiti:formProperty>
         <activiti:formProperty id="adminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string"></activiti:formProperty>
         <activiti:formProperty id="date_registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string"></activiti:formProperty>
-        <activiti:formProperty id="status" name="Обробка заяви" type="enum">
+        <activiti:formProperty id="status" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="attr1_wait" name="Документи передані в Відділ землекористування"></activiti:value>
           <activiti:value id="attr2_finish" name="Відмова громадянину у разі надання неповного пакету документів"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="file1" name="Якщо з документами все гаразд - завантажте скановану копію описа документів, надісланих громодянином" type="file"></activiti:formProperty>
+        <activiti:formProperty id="file1" name="Якщо з документами все гаразд - завантажте скановану копію описа документів, надісланих громадянином (тільки для ЦНАП Ужгорода)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="Шапка" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody" name="[pattern/print/uzhgorod_cnap_112_print.html]" type="invisible" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -106,9 +113,11 @@
 Номер Вашого замовлення: ${number_cnap}.
 &lt;/p&gt;
 &lt;br /&gt;
-Телефон для довідок: (0312) 61-76-87, (0312) 61-41-42 &lt;br /&gt; 
+${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-Центр надання адміністративних послуг виконкому Ужгородської міської ради,&lt;br /&gt;
+${sNameOrgan}.&lt;br /&gt;
+${sAddress}.&lt;br /&gt;
+${sWorkTime}.&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -118,11 +127,11 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow7" name="status=='attr1_wait'" sourceRef="exclusivegateway1" targetRef="servicetask2">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status=='attr1_wait'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Public_SubjectOrganJoin == 'zak_uzgT'&& status=='attr1_wait'}]]></conditionExpression>
     </sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow8" sourceRef="servicetask5" targetRef="endevent2"></sequenceFlow>
-    <userTask id="usertask2" name="Підготовка відповіді після рішення Відділу землекористування (2-й крок)" activiti:candidateGroups="uzhgorod_cnap_112">
+    <userTask id="usertask2" name="Підготовка відповіді після рішення Відділу землекористування (2-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Автор звернення " type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
@@ -165,7 +174,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:string><![CDATA[msvidran@gmail.com]]></activiti:string>
+          <activiti:string><![CDATA[akylish88@gmail.com]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення. Надання рішення міської ради про надання дозволів на розробку проектів землеустрою щодо відведення земельних ділянок.]]></activiti:string>
@@ -198,9 +207,11 @@
 &lt;p&gt;Ваш запит був успішно зареєстрований у нашій системі.&lt;br /&gt;
 Повідомлення про результат послуги буде спрямоване на Ваш e-mail.&lt;/p&gt;
 &lt;br /&gt;
-Телефон для довідок: (0312) 61-76-87, (0312) 61-41-42&lt;br /&gt; 
+${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-Центр надання адміністративних послуг виконкому Ужгородської міської ради,&lt;br /&gt;
+${sNameOrgan}.&lt;br /&gt;
+${sAddress}.&lt;br /&gt;
+${sWorkTime}.&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -222,11 +233,13 @@
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 На жаль, по Вашому зверненню щодо надання рішення міської ради про надання дозволів на розробку проектів землеустрою було відмовлено.&lt;/p&gt;&lt;br /&gt;
 &lt;p&gt;${decisionComment}&lt;/p&gt;&lt;br /&gt;
-Телефон для довідок: (0312) 61-76-87, (0312) 61-41-42&lt;br /&gt; 
+Телефон для довідок: ${sPhoneOrgan}&lt;br /&gt; 
 &lt;p&gt;Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="#current-page"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
 &lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-Центр надання адміністративних послуг виконкому Ужгородської міської ради&lt;br /&gt;
+${sNameOrgan}.&lt;br /&gt;
+${sAddress}.&lt;br /&gt;
+${sWorkTime}.&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -256,23 +269,46 @@
 &lt;p&gt;						
 Зверніть увагу, що заяву, яку Ви подавали в електронному вигляді, треба буде засвідчити особистим підписом.&lt;/p&gt;
 &lt;br /&gt;
-Адреса: &lt;br /&gt;
-м.Ужгород, пл.Поштова, 3.  &lt;br /&gt;
-&lt;br /&gt;
-Графік роботи ЦНАП-у:&lt;br /&gt;
-Понеділок - Четвер з 9.00 до 18.00&lt;br /&gt;
-П'ятниця з 9.00 до 15.00&lt;br /&gt;
-Обідня перерва з 13.00 до 13.30&lt;br /&gt;
-Телефон: (0312) 61-76-87, (0312) 61-41-42&lt;br /&gt;
-&lt;br /&gt;
+${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-Центр надання адміністративних послуг виконкому Ужгородської міської ради, &lt;br /&gt;
+${sNameOrgan}.&lt;br /&gt;
+${sAddress}.&lt;br /&gt;
+${sWorkTime}.&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
+    <serviceTask id="servicetask7" name="Лист Документи всі ок" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression>Надання рішення міської ради про надання дозволів на розробку проектів землеустрою щодо відведення земельних ділянок</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+Документи оформлені вірно.&lt;br /&gt;
+Заявка передана до місцевої ради. &lt;br /&gt;
+${sPhoneOrgan}.&lt;br /&gt;
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan}.&lt;br /&gt;
+${sAddress}.&lt;br /&gt;
+${sWorkTime}.&lt;br /&gt;
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow16" name="status=='attr1_wait' sID_Public_SubjectOrganJoin" sourceRef="exclusivegateway1" targetRef="servicetask7">
+       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${(sID_Public_SubjectOrganJoin == 'nikopolT'||sID_Public_SubjectOrganJoin == 'dndzT'||sID_Public_SubjectOrganJoin == 'marganT'||sID_Public_SubjectOrganJoin == 'novomoskT'||sID_Public_SubjectOrganJoin == 'ordzonikT'||sID_Public_SubjectOrganJoin == 'sinelnT'||sID_Public_SubjectOrganJoin == 'petrik'||sID_Public_SubjectOrganJoin == 'shirok'||sID_Public_SubjectOrganJoin == 'vilnogirskT') && status=='attr1_wait'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow17" sourceRef="servicetask7" targetRef="usertask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_uzhgorod_cnap_112">
     <bpmndi:BPMNPlane bpmnElement="uzhgorod_cnap_112" id="BPMNPlane_uzhgorod_cnap_112">
@@ -286,7 +322,7 @@
         <omgdc:Bounds height="30.0" width="30.0" x="167.0" y="171.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="162.0" y="240.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="164.0" y="256.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="73.0" width="105.0" x="500.0" y="121.0"></omgdc:Bounds>
@@ -318,13 +354,16 @@
       <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
         <omgdc:Bounds height="101.0" width="105.0" x="855.0" y="351.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
+        <omgdc:Bounds height="72.0" width="111.0" x="420.0" y="256.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="55.0" y="159.0"></omgdi:waypoint>
         <omgdi:waypoint x="92.0" y="159.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
         <omgdi:waypoint x="182.0" y="201.0"></omgdi:waypoint>
-        <omgdi:waypoint x="179.0" y="240.0"></omgdi:waypoint>
+        <omgdi:waypoint x="181.0" y="256.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
         <omgdi:waypoint x="475.0" y="159.0"></omgdi:waypoint>
@@ -345,7 +384,7 @@
         <omgdi:waypoint x="650.0" y="179.0"></omgdi:waypoint>
         <omgdi:waypoint x="650.0" y="241.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="95.0" x="601.0" y="210.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="95.0" x="659.0" y="202.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
@@ -385,6 +424,18 @@
       <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
         <omgdi:waypoint x="335.0" y="159.0"></omgdi:waypoint>
         <omgdi:waypoint x="370.0" y="159.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
+        <omgdi:waypoint x="650.0" y="179.0"></omgdi:waypoint>
+        <omgdi:waypoint x="475.0" y="256.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="56.0" width="100.0" x="447.0" y="215.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
+        <omgdi:waypoint x="475.0" y="328.0"></omgdi:waypoint>
+        <omgdi:waypoint x="475.0" y="401.0"></omgdi:waypoint>
+        <omgdi:waypoint x="598.0" y="401.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

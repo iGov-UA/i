@@ -25,6 +25,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   MarkersFactory,
   service,
   FieldMotionService,
+  ParameterFactory,
   $modal
   ,ErrorsFactory
     ) {
@@ -34,7 +35,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   var currentState = $state.$current;
 
   $scope.paramsBackup = null
-  
+
   $scope.oServiceData = oServiceData;
   $scope.account = BankIDAccount; // FIXME потенційний хардкод
   $scope.activitiForm = activitiForm;
@@ -83,12 +84,23 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
 
   if ( !$scope.data.formData ) {
     initializeFormData();
+    $scope.data.formData.params.bReferent = new ParameterFactory;
+    angular.extend($scope.data.formData.params.bReferent, {
+      "id": "bReferent",
+      "name": "Referent",
+      "type": "invisible",
+      "value": false,
+      "readable": true,
+      "writable": true,
+      "required": false,
+      "datePattern":null,
+      "enumValues":[]
+    });
   }
 
   $scope.markers = ValidationService.getValidationMarkers();
   var aID_FieldPhoneUA = $scope.markers.validate.PhoneUA.aField_ID;
 
-  $scope.referent = false;
   angular.forEach($scope.activitiForm.formProperties, function(field) {
 
     var sFieldName = field.name || '';
@@ -127,6 +139,14 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
             return sourceVal;
           }
         });
+      }
+    }
+    if (field.id === 'bReferent') {
+      angular.extend($scope.data.formData.params.bReferent, field);
+      $scope.visibleBReferent = true;
+      switch ($scope.data.formData.params.bReferent.value) {
+        case 'true': $scope.data.formData.params.bReferent.value = true; break;
+        case 'false': $scope.data.formData.params.bReferent.value = false; break;
       }
     }
   });
@@ -211,7 +231,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
             ErrorsFactory.logFail({sBody:"У поверненому об'єкти немае номера створеної заявки!",asParam:["soReturn: "+JSON.stringify(oReturn)]});
             return;
         }
-        
+
         var nCRC = ValidationService.getLunaValue(oReturn.id);
         var sID_Order = oServiceData.nID_Server + "-" + oReturn.id + nCRC;
         submitted.data.id = sID_Order;
@@ -219,13 +239,13 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
         submitted.data.formData = $scope.data.formData;
         $scope.isSending = false;
         $scope.$root.data = $scope.data;
-  
+
         try{
 //            ErrorsFactory.logInfoSendHide({sType:"success", sBody:"Створена заявка!",asParam:["sID_Order: "+sID_Order]});
         }catch(sError){
             console.log('[submitForm.ActivitiService]sID_Order='+sID_Order+',sError='+ sError);
         }
-        
+
         return $state.go(submitted, angular.extend($stateParams, {formID: null, signedFileID : null}));
       });
   };
@@ -244,7 +264,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   $scope.isSending = false;
 
   function getFieldProps(property) {
-    if ($scope.referent && property.id.startsWith('bankId')){
+    if ($scope.data.formData.params.bReferent.value && property.id.startsWith('bankId')){
       return {
         mentionedInWritable: true,
         fieldES: 1, //EDITABLE
@@ -258,8 +278,8 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     };
   }
 
-  $scope.onReferent = function (){
-    if ($scope.referent){
+  $scope.onReferent = function (oldV, newV){
+    if ($scope.data.formData.params.bReferent.value){
 
       angular.forEach($scope.activitiForm.formProperties, function (field){
         //if (field.id.startsWith('bankId') && field.type !== 'file'){
@@ -272,7 +292,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
         }
         if (field.type === 'file'){
             $scope.data.formData.params[field.id].value="";
-            $scope.data.formData.params[field.id].upload = true;
+            //$scope.data.formData.params[field.id].upload = true;
             $scope.data.formData.params[field.id].scan = null;
         }
       });
@@ -291,7 +311,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
 
   $scope.showFormField = function(property) {
     var p = getFieldProps(property);
-    if ($scope.referent && property.id.startsWith('bankId')){
+    if ($scope.data.formData.params.bReferent.value && property.id.startsWith('bankId')){
       return true;
     }
     if (p.mentionedInWritable)
@@ -305,7 +325,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   };
 
   $scope.renderAsLabel = function(property) {
-    if ($scope.referent && property.id.startsWith('bankId')){
+    if ($scope.data.formData.params.bReferent.value && property.id.startsWith('bankId')){
       return false;
     }
     var p = getFieldProps(property);
@@ -323,7 +343,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   };
 
   $scope.isFieldRequired = function(property) {
-    if ($scope.referent && property.id == 'bankId_scan_passport'){
+    if ($scope.data.formData.params.bReferent.value && property.id == 'bankId_scan_passport'){
       return true;
     }
     var b=FieldMotionService.FieldMentioned.inRequired(property.id) ?
@@ -435,9 +455,9 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
 
   $scope.bFilledSelfPrevious = function () {
       return $scope.paramsBackup !== null;
-      
+
   };
-  
+
   $scope.fillSelfPreviousBack = function () {
       if($scope.bFilledSelfPrevious()){
         angular.forEach($scope.data.formData.params, function (property, key) {
@@ -451,7 +471,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
         $scope.paramsBackup = null;
       }
   };
-  
+
   if($scope.selfOrdersCount.nOpened > 0){
     $scope.fillSelfPrevious();
   }
