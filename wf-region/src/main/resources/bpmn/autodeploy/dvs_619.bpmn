@@ -79,7 +79,7 @@
         <activiti:formProperty id="phone" name="Телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSubject" name="Суть питання" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="visitDay" name="Бажаний день прийому" type="queueData" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="visitDay" name="Бажаний день прийому" type="queueData" default="   ${date_of_visit}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="proverka" name="Рішення про прийняття або відхилення заяви" type="enum">
           <activiti:value id="accept" name="Записати громадянина"></activiti:value>
           <activiti:value id="reject" name="Скасувати запис"></activiti:value>
@@ -161,8 +161,7 @@
     <sequenceFlow id="flow12" sourceRef="servicetask3" targetRef="usertask2"></sequenceFlow>
     <userTask id="usertask2" name="Візит громадянина" activiti:candidateGroups="dvs_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="sPosadaVid" name="До кого саме записується на прийом громадянин" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="visitDay" name="День прийому" type="string" default="${date_of_visit}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="visitDay" name="День прийому" type="string" default="   ${date_of_visit}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFIO" name="Прізвище, ім`я, по-батькові громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail громадянина" type="string" writable="false"></activiti:formProperty>
