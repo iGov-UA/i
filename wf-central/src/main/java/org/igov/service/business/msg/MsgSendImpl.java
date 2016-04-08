@@ -118,6 +118,8 @@ public class MsgSendImpl implements MsgSend {
 
     }
 
+    private static final int MSG_CODE_LENGTH = 30 - 3;
+    
     public static final HTTPClient httpClient = new HTTPClient();
 
     private String sBusId = BusId_DEFAULT;
@@ -156,8 +158,13 @@ public class MsgSendImpl implements MsgSend {
 	} catch (final IllegalArgumentException e) {
 	    msgType = MsgType.INF_MESSAGE;
 	}
+	
+	String sf = sFunction.trim().toUpperCase();
+	if ( sf.length() > MSG_CODE_LENGTH ) {
+	    sf = sf.substring(sf.length() - MSG_CODE_LENGTH);
+	}
 
-	this.sMsgCode = msgType.getAbbr() + "-" + sFunction.trim().toUpperCase();
+	this.sMsgCode = msgType.getAbbr() + "-" + sf;
 	this.sFunction = sFunction;
 
 	LOG.debug("MsgCode={}", this.sMsgCode);
