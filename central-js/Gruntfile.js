@@ -1,40 +1,13 @@
 // Generated on 2015-04-13 using generator-angular-fullstack 2.0.13
 'use strict';
 
-var _ = require('lodash');
-
 module.exports = function (grunt) {
   var localConfig;
   try {
     localConfig = require('./server/config/local.env');
   } catch (e) {
-    try{
-      localConfig = require('./process-custom.json').env;
-    }catch(e){
-      localConfig = {};
-    }
+    localConfig = {};
   }
-
-  function parseUrl(url){
-    var pattern = "^(([^:/\\?#]+):)?(//(([^:/\\?#]*)(?::([^/\\?#]*))?))?([^\\?#]*)(\\?([^#]*))?(#(.*))?$",
-      regex = new RegExp(pattern),
-      parts = regex.exec(url);
-
-    return {
-      protocol: parts[2],
-      host: parts[5],
-      port: parts[6],
-      suffix: parts[7]
-    };
-  }
-
-  var sURLBackProxyCentralParts;
-  try{
-    sURLBackProxyCentralParts = parseUrl(localConfig.BackProxy_Central.sURL_BackProxy_Central);
-  }catch(e){
-    sURLBackProxyCentralParts = {};
-  }
-
 
   // Load grunt tasks automatically, when needed
   require('jit-grunt')(grunt, {
@@ -78,8 +51,7 @@ module.exports = function (grunt) {
     },
     open: {
       server: {
-        url: (localConfig.SERVER_PROTOCOL || sURLBackProxyCentralParts.protocol) + '://localhost:<%= express.options.port %>'
-        //url: localConfig.BackProxy_Central.sHostProtocol_BackProxy_Central + '://localhost:<%= express.options.port %>'
+        url: localConfig.SERVER_PROTOCOL + '://localhost:<%= express.options.port %>'
       }
     },
     watch: {
