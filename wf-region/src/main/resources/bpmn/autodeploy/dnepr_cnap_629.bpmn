@@ -112,8 +112,8 @@
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Серія та номер паспорту" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
-        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asSubekt" name="Оберіть суб'єкт підприємницької діяльності; ;writable=false" type="enum" required="true">
           <activiti:value id="fiz" name="фізична особа-підприємець"></activiti:value>
           <activiti:value id="ur" name="юридична особа"></activiti:value>
@@ -284,10 +284,10 @@ if(execution.getVariable('asDirection') == 'production'){
 per4 = "Відомості щодо виробництва фільмів - наявність власної або найманої (орендованої) виробничої бази для знімання фільмів: "+execution.getVariable('sProductionBase')+"&lt;br /&gt;Данні про види фільмів, способи їх знімання та виготовлення оригіналів фільмових матеріалів на кіноплівці, магнітних чи інших електронних носіях: "+ execution.getVariable('sProductionType')
 }
 if(execution.getVariable('asDirection') == 'spread'){
-per4 = "Відомості щодо розповсюдження фільмів - наявність власної або найманої (орендованої) виробничої бази для тиражування фільмів на кіноплівці, магнітних чи інших електронних носіях: "+execution.getVariable('sSpreadBase')+"&lt;br /&gt;види розповсюдження: "+ execution.getVariable('sSpreadType')
+per4 = "Відомості щодо розповсюдження фільмів - наявність власної або найманої (орендованої) виробничої бази для тиражування фільмів на кіноплівці, магнітних чи інших електронних носіях: "+execution.getVariable('sSpreadBase')+"&lt;br /&gt;Види розповсюдження: "+ execution.getVariable('sSpreadType')
 }
 if(execution.getVariable('asDirection') == 'show'){
-per4 = "Відомості щодо демонстрування фільмів - до заяви додаєтся копія акта про прийняття в експлуатацію новозбудованого, реконструйованого або переоснащеного кінотеатру, відеозалу, кіноустановки, відеоустановки міжвідомчою комісією.&lt;/li&gt;"
+per4 = "Відомості щодо демонстрування фільмів - до заяви додаєтся копія акта про прийняття в експлуатацію новозбудованого, реконструйованого або переоснащеного кінотеатру, відеозалу, кіноустановки, відеоустановки міжвідомчою комісією&lt;/li&gt;"
 }
 res2 = '&lt;ol&gt;'+per1+per2+per3+per5+'&lt;/ol&gt;'
 execution.setVariable('sListDocumentsLetter', res2)
