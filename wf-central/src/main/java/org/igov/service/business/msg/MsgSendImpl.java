@@ -66,8 +66,11 @@ import com.pb.util.gsv.net.HTTPClient;
  *              Если СООБЩЕНИЯ с заданным кодом нет, то передаваемые данные привязываются к СООБЩЕНИЮ с кодом DEFAULT. 
  *         В этом случае, программа попытается создать на сервисе новое СООБЩЕНИЕ с новым кодом. 
  *                 
- *             Для задач igov мы приняли следующий шаблон формирования Кода СООБЩЕНИЯ:  АББРЕВИАТУРА_ТИПА_СООБЩЕНИЯ-ИМЯ_ФУНКЦИИ
- *         Например при вызове MsgSendImpl("WARNING","org.igov.getFunctionMeat"), Код СООБЩЕНИЯ будет WR-ORG.IGOV.GETFUNCTIONMEAT
+ *             Для задач igov мы приняли следующий шаблон формирования Кода СООБЩЕНИЯ:  АББРЕВИАТУРА_ТИПА_СООБЩЕНИЯ-ИМЯ_ФУНКЦИИ, 
+ *         длина кода сообщения не более 30символов. При превышении этой длины название функции обрезается слева.
+ *         Например при вызове MsgSendImpl("WARNING","org.igov.controller.getFunction"), Код СООБЩЕНИЯ будет: 
+ *         WR-IGOV.CONTROLLER.GETFUNCTION
+ *         123456789012345678901234567890 
  * 
  *         
  *         Для гибкой настройки программы может использоваться файл параметров msg.properties, где:
@@ -81,9 +84,10 @@ public class MsgSendImpl implements MsgSend {
     private static final Logger LOG = LoggerFactory.getLogger(MsgSendImpl.class);
 
     public static final String MSG_URL;
-
     private static final String TemplateMsgId;
     private static final String BusId_DEFAULT;
+    private static final String MSG_LOGIN;
+    
     private static final String MSG_DEFAULT = "DEFAULT";
 
     private static final Properties prop = new Properties();
@@ -93,26 +97,32 @@ public class MsgSendImpl implements MsgSend {
 	String MsgURL;
 	String sBusId;
 	String propTemplateMsgId;
+	String msgLogin;
 	try {
 	    prop.load(inputStream);
 
 	    MsgURL = prop.getProperty("MsgURL", "http://msg.igov.org.ua/MSG");
 	    sBusId = prop.getProperty("BusId", "TEST");
 	    propTemplateMsgId = prop.getProperty("TemplateMsgId", "HMXHVKM80002M0");
+	    msgLogin = prop.getProperty("MsgLogin", "");
 	} catch (IOException e) {
 	    MsgURL = "http://msg.igov.org.ua/MSG";
 	    sBusId = "TEST";
 	    propTemplateMsgId = "HMXHVKM80002M0";
+	    msgLogin = "";
 	}
 
 	MSG_URL = MsgURL;
 	BusId_DEFAULT = sBusId;
 	TemplateMsgId = propTemplateMsgId; 
+	MSG_LOGIN = msgLogin;
 	
 	System.setProperty("MsgURL", MSG_URL);
 
     }
 
+    private static final int MSG_CODE_LENGTH = 30 - 3;
+    
     public static final HTTPClient httpClient = new HTTPClient();
 
     private String sBusId = BusId_DEFAULT;
@@ -151,8 +161,13 @@ public class MsgSendImpl implements MsgSend {
 	} catch (final IllegalArgumentException e) {
 	    msgType = MsgType.INF_MESSAGE;
 	}
+	
+	String sf = sFunction.trim().toUpperCase();
+	if ( sf.length() > MSG_CODE_LENGTH ) {
+	    sf = sf.substring(sf.length() - MSG_CODE_LENGTH);
+	}
 
-	this.sMsgCode = msgType.getAbbr() + "-" + sFunction.trim().toUpperCase();
+	this.sMsgCode = msgType.getAbbr() + "-" + sf;
 	this.sFunction = sFunction;
 
 	LOG.debug("MsgCode={}", this.sMsgCode);
@@ -329,7 +344,9 @@ public class MsgSendImpl implements MsgSend {
      */
     private String buildJSON() {
 	StringBuilder sb = new StringBuilder(500);
-	sb.append("{\"r\":[{\"_type_comment\" : \"Создание сообщения\",\"type\":\"MSG_ADD\",\"sid\" : \"\",\"s\":{\"Type\":\"");
+	sb.append("{\"r\":[{\"_type_comment\" : \"Создание сообщения\",\"type\":\"MSG_ADD\",\"sid\" : \"\", \"login\":\"");
+	sb.append(MSG_LOGIN);
+	sb.append("\", \"s\":{\"Type\":\"");
 	sb.append(msgType.name());
 	sb.append("\",\"MsgCode\":\"");
 	sb.append(sMsgCode);
@@ -383,7 +400,7 @@ public class MsgSendImpl implements MsgSend {
 	    LOG.info("Созданно сообщение с кодом : {}", this.sMsgCode);
 	    
 	    // Cохранить данные во вновь созданном СООБЩЕНИИ
-//	    retMsg = doMsg();
+	    retMsg = doMsg();
 	}
 
 	return retMsg;

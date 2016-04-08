@@ -36,7 +36,7 @@
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="Шапка для прінтформи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapkaGolova" name="Шапка для прінтформи" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -54,7 +54,7 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;strong&gt;Шановний(-а) колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-У Вас в черзі на обробку нове звернення щодо затвердження проекту відведення земельної ділянки та надання її у користування (оренду).&lt;br /&gt;
+У Вас в черзі на обробку нове звернення щодо видачи акту обстеження та ордеру на видалення зелених насаджень.&lt;br /&gt;
 Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
 Відпрацюйте це звернення на &lt;a href="https://region.igov.org.ua" target="_blank"&gt;порталі&lt;/a&gt;
 [pattern/mail/_common_signature.html]
@@ -76,7 +76,7 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;Ваше звернення щодо затвердження проекту відведення земельної ділянки та надання її у користування (оренду) зареєстровано у системі.&lt;br/&gt;
+&lt;p&gt;Ваше звернення щодо видачи акту обстеження та ордеру на видалення зелених насаджень зареєстровано у системі.&lt;br/&gt;
 Повідомлення про результат послуги буде спрямоване на Ваш e-mail.&lt;/p&gt;
 &lt;br /&gt;
 ${sPhoneOrgan}.&lt;br /&gt;
@@ -119,7 +119,7 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="reject" name="Відмовити у розгляді без реєстрації у звязку з відсутністю необхідних документів"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="Шапка для прінтформи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapkaGolova" name="Шапка для прінтформи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers12" name="принтформа якщо юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_12&quot;:{&quot;aElement_ID&quot;:[&quot;ur_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asChoiceObject&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnumUr'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers13" name="принтформа якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;fiz_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asChoiceObject&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnumFiz'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sBody" name="[pattern/print/dneprOblSnap/cnap_469_print.html]" type="invisible" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
@@ -153,7 +153,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-На жаль, Ваше звернення щодо затвердження проекту відведення земельної ділянки та надання її у користування (оренду) - відхилине.&lt;/p&gt;
+На жаль, Ваше звернення щодо видачи акту обстеження та ордеру на видалення зелених насаджень - відхилине.&lt;/p&gt;
 &lt;p&gt;Причина в наступному:&lt;/p&gt;
 &lt;p&gt;${comment}&lt;/p&gt;
 &lt;p&gt;Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="#current-page"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
@@ -183,8 +183,8 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення щодо затвердження проекту відведення земельної ділянки та надання її у користування (оренду) - відправлене у профільний відділ міської ради.&lt;br /&gt;
-Спеціалісти з органу місцевого самоврядування повинні дати відповідь протягом 44-х календарних днів з дня реєстрації заяви.&lt;br /&gt; 
+Ваше звернення щодо видачи акту обстеження та ордеру на видалення зелених насаджень - відправлене у профільний відділ міської ради.&lt;br /&gt;
+Спеціалісти з органу місцевого самоврядування повинні дати відповідь протягом 50-ти календарних днів з дня реєстрації заяви.&lt;br /&gt; 
 &lt;p&gt;Номер Вашого замовлення: ${sExtensionNumber}&lt;/p&gt;&lt;br /&gt; 
 ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
@@ -223,8 +223,8 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="sAdminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration" name="Дата реєстрації ЦНАП" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asStatus" name="Обробка після рішення міської ради" type="enum" required="true">
-          <activiti:value id="sEnumGood" name="Рішення готове. Запросити громадянина до ЦНАПу"></activiti:value>
-          <activiti:value id="sEnumBad" name="Відправити заявнику копію рішення у разі негативного рішення управління"></activiti:value>
+          <activiti:value id="sEnumGood" name="Ордер готов. Запросити громадянина до ЦНАПу"></activiti:value>
+          <activiti:value id="sEnumBad" name="Відправити заявнику копію рішення у разі негативного рішення"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="nReference" name="Сканкопія рішення" type="file" required="true"></activiti:formProperty>
       </extensionElements>
@@ -247,19 +247,19 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 &lt;p&gt;
-Ваше звернення щодо затвердження проекту відведення земельної ділянки та надання її у користування (оренду) - опрацьовано. &lt;br /&gt;
-Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення особисто під підпис у ЦНАП.&lt;br/&gt; 
+Ваше звернення щодо видачи акту обстеження та ордеру на видалення зелених насаджень - опрацьовано. &lt;br /&gt;
+Ви або уповноважена Вами особа (при наявності довіреності) можете отримати акт обстеження та ордер особисто під підпис у ЦНАП.&lt;br/&gt; 
 При собі треба мати:&lt;br/&gt; 
 1. Документ, що посвідчує особу.&lt;br/&gt; 
 2. Для уповоноваженої особи - довіренність.&lt;br/&gt;
 3. Оригінали документів, що були завантажені при подачі заяви на сайті.&lt;br/&gt;
 &lt;/p&gt;
 &lt;br /&gt;
+${sAddress}.&lt;br /&gt;
+${sWorkTime}.&lt;br /&gt;
 ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}.&lt;br /&gt;
-${sAddress}.&lt;br /&gt;
-${sWorkTime}.&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
@@ -284,7 +284,7 @@ ${sWorkTime}.&lt;br /&gt;
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 &lt;p&gt;
-На жаль, Ваше звернення щодо затвердження проекту відведення земельної ділянки та надання її у користування (оренду) - відхилено.&lt;br /&gt;
+На жаль, Ваше звернення щодо видачи акту обстеження та ордеру на видалення зелених насаджень - відхилено.&lt;br /&gt;
 Вам надіслано в прикріпленому файлі рішення з вказаною причиною. &lt;br /&gt;
 &lt;/p&gt;
 &lt;br /&gt;
