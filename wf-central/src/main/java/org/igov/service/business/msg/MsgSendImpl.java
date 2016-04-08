@@ -81,9 +81,10 @@ public class MsgSendImpl implements MsgSend {
     private static final Logger LOG = LoggerFactory.getLogger(MsgSendImpl.class);
 
     public static final String MSG_URL;
-
     private static final String TemplateMsgId;
     private static final String BusId_DEFAULT;
+    private static final String MSG_LOGIN;
+    
     private static final String MSG_DEFAULT = "DEFAULT";
 
     private static final Properties prop = new Properties();
@@ -93,21 +94,25 @@ public class MsgSendImpl implements MsgSend {
 	String MsgURL;
 	String sBusId;
 	String propTemplateMsgId;
+	String msgLogin;
 	try {
 	    prop.load(inputStream);
 
 	    MsgURL = prop.getProperty("MsgURL", "http://msg.igov.org.ua/MSG");
 	    sBusId = prop.getProperty("BusId", "TEST");
 	    propTemplateMsgId = prop.getProperty("TemplateMsgId", "HMXHVKM80002M0");
+	    msgLogin = prop.getProperty("MsgLogin", "");
 	} catch (IOException e) {
 	    MsgURL = "http://msg.igov.org.ua/MSG";
 	    sBusId = "TEST";
 	    propTemplateMsgId = "HMXHVKM80002M0";
+	    msgLogin = "";
 	}
 
 	MSG_URL = MsgURL;
 	BusId_DEFAULT = sBusId;
 	TemplateMsgId = propTemplateMsgId; 
+	MSG_LOGIN = msgLogin;
 	
 	System.setProperty("MsgURL", MSG_URL);
 
@@ -329,7 +334,9 @@ public class MsgSendImpl implements MsgSend {
      */
     private String buildJSON() {
 	StringBuilder sb = new StringBuilder(500);
-	sb.append("{\"r\":[{\"_type_comment\" : \"Создание сообщения\",\"type\":\"MSG_ADD\",\"sid\" : \"\",\"s\":{\"Type\":\"");
+	sb.append("{\"r\":[{\"_type_comment\" : \"Создание сообщения\",\"type\":\"MSG_ADD\",\"sid\" : \"\", \"login\":\"");
+	sb.append(MSG_LOGIN);
+	sb.append("\", \"s\":{\"Type\":\"");
 	sb.append(msgType.name());
 	sb.append("\",\"MsgCode\":\"");
 	sb.append(sMsgCode);
