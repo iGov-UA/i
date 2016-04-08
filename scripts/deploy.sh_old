@@ -46,10 +46,6 @@ do
 			IFS=',' read -r -a saCompile <<< "$2"
 			shift
 			;;
-		--docker)
-			bDocker="$2"
-			shift
-			;;
 		*)
 			echo "bad option"
 			exit 1
@@ -98,48 +94,6 @@ fi
 #if [[ $sVersion == "prod" && $sProject == "dashboard-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-region" ]]; then
 #		sHost="region.igov.org.ua"
 #fi
-
-build_docker ()
-{
-#	if ! [ -x "$(command -v docker)" ]; then
-#	  echo 'Docker is not installed.' >&2
-#	  return
-#	fi
-
-	readonly DOCKER_REPO=puppet.igov.org.ua:5000
-	readonly DOCKER_IMAGE=$sProject"_"$sVersion
-	readonly DOCKER_TAG=$sVersion
-
-	echo "Start building Docker image..."
-
-	if ! [ -f Dockerfile ]; then
-		echo "Dockerfile  not found. Creating Dockerfile."
-		if [ $sProject == "wf-central" ] || [ $sProject == "wf-region" ]; then
-			cat <<- _EOF_ > Dockerfile
-			FROM tomcat:jre8
-			COPY target/*.war /usr/local/tomcat/webapps
-			EXPOSE 8080
-			CMD ["catalina.sh", "run"]
-			_EOF_
-		fi
-		if [ $sProject == "central-js" ] || [ $sProject == "dashboard-js" ]; then
-			cat <<- _EOF_ > Dockerfile
-			FROM node
-			RUN mkdir -p /usr/src/app
-			WORKDIR /usr/src/app
-			COPY . /usr/src/app
-			EXPOSE 9000
-			CMD [ "npm", "start" ]
-			_EOF_
-		fi
-	fi
-
-	docker build -t $DOCKER_REPO/$DOCKER_IMAGE .
-	docker tag  $DOCKER_REPO/$DOCKER_IMAGE:latest  $DOCKER_REPO/$DOCKER_IMAGE:$DOCKER_TAG
-	docker push $DOCKER_REPO/$DOCKER_IMAGE:latest
-	docker push $DOCKER_REPO/$DOCKER_IMAGE:$DOCKER_TAG
-	echo "Build & push to Docker registry finished."
-}
 
 build_central-js ()
 {
@@ -363,9 +317,6 @@ else
 	if [ $sProject == "dashboard-js" ]; then
 		build_dashboard-js
 	fi
-fi
-if [ "$bDocker" == "true" ]; then
-	build_docker
 fi
 if [ -z $sHost ]; then
     echo "Cloud not select host for deploy. Wrong version or project."
