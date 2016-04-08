@@ -7,7 +7,7 @@ angular.module('journal').controller('JournalSearchController', function (
   $stateParams,
   ServiceService,
   MessagesService,
-  BankIDService,
+  UserService,
   BankIDLogin,
   order,
   events,
@@ -31,7 +31,7 @@ angular.module('journal').controller('JournalSearchController', function (
   $scope.sOrderCommentNew = '';
   $scope.sOrderAnswerCommentNew = '';
 
-  $scope.bAuth = BankIDService.isLoggedIn().then(function () {
+  $scope.bAuth = UserService.isLoggedIn().then(function () {
     $scope.bAuth = true;
   }).catch(function () {
     $scope.bAuth = false;
@@ -123,7 +123,7 @@ angular.module('journal').controller('JournalSearchController', function (
     var oFuncNote = {sHead: "Завантаженя історії та коментарів", sFunc: "loadMessages"};
     ErrorsFactory.init(oFuncNote, {asParam: ['sID_Order: ' + sID_Order, 'sToken: ' + sToken]});
     $scope.aOrderMessage = [];
-    BankIDService.isLoggedIn().then(function () {
+    UserService.isLoggedIn().then(function () {
       $scope.bAuth = true;
       if ($scope.bOrderOwner) {
         MessagesService.getServiceMessages(sID_Order, sToken).then(function (oResponse) {

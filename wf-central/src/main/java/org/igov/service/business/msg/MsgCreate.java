@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author kr110666kai
  * 
- * Создание шаблона сообщения на основании JSON запроса вида:
+ * Создание СООБЩЕНИЯ на основании JSON запроса вида:
  * 
  * { "r" : 
  *   [ 
@@ -28,8 +28,15 @@ import org.slf4j.LoggerFactory;
  *                "MsgCode" : "${Код сообщения}",
  *                "BusId" : "${Id бизнеспроцесса}",
  *                "Descr" : "${Описание сообщения}",
- *                "TemplateMsgId" : "${Id шаблона}" 
- *               }
+ *                "TemplateMsgId" : "${Id шаблона}",
+ *                "ext": {
+ *                         "LocalMsg": [{
+ *                         	          "Level": "DEVELOPER",
+ *                         	          "Lang": "UKR",
+ *                                        "Text": "getMessageImpl",
+ *                                        "FullText": ""
+ *                                     }]
+ *                       }
  *      }
  *   ]
  * }
@@ -57,7 +64,6 @@ public class MsgCreate {
 	    conn.setDoOutput(true);
 	    conn.setRequestMethod("POST");
 	    conn.setRequestProperty("Content-Type", "application/json");
-//	    conn.setRequestProperty("Content-Type", "application/xml");
 	    
 	    OutputStream os = conn.getOutputStream();
 	    os.write(sBodyRequest.getBytes());
@@ -75,7 +81,7 @@ public class MsgCreate {
 	    if (conn.getResponseCode() != HttpURLConnection.HTTP_CREATED) {
 		
 		StringBuffer berr = new StringBuffer(500);
-		berr.append("Ошибка при работе с сервисом :");
+		berr.append("Ошибка при работе с сервисом ");
 		berr.append(url);
 		berr.append("\nBodyRequest:\n");
 		berr.append(sBodyRequest);
@@ -93,11 +99,9 @@ public class MsgCreate {
 	    LOG.debug("\nResponseBody:{}\n", ret.toString());
 	    
 	} catch (MalformedURLException e) {
-	    LOG.error("Ошибка при создании шаблона сообщения. Тело запроса:\n{}\n Ошибка:{}",sBodyRequest,e.getMessage());
-	    e.printStackTrace();
+	    LOG.error("Ошибка при создании сообщения. Запрос:\n{}\n Ошибка:\n",sBodyRequest,e);
 	} catch (IOException e) {
-	    LOG.error("Ошибка при создании шаблона сообщения. Тело запроса:\n{}\n Ошибка:{}",sBodyRequest,e.getMessage());
-	    e.printStackTrace();
+	    LOG.error("Ошибка при создании сообщения. Запрос:\n{}\n Ошибка:\n",sBodyRequest,e);
 	} finally {
 	    conn.disconnect();
 	}
