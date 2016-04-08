@@ -1,4 +1,4 @@
-angular.module('app').factory('DropdownFactory', function() {
+angular.module('app').factory('DropdownFactory', function($timeout) {
   var dropdown = function() {
     this.model = null;
     this.list = null;
