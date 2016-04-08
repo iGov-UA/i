@@ -69,7 +69,7 @@ import com.pb.util.gsv.net.HTTPClient;
  *             Для задач igov мы приняли следующий шаблон формирования Кода СООБЩЕНИЯ:  АББРЕВИАТУРА_ТИПА_СООБЩЕНИЯ-ИМЯ_ФУНКЦИИ, 
  *         длина кода сообщения не более 30символов. При превышении этой длины название функции обрезается слева.
  *         Например при вызове MsgSendImpl("WARNING","org.igov.controller.getFunction"), Код СООБЩЕНИЯ будет: 
- *         WR-IGOV.CONTROLLER.GETFUNCTION
+ *         WR-IGOV_CONTROLLER_GETFUNCTION  - здесь точки заменены на знак подчеркивания
  *         123456789012345678901234567890 
  * 
  *         
@@ -123,6 +123,9 @@ public class MsgSendImpl implements MsgSend {
 
     private static final int MSG_CODE_LENGTH = 30 - 3;
     
+    // Символы разрешенные в коде СООБЩЕНИЯ
+    private static final String ALLOWED_CHARS_MSG_CODE = "^[a-zA-Z0-9-_]+$";
+    
     public static final HTTPClient httpClient = new HTTPClient();
 
     private String sBusId = BusId_DEFAULT;
@@ -162,7 +165,13 @@ public class MsgSendImpl implements MsgSend {
 	    msgType = MsgType.INF_MESSAGE;
 	}
 	
-	String sf = sFunction.trim().toUpperCase();
+	String sf = sFunction.trim().toUpperCase().replaceAll("\\.","_");
+	LOG.debug("Modified sFunction={}", sf);
+	
+	if (!sf.matches(ALLOWED_CHARS_MSG_CODE)) {
+	    throw new IllegalArgumentException("Недопустимые символы в sFunction. Разрешено использовать цифры и буквы латинского алфавита.");
+	}
+	
 	if ( sf.length() > MSG_CODE_LENGTH ) {
 	    sf = sf.substring(sf.length() - MSG_CODE_LENGTH);
 	}
@@ -378,7 +387,8 @@ public class MsgSendImpl implements MsgSend {
 
 //     public static void main(String[] args) throws IOException {
 //         try {
-//	    IMsgObjR msg = new MsgSendImpl("WARNING", "getFunction").save();
+////	    IMsgObjR msg = new MsgSendImpl("WARNING", "getFunction ").save();
+// 	    new MsgSendImpl("WARNING", "org.getFunction-2");
 //	} catch (Exception e) {
 //	    e.printStackTrace();
 //	}
