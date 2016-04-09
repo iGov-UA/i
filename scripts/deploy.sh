@@ -262,13 +262,16 @@ build_base ()
 		"*")
 			echo "Build all base modules"
 			cd storage-static
-			mvn -P $sVersion clean install $sBuildArg
+			#mvn -P $sVersion clean install $sBuildArg
+			mvn -P $sVersion clean deploy $sBuildArg
 			cd ..
 			cd storage-temp
-			mvn -P $sVersion clean install $sBuildArg
+			#mvn -P $sVersion clean install $sBuildArg
+			mvn -P $sVersion clean deploy $sBuildArg
 			cd ..
 			cd wf-base
-			mvn -P $sVersion clean install $sBuildDoc $sBuildArg -Ddependency.locations.enabled=false
+			#mvn -P $sVersion clean install $sBuildDoc $sBuildArg -Ddependency.locations.enabled=false
+			mvn -P $sVersion clean deploy $sBuildDoc $sBuildArg -Ddependency.locations.enabled=false
 			cd ..
 		   ;;
 		esac
