@@ -178,6 +178,7 @@ build_central-js ()
 		npm cache clean
 		npm install
 		bower install
+		npm install grunt-contrib-sass
 		npm install grunt-contrib-imagemin
 		grunt build
 		cd dist
