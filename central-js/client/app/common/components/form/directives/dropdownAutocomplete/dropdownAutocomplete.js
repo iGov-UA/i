@@ -4,15 +4,12 @@ angular.module('app').directive('dropdownAutocomplete', function () {
     controller: 'dropdownAutocompleteCtrl',
     controllerAs: 'uiScroll',
     link: function (scope, element, attrs) {
-      attrs.$observe('autocompleteData', function (attr) {
-        scope.$eval('autocompleteData = ' + attr);
-      });
-      attrs.$observe('autocompleteName', function (attr) {
-        scope.$eval('autocompleteName = ' + attr);
-      });
-      attrs.$observe('formData', function (attr) {
-        scope.$eval('formData = ' + attr);
-      });
+      scope.$eval('autocompleteData = ' + attrs.autocompleteData);
+      scope.$eval('autocompleteName = ' + attrs.autocompleteName);
+      scope.$eval('formData = ' + attrs.formData);
+      if (angular.isFunction(scope.autocompleteData.init)) {
+        scope.$eval(scope.autocompleteData.init);
+      }
     }
   };
 });

@@ -3,7 +3,8 @@ angular.module('app').factory('autocompletesDataFactory', function () {
     Currency: {
       valueProperty: 'sID_UA',
       titleProperty: 'sName_UA',
-      apiUrl: './api/currencies'
+      apiUrl: './api/currencies',
+      orderBy: 'sName_UA'
     },
     ObjectCustoms: {
       valueProperty: 'sID_UA',
@@ -14,25 +15,24 @@ angular.module('app').factory('autocompletesDataFactory', function () {
     SubjectOrganJoinTax: {
       valueProperty: 'sID_UA',
       titleProperty: 'sName_UA',
+      orderBy: 'sName_UA',
       apiUrl: './api/subject/organs/join-tax',
-      link: function (scope) {
+      init: function (scope) {
         scope.$watch("formData.params['sID_Public_SubjectOrganJoin'].nID", function (newValue) {
-          scope.resetAutoComplete();
-          if (newValue)
-            scope.dataList.load(scope.serviceData, null, {nID_SubjectOrganJoin: newValue}).then(function (regions) {
-              scope.dataList.initialize(regions);
-            });
+          scope.refreshList('nID_SubjectOrganJoin', newValue);
         });
       }
     },
     ObjectEarthTarget: {
       valueProperty: 'sID_UA',
       titleProperty: 'sName_UA',
+      orderBy: 'sName_UA',
       apiUrl: './api/object-earth-target'
     },
     Country: {
       valueProperty: 'nID_UA',
       titleProperty: 'sNameShort_UA',
+      orderBy: 'sNameShort_UA',
       additionalValueProperty: 'sID_UA',
       apiUrl: './api/countries/'
     }
