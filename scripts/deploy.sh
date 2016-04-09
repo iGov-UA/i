@@ -157,6 +157,7 @@ build_central-js ()
 			sleep 5
 		done
 		cd central-js
+		gem install sass
 		npm cache clean
 		npm install
 		bower install
