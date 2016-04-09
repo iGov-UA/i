@@ -103,27 +103,22 @@ if [ $sProject == "central-js" ]; then
 	done
 	unset IFS
 	mv -f /sybase/central-js /sybase/.backup/$sProject/$sDate
-	#Перемещаем новую версию на место старой
 	cp -r /sybase/.upload/central-js /sybase/central-js
-	#mv -f /sybase/.upload/central-js.$data/dist /sybase/central-js
 	cd /sybase/central-js
-	#cp -f /sybase/.configs/central-js/index.js /sybase/central-js/server/config/index.js
-	#cp -f /sybase/.configs/central-js/config/index.js /sybase/central-js/server/config/index.js
-	#cp -f /sybase/.configs/central-js/config.js /sybase/central-js/server/config.js
 	cp -f -R /sybase/.configs/central-js/* /sybase/central-js/
 	pm2 start process.json --name central-js
 	pm2 info central-js
-	#curl --insecure https://127.0.0.1:8443
-	#if [ $? -ne 0 ]; then
-	#	echo "NodeJS failed to start. Restoring from backup...."
-	#	cd /sybase
-	#	pm2 stop central-js
-	#	pm2 delete central-js
-	#	rm -rf /sybase/central-js
-	#	cp /sybase/.backup/$sProject/$sDate /sybase/central-js
-	#	pm2 start process.json --name central-js
-	#	pm2 info central-js
-	#fi
+	curl --insecure https://127.0.0.1:8443
+	if [ $? -ne 0 ]; then
+		echo "NodeJS failed to start. Restoring from backup...."
+		cd /sybase
+		pm2 stop central-js
+		pm2 delete central-js
+		rm -rf /sybase/central-js
+		cp /sybase/.backup/$sProject/$sDate /sybase/central-js
+		pm2 start process.json --name central-js
+		pm2 info central-js
+	fi
 fi
 
 if [ $sProject == "dashboard-js" ]; then
