@@ -134,6 +134,7 @@ build_docker ()
 		fi
 	fi
 
+	mkdir /tmp/$sProject
 	docker build -t $DOCKER_REPO/$DOCKER_IMAGE .
 	docker tag  $DOCKER_REPO/$DOCKER_IMAGE:latest  $DOCKER_REPO/$DOCKER_IMAGE:$DOCKER_TAG
 	docker push $DOCKER_REPO/$DOCKER_IMAGE:latest
