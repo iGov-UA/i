@@ -92,9 +92,9 @@ fi
 if [[ $sVersion == "alpha" && $sProject == "dashboard-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-region" ]]; then
 		sHost="test.region.igov.org.ua"
 fi
-#if [[ $sVersion == "beta" && $sProject == "dashboard-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-region" ]]; then
-#		sHost="test-version.region.igov.org.ua"
-#fi
+if [[ $sVersion == "beta" && $sProject == "dashboard-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-region" ]]; then
+		sHost="test-version.region.igov.org.ua"
+fi
 #if [[ $sVersion == "prod" && $sProject == "dashboard-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-region" ]]; then
 #		sHost="region.igov.org.ua"
 #fi
