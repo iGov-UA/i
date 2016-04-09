@@ -104,7 +104,7 @@ if [ $sProject == "central-js" ]; then
 	unset IFS
 	mv -f /sybase/central-js /sybase/.backup/$sProject/$sDate
 	#Перемещаем новую версию на место старой
-	mv -f /sybase/.upload/central-js /sybase/central-js
+	cp /sybase/.upload/central-js /sybase/central-js
 	#mv -f /sybase/.upload/central-js.$data/dist /sybase/central-js
 	cd /sybase/central-js
 	#cp -f /sybase/.configs/central-js/index.js /sybase/central-js/server/config/index.js
