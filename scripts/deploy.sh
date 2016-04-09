@@ -82,9 +82,10 @@ fi
 if [[ $sVersion == "alpha" && $sProject == "central-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-central" ]]; then
 		sHost="test.igov.org.ua"
 fi
-#if [[ $sVersion == "beta" && $sProject == "central-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-central" ]]; then
-#		sHost="test-version.igov.org.ua"
-#fi
+if [[ $sVersion == "beta" && $sProject == "central-js" ]] || [[ $sVersion == "beta" && $sProject == "wf-central" ]]; then
+		sHost="test-version.igov.org.ua"
+		export PATH=/usr/local/bin:$PATH
+fi
 #if [[ $sVersion == "prod" && $sProject == "central-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-central" ]]; then
 #		sHost="igov.org.ua"
 #fi
@@ -92,12 +93,15 @@ fi
 if [[ $sVersion == "alpha" && $sProject == "dashboard-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-region" ]]; then
 		sHost="test.region.igov.org.ua"
 fi
-#if [[ $sVersion == "beta" && $sProject == "dashboard-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-region" ]]; then
-#		sHost="test-version.region.igov.org.ua"
-#fi
+if [[ $sVersion == "beta" && $sProject == "dashboard-js" ]] || [[ $sVersion == "beta" && $sProject == "wf-region" ]]; then
+		sHost="test-version.region.igov.org.ua"
+		export PATH=/usr/local/bin:$PATH
+fi
 #if [[ $sVersion == "prod" && $sProject == "dashboard-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-region" ]]; then
 #		sHost="region.igov.org.ua"
 #fi
+
+echo "Host $sHost will be a target server for deploy...."
 
 build_docker ()
 {
@@ -134,9 +138,10 @@ build_docker ()
 		fi
 	fi
 
-	mkdir /tmp/$sProject
-	docker build -t $DOCKER_REPO/$DOCKER_IMAGE:latest .
+	docker build -t $DOCKER_REPO/$DOCKER_IMAGE .
+	docker tag  $DOCKER_REPO/$DOCKER_IMAGE:latest  $DOCKER_REPO/$DOCKER_IMAGE:$DOCKER_TAG
 	docker push $DOCKER_REPO/$DOCKER_IMAGE:latest
+	docker push $DOCKER_REPO/$DOCKER_IMAGE:$DOCKER_TAG
 	echo "Build & push to Docker registry finished."
 }
 
@@ -153,6 +158,7 @@ build_central-js ()
 			echo "dashboard-js compilation is still running. we will wait until it finish."
 			sleep 5
 		done
+		gem install sass
 		cd central-js
 		npm cache clean
 		npm install
@@ -169,11 +175,11 @@ build_central-js ()
 			echo "dashboard-js compilation is still running. we will wait until it finish."
 			sleep 5
 		done
+		gem install sass
 		cd central-js
 		npm cache clean
 		npm install
 		bower install
-		npm install grunt-contrib-imagemin
 		grunt build
 		cd dist
 		npm install --production
@@ -241,37 +247,31 @@ build_base ()
 		storage-static)
 			echo  "will build $sArrComponent"
 			cd storage-static
-			#mvn -P $sVersion clean install $sBuildArg
-			mvn -P $sVersion clean deploy $sBuildArg
+			mvn -P $sVersion clean install $sBuildArg
 			cd ..
 			;;
 		storage-temp)
 			echo  "will build $sArrComponent"
 			cd storage-temp
-			#mvn -P $sVersion clean install $sBuildArg
-			mvn -P $sVersion clean deploy $sBuildArg
+			mvn -P $sVersion clean install $sBuildArg
 			cd ..
 			;;
 		wf-base)
 			echo  "will build $sArrComponent"
 			cd wf-base
-			#mvn -P $sVersion clean install $sBuildDoc $sBuildArg -Ddependency.locations.enabled=false
-			mvn -P $sVersion clean deploy $sBuildDoc $sBuildArg -Ddependency.locations.enabled=false
+			mvn -P $sVersion clean install $sBuildDoc $sBuildArg -Ddependency.locations.enabled=false
 			cd ..
 			;;
 		"*")
 			echo "Build all base modules"
 			cd storage-static
-			#mvn -P $sVersion clean install $sBuildArg
-			mvn -P $sVersion clean deploy $sBuildArg
+			mvn -P $sVersion clean install $sBuildArg
 			cd ..
 			cd storage-temp
-			#mvn -P $sVersion clean install $sBuildArg
-			mvn -P $sVersion clean deploy $sBuildArg
+			mvn -P $sVersion clean install $sBuildArg
 			cd ..
 			cd wf-base
-			#mvn -P $sVersion clean install $sBuildDoc $sBuildArg -Ddependency.locations.enabled=false
-			mvn -P $sVersion clean deploy $sBuildDoc $sBuildArg -Ddependency.locations.enabled=false
+			mvn -P $sVersion clean install $sBuildDoc $sBuildArg -Ddependency.locations.enabled=false
 			cd ..
 		   ;;
 		esac
@@ -381,7 +381,7 @@ if [ "$bSkipDeploy" == "true" ]; then
 	exit 0
 fi
 
-echo "Connecting to remote host (Project deploy)"
+echo "Connecting to remote host $sHost"
 cd $WORKSPACE
 rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' scripts/deploy_remote.sh sybase@$sHost:/sybase/
 ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $sHost << EOF
