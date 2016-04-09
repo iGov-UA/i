@@ -150,7 +150,7 @@ build_central-js ()
 	if [ "$bSkipBuild" == "true" ]; then
 		echo "Deploy to host: $sHost"
 		cd central-js
-		rsync -az --delete -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' $WORKSPACE/$sProject/dist/ sybase@$sHost:/sybase/.upload/central-js/
+		rsync -az --delete -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' dist/ sybase@$sHost:/sybase/.upload/central-js/
 		return
 	fi
 	if [ "$bSkipDeploy" == "true" ]; then
@@ -185,7 +185,7 @@ build_central-js ()
 		npm install --production
 		cd ..
 		rm -rf /tmp/$sProject
-		rsync -az --delete -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' $WORKSPACE/$sProject/dist/ sybase@$sHost:/sybase/.upload/central-js/
+		rsync -az --delete -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' dist/ sybase@$sHost:/sybase/.upload/central-js/
 		cd ..
 	fi
 }
