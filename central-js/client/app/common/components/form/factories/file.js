@@ -3,6 +3,7 @@ angular.module('app').factory('FileFactory', function ($q, $rootScope, ActivitiS
     this.isUploading = false;
     this.fileName = null;
     this.value = null;//{fileID: 'file id from redis', oSignData : 'information about eds' }
+    this.fileSize = null;
   };
 
   file.prototype.createFactory = function(){
@@ -21,6 +22,7 @@ angular.module('app').factory('FileFactory', function ($q, $rootScope, ActivitiS
     uiUploader.removeAll();
     this.fileName = null;
     this.value = null;
+    this.fileSize = null;
   };
 
   file.prototype.setFiles = function (files) {
@@ -28,6 +30,7 @@ angular.module('app').factory('FileFactory', function ($q, $rootScope, ActivitiS
     uiUploader.addFiles(files);
 
     this.fileName = files[0].name;
+    this.fileSize = files[0].size;
   };
 
   file.prototype.addFiles = function (files) {
@@ -36,6 +39,7 @@ angular.module('app').factory('FileFactory', function ($q, $rootScope, ActivitiS
     uiUploader.addFiles(files);
 
     this.fileName = files[0].name;
+    this.fileSize = files[0].size;
   };
 
   file.prototype.upload = function (oServiceData) {
