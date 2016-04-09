@@ -1,40 +1,31 @@
 angular.module('app').controller('dropdownAutocompleteCtrl', function ($scope, $http, $filter, $timeout, $q) {
 
   var hasNextChunk = true,
-      queryString = '',
-      skip = 0, count = 30,
-      tempCollection;
+      queryParams = {params: {}},
+      tempCollection, count = 30;
 
   function getInfinityScrollChunk() {
     $scope.isRequestMoreItems = true;
-    var params = $scope.autocompleteData.hasPaging ? {count: count, skip: skip} : {};
-    hasNextChunk = $scope.autocompleteData.hasPaging ? hasNextChunk : false;
-    params[$scope.autocompleteData.titleProperty] = queryString;
-    return $http.get($scope.autocompleteData.apiUrl, {params: params});
+    return $http.get($scope.autocompleteData.apiUrl, queryParams);
   }
 
   var getAdditionalPropertyName = function() {
     return ($scope.autocompleteData.additionalValueProperty ? $scope.autocompleteData.additionalValueProperty : $scope.autocompleteData.valueProperty) + '_' + $scope.autocompleteName;
   };
 
-  $scope.requestMoreItems = function(query, collection) {
+  $scope.requestMoreItems = function(collection) {
       if ($scope.isRequestMoreItems || !hasNextChunk) {
           return $q.reject();
       }
 
-      if (!angular.isDefined(collection)) {
-        collection = query;
-        query = queryString;
-      }
-
-      skip = collection.length;
-
       return ($scope.autocompleteData ? getInfinityScrollChunk() : $timeout(getInfinityScrollChunk, 200))
           .then(function(response) {
-            Array.prototype.push.apply(collection, $scope.autocompleteData.hasPaging ? response.data :
-              $filter('orderBy')(response.data, $scope.autocompleteData.titleProperty));
-            if (response.data.lenght < count) {
+            Array.prototype.push.apply(collection, $filter('orderBy')(response.data, $scope.autocompleteData.orderBy));
+            if (!$scope.autocompleteData.hasPaging || response.data.lenght < count) {
               hasNextChunk = false;
+            }
+            if ($scope.autocompleteData.hasPaging) {
+              queryParams.params.skip = collection.length;
             }
             return collection;
           }, function(err) {
@@ -45,27 +36,28 @@ angular.module('app').controller('dropdownAutocompleteCtrl', function ($scope, $
           });
   };
 
-  $scope.refreshList = function(query) {
-    if (!$scope.autocompleteData.hasPaging && !hasNextChunk) {
-      tempCollection = tempCollection || $scope.$select.items;
-      if (query.length) {
-        var params = {};
-        params[$scope.autocompleteData.titleProperty] = query;
-        $scope.$select.items = $filter('filter')(tempCollection, params);
-      } else {
-        $scope.$select.items = tempCollection;
-      }
-      return;
+  $scope.refreshList = function(queryKey, queryValue) {
+    if (!angular.isDefined(queryParams.params[queryKey])) {
+      hasNextChunk = true;
     }
-    if (queryString !== query || query === '') {
-      queryString = query;
-      skip = 0;
-      $scope.isRequestMoreItems = false;
-      $scope.requestMoreItems(query, []).then(function (items) {
-        $timeout(function () {
-          $scope.$select.items = items;
-        }, 0, queryString === query);
-      });
+    if (!angular.equals(queryParams.params[queryKey], queryValue)) {
+      if ($scope.autocompleteData.hasPaging || !angular.isDefined(queryParams.params[queryKey])) {
+        if ($scope.autocompleteData.hasPaging) {
+          queryParams.params.count = count;
+          queryParams.params.skip = 0;
+        }
+        $scope.isRequestMoreItems = false;
+        hasNextChunk = true;
+        queryParams.params[queryKey] = queryValue;
+        $scope.requestMoreItems([]).then(function (items) {
+          $timeout(function () {
+            $scope.$select.items = items;
+          }, 0, !angular.equals(queryParams.params[queryKey], queryValue));
+        });
+      } else {
+        tempCollection = tempCollection || $scope.$select.items;
+        $scope.$select.items = $filter('filter')(tempCollection, queryValue);
+      }
     }
   };
 
