@@ -73,7 +73,9 @@ backup ()
 deploy-tomcat ()
 {
 	#Выключаем томкат. Ротируется ли лог при выключении или старте?
-	cd /sybase/tomcat_${sProject}$1/bin/ && ./_shutdown_force.sh
+	cd /sybase/tomcat_${sProject}$1/bin/
+	./_shutdown.sh > /dev/null 2>&1
+	./_shutdown_force.sh
 	sleep 5
 	#Разворачиваем новые конфиги
 	cp -rf /sybase/.configs/${sProject}/* /sybase/tomcat_${sProject}$1/conf/
@@ -87,7 +89,9 @@ deploy-tomcat ()
 
 if [ $sProject == "central-js" ]; then
 	echo "Deploying project $sProject"
-	cd /sybase && pm2 stop central-js && pm2 delete central-js
+	cd /sybase
+	pm2 stop central-js
+	pm2 delete central-js
 	#Делаем бекап старой версии
 	if [ ! -d /sybase/.backup/$sProject ]; then
 		mkdir -p /sybase/.backup/$sProject
@@ -99,13 +103,8 @@ if [ $sProject == "central-js" ]; then
 	done
 	unset IFS
 	mv -f /sybase/central-js /sybase/.backup/$sProject/$sDate
-	#Перемещаем новую версию на место старой
-	mv -f /sybase/.upload/central-js /sybase/central-js
-	#mv -f /sybase/.upload/central-js.$data/dist /sybase/central-js
+	cp -r /sybase/.upload/central-js /sybase/central-js
 	cd /sybase/central-js
-	#cp -f /sybase/.configs/central-js/index.js /sybase/central-js/server/config/index.js
-	#cp -f /sybase/.configs/central-js/config/index.js /sybase/central-js/server/config/index.js
-	#cp -f /sybase/.configs/central-js/config.js /sybase/central-js/server/config.js
 	cp -f -R /sybase/.configs/central-js/* /sybase/central-js/
 	pm2 start process.json --name central-js
 	pm2 info central-js

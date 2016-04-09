@@ -1,16 +1,16 @@
-angular.module('app').controller('IndexController', function ($scope, BankIDService) {
+angular.module('app').controller('IndexController', function ($scope, UserService) {
   // See why it's needed for navbar:
   // http://stackoverflow.com/questions/14741988/twitter-bootstrap-navbar-with-angular-js-collapse-not-functioning
   $scope.navBarIsCollapsed = true;
   $scope.navBarStatusVisible = false;
   $scope.logout = function () {
-    BankIDService.logout();
+    UserService.logout();
     $scope.navBarStatusVisible = false;
   };
 
-  BankIDService.isLoggedIn().then(function (result) {
+  UserService.isLoggedIn().then(function (result) {
     $scope.navBarStatusVisible = result;
-    BankIDService.fio().then(function (res) {
+    UserService.fio().then(function (res) {
       $scope.userName = capitalize(res.firstName)
         + " " +
         capitalize(res.middleName)

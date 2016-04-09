@@ -1,4 +1,4 @@
-angular.module('app').factory('BankIDService', function ($http, $q, AdminService, ErrorsFactory) {
+angular.module('app').factory('UserService', function ($http, $q, AdminService, ErrorsFactory) {
   var bankIDLogin;
   var bankIDAccount;
 

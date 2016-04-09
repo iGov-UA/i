@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author kr110666kai
  * 
- * Создание шаблона сообщения на основании JSON запроса вида:
+ * Создание СООБЩЕНИЯ на основании JSON запроса вида:
  * 
  * { "r" : 
  *   [ 
@@ -28,8 +28,15 @@ import org.slf4j.LoggerFactory;
  *                "MsgCode" : "${Код сообщения}",
  *                "BusId" : "${Id бизнеспроцесса}",
  *                "Descr" : "${Описание сообщения}",
- *                "TemplateMsgId" : "${Id шаблона}" 
- *               }
+ *                "TemplateMsgId" : "${Id шаблона}",
+ *                "ext": {
+ *                         "LocalMsg": [{
+ *                         	          "Level": "DEVELOPER",
+ *                         	          "Lang": "UKR",
+ *                                        "Text": "getMessageImpl",
+ *                                        "FullText": ""
+ *                                     }]
+ *                       }
  *      }
  *   ]
  * }
@@ -41,7 +48,7 @@ public class MsgCreate {
     private String sBodyRequest = null;
 
     public MsgCreate(String sBodyRequest) {
-	LOG.debug("reqest={}", sBodyRequest);
+	LOG.debug("BodyRequest:\n{}", sBodyRequest);
 
 	this.sBodyRequest = sBodyRequest;
     }
@@ -57,7 +64,7 @@ public class MsgCreate {
 	    conn.setDoOutput(true);
 	    conn.setRequestMethod("POST");
 	    conn.setRequestProperty("Content-Type", "application/json");
-
+	    
 	    OutputStream os = conn.getOutputStream();
 	    os.write(sBodyRequest.getBytes());
 	    os.flush();
@@ -70,13 +77,11 @@ public class MsgCreate {
 		}
 	    }
 
-	    LOG.debug("response={}", conn.getResponseCode());
-	    LOG.debug("nResponseBody={}", ret.toString());
 
-	    if (conn.getResponseCode() != HttpURLConnection.HTTP_CREATED) {
+	    if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
 		
 		StringBuffer berr = new StringBuffer(500);
-		berr.append("Ошибка при работе с сервисом :");
+		berr.append("Ошибка при работе с сервисом ");
 		berr.append(url);
 		berr.append("\nBodyRequest:\n");
 		berr.append(sBodyRequest);
@@ -84,16 +89,19 @@ public class MsgCreate {
 		berr.append(ret);
 		berr.append("\nHTTP error code : ");
 		berr.append(conn.getResponseCode());
+
+		LOG.error(berr.toString());
 		
 		throw new Exception(berr.toString());
 	    }
 
+	    LOG.debug("HTTP code:{}", conn.getResponseCode());
+	    LOG.debug("\nResponseBody:{}\n", ret.toString());
+	    
 	} catch (MalformedURLException e) {
-	    LOG.error("Ошибка при создании шаблона сообщения. Тело запроса:\n{}\n Ошибка:{}",sBodyRequest,e.getMessage());
-	    e.printStackTrace();
+	    LOG.error("Ошибка при создании сообщения. Запрос:\n{}\n Ошибка:\n",sBodyRequest,e);
 	} catch (IOException e) {
-	    LOG.error("Ошибка при создании шаблона сообщения. Тело запроса:\n{}\n Ошибка:{}",sBodyRequest,e.getMessage());
-	    e.printStackTrace();
+	    LOG.error("Ошибка при создании сообщения. Запрос:\n{}\n Ошибка:\n",sBodyRequest,e);
 	} finally {
 	    conn.disconnect();
 	}

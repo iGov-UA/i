@@ -116,7 +116,9 @@
         <activiti:formProperty id="sFioAdmin" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string"></activiti:formProperty>
         <activiti:formProperty id="sShapka_190" name="Керівнику якого робочого органу" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="markers21" name="Настроювання принтформи" type="markers" default="${markerService.loadFromFile('dneprCnap/dnepr_cnap_190_21_Print.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers22" name="Настроювання принтформи" type="markers" default="${markerService.loadFromFile('dneprCnap/dnepr_cnap_190_22_Print.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/skv/dndz_cnap_190_print.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody2" name="[pattern/print/skv/dndz_cnap_190_print_Nikopol.html]" type="invisible" default="Заява (м. Нікополь)" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть центр надання адмінпослуг" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -177,7 +179,9 @@
         <activiti:formProperty id="nFile_Rishennya" name="Завантажте копію рішення" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть центр надання адмінпослуг" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers31" name="Настроювання принтформи" type="markers" default="${markerService.loadFromFile('dneprCnap/dnepr_cnap_190_21_Print.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers32" name="Настроювання принтформи" type="markers" default="${markerService.loadFromFile('dneprCnap/dnepr_cnap_190_22_Print.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/skv/dndz_cnap_190_print.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody2" name="[pattern/print/skv/dndz_cnap_190_print_Nikopol.html]" type="invisible" default="Заява (м. Нікополь)" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>

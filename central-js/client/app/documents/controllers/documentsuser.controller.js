@@ -1,11 +1,11 @@
-angular.module('documents').controller('DocumentsUserController', function($scope, $state, $location, $window, BankIDService, ErrorsFactory) {
+angular.module('documents').controller('DocumentsUserController', function($scope, $state, $location, $window, UserService, ErrorsFactory) {
 
   $scope.authProcess = false;
 
   if ($state.params.error) {
     var oFuncNote = {sHead:"Документи", sFunc:"DocumentsUserController"};
     ErrorsFactory.init(oFuncNote, {asParam:['$state.params.error: '+$state.params.error]});
-      
+
     var sErrorText = $state.params.error;
     try {
       sErrorText = JSON.parse($state.params.error).error;
@@ -22,7 +22,7 @@ angular.module('documents').controller('DocumentsUserController', function($scop
     */
   }
 
-  BankIDService.isLoggedIn().then(function() {
+  UserService.isLoggedIn().then(function() {
     $scope.loading = true;
     return $state.go('index.documents.content').finally(function() {
       $scope.loading = false;
