@@ -241,19 +241,22 @@ build_base ()
 		storage-static)
 			echo  "will build $sArrComponent"
 			cd storage-static
-			mvn -P $sVersion clean install $sBuildArg
+			#mvn -P $sVersion clean install $sBuildArg
+			mvn -P $sVersion clean deploy $sBuildArg
 			cd ..
 			;;
 		storage-temp)
 			echo  "will build $sArrComponent"
 			cd storage-temp
-			mvn -P $sVersion clean install $sBuildArg
+			#mvn -P $sVersion clean install $sBuildArg
+			mvn -P $sVersion clean deploy $sBuildArg
 			cd ..
 			;;
 		wf-base)
 			echo  "will build $sArrComponent"
 			cd wf-base
-			mvn -P $sVersion clean install $sBuildDoc $sBuildArg -Ddependency.locations.enabled=false
+			#mvn -P $sVersion clean install $sBuildDoc $sBuildArg -Ddependency.locations.enabled=false
+			mvn -P $sVersion clean deploy $sBuildDoc $sBuildArg -Ddependency.locations.enabled=false
 			cd ..
 			;;
 		"*")
