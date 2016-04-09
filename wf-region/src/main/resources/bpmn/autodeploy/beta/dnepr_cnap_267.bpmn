@@ -64,8 +64,8 @@
         <activiti:formProperty id="for_bank_name" name="Найменування банку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="for_bank_adres" name="Місцезнаходження банку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="text10" name=" " type="label" default="&lt;b&gt;інформація про товар&lt;/b&gt;"></activiti:formProperty>
-        <activiti:formProperty id="name_tovar" name="Найменування товару" type="string"></activiti:formProperty>
-        <activiti:formProperty id="kod_tovar" name="Код товару (УКТ ЗЕД)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sObjectCustoms" name="Найменування товару" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_ObjectCustoms" name="Код товару (УКТ ЗЕД)" type="string"></activiti:formProperty>
         <activiti:formProperty id="unit" name="Одиниця виміру" type="enum" default="kilogram" required="true">
           <activiti:value id="kilogram" name="кілограм|кг"></activiti:value>
           <activiti:value id="bruttobetrags" name="бруттореєстрова тонна|бруттореєстр. Т"></activiti:value>
@@ -161,6 +161,7 @@
         <activiti:formProperty id="pogodgennya" name="Сертифікат про походження товару або експертний висновок з визначенням країни походження та коду товару відповідно до Української класифікації товарів зовнішньоекономічної діяльності; виданий Торгово-промисловою палатою України або регіональними торгово-промисловими палатами" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="visnovok" name="Висновок експертної організації про відповідність контрактної ціни рівню цін кон'юнктури ринку на товари (роботи, послуги), що поставляються (виконуються, надаються) за конкретною зовнішньоекономічною операцією" type="file"></activiti:formProperty>
         <activiti:formProperty id="other_docs" name="Документи та інформація, які засвідчують ужиття практичних заходів щодо припинення правопорушення, яке призвело до застосування режиму індивідуального ліцензування" type="file"></activiti:formProperty>
+        <activiti:formProperty id="notice" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
         <activiti:formProperty id="sNameUnit" name="назва адміністартивного органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPost" name="пошта посадовця" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="адреса адміністартивного органу" type="invisible"></activiti:formProperty>
@@ -233,8 +234,8 @@
         <activiti:formProperty id="applicant_account_for" name="Номер банківського рахунку іноземного суб'єкту; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="for_bank_name" name="Найменування банку іноземного суб'єкту; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="for_bank_adres" name="Місцезнаходження банку іноземного суб'єкту; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="name_tovar" name="Найменування товару; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="kod_tovar" name="Код товару (УКТ ЗЕД); ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sObjectCustoms" name="Найменування товару" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_ObjectCustoms" name="Код товару (УКТ ЗЕД)" type="string"></activiti:formProperty>
         <activiti:formProperty id="unit" name="Одиниця виміру; ;writable=false" type="enum">
           <activiti:value id="kilogram" name="кілограм|кг"></activiti:value>
           <activiti:value id="bruttobetrags" name="бруттореєстрова тонна|бруттореєстр. Т"></activiti:value>
@@ -402,8 +403,8 @@
         <activiti:formProperty id="applicant_account_for" name="Номер банківського рахунку іноземного суб'єкту; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="for_bank_name" name="Найменування банку іноземного суб'єкту; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="for_bank_adres" name="Місцезнаходження банку іноземного суб'єкту; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="name_tovar" name="Найменування товару; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="kod_tovar" name="Код товару (УКТ ЗЕД); ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sObjectCustoms" name="Найменування товару" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_ObjectCustoms" name="Код товару (УКТ ЗЕД)" type="string"></activiti:formProperty>
         <activiti:formProperty id="unit" name="Одиниця виміру; ;writable=false" type="enum">
           <activiti:value id="kilogram" name="кілограм|кг"></activiti:value>
           <activiti:value id="bruttobetrags" name="бруттореєстрова тонна|бруттореєстр. Т"></activiti:value>
@@ -635,35 +636,35 @@ var per5 = ' '
 var per6 = 'sWorkTime'
 var per7 = 'group'
 if (execution.getVariable('area') == 'dn'){
-per1 = 'pilguj@gue.dp.ua'
+per1 = 'darja.grek@gmail.com'
 per2 = 'Департамент економічного розвитку Дніпропетровської обласної державної адміністрації'
 per3 = 'м. Дніпропетровськ, просп. Карла Маркса, 75'
 per6 = "Режим роботи: Понеділок, середа з 9.00 до 18.00&lt;br /&gt; Вівторок, четвер з 9.00 до 20.00&lt;br /&gt; П'ятниця з 9.00 до 16.45&lt;br /&gt; Субота з 10.00 до 16.00&lt;br /&gt; Вихідний - Неділя&lt;br /&gt;"
 per7 = 'dnepr'
 }
 if (execution.getVariable('area') == 'cn'){
-per1 = 'svyrydenko.yulia@gmail.com'
+per1 = 'darja.grek@gmail.com'
 per2 = 'Департамент економічного розвитку Чернігівської обласної державної адміністрації'
 per3 = 'м.Чернігів, вул. Шевченка, 7'
 per6 = "Режим роботи: Понеділок-П'ятниця з 8:00 - 17:00&lt;br /&gt; Обідня перерва: 13:00 - 14:00&lt;br /&gt; Вихідні дні: субота, неділя&lt;br /&gt;"
 per7 = 'chernigov'
 }
 if (execution.getVariable('area') == 'cs'){
-per1 = 'іnvest@drr-ck.gov.ua'
+per1 = 'darja.grek@gmail.com'
 per2 = 'Департамент регіонального розвитку Черкаської обласної державної адміністрації'
 per3 = 'м. Черкаси, бул. Шевченка 185, каб. 403.'
 per6 = "Режим роботи: Понеділок-Четверг з 09:00 - 18:15&lt;br /&gt;Пятниця з 09:00 - 17:00&lt;br /&gt; Обідня перерва: 13:00 - 14:00&lt;br /&gt; Вихідні дні: субота, неділя&lt;br /&gt;"
 per7 = 'chercassi'
 }
 if (execution.getVariable('area') == 'tr'){
-per1 = 'internationalrelations.te@gmail.com'
+per1 = 'darja.grek@gmail.com'
 per2 = 'Департамент економічного розвитку, інвестиційної діяльності та міжнародного співробітництва Тернопільської облдержадміністрації'
 per3 = 'м. Тернопіль, вул. Грушевського, 8'
 per6 = "Режим роботи: Понеділок-Четверг з 08:00 - 17:15&lt;br /&gt;Пятниця з 08:00 - 16:00&lt;br /&gt; Обідня перерва: 13:00 - 14:00&lt;br /&gt; Вихідні дні: субота, неділя&lt;br /&gt;"
 per7 = 'ternopil'
 }
 if (execution.getVariable('area') == 'hm'){
-per1 = 'spatialdevkm@gmail.com'
+per1 = 'darja.grek@gmail.com'
 per2 = 'Департамент економічного розвитку, промисловості та інфраструктури Хмельницького ОДА'
 per3 = 'м. Хмельницький, майдан Незалежності, Будинок Рад'
 per6 = "Режим роботи: Понеділок-Четверг з 09:00 - 18:15&lt;br /&gt;Пятниця з 09:00 - 17:00&lt;br /&gt; Обідня перерва: 13:00 - 14:00&lt;br /&gt; Вихідні дні: субота, неділя&lt;br /&gt;"
@@ -760,8 +761,8 @@ execution.setVariable('group', per7)
         <activiti:formProperty id="applicant_account_for" name="Номер банківського рахунку іноземного суб'єкту; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="for_bank_name" name="Найменування банку іноземного суб'єкту; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="for_bank_adres" name="Місцезнаходження банку іноземного суб'єкту; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="name_tovar" name="Найменування товару; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="kod_tovar" name="Код товару (УКТ ЗЕД); ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sObjectCustoms" name="Найменування товару" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_ObjectCustoms" name="Код товару (УКТ ЗЕД)" type="string"></activiti:formProperty>
         <activiti:formProperty id="unit" name="Одиниця виміру; ;writable=false" type="enum">
           <activiti:value id="kilogram" name="кілограм|кг"></activiti:value>
           <activiti:value id="bruttobetrags" name="бруттореєстрова тонна|бруттореєстр. Т"></activiti:value>
