@@ -99,6 +99,8 @@ fi
 #		sHost="region.igov.org.ua"
 #fi
 
+echo "Host $sHost will be a target server for deploy...."
+
 build_docker ()
 {
 #	if ! [ -x "$(command -v docker)" ]; then
