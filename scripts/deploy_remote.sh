@@ -89,7 +89,9 @@ deploy-tomcat ()
 
 if [ $sProject == "central-js" ]; then
 	echo "Deploying project $sProject"
-	cd /sybase && pm2 stop central-js && pm2 delete central-js
+	cd /sybase
+	pm2 stop central-js
+	pm2 delete central-js
 	#Делаем бекап старой версии
 	if [ ! -d /sybase/.backup/$sProject ]; then
 		mkdir -p /sybase/.backup/$sProject
@@ -111,6 +113,17 @@ if [ $sProject == "central-js" ]; then
 	cp -f -R /sybase/.configs/central-js/* /sybase/central-js/
 	pm2 start process.json --name central-js
 	pm2 info central-js
+	curl --insecure https://127.0.0.1:8443
+	if [ $? -ne 0 ]; then
+		echo "NodeJS failed to start. Restoring from backup...."
+		cd /sybase
+		pm2 stop central-js
+		pm2 delete central-js
+		rm -rf /sybase/central-js
+		cp /sybase/.backup/$sProject/$sDate /sybase/central-js
+		pm2 start process.json --name central-js
+		pm2 info central-js
+	fi
 fi
 
 if [ $sProject == "dashboard-js" ]; then
@@ -132,6 +145,17 @@ if [ $sProject == "dashboard-js" ]; then
 	cd /sybase/dashboard-js
 	pm2 start process.json --name dashboard-js
 	pm2 info dashboard-js
+	curl --insecure https://127.0.0.1:8444
+	if [ $? -ne 0 ]; then
+		echo "NodeJS failed to start. Restoring from backup...."
+		cd /sybase
+		pm2 stop dashboard-js
+		pm2 delete dashboard-js
+		rm -rf /sybase/dashboard-js
+		cp /sybase/.backup/$sProject/$sDate /sybase/dashboard-js
+		pm2 start process.json --name dashboard-js
+		pm2 info dashboard-js
+	fi
 fi
 
 if [ $sProject == "wf-central"  ] || [ $sProject == "wf-region" ]; then
