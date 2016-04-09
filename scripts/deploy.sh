@@ -135,10 +135,8 @@ build_docker ()
 	fi
 
 	mkdir /tmp/$sProject
-	docker build -t $DOCKER_REPO/$DOCKER_IMAGE .
-	docker tag  $DOCKER_REPO/$DOCKER_IMAGE:latest  $DOCKER_REPO/$DOCKER_IMAGE:$DOCKER_TAG
+	docker build -t $DOCKER_REPO/$DOCKER_IMAGE:latest .
 	docker push $DOCKER_REPO/$DOCKER_IMAGE:latest
-	docker push $DOCKER_REPO/$DOCKER_IMAGE:$DOCKER_TAG
 	echo "Build & push to Docker registry finished."
 }
 
