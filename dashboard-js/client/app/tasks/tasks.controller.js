@@ -152,7 +152,7 @@
     };
 
     var tasksPage = 0;
-    var totalTasks = null;
+    var lastTasksResult = null;
 
     var loadNextTasksPage = function() {
       var defer = $q.defer();
@@ -186,7 +186,7 @@
                 $scope.tasks = [];
               for (var i = 0; i < aTaskFiltered.length; i++)
                 $scope.tasks.push(aTaskFiltered[i]);
-              totalTasks = oResult.total;
+              lastTasksResult = oResult;
               // build filtered tasks array
               filterLoadedTasks();
 
@@ -356,7 +356,7 @@
     };
 
     $scope.isLoadMoreAvailable = function () {
-      return $scope.tasks !== null && $scope.tasks.length < totalTasks;
+      return lastTasksResult !== null && lastTasksResult.start + lastTasksResult.size < lastTasksResult.total;
     };
 
     $scope.loadMoreTasks = function() {
