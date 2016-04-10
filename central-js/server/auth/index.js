@@ -11,6 +11,7 @@ var router = express.Router();
 require('./bankid/bankid.passport').setup(config);
 router.use('/bankID', require('./bankid'));
 router.use('/eds', require('./eds'));
+router.use('/mpbds', require('./mpbds'));
 router.use('/email', require('./email'));
 
 if(config.hasSoccardAuth()){
