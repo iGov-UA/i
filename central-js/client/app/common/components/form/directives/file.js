@@ -28,12 +28,10 @@ angular.module('app').directive('fileField', function () {
             if (nFileSize > (nMaxFileSizeLimit * 1024 * 1024)){
               message = "Розмір завантажуємого файлу " + (nFileSize / (1024 * 1024)).toFixed(1) + " МБайт перевищує допустимий.\n " +
                 "Для завантаження дозволяються файли розміром не більше " + nMaxFileSizeLimit + " МБайт."
-              //alert(message);
               throw new Error(message);
             } else if (!verifyExtension(sFileName)) {
               var extList = convertAvailableExtensionArrayToString();
               message = "Не допустимий тип файлу. \n Для завантаження допускаються файли лише наступних типів: " + extList;
-              //alert(message);
               throw new Error(message);
             } else {
               console.log("File validation successfully");
@@ -45,7 +43,7 @@ angular.module('app').directive('fileField', function () {
         });
       });
 
-      verifyExtension = function(sFileNameForCheck){
+      function verifyExtension (sFileNameForCheck){
         var ext = sFileNameForCheck.split('.').pop().toLowerCase();
         for (var i = 0; i < aAvailableFileExtensions.length; i++){
           if (ext === aAvailableFileExtensions[i]){
@@ -55,7 +53,7 @@ angular.module('app').directive('fileField', function () {
         return false;
       };
 
-      convertAvailableExtensionArrayToString = function(){
+      function convertAvailableExtensionArrayToString (){
         var resultString = null;
         for(var i = 0; i < aAvailableFileExtensions.length; i++){
           if (i === 0){
