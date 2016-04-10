@@ -1,14 +1,6 @@
 ﻿(function() {
   'use strict';
 
-  var params = {
-    templateUrl: 'app/tasks/tasks.html',
-    controller: 'TasksCtrl',
-    access: {
-      requiresLogin: true
-    }
-  };
-
   angular
     .module('dashboardJsApp')
     .config(tasksConfig);
@@ -22,7 +14,24 @@
         access: {
           requiresLogin: true
         },
-        templateUrl: 'app/tasks/base.html'
+        templateUrl: 'app/tasks/base.html',
+        resolve: {
+          tasksStateModel: function () {
+            return {};
+          },
+          processesList: [
+            'processes',
+            function (processes) {
+              return processes.list();
+            }
+          ],
+          userProcesses: [
+            'taskFilterService',
+            function (taskFilterService) {
+              return taskFilterService.getProcesses();
+            }
+          ]
+        }
       })
       .state('tasks.typeof', {
         url: '/:type',
@@ -33,12 +42,71 @@
         }
       })
       .state('tasks.typeof.view', {
-        parent: 'tasks',
-        url: '/:type/:id',
-        templateUrl: 'app/tasks/tasks.html',
-        controller: 'TasksCtrl',
+        url: '/:id',
+        templateUrl: 'app/tasks/taskView.html',
+        controller: 'TaskViewCtrl',
         access: {
           requiresLogin: true
+        },
+        resolve: {
+          oTask: [
+            'tasks',
+            '$stateParams',
+            'tasksStateModel',
+            '$q',
+            function (tasks, $stateParams, tasksStateModel, $q) {
+              tasksStateModel.taskId = $stateParams.id;
+              if ($stateParams.type == 'finished'){
+                var defer = $q.defer();
+                tasks.taskFormFromHistory($stateParams.id).then(function(response){
+                  defer.resolve(JSON.parse(response).data[0]);
+                }, defer.reject);
+                return defer.promise;
+              }
+              else {
+                return tasks.getTask($stateParams.id);
+              }
+            }
+          ],
+          attachments: [
+            'tasks',
+            'oTask',
+            function (tasks, oTask) {
+              return tasks.taskAttachments(oTask.id)
+            }
+          ],
+          orderMessages: [
+            'tasks',
+            'oTask',
+            function (tasks, oTask) {
+              return tasks.getOrderMessages(oTask.processInstanceId);
+            }
+          ],
+          taskAttachments: [
+            'tasks',
+            'oTask',
+            function (tasks, oTask) {
+              return tasks.getTaskAttachments(oTask.id);
+            }
+          ],
+          taskForm: [
+            'oTask',
+            'tasks',
+            '$q',
+            function (oTask, tasks, $q) {
+              var defer = $q.defer();
+              if (oTask.endTime) {
+                tasks.taskFormFromHistory(oTask.id).then(function (result) {
+                  defer.resolve(JSON.parse(result).data[0].variables)
+                }, defer.reject)
+              } else {
+                tasks.taskForm(oTask.id).then(function (result) {
+                  defer.resolve(JSON.parse(result).formProperties);
+                }, defer.reject);
+              }
+              return defer.promise;
+            }
+          ]
         }
       });
   }

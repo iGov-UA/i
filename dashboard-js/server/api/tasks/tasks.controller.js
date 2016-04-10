@@ -410,9 +410,7 @@ exports.unassign = function (req, res) {
 exports.getTaskData = function(req, res) {
   var options = {
     path: 'action/task/getTaskData',
-    query: {
-      nID_Task: req.params.taskId
-    },
+    query: req.query,
     json: true
   };
 

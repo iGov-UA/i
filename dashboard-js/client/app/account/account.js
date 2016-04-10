@@ -23,7 +23,7 @@ angular.module('dashboardJsApp')
 					var sessionSettings = Auth.getSessionSettings();
 					// configure Idle settings
 					idleProvider.idle(sessionSettings.sessionIdle); // in seconds
-					idleProvider.timeout(sessionSettings.timeOut); // in seconds
+					idleProvider.timeout(sessionSettings.timeOut | 0); // in seconds
 					keepaliveProvider.interval(sessionSettings.interval); // in seconds
 					idleProvider.autoResume(false);
 				}
