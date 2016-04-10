@@ -19,7 +19,7 @@ angular.module('dashboardJsApp', [
 }).run(function(amMoment, $rootScope, Modal) {
   amMoment.changeLocale('uk');
   $rootScope.$on('$stateChangeError', function () {
-    Modal.inform.error()('Виникла помилка. Зверніться будьласка у тухнічну підтримку.');
+    Modal.inform.error()('Виникла помилка. Зверніться будь ласка у технічну підтримку.');
     console.warn('Виникла помилка. Інформація для технічної підтримки: ', arguments);
   })
 });
