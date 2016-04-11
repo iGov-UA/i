@@ -14,6 +14,13 @@
   <i class="icon-badge"></i>
   <span class="btn-text"><div>Сертифікат електронно-</div><div>цифрового підпису</div></span>
 </a>
+<button style="display: none;" class="btn"><i class="icon-mobil-id"></i></button>
+<a class="btn btn-info_ btn-success i-btn-badge" target="_self"
+   ng-href="{{$location.protocol()}}://{{$location.host()}}:{{$location.port()}}/auth/mpbds?link={{redirectUri}}"
+   ng-if="!authMethods || authMethods.indexOf('mpbds') > -1">
+  <i class="icon-badge"></i>
+  <span class="btn-text">IDcard</span>
+</a>
 <button ng-click="loginWithEmail()"
         ng-if="!authMethods || authMethods.indexOf('email') > -1"
         class="btn btn-info">
