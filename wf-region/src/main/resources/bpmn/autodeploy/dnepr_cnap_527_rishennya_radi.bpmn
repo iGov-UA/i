@@ -1,0 +1,410 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="dnepr_cnap_527_rishennya_radi" name="Рішення про внесення змін або продовження терміну дії рішення міської ради" isExecutable="true">
+    <documentation>Смоктій К.В. Последние правки: 11.04.2016</documentation>
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть центр надання адмінпослуг" type="select" default="0" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорту" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="Ідентифікаційний номер фізичної особи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_inn" name="Скан-копія ідентифікаційного номеру фізичної особи" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddress" name="Адреса реєстрації" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asSubect" name="Оберіть кому надається адміністративна послуга" type="enum" required="true">
+          <activiti:value id="sEnumElement_fiz" name="фізична особа"></activiti:value>
+          <activiti:value id="sEnumElement_ur" name="юридична особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sName_ur" name="Повне найменування юридичної особи" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно з ЄДРПОУ; тільки цифрові позначення" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFile_AdvertLicense" name="Копія виписки з єдиного державного реєстру юридичних осіб та фізичних осіб" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile_ConstituentDocuments" name="Копія установчих документів (для суб’єктів господарювання)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sAdres_1" name="Юридична адреса юридичної особи" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asTypeAction" name="Оберіть дію щодо рішення міської ради" type="enum" required="true">
+          <activiti:value id="sEnumElement_Edit" name="внесення зміни до рішення міської ради"></activiti:value>
+          <activiti:value id="sEnumElement_Drop" name="внесення зміни (виключити пункт з рішення міської ради)"></activiti:value>
+          <activiti:value id="sEnumElement_Prolong" name="продовження терміна дії рішення"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asHow" name="Спосіб отримання документу" type="enum" default="personally">
+          <activiti:value id="personally" name="особисто"></activiti:value>
+          <activiti:value id="confidant" name="через уповноважену особу (за дорученням)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sConfidant_pib" name="Прізвище Ім'я та По батькові довіреної особи" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sConfidant_passport" name="Документи, що підтверджують довірену особу (паспортні дані: серія, номер, дата, ким виданий, довіреність)" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sNomerRishennya" name="Номер рішення" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDateRishennya" name="Дата рішення; формат дати ДД.ММ.РРРР" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNoteRishennya" name="Заголовок рішення" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_CopyRishennya" name="Копія рішення міської ради (в яке необхідно внести зміни)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sReasonForEdit" name="Причина внесення змін до рішення" type="textArea" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_ConfirmDocum" name="Документи, що підтверджують необхідність внесення змін до рішення" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="пошта оргструктури (району)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapka527" name="Керівнику якого робочого органу" type="invisible" default="Міському голові"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адрес оргструктури (району)" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва оргструктури (району)" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон для довідки оргструктури (району)" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="графік роботи оргструктури (району)" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="markers11" name="Розкриття атрібутів щодо специфіки вводу" type="markers" default="${markerService.loadFromFile('dnepr_cnap_527_1.json')}"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <serviceTask id="servicetask1" name="Підтягування додаткових документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <userTask id="usertask1" name="Реєстрація звернення, результат обробки вхідних данних" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
+      <extensionElements>
+        <activiti:formProperty id="sNameOrgan" name="Центр надання адмінпослуг" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sClientFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="Ідентифікаційний номер фізичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddress" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asSubect" name="Оберіть кому надається адміністративна послуга" type="enum" writable="false">
+          <activiti:value id="sEnumElement_fiz" name="фізична особа"></activiti:value>
+          <activiti:value id="sEnumElement_ur" name="юридична особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sName_ur" name="Повне найменування юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно з ЄДРПОУ; тільки цифрові позначення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdres_1" name="Юридична адреса юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asTypeAction" name="Оберіть дію щодо рішення міської ради" type="enum" writable="false">
+          <activiti:value id="sEnumElement_Edit" name="внести зміни до рішення міської ради"></activiti:value>
+          <activiti:value id="sEnumElement_Drop" name="внести зміни (виключити пункт з рішення міської ради)"></activiti:value>
+          <activiti:value id="sEnumElement_Prolong" name="продовжити термін дії рішення"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asHow" name="Спосіб отримання документу" type="enum" writable="false">
+          <activiti:value id="personally" name="особисто"></activiti:value>
+          <activiti:value id="confidant" name="через уповноважену особу (за дорученням)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sConfidant_pib" name="Прізвище Ім'я та По батькові довіреної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sConfidant_passport" name="Документи, що підтверджують довірену особу (паспортні дані: серія, номер, дата, ким виданий, довіреність)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNomerRishennya" name="Номер рішення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateRishennya" name="Дата рішення; формат дати ДД.ММ.РРРР" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNoteRishennya" name="Заголовок рішення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sReasonForEdit" name="Причина внесення змін до рішення" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sReestr_numb" name="Реєстраційний номер" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sDate_Reestr" name="Укажіть дату реєстрації звернення" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sPib_Admin" name="Прізвище та ініціали адміністратора" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sShapka527" name="Керівнику якого робочого органу" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asEnum_decision_1" name="Прийняття рішення про надання послуги" type="enum" required="true">
+          <activiti:value id="accept" name="Заповнені дані вірні, інформація направлена на розгляд, очікується рішення"></activiti:value>
+          <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sComment_1" name="У разі відхилення запиту внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть центр надання адмінпослуг" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="markers21" name="Настроювання принтформи " type="markers" default="${markerService.loadFromFile('dnepr_cnap_527_2_print.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/skv/dnepr_cnap_527_rishennya_radi_print.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/skv/dnepr_cnap_527_rishennya_radi_print.html" type="file"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression>${bankId_scan_passport},${bankId_scan_inn},${nFile_AdvertLicense},${nFile_ConstituentDocuments},${nFile_CopyRishennya},${nFile_ConfirmDocum}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <userTask id="usertask2" name="Прийняття рішення щодо звернення" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
+      <extensionElements>
+        <activiti:formProperty id="sNameOrgan" name="Район" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sClientFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="Ідентифікаційний номер фізичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddress" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asSubect" name="Оберіть кому надається адміністративна послуга" type="enum" writable="false">
+          <activiti:value id="sEnumElement_fiz" name="фізична особа"></activiti:value>
+          <activiti:value id="sEnumElement_ur" name="юридична особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sName_ur" name="Повне найменування юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно з ЄДРПОУ; тільки цифрові позначення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdres_1" name="Юридична адреса юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asTypeAction" name="Оберіть дію щодо рішення міської ради" type="enum" writable="false">
+          <activiti:value id="sEnumElement_Edit" name="внести зміни до рішення міської ради"></activiti:value>
+          <activiti:value id="sEnumElement_Drop" name="внести зміни (виключити пункт з рішення міської ради)"></activiti:value>
+          <activiti:value id="sEnumElement_Prolong" name="продовжити термін дії рішення"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asHow" name="Спосіб отримання документу" type="enum" writable="false">
+          <activiti:value id="personally" name="особисто"></activiti:value>
+          <activiti:value id="confidant" name="через уповноважену особу (за дорученням)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sConfidant_pib" name="Прізвище Ім'я та По батькові довіреної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sConfidant_passport" name="Документи, що підтверджують довірену особу (паспортні дані: серія, номер, дата, ким виданий, довіреність)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNomerRishennya" name="Номер рішення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateRishennya" name="Дата рішення; формат дати ДД.ММ.РРРР" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNoteRishennya" name="Заголовок рішення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sReasonForEdit" name="Причина внесення змін до рішення" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sReestr_numb" name="Реєстраційний номер" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDate_Reestr" name="Укажіть дату реєстрації звернення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPib_Admin" name="Прізвище та ініціали адміністратора" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sShapka527" name="Керівнику якого робочого органу" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asEnum_decision_2" name="Результат рішення" type="enum" required="true">
+          <activiti:value id="decision_2_1" name="Зміни внесено"></activiti:value>
+          <activiti:value id="decision_2_2" name="відмовлено у внесенні змін"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sComment_2" name="У разі необхідності внесіть, будь ласка, комментар" type="textArea" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFile_Rishen" name="Завантажте копію рішення" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть центр надання адмінпослуг" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="markers31" name="Настроювання принтформи " type="markers" default="${markerService.loadFromFile('dnepr_cnap_527_2_print.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/skv/dnepr_cnap_527_rishennya_radi_print.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/skv/dnepr_cnap_527_rishennya_radi_print.html" type="file"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression>${bankId_scan_passport},${bankId_scan_inn},${nFile_AdvertLicense},${nFile_ConstituentDocuments},${nFile_CopyRishennya},${nFile_ConfirmDocum}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <serviceTask id="servicetask5" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression>${sMailClerk}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Нове звернення на тему: рішення про внесення змін або продовження терміну дії рішення міської ради]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow24" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
+    <serviceTask id="servicetask4" name="Повідомлення громадянина про успішне подання зверенння" activiti:delegateExpression="#{MailTaskWithAttachments}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>"${email}"</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Зареєстровано звернення на тему: рішення про внесення змін або продовження терміну дії рішення міської ради]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>${PrintForm_1}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;b&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+Ваш запит щодо enum{[asTypeAction]} успішно зареєстровано і буде опрацьовано впродовж визначений Законом термін.&lt;br /&gt;
+&lt;br /&gt;
+Реєстраційний номер заяви: ${sReestr_numb};&lt;br /&gt;
+&lt;br /&gt;
+Ви отримаєте додаткове повідомлення за результатами розгляду зверення.&lt;br /&gt;
+${sWorkTime}&lt;br /&gt;
+[pattern/mail/_common_signature_start.html]
+${sAddress}&lt;br /&gt;
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask6" name="повідомлення громадянина про відхилення звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Відхилено звернення на тему: рішення про внесення змін або продовження терміну дії рішення міської ради]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;
+На жаль, Ваше звернення щодо enum{[asTypeAction]} відхилено через недостатню або неправильну інформацію.&lt;br /&gt;
+&lt;br /&gt;
+${sComment_1}&lt;br /&gt;
+Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
+${sWorkTime}&lt;br /&gt;
+[pattern/mail/_common_signature_start.html]
+${sAddress}&lt;br /&gt;
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask3" name="повідомлення громадянина про прийняте рішення" activiti:delegateExpression="#{MailTaskWithAttachments}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>"${email}"</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення на тему: рішення про внесення змін або продовження терміну дії рішення міської ради]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>${nFile_Rishen},${nFile_Dogovor},${nFile_Rekvizity},${PrintForm_1}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b &gt;&lt;br /&gt;&lt;br /&gt;
+${sLetter}&lt;br /&gt;
+${sComment_2}&lt;br /&gt;
+Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у ЦНАПі.&lt;br /&gt;
+&lt;br /&gt;
+При собі треба мати:&lt;br /&gt;
+1. Документ, що посвідчує особу.&lt;br /&gt;
+2. Для уповоноваженої особи - довіренність.&lt;br /&gt;
+3. Роздруковану заяву (знаходиться у додатку до листа), яку ви подавали в електронному вигляді, засвідчену особистим  підписом  керівника  юридичної  особи, фізичної особи або уповноваженої особи.&lt;br /&gt;
+4. Копія виписки з єдиного державного реєстру юридичних осіб та фізичних осіб (для юридичних осіб).&lt;br /&gt;
+&lt;br /&gt;
+${sWorkTime}&lt;br /&gt;
+${sNameOrgan}&lt;br /&gt;
+${sPhoneOrgan}&lt;br /&gt;
+[pattern/mail/_common_signature_start.html]
+[pattern/mail/_common_signature_end.html]   
+[pattern/mail/_common_feedback.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow25" name="документи ок" sourceRef="exclusivegateway1" targetRef="servicetask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asEnum_decision_1=='accept'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow28" sourceRef="servicetask5" targetRef="usertask1"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow12" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
+    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
+      <errorEventDefinition></errorEventDefinition>
+    </boundaryEvent>
+    <sequenceFlow id="flow6" name="відхилення звернення" sourceRef="exclusivegateway1" targetRef="servicetask6">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asEnum_decision_1=='reject'}]]></conditionExpression>
+    </sequenceFlow>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <sequenceFlow id="flow29" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow30" sourceRef="servicetask3" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow31" sourceRef="servicetask6" targetRef="endevent2"></sequenceFlow>
+    <sequenceFlow id="flow35" sourceRef="usertask2" targetRef="servicetask3"></sequenceFlow>
+    <serviceTask id="servicetask7" name=" Повідомлення громадянина  про успішну реєстрацію звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Нове звернення на тему: рішення про внесення змін або продовження терміну дії рішення міської ради]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+Ваше звернення успішно зареєстровано та буде розглянуто. &lt;br /&gt; 
+Ви отримаєте відповідь у визначений Законом термін на цю email-адресу.&lt;br /&gt;
+[pattern/mail/_common_signature.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow37" sourceRef="servicetask7" targetRef="servicetask5"></sequenceFlow>
+    <endEvent id="endevent2" name="End"></endEvent>
+    <sequenceFlow id="flow38" sourceRef="servicetask1" targetRef="servicetask7"></sequenceFlow>
+    <sequenceFlow id="flow42" sourceRef="servicetask4" targetRef="usertask2"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_527_rishennya_radi">
+    <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_527_rishennya_radi" id="BPMNPlane_dnepr_cnap_527_rishennya_radi">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="20.0" y="54.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="58.0" width="129.0" x="73.0" y="42.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
+        <omgdc:Bounds height="30.0" width="30.0" x="106.0" y="79.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="59.0" width="105.0" x="607.0" y="42.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
+        <omgdc:Bounds height="62.0" width="137.0" x="436.0" y="199.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
+        <omgdc:Bounds height="61.0" width="160.0" x="425.0" y="41.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
+        <omgdc:Bounds height="58.0" width="111.0" x="695.0" y="143.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
+        <omgdc:Bounds height="55.0" width="148.0" x="730.0" y="-27.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
+        <omgdc:Bounds height="57.0" width="211.0" x="170.0" y="200.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="730.0" y="50.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="103.0" y="212.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
+        <omgdc:Bounds height="67.0" width="194.0" x="213.0" y="37.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
+        <omgdc:Bounds height="35.0" width="35.0" x="910.0" y="-17.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
+        <omgdi:waypoint x="55.0" y="71.0"></omgdi:waypoint>
+        <omgdi:waypoint x="73.0" y="71.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
+        <omgdi:waypoint x="750.0" y="90.0"></omgdi:waypoint>
+        <omgdi:waypoint x="750.0" y="143.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="69.0" x="760.0" y="109.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
+        <omgdi:waypoint x="585.0" y="71.0"></omgdi:waypoint>
+        <omgdi:waypoint x="607.0" y="71.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
+        <omgdi:waypoint x="712.0" y="71.0"></omgdi:waypoint>
+        <omgdi:waypoint x="730.0" y="70.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+        <omgdi:waypoint x="750.0" y="50.0"></omgdi:waypoint>
+        <omgdi:waypoint x="804.0" y="28.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="766.0" y="43.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow29" id="BPMNEdge_flow29">
+        <omgdi:waypoint x="121.0" y="109.0"></omgdi:waypoint>
+        <omgdi:waypoint x="120.0" y="212.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
+        <omgdi:waypoint x="170.0" y="228.0"></omgdi:waypoint>
+        <omgdi:waypoint x="138.0" y="229.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
+        <omgdi:waypoint x="878.0" y="0.0"></omgdi:waypoint>
+        <omgdi:waypoint x="910.0" y="0.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
+        <omgdi:waypoint x="436.0" y="230.0"></omgdi:waypoint>
+        <omgdi:waypoint x="381.0" y="228.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow37" id="BPMNEdge_flow37">
+        <omgdi:waypoint x="407.0" y="70.0"></omgdi:waypoint>
+        <omgdi:waypoint x="425.0" y="71.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
+        <omgdi:waypoint x="202.0" y="71.0"></omgdi:waypoint>
+        <omgdi:waypoint x="213.0" y="70.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">
+        <omgdi:waypoint x="750.0" y="201.0"></omgdi:waypoint>
+        <omgdi:waypoint x="749.0" y="230.0"></omgdi:waypoint>
+        <omgdi:waypoint x="573.0" y="230.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
