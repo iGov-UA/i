@@ -70,7 +70,11 @@ public class FileSystemData {
     public static byte[] getFileData_Pattern(String sPathFile) throws IOException, URISyntaxException {
         //return getResourcesFile(PATTERN_FILE_PATH_BEGIN, sPathFile);
         try{
-            return ToolFS.aFileByte(SUB_PATH_PATTERN_FILES, getCheckedPathFileOnReturn(sPathFile));
+            LOG.info(String.format("Start get FileData pattern service [sPathFile = %s]", sPathFile));
+            String sPath = getCheckedPathFileOnReturn(sPathFile);
+            LOG.info(String.format("getCheckedPathFileOnReturn result [sPath = %s]", sPath));
+            LOG.info(String.format("Get ToolFS.aFileByte(%s, %s)",SUB_PATH_PATTERN_FILES, sPath));
+            return ToolFS.aFileByte(SUB_PATH_PATTERN_FILES, sPath);
         }catch(IOException | URISyntaxException oException){
             LOG.warn("FAIL: {} (sPathFile={})", oException.getMessage(), sPathFile);
             throw oException;
