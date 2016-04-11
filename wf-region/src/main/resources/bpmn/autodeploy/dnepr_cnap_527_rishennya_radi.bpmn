@@ -40,7 +40,7 @@
         <activiti:formProperty id="sNoteRishennya" name="Заголовок рішення" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_CopyRishennya" name="Копія рішення міської ради (в яке необхідно внести зміни)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sReasonForEdit" name="Причина внесення змін до рішення" type="textArea" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile_СonfirmDocument" name="Документи, що підтверджують необхідність внесення змін до рішення" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile_ConfirmDocum" name="Документи, що підтверджують необхідність внесення змін до рішення" type="file"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="пошта оргструктури (району)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sShapka527" name="Керівнику якого робочого органу" type="invisible" default="Міському голові"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адрес оргструктури (району)" type="invisible"></activiti:formProperty>
@@ -98,7 +98,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${bankId_scan_inn},${nFile_AdvertLicense},${nFile_ConstituentDocuments},${nFile_CopyRishennya},${nFile_СonfirmDocument}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport},${bankId_scan_inn},${nFile_AdvertLicense},${nFile_ConstituentDocuments},${nFile_CopyRishennya},${nFile_ConfirmDocum}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -151,7 +151,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${bankId_scan_inn},${nFile_AdvertLicense},${nFile_ConstituentDocuments},${nFile_CopyRishennya},${nFile_СonfirmDocument}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport},${bankId_scan_inn},${nFile_AdvertLicense},${nFile_ConstituentDocuments},${nFile_CopyRishennya},${nFile_ConfirmDocum}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
