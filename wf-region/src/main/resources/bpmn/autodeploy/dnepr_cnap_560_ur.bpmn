@@ -104,6 +104,7 @@
           <activiti:value id="tf202" name="Автономна Республіка Крим"></activiti:value>
         </activiti:formProperty>
 
+
         <activiti:formProperty id="sVarOblNam" name="Введіть найменування" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="markers200" name="показати область для вводу" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_200&quot;:{&quot;aField_ID&quot;:[&quot;sVarOblNam&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectOblKr&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf201'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sVarOblPlus" name="область +" type="invisible" default=" "></activiti:formProperty>
@@ -186,11 +187,11 @@
         <activiti:formProperty id="middleName_UA1" name="По Батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sVarDatDenN01" name="Дата народження;(формат дд.мм.рррр)" type="string" required="true"></activiti:formProperty>
 
-        <activiti:formProperty id="sReestrNum" name="Реєстраційний номер облікової картки платника податків" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sReestrNum" name="Реєстраційний номер облікової картки платника податків" type="string" required="false"></activiti:formProperty>
 
         <activiti:formProperty id="Info4" name="Паспортні дані" type="label" default="Тільки для осіб, які через свої релігійні або інші переконання відмовилися від прийняття реєстраційного номера облікової картки платника податків та мають відмітку в паспорті."></activiti:formProperty>
-        <activiti:formProperty id="sVarSerPass" name="Cерія" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sVarNumPass" name="Номер" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sVarSerPass" name="Cерія" type="string" required="false"></activiti:formProperty>
+        <activiti:formProperty id="sVarNumPass" name="Номер" type="string" required="false"></activiti:formProperty>
 
         <activiti:formProperty id="sVarDatVibor" name="Дата обрання (призначення);(формат дд.мм.рррр)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sVarOgrUr" name="Наявність обмежень щодо представництва від імені юридичної особи" type="textArea" required="true"></activiti:formProperty>
@@ -205,14 +206,15 @@
         <activiti:formProperty id="sVarNumPass02" name="Номер" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sVarDatDenN02" name="Дата народження;(формат дд.мм.рррр)" type="string" required="true"></activiti:formProperty>
 
-        <activiti:formProperty id="asSelectUr" name="Засновником виступає іноземна юридична особа" type="enum" required="true">
+        <activiti:formProperty id="asSelectUr" name="Засновником виступає фізична особа" type="enum" required="true">
           <activiti:value id="tf901" name="Так"></activiti:value>
           <activiti:value id="tf902" name="Ні"></activiti:value>
         </activiti:formProperty>
-        
+
+        <activiti:formProperty id="sVarZasnFisPlus" name="Кінцевий бенефіціарний власник (контролер) юридичної особи +" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sReestrNum02" name="Ідентифікаційний код засновника;(реєстраційний номер облікової картки платника податків (за наявності)) засновника" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="markers901_1" name="показати Реєстраційний номер облікової картки платника податків" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_901_1&quot;:{&quot;aField_ID&quot;:[&quot;sReestrNum02&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectUr&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf902'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers901_2" name="очистить ИНН" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_901_2&quot;:{&quot;aField_ID&quot;:[&quot;sReestrNum02&quot;],&quot;asID_Field_sValue&quot;:[&quot; &quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectUr&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf901'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers901_1" name="Поставити + Кінцевий бенефіціарний власник (контролер) юридичної особи" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_901_1&quot;:{&quot;aField_ID&quot;:[&quot;sVarZasnFisPlus&quot;],&quot;asID_Field_sValue&quot;:[&quot;+&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectUr&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf901'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers901_2" name="очистить + Кінцевий бенефіціарний власник (контролер) юридичної особи" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_901_2&quot;:{&quot;aField_ID&quot;:[&quot;sVarZasnFisPlus&quot;],&quot;asID_Field_sValue&quot;:[&quot; &quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectUr&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf902'&quot;}}}"></activiti:formProperty>
 
         <activiti:formProperty id="sVarStrana01" name="Країна резидентства/громадянства засновника" type="string" required="true"></activiti:formProperty>
 
