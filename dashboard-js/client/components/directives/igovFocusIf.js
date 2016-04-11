@@ -8,8 +8,13 @@
       function ($parse) {
         return {
           link: function igovFocusIfPostLink(scope, element, attrs) {
-            if ($parse(attrs.igovFocusIf)(scope))
-              element.focus();
+            scope.$watch(function () {
+              return $parse(attrs.igovFocusIf)(scope);
+            }, function (newValue) {
+              if (newValue) {
+                element.focus();
+              }
+            });
           }
         }
       }

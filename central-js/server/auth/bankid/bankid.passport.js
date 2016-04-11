@@ -25,7 +25,13 @@ exports.setup = function (config) {
         });
 
     BankIDAuth.prototype.authorizationParams = function (options) {
-        return options.eds ? {eds : true} : {};
+        if(options.eds){
+          return {eds : true};
+        } else if (options.mpbds){
+          return {bank : 'mpbds'};
+        } else {
+          return {};
+        }
     };
 
     BankIDAuth.prototype.tokenParams = function (options) {

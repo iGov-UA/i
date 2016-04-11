@@ -40,10 +40,6 @@
       $location.path('/services');
     };
 
-    $scope.goToTasks = function(tab) { console.log(tab);
-      $location.path('/tasks/' + tab);
-    };
-
     $scope.goToEscalations = function() {
       $location.path('/escalations');
     };

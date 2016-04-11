@@ -1,0 +1,117 @@
+<div class="tasks-form-view">
+  <h3 ng-show="selectedTask && taskForm == null && !error">Завантаження ...</h3>
+
+  <show-error data="error" ng-show="error"></show-error>
+
+  <div>
+    <h4 ng-show="selectedTask && taskForm != null && sSelectedTask == 'all' && selectedTask.assignee">Призначено на : {{selectedTask.assignee}}</h4>
+    <h4 ng-show="selectedTask && taskForm != null && sSelectedTask == 'all' && selectedTask.assignee == null">Вільний тікет</h4>
+    <button ng-show="selectedTask && taskForm != null && sSelectedTask == 'all' && selectedTask.assignee" ng-click="unassign()" class="btn btn-success">Відкріпити
+    </button>
+  </div>
+
+  <div ng-if="!clarify">
+    <puttowork-button ng-hide="selectedTask.assignee != null || sSelectedTask == 'all'"></puttowork-button>
+  </div>
+
+  <div ng-repeat="item in taskForm" class="task-form-property" ng-show="selectedTask">
+
+        <span ng-if="['string', 'long'].indexOf(item.type) > -1">
+          <field-title></field-title>
+          <simple-field></simple-field>
+        </span>
+        <span ng-if="['date'].indexOf(item.type) > -1">
+          <field-title></field-title>
+          <date-field></date-field>
+        </span>
+
+    <textarea-field></textarea-field>
+
+    <user-field></user-field>
+
+    <enum-field></enum-field>
+
+    <file-formfield></file-formfield>
+
+        <span style="display: none;" ng-if="['invisible'].indexOf(item.type) > -1">
+          <field-title></field-title>
+        </span>
+
+        <span ng-if="['label'].indexOf(item.type) > -1">
+          <field-title></field-title>
+          <label>{{item.value}}</label>
+        </span>
+
+        <span ng-if="['queueData'].indexOf(item.type) > -1">
+          <field-title></field-title>
+          <label title="{{nID_FlowSlotTicket_FieldQueueData(item.value)}}">{{sDate_FieldQueueData(item.value)}}</label>
+        </span>
+
+    <div ng-if="clarify && item.writable && (item.type==='string' || item.type==='textArea' || item.type==='date')"> <!--item.writable-->
+      <input type="checkbox" ng-model="clarifyFields[item.id].clarify" id="{{item.id}}_clarify"/>
+      <label for="{{item.id}}_clarify">Уточнити</label>
+
+      <div ng-if="clarifyFields[item.id].clarify">
+            <textarea ng-model="clarifyFields[item.id].text" class="form-control"
+                      placeholder="Уточнення для {{sFieldLabel(item.name)}}"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div ng-show="attachments">
+    <p ng-repeat="item in attachments">
+      Файл: <a href="/api/tasks/{{taskId}}/attachments/{{item.id}}/content/{{($index+1)}}"
+               target="_blank"><b>{{item.description}}</b> ({{item.name}})</a>
+      <button type="button" class="btn btn-success"
+              ng-disabled="checkSignState.inProcess"
+              ng-click="checkAttachmentSign(taskId, item.id, item.description)"
+              ng-if="sSelectedTask=='selfAssigned'">Перевірити підпис</button>
+    </p>
+  </div>
+
+</div>
+
+<hr>
+
+<div class="tasks-form-buttons" ng-if="selectedTask">
+
+  <div ng-hide="selectedTask.assignee === null || sSelectedTask === 'finished' || sSelectedTask === 'all'" style="padding-top:5px;">
+    <button ng-click="print()" class="btn btn-success">Роздрукувати</button>
+    <select class="aPatternPrint form-control" ng-options="option.displayTemplate for option in printTemplateList track by option.id" ng-required ng-model="model.printTemplate" ng-hide="printTemplateList.length == 0 || selectedTask.assignee === null || sSelectedTask === 'finished'" >
+    </select>
+  </div>
+
+  <div ng-if="!clarify" style="padding-top:5px;">
+    <puttowork-button ng-hide="selectedTask.assignee != null || sSelectedTask == 'all'"></puttowork-button>
+    <submittask-button ng-hide="selectedTask.assignee == null || sSelectedTask == 'all'"></submittask-button>
+  </div>
+
+  <div class="tasks-form-buttons-clarify" ng-if="sSelectedTask=='selfAssigned'" style="/*padding-top:25px;*/">
+    <button ng-if="!clarify" type="button" class="btn btn-success" ng-click="clarifyToggle()">Внести зауваження</button>
+    <div ng-if="clarify" style="padding-top:5px;">
+      <textarea class="form-control" placeholder="Коментар до зауваження" ng-model="clarifyModel.sBody"></textarea>
+      <button type="button" class="btn btn-success" ng-click="clarifySend()">Відправити зауваження</button>
+      <button type="button" class="btn btn-default" ng-click="clarifyToggle()">Відміна</button>
+    </div>
+  </div>
+
+</div>
+
+<div class="tasks-form-history" ng-show="aOrderMessage && aOrderMessage!==null && aOrderMessage.length>0" style="/*padding-top:15px;*/">
+  <h4>Історія диалогу:</h4>
+  <br>
+  <div ng-repeat="oMessage in aOrderMessage">
+    <div class="row">
+      <span><b>{{oMessage.sDate}}</b>&nbsp;{{oMessage.sHead}}</span>
+    </div>
+
+    <div class="row" ng-bind-html="oMessage.sBody"></div>
+
+    <div class="row" ng-repeat="oFile in oMessage.osData.aFile">
+      Прикріплено файл: <a href="{{getMessageFileUrl(oMessage, oFile)}}" target="_blank">{{oFile.sFileName}}</a>
+    </div>
+  </div>
+</div>
+
+<print-dialog></print-dialog>
+<sign-info-content-dialog></sign-info-content-dialog>
