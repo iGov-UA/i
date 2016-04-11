@@ -4329,7 +4329,7 @@ execution.setVariable('sNameDepartment', per2)</script>
     <sequenceFlow id="flow57" name="asAnswerChannel=='sEnumAnsw3'" sourceRef="exclusivegateway2" targetRef="servicetask6">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asAnswerChannel=='sEnumAnsw3'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow58" sourceRef="usertask10" targetRef="exclusivegateway2"></sequenceFlow>
+    <sequenceFlow id="flow58" sourceRef="usertask10" targetRef="servicetask7"></sequenceFlow>
     <sequenceFlow id="flow59" name="asAnswerChannel=='sEnumAnsw2'" sourceRef="exclusivegateway2" targetRef="usertask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asAnswerChannel=='sEnumAnsw2'}]]></conditionExpression>
     </sequenceFlow>
@@ -4338,6 +4338,38 @@ execution.setVariable('sNameDepartment', per2)</script>
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asStatusOperator=='sEnumClose'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow63" sourceRef="usertask4" targetRef="usertask1"></sequenceFlow>
+    <serviceTask id="servicetask7" name="Тимчасова тестова Service Task" activiti:delegateExpression="#{MailTaskWithAttachments}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Тестовий лист. Відповідь УкрДок]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+&lt;p&gt;
+&lt;b&gt;Статус документа:&lt;/b&gt; ${sStatusName_UkrDoc}&lt;br&gt;
+&lt;b&gt;Номер документа:&lt;/b&gt; ${sID_Document_UkrDoc}&lt;br&gt;
+&lt;b&gt;Аттач:&lt;/b&gt; ${anID_Attach_UkrDoc}&lt;br&gt;
+&lt;b&gt;Head:&lt;/b&gt;  ${sHead_Document_UkrDoc}&lt;br&gt;
+&lt;b&gt;Body:&lt;/b&gt; ${sBody_Document_UkrDoc}&lt;br&gt;
+&lt;/p&gt;
+&lt;br&gt;
+[pattern/mail/_common_signature_start.html]
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>${anID_Attach_UkrDoc}</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow64" sourceRef="servicetask7" targetRef="exclusivegateway2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_mvk_291_common">
     <bpmndi:BPMNPlane bpmnElement="dnepr_mvk_291_common" id="BPMNPlane_dnepr_mvk_291_common">
@@ -4433,6 +4465,9 @@ execution.setVariable('sNameDepartment', per2)</script>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent10" id="BPMNShape_endevent10">
         <omgdc:Bounds height="35.0" width="35.0" x="734.0" y="680.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
+        <omgdc:Bounds height="55.0" width="105.0" x="1176.0" y="440.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="75.0" y="160.0"></omgdi:waypoint>
@@ -4626,8 +4661,9 @@ execution.setVariable('sNameDepartment', per2)</script>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow58" id="BPMNEdge_flow58">
-        <omgdi:waypoint x="1180.0" y="554.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1228.0" y="554.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1127.0" y="513.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1128.0" y="469.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1176.0" y="467.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow59" id="BPMNEdge_flow59">
         <omgdi:waypoint x="1248.0" y="574.0"></omgdi:waypoint>
@@ -4649,6 +4685,10 @@ execution.setVariable('sNameDepartment', per2)</script>
       <bpmndi:BPMNEdge bpmnElement="flow63" id="BPMNEdge_flow63">
         <omgdi:waypoint x="751.0" y="193.0"></omgdi:waypoint>
         <omgdi:waypoint x="751.0" y="263.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow64" id="BPMNEdge_flow64">
+        <omgdi:waypoint x="1228.0" y="495.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1248.0" y="534.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
