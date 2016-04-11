@@ -25,7 +25,7 @@ fallback ()
 	#Очищаем папку с приложениями
 	rm -rf /sybase/tomcat_${sProject}$1/webapps/*
 	#Копируем обратно старое приложение
-	cp -p /sybase/.backup/war/${sProject}$1/tomcat_${sProject}$1/$sDate/wf.war /sybase/tomcat_${sProject}$1/webapps/
+	cp -p /sybase/.backup/war/${sProject}/tomcat_${sProject}$1/$sDate/wf.war /sybase/tomcat_${sProject}$1/webapps/
 	#Запускаем службу
 	cd /sybase/tomcat_${sProject}$1/bin/ && ./_startup.sh
 	sleep 15
