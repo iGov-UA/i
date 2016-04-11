@@ -158,7 +158,6 @@ build_central-js ()
 			echo "dashboard-js compilation is still running. we will wait until it finish."
 			sleep 5
 		done
-		gem install sass
 		cd central-js
 		npm cache clean
 		npm install
@@ -175,7 +174,6 @@ build_central-js ()
 			echo "dashboard-js compilation is still running. we will wait until it finish."
 			sleep 5
 		done
-		gem install sass
 		cd central-js
 		npm cache clean
 		npm install
