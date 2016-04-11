@@ -125,7 +125,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
     private void protocolize(HttpServletRequest oRequest, HttpServletResponse oResponse, boolean bSaveHistory)
             throws IOException {
-
+        LOG.info("Method 'protocolize' started");
         int nLen = generalConfig.bTest() ? 300 : 200;
         
         Map<String, String> mRequestParam = new HashMap<>();
@@ -154,6 +154,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         //getting task id from URL, if URL matches runtime/tasks/{taskId} (#1234)
         if (TAG_PATTERN_PREFIX.matcher(oRequest.getRequestURL()).find())
         {
+            LOG.info("URL is like runtime/tasks/{taskId}, getting task id from url, task id is "+snTaskId);
             snTaskId = sURL.substring(sURL.lastIndexOf("/")+1);
         }
         
@@ -222,6 +223,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 LOG.info("saveNewTaskInfo block");
                 saveNewTaskInfo(sRequestBody, sResponseBody, mRequestParam);
             } else if (isCloseTask(oRequest, sResponseBody)) {
+                LOG.info("saveClosedTaskInfo block");
                 saveClosedTaskInfo(sRequestBody, snTaskId);
             } else if (isUpdateTask(oRequest)) {
                 saveUpdatedTaskInfo(sResponseBody);
@@ -232,6 +234,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             LOG_BIG.error("Can't save service-history record: {}",ex.getMessage());
             LOG_BIG.error("FAIL:", ex);
         }
+        LOG.info("Method 'protocolize' finished");
     }
 
     private boolean isUpdateTask(HttpServletRequest oRequest) {
@@ -343,7 +346,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         String snID_Task = (String) omRequestBody.get("taskId");
         if ((snID_Task == null) && (snClosedTaskId != null))
         {
-        snID_Task = snClosedTaskId;
+            snID_Task = snClosedTaskId;
+            LOG.info("Task id from requestbody is null, so using task id from url - "+snID_Task);
         }
         
         if(snID_Task != null){
