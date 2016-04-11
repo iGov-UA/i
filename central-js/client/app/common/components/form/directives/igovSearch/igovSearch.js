@@ -11,6 +11,9 @@ angular.module('app')
       var sID_Order_RegExp = /^\d$|^\d-$|^\d-\d+$/;
       var sID_Order_Full_RegExp = /^\d-\d+$/;
 
+
+      $scope.isSearch = statesRepository.isSearch();
+      $scope.getOrgan = statesRepository.getOrgan();
       $scope.isCentral = statesRepository.isCentral();
       $scope.regionList = new RegionListFactory();
       $scope.regionList.load(null, null);
@@ -71,7 +74,7 @@ angular.module('app')
         $scope.catalog = [];
         return CatalogService.getModeSpecificServices(getIDPlaces(), $scope.sSearch, bShowEmptyFolders).then(function (result) {
           fullCatalog = result;
-          if ($scope.bShowExtSearch) {
+          if ($scope.bShowExtSearch || $scope.getOrgan) {
             $scope.filterByExtSearch();
           } else {
             updateCatalog(angular.copy(fullCatalog));
@@ -97,6 +100,10 @@ angular.module('app')
         if ($scope.operator != -1) {
           filterCriteria.sSubjectOperatorName = $scope.operator;
         }
+        if ($scope.getOrgan) {
+          filterCriteria.sSubjectOperatorName = $scope.getOrgan;
+        }
+        
         // create a copy of current fullCatalog
         var ctlg = angular.copy(fullCatalog);
         angular.forEach(ctlg, function(category) {
@@ -122,7 +129,7 @@ angular.module('app')
 
       $scope.onExtSearchClick = function() {
         $scope.bShowExtSearch = !$scope.bShowExtSearch;
-        if ($scope.operator != -1 || $scope.selectedStatus != -1 || $scope.data.region != null) {
+        if ($scope.operator != -1 || $scope.selectedStatus != -1 || $scope.data.region != null || $scope.getOrgan) {
             $scope.search();
         }
       };
