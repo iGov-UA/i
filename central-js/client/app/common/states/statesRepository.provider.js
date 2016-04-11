@@ -8,7 +8,7 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
     "ternopil": {
       "header": "ternopil.header.html",
       "footer": "ternopil.footer.html",
-      "placesID": []
+      "placesID": ['6110100000', '6100000000']
       ,"asOrgan": []
       ,"bSearch": true
     },
@@ -36,8 +36,8 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
     "dfs": {
       "header": "dfs.header.html",
       "footer": "dfs.footer.html",
-      "placesID": ['6110100000', '6100000000']
-      ,"asOrgan": ['Державна міграційна служба']
+      "placesID": []
+      ,"asOrgan": ['Державна фіскальна служба']
       ,"bSearch": false
     }
   };
