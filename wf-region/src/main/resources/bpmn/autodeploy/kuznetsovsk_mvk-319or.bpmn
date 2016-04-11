@@ -42,7 +42,7 @@
     <serviceTask id="servicetask4" name="Повідомлення ЦНАП про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>agerman.ua@gmail.com</activiti:expression>
+          <activiti:expression>akylish88@gmail.com</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -72,7 +72,7 @@
 									&lt;h3&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 									&lt;p&gt;
 										Ваш запит був успішно зареєстрований у нашій системі.&lt;br&gt; 
-										Спеціалісти з державного Органу повинні дати відповідь найближчим часом.
+										Спеціалісти дадуть відповідь найближчим часом.
 									&lt;/p&gt;
 									${sPhoneOrgan}.&lt;br /&gt;
 									[pattern/mail/_common_signature_start.html]
@@ -102,7 +102,6 @@
           <activiti:value id="reject" name="Відмовити в реєстрації звернення"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Коментар адміністратора у разі відмови у реєстрації звернення" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="spec" name="електронна адреса спеціаліста" type="string"></activiti:formProperty>
         <activiti:formProperty id="navischo" name="ціль відведення" type="invisible" default="в оренду терміном на ${term} років"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/kuznetsovsk/kuznetsovsk_319.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
@@ -182,7 +181,7 @@
     <serviceTask id="servicetask8" name="Повідомлення спеціаліста про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${spec}</activiti:expression>
+          <activiti:expression>akylish88@gmail.com</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
