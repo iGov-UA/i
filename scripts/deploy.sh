@@ -138,10 +138,10 @@ build_docker ()
 		fi
 	fi
 
-	docker build -t $DOCKER_REPO/$DOCKER_IMAGE .
-	docker tag  $DOCKER_REPO/$DOCKER_IMAGE:latest  $DOCKER_REPO/$DOCKER_IMAGE:$DOCKER_TAG
+	mkdir /tmp/$sProject
+	docker build -t $DOCKER_REPO/$DOCKER_IMAGE:latest .
 	docker push $DOCKER_REPO/$DOCKER_IMAGE:latest
-	docker push $DOCKER_REPO/$DOCKER_IMAGE:$DOCKER_TAG
+	kubectl rolling-update $DOCKER_IMAGE --image=$DOCKER_REPO/$DOCKER_IMAGE:latest
 	echo "Build & push to Docker registry finished."
 }
 
