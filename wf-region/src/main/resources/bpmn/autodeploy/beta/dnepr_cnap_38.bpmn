@@ -18,10 +18,10 @@
         <activiti:formProperty id="edrpou_inn" name="Ідентифікаційний код згідно з ЄДРПОУ або ідентифікаційний номер фізичної особи – підприємця" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="sRukov" name="П.І.Б. керівника юридичної особи / фізичної особи  – підприємця" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sOrgAdress" name="Місцезнаходження юридичної особи / місце проживання фізичної особи – підприємця; Індекс, Область, Місто, Вулиця, Будинок, Квартира або Офіс" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNameObject" name="підпис у листі" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWork_Time" name="графік роботи органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="підпис у листі" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="графік роботи органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sClerkPost" name="Пошта органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -35,7 +35,7 @@
     <serviceTask id="servicetask3" name="Повідомлення про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>zhigan.roman@gmail.com</activiti:expression>
+          <activiti:expression>${sMailClerk}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -68,7 +68,7 @@
                                       Спеціалісти Центру надання адміністративних послуг повинні дати відповідь найближчім часом.
 									</p>
                                     [pattern/mail/_common_signature_start.html]
-									${sNameObject},<br>
+									${sNameOrgan},<br>
                                     [pattern/mail/_common_signature_end.html]   
 									[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
@@ -77,6 +77,7 @@
     <sequenceFlow id="flow23" sourceRef="servicetask4" targetRef="usertask1"></sequenceFlow>
     <userTask id="usertask1" name="Первинна обробка даних" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
+        <activiti:formProperty id="sNameOrgan" name="Центр надання адмінпослуг" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="Індивідуальний податковий номер" type="string" writable="false"></activiti:formProperty>
@@ -131,7 +132,7 @@
                                     	${comment}
 									</p>
 									[pattern/mail/_common_signature_start.html]
-									${sNameObject}.</p>   
+									${sNameOrgan}.</p>   
 									[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
@@ -157,10 +158,10 @@
                                     <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
                                     <p>
                                       Ваше звернення щодо копії рішень міської ради про передачу в оренду земельних ділянок державної або комунальної власності передане на опрацювання.<br>
-                                      Спеціалісти державного Органу повинні дати відповідь протягом 10 робочіх днів.
+                                      Спеціалісти державного Органу повинні дати відповідь у відведений Законом термін.
 									</p>
                                     [pattern/mail/_common_signature_start.html]
-									${sNameObject},<br>
+									${sNameOrgan},<br>
                                     [pattern/mail/_common_signature_end.html]   
 									[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
@@ -169,6 +170,7 @@
     <sequenceFlow id="flow12" sourceRef="servicetask2" targetRef="usertask2"></sequenceFlow>
     <userTask id="usertask2" name="Видача рішення" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
+        <activiti:formProperty id="sNameOrgan" name="Центр надання адмінпослуг" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="reestr_numb" name="Реєстраційний номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="pib_admin" name="Прізвище та ініціали адміністратора" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -221,10 +223,10 @@
 									</p>
 									<p>
                              		Отримати документ можна:<br>
-                             		${sAddress}<br>${sWork_Time}
+                             		${sAddress}<br>${sWorkTime}
                              		</p>
                             		[pattern/mail/_common_signature_start.html]
-									${sNameObject},<br>
+									${sNameOrgan},<br>
 									[pattern/mail/_common_signature_end.html]   
 									[pattern/mail/_common_feedback.html]
 									[pattern/mail/_common_footer.html]]]></activiti:expression>
@@ -254,6 +256,8 @@
 								  <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
                                     <p>
                              		Нажаль неможливо видати Вам копію рішень міської ради про передачу в оренду земельних ділянок державної або комунальної власності.
+                             		&lt;br /&gt;
+									Підстава: ${comment1}&lt;br /&gt;
                              		</p>
 									<p>
                               		Ви або уповноважена Вами особа (при наявності довіреності) можете отримати офіційну відмову особисто під підпис у ЦНАП.<br>
@@ -264,10 +268,10 @@
 									</p>
 									<p>
 									Отримати документ можна:<br>
-                             		${sAddress}<br>${sWork_Time}
+                             		${sAddress}<br>${sWorkTime}
                              		</p>
                             		[pattern/mail/_common_signature_start.html]
-									${sNameObject},<br>
+									${sNameOrgan},<br>
 									[pattern/mail/_common_signature_end.html]   
 									[pattern/mail/_common_feedback.html]
 									[pattern/mail/_common_footer.html]]]></activiti:expression>
