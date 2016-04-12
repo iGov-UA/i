@@ -4323,6 +4323,15 @@ execution.setVariable('sNameDepartment', per2)</script>
           <activiti:field name="sID_Document">
             <activiti:expression>${sID_Document_UkrDoc}</activiti:expression>
           </activiti:field>
+          <activiti:field name="sStatusName_UkrDoc">
+            <activiti:expression>${sStatusName_UkrDoc}</activiti:expression>
+          </activiti:field>
+          <activiti:field name="sHead_Document_UkrDoc">
+            <activiti:expression>${sHead_Document_UkrDoc}</activiti:expression>
+          </activiti:field>
+          <activiti:field name="sBody_Document_UkrDoc">
+            <activiti:expression>${sBody_Document_UkrDoc}</activiti:expression>
+          </activiti:field>
         </activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -4369,7 +4378,8 @@ execution.setVariable('sNameDepartment', per2)</script>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow64" sourceRef="servicetask7" targetRef="exclusivegateway2"></sequenceFlow>
+    <endEvent id="endevent11" name="End"></endEvent>
+    <sequenceFlow id="flow65" sourceRef="servicetask7" targetRef="endevent11"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_mvk_291_common">
     <bpmndi:BPMNPlane bpmnElement="dnepr_mvk_291_common" id="BPMNPlane_dnepr_mvk_291_common">
@@ -4468,6 +4478,9 @@ execution.setVariable('sNameDepartment', per2)</script>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
         <omgdc:Bounds height="55.0" width="105.0" x="1176.0" y="440.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent11" id="BPMNShape_endevent11">
+        <omgdc:Bounds height="35.0" width="35.0" x="1326.0" y="450.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="75.0" y="160.0"></omgdi:waypoint>
@@ -4686,9 +4699,9 @@ execution.setVariable('sNameDepartment', per2)</script>
         <omgdi:waypoint x="751.0" y="193.0"></omgdi:waypoint>
         <omgdi:waypoint x="751.0" y="263.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow64" id="BPMNEdge_flow64">
-        <omgdi:waypoint x="1228.0" y="495.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1248.0" y="534.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow65" id="BPMNEdge_flow65">
+        <omgdi:waypoint x="1281.0" y="467.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1326.0" y="467.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
