@@ -157,9 +157,7 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow23" sourceRef="servicetask9" targetRef="servicetask10"></sequenceFlow>
     <serviceTask id="servicetask10" name="Видалення тікета з черги" activiti:delegateExpression="#{releaseTicketsOfQueue}"></serviceTask>
-    <sequenceFlow id="flow24" sourceRef="servicetask10" targetRef="endevent3"></sequenceFlow>
     <scriptTask id="scripttask1" name="Формат даты" activiti:async="true" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var src=execution.getVariable('date_of_visit')
 var year=src.substr(0,4)
@@ -197,6 +195,8 @@ execution.setVariable('sNotification_day', timer)</script>
     <sequenceFlow id="flow29" sourceRef="usertask1" targetRef="usertask2"></sequenceFlow>
     <sequenceFlow id="flow30" sourceRef="servicetask6" targetRef="servicetask5"></sequenceFlow>
     <sequenceFlow id="flow31" sourceRef="servicetask5" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow32" sourceRef="servicetask9" targetRef="servicetask10"></sequenceFlow>
+    <sequenceFlow id="flow33" sourceRef="servicetask10" targetRef="endevent3"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dvs_619">
     <bpmndi:BPMNPlane bpmnElement="dvs_619" id="BPMNPlane_dvs_619">
@@ -275,15 +275,6 @@ execution.setVariable('sNotification_day', timer)</script>
           <omgdc:Bounds height="14.0" width="75.0" x="682.0" y="139.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
-        <omgdi:waypoint x="738.0" y="247.0"></omgdi:waypoint>
-        <omgdi:waypoint x="738.0" y="263.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
-        <omgdi:waypoint x="686.0" y="290.0"></omgdi:waypoint>
-        <omgdi:waypoint x="666.0" y="291.0"></omgdi:waypoint>
-        <omgdi:waypoint x="612.0" y="291.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
         <omgdi:waypoint x="172.0" y="189.0"></omgdi:waypoint>
         <omgdi:waypoint x="235.0" y="141.0"></omgdi:waypoint>
@@ -303,6 +294,14 @@ execution.setVariable('sNotification_day', timer)</script>
       <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
         <omgdi:waypoint x="405.0" y="112.0"></omgdi:waypoint>
         <omgdi:waypoint x="413.0" y="111.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
+        <omgdi:waypoint x="738.0" y="247.0"></omgdi:waypoint>
+        <omgdi:waypoint x="738.0" y="263.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
+        <omgdi:waypoint x="686.0" y="290.0"></omgdi:waypoint>
+        <omgdi:waypoint x="612.0" y="291.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
