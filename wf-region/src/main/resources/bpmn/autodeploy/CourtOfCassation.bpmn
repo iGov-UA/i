@@ -1,0 +1,891 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="CourtOfCassation" name="Подання процесуальних документів для розгляду у відкритому апеляційному/касаційному провадженні" isExecutable="true">
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAdres" name="Адреса реєстрації" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asSubekt_00" name="Звернення подаю" type="enum" required="true">
+          <activiti:value id="personally" name="особисто"></activiti:value>
+          <activiti:value id="confidant" name="як довірена особа (представник)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asSubekt_01" name="Оберіть суб'єкт підприємницької діяльності" type="enum" required="true">
+          <activiti:value id="fop" name="фізична особа-підприємець"></activiti:value>
+          <activiti:value id="ur" name="юридична особа"></activiti:value>
+          <activiti:value id="fiz" name="фізична особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asSubekt_02" name="Оберіть відповідний варіант представництва" type="enum" required="true">
+          <activiti:value id="prosecutor" name="прокурор"></activiti:value>
+          <activiti:value id="lawyer" name="адвокат"></activiti:value>
+          <activiti:value id="confidant_delegate" name="представник за довіреністю"></activiti:value>
+          <activiti:value id="authorized" name="уповноважена посадова особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sSurname" name="Прізвище заявника, представником якого Ви є" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sName" name="Ім'я заявника, представником якого Ви є" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMiddleName" name="По батькові заявника, представником якого Ви є" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAdres0" name="Адреса реєстрації заявника, представником якого Ви є" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sNumberCase" name="Номер судової справи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCountDocs" name="Вкажіть кількість документів, що подаються" type="enum" required="true">
+          <activiti:value id="one" name="1"></activiti:value>
+          <activiti:value id="two" name="2"></activiti:value>
+          <activiti:value id="three" name="3"></activiti:value>
+          <activiti:value id="four" name="4"></activiti:value>
+          <activiti:value id="five" name="5"></activiti:value>
+          <activiti:value id="six" name="6"></activiti:value>
+          <activiti:value id="seven" name="7"></activiti:value>
+          <activiti:value id="eight" name="8"></activiti:value>
+          <activiti:value id="nine" name="9"></activiti:value>
+          <activiti:value id="ten" name="10"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sCategoryDoc1" name="Оберіть категорію процесуального документу №1" type="enum" required="true">
+          <activiti:value id="recall" name="відгук на касаційну скаргу"></activiti:value>
+          <activiti:value id="explanation" name="письмові пояснення"></activiti:value>
+          <activiti:value id="petition" name="клопотання"></activiti:value>
+          <activiti:value id="withdrawal" name="заява щодо складу суду"></activiti:value>
+          <activiti:value id="other" name="інше"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sOther1" name="Індивідуальна назва процесуального документу №1" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTypePetition1" name="Оберіть відповідне клопотання" type="enum" required="true">
+          <activiti:value id="petition1" name="Клопотання про ознайомлення з матеріалами справи/касаційного провадження"></activiti:value>
+          <activiti:value id="petition2" name="Клопотання про відкладення розгляду справи"></activiti:value>
+          <activiti:value id="petition3" name="Клопотання про колегіальний розгляд справи"></activiti:value>
+          <activiti:value id="petition4" name="Клопотання про призначення експертизи"></activiti:value>
+          <activiti:value id="petition5" name="Клопотання про зупинення касаційного виробницства"></activiti:value>
+          <activiti:value id="petition6" name="Клопотання про проведення відео, аудіо фіксації судового засідання"></activiti:value>
+          <activiti:value id="petition7" name="Клопотання про участь в засіданні в режимі відеоконференції"></activiti:value>
+          <activiti:value id="petition8" name="Клопотання про відмову від касаційної скарги"></activiti:value>
+          <activiti:value id="petition9" name="Клопотання про зупинення виконання рішення суда"></activiti:value>
+          <activiti:value id="petition10" name="Клопотання про залучення доказів"></activiti:value>
+          <activiti:value id="petition11" name="Клопотання про поновлення строку"></activiti:value>
+          <activiti:value id="petition12" name="Клопотання про роз'яснення судового рішення"></activiti:value>
+          <activiti:value id="petition13" name="Клопотання про виправлення помилки в судовому решенні"></activiti:value>
+          <activiti:value id="petition14" name="Клопотання про винесення додаткового рішення"></activiti:value>
+          <activiti:value id="petition15" name="Клопотання про видачу копії судового рішення"></activiti:value>
+          <activiti:value id="petition16" name="Клопотання про забезпечення позову (касаційної скарги)"></activiti:value>
+          <activiti:value id="petition_other" name="Індивідуальна назва клопотання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDoc1" name="Завантажте документ №1;обов'язково тільки у форматі pdf" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCategoryDoc2" name="Оберіть категорію процесуального документу №2" type="enum" required="true">
+          <activiti:value id="recall" name="відгук на касаційну скаргу"></activiti:value>
+          <activiti:value id="explanation" name="письмові пояснення"></activiti:value>
+          <activiti:value id="petition" name="клопотання"></activiti:value>
+          <activiti:value id="withdrawal" name="заява щодо складу суду"></activiti:value>
+          <activiti:value id="other" name="інше"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sOther2" name="Індивідуальна назва процесуального документу №1" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTypePetition2" name="Оберіть відповідне клопотання" type="enum" required="true">
+          <activiti:value id="petition1" name="Клопотання про ознайомлення з матеріалами справи/касаційного провадження"></activiti:value>
+          <activiti:value id="petition2" name="Клопотання про відкладення розгляду справи"></activiti:value>
+          <activiti:value id="petition3" name="Клопотання про колегіальний розгляд справи"></activiti:value>
+          <activiti:value id="petition4" name="Клопотання про призначення експертизи"></activiti:value>
+          <activiti:value id="petition5" name="Клопотання про зупинення касаційного виробницства"></activiti:value>
+          <activiti:value id="petition6" name="Клопотання про проведення відео, аудіо фіксації судового засідання"></activiti:value>
+          <activiti:value id="petition7" name="Клопотання про участь в засіданні в режимі відеоконференції"></activiti:value>
+          <activiti:value id="petition8" name="Клопотання про відмову від касаційної скарги"></activiti:value>
+          <activiti:value id="petition9" name="Клопотання про зупинення виконання рішення суда"></activiti:value>
+          <activiti:value id="petition10" name="Клопотання про залучення доказів"></activiti:value>
+          <activiti:value id="petition11" name="Клопотання про поновлення строку"></activiti:value>
+          <activiti:value id="petition12" name="Клопотання про роз'яснення судового рішення"></activiti:value>
+          <activiti:value id="petition13" name="Клопотання про виправлення помилки в судовому решенні"></activiti:value>
+          <activiti:value id="petition14" name="Клопотання про винесення додаткового рішення"></activiti:value>
+          <activiti:value id="petition15" name="Клопотання про видачу копії судового рішення"></activiti:value>
+          <activiti:value id="petition16" name="Клопотання про забезпечення позову (касаційної скарги)"></activiti:value>
+          <activiti:value id="petition_other" name="Індивідуальна назва клопотання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDoc2" name="Завантажте документ №1;обов'язково тільки у форматі pdf" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCategoryDoc3" name="Оберіть категорію процесуального документу №3" type="enum" required="true">
+          <activiti:value id="recall" name="відгук на касаційну скаргу"></activiti:value>
+          <activiti:value id="explanation" name="письмові пояснення"></activiti:value>
+          <activiti:value id="petition" name="клопотання"></activiti:value>
+          <activiti:value id="withdrawal" name="заява щодо складу суду"></activiti:value>
+          <activiti:value id="other" name="інше"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sOther3" name="Індивідуальна назва процесуального документу №1" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTypePetition3" name="Оберіть відповідне клопотання" type="enum" required="true">
+          <activiti:value id="petition1" name="Клопотання про ознайомлення з матеріалами справи/касаційного провадження"></activiti:value>
+          <activiti:value id="petition2" name="Клопотання про відкладення розгляду справи"></activiti:value>
+          <activiti:value id="petition3" name="Клопотання про колегіальний розгляд справи"></activiti:value>
+          <activiti:value id="petition4" name="Клопотання про призначення експертизи"></activiti:value>
+          <activiti:value id="petition5" name="Клопотання про зупинення касаційного виробницства"></activiti:value>
+          <activiti:value id="petition6" name="Клопотання про проведення відео, аудіо фіксації судового засідання"></activiti:value>
+          <activiti:value id="petition7" name="Клопотання про участь в засіданні в режимі відеоконференції"></activiti:value>
+          <activiti:value id="petition8" name="Клопотання про відмову від касаційної скарги"></activiti:value>
+          <activiti:value id="petition9" name="Клопотання про зупинення виконання рішення суда"></activiti:value>
+          <activiti:value id="petition10" name="Клопотання про залучення доказів"></activiti:value>
+          <activiti:value id="petition11" name="Клопотання про поновлення строку"></activiti:value>
+          <activiti:value id="petition12" name="Клопотання про роз'яснення судового рішення"></activiti:value>
+          <activiti:value id="petition13" name="Клопотання про виправлення помилки в судовому решенні"></activiti:value>
+          <activiti:value id="petition14" name="Клопотання про винесення додаткового рішення"></activiti:value>
+          <activiti:value id="petition15" name="Клопотання про видачу копії судового рішення"></activiti:value>
+          <activiti:value id="petition16" name="Клопотання про забезпечення позову (касаційної скарги)"></activiti:value>
+          <activiti:value id="petition_other" name="Індивідуальна назва клопотання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDoc3" name="Завантажте документ №1;обов'язково тільки у форматі pdf" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCategoryDoc4" name="Оберіть категорію процесуального документу №4" type="enum" required="true">
+          <activiti:value id="recall" name="відгук на касаційну скаргу"></activiti:value>
+          <activiti:value id="explanation" name="письмові пояснення"></activiti:value>
+          <activiti:value id="petition" name="клопотання"></activiti:value>
+          <activiti:value id="withdrawal" name="заява щодо складу суду"></activiti:value>
+          <activiti:value id="other" name="інше"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sOther4" name="Індивідуальна назва процесуального документу №1" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTypePetition4" name="Оберіть відповідне клопотання" type="enum" required="true">
+          <activiti:value id="petition1" name="Клопотання про ознайомлення з матеріалами справи/касаційного провадження"></activiti:value>
+          <activiti:value id="petition2" name="Клопотання про відкладення розгляду справи"></activiti:value>
+          <activiti:value id="petition3" name="Клопотання про колегіальний розгляд справи"></activiti:value>
+          <activiti:value id="petition4" name="Клопотання про призначення експертизи"></activiti:value>
+          <activiti:value id="petition5" name="Клопотання про зупинення касаційного виробницства"></activiti:value>
+          <activiti:value id="petition6" name="Клопотання про проведення відео, аудіо фіксації судового засідання"></activiti:value>
+          <activiti:value id="petition7" name="Клопотання про участь в засіданні в режимі відеоконференції"></activiti:value>
+          <activiti:value id="petition8" name="Клопотання про відмову від касаційної скарги"></activiti:value>
+          <activiti:value id="petition9" name="Клопотання про зупинення виконання рішення суда"></activiti:value>
+          <activiti:value id="petition10" name="Клопотання про залучення доказів"></activiti:value>
+          <activiti:value id="petition11" name="Клопотання про поновлення строку"></activiti:value>
+          <activiti:value id="petition12" name="Клопотання про роз'яснення судового рішення"></activiti:value>
+          <activiti:value id="petition13" name="Клопотання про виправлення помилки в судовому решенні"></activiti:value>
+          <activiti:value id="petition14" name="Клопотання про винесення додаткового рішення"></activiti:value>
+          <activiti:value id="petition15" name="Клопотання про видачу копії судового рішення"></activiti:value>
+          <activiti:value id="petition16" name="Клопотання про забезпечення позову (касаційної скарги)"></activiti:value>
+          <activiti:value id="petition_other" name="Індивідуальна назва клопотання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDoc4" name="Завантажте документ №1;обов'язково тільки у форматі pdf" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCategoryDoc5" name="Оберіть категорію процесуального документу №5" type="enum" required="true">
+          <activiti:value id="recall" name="відгук на касаційну скаргу"></activiti:value>
+          <activiti:value id="explanation" name="письмові пояснення"></activiti:value>
+          <activiti:value id="petition" name="клопотання"></activiti:value>
+          <activiti:value id="withdrawal" name="заява щодо складу суду"></activiti:value>
+          <activiti:value id="other" name="інше"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sOther5" name="Індивідуальна назва процесуального документу №1" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTypePetition5" name="Оберіть відповідне клопотання" type="enum" required="true">
+          <activiti:value id="petition1" name="Клопотання про ознайомлення з матеріалами справи/касаційного провадження"></activiti:value>
+          <activiti:value id="petition2" name="Клопотання про відкладення розгляду справи"></activiti:value>
+          <activiti:value id="petition3" name="Клопотання про колегіальний розгляд справи"></activiti:value>
+          <activiti:value id="petition4" name="Клопотання про призначення експертизи"></activiti:value>
+          <activiti:value id="petition5" name="Клопотання про зупинення касаційного виробницства"></activiti:value>
+          <activiti:value id="petition6" name="Клопотання про проведення відео, аудіо фіксації судового засідання"></activiti:value>
+          <activiti:value id="petition7" name="Клопотання про участь в засіданні в режимі відеоконференції"></activiti:value>
+          <activiti:value id="petition8" name="Клопотання про відмову від касаційної скарги"></activiti:value>
+          <activiti:value id="petition9" name="Клопотання про зупинення виконання рішення суда"></activiti:value>
+          <activiti:value id="petition10" name="Клопотання про залучення доказів"></activiti:value>
+          <activiti:value id="petition11" name="Клопотання про поновлення строку"></activiti:value>
+          <activiti:value id="petition12" name="Клопотання про роз'яснення судового рішення"></activiti:value>
+          <activiti:value id="petition13" name="Клопотання про виправлення помилки в судовому решенні"></activiti:value>
+          <activiti:value id="petition14" name="Клопотання про винесення додаткового рішення"></activiti:value>
+          <activiti:value id="petition15" name="Клопотання про видачу копії судового рішення"></activiti:value>
+          <activiti:value id="petition16" name="Клопотання про забезпечення позову (касаційної скарги)"></activiti:value>
+          <activiti:value id="petition_other" name="Індивідуальна назва клопотання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDoc5" name="Завантажте документ №1;обов'язково тільки у форматі pdf" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCategoryDoc6" name="Оберіть категорію процесуального документу №1" type="enum" required="true">
+          <activiti:value id="recall" name="відгук на касаційну скаргу"></activiti:value>
+          <activiti:value id="explanation" name="письмові пояснення"></activiti:value>
+          <activiti:value id="petition" name="клопотання"></activiti:value>
+          <activiti:value id="withdrawal" name="заява щодо складу суду"></activiti:value>
+          <activiti:value id="other" name="інше"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sOther6" name="Індивідуальна назва процесуального документу №6" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTypePetition6" name="Оберіть відповідне клопотання" type="enum" required="true">
+          <activiti:value id="petition1" name="Клопотання про ознайомлення з матеріалами справи/касаційного провадження"></activiti:value>
+          <activiti:value id="petition2" name="Клопотання про відкладення розгляду справи"></activiti:value>
+          <activiti:value id="petition3" name="Клопотання про колегіальний розгляд справи"></activiti:value>
+          <activiti:value id="petition4" name="Клопотання про призначення експертизи"></activiti:value>
+          <activiti:value id="petition5" name="Клопотання про зупинення касаційного виробницства"></activiti:value>
+          <activiti:value id="petition6" name="Клопотання про проведення відео, аудіо фіксації судового засідання"></activiti:value>
+          <activiti:value id="petition7" name="Клопотання про участь в засіданні в режимі відеоконференції"></activiti:value>
+          <activiti:value id="petition8" name="Клопотання про відмову від касаційної скарги"></activiti:value>
+          <activiti:value id="petition9" name="Клопотання про зупинення виконання рішення суда"></activiti:value>
+          <activiti:value id="petition10" name="Клопотання про залучення доказів"></activiti:value>
+          <activiti:value id="petition11" name="Клопотання про поновлення строку"></activiti:value>
+          <activiti:value id="petition12" name="Клопотання про роз'яснення судового рішення"></activiti:value>
+          <activiti:value id="petition13" name="Клопотання про виправлення помилки в судовому решенні"></activiti:value>
+          <activiti:value id="petition14" name="Клопотання про винесення додаткового рішення"></activiti:value>
+          <activiti:value id="petition15" name="Клопотання про видачу копії судового рішення"></activiti:value>
+          <activiti:value id="petition16" name="Клопотання про забезпечення позову (касаційної скарги)"></activiti:value>
+          <activiti:value id="petition_other" name="Індивідуальна назва клопотання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDoc6" name="Завантажте документ №1;обов'язково тільки у форматі pdf" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCategoryDoc7" name="Оберіть категорію процесуального документу №7" type="enum" required="true">
+          <activiti:value id="recall" name="відгук на касаційну скаргу"></activiti:value>
+          <activiti:value id="explanation" name="письмові пояснення"></activiti:value>
+          <activiti:value id="petition" name="клопотання"></activiti:value>
+          <activiti:value id="withdrawal" name="заява щодо складу суду"></activiti:value>
+          <activiti:value id="other" name="інше"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sOther7" name="Індивідуальна назва процесуального документу №1" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTypePetition7" name="Оберіть відповідне клопотання" type="enum" required="true">
+          <activiti:value id="petition1" name="Клопотання про ознайомлення з матеріалами справи/касаційного провадження"></activiti:value>
+          <activiti:value id="petition2" name="Клопотання про відкладення розгляду справи"></activiti:value>
+          <activiti:value id="petition3" name="Клопотання про колегіальний розгляд справи"></activiti:value>
+          <activiti:value id="petition4" name="Клопотання про призначення експертизи"></activiti:value>
+          <activiti:value id="petition5" name="Клопотання про зупинення касаційного виробницства"></activiti:value>
+          <activiti:value id="petition6" name="Клопотання про проведення відео, аудіо фіксації судового засідання"></activiti:value>
+          <activiti:value id="petition7" name="Клопотання про участь в засіданні в режимі відеоконференції"></activiti:value>
+          <activiti:value id="petition8" name="Клопотання про відмову від касаційної скарги"></activiti:value>
+          <activiti:value id="petition9" name="Клопотання про зупинення виконання рішення суда"></activiti:value>
+          <activiti:value id="petition10" name="Клопотання про залучення доказів"></activiti:value>
+          <activiti:value id="petition11" name="Клопотання про поновлення строку"></activiti:value>
+          <activiti:value id="petition12" name="Клопотання про роз'яснення судового рішення"></activiti:value>
+          <activiti:value id="petition13" name="Клопотання про виправлення помилки в судовому решенні"></activiti:value>
+          <activiti:value id="petition14" name="Клопотання про винесення додаткового рішення"></activiti:value>
+          <activiti:value id="petition15" name="Клопотання про видачу копії судового рішення"></activiti:value>
+          <activiti:value id="petition16" name="Клопотання про забезпечення позову (касаційної скарги)"></activiti:value>
+          <activiti:value id="petition_other" name="Індивідуальна назва клопотання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDoc7" name="Завантажте документ №1;обов'язково тільки у форматі pdf" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCategoryDoc8" name="Оберіть категорію процесуального документу №8" type="enum" required="true">
+          <activiti:value id="recall" name="відгук на касаційну скаргу"></activiti:value>
+          <activiti:value id="explanation" name="письмові пояснення"></activiti:value>
+          <activiti:value id="petition" name="клопотання"></activiti:value>
+          <activiti:value id="withdrawal" name="заява щодо складу суду"></activiti:value>
+          <activiti:value id="other" name="інше"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sOther8" name="Індивідуальна назва процесуального документу №1" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTypePetition8" name="Оберіть відповідне клопотання" type="enum" required="true">
+          <activiti:value id="petition1" name="Клопотання про ознайомлення з матеріалами справи/касаційного провадження"></activiti:value>
+          <activiti:value id="petition2" name="Клопотання про відкладення розгляду справи"></activiti:value>
+          <activiti:value id="petition3" name="Клопотання про колегіальний розгляд справи"></activiti:value>
+          <activiti:value id="petition4" name="Клопотання про призначення експертизи"></activiti:value>
+          <activiti:value id="petition5" name="Клопотання про зупинення касаційного виробницства"></activiti:value>
+          <activiti:value id="petition6" name="Клопотання про проведення відео, аудіо фіксації судового засідання"></activiti:value>
+          <activiti:value id="petition7" name="Клопотання про участь в засіданні в режимі відеоконференції"></activiti:value>
+          <activiti:value id="petition8" name="Клопотання про відмову від касаційної скарги"></activiti:value>
+          <activiti:value id="petition9" name="Клопотання про зупинення виконання рішення суда"></activiti:value>
+          <activiti:value id="petition10" name="Клопотання про залучення доказів"></activiti:value>
+          <activiti:value id="petition11" name="Клопотання про поновлення строку"></activiti:value>
+          <activiti:value id="petition12" name="Клопотання про роз'яснення судового рішення"></activiti:value>
+          <activiti:value id="petition13" name="Клопотання про виправлення помилки в судовому решенні"></activiti:value>
+          <activiti:value id="petition14" name="Клопотання про винесення додаткового рішення"></activiti:value>
+          <activiti:value id="petition15" name="Клопотання про видачу копії судового рішення"></activiti:value>
+          <activiti:value id="petition16" name="Клопотання про забезпечення позову (касаційної скарги)"></activiti:value>
+          <activiti:value id="petition_other" name="Індивідуальна назва клопотання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDoc8" name="Завантажте документ №1;обов'язково тільки у форматі pdf" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCategoryDoc9" name="Оберіть категорію процесуального документу №9" type="enum" required="true">
+          <activiti:value id="recall" name="відгук на касаційну скаргу"></activiti:value>
+          <activiti:value id="explanation" name="письмові пояснення"></activiti:value>
+          <activiti:value id="petition" name="клопотання"></activiti:value>
+          <activiti:value id="withdrawal" name="заява щодо складу суду"></activiti:value>
+          <activiti:value id="other" name="інше"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sOther9" name="Індивідуальна назва процесуального документу №1" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTypePetition9" name="Оберіть відповідне клопотання" type="enum" required="true">
+          <activiti:value id="petition1" name="Клопотання про ознайомлення з матеріалами справи/касаційного провадження"></activiti:value>
+          <activiti:value id="petition2" name="Клопотання про відкладення розгляду справи"></activiti:value>
+          <activiti:value id="petition3" name="Клопотання про колегіальний розгляд справи"></activiti:value>
+          <activiti:value id="petition4" name="Клопотання про призначення експертизи"></activiti:value>
+          <activiti:value id="petition5" name="Клопотання про зупинення касаційного виробницства"></activiti:value>
+          <activiti:value id="petition6" name="Клопотання про проведення відео, аудіо фіксації судового засідання"></activiti:value>
+          <activiti:value id="petition7" name="Клопотання про участь в засіданні в режимі відеоконференції"></activiti:value>
+          <activiti:value id="petition8" name="Клопотання про відмову від касаційної скарги"></activiti:value>
+          <activiti:value id="petition9" name="Клопотання про зупинення виконання рішення суда"></activiti:value>
+          <activiti:value id="petition10" name="Клопотання про залучення доказів"></activiti:value>
+          <activiti:value id="petition11" name="Клопотання про поновлення строку"></activiti:value>
+          <activiti:value id="petition12" name="Клопотання про роз'яснення судового рішення"></activiti:value>
+          <activiti:value id="petition13" name="Клопотання про виправлення помилки в судовому решенні"></activiti:value>
+          <activiti:value id="petition14" name="Клопотання про винесення додаткового рішення"></activiti:value>
+          <activiti:value id="petition15" name="Клопотання про видачу копії судового рішення"></activiti:value>
+          <activiti:value id="petition16" name="Клопотання про забезпечення позову (касаційної скарги)"></activiti:value>
+          <activiti:value id="petition_other" name="Індивідуальна назва клопотання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDoc9" name="Завантажте документ №1;обов'язково тільки у форматі pdf" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCategoryDoc10" name="Оберіть категорію процесуального документу №10" type="enum" required="true">
+          <activiti:value id="recall" name="відгук на касаційну скаргу"></activiti:value>
+          <activiti:value id="explanation" name="письмові пояснення"></activiti:value>
+          <activiti:value id="petition" name="клопотання"></activiti:value>
+          <activiti:value id="withdrawal" name="заява щодо складу суду"></activiti:value>
+          <activiti:value id="other" name="інше"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sOther10" name="Індивідуальна назва процесуального документу №1" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTypePetition10" name="Оберіть відповідне клопотання" type="enum" required="true">
+          <activiti:value id="petition1" name="Клопотання про ознайомлення з матеріалами справи/касаційного провадження"></activiti:value>
+          <activiti:value id="petition2" name="Клопотання про відкладення розгляду справи"></activiti:value>
+          <activiti:value id="petition3" name="Клопотання про колегіальний розгляд справи"></activiti:value>
+          <activiti:value id="petition4" name="Клопотання про призначення експертизи"></activiti:value>
+          <activiti:value id="petition5" name="Клопотання про зупинення касаційного виробницства"></activiti:value>
+          <activiti:value id="petition6" name="Клопотання про проведення відео, аудіо фіксації судового засідання"></activiti:value>
+          <activiti:value id="petition7" name="Клопотання про участь в засіданні в режимі відеоконференції"></activiti:value>
+          <activiti:value id="petition8" name="Клопотання про відмову від касаційної скарги"></activiti:value>
+          <activiti:value id="petition9" name="Клопотання про зупинення виконання рішення суда"></activiti:value>
+          <activiti:value id="petition10" name="Клопотання про залучення доказів"></activiti:value>
+          <activiti:value id="petition11" name="Клопотання про поновлення строку"></activiti:value>
+          <activiti:value id="petition12" name="Клопотання про роз'яснення судового рішення"></activiti:value>
+          <activiti:value id="petition13" name="Клопотання про виправлення помилки в судовому решенні"></activiti:value>
+          <activiti:value id="petition14" name="Клопотання про винесення додаткового рішення"></activiti:value>
+          <activiti:value id="petition15" name="Клопотання про видачу копії судового рішення"></activiti:value>
+          <activiti:value id="petition16" name="Клопотання про забезпечення позову (касаційної скарги)"></activiti:value>
+          <activiti:value id="petition_other" name="Індивідуальна назва клопотання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDoc10" name="Завантажте документ №1;обов'язково тільки у форматі pdf" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="1 документ" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc1&quot;,&quot;sDoc1&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountDocs&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'one'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="1 документ клопотання" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;sTypePetition1&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCategoryDoc1&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'petition'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="1 документ інше" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;sOther1&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCategoryDoc1&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'other'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers4" name="1 документ інше клопотання" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;sOther1&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sTypePetition1&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'petition_other'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers5" name="2 документи" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc1&quot;,&quot;sDoc1&quot;,&quot;sCategoryDoc2&quot;,&quot;sDoc2&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountDocs&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'two'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers6" name="2 документ клопотання" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_6&quot;:{&quot;aField_ID&quot;:[&quot;sTypePetition2&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCategoryDoc2&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'petition'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers7" name="2 документ інше" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_7&quot;:{&quot;aField_ID&quot;:[&quot;sOther2&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCategoryDoc2&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'other'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers8" name="2 документ інше клопотання" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_8&quot;:{&quot;aField_ID&quot;:[&quot;sOther2&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sTypePetition2&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'petition_other'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers9" name="3 документи" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_9&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc1&quot;,&quot;sDoc1&quot;,&quot;sCategoryDoc2&quot;,&quot;sDoc2&quot;,&quot;sCategoryDoc3&quot;,&quot;sDoc3&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountDocs&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'three'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers10" name="3 документ клопотання" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_10&quot;:{&quot;aField_ID&quot;:[&quot;sTypePetition3&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCategoryDoc3&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'petition'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers11" name="3 документ інше" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_11&quot;:{&quot;aField_ID&quot;:[&quot;sOther3&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCategoryDoc3&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'other'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers12" name="3 документ інше клопотання" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_12&quot;:{&quot;aField_ID&quot;:[&quot;sOther3&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sTypePetition3&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'petition_other'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers13" name="4 документи" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_13&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc1&quot;,&quot;sDoc1&quot;,&quot;sCategoryDoc2&quot;,&quot;sDoc2&quot;,&quot;sCategoryDoc3&quot;,&quot;sDoc3&quot;,&quot;sCategoryDoc4&quot;,&quot;sDoc4&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountDocs&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'four'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers14" name="4 документ клопотання" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_14&quot;:{&quot;aField_ID&quot;:[&quot;sTypePetition4&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCategoryDoc4&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'petition'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers15" name="4 документ інше" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_15&quot;:{&quot;aField_ID&quot;:[&quot;sOther4&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCategoryDoc4&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'other'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers16" name="4 документ інше клопотання" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_16&quot;:{&quot;aField_ID&quot;:[&quot;sOther4&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sTypePetition4&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'petition_other'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers17" name="5 документів" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_17&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc1&quot;,&quot;sDoc1&quot;,&quot;sCategoryDoc2&quot;,&quot;sDoc2&quot;,&quot;sCategoryDoc3&quot;,&quot;sDoc3&quot;,&quot;sCategoryDoc4&quot;,&quot;sDoc4&quot;,&quot;sCategoryDoc5&quot;,&quot;sDoc5&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountDocs&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'five'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers18" name="5 документ клопотання" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_18&quot;:{&quot;aField_ID&quot;:[&quot;sTypePetition5&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCategoryDoc5&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'petition'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers19" name="5 документ інше" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_19&quot;:{&quot;aField_ID&quot;:[&quot;sOther5&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCategoryDoc5&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'other'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers20" name="5 документ інше клопотання" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_20&quot;:{&quot;aField_ID&quot;:[&quot;sOther5&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sTypePetition5&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'petition_other'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers21" name="6 документів" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_21&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc1&quot;,&quot;sDoc1&quot;,&quot;sCategoryDoc2&quot;,&quot;sDoc2&quot;,&quot;sCategoryDoc3&quot;,&quot;sDoc3&quot;,&quot;sCategoryDoc4&quot;,&quot;sDoc4&quot;,&quot;sCategoryDoc5&quot;,&quot;sDoc5&quot;,&quot;sCategoryDoc6&quot;,&quot;sDoc6&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountDocs&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'six'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers22" name="6 документ клопотання" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_22&quot;:{&quot;aField_ID&quot;:[&quot;sTypePetition6&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCategoryDoc6&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'petition'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers23" name="6 документ інше" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_23&quot;:{&quot;aField_ID&quot;:[&quot;sOther6&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCategoryDoc6&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'other'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers24" name="6 документ інше клопотання" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_24&quot;:{&quot;aField_ID&quot;:[&quot;sOther6&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sTypePetition6&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'petition_other'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers25" name="7 документів" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_25&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc1&quot;,&quot;sDoc1&quot;,&quot;sCategoryDoc2&quot;,&quot;sDoc2&quot;,&quot;sCategoryDoc3&quot;,&quot;sDoc3&quot;,&quot;sCategoryDoc4&quot;,&quot;sDoc4&quot;,&quot;sCategoryDoc5&quot;,&quot;sDoc5&quot;,&quot;sCategoryDoc6&quot;,&quot;sDoc6&quot;,&quot;sCategoryDoc7&quot;,&quot;sDoc7&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountDocs&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'seven'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers26" name="7 документ клопотання" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_26&quot;:{&quot;aField_ID&quot;:[&quot;sTypePetition7&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCategoryDoc7&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'petition'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers27" name="7 документ інше" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_27&quot;:{&quot;aField_ID&quot;:[&quot;sOther7&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCategoryDoc7&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'other'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers28" name="7 документ інше клопотання" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_28&quot;:{&quot;aField_ID&quot;:[&quot;sOther7&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sTypePetition7&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'petition_other'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers29" name="8 документів" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_29&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc1&quot;,&quot;sDoc1&quot;,&quot;sCategoryDoc2&quot;,&quot;sDoc2&quot;,&quot;sCategoryDoc3&quot;,&quot;sDoc3&quot;,&quot;sCategoryDoc4&quot;,&quot;sDoc4&quot;,&quot;sCategoryDoc5&quot;,&quot;sDoc5&quot;,&quot;sCategoryDoc6&quot;,&quot;sDoc6&quot;,&quot;sCategoryDoc7&quot;,&quot;sDoc7&quot;,&quot;sCategoryDoc8&quot;,&quot;sDoc8&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountDocs&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'eight'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers30" name="8 документ клопотання" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_30&quot;:{&quot;aField_ID&quot;:[&quot;sTypePetition8&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCategoryDoc8&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'petition'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers31" name="8 документ інше" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_31&quot;:{&quot;aField_ID&quot;:[&quot;sOther8&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCategoryDoc8&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'other'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers32" name="8 документ інше клопотання" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_32&quot;:{&quot;aField_ID&quot;:[&quot;sOther8&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sTypePetition8&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'petition_other'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers33" name="9 документів" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_33&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc1&quot;,&quot;sDoc1&quot;,&quot;sCategoryDoc2&quot;,&quot;sDoc2&quot;,&quot;sCategoryDoc3&quot;,&quot;sDoc3&quot;,&quot;sCategoryDoc4&quot;,&quot;sDoc4&quot;,&quot;sCategoryDoc5&quot;,&quot;sDoc5&quot;,&quot;sCategoryDoc6&quot;,&quot;sDoc6&quot;,&quot;sCategoryDoc7&quot;,&quot;sDoc7&quot;,&quot;sCategoryDoc8&quot;,&quot;sDoc8&quot;,&quot;sCategoryDoc9&quot;,&quot;sDoc9&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountDocs&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'nine'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers34" name="9 документ клопотання" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_34&quot;:{&quot;aField_ID&quot;:[&quot;sTypePetition9&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCategoryDoc9&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'petition'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers35" name="9 документ інше" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_35&quot;:{&quot;aField_ID&quot;:[&quot;sOther9&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCategoryDoc9&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'other'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers36" name="9 документ інше клопотання" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_36&quot;:{&quot;aField_ID&quot;:[&quot;sOther9&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sTypePetition9&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'petition_other'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers37" name="10 документів" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_37&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc1&quot;,&quot;sDoc1&quot;,&quot;sCategoryDoc2&quot;,&quot;sDoc2&quot;,&quot;sCategoryDoc3&quot;,&quot;sDoc3&quot;,&quot;sCategoryDoc4&quot;,&quot;sDoc4&quot;,&quot;sCategoryDoc5&quot;,&quot;sDoc5&quot;,&quot;sCategoryDoc6&quot;,&quot;sDoc6&quot;,&quot;sCategoryDoc7&quot;,&quot;sDoc7&quot;,&quot;sCategoryDoc8&quot;,&quot;sDoc8&quot;,&quot;sCategoryDoc9&quot;,&quot;sDoc9&quot;,&quot;sCategoryDoc10&quot;,&quot;sDoc10&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountDocs&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'ten'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers38" name="10 документ клопотання" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_38&quot;:{&quot;aField_ID&quot;:[&quot;sTypePetition10&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCategoryDoc10&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'petition'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers39" name="10 документ інше" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_39&quot;:{&quot;aField_ID&quot;:[&quot;sOther10&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCategoryDoc10&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'other'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers40" name="10 документ інше клопотання" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_40&quot;:{&quot;aField_ID&quot;:[&quot;sOther10&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sTypePetition10&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'petition_other'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers41" name="якщо особисто" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_41&quot;:{&quot;aField_ID&quot;:[&quot;asSubekt_01&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asSubekt_00&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'personally'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers42" name="якщо представник" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_42&quot;:{&quot;aField_ID&quot;:[&quot;asSubekt_02&quot;,&quot;sSurname&quot;,&quot;sName&quot;,&quot;sMiddleName&quot;,&quot;sAdres0&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asSubekt_00&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'confidant'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="form_signed" name=" " type="file"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <userTask id="usertask1" name="прийняття рішення про реєстрацію документів" activiti:candidateGroups="Court_Of_Cassation">
+      <extensionElements>
+        <activiti:formProperty id="fio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name=" ІПН" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdres" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asSubekt_00" name="Звернення подаю; ;writable=false" type="enum">
+          <activiti:value id="personally" name="особисто"></activiti:value>
+          <activiti:value id="confidant" name="як довірена особа (представник)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asSubekt_01" name="Оберіть суб'єкт підприємницької діяльності; ;writable=false" type="enum">
+          <activiti:value id="fop" name="фізична особа-підприємець"></activiti:value>
+          <activiti:value id="ur" name="юридична особа"></activiti:value>
+          <activiti:value id="fiz" name="фізична особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asSubekt_02" name="Оберіть відповідний варіант представництва; ;writable=false" type="enum">
+          <activiti:value id="prosecutor" name="прокурор"></activiti:value>
+          <activiti:value id="lawyer" name="адвокат"></activiti:value>
+          <activiti:value id="confidant_delegate" name="представник за довіреністю"></activiti:value>
+          <activiti:value id="authorized" name="уповноважена посадова особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sSurname" name="Прізвище заявника, представником якого Ви є; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sName" name="Ім'я заявника, представником якого Ви є; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMiddleName" name="По батькові заявника, представником якого Ви є; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAdres0" name="Адреса реєстрації заявника, представником якого Ви є; ;writable=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sNumberCase" name="Номер судової справи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCountDocs" name="Вкажіть кількість документів, що подаються; ;writable=false" type="enum">
+          <activiti:value id="one" name="1"></activiti:value>
+          <activiti:value id="two" name="2"></activiti:value>
+          <activiti:value id="three" name="3"></activiti:value>
+          <activiti:value id="four" name="4"></activiti:value>
+          <activiti:value id="five" name="5"></activiti:value>
+          <activiti:value id="six" name="6"></activiti:value>
+          <activiti:value id="seven" name="7"></activiti:value>
+          <activiti:value id="eight" name="8"></activiti:value>
+          <activiti:value id="nine" name="9"></activiti:value>
+          <activiti:value id="ten" name="10"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sCategoryDoc1" name="Оберіть категорію процесуального документу №1; ;writable=false" type="enum">
+          <activiti:value id="recall" name="відгук на касаційну скаргу"></activiti:value>
+          <activiti:value id="explanation" name="письмові пояснення"></activiti:value>
+          <activiti:value id="petition" name="клопотання"></activiti:value>
+          <activiti:value id="withdrawal" name="заява щодо складу суду"></activiti:value>
+          <activiti:value id="other" name="інше"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sOther1" name="Індивідуальна назва процесуального документу №1; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTypePetition1" name="Оберіть відповідне клопотання; ;writable=false" type="enum">
+          <activiti:value id="petition1" name="Клопотання про ознайомлення з матеріалами справи/касаційного провадження"></activiti:value>
+          <activiti:value id="petition2" name="Клопотання про відкладення розгляду справи"></activiti:value>
+          <activiti:value id="petition3" name="Клопотання про колегіальний розгляд справи"></activiti:value>
+          <activiti:value id="petition4" name="Клопотання про призначення експертизи"></activiti:value>
+          <activiti:value id="petition5" name="Клопотання про зупинення касаційного виробницства"></activiti:value>
+          <activiti:value id="petition6" name="Клопотання про проведення відео, аудіо фіксації судового засідання"></activiti:value>
+          <activiti:value id="petition7" name="Клопотання про участь в засіданні в режимі відеоконференції"></activiti:value>
+          <activiti:value id="petition8" name="Клопотання про відмову від касаційної скарги"></activiti:value>
+          <activiti:value id="petition9" name="Клопотання про зупинення виконання рішення суда"></activiti:value>
+          <activiti:value id="petition10" name="Клопотання про залучення доказів"></activiti:value>
+          <activiti:value id="petition11" name="Клопотання про поновлення строку"></activiti:value>
+          <activiti:value id="petition12" name="Клопотання про роз'яснення судового рішення"></activiti:value>
+          <activiti:value id="petition13" name="Клопотання про виправлення помилки в судовому решенні"></activiti:value>
+          <activiti:value id="petition14" name="Клопотання про винесення додаткового рішення"></activiti:value>
+          <activiti:value id="petition15" name="Клопотання про видачу копії судового рішення"></activiti:value>
+          <activiti:value id="petition16" name="Клопотання про забезпечення позову (касаційної скарги)"></activiti:value>
+          <activiti:value id="petition_other" name="Індивідуальна назва клопотання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sCategoryDoc2" name="Оберіть категорію процесуального документу №2; ;writable=false" type="enum">
+          <activiti:value id="recall" name="відгук на касаційну скаргу"></activiti:value>
+          <activiti:value id="explanation" name="письмові пояснення"></activiti:value>
+          <activiti:value id="petition" name="клопотання"></activiti:value>
+          <activiti:value id="withdrawal" name="заява щодо складу суду"></activiti:value>
+          <activiti:value id="other" name="інше"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sOther2" name="Індивідуальна назва процесуального документу №1; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTypePetition2" name="Оберіть відповідне клопотання; ;writable=false" type="enum">
+          <activiti:value id="petition1" name="Клопотання про ознайомлення з матеріалами справи/касаційного провадження"></activiti:value>
+          <activiti:value id="petition2" name="Клопотання про відкладення розгляду справи"></activiti:value>
+          <activiti:value id="petition3" name="Клопотання про колегіальний розгляд справи"></activiti:value>
+          <activiti:value id="petition4" name="Клопотання про призначення експертизи"></activiti:value>
+          <activiti:value id="petition5" name="Клопотання про зупинення касаційного виробницства"></activiti:value>
+          <activiti:value id="petition6" name="Клопотання про проведення відео, аудіо фіксації судового засідання"></activiti:value>
+          <activiti:value id="petition7" name="Клопотання про участь в засіданні в режимі відеоконференції"></activiti:value>
+          <activiti:value id="petition8" name="Клопотання про відмову від касаційної скарги"></activiti:value>
+          <activiti:value id="petition9" name="Клопотання про зупинення виконання рішення суда"></activiti:value>
+          <activiti:value id="petition10" name="Клопотання про залучення доказів"></activiti:value>
+          <activiti:value id="petition11" name="Клопотання про поновлення строку"></activiti:value>
+          <activiti:value id="petition12" name="Клопотання про роз'яснення судового рішення"></activiti:value>
+          <activiti:value id="petition13" name="Клопотання про виправлення помилки в судовому решенні"></activiti:value>
+          <activiti:value id="petition14" name="Клопотання про винесення додаткового рішення"></activiti:value>
+          <activiti:value id="petition15" name="Клопотання про видачу копії судового рішення"></activiti:value>
+          <activiti:value id="petition16" name="Клопотання про забезпечення позову (касаційної скарги)"></activiti:value>
+          <activiti:value id="petition_other" name="Індивідуальна назва клопотання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sCategoryDoc3" name="Оберіть категорію процесуального документу №3; ;writable=false" type="enum">
+          <activiti:value id="recall" name="відгук на касаційну скаргу"></activiti:value>
+          <activiti:value id="explanation" name="письмові пояснення"></activiti:value>
+          <activiti:value id="petition" name="клопотання"></activiti:value>
+          <activiti:value id="withdrawal" name="заява щодо складу суду"></activiti:value>
+          <activiti:value id="other" name="інше"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sOther3" name="Індивідуальна назва процесуального документу №1; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTypePetition3" name="Оберіть відповідне клопотання; ;writable=false" type="enum">
+          <activiti:value id="petition1" name="Клопотання про ознайомлення з матеріалами справи/касаційного провадження"></activiti:value>
+          <activiti:value id="petition2" name="Клопотання про відкладення розгляду справи"></activiti:value>
+          <activiti:value id="petition3" name="Клопотання про колегіальний розгляд справи"></activiti:value>
+          <activiti:value id="petition4" name="Клопотання про призначення експертизи"></activiti:value>
+          <activiti:value id="petition5" name="Клопотання про зупинення касаційного виробницства"></activiti:value>
+          <activiti:value id="petition6" name="Клопотання про проведення відео, аудіо фіксації судового засідання"></activiti:value>
+          <activiti:value id="petition7" name="Клопотання про участь в засіданні в режимі відеоконференції"></activiti:value>
+          <activiti:value id="petition8" name="Клопотання про відмову від касаційної скарги"></activiti:value>
+          <activiti:value id="petition9" name="Клопотання про зупинення виконання рішення суда"></activiti:value>
+          <activiti:value id="petition10" name="Клопотання про залучення доказів"></activiti:value>
+          <activiti:value id="petition11" name="Клопотання про поновлення строку"></activiti:value>
+          <activiti:value id="petition12" name="Клопотання про роз'яснення судового рішення"></activiti:value>
+          <activiti:value id="petition13" name="Клопотання про виправлення помилки в судовому решенні"></activiti:value>
+          <activiti:value id="petition14" name="Клопотання про винесення додаткового рішення"></activiti:value>
+          <activiti:value id="petition15" name="Клопотання про видачу копії судового рішення"></activiti:value>
+          <activiti:value id="petition16" name="Клопотання про забезпечення позову (касаційної скарги)"></activiti:value>
+          <activiti:value id="petition_other" name="Індивідуальна назва клопотання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sCategoryDoc4" name="Оберіть категорію процесуального документу №4; ;writable=false" type="enum">
+          <activiti:value id="recall" name="відгук на касаційну скаргу"></activiti:value>
+          <activiti:value id="explanation" name="письмові пояснення"></activiti:value>
+          <activiti:value id="petition" name="клопотання"></activiti:value>
+          <activiti:value id="withdrawal" name="заява щодо складу суду"></activiti:value>
+          <activiti:value id="other" name="інше"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sOther4" name="Індивідуальна назва процесуального документу №1; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTypePetition4" name="Оберіть відповідне клопотання; ;writable=false" type="enum">
+          <activiti:value id="petition1" name="Клопотання про ознайомлення з матеріалами справи/касаційного провадження"></activiti:value>
+          <activiti:value id="petition2" name="Клопотання про відкладення розгляду справи"></activiti:value>
+          <activiti:value id="petition3" name="Клопотання про колегіальний розгляд справи"></activiti:value>
+          <activiti:value id="petition4" name="Клопотання про призначення експертизи"></activiti:value>
+          <activiti:value id="petition5" name="Клопотання про зупинення касаційного виробницства"></activiti:value>
+          <activiti:value id="petition6" name="Клопотання про проведення відео, аудіо фіксації судового засідання"></activiti:value>
+          <activiti:value id="petition7" name="Клопотання про участь в засіданні в режимі відеоконференції"></activiti:value>
+          <activiti:value id="petition8" name="Клопотання про відмову від касаційної скарги"></activiti:value>
+          <activiti:value id="petition9" name="Клопотання про зупинення виконання рішення суда"></activiti:value>
+          <activiti:value id="petition10" name="Клопотання про залучення доказів"></activiti:value>
+          <activiti:value id="petition11" name="Клопотання про поновлення строку"></activiti:value>
+          <activiti:value id="petition12" name="Клопотання про роз'яснення судового рішення"></activiti:value>
+          <activiti:value id="petition13" name="Клопотання про виправлення помилки в судовому решенні"></activiti:value>
+          <activiti:value id="petition14" name="Клопотання про винесення додаткового рішення"></activiti:value>
+          <activiti:value id="petition15" name="Клопотання про видачу копії судового рішення"></activiti:value>
+          <activiti:value id="petition16" name="Клопотання про забезпечення позову (касаційної скарги)"></activiti:value>
+          <activiti:value id="petition_other" name="Індивідуальна назва клопотання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sCategoryDoc5" name="Оберіть категорію процесуального документу №5; ;writable=false" type="enum">
+          <activiti:value id="recall" name="відгук на касаційну скаргу"></activiti:value>
+          <activiti:value id="explanation" name="письмові пояснення"></activiti:value>
+          <activiti:value id="petition" name="клопотання"></activiti:value>
+          <activiti:value id="withdrawal" name="заява щодо складу суду"></activiti:value>
+          <activiti:value id="other" name="інше"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sOther5" name="Індивідуальна назва процесуального документу №1; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTypePetition5" name="Оберіть відповідне клопотання; ;writable=false" type="enum">
+          <activiti:value id="petition1" name="Клопотання про ознайомлення з матеріалами справи/касаційного провадження"></activiti:value>
+          <activiti:value id="petition2" name="Клопотання про відкладення розгляду справи"></activiti:value>
+          <activiti:value id="petition3" name="Клопотання про колегіальний розгляд справи"></activiti:value>
+          <activiti:value id="petition4" name="Клопотання про призначення експертизи"></activiti:value>
+          <activiti:value id="petition5" name="Клопотання про зупинення касаційного виробницства"></activiti:value>
+          <activiti:value id="petition6" name="Клопотання про проведення відео, аудіо фіксації судового засідання"></activiti:value>
+          <activiti:value id="petition7" name="Клопотання про участь в засіданні в режимі відеоконференції"></activiti:value>
+          <activiti:value id="petition8" name="Клопотання про відмову від касаційної скарги"></activiti:value>
+          <activiti:value id="petition9" name="Клопотання про зупинення виконання рішення суда"></activiti:value>
+          <activiti:value id="petition10" name="Клопотання про залучення доказів"></activiti:value>
+          <activiti:value id="petition11" name="Клопотання про поновлення строку"></activiti:value>
+          <activiti:value id="petition12" name="Клопотання про роз'яснення судового рішення"></activiti:value>
+          <activiti:value id="petition13" name="Клопотання про виправлення помилки в судовому решенні"></activiti:value>
+          <activiti:value id="petition14" name="Клопотання про винесення додаткового рішення"></activiti:value>
+          <activiti:value id="petition15" name="Клопотання про видачу копії судового рішення"></activiti:value>
+          <activiti:value id="petition16" name="Клопотання про забезпечення позову (касаційної скарги)"></activiti:value>
+          <activiti:value id="petition_other" name="Індивідуальна назва клопотання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sCategoryDoc6" name="Оберіть категорію процесуального документу №1; ;writable=false" type="enum">
+          <activiti:value id="recall" name="відгук на касаційну скаргу"></activiti:value>
+          <activiti:value id="explanation" name="письмові пояснення"></activiti:value>
+          <activiti:value id="petition" name="клопотання"></activiti:value>
+          <activiti:value id="withdrawal" name="заява щодо складу суду"></activiti:value>
+          <activiti:value id="other" name="інше"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sOther6" name="Індивідуальна назва процесуального документу №6; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTypePetition6" name="Оберіть відповідне клопотання; ;writable=false" type="enum">
+          <activiti:value id="petition1" name="Клопотання про ознайомлення з матеріалами справи/касаційного провадження"></activiti:value>
+          <activiti:value id="petition2" name="Клопотання про відкладення розгляду справи"></activiti:value>
+          <activiti:value id="petition3" name="Клопотання про колегіальний розгляд справи"></activiti:value>
+          <activiti:value id="petition4" name="Клопотання про призначення експертизи"></activiti:value>
+          <activiti:value id="petition5" name="Клопотання про зупинення касаційного виробницства"></activiti:value>
+          <activiti:value id="petition6" name="Клопотання про проведення відео, аудіо фіксації судового засідання"></activiti:value>
+          <activiti:value id="petition7" name="Клопотання про участь в засіданні в режимі відеоконференції"></activiti:value>
+          <activiti:value id="petition8" name="Клопотання про відмову від касаційної скарги"></activiti:value>
+          <activiti:value id="petition9" name="Клопотання про зупинення виконання рішення суда"></activiti:value>
+          <activiti:value id="petition10" name="Клопотання про залучення доказів"></activiti:value>
+          <activiti:value id="petition11" name="Клопотання про поновлення строку"></activiti:value>
+          <activiti:value id="petition12" name="Клопотання про роз'яснення судового рішення"></activiti:value>
+          <activiti:value id="petition13" name="Клопотання про виправлення помилки в судовому решенні"></activiti:value>
+          <activiti:value id="petition14" name="Клопотання про винесення додаткового рішення"></activiti:value>
+          <activiti:value id="petition15" name="Клопотання про видачу копії судового рішення"></activiti:value>
+          <activiti:value id="petition16" name="Клопотання про забезпечення позову (касаційної скарги)"></activiti:value>
+          <activiti:value id="petition_other" name="Індивідуальна назва клопотання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sCategoryDoc7" name="Оберіть категорію процесуального документу №7; ;writable=false" type="enum">
+          <activiti:value id="recall" name="відгук на касаційну скаргу"></activiti:value>
+          <activiti:value id="explanation" name="письмові пояснення"></activiti:value>
+          <activiti:value id="petition" name="клопотання"></activiti:value>
+          <activiti:value id="withdrawal" name="заява щодо складу суду"></activiti:value>
+          <activiti:value id="other" name="інше"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sOther7" name="Індивідуальна назва процесуального документу №1; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTypePetition7" name="Оберіть відповідне клопотання; ;writable=false" type="enum">
+          <activiti:value id="petition1" name="Клопотання про ознайомлення з матеріалами справи/касаційного провадження"></activiti:value>
+          <activiti:value id="petition2" name="Клопотання про відкладення розгляду справи"></activiti:value>
+          <activiti:value id="petition3" name="Клопотання про колегіальний розгляд справи"></activiti:value>
+          <activiti:value id="petition4" name="Клопотання про призначення експертизи"></activiti:value>
+          <activiti:value id="petition5" name="Клопотання про зупинення касаційного виробницства"></activiti:value>
+          <activiti:value id="petition6" name="Клопотання про проведення відео, аудіо фіксації судового засідання"></activiti:value>
+          <activiti:value id="petition7" name="Клопотання про участь в засіданні в режимі відеоконференції"></activiti:value>
+          <activiti:value id="petition8" name="Клопотання про відмову від касаційної скарги"></activiti:value>
+          <activiti:value id="petition9" name="Клопотання про зупинення виконання рішення суда"></activiti:value>
+          <activiti:value id="petition10" name="Клопотання про залучення доказів"></activiti:value>
+          <activiti:value id="petition11" name="Клопотання про поновлення строку"></activiti:value>
+          <activiti:value id="petition12" name="Клопотання про роз'яснення судового рішення"></activiti:value>
+          <activiti:value id="petition13" name="Клопотання про виправлення помилки в судовому решенні"></activiti:value>
+          <activiti:value id="petition14" name="Клопотання про винесення додаткового рішення"></activiti:value>
+          <activiti:value id="petition15" name="Клопотання про видачу копії судового рішення"></activiti:value>
+          <activiti:value id="petition16" name="Клопотання про забезпечення позову (касаційної скарги)"></activiti:value>
+          <activiti:value id="petition_other" name="Індивідуальна назва клопотання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sCategoryDoc8" name="Оберіть категорію процесуального документу №8; ;writable=false" type="enum">
+          <activiti:value id="recall" name="відгук на касаційну скаргу"></activiti:value>
+          <activiti:value id="explanation" name="письмові пояснення"></activiti:value>
+          <activiti:value id="petition" name="клопотання"></activiti:value>
+          <activiti:value id="withdrawal" name="заява щодо складу суду"></activiti:value>
+          <activiti:value id="other" name="інше"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sOther8" name="Індивідуальна назва процесуального документу №1; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTypePetition8" name="Оберіть відповідне клопотання; ;writable=false" type="enum">
+          <activiti:value id="petition1" name="Клопотання про ознайомлення з матеріалами справи/касаційного провадження"></activiti:value>
+          <activiti:value id="petition2" name="Клопотання про відкладення розгляду справи"></activiti:value>
+          <activiti:value id="petition3" name="Клопотання про колегіальний розгляд справи"></activiti:value>
+          <activiti:value id="petition4" name="Клопотання про призначення експертизи"></activiti:value>
+          <activiti:value id="petition5" name="Клопотання про зупинення касаційного виробницства"></activiti:value>
+          <activiti:value id="petition6" name="Клопотання про проведення відео, аудіо фіксації судового засідання"></activiti:value>
+          <activiti:value id="petition7" name="Клопотання про участь в засіданні в режимі відеоконференції"></activiti:value>
+          <activiti:value id="petition8" name="Клопотання про відмову від касаційної скарги"></activiti:value>
+          <activiti:value id="petition9" name="Клопотання про зупинення виконання рішення суда"></activiti:value>
+          <activiti:value id="petition10" name="Клопотання про залучення доказів"></activiti:value>
+          <activiti:value id="petition11" name="Клопотання про поновлення строку"></activiti:value>
+          <activiti:value id="petition12" name="Клопотання про роз'яснення судового рішення"></activiti:value>
+          <activiti:value id="petition13" name="Клопотання про виправлення помилки в судовому решенні"></activiti:value>
+          <activiti:value id="petition14" name="Клопотання про винесення додаткового рішення"></activiti:value>
+          <activiti:value id="petition15" name="Клопотання про видачу копії судового рішення"></activiti:value>
+          <activiti:value id="petition16" name="Клопотання про забезпечення позову (касаційної скарги)"></activiti:value>
+          <activiti:value id="petition_other" name="Індивідуальна назва клопотання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sCategoryDoc9" name="Оберіть категорію процесуального документу №9; ;writable=false" type="enum">
+          <activiti:value id="recall" name="відгук на касаційну скаргу"></activiti:value>
+          <activiti:value id="explanation" name="письмові пояснення"></activiti:value>
+          <activiti:value id="petition" name="клопотання"></activiti:value>
+          <activiti:value id="withdrawal" name="заява щодо складу суду"></activiti:value>
+          <activiti:value id="other" name="інше"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sOther9" name="Індивідуальна назва процесуального документу №1; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTypePetition9" name="Оберіть відповідне клопотання; ;writable=false" type="enum">
+          <activiti:value id="petition1" name="Клопотання про ознайомлення з матеріалами справи/касаційного провадження"></activiti:value>
+          <activiti:value id="petition2" name="Клопотання про відкладення розгляду справи"></activiti:value>
+          <activiti:value id="petition3" name="Клопотання про колегіальний розгляд справи"></activiti:value>
+          <activiti:value id="petition4" name="Клопотання про призначення експертизи"></activiti:value>
+          <activiti:value id="petition5" name="Клопотання про зупинення касаційного виробницства"></activiti:value>
+          <activiti:value id="petition6" name="Клопотання про проведення відео, аудіо фіксації судового засідання"></activiti:value>
+          <activiti:value id="petition7" name="Клопотання про участь в засіданні в режимі відеоконференції"></activiti:value>
+          <activiti:value id="petition8" name="Клопотання про відмову від касаційної скарги"></activiti:value>
+          <activiti:value id="petition9" name="Клопотання про зупинення виконання рішення суда"></activiti:value>
+          <activiti:value id="petition10" name="Клопотання про залучення доказів"></activiti:value>
+          <activiti:value id="petition11" name="Клопотання про поновлення строку"></activiti:value>
+          <activiti:value id="petition12" name="Клопотання про роз'яснення судового рішення"></activiti:value>
+          <activiti:value id="petition13" name="Клопотання про виправлення помилки в судовому решенні"></activiti:value>
+          <activiti:value id="petition14" name="Клопотання про винесення додаткового рішення"></activiti:value>
+          <activiti:value id="petition15" name="Клопотання про видачу копії судового рішення"></activiti:value>
+          <activiti:value id="petition16" name="Клопотання про забезпечення позову (касаційної скарги)"></activiti:value>
+          <activiti:value id="petition_other" name="Індивідуальна назва клопотання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sCategoryDoc10" name="Оберіть категорію процесуального документу №10; ;writable=false" type="enum">
+          <activiti:value id="recall" name="відгук на касаційну скаргу"></activiti:value>
+          <activiti:value id="explanation" name="письмові пояснення"></activiti:value>
+          <activiti:value id="petition" name="клопотання"></activiti:value>
+          <activiti:value id="withdrawal" name="заява щодо складу суду"></activiti:value>
+          <activiti:value id="other" name="інше"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sOther10" name="Індивідуальна назва процесуального документу №1; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTypePetition10" name="Оберіть відповідне клопотання; ;writable=false" type="enum">
+          <activiti:value id="petition1" name="Клопотання про ознайомлення з матеріалами справи/касаційного провадження"></activiti:value>
+          <activiti:value id="petition2" name="Клопотання про відкладення розгляду справи"></activiti:value>
+          <activiti:value id="petition3" name="Клопотання про колегіальний розгляд справи"></activiti:value>
+          <activiti:value id="petition4" name="Клопотання про призначення експертизи"></activiti:value>
+          <activiti:value id="petition5" name="Клопотання про зупинення касаційного виробницства"></activiti:value>
+          <activiti:value id="petition6" name="Клопотання про проведення відео, аудіо фіксації судового засідання"></activiti:value>
+          <activiti:value id="petition7" name="Клопотання про участь в засіданні в режимі відеоконференції"></activiti:value>
+          <activiti:value id="petition8" name="Клопотання про відмову від касаційної скарги"></activiti:value>
+          <activiti:value id="petition9" name="Клопотання про зупинення виконання рішення суда"></activiti:value>
+          <activiti:value id="petition10" name="Клопотання про залучення доказів"></activiti:value>
+          <activiti:value id="petition11" name="Клопотання про поновлення строку"></activiti:value>
+          <activiti:value id="petition12" name="Клопотання про роз'яснення судового рішення"></activiti:value>
+          <activiti:value id="petition13" name="Клопотання про виправлення помилки в судовому решенні"></activiti:value>
+          <activiti:value id="petition14" name="Клопотання про винесення додаткового рішення"></activiti:value>
+          <activiti:value id="petition15" name="Клопотання про видачу копії судового рішення"></activiti:value>
+          <activiti:value id="petition16" name="Клопотання про забезпечення позову (касаційної скарги)"></activiti:value>
+          <activiti:value id="petition_other" name="Індивідуальна назва клопотання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sNumberAplication" name="Реєстраційний номер заяви" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDateAplication" name="Дата та час реєстрації звернення" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="decision_1" name="Прийняття рішення про отримання витягу" type="enum" required="true">
+          <activiti:value id="accept" name="документи зарєєстровано"></activiti:value>
+          <activiti:value id="reject" name="відхилити звернення"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="comment_1" name="У разі відхилення звернення, внесіть, будь ласка, коментар" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sListDocumentsLetter" name="перелік документів" type="invisible"></activiti:formProperty>
+         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression>${sDoc1},${sDoc2},${sDoc3},${sDoc4},${sDoc5},${sDoc6},${sDoc7},${sDoc8},${sDoc9},${sDoc10}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <serviceTask id="servicetask4" name="Повідомлення співробітника канцелярії суду" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:string><![CDATA[darja.grek@gmail.com]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Подання процесуальних документів для розгляду у відкритому апеляційному/касаційному провадженні]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;b&gt;Шановний колего!&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+У черзі на обробку зареєстровано нове звернення.&lt;br /&gt;
+Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
+Номер справи: ${sNumberCase}&lt;br /&gt;
+Опрацюйте це звернення на &lt;a href="http://region.igov.org.ua"&gt;порталі&lt;/a&gt;&lt;br /&gt;
+[pattern/mail/_common_signature.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask2" name="повідомлення громадянина про реєстрацію документів" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Подання процесуальних документів для розгляду у відкритому апеляційному/касаційному провадженні]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+Процесуальні документи, що Ви подавали по справі ${sNumberCase} зареєстровано і передано на розгляд судді.
+Реєстраційний номер ${sNumberAplication}, дата та час реєстрації звернення ${sDateAplication}&lt;br /&gt;
+Перелік зареєстрованих документів:
+${sListDocumentsLetter}
+Телефон канцелярії:
+&lt;br /&gt;
+[pattern/mail/_common_signature_start.html]
+Вищий господарський суд України&lt;br /&gt;
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_feedback.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask3" name="повідомлення громадянина про відмову у реєстрації документів" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Подання процесуальних документів для розгляду у відкритому апеляційному/касаційному провадженні]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+На жаль, Вам відмовлено у реєстрації процесуальних документів, що Ви подавали по справі ${sNumberCase}.&lt;br/&gt;
+Кометар працівника канцелярії: ${comment_1}&lt;br/&gt;
+Перелік документів:
+${sListDocumentsLetter}
+Телефон канцелярії:
+&lt;br /&gt;
+[pattern/mail/_common_signature_start.html]
+Вищий господарський суд України&lt;br /&gt;
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+       <script>
+var per1 = " "
+var per2 = " "
+var res = 'res'
+if(execution.getVariable('sDoc1') != null){
+per1 = "&lt;li&gt;+execution.getVariable('sCategoryDoc1')+execution.getVariable('sOther1')+execution.getVariable('sTypePetition1')&lt;/li&gt;"
+}
+if(execution.getVariable('sDoc2') != null){
+per2 = "&lt;li&gt;+execution.getVariable('sCategoryDoc2')+execution.getVariable('sOther2')+execution.getVariable('sTypePetition2')&lt;/li&gt;"
+}
+res = '&lt;ol&gt;'+per1+per2+'&lt;/ol&gt;'
+execution.setVariable('sListDocumentsLetter', res)
+	  </script> 
+       
+    </scriptTask>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow4" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <sequenceFlow id="flow10" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
+    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
+      <errorEventDefinition></errorEventDefinition>
+    </boundaryEvent>
+    <sequenceFlow id="flow20" sourceRef="exclusivegateway1" targetRef="servicetask2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_1=='accept'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow21" sourceRef="exclusivegateway1" targetRef="servicetask3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_1=='reject'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow22" sourceRef="servicetask3" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow24" sourceRef="servicetask2" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow27" sourceRef="servicetask4" targetRef="usertask1"></sequenceFlow>
+ 
+    <sequenceFlow id="flow29" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
+    <sequenceFlow id="flow30" sourceRef="scripttask1" targetRef="servicetask4"></sequenceFlow>
+    <endEvent id="endevent2" name="End"></endEvent>
+    <sequenceFlow id="flow31" sourceRef="boundaryerror1" targetRef="endevent2"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_CourtOfCassation">
+    <bpmndi:BPMNPlane bpmnElement="CourtOfCassation" id="BPMNPlane_CourtOfCassation">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="61.0" y="40.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="55.0" width="162.0" x="330.0" y="190.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
+        <omgdc:Bounds height="55.0" width="162.0" x="330.0" y="110.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
+        <omgdc:Bounds height="55.0" width="169.0" x="326.0" y="330.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
+        <omgdc:Bounds height="56.0" width="131.0" x="131.0" y="258.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="390.0" y="267.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="179.0" y="340.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="55.0" width="170.0" x="131.0" y="30.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
+        <omgdc:Bounds height="30.0" width="30.0" x="130.0" y="57.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="161.0" x="330.0" y="30.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
+        <omgdc:Bounds height="35.0" width="35.0" x="127.0" y="100.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="411.0" y="245.0"></omgdi:waypoint>
+        <omgdi:waypoint x="410.0" y="267.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
+        <omgdi:waypoint x="96.0" y="57.0"></omgdi:waypoint>
+        <omgdi:waypoint x="131.0" y="57.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
+        <omgdi:waypoint x="410.0" y="307.0"></omgdi:waypoint>
+        <omgdi:waypoint x="410.0" y="330.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
+        <omgdi:waypoint x="390.0" y="287.0"></omgdi:waypoint>
+        <omgdi:waypoint x="262.0" y="286.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
+        <omgdi:waypoint x="196.0" y="314.0"></omgdi:waypoint>
+        <omgdi:waypoint x="196.0" y="340.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
+        <omgdi:waypoint x="326.0" y="357.0"></omgdi:waypoint>
+        <omgdi:waypoint x="214.0" y="357.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
+        <omgdi:waypoint x="411.0" y="165.0"></omgdi:waypoint>
+        <omgdi:waypoint x="411.0" y="190.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow29" id="BPMNEdge_flow29">
+        <omgdi:waypoint x="301.0" y="57.0"></omgdi:waypoint>
+        <omgdi:waypoint x="330.0" y="57.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
+        <omgdi:waypoint x="410.0" y="85.0"></omgdi:waypoint>
+        <omgdi:waypoint x="411.0" y="110.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
+        <omgdi:waypoint x="145.0" y="87.0"></omgdi:waypoint>
+        <omgdi:waypoint x="144.0" y="100.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

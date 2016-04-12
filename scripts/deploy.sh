@@ -138,10 +138,10 @@ build_docker ()
 		fi
 	fi
 
-	docker build -t $DOCKER_REPO/$DOCKER_IMAGE .
-	docker tag  $DOCKER_REPO/$DOCKER_IMAGE:latest  $DOCKER_REPO/$DOCKER_IMAGE:$DOCKER_TAG
+	mkdir /tmp/$sProject
+	docker build -t $DOCKER_REPO/$DOCKER_IMAGE:latest .
 	docker push $DOCKER_REPO/$DOCKER_IMAGE:latest
-	docker push $DOCKER_REPO/$DOCKER_IMAGE:$DOCKER_TAG
+	kubectl rolling-update $DOCKER_IMAGE --image=$DOCKER_REPO/$DOCKER_IMAGE:latest
 	echo "Build & push to Docker registry finished."
 }
 
@@ -158,7 +158,6 @@ build_central-js ()
 			echo "dashboard-js compilation is still running. we will wait until it finish."
 			sleep 5
 		done
-		gem install sass
 		cd central-js
 		npm cache clean
 		npm install
@@ -175,11 +174,11 @@ build_central-js ()
 			echo "dashboard-js compilation is still running. we will wait until it finish."
 			sleep 5
 		done
-		gem install sass
 		cd central-js
 		npm cache clean
 		npm install
 		bower install
+		npm install grunt-contrib-imagemin
 		grunt build
 		cd dist
 		npm install --production

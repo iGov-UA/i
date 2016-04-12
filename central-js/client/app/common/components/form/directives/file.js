@@ -1,4 +1,4 @@
-angular.module('app').directive('fileField', function () {
+angular.module('app').directive('fileField', function (ErrorsFactory) {
   return {
     require: 'ngModel',
     restrict: 'E',
@@ -8,7 +8,7 @@ angular.module('app').directive('fileField', function () {
 
       var nMaxFileSizeLimit = 10; // max upload file size = 10 MB
       var aAvailableFileExtensions = ["bmp", "gif", "jpeg", "jpg", "png", "tif", "doc", "docx", "odt", "rtf", "pdf"
-        , "xls", "xlsx", "xlsm", "ods", "sxc", "wks", "csv"];
+        , "xls", "xlsx", "xlsm", "ods", "sxc", "wks", "csv", "zip", "rar", "7z"];
 
 
       try {
@@ -22,22 +22,29 @@ angular.module('app').directive('fileField', function () {
       fileField.bind('change', function (event) {
         scope.$apply(function () {
           if (event.target.files && event.target.files.length > 0) {
-            var sFileName = event.target.files[0].name;
-            var nFileSize = event.target.files[0].size;
-            var message = null;
-            if (nFileSize > (nMaxFileSizeLimit * 1024 * 1024)){
-              message = "Розмір завантажуємого файлу " + (nFileSize / (1024 * 1024)).toFixed(1) + " МБайт перевищує допустимий.\n " +
-                "Для завантаження дозволяються файли розміром не більше " + nMaxFileSizeLimit + " МБайт."
-              //alert(message);
-              throw new Error(message);
-            } else if (!verifyExtension(sFileName)) {
-              var extList = convertAvailableExtensionArrayToString();
-              message = "Не допустимий тип файлу. \n Для завантаження допускаються файли лише наступних типів: " + extList;
-              //alert(message);
-              throw new Error(message);
-            } else {
-              console.log("File validation successfully");
-              oFile.setFiles(event.target.files);
+            var aFilteredFiles = [];
+            for(var nFileIndex = 0; nFileIndex < event.target.files.length; nFileIndex++){
+              var sFileName = event.target.files[nFileIndex].name;
+              var nFileSize = event.target.files[nFileIndex].size;
+              var message = null;
+              if (nFileSize > (nMaxFileSizeLimit * 1024 * 1024)){
+                console.warn("File " + sFileName + " is very big for upload");
+                message = "Розмір завантажуємого файлу " + sFileName + " " + (nFileSize / (1024 * 1024)).toFixed(1) + " МБайт перевищує допустимий.\n " +
+                  "Для завантаження дозволяються файли розміром не більше " + nMaxFileSizeLimit + " МБайт.";
+                ErrorsFactory.push({type:"warning", text: message});
+              } else if (!verifyExtension(sFileName)) {
+                console.warn("File " + sFileName + "is not supported");
+                var extList = convertAvailableExtensionArrayToString();
+                message = "Не підтримуємий тип файлу. Для завантаження допускаються файли лише наступних типів: " + extList;
+                ErrorsFactory.push({type:"warning", text: message});
+              } else {
+                console.log("File " + sFileName + " validation successfully");
+                aFilteredFiles.push(event.target.files[nFileIndex]);
+              }
+            }
+            if(aFilteredFiles.length > 0){
+              console.log("Start uploading " + aFilteredFiles.length + " file(s)");
+              oFile.setFiles(aFilteredFiles);
               oFile.upload(scope.oServiceData);
               console.log('ngModel.$name=' + ngModel.$name);
             }
@@ -45,7 +52,7 @@ angular.module('app').directive('fileField', function () {
         });
       });
 
-      verifyExtension = function(sFileNameForCheck){
+      function verifyExtension (sFileNameForCheck){
         var ext = sFileNameForCheck.split('.').pop().toLowerCase();
         for (var i = 0; i < aAvailableFileExtensions.length; i++){
           if (ext === aAvailableFileExtensions[i]){
@@ -55,7 +62,7 @@ angular.module('app').directive('fileField', function () {
         return false;
       };
 
-      convertAvailableExtensionArrayToString = function(){
+      function convertAvailableExtensionArrayToString (){
         var resultString = null;
         for(var i = 0; i < aAvailableFileExtensions.length; i++){
           if (i === 0){
