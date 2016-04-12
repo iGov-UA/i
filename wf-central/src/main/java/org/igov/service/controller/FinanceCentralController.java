@@ -1,35 +1,33 @@
 package org.igov.service.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import org.igov.model.finance.CurrencyDao;
+import org.igov.model.finance.Merchant;
+import org.igov.model.finance.MerchantDao;
+import org.igov.model.subject.organ.SubjectOrgan;
+import org.igov.model.subject.organ.SubjectOrganDao;
+import org.igov.service.business.finance.Liqpay;
+import org.igov.service.business.finance.MerchantVO;
+import org.igov.service.exception.CommonServiceException;
+import org.igov.util.JSON.JsonRestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.igov.util.Tool;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import java.util.List;
-import org.igov.model.finance.Merchant;
-import org.igov.model.finance.MerchantDao;
-import org.igov.service.business.finance.MerchantVO;
-import org.igov.model.subject.organ.SubjectOrgan;
-import org.igov.model.subject.organ.SubjectOrganDao;
-import org.igov.service.business.finance.Currency;
-import org.igov.service.business.object.Language;
-import org.igov.model.finance.CurrencyDao;
-import static org.igov.service.business.finance.FinanceService.toVO;
-import org.igov.service.business.finance.Liqpay;
-import org.igov.service.exception.CommonServiceException;
-import org.igov.util.JSON.JsonRestUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
-@Api(tags = {"FinanceCentralController"}, description = "Финансовые и смежные сущности")
+import static org.igov.service.business.finance.FinanceService.toVO;
+
+@Api(tags = { "FinanceCentralController -- Финансовые и смежные сущности" })
 @Controller
 @RequestMapping(value = "/finance")
 public class FinanceCentralController {
@@ -76,19 +74,7 @@ public class FinanceCentralController {
         return t + "/";
     }*/
 
-    /**
-     * @param sID_Merchant ид меранта
-     * @param sSum сумма оплаты
-     * @param oID_Currency валюта
-     * @param oLanguage язык
-     * @param sDescription описание
-     * @param sID_Order ид заказа
-     * @param sURL_CallbackStatusNew URL для отправки статуса
-     * @param sURL_CallbackPaySuccess URL для отправки ответа
-     * @param nID_Subject ид субъекта
-     * @param bTest тестовый вызов или нет
-     */
-    /*@ApiOperation(value = "Получение кнопки для оплаты через LiqPay", notes = "##### FinanceController - Финансовые и смежные сущности. Получение кнопки для оплаты через LiqPay #####\n\n"
+     /*@ApiOperation(value = "Получение кнопки для оплаты через LiqPay", notes = "##### FinanceController - Финансовые и смежные сущности. Получение кнопки для оплаты через LiqPay #####\n\n"
             + "HTTP Context: https://server:port/wf/service/finance/getPayButtonHTML_LiqPay\n\n\n"
             + "Пример:\n"
             + "https://test.igov.org.ua/wf/service/finance/getPayButtonHTML_LiqPay?sID_Merchant=i10172968078&sSum=55,00&oID_Currency=UAH&oLanguage=RUSSIAN&sDescription=test&sID_Order=12345&sURL_CallbackStatusNew=&sURL_CallbackPaySuccess=&nID_Subject=1&bTest=true\n")
@@ -120,8 +106,7 @@ public class FinanceCentralController {
     /**
      * получить весь список обьектов мерчантов
      */
-    @ApiOperation(value = "Получить весь список обьектов мерчантов", notes = "##### FinanceController - Финансовые и смежные сущности. Получение всего списка обьектов мерчантов #####\n\n"
-            + "HTTP Context: https://server:port/wf/service/finance/getMerchants\n\n\n"
+    @ApiOperation(value = "Получить весь список обьектов мерчантов", notes = ""
             + "Response\n\n"
             + "\n```json\n"
             + "[\n"
@@ -160,10 +145,9 @@ public class FinanceCentralController {
      *
      * @param sID ID-строка мерчанта(публичный ключ)
      */
-    @ApiOperation(value = "Получить обьект мерчанта", notes = "##### FinanceController - Финансовые и смежные сущности. Получение обьекта мерчанта #####\n\n"
-            + "HTTP Context: https://server:port/wf/service/finance/getMerchant\n\n\n"
-            + "\n```json\n"
-            + "Response\n"
+    @ApiOperation(value = "Получить обьект мерчанта", notes = "Пример:\n"
+            + "https://test.igov.org.ua/wf/service/finance/getMerchant?sID=i10172968078"
+            + "\nResponse```json\n"
             + "{\n"
             + "    \"nID\":1\n"
             + "    ,\"sID\":\"Test_sID\"\n"
@@ -174,9 +158,7 @@ public class FinanceCentralController {
             + "    ,\"nID_SubjectOrgan\":1\n"
             + "    ,\"sID_Currency\":\"UAH\"\n"
             + "}\n"
-            + "\n```\n"
-            + "Пример:\n"
-            + "https://test.igov.org.ua/wf/service/finance/getMerchant?sID=i10172968078")
+            + "\n```\n")
     @RequestMapping(value = "/getMerchant", method = RequestMethod.GET)
     public @ResponseBody
     ResponseEntity getMerchant(@ApiParam(value = "ID-строка мерчанта(публичный ключ)", required = true) @RequestParam(value = "sID") String sID) {
@@ -193,12 +175,11 @@ public class FinanceCentralController {
      *
      * @param id ID-строка мерчанта(публичный ключ)
      */
-    @ApiOperation(value = "Удаление мерчанта", notes = "##### FinanceController - Финансовые и смежные сущности. Удаление мерчанта #####\n\n"
-            + "HTTP Context: http://server:port/wf/service/finance/removeMerchant\n\n\n"
+    @ApiOperation(value = "Удаление мерчанта", notes = "Пример:\n"
+            + "https://test.igov.org.ua/wf/service/finance/removeMerchant?sID=i10172968078"
             + "Response\n"
-            + "Status 200\n\n"
-            + "Пример:\n"
-            + "https://test.igov.org.ua/wf/service/finance/removeMerchant?sID=i10172968078")
+            + "Status 200\n"
+    )
     @RequestMapping(value = "/removeMerchant", method = RequestMethod.DELETE)
     public ResponseEntity removeMerchant(@ApiParam(value = "ID-строка мерчанта(публичный ключ)", required = true) @RequestParam(value = "sID") String id) {
         return new ResponseEntity(merchantDao.deleteMerchant(id) ? HttpStatus.OK : HttpStatus.NOT_FOUND);
@@ -222,8 +203,7 @@ public class FinanceCentralController {
      * @param sURL_CallbackPaySuccess строка-URL каллбэка, после успешной
      * отправки платежа //опциональный
      */
-    @ApiOperation(value = "Обновление информации мерчанта", notes = "##### FinanceController - Финансовые и смежные сущности. Обновление информации мерчанта #####\n\n"
-            + "HTTP Context: http://server:port/wf/service/finance/setMerchant\n\n\n"
+    @ApiOperation(value = "Обновление информации мерчанта", notes = ""
             + "Response\n"
             + "\n```json\n"
             + "{\n"
@@ -247,7 +227,7 @@ public class FinanceCentralController {
             @ApiParam(value = "ID-номер мерчанта(внутренний) (если не задан или не найден - будет добавлена запись)", required = false) @RequestParam(value = "nID", required = false) Long nID,
             @ApiParam(value = "ID-строка мерчанта(публичный ключ) (если не задан или не найден - будет добавлена запись)", required = false) @RequestParam(value = "sID", required = false) String sID,
             @ApiParam(value = "строковое название мерчанта (при добавлении записи - обязательный)", required = false) @RequestParam(value = "sName", required = false) String sName,
-            @ApiParam(value = "sPrivateKey приватный ключ мерчанта (при добавлении записи - обязательный)", required = false) @RequestParam(value = "sPrivateKey", required = false) String sPrivateKey,
+            @ApiParam(value = "sPrivateKey строка-приватный ключ мерчанта (при добавлении записи - обязательный)", required = false) @RequestParam(value = "sPrivateKey", required = false) String sPrivateKey,
             @ApiParam(value = "ID-номер субьекта-органа мерчанта(может быть общий субьект у нескольких мерчантов)", required = false) @RequestParam(value = "nID_SubjectOrgan", required = false) Long nID_SubjectOrgan,
             @ApiParam(value = "строка-URL каллбэка, при новом статусе платежа(проведении проплаты)", required = false) @RequestParam(value = "sURL_CallbackStatusNew", required = false) String sURL_CallbackStatusNew,
             @ApiParam(value = "строка-URL каллбэка, после успешной отправки платежа", required = false) @RequestParam(value = "sURL_CallbackPaySuccess", required = false) String sURL_CallbackPaySuccess,
@@ -301,11 +281,10 @@ public class FinanceCentralController {
      * @param sName_EN (опциональный)
      * @return список Currency согласно фильтрам
      */
-    @ApiOperation(value = "Возвращает список валют, подпадающих под параметры", notes = "##### FinanceController - Финансовые и смежные сущности. Возврат списка валют, подпадающих под параметры #####\n\n"
-            + "HTTP Context: https://server:port/wf/service/finance/getCurrencies\n\n"
-            + "http://search.ligazakon.ua/l_doc2.nsf/link1/FIN14565.html[Источник данных]\n\n"
-            + "Пример запроса: https://test.igov.org.ua/wf/service/finance/getCurrencies?sID_UA=004\n\n"
-            + "Пример ответа:\n\n"
+    @ApiOperation(value = "Возвращает список валют, подпадающих под параметры", notes = ""
+            + "http://search.ligazakon.ua/l_doc2.nsf/link1/FIN14565.html[Источник данных]\n"
+            + "Пример запроса: https://test.igov.org.ua/wf/service/finance/getCurrencies?sID_UA=004\n"
+            + "Пример ответа:\n"
             + "\n```json\n"
             + "{\n"
             + "    \"sID_UA\"       : \"004\",\n"
@@ -319,8 +298,8 @@ public class FinanceCentralController {
     public @ResponseBody
     List<org.igov.model.finance.Currency> getCurrencies(
             @ApiParam(value = "ИД-номер Код, в украинском классификаторе", required = false) @RequestParam(value = "sID_UA", required = false) String sID_UA,
-            @ApiParam(value = "Название на украинском", required = false) @RequestParam(value = "sName_UA", required = false) String sName_UA,
-            @ApiParam(value = "Название на английском", required = false) @RequestParam(value = "sName_EN", required = false) String sName_EN,
+            @ApiParam(value = "строка-название на украинском", required = false) @RequestParam(value = "sName_UA", required = false) String sName_UA,
+            @ApiParam(value = "строка-название на английском", required = false) @RequestParam(value = "sName_EN", required = false) String sName_EN,
             @ApiParam(value = "Международный строковой трехсимвольный код валюты", required = false) @RequestParam(value = "sID_Currency", required = false) String sID_Currency) {
 
         return currencyDao.getCurrencies(sID_UA, sName_UA, sName_EN, sID_Currency);
@@ -338,21 +317,20 @@ public class FinanceCentralController {
      * @param sName_EN (опциональный, если nID задан и по нему найдена запись)
      * @return обновленный/вставленный обьект
      */
-    @ApiOperation(value = "обновляет запись валюты", notes = "##### FinanceController - Финансовые и смежные сущности. Обновление записи валюты #####\n\n"
-            + "HTTP Context: https://server:port/wf/service/finance/setCurrency\n\n"
+    @ApiOperation(value = "обновляет запись валюты", notes = ""
             + "обновляет запись (если задан один из параметров: nID, sID_UA; и по нему найдена запись) или вставляет (если не задан nID), и отдает экземпляр нового объекта\n\n"
-            + "http://search.ligazakon.ua/l_doc2.nsf/link1/FIN14565.html[Источник данных]\n\n"
-            + "Пример добавления записи:\n\n"
-            + "https://test.igov.org.ua/wf/service/finance/setCurrency?sID_UA=050&sName_UA=Така&sName_EN=Taka&sID_Currency=BDT\n\n"
-            + "Пример обновления записи:\n\n"
-            + "https://test.igov.org.ua/wf/service/finance/setCurrency?sID_UA=050&sName_UA=Така\n\n")
+            + "http://search.ligazakon.ua/l_doc2.nsf/link1/FIN14565.html[Источник данных]\n"
+            + "Пример добавления записи:\n"
+            + "https://test.igov.org.ua/wf/service/finance/setCurrency?sID_UA=050&sName_UA=Така&sName_EN=Taka&sID_Currency=BDT\n"
+            + "Пример обновления записи:\n"
+            + "https://test.igov.org.ua/wf/service/finance/setCurrency?sID_UA=050&sName_UA=Така\n")
     @RequestMapping(value = "/setCurrency", method = RequestMethod.GET)
     public @ResponseBody
     org.igov.model.finance.Currency setCurrency(
             @ApiParam(value = "внутренний ИД-номер (уникальный; если sID_UA задан и по нему найдена запись)", required = false) @RequestParam(value = "nID", required = false) Long nID,
             @ApiParam(value = "ИД-номер Код, в украинском классификаторе (уникальный; если nID задан и по нему найдена запись)", required = false) @RequestParam(value = "sID_UA", required = false) String sID_UA,
-            @ApiParam(value = "название на украинском (уникальный; если nID задан и по нему найдена запись)", required = false) @RequestParam(value = "sName_UA", required = false) String sName_UA,
-            @ApiParam(value = "название на английском (уникальный; если nID задан и по нему найдена запись)", required = false) @RequestParam(value = "sName_EN", required = false) String sName_EN,
+            @ApiParam(value = "строка-название на украинском (уникальный; если nID задан и по нему найдена запись)", required = false) @RequestParam(value = "sName_UA", required = false) String sName_UA,
+            @ApiParam(value = "строка-название на английском (уникальный; если nID задан и по нему найдена запись)", required = false) @RequestParam(value = "sName_EN", required = false) String sName_EN,
             @ApiParam(value = "международный строковой трехсимвольный код валюты (уникальный; если nID задан и по нему найдена запись)", required = false) @RequestParam(value = "sID_Currency", required = false) String sID_Currency)
             throws CommonServiceException {
 
@@ -405,9 +383,8 @@ public class FinanceCentralController {
      * @param sID_UA (опциональный, если другой уникальный-ключ задан и по нему
      * найдена запись)
      */
-    @ApiOperation(value = "Удаление элемента по обязательно заданному одному из параметров", notes = "##### FinanceController - Финансовые и смежные сущности. Удаление элемента по обязательно заданному одному из параметров #####\n\n"
-            + "HTTP Context: https://server:port/wf/service/finance/removeCurrency\n\n"
-            + "http://search.ligazakon.ua/l_doc2.nsf/link1/FIN14565.html[Источник данных]\n\n"
+    @ApiOperation(value = "Удаление элемента по обязательно заданному одному из параметров", notes = ""
+            + "http://search.ligazakon.ua/l_doc2.nsf/link1/FIN14565.html[Источник данных]\n"
             + "Пример запроса:\n"
             + "https://test.igov.org.ua/wf/service/finance/removeCurrency?sID_UA=050\n")
     @RequestMapping(value = "/removeCurrency", method = RequestMethod.GET)
