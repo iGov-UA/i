@@ -5,30 +5,37 @@
 		"ShowElementsOnTrue_12":
 		{
 			"sNote":		["принтформа якщо юридична особа"],
-			"aElement_ID":	["shapka","zagolovok","obect_pf","obect_2_pf","adres_2_pf","imya_ur_pf","kved_pf","edrpo_pf","pib_ur_pf","adres_1_pf","tel_pf","person_pf","end_pf"],
+			"aElement_ID":	["UR_osoba"],
 			"asID_Field":	{"sCond":"asSubect"},
-			"sCondition":	"[sCond]=='ur'"
+			"sCondition":	"[sCond]=='sEnumElement_ur'"
 		},
 		"ShowElementsOnTrue_13":
 		{
 			"sNote":		["принтформа якщо фізична особа"],
-			"aElement_ID":	["shapka","zagolovok","obect_pf","obect_2_pf","adres_2_pf","pib_fiz_pf","kved_pf","bankIdinn_pf","adres_0_pf","phone_pf","person_pf","end_pf"],
+			"aElement_ID":	["FOP_osoba","FOP_osoba_PD"],
 			"asID_Field":	{"sCond":"asSubect"},
-			"sCondition":	"[sCond]=='fiz'"
+			"sCondition":	"[sCond]=='sEnumElement_fiz'"
 		},
 		"ShowElementsOnTrue_14":
 		{
-			"sNote":		["Додано ще один додаток для Новопскова"],
-			"aElement_ID":	["add_roztashuvannya_M"],
-			"asID_Field":	{"sCond":"sID_Public_SubjectOrganJoin"},
-			"sCondition":	"[sCond]=='mvk_lug_NovopskovskT'"
+			"sNote":		["Додано на зміни"],
+			"aElement_ID":	["zagolovok1"],
+			"asID_Field":	{"sCond":"asTypeAction"},
+			"sCondition":	"[sCond]=='sEnumElement_Edit'"
 		},
 		"ShowElementsOnTrue_15":
 		{
-			"sNote":				["Добавить в приложения оригинал попереднього дозволу"],
-			"aElement_ID":			["add_copy_dozvol"],
-			"asID_Field":			{"sReason":"asPurpose"},
-			"sCondition":			"[sReason]=='second_permission' || [sReason] == 'revoke'|| [sReason] == 'continuation' || [sReason] == 'restructuring'"
+			"sNote":		["Додано на на зміни (del)"],
+			"aElement_ID":	["zagolovok2"],
+			"asID_Field":	{"sCond":"asTypeAction"},
+			"sCondition":	"[sCond]=='sEnumElement_Drop'"
+		},
+		"ShowElementsOnTrue_16":
+		{
+			"sNote":		["Додано на подовження"],
+			"aElement_ID":	["zagolovok3"],
+			"asID_Field":	{"sCond":"asTypeAction"},
+			"sCondition":	"[sCond]=='sEnumElement_Prolong'"
 		}
 	}
 }
