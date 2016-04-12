@@ -12,7 +12,7 @@
         <activiti:formProperty id="sSubject" name="Суть питання; Вкажіть найменування сторін виконавчого провадження та коротко основна причина для звернення до органу ДВС" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Графік роботи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання послуги?" type="queueData" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nID_Department_visitDay" name="Департамент" type="invisible" default="97"></activiti:formProperty>
+        <activiti:formProperty id="nID_Department_visitDay" name="Департамент" type="invisible" ></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="електронна пошта" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок" type="invisible"></activiti:formProperty>
@@ -45,11 +45,10 @@
 			&lt;p&gt;Ваше звернення щодо запису на прийом до керівника органу державної виконавчої служби успішно зареєстроване.&lt;br&gt;&lt;/p&gt;
 			&lt;p&gt;Дата та час візиту: ${date_of_visit}.	&lt;/p&gt;
 			&lt;p&gt;Відділ виконавчої служби: ${sNameOrgan}.&lt;/p&gt;
-			&lt;p&gt;Керівник відділу: ${sPosada}.&lt;br&gt;&lt;/p&gt;
+			&lt;p&gt;Керівник відділу: ${sPosada}.&lt;br&gt;&lt;br&gt;&lt;/p&gt;
 			&lt;p&gt;Адреса: ${sAddress}.&lt;br&gt;&lt;/p&gt;
-			Ви можете відмінити Ваш запис на прийом, натиснувши кнопку:&lt;br&gt;
 			&lt;p&gt;[cancelTask]&lt;/p&gt;
-			&lt;p&gt;За наявності питань Ви можете звернутися за телефоном: ${sPhoneOrgan}&lt;/p&gt;
+			&lt;p&gt;За наявності питань Ви можете зателефонувати: ${sPhoneOrgan}&lt;/p&gt;
 			[pattern/mail/_common_signature_start.html]
 			${sNameOrgan},&lt;br&gt;
 			[pattern/mail/_common_signature_end.html]
@@ -81,12 +80,13 @@
         <activiti:formProperty id="phone" name="Телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSubject" name="Суть питання" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="visitDay" name="Бажаний день прийому" type="queueData" default="   ${date_of_visit}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="visitDay" name="Бажаний день прийому" type="queueData" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <userTask id="usertask2" name="Візит громадянина" activiti:candidateGroups="dvs_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="visitDay" name="День прийому" type="string" default="   ${date_of_visit}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="visitDay" name="День прийому" type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFIO" name="Прізвище, ім`я, по-батькові громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail громадянина" type="string" writable="false"></activiti:formProperty>
@@ -157,9 +157,7 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow23" sourceRef="servicetask9" targetRef="servicetask10"></sequenceFlow>
     <serviceTask id="servicetask10" name="Видалення тікета з черги" activiti:delegateExpression="#{releaseTicketsOfQueue}"></serviceTask>
-    <sequenceFlow id="flow24" sourceRef="servicetask10" targetRef="endevent3"></sequenceFlow>
     <scriptTask id="scripttask1" name="Формат даты" activiti:async="true" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var src=execution.getVariable('date_of_visit')
 var year=src.substr(0,4)
@@ -192,11 +190,12 @@ else
 var timer=year+'-'+month+'-'+day+'T'+hour+':'+minutes+':'+seconds
 execution.setVariable('sNotification_day', timer)</script>
     </scriptTask>
-    <sequenceFlow id="flow27" sourceRef="scripttask1" targetRef="servicetask6"></sequenceFlow>
-    <sequenceFlow id="flow28" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow29" sourceRef="usertask1" targetRef="usertask2"></sequenceFlow>
     <sequenceFlow id="flow30" sourceRef="servicetask6" targetRef="servicetask5"></sequenceFlow>
     <sequenceFlow id="flow31" sourceRef="servicetask5" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow32" sourceRef="servicetask9" targetRef="servicetask10"></sequenceFlow>
+    <sequenceFlow id="flow33" sourceRef="servicetask10" targetRef="endevent3"></sequenceFlow>
+    <sequenceFlow id="flow34" sourceRef="servicetask1" targetRef="servicetask6"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dvs_619">
     <bpmndi:BPMNPlane bpmnElement="dvs_619" id="BPMNPlane_dvs_619">
@@ -275,23 +274,6 @@ execution.setVariable('sNotification_day', timer)</script>
           <omgdc:Bounds height="14.0" width="75.0" x="682.0" y="139.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
-        <omgdi:waypoint x="738.0" y="247.0"></omgdi:waypoint>
-        <omgdi:waypoint x="738.0" y="263.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
-        <omgdi:waypoint x="686.0" y="290.0"></omgdi:waypoint>
-        <omgdi:waypoint x="666.0" y="291.0"></omgdi:waypoint>
-        <omgdi:waypoint x="612.0" y="291.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
-        <omgdi:waypoint x="172.0" y="189.0"></omgdi:waypoint>
-        <omgdi:waypoint x="235.0" y="141.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
-        <omgdi:waypoint x="115.0" y="141.0"></omgdi:waypoint>
-        <omgdi:waypoint x="172.0" y="189.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow29" id="BPMNEdge_flow29">
         <omgdi:waypoint x="518.0" y="111.0"></omgdi:waypoint>
         <omgdi:waypoint x="529.0" y="113.0"></omgdi:waypoint>
@@ -303,6 +285,18 @@ execution.setVariable('sNotification_day', timer)</script>
       <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
         <omgdi:waypoint x="405.0" y="112.0"></omgdi:waypoint>
         <omgdi:waypoint x="413.0" y="111.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
+        <omgdi:waypoint x="738.0" y="247.0"></omgdi:waypoint>
+        <omgdi:waypoint x="738.0" y="263.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
+        <omgdi:waypoint x="686.0" y="290.0"></omgdi:waypoint>
+        <omgdi:waypoint x="612.0" y="291.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
+        <omgdi:waypoint x="168.0" y="110.0"></omgdi:waypoint>
+        <omgdi:waypoint x="183.0" y="110.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
