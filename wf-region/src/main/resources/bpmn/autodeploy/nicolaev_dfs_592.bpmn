@@ -27,7 +27,8 @@
         <activiti:formProperty id="date_bigin" name="Вкажіть дату з якої ви хочете отримати ліцензію:;(ліцензія видається на рік)" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="file_lic_plata" name="Сканкопія квитанції про оплату за ліцензію" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="marker_osoba_license" name="vubir_osobu" type="markers" default="${markerService.loadFromFile('dfs_593.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sInfo" name="Інфо" type="label" default="Внесіть інформацію про реєстратор розрахункових операцій (книгу обліку розрахункових операцій), який знаходиться у місці торгівлі"></activiti:formProperty>
+        <activiti:formProperty id="sInfo" name="Інфо" type="label" default="Внесіть інформацію про реєстратори розрахункових операцій (книги обліку розрахункових операцій), який знаходиться у місці торгівлі"></activiti:formProperty>
+        <activiti:formProperty id="marker_reestrators" name="vubir_osobu" type="markers" default="${markerService.loadFromFile('dfs_592.json')}"></activiti:formProperty>
         <activiti:formProperty id="sReestrat_ekka" name="Реєстраційне посвідчення на ЕККА" type="string"></activiti:formProperty>
         <activiti:formProperty id="sReestrat_model" name="Модель" type="string"></activiti:formProperty>
         <activiti:formProperty id="sReestrat_modif" name="Модифікація" type="string"></activiti:formProperty>
@@ -36,6 +37,55 @@
         <activiti:formProperty id="sReestrat_date_vug" name="Дата виготовлення" type="string"></activiti:formProperty>
         <activiti:formProperty id="sReestrat_N_posv" name="Реєстраційний номер КОРО реєстратора розрахункових операцій" type="string"></activiti:formProperty>
         <activiti:formProperty id="sReestrat_jblic_dfs" name="Дата початку обліку в органах ДФС" type="string"></activiti:formProperty>
+        <activiti:formProperty id="as2reestrators" name="Чи є у вас ще касові апарати дані яких треба внести?" type="enum" required="true">
+          <activiti:value id="s2yes" name="Так"></activiti:value>
+          <activiti:value id="s2no" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sInfo2" name="Інфо" type="label" default="Внесіть інформацію про інші реєстратори"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_ekka2" name="Реєстраційне посвідчення на ЕККА" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_model2" name="Модель" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_modif2" name="Модифікація" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_zavodN2" name="Заводський номер" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_virobn2" name="Виробник" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_date_vug2" name="Дата виготовлення" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_N_posv2" name="Реєстраційний номер КОРО реєстратора розрахункових операцій" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_jblic_dfs2" name="Дата початку обліку в органах ДФС" type="string"></activiti:formProperty>
+        <activiti:formProperty id="as3reestrators" name="Чи є у вас ще касові апарати дані яких треба внести?" type="enum" required="true">
+          <activiti:value id="s3yes" name="Так"></activiti:value>
+          <activiti:value id="s3no" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sReestrat_ekka3" name="Реєстраційне посвідчення на ЕККА" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_model3" name="Модель" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_modif3" name="Модифікація" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_zavodN3" name="Заводський номер" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_virobn3" name="Виробник" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_date_vug3" name="Дата виготовлення" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_N_posv3" name="Реєстраційний номер КОРО реєстратора розрахункових операцій" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_jblic_dfs3" name="Дата початку обліку в органах ДФС" type="string"></activiti:formProperty>
+        <activiti:formProperty id="as4reestrators" name="Чи є у вас ще касові апарати дані яких треба внести?" type="enum" required="true">
+          <activiti:value id="s4yes" name="Так"></activiti:value>
+          <activiti:value id="s4no" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sReestrat_ekka4" name="Реєстраційне посвідчення на ЕККА" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_model4" name="Модель" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_modif4" name="Модифікація" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_zavodN4" name="Заводський номер" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_virobn4" name="Виробник" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_date_vug4" name="Дата виготовлення" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_N_posv4" name="Реєстраційний номер КОРО реєстратора розрахункових операцій" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_jblic_dfs4" name="Дата початку обліку в органах ДФС" type="string"></activiti:formProperty>
+        <activiti:formProperty id="as5reestrators" name="Чи є у вас ще касові апарати дані яких треба внести?" type="enum" required="true">
+          <activiti:value id="s5yes" name="Так"></activiti:value>
+          <activiti:value id="s5no" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sReestrat_ekka5" name="Реєстраційне посвідчення на ЕККА" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_model5" name="Модель" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_modif5" name="Модифікація" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_zavodN5" name="Заводський номер" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_virobn5" name="Виробник" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_date_vug5" name="Дата виготовлення" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_N_posv5" name="Реєстраційний номер КОРО реєстратора розрахункових операцій" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_jblic_dfs5" name="Дата початку обліку в органах ДФС" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Телефон органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible"></activiti:formProperty>
