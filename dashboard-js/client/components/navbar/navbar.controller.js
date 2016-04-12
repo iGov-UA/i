@@ -83,7 +83,6 @@
         tasksSearchService.searchTaskByUserInput($scope.tasksSearch.value)
           .then(function(aIds) {
             $scope.tasksSearch.count = aIds.length;
-            $scope.tasksSearch.autofocusOnTask = true;
           })
           .finally(function() {
             $scope.tasksSearch.loading=false;

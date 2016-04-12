@@ -4,12 +4,12 @@
   angular
     .module('dashboardJsApp')
     .controller('TaskViewCtrl', [
-      '$scope', '$stateParams', 'oTask', 'PrintTemplateService', 'MarkersFactory', 'tasks', 'attachments',
+      '$scope', '$stateParams', 'taskData', 'oTask', 'PrintTemplateService', 'MarkersFactory', 'tasks', 'attachments',
       'orderMessages', 'taskAttachments', 'taskForm', 'iGovNavbarHelper', 'Modal', 'Auth', 'defaultSearchHandlerService',
-      '$state',
-      function ($scope, $stateParams, oTask, PrintTemplateService, MarkersFactory, tasks, attachments,
+      '$state', 'stateModel',
+      function ($scope, $stateParams, taskData, oTask, PrintTemplateService, MarkersFactory, tasks, attachments,
                 orderMessages, taskAttachments, taskForm, iGovNavbarHelper, Modal, Auth, defaultSearchHandlerService,
-                $state) {
+                $state, stateModel) {
         var defaultErrorHandler = function (response, msgMapping) {
           defaultSearchHandlerService.handleError(response, msgMapping);
           if ($scope.taskForm) {
@@ -19,6 +19,7 @@
         };
 
         $scope.printTemplateList = [];
+        $scope.model = stateModel;
         $scope.model.printTemplate = null;
 
         $scope.taskForm = null;
@@ -56,38 +57,12 @@
           });
         };
 
-        var setTaskForm = function (formProperties) {
-          $scope.taskForm = formProperties;
-          $scope.taskForm = addIndexForFileItems($scope.taskForm);
-          $scope.printTemplateList = PrintTemplateService.getTemplates($scope.taskForm);
-          if ($scope.printTemplateList.length > 0) {
-            $scope.model.printTemplate = $scope.printTemplateList[0];
-          }
-          if ($scope.selectedTask) {
-            tasks.getTaskData({nID_Task: $scope.selectedTask.id}).then(function (taskData) {
-              $scope.taskForm.taskData = taskData;
-            });
-          }
-
-          // autofocus on searched task
-          if (iGovNavbarHelper.tasksSearch.autofocusOnTask) {
-            var oHtmlDomTasksList = document.getElementById("tasks-list");
-            var aHtmlDomTasks = oHtmlDomTasksList.getElementsByTagName("a");
-            var oHtmlDomTaskActive;
-            for (var i = 0, max = aHtmlDomTasks.length; i < max; i++) {
-              var el = aHtmlDomTasks.item(i);
-              var elClassName = el.getAttribute("class");
-              if (elClassName.search("active") != -1) {
-                oHtmlDomTaskActive = el;
-                break;
-              }
-            }
-            oHtmlDomTaskActive.scrollIntoView(true);
-            iGovNavbarHelper.tasksSearch.autofocusOnTask = false;
-          }
-        };
-
-        setTaskForm(taskForm);
+        $scope.taskForm = addIndexForFileItems(taskForm);
+        $scope.printTemplateList = PrintTemplateService.getTemplates($scope.taskForm);
+        if ($scope.printTemplateList.length > 0) {
+          $scope.model.printTemplate = $scope.printTemplateList[0];
+        }
+        $scope.taskForm.taskData = taskData;
 
         if (!oTask.endTime) {
           $scope.taskForm.forEach(function (field) {
