@@ -351,18 +351,22 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             snID_Task = snClosedTaskId;
             LOG.info("Task id from requestbody is null, so using task id from url - " + snID_Task);
         }
-
+        LOG.info("Task id is - "+snID_Task);
         if (snID_Task != null) {
+            LOG.info("Getting historic instance");
             HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery()
                     .taskId(snID_Task).singleResult();
-
+            LOG.info("Getting snID_Process");
             String snID_Process = oHistoricTaskInstance.getProcessInstanceId();
+            LOG.info("Parsing snID_Process to long");
             Long nID_Process = Long.valueOf(snID_Process);
+            LOG.info("Getting sID_Order");
             String sID_Order = generalConfig.sID_Order_ByProcess(nID_Process);
+            LOG.info("Getting snMinutesDurationProcess");
             String snMinutesDurationProcess = getTotalTimeOfExecution(snID_Process);
             mParam.put("nTimeMinutes", snMinutesDurationProcess);
             LOG.info("(sID_Order={},nMinutesDurationProcess={})", sID_Order, snMinutesDurationProcess);
-
+            LOG.info("Creating task query");
             List<Task> aTask = taskService.createTaskQuery().processInstanceId(snID_Process).list();
             boolean bProcessClosed = aTask == null || aTask.isEmpty();
             String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();
