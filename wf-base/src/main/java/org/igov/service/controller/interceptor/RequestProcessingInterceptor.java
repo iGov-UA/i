@@ -156,8 +156,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         String snTaskId = null;
         //getting task id from URL, if URL matches runtime/tasks/{taskId} (#1234)
         if (TAG_PATTERN_PREFIX.matcher(oRequest.getRequestURL()).find()) {
-            LOG.info("URL is like runtime/tasks/{taskId}, getting task id from url, task id is " + snTaskId);
             snTaskId = sURL.substring(sURL.lastIndexOf("/") + 1);
+            LOG.info("URL is like runtime/tasks/{taskId}, getting task id from url, task id is " + snTaskId);
         }
 
         String sRequestBody = osRequestBody.toString();
@@ -226,7 +226,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 LOG.info("saveNewTaskInfo block");
                 saveNewTaskInfo(sRequestBody, sResponseBody, mRequestParam);
             } else if (isCloseTask(oRequest, sResponseBody)) {
-                LOG.info("saveClosedTaskInfo block");
+                LOG.info("saveClosedTaskInfo block started");
                 saveClosedTaskInfo(sRequestBody, snTaskId);
             } else if (isUpdateTask(oRequest)) {
                 saveUpdatedTaskInfo(sResponseBody);
@@ -347,66 +347,68 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
         String snID_Task = (String) omRequestBody.get("taskId");
         if ((snID_Task == null) && (snClosedTaskId != null)) {
-            snID_Task = snClosedTaskId;
+            snID_Task = snClosedTaskId.trim();
             LOG.info("Task id from requestbody is null, so using task id from url - " + snID_Task);
         }
-
+        LOG.info("Task id is - "+snID_Task);
         if (snID_Task != null) {
             HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery()
                     .taskId(snID_Task).singleResult();
-
             String snID_Process = oHistoricTaskInstance.getProcessInstanceId();
-            Long nID_Process = Long.valueOf(snID_Process);
-            String sID_Order = generalConfig.sID_Order_ByProcess(nID_Process);
-            String snMinutesDurationProcess = getTotalTimeOfExecution(snID_Process);
-            mParam.put("nTimeMinutes", snMinutesDurationProcess);
-            LOG.info("(sID_Order={},nMinutesDurationProcess={})", sID_Order, snMinutesDurationProcess);
+            if (snID_Process != null) {
+                LOG.info("Parsing snID_Process: " + snID_Process + " to long");
+                Long nID_Process = Long.valueOf(snID_Process);
+                String sID_Order = generalConfig.sID_Order_ByProcess(nID_Process);
+                String snMinutesDurationProcess = getTotalTimeOfExecution(snID_Process);
+                mParam.put("nTimeMinutes", snMinutesDurationProcess);
+                LOG.info("(sID_Order={},nMinutesDurationProcess={})", sID_Order, snMinutesDurationProcess);
+                List<Task> aTask = taskService.createTaskQuery().processInstanceId(snID_Process).list();
+                boolean bProcessClosed = aTask == null || aTask.isEmpty();
+                String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();
 
-            List<Task> aTask = taskService.createTaskQuery().processInstanceId(snID_Process).list();
-            boolean bProcessClosed = aTask == null || aTask.isEmpty();
-            String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();
-
-            String sProcessName = oHistoricTaskInstance.getProcessDefinitionId();
-            try {
-                if (bProcessClosed && sProcessName.indexOf("system") != 0) {//issue 962
-                    //LOG.info(String.format("start process feedback for process with snID_Process=%s", snID_Process));
-                    if (!generalConfig.bTest()) {
-                        String snID_Proccess_Feedback = bpHandler
-                                .startFeedbackProcess(snID_Task, snID_Process, sProcessName);
-                        mParam.put("nID_Proccess_Feedback", snID_Proccess_Feedback);
-                        LOG.info("Create escalation process! (sProcessName={}, nID_Proccess_Feedback={})", sProcessName,
-                                snID_Proccess_Feedback);
-                    } else {
-                        LOG.info("SKIPED(test)!!! Create escalation process! (sProcessName={})", sProcessName);
+                String sProcessName = oHistoricTaskInstance.getProcessDefinitionId();
+                try {
+                    if (bProcessClosed && sProcessName.indexOf("system") != 0) {//issue 962
+                        //LOG.info(String.format("start process feedback for process with snID_Process=%s", snID_Process));
+                        if (!generalConfig.bTest()) {
+                            String snID_Proccess_Feedback = bpHandler
+                                    .startFeedbackProcess(snID_Task, snID_Process, sProcessName);
+                            mParam.put("nID_Proccess_Feedback", snID_Proccess_Feedback);
+                            LOG.info("Create escalation process! (sProcessName={}, nID_Proccess_Feedback={})",
+                                    sProcessName,
+                                    snID_Proccess_Feedback);
+                        } else {
+                            LOG.info("SKIPED(test)!!! Create escalation process! (sProcessName={})", sProcessName);
+                        }
                     }
+                } catch (Exception e) {
+                    LOG.error("Can't create escalation process: {}", e.getMessage());
+                    LOG.trace("FAIL:", e);
                 }
-            } catch (Exception e) {
-                LOG.error("Can't create escalation process: {}", e.getMessage());
-                LOG.trace("FAIL:", e);
-            }
-            try {
-                if (sProcessName.indexOf(BpServiceHandler.PROCESS_ESCALATION) == 0) {
-                    //issue 981 -- save history
-                    EscalationHistory escalationHistory = escalationHistoryService.updateStatus(nID_Process,
-                            bProcessClosed ?
-                                    EscalationHistoryService.STATUS_CLOSED :
-                                    EscalationHistoryService.STATUS_IN_WORK);
-                    //                LOG.info("update escalation history: {}", escalationHistory);
-                    //issue 1038 -- save message
-                    //LOG.info("try to save service message for escalation process with (snID_Process={})", snID_Process);
-                    String sServiceMessage = bpHandler.createServiceMessage(snID_Task);
-                    //LOG.info("(sServiceMessage={})", sServiceMessage);
-                    LOG.info(
-                            "Updated escalation history and create service message! (sProcessName={}, sServiceMessage={})",
-                            sProcessName, sServiceMessage);
+                try {
+                    if (sProcessName.indexOf(BpServiceHandler.PROCESS_ESCALATION) == 0) {
+                        //issue 981 -- save history
+                        EscalationHistory escalationHistory = escalationHistoryService.updateStatus(nID_Process,
+                                bProcessClosed ?
+                                        EscalationHistoryService.STATUS_CLOSED :
+                                        EscalationHistoryService.STATUS_IN_WORK);
+                        //                LOG.info("update escalation history: {}", escalationHistory);
+                        //issue 1038 -- save message
+                        //LOG.info("try to save service message for escalation process with (snID_Process={})", snID_Process);
+                        String sServiceMessage = bpHandler.createServiceMessage(snID_Task);
+                        //LOG.info("(sServiceMessage={})", sServiceMessage);
+                        LOG.info(
+                                "Updated escalation history and create service message! (sProcessName={}, sServiceMessage={})",
+                                sProcessName, sServiceMessage);
+                    }
+                } catch (Exception e) {
+                    LOG.error("Can't save service message for escalation: {}", e.getMessage());
+                    LOG.trace("FAIL:", e);
                 }
-            } catch (Exception e) {
-                LOG.error("Can't save service message for escalation: {}", e.getMessage());
-                LOG.trace("FAIL:", e);
+                historyEventService
+                        .updateHistoryEvent(sID_Order, sUserTaskName, false, HistoryEvent_Service_StatusType.CLOSED,
+                                mParam);//sID_Process
             }
-            historyEventService
-                    .updateHistoryEvent(sID_Order, sUserTaskName, false, HistoryEvent_Service_StatusType.CLOSED,
-                            mParam);//sID_Process
         }
         LOG.info("Method saveClosedTaskInfo finished");
     }
