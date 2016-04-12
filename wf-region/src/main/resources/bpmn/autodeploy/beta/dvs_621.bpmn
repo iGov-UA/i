@@ -153,7 +153,7 @@
           <activiti:value id="sEnumDeny" name="Відмова заявнику у видачі довідки"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sComment" name="Якщо ви відмовляєте заявнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="file1" name="Завантажте скановану копію довідки" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="file1" name="Завантажте скановану копію довідки; з накладеним ЕЦП (електронно-цифровим підписом)" type="file" required="true"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
@@ -171,7 +171,7 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 			&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-			На жаль, Ваше звернення щодо Довідки про неотримання аліментів або розмір аліментів - відхилине.&lt;/p&gt;
+			На жаль, Ваше звернення щодо Довідки про неотримання аліментів або розмір аліментів - відхилене.&lt;/p&gt;
 			&lt;p&gt;Причина в наступному: 
 			                                    &lt;/p&gt;
 			&lt;p&gt;${sComment}&lt;/p&gt;
@@ -198,24 +198,26 @@
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;
-Довідка про неотримання аліментів або розмір аліментів - готова&lt;br /&gt;
-&lt;/p&gt;
-Скан-копію довідки з накладеним ЕЦП (електронно-цифровим підписом) прикріплено до цього листа.&lt;br /&gt;Ви можете використати її для подання до державних органів соціального захисту населення.
-&lt;p&gt;
-Оригінал довідки можете отримати за адресою:
-&lt;br /&gt;
-&lt;br /&gt;
-${sAddress}&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+			&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+			&lt;p&gt;
+			Довідка про неотримання аліментів або розмір аліментів - готова&lt;br /&gt;
+			&lt;/p&gt;
+			Скан-копію довідки з накладеним ЕЦП (електронно-цифровим підписом) прикріплено до цього листа.&lt;br /&gt;
+			Ви можете використати її для подання до державних органів соціального захисту населення.
+			&lt;p&gt;
+			Оригінал довідки можете отримати за адресою:
+			&lt;br /&gt;
+			&lt;br /&gt;
+			${sAddress}&lt;br /&gt;
+			${sWorkTime}&lt;br /&gt;
+			&lt;br /&gt;
+			${sPhoneOrgan}&lt;br /&gt;
+			[pattern/mail/_common_signature_start.html]
+			${sNameOrgan}&lt;br /&gt;
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_feedback.html]
+			[pattern/mail/_common_footer.html]
+			</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${file1}</activiti:expression>
