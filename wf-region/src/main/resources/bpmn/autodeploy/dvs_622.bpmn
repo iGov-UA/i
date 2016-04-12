@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="myProcess" name="My process" isExecutable="true">
+  <process id="dvs_622" name="Отримання відомостей про платіжні реквізити Державної виконавчої служби" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть потрібний орган ДВС" type="select" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть потрібний відділ ДВС" type="select" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Вкажіть електронну адресу, на яку отримаєте платіжні реквізити" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Телефон" type="invisible"></activiti:formProperty>
@@ -26,8 +26,8 @@
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
-			&lt;b&gt;Доброго дня!&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-			&lt;p&gt; На Ваш запит щодо отримання реквізитів Державної виконавчої служби повідомляємо наступне:&lt;br/&gt;&lt;br/&gt;
+			&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+			&lt;p&gt; На Ваш запит щодо отримання платіжних реквізитів Державної виконавчої служби повідомляємо наступне:&lt;br/&gt;&lt;br/&gt;
 			${sNameOrgan}&lt;br/&gt;&lt;br/&gt;
 			${sRekv}&lt;/p&gt;
 			&lt;br /&gt;
@@ -49,8 +49,8 @@
     <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
     <sequenceFlow id="flow4" sourceRef="servicetask2" targetRef="endevent1"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_myProcess">
-    <bpmndi:BPMNPlane bpmnElement="myProcess" id="BPMNPlane_myProcess">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_dvs_622">
+    <bpmndi:BPMNPlane bpmnElement="dvs_622" id="BPMNPlane_dvs_622">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="130.0" y="120.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
