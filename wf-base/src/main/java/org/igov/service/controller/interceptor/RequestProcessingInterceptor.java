@@ -358,7 +358,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                     .taskId(snID_Task).singleResult();
             LOG.info("Getting snID_Process");
             String snID_Process = oHistoricTaskInstance.getProcessInstanceId();
-            LOG.info("Parsing snID_Process to long");
+            LOG.info("Parsing snID_Process: "+snID_Process+" to long");
             Long nID_Process = Long.valueOf(snID_Process);
             LOG.info("Getting sID_Order");
             String sID_Order = generalConfig.sID_Order_ByProcess(nID_Process);
