@@ -14,7 +14,7 @@
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="nWhereLives0" name="З якого року проживаєте в даному населеному пункті; чотори цифри" type="long" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asWork0" name="Десь працюєте" type="enum" required="true">
+        <activiti:formProperty id="asWork0" name="Працюєте" type="enum" required="true">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="no" name="Ні"></activiti:value>
         </activiti:formProperty>
@@ -31,7 +31,7 @@
           <activiti:value id="r5" name="5"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="nLivingSpace" name="Жила площа, кв.м.; через кому" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asOwnership" name="Будинок (квартира) перебуває в" type="enum" default="r1" required="true">
+        <activiti:formProperty id="asOwnership" name="Будинок (квартира) перебуває в" type="enum" required="true">
           <activiti:value id="own1" name="комунальній власності"></activiti:value>
           <activiti:value id="own2" name="кооперативній власності"></activiti:value>
           <activiti:value id="own3" name="власний"></activiti:value>
@@ -44,7 +44,8 @@
         <activiti:formProperty id="lPrivilege" name="Зверніть увагу" type="label" default="Укажіть свій статус так прикрипіть один чи декілька документів:           &lt;ul&gt;            &lt;li&gt;довідка МСЕК&lt;/li&gt;            &lt;li&gt;довідка про одержання грошової допомоги одинокої матері&lt;/li&gt;            &lt;li&gt;копія посвідчення багатодітної родини&lt;/li&gt;            &lt;li&gt;довідка з місця роботи для працівник міліції&lt;/li&gt;            &lt;li&gt;довідка з місця роботи для працівників освіти&lt;/li&gt;            &lt;li&gt;посвідчення ветерана війни&lt;/li&gt;            &lt;li&gt;свідоцтво постраждалих внаслідок Чорнобильської катастрофи&lt;/li&gt;            &lt;li&gt;документ який свідчить про статус сироти&lt;/li&gt;            &lt;li&gt;копія довідки із учбового закладу про розподіл на роботу у іншу місцевість&lt;/li&gt;            &lt;li&gt;копія приказу про призначення на посаду (працівників прокуратури та суду)&lt;/li&gt;           &lt;/ul&gt; "></activiti:formProperty>
         <activiti:formProperty id="aPrivilege" name="Укажіть свої льготи;якщо декілька, то вказуйте через кому" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="nfile_Privilege" name="Копія(ї) документа(ів), що надає льготу для першочергового одержання житла; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asCountFamily" name="Укажіть скільки осіб проживає з вами" type="enum" required="true">
+        <activiti:formProperty id="asCountFamily" name="Укажіть скільки осіб проживає з вами" default="f0" type="enum" required="true">
+          <activiti:value id="f0" name="0"></activiti:value>
           <activiti:value id="f1" name="1"></activiti:value>
           <activiti:value id="f2" name="2"></activiti:value>
           <activiti:value id="f3" name="3"></activiti:value>
@@ -52,17 +53,18 @@
           <activiti:value id="f5" name="5"></activiti:value>
           <activiti:value id="f6" name="6"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="lHR1" name="Член сім'ї" type="label" default="Перший"></activiti:formProperty>
         <activiti:formProperty id="sFamilyRelation1" name="Вкажіть родинні стосунки" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sFIO1" name="Прізвище, Ім'я, По Батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="nBirthday1" name="Рік народження; чотори цифри" type="long" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asAdult1" name="Повнолітній" type="enum" default="no" required="true">
+        <activiti:formProperty id="asAdult1" name="Повнолітній" type="enum" required="true">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="no" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="nFilePassport1" name="Копія паспорта громадянина України першого члена сім'ї; Сторінки 1, 2, 10, 11. При наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву чи pdf-файлі" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFileINN1" name="Копія ідентифіувційного коду першого члена сім'ї" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nWhereLives1" name="З якого року проживає в даному населеному пункті; чотори цифри" type="long" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asWork1" name="Десь працює" type="enum" required="true">
+        <activiti:formProperty id="asWork1" name="Працює" type="enum" required="true">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="no" name="Ні"></activiti:value>
         </activiti:formProperty>
@@ -71,17 +73,18 @@
         <activiti:formProperty id="nFileCertificateOfEmployment1" name="Копія довідки з місця роботи першого члена сім'ї; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву чи pdf-файлі" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFileBirthCertificate1" name="Копія свідоцтва про народження першого члена сім'ї; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFileBTI1" name="Копія довідки із реєстраційної служби речових прав на нерухоме майно (БТІ чи інший) про наявність або відсутність власності нерухомого майна першого члена сім'ї" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="lHR2" name="Член сім'ї" type="label" default="Другий"></activiti:formProperty>
         <activiti:formProperty id="sFamilyRelation2" name="Вкажіть родинні стосунки" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sFIO2" name="Прізвище, Ім'я, По Батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="nBirthday2" name="Рік народження; чотори цифри" type="long" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asAdult2" name="Повнолітній" type="enum" default="no" required="true">
+        <activiti:formProperty id="asAdult2" name="Повнолітній" type="enum" required="true">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="no" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="nFilePassport2" name="Копія паспорта громадянина України другого члена сім'ї; Сторінки 1, 2, 10, 11. При наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву чи pdf-файлі" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFileINN2" name="Копія ідентифіувційного коду другого члена сім'ї" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nWhereLives2" name="З якого року проживає в даному населеному пункті; чотори цифри" type="long" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asWork2" name="Десь працює" type="enum" required="true">
+        <activiti:formProperty id="asWork2" name="Працює" type="enum" required="true">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="no" name="Ні"></activiti:value>
         </activiti:formProperty>
@@ -90,17 +93,18 @@
         <activiti:formProperty id="nFileCertificateOfEmployment2" name="Копія довідки з місця роботи другого члена сім'ї; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву чи pdf-файлі" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFileBirthCertificate2" name="Копія свідоцтва про народження другого члена сім'ї; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFileBTI2" name="Копія довідки із реєстраційної служби речових прав на нерухоме майно (БТІ чи інший) про наявність або відсутність власності нерухомого майна другого члена сім'ї" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="lHR3" name="Член сім'ї" type="label" default="Третій"></activiti:formProperty>
         <activiti:formProperty id="sFamilyRelation3" name="Вкажіть родинні стосунки" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sFIO3" name="Прізвище, Ім'я, По Батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="nBirthday3" name="Рік народження; чотори цифри" type="long" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asAdult3" name="Повнолітній" type="enum" default="no" required="true">
+        <activiti:formProperty id="asAdult3" name="Повнолітній" type="enum" required="true">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="no" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="nFilePassport3" name="Копія паспорта громадянина України третього члена сім'ї; Сторінки 1, 2, 10, 11. При наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву чи pdf-файлі" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFileINN3" name="Копія ідентифіувційного коду третього члена сім'ї" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nWhereLives3" name="З якого року проживає в даному населеному пункті; чотори цифри" type="long" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asWork3" name="Десь працює" type="enum" required="true">
+        <activiti:formProperty id="asWork3" name="Працює" type="enum" required="true">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="no" name="Ні"></activiti:value>
         </activiti:formProperty>
@@ -109,17 +113,18 @@
         <activiti:formProperty id="nFileCertificateOfEmployment3" name="Копія довідки з місця роботи третього члена сім'ї; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву чи pdf-файлі" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFileBirthCertificate3" name="Копія свідоцтва про народження третього члена сім'ї; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFileBTI3" name="Копія довідки із реєстраційної служби речових прав на нерухоме майно (БТІ чи інший) про наявність або відсутність власності нерухомого майна третього члена сім'ї" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="lHR4" name="Член сім'ї" type="label" default="Четвертий"></activiti:formProperty>
         <activiti:formProperty id="sFamilyRelation4" name="Вкажіть родинні стосунки" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sFIO4" name="Прізвище, Ім'я, По Батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="nBirthday4" name="Рік народження; чотори цифри" type="long" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asAdult4" name="Повнолітній" type="enum" default="no" required="true">
+        <activiti:formProperty id="asAdult4" name="Повнолітній" type="enum" required="true">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="no" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="nFilePassport4" name="Копія паспорта громадянина України четвертого члена сім'ї; Сторінки 1, 2, 10, 11. При наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву чи pdf-файлі" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFileINN4" name="Копія ідентифіувційного коду четвертого члена сім'ї" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nWhereLives4" name="З якого року проживає в даному населеному пункті; чотори цифри" type="long" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asWork4" name="Десь працює" type="enum" required="true">
+        <activiti:formProperty id="asWork4" name="Працює" type="enum" required="true">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="no" name="Ні"></activiti:value>
         </activiti:formProperty>
@@ -128,17 +133,18 @@
         <activiti:formProperty id="nFileCertificateOfEmployment4" name="Копія довідки з місця роботи четвертого члена сім'ї; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву чи pdf-файлі" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFileBirthCertificate4" name="Копія свідоцтва про народження четвертого члена сім'ї; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFileBTI4" name="Копія довідки із реєстраційної служби речових прав на нерухоме майно (БТІ чи інший) про наявність або відсутність власності нерухомого майна четвертого члена сім'ї" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="lHR5" name="Член сім'ї" type="label" default="П'ятий"></activiti:formProperty>
         <activiti:formProperty id="sFamilyRelation5" name="Вкажіть родинні стосунки" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sFIO5" name="Прізвище, Ім'я, По Батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="nBirthday5" name="Рік народження; чотори цифри" type="long" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asAdult5" name="Повнолітній" type="enum" default="no" required="true">
+        <activiti:formProperty id="asAdult5" name="Повнолітній" type="enum" required="true">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="no" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="nFilePassport5" name="Копія паспорта громадянина України п'ятого члена сім'ї; Сторінки 1, 2, 10, 11. При наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву чи pdf-файлі" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFileINN5" name="Копія ідентифіувційного коду п'ятого члена сім'ї" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nWhereLives5" name="З якого року проживає в даному населеному пункті; чотори цифри" type="long" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asWork5" name="Десь працює" type="enum" required="true">
+        <activiti:formProperty id="asWork5" name="Працює" type="enum" required="true">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="no" name="Ні"></activiti:value>
         </activiti:formProperty>
@@ -147,17 +153,18 @@
         <activiti:formProperty id="nFileCertificateOfEmployment5" name="Копія довідки з місця роботи п'ятого члена сім'ї; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву чи pdf-файлі" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFileBirthCertificate5" name="Копія свідоцтва про народження п'ятого члена сім'ї; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFileBTI5" name="Копія довідки із реєстраційної служби речових прав на нерухоме майно (БТІ чи інший) про наявність або відсутність власності нерухомого майна п'ятого члена сім'ї" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="lHR6" name="Член сім'ї" type="label" default="Шостий"></activiti:formProperty>
         <activiti:formProperty id="sFamilyRelation6" name="Вкажіть родинні стосунки" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sFIO6" name="Прізвище, Ім'я, По Батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="nBirthday6" name="Рік народження; чотори цифри" type="long" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asAdult6" name="Повнолітній" type="enum" default="no" required="true">
+        <activiti:formProperty id="asAdult6" name="Повнолітній" type="enum" required="true">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="no" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="nFilePassport6" name="Копія паспорта громадянина України шостого члена сім'ї; Сторінки 1, 2, 10, 11. При наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву чи pdf-файлі" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFileINN6" name="Копія ідентифіувційного коду шостого члена сім'ї" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nWhereLives6" name="З якого року проживає в даному населеному пункті; чотори цифри" type="long" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asWork6" name="Десь працює" type="enum" required="true">
+        <activiti:formProperty id="asWork6" name="Працює" type="enum" required="true">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="no" name="Ні"></activiti:value>
         </activiti:formProperty>
@@ -226,13 +233,13 @@
 			<p>
 				Ваш запит був успішно зареєстрований у нашій системі.
 			</p>
-			<br />
+			<br>
 			За наявності питань можете звернутись за наступними контактами<br>
 			${sAddress}<br>
 			${sWorkTime}<br>
 			${sPhoneOrgan}<br><br>
 			[pattern/mail/_common_signature_start.html]
-			${sNameOrgan}.<br />
+			${sNameOrgan}.<br>
 			[pattern/mail/_common_signature_end.html]
 			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
@@ -283,7 +290,7 @@
         <activiti:formProperty id="sClFio4" name="4 член сім’ї" type="string" default="${sFIO4}, ${sFamilyRelation4}, ${nBirthday4} р.н." writable="false"></activiti:formProperty>
         <activiti:formProperty id="sClFio5" name="5 член сім’ї" type="string" default="${sFIO5}, ${sFamilyRelation5}, ${nBirthday5} р.н." writable="false"></activiti:formProperty>
         <activiti:formProperty id="sClFio6" name="6 член сім’ї" type="string" default="${sFIO6}, ${sFamilyRelation6}, ${nBirthday6} р.н." writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sFIO1" name="підпис в шапке" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sFIO1" name="ФІО родича 1" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sFamilyRelation1" name="підпис в шапке" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nBirthday1" name="підпис в шапке" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nWhereLives1" name="підпис в шапке" type="invisible"></activiti:formProperty>
@@ -420,14 +427,14 @@
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 			<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
 			<p> 
-				Ваше звернення виконано.<br>
+				Ваше звернення було перевірено.<br>
+				Будь-ласка роздрукуйте та підпишіть у всіх понолітніх членів вашої сім'ї, прикріплену до листа заяву.
 			</p>
 			<br>
-			Ви можете отримати результат<br>
+			За додатковими питаннями Ви можете звернутись за наступними контактами<br>
 			${sAddress}<br>
 			${sWorkTime}<br>
-			${sPhoneOrgan}<br><br><br>			
-			[pattern/mail/_common_feedback.html]
+			${sPhoneOrgan}<br><br>
 			[pattern/mail/_common_signature_start.html]
 			${sNameOrgan}.<br />
 			[pattern/mail/_common_signature_end.html]
