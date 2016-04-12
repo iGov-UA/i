@@ -343,11 +343,6 @@
         <activiti:formProperty id="nWhereLives6" name="З якого часу проживає в даному населеному пункті" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkPlace6" name="Місце роботи і посада" type="invisible"></activiti:formProperty>
 
-
-
-
-
-
        
         <activiti:formProperty id="asAdult6" name="Повнолітній" type="enum" default="no" readable="false" writable="false">
           <activiti:value id="yes" name="Так"></activiti:value>
@@ -361,9 +356,6 @@
         <activiti:formProperty id="sShapkaGolova" name="підпис в шапке" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/mvk/nikolaev_mvk_408_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="Заява;Заява громадянина;pattern/print/mvk/nikolaev_mvk_408_print.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="markers2" name="hide fields Status" type="markers" default="${markerService.loadFromFile('mvk/show_fill_status.json')}"></activiti:formProperty>
-
-
 
 
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -574,9 +566,8 @@
         
         <activiti:formProperty id="sShapkaGolova" name="підпис в шапке" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/mvk/nikolaev_mvk_408_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="Заява;Заява громадянина;pattern/print/mvk/nikolaev_mvk_408_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_2" name="Заява;Заява громадянина;pattern/print/mvk/nikolaev_mvk_408_print.html" type="file"></activiti:formProperty>
 
-        <activiti:formProperty id="markers_For_Print_2" name="hide-show fields table" type="markers" default="${markerService.loadFromFile('mvk/nikolaev_mvk_408_hide-show_for_print_2.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${nFileCertificateOfEmploymentCenter0}, ${nFileCertificateOfEmployment0}, ${nFileBTI0}, ${nfile_Privilege}, ${nFileINN0}, 
@@ -611,7 +602,7 @@
           <activiti:expression><![CDATA[Взяття на облік громадян, які потребують поліпшення житлових умов]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA["${PrintForm_1}"]]></activiti:expression>
+          <activiti:expression><![CDATA["${PrintForm_2}"]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
