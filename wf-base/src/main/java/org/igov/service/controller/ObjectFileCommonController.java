@@ -685,6 +685,7 @@ public class ObjectFileCommonController {
                     : sContentType;
             response.setContentType(contentType);
             response.setCharacterEncoding(Charsets.UTF_8.toString());
+            LOG.info(String.format("Getting FileData pattern [sPathFile = %s]", sPathFile));
             byte[] resultObj = getFileData_Pattern(sPathFile);
             response.getOutputStream().write(resultObj);
         } catch (IllegalArgumentException | IOException e) {
