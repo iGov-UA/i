@@ -275,8 +275,9 @@
           <activiti:value id="no" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sPrivilege" name="Статус для пільг" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sFIOAccountsOfMunicipalServices" name="На кого відкриті рахунки на оплату комунальних послуг; вкажіть прізвище, та ініціали " type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asCountFamily" name="Склад сім’ї, чол." type="enum" required="true">
+        <activiti:formProperty id="sFIOAccountsOfMunicipalServices" name="На кого відкриті рахунки на оплату комунальних послуг; вкажіть прізвище, та ініціали " type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asCountFamily" name="Склад сім’ї, чол." type="enum" writable="false">
+          <activiti:value id="f0" name="0"></activiti:value>
           <activiti:value id="f1" name="1"></activiti:value>
           <activiti:value id="f2" name="2"></activiti:value>
           <activiti:value id="f3" name="3"></activiti:value>
@@ -423,6 +424,9 @@
         <activiti:field name="subject">
           <activiti:expression><![CDATA[Взяття на облік громадян, які потребують поліпшення житлових умов]]></activiti:expression>
         </activiti:field>
+		<activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA["${PrintForm_1}"]]></activiti:expression>
+        </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 			<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
@@ -472,8 +476,9 @@
           <activiti:value id="no" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sPrivilege" name="Статус для пільг" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sFIOAccountsOfMunicipalServices" name="На кого відкриті рахунки на оплату комунальних послуг; вкажіть прізвище, та ініціали " type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asCountFamily" name="Склад сім’ї, чол." type="enum" required="true">
+        <activiti:formProperty id="sFIOAccountsOfMunicipalServices" name="На кого відкриті рахунки на оплату комунальних послуг; вкажіть прізвище, та ініціали " type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asCountFamily" name="Склад сім’ї, чол." type="enum" writable="false">
+          <activiti:value id="f0" name="0"></activiti:value>
           <activiti:value id="f1" name="1"></activiti:value>
           <activiti:value id="f2" name="2"></activiti:value>
           <activiti:value id="f3" name="3"></activiti:value>
