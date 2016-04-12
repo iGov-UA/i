@@ -348,7 +348,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
         String snID_Task = (String) omRequestBody.get("taskId");
         if ((snID_Task == null) && (snClosedTaskId != null)) {
-            snID_Task = snClosedTaskId;
+            snID_Task = snClosedTaskId.trim();
             LOG.info("Task id from requestbody is null, so using task id from url - " + snID_Task);
         }
         LOG.info("Task id is - "+snID_Task);
