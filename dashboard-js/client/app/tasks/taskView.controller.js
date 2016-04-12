@@ -57,6 +57,18 @@
         };
 
         var setTaskForm = function (formProperties) {
+          // change "enum" field to "string" (issue # 751)
+          var aTempFormProperties = formProperties;
+          for(var i = 0; i < formProperties.length; i++){
+            if (aTempFormProperties[i].type === "enum" && isItemFormPropertyDisabled(aTempFormProperties[i])){
+              formProperties[i].type = "string";
+              for(var j = 0; j < aTempFormProperties[i].enumValues.length; j++){
+                if(aTempFormProperties[i].value === aTempFormProperties[i].enumValues[j].id){
+                  formProperties[i].value = aTempFormProperties[i].enumValues[j].name;
+                }
+              }
+            }
+          }
           $scope.taskForm = formProperties;
           $scope.taskForm = addIndexForFileItems($scope.taskForm);
           $scope.printTemplateList = PrintTemplateService.getTemplates($scope.taskForm);
@@ -86,6 +98,43 @@
             iGovNavbarHelper.tasksSearch.autofocusOnTask = false;
           }
         };
+
+        function isItemFormPropertyDisabled(oItemFormProperty){
+          if (!($scope.selectedTask && $scope.selectedTask !== null)) {
+            return true;
+          }
+          if ($scope.selectedTask.assignee === null) {
+            return true;
+          }
+          if ($scope.sSelectedTask === null) {
+            return true;
+          }
+          if (oItemFormProperty === null) {
+            return true;
+          }
+          if ($scope.sSelectedTask === 'finished') {
+            return true;
+          }
+          var sID_Field = oItemFormProperty.id;
+          if (sID_Field === null) {
+            return true;
+          }
+          if (!oItemFormProperty.writable) {
+            return true;
+          }
+          //var bNotBankID =
+          var bEditable = sID_Field.indexOf("bankId") !== 0;
+          var sFieldName = oItemFormProperty.name;
+          if (sFieldName === null) {
+            return true;
+          }
+          var as = sFieldName.split(";");
+          if (as.length > 2) {
+            bEditable = as[2] === "writable=true" ? true : as[2] === "writable=false" ? false : bEditable;
+          }
+
+          return !bEditable;
+        }
 
         setTaskForm(taskForm);
 
@@ -239,6 +288,7 @@
         };
 
         $scope.isFormPropertyDisabled = function (formProperty) {
+          /*
           if (!($scope.selectedTask && $scope.selectedTask !== null)) {
             return true;
           }
@@ -273,6 +323,8 @@
           }
 
           return !bEditable;
+          */
+          return isItemFormPropertyDisabled(formProperty);
         };
 
         $scope.print = function () {

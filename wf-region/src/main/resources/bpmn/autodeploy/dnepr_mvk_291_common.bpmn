@@ -1831,7 +1831,7 @@ p {font-size: 14px;}
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <serviceTask id="servicetask6" name="Відповідь громадянину Email" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask6" name="Відповідь громадянину Email" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -1861,9 +1861,6 @@ Body: ${sBody_Document_UkrDoc}&lt;br&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${anID_Attach_UkrDoc}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -4323,6 +4320,15 @@ execution.setVariable('sNameDepartment', per2)</script>
           <activiti:field name="sID_Document">
             <activiti:expression>${sID_Document_UkrDoc}</activiti:expression>
           </activiti:field>
+          <activiti:field name="sStatusName_UkrDoc">
+            <activiti:expression>${sStatusName_UkrDoc}</activiti:expression>
+          </activiti:field>
+          <activiti:field name="sHead_Document_UkrDoc">
+            <activiti:expression>${sHead_Document_UkrDoc}</activiti:expression>
+          </activiti:field>
+          <activiti:field name="sBody_Document_UkrDoc">
+            <activiti:expression>${sBody_Document_UkrDoc}</activiti:expression>
+          </activiti:field>
         </activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -4338,7 +4344,7 @@ execution.setVariable('sNameDepartment', per2)</script>
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asStatusOperator=='sEnumClose'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow63" sourceRef="usertask4" targetRef="usertask1"></sequenceFlow>
-    <serviceTask id="servicetask7" name="Тимчасова тестова Service Task" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask7" name="Тимчасова тестова Service Task" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -4364,12 +4370,9 @@ execution.setVariable('sNameDepartment', per2)</script>
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${anID_Attach_UkrDoc}</activiti:expression>
-        </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow64" sourceRef="servicetask7" targetRef="exclusivegateway2"></sequenceFlow>
+    <sequenceFlow id="flow65" sourceRef="servicetask7" targetRef="exclusivegateway2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_mvk_291_common">
     <bpmndi:BPMNPlane bpmnElement="dnepr_mvk_291_common" id="BPMNPlane_dnepr_mvk_291_common">
@@ -4686,7 +4689,7 @@ execution.setVariable('sNameDepartment', per2)</script>
         <omgdi:waypoint x="751.0" y="193.0"></omgdi:waypoint>
         <omgdi:waypoint x="751.0" y="263.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow64" id="BPMNEdge_flow64">
+      <bpmndi:BPMNEdge bpmnElement="flow65" id="BPMNEdge_flow65">
         <omgdi:waypoint x="1228.0" y="495.0"></omgdi:waypoint>
         <omgdi:waypoint x="1248.0" y="534.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
