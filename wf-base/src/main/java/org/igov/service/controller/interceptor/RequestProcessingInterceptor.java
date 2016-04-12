@@ -156,8 +156,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         String snTaskId = null;
         //getting task id from URL, if URL matches runtime/tasks/{taskId} (#1234)
         if (TAG_PATTERN_PREFIX.matcher(oRequest.getRequestURL()).find()) {
-            LOG.info("URL is like runtime/tasks/{taskId}, getting task id from url, task id is " + snTaskId);
             snTaskId = sURL.substring(sURL.lastIndexOf("/") + 1);
+            LOG.info("URL is like runtime/tasks/{taskId}, getting task id from url, task id is " + snTaskId);
         }
 
         String sRequestBody = osRequestBody.toString();
@@ -226,8 +226,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 LOG.info("saveNewTaskInfo block");
                 saveNewTaskInfo(sRequestBody, sResponseBody, mRequestParam);
             } else if (isCloseTask(oRequest, sResponseBody)) {
-                LOG.info("saveClosedTaskInfo block");
+                LOG.info("saveClosedTaskInfo block started");
                 saveClosedTaskInfo(sRequestBody, snTaskId);
+                LOG.info("saveClosedTaskInfo block finished");
             } else if (isUpdateTask(oRequest)) {
                 saveUpdatedTaskInfo(sResponseBody);
             }
