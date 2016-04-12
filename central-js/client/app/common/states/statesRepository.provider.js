@@ -70,7 +70,7 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
       } else if (domen.indexOf('ternopil') >= 0) {
         //ternopil.igov.org.ua
         this.mode = 'ternopil';
-      } else if (domen.indexOf('dfs') >= 0) {
+      } else if (domen.indexOf('sfs') >= 0) {
         //dfs.igov.org.ua
         this.mode = 'dfs';
       } else {
