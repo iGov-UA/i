@@ -1839,6 +1839,50 @@ public class ActionTaskService {
         return result;
     }
 
+
+    /**
+     * Ищет таску среди активных и архивных и возвращает ее имя или статус (поиск сначала происходит среди активных Тасок, если не удается найти - ищет в архивных)
+     * @param nID_Task - ИД таски
+     * @return - результат метода Таски getName()
+     * @throws RecordNotFoundException - в случая не возможности найти заданный ИД среди архивных тасок
+     */
+    public Map<String,String> getTaskData(Long nID_Task) throws RecordNotFoundException {
+        SimpleDateFormat oDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        Map<String,String> m = new HashMap();
+        //String result;
+        String snID_Task = nID_Task.toString();
+        try{
+            //result = oTaskService.createTaskQuery().taskId(snID_Task).singleResult().getName();
+            //m.put("sDateEnd", oActionTaskService.getsIDUserTaskByTaskId(nID_Task));
+            Task oTask=oTaskService.createTaskQuery().taskId(snID_Task).singleResult();
+            m.put("sLoginAggigned", oTask.getAssignee());
+            //m.put("sDateEnd", oDateFormat.format(oTask.getCreateTime()));
+        /*return oHistoryService.createHistoricTaskInstanceQuery()
+                .taskId(nID_Task.toString()).singleResult().getTaskDefinitionKey();
+        */
+		//taskInfo.put("createTime", oDateFormat.format(task.getCreateTime()));
+            
+        } catch (NullPointerException e){
+            LOG.info(String.format("Must search Task [id = '%s'] in history!!!", snID_Task));
+            try {
+                //oTask = oHistoryService.createHistoricTaskInstanceQuery().taskId(snID_Task).singleResult().getName();
+                HistoricTaskInstance oTask = oHistoryService.createHistoricTaskInstanceQuery().taskId(snID_Task).singleResult();
+                m.put("sLoginAggigned", oTask.getAssignee());
+                m.put("sDateEnd", oDateFormat.format(oTask.getCreateTime()));
+            } catch (NullPointerException e1){
+                throw new RecordNotFoundException(String.format("Task [id = '%s'] not faund", snID_Task));
+            }
+        }
+        LOG.info("Task id = " + nID_Task + "; m = " + m);
+        return m;
+    }
+    
+    
+        
+        
+    
+    
+    
     public List<FormProperty> getFormPropertiesByTaskID(Long nID_Task) {
         return oFormService.getTaskFormData(nID_Task.toString()).getFormProperties();
     }

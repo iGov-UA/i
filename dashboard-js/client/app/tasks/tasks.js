@@ -19,6 +19,14 @@
           tasksStateModel: function () {
             return {};
           },
+          stateModel: function () {
+            return {
+              printTemplate: null,
+              taskDefinition: null,
+              strictTaskDefinition: null,
+              userProcess: null
+            }
+          },
           processesList: [
             'processes',
             function (processes) {
@@ -49,6 +57,13 @@
           requiresLogin: true
         },
         resolve: {
+          taskData: [
+            'tasks',
+            '$stateParams',
+            function(tasks, $stateParams) {
+              return tasks.getTaskData({nID_Task:$stateParams.id})
+            }
+          ],
           oTask: [
             'tasks',
             '$stateParams',
