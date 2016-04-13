@@ -115,17 +115,17 @@ public class SubjectHuman extends NamedEntity {
 
     private transient List<SubjectContact> aContact;
 
-    @JsonProperty(value = "nID_Sex")
-    @Column(name = "nID_Sex")
-    private Integer nID_Sex;
-
-    public int getnID_Sex() {
-        return nID_Sex;
-    }
-
-    public void setnID_Sex(Integer nID_Sex) {
-        this.nID_Sex = nID_Sex;
-    }
+//    @JsonProperty(value = "nID_Sex")
+//    @Column(name = "nID_Sex")
+//    private Integer nID_Sex;
+//
+//    public int getnID_Sex() {
+//        return nID_Sex;
+//    }
+//
+//    public void setnID_Sex(Integer nID_Sex) {
+//        this.nID_Sex = nID_Sex;
+//    }
 
 //    public String getsID_Sex() {
 //        if (nID_Sex == null) {
