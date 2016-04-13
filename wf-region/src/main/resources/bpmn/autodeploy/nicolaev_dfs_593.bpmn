@@ -15,22 +15,16 @@
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІНН" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sEdrpou" name="ЄДРПОУ" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAdress" name="Адреса реєстрації суб'єкта звернення" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAdress" name="Юридична адреса суб'єкта господарювання" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Мобільний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asLicenz" name="Ви отримуэте нову чи продовжуєте стару ліцензію?" type="enum" required="true">
-          <activiti:value id="sEnamLic_new" name="нову"></activiti:value>
-          <activiti:value id="sEnamLic_old" name="стару"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sLicenz" name="Реквізити лізензії(номер і дата)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asLicenzChange" name="Чи змінюються відомості у вже виданій вам ліцензії" type="enum" required="true">
-          <activiti:value id="sEnamLic_Nochange" name="ні"></activiti:value>
-          <activiti:value id="sEnamLic_Change" name="так"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sLicenz_zmina" name="Які відомості змінюються?" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file_lic_change" name="Документ що підтверджує зміну відомостей;(Якщо документів кілька, вантажте zip архівом)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sT_Adress" name="Адреса місця торгівлі" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sTermin" name="Термін на який видається ліцензія" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sT_indeks" name="Індекс" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sT_plosha" name="Торгівельна площа (м.кв)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sT_objekt" name="Тип об'єкта торгівлі:;(магазин,кафе,кіоск)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sT_dfs_torg" name="Орган ДФС за місцем торгівлі" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sT_dfs_reestr" name="Орган ДФС за місцем реєстрації суб'єкта господарювання" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="date_bigin" name="Вкажіть дату з якої ви хочете отримати ліцензію:;(ліцензія видається на рік)" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="file_lic_plata" name="Сканкопія квитанції про оплату за ліцензію" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="marker_osoba_license" name="vubir_osobu" type="markers" default="${markerService.loadFromFile('dfs_593.json')}"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва ЦНАП" type="invisible"></activiti:formProperty>
@@ -59,14 +53,7 @@
           <activiti:expression>Нова заявка. ${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а) колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-У Вас в черзі на обробку нове звернення. Послуга: ${sPosluga_name}&lt;br /&gt;
-Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
-enum{[asOsoba]}&lt;br /&gt;
-Опрацюйте це звернення на &lt;a href="https://region.igov.org.ua" target="_blank"&gt;порталі&lt;/a&gt;
-[pattern/mail/_common_signature.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -91,8 +78,6 @@ enum{[asOsoba]}&lt;br /&gt;
 ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}.&lt;br /&gt;
-${sAddress}.&lt;br /&gt;
-${sWorkTime}.&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -115,19 +100,18 @@ ${sWorkTime}.&lt;br /&gt;
         <activiti:formProperty id="sAdress" name="Адреса реєстрації суб'єкта звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Мобільний телефон" type="string" default="+380" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asLicenz" name="Заявник отримує нову чи продовжуєте стару ліцензію" type="enum" writable="false">
-          <activiti:value id="sEnamLic_new" name="нову"></activiti:value>
-          <activiti:value id="sEnamLic_old" name="стару"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sLicenz_zmina" name="Які відомості змінюються?" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sLicenz" name="Реквізити лізензії(номер і дата)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sT_Adress" name="Адреса місця торгівлі" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTermin" name="Термін на який видається ліцензія" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asVariants" name="Результат розгляду заявки" type="enum" required="true">
-          <activiti:value id="sEnamDok_ok" name="Заявку оформлено вірно, ліцензію видати"></activiti:value>
-          <activiti:value id="sEnamDok_bad" name="Заявка оформлена не вірно відмова."></activiti:value>
+        <activiti:formProperty id="sT_indeks" name="Індекс" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sT_plosha" name="Торгівельна площа (м.кв)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sT_objekt" name="Тип об'єкта торгівлі:;(магазин,кафе,кіоск)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sT_dfs_torg" name="Орган ДФС за місцем торгівлі" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sT_dfs_reestr" name="Орган ДФС за місцем реєстрації суб'єкта господарювання" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_bigin" name="Дата з якої буде діяти ліцензія" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asVariants" name="Результат розгляду заяви" type="enum" required="true">
+          <activiti:value id="sEnamDok_ok" name="Заяву оформлено вірно, ліцензію видати"></activiti:value>
+          <activiti:value id="sEnamDok_bad" name="Заява оформлена не вірно відмова."></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="Komment_organ" name="Коментар по розгляду заявки;(Вкажіть дату з якої можна отримати ліцензію, в разі відмови поясніть причину відмови)" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="Komment_organ" name="Коментар по розгляду заявки. В разі відмови поясніть причину відмови" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern\print\nicolaev_dfs_593.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="супровідний текст" type="invisible" default="Якщо заявка прийнята, вона знов з'явиться в необроблених, візьміть ії в роботу і зробіть помітку чи видано на руки документ. У разі відмови робота по цій заявці завершена."></activiti:formProperty>
@@ -135,7 +119,7 @@ ${sWorkTime}.&lt;br /&gt;
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${file_lic_change},${file_lic_plata}</activiti:expression>
+            <activiti:expression>${file_lic_plata}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>

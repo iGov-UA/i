@@ -15,38 +15,86 @@
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІНН" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sEdrpou" name="ЄДРПОУ" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAdress" name="Адреса реєстрації суб'єкта звернення" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAdress" name="Юридична адреса суб'єкта господарювання" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Мобільний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asLicenz" name="Ви отримуэте нову чи продовжуєте стару ліцензію?" type="enum" required="true">
-          <activiti:value id="sEnamLic_new" name="нову"></activiti:value>
-          <activiti:value id="sEnamLic_old" name="стару"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sLicenz" name="Реквізити лізензії(номер і дата)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asLicenzChange" name="Чи змінюються відомості у вже виданій вам ліцензії" type="enum" required="true">
-          <activiti:value id="sEnamLic_Nochange" name="ні"></activiti:value>
-          <activiti:value id="sEnamLic_Change" name="так"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sLicenz_zmina" name="Які відомості змінюються?" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file_lic_change" name="Документ що підтверджує зміну відомостей;(Якщо документів кілька, вантажте zip архівом)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sT_Adress" name="Адреса місця торгівлі" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sTermin" name="Термін на який видається ліцензія" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sT_indeks" name="Індекс" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sT_plosha" name="Торгівельна площа (м.кв)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sT_objekt" name="Тип об'єкта торгівлі:;(магазин,кафе,кіоск)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sT_dfs_torg" name="Орган ДФС за місцем торгівлі" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sT_dfs_reestr" name="Орган ДФС за місцем реєстрації суб'єкта господарювання" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="date_bigin" name="Вкажіть дату з якої ви хочете отримати ліцензію:;(ліцензія видається на рік)" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="file_lic_plata" name="Сканкопія квитанції про оплату за ліцензію" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="marker_osoba_license" name="vubir_osobu" type="markers" default="${markerService.loadFromFile('dfs_593.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sInfo" name="Інфо" type="label" default="Внесіть інформацію про реєстратор розрахункових операцій (книгу обліку розрахункових операцій), який знаходиться у місці торгівлі"></activiti:formProperty>
+        <activiti:formProperty id="sInfo" name="Інфо" type="label" default="Внесіть інформацію про реєстратори розрахункових операцій (книги обліку розрахункових операцій), які знаходиться у місці торгівлі"></activiti:formProperty>
+        <activiti:formProperty id="marker_reestrators" name="vubir_osobu" type="markers" default="${markerService.loadFromFile('dfs_592.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_ekka" name="Реєстраційне посвідчення на ЕККА:;(№, дата видачі,орган що видав)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sReestrat_model" name="Модель" type="string"></activiti:formProperty>
         <activiti:formProperty id="sReestrat_modif" name="Модифікація" type="string"></activiti:formProperty>
         <activiti:formProperty id="sReestrat_zavodN" name="Заводський номер" type="string"></activiti:formProperty>
         <activiti:formProperty id="sReestrat_virobn" name="Виробник" type="string"></activiti:formProperty>
         <activiti:formProperty id="sReestrat_date_vug" name="Дата виготовлення" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sReestrat_N_posv" name="Реєстраційний номер посвідчення реєстратора розрахункових операцій" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_N_posv" name="Реєстраційний номер КОРО реєстратора розрахункових операцій" type="string"></activiti:formProperty>
         <activiti:formProperty id="sReestrat_jblic_dfs" name="Дата початку обліку в органах ДФС" type="string"></activiti:formProperty>
+        <activiti:formProperty id="as2reestrators" name="Чи є у вас ще касові апарати дані яких треба внести?" type="enum" required="true">
+          <activiti:value id="s2yes" name="Так"></activiti:value>
+          <activiti:value id="s2no" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sReestrat_ekka2" name="Реєстраційне посвідчення на ЕККА" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_model2" name="Модель" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_modif2" name="Модифікація" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_zavodN2" name="Заводський номер" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_virobn2" name="Виробник" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_date_vug2" name="Дата виготовлення" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_N_posv2" name="Реєстраційний номер КОРО реєстратора розрахункових операцій" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_jblic_dfs2" name="Дата початку обліку в органах ДФС" type="string"></activiti:formProperty>
+        <activiti:formProperty id="as3reestrators" name="Чи є у вас ще касові апарати дані яких треба внести?" type="enum" required="true">
+          <activiti:value id="s3yes" name="Так"></activiti:value>
+          <activiti:value id="s3no" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sReestrat_ekka3" name="Реєстраційне посвідчення на ЕККА" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_model3" name="Модель" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_modif3" name="Модифікація" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_zavodN3" name="Заводський номер" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_virobn3" name="Виробник" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_date_vug3" name="Дата виготовлення" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_N_posv3" name="Реєстраційний номер КОРО реєстратора розрахункових операцій" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_jblic_dfs3" name="Дата початку обліку в органах ДФС" type="string"></activiti:formProperty>
+        <activiti:formProperty id="as4reestrators" name="Чи є у вас ще касові апарати дані яких треба внести?" type="enum" required="true">
+          <activiti:value id="s4yes" name="Так"></activiti:value>
+          <activiti:value id="s4no" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sReestrat_ekka4" name="Реєстраційне посвідчення на ЕККА" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_model4" name="Модель" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_modif4" name="Модифікація" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_zavodN4" name="Заводський номер" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_virobn4" name="Виробник" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_date_vug4" name="Дата виготовлення" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_N_posv4" name="Реєстраційний номер КОРО реєстратора розрахункових операцій" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_jblic_dfs4" name="Дата початку обліку в органах ДФС" type="string"></activiti:formProperty>
+        <activiti:formProperty id="as5reestrators" name="Чи є у вас ще касові апарати дані яких треба внести?" type="enum" required="true">
+          <activiti:value id="s5yes" name="Так"></activiti:value>
+          <activiti:value id="s5no" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sReestrat_ekka5" name="Реєстраційне посвідчення на ЕККА" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_model5" name="Модель" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_modif5" name="Модифікація" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_zavodN5" name="Заводський номер" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_virobn5" name="Виробник" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_date_vug5" name="Дата виготовлення" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_N_posv5" name="Реєстраційний номер КОРО реєстратора розрахункових операцій" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_jblic_dfs5" name="Дата початку обліку в органах ДФС" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Телефон органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Час роботи органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="print2" name="принт2" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="print3" name="принт3" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="print4" name="принт4" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="print5" name="принт5" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPosluga_name" name="назва послуги" type="invisible" default="Видача ліцензії на право роздрібної торгівлі алкогольними напоями або сидром та перрі"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -67,18 +115,11 @@
           <activiti:expression>Нова заявка. ${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а) колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-У Вас в черзі на обробку нове звернення. Послуга: ${sPosluga_name}&lt;br /&gt;
-Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
-enum{[asOsoba]}&lt;br /&gt;
-Опрацюйте це звернення на &lt;a href="https://region.igov.org.ua" target="_blank"&gt;порталі&lt;/a&gt;
-[pattern/mail/_common_signature.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="servicetask3"></sequenceFlow>
+    <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <serviceTask id="servicetask4" name="Лист заявнику" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -123,14 +164,14 @@ ${sWorkTime}.&lt;br /&gt;
         <activiti:formProperty id="sAdress" name="Адреса реєстрації суб'єкта звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Мобільний телефон" type="string" default="+380" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asLicenz" name="Заявник продовжує стару чи отрумує нову ліцензію?" type="enum" writable="false">
-          <activiti:value id="sEnamLic_new" name="нову"></activiti:value>
-          <activiti:value id="sEnamLic_old" name="стару"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sLicenz_zmina" name="Які відомості змінюються в старій ліцензії?" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sLicenz" name="Реквізити лізензії(номер і дата)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sT_Adress" name="Адреса місця торгівлі" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTermin" name="Термін на який видається ліцензія" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sT_indeks" name="Індекс" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sT_plosha" name="Торгівельна площа (м.кв)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sT_objekt" name="Тип об'єкта торгівлі:;(магазин,кафе,кіоск)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sT_dfs_torg" name="Орган ДФС за місцем торгівлі" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sT_dfs_reestr" name="Орган ДФС за місцем реєстрації суб'єкта господарювання" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_bigin" name="Дата з якої буде діяти ліцензія" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sReestrat_ekka" name="Реєстраційне посвідчення на ЕККА" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sReestrat_model" name="Модель реєстратора розрахункових операцій" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sReestrat_modif" name="Модифікація реєстратора розрахункових операцій" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sReestrat_zavodN" name="Заводський номер реєстратора розрахункових операцій" type="string" writable="false"></activiti:formProperty>
@@ -144,13 +185,17 @@ ${sWorkTime}.&lt;br /&gt;
         </activiti:formProperty>
         <activiti:formProperty id="Komment_organ" name="Коментар по розгляду заявки;(Вкажіть корисну інформацію, в разі відмови поясніть причину відмови)" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="print2" name="принт2" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="print3" name="принт3" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="print4" name="принт4" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="print5" name="принт5" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern\print\nicolaev_dfs_592.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="супровідний текст" type="invisible" default="Якщо заявка прийнята, вона знов з'явиться в необроблених, візьміть ії в роботу і зробіть помітку чи видано на руки документ. У разі відмови робота по цій заявці завершена."></activiti:formProperty>
-        <activiti:formProperty id="print_marker1" name="ur_fiz_print" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_1&quot;:{&quot;aElement_ID&quot;:[&quot;UO&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asOsoba&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnamUr'&quot;},&quot;ShowElementsOnTrue_2&quot;:{&quot;aElement_ID&quot;:[&quot;FO&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asOsoba&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnamFiz'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="print_marker1" name="ur_fiz_print" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_1&quot;:{&quot;aElement_ID&quot;:[&quot;UO&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asOsoba&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnamUr'&quot;},&quot;ShowElementsOnTrue_2&quot;:{&quot;aElement_ID&quot;:[&quot;FO&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asOsoba&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnamFiz'&quot;},&quot;ShowElementsOnTrue_3&quot;:{&quot;aElement_ID&quot;:[&quot;s2yes&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;print2&quot;},&quot;sCondition&quot;:&quot;[sCond]=='s2yes'&quot;},&quot;ShowElementsOnTrue_4&quot;:{&quot;aElement_ID&quot;:[&quot;s3yes&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;print3&quot;},&quot;sCondition&quot;:&quot;[sCond]=='s3yes'&quot;},&quot;ShowElementsOnTrue_5&quot;:{&quot;aElement_ID&quot;:[&quot;s4yes&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;print4&quot;},&quot;sCondition&quot;:&quot;[sCond]=='s4yes'&quot;},&quot;ShowElementsOnTrue_6&quot;:{&quot;aElement_ID&quot;:[&quot;s5yes&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;print5&quot;},&quot;sCondition&quot;:&quot;[sCond]=='s5yes'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${file_lic_change},${file_lic_plata}</activiti:expression>
+            <activiti:expression>${file_lic_plata}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -309,6 +354,31 @@ ${sWorkTime}.&lt;br /&gt;
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow16" sourceRef="servicetask8" targetRef="endevent2"></sequenceFlow>
+    <scriptTask id="scripttask1" name="Script1" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>
+var per2 = 'print2'
+var per3 = 'print3'
+var per4 = 'print4'
+var per5 = 'print5'
+if (execution.getVariable('as2reestrators') == 's2yes'){
+per2 = 's2yes'
+}
+if (execution.getVariable('as3reestrators') == 's3yes'){
+per3 = 's3yes'
+}
+if (execution.getVariable('as4reestrators') == 's4yes'){
+per4 = 's4yes'
+}
+if (execution.getVariable('as5reestrators') == 's5yes'){
+per5 = 's5yes'
+}
+execution.setVariable('print2', per2)
+execution.setVariable('print3', per3)
+execution.setVariable('print4', per4)
+execution.setVariable('print5', per5)
+      </script>
+    </scriptTask>
+    <sequenceFlow id="flow17" sourceRef="scripttask1" targetRef="servicetask3"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_nicolaev_dfs_592">
     <bpmndi:BPMNPlane bpmnElement="nicolaev_dfs_592" id="BPMNPlane_nicolaev_dfs_592">
@@ -357,13 +427,16 @@ ${sWorkTime}.&lt;br /&gt;
       <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
         <omgdc:Bounds height="55.0" width="105.0" x="780.0" y="282.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="190.0" y="10.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="85.0" y="117.0"></omgdi:waypoint>
         <omgdi:waypoint x="130.0" y="117.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="235.0" y="117.0"></omgdi:waypoint>
-        <omgdi:waypoint x="250.0" y="117.0"></omgdi:waypoint>
+        <omgdi:waypoint x="182.0" y="90.0"></omgdi:waypoint>
+        <omgdi:waypoint x="242.0" y="65.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
         <omgdi:waypoint x="355.0" y="117.0"></omgdi:waypoint>
@@ -430,6 +503,10 @@ ${sWorkTime}.&lt;br /&gt;
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
         <omgdi:waypoint x="885.0" y="309.0"></omgdi:waypoint>
         <omgdi:waypoint x="900.0" y="309.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
+        <omgdi:waypoint x="242.0" y="65.0"></omgdi:waypoint>
+        <omgdi:waypoint x="302.0" y="90.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
