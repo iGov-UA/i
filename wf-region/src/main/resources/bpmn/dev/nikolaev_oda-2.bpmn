@@ -1,0 +1,601 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="nikolaev_oda_2" name="Взяття на облік громадян, які потребують поліпшення житлових умов" isExecutable="true">
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати рішення" type="select" default="0"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані заявника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта громадянина України заявника; Сторінки 1, 2, 10, 11. При наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву чи pdf-файлі" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Ваш e-mail" type="string" required="true"></activiti:formProperty>
+        
+        
+        <activiti:formProperty id="nWhereLives0" name="З якого року проживаєте в даному населеному пункті; чотори цифри" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asWork0" name="Десь працюєте" type="enum" required="true">
+          <activiti:value id="yes" name="працюю"></activiti:value>
+          <activiti:value id="no" name="безробітній"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sWorkPlace0" name="Місце роботи" type="string" required="true"></activiti:formProperty>
+		<activiti:formProperty id="nFileCertificateOfEmploymentCenter0" name="Копія довідки з центра зайнятості заявника; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву чи pdf-файлі" type="file" required="true"></activiti:formProperty>        
+		<activiti:formProperty id="nFileCertificateOfEmployment0" name="Копія довідки з місця роботи заявника; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву чи pdf-файлі" type="file" required="true"></activiti:formProperty>        
+		<activiti:formProperty id="nFileBTI0" name="Копія довідки із реєстраційної служби речових прав на нерухоме майно (БТІ чи інший) про наявність або відсутність власності нерухомого майна заявника" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAddressFactual" name="Фактична адреса за якою проживаєте" type="string" required="true"></activiti:formProperty>
+		<activiti:formProperty id="anRooms" name="Скільки в ній кімнат" default="r1" type="enum" required="true">
+          <activiti:value id="r1" name="1"></activiti:value>
+          <activiti:value id="r2" name="2"></activiti:value>
+          <activiti:value id="r3" name="3"></activiti:value>
+          <activiti:value id="r4" name="4"></activiti:value>
+          <activiti:value id="r5" name="5"></activiti:value>
+        </activiti:formProperty>
+        
+        <activiti:formProperty id="nLivingSpace" name="Жила площа, кв.м.; через крапку" type="double" required="true"></activiti:formProperty>
+        
+        
+        <activiti:formProperty id="asOwnership" name="Будинок (квартира) належить" default="r1" type="enum" required="true">
+          <activiti:value id="own1" name="комунальний"></activiti:value>
+          <activiti:value id="own2" name="кооперативний"></activiti:value>
+          <activiti:value id="own3" name="власний"></activiti:value>
+        </activiti:formProperty>
+        
+        <activiti:formProperty id="sFIOAccountsOfMunicipalServices" name="На кого відкриті рахунки на оплату комунальних послуг; вкажіть прізвище, та ініціали " type="string" required="true"></activiti:formProperty>
+        
+        
+        
+        <activiti:formProperty id="asPrivilege" name="Маєти пільги ви чи ваші члени сім'ї для першочергового одержання житла" type="enum" required="true">
+          <activiti:value id="yes" name="Так"></activiti:value>
+          <activiti:value id="no" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="lPrivilege" name="Зверніть увагу" type="label" default="Укажіть свій статус так прикрипіть один чи декілька документів:           &lt;ul&gt;            &lt;li&gt;довідка МСЕК&lt;/li&gt;            &lt;li&gt;довідка про одержання грошової допомоги одинокої матері&lt;/li&gt;            &lt;li&gt;копія посвідчення багатодітної родини&lt;/li&gt;            &lt;li&gt;довідка з місця роботи для працівник міліції&lt;/li&gt;            &lt;li&gt;довідка з місця роботи для працівників освіти&lt;/li&gt;            &lt;li&gt;посвідчення ветерана війни&lt;/li&gt;            &lt;li&gt;свідоцтво постраждалих внаслідок Чорнобильської катастрофи&lt;/li&gt;            &lt;li&gt;документ який свідчить про статус сироти&lt;/li&gt;            &lt;li&gt;копія довідки із учбового закладу про розподіл на роботу у іншу місцевість&lt;/li&gt;            &lt;li&gt;копія приказу про призначення на посаду (працівників прокуратури та суду)&lt;/li&gt;           &lt;/ul&gt; "></activiti:formProperty>
+        <activiti:formProperty id="aPrivilege" name="Укажіть свої льготи;якщо декілька, то вказуйте через кому" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nfile_Privilege" name="Копія(ї) документа(ів), що надає льготу для першочергового одержання житла; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву" type="file" required="true"></activiti:formProperty>        
+        
+		<activiti:formProperty id="asCountFamily" name="Укажіть скільки осіб проживає з вами" type="enum" required="true">
+          <activiti:value id="f1" name="1"></activiti:value>
+          <activiti:value id="f2" name="2"></activiti:value>
+          <activiti:value id="f3" name="3"></activiti:value>
+          <activiti:value id="f4" name="4"></activiti:value>
+          <activiti:value id="f5" name="5"></activiti:value>
+          <activiti:value id="f6" name="6"></activiti:value>
+          <activiti:value id="f7" name="7"></activiti:value>
+          <activiti:value id="f8" name="8"></activiti:value>
+          <activiti:value id="f9" name="9"></activiti:value>
+        </activiti:formProperty>
+        
+
+        <activiti:formProperty id="lHR1" name="&lt;hrl&gt;" type="label" default="&lt;hrl&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sFamilyRelation1" name="Вкажіть родинні стосунки" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFIO1" name="Прізвище, Ім'я, По Батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nBirthday1" name="Рік народження; чотори цифри" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asAdult1" name="Повнолітній" type="enum" default="no" required="true">
+          <activiti:value id="yes" name="Так"></activiti:value>
+          <activiti:value id="no" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="nFilePassport1" name="Копія паспорта громадянина України першого члена сім'ї; Сторінки 1, 2, 10, 11. При наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву чи pdf-файлі" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nWhereLives1" name="З якого року проживає в даному населеному пункті; чотори цифри" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asWork1" name="Десь працює" type="enum" required="true">
+          <activiti:value id="yes" name="працює"></activiti:value>
+          <activiti:value id="no" name="безробітній"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sWorkPlace1" name="Місце роботи" type="string" required="true"></activiti:formProperty>
+		<activiti:formProperty id="nFileCertificateOfEmploymentCenter1" name="Копія довідки з центра зайнятості першого члена сім'ї; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву чи pdf-файлі" type="file" required="true"></activiti:formProperty>        
+		<activiti:formProperty id="nFileCertificateOfEmployment1" name="Копія довідки з місця роботи першого члена сім'ї; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву чи pdf-файлі" type="file" required="true"></activiti:formProperty>        
+        <activiti:formProperty id="nFileBirthCertificate1" name="Копія свідоцтва про народження першого члена сім'ї; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileBTI1" name="Копія довідки із реєстраційної служби речових прав на нерухоме майно (БТІ чи інший) про наявність або відсутність власності нерухомого майна першого члена сім'ї" type="file" required="true"></activiti:formProperty>
+        
+        
+        <activiti:formProperty id="lHR2" name="&lt;hrl&gt;" type="label" default="&lt;hrl&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sFamilyRelation2" name="Вкажіть родинні стосунки" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFIO2" name="Прізвище, Ім'я, По Батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nBirthday2" name="Рік народження; чотори цифри" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asAdult2" name="Повнолітній" type="enum" default="no" required="true">
+          <activiti:value id="yes" name="Так"></activiti:value>
+          <activiti:value id="no" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="nFilePassport2" name="Копія паспорта громадянина України другого члена сім'ї; Сторінки 1, 2, 10, 11. При наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву чи pdf-файлі" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nWhereLives2" name="З якого року проживає в даному населеному пункті; чотори цифри" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asWork2" name="Десь працює" type="enum" required="true">
+          <activiti:value id="yes" name="працює"></activiti:value>
+          <activiti:value id="no" name="безробітній"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sWorkPlace2" name="Місце роботи" type="string" required="true"></activiti:formProperty>
+		<activiti:formProperty id="nFileCertificateOfEmploymentCenter2" name="Копія довідки з центра зайнятості другого члена сім'ї; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву чи pdf-файлі" type="file" required="true"></activiti:formProperty>        
+		<activiti:formProperty id="nFileCertificateOfEmployment2" name="Копія довідки з місця роботи другого члена сім'ї; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву чи pdf-файлі" type="file" required="true"></activiti:formProperty>        
+        <activiti:formProperty id="nFileBirthCertificate2" name="Копія свідоцтва про народження другого члена сім'ї; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileBTI2" name="Копія довідки із реєстраційної служби речових прав на нерухоме майно (БТІ чи інший) про наявність або відсутність власності нерухомого майна другого члена сім'ї" type="file" required="true"></activiti:formProperty>
+        
+        
+        <activiti:formProperty id="lHR3" name="&lt;hrl&gt;" type="label" default="&lt;hrl&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sFamilyRelation3" name="Вкажіть родинні стосунки" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFIO3" name="Прізвище, Ім'я, По Батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nBirthday3" name="Рік народження; чотори цифри" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asAdult3" name="Повнолітній" type="enum" default="no" required="true">
+          <activiti:value id="yes" name="Так"></activiti:value>
+          <activiti:value id="no" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="nFilePassport3" name="Копія паспорта громадянина України третього члена сім'ї; Сторінки 1, 2, 10, 11. При наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву чи pdf-файлі" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nWhereLives3" name="З якого року проживає в даному населеному пункті; чотори цифри" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asWork3" name="Десь працює" type="enum" required="true">
+          <activiti:value id="yes" name="працює"></activiti:value>
+          <activiti:value id="no" name="безробітній"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sWorkPlace3" name="Місце роботи" type="string" required="true"></activiti:formProperty>
+		<activiti:formProperty id="nFileCertificateOfEmploymentCenter3" name="Копія довідки з центра зайнятості третього члена сім'ї; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву чи pdf-файлі" type="file" required="true"></activiti:formProperty>        
+		<activiti:formProperty id="nFileCertificateOfEmployment3" name="Копія довідки з місця роботи третього члена сім'ї; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву чи pdf-файлі" type="file" required="true"></activiti:formProperty>        
+        <activiti:formProperty id="nFileBirthCertificate3" name="Копія свідоцтва про народження третього члена сім'ї; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileBTI3" name="Копія довідки із реєстраційної служби речових прав на нерухоме майно (БТІ чи інший) про наявність або відсутність власності нерухомого майна третього члена сім'ї" type="file" required="true"></activiti:formProperty>
+        
+        
+        <activiti:formProperty id="lHR4" name="&lt;hrl&gt;" type="label" default="&lt;hrl&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sFamilyRelation4" name="Вкажіть родинні стосунки" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFIO4" name="Прізвище, Ім'я, По Батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nBirthday4" name="Рік народження; чотори цифри" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asAdult4" name="Повнолітній" type="enum" default="no" required="true">
+          <activiti:value id="yes" name="Так"></activiti:value>
+          <activiti:value id="no" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="nFilePassport4" name="Копія паспорта громадянина України четвертого члена сім'ї; Сторінки 1, 2, 10, 11. При наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву чи pdf-файлі" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nWhereLives4" name="З якого року проживає в даному населеному пункті; чотори цифри" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asWork4" name="Десь працює" type="enum" required="true">
+          <activiti:value id="yes" name="працює"></activiti:value>
+          <activiti:value id="no" name="безробітній"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sWorkPlace4" name="Місце роботи" type="string" required="true"></activiti:formProperty>
+		<activiti:formProperty id="nFileCertificateOfEmploymentCenter4" name="Копія довідки з центра зайнятості четвертого члена сім'ї; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву чи pdf-файлі" type="file" required="true"></activiti:formProperty>        
+		<activiti:formProperty id="nFileCertificateOfEmployment4" name="Копія довідки з місця роботи четвертого члена сім'ї; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву чи pdf-файлі" type="file" required="true"></activiti:formProperty>        
+        <activiti:formProperty id="nFileBirthCertificate4" name="Копія свідоцтва про народження четвертого члена сім'ї; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileBTI4" name="Копія довідки із реєстраційної служби речових прав на нерухоме майно (БТІ чи інший) про наявність або відсутність власності нерухомого майна четвертого члена сім'ї" type="file" required="true"></activiti:formProperty>
+        
+        
+        <activiti:formProperty id="lHR5" name="&lt;hrl&gt;" type="label" default="&lt;hrl&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sFamilyRelation5" name="Вкажіть родинні стосунки" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFIO5" name="Прізвище, Ім'я, По Батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nBirthday5" name="Рік народження; чотори цифри" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asAdult5" name="Повнолітній" type="enum" default="no" required="true">
+          <activiti:value id="yes" name="Так"></activiti:value>
+          <activiti:value id="no" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="nFilePassport5" name="Копія паспорта громадянина України п'ятого члена сім'ї; Сторінки 1, 2, 10, 11. При наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву чи pdf-файлі" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nWhereLives5" name="З якого року проживає в даному населеному пункті; чотори цифри" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asWork5" name="Десь працює" type="enum" required="true">
+          <activiti:value id="yes" name="працює"></activiti:value>
+          <activiti:value id="no" name="безробітній"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sWorkPlace5" name="Місце роботи" type="string" required="true"></activiti:formProperty>
+		<activiti:formProperty id="nFileCertificateOfEmploymentCenter5" name="Копія довідки з центра зайнятості п'ятого члена сім'ї; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву чи pdf-файлі" type="file" required="true"></activiti:formProperty>        
+		<activiti:formProperty id="nFileCertificateOfEmployment5" name="Копія довідки з місця роботи п'ятого члена сім'ї; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву чи pdf-файлі" type="file" required="true"></activiti:formProperty>        
+        <activiti:formProperty id="nFileBirthCertificate5" name="Копія свідоцтва про народження п'ятого члена сім'ї; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileBTI5" name="Копія довідки із реєстраційної служби речових прав на нерухоме майно (БТІ чи інший) про наявність або відсутність власності нерухомого майна п'ятого члена сім'ї" type="file" required="true"></activiti:formProperty>
+        
+        
+        <activiti:formProperty id="lHR6" name="&lt;hrl&gt;" type="label" default="&lt;hrl&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sFamilyRelation6" name="Вкажіть родинні стосунки" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFIO6" name="Прізвище, Ім'я, По Батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nBirthday6" name="Рік народження; чотори цифри" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asAdult6" name="Повнолітній" type="enum" default="no" required="true">
+          <activiti:value id="yes" name="Так"></activiti:value>
+          <activiti:value id="no" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="nFilePassport6" name="Копія паспорта громадянина України шостого члена сім'ї; Сторінки 1, 2, 10, 11. При наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву чи pdf-файлі" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nWhereLives6" name="З якого року проживає в даному населеному пункті; чотори цифри" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asWork6" name="Десь працює" type="enum" required="true">
+          <activiti:value id="yes" name="працює"></activiti:value>
+          <activiti:value id="no" name="безробітній"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sWorkPlace6" name="Місце роботи" type="string" required="true"></activiti:formProperty>
+		<activiti:formProperty id="nFileCertificateOfEmploymentCenter6" name="Копія довідки з центра зайнятості шостого члена сім'ї; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву чи pdf-файлі" type="file" required="true"></activiti:formProperty>        
+		<activiti:formProperty id="nFileCertificateOfEmployment6" name="Копія довідки з місця роботи шостого члена сім'ї; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву чи pdf-файлі" type="file" required="true"></activiti:formProperty>        
+        <activiti:formProperty id="nFileBirthCertificate6" name="Копія свідоцтва про народження шостого члена сім'ї; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileBTI6" name="Копія довідки із реєстраційної служби речових прав на нерухоме майно (БТІ чи інший) про наявність або відсутність власності нерухомого майна шостого члена сім'ї" type="file" required="true"></activiti:formProperty>
+        
+        
+        
+        <activiti:formProperty id="lHR7" name="&lt;hrl&gt;" type="label" default="&lt;hrl&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sFamilyRelation7" name="Вкажіть родинні стосунки" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFIO7" name="Прізвище, Ім'я, По Батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nBirthday7" name="Рік народження; чотори цифри" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asAdult7" name="Повнолітній" type="enum" default="no" required="true">
+          <activiti:value id="yes" name="Так"></activiti:value>
+          <activiti:value id="no" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="nFilePassport7" name="Копія паспорта громадянина України сьомого члена сім'ї; Сторінки 1, 2, 10, 11. При наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву чи pdf-файлі" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nWhereLives7" name="З якого року проживає в даному населеному пункті; чотори цифри" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asWork7" name="Десь працює" type="enum" required="true">
+          <activiti:value id="yes" name="працює"></activiti:value>
+          <activiti:value id="no" name="безробітній"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sWorkPlace7" name="Місце роботи" type="string" required="true"></activiti:formProperty>
+		<activiti:formProperty id="nFileCertificateOfEmploymentCenter7" name="Копія довідки з центра зайнятості сьомого члена сім'ї; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву чи pdf-файлі" type="file" required="true"></activiti:formProperty>        
+		<activiti:formProperty id="nFileCertificateOfEmployment7" name="Копія довідки з місця роботи сьомого члена сім'ї; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву чи pdf-файлі" type="file" required="true"></activiti:formProperty>        
+        <activiti:formProperty id="nFileBirthCertificate7" name="Копія свідоцтва про народження сьомого члена сім'ї; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileBTI7" name="Копія довідки із реєстраційної служби речових прав на нерухоме майно (БТІ чи інший) про наявність або відсутність власності нерухомого майна сьомого члена сім'ї" type="file" required="true"></activiti:formProperty>
+        
+        
+        <activiti:formProperty id="lHR8" name="&lt;hrl&gt;" type="label" default="&lt;hrl&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sFamilyRelation8" name="Вкажіть родинні стосунки" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFIO8" name="Прізвище, Ім'я, По Батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nBirthday8" name="Рік народження; чотори цифри" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asAdult8" name="Повнолітній" type="enum" default="no" required="true">
+          <activiti:value id="yes" name="Так"></activiti:value>
+          <activiti:value id="no" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="nFilePassport8" name="Копія паспорта громадянина України восьмого члена сім'ї; Сторінки 1, 2, 10, 11. При наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву чи pdf-файлі" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nWhereLives8" name="З якого року проживає в даному населеному пункті; чотори цифри" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asWork8" name="Десь працює" type="enum" required="true">
+          <activiti:value id="yes" name="працює"></activiti:value>
+          <activiti:value id="no" name="безробітній"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sWorkPlace8" name="Місце роботи" type="string" required="true"></activiti:formProperty>
+		<activiti:formProperty id="nFileCertificateOfEmploymentCenter8" name="Копія довідки з центра зайнятості восьмого члена сім'ї; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву чи pdf-файлі" type="file" required="true"></activiti:formProperty>        
+		<activiti:formProperty id="nFileCertificateOfEmployment8" name="Копія довідки з місця роботи восьмого члена сім'ї; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву чи pdf-файлі" type="file" required="true"></activiti:formProperty>        
+        <activiti:formProperty id="nFileBirthCertificate8" name="Копія свідоцтва про народження восьмого члена сім'ї; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileBTI8" name="Копія довідки із реєстраційної служби речових прав на нерухоме майно (БТІ чи інший) про наявність або відсутність власності нерухомого майна восьмого члена сім'ї" type="file" required="true"></activiti:formProperty>
+        
+        
+        
+        <activiti:formProperty id="lHR9" name="&lt;hrl&gt;" type="label" default="&lt;hrl&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sFamilyRelation9" name="Вкажіть родинні стосунки" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFIO9" name="Прізвище, Ім'я, По Батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nBirthday9" name="Рік народження; чотори цифри" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asAdult9" name="Повнолітній" type="enum" default="no" required="true">
+          <activiti:value id="yes" name="Так"></activiti:value>
+          <activiti:value id="no" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="nFilePassport9" name="Копія паспорта громадянина України девятого члена сім'ї; Сторінки 1, 2, 10, 11. При наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву чи pdf-файлі" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nWhereLives9" name="З якого року проживає в даному населеному пункті; чотори цифри" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asWork9" name="Десь працює" type="enum" required="true">
+          <activiti:value id="yes" name="працює"></activiti:value>
+          <activiti:value id="no" name="безробітній"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sWorkPlace9" name="Місце роботи" type="string" required="true"></activiti:formProperty>
+		<activiti:formProperty id="nFileCertificateOfEmploymentCenter9" name="Копія довідки з центра зайнятості девятого члена сім'ї; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву чи pdf-файлі" type="file" required="true"></activiti:formProperty>        
+		<activiti:formProperty id="nFileCertificateOfEmployment9" name="Копія довідки з місця роботи девятого члена сім'ї; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву чи pdf-файлі" type="file" required="true"></activiti:formProperty>        
+        <activiti:formProperty id="nFileBirthCertificate9" name="Копія свідоцтва про народження девятого члена сім'ї; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileBTI9" name="Копія довідки із реєстраційної служби речових прав на нерухоме майно (БТІ чи інший) про наявність або відсутність власності нерухомого майна девятого члена сім'ї" type="file" required="true"></activiti:formProperty>
+        
+        
+        <activiti:formProperty id="nFileFamily" name="Копія довідки по формі-3 (довдовідка про склад сім'ї)" type="file" required="true"></activiti:formProperty>
+       
+        <activiti:formProperty id="sPhoneOrgan" name="телефон" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адреса органу" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sContact" name="адреса органу" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sShapkaGolova" name="підпис в шапке" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hide fields Privilege" type="markers" default="${markerService.loadFromFile('mvk/show_fill_privilege.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers_visual_fill_relative_1" name="Отображать 1 родственника" type="markers" default="${markerService.loadFromFile('mvk/visual_fill_relative_1.json')}"></activiti:formProperty>
+		<activiti:formProperty id="markers_visual_fill_relative_2" name="Отображать 2 родственника" type="markers" default="${markerService.loadFromFile('mvk/visual_fill_relative_2.json')}"></activiti:formProperty>
+		<activiti:formProperty id="markers_visual_fill_relative_3" name="Отображать 3 родственника" type="markers" default="${markerService.loadFromFile('mvk/visual_fill_relative_3.json')}"></activiti:formProperty>
+		<activiti:formProperty id="markers_visual_fill_relative_4" name="Отображать 4 родственника" type="markers" default="${markerService.loadFromFile('mvk/visual_fill_relative_4.json')}"></activiti:formProperty>
+		<activiti:formProperty id="markers_visual_fill_relative_5" name="Отображать 5 родственника" type="markers" default="${markerService.loadFromFile('mvk/visual_fill_relative_5.json')}"></activiti:formProperty>
+		<activiti:formProperty id="markers_visual_fill_relative_6" name="Отображать 6 родственника" type="markers" default="${markerService.loadFromFile('mvk/visual_fill_relative_6.json')}"></activiti:formProperty>
+		<activiti:formProperty id="markers_visual_fill_relative_7" name="Отображать 7 родственника" type="markers" default="${markerService.loadFromFile('mvk/visual_fill_relative_7.json')}"></activiti:formProperty>
+		<activiti:formProperty id="markers_visual_fill_relative_8" name="Отображать 8 родственника" type="markers" default="${markerService.loadFromFile('mvk/visual_fill_relative_8.json')}"></activiti:formProperty>
+		<activiti:formProperty id="markers_visual_fill_relative_9" name="Отображать 9 родственника" type="markers" default="${markerService.loadFromFile('mvk/visual_fill_relative_9.json')}"></activiti:formProperty>
+        
+      </extensionElements>
+    </startEvent>
+    <sequenceFlow id="flow14" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
+    <serviceTask id="servicetask1" name="отримання додаткових документiв" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
+      <errorEventDefinition></errorEventDefinition>
+    </boundaryEvent>
+    <sequenceFlow id="flow11" sourceRef="boundaryerror1" targetRef="endevent3"></sequenceFlow>
+    <serviceTask id="servicetask2" name="Повідомлення чиновника про нову заявку" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression><![CDATA[Нове звернення громадян на тему:
+          	Взяття на облік громадян, які потребують поліпшення житлових умов]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow22" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
+    <serviceTask id="servicetask3" name="Повідомлення про  подання звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression><![CDATA[Взяття на облік громадян, які потребують поліпшення житлових умов]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+			<p>
+				Ваш запит був успішно зареєстрований у нашій системі.
+			</p>
+			<br />
+			За наявності питянь можете звернутись за наступними контактами<br>
+			${sAddress}<br>
+			${sWorkTime}<br>
+			${sPhoneOrgan}<br><br>
+			[pattern/mail/_common_signature_start.html]
+			${sNameOrgan}.<br />
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow15" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
+    <userTask id="usertask1" name="Прийняття рішення про надання послуги" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
+      <extensionElements>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні данні" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asPrivilege" name="Чи має льготи для першочергового одержання житла" type="enum" writable="false">
+          <activiti:value id="yes" name="Так"></activiti:value>
+          <activiti:value id="no" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sPrivilege" name="Статус для льгот" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="decide" name="Рішення про надання послуги" type="enum" required="true">
+          <activiti:value id="accept" name="Надати послугу"></activiti:value>
+          <activiti:value id="reject" name="Відмовити"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="comment" name="В разі відмови в наданні послуги зазначте підставу для відмови" type="textArea"></activiti:formProperty>        
+        <activiti:formProperty id="sShapkaGolova" name="підпис в шапке" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/mvk/nikolaev_mvk_408_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="hide fields Status" type="markers" default="${markerService.loadFromFile('mvk/show_fill_status.json')}"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${nFileFamily},${nFileBTI},${nFile3},${nFile4},${nfile_Privilege}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow2" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow3" name="Документи не відповідають" sourceRef="exclusivegateway1" targetRef="servicetask5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'reject'}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask5" name="Відправлення листа про відмову громадянину" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression><![CDATA[Взяття на облік громадян, які потребують поліпшення житлових умов]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+		    <p>
+				На жаль Вам відмовлено в наданні послуги.
+			</p>
+		    	Причина в наступному:<br>
+				<b><i>${comment}</i></b>
+		    </p>
+		    <p>
+		    	Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="#current-page">iGov.org.ua</a>.
+			</p>
+			<br />
+			За наявності питянь можете звернутись за наступними контактами<br>
+			${sAddress}<br>
+			${sWorkTime}<br>
+			${sPhoneOrgan}<br><br>
+			[pattern/mail/_common_signature_start.html]
+			${sNameOrgan}.<br />
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow6" sourceRef="servicetask5" targetRef="endevent3"></sequenceFlow>
+    <sequenceFlow id="flow4" name="Документи в порядку" sourceRef="exclusivegateway1" targetRef="usertask3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'accept'}]]></conditionExpression>
+    </sequenceFlow>
+    <userTask id="usertask3" name="Підготовка витягу з рішення виконавчого комітету Ммр щодо взяття на квартирний облік" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
+      <extensionElements>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні данні" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asPrivilege" name="Чи має льготи для першочергового одержання житла" type="enum" writable="false">
+          <activiti:value id="yes" name="Так"></activiti:value>
+          <activiti:value id="no" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sPrivilege" name="Статус для льгот" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="regChanged" name="Витяг готовий?" type="enum" required="true">
+          <activiti:value id="yes" name="Так, готовий"></activiti:value>
+          <activiti:value id="no" name="витяг не може бути наданий"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="comment" name="В разі відмови в наданні послуги зазначте підставу для відмови" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sShapkaGolova" name="підпис в шапке" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/mvk/nikolaev_mvk_408_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="hide fields Status" type="markers" default="${markerService.loadFromFile('mvk/show_fill_status.json')}"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${nFileFamily},${nFileBTI},${nFile3},${nFile4},${nfile_Privilege}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow17" sourceRef="usertask3" targetRef="exclusivegateway2"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow18" name="Відмовити по причині" sourceRef="exclusivegateway2" targetRef="servicetask5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${regChanged == 'no'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow19" name="Заявка оброблена" sourceRef="exclusivegateway2" targetRef="servicetask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${regChanged == 'yes'}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask4" name="Відправлення листа громадянину" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression><![CDATA[Взяття на облік громадян, які потребують поліпшення житлових умов]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+			<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+			<p> 
+				Ваше звернення виконано.<br>
+			</p>
+			<br>
+			Ви можете отримати результат<br>
+			${sAddress}<br>
+			${sWorkTime}<br>
+			${sPhoneOrgan}<br><br><br>			
+			[pattern/mail/_common_feedback.html]
+			[pattern/mail/_common_signature_start.html]
+			${sNameOrgan}.<br />
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow20" sourceRef="servicetask4" targetRef="endevent3"></sequenceFlow>
+    <endEvent id="endevent3" name="End"></endEvent>
+    <sequenceFlow id="flow23" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
+    <textAnnotation id="textannotation1">
+      <text>Выбирается услуга:
+      		Взяття на облік громадян, які потребують поліпшення житлових умов
+      </text>
+    </textAnnotation>
+    <association id="association1" sourceRef="textannotation1" targetRef="startevent1"></association>
+    <textAnnotation id="textannotation3">
+      <text>Адміністратор ЦНАП
+      </text>
+    </textAnnotation>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_nikolaev_oda_2">
+    <bpmndi:BPMNPlane bpmnElement="nikolaev_oda_2" id="BPMNPlane_nikolaev_oda_2">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="73.0" y="72.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="61.0" width="126.0" x="28.0" y="136.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
+        <omgdc:Bounds height="30.0" width="30.0" x="23.0" y="170.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
+        <omgdc:Bounds height="70.0" width="132.0" x="197.0" y="132.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
+        <omgdc:Bounds height="70.0" width="141.0" x="372.0" y="132.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="64.0" width="161.0" x="558.0" y="135.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="618.0" y="285.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
+        <omgdc:Bounds height="62.0" width="168.0" x="300.0" y="275.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
+        <omgdc:Bounds height="88.0" width="166.0" x="556.0" y="381.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="363.0" y="404.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
+        <omgdc:Bounds height="66.0" width="141.0" x="48.0" y="392.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
+        <omgdc:Bounds height="35.0" width="35.0" x="101.0" y="288.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="textannotation1" id="BPMNShape_textannotation1">
+        <omgdc:Bounds height="61.0" width="255.0" x="1.0" y="1.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="textannotation3" id="BPMNShape_textannotation3">
+        <omgdc:Bounds height="91.0" width="101.0" x="633.0" y="11.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
+        <omgdi:waypoint x="90.0" y="107.0"></omgdi:waypoint>
+        <omgdi:waypoint x="91.0" y="136.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
+        <omgdi:waypoint x="38.0" y="200.0"></omgdi:waypoint>
+        <omgdi:waypoint x="118.0" y="288.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
+        <omgdi:waypoint x="329.0" y="167.0"></omgdi:waypoint>
+        <omgdi:waypoint x="372.0" y="167.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
+        <omgdi:waypoint x="513.0" y="167.0"></omgdi:waypoint>
+        <omgdi:waypoint x="558.0" y="167.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="638.0" y="199.0"></omgdi:waypoint>
+        <omgdi:waypoint x="638.0" y="285.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="618.0" y="305.0"></omgdi:waypoint>
+        <omgdi:waypoint x="468.0" y="306.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="507.0" y="285.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+        <omgdi:waypoint x="300.0" y="306.0"></omgdi:waypoint>
+        <omgdi:waypoint x="136.0" y="305.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="638.0" y="325.0"></omgdi:waypoint>
+        <omgdi:waypoint x="639.0" y="381.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="648.0" y="330.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
+        <omgdi:waypoint x="556.0" y="425.0"></omgdi:waypoint>
+        <omgdi:waypoint x="403.0" y="424.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
+        <omgdi:waypoint x="383.0" y="404.0"></omgdi:waypoint>
+        <omgdi:waypoint x="384.0" y="337.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="393.0" y="354.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
+        <omgdi:waypoint x="363.0" y="424.0"></omgdi:waypoint>
+        <omgdi:waypoint x="189.0" y="425.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="100.0" x="216.0" y="405.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
+        <omgdi:waypoint x="118.0" y="392.0"></omgdi:waypoint>
+        <omgdi:waypoint x="118.0" y="323.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
+        <omgdi:waypoint x="154.0" y="166.0"></omgdi:waypoint>
+        <omgdi:waypoint x="197.0" y="167.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="association1" id="BPMNEdge_association1">
+        <omgdi:waypoint x="256.0" y="31.0"></omgdi:waypoint>
+        <omgdi:waypoint x="90.0" y="72.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

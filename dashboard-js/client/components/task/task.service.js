@@ -125,11 +125,11 @@ angular.module('dashboardJsApp')
         }, callback);
       },
 
-      taskFormFromHistory: function(taskId, callback) {
+      taskFormFromHistory: function(taskId) {
         return simpleHttpPromise({
           method: 'GET',
           url: '/api/tasks/' + taskId + '/form-from-history'
-        }, callback);
+        });
       },
 
       taskAttachments: function(taskId, callback) {
@@ -369,11 +369,20 @@ angular.module('dashboardJsApp')
           }
         );
       },
-      getTaskData: function(nID_Task)
+      getTaskData: function (params, allData)
       {
+        var requestParams = angular.copy(params);
+        if (allData === true)
+          angular.merge(requestParams, {
+            bIncludeGroups: true,
+            bIncludeStartForm: true,
+            bIncludeAttachments: true,
+            bIncludeMessages: true
+          });
         return simpleHttpPromise({
             method: 'GET',
-            url: '/api/tasks/'+ nID_Task + '/getTaskData'
+            url: '/api/tasks/getTaskData',
+            params: requestParams
           }
         );
       }
