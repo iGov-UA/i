@@ -111,7 +111,7 @@ build_docker ()
 #	fi
 
 	readonly DOCKER_REPO=puppet.igov.org.ua:5000
-	readonly DOCKER_IMAGE=$sProject"_"$sVersion
+	readonly DOCKER_IMAGE=$sProject"-"$sVersion
 	readonly DOCKER_TAG=$sVersion
 
 	echo "Start building Docker image..."

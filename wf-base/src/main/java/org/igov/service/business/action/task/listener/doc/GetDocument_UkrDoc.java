@@ -1,6 +1,7 @@
 package org.igov.service.business.action.task.listener.doc;
 
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.logging.Level;
 
 import org.activiti.engine.RuntimeService;
@@ -117,5 +118,6 @@ public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListene
 
             }
         }
+        taskService.complete(delegateTask.getId(), new HashMap());
     }
 }
