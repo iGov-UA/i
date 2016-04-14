@@ -334,15 +334,13 @@ ${sMail_Signature}
       </extensionElements>
     </serviceTask>
     <scriptTask id="scripttask1" name="set country" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var req=execution.getVariable('sCountry_UA')
-var info=' '
-if (req=='inn'){
-info='по фізичній особі з ІПН '+execution.getVariable('ownerInn')}
+      <script>var Country=execution.getVariable('sCountry_UA')
+var RegionbirthDay_UA=execution.getVariable('asRegionbirthDay_UA ')
+var result=' '
+if (Country=='Україна'){ result=RegionbirthDay_UA }
+execution.setVariable('sRegionbirthDay',result)
 
-execution.setVariable('1', info)
-
-sRegionbirthDay
-asRegionbirthDay_UA </script>
+</script>
     </scriptTask>
     <sequenceFlow id="flow14" sourceRef="servicetask4" targetRef="scripttask1"></sequenceFlow>
   </process>
