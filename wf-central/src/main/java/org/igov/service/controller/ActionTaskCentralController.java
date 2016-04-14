@@ -77,7 +77,9 @@ public class ActionTaskCentralController {
                 null,//nTimeMinutes
                 null,//nID_Proccess_Feedback,
                 null,//nID_Proccess_Escalation,
-                HistoryEvent_Service_StatusType.OPENED_REMARK_CLIENT_ANSWER.getnID() //nID_StatusType
+                HistoryEvent_Service_StatusType.OPENED_REMARK_CLIENT_ANSWER.getnID(), //nID_StatusType
+                    null,//sSubjectInfo
+                    null //nID_Subject
             );
             
             /*
