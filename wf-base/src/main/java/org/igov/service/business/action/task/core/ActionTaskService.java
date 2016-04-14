@@ -1266,7 +1266,7 @@ public class ActionTaskService {
     }    
  
     public String updateHistoryEvent_Service(HistoryEvent_Service_StatusType oHistoryEvent_Service_StatusType, String sID_Order,
-            String saField, String sBody, String sToken, String sUserTaskName
+            String saField, String sBody, String sToken, String sUserTaskName,String sSubjectInfo, Long nID_Subject
         ) throws Exception {
 
         Map<String, String> mParam = new HashMap<>();
@@ -1277,6 +1277,8 @@ public class ActionTaskService {
         //params.put("sHead", sHead);
         mParam.put("sBody", sBody);
         mParam.put("sToken", sToken);
+        mParam.put("sSubjectInfo",sSubjectInfo);
+        mParam.put("snID_Subject",String.valueOf(nID_Subject));
         //params.put("sUserTaskName", sUserTaskName);
         return oHistoryEventService.updateHistoryEvent(sID_Order, sUserTaskName, true, oHistoryEvent_Service_StatusType, mParam);
     }
