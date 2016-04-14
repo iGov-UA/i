@@ -70,7 +70,7 @@
         <activiti:formProperty id="sCountry" name="Громадянство" type="string"></activiti:formProperty>
         <activiti:formProperty id="sCountry_UA" name="Країна народження" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sRegionbirthDay" name="Регіон народження" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asRegionbirthDay_UA" name="Регіон народження" type="enum">
+        <activiti:formProperty id="sID_Region_Birth_UA" name="Регіон народження" type="enum">
           <activiti:value id="100000000" name="Автономна Республіка Крим"></activiti:value>
           <activiti:value id="700000000" name="Волинська"></activiti:value>
           <activiti:value id="500000000" name="Вінницька"></activiti:value>
@@ -198,7 +198,7 @@
         <activiti:formProperty id="sID_Country" name="Country Code (Code)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sCountry" name="Громадянство" type="string"></activiti:formProperty>
         <activiti:formProperty id="sCountry_UA" name="Країна народження" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sRegion" name="Регіон народження" type="string" default="${sRegionbirthDay}"></activiti:formProperty>
+        <activiti:formProperty id="sRegion" name="Регіон народження" type="string"></activiti:formProperty>
         <activiti:formProperty id="sArea" name="Район народження" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPlace" name="Населений пункт народження" type="string"></activiti:formProperty>
         <activiti:formProperty id="goal" name="Мета отримання довідки" type="enum">
@@ -334,11 +334,11 @@ ${sMail_Signature}
       </extensionElements>
     </serviceTask>
     <scriptTask id="scripttask1" name="set country" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var Country=execution.getVariable('sCountry_UA')
-var RegionbirthDay_UA=execution.getVariable('asRegionbirthDay_UA ')
-var result=' '
-if (Country=='Україна'){ result=RegionbirthDay_UA }
-execution.setVariable('sRegionbirthDay',result)
+      <script>
+var Country=execution.getVariable('sCountry_UA')
+var RegionbirthDay_UA=execution.getVariable('sID_Region_Birth_UA')
+if (Country=='Україна'){execution.setVariable('sRegion',RegionbirthDay_UA)}
+
 
 </script>
     </scriptTask>
