@@ -641,7 +641,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
         response.put("sStatusName", oActionTaskService.getTaskName(nID_Task));
         response.put("sID_Status", oActionTaskService.getsIDUserTaskByTaskId(nID_Task));
-
+        response.putAll(oActionTaskService.getTaskData(nID_Task));
+        
         String sDateTimeCreate = JsonDateTimeSerializer.DATETIME_FORMATTER.print(
                 oActionTaskService.getTaskDateTimeCreate(nID_Task).getTime()
         );
@@ -1390,8 +1391,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "строка-массива параметров", required = true) @RequestParam(value = "saField") String soParams,
             @ApiParam(value = "строка электронного адреса гражданина", required = true) @RequestParam(value = "sMail") String sMail,
             @ApiParam(value = "строка заголовка письма", required = false) @RequestParam(value = "sHead", required = false) String sHead,
-            @ApiParam(value = "строка тела сообщения-коммента (общего)", required = false) @RequestParam(value = "sBody", required = false) String sBody)
-            throws CommonServiceException, CRCInvalidException {
+            @ApiParam(value = "строка тела сообщения-коммента (общего)", required = false) @RequestParam(value = "sBody", required = false) String sBody,
+			@ApiParam(value = "строка информация о субьекте", required = false) @RequestParam(value = "sSubjectInfo", required = false) String sSubjectInfo,
+			@ApiParam(value = "номер - ИД субьекта",required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject
+	)throws CommonServiceException, CRCInvalidException {
 
         String sToken = Tool.getGeneratedToken();
         try {
@@ -1400,7 +1403,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     HistoryEvent_Service_StatusType.OPENED_REMARK_EMPLOYEE_QUESTION,
                     sID_Order,
                     saField,
-                    "Необхідно уточнити дані" + (sBody == null ? "" : ", за коментарем: " + sO(sBody)), sToken, null);
+                    "Необхідно уточнити дані" + (sBody == null ? "" : ", за коментарем: " + sO(sBody)), sToken, null,sSubjectInfo, nID_Subject);
             LOG.info("(sReturn={})", sReturn);
             //oActionTaskService.setInfo_ToActiviti("" + nID_Process, saField, sBody);
             //createSetTaskQuestionsMessage(sID_Order, sO(sBody), saField);//issue 1042

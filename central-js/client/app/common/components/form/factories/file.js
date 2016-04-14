@@ -73,9 +73,9 @@ angular.module('app').factory('FileFactory', function ($q, $rootScope, ActivitiS
     var scope = $rootScope.$new(true, $rootScope);
     uiUploader.startUpload({
       url: './api/documents/upload?'
-        + 'documentType=' + documentType
-        + '&documentName=' + documentName
-        + '&documentFileName=' + self.fileName,
+      + 'documentType=' + documentType
+      + '&documentName=' + documentName
+      + '&documentFileName=' + self.fileName,
       concurrency: 1,
       onProgress: function (file) {
         scope.$apply(function () {

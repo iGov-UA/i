@@ -37,8 +37,7 @@ angular.module('dashboardJsApp').service('PrintTemplateService', ['tasks', 'Prin
       });
       return templates;
     },
-    // method to get parsed template 
-//    getPrintTemplate: function(task, form, printTemplateName, lunaService) {
+    // method to get parsed template
     getPrintTemplate: function(task, form, printTemplateName) {
       var deferred = $q.defer();
       if (!printTemplateName) {
@@ -52,7 +51,6 @@ angular.module('dashboardJsApp').service('PrintTemplateService', ['tasks', 'Prin
         tasks.getPatternFile(printTemplatePath).then(function(originalTemplate){
           // cache template
           loadedTemplates[printTemplatePath] = originalTemplate;
-          //parsedForm = PrintTemplateProcessor.getPrintTemplate(task, form, originalTemplate, lunaService);
           parsedForm = PrintTemplateProcessor.getPrintTemplate(task, form, originalTemplate);
           deferred.resolve(parsedForm);
         }, function() {
@@ -60,7 +58,6 @@ angular.module('dashboardJsApp').service('PrintTemplateService', ['tasks', 'Prin
         });
       } else {
         // resolve deferred in case the form was cached
-        //parsedForm = PrintTemplateProcessor.getPrintTemplate(task, form, loadedTemplates[printTemplatePath], lunaService);
         parsedForm = PrintTemplateProcessor.getPrintTemplate(task, form, loadedTemplates[printTemplatePath]);
         deferred.resolve(parsedForm);
       }

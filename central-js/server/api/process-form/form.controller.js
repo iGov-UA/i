@@ -3,7 +3,7 @@ var url = require('url')
   , FormData = require('form-data')
   , config = require('../../config/environment')
   //, config = require('../../config')
-  , accountService = require('../../auth/bankid/bankid.service.js')
+  , bankIDService = require('../../auth/bankid/bankid.service.js')
   , _ = require('lodash')
   , StringDecoder = require('string_decoder').StringDecoder
   , async = require('async')
@@ -93,7 +93,7 @@ module.exports.scanUpload = function (req, res) {
 
     var uploadResults = [];
     var uploadScan = function (documentScan, callback) {
-      var scanContentRequest = accountService.prepareScanContentRequest(documentScan.scan.link, accessToken);
+      var scanContentRequest = bankIDService.prepareScanContentRequest(documentScan.scan.link, accessToken);
 
       var form = new FormData();
       form.append('file', scanContentRequest, {
@@ -256,7 +256,7 @@ module.exports.signForm = function (req, res) {
       function (formData, callback) {
         var accessToken = req.session.access.accessToken;
         createHtml(formData, function (formToUpload) {
-          accountService.signHtmlForm(accessToken, callbackURL, formToUpload, function (error, result) {
+          bankIDService.signHtmlForm(accessToken, callbackURL, formToUpload, function (error, result) {
             if (error) {
               callback(error, null);
             } else {
@@ -286,7 +286,7 @@ module.exports.signFormCallback = function (req, res) {
     sURL = '';
   }
 
-  var signedFormForUpload = accountService
+  var signedFormForUpload = bankIDService
     .prepareSignedContentRequest(req.session.access.accessToken, codeValue);
 
   async.waterfall([

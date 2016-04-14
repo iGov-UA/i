@@ -50,6 +50,10 @@ do
 			bDocker="$2"
 			shift
 			;;
+		--gitCommit)
+			sGitCommit="$2"
+			shift
+			;;
 		*)
 			echo "bad option"
 			exit 1
@@ -105,14 +109,20 @@ echo "Host $sHost will be a target server for deploy...."
 
 build_docker ()
 {
-#	if ! [ -x "$(command -v docker)" ]; then
-#	  echo 'Docker is not installed.' >&2
-#	  return
-#	fi
+	if ! [ -x "$(command -v docker)" ]; then
+	    echo "Docker is not installed."
+	    exit 1
+	fi
+
+	if [ -z $sGitCommit ]; then
+	    echo "We want a git commmit variable!"
+	    exit 1
+	fi
 
 	readonly DOCKER_REPO=puppet.igov.org.ua:5000
-	readonly DOCKER_IMAGE=$sProject"_"$sVersion
-	readonly DOCKER_TAG=$sVersion
+	readonly DOCKER_IMAGE=$DOCKER_REPO/$sProject"-"$sVersion
+	readonly DOCKER_TAG=$sGitCommit
+	readonly KUBE_RC=$sProject"-"$sVersion
 
 	echo "Start building Docker image..."
 
@@ -138,11 +148,14 @@ build_docker ()
 		fi
 	fi
 
-	docker build -t $DOCKER_REPO/$DOCKER_IMAGE .
-	docker tag  $DOCKER_REPO/$DOCKER_IMAGE:latest  $DOCKER_REPO/$DOCKER_IMAGE:$DOCKER_TAG
-	docker push $DOCKER_REPO/$DOCKER_IMAGE:latest
-	docker push $DOCKER_REPO/$DOCKER_IMAGE:$DOCKER_TAG
-	echo "Build & push to Docker registry finished."
+	mkdir /tmp/$sProject
+	docker build -t $DOCKER_IMAGE .
+	docker tag  $DOCKER_IMAGE:latest $DOCKER_IMAGE:$DOCKER_TAG
+	docker push $DOCKER_IMAGE:latest
+	docker push $DOCKER_IMAGE:$DOCKER_TAG
+	echo "Build & push container to Docker registry finished."
+	kubectl rolling-update $KUBE_RC --image=$DOCKER_IMAGE:$DOCKER_TAG
+	echo "Rolling-update replication controller finished."
 }
 
 build_central-js ()
@@ -178,6 +191,7 @@ build_central-js ()
 		npm cache clean
 		npm install
 		bower install
+		npm install grunt-contrib-imagemin
 		grunt build
 		cd dist
 		npm install --production

@@ -25,7 +25,7 @@ angular.module('documents').controller('DocumentsBankIdController', function ($s
   $scope.getRedirectUrl = getRedirectURI;
 
   $scope.getAuthMethods = function () {
-    return "BankID,EDS,KK"
+    return "BankID,EDS,mpbds,KK"
   };
 
   $scope.loginWithEmail = function () {
