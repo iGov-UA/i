@@ -8,7 +8,7 @@
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="lable1" name="Зверніть увагу" type="label" default="Дані особи, яка прийде на прийом"></activiti:formProperty>
+        <activiti:formProperty id="lable1" name="Зверніть увагу" type="label" default="Будь ласка, внесіть дату прийому у  поле &quot;Призначений день прийому&quot; у разі погодження. Якщо у прийомі відмовлено, у  полі &quot;Призначений день прийому&quot; треба зробити відмітку  &quot;Запис скасовано&quot; "></activiti:formProperty>
         <activiti:formProperty id="lastName_UA1" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="firstName_UA1" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA1" name="По Батькові" type="string" required="true"></activiti:formProperty>
@@ -49,7 +49,7 @@
 			Ви отримаєте відповідь протягом 1-3 робочих днів.
 			&lt;/p&gt;
 			&lt;p&gt; 
-			За наявності питань Ви можете звернутися за телефоном: ${sPhoneOrgan}
+		        ${sPhoneOrgan}
 			&lt;/p&gt;
 			[pattern/mail/_common_signature_start.html]
 			${sNameOrgan},&lt;br&gt;
@@ -78,7 +78,7 @@
     <sequenceFlow id="flow17" sourceRef="servicetask6" targetRef="servicetask5"></sequenceFlow>
     <userTask id="usertask1" name="Перевірка даних" activiti:candidateGroups="priyom_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="clFIO" name="Прізвище, ім`я, по-батькові громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clFIO" name="Прізвище, ім`я, по батькові громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio1" name="ПІБ того, кто прийде на прийом" type="string" default="${lastName_UA1} ${firstName_UA1} ${middleName_UA1}" writable="false"></activiti:formProperty>
@@ -88,9 +88,10 @@
           <activiti:value id="accept" name="Записати громадянина"></activiti:value>
           <activiti:value id="reject" name="Скасувати запис"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="visitDay1" name="Призначений день прийому" type="string"></activiti:formProperty>
+         <activiti:formProperty id="lable2" name="Важливо" type="label" default="Будь ласка, внесіть інформацію про дату прийому, у задане поле, якщо у прийомі відмовлено - також зробіть відмітку"></activiti:formProperty>
+        <activiti:formProperty id="visitDay1" name="Призначений день прийому" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="NumbPers" name="Номер особи в черзі" type="string"></activiti:formProperty>
-        <activiti:formProperty id="comment" name="Якщо громадянину відмовлено, вкажіть причину у цьому полі Або додайте коментар стосовно прийому при запрошенні громадянина" type="textArea" default=" "></activiti:formProperty>
+        <activiti:formProperty id="comment" name="Якщо громадянину відмовлено, вкажіть причину у цьому полі або додайте коментар стосовно прийому при запрошенні громадянина" type="textArea" default=" "></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow2" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
@@ -153,11 +154,11 @@
 			Місце в черзі - ${NumbPers}
 			&lt;/p&gt;
 			&lt;p&gt;
-				Коментар державного службовця:&lt;br&gt;
+				Коментар державного службовця (за наявністю):&lt;br&gt;
 				${comment}
 			&lt;/p&gt;
 			&lt;p&gt;
-			За наявності питань Ви можете звернутися за телефоном: ${sPhoneOrgan}
+			${sPhoneOrgan}
 			&lt;/p&gt;
 			[pattern/mail/_common_signature_start.html]
 			${sNameOrgan},&lt;br&gt;
@@ -173,7 +174,7 @@
         <activiti:formProperty id="visitDay1" name="День прийому" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="NumbPers" name="Номер особи в черзі" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio1" name="ПІБ того, кто прийде на прийом" type="string" default="${lastName_UA1} ${firstName_UA1} ${middleName_UA1}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="clFIO" name="Прізвище, ім`я, по-батькові громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clFIO" name="Прізвище, ім`я, по батькові громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="vizit" name="Підсумок візиту" type="enum">

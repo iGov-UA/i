@@ -1,6 +1,7 @@
 package org.igov.service.business.action.task.listener.doc;
 
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.logging.Level;
 
 import org.activiti.engine.RuntimeService;
@@ -68,9 +69,9 @@ public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListene
             if (content != null) {
 
                 String name = (String) ((JSONObject) content).get("name");
-                runtimeService.setVariable(execution.getProcessInstanceId(), "sHead_Document", name);
+                runtimeService.setVariable(execution.getProcessInstanceId(), "sHead_Document_UkrDoc", name);
                 String text = (String) ((JSONObject) content).get("text");
-                runtimeService.setVariable(execution.getProcessInstanceId(), "sBody_Document", text);
+                runtimeService.setVariable(execution.getProcessInstanceId(), "sBody_Document_UkrDoc", text);
                 try {
                     LOG.info("class: " + ((JSONObject) ((JSONObject) content).get("extensions")).get("files").getClass());
                     JSONArray files = (JSONArray) ((JSONObject) ((JSONObject) content).get("extensions")).get("files");
@@ -117,5 +118,6 @@ public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListene
 
             }
         }
+        taskService.complete(delegateTask.getId(), new HashMap());
     }
 }

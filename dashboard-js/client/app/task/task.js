@@ -8,11 +8,9 @@
         $stateProvider
           .state('baTask', {
             url: '/task',
-            controller: 'baTask',
             access: {
               requiresLogin: true
             },
-            templateUrl: 'app/task/baTask.html',
             resolve: {
               taskData: [
                 'tasks',
@@ -24,7 +22,88 @@
                   }
                   return tasks.getTaskData(params, true);
                 }
+              ],
+              stateModel: [
+                function () {
+                  return {
+                    printTemplate: null,
+                    taskDefinition: null,
+                    strictTaskDefinition: null,
+                    userProcess: null
+                  }
+                }
               ]
+            },
+            views: {
+              '@': {
+                controller: 'baTask',
+                templateUrl: 'app/task/baTask.html',
+              },
+              'task-view@baTask': {
+                templateUrl: 'app/tasks/taskForm.html',
+                controller: 'TaskViewCtrl',
+                resolve: {
+                  oTask: [
+                    'tasks',
+                    '$stateParams',
+                    '$q',
+                    'taskData',
+                    '$location',
+                    function (tasks, $stateParams, $q, taskData, $location) {
+                      return tasks.getTask($location.search().nID_Task);
+                    }
+                  ],
+                  attachments: [
+                    'tasks',
+                    'oTask',
+                    function (tasks, oTask) {
+                      return tasks.taskAttachments(oTask.id)
+                    }
+                  ],
+                  orderMessages: [
+                    'tasks',
+                    'oTask',
+                    function (tasks, oTask) {
+                      return tasks.getOrderMessages(oTask.processInstanceId);
+                    }
+                  ],
+                  taskAttachments: [
+                    'tasks',
+                    'oTask',
+                    function (tasks, oTask) {
+                      return tasks.getTaskAttachments(oTask.id);
+                    }
+                  ],
+                  taskForm: [
+                    'oTask',
+                    'tasks',
+                    '$q',
+                    function (oTask, tasks, $q) {
+                      var defer = $q.defer();
+                      if (oTask.endTime) {
+                        tasks.taskFormFromHistory(oTask.id).then(function (result) {
+                          defer.resolve(JSON.parse(result).data[0].variables)
+                        }, defer.reject)
+                      } else {
+                        tasks.taskForm(oTask.id).then(function (result) {
+                          defer.resolve(JSON.parse(result).formProperties);
+                        }, defer.reject);
+                      }
+                      return defer.promise;
+                    }
+                  ]
+                }
+              },
+              'task-view-history@baTask': {
+                templateUrl: '/app/tasks/taskFormHistory.html',
+                controller: [
+                  '$scope',
+                  'taskData',
+                  function($scope, taskData) {
+                    $scope.aOrderMessage = JSON.parse(taskData.aMessage);
+                  }
+                ]
+              }
             }
           })
       }

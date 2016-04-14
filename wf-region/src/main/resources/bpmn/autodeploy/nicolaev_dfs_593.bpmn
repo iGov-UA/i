@@ -24,7 +24,7 @@
         <activiti:formProperty id="sT_objekt" name="Тип об'єкта торгівлі:;(магазин,кафе,кіоск)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sT_dfs_torg" name="Орган ДФС за місцем торгівлі" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sT_dfs_reestr" name="Орган ДФС за місцем реєстрації суб'єкта господарювання" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="date_bigin" name="Вкажіть дату з якоъ ви хочете отримати ліцензію:;(ліцензія видається на рік)" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="date_bigin" name="Вкажіть дату з якої ви хочете отримати ліцензію:;(ліцензія видається на рік)" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="file_lic_plata" name="Сканкопія квитанції про оплату за ліцензію" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="marker_osoba_license" name="vubir_osobu" type="markers" default="${markerService.loadFromFile('dfs_593.json')}"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва ЦНАП" type="invisible"></activiti:formProperty>
@@ -53,14 +53,7 @@
           <activiti:expression>Нова заявка. ${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а) колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-У Вас в черзі на обробку нове звернення. Послуга: ${sPosluga_name}&lt;br /&gt;
-Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
-enum{[asOsoba]}&lt;br /&gt;
-Опрацюйте це звернення на &lt;a href="https://region.igov.org.ua" target="_blank"&gt;порталі&lt;/a&gt;
-[pattern/mail/_common_signature.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -93,9 +86,7 @@ ${sNameOrgan}.&lt;br /&gt;
     <sequenceFlow id="flow4" sourceRef="servicetask3" targetRef="servicetask4"></sequenceFlow>
     <userTask id="usertask1" name="Обробка в податковій" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asOsoba" name="Тип особи" type="enum" writable="false">
           <activiti:value id="sEnamUr" name="Юридична особа"></activiti:value>
           <activiti:value id="sEnamFiz" name="Фізична особа підприємець"></activiti:value>
@@ -104,7 +95,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="sEdrpou" name="ЄДРПОУ" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІНН" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAdress" name="Адреса реєстрації суб'єкта звернення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdress" name="Юридична адреса суб'єкта господарювання" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Мобільний телефон" type="string" default="+380" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sT_Adress" name="Адреса місця торгівлі" type="string" writable="false"></activiti:formProperty>
@@ -122,7 +113,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="sShapka" name="назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern\print\nicolaev_dfs_593.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="супровідний текст" type="invisible" default="Якщо заявка прийнята, вона знов з'явиться в необроблених, візьміть ії в роботу і зробіть помітку чи видано на руки документ. У разі відмови робота по цій заявці завершена."></activiti:formProperty>
-        <activiti:formProperty id="print_marker1" name="ur_fiz_print" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_1&quot;:{&quot;aElement_ID&quot;:[&quot;UO&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asOsoba&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnamUr'&quot;},&quot;ShowElementsOnTrue_2&quot;:{&quot;aElement_ID&quot;:[&quot;FO&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asOsoba&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnamFiz'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="print_marker1" name="ur_fiz_print" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_1&quot;:{&quot;aElement_ID&quot;:[&quot;sEnamUr&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asOsoba&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnamUr'||[sCond]=='Юридична особа'&quot;},&quot;ShowElementsOnTrue_2&quot;:{&quot;aElement_ID&quot;:[&quot;sEnamFiz&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asOsoba&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnamFiz'||[sCond]=='Фізична особа підприємець'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -148,7 +139,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Документи оформлені НЕ вірно. Відмова. &lt;br /&gt;
+Заява оформлена НЕ вірно. Відмова. &lt;br /&gt;
 Причина відмови: ${Komment_organ} &lt;br /&gt;
 ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
@@ -194,9 +185,7 @@ ${sWorkTime}.&lt;br /&gt;
     </sequenceFlow>
     <userTask id="usertask2" name="Видача документа" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asOsoba" name="Вкажіть тип особи" type="enum" writable="false">
           <activiti:value id="sEnamUr" name="Юридична особа"></activiti:value>
           <activiti:value id="sEnamFiz" name="Фізична особа підприємець"></activiti:value>
@@ -263,22 +252,11 @@ ${sWorkTime}.&lt;br /&gt;
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Рішення прийняте.&lt;br /&gt;
-Ви або уповноважена Вами особа (при наявності довіреності) можете отримати документи - собисто під підпис у ЦНАП.&lt;br /&gt;
-При собі треба мати:&lt;br /&gt;
-1. Документ, що посвідчує особу.&lt;br /&gt;
-2. Для уповоноваженої особи - довіренність.&lt;br /&gt;
-&lt;/p&gt;	
-&lt;p&gt;						
-Зверніть увагу, що заяву, яку Ви подавали в електронному вигляді, треба буде засвідчити особистим підписом.&lt;/p&gt;
-&lt;br /&gt;
 Будь ласка оцініть якість наданої вам послуги. &lt;br /&gt;
 [pattern/mail/_common_feedback.html]
 ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}.&lt;br /&gt;
-${sAddress}.&lt;br /&gt;
-${sWorkTime}.&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -357,14 +335,14 @@ ${sWorkTime}.&lt;br /&gt;
         <omgdi:waypoint x="690.0" y="117.0"></omgdi:waypoint>
         <omgdi:waypoint x="780.0" y="117.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="700.0" y="117.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="42.0" x="700.0" y="117.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
         <omgdi:waypoint x="670.0" y="137.0"></omgdi:waypoint>
         <omgdi:waypoint x="670.0" y="190.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="591.0" y="150.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="75.0" x="591.0" y="150.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
@@ -383,7 +361,7 @@ ${sWorkTime}.&lt;br /&gt;
         <omgdi:waypoint x="690.0" y="393.0"></omgdi:waypoint>
         <omgdi:waypoint x="780.0" y="392.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="678.0" y="401.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="93.0" x="678.0" y="401.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
@@ -400,7 +378,7 @@ ${sWorkTime}.&lt;br /&gt;
         <omgdi:waypoint x="670.0" y="373.0"></omgdi:waypoint>
         <omgdi:waypoint x="832.0" y="337.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="659.0" y="329.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="75.0" x="659.0" y="329.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">

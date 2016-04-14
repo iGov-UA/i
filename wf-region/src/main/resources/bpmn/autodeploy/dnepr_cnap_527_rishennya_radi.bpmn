@@ -13,7 +13,7 @@
         <activiti:formProperty id="bankIdinn" name="Ідентифікаційний номер фізичної особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_inn" name="Скан-копія ідентифікаційного номеру фізичної особи" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddress" name="Адреса реєстрації" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asSubect" name="Оберіть кому надається адміністративна послуга" type="enum" required="true">
+        <activiti:formProperty id="sEnumSubect" name="Оберіть кому надається адміністративна послуга" type="enum" required="true">
           <activiti:value id="sEnumElement_fiz" name="фізична особа"></activiti:value>
           <activiti:value id="sEnumElement_ur" name="юридична особа"></activiti:value>
         </activiti:formProperty>
@@ -37,7 +37,7 @@
         <activiti:formProperty id="sConfidant_passport" name="Документи, що підтверджують довірену особу (паспортні дані: серія, номер, дата, ким виданий, довіреність)" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sNomerRishennya" name="Номер рішення" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateRishennya" name="Дата рішення; формат дати ДД.ММ.РРРР" type="string" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNoteRishennya" name="Заголовок рішення" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNoteRishennya" name="Назва рішення" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_CopyRishennya" name="Копія рішення міської ради (в яке необхідно внести зміни)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDel_NomerPunkta" name="Номер пункту, що потрібно виключити з рішення" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sReasonForEdit" name="Причина внесення змін до рішення" type="textArea" default=" " required="true"></activiti:formProperty>
@@ -53,14 +53,14 @@
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Підтягування додаткових документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <userTask id="usertask1" name="Реєстрація звернення, результат обробки вхідних данних" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask1" name="Реєстрація звернення, результат обробки вхідних данних (1-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="Центр надання адмінпослуг" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sClientFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="Ідентифікаційний номер фізичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddress" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asSubect" name="Оберіть кому надається адміністративна послуга" type="enum" writable="false">
+        <activiti:formProperty id="sEnumSubect" name="Оберіть кому надається адміністративна послуга" type="enum" writable="false">
           <activiti:value id="sEnumElement_fiz" name="фізична особа"></activiti:value>
           <activiti:value id="sEnumElement_ur" name="юридична особа"></activiti:value>
         </activiti:formProperty>
@@ -82,7 +82,7 @@
         <activiti:formProperty id="sConfidant_passport" name="Документи, що підтверджують довірену особу (паспортні дані: серія, номер, дата, ким виданий, довіреність)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNomerRishennya" name="Номер рішення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateRishennya" name="Дата рішення; формат дати ДД.ММ.РРРР" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNoteRishennya" name="Заголовок рішення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNoteRishennya" name="Назва рішення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDel_NomerPunkta" name="Номер пункту, що потрібно виключити з рішення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sReasonForEdit" name="Причина внесення змін до рішення" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sReestr_numb" name="Реєстраційний номер" type="string" default=" "></activiti:formProperty>
@@ -96,7 +96,7 @@
         <activiti:formProperty id="sComment_1" name="У разі відхилення запиту внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть центр надання адмінпослуг" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka527_rishennyaOrgan" name="Рішення якого робочого органу треба змінити" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers21" name="Настроювання принтформи " type="markers" default="${markerService.loadFromFile('dnepr_cnap_527_2_print.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers21" name="Настроювання принтформи" type="markers" default="${markerService.loadFromFile('dnepr_cnap_527_2_print.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/skv/dnepr_cnap_527_rishennya_radi_print.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/skv/dnepr_cnap_527_rishennya_radi_print.html" type="file"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -107,14 +107,14 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask2" name="Прийняття рішення щодо звернення" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask2" name="Прийняття рішення щодо звернення (2-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="Район" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sClientFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="Ідентифікаційний номер фізичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddress" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asSubect" name="Оберіть кому надається адміністративна послуга" type="enum" writable="false">
+        <activiti:formProperty id="sEnumSubect" name="Оберіть кому надається адміністративна послуга" type="enum" writable="false">
           <activiti:value id="sEnumElement_fiz" name="фізична особа"></activiti:value>
           <activiti:value id="sEnumElement_ur" name="юридична особа"></activiti:value>
         </activiti:formProperty>
@@ -136,7 +136,7 @@
         <activiti:formProperty id="sConfidant_passport" name="Документи, що підтверджують довірену особу (паспортні дані: серія, номер, дата, ким виданий, довіреність)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNomerRishennya" name="Номер рішення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateRishennya" name="Дата рішення; формат дати ДД.ММ.РРРР" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNoteRishennya" name="Заголовок рішення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNoteRishennya" name="Назва рішення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDel_NomerPunkta" name="Номер пункту, що потрібно виключити з рішення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sReasonForEdit" name="Причина внесення змін до рішення" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sReestr_numb" name="Реєстраційний номер" type="string" writable="false"></activiti:formProperty>
