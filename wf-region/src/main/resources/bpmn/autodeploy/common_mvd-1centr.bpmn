@@ -3,7 +3,7 @@
   <process id="common_mvd_1centr" name="(загальна) - Надання довідки про відсутність або наявніcть судимості" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть регіональне відділення, де Ви б бажали отримати послугу" type="select" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть регіональне відділення, де Ви б бажали отримати послугу" type="select" required="true" default="0"></activiti:formProperty>
         <activiti:formProperty id="sWork_Time" name="Графік прийому громадян" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sFamily_RU" name="Фамилия (рус.)" type="string" required="true"></activiti:formProperty>
@@ -70,6 +70,34 @@
         <activiti:formProperty id="sCountry" name="Громадянство" type="string"></activiti:formProperty>
         <activiti:formProperty id="sCountry_UA" name="Країна народження" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sRegionbirthDay" name="Регіон народження" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asRegionbirthDay_UA" name="Регіон народження" type="enum">
+            <activiti:value id="100000000" name="Автономна Республіка Крим"></activiti:value>
+            <activiti:value id="700000000" name="Волинська"></activiti:value>
+            <activiti:value id="500000000" name="Вінницька"></activiti:value>
+            <activiti:value id="1200000000" name="Дніпропетровська"></activiti:value>
+            <activiti:value id="1400000000" name="Донецька"></activiti:value>
+            <activiti:value id="1800000000" name="Житомирська"></activiti:value>
+            <activiti:value id="2100000000" name="Закарпатська"></activiti:value>
+            <activiti:value id="2300000000" name="Запорізька"></activiti:value>
+            <activiti:value id="2600000000" name="Івано-Франківська"></activiti:value>
+            <activiti:value id="3200000000" name="Київська"></activiti:value>
+            <activiti:value id="3500000000" name="Кіровоградська"></activiti:value>
+            <activiti:value id="4400000000" name="Луганська"></activiti:value>
+            <activiti:value id="4600000000" name="Львівська"></activiti:value>
+            <activiti:value id="4800000000" name="Миколаївська"></activiti:value>
+            <activiti:value id="5100000000" name="Одеська"></activiti:value>
+            <activiti:value id="5300000000" name="Полтавська"></activiti:value>
+            <activiti:value id="5600000000" name="Рівненська"></activiti:value>
+            <activiti:value id="5900000000" name="Сумська"></activiti:value>
+            <activiti:value id="6100000000" name="Тернопільська"></activiti:value>
+            <activiti:value id="6300000000" name="Харківська"></activiti:value>
+            <activiti:value id="6500000000" name="Херсонська"></activiti:value>
+            <activiti:value id="6800000000" name="Хмельницька"></activiti:value>
+            <activiti:value id="7100000000" name="Черкаська"></activiti:value>
+            <activiti:value id="7300000000" name="Чернівецька"></activiti:value>
+            <activiti:value id="7400000000" name="Чернігівська"></activiti:value>
+            <activiti:value id="8500000000" name="м.Севастополь"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sArea" name="Район народження" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPlace" name="Населений пункт народження" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="goal" name="Мета отримання довідки" type="enum" required="true">
@@ -92,6 +120,8 @@
         <activiti:formProperty id="phone" name="Контактний телефон; у форматі +380...." type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="fields for name change" type="markers" default="${markerService.loadFromFile('mvd/common_mvd.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="country" type="markers" default="${markerService.loadFromFile('mvd/common_mvd_1_centr_1.json')}"></activiti:formProperty>
+        
         <activiti:formProperty id="sAddress" name="Адреса сервісного центру" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMail_Signature" name="Підпис" type="invisible" default=" "></activiti:formProperty>
 
