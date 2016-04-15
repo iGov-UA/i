@@ -335,10 +335,11 @@ ${sMail_Signature}
     </serviceTask>
     <scriptTask id="scripttask1" name="set country" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
-var Country=execution.getVariable('sCountry_UA')
-var RegionbirthDay_UA=execution.getVariable('sID_Place_UA_Birth_Region')
-if (Country=='Україна'){execution.setVariable('sRegion',RegionbirthDay_UA)}
-
+          var Country=execution.getVariable('sCountry_UA')
+          var RegionbirthDay_UA=execution.getVariable('sID_Place_UA_Birth_Region')
+          var RegionbirthDay=execution.getVariable('sRegionbirthDay')
+          if (Country=='Україна'){execution.setVariable('sRegion',RegionbirthDay_UA)}
+          if (Country!='Україна'){execution.setVariable('sRegion',RegionbirthDay)}
 
 </script>
     </scriptTask>
