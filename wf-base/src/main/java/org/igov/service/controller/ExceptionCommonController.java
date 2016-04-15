@@ -64,6 +64,11 @@ public class ExceptionCommonController {
     public
     @ResponseBody
     ResponseEntity<String> catchRuntimeException(RuntimeException exception) {
+        String sClass = exception.getStackTrace()[0].getClassName();
+        String sFileName = exception.getStackTrace()[0].getFileName();
+        String sMethod = exception.getStackTrace()[0].getMethodName();
+        LOG.error("!!!Error: ", exception);
+        LOG.error("sClass: " + sClass + " sFileName: " + sFileName + " sMethod: " + sMethod, exception);
         LOG.error("Error:{}. REST System Exception", exception.getMessage());
         LOG.trace("FAIL:", exception);
         new Log(this.getClass(), exception)
