@@ -16,7 +16,8 @@ angular.module('appBoilerPlate', ['ngCookies',
   'dialogs.main',
   'pascalprecht.translate',
   'dialogs.default-translations',
-  'textAngular']);
+  'textAngular',
+  'iGovMarkers']);
 
 angular.module('documents', ['appBoilerPlate']);
 angular.module('auth', ['appBoilerPlate']);
@@ -48,5 +49,3 @@ angular.module('app', [
     }
   });
 });
-
-
