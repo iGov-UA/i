@@ -1869,11 +1869,9 @@ p {font-size: 14px;}
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 &lt;p&gt;
 Ваше звернення до Дніпропетровської міської ради - опрацьовано. &lt;br /&gt;
-Статус документа: ${sStatusName_UkrDoc}&lt;br&gt;
+
 Номер документа: ${sID_Document_UkrDoc}&lt;br&gt;
-Аттач: ${anID_Attach_UkrDoc}&lt;br&gt;
-Head:  ${sHead_Document_UkrDoc}&lt;br&gt;
-Body: ${sBody_Document_UkrDoc}&lt;br&gt;
+
 
 &lt;/p&gt;
 Телефон для довідок: &lt;br /&gt;
@@ -4347,15 +4345,6 @@ execution.setVariable('sNameDepartment', per2)</script>
           <activiti:field name="sID_Document">
             <activiti:expression>${sID_Document_UkrDoc}</activiti:expression>
           </activiti:field>
-          <activiti:field name="sStatusName_UkrDoc">
-            <activiti:expression>${sStatusName_UkrDoc}</activiti:expression>
-          </activiti:field>
-          <activiti:field name="sHead_Document_UkrDoc">
-            <activiti:expression>${sHead_Document_UkrDoc}</activiti:expression>
-          </activiti:field>
-          <activiti:field name="sBody_Document_UkrDoc">
-            <activiti:expression>${sBody_Document_UkrDoc}</activiti:expression>
-          </activiti:field>
         </activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -4386,11 +4375,7 @@ execution.setVariable('sNameDepartment', per2)</script>
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 &lt;p&gt;
-&lt;b&gt;Статус документа:&lt;/b&gt; ${sStatusName_UkrDoc}&lt;br&gt;
-&lt;b&gt;Номер документа:&lt;/b&gt; ${sID_Document_UkrDoc}&lt;br&gt;
-&lt;b&gt;Аттач:&lt;/b&gt; ${anID_Attach_UkrDoc}&lt;br&gt;
-&lt;b&gt;Head:&lt;/b&gt;  ${sHead_Document_UkrDoc}&lt;br&gt;
-&lt;b&gt;Body:&lt;/b&gt; ${sBody_Document_UkrDoc}&lt;br&gt;
+${sID_Document_UkrDoc}
 &lt;/p&gt;
 &lt;br&gt;
 [pattern/mail/_common_signature_start.html]
