@@ -25,6 +25,12 @@
           <activiti:value id="sEnumRepair" name="проведення ремонтних робіт в охоронній зоні "></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sAdress2" name="Адреса находження зелених насаджень" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asChoiceType" name="Вид зелених насаджень" type="enum" required="true">
+          <activiti:value id="sEnumTree" name="Дерева (кущи)"></activiti:value>
+          <activiti:value id="sEnumLawn" name="Газон"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sQuantityTree" name="Кількість зелених насаджень (шт.)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sQuantityLawn" name="Площа газону (м.кв.)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорту" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_inn" name="Скан-копія ІПН" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile1" name="Документи, що підтверджують право користування земельною ділянкою" type="file" required="true"></activiti:formProperty>
@@ -111,6 +117,12 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="sEnumRepair" name="проведення ремонтних робіт в охоронній зоні "></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sAdress2" name="Адреса находження зелених насаджень" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asChoiceType" name="Вид зелених насаджень" type="enum" writable="false">
+          <activiti:value id="sEnumTree" name="Дерева (кущи)"></activiti:value>
+          <activiti:value id="sEnumLawn" name="Газон"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sQuantityTree" name="Кількість зелених насаджень (шт.)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sQuantityLawn" name="Площа газону (м.кв.)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sExtensionNumber" name="Реєстраційний номер ЦНАП" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string"></activiti:formProperty>
@@ -122,6 +134,8 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="sShapkaGolova" name="Шапка для прінтформи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers12" name="принтформа якщо юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_12&quot;:{&quot;aElement_ID&quot;:[&quot;ur_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asChoiceObject&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnumUr'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers13" name="принтформа якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;fiz_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asChoiceObject&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnumFiz'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers14" name="принтформа якщо дерева" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_14&quot;:{&quot;aElement_ID&quot;:[&quot;tree_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asChoiceType&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnumTree'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers15" name="принтформа якщо газон" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_15&quot;:{&quot;aElement_ID&quot;:[&quot;lawn_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asChoiceType&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnumLawn'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sBody" name="[pattern/print/dneprOblSnap/cnap_469_print.html]" type="invisible" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -219,6 +233,12 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="sEnumRepair" name="проведення ремонтних робіт в охоронній зоні "></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sAdress2" name="Адреса находження зелених насаджень" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asChoiceType" name="Вид зелених насаджень" type="enum" writable="false">
+          <activiti:value id="sEnumTree" name="Дерева (кущи)"></activiti:value>
+          <activiti:value id="sEnumLawn" name="Газон"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sQuantityTree" name="Кількість зелених насаджень (шт.)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sQuantityLawn" name="Площа газону (м.кв.)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sExtensionNumber" name="Реєстраційний номер ЦНАП" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration" name="Дата реєстрації ЦНАП" type="string" writable="false"></activiti:formProperty>
