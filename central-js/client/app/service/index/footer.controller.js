@@ -19,12 +19,12 @@ angular.module('app').controller('FooterController', function ($scope) {
       image: 'assets/images/ads/promarmatura.png',
       height: 50
     }
-    ,{
+    /*,{
       url: 'http://nic.ua',
       alt: 'nicua',
       image: 'assets/images/ads/nicua.png',
       height: 50
-    }
+    }*/
     ,{
       url: 'http://work.ua',
       alt: 'workua',

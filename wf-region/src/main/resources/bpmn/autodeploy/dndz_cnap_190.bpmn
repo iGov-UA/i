@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dndz_cnap_190" name="Розірвання договору оренди земельної ділянки або припинення права постійного користування земельною ділянкою" isExecutable="true">
-    <documentation>Смоктій К.В. Последние правки: 30.03.2016</documentation>
+    <documentation>Смоктій К.В. Последние правки: 06.04.2016</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть центр надання адмінпослуг" type="select" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть центр надання адмінпослуг" type="select" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По-батькові" type="string"></activiti:formProperty>
@@ -56,6 +56,7 @@
         <activiti:formProperty id="nFile_ReasonDocument" name="Копія документу, який підтверджує підстави щодо розірвання договору оренди земельної ділянки" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_AktObstezennya" name="Копія Акт обстеження земельної ділянки" type="file"></activiti:formProperty>
         <activiti:formProperty id="nFile_OwnershipInsideBuildings" name="Для вбудованних приміщень обов'язково документ про право власності на приміщення" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile_UstanovchiDocumenti" name="Копії установчих документів (для суб’єктів господарювання)" type="file"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Розкриття атрібутів щодо специфіки вводу" type="markers" default="${markerService.loadFromFile('dneprCnap/dnepr_cnap_190_11.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="Розкриття атрібутів щодо специфіки вводу" type="markers" default="${markerService.loadFromFile('dneprCnap/dnepr_cnap_190_12.json')}"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible"></activiti:formProperty>
@@ -64,8 +65,6 @@
         <activiti:formProperty id="sAddress" name="Адреса ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka_190" name="На кого пишеться заява" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sVarNamePrintForm" name="Назва прінт-форми" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sVarNameMarkerPrintForm" name="Назва маркера щодо роботи з прінт-формою" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="[Етап I] Реєстрація звернення, результат обробки вхідних данних (1-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
@@ -116,13 +115,15 @@
         <activiti:formProperty id="sDate_Registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFioAdmin" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string"></activiti:formProperty>
         <activiti:formProperty id="sShapka_190" name="Керівнику якого робочого органу" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markers21" name="Настроювання принтформи" type="markers" default="${markerService.loadFromFile('dneprCnap/dnepr_cnap_190_21_Print.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers22" name="Настроювання принтформи" type="markers" default="${markerService.loadFromFile('dneprCnap/dnepr_cnap_190_22_Print.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/skv/dndz_cnap_190_print.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody2" name="[pattern/print/skv/dndz_cnap_190_print_Nikopol.html]" type="invisible" default="Заява (м. Нікополь)" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть центр надання адмінпослуг" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers21" name="Настроювання принтформи" type="markers" default="${markerService.loadFromFile('dneprCnap/dnepr_cnap_190_Test_Print.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sBody1" name="[pattern/print/skv/dndz_cnap_190_test_print.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${bankId_scan_inn},${nFile_DovirenistConfidant},${nFile_PassportConfidant},${nFile_ContarctArenda}, ${nFile_AdvertLicense}, ${nFile_DovidkaProVidsutnistDolgaArendi}, ${nFile_DPI_DovidkaProVidsutnistDolgaArendi}, ${nFile_ReasonDocument}, ${nFile_AktObstezennya}, ${nFile_OwnershipInsideBuildings}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport},${bankId_scan_inn},${nFile_DovirenistConfidant},${nFile_PassportConfidant},${nFile_ContarctArenda}, ${nFile_AdvertLicense}, ${nFile_DovidkaProVidsutnistDolgaArendi}, ${nFile_DPI_DovidkaProVidsutnistDolgaArendi}, ${nFile_ReasonDocument}, ${nFile_AktObstezennya}, ${nFile_OwnershipInsideBuildings}, ${nFile_UstanovchiDocumenti}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -178,7 +179,9 @@
         <activiti:formProperty id="nFile_Rishennya" name="Завантажте копію рішення" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть центр надання адмінпослуг" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers31" name="Настроювання принтформи" type="markers" default="${markerService.loadFromFile('dneprCnap/dnepr_cnap_190_21_Print.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers32" name="Настроювання принтформи" type="markers" default="${markerService.loadFromFile('dneprCnap/dnepr_cnap_190_22_Print.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/skv/dndz_cnap_190_print.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody2" name="[pattern/print/skv/dndz_cnap_190_print_Nikopol.html]" type="invisible" default="Заява (м. Нікополь)" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -199,6 +202,7 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
+    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
     <serviceTask id="servicetask3" name="Повідомлення про доставку замовлення до ЦНАПу" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -239,7 +243,7 @@ ${sAddress}&lt;br /&gt;
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Відхилено звернення на тему: розірвання договору оренди земельної ділянки або припинення права постійного користування земельною ділянкою]]></activiti:string>
+		<activiti:string><![CDATA[Відхилено звернення на тему: розірвання договору оренди земельної ділянки або припинення права постійного користування земельною ділянкою]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -313,10 +317,10 @@ ${sAddress}&lt;br /&gt;
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення опрацьовано: розірвання договору оренди земельної ділянки або припинення права постійного користування земельною ділянкою]]></activiti:string>
         </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
+    	<activiti:field name="saAttachmentsForSend">
           <activiti:expression>${nFile_Rishennya}</activiti:expression>
         </activiti:field>
-        <activiti:field name="text">
+            <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 &lt;p&gt;Ви подавали звернення щодо розірвання договору оренди земельної ділянки або припинення права постійного користування земельною ділянкою. &lt;br /&gt;
@@ -373,7 +377,6 @@ ${sAddress}&lt;br /&gt;
     </sequenceFlow>
     <sequenceFlow id="flow14" sourceRef="servicetask7" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow15" sourceRef="servicetask6" targetRef="endevent2"></sequenceFlow>
-    <sequenceFlow id="flow16" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dndz_cnap_190">
     <bpmndi:BPMNPlane bpmnElement="dndz_cnap_190" id="BPMNPlane_dndz_cnap_190">
@@ -426,6 +429,10 @@ ${sAddress}&lt;br /&gt;
         <omgdi:waypoint x="85.0" y="205.0"></omgdi:waypoint>
         <omgdi:waypoint x="120.0" y="205.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="225.0" y="205.0"></omgdi:waypoint>
+        <omgdi:waypoint x="270.0" y="205.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="375.0" y="205.0"></omgdi:waypoint>
         <omgdi:waypoint x="400.0" y="205.0"></omgdi:waypoint>
@@ -449,7 +456,7 @@ ${sAddress}&lt;br /&gt;
         <omgdi:waypoint x="760.0" y="225.0"></omgdi:waypoint>
         <omgdi:waypoint x="759.0" y="259.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="89.0" x="721.0" y="227.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="100.0" x="721.0" y="227.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
@@ -472,14 +479,14 @@ ${sAddress}&lt;br /&gt;
         <omgdi:waypoint x="739.0" y="520.0"></omgdi:waypoint>
         <omgdi:waypoint x="595.0" y="520.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="78.0" x="622.0" y="527.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="100.0" x="622.0" y="527.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
         <omgdi:waypoint x="779.0" y="520.0"></omgdi:waypoint>
         <omgdi:waypoint x="885.0" y="520.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="60.0" x="780.0" y="529.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="100.0" x="780.0" y="529.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
@@ -489,10 +496,6 @@ ${sAddress}&lt;br /&gt;
       <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
         <omgdi:waypoint x="542.0" y="460.0"></omgdi:waypoint>
         <omgdi:waypoint x="204.0" y="315.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
-        <omgdi:waypoint x="225.0" y="205.0"></omgdi:waypoint>
-        <omgdi:waypoint x="270.0" y="205.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
