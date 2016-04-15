@@ -43,6 +43,12 @@ public class GeneralConfig {
     private String SID_login;
     @Value("${general.SID_password}")
     private String SID_password;
+    
+    @Value("${general.SID_login2}")
+    private String SID_login2;
+    @Value("${general.SID_password2}")
+    private String SID_password2;
+    
     @Value("${general.nID_Server}")
     private String snID_Server;
 
@@ -122,6 +128,14 @@ public class GeneralConfig {
         return SID_password != null ? SID_password : "igov-sess";
     }
 
+    public String getSID_login2() {
+        return SID_login2 != null ? SID_login2 : "igov";
+    }
+
+    public String getSID_password2() {
+        return SID_password2 != null ? SID_password2 : "igov-sess";
+    }
+    
     public boolean bTest() {
         /*if (bTest != null) {
          return bTest;
