@@ -106,7 +106,7 @@ if [ $sProject == "central-js" ]; then
 	cp -r /sybase/.upload/central-js /sybase/central-js
 	cd /sybase/central-js
 	cp -f -R /sybase/.configs/central-js/* /sybase/central-js/
-	pm2 start process.json --name central-js
+	pm2 start process.json --name central-js --log /sybase/logs/central_front
 	pm2 info central-js
 fi
 
