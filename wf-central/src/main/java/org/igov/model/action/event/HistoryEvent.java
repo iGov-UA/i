@@ -65,7 +65,7 @@ public class HistoryEvent extends Entity {
     private String sSubjectInfo;
 
     @JsonProperty(value = "oSubject")
-    @JoinColumn(name = "nId_Subject", insertable = false, updatable = false)
+    @JoinColumn(name = "nID_Subject", insertable = false, updatable = false)
     @ManyToOne(fetch = FetchType.EAGER)
     private Subject oSubject;
 
