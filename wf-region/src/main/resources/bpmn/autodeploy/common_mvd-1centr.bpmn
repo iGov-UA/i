@@ -70,7 +70,7 @@
         <activiti:formProperty id="sCountry" name="Громадянство" type="string"></activiti:formProperty>
         <activiti:formProperty id="sCountry_UA" name="Країна народження" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sRegionbirthDay" name="Регіон народження" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Region_Birth_UA" name="Регіон народження" type="enum">
+        <activiti:formProperty id="sID_Place_UA_Birth_Region" name="Регіон народження" type="enum">
           <activiti:value id="100000000" name="Автономна Республіка Крим"></activiti:value>
           <activiti:value id="700000000" name="Волинська"></activiti:value>
           <activiti:value id="500000000" name="Вінницька"></activiti:value>
@@ -336,7 +336,7 @@ ${sMail_Signature}
     <scriptTask id="scripttask1" name="set country" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
 var Country=execution.getVariable('sCountry_UA')
-var RegionbirthDay_UA=execution.getVariable('sID_Region_Birth_UA')
+var RegionbirthDay_UA=execution.getVariable('sID_Place_UA_Birth_Region')
 if (Country=='Україна'){execution.setVariable('sRegion',RegionbirthDay_UA)}
 
 
