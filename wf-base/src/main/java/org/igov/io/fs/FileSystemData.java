@@ -56,7 +56,6 @@ public class FileSystemData {
     }
     
     public static Collection<File> getFiles_PatternPrint() {
-        //File directory = new File(PATTERN_PRINT_FILE_PATH_BEGIN);
         try{
             Path oPath = Paths.get(SUB_PATH_PATTERN_PRINT_FILES);
             File oFileDir = oPath.toFile();
@@ -68,7 +67,6 @@ public class FileSystemData {
     }    
     
     public static byte[] getFileData_Pattern(String sPathFile) throws IOException, URISyntaxException {
-        //return getResourcesFile(PATTERN_FILE_PATH_BEGIN, sPathFile);
         try{
             return ToolFS.aFileByte(SUB_PATH_PATTERN_FILES, getCheckedPathFileOnReturn(sPathFile));
         }catch(IOException | URISyntaxException oException){
@@ -78,7 +76,6 @@ public class FileSystemData {
     }
     
     public static byte[] getFileData_MarkersMotionJson(String sPathFile) throws IOException, URISyntaxException {
-        //return getResourcesFile(MARKERS_MOTION_FILE_PATH_BEGIN, sPathFile);
         try{
             return ToolFS.aFileByte(SUB_PATH_MARKERS_MOTION_FILES, getCheckedPathFileOnReturn(sPathFile));
         }catch(IOException | URISyntaxException oException){
@@ -88,7 +85,6 @@ public class FileSystemData {
     }
     
     public static String getSmartPathFileContent_ActionItem(String sSubPathFileSmart, String sSubPath, Long nID) {
-        //return FileSystemData.getSmartFieldValue(info, BASE_INFO_PATTERN_FILE_PATH, new StringBuilder().append(getId()).append(".html").toString());
         String sContent = null;
         try{
             sContent = ToolFS.getSmartPathFileContent(sSubPathFileSmart
@@ -97,53 +93,7 @@ public class FileSystemData {
         }catch(IOException | URISyntaxException oException){
             LOG.error("Refused: {} (sSubPathFileSmart={},sSubPath={},nID={})", oException.getMessage(), sSubPathFileSmart, sSubPath, nID);
             LOG.trace("FAIL:", oException);
-            //throw oException;
         }
         return sContent != null ? sContent : sSubPathFileSmart;
     }
-
-    /*public static byte[] getResourcesFile(String sRootFolder, String sPathFile) throws IOException {
-        if (sPathFile.contains("..")) {
-            throw new IllegalArgumentException("incorrect sPathFile!");
-        }
-        String sFullFileName = sRootFolder + sPathFile;
-        File file = new File(sFullFileName);
-        LOG.info("Loading pattern file: '{}'", sFullFileName);
-        return Files.toByteArray(file);
-    }*/
-    
-    /*public static String getSmartFieldValue(String sDefaultValue, String sBasePath, String sFileName) {
-        String content = getSmartPathFileContent(sDefaultValue, sBasePath, sFileName);
-        return content != null ? content : sDefaultValue;
-    }*/
-
-    /*try {
-        //osFullPathFile = Paths.get(oURL.toURI());
-        return new String(Files.toByteArray(osFullPathFile.toFile()), DEFAULT_ENCODING);
-    } catch (IOException e) {
-        LOG.error("Cannot read the file: {} (osFullPathFile={})", e.getMessage(), osFullPathFile.toString());
-        return null;
-    }*/
-
-    /*
-    Path osSubPathFile = sSubPathFileSmart.equals("*")
-            ? Paths.get(sSubPathBase, sPathFileDefault)
-            : Paths.get(sSubPathBase, sSubPathFileSmart);
-
-    String sSubPathFile = osSubPathFile.toString();
-    URL oURL = Tool.class.getClassLoader().getResource(sSubPathFile);
-    if (oURL == null) {
-        LOG.error("Cannot find the file '(sSubPathFile={})'", sSubPathFile);
-        return null;
-    }
-
-    Path osFullPathFile = null;
-    try {
-        osFullPathFile = Paths.get(oURL.toURI());
-        return new String(Files.toByteArray(osFullPathFile.toFile()), DEFAULT_ENCODING);
-    } catch (URISyntaxException | IOException e) {
-        LOG.error("Cannot read the file: {} (osFullPathFile={})", e.getMessage(), osFullPathFile);
-        return null;
-    }*/
-    
 }

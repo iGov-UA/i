@@ -57,7 +57,7 @@ module.exports.index = function (req, res) {
   //var config = require('../../config');
 
   var type = req.session.type;
-  if (type === 'bankid' || type === 'eds') {
+  if (type === 'bankid' || type === 'eds' || type === 'mpbds') {
     bankidService.syncWithSubject(req.session.access.accessToken, function (err, result) {
       finishRequest(req, res, err, result, type);
     });

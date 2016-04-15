@@ -1,40 +1,37 @@
 package org.igov.service.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import org.igov.model.object.ObjectCustoms;
+import org.igov.model.object.ObjectCustomsDao;
+import org.igov.model.object.ObjectEarthTarget;
+import org.igov.model.object.ObjectEarthTargetDao;
+import org.igov.service.exception.CommonServiceException;
+import org.igov.util.JSON.JsonRestUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.igov.model.object.ObjectEarthTargetDao;
-import org.igov.model.object.ObjectEarthTarget;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
-
 import java.util.List;
 import java.util.Map;
-import javax.servlet.http.HttpServletResponse;
-import org.igov.model.object.ObjectCustoms;
-import org.igov.model.object.ObjectCustomsDao;
-import static org.igov.service.business.object.ObjectService.isArgsNull;
-import static org.igov.service.business.object.ObjectService.isMatchSID;
-import static org.igov.service.business.object.ObjectService.isMeasureCorrect;
-import static org.igov.service.business.object.ObjectService.sid_pattern1;
-import org.igov.service.exception.CommonServiceException;
-import org.igov.util.JSON.JsonRestUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+
+import static org.igov.service.business.object.ObjectService.*;
 
 /**
  * @author grigoriy-romanenko
  */
 @Controller
-@Api(tags = {"ObjectController"}, description = "Обьекты и смежные сущности")
+@Api(tags = { "ObjectController -- Обьекты и смежные сущности" })
 @RequestMapping(value = "/object")
 public class ObjectController {
 
@@ -46,28 +43,9 @@ public class ObjectController {
     @Autowired
     private ObjectCustomsDao objectCustomsDao;
 
-    /**
-     * возвращает список целевых назначений земель, подпадающих под параметры
-     * <br>пример запроса:
-     * https://test.igov.org.ua/wf/service/object/getObjectEarthTargets?sID_UA=01.01
-     * <br>пример ответа:
-     * <br>{
-     * <br> "sID_UA" : "01.01",
-     * <br> "sName_UA" : "Для ведення товарного сільськогосподарського
-     * виробництва",
-     * <br> "nID" : 1
-     * <br>}
-     * <br><a href="http://www.neruhomist.biz.ua/classification.html">источник
-     * данных</a>
-     *
-     * @param sID_UA подразделение в коде КВЦПЗ (уникальный; опциональный)
-     * @param sName_UA название целевого назначения земель на украинском
-     * (уникальный; опциональный, достаточно чтоб совпала любая часть названия)
-     * @return список целевых назначений земель согласно фильтрам
-     */
-    @ApiOperation(value = "Получение списка целевых назначений земель, подпадающих под параметры", notes = "##### ObjectController - Обьекты и смежные сущности. Получение списка целевых назначений земель, подпадающих под параметры #####\n\n"
-            + "Пример запроса:\n"
-            + "https://test.igov.org.ua/wf/service/object/getObjectEarthTargets?sID_UA=01.01\n\n\n"
+    @ApiOperation(value = "Получение списка целевых назначений земель, подпадающих под параметры", notes =
+            "Пример запроса:\n"
+                    + "https://test.igov.org.ua/wf/service/object/getObjectEarthTargets?sID_UA=01.01\n"
             + "Пример ответа:\n"
             + "\n```json\n"
             + "{\n"
@@ -80,36 +58,12 @@ public class ObjectController {
     @RequestMapping(value = "/getObjectEarthTargets", method = RequestMethod.GET)
     public @ResponseBody
     List<ObjectEarthTarget> getObjectEarthTargets(
-            @ApiParam(value = "подразделение в коде КВЦПЗ (уникальный)", required = false) @RequestParam(value = "sID_UA", required = false) String sID_UA,
-            @ApiParam(value = "название целевого назначения земель на украинском (уникальный, достаточно чтоб совпала любая часть названия)", required = false) @RequestParam(value = "sName_UA", required = false) String sName_UA) {
+            @ApiParam(value = "ид-строка. подразделение в коде КВЦПЗ (уникальный)", required = false) @RequestParam(value = "sID_UA", required = false) String sID_UA,
+            @ApiParam(value = "строка-название целевого назначения земель на украинском (уникальный, достаточно чтоб совпала любая часть названия)", required = false) @RequestParam(value = "sName_UA", required = false) String sName_UA) {
         return objectEarthTargetDao.getObjectEarthTargets(sID_UA, sName_UA);
     }
 
-    /**
-     * issue #968 — lesha1980;
-     *
-     * Запрос вида /wf/service/object/getObjectCustoms?; метод возвращает список
-     * объектов ObjectCustoms по аргументам sID_UA и/или sName_UA; пример
-     * возвращаемого списка объектов: [{"sID_UA":"0101","sName_UA":"Коні,
-     * віслюки, мули та лошаки, живі:","sMeasure_UA":"-","nID":1},
-     * {"sID_UA":"0101 10","sName_UA":"Коні, віслюки, мули та лошаки, живі: 
-     * чистопородні племінні тварини:","sMeasure_UA":"-","nID":2}]
-     *
-     *
-     * @param sID_UA (опциональный, если другой уникальный ключ задан и по нему
-     * найдена запись) (формат 0101 01 01 01)
-     * @param sName_UA (опциональный, если другой уникальный ключ задан и по
-     * нему найдена запись)
-     * @param response
-     * @return list — список найденных объектов
-     *
-     */
-    @ApiOperation(value = "Получить список объектов ObjectCustoms ", notes = "##### ObjectController - Обьекты и смежные сущности. Получение списка объектов ObjectCustoms #####\n\n"
-            + "issue #968 — lesha1980;\n"
-            + "Запрос вида /wf/service/object/getObjectCustoms?\n\n\n"
-            + "Параметры\n\n"
-            + "- sID_UA      (опциональный, если другой уникальный ключ задан и по нему найдена запись) (формат 0101 01 01 01)\n"
-            + "- sName_UA    (опциональный, если другой уникальный ключ задан и по нему найдена запись)\n\n\n"
+    @ApiOperation(value = "Получить список объектов ObjectCustoms ", notes = "Пример ответа:\n"
             + "\n```json\n"
             + "[\n"
             + "  {\n"
@@ -129,8 +83,8 @@ public class ObjectController {
     @RequestMapping(value = "/getObjectCustoms", method = RequestMethod.GET)
     public @ResponseBody
     ResponseEntity<String> getObjectCustoms(
-            @ApiParam(value = "(опциональный, если другой уникальный ключ задан и по нему найдена запись) (формат 0101 01 01 01)", required = false) @RequestParam(value = "sID_UA", required = false) String sID_UA,
-            @ApiParam(value = "(опциональный, если другой уникальный ключ задан и по нему найдена запись)", required = false) @RequestParam(value = "sName_UA", required = false) String sName_UA,
+            @ApiParam(value = "строка-ид(опциональный, если другой уникальный ключ задан и по нему найдена запись) (формат 0101 01 01 01)", required = false) @RequestParam(value = "sID_UA", required = false) String sID_UA,
+            @ApiParam(value = "строка-ид(опциональный, если другой уникальный ключ задан и по нему найдена запись)", required = false) @RequestParam(value = "sName_UA", required = false) String sName_UA,
             HttpServletResponse response
     ) throws CommonServiceException {
         //проверяем наличие аргументов
@@ -216,34 +170,8 @@ public class ObjectController {
         return result;
     }
 
-    /**
-     * issue #968 — lesha1980;
-     *
-     * Запрос вида /wf/service/object/setObjectCustoms?; обновляет или вставляет
-     * новую запись; обновление записи происходит в том случае, если есть
-     * параметр nID и хотя бы один другой параметр: sID_UA, sName_UA или
-     * sMeasure_UA; вставка записи происходит в том случае, если в метод не
-     * передается параметр nID, но передаются три других параметра; пример
-     * возвращаемого объекта: {"sID_UA":"0101","sName_UA":"Коні, віслюки, мули
-     * та лошаки, живі:","sMeasure_UA":"-","nID":1} при вставке и обновлении
-     * поля sID_UA важно, чтобы параметр не имел впереди и позади пробелов,
-     * иначе может нарушиться уникальность записи при вставке и обновлении поля
-     * sName_UA важно брать в кавычки запись, если она содержит "точку с
-     * пробелом" — ";"
-     *
-     * @param nID (опциональный, если другой уникальный-ключ задан и по нему
-     * найдена запись)
-     * @param sID_UA (опциональный, если другой уникальный-ключ задан и по нему
-     * найдена запись)(формат 0101 01 01 01)
-     * @param sName_UA (опциональный, если другой уникальный-ключ задан и по
-     * нему найдена запись)
-     * @param sMeasure_UA (опциональный)
-     * @param response
-     * @return ObjectCustoms
-     */
-    @ApiOperation(value = "Обновление или вставка новуой записи", notes = "##### ObjectController - Обьекты и смежные сущности. Обновить или вставить новую запись #####\n\n"
-            + "issue #968 — lesha1980;\n\n"
-            + "Запрос вида /wf/service/object/setObjectCustoms?\n\n\n"
+    @ApiOperation(value = "Обновление или вставка новуой записи", notes =
+            "Запрос вида /wf/service/object/setObjectCustoms?\n"
             + "обновление записи происходит в том случае, если есть параметр nID\n"
             + "и хотя бы один другой параметр: sID_UA, sName_UA или sMeasure_UA;\n"
             + "вставка записи происходит в том случае, если в метод не передается\n"
@@ -258,7 +186,7 @@ public class ObjectController {
             + "}\n"
             + "\n```\n"
             + "при вставке и обновлении поля sID_UA важно, чтобы параметр не имел впереди и позади пробелов, иначе может нарушиться уникальность записи\n"
-            + "при вставке и обновлении поля sName_UA важно брать в кавычки запись, если она содержит \"точку с пробелом\" — \";\"\n\n"
+                    + "при вставке и обновлении поля sName_UA важно брать в кавычки запись, если она содержит \"точку с пробелом\" — \";\"\n"
             + "- nID         (опциональный, если другой уникальный-ключ задан и по нему найдена запись)\n"
             + "- sID_UA      (опциональный, если другой уникальный-ключ задан и по нему найдена запись)(формат 0101 01 01 01)\n"
             + "- sName_UA    (опциональный, если другой уникальный-ключ задан и по нему найдена запись)\n"
@@ -266,9 +194,9 @@ public class ObjectController {
     @RequestMapping(value = "/setObjectCustoms", method = RequestMethod.GET)
     public @ResponseBody
     ResponseEntity setObjectCustoms(
-            @ApiParam(value = "(опциональный, если другой уникальный-ключ задан и по нему найдена запись)", required = false) @RequestParam(value = "nID", required = false) Long nID,
-            @ApiParam(value = "(опциональный, если другой уникальный-ключ задан и по нему найдена запись)(формат 0101 01 01 01)", required = false) @RequestParam(value = "sID_UA", required = false) String sID_UA,
-            @ApiParam(value = "(опциональный, если другой уникальный-ключ задан и по нему найдена запись)", required = false) @RequestParam(value = "sName_UA", required = false) String sName_UA,
+            @ApiParam(value = "строка-ключ(опциональный, если другой уникальный-ключ задан и по нему найдена запись)", required = false) @RequestParam(value = "nID", required = false) Long nID,
+            @ApiParam(value = "строка-ключ(опциональный, если другой уникальный-ключ задан и по нему найдена запись)(формат 0101 01 01 01)", required = false) @RequestParam(value = "sID_UA", required = false) String sID_UA,
+            @ApiParam(value = "строка-ключ(опциональный, если другой уникальный-ключ задан и по нему найдена запись)", required = false) @RequestParam(value = "sName_UA", required = false) String sName_UA,
             @ApiParam(value = "строка названия мерчанта на украинском", required = false) @RequestParam(value = "sMeasure_UA", required = false) String sMeasure_UA,
             HttpServletResponse response
     ) throws CommonServiceException {
@@ -371,20 +299,8 @@ public class ObjectController {
         return result;
     }
 
-    /**
-     * issue #968 - lesha1980; Запрос вида
-     * /wf/service/object/removeObjectCustoms?; удаляет запись по уникальному
-     * значению nID или sID_UA;
-     *
-     * @param nID (опциональный, если другой уникальный-ключ задан и по нему
-     * найдена запись)
-     * @param sID_UA (опциональный, если другой уникальный-ключ задан и по нему
-     * найдена запись)(формат 0101 01 01 01)
-     * @param response
-     */
-    @ApiOperation(value = "Удаление записи по уникальному значению nID или sID_UA", notes = "##### ObjectController - Обьекты и смежные сущности. Удалить запись по уникальному значению nID или sID_UA #####\n\n"
-            + "issue #968 - lesha1980;\n"
-            + "Запрос вида /wf/service/object/removeObjectCustoms?;\n\n\n"
+    @ApiOperation(value = "Удаление записи по уникальному значению nID или sID_UA", notes =
+            "Запрос вида /wf/service/object/removeObjectCustoms?;\n\n\n"
             + "- nID     (опциональный, если другой уникальный-ключ задан и по нему найдена запись)\n"
             + "- sID_UA  (опциональный, если другой уникальный-ключ задан и по нему найдена запись)(формат 0101 01 01 01)")
     @RequestMapping(value = "/removeObjectCustoms", method = RequestMethod.GET)

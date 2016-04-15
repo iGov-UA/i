@@ -6,9 +6,20 @@ angular.module('app')
     $scope.catalog = [];
     $scope.catalogCounts = {0: 0, 1: 0, 2: 0};
     $scope.limit = 4;
+    $scope.nLimitCategory = function(nID){
+        if(statesRepository.isCatalogCategoryShowAll(nID)){
+            return 999;
+        }else{
+            return 4;
+        }
+    };
     $scope.bAdmin = AdminService.isAdmin();
     $scope.recalcCounts = true;
     $scope.spinner = true;
+
+    /*$scope.isCatalogCategoryShowAll = function(nID){
+        return statesRepository.isSearch(nID);
+    };*/
 
     $scope.categoryEditor = EditServiceTreeFactory.category;
     $scope.subcategoryEditor = EditServiceTreeFactory.subcategory;

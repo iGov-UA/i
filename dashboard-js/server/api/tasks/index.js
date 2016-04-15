@@ -6,6 +6,7 @@ var controller = require('./tasks.controller');
 var router = express.Router();
 
 router.get('/', controller.index);
+router.get('/getTaskData', controller.getTaskData);
 router.get('/getPatternFile', controller.getPatternFile);
 router.get('/:taskId/events', controller.getAllTaskEvents);
 router.get('/:taskId/form', controller.getForm);
@@ -23,7 +24,6 @@ router.get('/search/byText/:text/type/:sType', controller.getTasksByText);
 router.post('/:taskId/upload_content_as_attachment', controller.upload_content_as_attachment);
 router.post('/setTaskQuestions', controller.setTaskQuestions);
 router.get('/:taskId/attachments/:attachmentId/checkAttachmentSign', controller.checkAttachmentSign);
-router.get('/:taskId/getTaskData', controller.getTaskData);
 router.get('/:taskId/getMessageFile/:messageId/:fileName', controller.getMessageFile);
 
 
