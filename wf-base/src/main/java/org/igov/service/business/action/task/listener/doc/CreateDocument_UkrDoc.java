@@ -198,9 +198,10 @@ public class CreateDocument_UkrDoc extends AbstractModelTask implements TaskList
                 }
             }
         }
-        LOG.info("close task aythomaticaly: " + delegateTask.getId() + "...");
+        String nID_Task = delegateTask.getId();
+        LOG.info("close task aythomaticaly: " + nID_Task + "...");
         taskService.complete(delegateTask.getId(), new HashMap());
-        LOG.info("close task aythomaticaly: " + delegateTask.getId() + " ok!");
+        LOG.info("close task aythomaticaly: " + nID_Task + " ok!");
     }
 
 }

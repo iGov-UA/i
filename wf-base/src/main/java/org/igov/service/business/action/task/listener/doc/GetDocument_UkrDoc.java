@@ -24,6 +24,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.activiti.engine.impl.util.json.JSONObject;
+import static org.igov.service.business.action.task.core.AbstractModelTask.contentStringToByte;
+import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
 
 @Component("GetDocument_UkrDoc")
 public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListener {
