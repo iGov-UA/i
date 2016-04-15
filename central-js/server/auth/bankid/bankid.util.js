@@ -130,7 +130,7 @@ function isEncrypted(value, key) {
   }
 }
 
-function decryptValue(value, privateKey){
+function decryptValue(value, privateKey, key){
   try {
     return crypto.privateDecrypt(privateKey, new Buffer(value, 'base64')).toString('utf8');
   } catch (err) {
@@ -140,7 +140,7 @@ function decryptValue(value, privateKey){
 
 function decrypt(value, key, privateKey) {
   if (isEncrypted(value, key)) {
-    return decryptValue(value, privateKey);
+    return decryptValue(value, privateKey, key);
   } else {
     return value;
   }
