@@ -1,6 +1,7 @@
 package org.igov.service.business.action.task.listener.doc;
 
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -47,6 +48,12 @@ public class CreateDocument_UkrDoc extends AbstractModelTask implements TaskList
     private Expression nID_Pattern;
     private Expression sID_Order_GovPublic;
     private Expression sSourceChannel;
+    private Expression bankIdlastName;
+    private Expression bankIdfirstName;
+    private Expression bankIdmiddleName;
+    private Expression sDepartNameFull;
+    private Expression sSex;
+    private Expression sAddress;
     
 
     @Autowired
@@ -74,10 +81,24 @@ public class CreateDocument_UkrDoc extends AbstractModelTask implements TaskList
         String nID_PatternValue = getStringFromFieldExpression(this.nID_Pattern, execution);
         String sID_Order_GovPublicValue = getStringFromFieldExpression(this.sID_Order_GovPublic, execution);
         String sSourceChannelValue = getStringFromFieldExpression(this.sSourceChannel, execution);
-        
-        LOG.info("Parameters of the task sLogin:{}, sHead:{}, sBody:{}, nId_PatternValue:{}", sLoginAuthorValue, sHeadValue,
-                sBodyValue, nID_PatternValue);
+        String sDepartNameFullValue = getStringFromFieldExpression(this.sDepartNameFull, execution);
+        String sSexValue = getStringFromFieldExpression(this.sSex, execution);
+        String sAddressValue = getStringFromFieldExpression(this.sAddress, execution);
+        String bankIdlastName = getStringFromFieldExpression(this.bankIdlastName, execution);
+        String bankIdfirstName = getStringFromFieldExpression(this.bankIdfirstName, execution);
+        String bankIdmiddleName = getStringFromFieldExpression(this.bankIdmiddleName, execution);
+        String shortFIO = "_", fullIO = "_";
+        LOG.info("Parameters of the task sLogin:{}, sHead:{}, sBody:{}, nId_PatternValue:{}, bankIdlastName:{}, bankIdfirstName:{}, bankIdmiddleName:{}"
+                , sLoginAuthorValue, sHeadValue, sBodyValue, nID_PatternValue, bankIdlastName, bankIdfirstName, bankIdmiddleName);
 
+        if(bankIdlastName != null && bankIdfirstName != null && bankIdmiddleName != null 
+                && bankIdfirstName.length() > 0 && bankIdmiddleName.length() > 0){
+            fullIO = new StringBuilder(bankIdfirstName).append(" ").append(bankIdmiddleName).toString();
+            shortFIO = new StringBuilder(bankIdlastName).append(". ")
+                    .append(bankIdfirstName.substring(0, 1)).append(". ")
+                    .append(bankIdmiddleName.substring(0, 1)).append(".").toString();
+        }
+        
         List<Attachment> attachments = new LinkedList<Attachment>();
 
         List<Attachment> attach1 = taskService.getProcessInstanceAttachments(delegateTask.getProcessInstanceId());
@@ -126,7 +147,8 @@ public class CreateDocument_UkrDoc extends AbstractModelTask implements TaskList
         LOG.info("Processing {} attachments", attachments.size());
 
         Map<String, Object> urkDocRequest = UkrDocUtil.makeJsonRequestObject(sHeadValue, sBodyValue, sLoginAuthorValue, nID_PatternValue,
-                attachments, execution.getId(), generalConfig, sID_Order_GovPublicValue, sSourceChannelValue);
+                attachments, execution.getId(), generalConfig, sID_Order_GovPublicValue, sSourceChannelValue, shortFIO, fullIO,
+                sDepartNameFullValue, sSexValue, sAddressValue);
 
         JSONObject json = new JSONObject();
         json.putAll(urkDocRequest);
@@ -176,7 +198,9 @@ public class CreateDocument_UkrDoc extends AbstractModelTask implements TaskList
                 }
             }
         }
-
+        LOG.info("close task aythomaticaly: " + delegateTask.getId() + "...");
+        taskService.complete(delegateTask.getId(), new HashMap());
+        LOG.info("close task aythomaticaly: " + delegateTask.getId() + " ok!");
     }
 
 }
