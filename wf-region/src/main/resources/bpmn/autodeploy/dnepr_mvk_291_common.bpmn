@@ -3809,7 +3809,7 @@ execution.setVariable('sNameDepartment', per2)</script>
     <sequenceFlow id="flow55" sourceRef="exclusivegateway6" targetRef="endevent9">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asAppealCharacter=='sEnumConsult'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask10" name="Отримання відповіді" activiti:candidateGroups="sales">
+    <userTask id="usertask10" name="Отримання відповіді від УкрДок" activiti:candidateGroups="sales">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
@@ -4351,7 +4351,7 @@ execution.setVariable('sNameDepartment', per2)</script>
     <sequenceFlow id="flow57" name="asAnswerChannel=='sEnumAnsw3'" sourceRef="exclusivegateway2" targetRef="servicetask6">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asAnswerChannel=='sEnumAnsw3'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow58" sourceRef="usertask10" targetRef="servicetask7"></sequenceFlow>
+    <sequenceFlow id="flow58" sourceRef="usertask10" targetRef="exclusivegateway2"></sequenceFlow>
     <sequenceFlow id="flow59" name="asAnswerChannel=='sEnumAnsw2'" sourceRef="exclusivegateway2" targetRef="usertask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asAnswerChannel=='sEnumAnsw2'}]]></conditionExpression>
     </sequenceFlow>
@@ -4360,31 +4360,6 @@ execution.setVariable('sNameDepartment', per2)</script>
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asStatusOperator=='sEnumClose'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow63" sourceRef="usertask4" targetRef="usertask1"></sequenceFlow>
-    <serviceTask id="servicetask7" name="Тимчасова тестова Service Task" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
-      <extensionElements>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:string><![CDATA[Тестовий лист. Відповідь УкрДок]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;
-${sID_Document_UkrDoc}
-&lt;/p&gt;
-&lt;br&gt;
-[pattern/mail/_common_signature_start.html]
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
-    <sequenceFlow id="flow65" sourceRef="servicetask7" targetRef="exclusivegateway2"></sequenceFlow>
     <scriptTask id="scripttask3" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var per1 = 'channel'
 if (execution.getVariable('asChannelAppeals') == 'sEnumAppeal1'){
@@ -4500,9 +4475,6 @@ execution.setVariable('sChannelApp', per1)</script>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent10" id="BPMNShape_endevent10">
         <omgdc:Bounds height="35.0" width="35.0" x="734.0" y="680.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
-        <omgdc:Bounds height="55.0" width="105.0" x="1314.0" y="440.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask3" id="BPMNShape_scripttask3">
         <omgdc:Bounds height="55.0" width="105.0" x="918.0" y="525.0"></omgdc:Bounds>
@@ -4699,9 +4671,8 @@ execution.setVariable('sChannelApp', per1)</script>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow58" id="BPMNEdge_flow58">
-        <omgdi:waypoint x="1248.0" y="514.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1248.0" y="467.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1314.0" y="467.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1301.0" y="555.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1346.0" y="554.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow59" id="BPMNEdge_flow59">
         <omgdi:waypoint x="1366.0" y="574.0"></omgdi:waypoint>
@@ -4723,10 +4694,6 @@ execution.setVariable('sChannelApp', per1)</script>
       <bpmndi:BPMNEdge bpmnElement="flow63" id="BPMNEdge_flow63">
         <omgdi:waypoint x="751.0" y="193.0"></omgdi:waypoint>
         <omgdi:waypoint x="751.0" y="263.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow65" id="BPMNEdge_flow65">
-        <omgdi:waypoint x="1366.0" y="495.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1366.0" y="534.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow66" id="BPMNEdge_flow66">
         <omgdi:waypoint x="1023.0" y="552.0"></omgdi:waypoint>
