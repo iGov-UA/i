@@ -51,6 +51,9 @@ public class CreateDocument_UkrDoc extends AbstractModelTask implements TaskList
     private Expression bankIdlastName;
     private Expression bankIdfirstName;
     private Expression bankIdmiddleName;
+    private Expression sDepartNameFull;
+    private Expression sSex;
+    private Expression sAddress;
     
 
     @Autowired
@@ -78,6 +81,9 @@ public class CreateDocument_UkrDoc extends AbstractModelTask implements TaskList
         String nID_PatternValue = getStringFromFieldExpression(this.nID_Pattern, execution);
         String sID_Order_GovPublicValue = getStringFromFieldExpression(this.sID_Order_GovPublic, execution);
         String sSourceChannelValue = getStringFromFieldExpression(this.sSourceChannel, execution);
+        String sDepartNameFullValue = getStringFromFieldExpression(this.sDepartNameFull, execution);
+        String sSexValue = getStringFromFieldExpression(this.sSex, execution);
+        String sAddressValue = getStringFromFieldExpression(this.sAddress, execution);
         String bankIdlastName = getStringFromFieldExpression(this.bankIdlastName, execution);
         String bankIdfirstName = getStringFromFieldExpression(this.bankIdfirstName, execution);
         String bankIdmiddleName = getStringFromFieldExpression(this.bankIdmiddleName, execution);
@@ -141,7 +147,8 @@ public class CreateDocument_UkrDoc extends AbstractModelTask implements TaskList
         LOG.info("Processing {} attachments", attachments.size());
 
         Map<String, Object> urkDocRequest = UkrDocUtil.makeJsonRequestObject(sHeadValue, sBodyValue, sLoginAuthorValue, nID_PatternValue,
-                attachments, execution.getId(), generalConfig, sID_Order_GovPublicValue, sSourceChannelValue, shortFIO, fullIO);
+                attachments, execution.getId(), generalConfig, sID_Order_GovPublicValue, sSourceChannelValue, shortFIO, fullIO,
+                sDepartNameFullValue, sSexValue, sAddressValue);
 
         JSONObject json = new JSONObject();
         json.putAll(urkDocRequest);
