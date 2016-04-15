@@ -8,25 +8,7 @@
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asSubekt_00" name="Звернення подаю" type="enum" required="true">
-          <activiti:value id="personally" name="особисто"></activiti:value>
-          <activiti:value id="confidant" name="як довірена особа (представник)"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asSubekt_01" name="Оберіть суб'єкт підприємницької діяльності" type="enum" required="true">
-          <activiti:value id="fop" name="фізична особа-підприємець"></activiti:value>
-          <activiti:value id="ur" name="юридична особа"></activiti:value>
-          <activiti:value id="fiz" name="фізична особа"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asSubekt_02" name="Оберіть відповідний варіант представництва" type="enum" required="true">
-          <activiti:value id="prosecutor" name="прокурор"></activiti:value>
-          <activiti:value id="lawyer" name="адвокат"></activiti:value>
-          <activiti:value id="confidant_delegate" name="представник за довіреністю"></activiti:value>
-          <activiti:value id="authorized" name="уповноважена посадова особа"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sSurname" name="Прізвище заявника, представником якого Ви є" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sName" name="Ім'я заявника, представником якого Ви є" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sMiddleName" name="По батькові заявника, представником якого Ви є" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAdres0" name="Адреса реєстрації заявника, представником якого Ви є" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sSurname" name="Учасник судового процесу, від імені якого подається документ" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNumberCase" name="Номер судової справи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sCountDocs" name="Вкажіть кількість документів, що подаються" type="enum" required="true">
           <activiti:value id="one" name="1"></activiti:value>
@@ -308,7 +290,6 @@
 		<activiti:formProperty id="markers35" name="9 документ інше" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_35&quot;:{&quot;aField_ID&quot;:[&quot;sOther9&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCategoryDoc9&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'other'&quot;}}}"></activiti:formProperty>
 		<activiti:formProperty id="markers37" name="10 документів" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_37&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc1&quot;,&quot;sDoc1&quot;,&quot;sCategoryDoc2&quot;,&quot;sDoc2&quot;,&quot;sCategoryDoc3&quot;,&quot;sDoc3&quot;,&quot;sCategoryDoc4&quot;,&quot;sDoc4&quot;,&quot;sCategoryDoc5&quot;,&quot;sDoc5&quot;,&quot;sCategoryDoc6&quot;,&quot;sDoc6&quot;,&quot;sCategoryDoc7&quot;,&quot;sDoc7&quot;,&quot;sCategoryDoc8&quot;,&quot;sDoc8&quot;,&quot;sCategoryDoc9&quot;,&quot;sDoc9&quot;,&quot;sCategoryDoc10&quot;,&quot;sDoc10&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountDocs&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'ten'&quot;}}}"></activiti:formProperty>
 		<activiti:formProperty id="markers39" name="10 документ інше" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_39&quot;:{&quot;aField_ID&quot;:[&quot;sOther10&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCategoryDoc10&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'other'&quot;}}}"></activiti:formProperty>        <activiti:formProperty id="markers41" name="якщо особисто" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_41&quot;:{&quot;aField_ID&quot;:[&quot;asSubekt_01&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asSubekt_00&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'personally'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers42" name="якщо представник" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_42&quot;:{&quot;aField_ID&quot;:[&quot;asSubekt_02&quot;,&quot;sSurname&quot;,&quot;sName&quot;,&quot;sMiddleName&quot;,&quot;sAdres0&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asSubekt_00&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'confidant'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="form_signed" name=" " type="file"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -318,25 +299,7 @@
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name=" ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asSubekt_00" name="Звернення подаю" type="enum" writable="false">
-          <activiti:value id="personally" name="особисто"></activiti:value>
-          <activiti:value id="confidant" name="як довірена особа (представник)"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asSubekt_01" name="Оберіть суб'єкт підприємницької діяльності" type="enum" writable="false">
-          <activiti:value id="fop" name="фізична особа-підприємець"></activiti:value>
-          <activiti:value id="ur" name="юридична особа"></activiti:value>
-          <activiti:value id="fiz" name="фізична особа"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asSubekt_02" name="Оберіть відповідний варіант представництва" type="enum" writable="false">
-          <activiti:value id="prosecutor" name="прокурор"></activiti:value>
-          <activiti:value id="lawyer" name="адвокат"></activiti:value>
-          <activiti:value id="confidant_delegate" name="представник за довіреністю"></activiti:value>
-          <activiti:value id="authorized" name="уповноважена посадова особа"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sSurname" name="Прізвище заявника, представником якого Ви є; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sName" name="Ім'я заявника, представником якого Ви є; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sMiddleName" name="По батькові заявника, представником якого Ви є; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAdres0" name="Адреса реєстрації заявника, представником якого Ви є; ;writable=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sSurname" name="Учасник судового процесу, від імені якого подається документ; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNumberCase" name="Номер судової справи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sCountDocs" name="Вкажіть кількість документів, що подаються" type="enum" writable="false">
           <activiti:value id="one" name="1"></activiti:value>
