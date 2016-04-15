@@ -355,7 +355,9 @@ public class ActionEventService {
             String nTimeMinutes,
             Long nID_Proccess_Feedback,
             Long nID_Proccess_Escalation,
-            Long nID_StatusType
+            Long nID_StatusType,
+            String sSubjectInfo,
+            Long nID_Subject
     ) throws CommonServiceException {
 
         //TODO: Remove lete (for back compatibility)
@@ -424,8 +426,9 @@ public class ActionEventService {
         }
         oHistoryEvent_Service.setsID_Order(sID_Order);
 
-        
-        Long nID_Subject = oHistoryEvent_Service.getnID_Subject();
+        if(nID_Subject == null){
+         nID_Subject = oHistoryEvent_Service.getnID_Subject();
+        }
         if (soData == null || "[]".equals(soData)) { //My journal. change status of task
             Map<String, String> mParamMessage = new HashMap<>();
             mParamMessage.put(HistoryEventMessage.SERVICE_STATE, sUserTaskName);
@@ -476,7 +479,7 @@ public class ActionEventService {
                 }*/
                 
                 SubjectMessage oSubjectMessage = oSubjectMessageService.createSubjectMessage(sMessageHead(nID_SubjectMessageType,
-                            sID_Order), osBody.toString(), nID_Subject, "", "", soData, nID_SubjectMessageType);
+                            sID_Order), osBody.toString(), nID_Subject, "", "", soData, nID_SubjectMessageType, sSubjectInfo);
                     oSubjectMessage.setnID_HistoryEvent_Service(oHistoryEvent_Service.getId());
                     subjectMessagesDao.setMessage(oSubjectMessage);
                     

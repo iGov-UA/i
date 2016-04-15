@@ -167,7 +167,9 @@ public class ActionEventController {
             @ApiParam(value = "строка-время обработки задачи (в минутах, опционально)", required = false) @RequestParam(value = "nTimeMinutes", required = false) String nTimeMinutes,
             @ApiParam(value = "номер-ид запущенного процесса для обработки фидбеков (issue 962)", required = false) @RequestParam(value = "nID_Proccess_Feedback", required = false) Long nID_Proccess_Feedback,
             @ApiParam(value = "номер-ид бп эсклации (поле на перспективу для следующего тз по эскалации)", required = false) @RequestParam(value = "nID_Proccess_Escalation", required = false) Long nID_Proccess_Escalation,
-            @ApiParam(value = "числовой код, который соответсвует статусу", required = true) @RequestParam(value = "nID_StatusType", required = true) Long nID_StatusType
+            @ApiParam(value = "числовой код, который соответсвует статусу", required = true) @RequestParam(value = "nID_StatusType", required = true) Long nID_StatusType,
+            @ApiParam(value = "строка информация о субьекте", required = false) @RequestParam(value = "sSubjectInfo", required = false) String sSubjectInfo,
+            @ApiParam(value = "номер - ИД субьекта",required = false) @RequestParam(value = "snID_Subject", required = false) Long nID_Subject
     ) throws CommonServiceException {
         return oActionEventService.updateActionStatus_Central(
             sID_Order,
@@ -178,7 +180,9 @@ public class ActionEventController {
             nTimeMinutes,
             nID_Proccess_Feedback,
             nID_Proccess_Escalation,
-             nID_StatusType
+                nID_StatusType,
+                sSubjectInfo,
+                nID_Subject
         );
     }
 

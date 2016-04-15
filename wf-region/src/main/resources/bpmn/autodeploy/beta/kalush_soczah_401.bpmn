@@ -114,10 +114,12 @@
           <activiti:value id="sEnumChange" name="Заміна посвідчення «Сім’я загиблого (померлого) ветерана війни»"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asCategory" name="Категорія осіб, до якої належав загиблий ветеран" type="enum" writable="false">
-          <activiti:value id="sEnumVolunteer" name="Особи, які добровільно забезпечували проведення АТО (у т.ч здійснювали волонтерську діяльність)"></activiti:value>
-          <activiti:value id="sEnumDobrovLaw" name="Особи, які, перебували у складі добровольчих формувань, які в подальшому були включені до складу ЗС, МВС, НГ та ін. утворених відповідно до законів України військових формувань та правоохоронних органів"></activiti:value>
-          <activiti:value id="sEnumDobrov" name="Особи, які, перебували у складі добровольчих формувань, які в подальшому НЕ були включені до складу ЗС, МВС, НГ та ін. утворених відповідно до законів України військових формувань та правоохоронних органів"></activiti:value>
           <activiti:value id="sEnumArmy" name="Військовослужбовці і працівники ЗСУ, НГ, СБУ, Служби зовнішньої розвідки, Держприкордонслужби, Держспецтрансслужби, військовослужбовців військових прокуратур,МВС, Управління державної охорони, Держспецзв’язку, ДСНС, ДПтС, ін."></activiti:value>
+          <activiti:value id="sEnumInvalid" name="Інваліди ВВВ, а також учасники війни, учасники бойових дій визнаних за життя інвалідами"></activiti:value>
+          <activiti:value id="sEnumReward" name="Учасники бойових дій та учасники війни, нагороджені за бойові дії державними нагородами та орденами і медалями колишнього СРСР "></activiti:value>
+          <activiti:value id="sEnumVolunteer" name="Особи, які добровільно забезпечували проведення АТО (у т.ч здійснювали волонтерську діяльність)"></activiti:value>
+          <activiti:value id="sEnumDobrovLaw" name="Особи, які перебували у складі добровольчих формувань, які в подальшому були включені до складу ЗС, МВС, НГ та ін. утворених відповідно до законів України військових формувань та правоохоронних органів"></activiti:value>
+          <activiti:value id="sEnumDobrov" name="Особи, які перебували у складі добровольчих формувань, які в подальшому НЕ були включені до складу ЗС, МВС, НГ та ін. утворених відповідно до законів України військових формувань та правоохоронних органів"></activiti:value>
           <activiti:value id="sEnumEmployee" name="Працівники підприємств, установ, організацій, які залучалися до забезпечення проведення АТО"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sPrich" name="Причина заміни посвідчення" type="string" writable="false"></activiti:formProperty>
@@ -131,7 +133,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFamily},${nCerti},${nMSEK},${nReward},${nSviDeath},${nVolunteer},${nCommander},${nDovidkaVolunteer},${nSudMed},${nCourt},${nDovATOvzaemod},${nDokaz},${nKlopot},${nVLK},${nEmployee}</activiti:expression>
+            <activiti:expression>${nFamily},${nCertif},${nMSEK},${nReward},${nSviDeath},${nVolunteer},${nCommander},${nDovidkaVolunteer},${nSudMed},${nCourt},${nDovATOvzaemod},${nDokaz},${nKlopot},${nVLK},${nEmployee}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>

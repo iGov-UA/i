@@ -11,6 +11,7 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
       "placesID": ['6110100000', '6100000000']
       ,"asOrgan": []
       ,"bSearch": true
+      ,"anID_CatalogCategoryShowAll": []
     },
     "kyiv": {
       "header": "kyiv.header.html",
@@ -18,6 +19,7 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
       "placesID": ['8000000000', '8000000000']
       ,"asOrgan": []
       ,"bSearch": true
+      ,"anID_CatalogCategoryShowAll": []
     },
     "kharkiv": {
       "header": "kharkiv.header.html",
@@ -25,6 +27,7 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
       "placesID": ['6310100000', '6300000000']
       ,"asOrgan": []
       ,"bSearch": true
+      ,"anID_CatalogCategoryShowAll": []
     },
     "mvd": {
       "header": "mvd.header.html",
@@ -32,6 +35,7 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
       "placesID": ['3200000000', '8000000000']
       ,"asOrgan": []
       ,"bSearch": true
+      ,"anID_CatalogCategoryShowAll": []
     },
     "dfs": {
       "header": "dfs.header.html",
@@ -39,6 +43,7 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
       "placesID": []
       ,"asOrgan": ['Державна фіскальна служба']
       ,"bSearch": false
+      ,"anID_CatalogCategoryShowAll": [1]
     }
   };
 
@@ -171,6 +176,20 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
       return modes[this.mode].bSearch;
     }
     return true;
+  };
+  
+  StatesRepository.prototype.isCatalogCategoryShowAll = function (nID) {
+    var bAll=false;
+    if (!!modes[this.mode] && nID) {
+      angular.forEach(modes[this.mode].anID_CatalogCategoryShowAll, function (nID_CatalogCategoryShowAll) {
+        if (nID_CatalogCategoryShowAll === nID) {
+            bAll=true;
+        }
+        //return bAll;
+      });
+      //return modes[this.mode].asCatalogCategoryShowAll;
+    }
+    return bAll;
   };
   
 
