@@ -1,6 +1,7 @@
 package org.igov.service.business.action.task.listener.doc;
 
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -190,6 +191,9 @@ public class CreateDocument_UkrDoc extends AbstractModelTask implements TaskList
                 }
             }
         }
+        LOG.info("close task aythomaticaly: " + delegateTask.getId() + "...");
+        taskService.complete(delegateTask.getId(), new HashMap());
+        LOG.info("close task aythomaticaly: " + delegateTask.getId() + " ok!");
     }
 
 }
