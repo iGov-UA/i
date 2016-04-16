@@ -38,7 +38,7 @@ import org.springframework.stereotype.Component;
 @Component("CreateDocument_UkrDoc")
 public class CreateDocument_UkrDoc extends AbstractModelTask implements TaskListener {
 
-    //public static final String UKRDOC_ID_DOCUMENT_VARIABLE_NAME = "sID_Document";
+    public static final String UKRDOC_ID_DOCUMENT_VARIABLE_NAME = "sID_Document";
     private final static Logger LOG = LoggerFactory.getLogger(CreateDocument_UkrDoc.class);
 
     private Expression sLoginAuthor;
@@ -170,7 +170,7 @@ public class CreateDocument_UkrDoc extends AbstractModelTask implements TaskList
             if (details != null) {
                 String documentId = ((org.activiti.engine.impl.util.json.JSONObject) details).get("id") + ":"
                         + ((org.activiti.engine.impl.util.json.JSONObject) details).get("year");
-                //runtimeService.setVariable(execution.getProcessInstanceId(), UKRDOC_ID_DOCUMENT_VARIABLE_NAME, documentId);
+                runtimeService.setVariable(execution.getProcessInstanceId(), UKRDOC_ID_DOCUMENT_VARIABLE_NAME, documentId);
                 runtimeService.setVariable(execution.getProcessInstanceId(), "sID_Document_UkrDoc", documentId);
                 LOG.info("Set variable to runtime process:{}", documentId);
 
