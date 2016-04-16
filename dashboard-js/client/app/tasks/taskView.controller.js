@@ -4,10 +4,10 @@
   angular
     .module('dashboardJsApp')
     .controller('TaskViewCtrl', [
-      '$scope', '$stateParams', 'oTask', 'PrintTemplateService', 'MarkersFactory', 'tasks', 'attachments',
+      '$scope', '$stateParams', 'oTask', 'PrintTemplateService', 'iGovMarkers', 'tasks', 'attachments',
       'orderMessages', 'taskAttachments', 'taskForm', 'iGovNavbarHelper', 'Modal', 'Auth', 'defaultSearchHandlerService',
       '$state',
-      function ($scope, $stateParams, oTask, PrintTemplateService, MarkersFactory, tasks, attachments,
+      function ($scope, $stateParams, oTask, PrintTemplateService, iGovMarkers, tasks, attachments,
                 orderMessages, taskAttachments, taskForm, iGovNavbarHelper, Modal, Auth, defaultSearchHandlerService,
                 $state) {
         var defaultErrorHandler = function (response, msgMapping) {
@@ -57,6 +57,7 @@
         };
 
         var setTaskForm = function (formProperties) {
+          console.log(formProperties);
           // change "enum" field to "string" (issue # 751)
           var aTempFormProperties = formProperties;
           for(var i = 0; i < formProperties.length; i++){
@@ -148,7 +149,7 @@
                 console.log('markers attribute ' + field.name + ' contain bad formatted json\n' + ex.name + ', ' + ex.message + '\nfield.value: ' + field.value);
               }
               if (sourceObj !== null) {
-                _.merge(MarkersFactory.getMarkers(), sourceObj, function (destVal, sourceVal) {
+                _.merge(iGovMarkers.getMarkers(), sourceObj, function (destVal, sourceVal) {
                   if (_.isArray(sourceVal)) {
                     return sourceVal;
                   }

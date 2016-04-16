@@ -1,5 +1,5 @@
 angular.module('iGovMarkers')
-  .constant('defaults', {
+  .constant('iGovMarkersDefaults', {
     validate: {
       PhoneUA: {
         aField_ID: ['privatePhone', 'workPhone', 'phone', 'tel']
@@ -78,7 +78,7 @@ angular.module('iGovMarkers')
         //aField_ID: ['house_number', 'gas_number', 'coolwater_number', 'hotwater_number', 'waterback_number', 'warming_number', 'electricity_number', 'garbage_number'],
         sMessage: 'Перевірте правильність уведеного номеру (літери не дозволені до заповнення)'
       }
-      //,CustomFormat_NumberKadastr: { //унифицированный валидатор проверки кодов/номеров(с кастомным сообщением), с заданным количеством и последовательностью знаков
+      //,CustomFormat_NumberKadastr:  //унифицированный валидатор проверки кодов/номеров(с кастомным сообщением), с заданным количеством и последовательностью знаков
       ,CustomFormat_1: { //унифицированный валидатор проверки кодов/номеров(с кастомным сообщением), с заданным количеством и последовательностью знаков
         aField_ID: ['landNumb'],
         //sFormat: 'хххххххххх:хх:ххх:хххх',
@@ -93,6 +93,11 @@ angular.module('iGovMarkers')
       Editable_1: {aField_ID:['sPhone_User1', 'sMail_User1', 'bankIdlastName1'], bValue: true},
     },
     motion: {
-
+      ReplaceTextLastSymbols_1: {
+        sID_Field: "nachalnikFamily",
+        nSymbols: 2,
+        sValueNew: "ко",
+        sID_Element_sValue: "sNachalnikFamily"
+      }
     }
 });

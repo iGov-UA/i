@@ -1,5 +1,6 @@
 angular.module('iGovMarkers')
-  .factory('iGovMarkers', function($http) {
+  .factory('iGovMarkers', function($http, iGovMarkersDefaults) {
+    var markers = iGovMarkersDefaults;
     return {
       getMarkers: function () {
         return markers;
