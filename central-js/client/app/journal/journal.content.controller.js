@@ -16,6 +16,10 @@ angular.module('journal').controller('JournalContentController', function($rootS
     return $state.href('index.search', oParams);
   };
   $scope.searchOrder = function () {
+    ErrorsFactory.init(oFuncNote, {
+      asParam: ['sID_Order: ' + $scope.sSearch],
+      sNote: 'Формат заявки повинен бути лише із цифр та тире: X-XXXXX (де X-цифра), наприклад: 0-123456789'
+    });
     ServiceService.searchOrder($scope.sSearch)
       .then(function (oResponse) {
         if (ErrorsFactory.bSuccessResponse(oResponse, function (oThis, doMerge, sMessage, aCode, sResponse) {
@@ -25,7 +29,7 @@ angular.module('journal').controller('JournalContentController', function($rootS
               doMerge(oThis, {sType: "warning", sBody: 'Невірний номер заявки по контрольній суммі!'});
             } else if (sMessage.indexOf(['sID_Order has incorrect format!']) > -1) {
               doMerge(oThis, {sType: "warning", sBody: 'Невірний формат заявки!'});
-            } else if (sMessage.indexOf(['Record not found']) > -1) {
+            } else if (sMessage.indexOf(['not found']) > -1) {
               doMerge(oThis, {sType: "warning", sBody: 'Заявку не знайдено!'});
             }
           })) {

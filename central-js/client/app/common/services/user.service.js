@@ -5,7 +5,6 @@ angular.module('app').factory('UserService', function ($http, $q, AdminService, 
   return {
     isLoggedIn: function () {
         var oFuncNote = {sHead:"Перевірка авторизованості", sFunc:"isLoggedIn"};
-        ErrorsFactory.init(oFuncNote,{asParam:['bankIDLogin: '+bankIDLogin, 'bankIDAccount: '+bankIDAccount]});
       var deferred = $q.defer();
 
       $http.get('./auth/isAuthenticated').success(function (data, status) {
@@ -14,6 +13,7 @@ angular.module('app').factory('UserService', function ($http, $q, AdminService, 
         bankIDLogin = undefined;
         bankIDAccount = undefined;
         deferred.reject(true);
+        ErrorsFactory.init(oFuncNote,{asParam:['bankIDLogin: '+bankIDLogin, 'bankIDAccount: '+bankIDAccount]});
         ErrorsFactory.addFail({sBody:'Помилка сервіса!',asParam:['data: '+data,'status: '+status]});
       });
 
@@ -48,8 +48,7 @@ angular.module('app').factory('UserService', function ($http, $q, AdminService, 
     },
 
     fio: function(){
-        var oFuncNote = {sHead:"Завантаження ПІБ по авторизації", sFunc:"fio"};
-        ErrorsFactory.init(oFuncNote,{asParam:['bankIDLogin: '+bankIDLogin, 'bankIDAccount: '+bankIDAccount]});
+      var oFuncNote = {sHead:"Завантаження ПІБ по авторизації", sFunc:"fio"};
       return $http.get('./api/user/fio').then(function(oResponse){
         if(ErrorsFactory.bSuccessResponse(oResponse.data)){
             return oResponse.data;
@@ -61,6 +60,7 @@ angular.module('app').factory('UserService', function ($http, $q, AdminService, 
         */
         bankIDLogin = undefined;
         bankIDAccount = undefined;
+        ErrorsFactory.init(oFuncNote,{asParam:['bankIDLogin: '+bankIDLogin, 'bankIDAccount: '+bankIDAccount]});
         ErrorsFactory.addFail({sBody:'Помилка сервіса!',asParam:['soResponse: '+JSON.stringify(oResponse)]});
         return bankIDAccount;
       });
