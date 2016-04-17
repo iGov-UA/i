@@ -229,7 +229,8 @@ module.exports.signForm = function (req, res) {
       }
 
       if (patternFileName) {
-        var reqParams = activiti.buildRequest(req, '/wf/service/object/file/getPatternFile', {sPathFile: patternFileName.replace(/^pattern\//, '')}, config.server.sServerRegion);
+        //var reqParams = activiti.buildRequest(req, '/wf/service/object/file/getPatternFile', {sPathFile: patternFileName.replace(/^pattern\//, '')}, config.server.sServerRegion);
+        var reqParams = activiti.buildRequest(req, 'service/object/file/getPatternFile', {sPathFile: patternFileName.replace(/^pattern\//, '')}, sURL);
         request(reqParams, function (error, response, body) {
           for (var key in formData.params) {
             if (formData.params.hasOwnProperty(key)) {

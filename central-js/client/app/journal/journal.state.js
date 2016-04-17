@@ -49,10 +49,14 @@ angular.module('journal').config(function ($stateProvider, statesRepositoryProvi
               //This is not correct branch,
               //should using specific api in the future.
               //For example: ServiceService.searchDocument(...
-              return ServiceService.searchOrder($stateParams.nID, $stateParams.sToken);
+              return ServiceService
+                .searchOrder($stateParams.nID, $stateParams.sToken)
+                .catch(angular.noop);
             }
             else if ($stateParams.sID_Order) {
-              return ServiceService.searchOrder($stateParams.sID_Order, $stateParams.sToken);
+              return ServiceService
+                .searchOrder($stateParams.sID_Order, $stateParams.sToken)
+                .catch(angular.noop);
             }
             else {
               return $q.when(null);

@@ -50,28 +50,7 @@
                     'taskData',
                     '$location',
                     function (tasks, $stateParams, $q, taskData, $location) {
-                      return tasks.getTask($location.search().nID_Task);
-                    }
-                  ],
-                  attachments: [
-                    'tasks',
-                    'oTask',
-                    function (tasks, oTask) {
-                      return tasks.taskAttachments(oTask.id)
-                    }
-                  ],
-                  orderMessages: [
-                    'tasks',
-                    'oTask',
-                    function (tasks, oTask) {
-                      return tasks.getOrderMessages(oTask.processInstanceId);
-                    }
-                  ],
-                  taskAttachments: [
-                    'tasks',
-                    'oTask',
-                    function (tasks, oTask) {
-                      return tasks.getTaskAttachments(oTask.id);
+                      return tasks.getTask(taskData.nID_Task);
                     }
                   ],
                   taskForm: [
@@ -95,14 +74,7 @@
                 }
               },
               'task-view-history@baTask': {
-                templateUrl: '/app/tasks/taskFormHistory.html',
-                controller: [
-                  '$scope',
-                  'taskData',
-                  function($scope, taskData) {
-                    $scope.aOrderMessage = JSON.parse(taskData.aMessage);
-                  }
-                ]
+                templateUrl: '/app/tasks/taskFormHistory.html'
               }
             }
           })

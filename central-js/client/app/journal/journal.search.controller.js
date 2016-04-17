@@ -84,19 +84,20 @@ angular.module('journal').controller('JournalSearchController', function (
       }
       ServiceService.searchOrder(sID_Order, sToken)
         .then(function (oResponse) {
-          if (ErrorsFactory.bSuccessResponse(oResponse, function (oThis, doMerge, sMessage, aCode, sResponse) {
-              if (!sMessage) {
-                doMerge(oThis, {sType: "warning"});
-              } else if (sMessage.indexOf(['CRC Error']) > -1) {
-                doMerge(oThis, {sType: "warning", sBody: 'Невірний номер заявки по контрольній суммі!'});
-              } else if (sMessage.indexOf(['sID_Order has incorrect format!']) > -1) {
-                doMerge(oThis, {sType: "warning", sBody: 'Невірний формат заявки!'});
-              } else if (sMessage.indexOf(['Record not found']) > -1) {
-                doMerge(oThis, {sType: "warning", sBody: 'Заявку не знайдено!'});
-              }
-            })) {
+          //if (ErrorsFactory.bSuccessResponse(oResponse, function (oThis, doMerge, sMessage, aCode, sResponse) {
+            // console.log(oThis);
+            //   if (!sMessage) {
+            //     doMerge(oThis, {sType: "warning"});
+            //   } else if (sMessage.indexOf(['CRC Error']) > -1) {
+            //     doMerge(oThis, {sType: "warning", sBody: 'Невірний номер заявки по контрольній суммі!'});
+            //   } else if (sMessage.indexOf(['sID_Order has incorrect format!']) > -1) {
+            //     doMerge(oThis, {sType: "warning", sBody: 'Невірний формат заявки!'});
+            //   } else if (sMessage.indexOf(['not found']) > -1) {
+            //     doMerge(oThis, {sType: "warning", sBody: 'Заявку не знайдено!'});
+            //   }
+            // })) {
             oOrder = oResponse;
-            if (ErrorsFactory.bSuccess(oFuncNote)) {
+            if (/*ErrorsFactory.bSuccess(oFuncNote)*/!oResponse.message || oResponse.message.indexOf('not found') === -1) {
               $scope.oOrder = oOrder;
               $scope.oOrder.sDate = new Date (oOrder.sDate.replace(' ', 'T'));
               $scope.bOrder = bExist(oOrder) && bExist(oOrder.nID);
@@ -105,7 +106,7 @@ angular.module('journal').controller('JournalSearchController', function (
               $scope.loadMessages($scope.sID_Order, $scope.sToken);
               return oOrder;
             }
-          }
+          // }
         }, function (sError) {
           ErrorsFactory.logFail({
             sBody: 'Невідома помилка сервісу!',
