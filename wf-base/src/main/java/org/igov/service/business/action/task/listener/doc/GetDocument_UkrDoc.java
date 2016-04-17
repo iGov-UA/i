@@ -61,8 +61,9 @@ public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListene
 
             HttpHeaders headers = new HttpHeaders();
             headers.set("Authorization", "promin.privatbank.ua/EXCL " + sessionId);
+            headers.set("Content-Type", "application/json; charset=utf-8");
 
-            String resp = new RestRequest().get(generalConfig.getsUkrDocServerAddress() + url, MediaType.APPLICATION_JSON, StandardCharsets.UTF_8, String.class, headers);
+            String resp = new RestRequest().get(generalConfig.getsUkrDocServerAddress() + url, null, StandardCharsets.UTF_8, String.class, headers);
 
             LOG.info("Ukrdoc response getDocument:" + resp);
             JSONObject respJson = new JSONObject(resp);
