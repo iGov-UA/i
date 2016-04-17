@@ -1857,7 +1857,7 @@ public class ActionTaskService {
             //result = oTaskService.createTaskQuery().taskId(snID_Task).singleResult().getName();
             //m.put("sDateEnd", oActionTaskService.getsIDUserTaskByTaskId(nID_Task));
             Task oTask=oTaskService.createTaskQuery().taskId(snID_Task).singleResult();
-            m.put("sLoginAggigned", oTask.getAssignee());
+            m.put("sLoginAssigned", oTask.getAssignee());
             //m.put("sDateEnd", oDateFormat.format(oTask.getCreateTime()));
         /*return oHistoryService.createHistoricTaskInstanceQuery()
                 .taskId(nID_Task.toString()).singleResult().getTaskDefinitionKey();
@@ -1869,7 +1869,7 @@ public class ActionTaskService {
             try {
                 //oTask = oHistoryService.createHistoricTaskInstanceQuery().taskId(snID_Task).singleResult().getName();
                 HistoricTaskInstance oTask = oHistoryService.createHistoricTaskInstanceQuery().taskId(snID_Task).singleResult();
-                m.put("sLoginAggigned", oTask.getAssignee());
+                m.put("sLoginAssigned", oTask.getAssignee());
                 m.put("sDateEnd", oDateFormat.format(oTask.getCreateTime()));
             } catch (NullPointerException e1){
                 throw new RecordNotFoundException(String.format("Task [id = '%s'] not faund", snID_Task));

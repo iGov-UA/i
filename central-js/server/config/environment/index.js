@@ -107,8 +107,8 @@ var all = {
 
   server: {
     //sServerRegion: processProps.BackProxy_Central ? processProps.BackProxy_Central.sURL_BackProxy_Central : process.env.sServerRegion,
-    //sServerRegion: sURLBackProxyCentralParts ? (sURLBackProxyCentralParts.protocol+'://'+sURLBackProxyCentralParts.host) : process.env.sServerRegion,
-    sServerRegion: processProps.sServerRegion || process.env.sServerRegion,
+    sServerRegion: sURLBackProxyCentralParts ? (sURLBackProxyCentralParts.protocol+'://'+sURLBackProxyCentralParts.host) : process.env.sServerRegion,
+    //sServerRegion: processProps.sServerRegion || process.env.sServerRegion,
     protocol: sURLBackProxyCentralParts ? sURLBackProxyCentralParts.protocol : process.env.SERVER_PROTOCOL,
     port: sURLBackProxyCentralParts ? sURLBackProxyCentralParts.port : process.env.SERVER_PORT,
     key: processProps.BackProxy_Central ? processProps.BackProxy_Central.sKeyPath_BackProxy_Central : process.env.SERVER_KEY,
