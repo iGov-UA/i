@@ -1681,8 +1681,8 @@
         <activiti:formProperty id="sLoginUkrDoc" name="Логін працівника міськради" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Document_UkrDoc" name="Number UkrDoc" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sStatusName_UkrDoc" name="Status UkrDoc" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sHead_Document_UkrDoc" name="Status UkrDoc" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody_Document_UkrDoc" name="Status UkrDoc" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sHead_Document_UkrDoc" name="Заголовок UkrDoc" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sBody_Document_UkrDoc" name="Тело ответа UkrDoc" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${CreateDocument_UkrDoc}">
           <activiti:field name="sLoginAuthor">
             <activiti:expression><![CDATA[${sLoginUkrDoc}]]></activiti:expression>
@@ -1862,7 +1862,7 @@ p {font-size: 14px;}
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <serviceTask id="servicetask6" name="Відповідь громадянину Email" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask6" name="Відповідь громадянину Email" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -1877,8 +1877,8 @@ p {font-size: 14px;}
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 <b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
 <p>
-Ваше звернення до Дніпропетровської міської ради - опрацьовано. <br />
-
+Ваше звернення до Дніпропетровської міської ради - опрацьовано. <br ><br>
+Рішення міської ради: ${sBody_Document_UkrDoc}<br><br>
 Номер документа: ${sID_Document_UkrDoc}<br>
 
 
@@ -1890,6 +1890,9 @@ p {font-size: 14px;}
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[${anID_Attach_UkrDoc}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
