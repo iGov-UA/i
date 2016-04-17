@@ -86,7 +86,7 @@ public class SubjectHuman extends NamedEntity {
     private SubjectContact defaultPhone;
 
     @JsonProperty(value = "nID_Sex")
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     private SubjectHumanSex nID_Sex;
     
     private transient List<SubjectContact> aContact;
