@@ -1961,23 +1961,23 @@ public class ActionTaskService {
      * @throws RecordNotFoundException
      */
     public List<Map<String, String>> getHistoricFormPropertiesByTaskID(Long nID_Task) throws RecordNotFoundException {
-        List<Map<String, String>> result = new ArrayList<>();
-
+        List<Map<String, String>> aReturn = new ArrayList<>();
         List<HistoricDetail> aHistoricDetail = oHistoryService.createHistoricDetailQuery().taskId(nID_Task.toString()).formProperties().list();
-
         LOG.info("(aHistoricDetail={})", aHistoricDetail);
         if (aHistoricDetail == null) {
             throw new RecordNotFoundException("aHistoricDetail");
         }
         for (HistoricDetail oHistoricDetail : aHistoricDetail) {
-            Map<String, String> oHistoricFormPropertyCover = new HashMap<>();
-            HistoricFormProperty historicFormProperty = (HistoricFormProperty) oHistoricDetail;
-            oHistoricFormPropertyCover.put("id", historicFormProperty.getPropertyId());
-            oHistoricFormPropertyCover.put("value", historicFormProperty.getPropertyValue());
-            result.add(oHistoricFormPropertyCover);
+            Map<String, String> mReturn = new HashMap<>();
+            HistoricFormProperty oHistoricFormProperty = (HistoricFormProperty) oHistoricDetail;
+            //oHistoricFormPropertyCover.put("id", historicFormProperty.getPropertyId());
+            //oHistoricFormPropertyCover.put("value", historicFormProperty.getPropertyValue());
+            mReturn.put("sID", oHistoricFormProperty.getPropertyId());
+            mReturn.put("sValue", oHistoricFormProperty.getPropertyValue());
+            aReturn.add(mReturn);
         }
-        LOG.info("(List oHistoricFormPropertyCover = {})", result);
-        return result;
+//        LOG.info("(List oHistoricFormPropertyCover = {})", aReturn);
+        return aReturn;
     }
 
     /**

@@ -92,8 +92,12 @@ public class ExceptionCommonController {
                 ._StatusHTTP(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 ._Send()
                 ;
-        return JsonRestUtils.toJsonResponse(HttpStatus.INTERNAL_SERVER_ERROR,
-                new ErrorResponse(BUSINESS_ERROR_CODE, exception.getMessage()));
+        if(exception.getMessage() != null && exception.getMessage().contains("act_fk_tskass_task")){
+            return JsonRestUtils.toJsonResponse(exception.getMessage());
+        } else{
+            return JsonRestUtils.toJsonResponse(HttpStatus.INTERNAL_SERVER_ERROR,
+                new ErrorResponse(SYSTEM_ERROR_CODE, exception.getMessage()));
+        }
     }
 
     @Ignore

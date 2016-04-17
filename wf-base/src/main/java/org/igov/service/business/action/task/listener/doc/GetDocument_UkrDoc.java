@@ -50,7 +50,7 @@ public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListene
 
         LOG.info("Parameters of the task sID_Document:{}", sID_Document);
 
-        String sessionId = UkrDocUtil.getSessionId(generalConfig.getSID_login(), generalConfig.getSID_password(),
+        String sessionId = UkrDocUtil.getSessionId(generalConfig.getSID_login2(), generalConfig.getSID_password2(),
                 generalConfig.sURL_AuthSID_PB() + "?lang=UA");
 
         String[] documentIDs = sID_Document.split(":");
