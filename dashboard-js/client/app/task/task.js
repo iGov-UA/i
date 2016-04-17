@@ -50,14 +50,7 @@
                     'taskData',
                     '$location',
                     function (tasks, $stateParams, $q, taskData, $location) {
-                      return tasks.getTask($location.search().nID_Task);
-                    }
-                  ],
-                  orderMessages: [
-                    'tasks',
-                    'oTask',
-                    function (tasks, oTask) {
-                      return tasks.getOrderMessages(oTask.processInstanceId);
+                      return tasks.getTask(taskData.nID_Task);
                     }
                   ],
                   taskForm: [
