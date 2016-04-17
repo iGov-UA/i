@@ -641,6 +641,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
         response.put("sStatusName", oActionTaskService.getTaskName(nID_Task));
         response.put("sID_Status", oActionTaskService.getsIDUserTaskByTaskId(nID_Task));
+        response.put("nID_Task", nID_Task);
         response.putAll(oActionTaskService.getTaskData(nID_Task));
         
         String sDateTimeCreate = JsonDateTimeSerializer.DATETIME_FORMATTER.print(

@@ -121,7 +121,7 @@ public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListene
             }
         }
         LOG.info("close task aythomaticaly: " + delegateTask.getId() + "...");
-        taskService.complete(delegateTask.getId(), new HashMap());
+        //taskService.complete(delegateTask.getId(), new HashMap());
         LOG.info("close task aythomaticaly: " + delegateTask.getId() + " ok!");
     }
 }
