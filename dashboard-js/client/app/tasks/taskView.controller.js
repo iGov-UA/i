@@ -5,10 +5,10 @@
     .module('dashboardJsApp')
     .controller('TaskViewCtrl', [
       '$scope', '$stateParams', 'taskData', 'oTask', 'PrintTemplateService', 'MarkersFactory', 'tasks',
-      'orderMessages', 'taskForm', 'iGovNavbarHelper', 'Modal', 'Auth', 'defaultSearchHandlerService',
+      'taskForm', 'iGovNavbarHelper', 'Modal', 'Auth', 'defaultSearchHandlerService',
       '$state', 'stateModel',
       function ($scope, $stateParams, taskData, oTask, PrintTemplateService, MarkersFactory, tasks,
-                orderMessages, taskForm, iGovNavbarHelper, Modal, Auth, defaultSearchHandlerService,
+                taskForm, iGovNavbarHelper, Modal, Auth, defaultSearchHandlerService,
                 $state, stateModel) {
         var defaultErrorHandler = function (response, msgMapping) {
           defaultSearchHandlerService.handleError(response, msgMapping);
@@ -24,7 +24,6 @@
         $scope.model.printTemplate = null;
 
         $scope.taskForm = null;
-        $scope.aOrderMessage = null;
         $scope.error = null;
         $scope.clarify = false;
         $scope.clarifyFields = {};
@@ -32,14 +31,6 @@
         $scope.selectedTask = oTask;
         $scope.taskId = oTask.id;
         $scope.nID_Process = oTask.processInstanceId;
-
-        $scope.aOrderMessage = JSON.parse(orderMessages);
-        angular.forEach($scope.aOrderMessage, function (message) {
-          if (message.hasOwnProperty('sData') && message.sData.length > 1) {
-            message.osData = JSON.parse(message.sData);
-          }
-        });
-
 
         var addIndexForFileItems = function (val) {
           var idx = 0;

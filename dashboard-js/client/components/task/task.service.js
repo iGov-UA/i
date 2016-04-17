@@ -377,7 +377,17 @@ angular.module('dashboardJsApp')
             url: '/api/tasks/getTaskData',
             params: requestParams
           }
-        );
+        ).then(function(data) {
+          // Костыль. Удалить когда будет приходить массив вместо строки
+          if (angular.isString(data.aMessage))
+            data.aMessage = JSON.parse(data.aMessage);
+          angular.forEach(data.aMessage, function(message) {
+            if (angular.isString(message.sData) && message.sData.length > 1) {
+              message.osData = JSON.parse(message.sData);
+            }
+          });
+          return data;
+        });
       }
     };
   });

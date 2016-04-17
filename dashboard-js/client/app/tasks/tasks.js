@@ -83,13 +83,6 @@
               }
             }
           ],
-          orderMessages: [
-            'tasks',
-            'oTask',
-            function (tasks, oTask) {
-              return tasks.getOrderMessages(oTask.processInstanceId);
-            }
-          ],
           taskForm: [
             'oTask',
             'tasks',

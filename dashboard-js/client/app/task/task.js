@@ -74,14 +74,7 @@
                 }
               },
               'task-view-history@baTask': {
-                templateUrl: '/app/tasks/taskFormHistory.html',
-                controller: [
-                  '$scope',
-                  'taskData',
-                  function($scope, taskData) {
-                    $scope.aOrderMessage = JSON.parse(taskData.aMessage);
-                  }
-                ]
+                templateUrl: '/app/tasks/taskFormHistory.html'
               }
             }
           })
