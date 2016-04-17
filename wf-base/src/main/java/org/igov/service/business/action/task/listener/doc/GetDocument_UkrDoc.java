@@ -110,8 +110,9 @@ public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListene
                             }
                         }
                         if (anID_Attach_UkrDoc.length() > 0) {
-                            runtimeService.setVariable(execution.getProcessInstanceId(), "anID_Attach_UkrDoc",
-                                    anID_Attach_UkrDoc.deleteCharAt(anID_Attach_UkrDoc.length() - 1).toString());
+                            String sID_Attach_UkrDoc = anID_Attach_UkrDoc.deleteCharAt(anID_Attach_UkrDoc.length() - 1).toString();
+                            runtimeService.setVariable(execution.getProcessInstanceId(), "anID_Attach_UkrDoc", sID_Attach_UkrDoc);
+                            taskService.setVariable(delegateTask.getId(), "anID_Attach_UkrDoc", sID_Attach_UkrDoc);
                         }
                     }
                 } catch (Exception ex) {
