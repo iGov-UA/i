@@ -6,6 +6,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.Type;
+import org.igov.model.subject.Subject;
 import org.joda.time.DateTime;
 import org.igov.model.core.Entity;
 import org.igov.util.JSON.JsonDateTimeDeserializer;
@@ -75,6 +76,15 @@ public class SubjectMessage extends Entity {
     @JsonProperty(value = "nID_HistoryEvent_Service")
     @Column(name = "nID_HistoryEvent_Service", nullable = true)
     private Long nID_HistoryEvent_Service;
+
+    @JsonProperty(value = "sSubjectInfo")
+    @Column(name = "sSubjectInfo")
+    private String sSubjectInfo;
+
+    @JsonProperty(value = "oSubject")
+    @JoinColumn(name = "nID_Subject", insertable = false, updatable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Subject oSubject;
 
     public String getHead() {
         return head;
@@ -163,5 +173,15 @@ public class SubjectMessage extends Entity {
         this.oMail = oMail;
     }
 
-    
+    public Subject getoSubject() {
+        return oSubject;
+    }
+
+    public String getsSubjectInfo() {
+        return sSubjectInfo;
+    }
+
+    public void setsSubjectInfo(String sSubjectInfo) {
+        this.sSubjectInfo = sSubjectInfo;
+    }
 }

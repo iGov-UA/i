@@ -1,22 +1,7 @@
 package org.igov.service.controller;
 
-import static org.igov.service.business.action.task.core.AbstractModelTask.getByteArrayMultipartFileFromStorageInmemory;
-import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-
-import javax.servlet.http.HttpServletResponse;
-
+import com.google.common.base.Optional;
+import io.swagger.annotations.*;
 import org.activiti.engine.ActivitiException;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
@@ -38,8 +23,8 @@ import org.igov.service.business.subject.SubjectMessageService;
 import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.FileServiceIOException;
-import org.igov.util.MethodsCallRunnerUtil;
 import org.igov.util.JSON.JsonRestUtils;
+import org.igov.util.MethodsCallRunnerUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,14 +37,24 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.google.common.base.Optional;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
+import static org.igov.service.business.action.task.core.AbstractModelTask.getByteArrayMultipartFileFromStorageInmemory;
+import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
 @Controller
-@Api(tags = {"SubjectMessageController"}, description = "Сообщения субьектов")
+@Api(tags = { "SubjectMessageController -- Сообщения субьектов" })
 @RequestMapping(value = "/subject/message")
 public class SubjectMessageController {
 
     private static final Logger LOG = LoggerFactory.getLogger(SubjectMessageController.class);
-
+    @Autowired
+    MethodsCallRunnerUtil methodCallRunner;
     @Autowired
     private HistoryEvent_ServiceDao historyEventServiceDao;
     @Autowired
@@ -68,32 +63,19 @@ public class SubjectMessageController {
     private GeneralConfig generalConfig;
     @Autowired
     private BpService bpService;
-
     @Autowired
     private AccessDataService accessDataDao;
-    
     @Autowired
     private IBytesDataStorage durableBytesDataStorage;
-    
     @Autowired
     private ActionEventService actionEventService;
-    
     @Autowired
     private SubjectMessageService oSubjectMessageService;
-
     @Autowired
     private IBytesDataInmemoryStorage oBytesDataInmemoryStorage;
-    
-    @Autowired 
-    MethodsCallRunnerUtil methodCallRunner;
-    /**
-     * получение сообщения
-     *
-     * @param nID ID сообщения
-     */
-    @ApiOperation(value = "Получение сообщения", notes = "##### SubjectMessageController - Сообщения субьектов. Получение сообщения #####\n\n"
-            + "HTTP Context: http://server:port/wf/service/subject/message/getMessage\n\n\n"
-            + "Примеры: https://test.igov.org.ua/wf/service/subject/message/getMessage?nID=76\n\n"
+
+    @ApiOperation(value = "Получение сообщения", notes = ""
+            + "Примеры: https://test.igov.org.ua/wf/service/subject/message/getMessage?nID=76\n"
             + "\n```json\n"
             + "Ответ:\n"
             + "{\n"
@@ -121,22 +103,9 @@ public class SubjectMessageController {
 
         SubjectMessage message = subjectMessagesDao.getMessage(nID);
         return JsonRestUtils.toJsonResponse(message);
-    }  
-    
-    /**
-     * Сохранение сообщения
-     *
-     * @param sHead                  Строка-заглавие сообщения
-     * @param sBody                  Строка-тело сообщения
-     * @param sMail                  Строка электронного адреса автора //опционально
-     * @param sContacts              Строка контактов автора //опционально
-     * @param sData                  Строка дополнительных данных автора //опционально
-     * @param nID_SubjectMessageType ИД-номер типа сообщения //опционально (по
-     *                               умолчанию == 0)
-     */
-    @ApiOperation(value = "Сохранение сообщение ", notes = "##### SubjectMessageController - Сообщения субьектов. Сохранение сообщения #####\n\n"
-            + "HTTP Context: http://server:port/wf/service/subject/message/setMessage\n\n\n"
-            + "- nID_SubjectMessageType: nID;sName;sDescription 0;ServiceNeed;Просьба добавить услугу 1;ServiceFeedback;Отзыв о услуге\n\n\n"
+    }
+
+    @ApiOperation(value = "Сохранение сообщение ", notes = ""
             + "При заданных параметрах sID_Order или nID_Protected с/без nID_Server и sID_Rate - обновляется поле nRate в записи сущности HistoryEvent_Service, которая находится по sID_Order или nID_Protected с/без nID_Server (подробнее тут, при этом приходящее значение из параметра sID_Rate должно содержать число от 1 до 5. т.е. возможные ошибки:\n\n"
             + "- nID_Protected некорректное -- ошибка 403. CRC Error, пишется в лог (т.е. сообщение все равно сохраняется)\n"
             + "- sID_Rate некорректное (не число или не в промежутке от 1 до 5) -- ошибка 403. Incorrect sID_Rate, пишется в лог\n"
@@ -168,16 +137,7 @@ public class SubjectMessageController {
         return JsonRestUtils.toJsonResponse(message);
     }
 
-    /**
-     * Сохранение сообщения оценки
-     *
-     * @param sID_Order     Строка-ИД заявки (временно опциональный)
-     * @param sID_Rate      Строка-ИД Рнйтинга/оценки (число от 1 до 5)
-//     * @param nID_Protected Номер-ИД заявки, защищенный по алгоритму Луна,
-//     *                      опционально(для обратной совместимости)
-     * @throws CommonServiceException
-     */
-    @ApiOperation(value = "/setMessageRate", notes = "##### SubjectMessageController - Сообщения субьектов. Установка сообщения-оценки #####\n\n")
+    @ApiOperation(value = "/setMessageRate", notes = "Установка сообщения-оценки")
     @RequestMapping(value = "/setMessageRate", method = RequestMethod.GET)//Rate
     public
     @ResponseBody
@@ -311,10 +271,7 @@ public class SubjectMessageController {
         return sReturn;//"Ok!";
     }
 
-    
-    
-    
-    @ApiOperation(value = "/setMessageFeedback_Indirectly", notes = "##### SubjectMessageController - Сообщения субьектов. нет описания #####\n\n")
+    @ApiOperation(value = "/setMessageFeedback_Indirectly", notes = "")
     @RequestMapping(value = "/setMessageFeedback_Indirectly", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -363,15 +320,9 @@ public class SubjectMessageController {
         LOG.error("Finished execution");
         return "Ok";
     }
-    
-    
-    /**
-     * получение массива сообщений
-     */
-    @ApiOperation(value = "Получение массива сообщений ", notes = "##### SubjectMessageController - Сообщения субьектов. Получение массива сообщений #####\n\n"
-            + "HTTP Context: http://server:port/wf/service/subject/message/getMessages\n\n\n"
-            + "Примеры:\n"
-            + "https://test.igov.org.ua/wf/service/subject/message/getMessages\n\n"
+
+    @ApiOperation(value = "Получение массива сообщений ", notes = "Примеры:\n"
+            + "https://test.igov.org.ua/wf/service/subject/message/getMessages\n"
             + "nID_Subject - ID авторизированого субъекта (добавляется в запрос автоматически после аутентификации пользователя)\n"
             + "Response:\n"
             + "\n```json\n"
@@ -408,7 +359,7 @@ public class SubjectMessageController {
      * @param nID_Subject
      * @return array of messages by sID_Order
      */
-    @ApiOperation(value = "Получение массива сообщений по услуге", notes = "##### SubjectMessageController - Сообщения субьектов. Получение массива сообщений по услуге #####\n\n")
+    @ApiOperation(value = "Получение массива сообщений по услуге", notes = "")
     @RequestMapping(value = "/getServiceMessages", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE, headers = {"Accept=application/json"})
     public
@@ -416,7 +367,7 @@ public class SubjectMessageController {
     ResponseEntity getServiceMessages(
             @ApiParam(value = "Строка-ИД заявки", required = true) @RequestParam(value = "sID_Order", required = true) String sID_Order,
             @ApiParam(value = "Строка-Token", required = false) @RequestParam(value = "sToken", required = false) String sToken,
-            @ApiParam(value = "Включить авторизацию", required = false) @RequestParam(value = "bAuth", required = false, defaultValue = "false") Boolean bAuth,
+            @ApiParam(value = "булевский флаг, Включить авторизацию", required = false) @RequestParam(value = "bAuth", required = false, defaultValue = "false") Boolean bAuth,
             @ApiParam(value = "Номер-ИД субьекта (владельца заявки)", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject
     ) throws CommonServiceException {
         Long nID_HistoryEvent_Service;
@@ -473,14 +424,7 @@ public class SubjectMessageController {
         return JsonRestUtils.toJsonResponse(aSubjectMessage);
     }
 
-    /**
-     * Сохранение сообщения по услуге
-     *
-     * @param sID_Order              Строка-ИД заявки
-     * @param sBody                  Строка-тело сообщения
-     * @param nID_SubjectMessageType ИД-номер типа сообщения //опционально (по
-     *                               умолчанию == 0)
-     */
+
     @SuppressWarnings("unchecked")
 	@ApiOperation(value = "Сохранение сообщения по услуге", notes = "")
     @RequestMapping(value = "/setServiceMessage", method = { RequestMethod.POST, RequestMethod.GET })
@@ -492,9 +436,9 @@ public class SubjectMessageController {
             @ApiParam(value = "Строка-Token", required = false) @RequestParam(value = "sToken", required = false) String sToken,
             @ApiParam(value = "Строка-тело сообщения", required = true) @RequestParam(value = "sBody", required = true) String sBody,
             @ApiParam(value = "Строка дополнительных данных автора", required = false) @RequestParam(value = "sData", required = false) String sData,
-            @ApiParam(value = "Включить авторизацию", required = false) @RequestParam(value = "bAuth", required = false, defaultValue = "false") Boolean bAuth,
-            @ApiParam(value = "Ключ записи redis", required = false) @RequestParam(value = "sID_File", required = false) String sID_File,
-            @ApiParam(value = "Название файла", required = false) @RequestParam(value = "sFileName", required = false) String sFileName,
+            @ApiParam(value = "булевский флаг, Включить авторизацию", required = false) @RequestParam(value = "bAuth", required = false, defaultValue = "false") Boolean bAuth,
+            @ApiParam(value = "строка-Ключ записи redis", required = false) @RequestParam(value = "sID_File", required = false) String sID_File,
+            @ApiParam(value = "строка-Название файла", required = false) @RequestParam(value = "sFileName", required = false) String sFileName,
             @ApiParam(value = "ИД-номер типа сообщения", required = true) @RequestParam(value = "nID_SubjectMessageType", required = true) Long nID_SubjectMessageType
             //,//, defaultValue = "4"
     ) throws CommonServiceException {
@@ -572,13 +516,9 @@ public class SubjectMessageController {
             throw new CommonServiceException(500, "{sID_Order=" + sID_Order + "}:" + e.getMessage());
         }
         return JsonRestUtils.toJsonResponse(oSubjectMessage);
-    }    
+    }
 
-    
-
-    @ApiOperation(value = "Получить сообщение-фидбек заявки", notes = "##### SubjectMessageController - Сообщения субьектов. Получить сообщения-фидбека заявки #####\n\n"
-            + "HTTP Context: https://test.igov.org.ua/wf/service/subject/message/getMessageFeedbackExtended?sID_Order=XXX-XXXXXX&sToken=[TokenValue]*\n\n"
-            + "получает сообщение-фидбека:\n\n\n"
+    @ApiOperation(value = "Получить сообщение-фидбек заявки", notes = "получает сообщение-фидбека:\n"
             + "Если объект не найден по sID_Order, то возвращается код 404 и сообщение \"Record Not Found\"\n"
             + "Если sToken<>'' и sToken<>null и sToken не совпадет с HistoryEvent_Service.sToken то возвращается 403 статус и сообщение \"Security Error\"\n"
             + "если в найденном обекте SubjectMessage sBody='', то sDate в результате возвращается как null\n"
@@ -595,20 +535,6 @@ public class SubjectMessageController {
             @ApiResponse(code = 403, message = "Security Error (если не совпадает токен)"),
             @ApiResponse(code = 404, message = "Record not found")})
     @RequestMapping(value = "/getMessageFeedbackExtended", method = RequestMethod.GET)//Feedback
-    /**
-     * Получение сообщение-фидбека заявки по следующим параметрам:
-     *
-     * @param sID_Order строка-ид события по услуге, формат XXX-XXXXXX, где
-     * первая часть -- ид сервера, где расположена задача, вторая часть --
-     * nID_Protected, т.е. ид задачи + контрольная сумма по алгоритму Луна
-     * @param sToken токен, который сранивается со значением sToken из объекта
-     * HistoryEvent_Service
-     * @return json со значениями sDate, sHead, sID_Order
-     * @throws CommonServiceException 404 ошибка и сообщение "Record Not Found" -
-     * если запись не найдена 403 ошибка и сообщение "Security Error" - если не
-     * совпадает токен
-     */
-    // (формат XXX-XXXXXX, где первая часть -- ид сервера, где расположена задача, вторая часть -- nID_Protected, т.е. ид задачи + контрольная сумма по алгоритму Луна)
     public
     @ResponseBody
     Map<String, Object> getMessageFeedbackExtended(
@@ -684,9 +610,7 @@ public class SubjectMessageController {
                 HttpStatus.NOT_FOUND);
     }
 
-    @ApiOperation(value = "Сохранить сообщение-фидбек заявки", notes = "##### SubjectMessageController - Сообщения субьектов. Сохранить сообщения-фидбека заявки #####\n\n"
-            + "HTTP Context: https://test.igov.org.ua/wf/service/subject/message/setMessageFeedbackExtended?sID_Order=XXX-XXXXXX&sToken=[TokenValue]*\n\n"
-            + "сохраняет сообщение-фидбек\n\n\n"
+    @ApiOperation(value = "Сохранить сообщение-фидбек заявки", notes = "сохраняет сообщение-фидбек\n"
             + "Если запись успешно добавлена/обновлена то устанавливается sToken='' и sDate устанавливается в текущую.\n"
             + "Если запись найдена и sBody<>'', то возвращается статус 403 и сообщение \"Already exists\"\n"
             + "Если запись не найдена и sBody<>'', то возвращается 404 статус и сообщение \"Record Not Found\"\n"
@@ -695,21 +619,7 @@ public class SubjectMessageController {
             @ApiResponse(code = 403, message = "Already exist (если sBody в SubjectMessage не пустое ) / Security Error (если не совпадает токен)"),
             @ApiResponse(code = 404, message = "Record not found")})
     @RequestMapping(value = "/setMessageFeedbackExtended", method = RequestMethod.POST)//Feedback
-    /**
-     * Сохранение сообщение-фидбека заявки
-     *
-     * @param sID_Order строка-ид события по услуге, формат XXX-XXXXXX, где
-     * первая часть -- ид сервера, где расположена задача, вторая часть --
-     * nID_Protected, т.е. ид задачи + контрольная сумма по алгоритму Луна
-     * @param sToken токен, который сранивается со значением sToken из объекта
-     * HistoryEvent_Service
-     * @param sBody строка текста фидбэка
-     *
-     * @throws CommonServiceException 404 ошибка и сообщение "Record Not Found" -
-     * если запись не найдена 403 ошибка и сообщение "Security Error" - если не
-     * совпадает токен 403 ошибка и сообщение "Already exist" - если sBody в
-     * SubjectMessage не пустое
-     */
+
     public
     @ResponseBody
     String setMessageFeedbackExtended(
@@ -795,23 +705,15 @@ public class SubjectMessageController {
         return "Ok";
     }
 
-    /** Центральный сервис получения контента файла
-     * 
-     *
-     * @param sID_Order  Строка-ИД заявки     * 
-     * @param nID_Message номер-ИД сообщения 
-     * @throws CommonServiceException 
-     */
     @ApiOperation(value = " Центральный сервис получения контента файла", notes = ""
-            + "HTTP Context: https://test.igov.org.ua/wf/service/subject/message/getMessageFile?sID_Order=XXX-XXXXXX&nID_Message=[nID_Message]*\n\n"
-            + "получает массив байт контента файла:\n\n\n"
-            + "Если не найдена запись с сообщением nID_Message, то возвращать ошибку с текстом сообщения \"Record not found\"\n\n"
-            + "Если не найден файл в монге, то возвращать ошибку с текстом сообщения \"Content not found\"\n\n"
-            + "Логика связанная с параметром sID_Order \n\n"
+            + "получает массив байт контента файла:\n"
+            + "Если не найдена запись с сообщением nID_Message, то возвращать ошибку с текстом сообщения \"Record not found\"\n"
+            + "Если не найден файл в монге, то возвращать ошибку с текстом сообщения \"Content not found\"\n"
+            + "Логика связанная с параметром sID_Order \n"
             + " -задан, то сверять наличие привязанности записи сообщения SubjectMessage с записью HistoryEvent_Service \n\n"
-            + " (по полю \"nID_HistoryEvent_Service\" в SubjectMessage) и значению поля sID_Order в связанной записи HistoryEvent_Service; \n\n"
-            + " если значения sID_Order не совпадают - выдавать ошибку \"Alien order\" \n\n"
-            + " если значения sID_Order не связаны - выдавать ошибку \"Order not found\" \n\n"
+            + " (по полю \"nID_HistoryEvent_Service\" в SubjectMessage) и значению поля sID_Order в связанной записи HistoryEvent_Service; \n"
+            + " если значения sID_Order не совпадают - выдавать ошибку \"Alien order\" \n"
+            + " если значения sID_Order не связаны - выдавать ошибку \"Order not found\" \n"
             + " -не задан - отдавать найденный контент, если он найден /n/n"
             + "Пример:\n"
             + "https://test.igov.org.ua/wf/service/subject/message/getMessageFile?sID_Order=0-4446&nID_Message=")

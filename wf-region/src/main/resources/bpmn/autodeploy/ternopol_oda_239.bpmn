@@ -98,6 +98,8 @@
         <activiti:formProperty id="sMailClerk" name="електронна пошта ОДА" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPosadaKomu" name="назва посади в шапку заяви" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sGolovaKomu" name="ПІБ голови в шапку заяви" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Загрузка файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -247,9 +249,16 @@
         <activiti:formProperty id="sArea" name="назва області" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sGolova" name="ПІБ голови ОДА" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPosadaVid" name="До кого саме подається звернення" type="invisible"></activiti:formProperty>
+        
+        <activiti:formProperty id="sNameOrgan" name="назва області" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPosadaKomu" name="назва посади в шапку заяви" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sGolovaKomu" name="ПІБ голови в шапку заяви" type="invisible"></activiti:formProperty>
+        
+        
         <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/ternopil_oda_239zaj.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/ternopil/ternopil_oda_239_rkk.html]" type="invisible" default="Реєстраційно-контрольна карта" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_3" name="[pattern/print/ternopil/mykol_oda_239zaj.html]" type="invisible" default="Заява Миколаївська, Херсонська" writable="false"></activiti:formProperty>
+        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">

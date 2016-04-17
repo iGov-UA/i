@@ -9,6 +9,8 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import org.igov.model.document.Document;
+import org.igov.model.subject.Subject;
+
 import javax.persistence.Transient;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -57,6 +59,15 @@ public class HistoryEvent extends Entity {
     @JsonIgnore
     @Column(name = "nID_Document", nullable = true)
     private Long nID_Document;
+
+    @JsonProperty(value = "sSubjectInfo")
+    @Column(name = "sSubjectInfo")
+    private String sSubjectInfo;
+
+    @JsonProperty(value = "oSubject")
+    @JoinColumn(name = "nID_Subject", insertable = false, updatable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Subject oSubject;
 
     public void setnID_HistoryEvent_Service(Long nID_HistoryEvent_Service) {
         this.nID_HistoryEvent_Service = nID_HistoryEvent_Service;
@@ -121,5 +132,17 @@ public class HistoryEvent extends Entity {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public String getsSubjectInfo() {
+        return sSubjectInfo;
+    }
+
+    public void setsSubjectInfo(String sSubjectInfo) {
+        this.sSubjectInfo = sSubjectInfo;
+    }
+
+    public Subject getoSubject() {
+        return oSubject;
     }
 }
