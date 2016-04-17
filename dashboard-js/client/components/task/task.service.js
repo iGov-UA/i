@@ -111,13 +111,6 @@ angular.module('dashboardJsApp')
         }, callback);
       },
 
-      getTaskAttachments: function(taskId, callback) {
-        return simpleHttpPromise({
-          method: 'GET',
-          url: '/api/tasks/' + taskId + '/attachments'
-        }, callback);
-      },
-
       taskForm: function(taskId, callback) {
         return simpleHttpPromise({
           method: 'GET',

@@ -4,11 +4,11 @@
   angular
     .module('dashboardJsApp')
     .controller('TaskViewCtrl', [
-      '$scope', '$stateParams', 'taskData', 'oTask', 'PrintTemplateService', 'MarkersFactory', 'tasks', 'attachments',
-      'orderMessages', 'taskAttachments', 'taskForm', 'iGovNavbarHelper', 'Modal', 'Auth', 'defaultSearchHandlerService',
+      '$scope', '$stateParams', 'taskData', 'oTask', 'PrintTemplateService', 'MarkersFactory', 'tasks',
+      'orderMessages', 'taskForm', 'iGovNavbarHelper', 'Modal', 'Auth', 'defaultSearchHandlerService',
       '$state', 'stateModel',
-      function ($scope, $stateParams, taskData, oTask, PrintTemplateService, MarkersFactory, tasks, attachments,
-                orderMessages, taskAttachments, taskForm, iGovNavbarHelper, Modal, Auth, defaultSearchHandlerService,
+      function ($scope, $stateParams, taskData, oTask, PrintTemplateService, MarkersFactory, tasks,
+                orderMessages, taskForm, iGovNavbarHelper, Modal, Auth, defaultSearchHandlerService,
                 $state, stateModel) {
         var defaultErrorHandler = function (response, msgMapping) {
           defaultSearchHandlerService.handleError(response, msgMapping);
@@ -18,15 +18,14 @@
           }
         };
 
+        $scope.taskData = taskData;
         $scope.printTemplateList = [];
         $scope.model = stateModel;
         $scope.model.printTemplate = null;
 
         $scope.taskForm = null;
-        $scope.attachments = null;
         $scope.aOrderMessage = null;
         $scope.error = null;
-        $scope.taskAttachments = null;
         $scope.clarify = false;
         $scope.clarifyFields = {};
         $scope.sSelectedTask = $stateParams.type;
@@ -34,16 +33,12 @@
         $scope.taskId = oTask.id;
         $scope.nID_Process = oTask.processInstanceId;
 
-        $scope.attachments = JSON.parse(attachments);
-
         $scope.aOrderMessage = JSON.parse(orderMessages);
         angular.forEach($scope.aOrderMessage, function (message) {
           if (message.hasOwnProperty('sData') && message.sData.length > 1) {
             message.osData = JSON.parse(message.sData);
           }
         });
-
-        $scope.taskAttachments = taskAttachments;
 
 
         var addIndexForFileItems = function (val) {
@@ -61,7 +56,7 @@
           if (!$scope.selectedTask || !$scope.selectedTask.assignee || !oItemFormProperty
             || !$scope.sSelectedTask || $scope.sSelectedTask === 'finished')
           return true;
-          
+
           var sID_Field = oItemFormProperty.id;
           if (sID_Field === null) {
             return true;

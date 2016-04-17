@@ -53,25 +53,11 @@
                       return tasks.getTask($location.search().nID_Task);
                     }
                   ],
-                  attachments: [
-                    'tasks',
-                    'oTask',
-                    function (tasks, oTask) {
-                      return tasks.taskAttachments(oTask.id)
-                    }
-                  ],
                   orderMessages: [
                     'tasks',
                     'oTask',
                     function (tasks, oTask) {
                       return tasks.getOrderMessages(oTask.processInstanceId);
-                    }
-                  ],
-                  taskAttachments: [
-                    'tasks',
-                    'oTask',
-                    function (tasks, oTask) {
-                      return tasks.getTaskAttachments(oTask.id);
                     }
                   ],
                   taskForm: [
