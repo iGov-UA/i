@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.nio.charset.Charset;
 import java.util.Arrays;
+import org.springframework.http.converter.StringHttpMessageConverter;
 
 /**
  * Created by Dmytro Tsapko on 8/23/2015.
@@ -28,6 +29,7 @@ public class RestRequest {
         T xmlResponse = null;
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.setErrorHandler(new ResponseErrHandler());
+        restTemplate.getMessageConverters().add(0, new StringHttpMessageConverter(Charset.forName("UTF-8")));
 
         httpHeaders = httpHeaders == null ? new HttpHeaders() : httpHeaders;
         if (contentType != null) {
@@ -52,7 +54,6 @@ public class RestRequest {
             throw new IllegalArgumentException("url: " + url + " clazz: " + clazz);
         }
 
-        T response = null;
         SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory() {
             @Override
             protected void prepareConnection(HttpURLConnection connection, String httpMethod) throws IOException {
@@ -64,6 +65,7 @@ public class RestRequest {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.setRequestFactory(factory);
         restTemplate.setErrorHandler(new ResponseErrHandler());
+        restTemplate.getMessageConverters().add(0, new StringHttpMessageConverter(Charset.forName("UTF-8")));
 
         httpHeaders = httpHeaders == null ? new HttpHeaders() : httpHeaders;
 
@@ -96,7 +98,6 @@ public class RestRequest {
             throw new IllegalArgumentException("url: " + url + " clazz: " + clazz);
         }
 
-        T response = null;
         SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory() {
             @Override
             protected void prepareConnection(HttpURLConnection connection, String httpMethod) throws IOException {
@@ -108,6 +109,7 @@ public class RestRequest {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.setRequestFactory(factory);
         restTemplate.setErrorHandler(new ResponseErrHandler());
+        restTemplate.getMessageConverters().add(0, new StringHttpMessageConverter(Charset.forName("UTF-8")));
 
         httpHeaders = httpHeaders == null ? new HttpHeaders() : httpHeaders;
 
