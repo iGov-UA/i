@@ -2,7 +2,7 @@ package org.igov.model.subject;
 
 public enum SubjectHumanSex {
 
-	FEMALE("FEMALE", "0"), MALE("MALE", "1");
+	FEMALE("female", "0"), MALE("male", "1");
 
 	private String sID_Sex;
 	private String nID_Sex;
