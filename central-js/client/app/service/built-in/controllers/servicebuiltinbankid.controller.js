@@ -188,7 +188,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     }
     
     if ($scope.sign.checked) {
-      $scope.fixForm();
+      $scope.fixForm(form, aFormProperties);
       $scope.signForm();
     } else {
       $scope.submitForm(form, aFormProperties);
@@ -238,7 +238,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
       form.$setSubmitted();
     }
     
-    $scope.fixForm();
+    $scope.fixForm(form, aFormProperties);
     if(aFormProperties && aFormProperties!==null){
         angular.forEach(aFormProperties, function(oProperty){
             if(oProperty.type === "enum" && oProperty.bVariable && oProperty.bVariable !== null && oProperty.bVariable === true){//oProperty.id === attr.sName &&
