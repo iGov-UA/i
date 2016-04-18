@@ -35,6 +35,7 @@ import org.activiti.engine.HistoryService;
 import org.igov.service.business.action.task.core.ActionTaskService;
 import org.igov.service.business.action.task.systemtask.misc.CancelTaskUtil;
 import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
+import org.igov.io.sms.ManagerOTP;
 
 import org.igov.service.controller.security.AccessContract;
 import org.igov.util.JSON.JsonDateTimeSerializer;
@@ -92,6 +93,9 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
     public Expression to;
     public Expression subject;
     public Expression text;
+    
+    protected Expression sPhone_SMS;
+    protected Expression sText_SMS;    
     protected Expression sID_Merchant;
     protected Expression sSum;
     protected Expression sID_Currency;
@@ -99,6 +103,10 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
     protected Expression sDescription;
     protected Expression nID_Subject;
     //private static final String PATTERN_DELIMITER = "_";
+    
+    @Autowired
+    public ManagerOTP oManagerOTP;
+    
     @Autowired
     AccessKeyService accessCover;
     @Autowired
@@ -496,6 +504,15 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
     public Mail Mail_BaseFromTask(DelegateExecution oExecution)
             throws Exception {
 
+        String sPhone_SMS = getStringFromFieldExpression(this.sPhone_SMS, oExecution);
+        if(sPhone_SMS!=null){
+            String sText_SMS = getStringFromFieldExpression(this.sText_SMS, oExecution);
+            if(sText_SMS!=null){
+                sText_SMS = replaceTags(sText_SMS, oExecution);
+                String sReturn = oManagerOTP.sendPasswordOTP(sPhone_SMS, sText_SMS);
+            }
+        }
+        
         String sFromMail = getStringFromFieldExpression(this.from, oExecution);
         String saToMail = getStringFromFieldExpression(this.to, oExecution);
         String sHead = getStringFromFieldExpression(this.subject, oExecution);
