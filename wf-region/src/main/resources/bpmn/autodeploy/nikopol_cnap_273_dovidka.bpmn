@@ -157,7 +157,7 @@
         <activiti:formProperty id="sAdresUr" name="Юрідична адреса; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdres" name="Адреса реєстрації громадянина; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="decision_2" name="Прийняте рішення" type="enum" required="true">
-          <activiti:value id="accept" name="відправити довідку"></activiti:value>
+          <activiti:value id="accept" name="надана затребувана інформація"></activiti:value>
           <activiti:value id="reject" name="відмовлено у наданні інформації"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment_2" name="У разі відмови у наданні дозволу внесіть, будь ласка, причину" type="textArea"></activiti:formProperty>
@@ -208,7 +208,7 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення enum{[sTypeApplication]} отримано і буде опрацьовано впродовж 20 календарних днів.&lt;br /&gt;
+Ваше звернення про enum{[sTypeApplication]} отримано і буде опрацьовано впродовж 20 календарних днів.&lt;br /&gt;
 &lt;br /&gt;
 Ви отримаєте додаткове повідомлення за результатами розгляду запиту.&lt;br /&gt;
 ${sPhoneOrgan}&lt;br /&gt;
@@ -310,10 +310,10 @@ if(execution.getVariable('sTypeApplication') == 'rename'){
 per20 = "Прошу надати інформацію про зміну (перейменування) назви вулиці (проспекту) з " +execution.getVariable('sNameStreet1')+ " на " +execution.getVariable('NameStreet2')+ " в м. Нікополі."
 }
 if(execution.getVariable('sTypeApplication') == 'clarify'){
-per20 = "Прошу надати інформацію (уточнити адресу) щодо зміни нумерації " +per21+ "розташованого за адресою: " +execution.getVariable('slocationRoom')+ " вулиця "  +execution.getVariable('sStreet')+ " будинок " +execution.getVariable('sNumberHouse')+ " в м. Нікополі." 
+per20 = "Прошу надати інформацію (уточнити адресу) щодо зміни нумерації " +per21+ " розташованого за адресою: " +execution.getVariable('slocationRoom')+ ", вулиця "  +execution.getVariable('sStreet')+ ", будинок " +execution.getVariable('sNumberHouse')+ " в м. Нікополі." 
 }
 if(execution.getVariable('sTypeApplication') == 'correctly'){
-per20 = "Прошу надати інформацію про правильність написання назви вулиці" +execution.getVariable('sNameStreet3')+" в м. Нікополі." 
+per20 = "Прошу надати інформацію про правильність написання назви вулиці " +execution.getVariable('sNameStreet3')+" в м. Нікополі." 
 }
 if(execution.getVariable('sDocFop') != null){
 per3 = "&lt;li&gt;Виписку з єдиного державного реєстру платників податків.&lt;/li&gt;"
