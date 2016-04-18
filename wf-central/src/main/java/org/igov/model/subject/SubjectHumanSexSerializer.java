@@ -14,7 +14,16 @@ public class SubjectHumanSexSerializer extends JsonSerializer<SubjectHumanSex> {
 			SerializerProvider provider) throws IOException,
 			JsonProcessingException {
 		// output the custom Json
+		generator.writeStartObject();
+
+		// the type
+		generator.writeFieldName("nID_Sex");
 		generator.writeString(value.getnID_Sex());
+
+		generator.writeFieldName("sID_Sex");
+		generator.writeString(value.getsID_Sex());
+		// end tag
+		generator.writeEndObject();
 
 	}
 }
