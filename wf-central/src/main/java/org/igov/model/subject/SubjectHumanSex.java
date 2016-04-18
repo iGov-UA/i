@@ -1,5 +1,8 @@
 package org.igov.model.subject;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+@JsonSerialize(using=SubjectHumanSexSerializer.class)
 public enum SubjectHumanSex {
 
 	FEMALE("female", "0"), MALE("male", "1");
