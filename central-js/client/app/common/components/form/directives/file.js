@@ -10,7 +10,6 @@ angular.module('app').directive('fileField', function (ErrorsFactory) {
       var aAvailableFileExtensions = ["bmp", "gif", "jpeg", "jpg", "png", "tif", "doc", "docx", "odt", "rtf", "pdf"
         , "xls", "xlsx", "xlsm", "ods", "sxc", "wks", "csv", "zip", "rar", "7z"];
 
-
       try {
         console.log('scope.data.formData.params[ngModel.$name].fileName=' + scope.data.formData.params[ngModel.$name].fileName);
         scope.data.formData.params[ngModel.$name].fileName = "123" + scope.data.formData.params[ngModel.$name].fileName;
@@ -43,6 +42,7 @@ angular.module('app').directive('fileField', function (ErrorsFactory) {
               }
             }
             if(aFilteredFiles.length > 0){
+              scope.switchProcessUploadingState();
               console.log("Start uploading " + aFilteredFiles.length + " file(s)");
               oFile.setFiles(aFilteredFiles);
               oFile.upload(scope.oServiceData);
@@ -91,12 +91,12 @@ angular.module('app').directive('fileField', function (ErrorsFactory) {
     },
     // todo: Замінити цей темплейт на використування директиви buttonFileUpload
     template: '<p>' +
-    ' <button type="button" class="btn btn-success" ng-disabled="data.formData.params[property.id].isUploading"' +
+    ' <button type="button" class="btn btn-success" ng-disabled="isFileProcessUploading.bState">' +
     '  <span class="glyphicon glyphicon-file" aria-hidden="true">' +
     '  </span>' +
     '  <span ng-disabled="data.formData.params[property.id].isUploading">Обрати файл</span>' +
     '  <span class="small-loading" ng-if="data.formData.params[property.id].isUploading"></span>' +
-    '  <input type="file" style="display:none"  ng-disabled="data.formData.params[property.id].isUploading">' +
+    '  <input type="file" style="display:none"  ng-disabled="isFileProcessUploading.bState">' +
     ' </button>' +
     ' <br/>' +
     ' <label ng-if="data.formData.params[property.id].value">Файл: {{data.formData.params[property.id].fileName}}</label>' +

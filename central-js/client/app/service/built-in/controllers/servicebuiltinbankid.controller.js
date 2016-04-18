@@ -510,4 +510,14 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     $scope.fillSelfPrevious();
   }
 
+  // блокировка кнопок выбора файлов на время выполнения процесса загрузки ранее выбранного файла
+  $rootScope.isFileProcessUploading = {
+    bState: false
+  };
+
+  $rootScope.switchProcessUploadingState = function(){
+    $rootScope.isFileProcessUploading.bState = !$rootScope.isFileProcessUploading.bState;
+    console.log("Switch $rootScope.isFileProcessUploading to " + $rootScope.isFileProcessUploading.bState);
+  };
+
 });
