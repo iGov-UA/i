@@ -1,16 +1,28 @@
 'use strict';
 
-var path = require('path');
-var _ = require('lodash');
+var path = require('path')
+  , fs = require('fs')
+  , _ = require('lodash');
 
-var processProps;
-try {
+function getCustomConfig() {
+  try {
+    return require(__dirname + '/../../..' + '/process-custom.json').env
+  } catch (e) {
+    console.log('Can\'t load process-custom.json. ' + e);
+    return null;
+  }
+}
 
-  processProps = require(__dirname + '/../../..'+'/process-custom.json').env;
+function getConfig() {
+  try {
+    return require(__dirname + '/../../..' + '/process.json').env
+  } catch (e) {
+    console.log('Can\'t load process.json. ' + e);
+    return null;
+  }
+}
 
-} catch (e) {
-  processProps = _.merge({}, process.env);
-
+function convertStringsToObject(processProps) {
   processProps.BackProxy_Central =
     typeof processProps.BackProxy_Central == 'string' ?
       JSON.parse(processProps.BackProxy_Central) :
@@ -18,51 +30,65 @@ try {
 
   processProps.BackProxySession_Central =
     typeof processProps.BackProxySession_Central == 'string' ?
-      JSON.parse(processProps.BackProxySession_Central):
+      JSON.parse(processProps.BackProxySession_Central) :
       processProps.BackProxySession_Central;
 
   processProps.Back_Central =
     typeof processProps.Back_Central == 'string' ?
-    JSON.parse(processProps.Back_Central):
-    processProps.Back_Central;
+      JSON.parse(processProps.Back_Central) :
+      processProps.Back_Central;
 
   processProps.Auth_BankID =
     typeof processProps.Auth_BankID == 'string' ?
-    JSON.parse(processProps.Auth_BankID):
-    processProps.Auth_BankID;
+      JSON.parse(processProps.Auth_BankID) :
+      processProps.Auth_BankID;
 
   processProps.Auth_CardKyanyn =
-    typeof processProps.Auth_CardKyanyn  == 'string' ?
-    JSON.parse(processProps.Auth_CardKyanyn):
-    processProps.Auth_CardKyanyn;
+    typeof processProps.Auth_CardKyanyn == 'string' ?
+      JSON.parse(processProps.Auth_CardKyanyn) :
+      processProps.Auth_CardKyanyn;
 }
 
+var processProps;
+var defaultConfig = getConfig();
+var customConfig = getCustomConfig();
 
-function parsePath(pathStr){
+if (defaultConfig && customConfig) {
+  processProps = customConfig;
+} else if (!defaultConfig && customConfig) {
+  processProps = customConfig;
+} else if (defaultConfig && !customConfig) {
+  processProps = defaultConfig;
+} else if (!defaultConfig && !customConfig) {
+  processProps = _.merge({}, process.env);
+  convertStringsToObject(processProps);
+}
+
+function parsePath(pathStr) {
   return pathStr.split('/');
 }
 
 //If path is absolute? return as it is, else return relative path
 var sPrivateKeyPathAuthBankID;
-try{
+try {
 
   var pathStr = processProps.Auth_BankID ? processProps.Auth_BankID.sPrivateKeyPath_Auth_BankID : process.env.BANKID_PRIVATE_KEY;
   var pathArr = parsePath(processProps.Auth_BankID ? processProps.Auth_BankID.sPrivateKeyPath_Auth_BankID : process.env.BANKID_PRIVATE_KEY);
 
-  if( pathArr.length > 1){
+  if (pathArr.length > 1) {
     sPrivateKeyPathAuthBankID = pathStr;
-  }else{
+  } else {
     sPrivateKeyPathAuthBankID = (__dirname + '/../../../' + pathStr);
   }
 
-}catch(e){
+} catch (e) {
   sPrivateKeyPathAuthBankID = '';
 }
 
-function parseUrl(url){
+function parseUrl(url) {
   var pattern = "^(([^:/\\?#]+):)?(//(([^:/\\?#]*)(?::([^/\\?#]*))?))?([^\\?#]*)(\\?([^#]*))?(#(.*))?$",
-      regex = new RegExp(pattern),
-      parts = regex.exec(url);
+    regex = new RegExp(pattern),
+    parts = regex.exec(url);
 
   return {
     protocol: parts[2],
@@ -74,17 +100,17 @@ function parseUrl(url){
 
 //Split URL string to protocol, host, port
 var sURLBackProxyCentralParts,
-    sURLBackCentralParts,
-    sURLAccessAuthBankIDParts,
-    sURLResourceAuthBankIDParts,
-    sURLAuthCardKyanynParts;
-try{
-    sURLBackProxyCentralParts = parseUrl(processProps.BackProxy_Central.sURL_BackProxy_Central),
-    sURLBackCentralParts = parseUrl(processProps.Back_Central.sURL_Back_Central),
-    sURLAccessAuthBankIDParts = parseUrl(processProps.Auth_BankID.sURL_Access_Auth_BankID),
-    sURLResourceAuthBankIDParts = parseUrl(processProps.Auth_BankID.sURL_Resource_Auth_BankID),
-    sURLAuthCardKyanynParts = parseUrl(processProps.Auth_CardKyanyn.sURL_Auth_CardKyanyn);
-}catch(e){
+  sURLBackCentralParts,
+  sURLAccessAuthBankIDParts,
+  sURLResourceAuthBankIDParts,
+  sURLAuthCardKyanynParts;
+try {
+  sURLBackProxyCentralParts = parseUrl(processProps.BackProxy_Central.sURL_BackProxy_Central);
+  sURLBackCentralParts = parseUrl(processProps.Back_Central.sURL_Back_Central);
+  sURLAccessAuthBankIDParts = parseUrl(processProps.Auth_BankID.sURL_Access_Auth_BankID);
+  sURLResourceAuthBankIDParts = parseUrl(processProps.Auth_BankID.sURL_Resource_Auth_BankID);
+  sURLAuthCardKyanynParts = parseUrl(processProps.Auth_CardKyanyn.sURL_Auth_CardKyanyn);
+} catch (e) {
   sURLBackProxyCentralParts = undefined;
   sURLBackCentralParts = undefined;
   sURLAccessAuthBankIDParts = undefined;
@@ -107,7 +133,7 @@ var all = {
 
   server: {
     //sServerRegion: processProps.BackProxy_Central ? processProps.BackProxy_Central.sURL_BackProxy_Central : process.env.sServerRegion,
-    sServerRegion: sURLBackProxyCentralParts ? (sURLBackProxyCentralParts.protocol+'://'+sURLBackProxyCentralParts.host) : process.env.sServerRegion,
+    sServerRegion: sURLBackProxyCentralParts ? (sURLBackProxyCentralParts.protocol + '://' + sURLBackProxyCentralParts.host) : process.env.sServerRegion,
     //sServerRegion: processProps.sServerRegion || process.env.sServerRegion,
     protocol: sURLBackProxyCentralParts ? sURLBackProxyCentralParts.protocol : process.env.SERVER_PROTOCOL,
     port: sURLBackProxyCentralParts ? sURLBackProxyCentralParts.port : process.env.SERVER_PORT,
@@ -117,10 +143,10 @@ var all = {
     session: {
       secret: processProps.BackProxySession_Central ? processProps.BackProxySession_Central.sSecret_BackProxySession_Central : process.env.SESSION_SECRET,
       key: ((processProps.BackProxySession_Central ? processProps.BackProxySession_Central.sKey1_BackProxySession_Central : process.env.SESSION_KEY_ONE) &&
-            (processProps.BackProxySession_Central ? processProps.BackProxySession_Central.sKey2_BackProxySession_Central : process.env.SESSION_KEY_TWO) ?
-            [(processProps.BackProxySession_Central ? processProps.BackProxySession_Central.sKey1_BackProxySession_Central : process.env.SESSION_KEY_ONE),
-              (processProps.BackProxySession_Central ? processProps.BackProxySession_Central.sKey2_BackProxySession_Central : process.env.SESSION_KEY_TWO)] :
-            undefined),
+      (processProps.BackProxySession_Central ? processProps.BackProxySession_Central.sKey2_BackProxySession_Central : process.env.SESSION_KEY_TWO) ?
+        [(processProps.BackProxySession_Central ? processProps.BackProxySession_Central.sKey1_BackProxySession_Central : process.env.SESSION_KEY_ONE),
+          (processProps.BackProxySession_Central ? processProps.BackProxySession_Central.sKey2_BackProxySession_Central : process.env.SESSION_KEY_TWO)] :
+        undefined),
       secure: processProps.BackProxySession_Central ? (processProps.BackProxySession_Central.bSecure_BackProxySession_Central === "TRUE") : process.env.SESSION_SECURE,
       maxAge: processProps.BackProxySession_Central ? processProps.BackProxySession_Central.nLiveMS_BackProxySession_Central : process.env.SESSION_MAX_AGE  // 3 * 60 * 1000 = 3 min
     }
@@ -169,7 +195,7 @@ var all = {
     socCardAPIClientID: processProps.Auth_CardKyanyn ? processProps.Auth_CardKyanyn.sClientID_Auth_CardKyanyn : process.env.SOC_CARD_API_CLIENTID,
     socCardAPIClientSecret: processProps.Auth_CardKyanyn ? processProps.Auth_CardKyanyn.sClientSecret_Auth_CardKyanyn : process.env.SOC_CARD_API_CLIENT_SECRET,
     socCardAPIPrivateKey: processProps.Auth_CardKyanyn ? processProps.Auth_CardKyanyn.sPrivateKeyPath_Auth_CardKyanyn : process.env.SOC_CARD_PRIVATE_KEY,
-    socCardAPIPrivateKeyPassphrase: processProps.Auth_CardKyanyn? processProps.Auth_CardKyanyn.sPrivateKeyPassphrase_Auth_CardKyanyn : process.env.SOC_CARD_PRIVATE_KEY_PASSPHRASE
+    socCardAPIPrivateKeyPassphrase: processProps.Auth_CardKyanyn ? processProps.Auth_CardKyanyn.sPrivateKeyPassphrase_Auth_CardKyanyn : process.env.SOC_CARD_PRIVATE_KEY_PASSPHRASE
   },
 
   hasSoccardAuth: function () {
