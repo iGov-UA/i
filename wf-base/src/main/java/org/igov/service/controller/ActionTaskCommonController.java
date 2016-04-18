@@ -1953,6 +1953,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     	String documentIdFromPkSection = eventHandler.getDocumentId();
     	String year = eventHandler.getYear();
     	String status = eventHandler.getStatus();
+        String nID_DocumentTemplate = eventHandler.getnID_DocumentTemplate();
 
     	String sKey = documentId + ":" + year;
 
@@ -1987,6 +1988,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 					taskService.setVariable(task.getId(), "sStatusName_UkrDoc", status);
 					runtimeService.setVariable(task.getProcessInstanceId(), "sStatusName_UkrDoc", status);
 					runtimeService.setVariable(task.getProcessInstanceId(), "sID_Document_UkrDoc", sKey);
+                                        taskService.setVariable(task.getId(), "nID_DocumentTemplate_UkrDoc", nID_DocumentTemplate);
+					runtimeService.setVariable(task.getProcessInstanceId(), "nID_DocumentTemplate_UkrDoc", nID_DocumentTemplate);
 					LOG.info("Set variable sStatusName_UkrDoc {} and sID_Document_UkrDoc {} for process instance with ID {}", status, sKey, task.getProcessInstanceId());
 					taskService.complete(task.getId());
 					LOG.info("Completed task {}", task.getId());
