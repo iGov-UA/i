@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-    <process id="ternopil_rda_594" name="Надання дозволу органу опіки та піклування на вчинення правочину з майном, що перебуває у власності неповнолітніх" isExecutable="true">
+  <process id="ternopil_rda_594" name="Надання дозволу органу опіки та піклування на вчинення правочину з майном, що перебуває у власності неповнолітніх" isExecutable="true">
     <startEvent id="startevent1" name="Start">
-      <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган у якому Ви бажаєте отримати відповідь" type="select" default="0"></activiti:formProperty>
+      <extensionElements>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган у якому Ви бажаєте отримати відповідь" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Служба у справах дітей Тернопільської РДА" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
@@ -63,6 +64,7 @@
         <activiti:formProperty id="nDoc_zemlya" name="Документ, що підтверджує право власності (кориcтування) на земельну ділянку" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nDocument" name="Документ, що підтверджує право власності, володіння або користування дитини; стосовно чого вчинятиметься правочин" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('ternopil/tern_594.json')}"></activiti:formProperty>
+      </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="запрошення на співбесіду" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
       <extensionElements>
@@ -286,7 +288,7 @@ ${sNameOrgan},<br>
       </extensionElements>
     </serviceTask>
     <serviceTask id="servicetask6" name="відхилення звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
-     <extensionElements>
+      <extensionElements>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
@@ -310,7 +312,7 @@ ${sNameOrgan},<br>
       </extensionElements>
     </serviceTask>
     <serviceTask id="servicetask2" name="повідомлення громадянина про рішення" activiti:delegateExpression="#{MailTaskWithAttachments}">
-       <extensionElements>
+      <extensionElements>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
@@ -350,8 +352,6 @@ ${sNameOrgan},<br>
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>
     <sequenceFlow id="flow19" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
-    <sequenceFlow id="flow22" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
-    <sequenceFlow id="flow23" sourceRef="scripttask1" targetRef="servicetask3"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow27" sourceRef="exclusivegateway1" targetRef="servicetask6">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_1=='reject'}]]></conditionExpression>
@@ -364,6 +364,10 @@ ${sNameOrgan},<br>
     <sequenceFlow id="flow31" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
     <sequenceFlow id="flow32" sourceRef="servicetask5" targetRef="usertask2"></sequenceFlow>
     <sequenceFlow id="flow33" sourceRef="usertask2" targetRef="servicetask2"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow34" sourceRef="servicetask1" targetRef="exclusivegateway2"></sequenceFlow>
+    <sequenceFlow id="flow35" sourceRef="exclusivegateway2" targetRef="servicetask6"></sequenceFlow>
+    <sequenceFlow id="flow36" sourceRef="exclusivegateway2" targetRef="servicetask3"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_ternopil_rda_594">
     <bpmndi:BPMNPlane bpmnElement="ternopil_rda_594" id="BPMNPlane_ternopil_rda_594">
@@ -391,9 +395,6 @@ ${sNameOrgan},<br>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="55.0" width="105.0" x="200.0" y="182.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="341.0" y="26.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="235.0" y="112.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -405,6 +406,9 @@ ${sNameOrgan},<br>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
         <omgdc:Bounds height="40.0" width="40.0" x="373.0" y="197.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="373.0" y="33.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
         <omgdi:waypoint x="252.0" y="182.0"></omgdi:waypoint>
@@ -421,14 +425,6 @@ ${sNameOrgan},<br>
       <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
         <omgdi:waypoint x="210.0" y="82.0"></omgdi:waypoint>
         <omgdi:waypoint x="252.0" y="112.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
-        <omgdi:waypoint x="305.0" y="53.0"></omgdi:waypoint>
-        <omgdi:waypoint x="341.0" y="53.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
-        <omgdi:waypoint x="446.0" y="53.0"></omgdi:waypoint>
-        <omgdi:waypoint x="480.0" y="53.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
         <omgdi:waypoint x="393.0" y="197.0"></omgdi:waypoint>
@@ -457,6 +453,18 @@ ${sNameOrgan},<br>
       <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
         <omgdi:waypoint x="252.0" y="276.0"></omgdi:waypoint>
         <omgdi:waypoint x="252.0" y="237.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
+        <omgdi:waypoint x="305.0" y="53.0"></omgdi:waypoint>
+        <omgdi:waypoint x="373.0" y="53.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
+        <omgdi:waypoint x="393.0" y="73.0"></omgdi:waypoint>
+        <omgdi:waypoint x="393.0" y="102.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow36" id="BPMNEdge_flow36">
+        <omgdi:waypoint x="413.0" y="53.0"></omgdi:waypoint>
+        <omgdi:waypoint x="480.0" y="53.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
