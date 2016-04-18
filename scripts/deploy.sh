@@ -119,6 +119,10 @@ build_docker ()
 	    exit 1
 	fi
 
+	git clone git@github.com:e-government-ua/iSystem.git
+	cp -rvf iSystem/config/$sVersion/$sProject/* ./
+	rm -rf iSystem
+
 	readonly DOCKER_REPO=puppet.igov.org.ua:5000
 	readonly DOCKER_IMAGE=$DOCKER_REPO/$sProject"-"$sVersion
 	readonly DOCKER_TAG=$sGitCommit
@@ -127,25 +131,8 @@ build_docker ()
 	echo "Start building Docker image..."
 
 	if ! [ -f Dockerfile ]; then
-		echo "Dockerfile  not found. Creating Dockerfile."
-		if [ $sProject == "wf-central" ] || [ $sProject == "wf-region" ]; then
-			cat <<- _EOF_ > Dockerfile
-			FROM tomcat:jre8
-			COPY target/*.war /usr/local/tomcat/webapps
-			EXPOSE 8080
-			CMD ["catalina.sh", "run"]
-			_EOF_
-		fi
-		if [ $sProject == "central-js" ] || [ $sProject == "dashboard-js" ]; then
-			cat <<- _EOF_ > Dockerfile
-			FROM node
-			RUN mkdir -p /usr/src/app
-			WORKDIR /usr/src/app
-			COPY . /usr/src/app
-			EXPOSE 9000
-			CMD [ "npm", "start" ]
-			_EOF_
-		fi
+		echo "We have a proble. Dockerfile not found."
+		exit 1
 	fi
 
 	mkdir /tmp/$sProject
