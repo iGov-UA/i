@@ -63,6 +63,7 @@ angular.module('app').factory('FileFactory', function ($q, $rootScope, ActivitiS
       },
       onCompletedAll: function () {
         console.log('All files loaded successfully');
+        $rootScope.switchProcessUploadingState();
       }
     });
   };
