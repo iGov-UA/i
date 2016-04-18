@@ -207,7 +207,7 @@
           <activiti:value id="accept" name="Дозвіл готовий"></activiti:value>
           <activiti:value id="reject" name="Готова відмова у отриманні дозволу"></activiti:value>
         </activiti:formProperty>
-         <activiti:formProperty id="comment_6" name="У разі відхилення звернення внесіть, будь ласка, коментар" type="textArea" ></activiti:formProperty>
+        <activiti:formProperty id="comment_6" name="У разі відхилення звернення внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -305,8 +305,7 @@ ${sNameOrgan},<br>
                                         [pattern/mail/_common_signature_start.html]
                                         ${sNameOrgan},<br>
                                         [pattern/mail/_common_signature_end.html]
-                                        [pattern/mail/_common_footer.html]]]>
-          </activiti:expression>
+                                        [pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -363,10 +362,7 @@ ${sNameOrgan},<br>
     <sequenceFlow id="flow31" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
     <sequenceFlow id="flow32" sourceRef="servicetask5" targetRef="usertask2"></sequenceFlow>
     <sequenceFlow id="flow33" sourceRef="usertask2" targetRef="servicetask2"></sequenceFlow>
-    <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow34" sourceRef="servicetask1" targetRef="exclusivegateway2"></sequenceFlow>
-    <sequenceFlow id="flow35" sourceRef="exclusivegateway2" targetRef="servicetask6"></sequenceFlow>
-    <sequenceFlow id="flow36" sourceRef="exclusivegateway2" targetRef="servicetask3"></sequenceFlow>
+    <sequenceFlow id="flow34" sourceRef="servicetask1" targetRef="servicetask3"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_ternopil_rda_594">
     <bpmndi:BPMNPlane bpmnElement="ternopil_rda_594" id="BPMNPlane_ternopil_rda_594">
@@ -405,9 +401,6 @@ ${sNameOrgan},<br>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
         <omgdc:Bounds height="40.0" width="40.0" x="373.0" y="197.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
-        <omgdc:Bounds height="40.0" width="40.0" x="373.0" y="33.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
         <omgdi:waypoint x="252.0" y="182.0"></omgdi:waypoint>
@@ -455,14 +448,6 @@ ${sNameOrgan},<br>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
         <omgdi:waypoint x="305.0" y="53.0"></omgdi:waypoint>
-        <omgdi:waypoint x="373.0" y="53.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
-        <omgdi:waypoint x="393.0" y="73.0"></omgdi:waypoint>
-        <omgdi:waypoint x="393.0" y="102.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow36" id="BPMNEdge_flow36">
-        <omgdi:waypoint x="413.0" y="53.0"></omgdi:waypoint>
         <omgdi:waypoint x="480.0" y="53.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
