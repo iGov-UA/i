@@ -87,7 +87,7 @@ public class SubjectHuman extends NamedEntity {
 
     @JsonProperty(value = "oID_Sex")
     @Enumerated(EnumType.ORDINAL)
-    private SubjectHumanSex oID_Sex;
+    private SubjectHumanSex nID_Sex;
     
     private transient List<SubjectContact> aContact;
 
@@ -179,12 +179,12 @@ public class SubjectHuman extends NamedEntity {
         this.aContact = aContact;
     }
 
-	public SubjectHumanSex getoID_Sex() {
-		return oID_Sex;
+	public SubjectHumanSex getnID_Sex() {
+		return nID_Sex;
 	}
 
-	public void setoID_Sex(SubjectHumanSex oID_Sex) {
-		this.oID_Sex = oID_Sex;
+	public void setnID_Sex(SubjectHumanSex nID_Sex) {
+		this.nID_Sex = nID_Sex;
 	}
     
 }
