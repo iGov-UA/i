@@ -120,7 +120,7 @@ build_docker ()
 	fi
 
 	git clone git@github.com:e-government-ua/iSystem.git
-	cp -rvf iSystem/config/$sVersion/$sProject/* ./
+	rsync -rtv iSystem/config/$sVersion/$sProject/ ./
 	rm -rf iSystem
 
 	readonly DOCKER_REPO=puppet.igov.org.ua:5000

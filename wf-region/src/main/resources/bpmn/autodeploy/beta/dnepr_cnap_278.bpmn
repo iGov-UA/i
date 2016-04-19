@@ -133,7 +133,7 @@
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow1" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow2" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <serviceTask id="servicetask2" name="Повідомлення про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask2" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -142,16 +142,10 @@
           <activiti:expression>${sMailClerk}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове звернення. Державна реєстрація іншого речового права на нерухоме майно, обтяження права на нерухоме майно]]></activiti:string>
+          <activiti:string><![CDATA[Нове звернення. Державна реєстрація права власності на нерухоме майно]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а) колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-У Вас в черзі на обробку нове звернення щодо державної реєстрації іншого речового права на нерухоме майно, обтяження права на нерухоме майно.&lt;br /&gt;
-Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
-Відпрацюйте це звернення на &lt;a href="https://region.igov.org.ua" target="_blank"&gt;порталі&lt;/a&gt;
-[pattern/mail/_common_signature.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -304,7 +298,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile_Confidant_passport},${nFile_Confidant_Doc_Povnovazennya},${nFile_PaymentVityag},${nFile_PaymenAdminSbor},${nFile_Reason_Document},${bankId_scan_passport},${nFile_Signed_Zayava}</activiti:expression>
+            <activiti:expression>${nFile_Confidant_passport},${nFile_Confidant_Doc_Povnovazennya},${nFile_PaymentVityag},${nFile_PaymenAdminSbor},${nFile_Reason_Document},${bankId_scan_passport},${nFile_Signed_Zayava},${bankId_scan_inn},${nFile_Podatk_number_upovnovazh}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
