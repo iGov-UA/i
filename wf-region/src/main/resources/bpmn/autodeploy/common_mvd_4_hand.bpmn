@@ -105,7 +105,28 @@ ${sNameOrgan}&lt;br/&gt;
           <activiti:expression>Звернення на тему: Отримання дозволу на зброю</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[]</activiti:expression>
+          <activiti:expression>
+                    [pattern/mail/_common_header.html]
+&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+
+Ви подавали заявку щодо Отримання дозволу на придбання зброї &lt;br/&gt;&lt;br/&gt;
+
+              Адреса обраного Вами регіонального відділення: &lt;br/&gt;
+               &lt;b&gt;${sAddress}&lt;/b&gt; &lt;br/&gt;&lt;br/&gt;
+
+              Телефон для довідок: &lt;br/&gt;
+               &lt;b&gt;${sPhoneOrgan}&lt;/b&gt; &lt;br/&gt;&lt;br/&gt;
+
+              Графік прийому громадян: &lt;br/&gt;&lt;br/&gt;
+               &lt;b&gt;${sWorkTime}&lt;/b&gt; &lt;br/&gt;
+
+
+
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan}&lt;br/&gt;
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]
+          </activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
