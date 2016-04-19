@@ -4,7 +4,53 @@
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть центр надання адмінпослуг" type="select" required="true"></activiti:formProperty>
-       <activiti:formProperty id="asEnumType_Object" name="Тип об'єкта" type="enum" required="true">
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По-батькові" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта заявника" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="Ідентифікаційний номер фізичної особи" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_inn" name="Копія ідентифікаційного номеру фізичної особи" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAttribRekvizit_URL" name="Зверніть увагу - ця послуга є платною" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="asEnumZvilnennyVidSplati" name="Чи звільняєтеся Ви від сплати адміністративного збору?" type="enum" default="sElementSplata_No" required="true">
+          <activiti:value id="sElementSplata_No" name="Ні"></activiti:value>
+          <activiti:value id="sElementSplata_Yes" name="Так"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="nFile_FreeSplata" name="Підтверджуючий документ, що Ви належите до однієї з груп, які звільнені від сплати адміністративного збору" type="file"></activiti:formProperty>
+        <activiti:formProperty id="asEnumTerm" name="Розгляд заяви у скорочені строки" type="enum" required="true">
+          <activiti:value id="sElementEnum_Short_term" name="Так"></activiti:value>
+          <activiti:value id="sElementEnum_Long_term" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asEnumLenTerm" name="У який термін потрібно розглянути заяву" type="enum" required="true">
+          <activiti:value id="sElementLenTerm_seven_days" name="сім робочих днів"></activiti:value>
+          <activiti:value id="sElementLenTerm_two_days" name="два робочі дні"></activiti:value>
+          <activiti:value id="sElementLenTerm_one_day" name="протягом 24 годин з моменту прийняття заяви"></activiti:value>
+          <activiti:value id="sElementLenTerm_two_hours" name="протягом 2 годин з моменту прийняття заяви"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sLabel_4" name="Зверніть увагу" type="label" default="Сума оплати адміністративного збору зростає при зменшенні строку реєстрації права власності"></activiti:formProperty>
+        <activiti:formProperty id="asEnumType_Registration" name="Вид реєстрації" type="enum" required="true">
+          <activiti:value id="sElementTypeR_Appearance" name="Виникнення"></activiti:value>
+          <activiti:value id="sElementTypeR_Stop" name="Припинення"></activiti:value>
+          <activiti:value id="sElementTypeR_Transition" name="Перехід"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sInfo_3" name="Зверніть увагу - на перелік документів, що є підставою для державної реєстрації прав або обтяжень" type="label" default="Перелік документів, що є підставою для державної реєстрації прав або обтяжень, наведено в &lt;a href=&quot;http://zakon5.rada.gov.ua/laws/show/1952-15/page2#n295&quot; target=&quot;_blank&quot;&gt;Статті 27&lt;/a&gt; Закона України -Про державну реєстрацію речових прав на нерухоме майно та їх обтяжень-"></activiti:formProperty>
+        <activiti:formProperty id="sReason_Document" name="Назви та перелік документів, що є підставою для державної реєстрації права власності" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Reason_Document" name="Документ(и), що є підставою для державної реєстрації права власності;Якщо документів або сторінок декілька, то завантажте, будь ласка, одним архівом" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asEnumForm_Vlasnist" name="Оберіть форму власності" type="enum" required="true">
+          <activiti:value id="sElementFormV_Private" name="Приватна"></activiti:value>
+          <activiti:value id="sElementFormV_Comunal" name="Комунальна"></activiti:value>
+          <activiti:value id="sElementFormV_Goverment" name="Державна"></activiti:value>
+          <activiti:value id="sElementFormV_OtherState" name="Власність інших держав"></activiti:value>
+          <activiti:value id="sElementFormV_OtherOrg" name="Власність міжнародних організацій і юридичних осіб інших держав"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asEnumVid_Common" name="Оберіть вид спільної власності" type="enum" required="true">
+          <activiti:value id="sElementVidC_NotCommon" name="Не є спільною власністю"></activiti:value>
+          <activiti:value id="sElementVidC_Common" name="спільна сумісна"></activiti:value>
+          <activiti:value id="sElementVidC_PartCommon" name="спільна часткова"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asEnumType_Object" name="Тип об'єкта" type="enum" required="true">
           <activiti:value id="sElementTypeO_dilyanka" name="Земельна ділянка"></activiti:value>
           <activiti:value id="sElementTypeO_nezhytlove" name="Нежитлове приміщення"></activiti:value>
           <activiti:value id="sElementTypeO_zhytlove" name="Житлове приміщення"></activiti:value>
