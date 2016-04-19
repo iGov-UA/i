@@ -1,7 +1,6 @@
 package org.igov.service.business.action.task.listener.doc;
 
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
 import java.util.logging.Level;
 
 import org.activiti.engine.RuntimeService;
@@ -50,7 +49,7 @@ public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListene
 
         LOG.info("Parameters of the task sID_Document:{}", sID_Document);
 
-        String sessionId = UkrDocUtil.getSessionId(generalConfig.getSID_login(), generalConfig.getSID_password(),
+        String sessionId = UkrDocUtil.getSessionId(generalConfig.getSID_login2(), generalConfig.getSID_password2(),
                 generalConfig.sURL_AuthSID_PB() + "?lang=UA");
 
         String[] documentIDs = sID_Document.split(":");
@@ -61,8 +60,9 @@ public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListene
 
             HttpHeaders headers = new HttpHeaders();
             headers.set("Authorization", "promin.privatbank.ua/EXCL " + sessionId);
+            headers.set("Content-Type", "application/json; charset=utf-8");
 
-            String resp = new RestRequest().get(generalConfig.getsUkrDocServerAddress() + url, MediaType.APPLICATION_JSON, StandardCharsets.UTF_8, String.class, headers);
+            String resp = new RestRequest().get(generalConfig.getsUkrDocServerAddress() + url, null, StandardCharsets.UTF_8, String.class, headers);
 
             LOG.info("Ukrdoc response getDocument:" + resp);
             JSONObject respJson = new JSONObject(resp);
@@ -110,8 +110,9 @@ public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListene
                             }
                         }
                         if (anID_Attach_UkrDoc.length() > 0) {
-                            runtimeService.setVariable(execution.getProcessInstanceId(), "anID_Attach_UkrDoc",
-                                    anID_Attach_UkrDoc.deleteCharAt(anID_Attach_UkrDoc.length() - 1).toString());
+                            String sID_Attach_UkrDoc = anID_Attach_UkrDoc.deleteCharAt(anID_Attach_UkrDoc.length() - 1).toString();
+                            runtimeService.setVariable(execution.getProcessInstanceId(), "anID_Attach_UkrDoc", sID_Attach_UkrDoc);
+                            taskService.setVariable(delegateTask.getId(), "anID_Attach_UkrDoc", sID_Attach_UkrDoc);
                         }
                     }
                 } catch (Exception ex) {
@@ -121,7 +122,7 @@ public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListene
             }
         }
         LOG.info("close task aythomaticaly: " + delegateTask.getId() + "...");
-        taskService.complete(delegateTask.getId(), new HashMap());
+        //taskService.complete(delegateTask.getId(), new HashMap());
         LOG.info("close task aythomaticaly: " + delegateTask.getId() + " ok!");
     }
 }

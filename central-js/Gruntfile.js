@@ -3,19 +3,48 @@
 
 //var _ = require('lodash');
 
+function getCustomConfig() {
+  try {
+    return require('./process-custom.json').env
+  } catch (e) {
+    console.log('Can\'t load process-custom.json. ' + e);
+    return null;
+  }
+}
+
+function getConfig() {
+  try {
+    return require('./process.json').env
+  } catch (e) {
+    console.log('Can\'t load process.json. ' + e);
+    return null;
+  }
+}
+
 module.exports = function (grunt) {
   var localConfig;
   try {
     localConfig = require('./server/config/local.env');
+    console.log('USE process.json. local.env is old version !!!!!!!!!');
   } catch (e) {
-    try{
-      localConfig = require('./process-custom.json').env;
-    }catch(e){
+    var defaultConfig = getConfig();
+    var customConfig = getCustomConfig();
+
+    if (defaultConfig && customConfig) {
+      console.log('using process-custom.json as config file');
+      localConfig = customConfig;
+    } else if (!defaultConfig && customConfig) {
+      console.log('using process-custom.json as config file');
+      localConfig = customConfig;
+    } else if (defaultConfig && !customConfig) {
+      console.log('using process.json as config file');
+      localConfig = defaultConfig;
+    } else {
       localConfig = {};
     }
   }
 
-  function parseUrl(url){
+  function parseUrl(url) {
     var pattern = "^(([^:/\\?#]+):)?(//(([^:/\\?#]*)(?::([^/\\?#]*))?))?([^\\?#]*)(\\?([^#]*))?(#(.*))?$",
       regex = new RegExp(pattern),
       parts = regex.exec(url);
@@ -29,9 +58,9 @@ module.exports = function (grunt) {
   }
 
   var sURLBackProxyCentralParts;
-  try{
+  try {
     sURLBackProxyCentralParts = parseUrl(localConfig.BackProxy_Central.sURL_BackProxy_Central);
-  }catch(e){
+  } catch (e) {
     sURLBackProxyCentralParts = {};
   }
 
@@ -464,7 +493,7 @@ module.exports = function (grunt) {
         src: ['server/**/*.test.js']
       },
 
-      mochaTest : {
+      mochaTest: {
         options: {
           reporter: 'spec',
           ui: 'bdd',
@@ -656,8 +685,8 @@ module.exports = function (grunt) {
 
   grunt.registerTask('karma-only', function (target) {
     grunt.task.run([
-        'karma'
-      ]);
+      'karma'
+    ]);
   });
 
   grunt.registerTask('test', function (target) {

@@ -43,7 +43,7 @@ public class NotificationPatterns {
 
       String sBody = String.format("Ви подали заяву №%s на послугу через портал %s", nID_Protected,
               generalConfig.sHostCentral()) +
-              "<br>(Ви завжди можете подивитись її статус на порталі у разділі \"Статуси\")" +
+              "<br>(Ви завжди можете подивитись її статус на порталі у разділі \"Мій журнал\")" +
               "<br>" +
               "При надходжені Вашої заявки у систему госоргану - Вам буде додатково направлено персональний лист - повідомленя.<br>";
       */
@@ -53,7 +53,7 @@ public class NotificationPatterns {
             String sBody = String.format("Ваша заявка %s прийнята!", sID_Order) +
                     "<br>Ви завжди зможете переглянути її поточний статус у розділі <a href=\"" + generalConfig
                     .sHostCentral() + "/order/search?sID_Order=" + sID_Order
-                    + "\">\"Статуси\"</a>. Також на кожному етапі Ви будете отримувати email-повідомлення.	";
+                    + "\">\"Мій журнал\"</a>. Також на кожному етапі Ви будете отримувати email-повідомлення.	";
             
             /*
             Long nID_Task = oActionTaskService.getTaskIDbyProcess(null, sID_Order, Boolean.FALSE);
@@ -71,7 +71,7 @@ public class NotificationPatterns {
 
             // issue #1151
             //String sBody = String.format("Ваша заявка %s прийнята!", sID_Order) +
-            //        "<br>Ви завжди зможете переглянути її поточний статус у розділі <a href=\""+generalConfig.sHostCentral() + "/order/search?sID_Order=" + sID_Order+"\">\"Статуси\"</a>. Також на кожному етапі Ви будете отримувати email-повідомлення.	";
+            //        "<br>Ви завжди зможете переглянути її поточний статус у розділі <a href=\""+generalConfig.sHostCentral() + "/order/search?sID_Order=" + sID_Order+"\">\"Мій журнал\"</a>. Також на кожному етапі Ви будете отримувати email-повідомлення.	";
             
 
             String sBody = String.format("Шановний(-а) %s!", sRecipient)

@@ -605,8 +605,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
         List<FormProperty> aField = null;
         try{
-            aField = oActionTaskService.getFormPropertiesByTaskID(nID_Task);
-            response.put("aField", aField);
+//            aField = oActionTaskService.getFormPropertiesByTaskID(nID_Task);
+//            response.put("aField", aField);
+            response.put("aField", oActionTaskService.getFormPropertiesMapByTaskID(nID_Task));
+            
         } catch (ActivitiObjectNotFoundException e) {
             LOG.info(String.format("Must search Task [id = '%s'] in history!!!", nID_Task));
             response.put("aField", oActionTaskService.getHistoricFormPropertiesByTaskID(nID_Task));
@@ -641,6 +643,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
         response.put("sStatusName", oActionTaskService.getTaskName(nID_Task));
         response.put("sID_Status", oActionTaskService.getsIDUserTaskByTaskId(nID_Task));
+        response.put("nID_Task", nID_Task);
         response.putAll(oActionTaskService.getTaskData(nID_Task));
         
         String sDateTimeCreate = JsonDateTimeSerializer.DATETIME_FORMATTER.print(
@@ -1950,6 +1953,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     	String documentIdFromPkSection = eventHandler.getDocumentId();
     	String year = eventHandler.getYear();
     	String status = eventHandler.getStatus();
+        String nID_DocumentTemplate = eventHandler.getnID_DocumentTemplate();
 
     	String sKey = documentId + ":" + year;
 
@@ -1984,6 +1988,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 					taskService.setVariable(task.getId(), "sStatusName_UkrDoc", status);
 					runtimeService.setVariable(task.getProcessInstanceId(), "sStatusName_UkrDoc", status);
 					runtimeService.setVariable(task.getProcessInstanceId(), "sID_Document_UkrDoc", sKey);
+                                        taskService.setVariable(task.getId(), "nID_DocumentTemplate_UkrDoc", nID_DocumentTemplate);
+					runtimeService.setVariable(task.getProcessInstanceId(), "nID_DocumentTemplate_UkrDoc", nID_DocumentTemplate);
 					LOG.info("Set variable sStatusName_UkrDoc {} and sID_Document_UkrDoc {} for process instance with ID {}", status, sKey, task.getProcessInstanceId());
 					taskService.complete(task.getId());
 					LOG.info("Completed task {}", task.getId());

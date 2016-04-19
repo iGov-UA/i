@@ -1857,7 +1857,7 @@ public class ActionTaskService {
             //result = oTaskService.createTaskQuery().taskId(snID_Task).singleResult().getName();
             //m.put("sDateEnd", oActionTaskService.getsIDUserTaskByTaskId(nID_Task));
             Task oTask=oTaskService.createTaskQuery().taskId(snID_Task).singleResult();
-            m.put("sLoginAggigned", oTask.getAssignee());
+            m.put("sLoginAssigned", oTask.getAssignee());
             //m.put("sDateEnd", oDateFormat.format(oTask.getCreateTime()));
         /*return oHistoryService.createHistoricTaskInstanceQuery()
                 .taskId(nID_Task.toString()).singleResult().getTaskDefinitionKey();
@@ -1869,7 +1869,7 @@ public class ActionTaskService {
             try {
                 //oTask = oHistoryService.createHistoricTaskInstanceQuery().taskId(snID_Task).singleResult().getName();
                 HistoricTaskInstance oTask = oHistoryService.createHistoricTaskInstanceQuery().taskId(snID_Task).singleResult();
-                m.put("sLoginAggigned", oTask.getAssignee());
+                m.put("sLoginAssigned", oTask.getAssignee());
                 m.put("sDateEnd", oDateFormat.format(oTask.getCreateTime()));
             } catch (NullPointerException e1){
                 throw new RecordNotFoundException(String.format("Task [id = '%s'] not faund", snID_Task));
@@ -1884,9 +1884,74 @@ public class ActionTaskService {
         
     
     
+    /*public static String parseEnumProperty(FormProperty property) {
+        Object oValues = property.getType().getInformation("values");
+        if (oValues instanceof Map) {
+            Map<String, String> mValue = (Map) oValues;
+            LOG.info("(m={})", mValue);
+            String sName = property.getValue();
+            LOG.info("(sName={})", sName);
+            String sValue = mValue.get(sName);
+            LOG.info("(sValue={})", sValue);
+            return parseEnumValue(sValue);
+        } else {
+            LOG.error("Cannot parse values for property - {}", property);
+            return "";
+        }
+    }*/
+    //public HashMap<String, Object> getFormPropertiesMapByTaskID(Long nID_Task) {
+    public List<Map<String,Object>> getFormPropertiesMapByTaskID(Long nID_Task) {
+        List<FormProperty> a = oFormService.getTaskFormData(nID_Task.toString()).getFormProperties();
+        List<Map<String,Object>> aReturn = new LinkedList();
+        Map<String,Object> mReturn;
+        //a.get(1).getType().getInformation()
+        for (FormProperty oProperty : a) {
+            mReturn=new HashMap();
+            //String sValue = "";
+            //String sValue = oProperty.getValue();
+            mReturn.put("sValue", oProperty.getValue());
+            String sType = oProperty.getType() != null ? oProperty.getType().getName() : "";
+            mReturn.put("sType", sType);
+            mReturn.put("sID", oProperty.getId());
+            mReturn.put("sName", oProperty.getName());
+            mReturn.put("bReadable", oProperty.isReadable());
+            mReturn.put("bWritable", oProperty.isWritable());
+            mReturn.put("bRequired", oProperty.isRequired());
+            if ("enum".equalsIgnoreCase(sType)) {
+                //sValue = oActionTaskService.parseEnumProperty(oProperty);
+                Object oEnums = oProperty.getType().getInformation("values");
+                if (oEnums instanceof Map) {
+                    Map<String, String> mEnum = (Map) oEnums;
+//                    LOG.info("(mEnum={})", mEnum);
+                    mReturn.put("mEnum", mEnum);
+//                    String sName = oProperty.getValue();
+//                    LOG.info("(sName={})", sName);
+//                    String sValue = mValue.get(sName);
+//                    LOG.info("(sValue={})", sValue);
+//                    return parseEnumValue(sValue);
+//                } else {
+//                    LOG.error("Cannot parse values for property - {}", property);
+//                    return "";
+                }
+            /*} else {
+                sValue = oProperty.getValue();*/
+            }
+//            LOG.info("(nID_Task={}, sType={}, propertyName={}, sValue={})", nID_Task, sType, oProperty.getName(), sValue);
+//            if (sValue != null) {
+                //if (sValue.toLowerCase().contains(searchTeam)) {
+                //    res.add(currTask.getId());
+                //}
+//            }
+//            LOG.info("(nID_Task={}, mReturn={})", nID_Task, mReturn);
+            aReturn.add(mReturn);
+        }        
+        return aReturn;
+    }
     
     public List<FormProperty> getFormPropertiesByTaskID(Long nID_Task) {
-        return oFormService.getTaskFormData(nID_Task.toString()).getFormProperties();
+        List<FormProperty> a = oFormService.getTaskFormData(nID_Task.toString()).getFormProperties();
+        //a.get(1).getType().getInformation()
+        return a;
     }
 
     /**
@@ -1896,23 +1961,23 @@ public class ActionTaskService {
      * @throws RecordNotFoundException
      */
     public List<Map<String, String>> getHistoricFormPropertiesByTaskID(Long nID_Task) throws RecordNotFoundException {
-        List<Map<String, String>> result = new ArrayList<>();
-
+        List<Map<String, String>> aReturn = new ArrayList<>();
         List<HistoricDetail> aHistoricDetail = oHistoryService.createHistoricDetailQuery().taskId(nID_Task.toString()).formProperties().list();
-
         LOG.info("(aHistoricDetail={})", aHistoricDetail);
         if (aHistoricDetail == null) {
             throw new RecordNotFoundException("aHistoricDetail");
         }
         for (HistoricDetail oHistoricDetail : aHistoricDetail) {
-            Map<String, String> oHistoricFormPropertyCover = new HashMap<>();
-            HistoricFormProperty historicFormProperty = (HistoricFormProperty) oHistoricDetail;
-            oHistoricFormPropertyCover.put("id", historicFormProperty.getPropertyId());
-            oHistoricFormPropertyCover.put("value", historicFormProperty.getPropertyValue());
-            result.add(oHistoricFormPropertyCover);
+            Map<String, String> mReturn = new HashMap<>();
+            HistoricFormProperty oHistoricFormProperty = (HistoricFormProperty) oHistoricDetail;
+            //oHistoricFormPropertyCover.put("id", historicFormProperty.getPropertyId());
+            //oHistoricFormPropertyCover.put("value", historicFormProperty.getPropertyValue());
+            mReturn.put("sID", oHistoricFormProperty.getPropertyId());
+            mReturn.put("sValue", oHistoricFormProperty.getPropertyValue());
+            aReturn.add(mReturn);
         }
-        LOG.info("(List oHistoricFormPropertyCover = {})", result);
-        return result;
+//        LOG.info("(List oHistoricFormPropertyCover = {})", aReturn);
+        return aReturn;
     }
 
     /**

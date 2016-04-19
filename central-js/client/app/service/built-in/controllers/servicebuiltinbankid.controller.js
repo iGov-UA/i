@@ -186,8 +186,9 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
       $scope.isSending = false;
       return false;
     }
-
+    
     if ($scope.sign.checked) {
+      $scope.fixForm(form, aFormProperties);
       $scope.signForm();
     } else {
       $scope.submitForm(form, aFormProperties);
@@ -199,12 +200,45 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     ValidationService.validateByMarkers(form, null, true);
     return form.$valid && bValid;
   };
+  
+  $scope.fixForm = function(form, aFormProperties) {
+      try{
+        if(aFormProperties && aFormProperties!==null){
+            angular.forEach(aFormProperties, function(oProperty){
+                if((oProperty.id === "sVarLastName_0001" || oProperty.id === "sVarLastName_0002" || oProperty.id === "sVarLastName_0003")
+                        && ($scope.data.formData.params[oProperty.id].value===null || $scope.data.formData.params[oProperty.id].value==="")){//oProperty.id === attr.sName &&
+                    $scope.data.formData.params[oProperty.id].value = $scope.data.formData.params["bankIdlastName"].value;
+                }
+                if((oProperty.id === "sVarFirstName_0001" || oProperty.id === "sVarFirstName_0002" || oProperty.id === "sVarFirstName_0003")
+                        && ($scope.data.formData.params[oProperty.id].value===null || $scope.data.formData.params[oProperty.id].value==="")){//oProperty.id === attr.sName &&
+                    $scope.data.formData.params[oProperty.id].value = $scope.data.formData.params["bankIdfirstName"].value;
+                }
+                if((oProperty.id === "sVarMiddleName_0001" || oProperty.id === "sVarMiddleName_0002" || oProperty.id === "sVarMiddleName_0003")
+                        && ($scope.data.formData.params[oProperty.id].value===null || $scope.data.formData.params[oProperty.id].value==="")){//oProperty.id === attr.sName &&
+                    $scope.data.formData.params[oProperty.id].value = $scope.data.formData.params["bankIdmiddleName"].value;
+                }
+                if((oProperty.id === "sVarDatDenN_0001" || oProperty.id === "sVarDatDenN_0002" || oProperty.id === "sVarDatDenN_0003")
+                        && ($scope.data.formData.params[oProperty.id].value===null || $scope.data.formData.params[oProperty.id].value==="")){//oProperty.id === attr.sName &&
+                    $scope.data.formData.params[oProperty.id].value = $scope.data.formData.params["bankIdbirthDay"].value;
+                }
+                if((oProperty.id === "sReestrNum_0001" || oProperty.id === "sReestrNum_0002" || oProperty.id === "sReestrNum_0003")
+                        && ($scope.data.formData.params[oProperty.id].value===null || $scope.data.formData.params[oProperty.id].value==="")){//oProperty.id === attr.sName &&
+                    $scope.data.formData.params[oProperty.id].value = $scope.data.formData.params["bankIdinn"].value;
+                }
+            });
+        }
+      }catch(sError){
+        console.log('[submitForm.fixForm]sError='+ sError);          
+      }
+    
+  };
 
   $scope.submitForm = function(form, aFormProperties) {
     if(form){
       form.$setSubmitted();
     }
-
+    
+    $scope.fixForm(form, aFormProperties);
     if(aFormProperties && aFormProperties!==null){
         angular.forEach(aFormProperties, function(oProperty){
             if(oProperty.type === "enum" && oProperty.bVariable && oProperty.bVariable !== null && oProperty.bVariable === true){//oProperty.id === attr.sName &&
@@ -475,5 +509,15 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   if($scope.selfOrdersCount.nOpened > 0){
     $scope.fillSelfPrevious();
   }
+
+  // блокировка кнопок выбора файлов на время выполнения процесса загрузки ранее выбранного файла
+  $rootScope.isFileProcessUploading = {
+    bState: false
+  };
+
+  $rootScope.switchProcessUploadingState = function(){
+    $rootScope.isFileProcessUploading.bState = !$rootScope.isFileProcessUploading.bState;
+    console.log("Switch $rootScope.isFileProcessUploading to " + $rootScope.isFileProcessUploading.bState);
+  };
 
 });

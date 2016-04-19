@@ -61,7 +61,7 @@
             'tasks',
             '$stateParams',
             function(tasks, $stateParams) {
-              return tasks.getTaskData({nID_Task:$stateParams.id})
+              return tasks.getTaskData({nID_Task:$stateParams.id}, true)
             }
           ],
           oTask: [
@@ -81,27 +81,6 @@
               else {
                 return tasks.getTask($stateParams.id);
               }
-            }
-          ],
-          attachments: [
-            'tasks',
-            'oTask',
-            function (tasks, oTask) {
-              return tasks.taskAttachments(oTask.id)
-            }
-          ],
-          orderMessages: [
-            'tasks',
-            'oTask',
-            function (tasks, oTask) {
-              return tasks.getOrderMessages(oTask.processInstanceId);
-            }
-          ],
-          taskAttachments: [
-            'tasks',
-            'oTask',
-            function (tasks, oTask) {
-              return tasks.getTaskAttachments(oTask.id);
             }
           ],
           taskForm: [

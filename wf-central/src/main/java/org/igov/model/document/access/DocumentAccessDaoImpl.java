@@ -1,10 +1,11 @@
 package org.igov.model.document.access;
 
-import org.igov.service.business.finance.SmsTemplate;
-import org.igov.service.business.finance.OtpText;
-import org.igov.service.business.finance.OtpPassword;
-import org.igov.service.business.finance.OtpCreate;
-import org.igov.service.business.finance.OtpPass;
+import org.igov.io.sms.SmsTemplate;
+import org.igov.io.sms.OtpText;
+import org.igov.io.sms.OtpPassword;
+import org.igov.io.sms.OtpCreate;
+import org.igov.io.sms.OtpPass;
+import org.igov.io.mail.unisender.ManagerOTP;
 import com.google.common.collect.Iterables;
 import com.google.gson.Gson;
 import org.slf4j.Logger;import org.slf4j.LoggerFactory;
@@ -36,6 +37,9 @@ public class DocumentAccessDaoImpl extends GenericEntityDao<DocumentAccess> impl
     @Autowired
     private ApplicationContext context;
 
+    @Autowired
+    public ManagerOTP oManagerOTP;
+    
     public DocumentAccessDaoImpl() {
         super(DocumentAccess.class);
     }
@@ -165,7 +169,7 @@ public class DocumentAccessDaoImpl extends GenericEntityDao<DocumentAccess> impl
             if (generalConfig.bTest()) {
                 sReturn = "test";
             } else {
-                sReturn = sendPasswordOTP(sPhone, sAnswer);
+                sReturn = oManagerOTP.sendPasswordOTP(sPhone, sAnswer);
             }
 
             LOG.info("[bSentDocumentAccessOTP]sReturn={}",  sReturn);
@@ -230,69 +234,6 @@ public class DocumentAccessDaoImpl extends GenericEntityDao<DocumentAccess> impl
 
     //public String setDocumentAccess(Integer nID_Access, String sSecret, String sAnswer) throws Exception;
     //public String getDocumentAccess(Integer nID_Access, String sSecret) throws Exception;
-
-    private <T> String sendPasswordOTP(String sPhone, String sPassword) throws Exception {
-        Properties oProperties = new Properties();
-        File oFile = new File(System.getProperty("catalina.base") + "/conf/merch.properties");
-        FileInputStream oFileInputStream = new FileInputStream(oFile);
-        oProperties.load(oFileInputStream);
-        oFileInputStream.close();
-
-        OtpPassword oOtpPassword = new OtpPassword();
-        oOtpPassword.setMerchant_id(oProperties.getProperty("merchant_id"));
-        oOtpPassword.setMerchant_password(oProperties.getProperty("merchant_password"));
-
-        OtpCreate oOtpCreate = new OtpCreate();
-        oOtpCreate.setCategory("qwerty");
-        oOtpCreate.setFrom("10060");
-        oOtpCreate.setPhone(sPhone);
-		/*SmsTemplate oSmsTemplate = new SmsTemplate();
-		oSmsTemplate.setText("text:"+"Parol: ");
-		oSmsTemplate.setPassword("password:"+"2");
-		SmsTemplate oSmsTemplate2 = new SmsTemplate();
-		oSmsTemplate2.setText("text:"+"-");
-		oSmsTemplate2.setPassword("password:"+"2");
-		SmsTemplate oSmsTemplate3 = new SmsTemplate();
-		oSmsTemplate3.setText("text:"+"-");
-		oSmsTemplate3.setPassword("password:"+"2");
-		SmsTemplate oSmsTemplate4 = new SmsTemplate();
-		oSmsTemplate4.setText("text:"+"-");
-		oSmsTemplate4.setPassword("password:"+"2");*/
-        List<T> a = new ArrayList<T>();
-        a.add((T) new OtpText("Parol:"));
-        a.add((T) new OtpPass(sPassword));
-		/*a.add((T)new OtpPass("2"));
-		a.add((T)new OtpText("-"));
-		a.add((T)new OtpPass("2"));
-		a.add((T)new OtpText("-"));
-		a.add((T)new OtpPass("2"));
-		a.add((T)new OtpText("-"));
-		a.add((T)new OtpPass("2"));*/
-        oOtpCreate.setSms_template(a);
-        List<OtpCreate> aOtpCreate = new ArrayList<>();
-        aOtpCreate.add(oOtpCreate);
-        oOtpPassword.setOtp_create(aOtpCreate);
-        Gson oGson = new Gson();
-        String jsonObj = oGson.toJson(oOtpPassword);
-        URL oURL = new URL(urlConn);
-        HttpURLConnection oHttpURLConnection = (HttpURLConnection) oURL.openConnection();
-        oHttpURLConnection.setRequestMethod("POST");
-        oHttpURLConnection.setRequestProperty("content-type", "application/json;charset=UTF-8");
-        oHttpURLConnection.setDoOutput(true);
-        DataOutputStream oDataOutputStream = new DataOutputStream(oHttpURLConnection.getOutputStream());
-        oDataOutputStream.writeBytes(jsonObj);
-        oDataOutputStream.flush();
-        oDataOutputStream.close();
-
-        BufferedReader oBufferedReader = new BufferedReader(new InputStreamReader(oHttpURLConnection.getInputStream()));
-        StringBuilder os = new StringBuilder();
-        String s;
-        while ((s = oBufferedReader.readLine()) != null) {
-            os.append(s);
-        }
-        oBufferedReader.close();
-        return os.toString();
-    }
 
     private <T> String getOtpPassword(DocumentAccess docAcc) throws Exception {
         Properties prop = new Properties();

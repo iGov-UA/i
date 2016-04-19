@@ -21,14 +21,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.mail.internet.AddressException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
@@ -76,6 +72,33 @@ public class AccessCommonController {
     		@ApiParam(value = "Строка пароль пользователя", required = true) @RequestParam(value = "sPassword") String password, HttpServletRequest request)
             throws AccessServiceException {
         if (ProcessEngines.getDefaultProcessEngine().getIdentityService().checkPassword(login, password)) {
+            request.getSession(true);
+            return new LoginResponse(Boolean.TRUE.toString());
+        } else {
+            throw new AccessServiceException(AccessServiceException.Error.LOGIN_ERROR, "Login or password invalid");
+        }
+    }
+
+
+    @ApiOperation(value = "Логин пользователя", notes = "##### Response:\n"
+            + "\n```json\n"
+            + "  {\"session\":\"true\"}\n"
+            + "\n```\n"
+            + "Пример:\n"
+            + "https://test.region.igov.org.ua/wf/access/loginSubject?sLogin=kermit&sPassword=kermit\n")
+    @ApiResponses(value = { @ApiResponse(code = 200, message = "Возращает признак успеха/неудачи входа:\n "
+            + "- **true** - Пользователь авторизирован; \n"
+            + "- **false** - Имя пользователя или пароль некорректны. \n") })
+
+    @RequestMapping(value = { "/loginSubject" }, method = RequestMethod.POST)
+    public
+
+    @ResponseBody
+    LoginResponseI  loginSubject(
+            @ApiParam(value = "Строка логин пользователя", required = true) @RequestParam(value = "sLogin") String sLogin,
+            @ApiParam(value = "Строка пароль пользователя", required = true) @RequestBody String sPassword, HttpServletRequest request)
+            throws AccessServiceException {
+        if (ProcessEngines.getDefaultProcessEngine().getIdentityService().checkPassword(sLogin, sPassword)) {
             request.getSession(true);
             return new LoginResponse(Boolean.TRUE.toString());
         } else {

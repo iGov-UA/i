@@ -32,9 +32,16 @@ angular.module('app', [
   'order',
   'about',
   'feedback'
-]).config(function ($urlRouterProvider, $locationProvider) {
+]).config(function ($urlRouterProvider, $locationProvider, datepickerConfig, datepickerPopupConfig) {
   $urlRouterProvider.otherwise('/');
   $locationProvider.html5Mode(true);
+  datepickerConfig.datepickerMode = 'year';
+  datepickerConfig.showWeeks = false;
+  datepickerConfig.formatMonthTitle = 'Місяць';
+  datepickerConfig.formatYearTitle = 'Рік';
+  datepickerConfig.formatDayTitle = 'Дата';
+  datepickerConfig.formatDay = 'd';
+  datepickerPopupConfig.clearText = 'Очистити';
 }).run(function ($rootScope, $state) {
   $rootScope.state = $state;
   $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {

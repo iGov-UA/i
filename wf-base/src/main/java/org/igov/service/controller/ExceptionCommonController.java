@@ -93,7 +93,7 @@ public class ExceptionCommonController {
                 ._Send()
                 ;
         return JsonRestUtils.toJsonResponse(HttpStatus.INTERNAL_SERVER_ERROR,
-                new ErrorResponse(BUSINESS_ERROR_CODE, exception.getMessage()));
+                new ErrorResponse(SYSTEM_ERROR_CODE, exception.getMessage()));
     }
 
     @Ignore

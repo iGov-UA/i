@@ -1067,13 +1067,6 @@
         </addColumn>
     </changeSet>
 
-<!--    <changeSet id="issue-1218-addColumn_nID_Sex" author="maxline">
-        <addColumn tableName="SubjectHuman">
-            <column name="nID_Sex" type="NUMERIC">              
-            </column>
-        </addColumn>
-    </changeSet>-->
-
     <changeSet id="issue-1215" author="VadymBuz">
         <addColumn tableName="SubjectMessage">
             <column name="sSubjectInfo" type="varchar(255)">
@@ -1087,6 +1080,16 @@
                                  referencedColumnNames="nID"/>
         <addForeignKeyConstraint baseTableName="HistoryEvent" baseColumnNames="nID_Subject" constraintName="FK_Subject_HistoryEvent" referencedTableName="Subject"
                                  referencedColumnNames="nID"/>
+    </changeSet>
+    
+    <changeSet id="issue-1218-addColumn_nID_Sex" author="askosyr">
+    	<preConditions onFail="MARK_RAN">
+            <not><columnExists tableName="SubjectHuman" columnName="nID_Sex"/></not>
+        </preConditions>
+        <addColumn tableName="SubjectHuman">
+            <column name="nID_Sex" type="bigint">              
+            </column>
+        </addColumn>
     </changeSet>
 
 </databaseChangeLog>
