@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.igov.io.sms;
+package org.igov.io.mail.unisender;
 
 import com.google.gson.Gson;
 import java.io.BufferedReader;
@@ -17,6 +17,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import org.igov.io.GeneralConfig;
+import org.igov.io.sms.OtpCreate;
+import org.igov.io.sms.OtpPass;
+import org.igov.io.sms.OtpPassword;
+import org.igov.io.sms.OtpText;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
