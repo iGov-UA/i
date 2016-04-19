@@ -1,4 +1,4 @@
-package org.igov.service.business.finance;
+package org.igov.io.sms;
 
 public class OtpPass {
     private String password;
