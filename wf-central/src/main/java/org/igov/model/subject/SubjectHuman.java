@@ -85,7 +85,7 @@ public class SubjectHuman extends NamedEntity {
     @Cascade({CascadeType.SAVE_UPDATE})
     private SubjectContact defaultPhone;
 
-    @JsonProperty(value = "nID_Sex")
+    @JsonProperty(value = "oSex")
     @Enumerated(EnumType.ORDINAL)
     private SubjectHumanSex nID_Sex;
     
