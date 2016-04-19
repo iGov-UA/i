@@ -276,8 +276,10 @@
           <activiti:value id="NO" name="Довідка НЕ може бути надана"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Вкажіть причину відмови чи дату коли довідку можна буде забрати(дані будуть надіслані громадянинові по електронній пошті)*" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/architecture/zayava_407.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/сhernobyl/kalanchanska_rda_492_Print.html]" type="invisible" default="Довідка" writable="false"></activiti:formProperty>
         
+        
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression>${nfile_BirthDayDocument}</activiti:expression>
