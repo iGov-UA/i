@@ -99,16 +99,16 @@
     <serviceTask id="servicetask3" name="Повідомлення про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>klimkovichy@gmail.com</activiti:expression>
+          <activiti:expression>${sMailClerk}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Нове звернення громадян на тему: ${sTopic}]]></activiti:expression>
+          <activiti:expression>Нове звернення громадян на тему: ${sTopic}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
+          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -116,32 +116,32 @@
     <serviceTask id="servicetask2" name="E-Mail підтвердження отримання запиту" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Звернення на тему: ${sTopic}]]></activiti:expression>
+          <activiti:expression>Звернення на тему: ${sTopic}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-			<p>
+          <activiti:expression>[pattern/mail/_common_header.html]
+		    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+			&lt;p&gt;
 				Ваш запит був успішно зареєстрований у нашій системі. 
-		    </p>
-			<p>
+		    &lt;/p&gt;
+			&lt;p&gt;
 				Спеціалісти відповідального органу оброблять Вашу заявку та нададуть відповідь найближчим часом. 
-			</p>
-			<br>
-			Якщо у Вас є додаткові питання, Ви можете звернутись за наступними контактами:<br>
-			${sAddress}<br>
-			${sWorkTime}<br>
-			${sPhoneOrgan}<br><br>
+			&lt;/p&gt;
+			&lt;br&gt;
+			Якщо у Вас є додаткові питання, Ви можете звернутись за наступними контактами:&lt;br&gt;
+			${sAddress}&lt;br&gt;
+			${sWorkTime}&lt;br&gt;
+			${sPhoneOrgan}&lt;br&gt;&lt;br&gt;
 			[pattern/mail/_common_signature_start.html]
-			${sNameOrgan}.<br>
+			${sNameOrgan}.&lt;br&gt;
 			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]]]></activiti:expression>
+			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -152,7 +152,7 @@
     </sequenceFlow>
     <userTask id="usertask1" name="Первинна перевірка даних" activiti:candidateGroups="rda_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-      	<activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оган, що надає послугу" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оган, що надає послугу" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFIO" name="Прізвище, ім`я, по-батькові громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail заявника" type="string" writable="false"></activiti:formProperty>
@@ -236,31 +236,31 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA["${email}"]]></activiti:expression>
+          <activiti:expression>"${email}"</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Звернення на тему: ${sTopic}]]></activiti:expression>
+          <activiti:expression>Звернення на тему: ${sTopic}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-			<p>
-	            Ваше звернення на тему: ${sTopic} розглянуте.<br>
+          <activiti:expression>[pattern/mail/_common_header.html]
+		    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+			&lt;p&gt;
+	            Ваше звернення на тему: ${sTopic} розглянуте.&lt;br&gt;
 	            На жаль змушені відмовити Вам у реєстрації звернення.
-		    </p>
-			<p>
-				Коментар державного службовця: <br>
-				<i>{decisionComment}</i>
-			</p>
-			<br>
-			Якщо у Вас є додаткові питання, Ви можете звернутись за наступними контактами:<br>
-			${sAddress}<br>
-			${sWorkTime}<br>
-			${sPhoneOrgan}<br><br>
+		    &lt;/p&gt;
+			&lt;p&gt;
+				Коментар державного службовця: &lt;br&gt;
+				&lt;i&gt;${decisionComment}&lt;/i&gt;
+			&lt;/p&gt;
+			&lt;br&gt;
+			Якщо у Вас є додаткові питання, Ви можете звернутись за наступними контактами:&lt;br&gt;
+			${sAddress}&lt;br&gt;
+			${sWorkTime}&lt;br&gt;
+			${sPhoneOrgan}&lt;br&gt;&lt;br&gt;
 			[pattern/mail/_common_signature_start.html]
-			${sNameOrgan}.<br>
+			${sNameOrgan}.&lt;br&gt;
 			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]]]></activiti:expression>
+			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -271,7 +271,7 @@
     </sequenceFlow>
     <userTask id="usertask2" name="Обробка звернення" activiti:candidateGroups="rda_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-      	<activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оган, що надає послугу" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оган, що надає послугу" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFIO" name="Прізвище, ім`я, по-батькові громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail заявника" type="string" writable="false"></activiti:formProperty>
@@ -345,36 +345,36 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA["${email}"]]></activiti:expression>
+          <activiti:expression>"${email}"</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Звернення на тему: ${sTopic}]]></activiti:expression>
+          <activiti:expression>Звернення на тему: ${sTopic}</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA["${nDocFile}"]]></activiti:expression>
+          <activiti:expression>"${nDocFile}"</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-                                    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-                                    <p>
-                                        Ваше звернення на тему: ${sTopic} розглянуте.<br>
+          <activiti:expression>[pattern/mail/_common_header.html]
+                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+                                    &lt;p&gt;
+                                        Ваше звернення на тему: ${sTopic} розглянуте.&lt;br&gt;
                                         Скан-копія рішення знаходиться у додатках до цього листа.
-                                    </p>
-                                    <p>
+                                    &lt;/p&gt;
+                                    &lt;p&gt;
 										Якщо Ви бажаєте отримати фізичну копію цього документа - зверніться до відповідального органу.
-                                    </p>
-                                    <p>
-                                        ${sAddress},<br>
+                                    &lt;/p&gt;
+                                    &lt;p&gt;
+                                        ${sAddress},&lt;br&gt;
 										${sWorkTime}
-									</p>
-                                    <p>
-									<i>${decisionComment}</i>
-									</p>
+									&lt;/p&gt;
+                                    &lt;p&gt;
+									&lt;i&gt;${decisionComment}&lt;/i&gt;
+									&lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
-									${sNameOrgan},<br>
+									${sNameOrgan},&lt;br&gt;
 									[pattern/mail/_common_signature_end.html]
 									[pattern/mail/_common_feedback.html]
-                                    [pattern/mail/_common_footer.html]]]></activiti:expression>
+                                    [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -384,7 +384,7 @@
     </sequenceFlow>
     <userTask id="usertask3_red" name="Первинна перевірка данних наданих громадянином" activiti:candidateGroups="rda_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-      	<activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оган, що надає послугу" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оган, що надає послугу" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFIO" name="Прізвище, ім`я, по-батькові громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail заявника" type="string" writable="false"></activiti:formProperty>
@@ -472,7 +472,7 @@
     </sequenceFlow>
     <userTask id="usertask4_first" name="Рішення голови" activiti:candidateGroups="golova_rda_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-      	<activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оган, що надає послугу" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оган, що надає послугу" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFIO" name="Прізвище, ім`я, по-батькові громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail заявника" type="string" writable="false"></activiti:formProperty>
@@ -556,7 +556,7 @@
     <sequenceFlow id="flow46" sourceRef="usertask4_first" targetRef="exclusivegateway6"></sequenceFlow>
     <userTask id="usertask5_yellow" name="Рішення направити виконавцю" activiti:candidateGroups="rda_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-      	<activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оган, що надає послугу" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оган, що надає послугу" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFIO" name="Прізвище, ім`я, по-батькові громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail заявника" type="string" writable="false"></activiti:formProperty>
@@ -644,43 +644,43 @@
     <serviceTask id="servicetask8" name="Сповістити громадянина про прийняте рішення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Звернення на тему: ${sTopic}]]></activiti:expression>
+          <activiti:expression>Звернення на тему: ${sTopic}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-			<p>
+          <activiti:expression>[pattern/mail/_common_header.html]
+		    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+			&lt;p&gt;
 				Ваше звернення було зареєстроване та взяте в роботу. 
-		    </p>
-			<p>
-				Виконавець:<br>  
+		    &lt;/p&gt;
+			&lt;p&gt;
+				Виконавець:&lt;br&gt;  
 				${sNameExecutorExtended}
-				<br><br>
-				Строк виконання:<br> 
+				&lt;br&gt;&lt;br&gt;
+				Строк виконання:&lt;br&gt; 
 				${dExecution}										
-			</p>
-			<br>
-			Якщо у Вас є додаткові питання, Ви можете звернутись за наступними контактами:<br>
-			${sAddress}<br>
-			${sWorkTime}<br>
-			${sPhoneOrgan}<br><br>
+			&lt;/p&gt;
+			&lt;br&gt;
+			Якщо у Вас є додаткові питання, Ви можете звернутись за наступними контактами:&lt;br&gt;
+			${sAddress}&lt;br&gt;
+			${sWorkTime}&lt;br&gt;
+			${sPhoneOrgan}&lt;br&gt;&lt;br&gt;
 			[pattern/mail/_common_signature_start.html]
-			${sNameOrgan}.<br>
+			${sNameOrgan}.&lt;br&gt;
 			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]]]></activiti:expression>
+			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow49" sourceRef="servicetask8" targetRef="usertask6_green"></sequenceFlow>
     <userTask id="usertask6_green" name="Зняття з контролю" activiti:candidateGroups="rda_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-      	<activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оган, що надає послугу" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оган, що надає послугу" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFIO" name="Прізвище, ім`я, по-батькові громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail заявника" type="string" writable="false"></activiti:formProperty>
@@ -748,7 +748,7 @@
         <activiti:formProperty id="dTransExecutor" name="Дата направлення рішення виконавцю" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="dExecution" name="Строк виконання" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameExecutorExtended" name="Розширені дані про виконавця (прізвище, ініціали та номер телефону безпосереднього виконавця)" type="textArea" default="${sNameExecutor}" required="true"></activiti:formProperty>
-		<activiti:formProperty id="decide" name="Рішення голови РДА" type="enum" default="accept" writable="false">
+        <activiti:formProperty id="decide" name="Рішення голови РДА" type="enum" default="accept" writable="false">
           <activiti:value id="accept" name="Взяти в роботу"></activiti:value>
           <activiti:value id="reject" name="Відмовити"></activiti:value>
         </activiti:formProperty>
@@ -782,30 +782,30 @@
     <serviceTask id="servicetask9" name="E-Mail громадянину про успішне виконання рішення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Звернення на тему: ${sTopic}]]></activiti:expression>
+          <activiti:expression>Звернення на тему: ${sTopic}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-            <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-            <p>
+          <activiti:expression>[pattern/mail/_common_header.html]
+            &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+            &lt;p&gt;
 				Ваш запит був успішно виконаний. 
-			</p>
-			<br>
-			Якщо у Вас є додаткові питання, Ви можете звернутись за наступними контактами:<br>
-			${sAddress}<br>
-			${sWorkTime}<br>
-			${sPhoneOrgan}<br><br><br>			
+			&lt;/p&gt;
+			&lt;br&gt;
+			Якщо у Вас є додаткові питання, Ви можете звернутись за наступними контактами:&lt;br&gt;
+			${sAddress}&lt;br&gt;
+			${sWorkTime}&lt;br&gt;
+			${sPhoneOrgan}&lt;br&gt;&lt;br&gt;&lt;br&gt;			
 			[pattern/mail/_common_feedback.html]
 			[pattern/mail/_common_signature_start.html]
-			${sNameOrgan}.<br>
+			${sNameOrgan}.&lt;br&gt;
 			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]]]></activiti:expression>
+			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -819,34 +819,34 @@
     <serviceTask id="servicetask10" name="E-Mail  громадянину про не можливість виконання рішення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Звернення на тему: ${sTopic}]]></activiti:expression>
+          <activiti:expression>Звернення на тему: ${sTopic}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-			<p>
+          <activiti:expression>[pattern/mail/_common_header.html]
+			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+			&lt;p&gt;
 				Ваш запит не виконано. 
-		   	</p>
-			<p>
+		   	&lt;/p&gt;
+			&lt;p&gt;
 				В звязку з
 				Коментар держслужбовця:
 				${decisionComment} 
-			</p>
-			<br>
-			Якщо у Вас є додаткові питання, Ви можете звернутись за наступними контактами:<br>
-			${sAddress}<br>
-			${sWorkTime}<br>
-			${sPhoneOrgan}<br><br>
+			&lt;/p&gt;
+			&lt;br&gt;
+			Якщо у Вас є додаткові питання, Ви можете звернутись за наступними контактами:&lt;br&gt;
+			${sAddress}&lt;br&gt;
+			${sWorkTime}&lt;br&gt;
+			${sPhoneOrgan}&lt;br&gt;&lt;br&gt;
 			[pattern/mail/_common_signature_start.html]
-			${sNameOrgan}.<br>
+			${sNameOrgan}.&lt;br&gt;
 			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]]]></activiti:expression>
+			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
