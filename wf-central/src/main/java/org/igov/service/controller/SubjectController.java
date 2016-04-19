@@ -755,45 +755,6 @@ public class SubjectController {
         return subjectAccountRet;
     }
 
-    @ApiOperation(value = "Получение полного набора данных по субъектам", notes = "Получаем полный набор данных по субъектам. "
-            + "Пример:\n"
-            + "https://test.igov.org.ua/wf/service/subject/getSubjectsByAccount\n\n"
-            + "что-бы протестировать эту чать кода надо 1) запустить проэкт 2)ввести дефолтные парольи логин из 'нашего хозяйства' "
-            + " 3)ввести в адресную строку типа этой (без слешей)http://localhost:8080/service/subject/getSubjectsByAccount?nID_Server=0&saLogin=[\"Barmaley\",\"GrekD\"] 4)ввести вторые логин и пароль из 'нашего хозяйства' "
-            + "Ответ:\n"
-            + "\n```\n")
-    @RequestMapping(value = "/getSubjectsByAccount", method = RequestMethod.GET, headers = {JSON_TYPE})
-    public @ResponseBody
-    Map<String, Map<String, Subject>> getSubjectsByAccount(
-            @ApiParam(value = "Массив с логинами чиновников в виде json", required = false) @RequestParam(value = "saLogin", required = false) String saLogin,
-            @ApiParam(value = "Массив с логинами групп в виде json", required = false) @RequestParam(value = "saGroup", required = false) String saGroup,
-            @ApiParam(value = "Ид сервера", required = false) @RequestParam(value = "nID_Server", required = false) Long nID_Server,
-            @ApiParam(value = "Массив с внешними логинами  в виде json", required = false) @RequestParam(value = "saLoginExternal", required = false) String saLoginExternal,
-            @ApiParam(value = "Массив с типами аакаунтов  в виде json", required = false) @RequestParam(value = "nID_SubjectAccountType", required = false) Long nID_SubjectAccountType) throws CommonServiceException {
-        Map<String, Map<String, Subject>> result = new HashMap();
-
-        if (saLogin == null && saGroup == null && nID_Server == null && saLoginExternal == null && nID_SubjectAccountType == null) {
-            throw new CommonServiceException(
-                    ExceptionCommonController.BUSINESS_ERROR_CODE,
-                    "Ошибка! Укажите хотя бы параметры: saLogin,nID_Server",
-                    HttpStatus.BAD_REQUEST);
-        } else {
-            // находим сущность SubjectAccountType если не налл
-            SubjectAccountType subjectAccountType = new SubjectAccountType();
-            if (nID_SubjectAccountType != null) {
-                subjectAccountType = subjectAccountTypeDao.findByIdExpected(nID_SubjectAccountType);
-            }
-            if (subjectAccountType == null) {
-                throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
-                        "Error! SubjectAccountType not founf for id=" + 1, HttpStatus.NOT_FOUND);
-            }
-            result.put("users", getSubject(saLogin, 1L, nID_Server));
-            result.put("externalUsers", getSubject(saLoginExternal, 1L, nID_Server));
-            result.put("organs", getSubject(saGroup, 1L, nID_Server));
-        }
-        return result;
-    }
-
     private Map<String, Subject> getSubject(String saLogin, Long nID_SubjectAccountType, Long nID_Server) {
         Map<String, Subject> subjects = new HashMap();
         Long nID_Subject;

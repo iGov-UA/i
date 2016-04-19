@@ -14,6 +14,7 @@ import org.igov.service.business.access.AccessService;
 import org.igov.service.exception.AccessServiceException;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.HandlerBeanValidationException;
+import org.igov.service.exchange.SubjectCover;
 import org.igov.util.JSON.JsonRestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +28,9 @@ import javax.mail.internet.AddressException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * User: goodg_000
@@ -44,6 +47,9 @@ public class AccessCommonController {
     @Autowired
     private AccessService oAccessService;
 
+    @Autowired
+    private SubjectCover oSubjectCover;
+
     /**
      * Логин пользователя в систему. Возращает признак успеха/неудачи входа.
      * true - Пользователь авторизирован
@@ -56,9 +62,9 @@ public class AccessCommonController {
      * @throws AccessServiceException
      */
     @ApiOperation(value = "Логин пользователя", notes = "##### Response:\n"
-       + "\n```json\n" 
+       + "\n```json\n"
        + "  {\"session\":\"true\"}\n"
-       + "\n```\n" 
+       + "\n```\n"
        + "Пример:\n"
        + "https://test.region.igov.org.ua/wf/access/login?sLogin=kermit&sPassword=kermit\n")
     @ApiResponses(value = { @ApiResponse(code = 200, message = "Возращает признак успеха/неудачи входа:\n "
@@ -80,27 +86,32 @@ public class AccessCommonController {
     }
 
 
-    @ApiOperation(value = "Логин пользователя", notes = "##### Response:\n"
-            + "\n```json\n"
-            + "  {\"session\":\"true\"}\n"
-            + "\n```\n"
-            + "Пример:\n"
-            + "https://test.region.igov.org.ua/wf/access/loginSubject?sLogin=kermit&sPassword=kermit\n")
-    @ApiResponses(value = { @ApiResponse(code = 200, message = "Возращает признак успеха/неудачи входа:\n "
-            + "- **true** - Пользователь авторизирован; \n"
-            + "- **false** - Имя пользователя или пароль некорректны. \n") })
-
+    //task #1214
+    /**
+     *  Авторизация пользователя с возвратом структуры обьектов по субьекту
+     *
+     * @param sLogin    - Логин пользователя
+     * @param sPassword - Пароль пользователя, передается в теле запроса
+     * @return Возвращает структуру объектов по конкретному субъекту
+     * @throws AccessServiceException
+     */
+    @ApiOperation(value = "Авторизирует пользователя и возвращает соответсвующую ему структуру объектов")
     @RequestMapping(value = { "/loginSubject" }, method = RequestMethod.POST)
     public
-
     @ResponseBody
-    LoginResponseI  loginSubject(
+    Map  loginSubject(
             @ApiParam(value = "Строка логин пользователя", required = true) @RequestParam(value = "sLogin") String sLogin,
             @ApiParam(value = "Строка пароль пользователя", required = true) @RequestBody String sPassword, HttpServletRequest request)
             throws AccessServiceException {
+        LOG.info("Method loginSubjetct started");
+        LOG.info("Working values "+sLogin+" "+sPassword);
         if (ProcessEngines.getDefaultProcessEngine().getIdentityService().checkPassword(sLogin, sPassword)) {
+            LOG.info("Login and password are correct");
             request.getSession(true);
-            return new LoginResponse(Boolean.TRUE.toString());
+            Set<String> asAccounts = new HashSet<>();
+            asAccounts.add(sLogin);
+            LOG.info("Calling method getSubjectsBy with login "+sLogin);
+            return oSubjectCover.getSubjectsBy(asAccounts);
         } else {
             throw new AccessServiceException(AccessServiceException.Error.LOGIN_ERROR, "Login or password invalid");
         }
