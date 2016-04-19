@@ -91,15 +91,16 @@
         </activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть місто, у якому Ви плануєте отримувати паспорт" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="nDoc" name="Скан-копії документів" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible" default="Міністерство інфраструктури України"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="Телефон органу" type="invisible" default="123456"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Тип органу" type="invisible" default="Одесса"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Телефон органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Тип органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sArea" name="район/місто звернення" type="invisible" default="Одесса"></activiti:formProperty>
+        <activiti:formProperty id="sArea" name="район/місто звернення" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible" default="Заявка актуальна"></activiti:formProperty>
         <activiti:formProperty id="sDate_of_birth" name="Дата народження" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPlace_of_birth" name="Місце народження" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sSex" name="Стать" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPort" name="Назва порту" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('infrastr/sea_passp.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -189,11 +190,11 @@ execution.setVariable('sPlace_of_birth', sex1)
 										Ваш запит був успішно зареєстрований у нашій системі. 
 								    &lt;/p&gt;
 									&lt;p&gt;
-										Спеціалісти оброблять Вашу заявку та надішлють Вам email з підтвердженням та інструкцією щодо подальших дій. 
+										Спеціалісти ${sNameOrgan} оброблять Вашу заявку та надішлють Вам email з підтвердженням та інструкцією щодо подальших дій. 
 									&lt;/p&gt;
                                     &lt;p&gt;[cancelTask]&lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
-									${sNameOrgan},&lt;br&gt;
+									Міністерство інфраструктури України,&lt;br&gt;
 									[pattern/mail/_common_signature_end.html]   
 									[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -288,6 +289,7 @@ execution.setVariable('sPlace_of_birth', sex1)
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Коментар до рішення, наприклад, пояснення чому громадянину було відмовлено в наданні цієї послуги АБО додаткові деталі для закінчення процессу оформлення паспорта" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/infr/seaman_passp.html]" type="invisible" default="Зразок паспорта" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPort" name="Назва порту" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -328,7 +330,7 @@ execution.setVariable('sPlace_of_birth', sex1)
 										${sPhoneOrgan}
 									&lt;/p&gt;
 									[pattern/mail/_common_signature_start.html]
-                                    ${sNameOrgan}.&lt;/p&gt;
+                                    Міністерство інфраструктури України.&lt;/p&gt;
                                     [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
@@ -353,7 +355,7 @@ execution.setVariable('sPlace_of_birth', sex1)
           <activiti:expression>[pattern/mail/_common_header.html]
                                     &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
-                                        Спеціалісти ${sOrganType} успішно опрацювли Вашу заяву.&lt;br&gt;
+                                        Спеціалісти ${sNameOrgan} успішно опрацювли Вашу заяву.&lt;br&gt;
 										Для того щоб закінчити процедуру Видача/заміна паспорта моряка необхідно:&lt;br&gt;
 										&lt;ul&gt;
 										&lt;li&gt;Протягом 5 робочіх днів сплатити усі необхідні платежі та отримати квитанцію про сплату.&lt;/li&gt;
@@ -373,7 +375,7 @@ execution.setVariable('sPlace_of_birth', sex1)
 									&lt;/p&gt;
                                     &lt;p&gt;[cancelTask]&lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
-									${sNameOrgan},&lt;br&gt;
+									Міністерство інфраструктури України,&lt;br&gt;
 									[pattern/mail/_common_signature_end.html]   
 									[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -433,7 +435,7 @@ execution.setVariable('sPlace_of_birth', sex1)
 										${sPhoneOrgan}
                                     &lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
-									${sNameOrgan},&lt;/p&gt;
+									Міністерство інфраструктури України,&lt;/p&gt;
 									[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
@@ -460,7 +462,7 @@ execution.setVariable('sPlace_of_birth', sex1)
                               		Дякуємо.
 									&lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
-									${sNameOrgan},&lt;br /&gt;
+									Міністерство інфраструктури України,&lt;br /&gt;
 									[pattern/mail/_common_signature_end.html]   
 									[pattern/mail/_common_feedback.html]
 									[pattern/mail/_common_footer.html]</activiti:expression>
