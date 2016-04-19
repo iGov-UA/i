@@ -309,14 +309,14 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове  звернення. Експлуатаційний дозвіл для провадження діяльності на потужностях (об’єктах)]]></activiti:string>
+          <activiti:string><![CDATA[Заява повернена із Ветеринарної служби. Експлуатаційний дозвіл для провадження діяльності на потужностях (об’єктах)]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <userTask id="usertask3" name="Надання послуги ВетМед">
+    <userTask id="usertask3" name="Надання послуги ВетМед" activiti:candidateGroups="vet_${sID_Public_SubjectOrganJoin}">
      <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="Район" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -341,7 +341,6 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:formProperty id="sObject" name="Об’єкт, на який потрібно надати дозвіл" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdres_2" name="Адреса об’єкта, на який видається дозвіл" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sImya_ur" name="У давальному відмінку повне найменування юридичної особи" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="kved" name="Вид діяльності згідно з КВЕД; тільки цифрові позначення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно з ЄДРПОУ; тільки цифрові позначення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPib_ur" name="П.І.Б. керівника юридичної особи або уповноваженої особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPib_fiz" name="П.І.Б. фізичної особи–підприємця" type="string" writable="false"></activiti:formProperty>
@@ -350,15 +349,21 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:formProperty id="nReestr" name="Реєстраційний номер ЦНАП" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sReestrDate" name="Дата реєстрації звернення ЦНАП" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPib_admin" name="Прізвище та ініціали адміністратора ЦНАП" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="kved" name="Вид діяльності згідно з КВЕД" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="kved_text" name="Впишіть види діяльності, відповідно до вказаних кодів КВЕД" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="perelic_text" name="Впишіть ассортимент продукції, відповідно до доданих заявником документів (прикріплених файлів)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nReestrVet" name="Номер реєстрації" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sReestrDateVet" name="Дата видачі Експлуатаційного дозволу" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sStartDateVet" name="Дата початку строку дії Експлуатаційного дозволу (у форматі ДД місяць РРРР)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sEndDateVet" name="Дата закінчення строку дії Експлуатаційного дозволу (у форматі ДД місяць РРРР)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDozvNumb" name="Номер Експлуатаційного дозволу" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPibVet" name="Прізвище та ініціали працівника ветеринарної служби" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sShapkaVet" name="Начальнику управління ветеринарної медицини в " type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="rdozvil" name="назви документів" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers12" name="принтформа якщо юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_12&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;sObject_pf&quot;,&quot;sObject_2_pf&quot;,&quot;sAdres_2_pf&quot;,&quot;sImya_ur_pf&quot;,&quot;kved_pf&quot;,&quot;edrpou_pf&quot;,&quot;sPib_ur_pf&quot;,&quot;sAdres_1_pf&quot;,&quot;tel_pf&quot;,&quot;person_pf&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asSubekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnumUr'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers13" name="принтформа якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;sObject_pf&quot;,&quot;sObject_2_pf&quot;,&quot;sAdres_2_pf&quot;,&quot;sPib_fiz_pf&quot;,&quot;kved_pf&quot;,&quot;bankIdinn_pf&quot;,&quot;sAdres_0_pf&quot;,&quot;phone_pf&quot;,&quot;person_pf&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asSubekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnumFiz'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_55_print.html]" type="invisible" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_55vet.html]" type="invisible" default="Експлуатаційний дозвіл" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport}, ${doc_pidpriemci},${perelic_animals},${perelic_provender}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport}, ${doc_pidpriemci},${perelic_animals},${perelic_provender},${PrintForm_1}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
