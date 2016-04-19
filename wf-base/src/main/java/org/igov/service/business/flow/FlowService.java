@@ -84,8 +84,8 @@ public class FlowService implements ApplicationContextAware {
     }
 
     public Days getFlowSlots(Long nID_Service, Long nID_ServiceData, String sID_BP, Long nID_SubjectOrganDepartment,
-            DateTime startDate, DateTime endDate, boolean bAll,
-            int nFreeDays) {
+                             DateTime startDate, DateTime endDate, boolean bAll,
+                             int nFreeDays, int nSlots) {
 
         List<FlowSlot> aFlowSlot;
         Flow_ServiceData oFlow = null;
@@ -114,12 +114,32 @@ public class FlowService implements ApplicationContextAware {
             }
         }
 
-        for (FlowSlot flowSlot : aFlowSlot) {
-            DateTime currDate = flowSlot.getsDate().withTimeAtStartOfDay();
-            FlowSlotVO flowSlotVO = new FlowSlotVO(flowSlot);
-            if (!bAll && !flowSlotVO.isbFree()) {
+        List<List<FlowSlot>> slotsGroups = splitOnGroups(aFlowSlot, nSlots);
+
+        A: for (List<FlowSlot> group : slotsGroups) {
+            FlowSlotVO fistInGroup = null;
+
+            if (group.size() != nSlots) {
                 continue;
             }
+
+            for (FlowSlot flowSlot : group) {
+                FlowSlotVO flowSlotVO = new FlowSlotVO(flowSlot);
+                if (fistInGroup == null) {
+                    fistInGroup = flowSlotVO;
+                }
+
+                if (!flowSlotVO.isbFree()) {
+                    if (!bAll) {
+                        continue A;
+                    }
+
+                    fistInGroup.setbFree(false);
+                }
+
+            }
+
+            DateTime currDate = group.get(0).getsDate().withTimeAtStartOfDay();
 
             Day day = daysMap.get(currDate);
             if (day == null) {
@@ -127,12 +147,13 @@ public class FlowService implements ApplicationContextAware {
                 daysMap.put(currDate, day);
             }
 
-            day.getaSlot().add(flowSlotVO);
+            day.getaSlot().add(fistInGroup);
 
-            if (!day.isbHasFree() && flowSlotVO.isbFree()) {
+            if (!day.isbHasFree() && fistInGroup.isbFree()) {
                 day.setbHasFree(true);
             }
         }
+
 
         Days res = new Days();
         int freeDaysCount = 0;
@@ -154,57 +175,87 @@ public class FlowService implements ApplicationContextAware {
         return res;
     }
 
+    private List<List<FlowSlot>> splitOnGroups(List<FlowSlot> flowSlots, int slotsInGroup) {
+        List<List<FlowSlot>> res = new ArrayList<>();
+
+        List<FlowSlot> currGroup = new ArrayList<>();
+        DateTime nextStart = null;
+        for (FlowSlot slot : flowSlots) {
+            if (currGroup.size() == slotsInGroup || (nextStart != null && !slot.getsDate().isEqual(nextStart))) {
+                res.add(currGroup);
+                currGroup = new ArrayList<>();
+            }
+
+            currGroup.add(slot);
+            nextStart = slot.getsDate().plusMinutes(ToolDuration.parseDuration(slot.getsDuration()).getMinutes());
+        }
+        res.add(currGroup);
+
+        return res;
+    }
+
     public Flow_ServiceData getFlowByLink(Long nID_Service, Long nID_SubjectOrganDepartment) {
         FlowLink flow = flowLinkDao.findLinkByService(nID_Service, nID_SubjectOrganDepartment);
         return flow != null ? flow.getFlow_ServiceData() : null;
     }
 
-    public FlowSlotTicket saveFlowSlotTicket(Long nID_FlowSlot, Long nID_Subject, Long nID_Task_Activiti)
+    public FlowSlotTicket saveFlowSlotTicket(Long first_nID_FlowSlot, Long nID_Subject,
+                                             Long nID_Task_Activiti, Integer nSlots)
             throws Exception {
 
-        FlowSlotTicket oFlowSlotTicket = oFlowSlotTicketDao.findFlowSlotTicket(nID_FlowSlot);
-        if (oFlowSlotTicket == null) {
-            oFlowSlotTicket = new FlowSlotTicket();
-        } else {
-            //if(oFlowSlotTicket.getnID_Task_Activiti()!=null){
-            if (FlowSlotVO.bBusyStatic(oFlowSlotTicket)) {
-                //oFlowSlotTicket.getnID_Subject(nID_Subject);
-                String sError = "FlowSlotTicket with nID_FlowSlot=" + nID_FlowSlot
-                        + " is bBusyStatic by getnID_Task_Activiti()=" + oFlowSlotTicket.getnID_Task_Activiti();
-                LOG.error(sError);
-                throw new Exception(sError);
-            } else if (FlowSlotVO
-                    .bBusyTemp(oFlowSlotTicket)) {//oFlowSlotTicket.getsDateEdit(). <oFlowSlotTicket.getsDateEdit()
-                //bBusyStatic
-                LOG.info("(nID_Subject={})", nID_Subject);
-                LOG.info("(getnID_Subject()={})", oFlowSlotTicket.getnID_Subject());
-                if (!nID_Subject.equals(oFlowSlotTicket.getnID_Subject())) {
-                    String sError =
-                            "FlowSlotTicket with nID_FlowSlot=" + nID_FlowSlot + " is bBusyTemp from getsDateEdit()="
-                                    + oFlowSlotTicket.getsDateEdit();
+        FlowSlotTicket res = null;
+        List<FlowSlot> flowSlots = flowSlotDao.findFlowSlotsChain(first_nID_FlowSlot, nSlots);
+        if (flowSlots.size() != nSlots) {
+            String sError = "Slots chain absent";
+            LOG.error(sError);
+            throw new Exception(sError);
+        }
+
+        for (int i = 0; i < nSlots; ++i) {
+            FlowSlot flowSlot = flowSlots.get(i);
+            Long nID_FlowSlot = flowSlot.getId();
+            FlowSlotTicket oFlowSlotTicket = oFlowSlotTicketDao.findFlowSlotTicket(flowSlot.getId());
+            if (oFlowSlotTicket == null) {
+                oFlowSlotTicket = new FlowSlotTicket();
+            } else {
+                if (FlowSlotVO.bBusyStatic(oFlowSlotTicket)) {
+                    String sError = "FlowSlotTicket with nID_FlowSlot=" + nID_FlowSlot
+                            + " is bBusyStatic by getnID_Task_Activiti()=" + oFlowSlotTicket.getnID_Task_Activiti();
                     LOG.error(sError);
                     throw new Exception(sError);
+                } else if (FlowSlotVO.bBusyTemp(oFlowSlotTicket)) {
+                    LOG.info("(nID_Subject={})", nID_Subject);
+                    LOG.info("(getnID_Subject()={})", oFlowSlotTicket.getnID_Subject());
+                    if (!nID_Subject.equals(oFlowSlotTicket.getnID_Subject())) {
+                        String sError =
+                                "FlowSlotTicket with nID_FlowSlot=" + nID_FlowSlot + " is bBusyTemp from getsDateEdit()="
+                                        + oFlowSlotTicket.getsDateEdit();
+                        LOG.error(sError);
+                        throw new Exception(sError);
+                    }
                 }
+            }
+
+            oFlowSlotTicket.setnID_Subject(nID_Subject);
+            oFlowSlotTicket.setnID_Task_Activiti(nID_Task_Activiti);
+
+            oFlowSlotTicket.setoFlowSlot(flowSlot);
+            oFlowSlotTicket.setsDateStart(flowSlot.getsDate());
+
+            Duration duration = ToolDuration.parseDuration(flowSlot.getsDuration());
+            DateTime finishDateTime = flowSlot.getsDate().plusMinutes(duration.getMinutes());
+            oFlowSlotTicket.setsDateFinish(finishDateTime);
+
+            oFlowSlotTicket.setsDateEdit(DateTime.now());
+
+            oFlowSlotTicketDao.saveOrUpdate(oFlowSlotTicket);
+
+            if (i == 0) {
+                res = oFlowSlotTicket;
             }
         }
 
-        //oFlowSlotTicket
-
-        oFlowSlotTicket.setnID_Subject(nID_Subject);
-        oFlowSlotTicket.setnID_Task_Activiti(nID_Task_Activiti);
-
-        FlowSlot flowSlot = flowSlotDao.findByIdExpected(nID_FlowSlot);
-
-        oFlowSlotTicket.setoFlowSlot(flowSlot);
-        oFlowSlotTicket.setsDateStart(flowSlot.getsDate());
-
-        Duration duration = ToolDuration.parseDuration(flowSlot.getsDuration());
-        DateTime finishDateTime = flowSlot.getsDate().plusMinutes(duration.getMinutes());
-        oFlowSlotTicket.setsDateFinish(finishDateTime);
-
-        oFlowSlotTicket.setsDateEdit(DateTime.now());
-
-        return oFlowSlotTicketDao.saveOrUpdate(oFlowSlotTicket);
+        return res;
     }
 
     /**
