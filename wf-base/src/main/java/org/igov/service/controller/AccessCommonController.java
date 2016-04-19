@@ -104,6 +104,7 @@ public class AccessCommonController {
             @ApiParam(value = "Строка пароль пользователя", required = true) @RequestBody String sPassword, HttpServletRequest request)
             throws AccessServiceException {
         LOG.info("Method loginSubjetct started");
+        LOG.info("Working values "+sLogin+" "+sPassword);
         if (ProcessEngines.getDefaultProcessEngine().getIdentityService().checkPassword(sLogin, sPassword)) {
             LOG.info("Login and password are correct");
             request.getSession(true);
