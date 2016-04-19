@@ -506,6 +506,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 
         String sPhone_SMS = getStringFromFieldExpression(this.sPhone_SMS, oExecution);
         if(sPhone_SMS!=null){
+            sPhone_SMS="38"+sPhone_SMS;
             String sText_SMS = getStringFromFieldExpression(this.sText_SMS, oExecution);
             if(sText_SMS!=null){
                 sText_SMS = replaceTags(sText_SMS, oExecution);

@@ -25,6 +25,7 @@ import org.springframework.stereotype.Component;
 import org.activiti.engine.impl.util.json.JSONObject;
 import static org.igov.service.business.action.task.core.AbstractModelTask.contentStringToByte;
 import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
+import org.springframework.http.ResponseEntity;
 
 @Component("GetDocument_UkrDoc")
 public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListener {
@@ -87,16 +88,16 @@ public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListene
                             String fileName = file.getString("name");
 
                             LOG.info("view_url:" + generalConfig.getsUkrDocServerAddress() + view_url + " fileName: " + fileName);
-                            resp = new RestRequest().get(generalConfig.getsUkrDocServerAddress() + view_url, MediaType.APPLICATION_JSON,
+                            ResponseEntity responseEntity = new RestRequest().getResponseEntity(generalConfig.getsUkrDocServerAddress() + view_url, MediaType.APPLICATION_JSON,
                                     StandardCharsets.UTF_8, String.class, headers);
-                            LOG.info("Ukrdoc response getContentFile:" + resp);
+                            LOG.info("Ukrdoc response getContentFile getBody: " + responseEntity.getBody() 
+                                    + " getHeaders: " + responseEntity.getHeaders().entrySet());
                             try {
+                                //ByteArrayMultipartFile oByteArrayMultipartFile
+                                //        = new ByteArrayMultipartFile(contentStringToByte(resp), fileName, fileNameOrigin, "application/octet-stream");
                                 ByteArrayMultipartFile oByteArrayMultipartFile
-                                        = new ByteArrayMultipartFile(contentStringToByte(resp), fileName, fileNameOrigin, "application/octet-stream");
-                                //Attachment attachment = createAttachment(oByteArrayMultipartFile, delegateTask, fileName);
-                                //Attachment attachment = ((org.igov.service.conf.TaskServiceImpl) taskService)
-                                //        .createAttachment("application/octet-stream", delegateTask.getId(), execution.getProcessInstanceId(),
-                                //                fileNameOrigin, fileName, oByteArrayMultipartFile.getInputStream());
+                                        = new ByteArrayMultipartFile(contentStringToByte(resp), fileName, fileNameOrigin, responseEntity.getHeaders().getContentType().toString());
+                                
                                 Attachment attachment = taskService.createAttachment(oByteArrayMultipartFile.getContentType() + ";" + oByteArrayMultipartFile.getExp(), 
                                         delegateTask.getId(), execution.getProcessInstanceId(), 
                                         fileNameOrigin, fileName, oByteArrayMultipartFile.getInputStream());
