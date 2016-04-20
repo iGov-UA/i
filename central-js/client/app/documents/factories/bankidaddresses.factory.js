@@ -25,7 +25,7 @@ angular.module('documents').factory('BankIDAddressesFactory', function(BankIDAdd
         return element.toString();
       }
     }
-    return null;
+    return "";//null
   };
   addresses.prototype.getCountyCode = function() {
     for (var i = 0; i < this.list.length; i++) {
@@ -37,6 +37,76 @@ angular.module('documents').factory('BankIDAddressesFactory', function(BankIDAdd
     return null;
   };
 
+  addresses.prototype.getCountry = function() {
+    for (var i = 0; i < this.list.length; i++) {
+      var element = this.list[i];
+      if (element instanceof BankIDAddressesFactualFactory) {
+        return element.getCountry();
+      }
+    }
+    return "";
+  };
+
+
+  addresses.prototype.getState = function() {
+    for (var i = 0; i < this.list.length; i++) {
+      var element = this.list[i];
+      if (element instanceof BankIDAddressesFactualFactory) {
+        return element.getState();
+      }
+    }
+    return "";
+  };
+
+  addresses.prototype.getArea = function() {
+    for (var i = 0; i < this.list.length; i++) {
+      var element = this.list[i];
+      if (element instanceof BankIDAddressesFactualFactory) {
+        return element.getArea();
+      }
+    }
+    return "";
+  };
+
+  addresses.prototype.getCity = function() {
+    for (var i = 0; i < this.list.length; i++) {
+      var element = this.list[i];
+      if (element instanceof BankIDAddressesFactualFactory) {
+        return element.getCity();
+      }
+    }
+    return "";
+  };
+
+  addresses.prototype.getStreet = function() {
+    for (var i = 0; i < this.list.length; i++) {
+      var element = this.list[i];
+      if (element instanceof BankIDAddressesFactualFactory) {
+        return element.getStreet();
+      }
+    }
+    return "";
+  };
+
+  addresses.prototype.getHouseNo = function() {
+    for (var i = 0; i < this.list.length; i++) {
+      var element = this.list[i];
+      if (element instanceof BankIDAddressesFactualFactory) {
+        return element.getHouseNo();
+      }
+    }
+    return "";
+  };
+
+  addresses.prototype.getFlatNo = function() {
+    for (var i = 0; i < this.list.length; i++) {
+      var element = this.list[i];
+      if (element instanceof BankIDAddressesFactualFactory) {
+        return element.getFlatNo();
+      }
+    }
+    return "";
+  };
 
   return addresses;
 });
