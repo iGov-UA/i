@@ -41,7 +41,8 @@ public class ManagerOTP {
     
     public ManagerOTP(){}
     
-    public <T> String sendPasswordOTP(String sPhone, String sPassword) throws Exception {
+    public <T> String sendPasswordOTP(String sPhone, String sText, boolean bTextOnly) throws Exception {
+        LOG.info("(sPhone={},sText={})",sPhone,sText);
         Properties oProperties = new Properties();
         File oFile = new File(System.getProperty("catalina.base") + "/conf/merch.properties");
         FileInputStream oFileInputStream = new FileInputStream(oFile);
@@ -69,8 +70,12 @@ public class ManagerOTP {
 		oSmsTemplate4.setText("text:"+"-");
 		oSmsTemplate4.setPassword("password:"+"2");*/
         List<T> a = new ArrayList<T>();
-        a.add((T) new OtpText("Parol:"));
-        a.add((T) new OtpPass(sPassword));
+        if(bTextOnly){
+            a.add((T) new OtpText(sText));
+        }else{
+            a.add((T) new OtpText("Parol:"));
+            a.add((T) new OtpPass(sText));
+        }
 		/*a.add((T)new OtpPass("2"));
 		a.add((T)new OtpText("-"));
 		a.add((T)new OtpPass("2"));
