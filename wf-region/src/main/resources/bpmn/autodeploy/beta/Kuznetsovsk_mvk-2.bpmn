@@ -122,7 +122,7 @@
 										Ваш запит був успішно зареєстрований у нашій системі. 
 								    &lt;/p&gt;
 									&lt;p&gt;
-										Спеціалісти відповідального органу оброблять Вашу заявку та нададуть відповідь найближчим часом. 
+										Спеціалісти відповідального органу опрацюють Вашу заявку та нададуть відповідь найближчим часом. 
 									&lt;/p&gt;
 									&lt;p&gt;
 									${sPhoneOrgan}.
@@ -142,7 +142,7 @@
         <activiti:formProperty id="bankIdfirstName" name="Ім`я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="clFIO" name="Прізвище, ім`я, по-батькові громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clFIO" name="Прізвище, ім`я, по батькові громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPlase_of_reg" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
@@ -203,7 +203,7 @@
         <activiti:formProperty id="sAddress" name="адреса органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers_printform_1" name="принтформа заява" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_1&quot;:{&quot;aElement_ID&quot;:[&quot;zayva_standard_form&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sCond]=='zvern_zt_ztT'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers_printform_2" name="принтформа таблична" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_2&quot;:{&quot;aElement_ID&quot;:[&quot;zayva_table_form&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sCond]!='zvern_zt_ztT'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/rda_360.html]" type="invisible" default="Звернення громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/kuznetsovsk/kuznetsovsk_mvk_2.html]" type="invisible" default="Звернення громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -341,7 +341,7 @@ execution.setVariable('notification_day', timer)</script>
     <sequenceFlow id="flow31" sourceRef="servicetask6" targetRef="parallelgateway2"></sequenceFlow>
     <userTask id="usertask2" name="Обробка звернення" activiti:candidateGroups="mvk_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="clFIO" name="Прізвище, ім`я, по-батькові громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clFIO" name="Прізвище, ім`я, по батькові громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPlase_of_reg" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
@@ -432,7 +432,7 @@ execution.setVariable('flag', src)</script>
                                         Скан-копія рішення знаходиться у додатках до цього листа.
                                     &lt;/p&gt;
                                     &lt;p&gt;
-										Якщо Ви бажаєте отримати фізичну копію цього документа - зверніться до відповідального органу.
+										Якщо Ви бажаєте отримати паперову копію цієї відповіді, Вам необхідно звернутися особисто до відповідального органу.
                                     &lt;/p&gt;
                                     &lt;p&gt;
 										Адреса: &lt;br /&gt;
