@@ -235,20 +235,6 @@
       });
     };
 
-    $scope.unassign = function () {
-      tasks.unassign($scope.selectedTask.id)
-        .then(function () {
-          $scope.selectTask($scope.selectedTask);
-        })
-        .then(function () {
-          return tasks.getTask($scope.selectedTask.id);
-        })
-        .then(function (updatedTaskResult) {
-          angular.copy(updatedTaskResult, $scope.selectedTask);
-        })
-        .catch(defaultErrorHandler);
-    };
-
     $scope.selectTask = function (oTask) {
       $state.go('tasks.typeof.view', {id:oTask.id});
     };

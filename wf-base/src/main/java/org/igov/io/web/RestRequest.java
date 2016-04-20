@@ -48,6 +48,11 @@ public class RestRequest {
 
     public <T> T get(String url, MediaType contentType, Charset charset,
             Class<T> clazz, HttpHeaders httpHeaders) throws RestClientException {
+        return (T)getResponseEntity(url, contentType, charset, clazz, httpHeaders).getBody();
+    }
+    
+    public ResponseEntity getResponseEntity(String url, MediaType contentType, Charset charset,
+            Class clazz, HttpHeaders httpHeaders) throws RestClientException {
 
         if ("".equals(url) || url == null || clazz == null) {//todo add convertors
             LOG.error("url:{}, clazz:{}", url, clazz);
@@ -78,7 +83,7 @@ public class RestRequest {
         HttpEntity<String> httpEntity = new HttpEntity<String>(httpHeaders);
 
         LOG.info("Sending GET to rest resource: {}, HttpEntity:{}", url, httpEntity);
-        ResponseEntity<T> entity = restTemplate.exchange(url, HttpMethod.GET, httpEntity, clazz);
+        ResponseEntity entity = restTemplate.exchange(url, HttpMethod.GET, httpEntity, clazz);
         LOG.info("we got: {}",  entity);
         if (entity.getStatusCode().is3xxRedirection()) {
             LOG.info("Sending GET agter redirect to rest resource: {}, HttpEntity:{}",  url, httpEntity);
@@ -86,7 +91,7 @@ public class RestRequest {
                     HttpMethod.GET, httpEntity, clazz);
         }
 
-        return (T) entity.getBody();
+        return entity;
 
     }
 
