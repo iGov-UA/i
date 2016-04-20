@@ -70,7 +70,8 @@
         }
 
         $scope.taskForm = addIndexForFileItems(taskForm);
-          // change "enum" field to "string" (issue # 751)
+        /*
+        // change "enum" field to "string" (issue # 751)
           var aTempFormProperties = taskForm;
           for(var i = 0; i < taskForm.length; i++){
             if (aTempFormProperties[i].type === "enum" && isItemFormPropertyDisabled(aTempFormProperties[i])){
@@ -82,6 +83,7 @@
               }
             }
           }
+          */
         $scope.printTemplateList = PrintTemplateService.getTemplates($scope.taskForm);
         if ($scope.printTemplateList.length > 0) {
           $scope.model.printTemplate = $scope.printTemplateList[0];
