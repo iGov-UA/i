@@ -5,7 +5,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.annotations.*;
 import liquibase.util.csv.CSVWriter;
 
-import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.engine.*;
 import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.FormProperty;
@@ -17,8 +16,6 @@ import org.activiti.engine.identity.User;
 import org.activiti.engine.impl.form.FormPropertyImpl;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
-import org.activiti.engine.repository.DiagramLayout;
-import org.activiti.engine.repository.Model;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
@@ -26,12 +23,10 @@ import org.activiti.engine.task.TaskInfo;
 import org.activiti.engine.task.TaskInfoQuery;
 import org.activiti.engine.task.TaskQuery;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.mail.ByteArrayDataSource;
 import org.apache.commons.mail.EmailException;
 import org.igov.io.GeneralConfig;
-import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
 import org.igov.io.mail.Mail;
 import org.igov.io.mail.NotificationPatterns;
 import org.igov.io.web.HttpRequester;
@@ -42,7 +37,6 @@ import org.igov.model.action.task.core.entity.Process;
 import org.igov.model.flow.FlowSlotTicket;
 import org.igov.model.flow.FlowSlotTicketDao;
 import org.igov.service.business.action.event.HistoryEventService;
-import org.igov.service.business.action.task.core.AbstractModelTask;
 import org.igov.service.business.action.task.core.ActionTaskService;
 import org.igov.service.business.action.task.listener.doc.CreateDocument_UkrDoc;
 import org.igov.service.business.action.task.systemtask.doc.handler.UkrDocEventHandler;
@@ -52,7 +46,6 @@ import org.igov.util.JSON.JsonDateTimeSerializer;
 import org.igov.util.JSON.JsonRestUtils;
 import org.igov.util.Tool;
 import org.igov.util.ToolCellSum;
-import org.igov.util.VariableMultipartFile;
 import org.json.simple.JSONValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -1950,12 +1943,13 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     	LOG.info("Parsed document ID:{} and status:{} from event", eventHandler.getDocumentId(), eventHandler.getStatus());
 
     	String documentId = eventHandler.getDocumentId();
-    	String documentIdFromPkSection = eventHandler.getDocumentId();
+    	String documentIdFromPkSection = eventHandler.getPkDocumentId();
     	String year = eventHandler.getYear();
     	String status = eventHandler.getStatus();
         String nID_DocumentTemplate = eventHandler.getnID_DocumentTemplate();
 
     	String sKey = documentId + ":" + year;
+        String sKeyFromPkSection = documentIdFromPkSection + ":" + year;
 
     	//subject
 		long ukrDocSubjectId = 1l;
@@ -1987,10 +1981,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 					LOG.info("Processing task {} with assignee {}", task.getId(), task.getAssignee());
 					taskService.setVariable(task.getId(), "sStatusName_UkrDoc", status);
 					runtimeService.setVariable(task.getProcessInstanceId(), "sStatusName_UkrDoc", status);
-					runtimeService.setVariable(task.getProcessInstanceId(), "sID_Document_UkrDoc", sKey);
+					runtimeService.setVariable(task.getProcessInstanceId(), "sID_Document_UkrDoc", sKeyFromPkSection);
                                         taskService.setVariable(task.getId(), "nID_DocumentTemplate_UkrDoc", nID_DocumentTemplate);
 					runtimeService.setVariable(task.getProcessInstanceId(), "nID_DocumentTemplate_UkrDoc", nID_DocumentTemplate);
-					LOG.info("Set variable sStatusName_UkrDoc {} and sID_Document_UkrDoc {} for process instance with ID {}", status, sKey, task.getProcessInstanceId());
+					LOG.info("Set variable sStatusName_UkrDoc {} and sID_Document_UkrDoc {} and nID_DocumentTemplate {} for process instance with ID {}", status, sKeyFromPkSection, nID_DocumentTemplate, task.getProcessInstanceId());
 					taskService.complete(task.getId());
 					LOG.info("Completed task {}", task.getId());
 				}
@@ -2002,9 +1996,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 						TaskFormData formData = formService.getTaskFormData(task.getId());
 						for (FormProperty formProperty : formData.getFormProperties()){
 							if (formProperty.getId().equals("sID_Document_UkrDoc")){
-								LOG.info("Found form property with the id sID_Document_UkrDoc. Setting value {}", sKey);
+								LOG.info("Found form property with the id sID_Document_UkrDoc. Setting value {}", sKeyFromPkSection);
 								if (formProperty instanceof FormPropertyImpl){
-									((FormPropertyImpl)formProperty).setValue(sKey);
+									((FormPropertyImpl)formProperty).setValue(sKeyFromPkSection);
 								}
 							} else if (formProperty.getId().equals("sStatusName_UkrDoc")){
 								LOG.info("Found form property with the id sStatusName_UkrDoc. Setting value {}", status);
