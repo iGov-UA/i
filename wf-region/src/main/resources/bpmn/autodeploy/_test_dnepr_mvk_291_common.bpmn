@@ -3039,12 +3039,17 @@ execution.setVariable('sAnswerEmail', res)</script>
         </activiti:formProperty>
         <activiti:formProperty id="sReason" name="Суть звернення" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration" name="Дата реєстрації звернення" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asChannelAppeals" name="Канал звернення" type="enum">
+        <activiti:formProperty id="asChannelAppeals" name="Канал звернення" type="enum" writable="false">
           <activiti:value id="sEnumAppeal1" name="Гаряча лінія губернатора"></activiti:value>
           <activiti:value id="sEnumAppeal2" name="Урядова гаряча лінія"></activiti:value>
           <activiti:value id="sEnumAppeal3" name="Колл-центр"></activiti:value>
           <activiti:value id="sEnumAppeal4" name="Фронт-офіс"></activiti:value>
           <activiti:value id="sEnumAppeal5" name="Портал"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asAnswerChannel" name="Канал відповіді" type="enum" writable="false">
+          <activiti:value id="sEnumAnsw1" name="Письмова відповідь"></activiti:value>
+          <activiti:value id="sEnumAnsw2" name="Відповідь колл-центр"></activiti:value>
+          <activiti:value id="sEnumAnsw3" name="Відповідь на e-mail"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asStatus" name="Обробка звернення" type="enum" required="true">
           <activiti:value id="sEnumDep1" name="Виробничо-технічний відділ"></activiti:value>
@@ -3110,6 +3115,12 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sEnumAppeal4" name="Фронт-офіс"></activiti:value>
           <activiti:value id="sEnumAppeal5" name="Портал"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="asAnswerChannel" name="Канал відповіді" type="enum" writable="false">
+          <activiti:value id="sEnumAnsw1" name="Письмова відповідь"></activiti:value>
+          <activiti:value id="sEnumAnsw2" name="Відповідь колл-центр"></activiti:value>
+          <activiti:value id="sEnumAnsw3" name="Відповідь на e-mail"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sBody_Document_UkrDoc" name="Якщо канал відповіді колл-цент, внесіть її в це поле" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sAdminComment" name="Коментар для відділу" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateControl" name="Контрольна дата (у форматі ДД/ММ/РРРР)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDepComment" name="Коментар відділу" type="textArea"></activiti:formProperty>
@@ -3168,6 +3179,12 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sEnumAppeal4" name="Фронт-офіс"></activiti:value>
           <activiti:value id="sEnumAppeal5" name="Портал"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="asAnswerChannel" name="Канал відповіді" type="enum" writable="false">
+          <activiti:value id="sEnumAnsw1" name="Письмова відповідь"></activiti:value>
+          <activiti:value id="sEnumAnsw2" name="Відповідь колл-центр"></activiti:value>
+          <activiti:value id="sEnumAnsw3" name="Відповідь на e-mail"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sBody_Document_UkrDoc" name="Якщо канал відповіді колл-цент, внесіть її в це поле" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sDepComment" name="Коментар відділу" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asStatus" name="Відправити відповідь громадянину або у відділ на доопрацювання" type="enum">
           <activiti:value id="sEnumAnswer" name="Відправити громадянину відповідь"></activiti:value>
@@ -3234,6 +3251,12 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sEnumAppeal4" name="Фронт-офіс"></activiti:value>
           <activiti:value id="sEnumAppeal5" name="Портал"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="asAnswerChannel" name="Канал відповіді" type="enum" writable="false">
+          <activiti:value id="sEnumAnsw1" name="Письмова відповідь"></activiti:value>
+          <activiti:value id="sEnumAnsw2" name="Відповідь колл-центр"></activiti:value>
+          <activiti:value id="sEnumAnsw3" name="Відповідь на e-mail"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sBody_Document_UkrDoc" name="Якщо канал відповіді колл-цент, внесіть її в це поле" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="nFileAnswer" name="Завантажте файл з відповідю" type="file" default=" "></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">

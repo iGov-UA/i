@@ -143,6 +143,7 @@ build_docker ()
 	echo "Build & push container to Docker registry finished."
 	kubectl rolling-update $KUBE_RC --image=$DOCKER_IMAGE:$DOCKER_TAG
 	echo "Rolling-update replication controller finished."
+	exit 0
 }
 
 build_central-js ()

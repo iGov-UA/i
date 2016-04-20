@@ -13,7 +13,7 @@
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="Укажіть сьогоднішню дату" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="date_today" name="Вкажіть сьогоднішню дату" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="asSubekt" name="Оберіть суб'єкт підприємницької діяльності" type="enum" required="true">
           <activiti:value id="sEnumFiz" name="фізична особа-підприємець"></activiti:value>
           <activiti:value id="sEnumUr" name="юридична особа"></activiti:value>
@@ -28,17 +28,17 @@
         </activiti:formProperty>
         <activiti:formProperty id="sObject" name="Укажіть об’єкт, на який потрібно надати дозвіл" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdres_2" name="Адреса об’єкта, на який видається дозвіл" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAdres_0" name="Адреса реєстрації" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sImya_ur" name="У давальному відмінку повне найменування юридичної особи" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sAdres_0" name="Адреса реєстрації" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sImya_ur" name="У давальному відмінку повне найменування юридичної особи" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="kved" name="Вид діяльності згідно з КВЕД; тільки цифрові позначення" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно з ЄДРПОУ; тільки цифрові позначення" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sPib_ur" name="П.І.Б. керівника юридичної особи або уповноваженої особи" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sPib_fiz" name="П.І.Б. фізичної особи–підприємця" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sAdres_1" name="Місцезнаходження юридичної особи" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно з ЄДРПОУ; тільки цифрові позначення" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPib_ur" name="П.І.Б. керівника юридичної особи або уповноваженої особи" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPib_fiz" name="П.І.Б. фізичної особи–підприємця" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAdres_1" name="Місцезнаходження юридичної особи" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="workPhone" name="Телефон юридичної особи" type="string" default="+380"></activiti:formProperty>
         <activiti:formProperty id="doc_pidpriemci" name="Довідка про здатність провадити відповідну діяльність; в якій зазначається інформація про наявність кваліфікованого персоналу, технологічного обладнання, перелік товарів, що виготовляються або реалізуються, за підписом заявника" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="perelic_provender" name="Перелік добавок, преміксів і кормів" type="file"></activiti:formProperty>
-        <activiti:formProperty id="perelic_animals" name="Перелік продуктів тваринного походження" type="file"></activiti:formProperty>
+        <activiti:formProperty id="perelic_provender" name="Перелік добавок, преміксів і кормів" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="perelic_animals" name="Перелік продуктів тваринного походження" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="район" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="пошта району" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса" type="invisible"></activiti:formProperty>
@@ -69,7 +69,7 @@
         <activiti:formProperty id="sAdres_0" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="дата подання звернення" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_today" name="Дата подання звернення" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asSubekt" name="Cуб'єкт підприємницької діяльності" type="enum" writable="false">
           <activiti:value id="sEnumFiz" name="фізична особа-підприємець"></activiti:value>
           <activiti:value id="sEnumUr" name="юридична особа"></activiti:value>
@@ -108,7 +108,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport}, ${doc_pidpriemci},${perelic_animals},${perelic_provender}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport},${doc_pidpriemci},${perelic_animals},${perelic_provender}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -365,13 +365,14 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:formProperty id="sDozvNumb" name="Номер Експлуатаційного дозволу" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPibVet" name="Прізвище та ініціали працівника ветеринарної служби" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sShapkaVet" name="Начальнику управління ветеринарної медицини в " type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_55_print.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="rishen" name="File label;File title;pattern/print/dnepr_cnap_55vet.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_55vet.html]" type="invisible" default="Експлуатаційний дозвіл" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="Заява;Заява;pattern/print/dnepr_cnap_55_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_55_print.html]" type="invisible" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="rishen" name="Дозвіл;Дозвіл;pattern/print/dnepr_cnap_55vet.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/dnepr_cnap_55vet.html]" type="invisible" default="Експлуатаційний дозвіл" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport}, ${doc_pidpriemci},${perelic_animals},${perelic_provender},${PrintForm_1}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport},${doc_pidpriemci},${perelic_animals},${perelic_provender}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -431,11 +432,14 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:formProperty id="sDozvNumb" name="Номер Експлуатаційного дозволу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPibVet" name="Прізвище та ініціали працівника ветеринарної служби" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapkaVet" name="Начальнику управління ветеринарної медицини в " type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_55vet.html]" type="invisible" default="Експлуатаційний дозвіл" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="kved_text" name="Впишіть види діяльності, відповідно до вказаних кодів КВЕД" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="perelic_text" name="Впишіть ассортимент продукції, відповідно до доданих заявником документів (прикріплених файлів)" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/dnepr_cnap_55vet.html]" type="invisible" default="Експлуатаційний дозвіл" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_55_print.html]" type="invisible" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport}, ${doc_pidpriemci},${perelic_animals},${perelic_provender},${PrintForm_1},${rishen}</activiti:expression>
+            <activiti:expression>${PrintForm_1},${rishen}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
