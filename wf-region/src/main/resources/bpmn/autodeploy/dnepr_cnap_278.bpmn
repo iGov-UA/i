@@ -269,8 +269,6 @@
           <activiti:value id="attr2_finish" name="Відмова громадянину у разі надання неповного пакету документів"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment1" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_278_print.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody1" name="[pattern/print/dneprOblSnap/dnepr_cnap_278_print.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -456,7 +454,13 @@ ${sAddress}&lt;br /&gt;
           <activiti:value id="attr5_finish" name="Відмова громадянину у видачі витягу держреєстратором"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment2" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="nFile_Otvet" name="Завантажте скановану копию витягу (або електронний варіант витягу)" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFile_Otvet" name="Завантажте скановану копию витягу (або електронний варіант витягу)" type="file" default=" " required="true"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression>${nFile_Confidant_passport},${nFile_Confidant_Doc_Povnovazennya},${nFile_PaymentVityag},${nFile_PaymenAdminSbor},${nFile_Reason_Document},${bankId_scan_passport},${nFile_Signed_Zayava},${bankId_scan_inn},${nFile_Podatk_number_upovnovazh},${nFile_FreeSplata},${nFile_DocPosvidchueOsobu},${nFile_DocPosvidchueUrOsobu}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow9" sourceRef="servicetask4" targetRef="usertask2"></sequenceFlow>
