@@ -43,7 +43,7 @@ angular.module('documents').factory('BankIDAddressesFactualFactory', [
       return this.country;
     };
 
-    oAddress.prototype.getCounty = function() {
+    oAddress.prototype.getCountry = function() {
       return (this.country?this.country:"");
     };
     oAddress.prototype.getState = function() {
