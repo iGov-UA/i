@@ -95,7 +95,9 @@ public class AccessCommonController {
      * @return Возвращает структуру объектов по конкретному субъекту
      * @throws AccessServiceException
      */
-    @ApiOperation(value = "Авторизирует пользователя и возвращает соответсвующую ему структуру объектов")
+    @ApiOperation(value = "Авторизирует пользователя и возвращает соответсвующую ему структуру объектов", notes = "##### При вводе корректных данных"
+            + " метод возвращает код 200 и, при этом, открывается сессия и возвращается структура объектов, которая соответсвует этому пользователю.\n"
+            + " Если же пользователя с таким логином и паролем не существует, - то вернется ошибка с кодом LI_0001 и сообщением Login or password invalid.\n")
     @RequestMapping(value = { "/loginSubject" }, method = RequestMethod.POST, headers = {
             "Content-type=application/json" })
     public
