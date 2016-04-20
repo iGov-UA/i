@@ -1990,7 +1990,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 					runtimeService.setVariable(task.getProcessInstanceId(), "sID_Document_UkrDoc", sKey);
                                         taskService.setVariable(task.getId(), "nID_DocumentTemplate_UkrDoc", nID_DocumentTemplate);
 					runtimeService.setVariable(task.getProcessInstanceId(), "nID_DocumentTemplate_UkrDoc", nID_DocumentTemplate);
-					LOG.info("Set variable sStatusName_UkrDoc {} and sID_Document_UkrDoc {} for process instance with ID {}", status, sKey, task.getProcessInstanceId());
+					LOG.info("Set variable sStatusName_UkrDoc {} and sID_Document_UkrDoc {} and nID_DocumentTemplate {} for process instance with ID {}", status, sKey, nID_DocumentTemplate, task.getProcessInstanceId());
 					taskService.complete(task.getId());
 					LOG.info("Completed task {}", task.getId());
 				}

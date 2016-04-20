@@ -167,7 +167,7 @@ angular.module('app').factory('FormDataFactory', function (ParameterFactory, Dat
                 sFieldName = 'bankIdAddressFactual_country';
                 if (self.hasParam(sFieldName)) {
                   self.fields[sFieldName] = true;
-                  self.params[sFieldName].value = aAddress.getCounty();
+                  self.params[sFieldName].value = aAddress.getCountry();
                 }
                 sFieldName = 'bankIdAddressFactual_state';
                 if (self.hasParam(sFieldName)) {
