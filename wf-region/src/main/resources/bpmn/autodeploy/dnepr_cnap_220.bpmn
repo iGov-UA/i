@@ -47,7 +47,7 @@
         <activiti:formProperty id="file9" name="Документ дозвільного характеру, який підлягає анулюванню" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file11" name="Нормативний документ, та технічна документація, у відповідності до яких виготовлений об’єкт експертизи, а також технологічна документація (процес, регламент, інструкція тощо);(за наявності)" type="file"></activiti:formProperty>
         <activiti:formProperty id="file12" name="Копія документа, що підтверджує право власності на приміщення або право користування ним; копія угоди оренди або свідоцтва права власності" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file13" name="Копія документа, який підтверджує прийняття в експлуатацію закінченого будівництвом об’єкта; (зареєстрованих декларації або сертифіката згідно вимог постанови КМ України від 13.04.2011р № 461 або акту державної приймальної комісії про прийняття в експлуатацію закінченого будівництвом (реконструкцією) об’єкта чи акта технічної комісії, засвідчена у встановленому порядку (для об’єктів, що вперше розпочали свою діяльність і стають на державний облік/нагляд) інвентарна справа, проект відповідності санітарним нормам і правилам наявних приміщень розроблений та затверджений ліцензованою архітектурно-проектною організацією з обов’язковим долученням копії інвентарної справи, паспорт прив’язки, тощо)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file13" name="Копія документа, який підтверджує прийняття в експлуатацію закінченого будівництвом об’єкта; (зареєстрованих декларації або сертифіката, або акту державної приймальної комісії про прийняття в експлуатацію закінченого будівництвом (реконструкцією) об’єкта чи акта технічної комісії, інвентарна справа, проект відповідності санітарним нормам і правилам наявних приміщень, паспорт прив’язки, тощо)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file14" name="Асортиментний перелік продукції ; для закладів торгівлі, аптек, громадського харчування, об’єктів харчової промисловості" type="file"></activiti:formProperty>
         <activiti:formProperty id="file15" name="Документи щодо земельної ділянки: відведення / права власності / користування ;за наявності" type="file"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок" type="invisible"></activiti:formProperty>
@@ -148,7 +148,7 @@ execution.setVariable('term', per7)
           <activiti:value id="2" name="Управління на Придніпровській залізниці Головного управління Держсанепідслужби на залізничному транспорті"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="adminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="number_cnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="number_cnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string"></activiti:formProperty>
         <activiti:formProperty id="date_registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sShapka220" name="Шапка заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="substance" name="Суть заяви" type="invisible"></activiti:formProperty>
@@ -385,6 +385,10 @@ var per3 = ' '
 var per4 = ' '
 var per5 = ' '
 var per6 = ' '
+var per7 = ' '
+var per8 = ' '
+var per9 = ' '
+var per10 = ' '
 var res = 'res'
 if (execution.getVariable('vibor_service') == 'Видача висновку') {
 per1 = '&lt;li&gt;Документ, що підтверджує внесення плати за комплексне вивчення документів та підготовку проекту висновку державної санітарно-епідеміологічної експертизи.&lt;/li&gt;'
@@ -397,7 +401,19 @@ per5 = '&lt;li&gt;Акт про обстеження підприємства.&l
 if(execution.getVariable('file11') != null){
 per6 = '&lt;li&gt;Нормативний документ, та технічна документація.&lt;/li&gt;'
 }
-res = '&lt;ol&gt;'+per1+per2+per3+per4+per5+per6+'&lt;/ol&gt;'
+if(execution.getVariable('file12') != null){
+per7 = '&lt;li&gt;Копія документа, що підтверджує право власності на приміщення або право користування ним.&lt;/li&gt;'
+}
+if(execution.getVariable('file13') != null){
+per8 = '&lt;li&gt;Копія документа, який підтверджує прийняття в експлуатацію закінченого будівництвом об’єкта&lt;/li&gt;'
+}
+if(execution.getVariable('file14') != null){
+per9 = '&lt;li&gt;Асортиментний перелік продукції.&lt;/li&gt;'
+}
+if(execution.getVariable('file15') != null){
+per10 = '&lt;li&gt;Документи щодо земельної ділянки: відведення / права власності / користування.&lt;/li&gt;'
+}
+res = '&lt;ol&gt;'+per1+per2+per3+per4+per5+per6+per7+per8+per9+per10+'&lt;/ol&gt;'
 }
 if (execution.getVariable('vibor_service') == 'Переоформлення висновку') {
 per1 = '&lt;li&gt;Документ дозвільного характеру, який підлягає переоформленню.&lt;/li&gt;'

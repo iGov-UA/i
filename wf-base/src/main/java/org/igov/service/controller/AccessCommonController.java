@@ -96,7 +96,7 @@ public class AccessCommonController {
      * @throws AccessServiceException
      */
     @ApiOperation(value = "Авторизирует пользователя и возвращает соответсвующую ему структуру объектов")
-    @RequestMapping(value = { "/loginSubject" }, method = RequestMethod.POST)
+    @RequestMapping(value = { "/loginSubject" }, method = RequestMethod.POST, headers = {"Content-type=application/json"})
     public
     @ResponseBody
     Map  loginSubject(
