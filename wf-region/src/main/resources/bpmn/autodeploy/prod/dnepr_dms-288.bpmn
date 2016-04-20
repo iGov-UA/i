@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_dms-288" name="Отримання паспорта громадянина України для виїзда за кордон для дитини" isExecutable="true">
+  <process id="dnepr_dms-288" name="Отримання паспорта громадянина України для виїзду за кордон для дитини" isExecutable="true">
     <startEvent id="startevent1" name="Start" activiti:initiator="initiator">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
@@ -23,6 +23,7 @@
         <activiti:formProperty id="warning1" name=" " type="label" default="Якщо Ви не знайшли у обраному підрозділі ДМС зручну дату, спробуйте обрати інший підрозділ Вашого міста."></activiti:formProperty>
         <activiti:formProperty id="nID_Department_visitDay" name="Департамент" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса ДМС" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sDocChild" name="Документи у регіоні" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible" default="Заявка актуальна"></activiti:formProperty>
         <activiti:formProperty id="sNotification_day" name="sNotification_day" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="flow data" type="markers" default="${markerService.loadFromFile('dms/dmsZagran.json')}"></activiti:formProperty>
@@ -93,7 +94,7 @@ execution.setVariable('sNotification_day', timer)</script>
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Отримання паспорта громадянина України для виїзда за кордон для дитини]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Отримання паспорта громадянина України для виїзду за кордон для дитини]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -127,7 +128,7 @@ execution.setVariable('sNotification_day', timer)</script>
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Отримання паспорта громадянина України для виїзда за кордон для дитини]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Отримання паспорта громадянина України для виїзду за кордон для дитини]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -144,15 +145,16 @@ execution.setVariable('sNotification_day', timer)</script>
 										&lt;/ul&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
-									&lt;b&gt;Реквізити для сплати адміністративної послуги доступні за &lt;a href="https://docs.google.com/spreadsheets/d/1CyjBNPJFgNxZrnb8ARAIrlja5WD2tif7mkzHEiwU-us/edit#gid=1600883866?usp=sharing" target="_blank"&gt;посиланням&lt;/a&gt;&lt;/b&gt;
+									&lt;b&gt;Реквізити для сплати адміністративної послуги доступні за &lt;a href="http://dmsu.gov.ua/invoice/" target="_blank"&gt;посиланням&lt;/a&gt; Зверніть увагу! Діти не сплачують державного мита.&lt;/b&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
 										&lt;b&gt;Деталі зустрічі:&lt;/b&gt;&lt;br&gt;
 										День та час - ${date_of_visit}
 									&lt;/p&gt;
 									&lt;p&gt;
-										&lt;b&gt;Необхідні документи, які треба принести для оформлення паспорта громадянина України для виїзда за кордон для дитини:&lt;/b&gt;&lt;br&gt;
+										&lt;b&gt;Необхідні документи, які треба принести для оформлення паспорта громадянина України для виїзду за кордон для дитини:&lt;/b&gt;&lt;br&gt;
 										&lt;ul&gt;
+										${sDocChild}
 										&lt;li&gt;оригінал та копію свідоцтва про народження або довідки про належність до громадянства України (якщо один із батьків іноземець);&lt;/li&gt;
 										&lt;li&gt;квитанцію про сплату з мокрою печаткою банку, яка оформлена на дитину;&lt;/li&gt;
 										&lt;li&gt;якщо на момент подання документів дитині не виповнилось 12 років потрібно надати дві кольорові фотокартки розміром 3,5 х 4,5 сантиметра та одну фотокартку розміром 10х15 сантиметрів для внесення відцифрованого зображення особи шляхом сканування (фото виконане на білому фоні, обличчя дитини займає не менше 80% фотографії), присутність дитини не обов'язкова&lt;/li&gt;
@@ -193,7 +195,7 @@ execution.setVariable('sNotification_day', timer)</script>
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Отримання паспорта громадянина України для виїзда за кордон для дитини]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Отримання паспорта громадянина України для виїзду за кордон для дитини]]></activiti:string>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -213,14 +215,15 @@ execution.setVariable('sNotification_day', timer)</script>
 										&lt;/ul&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
-									&lt;b&gt;Реквізити для сплати адміністративної послуги доступні за &lt;a href="https://docs.google.com/spreadsheets/d/1CyjBNPJFgNxZrnb8ARAIrlja5WD2tif7mkzHEiwU-us/edit#gid=1600883866?usp=sharing" target="_blank"&gt;посиланням&lt;/a&gt;&lt;/b&gt;
+									&lt;b&gt;Реквізити для сплати адміністративної послуги доступні за &lt;a href="http://dmsu.gov.ua/invoice/" target="_blank"&gt;посиланням&lt;/a&gt; Зверніть увагу! Діти не сплачують державного мита.&lt;/b&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
 										&lt;b&gt;Деталі зустрічі:&lt;/b&gt;&lt;br&gt;
 										День та час - ${date_of_visit}
 									&lt;/p&gt;
-									&lt;b&gt;Необхідні документи, які треба принести для оформлення паспорта громадянина України для виїзда за кордон для дитини:&lt;/b&gt;&lt;br&gt;
+									&lt;b&gt;Необхідні документи, які треба принести для оформлення паспорта громадянина України для виїзду за кордон для дитини:&lt;/b&gt;&lt;br&gt;
 										&lt;ul&gt;
+										${sDocChild}
 										&lt;li&gt;оригінал та копію свідоцтва про народження або довідки про належність до громадянства України (якщо один із батьків іноземець);&lt;/li&gt;
 										&lt;li&gt;квитанцію про сплату з мокрою печаткою банку, яка оформлена на дитину;&lt;/li&gt;
 										&lt;li&gt;якщо на момент подання документів дитині не виповнилось 12 років потрібно надати дві кольорові фотокартки розміром 3,5 х 4,5 сантиметра та одну фотокартку розміром 10х15 сантиметрів для внесення відцифрованого зображення особи шляхом сканування (фото виконане на білому фоні, обличчя дитини займає не менше 80% фотографії), присутність дитини не обов'язкова&lt;/li&gt;
@@ -239,7 +242,7 @@ execution.setVariable('sNotification_day', timer)</script>
 									&lt;p&gt;	
 										&lt;b&gt;Зверніть увагу:&lt;/b&gt; 
 										&lt;ul&gt;
-										&lt;li&gt;Вам не потрібно буде реєструватись в електронній черзі на місці. Вашого запису через iGov на конкретний час достатньо. Але дуже просимо Вас не спізнюватись, бо електронна черга має доволі чіткий шаг.&lt;/li&gt;
+										&lt;li&gt;Вам не потрібно буде реєструватись у черзі на місці. Вашого запису через iGov на вказаний час достатньо. Але дуже просимо Вас не спізнюватись, бо електронна черга має доволі чіткий крок.&lt;/li&gt;
 										&lt;/ul&gt;
 									&lt;/p&gt;
 									&lt;p&gt;Після подання документів Ви зможете перевіряти готовність свого паспорта за цим &lt;a href="http://dmsu.gov.ua/perevirkastanu.php" target="_blank"&gt;посиланням&lt;/a&gt; &lt;/p&gt;          
@@ -293,13 +296,13 @@ execution.setVariable('sNotification_day', timer)</script>
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Отримання паспорта громадянина України для виїзда за кордон для дитини]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Отримання паспорта громадянина України для виїзду за кордон для дитини]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 								  &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
-                              		Ви отримали послугу "Отримання паспорта громадянина України для виїзда за кордон для дитини".
+                              		Ви отримали послугу "Отримання паспорта громадянина України для виїзду за кордон для дитини".
                               		&lt;/p&gt;
                               		&lt;p&gt;
                               		Будь ласка, оцініть якість надання послуги за допомогою форми нижче.&lt;br&gt;
@@ -327,14 +330,14 @@ execution.setVariable('sNotification_day', timer)</script>
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Отримання паспорта громадянина України для виїзда за кордон для дитини]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Отримання паспорта громадянина України для виїзду за кордон для дитини]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
                                     &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
                                         На жаль Ви не з'явились до підрозділу ДМС у призначений день і час або скасували заявку.&lt;br&gt;
-                                        При необхідності отримання паспорта громадянина України для виїзда за кордон для дитини Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;
+                                        При необхідності отримання паспорта громадянина України для виїзду за кордон для дитини Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;
 									&lt;/p&gt;
 									[pattern/mail/_common_signature_start.html]
 									Державна міграційна служба у Дніпропетровській області.&lt;/p&gt;

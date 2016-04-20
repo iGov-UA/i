@@ -509,7 +509,22 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
             String sText_SMS = getStringFromFieldExpression(this.sText_SMS, oExecution);
             if(sText_SMS!=null){
                 sText_SMS = replaceTags(sText_SMS, oExecution);
-                String sReturn = oManagerOTP.sendPasswordOTP(sPhone_SMS, sText_SMS);
+                
+                //sPhone_SMS="38"+sPhone_SMS;
+                String sReturn;
+                
+                sReturn = oManagerOTP.sendPasswordOTP("+38"+sPhone_SMS, sText_SMS, true);
+                LOG.info("(sReturn={})",sReturn);
+                
+                sReturn = oManagerOTP.sendPasswordOTP("38"+sPhone_SMS, sText_SMS, true);
+                LOG.info("(sReturn={})",sReturn);
+                
+                sReturn = oManagerOTP.sendPasswordOTP("8"+sPhone_SMS, sText_SMS, true);
+                LOG.info("(sReturn={})",sReturn);
+
+                sReturn = oManagerOTP.sendPasswordOTP(sPhone_SMS, sText_SMS, true);
+                LOG.info("(sReturn={})",sReturn);
+
             }
         }
         
