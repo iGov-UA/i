@@ -506,11 +506,36 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 
         String sPhone_SMS = getStringFromFieldExpression(this.sPhone_SMS, oExecution);
         if(sPhone_SMS!=null){
-            sPhone_SMS="38"+sPhone_SMS;
             String sText_SMS = getStringFromFieldExpression(this.sText_SMS, oExecution);
             if(sText_SMS!=null){
                 sText_SMS = replaceTags(sText_SMS, oExecution);
-                String sReturn = oManagerOTP.sendPasswordOTP(sPhone_SMS, sText_SMS);
+                
+                //sPhone_SMS="38"+sPhone_SMS;
+                String sReturn;
+
+                sPhone_SMS = sPhone_SMS.replaceAll("\\ ", "");
+                sReturn = oManagerOTP.sendPasswordOTP(sPhone_SMS, sText_SMS, true);
+                LOG.info("(sReturn={})",sReturn);
+                
+                sReturn = oManagerOTP.sendPasswordOTP(sPhone_SMS.substring(1), sText_SMS, true);
+                LOG.info("(sReturn={})",sReturn);
+
+                sReturn = oManagerOTP.sendPasswordOTP(sPhone_SMS.substring(2), sText_SMS, true);
+                LOG.info("(sReturn={})",sReturn);
+
+                sReturn = oManagerOTP.sendPasswordOTP(sPhone_SMS.substring(3), sText_SMS, true);
+                LOG.info("(sReturn={})",sReturn);
+                
+                /*sReturn = oManagerOTP.sendPasswordOTP("+38"+sPhone_SMS, sText_SMS, true);
+                LOG.info("(sReturn={})",sReturn);
+                
+                sReturn = oManagerOTP.sendPasswordOTP("38"+sPhone_SMS, sText_SMS, true);
+                LOG.info("(sReturn={})",sReturn);
+                
+                sReturn = oManagerOTP.sendPasswordOTP("8"+sPhone_SMS, sText_SMS, true);
+                LOG.info("(sReturn={})",sReturn);*/
+
+
             }
         }
         

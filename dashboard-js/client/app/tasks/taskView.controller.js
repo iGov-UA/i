@@ -340,6 +340,20 @@
             .catch(defaultErrorHandler);
         };
 
+        $scope.unassign = function () {
+          tasks.unassign($scope.selectedTask.id)
+            .then(function () {
+              $scope.selectTask($scope.selectedTask);
+            })
+            .then(function () {
+              return tasks.getTask($scope.selectedTask.id);
+            })
+            .then(function (updatedTaskResult) {
+              angular.copy(updatedTaskResult, $scope.selectedTask);
+            })
+            .catch(defaultErrorHandler);
+        };
+
         $scope.upload = function (files, propertyID) {
           tasks.upload(files, $scope.taskId).then(function (result) {
             var filterResult = $scope.taskForm.filter(function (property) {

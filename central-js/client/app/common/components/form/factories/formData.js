@@ -162,6 +162,45 @@ angular.module('app').factory('FormDataFactory', function (ParameterFactory, Dat
                   self.fields[sFieldName] = true;
                   self.params[sFieldName].value = aAddress.getCountyCode();
                 }
+                
+                
+                sFieldName = 'bankIdAddressFactual_country';
+                if (self.hasParam(sFieldName)) {
+                  self.fields[sFieldName] = true;
+                  self.params[sFieldName].value = aAddress.getCountry();
+                }
+                sFieldName = 'bankIdAddressFactual_state';
+                if (self.hasParam(sFieldName)) {
+                  self.fields[sFieldName] = true;
+                  self.params[sFieldName].value = aAddress.getState();
+                }
+                sFieldName = 'bankIdAddressFactual_area';
+                if (self.hasParam(sFieldName)) {
+                  self.fields[sFieldName] = true;
+                  self.params[sFieldName].value = aAddress.getArea();
+                }
+                sFieldName = 'bankIdAddressFactual_city';
+                if (self.hasParam(sFieldName)) {
+                  self.fields[sFieldName] = true;
+                  self.params[sFieldName].value = aAddress.getCity();
+                }
+                sFieldName = 'bankIdAddressFactual_street';
+                if (self.hasParam(sFieldName)) {
+                  self.fields[sFieldName] = true;
+                  self.params[sFieldName].value = aAddress.getStreet();
+                }
+                sFieldName = 'bankIdAddressFactual_houseNo';
+                if (self.hasParam(sFieldName)) {
+                  self.fields[sFieldName] = true;
+                  self.params[sFieldName].value = aAddress.getHouseNo();
+                }
+                sFieldName = 'bankIdAddressFactual_flatNo';
+                if (self.hasParam(sFieldName)) {
+                  self.fields[sFieldName] = true;
+                  self.params[sFieldName].value = aAddress.getFlatNo();
+                }
+          
+                
                 break;
             }
             if (sFieldName === null) {

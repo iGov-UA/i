@@ -18,6 +18,7 @@
         <activiti:formProperty id="sRozkladPriyom" name="Розклад прийому" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="Вкажіть день, у який Ви бажаєте записатись на прийом" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible" default="Заявка актуальна"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk226" name="електронна пошта" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок" type="invisible"></activiti:formProperty>
         </extensionElements>
@@ -154,6 +155,7 @@
 			Місце в черзі - ${NumbPers}
 			&lt;/p&gt;
 			&lt;p&gt;
+                                &lt;p&gt;[cancelTask]&lt;/p&gt;
 				Коментар державного службовця (за наявністю):&lt;br&gt;
 				${comment}
 			&lt;/p&gt;
@@ -170,6 +172,7 @@
     <sequenceFlow id="flow12" sourceRef="servicetask3" targetRef="usertask2"></sequenceFlow>
     <userTask id="usertask2" name="Візит громадянина" activiti:candidateGroups="priyom_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
+        <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPosadaVid" name="До кого саме записується на прийом громадянин" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="visitDay1" name="День прийому" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="NumbPers" name="Номер особи в черзі" type="string" writable="false"></activiti:formProperty>

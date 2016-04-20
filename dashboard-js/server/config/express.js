@@ -52,6 +52,12 @@ module.exports = function(app) {
     app.set('appPath', config.root + '/public');
     app.use(morgan(':method :url :status :response-time ms - :res[content-length]'));
   }
+  if ('test-omega' === env) {
+    app.use(favicon(path.join(config.root, 'public', 'favicon.ico')));
+    app.use(express.static(path.join(config.root, 'public')));
+    app.set('appPath', config.root + '/public');
+    app.use(morgan(':method :url :status :response-time ms - :res[content-length]'));
+  }
 
   if ('development' === env || 'test' === env) {
     app.use(require('connect-livereload')({port: 1337}));
