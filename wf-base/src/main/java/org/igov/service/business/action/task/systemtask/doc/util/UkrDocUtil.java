@@ -91,7 +91,7 @@ public class UkrDocUtil {
                 attributes.put("Краткое ФИО заявителя", shortFIO);
                 attributes.put("Имя и отчество заявителя", fullIO);
                 attributes.put("Полное название управления/департамента", sDepartNameFull);
-                attributes.put("Пол заявителя", sSex);
+                //attributes.put("Пол заявителя", sSex);
                 attributes.put("Адрес проживания", sAddress);
                 
 		Map<String, Object> extensions = new HashMap<String, Object>();
