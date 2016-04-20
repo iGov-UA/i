@@ -94,7 +94,8 @@
         <activiti:formProperty id="sNumber_doc" name="Серія, номер" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDate_doc" name="Дата видачі;у форматі ДД.ММ.РРРР" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sOrgan_doc" name="Ким видан" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile_DocPosvidchueOsobu" name="Документ, що посвідчує особу" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile_DocPosvidchueOsobu" name="Інший документ, що посвідчує фізичну особу" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile_DocPosvidchueUrOsobu" name="Документ, що посвідчує юридичну особу" type="file"></activiti:formProperty>
         <activiti:formProperty id="sLabel_3" name=" " type="label" default="&lt;b&gt;Відомості про уповноважену особу заявника&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="sPib_upovnovazh" name="Прізвище, ім’я, по батькові уповноваженої особи" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPodatk_number_upovnovazh" name="Податковий номер" type="string"></activiti:formProperty>
@@ -273,7 +274,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile_Confidant_passport},${nFile_Confidant_Doc_Povnovazennya},${nFile_PaymentVityag},${nFile_PaymenAdminSbor},${nFile_Reason_Document},${bankId_scan_passport},${nFile_Signed_Zayava},${bankId_scan_inn},${nFile_Podatk_number_upovnovazh},${nFile_FreeSplata},${nFile_DocPosvidchueOsobu}</activiti:expression>
+            <activiti:expression>${nFile_Confidant_passport},${nFile_Confidant_Doc_Povnovazennya},${nFile_PaymentVityag},${nFile_PaymenAdminSbor},${nFile_Reason_Document},${bankId_scan_passport},${nFile_Signed_Zayava},${bankId_scan_inn},${nFile_Podatk_number_upovnovazh},${nFile_FreeSplata},${nFile_DocPosvidchueOsobu},${nFile_DocPosvidchueUrOsobu}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
