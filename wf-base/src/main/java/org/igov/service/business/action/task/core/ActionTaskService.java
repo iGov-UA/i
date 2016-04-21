@@ -1278,7 +1278,9 @@ public class ActionTaskService {
         mParam.put("sBody", sBody);
         mParam.put("sToken", sToken);
         mParam.put("sSubjectInfo",sSubjectInfo);
-        mParam.put("snID_Subject",String.valueOf(nID_Subject));
+        if(nID_Subject != null){
+        mParam.put("snID_Subject",nID_Subject+"");
+        }
         //params.put("sUserTaskName", sUserTaskName);
         return oHistoryEventService.updateHistoryEvent(sID_Order, sUserTaskName, true, oHistoryEvent_Service_StatusType, mParam);
     }
