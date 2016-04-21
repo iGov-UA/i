@@ -42,6 +42,7 @@
         <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса адміністративного органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailCnap" name="пошта співробітника ЦНАП" type="invisible" default="darja.grek@gmail.com"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="пошта посадовця" type="invisible" default="darja.grek@gmail.com"></activiti:formProperty>
         <activiti:formProperty id="sArea" name="назва населеного пункту" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka628" name="шапка у принтформу" type="invisible"></activiti:formProperty>
@@ -158,7 +159,7 @@
     <serviceTask id="servicetask7" name="повідомлення співробітника ЦНАП" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${sMailClerk}</activiti:expression>
+          <activiti:expression>${sMailCnap}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -304,7 +305,7 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;strong&gt;Шановний(-а) колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
 ${sNameOrgan} прийняв кінцеве рішення по заявці [sID_Order], заявник - ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}.&lt;br /&gt;
-Заявнику enum{[decision_2]} та відправлено відповідне повідомлення і запрошення прийти до ЦНАПу за оригіналом рішення. &lt;br /&gt;
+Заявнику  та відправлено відповідне повідомлення і запрошення прийти до ЦНАПу за оригіналом рішення. &lt;br /&gt;
 [pattern/mail/_common_signature.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
