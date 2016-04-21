@@ -99,6 +99,7 @@ public class UkrDocUtil {
             Map<String, List<?>> tables = new HashMap<String, List<?>>();
             List<List<String>> attachmentsInfo = new LinkedList<List<String>>();
             for (Attachment attachInfo : attachmentsIds) {
+                LOG.info("attachInfo getId: " + attachInfo.getId() + " getName: " + attachInfo.getName() + " getType: " + attachInfo.getType());
                 if (attachInfo.getName() != null && !attachInfo.getName().contains("user+form")) {
                     List<String> info = new LinkedList<String>();
                     info.add(URLEncoder.encode(attachInfo.getName()));
