@@ -143,8 +143,8 @@ build_docker ()
 	echo "Build & push container to Docker registry finished."
 #	kubectl rolling-update $KUBE_RC --image=$DOCKER_IMAGE:$DOCKER_TAG
 #	echo "Rolling-update replication controller finished."
-
-	kubectl get rc $KUBE_RC > /dev/null 2>&1
+	kubectl get rc $KUBE_RC
+	kubectl get rc $KUBE_RC > /dev/null 2>&1;
 	if [ $? -ne 0 ]; then
   		echo "Replication controller does not exist, creating."
   		kubectl create -f kube/$KUBE_RC-rc.yaml
