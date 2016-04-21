@@ -836,6 +836,34 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         oActionTaskService.deleteProcess(nID_Order, sLogin, sReason);
     }
 
+    @ApiOperation(value = "DeleteProcess", notes = "#####  ActionCommonTaskController: описания нет #####\n\n")
+    @RequestMapping(value = "/delete-process-simple", method = RequestMethod.DELETE)
+    public
+    @ResponseBody
+    void deleteProcessSimple(@RequestParam(value = "nID_Process") String snID_Process,
+            @RequestParam(value = "sLogin", required = false) String sLogin,
+            @RequestParam(value = "sReason", required = false) String sReason    )
+            throws Exception {
+
+        oActionTaskService.deleteProcessSimple(snID_Process, sLogin, sReason);
+    }
+    
+
+    @ApiOperation(value = "DeleteProcess", notes = "#####  ActionCommonTaskController: описания нет #####\n\n")
+    @RequestMapping(value = "/delete-process-list", method = RequestMethod.DELETE)
+    public
+    @ResponseBody
+    void deleteProcesList(@RequestParam(value = "sanID_Process") String sanID_Process,
+            @RequestParam(value = "sLogin", required = false) String sLogin,
+            @RequestParam(value = "sReason", required = false) String sReason    )
+            throws Exception {
+        String[] asnID_Process = sanID_Process.split(",");
+        for(String snID_Process : asnID_Process){
+            oActionTaskService.deleteProcessSimple(snID_Process, sLogin, sReason);
+        }
+    }
+    
+    
     /**
      * Получение статистики по бизнес процессу за указанный период
      *
