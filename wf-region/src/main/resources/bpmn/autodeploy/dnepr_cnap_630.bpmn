@@ -195,7 +195,7 @@ ${sNameOrgan}&lt;br /&gt;
     <serviceTask id="servicetask9" name="відхилення звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
-          <activiti:string><![CDATA[test_noreply@igov.org.ua]]></activiti:string>
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
           <activiti:expression>"${email}"</activiti:expression>
@@ -221,7 +221,7 @@ ${sNameOrgan}&lt;br /&gt;
     <serviceTask id="servicetask4" name="повідомлення про рішення" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="from">
-          <activiti:string><![CDATA[test_noreply@igov.org.ua]]></activiti:string>
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
           <activiti:expression>"${email}"</activiti:expression>
@@ -254,8 +254,8 @@ ${sNameOrgan}&lt;br /&gt;
         </activiti:field>
       </extensionElements>
     </serviceTask>
-<serviceTask id="servicetask10" name="повідомлення співробітника ОДА" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
-     <extensionElements>
+    <serviceTask id="servicetask10" name="повідомлення співробітника ОДА" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${sMailClerk}</activiti:expression>
         </activiti:field>
@@ -276,9 +276,9 @@ ${sNameOrgan}&lt;br /&gt;
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
-</serviceTask>
-<serviceTask id="servicetask11" name="повідомлення співробітника ЦНАП про прийняте рішення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
-        <extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask11" name="повідомлення співробітника ЦНАП про прийняте рішення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${sMailCnap}</activiti:expression>
         </activiti:field>
@@ -297,8 +297,7 @@ ${sNameOrgan} прийняв кінцеве рішення по заявці [sI
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
-</serviceTask>
- 
+    </serviceTask>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
 var per1 = "&lt;li&gt;Документ, що посвідчує особу&lt;/li&gt;"
@@ -348,21 +347,17 @@ execution.setVariable('sListDocumentsPrint', res2)
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_1=='reject'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow45" sourceRef="servicetask9" targetRef="endevent2"></sequenceFlow>
-    <sequenceFlow id="flow50" sourceRef="usertask2" targetRef="servicetask4"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow54" sourceRef="usertask1" targetRef="exclusivegateway2"></sequenceFlow>
     <sequenceFlow id="flow55" sourceRef="boundaryerror2" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow57" sourceRef="servicetask7" targetRef="usertask1"></sequenceFlow>
     <sequenceFlow id="flow59" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow60" sourceRef="scripttask1" targetRef="servicetask7"></sequenceFlow>
-   
     <sequenceFlow id="flow61" sourceRef="servicetask2" targetRef="servicetask10"></sequenceFlow>
     <sequenceFlow id="flow62" sourceRef="servicetask10" targetRef="usertask2"></sequenceFlow>
-   
-    <sequenceFlow id="flow63" sourceRef="usertask2" targetRef="servicetask11"></sequenceFlow>
-    <endEvent id="endevent3" name="End"></endEvent>
-    <sequenceFlow id="flow64" sourceRef="servicetask4" targetRef="endevent3"></sequenceFlow>
-    <sequenceFlow id="flow65" sourceRef="servicetask11" targetRef="endevent3"></sequenceFlow>
+    <sequenceFlow id="flow63" sourceRef="usertask2" targetRef="servicetask4"></sequenceFlow>
+    <sequenceFlow id="flow64" sourceRef="servicetask4" targetRef="servicetask11"></sequenceFlow>
+    <sequenceFlow id="flow65" sourceRef="servicetask11" targetRef="endevent2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_630">
     <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_630" id="BPMNPlane_dnepr_cnap_630">
@@ -382,10 +377,16 @@ execution.setVariable('sListDocumentsPrint', res2)
         <omgdc:Bounds height="55.0" width="141.0" x="626.0" y="220.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask9" id="BPMNShape_servicetask9">
-        <omgdc:Bounds height="55.0" width="141.0" x="296.0" y="139.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="141.0" x="250.0" y="139.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
-        <omgdc:Bounds height="56.0" width="141.0" x="250.0" y="220.0"></omgdc:Bounds>
+        <omgdc:Bounds height="56.0" width="141.0" x="440.0" y="220.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask10" id="BPMNShape_servicetask10">
+        <omgdc:Bounds height="55.0" width="141.0" x="626.0" y="300.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask11" id="BPMNShape_servicetask11">
+        <omgdc:Bounds height="55.0" width="141.0" x="250.0" y="220.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
         <omgdc:Bounds height="55.0" width="105.0" x="296.0" y="58.0"></omgdc:Bounds>
@@ -402,15 +403,6 @@ execution.setVariable('sListDocumentsPrint', res2)
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
         <omgdc:Bounds height="40.0" width="40.0" x="676.0" y="146.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask10" id="BPMNShape_servicetask10">
-        <omgdc:Bounds height="55.0" width="141.0" x="626.0" y="300.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask11" id="BPMNShape_servicetask11">
-        <omgdc:Bounds height="55.0" width="141.0" x="250.0" y="300.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
-        <omgdc:Bounds height="35.0" width="35.0" x="154.0" y="266.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
         <omgdi:waypoint x="105.0" y="87.0"></omgdi:waypoint>
         <omgdi:waypoint x="119.0" y="87.0"></omgdi:waypoint>
@@ -424,19 +416,14 @@ execution.setVariable('sListDocumentsPrint', res2)
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
         <omgdi:waypoint x="676.0" y="166.0"></omgdi:waypoint>
-        <omgdi:waypoint x="437.0" y="166.0"></omgdi:waypoint>
+        <omgdi:waypoint x="391.0" y="166.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="48.0" width="57.0" x="591.0" y="149.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
-        <omgdi:waypoint x="296.0" y="166.0"></omgdi:waypoint>
+        <omgdi:waypoint x="250.0" y="166.0"></omgdi:waypoint>
         <omgdi:waypoint x="189.0" y="166.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow50" id="BPMNEdge_flow50">
-        <omgdi:waypoint x="510.0" y="300.0"></omgdi:waypoint>
-        <omgdi:waypoint x="510.0" y="248.0"></omgdi:waypoint>
-        <omgdi:waypoint x="391.0" y="248.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow54" id="BPMNEdge_flow54">
         <omgdi:waypoint x="696.0" y="113.0"></omgdi:waypoint>
@@ -467,18 +454,17 @@ execution.setVariable('sListDocumentsPrint', res2)
         <omgdi:waypoint x="581.0" y="327.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow63" id="BPMNEdge_flow63">
-        <omgdi:waypoint x="440.0" y="327.0"></omgdi:waypoint>
-        <omgdi:waypoint x="391.0" y="327.0"></omgdi:waypoint>
+        <omgdi:waypoint x="510.0" y="300.0"></omgdi:waypoint>
+        <omgdi:waypoint x="510.0" y="276.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow64" id="BPMNEdge_flow64">
-        <omgdi:waypoint x="250.0" y="248.0"></omgdi:waypoint>
-        <omgdi:waypoint x="171.0" y="248.0"></omgdi:waypoint>
-        <omgdi:waypoint x="171.0" y="266.0"></omgdi:waypoint>
+        <omgdi:waypoint x="440.0" y="248.0"></omgdi:waypoint>
+        <omgdi:waypoint x="391.0" y="247.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow65" id="BPMNEdge_flow65">
-        <omgdi:waypoint x="250.0" y="327.0"></omgdi:waypoint>
-        <omgdi:waypoint x="171.0" y="327.0"></omgdi:waypoint>
-        <omgdi:waypoint x="171.0" y="301.0"></omgdi:waypoint>
+        <omgdi:waypoint x="250.0" y="247.0"></omgdi:waypoint>
+        <omgdi:waypoint x="171.0" y="247.0"></omgdi:waypoint>
+        <omgdi:waypoint x="171.0" y="184.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
