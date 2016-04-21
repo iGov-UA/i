@@ -101,17 +101,17 @@ public class CreateDocument_UkrDoc extends AbstractModelTask implements TaskList
 
             List<Attachment> attachments = new LinkedList<Attachment>();
 
-            List<Attachment> attach1 = taskService.getProcessInstanceAttachments(delegateTask.getProcessInstanceId());
-            if (attach1 != null && !attach1.isEmpty()) {
-                attachments = attach1;
-            }
+//            List<Attachment> attach1 = taskService.getProcessInstanceAttachments(delegateTask.getProcessInstanceId());
+//            if (attach1 != null && !attach1.isEmpty()) {
+//                attachments = attach1;
+//            }
 
             List<Attachment> attach2 = taskService.getTaskAttachments(delegateTask.getId());
             if (attach2 != null && !attach2.isEmpty()) {
                 attachments = attach2;
             }
 
-            LOG.info("Found attachments for the process {}: {}", attach1 != null ? attach1.size() : 0, attach2 != null ? attach2.size() : 0);
+            LOG.info("Found attachments for the process {}: {}", attach2 != null ? attach2.size() : 0);
 
             String sessionId = UkrDocUtil.getSessionId(generalConfig.getSID_login2(), generalConfig.getSID_password2(),
                     generalConfig.sURL_AuthSID_PB() + "?lang=UA");
