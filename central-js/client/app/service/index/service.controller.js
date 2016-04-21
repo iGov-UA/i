@@ -62,6 +62,11 @@ angular.module('app')
     // Check that the sub-domain where the user is located - sfs.
     // This is necessary because in other domains / sub-domains " Податки " should not be displayed in 3 columns.
     $scope.sfsSubdomainCheck = function(){
-      return $location.host().split('.')[0] === 'sfs'
+      var subDomainSearch = $location.host().split('.');
+      for(i=0; i<subDomainSearch.length; i++){
+        if(subDomainSearch[i] == 'sfs'){
+          return true
+        }
+      }
     };
   }]);
