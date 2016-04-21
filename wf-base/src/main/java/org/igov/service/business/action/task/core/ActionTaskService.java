@@ -1661,6 +1661,20 @@ public class ActionTaskService {
         success = true;
         return success;
     }
+    
+    
+    public boolean deleteProcessSimple(String snID_Process, String sLogin, String sReason) throws Exception{
+        boolean bOk = false;
+        LOG.info("Deleting process snID_Process={}, sLogin={}, sReason={}", snID_Process, sLogin, sReason);
+        try {
+            oRuntimeService.deleteProcessInstance(snID_Process, sReason);
+        } catch (ActivitiObjectNotFoundException e) {
+            LOG.info("Could not find process {} to delete: {}", snID_Process, e);
+            throw new RecordNotFoundException();
+        }
+        bOk = true;
+        return bOk;
+    }    
 
     /**
      * Загрузка задач из Activiti
