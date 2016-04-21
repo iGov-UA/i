@@ -340,7 +340,13 @@ public abstract class AbstractModelTask {
                         LOG.error("asFieldName has nothing! (asFieldName={})", asFieldName);
                     }
                 } else {
-                    LOG.error("Invalid Redis Key!!! (sKeyRedis={})", sKeyRedis);
+					try {
+						LOG.info("Checking whether attachment with ID {} already saved and this is attachment object ID", sKeyRedis);
+						Attachment oAttachment = oExecution.getEngineServices().getTaskService().getAttachment(sKeyRedis);
+						res.add(oAttachment);
+					} catch (Exception e) {
+						LOG.error("Invalid Redis Key!!! (sKeyRedis={})", sKeyRedis);
+					}
                 }
                 n++;
             }
