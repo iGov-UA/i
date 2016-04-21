@@ -2129,7 +2129,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             + "\"message\":\"Error! user has not been found\"\n"
             + "}\n"
             + "\n```\n")
-    @RequestMapping(value = "/changePassword", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/changePassword", method = {RequestMethod.POST})
     public
     @ResponseBody
     String changePassword(
