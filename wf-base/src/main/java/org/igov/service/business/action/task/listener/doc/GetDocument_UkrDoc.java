@@ -88,15 +88,15 @@ public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListene
                             String fileName = file.getString("name");
 
                             LOG.info("view_url:" + generalConfig.getsUkrDocServerAddress() + view_url + " fileName: " + fileName);
-                            ResponseEntity responseEntity = new RestRequest().getResponseEntity(generalConfig.getsUkrDocServerAddress() + view_url, MediaType.APPLICATION_JSON,
-                                    StandardCharsets.UTF_8, String.class, headers);
+                            ResponseEntity<byte[]> responseEntity = new RestRequest().getResponseEntity(generalConfig.getsUkrDocServerAddress() + view_url, MediaType.APPLICATION_JSON,
+                                    StandardCharsets.UTF_8, byte[].class, headers);
                             LOG.info("Ukrdoc response getContentFile getBody: " + responseEntity.getBody() 
                                     + " getHeaders: " + responseEntity.getHeaders().entrySet());
                             try {
                                 //ByteArrayMultipartFile oByteArrayMultipartFile
                                 //        = new ByteArrayMultipartFile(contentStringToByte(resp), fileName, fileNameOrigin, "application/octet-stream");
                                 ByteArrayMultipartFile oByteArrayMultipartFile
-                                        = new ByteArrayMultipartFile(contentStringToByte(resp), fileName, fileNameOrigin, responseEntity.getHeaders().getContentType().toString());
+                                        = new ByteArrayMultipartFile(responseEntity.getBody(), fileName, fileNameOrigin, responseEntity.getHeaders().getContentType().toString());
                                 
                                 Attachment attachment = taskService.createAttachment(oByteArrayMultipartFile.getContentType() + ";" + oByteArrayMultipartFile.getExp(), 
                                         delegateTask.getId(), execution.getProcessInstanceId(), 
@@ -122,8 +122,8 @@ public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListene
 
             }
         }
-        LOG.info("close task aythomaticaly: " + delegateTask.getId() + "...");
+        LOG.info("close task authomaticaly: " + delegateTask.getId() + "...");
         //taskService.complete(delegateTask.getId(), new HashMap());
-        LOG.info("close task aythomaticaly: " + delegateTask.getId() + " ok!");
+        LOG.info("close task authomaticaly: " + delegateTask.getId() + " ok!");
     }
 }
