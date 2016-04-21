@@ -1,5 +1,6 @@
 angular.module('app').controller('PlaceController',
   function ($state,
+            $q,
             AdminService,
             $rootScope,
             $scope,
@@ -24,6 +25,34 @@ angular.module('app').controller('PlaceController',
     $scope.$location = $location;
     $scope.bAdmin = AdminService.isAdmin();
     $scope.state = $state.get($state.current.name);
+
+    function getBuiltInBankIDStateParams() {
+      return {
+        'id': service.nID,
+        'region': $scope.getRegionId(),
+        'city': $scope.getCityId()
+      }
+    }
+
+    function isPlaceChoosingState(state) {
+      return state.current.name === 'index.service.general.place.built-in'
+    }
+
+    function isLoggedIn() {
+      return UserService.isLoggedIn().then(function () {
+        return {isStaying: false, isLoggedIn: true};
+      }).catch(function () {
+        return {isStaying: true, isLoggedIn: false};
+      });
+    }
+
+    function isStayingOnCurrentState(state, stateToGo) {
+      var isStaying = !stateToGo
+        || ($state.current.name === stateToGo)
+        || $state.current.name === 'index.service.general.place.built-in.bankid'
+        || $state.current.name === 'index.service.general.place.built-in.bankid.submitted'
+      return {isStaying: isStaying, isLoggedIn: false};
+    }
 
     /**
      * Обробити зміну місця
@@ -55,21 +84,14 @@ angular.module('app').controller('PlaceController',
 
       // console.info('PROCESS Place сhange, $state:', $state.current.name, ', to go:', stateToGo);
 
-      // не переходити до іншого стану, якщо даний стан є кінцевим
-      if (!stateToGo
-        || ($state.current.name === stateToGo)
-        || $state.current.name === 'index.service.general.place.built-in.bankid'
-        || $state.current.name === 'index.service.general.place.built-in.bankid.submitted') {
-        return;
-      }
-
-      $state.go(stateToGo, {
-        id: oService.nID
-      }, {
-        location: false
-      }).then(function () {
-        // якщо треба, робимо додаткові дії тут
-      });
+      $q.when(isPlaceChoosingState($state) ? isLoggedIn() : isStayingOnCurrentState($state, stateToGo))
+        .then(function (result) {
+          if (result.isLoggedIn) {
+            $state.go('index.service.general.place.built-in.bankid', getBuiltInBankIDStateParams());
+          } else if (!result.isLoggedIn && !result.isStaying) {
+            $state.go(stateToGo, {id: oService.nID}, {location: false})
+          }
+        });
     });
 
     /**
@@ -99,13 +121,13 @@ angular.module('app').controller('PlaceController',
       return city ? city.nID : 0;
     };
 
-    $scope.getAuthMethods = function(){
+    $scope.getAuthMethods = function () {
       var authMethods;
 
       if ($scope.serviceData) {
         if ($scope.serviceData.asAuth && $scope.serviceData.asAuth.length > 0) {
           if (typeof($scope.serviceData.asAuth) === 'string') {
-             authMethods = $scope.serviceData.asAuth;
+            authMethods = $scope.serviceData.asAuth;
           } else {
             //TODO processing of object O_o
             authMethods = $scope.serviceData.asAuth;
@@ -117,11 +139,7 @@ angular.module('app').controller('PlaceController',
     };
 
     $scope.getRedirectUrl = function () {
-      var stateForRedirect = $state.href('index.service.general.place.built-in.bankid', {
-        'id': service.nID,
-        'region': $scope.getRegionId(),
-        'city': $scope.getCityId()
-      });
+      var stateForRedirect = $state.href('index.service.general.place.built-in.bankid', getBuiltInBankIDStateParams());
       return $location.protocol() +
         '://' + $location.host() + ':'
         + $location.port()
