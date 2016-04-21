@@ -84,9 +84,9 @@
       </p>
     </div>
 
-    <div class="col-md-4"
+    <div ng-class="{'igov-columns-3 col-md-12':subcategory.sName == 'Податки' && sfsSubdomainCheck(), 'col-md-4':subcategory.sName != 'Податки' || !sfsSubdomainCheck()}"
          ng-repeat-start="subcategory in category.aSubcategory">
-      <h3>
+      <h3 ng-hide="category.aSubcategory.length === 1">
         <a title="Перейти до перегляду послуг цієї категорії"
            class="control-element"
            ui-sref="index.subcategory({'catID': category.nID, 'scatID': subcategory.nID })">
@@ -107,6 +107,7 @@
           <i class="glyphicon glyphicon-remove"></i>
         </a>
       </h3>
+      <div class="spacer10"></div>
 
       <a class="ctrls-admin ctrls-srvc add0-srvc"
          href=""
@@ -116,7 +117,7 @@
       </a>
       <ul class="list-unstyled">
         <li ng-repeat="service in subcategory.aService | orderBy: ['-nStatus', 'nOrder', 'sName'] | limitTo: nLimitCategory(category.nID) as services">
-          <div class="spacer10"></div>
+
           <p>
             <a ui-sref="index.service.general({'id': service.nID })"
                ng-href="/service/{{service.nID}}/general">
