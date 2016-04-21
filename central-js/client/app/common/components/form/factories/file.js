@@ -95,7 +95,15 @@ angular.module('app').factory('FileFactory', function ($q, $rootScope, ActivitiS
   };
 
   file.prototype.get = function () {
-    return this.value ? this.value.id : null;
+    //return this.value ? this.value.id : null;
+    if(this.value){
+      if(this.value.hasOwnProperty('id')){
+        return this.value.id;
+      } else {
+        return this.value;
+      }
+    }
+    return null;
   };
 
   file.prototype.isFit = function(property){
