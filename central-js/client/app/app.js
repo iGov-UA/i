@@ -36,11 +36,12 @@ angular.module('app', [
   $urlRouterProvider.otherwise('/');
   $locationProvider.html5Mode(true);
   datepickerConfig.datepickerMode = 'year';
-  datepickerConfig.showWeeks = false;
   datepickerConfig.formatMonthTitle = 'Місяць';
   datepickerConfig.formatYearTitle = 'Рік';
   datepickerConfig.formatDayTitle = 'Дата';
   datepickerConfig.formatDay = 'd';
+  datepickerConfig.formatMonth = 'MMM';
+  datepickerConfig.startingDay = 1;
   datepickerPopupConfig.clearText = 'Очистити';
 }).run(function ($rootScope, $state) {
   $rootScope.state = $state;
