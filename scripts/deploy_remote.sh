@@ -72,11 +72,11 @@ backup ()
 #Функция по деплою томката. Для первичного и вторичного инстанса действия идентичны
 deploy-tomcat ()
 {
-	#Выключаем томкат. Ротируется ли лог при выключении или старте?
-	cd /sybase/tomcat_${sProject}$1/bin/
-	./_shutdown.sh > /dev/null 2>&1
-	./_shutdown_force.sh
-	sleep 5
+	if ps ax | grep ${sProject}$1 | grep -v grep; then
+		cd /sybase/tomcat_${sProject}$1/bin/
+		./_shutdown.sh > /dev/null 2>&1
+		sleep 5
+	fi
 	#Разворачиваем новые конфиги
 	cp -rf /sybase/.configs/${sProject}/* /sybase/tomcat_${sProject}$1/conf/
 	#Устанавливаем новую версию приложения

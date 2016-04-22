@@ -384,7 +384,7 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Поновлення договору оренди землі</activiti:expression>
+          <activiti:expression>Надання дозволу на відведення земельної ділянки у власність</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -421,6 +421,7 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="reject" name="Відмовити в наданні послуги"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Коментар до рішення для громадянина" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="docToSend" name="Завантажте копію документа для відправлення заявнику" type="file"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
