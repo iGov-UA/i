@@ -62,22 +62,23 @@
     <sequenceFlow id="flow8" sourceRef="parallelgateway1" targetRef="exclusivegateway3"></sequenceFlow>
     <userTask id="usertask1" name="Страхування громадянської відповідальності" activiti:candidateGroups="sales">
         <extensionElements>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації; зазначена в паспорті" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="Індивідуальний податковий номер" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asWeaponType" name="На який тип зброї Вам потрібен дозвіл?" type="enum">
-          <activiti:value id="sEnum1" name="Нарізна"></activiti:value>
-          <activiti:value id="sEnum2" name="Гладкоствольна, холодна, пневматична"></activiti:value>
-        </activiti:formProperty>
-
-        <activiti:formProperty id="email" name="Ваш e-mail; для зворотнього зв'язку та оцінювання якості наданої послуги " type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false" ></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації; зазначена в паспорті" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="Індивідуальний податковий номер" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="e-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
                 
-        <activiti:formProperty id="sInsuranceInfo" name="sInsuranceInfo" type="invisible"></activiti:formProperty>
-        
+        <activiti:formProperty id="sInsuranceContract" name="Номер договора" type="string" required="true"></activiti:formProperty>
+                      
+        <activiti:formProperty id="sID_Payment_1" name="ИД транзакции платежа" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nID_Subject_1" name="ИД-номер субъекта" type="invisible" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sID_Merchant_1" name="ИД-строковой мерчанта (магазина)" type="invisible" default="i38613227067"></activiti:formProperty>
+        <activiti:formProperty id="sSum_1" name="сумма платежа" type="invisible" default="51.92"></activiti:formProperty>
+        <activiti:formProperty id="sID_Currency_1" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
+        <activiti:formProperty id="sDescription_1" name="строка-описание платежа" type="invisible" default="Страховий платіж за договором [№ договора страхования]. Страхувальник [ФИО клиента] [ИНН клиента]"></activiti:formProperty>
         
       </extensionElements>
         
@@ -243,22 +244,9 @@ ${sNameOrgan}&lt;br/&gt;
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 
-Ви подавали заявку щодо Отримання дозволу на придбання зброї &lt;br/&gt;&lt;br/&gt;
+[paymentButton_LiqPay_1]
 
-              Адреса обраного Вами регіонального відділення: &lt;br/&gt;
-               &lt;b&gt;${sAddress}&lt;/b&gt; &lt;br/&gt;&lt;br/&gt;
-
-              Телефон для довідок: &lt;br/&gt;
-               &lt;b&gt;${sPhoneOrgan}&lt;/b&gt; &lt;br/&gt;&lt;br/&gt;
-
-              Графік прийому громадян: &lt;br/&gt;&lt;br/&gt;
-               &lt;b&gt;${sWorkTime}&lt;/b&gt; &lt;br/&gt;
-
-
-
-[pattern/mail/_common_feedback.html]
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br/&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
