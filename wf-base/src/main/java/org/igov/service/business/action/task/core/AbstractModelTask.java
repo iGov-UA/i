@@ -1,7 +1,5 @@
 package org.igov.service.business.action.task.core;
 
-import org.igov.model.action.task.core.entity.ListKeyable;
-import org.igov.model.flow.FlowSlotTicket;
 import org.activiti.engine.ActivitiException;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.delegate.DelegateExecution;
@@ -10,29 +8,26 @@ import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.task.Attachment;
+import org.apache.commons.codec.binary.Base64;
+import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
 import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
-import org.apache.commons.codec.binary.Base64;
+import org.igov.model.action.task.core.entity.ListKeyable;
+import org.igov.model.flow.FlowSlotDao;
+import org.igov.model.flow.FlowSlotTicket;
+import org.igov.model.flow.FlowSlotTicketDao;
+import org.igov.service.business.action.task.form.FormFileType;
+import org.igov.service.business.action.task.form.QueueDataFormType;
+import org.igov.service.business.flow.slot.SaveFlowSlotTicketResponse;
+import org.igov.util.JSON.JsonRestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
-import org.igov.model.flow.FlowSlotDao;
-import org.igov.model.flow.FlowSlotTicketDao;
-import org.igov.util.JSON.JsonRestUtils;
-import org.igov.service.business.flow.slot.SaveFlowSlotTicketResponse;
-import org.igov.service.business.action.task.form.FormFileType;
-import org.igov.service.business.action.task.form.QueueDataFormType;
 
 import java.io.*;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
+import java.util.*;
 
 public abstract class AbstractModelTask {
 
@@ -304,50 +299,52 @@ public abstract class AbstractModelTask {
             for (String sKeyRedis : asFieldValue) {
                 LOG.info("(sKeyRedis={})", sKeyRedis);
                 if (sKeyRedis != null && !sKeyRedis.isEmpty() && !"".equals(sKeyRedis.trim()) && !"null"
-                        .equals(sKeyRedis.trim()) && sKeyRedis.length() > 15) {
-                    if (!asFieldName.isEmpty() && n < asFieldName.size()) {
-                        //String sDescription = asFieldName.get((asFieldName.size() - 1) - n);
-                        String sDescription = asFieldName.get(n);
-                        LOG.info("(sDescription={})", sDescription);
-                        String sID_Field = asFieldID.get(n);
-                        LOG.info("(sID_Field={})", sID_Field);
-                        //получение контента файла из временного хранилища
-                        byte[] aByteFile;
-                        ByteArrayMultipartFile oByteArrayMultipartFile = null;
-                        try {
-                            aByteFile = oBytesDataInmemoryStorage.getBytes(sKeyRedis);
-                            oByteArrayMultipartFile = getByteArrayMultipartFileFromStorageInmemory(aByteFile);
-                        } catch (ClassNotFoundException | IOException | RecordInmemoryException e1) {
-                            throw new ActivitiException(e1.getMessage(), e1);
-                        }
-                        Attachment oAttachment = createAttachment(oByteArrayMultipartFile, oTask, sDescription);
-                        if (oAttachment != null) {
-                            LOG.info("Added attachment with ID {} to the task:process {}:{}",
-                                    oAttachment.getId(), oTask.getId(), oExecution.getProcessInstanceId());
-                            res.add(oAttachment);
-                            String nID_Attachment = oAttachment.getId();
-                            LOG.info("Try set variable(sID_Field={}) with the value(nID_Attachment={}), for new attachment...",
-                                    sID_Field, nID_Attachment);
-                            oExecution.getEngineServices().getRuntimeService()
-                                    .setVariable(oExecution.getProcessInstanceId(), sID_Field, nID_Attachment);
-                            LOG.info("Finished setting new value for variable with attachment (sID_Field={})",
-                                    sID_Field);
-                        } else {
-                            LOG.error("Can't add attachment to (oTask.getId()={})", oTask.getId());
-                        }
+                        .equals(sKeyRedis.trim())) {
+                    if (sKeyRedis.length() > 15) {
+                        if (!asFieldName.isEmpty() && n < asFieldName.size()) {
+                            //String sDescription = asFieldName.get((asFieldName.size() - 1) - n);
+                            String sDescription = asFieldName.get(n);
+                            LOG.info("(sDescription={})", sDescription);
+                            String sID_Field = asFieldID.get(n);
+                            LOG.info("(sID_Field={})", sID_Field);
+                            //получение контента файла из временного хранилища
+                            byte[] aByteFile;
+                            ByteArrayMultipartFile oByteArrayMultipartFile = null;
+                            try {
+                                aByteFile = oBytesDataInmemoryStorage.getBytes(sKeyRedis);
+                                oByteArrayMultipartFile = getByteArrayMultipartFileFromStorageInmemory(aByteFile);
+                            } catch (ClassNotFoundException | IOException | RecordInmemoryException e1) {
+                                throw new ActivitiException(e1.getMessage(), e1);
+                            }
+                            Attachment oAttachment = createAttachment(oByteArrayMultipartFile, oTask, sDescription);
+                            if (oAttachment != null) {
+                                LOG.info("Added attachment with ID {} to the task:process {}:{}",
+                                        oAttachment.getId(), oTask.getId(), oExecution.getProcessInstanceId());
+                                res.add(oAttachment);
+                                String nID_Attachment = oAttachment.getId();
+                                LOG.info("Try set variable(sID_Field={}) with the value(nID_Attachment={}), for new attachment...",
+                                        sID_Field, nID_Attachment);
+                                oExecution.getEngineServices().getRuntimeService()
+                                        .setVariable(oExecution.getProcessInstanceId(), sID_Field, nID_Attachment);
+                                LOG.info("Finished setting new value for variable with attachment (sID_Field={})",
+                                        sID_Field);
+                            } else {
+                                LOG.error("Can't add attachment to (oTask.getId()={})", oTask.getId());
+                            }
 
+                        } else {
+                            LOG.error("asFieldName has nothing! (asFieldName={})", asFieldName);
+                        }
                     } else {
-                        LOG.error("asFieldName has nothing! (asFieldName={})", asFieldName);
+                            try {
+                                    LOG.info("Checking whether attachment with ID {} already saved and this is attachment object ID", sKeyRedis);
+                                    Attachment oAttachment = oExecution.getEngineServices().getTaskService().getAttachment(sKeyRedis);
+                                    res.add(oAttachment);
+                            } catch (Exception e){
+                                    LOG.error("Invalid Redis Key!!! (sKeyRedis={})", sKeyRedis);
+                            }
+
                     }
-                } else {
-                	try {
-                		LOG.info("Checking whether attachment with ID {} already saved and this is attachment object ID", sKeyRedis);
-                		Attachment oAttachment = oExecution.getEngineServices().getTaskService().getAttachment(sKeyRedis);
-                		res.add(oAttachment);
-                	} catch (Exception e){
-                		LOG.error("Invalid Redis Key!!! (sKeyRedis={})", sKeyRedis);
-                	}
-                    
                 }
                 n++;
             }
@@ -398,6 +395,7 @@ public abstract class AbstractModelTask {
             String sValue = asFieldValue.get(0);
             LOG.info("(sValue={})", sValue);
             if(sValue!=null && !"".equals(sValue.trim())){
+                LOG.info("sValue is present, so queue is filled");
                 long nID_FlowSlotTicket = 0;
                 Map<String, Object> m = QueueDataFormType.parseQueueData(sValue);
                 nID_FlowSlotTicket = QueueDataFormType.get_nID_FlowSlotTicket(m);
