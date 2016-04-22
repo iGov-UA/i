@@ -259,7 +259,7 @@
                              tableName="FlowSlotTicket_FlowSlot"/>
 
         <sql splitStatements="true" dbms="postgresql">
-            insert into "FlowSlotTicket_FlowSlot" ("nID_FlowSlotTicket", "nID_FlowSlot") select "nID", "nID_FlowSlot" from "FlowSlotTicket";
+            insert into "FlowSlotTicket_FlowSlot" ("nID_FlowSlotTicket", "nID_FlowSlot") select "nID", "nID_FlowSlot" from "FlowSlotTicket" where "nID_FlowSlot" is not null;
         </sql>
 
         <dropColumn tableName="FlowSlotTicket" columnName="nID_FlowSlot"/>
