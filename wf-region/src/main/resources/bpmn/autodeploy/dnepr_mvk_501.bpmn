@@ -36,6 +36,8 @@
         <activiti:formProperty id="sAddress" name="Адреса установи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Часи роботи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Контактний телефон" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="Шапка клопотання" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSato" name="Шапка клопотання" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_339_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('dnepr_mvk_501.json')}"></activiti:formProperty>
       </extensionElements>
@@ -118,6 +120,7 @@ ${sNameOrgan}&lt;br&gt;
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка клопотання" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSato" name="Шапка клопотання" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers12" name="принтформа якщо юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_12&quot;:{&quot;aElement_ID&quot;:[&quot;ur_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sChoiceObject&quot;},&quot;sCondition&quot;:&quot;[sCond]=='ur'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers13" name="принтформа якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;fiz_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sChoiceObject&quot;},&quot;sCondition&quot;:&quot;[sCond]=='fiz'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/dneprMVK/dnepr_mvk_501_print.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
@@ -273,7 +276,7 @@ ${sNameOrgan}&lt;br&gt;
 if (execution.getVariable('sChoiceATO') == 'yes') {
 res = 'від учасника АТО'
 }
-execution.setVariable('sShapka', res)</script>
+execution.setVariable('sSato', res)</script>
     </scriptTask>
     <sequenceFlow id="flow16" sourceRef="scripttask1" targetRef="servicetask2"></sequenceFlow>
   </process>
