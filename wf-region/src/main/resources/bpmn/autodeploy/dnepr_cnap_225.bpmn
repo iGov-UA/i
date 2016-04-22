@@ -404,7 +404,7 @@ ${sNameOrgan}<br />
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow28" sourceRef="servicetask9" targetRef="usertask3"></sequenceFlow>
-    <serviceTask id="servicetask10" name="Повідомлення працівника ЦНАПу">
+    <serviceTask id="servicetask10" name="Повідомлення працівника ЦНАПу" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -421,7 +421,7 @@ ${sNameOrgan}<br />
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow29" sourceRef="usertask3" targetRef="servicetask10"></sequenceFlow>
-    <userTask id="usertask4" name="Обробка працівником ЦНАПу після ДГК">
+    <userTask id="usertask4" name="Обробка працівником ЦНАПу після ДГК" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="shapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
