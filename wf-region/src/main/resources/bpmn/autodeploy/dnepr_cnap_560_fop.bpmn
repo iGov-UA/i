@@ -42,7 +42,8 @@
 		
         <activiti:formProperty id="sVarRajCityNam" name="Назва району в місті" type="string" required="false" default="."></activiti:formProperty>
 
-		<activiti:formProperty id="bankIdAddressFactual_street" name="Площа, вулиця, проспект, провулок; або інший тип елемента вулично-дорожньої мережі – зазначається разом з назвою" type="string" required="false"></activiti:formProperty>
+        <activiti:formProperty id="sVarVulNam" name="Тип елемента вулично-дорожньої мережі; наприклад: вулиця, проспект, провулок тощо" type="string"></activiti:formProperty>
+		<activiti:formProperty id="bankIdAddressFactual_street" name="Назва елемента вулично-дорожньої мережі" type="string" required="false"></activiti:formProperty>
 		
 		<activiti:formProperty id="bankIdAddressFactual_houseNo" name="Будинок" type="string" required="false"></activiti:formProperty>
 
@@ -60,12 +61,11 @@
           <activiti:value id="tf602" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="InfoDod1" name="Ви можете завантажития архів з бланком заяви" type="label" default="&lt;a href=&quot;https://drive.google.com/open?id=0B9UDkfHM4vkrRnF6SjVVeW9GSHc&quot; target=&quot;_blank&quot;&gt;ЗАЯВА про застосування спрощеної системи оподаткування&lt;/a&gt;"></activiti:formProperty>
-        <activiti:formProperty id="InfoDod21" name="Ви можете ознайомитися з порядком її подання" type="label" default="&lt;a href=&quot;http://zakon3.rada.gov.ua/laws/show/z1537-11&quot; target=&quot;_blank&quot;&gt;ПОРЯДОК подання заяви&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="sVarDod1_601Plus" name="Заява щодо обрання фізичною особою спрощеної системи оподаткування +" type="invisible" default=" "></activiti:formProperty>
 <!-- прячем маркеры -->
         <activiti:formProperty id="markers_Hide04" name="спрятать маркеры" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide04&quot;:{&quot;aField_ID&quot;:[&quot;markers601_1&quot;,&quot;markers601_2&quot;,&quot;markers601_3&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;bankIdlastName&quot;},&quot;sCondition&quot;:&quot;[sClient] == '.'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers601_1" name="поставити + Заява щодо обрання фізичною особою спрощеної системи оподаткування" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_601_1&quot;:{&quot;aField_ID&quot;:[&quot;sVarDod1_601Plus&quot;],&quot;asID_Field_sValue&quot;:[&quot;+&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectDod1&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf601'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers601_2" name="показати Заява щодо обрання фізичною особою спрощеної системи оподаткування для загрузки файлу" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_601_2&quot;:{&quot;aField_ID&quot;:[&quot;fVarDod1&quot;,&quot;InfoDod1&quot;,&quot;InfoDod21&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectDod1&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf601'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers601_2" name="показати Заява щодо обрання фізичною особою спрощеної системи оподаткування для загрузки файлу" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_601_2&quot;:{&quot;aField_ID&quot;:[&quot;fVarDod1&quot;,&quot;InfoDod1&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectDod1&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf601'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers601_3" name="поставити пробел Заява щодо обрання фізичною особою спрощеної системи оподаткування" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_601_3&quot;:{&quot;aField_ID&quot;:[&quot;sVarDod1_601Plus&quot;],&quot;asID_Field_sValue&quot;:[&quot; &quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectDod1&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf602'&quot;}}}"></activiti:formProperty>
 
         <activiti:formProperty id="asSelectDod2" name="Ви бажаєте зареєструватися як платник податку на додану вартість?" type="enum" required="false" default="tf702">
@@ -73,12 +73,11 @@
           <activiti:value id="tf702" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="InfoDod2" name="Ви можете завантажития архів з бланком заяви" type="label" default="&lt;a href=&quot;https://drive.google.com/open?id=0B9UDkfHM4vkreHcwWGtsYXctem8&quot; target=&quot;_blank&quot;&gt;РЕЄСТРАЦІЙНА ЗАЯВА платника податку на додану вартість&lt;/a&gt;"></activiti:formProperty>
-        <activiti:formProperty id="InfoDod22" name="Ви можете ознайомитися з положенням про реєстрацію платників ПДВ" type="label" default="&lt;a href=&quot;http://zakon2.rada.gov.ua/laws/show/z1456-14/paran20#n20&quot; target=&quot;_blank&quot;&gt;ПОЛОЖЕННЯ про реєстрацію платників ПДВ&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="sVarDod1_701Plus" name="Реєстраційна заява про добровільну реєстрацію як платника податку на додану вартість +" type="invisible" default=" "></activiti:formProperty>
 <!-- прячем маркеры -->
         <activiti:formProperty id="markers_Hide05" name="спрятать маркеры" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide05&quot;:{&quot;aField_ID&quot;:[&quot;markers701_1&quot;,&quot;markers701_2&quot;,&quot;markers701_3&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;bankIdlastName&quot;},&quot;sCondition&quot;:&quot;[sClient] == '.'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers701_1" name="поставити + Реєстраційна заява про добровільну реєстрацію як платника податку на додану вартість" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_701_1&quot;:{&quot;aField_ID&quot;:[&quot;sVarDod1_701Plus&quot;],&quot;asID_Field_sValue&quot;:[&quot;+&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectDod2&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf701'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers701_2" name="показати Реєстраційна заява про добровільну реєстрацію як платника податку на додану вартість для загрузки файлу" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_701_2&quot;:{&quot;aField_ID&quot;:[&quot;fVarDod2&quot;,&quot;InfoDod2&quot;,&quot;InfoDod22&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectDod2&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf701'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers701_2" name="показати Реєстраційна заява про добровільну реєстрацію як платника податку на додану вартість для загрузки файлу" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_701_2&quot;:{&quot;aField_ID&quot;:[&quot;fVarDod2&quot;,&quot;InfoDod2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectDod2&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf701'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers701_3" name="поставити пробел Реєстраційна заява про добровільну реєстрацію як платника податку на додану вартість" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_701_3&quot;:{&quot;aField_ID&quot;:[&quot;sVarDod1_701Plus&quot;],&quot;asID_Field_sValue&quot;:[&quot; &quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectDod2&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf702'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="InfoVarDod" name="Зверніть увагу - корисна інформація" type="label" default="Стати на облік до податкової можна в будь-який момент після реєстрації та до самого початку діяльності підприємства."></activiti:formProperty>
 <!-- налогообложение финиш -->
@@ -182,7 +181,7 @@
 <!--  Вставка форми -->
 <!-- переменные начало -->
 <!-- прячем переменные -->
-		<activiti:formProperty id="markers_Hide07" name="спрятать переменные" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide07&quot;:{&quot;aField_ID&quot;:[&quot;sVarPlace401Plus&quot;,&quot;sVarPlace402Plus&quot;,&quot;sVarPlace403Plus&quot;,&quot;sVarPlace404Plus&quot;,&quot;bankIdlastName&quot;,&quot;bankIdfirstName&quot;,&quot;bankIdmiddleName&quot;,&quot;bankIdbirthDay&quot;,&quot;bankIdinn&quot;,&quot;bankIdAddressFactual_country&quot;,&quot;sVarPostIndex&quot;,&quot;bankIdAddressFactual_state&quot;,&quot;bankIdAddressFactual_area&quot;,&quot;bankIdAddressFactual_city&quot;,&quot;sVarRajCityNam&quot;,&quot;bankIdAddressFactual_street&quot;,&quot;bankIdAddressFactual_houseNo&quot;,&quot;sVarKvNum&quot;,&quot;sVarTypePom&quot;,&quot;bankIdAddressFactual_flatNo&quot;,&quot;sVarDod1_601Plus&quot;,&quot;sVarDod1_701Plus&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;bankIdlastName&quot;},&quot;sCondition&quot;:&quot;[sClient] == '.'&quot;}}}"></activiti:formProperty>
+		<activiti:formProperty id="markers_Hide07" name="спрятать переменные" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide07&quot;:{&quot;aField_ID&quot;:[&quot;sVarPlace401Plus&quot;,&quot;sVarPlace402Plus&quot;,&quot;sVarPlace403Plus&quot;,&quot;sVarPlace404Plus&quot;,&quot;bankIdlastName&quot;,&quot;bankIdfirstName&quot;,&quot;bankIdmiddleName&quot;,&quot;bankIdbirthDay&quot;,&quot;bankIdinn&quot;,&quot;bankIdAddressFactual_country&quot;,&quot;sVarPostIndex&quot;,&quot;bankIdAddressFactual_state&quot;,&quot;bankIdAddressFactual_area&quot;,&quot;bankIdAddressFactual_city&quot;,&quot;sVarRajCityNam&quot;,&quot;bankIdAddressFactual_street&quot;,&quot;bankIdAddressFactual_houseNo&quot;,&quot;sVarKvNum&quot;,&quot;sVarTypePom&quot;,&quot;bankIdAddressFactual_flatNo&quot;,&quot;sVarDod1_601Plus&quot;,&quot;sVarDod1_701Plus&quot;,&quot;sVarVulNam&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;bankIdlastName&quot;},&quot;sCondition&quot;:&quot;[sClient] == '.'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="invisible" required="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="invisible" required="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="invisible" required="false"></activiti:formProperty>
@@ -190,7 +189,7 @@
 <!--        <activiti:formProperty id="bankIdinn" name="ІПН" type="invisible" required="false"></activiti:formProperty> -->
 <!-- адрес начало -->
 		<activiti:formProperty id="bankIdAddressFactual_country" name="Країна громадянства" type="invisible" required="false"></activiti:formProperty>
-        <activiti:formProperty id="sVarPostIndex" name="Поштовий індекс" type="invisible" required="false" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sVarPostIndex" name="Поштовий індекс" type="invisible" required="false"></activiti:formProperty>
 		<activiti:formProperty id="bankIdAddressFactual_state" name="Область" type="invisible" required="false"></activiti:formProperty>
 		<activiti:formProperty id="bankIdAddressFactual_area" name="Найменування району в області" type="invisible" required="false"></activiti:formProperty>
 <!-- юрособа -->
@@ -201,8 +200,9 @@
 
 		<activiti:formProperty id="bankIdAddressFactual_city" name="Назва населеного пункту" type="invisible" required="false"></activiti:formProperty>
 
-        <activiti:formProperty id="sVarRajCityNam" name="Назва району в місті" type="invisible" required="false" default="."></activiti:formProperty>
+        <activiti:formProperty id="sVarRajCityNam" name="Назва району в місті" type="invisible" required="false"></activiti:formProperty>
 
+        <activiti:formProperty id="sVarVulNam" name="Тип елемента вулично-дорожньої мережі; наприклад: вулиця, проспект, провулок тощо" type="invisible"></activiti:formProperty>
 		<activiti:formProperty id="bankIdAddressFactual_street" name="Площа, вулиця, проспект, провулок" type="invisible" required="false"></activiti:formProperty>
 		
 		<activiti:formProperty id="bankIdAddressFactual_houseNo" name="Будинок" type="invisible" required="false"></activiti:formProperty>
@@ -221,41 +221,41 @@
 <!-- прячем строки -->
         <activiti:formProperty id="markers_Hide08" name="спрятать маркеры" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide08&quot;:{&quot;aField_ID&quot;:[&quot;sKVED01&quot;,&quot;sKVED02&quot;,&quot;sKVED03&quot;,&quot;sKVED04&quot;,&quot;sKVED05&quot;,&quot;sKVED06&quot;,&quot;sKVED07&quot;,&quot;sKVED08&quot;,&quot;sKVED09&quot;,&quot;sKVED10&quot;,&quot;sKVED11&quot;,&quot;sKVED12&quot;,&quot;sKVED13&quot;,&quot;sKVED14&quot;,&quot;sKVED15&quot;,&quot;sKVED16&quot;,&quot;sKVED17&quot;,&quot;sKVED18&quot;,&quot;sKVED19&quot;,&quot;sKVED20&quot;,&quot;sKVED21&quot;,&quot;sKVED22&quot;,&quot;sKVED23&quot;,&quot;sKVED24&quot;,&quot;sKVED25&quot;,&quot;sKVED26&quot;,&quot;sKVED27&quot;,&quot;sKVED28&quot;,&quot;sKVED29&quot;,&quot;sKVED30&quot;,&quot;sVarOblPlus&quot;,&quot;sVarRajObl301Plus&quot;,&quot;sVarRajCity501Plus&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;bankIdlastName&quot;},&quot;sCondition&quot;:&quot;[sClient] == '.'&quot;}}}"></activiti:formProperty> 
         <activiti:formProperty id="sKVED01" name="Код виду діяльності" type="invisible" required="false"></activiti:formProperty>
-        <activiti:formProperty id="sKVED02" name="Код другого вилу діяльності" type="invisible" required="false" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED03" name="Код третього виду діяльності" type="invisible" required="false" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED04" name="Код четвертого виду діяльності" type="invisible" required="false" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED05" name="Код п'ятого виду діяльності" type="invisible" required="false" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED06" name="Код шостого виду діяльності" type="invisible" required="false" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED07" name="Код сьомого виду діяльності" type="invisible" required="false" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED08" name="Код восьмого виду діяльності" type="invisible" required="false" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED09" name="Код дев'ятого виду діяльності" type="invisible" required="false" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED10" name="Код десятого виду діяльності" type="invisible" required="false" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED11" name="Код одинадцятого виду діяльності" type="invisible" required="false" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED12" name="Код дванадцятого виду діяльності" type="invisible" required="false" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED13" name="Код тринадцятого виду діяльності" type="invisible" required="false" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED14" name="Код чотирнадцятого виду діяльності" type="invisible" required="false" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED15" name="Код п'ятнадцятого виду діяльності" type="invisible" required="false" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED16" name="Код шістнадцятого виду діяльності" type="invisible" required="false" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED17" name="Код сімнадцятого виду діяльності" type="invisible" required="false" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED18" name="Код вісімнадцятого виду діяльності" type="invisible" required="false" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED19" name="Код дев'ятнадцятого виду діяльності" type="invisible" required="false" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED20" name="Код двадцятого виду діяльності" type="invisible" required="false" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED21" name="Код двадцять першого виду діяльності" type="invisible" required="false" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED22" name="Код двадцять другого виду діяльності" type="invisible" required="false" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED23" name="Код двадцять третього виду діяльності" type="invisible" required="false" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED24" name="Код двадцять четвертого виду діяльності" type="invisible" required="false" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED25" name="Код двадцять п'ятого виду діяльності" type="invisible" required="false" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED26" name="Код двадцять шостого виду діяльності" type="invisible" required="false" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED27" name="Код двадцять сьомого виду діяльності" type="invisible" required="false" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED28" name="Код двадцять восьмого виду діяльності" type="invisible" required="false" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED29" name="Код двадцять дев'ятого виду діяльності" type="invisible" required="false" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED30" name="Код тридцятого виду діяльності" type="invisible" required="false" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sKVED02" name="Код другого виду діяльності" type="invisible" required="false"></activiti:formProperty>
+        <activiti:formProperty id="sKVED03" name="Код третього виду діяльності" type="invisible" required="false"></activiti:formProperty>
+        <activiti:formProperty id="sKVED04" name="Код четвертого виду діяльності" type="invisible" required="false"></activiti:formProperty>
+        <activiti:formProperty id="sKVED05" name="Код п'ятого виду діяльності" type="invisible" required="false"></activiti:formProperty>
+        <activiti:formProperty id="sKVED06" name="Код шостого виду діяльності" type="invisible" required="false"></activiti:formProperty>
+        <activiti:formProperty id="sKVED07" name="Код сьомого виду діяльності" type="invisible" required="false"></activiti:formProperty>
+        <activiti:formProperty id="sKVED08" name="Код восьмого виду діяльності" type="invisible" required="false"></activiti:formProperty>
+        <activiti:formProperty id="sKVED09" name="Код дев'ятого виду діяльності" type="invisible" required="false"></activiti:formProperty>
+        <activiti:formProperty id="sKVED10" name="Код десятого виду діяльності" type="invisible" required="false"></activiti:formProperty>
+        <activiti:formProperty id="sKVED11" name="Код одинадцятого виду діяльності" type="invisible" required="false"></activiti:formProperty>
+        <activiti:formProperty id="sKVED12" name="Код дванадцятого виду діяльності" type="invisible" required="false"></activiti:formProperty>
+        <activiti:formProperty id="sKVED13" name="Код тринадцятого виду діяльності" type="invisible" required="false"></activiti:formProperty>
+        <activiti:formProperty id="sKVED14" name="Код чотирнадцятого виду діяльності" type="invisible" required="false"></activiti:formProperty>
+        <activiti:formProperty id="sKVED15" name="Код п'ятнадцятого виду діяльності" type="invisible" required="false"></activiti:formProperty>
+        <activiti:formProperty id="sKVED16" name="Код шістнадцятого виду діяльності" type="invisible" required="false"></activiti:formProperty>
+        <activiti:formProperty id="sKVED17" name="Код сімнадцятого виду діяльності" type="invisible" required="false"></activiti:formProperty>
+        <activiti:formProperty id="sKVED18" name="Код вісімнадцятого виду діяльності" type="invisible" required="false"></activiti:formProperty>
+        <activiti:formProperty id="sKVED19" name="Код дев'ятнадцятого виду діяльності" type="invisible" required="false"></activiti:formProperty>
+        <activiti:formProperty id="sKVED20" name="Код двадцятого виду діяльності" type="invisible" required="false"></activiti:formProperty>
+        <activiti:formProperty id="sKVED21" name="Код двадцять першого виду діяльності" type="invisible" required="false"></activiti:formProperty>
+        <activiti:formProperty id="sKVED22" name="Код двадцять другого виду діяльності" type="invisible" required="false"></activiti:formProperty>
+        <activiti:formProperty id="sKVED23" name="Код двадцять третього виду діяльності" type="invisible" required="false"></activiti:formProperty>
+        <activiti:formProperty id="sKVED24" name="Код двадцять четвертого виду діяльності" type="invisible" required="false"></activiti:formProperty>
+        <activiti:formProperty id="sKVED25" name="Код двадцять п'ятого виду діяльності" type="invisible" required="false"></activiti:formProperty>
+        <activiti:formProperty id="sKVED26" name="Код двадцять шостого виду діяльності" type="invisible" required="false"></activiti:formProperty>
+        <activiti:formProperty id="sKVED27" name="Код двадцять сьомого виду діяльності" type="invisible" required="false"></activiti:formProperty>
+        <activiti:formProperty id="sKVED28" name="Код двадцять восьмого виду діяльності" type="invisible" required="false"></activiti:formProperty>
+        <activiti:formProperty id="sKVED29" name="Код двадцять дев'ятого виду діяльності" type="invisible" required="false"></activiti:formProperty>
+        <activiti:formProperty id="sKVED30" name="Код тридцятого виду діяльності" type="invisible" required="false"></activiti:formProperty>
 <!-- вид деятельности финиш -->
 
 <!-- работа невидимая на старте -->
-        <activiti:formProperty id="sVarOblPlus" name="область +" type="invisible" default="+"></activiti:formProperty>
-        <activiti:formProperty id="sVarRajObl301Plus" name="Район області +" type="invisible" default="+"></activiti:formProperty>
-        <activiti:formProperty id="sVarRajCity501Plus" name="В районі міста +" type="invisible" default="+"></activiti:formProperty>
+        <activiti:formProperty id="sVarOblPlus" name="область +" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sVarRajObl301Plus" name="Район області +" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sVarRajCity501Plus" name="В районі міста +" type="invisible"></activiti:formProperty>
 <!-- работа невидимая на старте -->
 <!--  Вставка  форми -->
 		
@@ -304,7 +304,7 @@
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
+&lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
 Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено рішення про відмову в реєстрації.&lt;br /&gt;&lt;br /&gt;
 Коментар держслужбовця (${sComment})&lt;br /&gt;&lt;br /&gt;
 Унікальний номер "Код" : &lt;strong&gt;${sUniqNum}&lt;/strong&gt;. &lt;br /&gt;&lt;br /&gt;
@@ -335,7 +335,7 @@
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
+&lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
 Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено позитивне рішення про реєстрацію.&lt;br /&gt;&lt;br /&gt;
 Унікальний номер "Код" : &lt;strong&gt;${sUniqNum}&lt;/strong&gt;. &lt;br /&gt;&lt;br /&gt;
 У будь-який час Ви можете отримати результат наданих адміністративних послуг використавши "Код" під час пошуку на &lt;a href="https://usr.minjust.gov.ua/ua/freesearch/" target="_blank"&gt;офіційній сторінці Міністерства юстиції України&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;
@@ -392,7 +392,7 @@
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
+&lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
 Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено позитивне рішення про реєстрацію.&lt;br /&gt;&lt;br /&gt;
 Унікальний номер "Код" : &lt;strong&gt;${sUniqNum}&lt;/strong&gt;. &lt;br /&gt;&lt;br /&gt;
 У будь-який час Ви можете отримати результат наданих адміністративних послуг використавши "Код" під час пошуку на &lt;a href="https://usr.minjust.gov.ua/ua/freesearch/" target="_blank"&gt;офіційній сторінці Міністерства юстиції України&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;
@@ -416,7 +416,7 @@
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
+&lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
 Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено рішення про відмову в реєстрації.&lt;br /&gt;&lt;br /&gt;
 Коментар держслужбовця (${sComment})&lt;br /&gt;&lt;br /&gt;
 Унікальний номер "Код" : &lt;strong&gt;${sUniqNum}&lt;/strong&gt;. &lt;br /&gt;&lt;br /&gt;
@@ -458,7 +458,7 @@
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
+&lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
 Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено рішення про відмову в реєстрації.&lt;br /&gt;&lt;br /&gt;
 Коментар держслужбовця (${sComment})&lt;br /&gt;&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
@@ -480,7 +480,7 @@
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
+&lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
 Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено рішення про відмову в реєстрації.&lt;br /&gt;&lt;br /&gt;
 Коментар держслужбовця (${sComment})&lt;br /&gt;&lt;br /&gt;
 Вам направлена копія рішення (додаток до листа).&lt;br /&gt;&lt;br /&gt; 
@@ -506,7 +506,7 @@
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
+&lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
 Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено позитивне рішення про реєстрацію.&lt;br /&gt;&lt;br /&gt;
 Вам направлена копія рішення (додаток до листа).&lt;br /&gt;&lt;br /&gt; 
 [pattern/mail/_common_signature_start.html]
@@ -532,7 +532,7 @@
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
+&lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
 Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено позитивне рішення про реєстрацію.&lt;br /&gt;&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 [pattern/mail/_common_signature_end.html]
