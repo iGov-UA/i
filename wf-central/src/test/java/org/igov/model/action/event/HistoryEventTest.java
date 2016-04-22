@@ -71,7 +71,7 @@ public class HistoryEventTest {
 	Long nHistoryEvent_Id = null;
 	try {
 	    nHistoryEvent_Id = historyEventDao.setHistoryEvent(testSubject_nID_Set, 6L, "event custom set",
-		    "message set", null, testDoc_nID_Full);
+		    "message set", null, testDoc_nID_Full, "subject info");
 	    Assert.assertNotNull("Ошибка сохранения данных HistoryEvent", nHistoryEvent_Id);
 	} catch (IOException e) {
 	    e.printStackTrace();
