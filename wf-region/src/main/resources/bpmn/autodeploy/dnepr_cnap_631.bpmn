@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_cnap_630" name="Дозвіл на проведення робіт на пам’ятках місцевого значення (крім пам’яток археології), їх територіях та в зонах охорони" isExecutable="true">
-    <documentation>https://github.com/e-government-ua/iBP/issues/630</documentation>
+  <process id="dnepr_cnap_631" name="Погодження розміщення реклами на пам’ятках місцевого значення, в межах зон охорони таких пам’яток" isExecutable="true">
+    <documentation>https://github.com/e-government-ua/iBP/issues/631</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0"></activiti:formProperty>
@@ -30,11 +30,8 @@
         <activiti:formProperty id="sPibUr" name="П.І.Б. керівника юридичної особи або уповноваженої особи" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sAdresUr" name="Місцезнаходження юридичної особи" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sPhoneUr" name="Телефон юридичної особи" type="string" default="+380"></activiti:formProperty>
-        <activiti:formProperty id="sDocBase" name="Документ, на основі якого планується проводити роботи; рішення місцевих органів влади та органів місцевого самоврядування" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDocAkt" name="Акт технічного стану пам'ятки до початку проведення робіт" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDocProject" name="Ескізний проект; вказати всі єлементи пам'ятки, їх розміри та матеріали" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDocText" name="Тексти всіх написів на пам'ятці" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDocShow" name="Перелік запланованих робіт" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDocReklama" name="Дозвіл на розміщення зовнішньої реклами; з фотокарткою або комп'ютерним макетом місця с фрагментом місцевості, на якому планується розташування рекламного засобу" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="info" name="Для деяких населених пунктів Ви можете от отримати дозвіл на рзміщення зовнішньої реклами через портал iGov.org.ua" type="label" default="&lt;a href=&quot;https://igov.org.ua/service/15/general&quot; target=&quot;_blank&quot;&gt;посилання на послугу&lt;/a&gt; "></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="сканована копія паспорту" type="file"></activiti:formProperty>
         <activiti:formProperty id="sDocConfidant" name="Довіреність на право представляти інтереси субʼєкта господарювання в органах місцевого самоврядування" type="file"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу" type="invisible"></activiti:formProperty>
@@ -87,13 +84,13 @@
         <activiti:formProperty id="sShapka628" name="шапка у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dnepr_cnap_630_print.html]" type="invisible" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dnepr_cnap_631_print.html]" type="invisible" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers12" name="принтформа якщо юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_12&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zayava&quot;,&quot;zagolovok&quot;,&quot;obect_pf&quot;,&quot;obect_pf2&quot;,&quot;sAdresObject_pf&quot;,&quot;sNameUr_pf&quot;,&quot;kved_pf&quot;,&quot;edrpo_pf&quot;,&quot;sPibUr_pf&quot;,&quot;sAdresUr_pf&quot;,&quot;sPhoneUr_pf&quot;,&quot;end&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asSubekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='ur'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers13" name="принтформа якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zayava&quot;,&quot;zagolovok&quot;,&quot;obect_pf&quot;,&quot;obect_pf2&quot;,&quot;sAdresObject_pf&quot;,&quot;sPibFiz_pf&quot;,&quot;kved_pf&quot;,&quot;bankIdinn_pf&quot;,&quot;sAdresFiz_pf&quot;,&quot;phone_pf&quot;,&quot;end&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asSubekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='fiz'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${sDocConfidant},${sDocBase},${sDocAkt},${sDocProject},${sDocText},${sDocShow}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport},${sDocConfidant},${sDocReklama}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -127,19 +124,19 @@
         <activiti:formProperty id="reestr_numb" name="Реєстраційний номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_reestr" name="Укажіть дату реєстрації звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="pib_admin" name="Прізвище та ініціали адміністратора" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="decision_2" name="Прийняття рішення про надання дозволу" type="enum" required="true">
-          <activiti:value id="accept" name="надано дозвіл"></activiti:value>
-          <activiti:value id="reject" name="відмовлено у наданні дозволу"></activiti:value>
+        <activiti:formProperty id="decision_2" name="Прийняття рішення про погодження розміщення реклами" type="enum" required="true">
+          <activiti:value id="accept" name="погоджено"></activiti:value>
+          <activiti:value id="reject" name="не погоджено"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="rishen" name="Завантажте копію дозволу" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="comment_2" name="У разі відмови у наданні дозволу внесіть, будь ласка, коментар" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="rishen" name="Завантажте копію документу" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="comment_2" name="У разі відмови у погоджені дозволу внесіть, будь ласка, коментар" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka628" name="шапка у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers12" name="принтформа якщо юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_12&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zayava&quot;,&quot;zagolovok&quot;,&quot;obect_pf&quot;,&quot;obect_pf2&quot;,&quot;sAdresObject_pf&quot;,&quot;sNameUr_pf&quot;,&quot;kved_pf&quot;,&quot;edrpo_pf&quot;,&quot;sPibUr_pf&quot;,sAdresUr_pf&quot;,&quot;,sPhoneUr_pf&quot;,&quot;end&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asSubekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='ur'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers13" name="принтформа якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zayava&quot;,&quot;zagolovok&quot;,&quot;obect_pf&quot;,&quot;obect_pf2&quot;,&quot;sAdresObject_pf&quot;,&quot;sPibFiz_pf&quot;,&quot;kved_pf&quot;,&quot;edrpo_pf&quot;,&quot;bankIdinn_pf&quot;,&quot;sAdresFiz_pf&quot;,&quot;phone_pf&quot;,&quot;end&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asSubekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='fiz'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_630_print.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dnepr_cnap_630_print.html]" type="invisible" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers13" name="принтформа якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zayava&quot;,&quot;zagolovok&quot;,&quot;obect_pf&quot;,&quot;obect_pf2&quot;,&quot;sAdresObject_pf&quot;,&quot;sPibFiz_pf&quot;,&quot;kved_pf&quot;,&quot;bankIdinn_pf&quot;,&quot;sAdresFiz_pf&quot;,&quot;phone_pf&quot;,&quot;end&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asSubekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='fiz'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_631_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dnepr_cnap_631_print.html]" type="invisible" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -152,7 +149,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове  звернення. Дозвіл на проведення робіт на пам’ятках місцевого значення (крім пам’яток археології), їх територіях та в зонах охорони]]></activiti:string>
+          <activiti:string><![CDATA[Нове  звернення. Погодження розміщення реклами на пам’ятках місцевого значення, в межах зон охорони таких пам’яток]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -174,7 +171,7 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Дозвіл на проведення робіт на пам’ятках місцевого значення (крім пам’яток археології), їх територіях та в зонах охорони]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Погодження розміщення реклами на пам’ятках місцевого значення, в межах зон охорони таких пам’яток]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -201,7 +198,7 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:expression>"${email}"</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Дозвіл на проведення робіт на пам’ятках місцевого значення (крім пам’яток археології), їх територіях та в зонах охорони]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Погодження розміщення реклами на пам’ятках місцевого значення, в межах зон охорони таких пам’яток]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -227,7 +224,7 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:expression>"${email}"</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Дозвіл на проведення робіт на пам’ятках місцевого значення (крім пам’яток археології), їх територіях та в зонах охорони]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Погодження розміщення реклами на пам’ятках місцевого значення, в межах зон охорони таких пам’яток]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>"${rishen}",${PrintForm_1}</activiti:expression>
@@ -235,7 +232,7 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Вам enum{[decision_2]} на проведення робіт  на пам’ятках місцевого значення (крім пам’яток археології), їх територіях та в зонах охорони.&lt;br /&gt; 
+Розміщення реклами на пам’ятках місцевого значення, в межах зон охорони таких пам’яток - &lt;b&gt;enum{[decision_2]}&lt;/b&gt;.&lt;br /&gt; 
 ${comment_2} &lt;br /&gt; 
 Копія рішення знаходиться у додатку до листа.&lt;br /&gt;
 Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у ЦНАПі.&lt;br /&gt;&lt;br /&gt;
@@ -292,7 +289,7 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;strong&gt;Шановний(-а) колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
 ${sNameOrgan} прийняв кінцеве рішення по заявці [sID_Order], заявник - ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}.&lt;br /&gt;
-Заявнику enum{[decision_2]} та відправлено відповідне повідомлення і запрошення прийти до ЦНАПу за оригіналом рішення. &lt;br /&gt;
+Заявнику enum{[decision_2]} розміщення реклами на пам’ятках місцевого значення та відправлено відповідне повідомлення і запрошення прийти до ЦНАПу за оригіналом рішення. &lt;br /&gt;
 [pattern/mail/_common_signature.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -304,32 +301,17 @@ var per1 = "&lt;li&gt;Документ, що посвідчує особу&lt;/l
 var per2 = "&lt;li&gt;Роздруковану заяву, яку ви подавали в електронному вигляді (знаходиться у додатку до листа), засвідчену особистим підписом керівника  юридичної  особи, фізичної особи-підприємця або уповноваженої ними особи&lt;/li&gt;"
 var per3 = " "
 var per4 = " "
-var per5 = " "
-var per6 = " "
-var per7 = " "
 var per8 = " "
 var per9 = "res1"
 var per10 = "res2"
-if(execution.getVariable('sDocBase') != null){
-per3 = "&lt;li&gt;Документ, на основі якого планується проводити роботи (рішення місцевих органів влади та органів місцевого самоврядування).&lt;/li&gt;"
-}
-if(execution.getVariable('sDocAkt') != null){
-per4 = "&lt;li&gt;Акт технічного стану пам'ятки до початку проведення робіт.&lt;/li&gt;"
-}
-if(execution.getVariable('sDocProject') != null){
-per5 = "&lt;li&gt;Ескізний проект; вказати всі єлементи пам'ятки, їх розміри та матеріали.&lt;/li&gt;"
-}
-if(execution.getVariable('sDocText') != null){
-per6 = "&lt;li&gt;Тексти всіх написів на пам'ятці.&lt;/li&gt;"
-}
-if(execution.getVariable('sDocShow') != null){
-per7 = "&lt;li&gt;Перелік запланованих робіт.&lt;/li&gt;"
+if(execution.getVariable('sDocReklama') != null){
+per3 = "&lt;li&gt;Дозвіл на розміщення зовнішньої реклами з фотокарткою або комп'ютерним макетом місця с фрагментом місцевості, на якому планується розташування рекламного засобу.&lt;/li&gt;"
 }
 if(execution.getVariable('sDocConfidant') != null){
 per8 = "&lt;li&gt;Довіреність на право представляти інтереси субʼєкта господарювання в органах місцевого самоврядування&lt;/li&gt;"
 }
-res1 = '&lt;ol&gt;'+per1+per2+per3+per4+per5+per6+per7+per8+'&lt;/ol&gt;'
-res2 = '&lt;ol&gt;'+per3+per4+per5+per6+per7+per8+'&lt;/ol&gt;'
+res1 = '&lt;ol&gt;'+per1+per2+per3+per8+'&lt;/ol&gt;'
+res2 = '&lt;ol&gt;'+per3+per8+'&lt;/ol&gt;'
 execution.setVariable('sListDocumentsLetter', res1)
 execution.setVariable('sListDocumentsPrint', res2)
  </script>
@@ -359,8 +341,8 @@ execution.setVariable('sListDocumentsPrint', res2)
     <sequenceFlow id="flow64" sourceRef="servicetask4" targetRef="servicetask11"></sequenceFlow>
     <sequenceFlow id="flow65" sourceRef="servicetask11" targetRef="endevent2"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_630">
-    <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_630" id="BPMNPlane_dnepr_cnap_630">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_631">
+    <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_631" id="BPMNPlane_dnepr_cnap_631">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="70.0" y="70.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>

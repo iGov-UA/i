@@ -171,6 +171,9 @@ build_central-js ()
 		return
 	fi
 	if [ "$bSkipDeploy" == "true" ]; then
+		nRandomNumber=$(( ( RANDOM % 10 )  + 1 ))
+		echo "Sleeping for random number of seconds: $nRandomNumber sec."
+		sleep $nRandomNumber
 		while ps axg | grep -v grep | grep -q dashboard-js; do
 			echo "dashboard-js compilation is still running. we will wait until it finish."
 			sleep 5
@@ -187,6 +190,9 @@ build_central-js ()
 		rm -rf /tmp/$sProject
 		return
 	else
+		nRandomNumber=$(( ( RANDOM % 10 )  + 1 ))
+		echo "Sleeping for random number of seconds: $nRandomNumber sec."
+		sleep $nRandomNumber
 		while ps axg | grep -v grep | grep -q dashboard-js; do
 			echo "dashboard-js compilation is still running. we will wait until it finish."
 			sleep 5
@@ -215,6 +221,9 @@ build_dashboard-js ()
 		return
 	fi
 	if [ "$bSkipDeploy" == "true" ]; then
+		nRandomNumber=$(( ( RANDOM % 10 )  + 1 ))
+		echo "Sleeping for random number of seconds: $nRandomNumber sec."
+		sleep $nRandomNumber
 		while ps axg | grep -v grep | grep -q central-js; do
 			echo "central-js compilation is still running. we will wait until it finish."
 			sleep 5
@@ -232,6 +241,9 @@ build_dashboard-js ()
 		rm -rf /tmp/$sProject
 		return
 	else
+		nRandomNumber=$(( ( RANDOM % 10 )  + 1 ))
+		echo "Sleeping for random number of seconds: $nRandomNumber sec."
+		sleep $nRandomNumber
 		while ps axg | grep -v grep | grep -q central-js; do
 			echo "central-js compilation is still running. we will wait until it finish."
 			sleep 5
