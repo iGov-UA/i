@@ -17,6 +17,7 @@
         <activiti:formProperty id="sPosadaVid" name="До кого саме Ви маєте намір записатись на прийом" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sRozkladPriyom" name="Розклад прийому" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="Вкажіть день, у який Ви бажаєте записатись на прийом" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sMessageText" name="Стислий зміст питання" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk226" name="електронна пошта" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок" type="invisible"></activiti:formProperty>
@@ -84,6 +85,7 @@
         <activiti:formProperty id="clFio1" name="ПІБ того, кто прийде на прийом" type="string" default="${lastName_UA1} ${firstName_UA1} ${middleName_UA1}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPosadaVid" name="До кого саме записується на прийом громадянин" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="Бажаний день прийому" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sMessageText" name="Стислий зміст питання" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="proverka" name="Рішення про прийняття або відхилення заяви" type="enum">
           <activiti:value id="accept" name="Записати громадянина"></activiti:value>
           <activiti:value id="reject" name="Скасувати запис"></activiti:value>
@@ -154,7 +156,7 @@
 			Місце в черзі - ${NumbPers}
 			&lt;/p&gt;
 			&lt;p&gt;
-				Коментар державного службовця (за наявністю):&lt;br&gt;
+                               	Коментар державного службовця (за наявністю):&lt;br&gt;
 				${comment}
 			&lt;/p&gt;
 			&lt;p&gt;
@@ -175,17 +177,20 @@
         <activiti:formProperty id="NumbPers" name="Номер особи в черзі" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio1" name="ПІБ того, кто прийде на прийом" type="string" default="${lastName_UA1} ${firstName_UA1} ${middleName_UA1}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFIO" name="Прізвище, ім`я, по батькові громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sMessageText" name="Стислий зміст питання" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail громадянина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="vizit" name="Підсумок візиту" type="enum">
-          <activiti:value id="ok" name="Прийом проведено"></activiti:value>
-          <activiti:value id="nejav" name="Громадянин не з'явився"></activiti:value>
+        <activiti:formProperty id="vizit" name="Результат розгляду" type="enum">
+          <activiti:value id="ok" name="Вирішено позитивно"></activiti:value>
+          <activiti:value id="ok1" name="Надано роз’яснення"></activiti:value>
+          <activiti:value id="nejav2" name="Відмовлено"></activiti:value> 
+          <activiti:value id="nejav" name="Громадянин не з'явився"></activiti:value>      
         </activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow19" sourceRef="usertask2" targetRef="exclusivegateway2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow20" name="${vizit=='ok'}" sourceRef="exclusivegateway2" targetRef="servicetask8">
+    <sequenceFlow id="flow20" name="${vizit!='nejav'}" sourceRef="exclusivegateway2" targetRef="servicetask8">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${vizit=='ok'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask8" name="Фідбек" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -235,7 +240,7 @@
           <activiti:expression>[pattern/mail/_common_header.html]
                                     &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
-                                        На жаль Ви не з'явились на прийом до ${sPosadaVid} у призначений день і час.&lt;br&gt;
+                                        На жаль, Ви не з'явились на прийом до ${sPosadaVid} у призначений день і час.&lt;br&gt;
                                         При необхідності нового запису Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;
 									&lt;/p&gt;
 									[pattern/mail/_common_signature_start.html]

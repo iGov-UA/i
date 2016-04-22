@@ -17,7 +17,6 @@
           <activiti:value id="withdrawal" name="Заява щодо складу суду"></activiti:value>
           <activiti:value id="petition1" name="Клопотання про ознайомлення з матеріалами справи/касаційного провадження"></activiti:value>
           <activiti:value id="petition2" name="Клопотання про відкладення розгляду справи"></activiti:value>
-          <activiti:value id="petition3" name="Клопотання про колегіальний розгляд справи"></activiti:value>
           <activiti:value id="petition4" name="Клопотання про призначення експертизи"></activiti:value>
           <activiti:value id="petition5" name="Клопотання про зупинення касаційного провадження"></activiti:value>
           <activiti:value id="petition6" name="Клопотання про проведення відео, аудіо фіксації судового засідання"></activiti:value>
@@ -53,7 +52,6 @@
           <activiti:value id="withdrawal" name="Заява щодо складу суду"></activiti:value>
           <activiti:value id="petition1" name="Клопотання про ознайомлення з матеріалами справи/касаційного провадження"></activiti:value>
           <activiti:value id="petition2" name="Клопотання про відкладення розгляду справи"></activiti:value>
-          <activiti:value id="petition3" name="Клопотання про колегіальний розгляд справи"></activiti:value>
           <activiti:value id="petition4" name="Клопотання про призначення експертизи"></activiti:value>
           <activiti:value id="petition5" name="Клопотання про зупинення касаційного провадження"></activiti:value>
           <activiti:value id="petition6" name="Клопотання про проведення відео, аудіо фіксації судового засідання"></activiti:value>
@@ -77,6 +75,7 @@
           <activiti:value id="reject" name="відхилити звернення"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відхилення звернення, внесіть, будь ласка, коментар" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/CourtOfCassation_print.html]" type="invisible" default="верифікація заявника" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsLetter" name="перелік документів" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -164,61 +163,58 @@
        <script>
 var per1 = " "
 if(execution.getVariable('sCategoryDoc1') == 'recall'){
-per1 = "Відзив на касаційну скаргу."
+per1 = "Відзив на касаційну скаргу"
 }
 if(execution.getVariable('sCategoryDoc1') == 'explanation'){
-per1 = "Письмові пояснення."
+per1 = "Письмові пояснення"
 }
 if(execution.getVariable('sCategoryDoc1') == 'withdrawal'){
-per1 = "Заява щодо складу суду."
+per1 = "Заява щодо складу суду"
 }
 if(execution.getVariable('sCategoryDoc1') == 'petition1'){
-per1 = "Клопотання про ознайомлення з матеріалами справи/касаційного провадження."
+per1 = "Клопотання про ознайомлення з матеріалами справи/касаційного провадження"
 }
 if(execution.getVariable('sCategoryDoc1') == 'petition2'){
-per1 = "Клопотання про відкладення розгляду справи."
-}
-if(execution.getVariable('sCategoryDoc1') == 'petition3'){
-per1 = "Клопотання про колегіальний розгляд справи."
+per1 = "Клопотання про відкладення розгляду справи"
 }
 if(execution.getVariable('sCategoryDoc1') == 'petition4'){
-per1 = "Клопотання про призначення експертизи."
+per1 = "Клопотання про призначення експертизи"
 }
 if(execution.getVariable('sCategoryDoc1') == 'petition5'){
-per1 = "Клопотання про зупинення касаційного провадження."
+per1 = "Клопотання про зупинення касаційного провадження"
 }
 if(execution.getVariable('sCategoryDoc1') == 'petition6'){
-per1 = "Клопотання про проведення відео, аудіо фіксації судового засідання."
+per1 = "Клопотання про проведення відео, аудіо фіксації судового засідання"
 }
 if(execution.getVariable('sCategoryDoc1') == 'petition7'){
-per1 = "Клопотання про участь в засіданні в режимі відеоконференції."
+per1 = "Клопотання про участь в засіданні в режимі відеоконференції"
 }
 if(execution.getVariable('sCategoryDoc1') == 'petition8'){
-per1 = "Клопотання про відмову від касаційної скарги."
+per1 = "Клопотання про відмову від касаційної скарги"
 }
 if(execution.getVariable('sCategoryDoc1') == 'petition9'){
-per1 = "Клопотання про зупинення виконання рішення суду."
+per1 = "Клопотання про зупинення виконання рішення суду"
 }
 if(execution.getVariable('sCategoryDoc1') == 'petition10'){
 per1 = "Клопотання про залучення доказів."
 }
 if(execution.getVariable('sCategoryDoc1') == 'petition11'){
-per1 = "Клопотання про поновлення строку."
+per1 = "Клопотання про поновлення строку"
 }
 if(execution.getVariable('sCategoryDoc1') == 'petition12'){
-per1 = "Клопотання про роз'яснення судового рішення."
+per1 = "Клопотання про роз'яснення судового рішення"
 }
 if(execution.getVariable('sCategoryDoc1') == 'petition13'){
-per1 = "Клопотання про виправлення помилки в судовому решенні."
+per1 = "Клопотання про виправлення помилки в судовому решенні"
 }
 if(execution.getVariable('sCategoryDoc1') == 'petition14'){
 per1 = "Клопотання про винесення додаткового рішення."
 }
 if(execution.getVariable('sCategoryDoc1') == 'petition15'){
-per1 = "Клопотання про видачу копії судового рішення."
+per1 = "Клопотання про видачу копії судового рішення"
 }
 if(execution.getVariable('sCategoryDoc1') == 'petition16'){
-per1 = "Клопотання про забезпечення позову (касаційної скарги)."
+per1 = "Клопотання про забезпечення позову (касаційної скарги)"
 }
 if(execution.getVariable('sCategoryDoc1') == 'other'){
 per1 = execution.getVariable('sOther1')

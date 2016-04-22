@@ -169,7 +169,7 @@ public class DocumentAccessDaoImpl extends GenericEntityDao<DocumentAccess> impl
             if (generalConfig.bTest()) {
                 sReturn = "test";
             } else {
-                sReturn = oManagerOTP.sendPasswordOTP(sPhone, sAnswer);
+                sReturn = oManagerOTP.sendPasswordOTP(sPhone, sAnswer, false);
             }
 
             LOG.info("[bSentDocumentAccessOTP]sReturn={}",  sReturn);

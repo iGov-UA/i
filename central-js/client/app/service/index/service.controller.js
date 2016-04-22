@@ -1,7 +1,7 @@
 angular.module('app')
   .controller('ServiceController',
-  ['$scope', '$rootScope', '$timeout', 'CatalogService', 'AdminService', '$filter', 'statesRepository', 'RegionListFactory', 'LocalityListFactory', 'messageBusService', 'EditServiceTreeFactory',
-  function($scope, $rootScope, $timeout, CatalogService, AdminService, $filter, statesRepository, RegionListFactory, LocalityListFactory, messageBusService, EditServiceTreeFactory) {
+  ['$scope', '$rootScope', '$timeout', 'CatalogService', 'AdminService', '$filter', 'statesRepository', 'RegionListFactory', 'LocalityListFactory', 'messageBusService', 'EditServiceTreeFactory', '$location',
+  function($scope, $rootScope, $timeout, CatalogService, AdminService, $filter, statesRepository, RegionListFactory, LocalityListFactory, messageBusService, EditServiceTreeFactory, $location) {
 
     $scope.catalog = [];
     $scope.catalogCounts = {0: 0, 1: 0, 2: 0};
@@ -57,5 +57,16 @@ angular.module('app')
         });
       });
       $scope.catalog = ctlg;
+    };
+
+    // Check that the sub-domain where the user is located - sfs.
+    // This is necessary because in other domains / sub-domains " Податки " should not be displayed in 3 columns.
+    $scope.sfsSubdomainCheck = function(){
+      var subDomainSearch = $location.host().split('.');
+      for(i=0; i<subDomainSearch.length; i++){
+        if(subDomainSearch[i] == 'sfs'){
+          return true
+        }
+      }
     };
   }]);
