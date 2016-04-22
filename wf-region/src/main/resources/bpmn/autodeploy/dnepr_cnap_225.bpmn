@@ -45,6 +45,8 @@
         <activiti:formProperty id="sPhoneOrgan" name="телефон для справок" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="marker" name="mShowFields" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sKadastrObject&quot;,&quot;sVitiagNo&quot;,&quot;sVitiagDate&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;aDocErr&quot;},&quot;sCondition&quot;:&quot;[sClient]=='enum1'&quot;},&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;sDovidkaNo&quot;,&quot;sDovidkaDate&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;aDocErr&quot;},&quot;sCondition&quot;:&quot;[sClient]=='enum2'&quot;},&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;sCopyNo&quot;,&quot;sCopyDate&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;aDocErr&quot;},&quot;sCondition&quot;:&quot;[sClient]=='enum3'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('dneprCnap/dnepr_225.json')}"></activiti:formProperty>
+        <activiti:formProperty id="bFlag" name="Перемикач регіонів" type="invisible" default="easy"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
@@ -215,7 +217,7 @@ ${sNameOrgan}<br />
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow25" sourceRef="servicetask7" targetRef="exclusivegateway3"></sequenceFlow>
     <sequenceFlow id="flow26" name="ЦНАП-ЦНАП" sourceRef="exclusivegateway3" targetRef="usertask2">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bFlagRda360=='easy'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bFlag=='easy'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow22" sourceRef="servicetask8" targetRef="endevent1"></sequenceFlow>
     <userTask id="usertask2" name="Підготовка відповіді ЦНАП" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
@@ -358,7 +360,7 @@ ${sNameOrgan}<br />
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow27" name="ЦНАП-ДГК-ЦНАП" sourceRef="exclusivegateway3" targetRef="servicetask9">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bFlagRda360=='hard'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bFlag=='hard'}]]></conditionExpression>
     </sequenceFlow>
     <userTask id="usertask3" name="Обробка документів в ДГК" activiti:candidateGroups="dgk_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
