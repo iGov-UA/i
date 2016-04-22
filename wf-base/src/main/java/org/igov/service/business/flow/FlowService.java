@@ -211,51 +211,47 @@ public class FlowService implements ApplicationContextAware {
             throw new Exception(sError);
         }
 
-        for (int i = 0; i < nSlots; ++i) {
-            FlowSlot flowSlot = flowSlots.get(i);
-            Long nID_FlowSlot = flowSlot.getId();
-            FlowSlotTicket oFlowSlotTicket = oFlowSlotTicketDao.findFlowSlotTicket(flowSlot.getId());
-            if (oFlowSlotTicket == null) {
-                oFlowSlotTicket = new FlowSlotTicket();
-            } else {
-                if (FlowSlotVO.bBusyStatic(oFlowSlotTicket)) {
-                    String sError = "FlowSlotTicket with nID_FlowSlot=" + nID_FlowSlot
-                            + " is bBusyStatic by getnID_Task_Activiti()=" + oFlowSlotTicket.getnID_Task_Activiti();
+        FlowSlotTicket oFlowSlotTicket = oFlowSlotTicketDao.findFlowSlotTicket(first_nID_FlowSlot);
+        if (oFlowSlotTicket == null) {
+            oFlowSlotTicket = new FlowSlotTicket();
+        } else {
+            if (FlowSlotVO.bBusyStatic(oFlowSlotTicket)) {
+                String sError = "FlowSlotTicket with nID_FlowSlot=" + first_nID_FlowSlot
+                        + " is bBusyStatic by getnID_Task_Activiti()=" + oFlowSlotTicket.getnID_Task_Activiti();
+                LOG.error(sError);
+                throw new Exception(sError);
+            } else if (FlowSlotVO.bBusyTemp(oFlowSlotTicket)) {
+                LOG.info("(nID_Subject={})", nID_Subject);
+                LOG.info("(getnID_Subject()={})", oFlowSlotTicket.getnID_Subject());
+                if (!nID_Subject.equals(oFlowSlotTicket.getnID_Subject())) {
+                    String sError =
+                            "FlowSlotTicket with nID_FlowSlot=" + first_nID_FlowSlot + " is bBusyTemp from getsDateEdit()="
+                                    + oFlowSlotTicket.getsDateEdit();
                     LOG.error(sError);
                     throw new Exception(sError);
-                } else if (FlowSlotVO.bBusyTemp(oFlowSlotTicket)) {
-                    LOG.info("(nID_Subject={})", nID_Subject);
-                    LOG.info("(getnID_Subject()={})", oFlowSlotTicket.getnID_Subject());
-                    if (!nID_Subject.equals(oFlowSlotTicket.getnID_Subject())) {
-                        String sError =
-                                "FlowSlotTicket with nID_FlowSlot=" + nID_FlowSlot + " is bBusyTemp from getsDateEdit()="
-                                        + oFlowSlotTicket.getsDateEdit();
-                        LOG.error(sError);
-                        throw new Exception(sError);
-                    }
                 }
-            }
-
-            oFlowSlotTicket.setnID_Subject(nID_Subject);
-            oFlowSlotTicket.setnID_Task_Activiti(nID_Task_Activiti);
-
-            oFlowSlotTicket.setoFlowSlot(flowSlot);
-            oFlowSlotTicket.setsDateStart(flowSlot.getsDate());
-
-            Duration duration = ToolDuration.parseDuration(flowSlot.getsDuration());
-            DateTime finishDateTime = flowSlot.getsDate().plusMinutes(duration.getMinutes());
-            oFlowSlotTicket.setsDateFinish(finishDateTime);
-
-            oFlowSlotTicket.setsDateEdit(DateTime.now());
-
-            oFlowSlotTicketDao.saveOrUpdate(oFlowSlotTicket);
-
-            if (i == 0) {
-                res = oFlowSlotTicket;
             }
         }
 
-        return res;
+        oFlowSlotTicket.setnID_Subject(nID_Subject);
+        oFlowSlotTicket.setnID_Task_Activiti(nID_Task_Activiti);
+
+        oFlowSlotTicket.getaFlowSlot().addAll(flowSlots);
+
+        oFlowSlotTicket.setsDateStart(flowSlots.get(0).getsDate());
+
+        DateTime endDate = oFlowSlotTicket.getsDateStart();
+        for (FlowSlot s : flowSlots) {
+            Duration duration = ToolDuration.parseDuration(s.getsDuration());
+            endDate.plusMinutes(duration.getMinutes());
+        }
+        oFlowSlotTicket.setsDateFinish(endDate);
+
+        oFlowSlotTicket.setsDateEdit(DateTime.now());
+
+        oFlowSlotTicketDao.saveOrUpdate(oFlowSlotTicket);
+
+        return oFlowSlotTicket;
     }
 
     /**
@@ -313,7 +309,7 @@ public class FlowService implements ApplicationContextAware {
 
                 // detach existing tickets from slots
                 for (FlowSlotTicket oFlowSlotTicket : slot.getFlowSlotTickets()) {
-                    oFlowSlotTicket.setoFlowSlot(null);
+                    oFlowSlotTicket.getaFlowSlot().clear();
                     oFlowSlotTicket.setsDateEdit(operationTime);
                 }
                 res.getaDeletedSlot().add(new FlowSlotVO(slot));
@@ -369,8 +365,8 @@ public class FlowService implements ApplicationContextAware {
         LOG.info("{}", sb.toString());
 
         currRes.put("nID", currFlowSlowTicket.getId().toString());
-        currRes.put("nID_FlowSlot", currFlowSlowTicket.getoFlowSlot() != null ?
-                currFlowSlowTicket.getoFlowSlot().getId().toString() : "");
+        currRes.put("nID_FlowSlot", !currFlowSlowTicket.getaFlowSlot().isEmpty() ?
+                currFlowSlowTicket.getaFlowSlot().get(0).getId().toString() : "");
         currRes.put("nID_Subject", currFlowSlowTicket.getnID_Subject().toString());
         Date startDate = new Date(currFlowSlowTicket.getsDateStart().getMillis());
         currRes.put("sDateStart", dateFormat.format(startDate));
