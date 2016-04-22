@@ -74,7 +74,7 @@ public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListene
                 String name = (String) ((JSONObject) content).get("name");
                 runtimeService.setVariable(execution.getProcessInstanceId(), "sHead_Document_UkrDoc", name);
                 String text = (String) ((JSONObject) content).get("text");
-                runtimeService.setVariable(execution.getProcessInstanceId(), "sBody_Document_UkrDoc", text);
+                runtimeService.setVariable(execution.getProcessInstanceId(), "sDocument_Body_UkrDoc", text);
                 try {
                     LOG.info("class: " + ((JSONObject) ((JSONObject) content).get("extensions")).get("files").getClass());
                     JSONArray files = (JSONArray) ((JSONObject) ((JSONObject) content).get("extensions")).get("files");
@@ -88,8 +88,8 @@ public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListene
                             String fileName = file.getString("name");
 
                             LOG.info("view_url:" + generalConfig.getsUkrDocServerAddress() + view_url + " fileName: " + fileName);
-                            ResponseEntity responseEntity = new RestRequest().getResponseEntity(generalConfig.getsUkrDocServerAddress() + view_url, MediaType.APPLICATION_JSON,
-                                    StandardCharsets.UTF_8, String.class, headers);
+                            ResponseEntity<byte[]> responseEntity = new RestRequest().getResponseEntity(generalConfig.getsUkrDocServerAddress() + view_url, MediaType.APPLICATION_JSON,
+                                    StandardCharsets.UTF_8, byte[].class, headers);
                             LOG.info("Ukrdoc response getContentFile getBody: " + responseEntity.getBody() 
                                     + " getHeaders: " + responseEntity.getHeaders().entrySet());
                             try {
@@ -99,7 +99,7 @@ public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListene
                                 //        = new ByteArrayMultipartFile(contentStringToByte(resp), fileName, fileNameOrigin, responseEntity.getHeaders().getContentType().toString());
                                 
                                 ByteArrayMultipartFile oByteArrayMultipartFile
-                                        = new ByteArrayMultipartFile(resp.getBytes(), fileName, fileNameOrigin, responseEntity.getHeaders().getContentType().toString());
+                                        = new ByteArrayMultipartFile(responseEntity.getBody(), fileName, fileNameOrigin, responseEntity.getHeaders().getContentType().toString());
                                 
                                 Attachment attachment = taskService.createAttachment(oByteArrayMultipartFile.getContentType() + ";" + oByteArrayMultipartFile.getExp(), 
                                         delegateTask.getId(), execution.getProcessInstanceId(), 

@@ -1096,7 +1096,7 @@
         <activiti:formProperty id="sChannelApp" name="Канал звернення" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAnswer" name="Відповідь колл-центра" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAnswerStatus" name="Статус відповіді колл-центра" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody_Document_UkrDoc" name="Відповідь на звернення" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sDocument_Body_UkrDoc" name="Відповідь на звернення" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sEnumTop" name="Енам подтематика" type="invisible" default="В РАЗРАБОТКЕ"></activiti:formProperty>
         <activiti:formProperty id="sNameDepartment" name="Назва управлиння (департаменту)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="asStatusOperator" name="Обробка звернення" type="enum">
@@ -1136,7 +1136,7 @@
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 Ваше звернення до Дніпропетровської міської ради - опрацьовано.&lt;/p&gt;
 &lt;p&gt;Відповідь:&lt;br&gt;
-&lt;i&gt;${sBody_Document_UkrDoc}&lt;/i&gt;
+&lt;i&gt;${sDocument_Body_UkrDoc}&lt;/i&gt;
 &lt;/p&gt;
 &lt;p&gt;Якщо Ви бажаєте зберегти копію відповіді у письмовому вигляді, Вам необхідно роздрукувати електронний документ прикріплений до листа.&lt;/p&gt;
 [pattern/mail/_common_signature_start.html]
@@ -1682,7 +1682,7 @@
         <activiti:formProperty id="sID_Document_UkrDoc" name="Number UkrDoc" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sStatusName_UkrDoc" name="Status UkrDoc" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sHead_Document_UkrDoc" name="Заголовок UkrDoc" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody_Document_UkrDoc" name="Тело ответа UkrDoc" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sDocument_Body_UkrDoc" name="Тело ответа UkrDoc" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nID_DocumentTemplate_UkrDoc" name="Шаблон ответного документа" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${CreateDocument_UkrDoc}">
           <activiti:field name="sLoginAuthor">
@@ -1879,7 +1879,7 @@ p {font-size: 14px;}
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 &lt;p&gt;
 Ваше звернення до Дніпропетровської міської ради - опрацьовано. &lt;br &gt;&lt;br&gt;
-Рішення міської ради: ${sBody_Document_UkrDoc}&lt;br&gt;&lt;br&gt;
+Рішення міської ради: ${sDocument_Body_UkrDoc}&lt;br&gt;&lt;br&gt;
 Номер документа: ${sID_Document_UkrDoc}&lt;br&gt;
 
 
@@ -2443,10 +2443,10 @@ execution.setVariable('sAnswerEmail', res)</script>
         <activiti:formProperty id="sAnswer" name="Ответ кол-центра" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAnswerStatus" name="Статус ответа" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEnumTop" name="Енам подтематика" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody_Document_UkrDoc" name="Відповідь управління" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sDocument_Body_UkrDoc" name="Відповідь управління" type="textArea"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${SendObject_Corezoid}">
           <activiti:field name="soJSON">
-            <activiti:expression>{"sFIO_Subject_Client":"value{[clFio]}","sPhonePrivate_SubjectContact_Client":"value{[sPhone]}","sPhoneCall_SubjectContact_Client":"value{[sPhoneCall_SubjectContact_Client]}","sID_Order":"[sID_Order]","sDate_Order":"[sDateCreate]","sAddress":"value{[sAdressProbl]}","sCategory":"enum{[asKindTr]}","sType":"enum{[asTypeTr]}","sHead":"enum{[asTopHead]}","sHeadSub":"value{[sEnumTop]}","sBody":"value{[sReason]}","nDaysRemain":"value{[nDaysRemain]}","sAnswer_UkrDoc":"value{[sBody_Document_UkrDoc]}"}</activiti:expression>
+            <activiti:expression>{"sFIO_Subject_Client":"value{[clFio]}","sPhonePrivate_SubjectContact_Client":"value{[sPhone]}","sPhoneCall_SubjectContact_Client":"value{[sPhoneCall_SubjectContact_Client]}","sID_Order":"[sID_Order]","sDate_Order":"[sDateCreate]","sAddress":"value{[sAdressProbl]}","sCategory":"enum{[asKindTr]}","sType":"enum{[asTypeTr]}","sHead":"enum{[asTopHead]}","sHeadSub":"value{[sEnumTop]}","sBody":"value{[sReason]}","nDaysRemain":"value{[nDaysRemain]}","sAnswer_UkrDoc":"value{[sDocument_Body_UkrDoc]}"}</activiti:expression>
           </activiti:field>
           <activiti:field name="sID_Conveyour">
             <activiti:expression>95289</activiti:expression>
@@ -2990,7 +2990,7 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sEnumAppeal5" name="Портал"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sChannelApp" name="Канал звернення" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody_Document_UkrDoc" name="Відповідь на звернення" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sDocument_Body_UkrDoc" name="Відповідь на звернення" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="asStatusSuper" name="Обрати спеціаліста" type="enum">
           <activiti:value id="sOperator_1" name="Оператор 1"></activiti:value>
           <activiti:value id="sOperator_2" name="Оператор 2"></activiti:value>
@@ -3793,7 +3793,7 @@ execution.setVariable('sNameDepartment', per2)</script>
           <activiti:value id="sEnumAppeal5" name="Портал"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sQuickAnswer" name="Відповідь на звернення" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sBody_Document_UkrDoc" name="Відповідь з управлиння" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sDocument_Body_UkrDoc" name="Відповідь з управлиння" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/dneprMVK/dnepr_mvk_291_common_print.html]" type="invisible" default="Форма письмової відповіді" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
