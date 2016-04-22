@@ -291,6 +291,11 @@ p {font-size: 14px;}
             <activiti:expression><![CDATA[10677]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="#{GetDocument_UkrDoc}">
+          <activiti:field name="sID_Document">
+            <activiti:expression><![CDATA[10300260:2016]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask6" name="Відповідь громадянину" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -432,7 +437,7 @@ execution.setVariable('sDistr', per1)</script>
         <activiti:formProperty id="sDocument_Body_UkrDoc" name="Status UkrDoc" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="#{GetDocument_UkrDoc}">
           <activiti:field name="sID_Document">
-            <activiti:expression><![CDATA[10300260:2016]]></activiti:expression>
+            <activiti:expression><![CDATA[${sID_Document_UkrDoc}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
