@@ -21,7 +21,7 @@
         <activiti:formProperty id="sDocName" name="Назва документа" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sGoal10" name="Мета отримання документа" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="docDateFormat" name="Дата прийняття документа" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="docDateFormat" name="Дата прийняття документа" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта" type="invisible"></activiti:formProperty>
@@ -33,8 +33,10 @@
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow26" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
-    <scriptTask id="scripttask1" name="Формат даты" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>execution.setVariable("docDateFormat", execution.getVariable("sDocDate").format("dd.MM.yyyy"))</script>
+    <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>
+      	execution.setVariable("docDateFormat", execution.getVariable("sDocDate").format("dd.mm.yyyy"))
+      </script>
     </scriptTask>
     <sequenceFlow id="flow27" sourceRef="scripttask1" targetRef="servicetask1"></sequenceFlow>    
     <serviceTask id="servicetask1" name="Загрузка файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -251,7 +253,7 @@
 			<p>На жаль, для виконання вашого запиту недостатньо інформації.</p>
 			<p>${comment}</p>
 			За необхідності Ви можете подати ще одну заяву на порталі <a href="https://igov.org.ua/" target="_blank">igov.org.ua</a><br><br>	
-			Якщо у вас виникли питання, Ви можете звернутись до
+			Якщо у вас виникли питання, Ви можете звернутись до<br>
 			${sAddress}<br>
 			${sWorkTime}<br>
 			${sPhoneOrgan}<br><br><br>		
