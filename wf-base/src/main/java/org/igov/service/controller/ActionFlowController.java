@@ -61,6 +61,7 @@ public class ActionFlowController {
      * @param nDays число дней от сегодняшего включительно(или sDateStart, если задан), до nDays в будующее за который нужно вернуть слоты (опциональный, по умолчанию 177 - пол года)
      * @param nFreeDays  число дней со слотами будут включаться в результат пока не наберется указанное кол-во свободных дней (опциональный, по умолчанию 60)
      * @param sDateStart строка опциональный параметр, определяющие дату начала в формате "yyyy-MM-dd", с которую выбрать слоты. При наличии этого параметра слоты возвращаются только за указанный период(число дней задается nDays).
+	 * @param nSlots число, опциональный параметр (по умолчанию 1), группировать слоты по заданному числу штук
      */
     @ApiOperation(value = "Получение слотов по сервису сгруппированных по дням", notes = "##### Пример:\n"
 	        + "https://test.igov.org.ua/wf/service/action/flow/getFlowSlots_ServiceData?nID_ServiceData=1 \n"
@@ -114,7 +115,8 @@ public class ActionFlowController {
 	    @ApiParam(value = "булевое значение, если false то из возвращаемого объекта исключаются элементы, содержащие \"bHasFree\":false \"bFree\":false (опциональный, по умолчанию false)", required = false) @RequestParam(value = "bAll", required = false, defaultValue = "false") boolean bAll,
 	    @ApiParam(value = "число дней со слотами будут включаться в результат пока не наберется указанное кол-во свободных дней (опциональный, по умолчанию 60)", required = false) @RequestParam(value = "nFreeDays", required = false, defaultValue = "60") int nFreeDays,
 	    @ApiParam(value = "число дней от сегодняшего включительно(или sDateStart, если задан), до nDays в будующее за который нужно вернуть слоты (опциональный, по умолчанию 177 - пол года)", required = false) @RequestParam(value = "nDays", required = false, defaultValue = "177") int nDays,
-	    @ApiParam(value = "строка параметр, определяющие дату начала в формате \"yyyy-MM-dd\", с которую выбрать слоты. При наличии этого параметра слоты возвращаются только за указанный период(число дней задается nDays)", required = false) @RequestParam(value = "sDateStart", required = false) String sDateStart
+	    @ApiParam(value = "строка параметр, определяющие дату начала в формате \"yyyy-MM-dd\", с которую выбрать слоты. При наличии этого параметра слоты возвращаются только за указанный период(число дней задается nDays)", required = false) @RequestParam(value = "sDateStart", required = false) String sDateStart,
+		@ApiParam(value = "число, опциональный параметр (по умолчанию 1), группировать слоты по заданному числу штук", required = false) @RequestParam(value = "nSlots", defaultValue = "1", required = false) Integer nSlots
     ) throws Exception {
 
         DateTime oDateStart = DateTime.now().withTimeAtStartOfDay();
@@ -127,7 +129,7 @@ public class ActionFlowController {
         }
 
         Days res = oFlowService.getFlowSlots(nID_Service, nID_ServiceData, sID_BP, nID_SubjectOrganDepartment,
-                oDateStart, oDateEnd, bAll, nFreeDays);
+                oDateStart, oDateEnd, bAll, nFreeDays, nSlots);
 
         return JsonRestUtils.toJsonResponse(res);
     }
@@ -174,6 +176,7 @@ public class ActionFlowController {
      * @param nID_FlowSlot        ИД сущности FlowSlot/ обязательный
      * @param nID_Subject         ИД сущности Subject — субьект пользователь услуги, который подписывается на слот/ обязательный
      * @param nID_Task_Activiti   ИД таски активити процесса предоставления услуги (не обязательный — вначале он null, а потом засчитывается после подтверждения тикета и создания процесса)/ опциональный
+	 * @param nSlots              Кол-во слотов, которые нужно зарезервировать подряд включая текущий (по умолчанию 1)
      * @return
      * @throws Exception 
      */
@@ -193,11 +196,13 @@ public class ActionFlowController {
     @ResponseBody
     ResponseEntity saveFlowSlotTicket(@ApiParam(value = "ИД сущности FlowSlot", required = true) @RequestParam(value = "nID_FlowSlot") Long nID_FlowSlot,
 	    @ApiParam(value = "ИД сущности Subject — субьект пользователь услуги, который подписывается на слот", required = true) @RequestParam(value = "nID_Subject") Long nID_Subject,
-	    @ApiParam(value = "ИД таски активити процесса предоставления услуги (не обязательный — вначале он null, а потом засчитывается после подтверждения тикета и создания процесса)", required = false) @RequestParam(value = "nID_Task_Activiti", required = false) Long nID_Task_Activiti) throws Exception {
+	    @ApiParam(value = "ИД таски активити процесса предоставления услуги (не обязательный — вначале он null, а потом засчитывается после подтверждения тикета и создания процесса)", required = false) @RequestParam(value = "nID_Task_Activiti", required = false) Long nID_Task_Activiti,
+		@ApiParam(value = "Кол-во слотов идущих подряд включая текущий (без зазоров времени между соседними), которые надо зарезервировать", required = true) @RequestParam(value = "nSlots", defaultValue = "1", required = false) Integer nSlots) throws Exception {
 
-        FlowSlotTicket oFlowSlotTicket = oFlowService.saveFlowSlotTicket(nID_FlowSlot, nID_Subject, nID_Task_Activiti);
+        FlowSlotTicket oFlowSlotTicket = oFlowService.saveFlowSlotTicket(nID_FlowSlot, nID_Subject, nID_Task_Activiti,
+				nSlots);
 
-        return JsonRestUtils.toJsonResponse(new SaveFlowSlotTicketResponse(oFlowSlotTicket.getId()));
+        return JsonRestUtils.toJsonResponse(new SaveFlowSlotTicketResponse(oFlowSlotTicket.getId(), nSlots));
     }
 
     /**

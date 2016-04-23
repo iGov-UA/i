@@ -119,7 +119,7 @@ public class JobBuilderFlowSlots extends IAutowiredSpringJob {
         LOG.info(" oDateEnd = {}", oDateEnd);
 
         Days res = oFlowService.getFlowSlots(nID_Service, nID_ServiceData, sID_BP, nID_SubjectOrganDepartment,
-                oDateStart, oDateEnd, bAll, WORK_DAYS_NEEDED); //WORK_DAYS_NEEDED
+                oDateStart, oDateEnd, bAll, WORK_DAYS_NEEDED, 1); //WORK_DAYS_NEEDED
         LOG.info(" Days = {}", res);
 
         nFreeWorkDaysFact = res.getaDay().size();

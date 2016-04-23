@@ -13,6 +13,7 @@ import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
 import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
 import org.igov.model.action.task.core.entity.ListKeyable;
+import org.igov.model.flow.FlowSlot;
 import org.igov.model.flow.FlowSlotDao;
 import org.igov.model.flow.FlowSlotTicket;
 import org.igov.model.flow.FlowSlotTicketDao;
@@ -402,6 +403,7 @@ public abstract class AbstractModelTask {
                 LOG.info("(nID_FlowSlotTicket={})", nID_FlowSlotTicket);
                 String sDate = (String) m.get(QueueDataFormType.sDate);
                 LOG.info("(sDate={})", sDate);
+                int nSlots = QueueDataFormType.get_nSlots(m);
 
                 try {
 
@@ -434,15 +436,15 @@ public abstract class AbstractModelTask {
                             throw new Exception(sError);
                         }
                     } else {
-                        long nID_FlowSlot = oFlowSlotTicket.getoFlowSlot().getId();
-                        LOG.info("(nID_FlowSlot={})", nID_FlowSlot);
+                        LOG.info("(nID_FlowSlot={})", !oFlowSlotTicket.getaFlowSlot().isEmpty() ?
+                                oFlowSlotTicket.getaFlowSlot().get(0).getId() : null);
                         long nID_Subject = oFlowSlotTicket.getnID_Subject();
                         LOG.info("(nID_Subject={})", nID_Subject);
 
                         oFlowSlotTicket.setnID_Task_Activiti(nID_Task_Activiti);
                         oFlowSlotTicketDao.saveOrUpdate(oFlowSlotTicket);
                         LOG.info("(JSON={})", JsonRestUtils
-                                .toJsonResponse(new SaveFlowSlotTicketResponse(oFlowSlotTicket.getId())));
+                                .toJsonResponse(new SaveFlowSlotTicketResponse(oFlowSlotTicket.getId(), nSlots)));
                         oExecution.setVariable("date_of_visit", sDate);
                         LOG.info("(date_of_visit={})", sDate);
                     }
