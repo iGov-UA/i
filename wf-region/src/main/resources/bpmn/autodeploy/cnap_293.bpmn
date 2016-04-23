@@ -16,7 +16,7 @@
           <activiti:value id="sDocTypeGorsovet" name="копія рішення міської ради"></activiti:value>
           <activiti:value id="sDocTypeGolova" name="копія розпорядження міського голови"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDocDate" name="Дата прийняття документа; в форматі ДД.ММ.РРРР" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDocDate" name="Дата прийняття документа" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocNumber" name="Номер документа" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocName" name="Назва документа" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sGoal10" name="Мета отримання документа" type="string" required="true"></activiti:formProperty>
@@ -87,9 +87,9 @@
     <sequenceFlow id="flow16" sourceRef="servicetask5" targetRef="usertask1"></sequenceFlow>
     <userTask id="usertask1" name="Перевірка вхідних даних" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім`я" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Орган обслуговування" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFIO" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Домашня адреса" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
@@ -171,14 +171,13 @@
     <sequenceFlow id="flow17" sourceRef="servicetask7" targetRef="usertask2"></sequenceFlow>    
     <userTask id="usertask2" name="Опрацювання звернення" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім`я" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Орган обслуговування" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFIO" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Домашня адреса" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="request" name="Запитуваний документ" type="textArea" default="enum{[asDocType]} ${docTyp} №  ${sDocNumber} від  ${sDocDate}: ${sDocName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="request" name="Запитуваний документ" type="textArea" default="${docTyp} №  ${sDocNumber} від  ${sDocDate}: ${sDocName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="request_goal" name="Мета запиту" type="string" default="${sGoal10}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="proverka" name="Рішення за підсумком опрацювання звернення" type="enum" required="true">
           <activiti:value id="ok" name="Копію виготовлено"></activiti:value>
