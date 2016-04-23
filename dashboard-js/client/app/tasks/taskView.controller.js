@@ -18,6 +18,10 @@
           }
         };
 
+        $scope.isShowExtendedLink = function () {
+          return tasks.isFullProfileAvailableForCurrentUser(taskData);
+        };
+
         $scope.taskData = taskData;
         $scope.printTemplateList = [];
         $scope.model = stateModel;
