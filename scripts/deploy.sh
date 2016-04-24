@@ -171,7 +171,7 @@ build_central-js ()
 		return
 	fi
 	if [ "$bSkipDeploy" == "true" ]; then
-		nRandomNumber=$(( ( RANDOM % 10 )  + 1 ))
+		nRandomNumber=$(( ( RANDOM % 30 )  + 1 ))
 		echo "Sleeping for random number of seconds: $nRandomNumber sec."
 		sleep $nRandomNumber
 		while ps axg | grep -v grep | grep -q dashboard-js; do
@@ -190,7 +190,7 @@ build_central-js ()
 		rm -rf /tmp/$sProject
 		return
 	else
-		nRandomNumber=$(( ( RANDOM % 10 )  + 1 ))
+		nRandomNumber=$(( ( RANDOM % 30 )  + 1 ))
 		echo "Sleeping for random number of seconds: $nRandomNumber sec."
 		sleep $nRandomNumber
 		while ps axg | grep -v grep | grep -q dashboard-js; do
@@ -221,7 +221,7 @@ build_dashboard-js ()
 		return
 	fi
 	if [ "$bSkipDeploy" == "true" ]; then
-		nRandomNumber=$(( ( RANDOM % 10 )  + 1 ))
+		nRandomNumber=$(( ( RANDOM % 25 )  + 1 ))
 		echo "Sleeping for random number of seconds: $nRandomNumber sec."
 		sleep $nRandomNumber
 		while ps axg | grep -v grep | grep -q central-js; do
@@ -241,7 +241,7 @@ build_dashboard-js ()
 		rm -rf /tmp/$sProject
 		return
 	else
-		nRandomNumber=$(( ( RANDOM % 10 )  + 1 ))
+		nRandomNumber=$(( ( RANDOM % 25 )  + 1 ))
 		echo "Sleeping for random number of seconds: $nRandomNumber sec."
 		sleep $nRandomNumber
 		while ps axg | grep -v grep | grep -q central-js; do
