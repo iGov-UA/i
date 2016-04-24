@@ -143,8 +143,8 @@ build_docker ()
 	echo "Build & push container to Docker registry finished."
 #	kubectl rolling-update $KUBE_RC --image=$DOCKER_IMAGE:$DOCKER_TAG
 #	echo "Rolling-update replication controller finished."
-
-	kubectl get rc $KUBE_RC > /dev/null 2>&1
+	kubectl get rc $KUBE_RC
+	kubectl get rc $KUBE_RC > /dev/null 2>&1;
 	if [ $? -ne 0 ]; then
   		echo "Replication controller does not exist, creating."
   		kubectl create -f kube/$KUBE_RC-rc.yaml
@@ -171,6 +171,9 @@ build_central-js ()
 		return
 	fi
 	if [ "$bSkipDeploy" == "true" ]; then
+		nRandomNumber=$(( ( RANDOM % 30 )  + 1 ))
+		echo "Sleeping for random number of seconds: $nRandomNumber sec."
+		sleep $nRandomNumber
 		while ps axg | grep -v grep | grep -q dashboard-js; do
 			echo "dashboard-js compilation is still running. we will wait until it finish."
 			sleep 5
@@ -187,6 +190,9 @@ build_central-js ()
 		rm -rf /tmp/$sProject
 		return
 	else
+		nRandomNumber=$(( ( RANDOM % 30 )  + 1 ))
+		echo "Sleeping for random number of seconds: $nRandomNumber sec."
+		sleep $nRandomNumber
 		while ps axg | grep -v grep | grep -q dashboard-js; do
 			echo "dashboard-js compilation is still running. we will wait until it finish."
 			sleep 5
@@ -215,6 +221,9 @@ build_dashboard-js ()
 		return
 	fi
 	if [ "$bSkipDeploy" == "true" ]; then
+		nRandomNumber=$(( ( RANDOM % 25 )  + 1 ))
+		echo "Sleeping for random number of seconds: $nRandomNumber sec."
+		sleep $nRandomNumber
 		while ps axg | grep -v grep | grep -q central-js; do
 			echo "central-js compilation is still running. we will wait until it finish."
 			sleep 5
@@ -232,6 +241,9 @@ build_dashboard-js ()
 		rm -rf /tmp/$sProject
 		return
 	else
+		nRandomNumber=$(( ( RANDOM % 25 )  + 1 ))
+		echo "Sleeping for random number of seconds: $nRandomNumber sec."
+		sleep $nRandomNumber
 		while ps axg | grep -v grep | grep -q central-js; do
 			echo "central-js compilation is still running. we will wait until it finish."
 			sleep 5

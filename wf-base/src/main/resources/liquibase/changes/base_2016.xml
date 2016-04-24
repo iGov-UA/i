@@ -241,4 +241,28 @@
         <addAutoIncrement tableName="AccessServiceRoleRightInclude" columnName="nID" startWith="1000" columnDataType="bigint"/>
     </changeSet>
 
+    <changeSet id="issue-1243-1" author="brunneng">
+        <createTable tableName="FlowSlotTicket_FlowSlot">
+            <column name="nID_FlowSlotTicket" type="bigint">
+                <constraints nullable="false"
+                             foreignKeyName="FK_FlowSlotTicket"
+                             referencedTableName="FlowSlotTicket" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+            <column name="nID_FlowSlot" type="bigint">
+                <constraints nullable="false"
+                             foreignKeyName="FK_FlowSlot"
+                             referencedTableName="FlowSlot" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+        </createTable>
+        <addUniqueConstraint constraintName="FlowSlotTicket_FlowSlot_U"
+                             columnNames="nID_FlowSlotTicket, nID_FlowSlot"
+                             tableName="FlowSlotTicket_FlowSlot"/>
+
+        <sql splitStatements="true" dbms="postgresql">
+            insert into "FlowSlotTicket_FlowSlot" ("nID_FlowSlotTicket", "nID_FlowSlot") select "nID", "nID_FlowSlot" from "FlowSlotTicket" where "nID_FlowSlot" is not null;
+        </sql>
+
+        <dropColumn tableName="FlowSlotTicket" columnName="nID_FlowSlot"/>
+    </changeSet>
+
 </databaseChangeLog>

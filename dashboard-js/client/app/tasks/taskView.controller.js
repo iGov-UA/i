@@ -18,6 +18,10 @@
           }
         };
 
+        $scope.isShowExtendedLink = function () {
+          return tasks.isFullProfileAvailableForCurrentUser(taskData);
+        };
+
         $scope.taskData = taskData;
         $scope.printTemplateList = [];
         $scope.model = stateModel;
@@ -67,23 +71,10 @@
           }
 
           return !bEditable;
-        }
+        };
 
         $scope.taskForm = addIndexForFileItems(taskForm);
-        /*
-        // change "enum" field to "string" (issue # 751)
-          var aTempFormProperties = taskForm;
-          for(var i = 0; i < taskForm.length; i++){
-            if (aTempFormProperties[i].type === "enum" && isItemFormPropertyDisabled(aTempFormProperties[i])){
-              taskForm[i].type = "string";
-              for(var j = 0; j < aTempFormProperties[i].enumValues.length; j++){
-                if(aTempFormProperties[i].value === aTempFormProperties[i].enumValues[j].id){
-                  taskForm[i].value = aTempFormProperties[i].enumValues[j].name;
-                }
-              }
-            }
-          }
-          */
+
         $scope.printTemplateList = PrintTemplateService.getTemplates($scope.taskForm);
         if ($scope.printTemplateList.length > 0) {
           $scope.model.printTemplate = $scope.printTemplateList[0];
@@ -247,6 +238,7 @@
               Modal.inform.error()('Не всі поля заповнені!');
               return;
             }
+            rollbackReadonlyEnumFields();
             $scope.printModalState.show = !$scope.printModalState.show;
           }
         };
@@ -308,6 +300,7 @@
 
             $scope.taskForm.isInProcess = true;
 
+            rollbackReadonlyEnumFields();
             tasks.submitTaskForm($scope.selectedTask.id, $scope.taskForm, $scope.selectedTask)
               .then(function (result) {
                 var sMessage = "Форму відправлено.";
@@ -316,6 +309,7 @@
                     sMessage = oField.value;
                   }
                 });
+                $scope.convertDisabledEnumFiedsToReadonlySimpleText();
 
 
                 Modal.inform.success(function (result) {
@@ -328,6 +322,7 @@
         };
 
         $scope.assignTask = function () {
+          rollbackReadonlyEnumFields();
           $scope.taskForm.isInProcess = true;
 
           tasks.assignTask($scope.selectedTask.id, Auth.getCurrentUser().id)
@@ -341,6 +336,7 @@
         };
 
         $scope.unassign = function () {
+          rollbackReadonlyEnumFields();
           tasks.unassign($scope.selectedTask.id)
             .then(function () {
               $scope.selectTask($scope.selectedTask);
@@ -444,6 +440,37 @@
           }
           return false;
         };
+
+        // change "enum" field to "string" (https://github.com/e-government-ua/i/issues/751)
+        $scope.convertDisabledEnumFiedsToReadonlySimpleText = function () {
+          $scope.originalTaskForm = jQuery.extend(true, {}, $scope.taskForm);
+          for (var i = 0; i < taskForm.length; i++) {
+            if ($scope.originalTaskForm[i].type === "enum" && isItemFormPropertyDisabled($scope.originalTaskForm[i])) {
+              $scope.taskForm[i].type = "string";
+              for (var j = 0; j < $scope.originalTaskForm[i].enumValues.length; j++) {
+                if ($scope.originalTaskForm[i].value === $scope.originalTaskForm[i].enumValues[j].id) {
+                  $scope.taskForm[i].value = $scope.originalTaskForm[i].enumValues[j].name;
+                }
+              }
+              $scope.taskForm.taskData.aField[i].sType = "string";
+              var keyCandidate = $scope.originalTaskForm.taskData.aField[i].sValue;
+              var objCandidate = $scope.originalTaskForm.taskData.aField[i].mEnum;
+              $scope.taskForm.taskData.aField[i].sValue = objCandidate[keyCandidate];
+            }
+          }
+        };
+        function rollbackReadonlyEnumFields() {
+          for (var i = 0; i < taskForm.length; i++) {
+            if ($scope.originalTaskForm[i].type === "enum" && isItemFormPropertyDisabled($scope.originalTaskForm[i])) {
+              $scope.taskForm[i].type = "enum";
+              $scope.taskForm[i].value = $scope.originalTaskForm[i].value;
+              $scope.taskForm.taskData.aField[i].sType = $scope.originalTaskForm.taskData.aField[i].sType;
+              $scope.taskForm.taskData.aField[i].sValue = $scope.originalTaskForm.taskData.aField[i].sValue;
+            }
+          }
+        }
+
+        $scope.convertDisabledEnumFiedsToReadonlySimpleText();
       }
     ]);
 })();

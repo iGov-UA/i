@@ -229,7 +229,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 LOG.info("saveClosedTaskInfo block started");
                 saveClosedTaskInfo(sRequestBody, snTaskId);
             } else if (isUpdateTask(oRequest)) {
-                saveUpdatedTaskInfo(sResponseBody);
+                saveUpdatedTaskInfo(sResponseBody, mRequestParam);
             }
         } catch (Exception ex) {
             LOG.error("Can't save service-history record: {}", ex.getMessage());
@@ -413,7 +413,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         LOG.info("Method saveClosedTaskInfo finished");
     }
 
-    private void saveUpdatedTaskInfo(String sResponseBody) throws Exception {
+    private void saveUpdatedTaskInfo(String sResponseBody, Map<String, String> mRequestParam) throws Exception {
         Map<String, String> mParam = new HashMap<>();
         JSONObject omResponseBody = (JSONObject) oJSONParser.parse(sResponseBody);
         String sUserTaskName = HistoryEvent_Service_StatusType.OPENED_ASSIGNED.getsName_UA();
@@ -430,6 +430,14 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         String sID_Order = generalConfig.sID_Order_ByProcess(nID_Process);
         LOG.info("(sID_Order={})", sID_Order);
 
+        String sSubjectInfo = mRequestParam.get("sSubjectInfo");
+        if(sSubjectInfo != null){
+        mParam.put("sSubjectInfo", sSubjectInfo);
+        }
+        if(mRequestParam.get("nID_Subject") != null){
+            String nID_Subject =  String.valueOf(mRequestParam.get("nID_Subject"));
+            mParam.put("nID_Subject", nID_Subject);
+        }
         //historyEventService.updateHistoryEvent(sID_Order, sUserTaskName, false, null);
         historyEventService
                 .updateHistoryEvent(sID_Order, sUserTaskName, false, HistoryEvent_Service_StatusType.OPENED_ASSIGNED,

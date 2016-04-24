@@ -938,16 +938,16 @@
             </column>
         </addColumn>
     </changeSet>
-    
-    <changeSet id="issue-1053-remove-sMail-from-SubjectMessage" author="lesha1980" runOnChange="true" dbms="postgresql" failOnError="false">
-       <preConditions onFail="MARK_RAN">
-           <columnExists tableName="SubjectMessage" columnName="sMail"/>
-           <sqlCheck expectedResult="0">select count("sMail") from "SubjectMessage"
-                  </sqlCheck>
-       </preConditions>
+
+    <!-- Precondition is danger stuff, because column can be deleted unpredictably.
+         Therefore changeset was commented out.
+         Uncomment this when time to delete column "sMail" will come, also don't forget to remove this column
+         from SubjectMessage.csv and corresponding loadUpdateData tableName="SubjectMessage"
+    <changeSet id="issue-1053-remove-sMail-from-SubjectMessage" author="lesha1980">
        <comment>remove column 'sMail' from table 'SubjectMessage'</comment>
        <dropColumn tableName="SubjectMessage" columnName="sMail"/>
     </changeSet>
+    -->
  
     <!--changeSet id="issue-1050-2.1" author="grigoriy-romanenko-and-bw"-->
     <changeSet id="issue-1050-all" author="grigoriy-romanenko" failOnError="false">

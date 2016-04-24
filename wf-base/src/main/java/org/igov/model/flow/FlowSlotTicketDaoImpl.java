@@ -21,7 +21,7 @@ public class FlowSlotTicketDaoImpl extends GenericEntityDao<FlowSlotTicket> impl
 
     @Override
     public FlowSlotTicket findFlowSlotTicket(Long nID_FlowSlot) {
-        return findBy("oFlowSlot.id", nID_FlowSlot).orNull();
+        return findBy("aFlowSlot.id", nID_FlowSlot).orNull();
     }
 
     @Override
