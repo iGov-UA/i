@@ -143,7 +143,6 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     }
     if (field.id === 'bReferent') {
       angular.extend($scope.data.formData.params.bReferent, field);
-      $scope.visibleBReferent = true;
       switch ($scope.data.formData.params.bReferent.value) {
         case 'true': $scope.data.formData.params.bReferent.value = true; break;
         case 'false': $scope.data.formData.params.bReferent.value = false; break;

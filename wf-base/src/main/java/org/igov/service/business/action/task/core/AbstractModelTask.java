@@ -304,43 +304,52 @@ public abstract class AbstractModelTask {
             for (String sKeyRedis : asFieldValue) {
                 LOG.info("(sKeyRedis={})", sKeyRedis);
                 if (sKeyRedis != null && !sKeyRedis.isEmpty() && !"".equals(sKeyRedis.trim()) && !"null"
-                        .equals(sKeyRedis.trim()) && sKeyRedis.length() > 15) {
-                    if (!asFieldName.isEmpty() && n < asFieldName.size()) {
-                        //String sDescription = asFieldName.get((asFieldName.size() - 1) - n);
-                        String sDescription = asFieldName.get(n);
-                        LOG.info("(sDescription={})", sDescription);
-                        String sID_Field = asFieldID.get(n);
-                        LOG.info("(sID_Field={})", sID_Field);
-                        //получение контента файла из временного хранилища
-                        byte[] aByteFile;
-                        ByteArrayMultipartFile oByteArrayMultipartFile = null;
-                        try {
-                            aByteFile = oBytesDataInmemoryStorage.getBytes(sKeyRedis);
-                            oByteArrayMultipartFile = getByteArrayMultipartFileFromStorageInmemory(aByteFile);
-                        } catch (ClassNotFoundException | IOException | RecordInmemoryException e1) {
-                            throw new ActivitiException(e1.getMessage(), e1);
-                        }
-                        Attachment oAttachment = createAttachment(oByteArrayMultipartFile, oTask, sDescription);
-                        if (oAttachment != null) {
-                            LOG.info("Added attachment with ID {} to the task:process {}:{}",
-                                    oAttachment.getId(), oTask.getId(), oExecution.getProcessInstanceId());
-                            res.add(oAttachment);
-                            String nID_Attachment = oAttachment.getId();
-                            LOG.info("Try set variable(sID_Field={}) with the value(nID_Attachment={}), for new attachment...",
-                                    sID_Field, nID_Attachment);
-                            oExecution.getEngineServices().getRuntimeService()
-                                    .setVariable(oExecution.getProcessInstanceId(), sID_Field, nID_Attachment);
-                            LOG.info("Finished setting new value for variable with attachment (sID_Field={})",
-                                    sID_Field);
-                        } else {
-                            LOG.error("Can't add attachment to (oTask.getId()={})", oTask.getId());
-                        }
+                        .equals(sKeyRedis.trim())) {
+                    if (sKeyRedis.length() > 15) {
+                        if (!asFieldName.isEmpty() && n < asFieldName.size()) {
+                            //String sDescription = asFieldName.get((asFieldName.size() - 1) - n);
+                            String sDescription = asFieldName.get(n);
+                            LOG.info("(sDescription={})", sDescription);
+                            String sID_Field = asFieldID.get(n);
+                            LOG.info("(sID_Field={})", sID_Field);
+                            //получение контента файла из временного хранилища
+                            byte[] aByteFile;
+                            ByteArrayMultipartFile oByteArrayMultipartFile = null;
+                            try {
+                                aByteFile = oBytesDataInmemoryStorage.getBytes(sKeyRedis);
+                                oByteArrayMultipartFile = getByteArrayMultipartFileFromStorageInmemory(aByteFile);
+                            } catch (ClassNotFoundException | IOException | RecordInmemoryException e1) {
+                                throw new ActivitiException(e1.getMessage(), e1);
+                            }
+                            Attachment oAttachment = createAttachment(oByteArrayMultipartFile, oTask, sDescription);
+                            if (oAttachment != null) {
+                                LOG.info("Added attachment with ID {} to the task:process {}:{}",
+                                        oAttachment.getId(), oTask.getId(), oExecution.getProcessInstanceId());
+                                res.add(oAttachment);
+                                String nID_Attachment = oAttachment.getId();
+                                LOG.info("Try set variable(sID_Field={}) with the value(nID_Attachment={}), for new attachment...",
+                                        sID_Field, nID_Attachment);
+                                oExecution.getEngineServices().getRuntimeService()
+                                        .setVariable(oExecution.getProcessInstanceId(), sID_Field, nID_Attachment);
+                                LOG.info("Finished setting new value for variable with attachment (sID_Field={})",
+                                        sID_Field);
+                            } else {
+                                LOG.error("Can't add attachment to (oTask.getId()={})", oTask.getId());
+                            }
 
+                        } else {
+                            LOG.error("asFieldName has nothing! (asFieldName={})", asFieldName);
+                        }
                     } else {
-                        LOG.error("asFieldName has nothing! (asFieldName={})", asFieldName);
+                            try {
+                                    LOG.info("Checking whether attachment with ID {} already saved and this is attachment object ID", sKeyRedis);
+                                    Attachment oAttachment = oExecution.getEngineServices().getTaskService().getAttachment(sKeyRedis);
+                                    res.add(oAttachment);
+                            } catch (Exception e){
+                                    LOG.error("Invalid Redis Key!!! (sKeyRedis={})", sKeyRedis);
+                            }
+
                     }
-                } else {
-                    LOG.error("Invalid Redis Key!!! (sKeyRedis={})", sKeyRedis);
                 }
                 n++;
             }
