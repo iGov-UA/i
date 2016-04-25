@@ -187,12 +187,11 @@
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="invisible" required="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="invisible" required="false"></activiti:formProperty>
 <!--        <activiti:formProperty id="bankIdinn" name="ІПН" type="invisible" required="false"></activiti:formProperty> -->
-<!-- адрес начало -->
-		<activiti:formProperty id="bankIdAddressFactual_country" name="Країна громадянства" type="invisible" required="false"></activiti:formProperty>
+<!-- адрес 1 форма - оригинал начало -->
+		<activiti:formProperty id="bankIdAddressFactual_country" name="Країна громадянства" type="invisible" required="false" ></activiti:formProperty>
         <activiti:formProperty id="sVarPostIndex" name="Поштовий індекс" type="invisible" required="false"></activiti:formProperty>
 		<activiti:formProperty id="bankIdAddressFactual_state" name="Область" type="invisible" required="false"></activiti:formProperty>
 		<activiti:formProperty id="bankIdAddressFactual_area" name="Найменування району в області" type="invisible" required="false"></activiti:formProperty>
-<!-- юрособа -->
         <activiti:formProperty id="sVarPlace401Plus" name="Місто +" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sVarPlace402Plus" name="Селище міського типу +" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sVarPlace403Plus" name="Селище +" type="invisible"></activiti:formProperty>
@@ -210,7 +209,23 @@
         <activiti:formProperty id="sVarKvNum" name="Корпус" type="invisible" required="false"></activiti:formProperty>
         <activiti:formProperty id="sVarTypePom" name="Тип приміщення" type="invisible" required="false"></activiti:formProperty>
 		<activiti:formProperty id="bankIdAddressFactual_flatNo" name="Номер приміщення" type="invisible" required="false"></activiti:formProperty>
-<!-- адрес конец -->
+<!-- адрес 1 форма - оригинал конец  -->
+
+<!-- адрес 2 форма - для исправления начало -->
+		<activiti:formProperty id="lInfo001" name="Адреса для коригування" type="label" required="false" default="______________________________________"></activiti:formProperty>
+		<activiti:formProperty id="sVar2BankIdAddressFactual_country" name="Країна громадянства" type="string" required="false" default="${bankIdAddressFactual_country}"></activiti:formProperty>
+        <activiti:formProperty id="sVar2PostIndex" name="Поштовий індекс" type="string" required="false" default="${sVarPostIndex}"></activiti:formProperty>
+		<activiti:formProperty id="sVar2BankIdAddressFactual_state" name="Область" type="string" required="false" default="${bankIdAddressFactual_state}"></activiti:formProperty>
+		<activiti:formProperty id="sVar2BankIdAddressFactual_area" name="Найменування району в області" type="string" required="false" default="${bankIdAddressFactual_area}"></activiti:formProperty>
+		<activiti:formProperty id="sVar2BankIdAddressFactual_city" name="Назва населеного пункту" type="string" required="false" default="${bankIdAddressFactual_city}"></activiti:formProperty>
+        <activiti:formProperty id="sVar2RajCityNam" name="Назва району в місті" type="string" required="false" default="${sVarRajCityNam}"></activiti:formProperty>
+        <activiti:formProperty id="sVar2VulNam" name="Тип елемента вулично-дорожньої мережі; наприклад: вулиця, проспект, провулок тощо" type="string" default="${sVarVulNam}"></activiti:formProperty>
+		<activiti:formProperty id="sVar2BankIdAddressFactual_street" name="Назва вулиці, проспекту, провулку тощо" type="string" required="false" default="${bankIdAddressFactual_street}"></activiti:formProperty>
+		<activiti:formProperty id="sVar2BankIdAddressFactual_houseNo" name="Будинок" type="string" required="false" default="${bankIdAddressFactual_houseNo}"></activiti:formProperty>
+        <activiti:formProperty id="sVar2KvNum" name="Корпус" type="string" required="false" default="${sVarKvNum}"></activiti:formProperty>
+        <activiti:formProperty id="sVar2TypePom" name="Тип приміщення" type="string" required="false" default="${sVarTypePom}"></activiti:formProperty>
+		<activiti:formProperty id="sVar2BankIdAddressFactual_flatNo" name="Номер приміщення" type="string" required="false" default="${bankIdAddressFactual_flatNo}"></activiti:formProperty>
+<!-- адрес 2 форма - для исправления конец  -->
 
 <!-- налогообложение старт -->
         <activiti:formProperty id="sVarDod1_601Plus" name="Заява щодо обрання фізичною особою спрощеної системи оподаткування +" type="invisible"></activiti:formProperty>
@@ -271,7 +286,8 @@
         <activiti:formProperty id="sComment" name="У разі негативного рішення вкажіть, будь ласка, причину" type="textArea" default="Причина: "></activiti:formProperty>
         <activiti:formProperty id="fDecisionDoc" name="Копія рішення для заявника:" type="file"></activiti:formProperty>
 
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_560_fop_print.html]" type="invisible" default="Заява про реєстрацію" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_560_fop_print.html]" type="invisible" default="Заява про реєстрацію - оригінал" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/dnepr_cnap_560_fop2_print.html]" type="invisible" default="Заява про реєстрацію - з виправленнями" writable="false"></activiti:formProperty>
 		
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
