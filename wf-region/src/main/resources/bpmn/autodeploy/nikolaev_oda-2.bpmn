@@ -201,52 +201,52 @@
     <sequenceFlow id="flow28" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
 	<scriptTask id="scripttask1" name="Script Task" scriptFormat="groovy" activiti:autoStoreVariables="true">
 		<script><![CDATA[
-			/* Заполнение полей */
-			/* Заявник */
-			if(execution.getVariable('asWork0')=='no'){
-			execution.setVariable('sWorkPlace0', 'не працює');
-			}
-			if(execution.getVariable('asPrivilege')=='no'){
-			execution.setVariable('sPrivilege', 'не має');
-			}
-			
-			// скільки проживає людей
-			int maxCountFamily = 6
-			int countFamily = execution.getVariable('asCountFamily')[1]
-			int countIsAdult = 0
-			
-			/*форматуємо поле місце роботи*/
-			for (int i = 1; i <= maxCountFamily; i++) {
-			    def name_asWork = 'asWork' + "${i}"
-			    def name_sWorkPlace = 'sWorkPlace' + "${i}"  
-			    def name_asAdult = 'asAdult' + "${i}"
-			      
-			    def name_sFamilyRelation = 'sFamilyRelation' + "${i}"  
-			    def name_nBirthday = 'nBirthday' + "${i}"  
-			    def name_nWhereLives = 'nWhereLives' + "${i}"
-			    def name_sFIO = 'sFIO' + "${i}"
-			
-			    
-			    if(i<=countFamily){/*родственники существуют*/     
-			     if(execution.getVariable(name_asAdult)== 'yes'){ /*дорослий*/
-			      countIsAdult ++;
-			      if(execution.getVariable(name_asWork)== 'no'){
-			       execution.setVariable(name_sWorkPlace, 'не працює')    
-			      }
-			     }
-			     else{
-			      execution.setVariable(name_sWorkPlace, 'не працює')    
-			     }     
-			    }
-			    else{/*родственники НЕ существуют*/     
-			     execution.setVariable(name_sWorkPlace, ' ')
-			     execution.setVariable(name_sFamilyRelation, ' ')   
-			     execution.setVariable(name_nBirthday, ' ')  
-			     execution.setVariable(name_nWhereLives, ' ')   
-			     execution.setVariable(name_sFIO, ' ')
-			    }
-			}
-			execution.setVariable(name_sFIO, ' ')
+/* Заполнение полей */
+/* Заявник */
+if(execution.getVariable('asWork0')=='no'){
+execution.setVariable('sWorkPlace0', 'не працює');
+}
+if(execution.getVariable('asPrivilege')=='no'){
+execution.setVariable('sPrivilege', 'не має');
+}
+
+// скільки проживає людей
+int maxCountFamily = 6
+int countFamily = execution.getVariable('asCountFamily')[1]
+int countIsAdult = 0
+
+/*форматуємо поле місце роботи*/
+for (int i = 1; i <= maxCountFamily; i++) {
+    def name_asWork = 'asWork' + "${i}"
+    def name_sWorkPlace = 'sWorkPlace' + "${i}"  
+    def name_asAdult = 'asAdult' + "${i}"
+      
+    def name_sFamilyRelation = 'sFamilyRelation' + "${i}"  
+    def name_nBirthday = 'nBirthday' + "${i}"  
+    def name_nWhereLives = 'nWhereLives' + "${i}"
+    def name_sFIO = 'sFIO' + "${i}"
+
+    
+    if(i<=countFamily){/*родственники существуют*/     
+     if(execution.getVariable(name_asAdult)== 'yes'){ /*дорослий*/
+      countIsAdult ++;
+      if(execution.getVariable(name_asWork)== 'no'){
+       execution.setVariable(name_sWorkPlace, 'не працює')    
+      }
+     }
+     else{
+      execution.setVariable(name_sWorkPlace, 'не працює')    
+     }     
+    }
+    else{/*родственники НЕ существуют*/     
+	    execution.setVariable(name_sWorkPlace, ' ')
+	    execution.setVariable(name_sFamilyRelation, ' ')   
+	    execution.setVariable(name_nBirthday, ' ')  
+	    execution.setVariable(name_nWhereLives, ' ')   
+	    execution.setVariable(name_sFIO, ' ')
+    }
+}
+execution.setVariable('nCountIsAdult', countIsAdult)
 		]]></script>
 	</scriptTask>
     
