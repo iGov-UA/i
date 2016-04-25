@@ -177,6 +177,7 @@ build_central-js ()
 			sleep 15
 			if [ -f /tmp/dashboard-js/build.lock ]; then
 				echo "doshboard-js build.lock file found. starting compilation..."
+				rm -f /tmp/$sProject/build.lock
 				break
 			fi
 		done
@@ -198,6 +199,7 @@ build_central-js ()
 			sleep 15
 			if [ -f /tmp/dashboard-js/build.lock ]; then
 				echo "doshboard-js build.lock file found. starting compilation..."
+				rm -f /tmp/$sProject/build.lock
 				break
 			fi
 		done
@@ -231,6 +233,7 @@ build_dashboard-js ()
 			sleep 15
 			if [ -f /tmp/central-js/build.lock ]; then
 				echo "central-js build.lock file found. starting compilation..."
+				rm -f /tmp/$sProject/build.lock
 				break
 			fi
 		done
@@ -253,6 +256,7 @@ build_dashboard-js ()
 			sleep 15
 			if [ -f /tmp/central-js/build.lock ]; then
 				echo "central-js build.lock file found. starting compilation..."
+				rm -f /tmp/$sProject/build.lock
 				break
 			fi
 		done
