@@ -41,7 +41,7 @@
           <activiti:value id="sEnamOtr_samost" name="Особисто"></activiti:value>
           <activiti:value id="sEnamOtr_predst" name="Через представника за довіреністю"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="file_oplat" name="Квитанція про оплату" type="file"></activiti:formProperty>
+        <activiti:formProperty id="testemail" name="Пошта університету(для тесту)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
@@ -57,7 +57,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:string><![CDATA[akylish88@gmail.com]]></activiti:string>
+          <activiti:expression>${testemail}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нова заявка на  довідку вищого навчального закладу з годинами та оцінками]]></activiti:string>
@@ -232,6 +232,7 @@ ${sNameOrgan}.&lt;br /&gt;
         </activiti:formProperty>
         <activiti:formProperty id="Komment_rishenia" name="Коментар по рішенню;(Вкажіть з якого числа можна отримати довідку, в разі відмови вкажіть причину відмови)" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="супровідний текст" type="invisible" default="Якщо заявка прийнята, вона з'явиться в необроблених і вам треба буде зробити відмітку чи виданий документ.У разі відмови робота по цій заявці завершена."></activiti:formProperty>
+        <activiti:formProperty id="file_oplata" name="Квитанція на оплату" type="file"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -241,7 +242,7 @@ ${sNameOrgan}.&lt;br /&gt;
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow21" sourceRef="usertask3" targetRef="exclusivegateway1"></sequenceFlow>
-    <serviceTask id="servicetask5" name="Завнику все ок" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask5" name="Завнику все ок" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -251,6 +252,9 @@ ${sNameOrgan}.&lt;br /&gt;
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Довідка вищого навчального закладу з годинами та оцінками]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>"${file_oplata}"</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
