@@ -336,7 +336,7 @@ ${sNameOrgan}<br />
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow19" sourceRef="usertask1" targetRef="exclusivegateway2"></sequenceFlow>
     <sequenceFlow id="flow20" sourceRef="exclusivegateway2" targetRef="servicetask7">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${proverkaCNAP=='ok'}, ${bFlag=='easy'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${proverkaCNAP=='ok' && bFlag=='easy'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask9" name="Повідомлення працівника ДГК" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
@@ -355,7 +355,7 @@ ${sNameOrgan}<br />
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow27" name="ЦНАП-ДГК-ЦНАП" sourceRef="exclusivegateway2" targetRef="servicetask9">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bFlag=='hard'}, [${proverkaCNAP=='ok'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bFlag=='hard' && proverkaCNAP=='ok'}]]></conditionExpression>
     </sequenceFlow>
     <userTask id="usertask3" name="Обробка документів в ДГК" activiti:candidateGroups="dgk_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
