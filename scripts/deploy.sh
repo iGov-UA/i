@@ -171,10 +171,7 @@ build_central-js ()
 		return
 	fi
 	if [ "$bSkipDeploy" == "true" ]; then
-		nRandomNumber=$(( ( RANDOM % 30 )  + 1 ))
-		echo "Sleeping for random number of seconds: $nRandomNumber sec."
-		sleep $nRandomNumber
-		while ps axg | grep -v grep | grep -q dashboard-js; do
+		while curl --silent --show-error http://viktor-karabedyants:2381a2cce687ef20c9208a9c05018a28@localhost:8080/job/alpha_Front_Region/lastBuild/api/json | grep -q result\":null; do
 			echo "dashboard-js compilation is still running. we will wait until it finish."
 			sleep 5
 		done
@@ -190,10 +187,7 @@ build_central-js ()
 		rm -rf /tmp/$sProject
 		return
 	else
-		nRandomNumber=$(( ( RANDOM % 30 )  + 1 ))
-		echo "Sleeping for random number of seconds: $nRandomNumber sec."
-		sleep $nRandomNumber
-		while ps axg | grep -v grep | grep -q dashboard-js; do
+		while curl --silent --show-error http://viktor-karabedyants:2381a2cce687ef20c9208a9c05018a28@localhost:8080/job/alpha_Front_Region/lastBuild/api/json | grep -q result\":null; do
 			echo "dashboard-js compilation is still running. we will wait until it finish."
 			sleep 5
 		done
@@ -221,10 +215,7 @@ build_dashboard-js ()
 		return
 	fi
 	if [ "$bSkipDeploy" == "true" ]; then
-		nRandomNumber=$(( ( RANDOM % 25 )  + 1 ))
-		echo "Sleeping for random number of seconds: $nRandomNumber sec."
-		sleep $nRandomNumber
-		while ps axg | grep -v grep | grep -q central-js; do
+		while curl --silent --show-error http://viktor-karabedyants:2381a2cce687ef20c9208a9c05018a28@localhost:8080/job/alpha_Front_Central/lastBuild/api/json | grep -q result\":null; do
 			echo "central-js compilation is still running. we will wait until it finish."
 			sleep 5
 		done
@@ -241,10 +232,7 @@ build_dashboard-js ()
 		rm -rf /tmp/$sProject
 		return
 	else
-		nRandomNumber=$(( ( RANDOM % 25 )  + 1 ))
-		echo "Sleeping for random number of seconds: $nRandomNumber sec."
-		sleep $nRandomNumber
-		while ps axg | grep -v grep | grep -q central-js; do
+		while curl --silent --show-error http://viktor-karabedyants:2381a2cce687ef20c9208a9c05018a28@localhost:8080/job/alpha_Front_Central/lastBuild/api/json | grep -q result\":null; do
 			echo "central-js compilation is still running. we will wait until it finish."
 			sleep 5
 		done
