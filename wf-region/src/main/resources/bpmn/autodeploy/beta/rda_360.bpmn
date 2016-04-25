@@ -127,12 +127,8 @@
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-			<p>
-				Ваш запит був успішно зареєстрований у нашій системі. 
-		    </p>
-			<p>
-				Спеціалісти відповідального органу оброблять Вашу заявку та нададуть відповідь найближчим часом. 
-			</p>
+			<p>Ваш запит був успішно зареєстрований у нашій системі.</p>
+			<p>Спеціалісти відповідального органу опрацюють Вашу заявку та нададуть відповідь найближчим часом. </p>
 			<br>
 			Якщо у Вас є додаткові питання, Ви можете звернутись за наступними контактами:<br>
 			${sAddress}<br>
@@ -152,8 +148,8 @@
     </sequenceFlow>
     <userTask id="usertask1" name="Первинна перевірка даних" activiti:candidateGroups="rda_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-      	<activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оган, що надає послугу" type="select" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="clFIO" name="Прізвище, ім`я, по-батькові громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+      	<activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Орган, що надає послугу" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clFIO" name="Прізвище, ім`я, по батькові громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPlase_of_reg" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
@@ -271,8 +267,8 @@
     </sequenceFlow>
     <userTask id="usertask2" name="Обробка звернення" activiti:candidateGroups="rda_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-      	<activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оган, що надає послугу" type="select" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="clFIO" name="Прізвище, ім`я, по-батькові громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+      	<activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Орган, що надає послугу" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clFIO" name="Прізвище, ім`я, по батькові громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPlase_of_reg" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
@@ -360,16 +356,14 @@
                                         Ваше звернення на тему: ${sTopic} розглянуте.<br>
                                         Скан-копія рішення знаходиться у додатках до цього листа.
                                     </p>
+                                    <p>Якщо Ви бажаєте отримати фізичну копію цього документа - зверніться до відповідального органу.</p>
                                     <p>
-										Якщо Ви бажаєте отримати фізичну копію цього документа - зверніться до відповідального органу.
-                                    </p>
-                                    <p>
+                                        ${sPhoneOrgan},<br>
                                         ${sAddress},<br>
-										${sWorkTime}
-									</p>
-                                    <p>
-									<i>${decisionComment}</i>
-									</p>
+					${sWorkTime},<br>
+                                        ${sPhoneOrgan} <br>
+				    </p>
+                                    <p> <i>${decisionComment}</i> </p>
                                     [pattern/mail/_common_signature_start.html]
 									${sNameOrgan},<br>
 									[pattern/mail/_common_signature_end.html]
@@ -384,8 +378,8 @@
     </sequenceFlow>
     <userTask id="usertask3_red" name="Первинна перевірка данних наданих громадянином" activiti:candidateGroups="rda_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-      	<activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оган, що надає послугу" type="select" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="clFIO" name="Прізвище, ім`я, по-батькові громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+      	<activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Орган, що надає послугу" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clFIO" name="Прізвище, ім`я, по батькові громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPlase_of_reg" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
@@ -472,8 +466,8 @@
     </sequenceFlow>
     <userTask id="usertask4_first" name="Рішення голови" activiti:candidateGroups="golova_rda_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-      	<activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оган, що надає послугу" type="select" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="clFIO" name="Прізвище, ім`я, по-батькові громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+      	<activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Орган, що надає послугу" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clFIO" name="Прізвище, ім`я, по батькові громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPlase_of_reg" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
@@ -556,8 +550,8 @@
     <sequenceFlow id="flow46" sourceRef="usertask4_first" targetRef="exclusivegateway6"></sequenceFlow>
     <userTask id="usertask5_yellow" name="Рішення направити виконавцю" activiti:candidateGroups="rda_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-      	<activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оган, що надає послугу" type="select" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="clFIO" name="Прізвище, ім`я, по-батькові громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+      	<activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Орган, що надає послугу" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clFIO" name="Прізвище, ім`я, по батькові громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPlase_of_reg" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
@@ -680,8 +674,8 @@
     <sequenceFlow id="flow49" sourceRef="servicetask8" targetRef="usertask6_green"></sequenceFlow>
     <userTask id="usertask6_green" name="Зняття з контролю" activiti:candidateGroups="rda_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-      	<activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оган, що надає послугу" type="select" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="clFIO" name="Прізвище, ім`я, по-батькові громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+      	<activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Орган, що надає послугу" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clFIO" name="Прізвище, ім`я, по батькові громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPlase_of_reg" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
@@ -834,7 +828,7 @@
 				Ваш запит не виконано. 
 		   	</p>
 			<p>
-				В звязку з
+				У звязку з
 				Коментар держслужбовця:
 				${decisionComment} 
 			</p>
