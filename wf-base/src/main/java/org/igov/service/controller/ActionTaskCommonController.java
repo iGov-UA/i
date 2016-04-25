@@ -775,7 +775,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public void setVariableToProcessInstance(
             @RequestParam String processInstanceId,
             @RequestParam String key,
-            @RequestParam Object value) {
+            @RequestParam String value) {
         runtimeService.setVariable(processInstanceId, key, value);
     }
 
