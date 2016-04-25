@@ -10,20 +10,25 @@
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорту" type="file"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_inn" name="Скан-копія ІПН" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="Ідентифікаційний номер фізичної особи" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddress" name="Адреса реєстрації" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта для зворотнього звя'язку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="Вкажіть сьогоднішню дату" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="asEnumSelectTypeContragent" name="Суб’єкт звернення" type="enum" required="true">
           <activiti:value id="sEnumElement_FOP" name="Фізична особа - підприємець"></activiti:value>
           <activiti:value id="sEnumElement_Company" name="Юридична особа"></activiti:value>
-          <activiti:value id="sEnumElement_FIZ" name="Фізична особа - громадянин України"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sNameCompany" name="Назва юридичної особи" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameCompany" name="У давальному відмінку повне найменування юридичної особи" type="string"></activiti:formProperty>
         <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно з ЄДРПОУ; тільки цифрові позначення" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAdressCompany" name="Юридична адреса" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAdressReestrFiz" name="Місце реєстрації фізичної особи" type="string"></activiti:formProperty>
-        <activiti:formProperty id="nFile_AdvertLicense" name="Копія виписки з єдиного державного реєстру юридичних осіб та фізичних осіб-підприємців" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sFIODirector_Company" name="Прізвище, імя, по батькові керівника юридичної особи" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAdressCompany" name="Місцезнаходження юридичної особи" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameFOP" name="У давальному відмінку ПІБ фізичної особи - підприємця" type="string"></activiti:formProperty>
+        <activiti:formProperty id="kved" name="Основний вид діяльності згідно з КВЕД" type="string"></activiti:formProperty>
+		<activiti:formProperty id="sInfo1" name=" " type="label" default="Відповідальна особа за виконання робіт"></activiti:formProperty>
+        <activiti:formProperty id="sNameMainWorker" name="ПІБ відповідального виконавця" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPostMainWorker" name="Посада відповідального виконавця" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPostMainWorker" name="Посада відповідального виконавця" type="string"></activiti:formProperty>
+        <activiti:formProperty id="workPhone" name="Мобільний телефон відповідального виконавця" type="string"></activiti:formProperty>
         <activiti:formProperty id="asEnumSelectType_How" name="Спосіб подання документів" type="enum" default="sEnumElement_Personally">
           <activiti:value id="sEnumElement_Personally" name="особисто"></activiti:value>
           <activiti:value id="sEnumElement_Confidant" name="через уповноважену особу (за дорученням)"></activiti:value>
@@ -33,38 +38,52 @@
         <activiti:formProperty id="sConfidant_middleName" name="По-батькові уповноваженої особи" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="nFile_DovirenistConfidant" name="Скан-копія довіреності на уповноважену особу" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="nFile_PassportConfidant" name="Скан-копія паспорту уповноваженої особи" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="asEnumSelectTypeReason" name="Оберіть причину розірвання договору оренди земельної ділянки" type="enum" required="true">
-          <activiti:value id="sEnumElement_Sale" name="Відчуження нерухомого майна на користь нового власника"></activiti:value>
-          <activiti:value id="sEnumElement_high_house" name="Об’єкт нерухомого майна розташований у багатоповерховому житловому будинку"></activiti:value>
-          <activiti:value id="sEnumElement_End_Of_Period" name="Закінчення строку, на який було укладено договір"></activiti:value>
-          <activiti:value id="sEnumElement_UnionOwnerArendar" name="Поєднання в одній особі власника земельної ділянки та орендаря"></activiti:value>
-          <activiti:value id="sEnumElement_DeathArendar" name="Смерть фізичної особи-орендаря або засудження його до позбавлення волі"></activiti:value>
-          <activiti:value id="sEnumElement_BreakCompany" name="Ліквідація юридичної особи-орендаря"></activiti:value>
-          <activiti:value id="sEnumElement_Buyout" name="Примусовий викуп (вилучення) земельної ділянки з мотивів суспільної необхідності"></activiti:value>
-          <activiti:value id="sEnumElement_AgreementPartner" name="Розірвання договору оренди земельної ділянки за взаємною згодою сторін"></activiti:value>
-          <activiti:value id="sEnumElement_DecisionLaw" name="На підставі рішення суду"></activiti:value>
+        <activiti:formProperty id="sTargetWork" name="Мета проведення робіт" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sFormatWork" name="Характер робіт (згідно з проектом)" type="string" default=" "></activiti:formProperty>
+		<activiti:formProperty id="sInfo2" name=" " type="label" default="Термін проведення робіт"></activiti:formProperty>
+		<activiti:formProperty id="sDate_Beg" name="З;формат дати ДД.ММ.РРРР" type="string" default=" "></activiti:formProperty>
+		<activiti:formProperty id="sDate_End" name="По;формат дати ДД.ММ.РРРР" type="string" default=" "></activiti:formProperty>
+		<activiti:formProperty id="sAdresObject" name="Місцезнаходження (адреса) об'єкта, на який видається дозвіл" type="string" default=" "></activiti:formProperty>
+		<activiti:formProperty id="sAdresObject" name="Місцезнаходження (адреса) об'єкта, на який видається дозвіл" type="string" default=" "></activiti:formProperty>
+		<activiti:formProperty id="sBeg" name="Від ..." type="string" default=" "></activiti:formProperty>
+		<activiti:formProperty id="sEnd" name="До ...." type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="asEnumTypeGet_Document" name="Спосіб одержання дозвільного документа" type="enum" default="sEnumElement_Personally">
+          <activiti:value id="sEnumElement_Personally" name="особисто"></activiti:value>
+          <activiti:value id="sEnumElement_Post" name="поштою"></activiti:value>
+          <activiti:value id="sEnumElement_eMail" name="за допомогою засобів телекомунікацій"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sBasedDocument" name="Документ, що посвідчує перехід права власності; формат: договір № ___ від ДД.ММ.РРРР)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nSquare" name="Площа земельної ділянки (га)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAdressZemelDilyanki" name="Адреса земельної ділянки" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sFioNewOwner" name="Новий власник нерухомого майна(П.І.Б.)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sContractNumber" name="Номер договору оренди земельної ділянки" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="oContractDate" name="Дата договору оренди земельної ділянки; у форматі ДД.ММ.РРРР" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile_ContarctArenda" name="Копія договору оренди земельної ділянки або державний акт на право постійного користування земельною ділянкою;​Документ, що посвідчує право користування земельною ділянкою" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile_DovidkaProVidsutnistDolgaArendi" name="Копія довідки про відсутність заборгованості по орендній платі" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nFile_DPI_DovidkaProVidsutnistDolgaArendi" name="Копія довідки з ДПІ про плату за землю та  відсутність заборгованості" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nFile_ReasonDocument" name="Копія документу, який підтверджує підстави щодо розірвання договору оренди земельної ділянки" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile_AktObstezennya" name="Копія Акт обстеження земельної ділянки" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nFile_OwnershipInsideBuildings" name="Для вбудованних приміщень обов'язково документ про право власності на приміщення" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nFile_UstanovchiDocumenti" name="Копії установчих документів (для суб’єктів господарювання)" type="file"></activiti:formProperty>
+		<activiti:formProperty id="sAdresPost" name="Адреса для відправки документів поштою" type="string" default=" "></activiti:formProperty>
+		<activiti:formProperty id="nZelenaZonaLen" name="Зелена зона (довжина), м" type="string" default=" "></activiti:formProperty>
+		<activiti:formProperty id="nZelenaZonaWidth" name="Зелена зона (ширина), м" type="string" default=" "></activiti:formProperty>
+		<activiti:formProperty id="nAsfaltZonaLen" name="Асфальтобетонне покриття проїжджої частини (довжина), м" type="string" default=" "></activiti:formProperty>
+		<activiti:formProperty id="nAsfaltZonaWidth" name="Асфальтобетонне покриття проїжджої частини (ширина), м" type="string" default=" "></activiti:formProperty>
+		<activiti:formProperty id="nAsfaltTrotuarZonaLen" name="Асфальтобетонне покриття тротуару (довжина), м" type="string" default=" "></activiti:formProperty>
+		<activiti:formProperty id="nAsfaltTrotuarZonaWidth" name="Асфальтобетонне покриття тротуару (ширина), м" type="string" default=" "></activiti:formProperty>
+		<activiti:formProperty id="nAsfaltDvorZonaLen" name="Асфальтобетонне покриття дворової території (довжина), м" type="string" default=" "></activiti:formProperty>
+		<activiti:formProperty id="nAsfaltDvorZonaWidth" name="Асфальтобетонне покриття дворової території (ширина), м" type="string" default=" "></activiti:formProperty>
+		<activiti:formProperty id="nShebenZonaLen" name="Щебеневе покриття (довжина), м" type="string" default=" "></activiti:formProperty>
+		<activiti:formProperty id="nShebenZonaWidth" name="Щебеневе покриття (ширина), м" type="string" default=" "></activiti:formProperty>
+		<activiti:formProperty id="nGruntZonaLen" name="Грунтове покриття (довжина), м" type="string" default=" "></activiti:formProperty>
+		<activiti:formProperty id="nGruntZonaWidth" name="Грунтове покриття (ширина), м" type="string" default=" "></activiti:formProperty>
+		<activiti:formProperty id="nTrotuarPlitkaZonaLen" name="Тротуарна плитка (довжина), м" type="string" default=" "></activiti:formProperty>
+		<activiti:formProperty id="nTrotuarPlitkaZonaWidth" name="Тротуарна плитка (ширина), м" type="string" default=" "></activiti:formProperty>
+		<activiti:formProperty id="sNameInshaZonaLen" name="Назва іншого типу покриття" type="string" default=" "></activiti:formProperty>
+		<activiti:formProperty id="nInshaZonaLen" name="Інший тип покриття (довжина), м" type="string" default=" "></activiti:formProperty>
+		<activiti:formProperty id="nInshaZonaWidth" name="Інший тип покриття (ширина), м" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFile_CopyProject" name="Копія робочого проекту або проекту виробничих робіт (план-схема місця проведення робіт у разі проведення аварійних робіт)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asEnumOnRoad" name="Роботи проводяться на проїжджій частині дороги?" type="enum">
+          <activiti:value id="sEnumElement_OnRoad" name="Так"></activiti:value>
+          <activiti:value id="sEnumElement_NotOnRoad" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="nFile_SchemaRuhu" name="Копія схеми організації дорожнього руху та тимчасової схеми об`їзду з урахуванням маршрутів руху транспорту та пішоходів, погоджену з Державтоінспекцією" type="file"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Розкриття атрібутів щодо специфіки вводу" type="markers" default="${markerService.loadFromFile('dneprCnap/dnepr_cnap_190_11.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers2" name="Розкриття атрібутів щодо специфіки вводу" type="markers" default="${markerService.loadFromFile('dneprCnap/dnepr_cnap_190_12.json')}"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sShapka_190" name="На кого пишеться заява" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapka_dozvil_na_Porushennya_Object_433" name="На кого пишеться заява" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAttribToApproveOrgan_433" name="Організації та установи з якими  необхідно погодити виконання планових робіт" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="[Етап I] Реєстрація звернення, результат обробки вхідних данних (1-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
