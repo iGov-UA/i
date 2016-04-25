@@ -174,7 +174,7 @@ build_central-js ()
 		while ps axg | grep -v grep | grep -q dashboard-js; do
 			echo "dashboard-js compilation is still running. we will wait until it finish."
 			touch /tmp/$sProject/build.lock
-			sleep 15
+			sleep 7
 			if [ -f /tmp/dashboard-js/build.lock ]; then
 				echo "doshboard-js build.lock file found. starting compilation..."
 				rm -f /tmp/$sProject/build.lock
@@ -196,7 +196,7 @@ build_central-js ()
 		while ps axg | grep -v grep | grep -q dashboard-js; do
 			echo "dashboard-js compilation is still running. we will wait until it finish."
 			touch /tmp/$sProject/build.lock
-			sleep 15
+			sleep 7
 			if [ -f /tmp/dashboard-js/build.lock ]; then
 				echo "doshboard-js build.lock file found. starting compilation..."
 				rm -f /tmp/$sProject/build.lock
