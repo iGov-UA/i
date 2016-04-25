@@ -171,9 +171,14 @@ build_central-js ()
 		return
 	fi
 	if [ "$bSkipDeploy" == "true" ]; then
-		while curl --silent --show-error http://viktor-karabedyants:2381a2cce687ef20c9208a9c05018a28@localhost:8080/job/alpha_Front_Region/lastBuild/api/json | grep -q result\":null; do
+		while ps axg | grep -v grep | grep -q dashboard-js; do
 			echo "dashboard-js compilation is still running. we will wait until it finish."
-			sleep 5
+			touch /tmp/$sProject/build.lock
+			sleep 15
+			if [ -f /tmp/dashboard-js/build.lock ]; then
+				echo "doshboard-js build.lock file found. starting compilation..."
+				break
+			fi
 		done
 		cd central-js
 		npm cache clean
@@ -187,9 +192,14 @@ build_central-js ()
 		rm -rf /tmp/$sProject
 		return
 	else
-		while curl --silent --show-error http://viktor-karabedyants:2381a2cce687ef20c9208a9c05018a28@localhost:8080/job/alpha_Front_Region/lastBuild/api/json | grep -q result\":null; do
+		while ps axg | grep -v grep | grep -q dashboard-js; do
 			echo "dashboard-js compilation is still running. we will wait until it finish."
-			sleep 5
+			touch /tmp/$sProject/build.lock
+			sleep 15
+			if [ -f /tmp/dashboard-js/build.lock ]; then
+				echo "doshboard-js build.lock file found. starting compilation..."
+				break
+			fi
 		done
 		cd central-js
 		npm cache clean
@@ -215,9 +225,14 @@ build_dashboard-js ()
 		return
 	fi
 	if [ "$bSkipDeploy" == "true" ]; then
-		while curl --silent --show-error http://viktor-karabedyants:2381a2cce687ef20c9208a9c05018a28@localhost:8080/job/alpha_Front_Central/lastBuild/api/json | grep -q result\":null; do
+		while ps axg | grep -v grep | grep -q central-js; do
 			echo "central-js compilation is still running. we will wait until it finish."
-			sleep 5
+			touch /tmp/$sProject/build.lock
+			sleep 15
+			if [ -f /tmp/central-js/build.lock ]; then
+				echo "central-js build.lock file found. starting compilation..."
+				break
+			fi
 		done
 		cd dashboard-js
 		npm install
@@ -232,9 +247,14 @@ build_dashboard-js ()
 		rm -rf /tmp/$sProject
 		return
 	else
-		while curl --silent --show-error http://viktor-karabedyants:2381a2cce687ef20c9208a9c05018a28@localhost:8080/job/alpha_Front_Central/lastBuild/api/json | grep -q result\":null; do
+		while ps axg | grep -v grep | grep -q central-js; do
 			echo "central-js compilation is still running. we will wait until it finish."
-			sleep 5
+			touch /tmp/$sProject/build.lock
+			sleep 15
+			if [ -f /tmp/central-js/build.lock ]; then
+				echo "central-js build.lock file found. starting compilation..."
+				break
+			fi
 		done
 		cd dashboard-js
 		npm install
