@@ -171,12 +171,14 @@ build_central-js ()
 		return
 	fi
 	if [ "$bSkipDeploy" == "true" ]; then
-		nRandomNumber=$(( ( RANDOM % 30 )  + 1 ))
-		echo "Sleeping for random number of seconds: $nRandomNumber sec."
-		sleep $nRandomNumber
 		while ps axg | grep -v grep | grep -q dashboard-js; do
 			echo "dashboard-js compilation is still running. we will wait until it finish."
-			sleep 5
+			touch /tmp/$sProject/build.lock
+			sleep 15
+			if [ -f /tmp/dashboard-js/build.lock ]; then
+				echo "doshboard-js build.lock file found. starting compilation..."
+				break
+			fi
 		done
 		cd central-js
 		npm cache clean
@@ -190,12 +192,14 @@ build_central-js ()
 		rm -rf /tmp/$sProject
 		return
 	else
-		nRandomNumber=$(( ( RANDOM % 30 )  + 1 ))
-		echo "Sleeping for random number of seconds: $nRandomNumber sec."
-		sleep $nRandomNumber
 		while ps axg | grep -v grep | grep -q dashboard-js; do
 			echo "dashboard-js compilation is still running. we will wait until it finish."
-			sleep 5
+			touch /tmp/$sProject/build.lock
+			sleep 15
+			if [ -f /tmp/dashboard-js/build.lock ]; then
+				echo "doshboard-js build.lock file found. starting compilation..."
+				break
+			fi
 		done
 		cd central-js
 		npm cache clean
@@ -221,12 +225,14 @@ build_dashboard-js ()
 		return
 	fi
 	if [ "$bSkipDeploy" == "true" ]; then
-		nRandomNumber=$(( ( RANDOM % 25 )  + 1 ))
-		echo "Sleeping for random number of seconds: $nRandomNumber sec."
-		sleep $nRandomNumber
 		while ps axg | grep -v grep | grep -q central-js; do
 			echo "central-js compilation is still running. we will wait until it finish."
-			sleep 5
+			touch /tmp/$sProject/build.lock
+			sleep 15
+			if [ -f /tmp/central-js/build.lock ]; then
+				echo "central-js build.lock file found. starting compilation..."
+				break
+			fi
 		done
 		cd dashboard-js
 		npm install
@@ -241,12 +247,14 @@ build_dashboard-js ()
 		rm -rf /tmp/$sProject
 		return
 	else
-		nRandomNumber=$(( ( RANDOM % 25 )  + 1 ))
-		echo "Sleeping for random number of seconds: $nRandomNumber sec."
-		sleep $nRandomNumber
 		while ps axg | grep -v grep | grep -q central-js; do
 			echo "central-js compilation is still running. we will wait until it finish."
-			sleep 5
+			touch /tmp/$sProject/build.lock
+			sleep 15
+			if [ -f /tmp/central-js/build.lock ]; then
+				echo "central-js build.lock file found. starting compilation..."
+				break
+			fi
 		done
 		cd dashboard-js
 		npm install
