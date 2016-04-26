@@ -84,11 +84,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
         bFinish = false;
         long startTime = System.currentTimeMillis();
-        LOG.info("(getMethod()={}, getRequestURL()={})", oRequest.getMethod().trim(),
-                oRequest.getRequestURL().toString());
-        LOG_BIG.info("(getMethod()={}, getRequestURL()={})", oRequest.getMethod().trim(), oRequest.getMethod().trim(),
-                oRequest.getRequestURL().toString());
-        //+ ",nMS_Start=" + System.currentTimeMillis());
+        LOG.info("(getMethod()={}, getRequestURL()={})", oRequest.getMethod().trim(), oRequest.getRequestURL().toString());
+        LOG_BIG.info("(getMethod()={}, getRequestURL()={})", oRequest.getMethod().trim(), oRequest.getRequestURL().toString());
+                //+ ",nMS_Start=" + System.currentTimeMillis());
         //LOG.debug("getRequestURL()=" + oRequest.getRequestURL().toString());
         //oLogBig_Controller.info("getRequestURL()=" + oRequest.getRequestURL().toString());
         oRequest.setAttribute("startTime", startTime);

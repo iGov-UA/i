@@ -95,9 +95,6 @@ public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListene
                             try {
                                 //ByteArrayMultipartFile oByteArrayMultipartFile
                                 //        = new ByteArrayMultipartFile(contentStringToByte(resp), fileName, fileNameOrigin, "application/octet-stream");
-                                //ByteArrayMultipartFile oByteArrayMultipartFile
-                                //        = new ByteArrayMultipartFile(contentStringToByte(resp), fileName, fileNameOrigin, responseEntity.getHeaders().getContentType().toString());
-                                
                                 ByteArrayMultipartFile oByteArrayMultipartFile
                                         = new ByteArrayMultipartFile(responseEntity.getBody(), fileName, fileNameOrigin, responseEntity.getHeaders().getContentType().toString());
                                 
@@ -125,8 +122,8 @@ public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListene
 
             }
         }
-        LOG.info("close task aythomaticaly: " + delegateTask.getId() + "...");
+        LOG.info("close task authomaticaly: " + delegateTask.getId() + "...");
         //taskService.complete(delegateTask.getId(), new HashMap());
-        LOG.info("close task aythomaticaly: " + delegateTask.getId() + " ok!");
+        LOG.info("close task authomaticaly: " + delegateTask.getId() + " ok!");
     }
 }

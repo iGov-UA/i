@@ -476,7 +476,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
         result = result.replace(key, value);
       });
 
-     return result;
+    return result;
     } else {
       return encodedhtml;
     }

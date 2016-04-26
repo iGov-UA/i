@@ -95,7 +95,6 @@ angular.module('app').factory('FileFactory', function ($q, $rootScope, ActivitiS
   };
 
   file.prototype.get = function () {
-    //return this.value ? this.value.id : null;
     if(this.value){
       if(this.value.hasOwnProperty('id')){
         return this.value.id;

@@ -162,8 +162,8 @@ angular.module('app').factory('FormDataFactory', function (ParameterFactory, Dat
                   self.fields[sFieldName] = true;
                   self.params[sFieldName].value = aAddress.getCountyCode();
                 }
-
-
+                
+                
                 sFieldName = 'bankIdAddressFactual_country';
                 if (self.hasParam(sFieldName)) {
                   self.fields[sFieldName] = true;
@@ -199,8 +199,8 @@ angular.module('app').factory('FormDataFactory', function (ParameterFactory, Dat
                   self.fields[sFieldName] = true;
                   self.params[sFieldName].value = aAddress.getFlatNo();
                 }
-
-
+          
+                
                 break;
             }
             if (sFieldName === null) {
