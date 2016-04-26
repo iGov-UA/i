@@ -153,6 +153,13 @@ angular.module('app').controller('FooterController', function ($scope) {
       image: 'assets/images/ads/lawuer-services.png',
       height: 50
     }
+    
+    ,{
+      url: 'https://www.imena.ua',
+      alt: 'imena',
+      image: 'assets/images/ads/imena.png',
+      height: 50
+    }
  
  
   ];
