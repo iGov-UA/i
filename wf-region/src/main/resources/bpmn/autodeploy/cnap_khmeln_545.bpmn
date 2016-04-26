@@ -12,21 +12,13 @@
         <activiti:formProperty id="sAdress" name="Адреса реєстрації суб'єкта звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Мобільний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
-        
-        
         <activiti:formProperty id="sAdres_bud" name="Адреса житлового приміщення яке треба обстежити" type="string" required="true"></activiti:formProperty>
-        
         <activiti:formProperty id="file_1" name="Технічний висновок про стан будівельних конструкцій, виконаний ліцензованою проектною організацією" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file_2" name="Документ про право власності на приміщення" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file_3" name="Технічний паспорт на житлове приміщення" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file_4" name="Договір оренди житлового приміщення (при умові надання приміщення в оренду)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file_5" name="Нотаріально завірена згода власників суміжних приміщень" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file_6" name="Довідка про склад сімʼї та реєстрацію." type="file" required="true"></activiti:formProperty>
-        
-       
-        
-        
-        
         <activiti:formProperty id="sNameOrgan" name="Назва ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
@@ -86,23 +78,17 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asOsoba" name="Вкажіть тип особи" type="enum" writable="false">
-          <activiti:value id="sEnamUr" name="Юридична особа"></activiti:value>
-          <activiti:value id="sEnamFiz" name="Фізична особа"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sSubzvern" name="Суб'єкт звернення:;(повна назва юридичної особи)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІНН" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sEDRPOU" name="Код ЄДРПОУ" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Адреса реєстрації суб'єкта звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Мобільний телефон" type="string" default="+380" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAdres_zemli" name="Адреса земельної ділянки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdres_bud" name="Адреса житлового приміщення яке треба обстежити" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asVariants" name="Результат розгляду заявки" type="enum" required="true">
           <activiti:value id="sEnamDok_ok" name="Заявку оформлено вірно, передати на опрацювання до місцевої ради"></activiti:value>
           <activiti:value id="sEnamDok_bad" name="Заявка оформлена не вірно відмова."></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="Komment_Cnap" name="Коментар по розгляду заявки;(Вкажіть інформацію, в разі відмови поясніть причину відмови)" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="Komment_Cnap" name="Коментар по розгляду заявки;(Вкажіть корисну інформацію, в разі відмови поясніть причину відмови)" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern\print\cnap_khmeln_546_print.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="супровідний текст" type="invisible" default="Якщо заявка прийнята, вона буде передана до місцевої ради. У разі відмови робота по цій заявці завершена."></activiti:formProperty>
@@ -110,7 +96,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${file_mistobud},${file_gen_plan},${file_posv_vlasn}</activiti:expression>
+            <activiti:expression>${file_1},${file_2},${file_3},${file_4},${file_5},${file_6}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -206,15 +192,9 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asOsoba" name="Вкажіть тип особи" type="enum" writable="false">
-          <activiti:value id="sEnamUr" name="Юридична особа"></activiti:value>
-          <activiti:value id="sEnamFiz" name="Фізична особа"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sSubzvern" name="Суб'єкт звернення:;(повна назва юридичної особи)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІНН" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sEDRPOU" name="Код ЄДРПОУ" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAdress" name="Адреса реєстрації суб'єкта звернення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdressB" name="Адреса реєстрації суб'єкта звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Мобільний телефон" type="string" default="+380" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdres_zemli" name="Адреса земельної ділянки" type="string" writable="false"></activiti:formProperty>
@@ -222,12 +202,11 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="Komment_Rada" name="Коментар спеціаліста Ради" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern\print\cnap_khmeln_546_print.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="супровідний текст" type="invisible" default="Якщо заявка прийнята, вона буде передана до місцевої ради. У разі відмови робота по цій заявці завершена."></activiti:formProperty>
         <activiti:formProperty id="print_marker1" name="ur_fiz_print" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_1&quot;:{&quot;aElement_ID&quot;:[&quot;UO&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asOsoba&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnamUr'&quot;},&quot;ShowElementsOnTrue_2&quot;:{&quot;aElement_ID&quot;:[&quot;FO&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asOsoba&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnamFiz'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${file_mistobud},${file_gen_plan},${file_posv_vlasn}</activiti:expression>
+            <activiti:expression>${file_1},${file_2},${file_3},${file_4},${file_5},${file_6}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -275,11 +254,6 @@ ${sWorkTime}.&lt;br /&gt;
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asOsoba" name="Вкажіть тип особи" type="enum" writable="false">
-          <activiti:value id="sEnamUr" name="Юридична особа"></activiti:value>
-          <activiti:value id="sEnamFiz" name="Фізична особа"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sSubzvern" name="Суб'єкт звернення:;(повна назва юридичної особи)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Адреса реєстрації суб'єкта звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Мобільний телефон" type="string" default="+380" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
