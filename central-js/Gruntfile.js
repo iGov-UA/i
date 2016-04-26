@@ -641,7 +641,7 @@ module.exports = function (grunt) {
     if (target === 'dist') {
       return grunt.task.run([
         'build',
-        'test:client',
+        // 'test:client',
         'env:all',
         'env:prod',
         'express:prod',

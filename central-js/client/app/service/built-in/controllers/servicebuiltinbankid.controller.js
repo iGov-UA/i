@@ -99,6 +99,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   }
 
   $scope.bAdmin = AdminService.isAdmin();
+
   $scope.markers = ValidationService.getValidationMarkers();
   var aID_FieldPhoneUA = $scope.markers.validate.PhoneUA.aField_ID;
 
