@@ -364,7 +364,7 @@ else
 	fi
 	if [ $sProject == "central-js" ]; then
 		touch /tmp/$sProject/build.lock
-		while [ ! -f /tmp/dashboard-js/build.lock ]; do
+		while [ -f /tmp/dashboard-js/build.lock ]; do
 			sleep 10
 			echo "dashboard-js compilation is still running. we will wait until it finish."
 		done
@@ -373,7 +373,7 @@ else
 	if [ $sProject == "dashboard-js" ]; then
 		sleep 10
 		touch /tmp/$sProject/build.lock
-		while [ ! -f /tmp/central-js/build.lock ]; do
+		while [ -f /tmp/central-js/build.lock ]; do
 			sleep 10
 			echo "central-js compilation is still running. we will wait until it finish."
 		done
