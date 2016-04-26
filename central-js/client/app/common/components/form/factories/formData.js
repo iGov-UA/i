@@ -245,7 +245,10 @@ angular.module('app').factory('FormDataFactory', function (ParameterFactory, Dat
     };
 
     var backToFile = function (key) {
+      var oldParam = self.params[key];
       self.params[key] = new FileFactory();
+      self.params[key].writable = oldParam.writable;
+      self.params[key].required = oldParam.required;
     };
 
     var populateWithValue = function (key, fileID) {

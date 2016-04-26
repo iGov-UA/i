@@ -1,6 +1,6 @@
 angular.module('app').controller('PlaceController',
-  function ($state,
-            $q,
+  function ($q,
+            $state,
             AdminService,
             $rootScope,
             $scope,

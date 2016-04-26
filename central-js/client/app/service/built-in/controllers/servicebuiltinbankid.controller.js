@@ -143,7 +143,6 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     }
     if (field.id === 'bReferent') {
       angular.extend($scope.data.formData.params.bReferent, field);
-      $scope.visibleBReferent = true;
       switch ($scope.data.formData.params.bReferent.value) {
         case 'true': $scope.data.formData.params.bReferent.value = true; break;
         case 'false': $scope.data.formData.params.bReferent.value = false; break;
@@ -461,8 +460,13 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     });
   }
 
+<<<<<<< HEAD
     $scope.htmldecode = function(encodedhtml){
      if(encodedhtml){
+=======
+  $scope.htmldecode = function(encodedhtml){
+    if(encodedhtml){
+>>>>>>> 9290934f89eb4b60f4eddf6d080c1a1db024e728
       var map = {
       '&amp;'     :   '&',
       '&gt;'      :   '>',
@@ -471,14 +475,17 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
       '&#39;'     :   "'"
      };
 
-    var result = angular.copy(encodedhtml);
-    angular.forEach(map, function(value, key)
-    {
+     var result = angular.copy(encodedhtml);
+     angular.forEach(map, function(value, key){
       while(result.indexOf(key) > -1)
         result = result.replace(key, value);
-    });
+      });
 
+<<<<<<< HEAD
      return result;
+=======
+    return result;
+>>>>>>> 9290934f89eb4b60f4eddf6d080c1a1db024e728
     } else {
       return encodedhtml;
     }
