@@ -24,9 +24,18 @@ module.exports.index = function (accessToken, callback, disableDecryption) {
   var url = bankidUtil.getInfoURL(config);
 
   function adminCheckCallback(error, response, body) {
-    if (body.customer && Admin.isAdminInn(body.customer.inn)) {
+    var innToCheck;
+
+    if(disableDecryption){
+      innToCheck = bankidUtil.decryptField(body.customer.inn);
+    } else {
+      innToCheck = body.customer.inn;
+    }
+
+
+    if (body.customer && Admin.isAdminInn(innToCheck)) {
       body.admin = {
-        inn: body.customer.inn,
+        inn: innToCheck,
         token: Admin.generateAdminToken()
       };
     }
