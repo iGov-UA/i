@@ -777,10 +777,18 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
     @RequestMapping(value = "/setVariable", method = RequestMethod.GET)
     public void setVariableToProcessInstance(
-            @RequestParam String processInstanceId,
-            @RequestParam String key,
-            @RequestParam String value) {
-        runtimeService.setVariable(processInstanceId, key, value);
+            @RequestParam(value = "processInstanceId", required = true) String snID_Process,
+            @RequestParam(value = "key", required = true) String sKey,
+            @RequestParam(value = "value", required = true) String sValue
+            //@RequestParam String processInstanceId,
+            //@RequestParam String key,
+            //@RequestParam String value
+    ) {
+        try{
+            runtimeService.setVariable(snID_Process, sKey, sValue);
+        }catch(Exception oException){
+            LOG.error("ERROR:{} (snID_Process={},sKey={},sValue={})", oException.getMessage(), snID_Process, sKey, sValue);
+        }
     }
 
     /**
