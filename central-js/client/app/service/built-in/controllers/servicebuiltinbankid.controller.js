@@ -461,9 +461,9 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     });
   }
 
-  $scope.htmldecode = function(encodedhtml)
-  {
-    var map = {
+  $scope.htmldecode = function(encodedhtml){
+    if(encodedhtml){
+      var map = {
       '&amp;'     :   '&',
       '&gt;'      :   '>',
       '&lt;'      :   '<',
@@ -479,6 +479,9 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     });
 
     return result;
+    } else {
+      return encodedhtml;
+    }
   };
 
   $scope.getHtml = function(html) {
