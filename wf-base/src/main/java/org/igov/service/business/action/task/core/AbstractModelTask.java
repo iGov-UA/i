@@ -395,7 +395,7 @@ public abstract class AbstractModelTask {
         if (!asFieldValue.isEmpty()) {
             String sValue = asFieldValue.get(0);
             LOG.info("(sValue={})", sValue);
-            if(sValue!=null && !"".equals(sValue.trim())){
+            if(sValue!=null && !"".equals(sValue.trim()) && !"null".equals(sValue.trim())){
                 LOG.info("sValue is present, so queue is filled");
                 long nID_FlowSlotTicket = 0;
                 Map<String, Object> m = QueueDataFormType.parseQueueData(sValue);
