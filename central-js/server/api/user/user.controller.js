@@ -18,7 +18,7 @@ var finishRequest = function (req, res, err, result, type) {
 
     var customer = userConvert.convertToCanonical(type, result.customer);
     var admin = result.admin;
-    if (!admin && customer && Admin.isAdminInn(customer.inn)) {
+    if (Admin.isAdminInn(customer.inn)) {
       admin = {
         inn: customer.inn,
         token: Admin.generateAdminToken()
