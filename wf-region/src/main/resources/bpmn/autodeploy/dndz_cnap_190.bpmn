@@ -13,7 +13,6 @@
         <activiti:formProperty id="bankId_scan_inn" name="Скан-копія ІПН" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта для зворотнього звя'язку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="Вкажіть сьогоднішню дату" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="asEnumSelectTypeContragent" name="Суб’єкт звернення" type="enum" required="true">
           <activiti:value id="sEnumElement_FOP" name="Фізична особа - підприємець"></activiti:value>
           <activiti:value id="sEnumElement_Company" name="Юридична особа"></activiti:value>
@@ -62,6 +61,7 @@
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="date_today" name="Вкажіть сьогоднішню дату" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka_190" name="На кого пишеться заява" type="invisible"></activiti:formProperty>
@@ -202,7 +202,7 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
+    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <serviceTask id="servicetask3" name="Повідомлення про доставку замовлення до ЦНАПу" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -243,7 +243,7 @@ ${sAddress}&lt;br /&gt;
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-		<activiti:string><![CDATA[Відхилено звернення на тему: розірвання договору оренди земельної ділянки або припинення права постійного користування земельною ділянкою]]></activiti:string>
+          <activiti:string><![CDATA[Відхилено звернення на тему: розірвання договору оренди земельної ділянки або припинення права постійного користування земельною ділянкою]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -317,10 +317,10 @@ ${sAddress}&lt;br /&gt;
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення опрацьовано: розірвання договору оренди земельної ділянки або припинення права постійного користування земельною ділянкою]]></activiti:string>
         </activiti:field>
-    	<activiti:field name="saAttachmentsForSend">
+        <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${nFile_Rishennya}</activiti:expression>
         </activiti:field>
-            <activiti:field name="text">
+        <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 &lt;p&gt;Ви подавали звернення щодо розірвання договору оренди земельної ділянки або припинення права постійного користування земельною ділянкою. &lt;br /&gt;
@@ -377,6 +377,10 @@ ${sAddress}&lt;br /&gt;
     </sequenceFlow>
     <sequenceFlow id="flow14" sourceRef="servicetask7" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow15" sourceRef="servicetask6" targetRef="endevent2"></sequenceFlow>
+    <scriptTask id="scripttask1" name="Script Task" scriptFormat="groovy" activiti:autoStoreVariables="false">
+		  <script>execution.setVariable('date_today', new Date().format("dd.MM.yyyy").toString())</script>
+    </scriptTask>
+    <sequenceFlow id="flow16" sourceRef="scripttask1" targetRef="servicetask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dndz_cnap_190">
     <bpmndi:BPMNPlane bpmnElement="dndz_cnap_190" id="BPMNPlane_dndz_cnap_190">
@@ -425,13 +429,16 @@ ${sAddress}&lt;br /&gt;
       <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
         <omgdc:Bounds height="121.0" width="105.0" x="885.0" y="460.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="210.0" y="80.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="85.0" y="205.0"></omgdi:waypoint>
         <omgdi:waypoint x="120.0" y="205.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="225.0" y="205.0"></omgdi:waypoint>
-        <omgdi:waypoint x="270.0" y="205.0"></omgdi:waypoint>
+        <omgdi:waypoint x="172.0" y="160.0"></omgdi:waypoint>
+        <omgdi:waypoint x="262.0" y="135.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="375.0" y="205.0"></omgdi:waypoint>
@@ -456,7 +463,7 @@ ${sAddress}&lt;br /&gt;
         <omgdi:waypoint x="760.0" y="225.0"></omgdi:waypoint>
         <omgdi:waypoint x="759.0" y="259.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="721.0" y="227.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="89.0" x="721.0" y="227.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
@@ -479,14 +486,14 @@ ${sAddress}&lt;br /&gt;
         <omgdi:waypoint x="739.0" y="520.0"></omgdi:waypoint>
         <omgdi:waypoint x="595.0" y="520.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="622.0" y="527.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="78.0" x="622.0" y="527.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
         <omgdi:waypoint x="779.0" y="520.0"></omgdi:waypoint>
         <omgdi:waypoint x="885.0" y="520.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="780.0" y="529.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="60.0" x="780.0" y="529.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
@@ -496,6 +503,10 @@ ${sAddress}&lt;br /&gt;
       <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
         <omgdi:waypoint x="542.0" y="460.0"></omgdi:waypoint>
         <omgdi:waypoint x="204.0" y="315.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
+        <omgdi:waypoint x="262.0" y="135.0"></omgdi:waypoint>
+        <omgdi:waypoint x="322.0" y="160.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
