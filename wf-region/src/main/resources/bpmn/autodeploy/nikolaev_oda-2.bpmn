@@ -42,7 +42,7 @@
           <activiti:value id="no" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="lPrivilege" name="Зверніть увагу" type="label" default="Укажіть свій статус так прикрипіть один чи декілька документів:           &lt;ul&gt;            &lt;li&gt;довідка МСЕК&lt;/li&gt;            &lt;li&gt;довідка про одержання грошової допомоги одинокої матері&lt;/li&gt;            &lt;li&gt;копія посвідчення багатодітної родини&lt;/li&gt;            &lt;li&gt;довідка з місця роботи для працівник міліції&lt;/li&gt;            &lt;li&gt;довідка з місця роботи для працівників освіти&lt;/li&gt;            &lt;li&gt;посвідчення ветерана війни&lt;/li&gt;            &lt;li&gt;свідоцтво постраждалих внаслідок Чорнобильської катастрофи&lt;/li&gt;            &lt;li&gt;документ який свідчить про статус сироти&lt;/li&gt;            &lt;li&gt;копія довідки із учбового закладу про розподіл на роботу у іншу місцевість&lt;/li&gt;            &lt;li&gt;копія приказу про призначення на посаду (працівників прокуратури та суду)&lt;/li&gt;           &lt;/ul&gt; "></activiti:formProperty>
-        <activiti:formProperty id="aPrivilege" name="Укажіть свої льготи;якщо декілька, то вказуйте через кому" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPrivilege" name="Укажіть свої льготи;якщо декілька, то вказуйте через кому" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="nfile_Privilege" name="Копія(ї) документа(ів), що надає льготу для першочергового одержання житла; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="asCountFamily" name="Укажіть скільки осіб проживає з вами" type="enum" default="f0" required="true">
           <activiti:value id="f0" name="0"></activiti:value>
@@ -203,10 +203,10 @@
 /* Заполнение полей */
 /* Заявник */
 if(execution.getVariable('asWork0')=='no'){
-execution.setVariable('sWorkPlace0', 'не працює');
+	execution.setVariable('sWorkPlace0', 'не працює');
 }
 if(execution.getVariable('asPrivilege')=='no'){
-execution.setVariable('sPrivilege', 'не має');
+	execution.setVariable('sPrivilege', 'не має');
 }
 
 // скільки проживає людей
@@ -218,31 +218,33 @@ int countIsAdult = 0
 for (int i = 1; i <= maxCountFamily; i++) {
     def name_asWork = 'asWork' + "${i}"
     def name_sWorkPlace = 'sWorkPlace' + "${i}"  
-    def name_asAdult = 'asAdult' + "${i}"
-      
+    def name_asAdult = 'asAdult' + "${i}"      
     def name_sFamilyRelation = 'sFamilyRelation' + "${i}"  
     def name_nBirthday = 'nBirthday' + "${i}"  
     def name_nWhereLives = 'nWhereLives' + "${i}"
     def name_sFIO = 'sFIO' + "${i}"
-    
-    if(i<=countFamily){/*родственники существуют*/     
-     if(execution.getVariable(name_asAdult)== 'yes'){ /*дорослий*/
-      countIsAdult ++;
-      if(execution.getVariable(name_asWork)== 'no'){
-       execution.setVariable(name_sWorkPlace, 'не працює')    
-      }
-     }
-     else{
-      execution.setVariable(name_sWorkPlace, 'не працює')    
-     }     
-    }
-    else{/*родственники НЕ существуют*/     
-	    execution.setVariable(name_sWorkPlace, ' ')
-	    execution.setVariable(name_sFamilyRelation, ' ')   
-	    execution.setVariable(name_nBirthday, ' ')  
-	    execution.setVariable(name_nWhereLives, ' ')   
-	    execution.setVariable(name_sFIO, ' ')
-    }
+    def name_sClFio = 'sClFio' + "${i}"
+	if(i<=countFamily){
+		def ClFio = execution.getVariable(name_sFIO) + ', ' + execution.getVariable(name_sFamilyRelation) + ', ' + execution.getVariable(name_nBirthday) + ' р.н.'     
+		execution.setVariable(name_sClFio, ClFio)     
+		if(execution.getVariable(name_asAdult)== 'yes'){
+			countIsAdult ++;
+			if(execution.getVariable(name_asWork)== 'no'){
+				execution.setVariable(name_sWorkPlace, 'не працює')    
+			}
+		}
+		else{
+			execution.setVariable(name_sWorkPlace, 'не працює')    
+		}
+	}
+	else{/*родственники НЕ существуют*/     
+		execution.setVariable(name_sWorkPlace, ' ')
+		execution.setVariable(name_sFamilyRelation, ' ')   
+		execution.setVariable(name_nBirthday, ' ')  
+		execution.setVariable(name_nWhereLives, ' ')   
+		execution.setVariable(name_sFIO, ' ')
+		execution.setVariable(name_sClFio, ' ')
+	}
 }
 execution.setVariable('nCountIsAdult', 'a' + countIsAdult)
 		]]></script>
