@@ -171,16 +171,6 @@ build_central-js ()
 		return
 	fi
 	if [ "$bSkipDeploy" == "true" ]; then
-		while ps axg | grep -v grep | grep -q dashboard-js; do
-			echo "dashboard-js compilation is still running. we will wait until it finish."
-			touch /tmp/$sProject/build.lock
-			sleep 7
-			if [ -f /tmp/dashboard-js/build.lock ]; then
-				echo "doshboard-js build.lock file found. starting compilation..."
-				rm -f /tmp/$sProject/build.lock
-				break
-			fi
-		done
 		cd central-js
 		npm cache clean
 		npm install
@@ -193,16 +183,6 @@ build_central-js ()
 		rm -rf /tmp/$sProject
 		return
 	else
-		while ps axg | grep -v grep | grep -q dashboard-js; do
-			echo "dashboard-js compilation is still running. we will wait until it finish."
-			touch /tmp/$sProject/build.lock
-			sleep 7
-			if [ -f /tmp/dashboard-js/build.lock ]; then
-				echo "doshboard-js build.lock file found. starting compilation..."
-				rm -f /tmp/$sProject/build.lock
-				break
-			fi
-		done
 		cd central-js
 		npm cache clean
 		npm install
@@ -227,16 +207,6 @@ build_dashboard-js ()
 		return
 	fi
 	if [ "$bSkipDeploy" == "true" ]; then
-		while ps axg | grep -v grep | grep -q central-js; do
-			echo "central-js compilation is still running. we will wait until it finish."
-			touch /tmp/$sProject/build.lock
-			sleep 15
-			if [ -f /tmp/central-js/build.lock ]; then
-				echo "central-js build.lock file found. starting compilation..."
-				rm -f /tmp/$sProject/build.lock
-				break
-			fi
-		done
 		cd dashboard-js
 		npm install
 		npm list grunt
@@ -250,16 +220,6 @@ build_dashboard-js ()
 		rm -rf /tmp/$sProject
 		return
 	else
-		while ps axg | grep -v grep | grep -q central-js; do
-			echo "central-js compilation is still running. we will wait until it finish."
-			touch /tmp/$sProject/build.lock
-			sleep 15
-			if [ -f /tmp/central-js/build.lock ]; then
-				echo "central-js build.lock file found. starting compilation..."
-				rm -f /tmp/$sProject/build.lock
-				break
-			fi
-		done
 		cd dashboard-js
 		npm install
 		npm list grunt
@@ -403,9 +363,20 @@ else
 		build_region
 	fi
 	if [ $sProject == "central-js" ]; then
+		touch /tmp/$sProject/build.lock
+		while [ -f /tmp/dashboard-js/build.lock ]; do
+			sleep 10
+			echo "dashboard-js compilation is still running. we will wait until it finish."
+		done
 		build_central-js
 	fi
 	if [ $sProject == "dashboard-js" ]; then
+		sleep 10
+		touch /tmp/$sProject/build.lock
+		while [ -f /tmp/central-js/build.lock ]; do
+			sleep 10
+			echo "central-js compilation is still running. we will wait until it finish."
+		done
 		build_dashboard-js
 	fi
 fi

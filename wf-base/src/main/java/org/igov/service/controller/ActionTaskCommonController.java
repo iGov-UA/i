@@ -1381,8 +1381,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 //     * @param nID_Server - ид сервера
      * @param sHead         -- строка заголовка письма //опциональный (если не задан, то
      *                      "Необходимо уточнить данные")
-     * @param sBody         -- строка тела письма //опциональный (если не задан, то
-     *                      пустота)
+     * @param sBody         -- строка тела письма //опциональный (если не задан, то пустота)
+     * @param sSubjectInfo  -- строка-информация о субъекте //опциональный
+	 * @param nID_Subject   -- ID гражданина //опциональный
      * @throws CommonServiceException
      * @throws CRCInvalidException
      */
