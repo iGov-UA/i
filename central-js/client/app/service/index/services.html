@@ -1,6 +1,6 @@
 <div class="container">
 
-  <div class="row">
+  <div class="row" ng-hide="isSfs()">
     <div class="col-md-6 col-md-offset-3">
       <igov-search></igov-search>
 
@@ -84,7 +84,7 @@
       </p>
     </div>
 
-    <div class="col-md-4" ng-repeat-start="subcategory in category.aSubcategory">
+    <div ng-class="{'igov-columns-3 col-md-12':category.aSubcategory.length <= 1, 'col-md-4':category.aSubcategory.length > 1}" ng-repeat-start="subcategory in category.aSubcategory">
       <h3 ng-hide="category.aSubcategory.length === 1">
         <a title="Перейти до перегляду послуг цієї категорії"
            class="control-element"
