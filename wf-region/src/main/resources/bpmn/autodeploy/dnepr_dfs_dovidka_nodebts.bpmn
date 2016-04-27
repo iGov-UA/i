@@ -4,12 +4,15 @@
     <documentation>Рефакторинг 27.04.16 Ставицкий В.Д.</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати рішення" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати рішення" type="select" default="0" required="true"></activiti:formProperty>        
+        <activiti:formProperty id="sAddress" name="адреса органу" type="string" default=" " writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nCodeTaxOrgan" name="код податкового відділення" type="string" default=" " writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nEGRPOU" name="ЕГРПОУ" type="string" default=" " writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотного зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="subekt" name="Ви хочете замовити витяг по собі або по іншому підприємству?" type="enum" default="fiz">
@@ -23,11 +26,8 @@
         <activiti:formProperty id="zapit" name="Заповнений бланк" type="file"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="адреса органу" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nCodeTaxOrgan" name="код податкового відділення" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nEGRPOU" name="ЕГРПОУ" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="markersShowFill" name="отображать поля" type="markers" default="${markerService.loadFromFile('dfs/dnepr_dfs_dovid_nodeb_show_fill.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -77,8 +77,8 @@
 			<br>
 			За наявності питань можете звернутись за наступними контактами<br>
 			${sAddress}<br>
-			${sWorkTime}<br>
-			${sPhoneOrgan}<br><br>
+			${sPhoneOrgan}<br>
+			${sWorkTime}<br><br>
 			[pattern/mail/_common_signature_start.html]
 			${sNameOrgan}.<br>
 			[pattern/mail/_common_signature_end.html]
@@ -107,11 +107,11 @@
           <activiti:value id="accept" name="Надати довідку про відсутність заборгованості з податків"></activiti:value>
           <activiti:value id="reject" name="Відмовити у наданні довідки"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="comment_1" name="Якщо обрали варіант &quot;інша причина&quot; внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="comment_1" name="Якщо обрали варіант &quot;Відмовити у наданні довідки&quot; внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${zapit}]]></activiti:expression>
+            <activiti:expression>${zapit}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -146,13 +146,12 @@
           	<br><br>
 			Забрати довідку Ви можете за наступними контактами:<br>
 			${sAddress}<br>
-			${sWorkTime}<br>
 			${sPhoneOrgan}<br>
+			${sWorkTime}<br><br>
 			<p>
-				Щоб отримати витяг, при візиті до відділення фіскальної служби, Вам необхідно мати наступні документи:<br>
-				1. № запиту (Ви його отримали листом після подачі заяви)<br>
-				номер заявки [sID_Order]<br>
-				2. Оригінал паспорта громадянина України
+				Щоб отримати витяг, при візиті до відділення фіскальної служби,<br> 
+				Вам необхідно мати при собі оригінал паспорта громадянина України<br> 
+				та назвати номер запиту №[sID_Order]
 			</p>			
 			<br><br>			
 			[pattern/mail/_common_feedback.html]
@@ -184,14 +183,14 @@
 			<p>
 				Вам відмовлено у наданні довідки про відсутність заборгованості з платежів до бюджету, 
 				що контролюються органами державної фіскальної служби.<br/>
-				Підстава: у Вас є заборгованість до бюджетів усіх рівнів<br>
+				Підстава:<br>
 				<b>${comment_1}</b>
 			</p>
 			<br><br>
 			Перевірити стан Вашої заборгованості Ви можете звернувшися до Вашого відділення фіскальної служби за наступними контактами<br>
 			${sAddress}<br>
-			${sWorkTime}<br>
-			${sPhoneOrgan}<br><br>
+			${sPhoneOrgan}<br>
+			${sWorkTime}<br><br>
 			[pattern/mail/_common_signature_start.html]
 			${sNameOrgan}.<br />
 			[pattern/mail/_common_signature_end.html]
