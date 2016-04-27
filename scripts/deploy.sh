@@ -369,6 +369,9 @@ else
 				while [ -f /tmp/dashboard-js/build.lock ]; do
 					sleep 10
 					echo "dashboard-js compilation is still running. we will wait until it finish."
+					if ps ax | grep -v grep | grep -q dashboard-js; then
+						break
+					fi
 				done
 			else
 				echo "dashboard-js compilation script is not running but lock file exist. removing lock file and starting compilation"
@@ -385,6 +388,9 @@ else
 				while [ -f /tmp/central-js/build.lock ]; do
 					sleep 10
 					echo "central-js compilation is still running. we will wait until it finish."
+					if ps ax | grep -v grep | grep -q central-js; then
+						break
+					fi
 				done
 			else
 				echo "central-js compilation script is not running but lock file exist. removing lock file and starting compilation"
