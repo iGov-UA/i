@@ -364,20 +364,36 @@ else
 	fi
 	if [ $sProject == "central-js" ]; then
 		touch /tmp/$sProject/build.lock
-		while [ -f /tmp/dashboard-js/build.lock ]; do
-			sleep 10
-			echo "dashboard-js compilation is still running. we will wait until it finish."
-		done
-		build_central-js
+		if [ -f /tmp/dashboard-js/build.lock ]; then
+			if ps ax | grep -v grep | grep -q dashboard-js; then
+				while [ -f /tmp/dashboard-js/build.lock ]; do
+					sleep 10
+					echo "dashboard-js compilation is still running. we will wait until it finish."
+				done
+				build_central-js
+			else
+				echo "dashboard-js compilation script is not running but lock file exist. removing lock file and starting compilation"
+				rm -f /tmp/dashboard-js/build.lock
+				build_central-js
+			fi
+		fi
 	fi
 	if [ $sProject == "dashboard-js" ]; then
 		sleep 10
 		touch /tmp/$sProject/build.lock
-		while [ -f /tmp/central-js/build.lock ]; do
-			sleep 10
-			echo "central-js compilation is still running. we will wait until it finish."
-		done
-		build_dashboard-js
+		if [ -f /tmp/central-js/build.lock ]; then
+			if ps ax | grep -v grep | grep -q central-js; then
+				while [ -f /tmp/central-js/build.lock ]; do
+					sleep 10
+					echo "central-js compilation is still running. we will wait until it finish."
+				done
+				build_dashboard-js
+			else
+				echo "central-js compilation script is not running but lock file exist. removing lock file and starting compilation"
+				rm -f /tmp/central-js/build.lock
+				build_dashboard-js
+			fi
+		fi
 	fi
 fi
 if [ "$bDocker" == "true" ]; then
