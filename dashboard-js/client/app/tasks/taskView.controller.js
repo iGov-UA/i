@@ -4,10 +4,10 @@
   angular
     .module('dashboardJsApp')
     .controller('TaskViewCtrl', [
-      '$scope', '$stateParams', 'taskData', 'oTask', 'PrintTemplateService', 'MarkersFactory', 'tasks',
+      '$scope', '$stateParams', 'taskData', 'oTask', 'PrintTemplateService', 'iGovMarkers', 'tasks',
       'taskForm', 'iGovNavbarHelper', 'Modal', 'Auth', 'defaultSearchHandlerService',
       '$state', 'stateModel',
-      function ($scope, $stateParams, taskData, oTask, PrintTemplateService, MarkersFactory, tasks,
+      function ($scope, $stateParams, taskData, oTask, PrintTemplateService, iGovMarkers, tasks,
                 taskForm, iGovNavbarHelper, Modal, Auth, defaultSearchHandlerService,
                 $state, stateModel) {
         var defaultErrorHandler = function (response, msgMapping) {
@@ -91,7 +91,7 @@
                 console.log('markers attribute ' + field.name + ' contain bad formatted json\n' + ex.name + ', ' + ex.message + '\nfield.value: ' + field.value);
               }
               if (sourceObj !== null) {
-                _.merge(MarkersFactory.getMarkers(), sourceObj, function (destVal, sourceVal) {
+                _.merge(iGovMarkers.getMarkers(), sourceObj, function (destVal, sourceVal) {
                   if (_.isArray(sourceVal)) {
                     return sourceVal;
                   }
