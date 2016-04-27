@@ -87,7 +87,7 @@ angular.module('app').controller('PlaceController',
       $q.when(isPlaceChoosingState($state) ? isLoggedIn() : isStayingOnCurrentState($state, stateToGo))
         .then(function (result) {
           if (result.isLoggedIn) {
-            $state.go('index.service.general.place.built-in.bankid', getBuiltInBankIDStateParams());
+            $state.go('index.service.general.place.built-in.bankid', getBuiltInBankIDStateParams(), {reload : true});
           } else if (!result.isLoggedIn && !result.isStaying) {
             $state.go(stateToGo, {id: oService.nID}, {location: false})
           }

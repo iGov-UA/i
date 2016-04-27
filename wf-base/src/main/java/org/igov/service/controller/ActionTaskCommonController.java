@@ -777,10 +777,18 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
     @RequestMapping(value = "/setVariable", method = RequestMethod.GET)
     public void setVariableToProcessInstance(
-            @RequestParam String processInstanceId,
-            @RequestParam String key,
-            @RequestParam String value) {
-        runtimeService.setVariable(processInstanceId, key, value);
+            @RequestParam(value = "processInstanceId", required = true) String snID_Process,
+            @RequestParam(value = "key", required = true) String sKey,
+            @RequestParam(value = "value", required = true) String sValue
+            //@RequestParam String processInstanceId,
+            //@RequestParam String key,
+            //@RequestParam String value
+    ) {
+        try{
+            runtimeService.setVariable(snID_Process, sKey, sValue);
+        }catch(Exception oException){
+            LOG.error("ERROR:{} (snID_Process={},sKey={},sValue={})", oException.getMessage(), snID_Process, sKey, sValue);
+        }
     }
 
     /**
@@ -1381,8 +1389,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 //     * @param nID_Server - ид сервера
      * @param sHead         -- строка заголовка письма //опциональный (если не задан, то
      *                      "Необходимо уточнить данные")
-     * @param sBody         -- строка тела письма //опциональный (если не задан, то
-     *                      пустота)
+     * @param sBody         -- строка тела письма //опциональный (если не задан, то пустота)
+     * @param sSubjectInfo  -- строка-информация о субъекте //опциональный
+	 * @param nID_Subject   -- ID гражданина //опциональный
      * @throws CommonServiceException
      * @throws CRCInvalidException
      */
