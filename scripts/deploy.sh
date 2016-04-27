@@ -367,9 +367,10 @@ else
 		if [ -f /tmp/dashboard-js/build.lock ]; then
 			if ps ax | grep -v grep | grep -q dashboard-js; then
 				while [ -f /tmp/dashboard-js/build.lock ]; do
-					sleep 10
-					echo "dashboard-js compilation is still running. we will wait until it finish."
 					if ps ax | grep -v grep | grep -q dashboard-js; then
+						sleep 10
+						echo "dashboard-js compilation is still running. we will wait until it finish."
+					else
 						break
 					fi
 				done
@@ -386,9 +387,10 @@ else
 		if [ -f /tmp/central-js/build.lock ]; then
 			if ps ax | grep -v grep | grep -q central-js; then
 				while [ -f /tmp/central-js/build.lock ]; do
-					sleep 10
-					echo "central-js compilation is still running. we will wait until it finish."
 					if ps ax | grep -v grep | grep -q central-js; then
+						sleep 10
+						echo "central-js compilation is still running. we will wait until it finish."
+					else
 						break
 					fi
 				done
