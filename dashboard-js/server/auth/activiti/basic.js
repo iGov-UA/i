@@ -97,7 +97,6 @@ exports.authenticate = function (req, res) {
         if (error) {
           callback(error, null);
         } else {
-
           userWithCookie.userResult['roles'] = !result.data ? [] : result.data.map(function (group) {
             return group.id;
           });
@@ -113,6 +112,7 @@ exports.authenticate = function (req, res) {
     if (error) {
       res.status(error.status ? error.status : 500).send(error);
     } else {
+      req.session = result.userResult;
       res.cookie('user', JSON.stringify(result.userResult), {
         expires: expiresUserInMs()
       });
