@@ -163,7 +163,7 @@ ${sNameOrgan}.&lt;br /&gt;
     <sequenceFlow id="flow24" name="asVariants == 'sEnamDok_ok_noopl" sourceRef="exclusivegateway1" targetRef="servicetask7">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asVariants == 'sEnamDok_ok_noopl'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask4" name="Повідомлення про оцінку послуги" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask7" name="Все ок(без квитанції)" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -177,9 +177,10 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Дякуємо що скористались нашою послугою онлайн.&lt;br /&gt;
-Будь ласка оцініть якість наданої вам послуги. &lt;br /&gt;
-[pattern/mail/_common_feedback.html]
+Ваша заявка успішно опрацьована, ви можете отримати довідку.&lt;br /&gt;
+${Komment_rishenia} &lt;br /&gt;
+${sAddress}.&lt;br /&gt;
+${sWorkTime}.&lt;br /&gt;
 ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}.&lt;br /&gt;
@@ -188,7 +189,7 @@ ${sNameOrgan}.&lt;br /&gt;
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask5" name="Завнику все ок (квитанція)" activiti:class="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask5" name="Завнику все ок (квитанція)" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -276,7 +277,7 @@ ${sNameOrgan}.&lt;br /&gt;
     <sequenceFlow id="flow19" sourceRef="servicetask2" targetRef="usertask3"></sequenceFlow>
     <sequenceFlow id="flow21" sourceRef="usertask3" targetRef="exclusivegateway1"></sequenceFlow>
     <sequenceFlow id="flow22" sourceRef="servicetask5" targetRef="usertask2"></sequenceFlow>
-    <serviceTask id="servicetask7" name="Все ок(без квитанції)" activiti:class="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask4" name="Повідомлення про оцінку послуги" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -290,10 +291,9 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваша заявка успішно опрацьована, ви можете отримати довідку.&lt;br /&gt;
-${Komment_rishenia} &lt;br /&gt;
-${sAddress}.&lt;br /&gt;
-${sWorkTime}.&lt;br /&gt;
+Дякуємо що скористались нашою послугою онлайн.&lt;br /&gt;
+Будь ласка оцініть якість наданої вам послуги. &lt;br /&gt;
+[pattern/mail/_common_feedback.html]
 ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}.&lt;br /&gt;
