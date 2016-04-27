@@ -36,9 +36,9 @@ angular.module('app', [
   $urlRouterProvider.otherwise('/');
   $locationProvider.html5Mode(true);
   datepickerConfig.datepickerMode = 'year';
-  datepickerConfig.formatMonthTitle = 'Місяць';
+  datepickerConfig.formatMonthTitle = 'yyyy';
   datepickerConfig.formatYearTitle = 'Рік';
-  datepickerConfig.formatDayTitle = 'Дата';
+  datepickerConfig.formatDayTitle = 'MMM yyyy';
   datepickerConfig.formatDay = 'd';
   datepickerConfig.formatMonth = 'MMM';
   datepickerConfig.startingDay = 1;
