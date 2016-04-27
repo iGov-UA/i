@@ -463,32 +463,22 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     });
   }
 
-<<<<<<< HEAD
-    $scope.htmldecode = function(encodedhtml){
-     if(encodedhtml){
-=======
-  $scope.htmldecode = function(encodedhtml){
-    if(encodedhtml){
->>>>>>> 9290934f89eb4b60f4eddf6d080c1a1db024e728
+  $scope.htmldecode = function (encodedhtml) {
+    if (encodedhtml) {
       var map = {
-        '&amp;'     :   '&',
-        '&gt;'      :   '>',
-        '&lt;'      :   '<',
-        '&quot;'    :   '"',
-        '&#39;'     :   "'"
+        '&amp;': '&',
+        '&gt;': '>',
+        '&lt;': '<',
+        '&quot;': '"',
+        '&#39;': "'"
       };
 
-     var result = angular.copy(encodedhtml);
-     angular.forEach(map, function(value, key){
-      while(result.indexOf(key) > -1)
-        result = result.replace(key, value);
+      var result = angular.copy(encodedhtml);
+      angular.forEach(map, function (value, key) {
+        while (result.indexOf(key) > -1)
+          result = result.replace(key, value);
       });
-
-<<<<<<< HEAD
-     return result;
-=======
-    return result;
->>>>>>> 9290934f89eb4b60f4eddf6d080c1a1db024e728
+      return result;
     } else {
       return encodedhtml;
     }
