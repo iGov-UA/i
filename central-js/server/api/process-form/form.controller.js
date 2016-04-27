@@ -195,7 +195,7 @@ module.exports.signForm = function (req, res) {
       return;
     }
 
-    var callbackURL = url.resolve(originalURL(req, {}), '/api/process-form/sign/callback');
+    var callbackURL = url.resolve(originalURL(req, {}), '/api/process-form/sign/callback?nID_Server=' + nID_Server);
     if (oServiceDataNID) {
       req.session.oServiceDataNID = oServiceDataNID;
       //TODO use oServiceDataNID in callback
@@ -276,7 +276,8 @@ module.exports.signForm = function (req, res) {
 };
 
 module.exports.signFormCallback = function (req, res) {
-  var sURL = req.session.sURL;
+  var sHost = req.region.sHost;
+  var sURL = sHost + '/';
   var formID = req.session.formID;
   var oServiceDataNID = req.session.oServiceDataNID;
   var codeValue = req.query.code;
