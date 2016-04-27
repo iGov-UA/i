@@ -408,6 +408,9 @@ if [ "$bSkipDeploy" == "true" ]; then
 	exit 0
 fi
 
+echo "Compilation finished removing lock file"
+rm -f /tmp/$sProject/build.lock
+
 echo "Connecting to remote host $sHost"
 cd $WORKSPACE
 rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' scripts/deploy_remote.sh sybase@$sHost:/sybase/
