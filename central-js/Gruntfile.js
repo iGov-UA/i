@@ -562,9 +562,15 @@ module.exports = function (grunt) {
       scripts: {
         options: {
           transform: function (filePath) {
-            filePath = filePath.replace('/client/', '');
-            filePath = filePath.replace('/.tmp/', '');
-            filePath = filePath.replace('/../', '');
+            console.log('before ' + filePath);
+            if(filePath.indexOf('public-js') > -1){
+              filePath = filePath.replace('/../', './../../');
+            } else {
+              filePath = filePath.replace('/client/', '');
+              filePath = filePath.replace('/.tmp/', '');
+              filePath = filePath.replace('/../', '');
+            }
+            console.log('after ' + filePath);
             return '<script src="' + filePath + '"></script>';
           },
           starttag: '<!-- injector:js -->',

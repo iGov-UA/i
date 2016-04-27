@@ -23,7 +23,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   PlacesService,
   uiUploader,
   FieldAttributesService,
-  MarkersFactory,
+  iGovMarkers,
   service,
   FieldMotionService,
   ParameterFactory,
@@ -136,7 +136,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
         console.log('markers attribute ' + field.name + ' contain bad formatted json\n' + ex.name + ', ' + ex.message + '\nfield.value: ' + field.value);
       }
       if (sourceObj !== null) {
-        _.merge(MarkersFactory.getMarkers(), sourceObj, function(destVal, sourceVal) {
+        _.merge(iGovMarkers.getMarkers(), sourceObj, function(destVal, sourceVal) {
           if (_.isArray(sourceVal)) {
             return sourceVal;
           }
@@ -152,7 +152,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
       }
     }
   });
-  MarkersFactory.validateMarkers();
+  iGovMarkers.validateMarkers();
   //save values for each property
   $scope.persistValues = JSON.parse(JSON.stringify($scope.data.formData.params));
   $scope.getSignFieldID = function(){
