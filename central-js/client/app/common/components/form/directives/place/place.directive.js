@@ -175,8 +175,6 @@ angular.module('app')
 
         $scope.resetPlace = function(reInit) {
           $scope.resetPlaceData();
-          $scope.data.region = null;
-          $scope.data.city = null;
 
           $scope.regionList.reset();
           $scope.regionList.select(null);
@@ -187,7 +185,7 @@ angular.module('app')
           $scope.localityList.select(null);
 
           $scope.setStepNumber(1);
-          console.log($scope.data.formData)
+
           $scope.$emit('onPlaceEdit');
 
         };

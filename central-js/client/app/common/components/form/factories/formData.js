@@ -7,6 +7,27 @@ angular.module('app').factory('FormDataFactory', function (ParameterFactory, Dat
     this.params = {};
   };
 
+  FormDataFactory.prototype.initializeParamsOnly = function (ActivitiForm) {
+    this.processDefinitionId = ActivitiForm.processDefinitionId;
+    for (var key in ActivitiForm.formProperties) {
+      if(ActivitiForm.formProperties.hasOwnProperty(key)){
+        var property = ActivitiForm.formProperties[key];
+        initializeWithFactory(this.params, this.factories, property);
+        fillAutoCompletes(property);
+      }
+    }
+  };
+
+  FormDataFactory.prototype.initialize = function (ActivitiForm, BankIDAccount, oServiceData) {
+    var self = this;
+    self.initializeParamsOnly(ActivitiForm);
+    setBankIDAccount(self, BankIDAccount);
+
+    return $q.all([fillInCountryInformation(self),
+      uploadScansFromBankID(self, oServiceData)]).then(function(results){
+    });
+  };
+
   var initializeWithFactory = function (params, factories, property) {
     var result = factories.filter(function (factory) {
       return factory.prototype.isFit(property);
@@ -19,38 +40,34 @@ angular.module('app').factory('FormDataFactory', function (ParameterFactory, Dat
     }
   };
 
-  var fillInCountryInformation = function (params, property, ActivitiForm) {
-    if (property.id === 'resident') {
-      // todo: #584 для теста п.2 закомментировать эту строку. после теста - удалить
-      //this.params[property.id].value = 'Україна';
-      if (params[property.id].value) {
-        // #584 п.3 автоподстановка зачения sID_Three в поле sID_Country
-        angular.forEach(ActivitiForm.formProperties, function (prop) {
-          if (prop.id === 'sID_Country') {
-            var param = params[property.id];
-            CountryService.getCountries().then(function (list) {
-              angular.forEach(list, function (country) {
-                if (country.sNameShort_UA == param.value)
-                  params[prop.id].value = country.sID_Three;
-              });
-            })
-          }
-        });
-      } else {
-        // #584 п.2 автоподстановка значения в поле "гражданство" из поля bankIdsID_Country если в форме оно не установлено
-        angular.forEach(ActivitiForm.formProperties, function (prop) {
-          if (prop.id == 'bankIdsID_Country') {
-            var param = params[property.id];
-            //CountryService.getCountryBy_sID_Three(prop.value).then(function (response) {
-            CountryService.getCountryBy_sID_Two(prop.value).then(function (response) {
-              param.value = response.data.sNameShort_UA;
-            });
-          }
-        });
-      }
+  var fillInCountryInformation = function (formData){
+    //TODO prepare all promises and use $q.all
+    var field;
+    if (formData.isResident()) {
+      field = formData.getField('sID_Country');
+      return $q.when(field ? CountryService.getCountries().then(function (list) {
+        var searchResult = list.filter(function(country){return country.sNameShort_UA === field.value});
+        if(searchResult.length > 0){
+          return searchResult[0]
+        } else {
+          return null
+        }
+      }) : null).then(function(valueForField){
+        if(valueForField){
+          field.value = valueForField;
+        }
+      });
+    } else {
+      field = formData.getField('bankIdsID_Country');
+      return $q.when(field ? CountryService.getCountryBy_sID_Two(field.value).then(function (response) {
+        return response.data.sNameShort_UA;
+      }) : null).then(function(valueForField){
+        if(valueForField){
+          field.value = valueForField;
+        }
+      });
     }
   };
-
 
   var fillAutoCompletes = function (property) {
     var match;
@@ -68,38 +85,6 @@ angular.module('app').factory('FormDataFactory', function (ParameterFactory, Dat
     }
   };
 
-  FormDataFactory.prototype.initialize = function (ActivitiForm) {
-    this.processDefinitionId = ActivitiForm.processDefinitionId;
-    for (var key in ActivitiForm.formProperties) {
-      var property = ActivitiForm.formProperties[key];
-
-      initializeWithFactory(this.params, this.factories, property);
-      fillInCountryInformation(this.params, ActivitiForm, property);
-      fillAutoCompletes(property);
-      //<activiti:formProperty id="bankIdsID_Country" name="Громадянство (Code)" type="invisible" default="UA"></activiti:formProperty>
-      //<activiti:formProperty id="sID_Country" name="Country Code (Code)" type="invisible"></activiti:formProperty>
-      //<activiti:formProperty id="sCountry" name="Громадянство" type="string"></activiti:formProperty>
-
-    }
-  };
-
-  FormDataFactory.prototype.hasParam = function (param) {
-    return this.params.hasOwnProperty(param);
-  };
-
-  FormDataFactory.prototype.isSignNeeded = function () {
-    return this.getSignField() !== null && !this.isAlreadySigned();
-  };
-
-  FormDataFactory.prototype.isSignNeededRequired = function () {//aFormProperties
-    return this.getSignField() && this.getSignField() !== null && this.getSignField().required;
-  };
-
-  FormDataFactory.prototype.isAlreadySigned = function(){
-    var field = this.getSignField();
-    return field && field.value;
-  };
-
   FormDataFactory.prototype.getSignField = function () {
     for (var key in this.params) {
       var param = this.params[key];
@@ -110,8 +95,8 @@ angular.module('app').factory('FormDataFactory', function (ParameterFactory, Dat
     return null;
   };
 
-  FormDataFactory.prototype.setBankIDAccount = function (BankIDAccount) {
-    var self = this;
+  function setBankIDAccount(formData, BankIDAccount) {
+    var self = formData;
     return angular.forEach(BankIDAccount.customer, function (oValue, sKey) {
       switch (sKey) {
         case 'scans':
@@ -162,8 +147,8 @@ angular.module('app').factory('FormDataFactory', function (ParameterFactory, Dat
                   self.fields[sFieldName] = true;
                   self.params[sFieldName].value = aAddress.getCountyCode();
                 }
-                
-                
+
+
                 sFieldName = 'bankIdAddressFactual_country';
                 if (self.hasParam(sFieldName)) {
                   self.fields[sFieldName] = true;
@@ -199,8 +184,8 @@ angular.module('app').factory('FormDataFactory', function (ParameterFactory, Dat
                   self.fields[sFieldName] = true;
                   self.params[sFieldName].value = aAddress.getFlatNo();
                 }
-          
-                
+
+
                 break;
             }
             if (sFieldName === null) {
@@ -220,13 +205,13 @@ angular.module('app').factory('FormDataFactory', function (ParameterFactory, Dat
           break;
       }
     }, this);
-  };
+  }
 
-  FormDataFactory.prototype.uploadScansFromBankID = function (oServiceData) {
-    var self = this;
+  function uploadScansFromBankID (formData, oServiceData) {
+    var self = formData;
     var paramsForUpload = [];
-    for (var key in this.params) {
-      var param = this.params[key];
+    for (var key in self.params) {
+      var param = self.params[key];
       if (param instanceof ScanFactory && !param.value) {
         paramsForUpload.push({key: key, scan: param.getScan()});
       }
@@ -255,9 +240,9 @@ angular.module('app').factory('FormDataFactory', function (ParameterFactory, Dat
       self.params[key].loaded(fileID);
     };
 
-    if (paramsForUpload.length > 0) {
+    function uploadScans() {
       prepareForLoading(paramsForUpload);
-      ActivitiService.autoUploadScans(oServiceData, paramsForUpload)
+      return ActivitiService.autoUploadScans(oServiceData, paramsForUpload)
         .then(function (uploadResults) {
           uploadResults.forEach(function (uploadResult) {
             if (!uploadResult.error) {
@@ -266,10 +251,56 @@ angular.module('app').factory('FormDataFactory', function (ParameterFactory, Dat
               backToFile(uploadResult.scanField.key);
             }
           });
+          return {uploadScans: true};
         }).catch(function () {
           backToFileAll(paramsForUpload);
+          return {uploadScans: false};
         });
     }
+
+    return $q.when(paramsForUpload.length > 0 ? uploadScans() : {uploadScans: false});
+  }
+
+  FormDataFactory.prototype.getField = function(fieldID){
+    var field = null;
+    var self = this;
+    for(var fieldKey in self){
+      if(self.hasOwnProperty(fieldKey) && fieldKey === fieldID){
+        field = self[fieldKey];
+        break;
+      }
+    }
+    return field;
+  };
+
+  FormDataFactory.prototype.isResident = function(){
+    var self = this;
+    var isResident = false;
+    for(var key in self.params){
+      if(self.params.hasOwnProperty(key)){
+        if(self.params[key].id === 'resident') {
+          isResident = params[key].value ? true : false;
+        }
+      }
+    }
+    return isResident;
+  };
+
+  FormDataFactory.prototype.hasParam = function (param) {
+    return this.params.hasOwnProperty(param);
+  };
+
+  FormDataFactory.prototype.isSignNeeded = function () {
+    return this.getSignField() !== null && !this.isAlreadySigned();
+  };
+
+  FormDataFactory.prototype.isSignNeededRequired = function () {//aFormProperties
+    return this.getSignField() && this.getSignField() !== null && this.getSignField().required;
+  };
+
+  FormDataFactory.prototype.isAlreadySigned = function(){
+    var field = this.getSignField();
+    return field && field.value;
   };
 
   FormDataFactory.prototype.setFile = function (name, file) {

@@ -14,6 +14,7 @@ var cookieParser = require('cookie-parser');
 var errorHandler = require('errorhandler');
 var path = require('path');
 var config = require('./environment');
+var session = require('cookie-session');
 
 module.exports = function(app) {
   var env = app.get('env');
@@ -28,6 +29,7 @@ module.exports = function(app) {
   app.use(bodyParser.json());
   app.use(methodOverride());
   app.use(cookieParser());
+  app.use(session(config.server.session));
 
   app.use(function(req, res, next) {
     res.setHeader("Access-Control-Allow-Origin", "*");
@@ -63,6 +65,7 @@ module.exports = function(app) {
     app.use(require('connect-livereload')({port: 1337}));
     app.use(express.static(path.join(config.root, '.tmp')));
     app.use(express.static(path.join(config.root, 'client')));
+    app.use('/public-js', express.static(path.resolve(config.root + '../../public-js')));
     app.set('appPath', 'client');
     app.use(morgan('dev'));
     app.use(errorHandler()); // Error handler - has to be last

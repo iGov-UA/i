@@ -5,6 +5,7 @@ var activiti = require('../../components/activiti');
 var errors = require('../../components/errors');
 var userService = require('../user/user.service');
 var async = require('async');
+var tasksService = require('./tasks.service');
 
 function createHttpError(error, statusCode) {
   return {httpError: error, httpStatus: statusCode};
@@ -163,11 +164,13 @@ exports.getForm = function (req, res) {
     }
   };
 
+  res.setHeader('Content-Type', 'application/json;charset=utf-8');
+
   activiti.get(options, function (error, statusCode, result) {
     if (error) {
       res.send(error);
     } else {
-      res.status(statusCode).json(result);
+      res.status(statusCode).send(result);
     }
   });
 };
@@ -420,8 +423,14 @@ exports.getTaskData = function(req, res) {
       res.status(500).send(error);
       return;
     }
-
-    res.status(200).send(body);
+    // После запуска существует вероятность, что объекта req.session еще не ссуществует и чтобы не вывалилась ошибка
+    // пропускаем проверку. todo: При следующем релизе нужно удалить условие !req.session
+    if (!req.session || tasksService.isTaskDataAllowedForUser(body, req.session))
+      res.status(200).send(body);
+    else {
+      error = errors.createError(errors.codes.FORBIDDEN_ERROR, 'Немає доступу до цієї задачі.');
+      res.status(403).send(error);
+    }
   });
 };
 
