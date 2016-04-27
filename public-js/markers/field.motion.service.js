@@ -93,8 +93,11 @@ function FieldMotionService(MarkersFactory) {
   };
 
   function evalCondition(entry, fieldId, formData, mentioned) {
-    if (!_.contains(entry.aField_ID || entry.aElement_ID, fieldId)) return false;
-    else mentioned.val = true;
+    if (!_.contains(entry.aField_ID || entry.aElement_ID, fieldId)) {
+      return false;
+    } else if(mentioned) {
+      mentioned.val = true;
+    }
     var toEval = entry.sCondition.replace(/\[(\w+)]/g, function(str, alias) {
       var fId = entry.asID_Field[alias];
       if (!fId) console.log('Cant resolve original fieldId by alias:' + alias);
