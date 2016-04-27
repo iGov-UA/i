@@ -15,6 +15,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   oServiceData,
   BankIDAccount,
   activitiForm,
+  formData,
   allowOrder,
   countOrder,
   selfOrdersCount,
@@ -48,15 +49,15 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   $scope.data.city = currentState.data.city;
   $scope.data.id = currentState.data.id;
 
+  $scope.data.formData = formData;
+
   $scope.setFormScope = function(scope){
     this.formScope = scope;
   };
 
   var initializeFormData = function (){
     $scope.data.formData = new FormDataFactory();
-    $scope.data.formData.initialize($scope.activitiForm);
-    $scope.data.formData.setBankIDAccount(BankIDAccount);
-    $scope.data.formData.uploadScansFromBankID(oServiceData);
+    return $scope.data.formData.initialize($scope.activitiForm, BankIDAccount, oServiceData);
   };
 
   if (!allowOrder) {
@@ -144,6 +145,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     }
     if (field.id === 'bReferent') {
       angular.extend($scope.data.formData.params.bReferent, field);
+      $scope.visibleBReferent = true;
       switch ($scope.data.formData.params.bReferent.value) {
         case 'true': $scope.data.formData.params.bReferent.value = true; break;
         case 'false': $scope.data.formData.params.bReferent.value = false; break;
@@ -400,7 +402,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
         $scope.data.formData.params['bankId_scan_passport'].scan = null;
       }*/
 
-      $scope.data.formData.initialize($scope.activitiForm);
+      $scope.data.formData.initializeParamsOnly($scope.activitiForm);
 
     } else {
       initializeFormData();
@@ -464,12 +466,12 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   $scope.htmldecode = function(encodedhtml){
     if(encodedhtml){
       var map = {
-      '&amp;'     :   '&',
-      '&gt;'      :   '>',
-      '&lt;'      :   '<',
-      '&quot;'    :   '"',
-      '&#39;'     :   "'"
-     };
+        '&amp;'     :   '&',
+        '&gt;'      :   '>',
+        '&lt;'      :   '<',
+        '&quot;'    :   '"',
+        '&#39;'     :   "'"
+      };
 
      var result = angular.copy(encodedhtml);
      angular.forEach(map, function(value, key){

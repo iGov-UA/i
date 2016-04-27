@@ -72,7 +72,7 @@ function FieldMotionService(MarkersFactory) {
       var result = '';
       if (formData[fId] && (typeof formData[fId].value === 'string' || formData[fId].value instanceof String)) {
         result = formData[fId].value.replace(/'/g, "\\'");
-      }else if (formData[fId]) {
+      } else if (formData.hasOwnProperty(fId)) {
         result = formData[fId].value;
       } else {
         console.log('can\'t find field [',fId,'] in ' + JSON.stringify(formData));
