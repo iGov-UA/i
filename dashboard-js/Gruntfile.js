@@ -31,6 +31,7 @@ module.exports = function (grunt) {
     yeoman: {
       // configurable paths
       client: require('./bower.json').appPath || 'client',
+      root: '..',
       dist: 'dist'
     },
     express: {
@@ -61,6 +62,7 @@ module.exports = function (grunt) {
       injectJS: {
         files: [
           '<%= yeoman.client %>/{app,components}/**/*.js',
+          '<%= yeoman.root %>/public-js/*/*.js',
           '!<%= yeoman.client %>/{app,components}/**/*.spec.js',
           '!<%= yeoman.client %>/{app,components}/**/*.mock.js',
           '!<%= yeoman.client %>/app/app.js'],
@@ -91,6 +93,7 @@ module.exports = function (grunt) {
           '{.tmp,<%= yeoman.client %>}/{app,components}/**/*.css',
           '{.tmp,<%= yeoman.client %>}/{app,components}/**/*.html',
           '{.tmp,<%= yeoman.client %>}/{app,components}/**/*.js',
+          '{.tmp,<%= yeoman.root %>}/public-js/*/*.js',
           '!{.tmp,<%= yeoman.client %>}{app,components}/**/*.spec.js',
           '!{.tmp,<%= yeoman.client %>}/{app,components}/**/*.mock.js',
           '<%= yeoman.client %>/assets/images/{,*//*}*.{png,jpg,jpeg,gif,webp,svg}'
@@ -134,13 +137,16 @@ module.exports = function (grunt) {
       },
       all: [
         '<%= yeoman.client %>/{app,components}/**/*.js',
+        '<%= yeoman.root %>/public-js/*/*.js',
         '!<%= yeoman.client %>/{app,components}/**/*.spec.js',
         '!<%= yeoman.client %>/{app,components}/**/*.mock.js'
       ],
       test: {
         src: [
           '<%= yeoman.client %>/{app,components}/**/*.spec.js',
-          '<%= yeoman.client %>/{app,components}/**/*.mock.js'
+          '<%= yeoman.client %>/{app,components}/**/*.mock.js',
+          '<%= yeoman.root %>/public-js/*/*.spec.js',
+          '<%= yeoman.root %>/public-js/*/*.mock.js'
         ]
       }
     },
@@ -465,6 +471,7 @@ module.exports = function (grunt) {
           transform: function(filePath) {
             filePath = filePath.replace('/client/', '');
             filePath = filePath.replace('/.tmp/', '');
+            filePath = filePath.replace('/../', '');
             return '<script src="' + filePath + '"></script>';
           },
           starttag: '<!-- injector:js -->',
@@ -472,6 +479,7 @@ module.exports = function (grunt) {
         },
         files: {
           '<%= yeoman.client %>/index.html': [
+              ['<%= yeoman.root %>/public-js/*/module.js', '<%= yeoman.root %>/public-js/*/*.js'],
               ['{.tmp,<%= yeoman.client %>}/{app,components}/**/*.js',
                '!{.tmp,<%= yeoman.client %>}/app/app.js',
                '!{.tmp,<%= yeoman.client %>}/{app,components}/**/*.spec.js',
@@ -533,7 +541,7 @@ module.exports = function (grunt) {
     if (target === 'dist') {
       return grunt.task.run([
         'build',
-        'test:client',
+        // 'test:client',
         'env:all',
         'env:prod',
         'express:prod',

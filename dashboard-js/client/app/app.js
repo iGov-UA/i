@@ -11,7 +11,8 @@ angular.module('dashboardJsApp', [
   'ui.uploader',
   'ui.event',
   'angularMoment',
-  'ngClipboard'
+  'ngClipboard',
+  'iGovMarkers'
 ]).config(function($urlRouterProvider, $locationProvider) {
   $urlRouterProvider
     .otherwise('/');

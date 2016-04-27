@@ -164,11 +164,13 @@ exports.getForm = function (req, res) {
     }
   };
 
+  res.setHeader('Content-Type', 'application/json;charset=utf-8');
+
   activiti.get(options, function (error, statusCode, result) {
     if (error) {
       res.send(error);
     } else {
-      res.status(statusCode).json(result);
+      res.status(statusCode).send(result);
     }
   });
 };

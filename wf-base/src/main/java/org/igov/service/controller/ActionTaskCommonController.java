@@ -1988,6 +1988,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     	String year = eventHandler.getYear();
     	String status = eventHandler.getStatus();
         String nID_DocumentTemplate = eventHandler.getnID_DocumentTemplate();
+        String sHasFile = String.valueOf(eventHandler.isbFile());
 
     	String sKey = documentId + ":" + year;
         String sKeyFromPkSection = documentIdFromPkSection + ":" + year;
@@ -2025,7 +2026,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 					runtimeService.setVariable(task.getProcessInstanceId(), "sID_Document_UkrDoc", sKeyFromPkSection);
                                         taskService.setVariable(task.getId(), "nID_DocumentTemplate_UkrDoc", nID_DocumentTemplate);
 					runtimeService.setVariable(task.getProcessInstanceId(), "nID_DocumentTemplate_UkrDoc", nID_DocumentTemplate);
-					LOG.info("Set variable sStatusName_UkrDoc {} and sID_Document_UkrDoc {} and nID_DocumentTemplate {} for process instance with ID {}", status, sKeyFromPkSection, nID_DocumentTemplate, task.getProcessInstanceId());
+                                        taskService.setVariable(task.getId(), "bFile_UkrDoc", sHasFile);
+					runtimeService.setVariable(task.getProcessInstanceId(), "bFile_UkrDoc", sHasFile);
+					LOG.info("Set variable sStatusName_UkrDoc {} and sID_Document_UkrDoc {} and nID_DocumentTemplate {} and sHasFile {} for process instance with ID {}", 
+                                                status, sKeyFromPkSection, nID_DocumentTemplate, sHasFile, task.getProcessInstanceId());
 					taskService.complete(task.getId());
 					LOG.info("Completed task {}", task.getId());
 				}
