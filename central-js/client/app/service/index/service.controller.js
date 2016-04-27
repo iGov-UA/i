@@ -1,7 +1,7 @@
 angular.module('app')
   .controller('ServiceController',
-  ['$scope', '$rootScope', '$timeout', 'CatalogService', 'AdminService', '$filter', 'statesRepository', 'RegionListFactory', 'LocalityListFactory', 'messageBusService', 'EditServiceTreeFactory',
-  function($scope, $rootScope, $timeout, CatalogService, AdminService, $filter, statesRepository, RegionListFactory, LocalityListFactory, messageBusService, EditServiceTreeFactory) {
+  ['$scope', '$rootScope', '$timeout', 'CatalogService', 'AdminService', '$filter', 'statesRepository', 'RegionListFactory', 'LocalityListFactory', 'messageBusService', 'EditServiceTreeFactory', '$location',
+  function($scope, $rootScope, $timeout, CatalogService, AdminService, $filter, statesRepository, RegionListFactory, LocalityListFactory, messageBusService, EditServiceTreeFactory, $location) {
 
     $scope.catalog = [];
     $scope.catalogCounts = {0: 0, 1: 0, 2: 0};
@@ -59,4 +59,11 @@ angular.module('app')
       $scope.catalog = ctlg;
     };
 
+    $scope.isSfs = function() {
+      if(location.hostname.indexOf('sfs') >= 0){
+        return true
+      } else {
+        return false
+      }
+    };
   }]);
