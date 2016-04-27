@@ -6,13 +6,16 @@
 //
 module.exports = {
   DEBUG: false,
-   DOMAIN: 'http://localhost:9001',
-  SESSION_SECRET: 'dashboardjs-secret',
+  DOMAIN: 'http://localhost:9001',
 
   SERVER_PROTOCOL: 'http',
   SERVER_PORT: '9001',
   SERVER_KEY: '/sybase/cert/server.key',
   SERVER_CERT: '/sybase/cert/server.crt',
+
+  SESSION_SECRET: 'dashboardjs-secret',
+  SESSION_SECURE: false,//false only for local
+  SESSION_MAX_AGE: 14400000, // 4h*60m*60s*1000ms
 
   ACTIVITI_PROT: 'https',
   ACTIVITI_HOST: 'test.region.igov.org.ua',
