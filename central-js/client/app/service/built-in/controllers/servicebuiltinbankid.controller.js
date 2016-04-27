@@ -461,8 +461,13 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     });
   }
 
+<<<<<<< HEAD
+    $scope.htmldecode = function(encodedhtml){
+     if(encodedhtml){
+=======
   $scope.htmldecode = function(encodedhtml){
     if(encodedhtml){
+>>>>>>> 9290934f89eb4b60f4eddf6d080c1a1db024e728
       var map = {
       '&amp;'     :   '&',
       '&gt;'      :   '>',
@@ -477,7 +482,11 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
         result = result.replace(key, value);
       });
 
+<<<<<<< HEAD
+     return result;
+=======
     return result;
+>>>>>>> 9290934f89eb4b60f4eddf6d080c1a1db024e728
     } else {
       return encodedhtml;
     }

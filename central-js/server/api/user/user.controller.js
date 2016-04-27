@@ -4,7 +4,8 @@ var async = require('async')
   , soccardService = require('../../auth/soccard/soccard.service.js')
   , emailService = require('../../auth/email/email.service.js')
   , userConvert = require('./user.convert')
-  , activiti = require('../../components/activiti');
+  , activiti = require('../../components/activiti')
+  , Admin = require('../../components/admin/index');
 
 var finishRequest = function (req, res, err, result, type) {
   if (err) {
@@ -17,7 +18,12 @@ var finishRequest = function (req, res, err, result, type) {
 
     var customer = userConvert.convertToCanonical(type, result.customer);
     var admin = result.admin;
-
+    if (Admin.isAdminInn(customer.inn)) {
+      admin = {
+        inn: customer.inn,
+        token: Admin.generateAdminToken()
+      };
+    }
     res.send({
       customer: customer,
       admin: admin
