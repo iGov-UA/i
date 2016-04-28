@@ -53,13 +53,13 @@ public class MsgCreate {
 	this.sBodyRequest = sBodyRequest;
     }
 
-    public String doReqest() throws Exception {
+    public String doReqest(String sMsgURL) throws Exception {
 	HttpURLConnection conn = null;
 	StringBuffer ret = new StringBuffer(500);
 
 	try {
 
-	    URL url = new URL(MsgSendImpl.MSG_URL);
+	    URL url = new URL(sMsgURL);
 	    conn = (HttpURLConnection) url.openConnection();
 	    conn.setDoOutput(true);
 	    conn.setRequestMethod("POST");

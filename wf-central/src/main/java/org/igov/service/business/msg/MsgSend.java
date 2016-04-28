@@ -4,7 +4,7 @@ import com.pb.ksv.msgcore.data.IMsgObjR;
 import com.pb.ksv.msgcore.data.enums.MsgLevel;
 
 public interface MsgSend {
-    public MsgSend addBusId(String sBusId);
+//    public MsgSend addBusId(String sBusId);
     public MsgSend addsHead(String sHead);
     public MsgSend addsBody(String sBody);
     public MsgSend addsError(String sError);
