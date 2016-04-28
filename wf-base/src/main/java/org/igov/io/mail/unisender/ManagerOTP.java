@@ -89,6 +89,7 @@ public class ManagerOTP {
         oOtpPassword.setOtp_create(aOtpCreate);
         Gson oGson = new Gson();
         String jsonObj = oGson.toJson(oOtpPassword);
+        LOG.info("(sURL={},jsonObj={})",sURL,jsonObj);
         URL oURL = new URL(sURL);
         HttpURLConnection oHttpURLConnection = (HttpURLConnection) oURL.openConnection();
         oHttpURLConnection.setRequestMethod("POST");
