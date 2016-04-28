@@ -52,9 +52,10 @@
         <activiti:formProperty id="sAddress" name="Адреса органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sArea" name="район/місто звернення" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sRegistrationOrgan" name="Відділ ДМС" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sRegistrationOrgan" name="Орган реєстрації" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible" default="Заявка актуальна"></activiti:formProperty>
         <activiti:formProperty id="sRecvizitiAdmin" name="Реквізити для адмінсбору" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKab89" name="Номер кабінету" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMinPay" name="мініальна сума адмінсбору" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMaxPay" name="максимальна сума адмінсбору" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="lable" name="В залежності від підстави для реєстрації, будь ласка, завантажте" type="label" default=" "></activiti:formProperty>
@@ -63,7 +64,7 @@
         <activiti:formProperty id="nForma3" name="Довідка про склад сім'ї або зареєстрованих осіб" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nDocNaim" name="Договір найму / піднайму / оренди;Якщо декілька сторінок об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nOther" name="Документ, на основі якого буде здійснюватись реєстрація;Якщо декілька сторінок об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('dms/asRegistration.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('dms/registration.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow2" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -152,8 +153,8 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="sDate_of_birth" name="Дата народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAreabirth" name="Місце народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNationality" name="Громадянство" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sRegistrationAddress" name="Звідки прибув" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sWhenCome" name="Дата зняття з реєстрації" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sRegistrationAddress" name="Попередня адреса реєстрації" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sWhenCome" name="Дата зняття з реєстрації з попереднього місця проживання" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNewAddress" name="Нова адреса реєстрації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sArea" name="Місто або район, до якого належить нове місце проживання громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asRegistrationDoc" name="Підставою для реєстрації у власному житлі" type="enum" writable="false">
@@ -175,8 +176,8 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:value id="sAccept" name="Призначити зустріч у відділенні"></activiti:value>
           <activiti:value id="sDecline" name="Відмовити в наданні послуги"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDecisionComment" name="Коментар до рішення; Наприклад, пояснення чому громадянину було відмовлено в наданні цієї послуги &lt;br /&gt; АБО &lt;br /&gt; Додаткові деталі для закінчення процессу реєстрації" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sRecvizitiAdmin" name="Реквізити для сплати держмита" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sDecisionComment" name="Коментар до рішення: наприклад, пояснення чому громадянину було відмовлено в наданні цієї послуги АБО додаткові деталі для закінчення процессу реєстрації" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sRecvizitiAdmin" name="Реквізити для сплати адмінсбору" type="textArea"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -205,7 +206,7 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
                                     <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
                                     <p>
-										На жаль, Вам відмовлено у надані послуги.<br />
+										На жаль, Вам відмовлено у надані послуги або Ви скасували заявку.<br>
 										При необхідності реєстрації нового місця проживання Ви можете подати ще одну заявку на порталі <a href="https://igov.org.ua/">iGov.org.ua</a>
 									</p> 
 									<p>
@@ -213,8 +214,7 @@ execution.setVariable('sMaxPay', maxpay)
 											<b><i>${sDecisionComment}</i></b>
 									</p>
 									<p>
-										При вниникненні питань Ви можете звернутися до чергового:<br>
-										${sPhoneOrgan}
+										При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
 									</p>
 									[pattern/mail/_common_signature_start.html]
                                     ${sNameOrgan}.</p>
@@ -244,7 +244,7 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
                                     <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
                                     <p>
-                                        Спеціалісти ${sOrganType} успішно опрацювли Вашу заяву.<br/>
+                                        Спеціалісти ${sOrganType} успішно опрацювли Вашу заяву.<br>
 										Для того щоб закінчити процедуру реєстрації необхідно:<br>
 										<ul>
 										<li>У будь-якому банку сплатити адміністративний збір і отримати квитанцію про сплату.</li>
@@ -262,15 +262,14 @@ execution.setVariable('sMaxPay', maxpay)
 										Призначення платежу: реєстрація місця проживання​</i>
 									</p>
 									<p>
-										<b>Деталі зустрічі:</b><br />
+										<b>Деталі зустрічі:</b><br>
 										День та час - ${date_of_visit}
 									</p>
 									<p>
 										<b>Необхідні документи, які треба принести до ${sOrganType} при реєстраціі місця проживання:</b><br>
 										<ul>
-										<li>оригінал та копію документа, до якого вносяться відомості про місце проживання</li>
-										<li>квитанцію про сплату державного мита з мокрою печаткою банку або документ про звільнення від його сплати</li>
-										<li>талон зняття з реєстрації (не подається в разі одночасного зняття з реєстрації місця проживання)</li>
+										<li>оригінал та копію документа, до якого вносяться відомості про місце проживання;</li>
+										<li>квитанцію про сплату адміністративного збору;</li>
 										<li>оригінал та копію одного з трьох документів, який підтверджує право на проживання за новим місцем реєстрації:
 										<ul>
 											<li>право на проживання в житлі (ордер, свідоцтво про право власності, договір найму (піднайму, оренди) або інші документи. У разі відсутності зазначених документів реєстрація здійснюється за згодою власника/співвласників житла, наймача та членів його сім’ї на реєстрацію місця проживання</li>
@@ -292,8 +291,7 @@ execution.setVariable('sMaxPay', maxpay)
 										<b><i>${sDecisionComment}</i></b>
 									</p>
 									<p>
-										При вниникненні питань Ви можете звернутися до чергового:<br>
-										${sPhoneOrgan}
+										При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
 									</p>
 									<p>[cancelTask]</p> 
                                     [pattern/mail/_common_signature_start.html]
@@ -319,8 +317,8 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="sDate_of_birth" name="Дата народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAreabirth" name="Місце народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNationality" name="Громадянство" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sRegistrationAddress" name="Звідки прибув" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sWhenCome" name="Коли прибув" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sRegistrationAddress" name="Попередня адреса реєстрації" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sWhenCome" name="Дата зняття з реєстрації з попереднього місця проживання" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNewAddress" name="Нова адреса реєстрації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sArea" name="Місто або район, до якого належить нове місце проживання громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asRegistrationDoc" name="Підстава для реєстрації у власному житлі" type="enum">
@@ -337,18 +335,18 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:value id="sYesR" name="Так"></activiti:value>
           <activiti:value id="sNoR" name="Ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sRegistrationOrgan" name="Орган, що оформлює реєстрацію" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sRegistrationOrgan" name="Орган, що оформлює реєстрацію" type="invisible" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asResult" name="Результат зустрічі" type="enum">
           <activiti:value id="sReestr" name="Громадянин зареєстрований"></activiti:value>
           <activiti:value id="sNejav" name="Громадянин не з'явився"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dms/zajava_regfr(dnepr).html]" type="invisible" default="Заява для реєстрації лицьова" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/dms/zajava_regbk(dnepr).html]" type="invisible" default="Заява для реєстрації зворотня" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_3" name="[pattern/print/dms/kartka(dnepr)fr.html]" type="invisible" default="Картка реєстрації лицьова" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_4" name="[pattern/print/dms/kartka(dnepr)bk.html]" type="invisible" default="Картка реєстрації зворотня" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_9" name="[pattern/print/dms/dodat12(dnepr).html]" type="invisible" default="Повідомлення про зняття з реєстрації" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_10" name="[pattern/print/dms/zajava_znfr(dnepr).html]" type="invisible" default="Заява для зняття з реєстрації лицьова" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_11" name="[pattern/print/dms/zajava_znbk(dnepr).html]" type="invisible" default="Заява для зняття з реєстрації зворотня" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dms/zajava_regFr.html]" type="invisible" default="Заява для реєстрації лицьова" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/dms/zajava_regBk.html]" type="invisible" default="Заява для реєстрації зворотня" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_3" name="[pattern/print/dms/kartkaFr.html]" type="invisible" default="Картка реєстрації лицьова" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_4" name="[pattern/print/dms/kartkaBk.html]" type="invisible" default="Картка реєстрації зворотня" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_9" name="[pattern/print/dms/PovidomZn.html]" type="invisible" default="Повідомлення про зняття з реєстрації" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_10" name="[pattern/print/dms/zajava_znFr.html]" type="invisible" default="Заява для зняття з реєстрації лицьова" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_11" name="[pattern/print/dms/zajava_znBk.html]" type="invisible" default="Заява для зняття з реєстрації зворотня" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -384,8 +382,7 @@ execution.setVariable('sMaxPay', maxpay)
                                         При необхідності реєстрації нового місця проживання Ви можете подати ще одну заявку на порталі <a href="https://igov.org.ua/">iGov.org.ua</a>
 									</p>
 									<p>
-										При вниникненні питань Ви можете звернутися до чергового:<br>
-										${sPhoneOrgan}
+										При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
                                     </p>
                                     [pattern/mail/_common_signature_start.html]
 									${sNameOrgan},</p>

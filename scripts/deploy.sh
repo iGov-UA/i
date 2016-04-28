@@ -171,10 +171,6 @@ build_central-js ()
 		return
 	fi
 	if [ "$bSkipDeploy" == "true" ]; then
-		while ps axg | grep -v grep | grep -q dashboard-js; do
-			echo "dashboard-js compilation is still running. we will wait until it finish."
-			sleep 5
-		done
 		cd central-js
 		npm cache clean
 		npm install
@@ -187,10 +183,6 @@ build_central-js ()
 		rm -rf /tmp/$sProject
 		return
 	else
-		while ps axg | grep -v grep | grep -q dashboard-js; do
-			echo "dashboard-js compilation is still running. we will wait until it finish."
-			sleep 5
-		done
 		cd central-js
 		npm cache clean
 		npm install
@@ -215,10 +207,6 @@ build_dashboard-js ()
 		return
 	fi
 	if [ "$bSkipDeploy" == "true" ]; then
-		while ps axg | grep -v grep | grep -q central-js; do
-			echo "central-js compilation is still running. we will wait until it finish."
-			sleep 5
-		done
 		cd dashboard-js
 		npm install
 		npm list grunt
@@ -232,10 +220,6 @@ build_dashboard-js ()
 		rm -rf /tmp/$sProject
 		return
 	else
-		while ps axg | grep -v grep | grep -q central-js; do
-			echo "central-js compilation is still running. we will wait until it finish."
-			sleep 5
-		done
 		cd dashboard-js
 		npm install
 		npm list grunt
@@ -379,9 +363,42 @@ else
 		build_region
 	fi
 	if [ $sProject == "central-js" ]; then
+		touch /tmp/$sProject/build.lock
+		if [ -f /tmp/dashboard-js/build.lock ]; then
+			if ps ax | grep -v grep | grep -q dashboard-js; then
+				while [ -f /tmp/dashboard-js/build.lock ]; do
+					if ps ax | grep -v grep | grep -q dashboard-js; then
+						sleep 10
+						echo "dashboard-js compilation is still running. we will wait until it finish."
+					else
+						break
+					fi
+				done
+			else
+				echo "dashboard-js compilation script is not running but lock file exist. removing lock file and starting compilation"
+				rm -f /tmp/dashboard-js/build.lock
+			fi
+		fi
 		build_central-js
 	fi
 	if [ $sProject == "dashboard-js" ]; then
+		sleep 10
+		touch /tmp/$sProject/build.lock
+		if [ -f /tmp/central-js/build.lock ]; then
+			if ps ax | grep -v grep | grep -q central-js; then
+				while [ -f /tmp/central-js/build.lock ]; do
+					if ps ax | grep -v grep | grep -q central-js; then
+						sleep 10
+						echo "central-js compilation is still running. we will wait until it finish."
+					else
+						break
+					fi
+				done
+			else
+				echo "central-js compilation script is not running but lock file exist. removing lock file and starting compilation"
+				rm -f /tmp/central-js/build.lock
+			fi
+		fi
 		build_dashboard-js
 	fi
 fi
@@ -396,6 +413,9 @@ if [ "$bSkipDeploy" == "true" ]; then
 	echo "Deploy dsiabled"
 	exit 0
 fi
+
+echo "Compilation finished removing lock file"
+rm -f /tmp/$sProject/build.lock
 
 echo "Connecting to remote host $sHost"
 cd $WORKSPACE

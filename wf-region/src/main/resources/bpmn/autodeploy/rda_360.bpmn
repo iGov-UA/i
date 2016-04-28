@@ -66,7 +66,7 @@
           <activiti:value id="sFirst" name="первинне"></activiti:value>
           <activiti:value id="sSecond" name="повторне звернення"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="dCreate" name="Дата подання заяви" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="dCreate" name="Дата подання заяви" type="invisible" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile" name="Додати документ;Якщо декілька сторінок об'єднайте їх у pdf-файл або zip архів" type="file"></activiti:formProperty>
         <activiti:formProperty id="sMoreFiles" name="Чи потрібні ще поля для завантаження файлів" type="enum" default="no">
           <activiti:value id="no" name="Ні"></activiti:value>
@@ -95,11 +95,11 @@
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>
-    <sequenceFlow id="flow20" sourceRef="servicetask1" targetRef="servicetask3"></sequenceFlow>
+    <sequenceFlow id="flow20" sourceRef="scripttask1" targetRef="servicetask3"></sequenceFlow>
     <serviceTask id="servicetask3" name="Повідомлення про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>klimkovichy@gmail.com</activiti:expression>
+          <activiti:expression><![CDATA[klimkovichy@gmail.com]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -148,7 +148,7 @@
     </sequenceFlow>
     <userTask id="usertask1" name="Первинна перевірка даних" activiti:candidateGroups="rda_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-      	<activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Орган, що надає послугу" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Орган, що надає послугу" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFIO" name="Прізвище, ім`я, по батькові громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail заявника" type="string" writable="false"></activiti:formProperty>
@@ -267,7 +267,7 @@
     </sequenceFlow>
     <userTask id="usertask2" name="Обробка звернення" activiti:candidateGroups="rda_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-      	<activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Орган, що надає послугу" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Орган, що надає послугу" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFIO" name="Прізвище, ім`я, по батькові громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail заявника" type="string" writable="false"></activiti:formProperty>
@@ -378,7 +378,7 @@
     </sequenceFlow>
     <userTask id="usertask3_red" name="Первинна перевірка данних наданих громадянином" activiti:candidateGroups="rda_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-      	<activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Орган, що надає послугу" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Орган, що надає послугу" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFIO" name="Прізвище, ім`я, по батькові громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail заявника" type="string" writable="false"></activiti:formProperty>
@@ -466,7 +466,7 @@
     </sequenceFlow>
     <userTask id="usertask4_first" name="Рішення голови" activiti:candidateGroups="golova_rda_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-      	<activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Орган, що надає послугу" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Орган, що надає послугу" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFIO" name="Прізвище, ім`я, по батькові громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail заявника" type="string" writable="false"></activiti:formProperty>
@@ -550,7 +550,7 @@
     <sequenceFlow id="flow46" sourceRef="usertask4_first" targetRef="exclusivegateway6"></sequenceFlow>
     <userTask id="usertask5_yellow" name="Рішення направити виконавцю" activiti:candidateGroups="rda_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-      	<activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Орган, що надає послугу" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Орган, що надає послугу" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFIO" name="Прізвище, ім`я, по батькові громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail заявника" type="string" writable="false"></activiti:formProperty>
@@ -674,7 +674,7 @@
     <sequenceFlow id="flow49" sourceRef="servicetask8" targetRef="usertask6_green"></sequenceFlow>
     <userTask id="usertask6_green" name="Зняття з контролю" activiti:candidateGroups="rda_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-      	<activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Орган, що надає послугу" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Орган, що надає послугу" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFIO" name="Прізвище, ім`я, по батькові громадянина" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail заявника" type="string" writable="false"></activiti:formProperty>
@@ -742,7 +742,7 @@
         <activiti:formProperty id="dTransExecutor" name="Дата направлення рішення виконавцю" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="dExecution" name="Строк виконання" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameExecutorExtended" name="Розширені дані про виконавця (прізвище, ініціали та номер телефону безпосереднього виконавця)" type="textArea" default="${sNameExecutor}" required="true"></activiti:formProperty>
-		<activiti:formProperty id="decide" name="Рішення голови РДА" type="enum" default="accept" writable="false">
+        <activiti:formProperty id="decide" name="Рішення голови РДА" type="enum" default="accept" writable="false">
           <activiti:value id="accept" name="Взяти в роботу"></activiti:value>
           <activiti:value id="reject" name="Відмовити"></activiti:value>
         </activiti:formProperty>
@@ -852,6 +852,10 @@
     </sequenceFlow>
     <exclusiveGateway id="exclusivegateway5" name="Parallel Gateway"></exclusiveGateway>
     <exclusiveGateway id="exclusivegateway6" name="Parallel Gateway"></exclusiveGateway>
+    <scriptTask id="scripttask1" name="Script Task" scriptFormat="groovy" activiti:autoStoreVariables="false">
+      <script>execution.setVariable('dCreate', new Date().format("dd.MM.yyyy").toString())</script>
+    </scriptTask>
+    <sequenceFlow id="flow64" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_rda_360">
     <bpmndi:BPMNPlane bpmnElement="rda_360" id="BPMNPlane_rda_360">
@@ -924,13 +928,16 @@
       <bpmndi:BPMNShape bpmnElement="exclusivegateway6" id="BPMNShape_exclusivegateway6">
         <omgdc:Bounds height="40.0" width="40.0" x="460.0" y="470.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="137.0" y="0.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
         <omgdi:waypoint x="35.0" y="116.0"></omgdi:waypoint>
         <omgdi:waypoint x="60.0" y="117.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
-        <omgdi:waypoint x="181.0" y="117.0"></omgdi:waypoint>
-        <omgdi:waypoint x="211.0" y="116.0"></omgdi:waypoint>
+        <omgdi:waypoint x="189.0" y="55.0"></omgdi:waypoint>
+        <omgdi:waypoint x="263.0" y="81.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
         <omgdi:waypoint x="316.0" y="116.0"></omgdi:waypoint>
@@ -1061,6 +1068,10 @@
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="14.0" width="79.0" x="489.0" y="519.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow64" id="BPMNEdge_flow64">
+        <omgdi:waypoint x="120.0" y="81.0"></omgdi:waypoint>
+        <omgdi:waypoint x="189.0" y="55.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

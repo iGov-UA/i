@@ -42,9 +42,9 @@
           <activiti:value id="no" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="lPrivilege" name="Зверніть увагу" type="label" default="Укажіть свій статус так прикрипіть один чи декілька документів:           &lt;ul&gt;            &lt;li&gt;довідка МСЕК&lt;/li&gt;            &lt;li&gt;довідка про одержання грошової допомоги одинокої матері&lt;/li&gt;            &lt;li&gt;копія посвідчення багатодітної родини&lt;/li&gt;            &lt;li&gt;довідка з місця роботи для працівник міліції&lt;/li&gt;            &lt;li&gt;довідка з місця роботи для працівників освіти&lt;/li&gt;            &lt;li&gt;посвідчення ветерана війни&lt;/li&gt;            &lt;li&gt;свідоцтво постраждалих внаслідок Чорнобильської катастрофи&lt;/li&gt;            &lt;li&gt;документ який свідчить про статус сироти&lt;/li&gt;            &lt;li&gt;копія довідки із учбового закладу про розподіл на роботу у іншу місцевість&lt;/li&gt;            &lt;li&gt;копія приказу про призначення на посаду (працівників прокуратури та суду)&lt;/li&gt;           &lt;/ul&gt; "></activiti:formProperty>
-        <activiti:formProperty id="aPrivilege" name="Укажіть свої льготи;якщо декілька, то вказуйте через кому" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPrivilege" name="Укажіть свої льготи;якщо декілька, то вказуйте через кому" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="nfile_Privilege" name="Копія(ї) документа(ів), що надає льготу для першочергового одержання житла; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asCountFamily" name="Укажіть скільки осіб проживає з вами" default="f0" type="enum" required="true">
+        <activiti:formProperty id="asCountFamily" name="Укажіть скільки осіб проживає з вами" type="enum" default="f0" required="true">
           <activiti:value id="f0" name="0"></activiti:value>
           <activiti:value id="f1" name="1"></activiti:value>
           <activiti:value id="f2" name="2"></activiti:value>
@@ -175,13 +175,25 @@
         <activiti:formProperty id="nFileBTI6" name="Копія довідки із реєстраційної служби речових прав на нерухоме майно (БТІ чи інший) про наявність або відсутність власності нерухомого майна шостого члена сім'ї" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFileActAnaliz" name="Копія акту обстеження житлових умов." type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFileFamily" name="Копія довідки по формі-3 (довідка про склад сім'ї)" type="file" required="true"></activiti:formProperty>
+
+        <activiti:formProperty id="sFalgNikolaevOda2" name="Флаг на заявление" type="invisible" default="normal"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sContact" name="адреса органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sShapkaGolova" name="підпис в шапке" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nCountIsAdult" name="кількість дорослих" type="invisible" default=" "></activiti:formProperty>
+
+        <activiti:formProperty id="sClFio1" name="1 член сім’ї" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sClFio2" name="2 член сім’ї" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sClFio3" name="3 член сім’ї" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sClFio4" name="4 член сім’ї" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sClFio5" name="5 член сім’ї" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sClFio6" name="6 член сім’ї" type="invisible" default=" "></activiti:formProperty>
+
+
+
         <activiti:formProperty id="markers1" name="hide fields Privilege" type="markers" default="${markerService.loadFromFile('mvk/show_fill_privilege.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers_visual_fill_relative_1" name="Отображать 1 родственника" type="markers" default="${markerService.loadFromFile('mvk/visual_fill_relative_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers_visual_fill_relative_2" name="Отображать 2 родственника" type="markers" default="${markerService.loadFromFile('mvk/visual_fill_relative_2.json')}"></activiti:formProperty>
@@ -196,8 +208,61 @@
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>
-    <sequenceFlow id="flow11" sourceRef="boundaryerror1" targetRef="endevent3"></sequenceFlow>
-    <sequenceFlow id="flow24" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
+    <sequenceFlow id="flow11" sourceRef="boundaryerror1" targetRef="endevent3"></sequenceFlow>        
+    <sequenceFlow id="flow28" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
+	<scriptTask id="scripttask1" name="Script Task" scriptFormat="groovy" activiti:autoStoreVariables="true">
+		<script><![CDATA[
+/* Заполнение полей */
+/* Заявник */
+if(execution.getVariable('asWork0')=='no'){
+	execution.setVariable('sWorkPlace0', 'не працює');
+}
+if(execution.getVariable('asPrivilege')=='no'){
+	execution.setVariable('sPrivilege', 'не має');
+}
+
+// скільки проживає людей
+int maxCountFamily = 6
+int countFamily = execution.getVariable('asCountFamily')[1]
+int countIsAdult = 0
+
+/*форматуємо поле місце роботи*/
+for (int i = 1; i <= maxCountFamily; i++) {
+    def name_asWork = 'asWork' + "${i}"
+    def name_sWorkPlace = 'sWorkPlace' + "${i}"  
+    def name_asAdult = 'asAdult' + "${i}"      
+    def name_sFamilyRelation = 'sFamilyRelation' + "${i}"  
+    def name_nBirthday = 'nBirthday' + "${i}"  
+    def name_nWhereLives = 'nWhereLives' + "${i}"
+    def name_sFIO = 'sFIO' + "${i}"
+    def name_sClFio = 'sClFio' + "${i}"
+	if(i<=countFamily){
+		def ClFio = execution.getVariable(name_sFIO) + ', ' + execution.getVariable(name_sFamilyRelation) + ', ' + execution.getVariable(name_nBirthday) + ' р.н.'     
+		execution.setVariable(name_sClFio, ClFio)     
+		if(execution.getVariable(name_asAdult)== 'yes'){
+			countIsAdult ++;
+			if(execution.getVariable(name_asWork)== 'no'){
+				execution.setVariable(name_sWorkPlace, 'не працює')    
+			}
+		}
+		else{
+			execution.setVariable(name_sWorkPlace, 'не працює')    
+		}
+	}
+	else{/*родственники НЕ существуют*/     
+		execution.setVariable(name_sWorkPlace, ' ')
+		execution.setVariable(name_sFamilyRelation, ' ')   
+		execution.setVariable(name_nBirthday, ' ')  
+		execution.setVariable(name_nWhereLives, ' ')   
+		execution.setVariable(name_sFIO, ' ')
+		execution.setVariable(name_sClFio, ' ')
+	}
+}
+execution.setVariable('nCountIsAdult', 'a' + countIsAdult)
+		]]></script>
+	</scriptTask>
+    
+    <sequenceFlow id="flow24" sourceRef="scripttask1" targetRef="servicetask2"></sequenceFlow>
     <serviceTask id="servicetask2" name="Повідомлення чиновника про нову заявку" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
@@ -285,98 +350,78 @@
           <activiti:value id="f5" name="5"></activiti:value>
           <activiti:value id="f6" name="6"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sClFio1" name="1 член сім’ї" type="string" default="${sFIO1}, ${sFamilyRelation1}, ${nBirthday1} р.н." writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sClFio2" name="2 член сім’ї" type="string" default="${sFIO2}, ${sFamilyRelation2}, ${nBirthday2} р.н." writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sClFio3" name="3 член сім’ї" type="string" default="${sFIO3}, ${sFamilyRelation3}, ${nBirthday3} р.н." writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sClFio4" name="4 член сім’ї" type="string" default="${sFIO4}, ${sFamilyRelation4}, ${nBirthday4} р.н." writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sClFio5" name="5 член сім’ї" type="string" default="${sFIO5}, ${sFamilyRelation5}, ${nBirthday5} р.н." writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sClFio6" name="6 член сім’ї" type="string" default="${sFIO6}, ${sFamilyRelation6}, ${nBirthday6} р.н." writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sClFio1" name="1 член сім’ї" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sClFio2" name="2 член сім’ї" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sClFio3" name="3 член сім’ї" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sClFio4" name="4 член сім’ї" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sClFio5" name="5 член сім’ї" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sClFio6" name="6 член сім’ї" type="string" writable="false"></activiti:formProperty>
+
+        <activiti:formProperty id="nCountIsAdult" name="кількість дорослих" type="invisible" default=" "></activiti:formProperty>
 
         <activiti:formProperty id="sFIO1" name="ФІО" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sFamilyRelation1" name="Родинні відносини" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nBirthday1" name="Рік народження" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nWhereLives1" name="З якого часу проживає в даному населеному пункті" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkPlace1" name="Місце роботи і посада" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="asAdult1" name="Повнолітній" type="enum" default="no" readable="false" writable="false">
-          <activiti:value id="yes" name="Так"></activiti:value>
-          <activiti:value id="no" name="Ні"></activiti:value>
-        </activiti:formProperty>
+
         <activiti:formProperty id="sFIO2" name="ФІО" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sFamilyRelation2" name="Родинні відносини" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nBirthday2" name="Рік народження" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nWhereLives2" name="З якого часу проживає в даному населеному пункті" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkPlace2" name="Місце роботи і посада" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="asAdult2" name="Повнолітній" type="enum" default="no" readable="false" writable="false">
-          <activiti:value id="yes" name="Так"></activiti:value>
-          <activiti:value id="no" name="Ні"></activiti:value>
-        </activiti:formProperty>
+
         <activiti:formProperty id="sFIO3" name="ФІО" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sFamilyRelation3" name="Родинні відносини" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nBirthday3" name="Рік народження" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nWhereLives3" name="З якого часу проживає в даному населеному пункті" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkPlace3" name="Місце роботи і посада" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="asAdult3" name="Повнолітній" type="enum" default="no" readable="false" writable="false">
-          <activiti:value id="yes" name="Так"></activiti:value>
-          <activiti:value id="no" name="Ні"></activiti:value>
-        </activiti:formProperty>
+
         <activiti:formProperty id="sFIO4" name="ФІО" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sFamilyRelation4" name="Родинні відносини" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nBirthday4" name="Рік народження" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nWhereLives4" name="З якого часу проживає в даному населеному пункті" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkPlace4" name="Місце роботи і посада" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="asAdult4" name="Повнолітній" type="enum" default="no" readable="false" writable="false">
-          <activiti:value id="yes" name="Так"></activiti:value>
-          <activiti:value id="no" name="Ні"></activiti:value>
-        </activiti:formProperty>
+
         <activiti:formProperty id="sFIO5" name="ФІО" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sFamilyRelation5" name="Родинні відносини" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nBirthday5" name="Рік народження" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nWhereLives5" name="З якого часу проживає в даному населеному пункті" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkPlace5" name="Місце роботи і посада" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="asAdult5" name="Повнолітній" type="enum" default="no" readable="false" writable="false">
-          <activiti:value id="yes" name="Так"></activiti:value>
-          <activiti:value id="no" name="Ні"></activiti:value>
-        </activiti:formProperty>
+
         <activiti:formProperty id="sFIO6" name="ФІО" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sFamilyRelation6" name="Родинні відносини" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nBirthday6" name="Рік народження" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nWhereLives6" name="З якого часу проживає в даному населеному пункті" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkPlace6" name="Місце роботи і посада" type="invisible"></activiti:formProperty>
 
-       
-        <activiti:formProperty id="asAdult6" name="Повнолітній" type="enum" default="no" readable="false" writable="false">
-          <activiti:value id="yes" name="Так"></activiti:value>
-          <activiti:value id="no" name="Ні"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="decide" name="Рішення про надання послуги" type="enum" required="true">
           <activiti:value id="accept" name="Надати послугу"></activiti:value>
           <activiti:value id="reject" name="Відмовити"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="В разі відмови в наданні послуги зазначте підставу для відмови" type="textArea"></activiti:formProperty>
+		<activiti:formProperty id="sFalgNikolaevOda2" name="Флаг на заявление" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sShapkaGolova" name="підпис в шапке" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/mvk/nikolaev_mvk_408_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="Заява;Заява громадянина;pattern/print/mvk/nikolaev_mvk_408_print.html" type="file"></activiti:formProperty>
 
-
         <activiti:formProperty id="markers2" name="hide fields Status" type="markers" default="${markerService.loadFromFile('mvk/show_fill_status.json')}"></activiti:formProperty>
-
-
         <activiti:formProperty id="markers_For_Print_1" name="hide-show fields adult" type="markers" default="${markerService.loadFromFile('mvk/nikolaev_mvk_408_hide-show_for_print_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers_For_Print_2" name="hide-show fields table" type="markers" default="${markerService.loadFromFile('mvk/nikolaev_mvk_408_hide-show_for_print_2.json')}"></activiti:formProperty>
-
-
+        <activiti:formProperty id="markers_For_Print_3" name="hide-show fields sFIO" type="markers" default="${markerService.loadFromFile('mvk/nikolaev_mvk_408_hide-show_for_print_3.json')}"></activiti:formProperty>
 
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFileCertificateOfEmploymentCenter0}, ${nFileCertificateOfEmployment0}, ${nFileBTI0}, ${nfile_Privilege}, ${nFileINN0}, 
+            <activiti:expression>${nFileCertificateOfEmploymentCenter0}, ${nFileCertificateOfEmployment0}, ${nFileBTI0}, ${nfile_Privilege}, ${nFileINN0}, 
             ${nFilePassport1}, ${nFileCertificateOfEmploymentCenter1}, ${nFileCertificateOfEmployment1}, ${nFileBirthCertificate1}, ${nFileBTI1}, ${nFileINN1},
             ${nFilePassport2}, ${nFileCertificateOfEmploymentCenter2}, ${nFileCertificateOfEmployment2}, ${nFileBirthCertificate2}, ${nFileBTI2}, ${nFileINN2}, 
             ${nFilePassport3}, ${nFileCertificateOfEmploymentCenter3}, ${nFileCertificateOfEmployment3}, ${nFileBirthCertificate3}, ${nFileBTI3}, ${nFileINN3}, 
             ${nFilePassport4}, ${nFileCertificateOfEmploymentCenter4}, ${nFileCertificateOfEmployment4}, ${nFileBirthCertificate4}, ${nFileBTI4}, ${nFileINN4}, 
             ${nFilePassport5}, ${nFileCertificateOfEmploymentCenter5}, ${nFileCertificateOfEmployment5}, ${nFileBirthCertificate5}, ${nFileBTI5}, ${nFileINN5}, 
             ${nFilePassport6}, ${nFileCertificateOfEmploymentCenter6}, ${nFileCertificateOfEmployment6}, ${nFileBirthCertificate6}, ${nFileBTI6}, ${nFileINN6}, 
-            ${nFileActAnaliz}, ${nFileFamily}]]></activiti:expression>
+            ${nFileActAnaliz}, ${nFileFamily}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -436,7 +481,7 @@
         <activiti:field name="subject">
           <activiti:expression><![CDATA[Взяття на облік громадян, які потребують поліпшення житлових умов]]></activiti:expression>
         </activiti:field>
-		<activiti:field name="saAttachmentsForSend">
+        <activiti:field name="saAttachmentsForSend">
           <activiti:expression><![CDATA["${PrintForm_1}"]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
@@ -498,103 +543,78 @@
           <activiti:value id="f5" name="5"></activiti:value>
           <activiti:value id="f6" name="6"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sClFio1" name="1 член сім’ї" type="string" default="${sFIO1}, ${sFamilyRelation1}, ${nBirthday1} р.н." writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sClFio2" name="2 член сім’ї" type="string" default="${sFIO2}, ${sFamilyRelation2}, ${nBirthday2} р.н." writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sClFio3" name="3 член сім’ї" type="string" default="${sFIO3}, ${sFamilyRelation3}, ${nBirthday3} р.н." writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sClFio4" name="4 член сім’ї" type="string" default="${sFIO4}, ${sFamilyRelation4}, ${nBirthday4} р.н." writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sClFio5" name="5 член сім’ї" type="string" default="${sFIO5}, ${sFamilyRelation5}, ${nBirthday5} р.н." writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sClFio6" name="6 член сім’ї" type="string" default="${sFIO6}, ${sFamilyRelation6}, ${nBirthday6} р.н." writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sClFio1" name="1 член сім’ї" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sClFio2" name="2 член сім’ї" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sClFio3" name="3 член сім’ї" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sClFio4" name="4 член сім’ї" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sClFio5" name="5 член сім’ї" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sClFio6" name="6 член сім’ї" type="string" writable="false"></activiti:formProperty>
         
+        <activiti:formProperty id="nCountIsAdult" name="кількість дорослих" type="invisible" default=" "></activiti:formProperty>
 
         <activiti:formProperty id="sFIO1" name="ФІО" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sFamilyRelation1" name="Родинні відносини" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nBirthday1" name="Рік народження" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nWhereLives1" name="З якого часу проживає в даному населеному пункті" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkPlace1" name="Місце роботи і посада" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="asAdult1" name="Повнолітній" type="enum" default="no" readable="false" writable="false">
-          <activiti:value id="yes" name="Так"></activiti:value>
-          <activiti:value id="no" name="Ні"></activiti:value>
-        </activiti:formProperty>
+
         <activiti:formProperty id="sFIO2" name="ФІО" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sFamilyRelation2" name="Родинні відносини" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nBirthday2" name="Рік народження" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nWhereLives2" name="З якого часу проживає в даному населеному пункті" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkPlace2" name="Місце роботи і посада" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="asAdult2" name="Повнолітній" type="enum" default="no" readable="false" writable="false">
-          <activiti:value id="yes" name="Так"></activiti:value>
-          <activiti:value id="no" name="Ні"></activiti:value>
-        </activiti:formProperty>
+
         <activiti:formProperty id="sFIO3" name="ФІО" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sFamilyRelation3" name="Родинні відносини" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nBirthday3" name="Рік народження" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nWhereLives3" name="З якого часу проживає в даному населеному пункті" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkPlace3" name="Місце роботи і посада" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="asAdult3" name="Повнолітній" type="enum" default="no" readable="false" writable="false">
-          <activiti:value id="yes" name="Так"></activiti:value>
-          <activiti:value id="no" name="Ні"></activiti:value>
-        </activiti:formProperty>
+
         <activiti:formProperty id="sFIO4" name="ФІО" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sFamilyRelation4" name="Родинні відносини" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nBirthday4" name="Рік народження" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nWhereLives4" name="З якого часу проживає в даному населеному пункті" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkPlace4" name="Місце роботи і посада" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="asAdult4" name="Повнолітній" type="enum" default="no" readable="false" writable="false">
-          <activiti:value id="yes" name="Так"></activiti:value>
-          <activiti:value id="no" name="Ні"></activiti:value>
-        </activiti:formProperty>
+
         <activiti:formProperty id="sFIO5" name="ФІО" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sFamilyRelation5" name="Родинні відносини" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nBirthday5" name="Рік народження" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nWhereLives5" name="З якого часу проживає в даному населеному пункті" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkPlace5" name="Місце роботи і посада" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="asAdult5" name="Повнолітній" type="enum" default="no" readable="false" writable="false">
-          <activiti:value id="yes" name="Так"></activiti:value>
-          <activiti:value id="no" name="Ні"></activiti:value>
-        </activiti:formProperty>
+
         <activiti:formProperty id="sFIO6" name="ФІО" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sFamilyRelation6" name="Родинні відносини" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nBirthday6" name="Рік народження" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nWhereLives6" name="З якого часу проживає в даному населеному пункті" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkPlace6" name="Місце роботи і посада" type="invisible"></activiti:formProperty>
 
-
-
-        <activiti:formProperty id="asAdult6" name="Повнолітній" type="enum" default="no" readable="false" writable="false">
-          <activiti:value id="yes" name="Так"></activiti:value>
-          <activiti:value id="no" name="Ні"></activiti:value>
-        </activiti:formProperty>
-        
-        
-       	<activiti:formProperty id="regChanged" name="Витяг готовий?" type="enum" required="true">
+        <activiti:formProperty id="regChanged" name="Витяг готовий?" type="enum" required="true">
           <activiti:value id="yes" name="Так, готовий"></activiti:value>
           <activiti:value id="no" name="витяг не може бути наданий"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="В разі відмови в наданні послуги зазначте підставу для відмови" type="textArea"></activiti:formProperty>
-        
-        
+		<activiti:formProperty id="sFalgNikolaevOda2" name="Флаг на заявление" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sShapkaGolova" name="підпис в шапке" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/mvk/nikolaev_mvk_408_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_2" name="Заява;Заява громадянина;pattern/print/mvk/nikolaev_mvk_408_print.html" type="file"></activiti:formProperty>
 
-
         <activiti:formProperty id="markers2" name="hide fields Status" type="markers" default="${markerService.loadFromFile('mvk/show_fill_status.json')}"></activiti:formProperty>
-
-
         <activiti:formProperty id="markers_For_Print_1" name="hide-show fields adult" type="markers" default="${markerService.loadFromFile('mvk/nikolaev_mvk_408_hide-show_for_print_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers_For_Print_2" name="hide-show fields table" type="markers" default="${markerService.loadFromFile('mvk/nikolaev_mvk_408_hide-show_for_print_2.json')}"></activiti:formProperty>
-
+        <activiti:formProperty id="markers_For_Print_3" name="hide-show fields sFIO" type="markers" default="${markerService.loadFromFile('mvk/nikolaev_mvk_408_hide-show_for_print_3.json')}"></activiti:formProperty>
 
 
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFileCertificateOfEmploymentCenter0}, ${nFileCertificateOfEmployment0}, ${nFileBTI0}, ${nfile_Privilege}, ${nFileINN0}, 
+            <activiti:expression>${nFileCertificateOfEmploymentCenter0}, ${nFileCertificateOfEmployment0}, ${nFileBTI0}, ${nfile_Privilege}, ${nFileINN0}, 
             ${nFilePassport1}, ${nFileCertificateOfEmploymentCenter1}, ${nFileCertificateOfEmployment1}, ${nFileBirthCertificate1}, ${nFileBTI1}, ${nFileINN1},
             ${nFilePassport2}, ${nFileCertificateOfEmploymentCenter2}, ${nFileCertificateOfEmployment2}, ${nFileBirthCertificate2}, ${nFileBTI2}, ${nFileINN2}, 
             ${nFilePassport3}, ${nFileCertificateOfEmploymentCenter3}, ${nFileCertificateOfEmployment3}, ${nFileBirthCertificate3}, ${nFileBTI3}, ${nFileINN3}, 
             ${nFilePassport4}, ${nFileCertificateOfEmploymentCenter4}, ${nFileCertificateOfEmployment4}, ${nFileBirthCertificate4}, ${nFileBTI4}, ${nFileINN4}, 
             ${nFilePassport5}, ${nFileCertificateOfEmploymentCenter5}, ${nFileCertificateOfEmployment5}, ${nFileBirthCertificate5}, ${nFileBTI5}, ${nFileINN5}, 
             ${nFilePassport6}, ${nFileCertificateOfEmploymentCenter6}, ${nFileCertificateOfEmployment6}, ${nFileBirthCertificate6}, ${nFileBTI6}, ${nFileINN6}, 
-            ${nFileActAnaliz}, ${nFileFamily}]]></activiti:expression>
+            ${nFileActAnaliz}, ${nFileFamily}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -696,6 +716,9 @@
       <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
         <omgdc:Bounds height="35.0" width="35.0" x="185.0" y="288.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="295.0" y="50.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="textannotation1" id="BPMNShape_textannotation1">
         <omgdc:Bounds height="61.0" width="255.0" x="1.0" y="21.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -711,8 +734,8 @@
         <omgdi:waypoint x="202.0" y="288.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
-        <omgdi:waypoint x="319.0" y="166.0"></omgdi:waypoint>
-        <omgdi:waypoint x="419.0" y="167.0"></omgdi:waypoint>
+        <omgdi:waypoint x="347.0" y="105.0"></omgdi:waypoint>
+        <omgdi:waypoint x="490.0" y="132.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
         <omgdi:waypoint x="561.0" y="167.0"></omgdi:waypoint>
@@ -769,6 +792,10 @@
       <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
         <omgdi:waypoint x="202.0" y="392.0"></omgdi:waypoint>
         <omgdi:waypoint x="202.0" y="323.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
+        <omgdi:waypoint x="256.0" y="136.0"></omgdi:waypoint>
+        <omgdi:waypoint x="347.0" y="105.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="association1" id="BPMNEdge_association1">
         <omgdi:waypoint x="128.0" y="82.0"></omgdi:waypoint>

@@ -11,7 +11,7 @@ angular.module('app').controller('PlaceController',
             LocalityListFactory,
             PlacesService,
             ServiceService,
-            UserService,
+            isLoggedIn,
             regions,
             service) {
 
@@ -34,16 +34,22 @@ angular.module('app').controller('PlaceController',
       }
     }
 
-    function isPlaceChoosingState(state) {
-      return state.current.name === 'index.service.general.place.built-in'
+    function isNewPlace(region, city){
+      if(region && city){
+        return region !== $scope.getRegionId() && city !== $scope.getCityId()
+      }
+      if(region){
+        return region !== $scope.getRegionId()
+      }
+      if(city){
+        return city !== $scope.getCityId()
+      }
+      return true;
     }
 
-    function isLoggedIn() {
-      return UserService.isLoggedIn().then(function () {
-        return {isStaying: false, isLoggedIn: true};
-      }).catch(function () {
-        return {isStaying: true, isLoggedIn: false};
-      });
+    function isPlaceChoosingState(state) {
+      return state.current.name === 'index.service.general.place' ||
+        state.current.name === 'index.service.general.place.built-in'
     }
 
     function isStayingOnCurrentState(state, stateToGo) {
@@ -54,44 +60,53 @@ angular.module('app').controller('PlaceController',
       return {isStaying: isStaying, isLoggedIn: false};
     }
 
+    var region;
+    var city;
+    var isChangeInProcess;
     /**
      * Обробити зміну місця
      */
     $scope.$on('onPlaceChange', function (evt) {
-      // діємо в залежності від доступності сервісу
-      var stateToGo = PlacesService.getServiceStateForPlace();
+      if(!isChangeInProcess) {
+        // діємо в залежності від доступності сервісу
+        var stateToGo = PlacesService.getServiceStateForPlace();
 
-      // отримати дані сервісу та його опис
-      var oAvail = PlacesService.serviceAvailableIn();
-      var foundInCountry;
-      var foundInRegion;
-      var foundInCity;
+        // отримати дані сервісу та його опис
+        var oAvail = PlacesService.serviceAvailableIn();
+        var foundInCountry;
+        var foundInRegion;
+        var foundInCity;
 
-      angular.forEach(oService.aServiceData, function (oServiceData, key) {
-        foundInCountry = oAvail.thisCountry;
-        foundInRegion = oAvail.thisRegion && oServiceData.nID_Region && oServiceData.nID_Region.nID === $scope.getRegionId();
-        foundInCity = oAvail.thisCity && oServiceData.nID_City && oServiceData.nID_City.nID === $scope.getCityId();
-        // if (service.nID_Region && service.nID_Region.nID === $scope.getRegionId() && service.nID_City && service.nID_City.nID === $scope.getCityId()) {
-        $scope.oService = oService;
-        if (foundInCountry || foundInRegion || foundInCity) {
-          $scope.serviceData = oServiceData;
-          if (oService.bNoteTrusted === false) {
-            $scope.serviceData.sNote = $sce.trustAsHtml($scope.serviceData.sNote);
-            oService.sNoteTrusted = true;
-          }
-        }
-      });
-
-      // console.info('PROCESS Place сhange, $state:', $state.current.name, ', to go:', stateToGo);
-
-      $q.when(isPlaceChoosingState($state) ? isLoggedIn() : isStayingOnCurrentState($state, stateToGo))
-        .then(function (result) {
-          if (result.isLoggedIn) {
-            $state.go('index.service.general.place.built-in.bankid', getBuiltInBankIDStateParams());
-          } else if (!result.isLoggedIn && !result.isStaying) {
-            $state.go(stateToGo, {id: oService.nID}, {location: false})
+        angular.forEach(oService.aServiceData, function (oServiceData, key) {
+          foundInCountry = oAvail.thisCountry;
+          foundInRegion = oAvail.thisRegion && oServiceData.nID_Region && oServiceData.nID_Region.nID === $scope.getRegionId();
+          foundInCity = oAvail.thisCity && oServiceData.nID_City && oServiceData.nID_City.nID === $scope.getCityId();
+          // if (service.nID_Region && service.nID_Region.nID === $scope.getRegionId() && service.nID_City && service.nID_City.nID === $scope.getCityId()) {
+          $scope.oService = oService;
+          if (foundInCountry || foundInRegion || foundInCity) {
+            $scope.serviceData = oServiceData;
+            if (oService.bNoteTrusted === false) {
+              $scope.serviceData.sNote = $sce.trustAsHtml($scope.serviceData.sNote);
+              oService.sNoteTrusted = true;
+            }
           }
         });
+
+        // console.info('PROCESS Place сhange, $state:', $state.current.name, ', to go:', stateToGo);
+        if (isPlaceChoosingState($state) && isNewPlace(region, city) && isLoggedIn) {
+          isChangeInProcess = true;
+          $state.go('index.service.general.place.built-in.bankid', getBuiltInBankIDStateParams()).finally(function () {
+            isChangeInProcess = false;
+          });
+        } else if (!isStayingOnCurrentState($state, stateToGo)) {
+          isChangeInProcess = true;
+          $state.go(stateToGo, {id: oService.nID}, {location: false}).finally(function () {
+            isChangeInProcess = false;
+          })
+        } else {
+          isChangeInProcess = false;
+        }
+      }
     });
 
     /**
@@ -105,7 +120,8 @@ angular.module('app').controller('PlaceController',
       }, {
         location: false
       }).then(function () {
-        //
+        region = null;
+        city = null;
       });
     });
 

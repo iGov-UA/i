@@ -3,10 +3,7 @@ package org.igov.model.flow;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
-import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import org.igov.model.core.NamedEntity;
@@ -38,7 +35,7 @@ public class FlowSlot extends NamedEntity {
     @JoinColumn(name = "nID_Flow_ServiceData")
     private Flow_ServiceData flow;
 
-    @OneToMany(mappedBy = "oFlowSlot")
+    @ManyToMany(targetEntity=FlowSlotTicket.class, mappedBy = "aFlowSlot")
     private List<FlowSlotTicket> aFlowSlotTicket = new ArrayList<>();
 
     public String getsData() {

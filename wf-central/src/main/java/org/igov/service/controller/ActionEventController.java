@@ -169,7 +169,7 @@ public class ActionEventController {
             @ApiParam(value = "номер-ид бп эсклации (поле на перспективу для следующего тз по эскалации)", required = false) @RequestParam(value = "nID_Proccess_Escalation", required = false) Long nID_Proccess_Escalation,
             @ApiParam(value = "числовой код, который соответсвует статусу", required = true) @RequestParam(value = "nID_StatusType", required = true) Long nID_StatusType,
             @ApiParam(value = "строка информация о субьекте", required = false) @RequestParam(value = "sSubjectInfo", required = false) String sSubjectInfo,
-            @ApiParam(value = "номер - ИД субьекта",required = false) @RequestParam(value = "snID_Subject", required = false) Long nID_Subject
+            @ApiParam(value = "номер - ИД субьекта",required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject
     ) throws CommonServiceException {
         return oActionEventService.updateActionStatus_Central(
             sID_Order,
@@ -285,6 +285,7 @@ public class ActionEventController {
      * @param sMessage строка - сохраняемое содержимое (обязательное поле)
      * @param nID_HistoryEvent_Service строка - id - сервиса HistoryEven (не обязательное поле)
      * @param nID_Document строка - id - документа (не обязательное поле)
+     * @param sSubjectInfo строка-информация о субъекте (не обязательное поле)
      */
     @ApiOperation(value = "Сохранение события в Мой Журнал", notes = "##### Пример:\n"
             + "http://test.igov.org.ua/wf/service/action/event/setHistoryEvent")
@@ -296,11 +297,12 @@ public class ActionEventController {
             @ApiParam(value = "строка-кастомное описание документа", required = false) @RequestParam(value = "sEventName", required = false) String sEventName_Custom,
             @ApiParam(value = "строка-сохраняемое содержимое", required = true) @RequestParam(value = "sMessage") String sMessage,
             @ApiParam(value = "номер-id обьекта события по услуге", required = false) @RequestParam(value = "nID_HistoryEvent_Service", required = false) Long nID_HistoryEvent_Service,
-            @ApiParam(value = "номер-id - документа", required = false) @RequestParam(value = "nID_Document", required = false) Long nID_Document)
+            @ApiParam(value = "номер-id - документа", required = false) @RequestParam(value = "nID_Document", required = false) Long nID_Document,
+            @ApiParam(value = "строка-информация о субъекте", required = false) @RequestParam(value = "sSubjectInfo", required = false) String sSubjectInfo)
             throws IOException {
 	
         return historyEventDao.setHistoryEvent(nID_Subject,
-                nID_HistoryEventType, sEventName_Custom, sMessage, nID_HistoryEvent_Service, nID_Document);
+                nID_HistoryEventType, sEventName_Custom, sMessage, nID_HistoryEvent_Service, nID_Document, sSubjectInfo);
     }
 
 

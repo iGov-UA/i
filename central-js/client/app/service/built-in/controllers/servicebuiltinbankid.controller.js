@@ -15,6 +15,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   oServiceData,
   BankIDAccount,
   activitiForm,
+  formData,
   allowOrder,
   countOrder,
   selfOrdersCount,
@@ -22,7 +23,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   PlacesService,
   uiUploader,
   FieldAttributesService,
-  MarkersFactory,
+  iGovMarkers,
   service,
   FieldMotionService,
   ParameterFactory,
@@ -48,15 +49,15 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   $scope.data.city = currentState.data.city;
   $scope.data.id = currentState.data.id;
 
+  $scope.data.formData = formData;
+
   $scope.setFormScope = function(scope){
     this.formScope = scope;
   };
 
   var initializeFormData = function (){
     $scope.data.formData = new FormDataFactory();
-    $scope.data.formData.initialize($scope.activitiForm);
-    $scope.data.formData.setBankIDAccount(BankIDAccount);
-    $scope.data.formData.uploadScansFromBankID(oServiceData);
+    return $scope.data.formData.initialize($scope.activitiForm, BankIDAccount, oServiceData);
   };
 
   if (!allowOrder) {
@@ -98,6 +99,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     });
   }
 
+  $scope.bAdmin = AdminService.isAdmin();
   $scope.markers = ValidationService.getValidationMarkers();
   var aID_FieldPhoneUA = $scope.markers.validate.PhoneUA.aField_ID;
 
@@ -134,7 +136,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
         console.log('markers attribute ' + field.name + ' contain bad formatted json\n' + ex.name + ', ' + ex.message + '\nfield.value: ' + field.value);
       }
       if (sourceObj !== null) {
-        _.merge(MarkersFactory.getMarkers(), sourceObj, function(destVal, sourceVal) {
+        _.merge(iGovMarkers.getMarkers(), sourceObj, function(destVal, sourceVal) {
           if (_.isArray(sourceVal)) {
             return sourceVal;
           }
@@ -150,7 +152,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
       }
     }
   });
-  MarkersFactory.validateMarkers();
+  iGovMarkers.validateMarkers();
   //save values for each property
   $scope.persistValues = JSON.parse(JSON.stringify($scope.data.formData.params));
   $scope.getSignFieldID = function(){
@@ -186,7 +188,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
       $scope.isSending = false;
       return false;
     }
-    
+
     if ($scope.sign.checked) {
       $scope.fixForm(form, aFormProperties);
       $scope.signForm();
@@ -200,7 +202,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     ValidationService.validateByMarkers(form, null, true);
     return form.$valid && bValid;
   };
-  
+
   $scope.fixForm = function(form, aFormProperties) {
       try{
         if(aFormProperties && aFormProperties!==null){
@@ -225,83 +227,83 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
                         && ($scope.data.formData.params[oProperty.id].value===null || $scope.data.formData.params[oProperty.id].value==="")){//oProperty.id === attr.sName &&
                     $scope.data.formData.params[oProperty.id].value = $scope.data.formData.params["bankIdinn"].value;
                 }
-                
+
                 var s="";
-                
+
                 s="sVarPostIndex";
                 if((oProperty.id === (s+"_0001") || oProperty.id === (s+"_0002") || oProperty.id === (s+"_0003"))
                         && ($scope.data.formData.params[oProperty.id].value===null || $scope.data.formData.params[oProperty.id].value==="")){//oProperty.id === attr.sName &&
                     $scope.data.formData.params[oProperty.id].value = $scope.data.formData.params[s].value;
                 }
-                
+
                 s="sVarOblNam";
                 if((oProperty.id === (s+"_0001") || oProperty.id === (s+"_0002") || oProperty.id === (s+"_0003"))
                         && ($scope.data.formData.params[oProperty.id].value===null || $scope.data.formData.params[oProperty.id].value==="")){//oProperty.id === attr.sName &&
                     $scope.data.formData.params[oProperty.id].value = $scope.data.formData.params[s].value;
                 }
-                
+
                 s="sVarRajOblNam";
                 if((oProperty.id === (s+"_0001") || oProperty.id === (s+"_0002") || oProperty.id === (s+"_0003"))
                         && ($scope.data.formData.params[oProperty.id].value===null || $scope.data.formData.params[oProperty.id].value==="")){//oProperty.id === attr.sName &&
                     $scope.data.formData.params[oProperty.id].value = $scope.data.formData.params[s].value;
                 }
-                
+
                 s="sVarPlaceNam";
                 if((oProperty.id === (s+"_0001") || oProperty.id === (s+"_0002") || oProperty.id === (s+"_0003"))
                         && ($scope.data.formData.params[oProperty.id].value===null || $scope.data.formData.params[oProperty.id].value==="")){//oProperty.id === attr.sName &&
                     $scope.data.formData.params[oProperty.id].value = $scope.data.formData.params[s].value;
                 }
-                
+
                 s="sVarRajCityNam";
                 if((oProperty.id === (s+"_0001") || oProperty.id === (s+"_0002") || oProperty.id === (s+"_0003"))
                         && ($scope.data.formData.params[oProperty.id].value===null || $scope.data.formData.params[oProperty.id].value==="")){//oProperty.id === attr.sName &&
                     $scope.data.formData.params[oProperty.id].value = $scope.data.formData.params[s].value;
                 }
-                
+
                 s="sVarVulNam";
                 if((oProperty.id === (s+"_0001") || oProperty.id === (s+"_0002") || oProperty.id === (s+"_0003"))
                         && ($scope.data.formData.params[oProperty.id].value===null || $scope.data.formData.params[oProperty.id].value==="")){//oProperty.id === attr.sName &&
                     $scope.data.formData.params[oProperty.id].value = $scope.data.formData.params[s].value;
                 }
-                
+
                 s="sVarBudNum";
                 if((oProperty.id === (s+"_0001") || oProperty.id === (s+"_0002") || oProperty.id === (s+"_0003"))
                         && ($scope.data.formData.params[oProperty.id].value===null || $scope.data.formData.params[oProperty.id].value==="")){//oProperty.id === attr.sName &&
                     $scope.data.formData.params[oProperty.id].value = $scope.data.formData.params[s].value;
                 }
-                
+
                 s="sVarKvNum";
                 if((oProperty.id === (s+"_0001") || oProperty.id === (s+"_0002") || oProperty.id === (s+"_0003"))
                         && ($scope.data.formData.params[oProperty.id].value===null || $scope.data.formData.params[oProperty.id].value==="")){//oProperty.id === attr.sName &&
                     $scope.data.formData.params[oProperty.id].value = $scope.data.formData.params[s].value;
                 }
-                
+
                 s="sVarTypePom";
                 if((oProperty.id === (s+"_0001") || oProperty.id === (s+"_0002") || oProperty.id === (s+"_0003"))
                         && ($scope.data.formData.params[oProperty.id].value===null || $scope.data.formData.params[oProperty.id].value==="")){//oProperty.id === attr.sName &&
                     $scope.data.formData.params[oProperty.id].value = $scope.data.formData.params[s].value;
                 }
-                
+
                 s="sVarPomNum";
                 if((oProperty.id === (s+"_0001") || oProperty.id === (s+"_0002") || oProperty.id === (s+"_0003"))
                         && ($scope.data.formData.params[oProperty.id].value===null || $scope.data.formData.params[oProperty.id].value==="")){//oProperty.id === attr.sName &&
                     $scope.data.formData.params[oProperty.id].value = $scope.data.formData.params[s].value;
                 }
 
-                
+
             });
         }
       }catch(sError){
-        console.log('[submitForm.fixForm]sError='+ sError);          
+        console.log('[submitForm.fixForm]sError='+ sError);
       }
-    
+
   };
 
   $scope.submitForm = function(form, aFormProperties) {
     if(form){
       form.$setSubmitted();
     }
-    
+
     $scope.fixForm(form, aFormProperties);
     if(aFormProperties && aFormProperties!==null){
         angular.forEach(aFormProperties, function(oProperty){
@@ -400,7 +402,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
         $scope.data.formData.params['bankId_scan_passport'].scan = null;
       }*/
 
-      $scope.data.formData.initialize($scope.activitiForm);
+      $scope.data.formData.initializeParamsOnly($scope.activitiForm);
 
     } else {
       initializeFormData();
@@ -461,24 +463,26 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     });
   }
 
-  $scope.htmldecode = function(encodedhtml)
-  {
-    var map = {
-      '&amp;'     :   '&',
-      '&gt;'      :   '>',
-      '&lt;'      :   '<',
-      '&quot;'    :   '"',
-      '&#39;'     :   "'"
-    };
+    $scope.htmldecode = function(encodedhtml){
+    if(encodedhtml){
+      var map = {
+        '&amp;'     :   '&',
+        '&gt;'      :   '>',
+        '&lt;'      :   '<',
+        '&quot;'    :   '"',
+        '&#39;'     :   "'"
+      };
 
-    var result = angular.copy(encodedhtml);
-    angular.forEach(map, function(value, key)
-    {
+     var result = angular.copy(encodedhtml);
+     angular.forEach(map, function(value, key){
       while(result.indexOf(key) > -1)
         result = result.replace(key, value);
-    });
+      });
 
     return result;
+    } else {
+      return encodedhtml;
+    }
   };
 
   $scope.getHtml = function(html) {
