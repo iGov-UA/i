@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_cnap_529_mode_worktime" name="Повідомлення про встановлення режиму роботи об’єкта торгівлі, закладу ресторанного господарства та сфери послуг" isExecutable="true">
+  <process id="dnepr_cnap_529_mode_worktime_chernigov" name="Повідомлення про встановлення режиму роботи об’єкта торгівлі, закладу ресторанного господарства та сфери послуг" isExecutable="true">
     <documentation>Смоктій К.В. Последние правки: 25.04.2016</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
@@ -19,7 +19,6 @@
           <activiti:value id="sElementProdovolchiTovari" name="торгівля продовольчими товарами"></activiti:value>
           <activiti:value id="sElementZmishaniTovari" name="торгівля змішаною групою товарів"></activiti:value>
           <activiti:value id="sElementRestoran" name="діяльність у сфері ресторанного господарства"></activiti:value>
-          <activiti:value id="sElementZakladHromadskogoHarchuvannya" name="діяльність у сфері громадського харчування"></activiti:value>
           <activiti:value id="sElementPoslugi" name="діяльність у сфері надання послуг"></activiti:value>
           <activiti:value id="sElementApteka" name="торгівля лікарськими засобами"></activiti:value>
         </activiti:formProperty>
@@ -35,9 +34,10 @@
         <activiti:formProperty id="sPib_fiz" name="П.І.Б. фізичної особи–підприємця" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sfiz_FopInn" name="Ідентифікаційний номер фізичної особи–підприємця" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdres_2" name="Місце проживання фізичної особи-підприємця" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nSquareObject" name="Загальна площа об’єкта, кв.м" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nTorgSquareObject" name="Торговельна площа об’єкта, кв.м" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nSquareObject" name="Загальна площа об’єкта, кв.м" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="nTorgSquareObject" name="Торговельна площа об’єкта, кв.м" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="nKolvoMest" name="Кількість посадкових місць" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sLabel_1" name=" " type="label" default="&lt;b&gt;Понеділок&lt;/b&gt;"></activiti:formProperty>
          <activiti:formProperty id="asEnumRW_Mon" name="Оберіть режим роботи: понеділок" type="enum" required="true">
           <activiti:value id="sElementRW_Work" name="робочий день"></activiti:value>
           <activiti:value id="sElementRW_NotWork" name="вихідний/санітарний день"></activiti:value>
@@ -103,6 +103,7 @@
           <activiti:value id="idTime22" name="22:00"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sTime_Break_Mon" name="Перерва у понеділок (з .. до ..)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sLabel_2" name=" " type="label" default="&lt;b&gt;Вівторок&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="asEnumRW_Tue" name="Оберіть режим роботи: вівторок" type="enum" required="true">
           <activiti:value id="sElementRW_Work" name="робочий день"></activiti:value>
           <activiti:value id="sElementRW_NotWork" name="вихідний/санітарний день"></activiti:value>
@@ -168,6 +169,7 @@
           <activiti:value id="idTime22" name="22:00"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sTime_Break_Tue" name="Перерва у вівторок (з .. до ..)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sLabel_3" name=" " type="label" default="&lt;b&gt;Середа&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="asEnumRW_Wed" name="Оберіть режим роботи: середа" type="enum" required="true">
           <activiti:value id="sElementRW_Work" name="робочий день"></activiti:value>
           <activiti:value id="sElementRW_NotWork" name="вихідний/санітарний день"></activiti:value>
@@ -233,6 +235,7 @@
           <activiti:value id="idTime22" name="22:00"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sTime_Break_Wed" name="Перерва у середу (з .. до ..)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sLabel_4" name=" " type="label" default="&lt;b&gt;Середа&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="asEnumRW_Thu" name="Оберіть режим роботи: четвер" type="enum" required="true">
           <activiti:value id="sElementRW_Work" name="робочий день"></activiti:value>
           <activiti:value id="sElementRW_NotWork" name="вихідний/санітарний день"></activiti:value>
@@ -298,6 +301,7 @@
           <activiti:value id="idTime22" name="22:00"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sTime_Break_Thu" name="Перерва у четверг (з .. до ..)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sLabel_5" name=" " type="label" default="&lt;b&gt;П'ятниця&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="asEnumRW_Fri" name="Оберіть режим роботи: п'ятниця" type="enum" required="true">
           <activiti:value id="sElementRW_Work" name="робочий день"></activiti:value>
           <activiti:value id="sElementRW_NotWork" name="вихідний/санітарний день"></activiti:value>
@@ -363,6 +367,7 @@
           <activiti:value id="idTime22" name="22:00"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sTime_Break_Fri" name="Перерва у п'ятницю (з .. до ..)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sLabel_6" name=" " type="label" default="&lt;b&gt;Субота&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="asEnumRW_Sat" name="Оберіть режим роботи: субота" type="enum" required="true">
           <activiti:value id="sElementRW_Work" name="робочий день"></activiti:value>
           <activiti:value id="sElementRW_NotWork" name="вихідний/санітарний день"></activiti:value>
@@ -428,6 +433,7 @@
           <activiti:value id="idTime22" name="22:00"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sTime_Break_Sat" name="Перерва у суботу (з .. до ..)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sLabel_7" name=" " type="label" default="&lt;b&gt;Неділя&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="asEnumRW_Sun" name="Оберіть режим роботи: неділя" type="enum" required="true">
           <activiti:value id="sElementRW_Work" name="робочий день"></activiti:value>
           <activiti:value id="sElementRW_NotWork" name="вихідний/санітарний день"></activiti:value>
