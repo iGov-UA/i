@@ -219,7 +219,7 @@
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлу" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <userTask id="usertask1" name="Перевірка наданих даних (1)" activiti:candidateGroups="cnap_vasil">
-  	  <extensionElements>
+      <extensionElements>
         <activiti:formProperty id="sNameService" name="Найменування замовленої послуги" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sClientFIO" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
@@ -308,9 +308,8 @@
             <activiti:expression>${fAppWithECP}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
-      </extensionElements>    
+      </extensionElements>
     </userTask>
-
     <userTask id="usertask2" name="Надання послуги (2)" activiti:candidateGroups="cnap_vasil">
       <extensionElements>
         <activiti:formProperty id="sNameService" name="Найменування замовленої послуги" type="string" writable="false"></activiti:formProperty>
@@ -635,13 +634,6 @@
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
-        <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
-        </activiti:field>
-        <activiti:field name="sText_SMS">
-          <activiti:expression>Shanovnyy(-a) zayavnyk. Na vkazanu Vamy poshtovu skryn'ku ([email]) nadislano lysta.</activiti:expression>
-        </activiti:field>
-       
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow16" sourceRef="exclusivegateway1" targetRef="servicetask4">
@@ -679,7 +671,7 @@
     <sequenceFlow id="flow36" sourceRef="servicetask3" targetRef="exclusivegateway3"></sequenceFlow>
     <sequenceFlow id="flow37" sourceRef="usertask1" targetRef="usertask2"></sequenceFlow>
     <serviceTask id="servicetask11" name="Е-mail додаткове повідомлення заявнику про прийняту заявку (з SMS)" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
-  	  <extensionElements>
+      <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
@@ -697,8 +689,14 @@
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
-      </extensionElements>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Shanovnyy(-a) zayavnyk. Na vkazanu Vamy poshtovu skryn'ku ${email} nadislano lysta.</activiti:expression>
+        </activiti:field>
         
+      </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow38" sourceRef="servicetask11" targetRef="usertask1"></sequenceFlow>
   </process>
@@ -712,6 +710,9 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
         <omgdc:Bounds height="30.0" width="30.0" x="-34.0" y="94.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="321.0" y="47.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
         <omgdc:Bounds height="55.0" width="105.0" x="452.0" y="47.0"></omgdc:Bounds>
@@ -754,9 +755,6 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask10" id="BPMNShape_servicetask10">
         <omgdc:Bounds height="55.0" width="351.0" x="642.0" y="-161.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="321.0" y="47.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask11" id="BPMNShape_servicetask11">
         <omgdc:Bounds height="55.0" width="105.0" x="200.0" y="47.0"></omgdc:Bounds>
