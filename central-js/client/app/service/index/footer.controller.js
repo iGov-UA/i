@@ -85,12 +85,12 @@ angular.module('app').controller('FooterController', function ($scope) {
       image: 'assets/images/ads/ternopil.png',
       height: 50
     }
-    ,{
+    /*,{
       url: 'https://www.facebook.com/3bobra',
       alt: 'tribobra',
       image: 'assets/images/ads/tribobra.png',
       height: 50
-    }
+    }*/
     ,{
       url: 'https://webmoney.ua',
       alt: 'webmoneyua',
