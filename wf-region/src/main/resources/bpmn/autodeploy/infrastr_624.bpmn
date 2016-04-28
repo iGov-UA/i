@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="infrastr_624" name="Видача/заміна паспорта моряка" isExecutable="true">
+  <process id="infrastr_624" name="Видача/обмін посвідчення особи моряка" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="lable1" name="Зверніть увагу" type="label" default="Особисті дані англійською краще вводити з закордонного паспорту або кваліфікаційного документу моряка"></activiti:formProperty>
@@ -85,7 +85,7 @@
         <activiti:formProperty id="sSpecialFeaturesEng" name="Особливі прикмети англійською" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asHavePassport" name="Чи маєте Ви паспорта моряка?" type="enum" required="true">
+        <activiti:formProperty id="asHavePassport" name="Чи маєте Ви посвідчення особи моряка?" type="enum" required="true">
           <activiti:value id="sYes1" name="Так, потрібно обміняти"></activiti:value>
           <activiti:value id="sNo1" name="Ні, буду отримувати вперше"></activiti:value>
         </activiti:formProperty>
@@ -96,7 +96,6 @@
         <activiti:formProperty id="sAddress" name="Адреса органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sArea" name="район/місто звернення" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible" default="Заявка актуальна"></activiti:formProperty>
         <activiti:formProperty id="sPlace_of_birth" name="Місце народження" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sSex" name="Стать" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPort" name="Назва порту" type="invisible"></activiti:formProperty>
@@ -158,7 +157,7 @@ execution.setVariable('sSex', sex1)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове звернення на тему: Видача/заміна паспорта моряка]]></activiti:string>
+          <activiti:string><![CDATA[Нове звернення на тему: Видача/обмін посвідчення особи моряка]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
@@ -175,7 +174,7 @@ execution.setVariable('sSex', sex1)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Видача/заміна паспорта моряка]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Видача/обмін посвідчення особи моряка]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -186,7 +185,6 @@ execution.setVariable('sSex', sex1)
 									&lt;p&gt;
 										Спеціалісти ${sNameOrgan} оброблять Вашу заявку та надішлють Вам email з підтвердженням та інструкцією щодо подальших дій. 
 									&lt;/p&gt;
-                                    &lt;p&gt;[cancelTask]&lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
 									Міністерство інфраструктури України,&lt;br&gt;
 									[pattern/mail/_common_signature_end.html]   
@@ -198,7 +196,6 @@ execution.setVariable('sSex', sex1)
     <userTask id="usertask1" name="Перевірка вхідних даних" activiti:candidateGroups="infrastr_624_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="info" name="На цьому етапі:" type="label" default="Ви перевіряєте дані громадянина і вирішуєте чи всі вони вірні. Якщо все добре, то громадянину надсилається лист із реквізитами для сплати"></activiti:formProperty>
-        <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
@@ -273,11 +270,11 @@ execution.setVariable('sSex', sex1)
         </activiti:formProperty>
         <activiti:formProperty id="sSpecialFeatures" name="Особливі прикмети" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSpecialFeaturesEng" name="Особливі прикмети англійською" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asHavePassport" name="Чи маєте Ви паспорта моряка?" type="enum" writable="false">
+        <activiti:formProperty id="asHavePassport" name="Чи має громадянин посвідчення особи моряка?" type="enum" writable="false">
           <activiti:value id="sYes1" name="Так, потрібно обміняти"></activiti:value>
-          <activiti:value id="sNo1" name="Ні, буду отримувати вперше"></activiti:value>
+          <activiti:value id="sNo1" name="Ні, буде отримувати вперше"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="workerDecision" name="Рішення держслужбовця" type="enum" required="true">
+        <activiti:formProperty id="workerDecision" name="Рішення посадової особи" type="enum" required="true">
           <activiti:value id="accept" name="Призначити зустріч у відділенні"></activiti:value>
           <activiti:value id="decline" name="Відмовити в наданні послуги"></activiti:value>
         </activiti:formProperty>
@@ -306,22 +303,21 @@ execution.setVariable('sSex', sex1)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Видача/заміна паспорта моряка]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Видача/обмін посвідчення особи моряка]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
                                     &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
 										На жаль, Вам відмовлено у надані послуги.&lt;br&gt;
-                                        При необхідності Видача/заміна паспорта моряка Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;
+                                        При необхідності видачі/обміну посвідчення особи моряка Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
-										Коментар Державного службовця:&lt;br&gt;
+										Коментар посадової особи:&lt;br&gt;
 											&lt;b&gt;&lt;i&gt;${decisionComment}&lt;/i&gt;&lt;/b&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
-										При вниникненні питань Ви можете звернутися до чергового:&lt;br&gt;
-										${sPhoneOrgan}
+										При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
 									&lt;/p&gt;
 									[pattern/mail/_common_signature_start.html]
                                     Міністерство інфраструктури України.&lt;/p&gt;
@@ -343,14 +339,14 @@ execution.setVariable('sSex', sex1)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Видача/заміна паспорта моряка]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Видача/обмін посвідчення особи моряка]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
                                     &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
                                         Спеціалісти ${sNameOrgan} успішно опрацювли Вашу заяву.&lt;br&gt;
-										Для того щоб закінчити процедуру Видача/заміна паспорта моряка необхідно:&lt;br&gt;
+										Для того щоб закінчити процедуру Видача/обмін посвідчення особи моряка необхідно:&lt;br&gt;
 										&lt;ul&gt;
 										&lt;li&gt;Протягом 5 робочіх днів сплатити усі необхідні платежі та отримати квитанцію про сплату.&lt;/li&gt;
 										&lt;li&gt;Після підтвердження від ${sNameOrgan} протягом двох тижнів відвідати його з оригіналами документів та отримати свій документ.&lt;/li&gt;
@@ -360,14 +356,12 @@ execution.setVariable('sSex', sex1)
 										Реквізити для сплати доступні за посиланням...
 									&lt;/p&gt;
 									&lt;p&gt;
-										Коментар Державного службовця:&lt;br /&gt;
+										Коментар посадової особи:&lt;br&gt;
 										&lt;b&gt;&lt;i&gt;${decisionComment}&lt;/i&gt;&lt;/b&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
-										При вниникненні питань Ви можете звернутися до чергового:&lt;br /&gt;
-										${sPhoneOrgan}
+										При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
 									&lt;/p&gt;
-                                    &lt;p&gt;[cancelTask]&lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
 									Міністерство інфраструктури України,&lt;br&gt;
 									[pattern/mail/_common_signature_end.html]   
@@ -415,14 +409,14 @@ execution.setVariable('sSex', sex1)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Видача/заміна паспорта моряка]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Видача/обмін посвідчення особи моряка]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
                                     &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
-                                        На жаль Ви не з'явились у призначений день і час.&lt;br /&gt;
-                                        При необхідності Видача/заміна паспорта моряка Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;
+                                        На жаль Ви не з'явились у призначений день і час.&lt;br&gt;
+                                        При необхідності Видача/обмін посвідчення особи моряка Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
 										При вниникненні питань Ви можете звернутися до чергового:&lt;br /&gt;
@@ -445,13 +439,13 @@ execution.setVariable('sSex', sex1)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Видача/заміна паспорта моряка]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Видача/обмін посвідчення особи моряка]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 								  &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
-                              		Ви отримали послугу "Видача/заміна паспорта моряка".&lt;br /&gt;
+                              		Ви отримали послугу "Видача/обмін посвідчення особи моряка".&lt;br /&gt;
                               		Будь ласка, оцініть якість надання цієї послуги за допомогою форми нижче.&lt;br /&gt;
                               		Дякуємо.
 									&lt;/p&gt;
