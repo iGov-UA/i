@@ -29,7 +29,7 @@
         <activiti:formProperty id="layout" name="Місце розташування земельної ділянки (адреса)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="square" name="Площа земельної ділянки (га)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_inn" name="Копія документа про присвоєння податкового номера" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Cканована копія паспорту" type="file" default="завантажується автоматично"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Cканована копія паспорту" type="file"></activiti:formProperty>
         <activiti:formProperty id="doverennost" name="Копія довіреннності" type="file"></activiti:formProperty>
         <activiti:formProperty id="doc_zemlya" name="Документація із землеустрою; яка є підставою для формування земельної ділянки" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="edoc" name="Електронний документ;у форматі XML" type="file" required="true"></activiti:formProperty>
@@ -38,8 +38,6 @@
         <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса адміністративного органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="пошта посадовця" type="invisible" default="darja.grek@gmail.com"></activiti:formProperty>
-        <activiti:formProperty id="sArea" name="назва населеного пункту" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nArea" name="номер з довідника населеного пункту" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka286" name="шапка у принтформу" type="invisible" default="Державному кадастровому реєстратору"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік документів у заяву" type="invisible"></activiti:formProperty>
@@ -50,7 +48,7 @@
     </startEvent>
     <userTask id="usertask1" name="перевірка вхідних данних" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-     <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Серія та номер паспорту" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
@@ -80,7 +78,6 @@
           <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відхилення звернення внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="opis" name="Завантажте опис прийнятих документів " type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_286_print.html]" type="invisible" default="Заявка на реєстрацію земельної ділянки" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapka286" name="шапка у принтформу" type="invisible" default="Державному кадастровому реєстратору"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист" type="invisible"></activiti:formProperty>
@@ -95,7 +92,7 @@
     </userTask>
     <userTask id="usertask2" name="рішення" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="rName" name="Район" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Серія та номер паспорту" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
@@ -118,7 +115,7 @@
         <activiti:formProperty id="layout" name="Місце розташування земельної ділянки (адреса)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="square" name="Площа земельної ділянки (га)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="reestr_numb" name="Реєстраційний номер" type="string" ></activiti:formProperty>
-        <activiti:formProperty id="date_reestr" name="Укажіть дату реєстрації звернення" type="string" ></activiti:formProperty>
+        <activiti:formProperty id="date_reestr" name="Укажіть дату реєстрації звернення" type="string"></activiti:formProperty>
         <activiti:formProperty id="pib_admin" name="Прізвище, ім'я та по батькові Державного кадастрового реєстратора" type="string"></activiti:formProperty>
         <activiti:formProperty id="decision_2" name="Прийняте рішення щодо надання реєстрації" type="enum" required="true">
           <activiti:value id="accept" name="земельну ділянку зареєстровано"></activiti:value>
@@ -155,7 +152,7 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask2" name=" успішне подання зверенння" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask2" name=" успішне подання зверенння" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[test_noreply@igov.org.ua]]></activiti:string>
@@ -166,15 +163,11 @@
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення на тему: Державна реєстрація земельної ділянки з видачею витягу з Державного земельного кадастру]]></activiti:string>
         </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${opis}</activiti:expression>
-        </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 Ваше звернення щодо державної реєстрації земельної ділянки з видачею витягу з Державного земельного кадастру передано на розгляд в управління Держземагентства Вашого населеного пункту і буде опрацьовано протягом 14 календарних днів.&lt;br /&gt;&lt;br /&gt;
 Реєстраційний номер заяви: ${reestr_numb};&lt;br /&gt;
-До листа додається опис наданих Вами документів.&lt;br /&gt;
 &lt;br /&gt;
 Ви отримаєте додаткове повідомлення за результатами розгляду зверення.&lt;br /&gt;
 ${sPhoneOrgan}&lt;br /&gt;
@@ -275,7 +268,7 @@ ${sNameOrgan}&lt;br /&gt;
         </activiti:field>
       </extensionElements>
     </serviceTask>
-     <scriptTask id="scripttask1" name="Передача значений" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask1" name="Передача значений" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
 var per1 = "&lt;li&gt;Документ, що посвідчує особу.&lt;/li&gt;"
 var per2 = "&lt;li&gt;Роздруковану заяву, яку ви подавали в електронному вигляді (знаходиться у додатку до листа), засвідчену особистим підписом.&lt;/li&gt;"
@@ -368,6 +361,9 @@ execution.setVariable('sListDocumentsPrint', res2)
       <bpmndi:BPMNShape bpmnElement="servicetask10" id="BPMNShape_servicetask10">
         <omgdc:Bounds height="55.0" width="139.0" x="268.0" y="232.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="156.0" y="97.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
         <omgdc:Bounds height="55.0" width="151.0" x="90.0" y="22.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -382,9 +378,6 @@ execution.setVariable('sListDocumentsPrint', res2)
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
         <omgdc:Bounds height="40.0" width="40.0" x="317.0" y="309.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="156.0" y="97.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
         <omgdi:waypoint x="76.0" y="49.0"></omgdi:waypoint>

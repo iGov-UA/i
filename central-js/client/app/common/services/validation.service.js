@@ -14,7 +14,7 @@
  * Більше вимог до валідації: i/issues/375, 654 та 685.
  */
 
-angular.module('app').service('ValidationService', ['moment', 'amMoment', 'angularMomentConfig', 'MarkersFactory', ValidationService])
+angular.module('app').service('ValidationService', ['moment', 'amMoment', 'angularMomentConfig', 'iGovMarkers', ValidationService])
   .constant('angularMomentConfig', {
     preprocess: 'utc',
     timezone: 'Europe/Kiev',

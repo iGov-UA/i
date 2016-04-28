@@ -72,6 +72,35 @@ public class GeneralConfig {
     @Value("${general.corezoid.sSecretKey}")
     private String sCorezoidSecretKey;
 
+    // MSG Properties
+    @Value("${general.msg.sMsgURL}")
+    private String sMsgURL;
+    
+    @Value("${general.msg.sBusId}")
+    private String sMsgBusId;
+    
+    @Value("${general.msg.sTemplateMsgId}")
+    private String sMsgTemplateMsgId;
+    
+    @Value("${general.msg.sMsgLogin}")
+    private String sMsgLogin;
+
+    public String sMsgURL() {
+        return sMsgURL;
+    }
+
+    public String sMsgBusId() {
+        return sMsgBusId;
+    }
+
+    public String sMsgTemplateMsgId() {
+        return sMsgTemplateMsgId;
+    }
+
+    public String sMsgLogin() {
+        return sMsgLogin;
+    }
+        
     public String sLogin_BankID() {
         return sLogin_BankID;
     }

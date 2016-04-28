@@ -15,6 +15,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   oServiceData,
   BankIDAccount,
   activitiForm,
+  formData,
   allowOrder,
   countOrder,
   selfOrdersCount,
@@ -22,7 +23,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   PlacesService,
   uiUploader,
   FieldAttributesService,
-  MarkersFactory,
+  iGovMarkers,
   service,
   FieldMotionService,
   ParameterFactory,
@@ -48,15 +49,15 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   $scope.data.city = currentState.data.city;
   $scope.data.id = currentState.data.id;
 
+  $scope.data.formData = formData;
+
   $scope.setFormScope = function(scope){
     this.formScope = scope;
   };
 
   var initializeFormData = function (){
     $scope.data.formData = new FormDataFactory();
-    $scope.data.formData.initialize($scope.activitiForm);
-    $scope.data.formData.setBankIDAccount(BankIDAccount);
-    $scope.data.formData.uploadScansFromBankID(oServiceData);
+    return $scope.data.formData.initialize($scope.activitiForm, BankIDAccount, oServiceData);
   };
 
   if (!allowOrder) {
@@ -98,6 +99,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     });
   }
 
+  $scope.bAdmin = AdminService.isAdmin();
   $scope.markers = ValidationService.getValidationMarkers();
   var aID_FieldPhoneUA = $scope.markers.validate.PhoneUA.aField_ID;
 
@@ -134,7 +136,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
         console.log('markers attribute ' + field.name + ' contain bad formatted json\n' + ex.name + ', ' + ex.message + '\nfield.value: ' + field.value);
       }
       if (sourceObj !== null) {
-        _.merge(MarkersFactory.getMarkers(), sourceObj, function(destVal, sourceVal) {
+        _.merge(iGovMarkers.getMarkers(), sourceObj, function(destVal, sourceVal) {
           if (_.isArray(sourceVal)) {
             return sourceVal;
           }
@@ -143,13 +145,14 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     }
     if (field.id === 'bReferent') {
       angular.extend($scope.data.formData.params.bReferent, field);
+      $scope.visibleBReferent = true;
       switch ($scope.data.formData.params.bReferent.value) {
         case 'true': $scope.data.formData.params.bReferent.value = true; break;
         case 'false': $scope.data.formData.params.bReferent.value = false; break;
       }
     }
   });
-  MarkersFactory.validateMarkers();
+  iGovMarkers.validateMarkers();
   //save values for each property
   $scope.persistValues = JSON.parse(JSON.stringify($scope.data.formData.params));
   $scope.getSignFieldID = function(){
@@ -399,7 +402,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
         $scope.data.formData.params['bankId_scan_passport'].scan = null;
       }*/
 
-      $scope.data.formData.initialize($scope.activitiForm);
+      $scope.data.formData.initializeParamsOnly($scope.activitiForm);
 
     } else {
       initializeFormData();
@@ -460,15 +463,15 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     });
   }
 
-  $scope.htmldecode = function(encodedhtml){
+    $scope.htmldecode = function(encodedhtml){
     if(encodedhtml){
       var map = {
-      '&amp;'     :   '&',
-      '&gt;'      :   '>',
-      '&lt;'      :   '<',
-      '&quot;'    :   '"',
-      '&#39;'     :   "'"
-     };
+        '&amp;'     :   '&',
+        '&gt;'      :   '>',
+        '&lt;'      :   '<',
+        '&quot;'    :   '"',
+        '&#39;'     :   "'"
+      };
 
      var result = angular.copy(encodedhtml);
      angular.forEach(map, function(value, key){

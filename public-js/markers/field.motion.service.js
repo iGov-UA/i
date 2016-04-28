@@ -1,7 +1,7 @@
-angular.module('app').service('FieldMotionService', ['MarkersFactory', FieldMotionService]);
+angular.module('iGovMarkers')
+  .service('FieldMotionService', ['iGovMarkers', FieldMotionService]);
 
 function FieldMotionService(MarkersFactory) {
-
   this.FieldMentioned = {
     'in': function(fieldId, prefix) {
       return grepByPrefix(prefix).some(function(entry) {
@@ -64,15 +64,47 @@ function FieldMotionService(MarkersFactory) {
     return result;
   };
 
-  function evalCondition(entry, fieldId, formData) {
-    if (!_.contains(entry.aField_ID, fieldId)) return false;
+  this.getElementIds = function() {
+    return grepByPrefix('ShowElementsOnTrue_')
+      .map(function(e) { return e.aElement_ID; })
+      .reduce(function(p, c) { return p.concat(c); },  []);
+  };
+
+  this.isElementVisible = function(elementId, formData) {
+    var mentioned = {val:false};
+    var bval = grepByPrefix('ShowElementsOnTrue_').some(function(entry) {
+      return evalCondition(entry, elementId, formData, mentioned);
+    });
+    return mentioned.val ? bval : true;
+  };
+
+  this.getSplittingRules = function() {
+    return grepByPrefix('SplitTextHalf_').reduce(function(p, c) {
+        p[c.sID_Field] = {splitter: c.sSpliter, el_id1: c.sID_Element_sValue1, el_id2: c.sID_Element_sValue2};
+        return p;
+      }, {});
+  };
+
+  this.getReplacingRules = function() {
+    return grepByPrefix(/*'ReplaceTextLastSymbols_'*/'ReplaceTextSymbols_').reduce(function(p, c) {
+        p[c.sID_Field] = c;
+        return p;
+      }, {});
+  };
+
+  function evalCondition(entry, fieldId, formData, mentioned) {
+    if (!_.contains(entry.aField_ID || entry.aElement_ID, fieldId)) {
+      return false;
+    } else if(mentioned) {
+      mentioned.val = true;
+    }
     var toEval = entry.sCondition.replace(/\[(\w+)]/g, function(str, alias) {
       var fId = entry.asID_Field[alias];
       if (!fId) console.log('Cant resolve original fieldId by alias:' + alias);
       var result = '';
       if (formData[fId] && (typeof formData[fId].value === 'string' || formData[fId].value instanceof String)) {
         result = formData[fId].value.replace(/'/g, "\\'");
-      }else if (formData[fId]) {
+      } else if (formData.hasOwnProperty(fId)) {
         result = formData[fId].value;
       } else {
         console.log('can\'t find field [',fId,'] in ' + JSON.stringify(formData));
@@ -86,8 +118,7 @@ function FieldMotionService(MarkersFactory) {
       return result;
     });
     try {
-      var bResult = eval(toEval);
-      return bResult;
+      return eval(toEval);
     } catch (e) {
       console.log('OnCondition expression error\n' + e.name + '\n' + e.message
         + '\nexpression:' + entry.sCondition

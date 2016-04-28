@@ -187,6 +187,7 @@ angular.module('app')
           $scope.setStepNumber(1);
 
           $scope.$emit('onPlaceEdit');
+
         };
 
         $scope.setStepNumber = function(nStep) {

@@ -44,8 +44,14 @@ var all = {
 
   request: {
     debug: process.env.DEBUG
+  },
+  server: {
+    session: {
+      secret: process.env.SESSION_SECRET,
+      secure: process.env.SESSION_SECURE,
+      maxAge: process.env.SESSION_MAX_AGE
+    }
   }
-
 };
 
 // Export the config object based on the NODE_ENV

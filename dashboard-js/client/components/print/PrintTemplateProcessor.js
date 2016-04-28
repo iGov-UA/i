@@ -14,6 +14,7 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
         el.remove();
     });
     var splittingRules = FieldMotionService.getSplittingRules();
+    var replacingRules = FieldMotionService.getReplacingRules();
     form.forEach(function(e) {
       var val = fieldGetter(e);
       if (val && _.has(splittingRules, e.id)) {
@@ -22,6 +23,12 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
         template.find('#' + rule.el_id1).html(a[0]);
         a.shift();
         template.find('#' + rule.el_id2).html(a.join(rule.splitter));
+      }
+      if (val && _.has(replacingRules, e.id)) {
+        rule = replacingRules[e.id];
+        //a = val.slice(0, val.length - rule.nSymbols) + rule.sValueNew;
+        a = val.replace(rule.sFrom, rule.sTo);
+        template.find('#' + rule.sID_Element_sValue).html(a);
       }
     });
     return template.html();
