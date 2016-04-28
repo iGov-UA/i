@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_mvk_291" name="Звернення громадян до Управління житлового господарства міської ради" isExecutable="true">
+  <process id="chernihiv_mvk_481" name="Звернення громадян до Управління житлового господарства міської ради" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
@@ -10,7 +10,6 @@
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="Вкажіть сьогоднішню дату" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="topic" name="Оберіть тему звернення" type="enum" required="true">
           <activiti:value id="top1" name="Ремонт ліфта"></activiti:value>
           <activiti:value id="top2" name="Підтоплення будинку"></activiti:value>
@@ -31,21 +30,9 @@
           <activiti:value id="top17" name="Фінансування робіт ремонту будинків"></activiti:value>
           <activiti:value id="top18" name="Інші питання утримання будинків"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="district" name="Район Вашого проживання" type="enum" required="true">
-          <activiti:value id="and" name="Амур-Нижньодніпровський"></activiti:value>
-          <activiti:value id="bab" name="Шевченківський (Бабушкінський)"></activiti:value>
-          <activiti:value id="zhovt" name="Соборний (Жовтневий)"></activiti:value>
-          <activiti:value id="indust" name="Індустріальний"></activiti:value>
-          <activiti:value id="kirov" name="Центральний (Кіровський)"></activiti:value>
-          <activiti:value id="krasn" name="Чечелівський (Красногвардійський)"></activiti:value>
-          <activiti:value id="lenin" name="Новокодацький (Ленінський)"></activiti:value>
-          <activiti:value id="samar" name="Самарський"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="rename" name="Зверніть увагу" type="label" default="У зв'язку з переіменуванням вулиць, під час введення нової адреси звірте назву за &lt;a href=&quot;https://docs.google.com/spreadsheets/d/16j-w5pN0erlhdmTg5xl0bs9Gob1W0U3ivjIhy0BTHsU/edit?pli=1#gid=0&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;."></activiti:formProperty>
         <activiti:formProperty id="adress" name="Адреса проживання заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="reason" name="Опишіть суть звернення" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="file1" name="Завантажте матеріал стосовно Вашого звернення, якщо є;(фото або відсканований документ що стосується звернення)" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="response" name="текст подяки" type="invisible" default="&lt;p&gt;Результати будуть спрямовані на Ваш e-mail.&lt;/p&gt;&lt;p&gt;За бажанням ви можете перейти на &lt;a href=&quot;http://dniprorada.gov.ua/zvernennja-gromadjan&quot; target=&quot;_self&quot;&gt;потрал міської ради&lt;/a&gt;.&lt;/p&gt;"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -474,8 +461,8 @@
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status=='answer_bad'||status=='dep1'||status=='dep2'||status=='dep3'||status=='dep4'||status=='dep5'||status=='dep6'||status=='dep7'||status=='dep8'||status=='dep9'||status=='dep10'||status=='dep11'||status=='dep12'||status=='dep13'||status=='dep14'||status=='dep15'||status=='dep16'||status=='dep17'||status=='dep18'||status=='dep19'||status=='dep20'||status=='dep24'||status=='dep25'||status=='dep26'||status=='dep27'||status=='dep28'}]]></conditionExpression>
     </sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_mvk_291">
-    <bpmndi:BPMNPlane bpmnElement="dnepr_mvk_291" id="BPMNPlane_dnepr_mvk_291">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_chernihiv_mvk_481">
+    <bpmndi:BPMNPlane bpmnElement="chernihiv_mvk_481" id="BPMNPlane_chernihiv_mvk_481">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="110.0" y="140.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
