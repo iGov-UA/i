@@ -179,6 +179,33 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
+    <serviceTask id="servicetask5" name="Інформування громадянина" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Запит про отримання витягу з реєстру платників єдиного податку]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+Ваша заява була передана до ДФС і буде опрацьована найближчим часом <br />
+
+[pattern/mail/_common_signature_start.html]
+[pattern_dictonary:dnepr_dfs.csv:value{[rName]}:2]<br />
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_feedback.html]
+[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    
+    </serviceTask>
+    <sequenceFlow id="flow28" sourceRef="servicetask4" targetRef="servicetask5"></sequenceFlow>
+    
     <serviceTask id="servicetask4" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
@@ -275,8 +302,6 @@ ${comment_1}<br/>
     <sequenceFlow id="flow24" sourceRef="servicetask2" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow26" sourceRef="servicetask1" targetRef="servicetask4"></sequenceFlow>
     <sequenceFlow id="flow27" sourceRef="servicetask5" targetRef="usertask1"></sequenceFlow>
-    <serviceTask id="servicetask5" name="Інформування громадянина"></serviceTask>
-    <sequenceFlow id="flow28" sourceRef="servicetask4" targetRef="servicetask5"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_gni_69">
     <bpmndi:BPMNPlane bpmnElement="gni_69" id="BPMNPlane_gni_69">
