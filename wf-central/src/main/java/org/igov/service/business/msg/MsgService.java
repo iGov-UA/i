@@ -45,7 +45,7 @@ public class MsgService {
 	    String sBody, String sError, String smData) throws Exception {
 
 	IMsgObjR msg = new MsgSendImpl(sServiceURL, sBusId, sType, sFunction, sTemplateMsgId, sMsgLogin)
-		.addnID_Server(nID_Server).addnID_Subject(nID_Server).addsBody(sBody).addsError(sError).addsHead(sHead)
+		.addnID_Server(nID_Server).addnID_Subject(nID_Subject).addsBody(sBody).addsError(sError).addsHead(sHead)
 		.addsmData(smData).save();
 
 	return msg;
