@@ -22,7 +22,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="fDock1" name="Документ, що містить технічні помилки" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sRealErr" name="Документ, що підтверджує факт існування технічної помилки" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="fDock2" name="Документ, що підтверджує факт існування технічної помилки" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="fDock2" name="Документ, що підтверджує факт існування технічної помилки; xml-файл" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sRealData" name="Документ, що підтверджує правильну редакцію зазначення відповідних відомостей" type="string" default="-"></activiti:formProperty>
         <activiti:formProperty id="fDock3" name="Документ, що підтверджує правильну редакцію зазначення відповідних відомостей" type="file"></activiti:formProperty>
         <activiti:formProperty id="sKadastrObject" name="Oб'єкт з земельного кадастру;за наявності - кадастровий номер у форматі хххххххххх:хх:ххх:хххх" type="string" default="__" required="true"></activiti:formProperty>
@@ -336,7 +336,7 @@ ${sNameOrgan}<br />
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow19" sourceRef="usertask1" targetRef="exclusivegateway2"></sequenceFlow>
     <sequenceFlow id="flow20" sourceRef="exclusivegateway2" targetRef="servicetask7">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${proverkaCNAP=='ok' && bFlag=='easy'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${proverkaCNAP=='ok'&& bFlag=='easy'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask9" name="Повідомлення працівника ДГК" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
@@ -355,7 +355,7 @@ ${sNameOrgan}<br />
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow27" name="ЦНАП-ДГК-ЦНАП" sourceRef="exclusivegateway2" targetRef="servicetask9">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bFlag=='hard' && proverkaCNAP=='ok'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${proverkaCNAP=='ok'&& bFlag=='hard'}]]></conditionExpression>
     </sequenceFlow>
     <userTask id="usertask3" name="Обробка документів в ДГК" activiti:candidateGroups="dgk_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
@@ -407,7 +407,7 @@ ${sNameOrgan}<br />
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[tanyazol@gmail.com]]></activiti:expression>
+          <activiti:expression><![CDATA[middayka@yandex.ru]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Заява повернена із ДГК: Виправлення технічної помилки у відомостях з Державного земельного кадастру, допущеної органом, що здійснює його ведення, з видачею витягу.]]></activiti:string>
