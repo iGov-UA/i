@@ -143,7 +143,7 @@ angular.module('app').controller('FooterController', function ($scope) {
     ,{
       url: 'http://besplatka.ua',
       alt: 'besplatka.ua',
-      image: 'assets/images/ads/besplatka_ua.png',
+      image: 'assets/images/ads/besplatka.jpg',
       height: 50
     }
  

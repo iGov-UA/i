@@ -291,7 +291,7 @@ ${sNameOrgan}<br />
 [pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[${PrintForm_1},${result}]]></activiti:expression>
+          <activiti:expression><![CDATA[${result}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -329,7 +329,7 @@ ${sNameOrgan}<br />
 [pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[${PrintForm_1},${result}]]></activiti:expression>
+          <activiti:expression><![CDATA[${result}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -341,7 +341,7 @@ ${sNameOrgan}<br />
     </sequenceFlow>
     <sequenceFlow id="flow23" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow24" sourceRef="servicetask7" targetRef="usertask2"></sequenceFlow>
-    <serviceTask id="servicetask9" name="Повідомлення працівника ДГК" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask9" name="Повідомлення працівника ДГК" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -404,7 +404,7 @@ ${sNameOrgan}<br />
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow26" sourceRef="servicetask9" targetRef="usertask3"></sequenceFlow>
-    <serviceTask id="servicetask10" name="Повідомлення працівника ЦНАПу" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask10" name="Повідомлення працівника ЦНАПу" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -481,7 +481,7 @@ ${sNameOrgan}<br />
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-			<p>Ваше звернення пройшло попередню перевірку адміністратором і передано для опрацювання відповідальній особі. За кілька днів ви отримаєте результат опрацювання на цей email.<br />Ви можете роздрукувати своє повідомлення з прикріплення до цього листа.<br />
+			<p>Ваше звернення пройшло попередню перевірку адміністратором і передано для опрацювання відповідальній особі. За кілька днів ви отримаєте результат опрацювання на цей email.<br />
 			<p>Якщо у Вас з`явились питання, Ви можете звернутись до ${sNameOrgan}<br />
 ${sAddress}<br />
 ${sWorkTime}<br />
