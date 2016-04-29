@@ -24,7 +24,7 @@
           <activiti:value id="other" name="інший масовий захід"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sMistoZahodu" name="Місце проведення заходу або маршрути руху (текстовий опис маршруту)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="fMapViewMarshrut" name="Cканована копія маршрута на картці" type="file" default="1"></activiti:formProperty>
+        <activiti:formProperty id="fMapViewMarshrut" name="Cканована копія маршрута на картці" type="file" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="dDate_Beg" name="Дата початку заходу" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="eTime_Beg" name="Час початку заходу" type="enum" default="idTime11" required="true">
           <activiti:value id="idTime0" name="00:00"></activiti:value>
@@ -145,7 +145,7 @@
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>
-    <userTask id="usertask1" name="Прийняття рішення щодо розгляду повідомлення" activiti:candidateGroups="cnap_kiev_kolon">
+    <userTask id="usertask1" name="[Етап I] Прийняття рішення щодо розгляду повідомлення" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="Орган надання адмінпослуг" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подання заяви" type="string" writable="false"></activiti:formProperty>
@@ -262,7 +262,7 @@
     </sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow6" sourceRef="servicetask4" targetRef="endevent1"></sequenceFlow>
-    <userTask id="usertask2" name="Друк заяви, повідомлення щодо рішення" activiti:candidateGroups="cnap_kiev_kolon">
+    <userTask id="usertask2" name="[Етап II] Друк заяви, повідомлення щодо рішення" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="Орган надання адмінпослуг" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подання заяви" type="string" writable="false"></activiti:formProperty>
