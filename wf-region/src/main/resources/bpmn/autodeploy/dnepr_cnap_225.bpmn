@@ -353,7 +353,7 @@ ${sNameOrgan}<br />
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow25" name="ЦНАП-ДГК-ЦНАП" sourceRef="servicetask11" targetRef="servicetask9"></sequenceFlow>
+    <sequenceFlow id="flow25" sourceRef="servicetask11" targetRef="servicetask9"></sequenceFlow>
     <userTask id="usertask3" name="Обробка документів в ДГК" activiti:candidateGroups="dgk_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="shapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
@@ -459,7 +459,7 @@ ${sNameOrgan}<br />
     </userTask>
     <sequenceFlow id="flow28" sourceRef="servicetask10" targetRef="usertask4"></sequenceFlow>
     <sequenceFlow id="flow29" sourceRef="usertask4" targetRef="exclusivegateway1"></sequenceFlow>
-    <sequenceFlow id="flow30" sourceRef="exclusivegateway2" targetRef="servicetask11">
+    <sequenceFlow id="flow30"  name="ЦНАП-ДГК-ЦНАП" sourceRef="exclusivegateway2" targetRef="servicetask11">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${proverkaCNAP=='ok'&& bFlag=='hard'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask11" name="Повідомлення громадянина" activiti:delegateExpression="#{MailTaskWithAttachments}">
