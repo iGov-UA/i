@@ -1,6 +1,6 @@
 package org.igov.service.business.action.task.systemtask.doc.handler;
 
-import java.util.List;
+import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +34,7 @@ public class UkrDocEventHandler {
         
         Object extensions = ((JSONObject) docStateEvent).get("extensions");
         Object files = ((JSONObject) extensions).get("files");
-        if (files != null && ((List)files).size() > 0) {
+        if (files != null && ((JSONArray)files).length() > 0) {
             bFile = true;
         } else{
             bFile = false;
