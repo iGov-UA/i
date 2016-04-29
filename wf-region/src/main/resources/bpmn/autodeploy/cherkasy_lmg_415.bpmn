@@ -10,18 +10,12 @@
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Адреса електронної пошти" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Телефон" type="string" default="+380" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asType" name="Оберіть тип звернення:" type="enum" required="true">
-          <activiti:value id="sEnumCertif" name="Видача Посвідчення мисливця"></activiti:value>
-          <activiti:value id="sEnumCard" name="Видача Контрольної картки обліку добутої дичини та порушень правил полювання"></activiti:value>
-          <activiti:value id="sEnumCertifDouble" name="Видача дублікату Посвідчення мисливця"></activiti:value>
-          <activiti:value id="sEnumCardDouble" name="Видача дублікату Контрольної картки обліку добутої дичини та порушень правил полювання"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органа в емейл" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Час роботи" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>  
-       </extensionElements>
+        <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
+      </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <serviceTask id="servicetask2" name="Повідомлення держслужбовця про звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -63,19 +57,13 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <userTask id="usertask1" name="Розгляд документів" activiti:candidateGroups="{sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask1" name="Розгляд документів" activiti:candidateGroups="ulmg_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Адреса електронної пошти" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdphone" name="Телефон" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asType" name="Оберіть тип звернення:" type="enum" writable="false">
-          <activiti:value id="sEnumCertif" name="Видача Посвідчення мисливця"></activiti:value>
-          <activiti:value id="sEnumCard" name="Видача Контрольної картки обліку добутої дичини та порушень правил полювання"></activiti:value>
-          <activiti:value id="sEnumCertifDouble" name="Видача дублікату Посвідчення мисливця"></activiti:value>
-          <activiti:value id="sEnumCardDouble" name="Видача дублікату Контрольної картки обліку добутої дичини та порушень правил полювання"></activiti:value>
-        </activiti:formProperty>
-      </extensionElements>
+       </extensionElements>
     </userTask>
     <serviceTask id="servicetask4" name="Лист-відмова" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
@@ -138,7 +126,7 @@
     </boundaryEvent>
     <endEvent id="endevent1" name="End"></endEvent>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="usertask1"></sequenceFlow>
     <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
     <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
     <sequenceFlow id="flow4" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
@@ -152,7 +140,7 @@
   <bpmndi:BPMNDiagram id="BPMNDiagram_cherkasy_lmg_415">
     <bpmndi:BPMNPlane bpmnElement="cherkasy_lmg_415" id="BPMNPlane_cherkasy_lmg_415">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="40.0" y="120.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="84.0" y="50.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
         <omgdc:Bounds height="75.0" width="105.0" x="100.0" y="100.0"></omgdc:Bounds>
@@ -182,9 +170,9 @@
         <omgdc:Bounds height="40.0" width="40.0" x="522.0" y="207.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="57.0" y="120.0"></omgdi:waypoint>
-        <omgdi:waypoint x="86.0" y="29.0"></omgdi:waypoint>
-        <omgdi:waypoint x="152.0" y="100.0"></omgdi:waypoint>
+        <omgdi:waypoint x="101.0" y="50.0"></omgdi:waypoint>
+        <omgdi:waypoint x="312.0" y="4.0"></omgdi:waypoint>
+        <omgdi:waypoint x="542.0" y="100.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
         <omgdi:waypoint x="205.0" y="137.0"></omgdi:waypoint>
