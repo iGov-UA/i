@@ -1988,7 +1988,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     	String year = eventHandler.getYear();
     	String status = eventHandler.getStatus();
         String nID_DocumentTemplate = eventHandler.getnID_DocumentTemplate();
-        String sHasFile = String.valueOf(eventHandler.isbFile());
+        Boolean sHasFile = eventHandler.isbFile();
 
     	String sKey = documentId + ":" + year;
         String sKeyFromPkSection = documentIdFromPkSection + ":" + year;
