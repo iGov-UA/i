@@ -44,6 +44,7 @@
         <activiti:formProperty id="sWorkTime" name="графік роботи ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для справок" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="marker" name="mShowFields" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sKadastrObject&quot;,&quot;sVitiagNo&quot;,&quot;sVitiagDate&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;aDocErr&quot;},&quot;sCondition&quot;:&quot;[sClient]=='enum1'&quot;},&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;sDovidkaNo&quot;,&quot;sDovidkaDate&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;aDocErr&quot;},&quot;sCondition&quot;:&quot;[sClient]=='enum2'&quot;},&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;sCopyNo&quot;,&quot;sCopyDate&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;aDocErr&quot;},&quot;sCondition&quot;:&quot;[sClient]=='enum3'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('dneprCnap/dnepr_225.json')}"></activiti:formProperty>
         <activiti:formProperty id="bFlag" name="Перемикач регіонів" type="invisible" default="easy"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -353,7 +354,7 @@ ${sNameOrgan}<br />
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow25" name="ЦНАП-ДГК-ЦНАП" sourceRef="servicetask11" targetRef="servicetask9"></sequenceFlow>
+    <sequenceFlow id="flow25" sourceRef="servicetask11" targetRef="servicetask9"></sequenceFlow>
     <userTask id="usertask3" name="Обробка документів в ДГК" activiti:candidateGroups="dgk_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="shapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
@@ -376,6 +377,9 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="sDovidkaDate" name="Дата видачі довідки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCopyNo" name="Реєстраційний номер викопіювання" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCopyDate" name="Дата видачі викопіювання" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fDock1" name="Документ, що містить технічні помилки" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fDock2" name="Документ, що підтверджує факт існування технічної помилки; xml-файл" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fDock3" name="Документ, що підтверджує правильну редакцію зазначення відповідних відомостей" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sRealErr" name="Документ, що підтверджує факт існування технічної помилки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sRealData" name="Документ, що підтверджує правильну редакцію зазначення відповідних відомостей" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sRegNo" name="Номер реєстрації звернення" type="string" writable="false"></activiti:formProperty>
@@ -459,7 +463,7 @@ ${sNameOrgan}<br />
     </userTask>
     <sequenceFlow id="flow28" sourceRef="servicetask10" targetRef="usertask4"></sequenceFlow>
     <sequenceFlow id="flow29" sourceRef="usertask4" targetRef="exclusivegateway1"></sequenceFlow>
-    <sequenceFlow id="flow30" sourceRef="exclusivegateway2" targetRef="servicetask11">
+    <sequenceFlow id="flow30"  name="ЦНАП-ДГК-ЦНАП" sourceRef="exclusivegateway2" targetRef="servicetask11">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${proverkaCNAP=='ok'&& bFlag=='hard'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask11" name="Повідомлення громадянина" activiti:delegateExpression="#{MailTaskWithAttachments}">
