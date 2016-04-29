@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_cnap_529_mode_worktime_chernigov" name="Повідомлення про встановлення режиму роботи об’єкта торгівлі, закладу ресторанного господарства та сфери послуг" isExecutable="true">
+  <process id="dnepr_cnap_529_mode_worktime_chernigov" name="Погодження режиму роботи об’єкта торгівлі, закладу ресторанного господарства та сфери послуг" isExecutable="true">
     <documentation>Смоктій К.В. Последние правки: 25.04.2016</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
@@ -38,7 +38,7 @@
         <activiti:formProperty id="nTorgSquareObject" name="Торговельна площа об’єкта, кв.м" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="nKolvoMest" name="Кількість посадкових місць" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sLabel_1" name=" " type="label" default="&lt;b&gt;Понеділок&lt;/b&gt;"></activiti:formProperty>
-         <activiti:formProperty id="asEnumRW_Mon" name="Оберіть режим роботи: понеділок" type="enum" required="true">
+        <activiti:formProperty id="asEnumRW_Mon" name="Оберіть режим роботи: понеділок" type="enum" required="true">
           <activiti:value id="sElementRW_Work" name="робочий день"></activiti:value>
           <activiti:value id="sElementRW_NotWork" name="вихідний/санітарний день"></activiti:value>
         </activiti:formProperty>
@@ -102,7 +102,7 @@
           <activiti:value id="idTime21_30" name="21:30"></activiti:value>
           <activiti:value id="idTime22" name="22:00"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sTime_Break_Mon" name="Перерва у понеділок (з .. до ..)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTime_Break_Mon" name="Перерва у понеділок (з .. до .. або вкажіть 'немає')" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sLabel_2" name=" " type="label" default="&lt;b&gt;Вівторок&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="asEnumRW_Tue" name="Оберіть режим роботи: вівторок" type="enum" required="true">
           <activiti:value id="sElementRW_Work" name="робочий день"></activiti:value>
@@ -168,7 +168,7 @@
           <activiti:value id="idTime21_30" name="21:30"></activiti:value>
           <activiti:value id="idTime22" name="22:00"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sTime_Break_Tue" name="Перерва у вівторок (з .. до ..)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTime_Break_Tue" name="Перерва у вівторок (з .. до .. або вкажіть 'немає')" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sLabel_3" name=" " type="label" default="&lt;b&gt;Середа&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="asEnumRW_Wed" name="Оберіть режим роботи: середа" type="enum" required="true">
           <activiti:value id="sElementRW_Work" name="робочий день"></activiti:value>
@@ -234,7 +234,7 @@
           <activiti:value id="idTime21_30" name="21:30"></activiti:value>
           <activiti:value id="idTime22" name="22:00"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sTime_Break_Wed" name="Перерва у середу (з .. до ..)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTime_Break_Wed" name="Перерва у середу (з .. до .. або вкажіть 'немає')" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sLabel_4" name=" " type="label" default="&lt;b&gt;Середа&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="asEnumRW_Thu" name="Оберіть режим роботи: четвер" type="enum" required="true">
           <activiti:value id="sElementRW_Work" name="робочий день"></activiti:value>
@@ -300,7 +300,7 @@
           <activiti:value id="idTime21_30" name="21:30"></activiti:value>
           <activiti:value id="idTime22" name="22:00"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sTime_Break_Thu" name="Перерва у четверг (з .. до ..)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTime_Break_Thu" name="Перерва у четвер (з .. до .. або вкажіть 'немає')" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sLabel_5" name=" " type="label" default="&lt;b&gt;П'ятниця&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="asEnumRW_Fri" name="Оберіть режим роботи: п'ятниця" type="enum" required="true">
           <activiti:value id="sElementRW_Work" name="робочий день"></activiti:value>
@@ -366,7 +366,7 @@
           <activiti:value id="idTime21_30" name="21:30"></activiti:value>
           <activiti:value id="idTime22" name="22:00"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sTime_Break_Fri" name="Перерва у п'ятницю (з .. до ..)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTime_Break_Fri" name="Перерва у п'ятницю (з .. до .. або вкажіть 'немає')" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sLabel_6" name=" " type="label" default="&lt;b&gt;Субота&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="asEnumRW_Sat" name="Оберіть режим роботи: субота" type="enum" required="true">
           <activiti:value id="sElementRW_Work" name="робочий день"></activiti:value>
@@ -432,7 +432,7 @@
           <activiti:value id="idTime21_30" name="21:30"></activiti:value>
           <activiti:value id="idTime22" name="22:00"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sTime_Break_Sat" name="Перерва у суботу (з .. до ..)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTime_Break_Sat" name="Перерва у суботу (з .. до .. або вкажіть 'немає')" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sLabel_7" name=" " type="label" default="&lt;b&gt;Неділя&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="asEnumRW_Sun" name="Оберіть режим роботи: неділя" type="enum" required="true">
           <activiti:value id="sElementRW_Work" name="робочий день"></activiti:value>
@@ -497,9 +497,16 @@
           <activiti:value id="idTime21" name="21:00"></activiti:value>
           <activiti:value id="idTime21_30" name="21:30"></activiti:value>
           <activiti:value id="idTime22" name="22:00"></activiti:value>
-        <activiti:formProperty id="sTime_Break_Sun" name="Перерва у неділю (з .. до ..)" type="string" required="true"></activiti:formProperty>
         </activiti:formProperty>
+        <activiti:formProperty id="sTime_Break_Sun" name="Перерва у неділю (з .. до .. або вкажіть 'немає')" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sSpecialConditions" name="Особливі умови роботи" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sInfo_1" name="Інформація щодо роботи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sInfo_2" name="Інформація щодо роботи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sInfo_3" name="Інформація щодо роботи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sInfo_4" name="Інформація щодо роботи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sInfo_5" name="Інформація щодо роботи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sInfo_6" name="Інформація щодо роботи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sInfo_7" name="Інформація щодо роботи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Центр надання адмінпослуг" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="пошта оргструктури (району)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адрес оргструктури (району)" type="invisible"></activiti:formProperty>
@@ -518,38 +525,516 @@
         <activiti:formProperty id="sFIO" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="long" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="Дата подачи заяви" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNameObject_RV" name="У родовому відмінку повне найменування об'єкта торгівлі, ресторанного господарства або сфери послуг" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAdressObject" name="Місцезнаходження об'єкта торгівлі, ресторанного господарства або сфери послуг" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameObject_RV" name="Повне найменування об'єкта щодо якого встановлюється режим роботи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdressObject" name="Місцезнаходження (адреса) об'єкта торгівлі, закладу ресторанного господарства або сфери послуг" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asEnumSpesialObject" name="Оберіть спеціалізацію об'єкта" type="enum" writable="false">
           <activiti:value id="sElementNeprodovolchiTovari" name="торгівля непродовольчими товарами"></activiti:value>
           <activiti:value id="sElementProdovolchiTovari" name="торгівля продовольчими товарами"></activiti:value>
           <activiti:value id="sElementZmishaniTovari" name="торгівля змішаною групою товарів"></activiti:value>
           <activiti:value id="sElementRestoran" name="діяльність у сфері ресторанного господарства"></activiti:value>
-          <activiti:value id="sElementZakladHromadskogoHarchuvannya" name="діяльність у сфері громадського харчування"></activiti:value>
           <activiti:value id="sElementPoslugi" name="діяльність у сфері надання послуг"></activiti:value>
           <activiti:value id="sElementApteka" name="торгівля лікарськими засобами"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sFioTrusted_Person" name="Ім'я, по батькові та прізвище фізичної особи – підприємця або юридичної особи" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAdressContragent" name="Місцезнаходження юридичної особи / місце проживання фізичної особи – підприємця" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTime_Full" name="Початок та закінчення роботи (з .. до ..)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTime_Break" name="Перерва (з .. до ..)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sWeekend" name="Вихідні дні" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sSpecialConditions" name="Особливі умови роботи" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sExtension_Number" name="Реєстраційний номер" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDate_Registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sFioAdmin" name="П.І.Б. посадової особи, яка прийняла заяву" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sShapka_mode_worktime_529" name="Керівнику якого робочого органу" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asSubect" name="Оберіть суб'єкт підприємницької діяльності" type="enum" writable="false">
+          <activiti:value id="fiz" name="фізична особа-підприємець"></activiti:value>
+          <activiti:value id="ur" name="юридична особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sName_ur" name="Повне найменування юридичної особи" type="string" default=" " writable="false"></activiti:formProperty>
+        <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно з ЄДРПОУ; тільки цифрові позначення" type="string" default=" " writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPib_ur" name="П.І.Б. керівника юридичної особи або уповноваженої особи" type="string" default=" " writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdres_1" name="Місцезнаходження юридичної особи" type="string" default=" " writable="false"></activiti:formProperty>
+        <activiti:formProperty id="workPhone" name="Телефон юридичної особи" type="string" default=" " writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPib_fiz" name="П.І.Б. фізичної особи–підприємця" type="string" default=" " writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sfiz_FopInn" name="Ідентифікаційний номер фізичної особи–підприємця" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdres_2" name="Місце проживання фізичної особи-підприємця" type="string" default=" " writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nSquareObject" name="Загальна площа об’єкта, кв.м" type="string" default=" " writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nTorgSquareObject" name="Торговельна площа об’єкта, кв.м" type="string" default=" " writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nKolvoMest" name="Кількість посадкових місць" type="string" default=" " writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLabel_1" name=" " type="label" default="&lt;b&gt;Понеділок&lt;/b&gt;" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asEnumRW_Mon" name="Оберіть режим роботи: понеділок" type="enum" writable="false">
+          <activiti:value id="sElementRW_Work" name="робочий день"></activiti:value>
+          <activiti:value id="sElementRW_NotWork" name="вихідний/санітарний день"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="eTime_Beg_Mon" name="Час початку заходу" type="enum" default="idTime8" writable="false">
+          <activiti:value id="idTime8" name="08:00"></activiti:value>
+          <activiti:value id="idTime8_30" name="08:30"></activiti:value>
+          <activiti:value id="idTime9" name="09:00"></activiti:value>
+          <activiti:value id="idTime9_30" name="09:30"></activiti:value>
+          <activiti:value id="idTime10" name="10:00"></activiti:value>
+          <activiti:value id="idTime10_30" name="10:30"></activiti:value>
+          <activiti:value id="idTime11" name="11:00"></activiti:value>
+          <activiti:value id="idTime11_30" name="11:30"></activiti:value>
+          <activiti:value id="idTime12" name="12:00"></activiti:value>
+          <activiti:value id="idTime12_30" name="12:30"></activiti:value>
+          <activiti:value id="idTime13" name="13:00"></activiti:value>
+          <activiti:value id="idTime13_30" name="13:30"></activiti:value>
+          <activiti:value id="idTime14" name="14:00"></activiti:value>
+          <activiti:value id="idTime14_30" name="14:30"></activiti:value>
+          <activiti:value id="idTime15" name="15:00"></activiti:value>
+          <activiti:value id="idTime15_30" name="15:30"></activiti:value>
+          <activiti:value id="idTime16" name="16:00"></activiti:value>
+          <activiti:value id="idTime16_30" name="16:30"></activiti:value>
+          <activiti:value id="idTime17" name="17:00"></activiti:value>
+          <activiti:value id="idTime17_30" name="17:30"></activiti:value>
+          <activiti:value id="idTime18" name="18:00"></activiti:value>
+          <activiti:value id="idTime18_30" name="18:30"></activiti:value>
+          <activiti:value id="idTime19" name="19:00"></activiti:value>
+          <activiti:value id="idTime19_30" name="19:30"></activiti:value>
+          <activiti:value id="idTime20" name="20:00"></activiti:value>
+          <activiti:value id="idTime20_30" name="20:30"></activiti:value>
+          <activiti:value id="idTime21" name="21:00"></activiti:value>
+          <activiti:value id="idTime21_30" name="21:30"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="eTime_End_Mon" name="Час закінчення заходу" type="enum" default="idTime20" writable="false">
+          <activiti:value id="idTime8_30" name="08:30"></activiti:value>
+          <activiti:value id="idTime9" name="09:00"></activiti:value>
+          <activiti:value id="idTime9_30" name="09:30"></activiti:value>
+          <activiti:value id="idTime10" name="10:00"></activiti:value>
+          <activiti:value id="idTime10_30" name="10:30"></activiti:value>
+          <activiti:value id="idTime11" name="11:00"></activiti:value>
+          <activiti:value id="idTime11_30" name="11:30"></activiti:value>
+          <activiti:value id="idTime12" name="12:00"></activiti:value>
+          <activiti:value id="idTime12_30" name="12:30"></activiti:value>
+          <activiti:value id="idTime13" name="13:00"></activiti:value>
+          <activiti:value id="idTime13_30" name="13:30"></activiti:value>
+          <activiti:value id="idTime14" name="14:00"></activiti:value>
+          <activiti:value id="idTime14_30" name="14:30"></activiti:value>
+          <activiti:value id="idTime15" name="15:00"></activiti:value>
+          <activiti:value id="idTime15_30" name="15:30"></activiti:value>
+          <activiti:value id="idTime16" name="16:00"></activiti:value>
+          <activiti:value id="idTime16_30" name="16:30"></activiti:value>
+          <activiti:value id="idTime17" name="17:00"></activiti:value>
+          <activiti:value id="idTime17_30" name="17:30"></activiti:value>
+          <activiti:value id="idTime18" name="18:00"></activiti:value>
+          <activiti:value id="idTime18_30" name="18:30"></activiti:value>
+          <activiti:value id="idTime19" name="19:00"></activiti:value>
+          <activiti:value id="idTime19_30" name="19:30"></activiti:value>
+          <activiti:value id="idTime20" name="20:00"></activiti:value>
+          <activiti:value id="idTime20_30" name="20:30"></activiti:value>
+          <activiti:value id="idTime21" name="21:00"></activiti:value>
+          <activiti:value id="idTime21_30" name="21:30"></activiti:value>
+          <activiti:value id="idTime22" name="22:00"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sTime_Break_Mon" name="Перерва у понеділок (з .. до .. або вкажіть 'немає')" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLabel_2" name=" " type="label" default="&lt;b&gt;Вівторок&lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="asEnumRW_Tue" name="Оберіть режим роботи: вівторок" type="enum" writable="false">
+          <activiti:value id="sElementRW_Work" name="робочий день"></activiti:value>
+          <activiti:value id="sElementRW_NotWork" name="вихідний/санітарний день"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="eTime_Beg_Tue" name="Час початку заходу" type="enum" default="idTime8" writable="false">
+          <activiti:value id="idTime8" name="08:00"></activiti:value>
+          <activiti:value id="idTime8_30" name="08:30"></activiti:value>
+          <activiti:value id="idTime9" name="09:00"></activiti:value>
+          <activiti:value id="idTime9_30" name="09:30"></activiti:value>
+          <activiti:value id="idTime10" name="10:00"></activiti:value>
+          <activiti:value id="idTime10_30" name="10:30"></activiti:value>
+          <activiti:value id="idTime11" name="11:00"></activiti:value>
+          <activiti:value id="idTime11_30" name="11:30"></activiti:value>
+          <activiti:value id="idTime12" name="12:00"></activiti:value>
+          <activiti:value id="idTime12_30" name="12:30"></activiti:value>
+          <activiti:value id="idTime13" name="13:00"></activiti:value>
+          <activiti:value id="idTime13_30" name="13:30"></activiti:value>
+          <activiti:value id="idTime14" name="14:00"></activiti:value>
+          <activiti:value id="idTime14_30" name="14:30"></activiti:value>
+          <activiti:value id="idTime15" name="15:00"></activiti:value>
+          <activiti:value id="idTime15_30" name="15:30"></activiti:value>
+          <activiti:value id="idTime16" name="16:00"></activiti:value>
+          <activiti:value id="idTime16_30" name="16:30"></activiti:value>
+          <activiti:value id="idTime17" name="17:00"></activiti:value>
+          <activiti:value id="idTime17_30" name="17:30"></activiti:value>
+          <activiti:value id="idTime18" name="18:00"></activiti:value>
+          <activiti:value id="idTime18_30" name="18:30"></activiti:value>
+          <activiti:value id="idTime19" name="19:00"></activiti:value>
+          <activiti:value id="idTime19_30" name="19:30"></activiti:value>
+          <activiti:value id="idTime20" name="20:00"></activiti:value>
+          <activiti:value id="idTime20_30" name="20:30"></activiti:value>
+          <activiti:value id="idTime21" name="21:00"></activiti:value>
+          <activiti:value id="idTime21_30" name="21:30"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="eTime_End_Tue" name="Час закінчення заходу" type="enum" default="idTime20" writable="false">
+          <activiti:value id="idTime8_30" name="08:30"></activiti:value>
+          <activiti:value id="idTime9" name="09:00"></activiti:value>
+          <activiti:value id="idTime9_30" name="09:30"></activiti:value>
+          <activiti:value id="idTime10" name="10:00"></activiti:value>
+          <activiti:value id="idTime10_30" name="10:30"></activiti:value>
+          <activiti:value id="idTime11" name="11:00"></activiti:value>
+          <activiti:value id="idTime11_30" name="11:30"></activiti:value>
+          <activiti:value id="idTime12" name="12:00"></activiti:value>
+          <activiti:value id="idTime12_30" name="12:30"></activiti:value>
+          <activiti:value id="idTime13" name="13:00"></activiti:value>
+          <activiti:value id="idTime13_30" name="13:30"></activiti:value>
+          <activiti:value id="idTime14" name="14:00"></activiti:value>
+          <activiti:value id="idTime14_30" name="14:30"></activiti:value>
+          <activiti:value id="idTime15" name="15:00"></activiti:value>
+          <activiti:value id="idTime15_30" name="15:30"></activiti:value>
+          <activiti:value id="idTime16" name="16:00"></activiti:value>
+          <activiti:value id="idTime16_30" name="16:30"></activiti:value>
+          <activiti:value id="idTime17" name="17:00"></activiti:value>
+          <activiti:value id="idTime17_30" name="17:30"></activiti:value>
+          <activiti:value id="idTime18" name="18:00"></activiti:value>
+          <activiti:value id="idTime18_30" name="18:30"></activiti:value>
+          <activiti:value id="idTime19" name="19:00"></activiti:value>
+          <activiti:value id="idTime19_30" name="19:30"></activiti:value>
+          <activiti:value id="idTime20" name="20:00"></activiti:value>
+          <activiti:value id="idTime20_30" name="20:30"></activiti:value>
+          <activiti:value id="idTime21" name="21:00"></activiti:value>
+          <activiti:value id="idTime21_30" name="21:30"></activiti:value>
+          <activiti:value id="idTime22" name="22:00"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sTime_Break_Tue" name="Перерва у вівторок (з .. до .. або вкажіть 'немає')" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLabel_3" name=" " type="label" default="&lt;b&gt;Середа&lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="asEnumRW_Wed" name="Оберіть режим роботи: середа" type="enum" writable="false">
+          <activiti:value id="sElementRW_Work" name="робочий день"></activiti:value>
+          <activiti:value id="sElementRW_NotWork" name="вихідний/санітарний день"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="eTime_Beg_Wed" name="Час початку заходу" type="enum" default="idTime8" writable="false">
+          <activiti:value id="idTime8" name="08:00"></activiti:value>
+          <activiti:value id="idTime8_30" name="08:30"></activiti:value>
+          <activiti:value id="idTime9" name="09:00"></activiti:value>
+          <activiti:value id="idTime9_30" name="09:30"></activiti:value>
+          <activiti:value id="idTime10" name="10:00"></activiti:value>
+          <activiti:value id="idTime10_30" name="10:30"></activiti:value>
+          <activiti:value id="idTime11" name="11:00"></activiti:value>
+          <activiti:value id="idTime11_30" name="11:30"></activiti:value>
+          <activiti:value id="idTime12" name="12:00"></activiti:value>
+          <activiti:value id="idTime12_30" name="12:30"></activiti:value>
+          <activiti:value id="idTime13" name="13:00"></activiti:value>
+          <activiti:value id="idTime13_30" name="13:30"></activiti:value>
+          <activiti:value id="idTime14" name="14:00"></activiti:value>
+          <activiti:value id="idTime14_30" name="14:30"></activiti:value>
+          <activiti:value id="idTime15" name="15:00"></activiti:value>
+          <activiti:value id="idTime15_30" name="15:30"></activiti:value>
+          <activiti:value id="idTime16" name="16:00"></activiti:value>
+          <activiti:value id="idTime16_30" name="16:30"></activiti:value>
+          <activiti:value id="idTime17" name="17:00"></activiti:value>
+          <activiti:value id="idTime17_30" name="17:30"></activiti:value>
+          <activiti:value id="idTime18" name="18:00"></activiti:value>
+          <activiti:value id="idTime18_30" name="18:30"></activiti:value>
+          <activiti:value id="idTime19" name="19:00"></activiti:value>
+          <activiti:value id="idTime19_30" name="19:30"></activiti:value>
+          <activiti:value id="idTime20" name="20:00"></activiti:value>
+          <activiti:value id="idTime20_30" name="20:30"></activiti:value>
+          <activiti:value id="idTime21" name="21:00"></activiti:value>
+          <activiti:value id="idTime21_30" name="21:30"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="eTime_End_Wed" name="Час закінчення заходу" type="enum" default="idTime20" writable="false">
+          <activiti:value id="idTime8_30" name="08:30"></activiti:value>
+          <activiti:value id="idTime9" name="09:00"></activiti:value>
+          <activiti:value id="idTime9_30" name="09:30"></activiti:value>
+          <activiti:value id="idTime10" name="10:00"></activiti:value>
+          <activiti:value id="idTime10_30" name="10:30"></activiti:value>
+          <activiti:value id="idTime11" name="11:00"></activiti:value>
+          <activiti:value id="idTime11_30" name="11:30"></activiti:value>
+          <activiti:value id="idTime12" name="12:00"></activiti:value>
+          <activiti:value id="idTime12_30" name="12:30"></activiti:value>
+          <activiti:value id="idTime13" name="13:00"></activiti:value>
+          <activiti:value id="idTime13_30" name="13:30"></activiti:value>
+          <activiti:value id="idTime14" name="14:00"></activiti:value>
+          <activiti:value id="idTime14_30" name="14:30"></activiti:value>
+          <activiti:value id="idTime15" name="15:00"></activiti:value>
+          <activiti:value id="idTime15_30" name="15:30"></activiti:value>
+          <activiti:value id="idTime16" name="16:00"></activiti:value>
+          <activiti:value id="idTime16_30" name="16:30"></activiti:value>
+          <activiti:value id="idTime17" name="17:00"></activiti:value>
+          <activiti:value id="idTime17_30" name="17:30"></activiti:value>
+          <activiti:value id="idTime18" name="18:00"></activiti:value>
+          <activiti:value id="idTime18_30" name="18:30"></activiti:value>
+          <activiti:value id="idTime19" name="19:00"></activiti:value>
+          <activiti:value id="idTime19_30" name="19:30"></activiti:value>
+          <activiti:value id="idTime20" name="20:00"></activiti:value>
+          <activiti:value id="idTime20_30" name="20:30"></activiti:value>
+          <activiti:value id="idTime21" name="21:00"></activiti:value>
+          <activiti:value id="idTime21_30" name="21:30"></activiti:value>
+          <activiti:value id="idTime22" name="22:00"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sTime_Break_Wed" name="Перерва у середу (з .. до .. або вкажіть 'немає')" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLabel_4" name=" " type="label" default="&lt;b&gt;Середа&lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="asEnumRW_Thu" name="Оберіть режим роботи: четвер" type="enum" writable="false">
+          <activiti:value id="sElementRW_Work" name="робочий день"></activiti:value>
+          <activiti:value id="sElementRW_NotWork" name="вихідний/санітарний день"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="eTime_Beg_Thu" name="Час початку заходу" type="enum" default="idTime8" writable="false">
+          <activiti:value id="idTime8" name="08:00"></activiti:value>
+          <activiti:value id="idTime8_30" name="08:30"></activiti:value>
+          <activiti:value id="idTime9" name="09:00"></activiti:value>
+          <activiti:value id="idTime9_30" name="09:30"></activiti:value>
+          <activiti:value id="idTime10" name="10:00"></activiti:value>
+          <activiti:value id="idTime10_30" name="10:30"></activiti:value>
+          <activiti:value id="idTime11" name="11:00"></activiti:value>
+          <activiti:value id="idTime11_30" name="11:30"></activiti:value>
+          <activiti:value id="idTime12" name="12:00"></activiti:value>
+          <activiti:value id="idTime12_30" name="12:30"></activiti:value>
+          <activiti:value id="idTime13" name="13:00"></activiti:value>
+          <activiti:value id="idTime13_30" name="13:30"></activiti:value>
+          <activiti:value id="idTime14" name="14:00"></activiti:value>
+          <activiti:value id="idTime14_30" name="14:30"></activiti:value>
+          <activiti:value id="idTime15" name="15:00"></activiti:value>
+          <activiti:value id="idTime15_30" name="15:30"></activiti:value>
+          <activiti:value id="idTime16" name="16:00"></activiti:value>
+          <activiti:value id="idTime16_30" name="16:30"></activiti:value>
+          <activiti:value id="idTime17" name="17:00"></activiti:value>
+          <activiti:value id="idTime17_30" name="17:30"></activiti:value>
+          <activiti:value id="idTime18" name="18:00"></activiti:value>
+          <activiti:value id="idTime18_30" name="18:30"></activiti:value>
+          <activiti:value id="idTime19" name="19:00"></activiti:value>
+          <activiti:value id="idTime19_30" name="19:30"></activiti:value>
+          <activiti:value id="idTime20" name="20:00"></activiti:value>
+          <activiti:value id="idTime20_30" name="20:30"></activiti:value>
+          <activiti:value id="idTime21" name="21:00"></activiti:value>
+          <activiti:value id="idTime21_30" name="21:30"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="eTime_End_Thu" name="Час закінчення заходу" type="enum" default="idTime20" writable="false">
+          <activiti:value id="idTime8_30" name="08:30"></activiti:value>
+          <activiti:value id="idTime9" name="09:00"></activiti:value>
+          <activiti:value id="idTime9_30" name="09:30"></activiti:value>
+          <activiti:value id="idTime10" name="10:00"></activiti:value>
+          <activiti:value id="idTime10_30" name="10:30"></activiti:value>
+          <activiti:value id="idTime11" name="11:00"></activiti:value>
+          <activiti:value id="idTime11_30" name="11:30"></activiti:value>
+          <activiti:value id="idTime12" name="12:00"></activiti:value>
+          <activiti:value id="idTime12_30" name="12:30"></activiti:value>
+          <activiti:value id="idTime13" name="13:00"></activiti:value>
+          <activiti:value id="idTime13_30" name="13:30"></activiti:value>
+          <activiti:value id="idTime14" name="14:00"></activiti:value>
+          <activiti:value id="idTime14_30" name="14:30"></activiti:value>
+          <activiti:value id="idTime15" name="15:00"></activiti:value>
+          <activiti:value id="idTime15_30" name="15:30"></activiti:value>
+          <activiti:value id="idTime16" name="16:00"></activiti:value>
+          <activiti:value id="idTime16_30" name="16:30"></activiti:value>
+          <activiti:value id="idTime17" name="17:00"></activiti:value>
+          <activiti:value id="idTime17_30" name="17:30"></activiti:value>
+          <activiti:value id="idTime18" name="18:00"></activiti:value>
+          <activiti:value id="idTime18_30" name="18:30"></activiti:value>
+          <activiti:value id="idTime19" name="19:00"></activiti:value>
+          <activiti:value id="idTime19_30" name="19:30"></activiti:value>
+          <activiti:value id="idTime20" name="20:00"></activiti:value>
+          <activiti:value id="idTime20_30" name="20:30"></activiti:value>
+          <activiti:value id="idTime21" name="21:00"></activiti:value>
+          <activiti:value id="idTime21_30" name="21:30"></activiti:value>
+          <activiti:value id="idTime22" name="22:00"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sTime_Break_Thu" name="Перерва у четвер (з .. до .. або вкажіть 'немає')" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLabel_5" name=" " type="label" default="&lt;b&gt;П'ятниця&lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="asEnumRW_Fri" name="Оберіть режим роботи: п'ятниця" type="enum" writable="false">
+          <activiti:value id="sElementRW_Work" name="робочий день"></activiti:value>
+          <activiti:value id="sElementRW_NotWork" name="вихідний/санітарний день"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="eTime_Beg_Fri" name="Час початку заходу" type="enum" default="idTime8" writable="false">
+          <activiti:value id="idTime8" name="08:00"></activiti:value>
+          <activiti:value id="idTime8_30" name="08:30"></activiti:value>
+          <activiti:value id="idTime9" name="09:00"></activiti:value>
+          <activiti:value id="idTime9_30" name="09:30"></activiti:value>
+          <activiti:value id="idTime10" name="10:00"></activiti:value>
+          <activiti:value id="idTime10_30" name="10:30"></activiti:value>
+          <activiti:value id="idTime11" name="11:00"></activiti:value>
+          <activiti:value id="idTime11_30" name="11:30"></activiti:value>
+          <activiti:value id="idTime12" name="12:00"></activiti:value>
+          <activiti:value id="idTime12_30" name="12:30"></activiti:value>
+          <activiti:value id="idTime13" name="13:00"></activiti:value>
+          <activiti:value id="idTime13_30" name="13:30"></activiti:value>
+          <activiti:value id="idTime14" name="14:00"></activiti:value>
+          <activiti:value id="idTime14_30" name="14:30"></activiti:value>
+          <activiti:value id="idTime15" name="15:00"></activiti:value>
+          <activiti:value id="idTime15_30" name="15:30"></activiti:value>
+          <activiti:value id="idTime16" name="16:00"></activiti:value>
+          <activiti:value id="idTime16_30" name="16:30"></activiti:value>
+          <activiti:value id="idTime17" name="17:00"></activiti:value>
+          <activiti:value id="idTime17_30" name="17:30"></activiti:value>
+          <activiti:value id="idTime18" name="18:00"></activiti:value>
+          <activiti:value id="idTime18_30" name="18:30"></activiti:value>
+          <activiti:value id="idTime19" name="19:00"></activiti:value>
+          <activiti:value id="idTime19_30" name="19:30"></activiti:value>
+          <activiti:value id="idTime20" name="20:00"></activiti:value>
+          <activiti:value id="idTime20_30" name="20:30"></activiti:value>
+          <activiti:value id="idTime21" name="21:00"></activiti:value>
+          <activiti:value id="idTime21_30" name="21:30"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="eTime_End_Fri" name="Час закінчення заходу" type="enum" default="idTime20" writable="false">
+          <activiti:value id="idTime8_30" name="08:30"></activiti:value>
+          <activiti:value id="idTime9" name="09:00"></activiti:value>
+          <activiti:value id="idTime9_30" name="09:30"></activiti:value>
+          <activiti:value id="idTime10" name="10:00"></activiti:value>
+          <activiti:value id="idTime10_30" name="10:30"></activiti:value>
+          <activiti:value id="idTime11" name="11:00"></activiti:value>
+          <activiti:value id="idTime11_30" name="11:30"></activiti:value>
+          <activiti:value id="idTime12" name="12:00"></activiti:value>
+          <activiti:value id="idTime12_30" name="12:30"></activiti:value>
+          <activiti:value id="idTime13" name="13:00"></activiti:value>
+          <activiti:value id="idTime13_30" name="13:30"></activiti:value>
+          <activiti:value id="idTime14" name="14:00"></activiti:value>
+          <activiti:value id="idTime14_30" name="14:30"></activiti:value>
+          <activiti:value id="idTime15" name="15:00"></activiti:value>
+          <activiti:value id="idTime15_30" name="15:30"></activiti:value>
+          <activiti:value id="idTime16" name="16:00"></activiti:value>
+          <activiti:value id="idTime16_30" name="16:30"></activiti:value>
+          <activiti:value id="idTime17" name="17:00"></activiti:value>
+          <activiti:value id="idTime17_30" name="17:30"></activiti:value>
+          <activiti:value id="idTime18" name="18:00"></activiti:value>
+          <activiti:value id="idTime18_30" name="18:30"></activiti:value>
+          <activiti:value id="idTime19" name="19:00"></activiti:value>
+          <activiti:value id="idTime19_30" name="19:30"></activiti:value>
+          <activiti:value id="idTime20" name="20:00"></activiti:value>
+          <activiti:value id="idTime20_30" name="20:30"></activiti:value>
+          <activiti:value id="idTime21" name="21:00"></activiti:value>
+          <activiti:value id="idTime21_30" name="21:30"></activiti:value>
+          <activiti:value id="idTime22" name="22:00"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sTime_Break_Fri" name="Перерва у п'ятницю (з .. до .. або вкажіть 'немає')" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLabel_6" name=" " type="label" default="&lt;b&gt;Субота&lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="asEnumRW_Sat" name="Оберіть режим роботи: субота" type="enum" writable="false">
+          <activiti:value id="sElementRW_Work" name="робочий день"></activiti:value>
+          <activiti:value id="sElementRW_NotWork" name="вихідний/санітарний день"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="eTime_Beg_Sat" name="Час початку заходу" type="enum" default="idTime8" writable="false">
+          <activiti:value id="idTime8" name="08:00"></activiti:value>
+          <activiti:value id="idTime8_30" name="08:30"></activiti:value>
+          <activiti:value id="idTime9" name="09:00"></activiti:value>
+          <activiti:value id="idTime9_30" name="09:30"></activiti:value>
+          <activiti:value id="idTime10" name="10:00"></activiti:value>
+          <activiti:value id="idTime10_30" name="10:30"></activiti:value>
+          <activiti:value id="idTime11" name="11:00"></activiti:value>
+          <activiti:value id="idTime11_30" name="11:30"></activiti:value>
+          <activiti:value id="idTime12" name="12:00"></activiti:value>
+          <activiti:value id="idTime12_30" name="12:30"></activiti:value>
+          <activiti:value id="idTime13" name="13:00"></activiti:value>
+          <activiti:value id="idTime13_30" name="13:30"></activiti:value>
+          <activiti:value id="idTime14" name="14:00"></activiti:value>
+          <activiti:value id="idTime14_30" name="14:30"></activiti:value>
+          <activiti:value id="idTime15" name="15:00"></activiti:value>
+          <activiti:value id="idTime15_30" name="15:30"></activiti:value>
+          <activiti:value id="idTime16" name="16:00"></activiti:value>
+          <activiti:value id="idTime16_30" name="16:30"></activiti:value>
+          <activiti:value id="idTime17" name="17:00"></activiti:value>
+          <activiti:value id="idTime17_30" name="17:30"></activiti:value>
+          <activiti:value id="idTime18" name="18:00"></activiti:value>
+          <activiti:value id="idTime18_30" name="18:30"></activiti:value>
+          <activiti:value id="idTime19" name="19:00"></activiti:value>
+          <activiti:value id="idTime19_30" name="19:30"></activiti:value>
+          <activiti:value id="idTime20" name="20:00"></activiti:value>
+          <activiti:value id="idTime20_30" name="20:30"></activiti:value>
+          <activiti:value id="idTime21" name="21:00"></activiti:value>
+          <activiti:value id="idTime21_30" name="21:30"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="eTime_End_Sat" name="Час закінчення заходу" type="enum" default="idTime20" writable="false">
+          <activiti:value id="idTime8_30" name="08:30"></activiti:value>
+          <activiti:value id="idTime9" name="09:00"></activiti:value>
+          <activiti:value id="idTime9_30" name="09:30"></activiti:value>
+          <activiti:value id="idTime10" name="10:00"></activiti:value>
+          <activiti:value id="idTime10_30" name="10:30"></activiti:value>
+          <activiti:value id="idTime11" name="11:00"></activiti:value>
+          <activiti:value id="idTime11_30" name="11:30"></activiti:value>
+          <activiti:value id="idTime12" name="12:00"></activiti:value>
+          <activiti:value id="idTime12_30" name="12:30"></activiti:value>
+          <activiti:value id="idTime13" name="13:00"></activiti:value>
+          <activiti:value id="idTime13_30" name="13:30"></activiti:value>
+          <activiti:value id="idTime14" name="14:00"></activiti:value>
+          <activiti:value id="idTime14_30" name="14:30"></activiti:value>
+          <activiti:value id="idTime15" name="15:00"></activiti:value>
+          <activiti:value id="idTime15_30" name="15:30"></activiti:value>
+          <activiti:value id="idTime16" name="16:00"></activiti:value>
+          <activiti:value id="idTime16_30" name="16:30"></activiti:value>
+          <activiti:value id="idTime17" name="17:00"></activiti:value>
+          <activiti:value id="idTime17_30" name="17:30"></activiti:value>
+          <activiti:value id="idTime18" name="18:00"></activiti:value>
+          <activiti:value id="idTime18_30" name="18:30"></activiti:value>
+          <activiti:value id="idTime19" name="19:00"></activiti:value>
+          <activiti:value id="idTime19_30" name="19:30"></activiti:value>
+          <activiti:value id="idTime20" name="20:00"></activiti:value>
+          <activiti:value id="idTime20_30" name="20:30"></activiti:value>
+          <activiti:value id="idTime21" name="21:00"></activiti:value>
+          <activiti:value id="idTime21_30" name="21:30"></activiti:value>
+          <activiti:value id="idTime22" name="22:00"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sTime_Break_Sat" name="Перерва у суботу (з .. до .. або вкажіть 'немає')" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLabel_7" name=" " type="label" default="&lt;b&gt;Неділя&lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="asEnumRW_Sun" name="Оберіть режим роботи: неділя" type="enum" writable="false">
+          <activiti:value id="sElementRW_Work" name="робочий день"></activiti:value>
+          <activiti:value id="sElementRW_NotWork" name="вихідний/санітарний день"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="eTime_Beg_Sun" name="Час початку заходу" type="enum" default="idTime8" writable="false">
+          <activiti:value id="idTime8" name="08:00"></activiti:value>
+          <activiti:value id="idTime8_30" name="08:30"></activiti:value>
+          <activiti:value id="idTime9" name="09:00"></activiti:value>
+          <activiti:value id="idTime9_30" name="09:30"></activiti:value>
+          <activiti:value id="idTime10" name="10:00"></activiti:value>
+          <activiti:value id="idTime10_30" name="10:30"></activiti:value>
+          <activiti:value id="idTime11" name="11:00"></activiti:value>
+          <activiti:value id="idTime11_30" name="11:30"></activiti:value>
+          <activiti:value id="idTime12" name="12:00"></activiti:value>
+          <activiti:value id="idTime12_30" name="12:30"></activiti:value>
+          <activiti:value id="idTime13" name="13:00"></activiti:value>
+          <activiti:value id="idTime13_30" name="13:30"></activiti:value>
+          <activiti:value id="idTime14" name="14:00"></activiti:value>
+          <activiti:value id="idTime14_30" name="14:30"></activiti:value>
+          <activiti:value id="idTime15" name="15:00"></activiti:value>
+          <activiti:value id="idTime15_30" name="15:30"></activiti:value>
+          <activiti:value id="idTime16" name="16:00"></activiti:value>
+          <activiti:value id="idTime16_30" name="16:30"></activiti:value>
+          <activiti:value id="idTime17" name="17:00"></activiti:value>
+          <activiti:value id="idTime17_30" name="17:30"></activiti:value>
+          <activiti:value id="idTime18" name="18:00"></activiti:value>
+          <activiti:value id="idTime18_30" name="18:30"></activiti:value>
+          <activiti:value id="idTime19" name="19:00"></activiti:value>
+          <activiti:value id="idTime19_30" name="19:30"></activiti:value>
+          <activiti:value id="idTime20" name="20:00"></activiti:value>
+          <activiti:value id="idTime20_30" name="20:30"></activiti:value>
+          <activiti:value id="idTime21" name="21:00"></activiti:value>
+          <activiti:value id="idTime21_30" name="21:30"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="eTime_End_Sun" name="Час закінчення заходу" type="enum" default="idTime20" writable="false">
+          <activiti:value id="idTime8_30" name="08:30"></activiti:value>
+          <activiti:value id="idTime9" name="09:00"></activiti:value>
+          <activiti:value id="idTime9_30" name="09:30"></activiti:value>
+          <activiti:value id="idTime10" name="10:00"></activiti:value>
+          <activiti:value id="idTime10_30" name="10:30"></activiti:value>
+          <activiti:value id="idTime11" name="11:00"></activiti:value>
+          <activiti:value id="idTime11_30" name="11:30"></activiti:value>
+          <activiti:value id="idTime12" name="12:00"></activiti:value>
+          <activiti:value id="idTime12_30" name="12:30"></activiti:value>
+          <activiti:value id="idTime13" name="13:00"></activiti:value>
+          <activiti:value id="idTime13_30" name="13:30"></activiti:value>
+          <activiti:value id="idTime14" name="14:00"></activiti:value>
+          <activiti:value id="idTime14_30" name="14:30"></activiti:value>
+          <activiti:value id="idTime15" name="15:00"></activiti:value>
+          <activiti:value id="idTime15_30" name="15:30"></activiti:value>
+          <activiti:value id="idTime16" name="16:00"></activiti:value>
+          <activiti:value id="idTime16_30" name="16:30"></activiti:value>
+          <activiti:value id="idTime17" name="17:00"></activiti:value>
+          <activiti:value id="idTime17_30" name="17:30"></activiti:value>
+          <activiti:value id="idTime18" name="18:00"></activiti:value>
+          <activiti:value id="idTime18_30" name="18:30"></activiti:value>
+          <activiti:value id="idTime19" name="19:00"></activiti:value>
+          <activiti:value id="idTime19_30" name="19:30"></activiti:value>
+          <activiti:value id="idTime20" name="20:00"></activiti:value>
+          <activiti:value id="idTime20_30" name="20:30"></activiti:value>
+          <activiti:value id="idTime21" name="21:00"></activiti:value>
+          <activiti:value id="idTime21_30" name="21:30"></activiti:value>
+          <activiti:value id="idTime22" name="22:00"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sTime_Break_Sun" name="Перерва у неділю (з .. до .. або вкажіть 'немає')" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSpecialConditions" name="Особливі умови роботи" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sInfo_1" name="Інформація щодо роботи" type="string" default=" " writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sInfo_2" name="Інформація щодо роботи" type="string" default=" " writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sInfo_3" name="Інформація щодо роботи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sInfo_4" name="Інформація щодо роботи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sInfo_5" name="Інформація щодо роботи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sInfo_6" name="Інформація щодо роботи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sInfo_7" name="Інформація щодо роботи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="пошта оргструктури (району)" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адрес оргструктури (району)" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="date_today" name="Вкажіть  сьогоднішню дату" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон для довідки оргструктури (району)" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="графік роботи оргструктури (району)" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapka_mode_worktime_529" name="Керівнику якого робочого органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="asEnum_decision_1" name="Обробка заяви" type="enum" required="true">
-          <activiti:value id="accept" name="З документами все гаразд, заява зареєстрована та буде розглянуто погодження режиму роботи"></activiti:value>
-          <activiti:value id="reject" name="Відмовити у розгляду погодження"></activiti:value>
+          <activiti:value id="accept" name="З інформацією все гаразд, заява зареєстрована та буде розглянута"></activiti:value>
+          <activiti:value id="reject" name="Відмовити у розгляду встановлення  режиму роботи"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_1" name="У разі відмови внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers21" name="Настроювання принтформи " type="markers" default="${markerService.loadFromFile('dnepr_cnap_529_mode_worktime_2_Print.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody" name="[pattern/print/skv/dnepr_cnap_529_mode_worktime_print.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -795,12 +1280,48 @@ ${sPhoneOrgan}&lt;br /&gt;
     </sequenceFlow>
     <sequenceFlow id="flow9" sourceRef="servicetask7" targetRef="usertask2"></sequenceFlow>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="groovy" activiti:autoStoreVariables="false">
-		  <script>execution.setVariable('date_today', new Date().format("dd.MM.yyyy").toString())</script>
+      <script>execution.setVariable('date_today', new Date().format("dd.MM.yyyy").toString())</script>
     </scriptTask>
-    <sequenceFlow id="flow16" sourceRef="scripttask1" targetRef="servicetask4"></sequenceFlow>
+    <sequenceFlow id="flow16" sourceRef="scripttask1" targetRef="scripttask2"></sequenceFlow>
+    <scriptTask id="scripttask2" name="Script Task" activiti:autoStoreVariables="false">
+    	<script>
+    	var per1 = ''
+    	var per2 = ''
+    	var per3 = ''
+    	var per4 = ''
+    	var per5 = ''
+    	var per6 = ''
+    	var per7 = ''
+if (execution.getVariable('asEnumRW_Mon') == 'sElementRW_Work')
+{
+	per1 = 'робочий день: з '+execution.getVariable('eTime_Beg_Mon')+' до '+execution.getVariable('eTime_End_Mon')+' \nПерерва: '+execution.getVariable('sTime_Break_Mon')
+}
+else
+{
+	per1 = 'вихідний/санітарний день'
+}
+if (execution.getVariable('asEnumRW_Tue') == 'sElementRW_Work')
+{
+	per2 = 'робочий день: з '+execution.getVariable('eTime_Beg_Tue')+' до '+execution.getVariable('eTime_End_Tue')+' \nПерерва: '+execution.getVariable('sTime_Break_Tue')
+}
+else
+{
+	per2 = 'вихідний/санітарний день'
+}
+    	
+execution.setVariable('sInfo_1', per1) 
+execution.setVariable('sInfo_2', per2)
+execution.setVariable('sInfo_3', per3)
+execution.setVariable('sInfo_4', per4) 
+execution.setVariable('sInfo_5', per5) 
+execution.setVariable('sInfo_6', per6) 
+execution.setVariable('sInfo_7', per7) 
+   	 </script>
+    </scriptTask>
+    <sequenceFlow id="flow17" sourceRef="scripttask2" targetRef="servicetask4"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_529_mode_worktime">
-    <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_529_mode_worktime" id="BPMNPlane_dnepr_cnap_529_mode_worktime">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_529_mode_worktime_chernigov">
+    <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_529_mode_worktime_chernigov" id="BPMNPlane_dnepr_cnap_529_mode_worktime_chernigov">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="40.0" y="160.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -850,7 +1371,10 @@ ${sPhoneOrgan}&lt;br /&gt;
         <omgdc:Bounds height="40.0" width="40.0" x="595.0" y="247.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="193.0" y="60.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="120.0" y="60.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
+        <omgdc:Bounds height="55.0" width="105.0" x="268.0" y="60.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
         <omgdi:waypoint x="328.0" y="308.0"></omgdi:waypoint>
@@ -892,7 +1416,7 @@ ${sPhoneOrgan}&lt;br /&gt;
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="172.0" y="142.0"></omgdi:waypoint>
-        <omgdi:waypoint x="245.0" y="115.0"></omgdi:waypoint>
+        <omgdi:waypoint x="172.0" y="115.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
         <omgdi:waypoint x="381.0" y="177.0"></omgdi:waypoint>
@@ -925,7 +1449,11 @@ ${sPhoneOrgan}&lt;br /&gt;
         <omgdi:waypoint x="381.0" y="267.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
-        <omgdi:waypoint x="245.0" y="115.0"></omgdi:waypoint>
+        <omgdi:waypoint x="225.0" y="87.0"></omgdi:waypoint>
+        <omgdi:waypoint x="268.0" y="87.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
+        <omgdi:waypoint x="320.0" y="115.0"></omgdi:waypoint>
         <omgdi:waypoint x="320.0" y="142.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>

@@ -11,6 +11,7 @@
       .state('tools.deploy', {
         url: '/deploy',
         templateUrl: 'app/deploy/deploy.html',
+        controller: 'DeployCtrl',
         access: {
           requiresLogin: true
         }
