@@ -444,7 +444,7 @@ ${sNameOrgan}<br />
       </extensionElements>
       </userTask>
     <sequenceFlow id="flow27" sourceRef="servicetask10" targetRef="usertask3"></sequenceFlow>
-    <serviceTask id="servicetask11" name="Повідомлення працівника ЦНАПу" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask11" name="Повідомлення працівника ЦНАПу" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
      <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -459,7 +459,6 @@ ${sNameOrgan}<br />
           <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
-    </serviceTask>
     </serviceTask>
     <sequenceFlow id="flow28" sourceRef="usertask3" targetRef="servicetask11"></sequenceFlow>
     <userTask id="usertask4" name="Обробка працівником ЦНАПу після ДГК" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
