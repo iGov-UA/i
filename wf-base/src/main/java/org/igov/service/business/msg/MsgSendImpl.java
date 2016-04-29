@@ -131,7 +131,7 @@ public class MsgSendImpl implements MsgSend {
 	    msgType = MsgType.INF_MESSAGE;
 	}
 	
-	String sf = sFunction.trim().toUpperCase().replaceAll("\\.","_");
+	String sf = sFunction.trim().toUpperCase().replaceAll("[\\.\\(\\)]","_");
 	LOG.debug("Modified sFunction={}", sf);
 	
 	if (!sf.matches(ALLOWED_CHARS_MSG_CODE)) {
@@ -351,10 +351,9 @@ public class MsgSendImpl implements MsgSend {
 	msgCreate.doReqest(this.sMsgURL);
     }
 
-//     public static void main(String[] args) throws IOException {
+//     public static void main(String[] args)  {
 //         try {
-////	    IMsgObjR msg = new MsgSendImpl("WARNING", "getFunction ").save();
-// 	    new MsgSendImpl("WARNING", "org.getFunction-2");
+//             MsgSendImpl msg = new MsgSendImpl("", "", "WARNING", "org.getFunction(2)", "", "");
 //	} catch (Exception e) {
 //	    e.printStackTrace();
 //	}
