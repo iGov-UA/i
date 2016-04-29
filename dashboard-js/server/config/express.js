@@ -17,6 +17,7 @@ var config = require('./environment');
 var session = require('cookie-session');
 
 module.exports = function(app) {
+  app.set('env', config.env);
   var env = app.get('env');
 
   app.set('views', config.root + '/server/views');
