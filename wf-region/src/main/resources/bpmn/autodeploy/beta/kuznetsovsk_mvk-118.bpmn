@@ -11,7 +11,7 @@
           <activiti:value id="sEnamUr" name="Юридична особа"></activiti:value>
           <activiti:value id="sEnamFiz" name="Фізична особа"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Скан паспорта" type="file"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Скан паспорта" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_inn" name="Скан ІНН" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file_svid_reestr" name="Свідоцтво про реэстрацію" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="place_of_liv" name="Адреса реєстрації; Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" required="true"></activiti:formProperty>
@@ -29,7 +29,7 @@
         <activiti:formProperty id="file_kadastr" name="Витяг з державного земельного кадастру" type="file"></activiti:formProperty>
         <activiti:formProperty id="file_tumch" name="Для тимчасових споруд - паспорт прив'язки тимчасової споруди" type="file"></activiti:formProperty>
         <activiti:formProperty id="Flag_region" name="Перемикач регіонів" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('CNAP_Dnepr_500.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('kuznetsovsk_mvk-118.json')}"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
@@ -67,8 +67,6 @@
 ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}.&lt;br /&gt;
-${sAddress}.&lt;br /&gt;
-${sWorkTime}.&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -116,7 +114,7 @@ ${sWorkTime}.&lt;br /&gt;
           <activiti:value id="reject" name="Відмовити в реєстрації звернення"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Коментар адміністратора у разі відмови у реєстрації звернення" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="spec" name="електронна адреса спеціаліста (тільки для Кузнєцовська)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="spec" name="електронна адреса спеціаліста (тільки для Кузнєцовська і Макарова)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/kuznetsovsk/kuznetsovsk_118.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -152,11 +150,8 @@ ${sWorkTime}.&lt;br /&gt;
 Коментар державного службовця: &lt;br /&gt;
 &lt;i&gt;${decisionComment}&lt;/i&gt;
 [pattern/mail/_common_signature_start.html]
-З повагою,&lt;br /&gt;
 ${sNameOrgan}.&lt;br /&gt;
 ${sPhoneOrgan}.&lt;br /&gt;
-${sAddress}.&lt;br /&gt;
-${sWorkTime}.&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -187,8 +182,6 @@ ${sWorkTime}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}.&lt;br /&gt;
 ${sPhoneOrgan}.&lt;br /&gt;
-${sAddress}.&lt;br /&gt;
-${sWorkTime}.&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -221,7 +214,7 @@ ${sPhoneOrgan}.&lt;br /&gt;
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow18" sourceRef="servicetask10" targetRef="usertask2"></sequenceFlow>
-    <userTask id="usertask2" name="Обробка даних профільним спеціалістом" activiti:candidateGroups="kuznets_spec_118">
+    <userTask id="usertask2" name="Обробка даних профільним спеціалістом" activiti:candidateGroups="spec_118_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="place_of_liv" name="Адреса проживання" type="string" writable="false"></activiti:formProperty>
@@ -410,6 +403,9 @@ ${sWorkTime}.&lt;br /&gt;
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow30" sourceRef="servicetask11" targetRef="endevent6"></sequenceFlow>
+    <sequenceFlow id="flow31" name="sID_Public_SubjectOrganJoin &amp;&amp; decide == 'accept" sourceRef="exclusivegateway3" targetRef="servicetask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${Flag_region != 'true' && decide == 'accept'}]]></conditionExpression>
+    </sequenceFlow>
     <serviceTask id="servicetask4" name="Лист про передачу до міської ради" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -429,16 +425,12 @@ ${sWorkTime}.&lt;br /&gt;
 ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}.&lt;br /&gt;
-${sAddress}.&lt;br /&gt;
-${sWorkTime}.&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow31" name="sID_Public_SubjectOrganJoin &amp;&amp; decide == 'accept" sourceRef="exclusivegateway3" targetRef="servicetask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${Flag_region != 'true' && decide == 'accept'}]]></conditionExpression>
-    </sequenceFlow>
+     <sequenceFlow id="flow33" sourceRef="servicetask4" targetRef="usertask3"></sequenceFlow>
     <userTask id="usertask3" name="ЦНАП після міської ради" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -468,8 +460,7 @@ ${sWorkTime}.&lt;br /&gt;
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow33" sourceRef="servicetask4" targetRef="usertask3"></sequenceFlow>
-    <sequenceFlow id="flow34" sourceRef="usertask3" targetRef="exclusivegateway2"></sequenceFlow>
+   <sequenceFlow id="flow34" sourceRef="usertask3" targetRef="exclusivegateway2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_kuznetsovsk_mvk-118">
     <bpmndi:BPMNPlane bpmnElement="kuznetsovsk_mvk-118" id="BPMNPlane_kuznetsovsk_mvk-118">
