@@ -32,7 +32,7 @@ public class UkrDocEventHandler {
             }
         }
         
-        Object extensions = ((JSONObject) dataObj).get("extensions");
+        Object extensions = ((JSONObject) docStateEvent).get("extensions");
         Object files = ((JSONObject) extensions).get("files");
         if (files != null && ((List)files).size() > 0) {
             bFile = true;
