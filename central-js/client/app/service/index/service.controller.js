@@ -61,9 +61,12 @@ angular.module('app')
 
     $scope.isSfs = function() {
       if(location.hostname.indexOf('sfs') >= 0){
+        $('.sfs-favicon').remove();
+        $('<link/>',{rel:'shortcut icon', href:'../../assets/images/icons/favicon-sfs.png', class:'sfs-favicon'}).appendTo('head');
         return true
       } else {
         return false
       }
     };
+    
   }]);
