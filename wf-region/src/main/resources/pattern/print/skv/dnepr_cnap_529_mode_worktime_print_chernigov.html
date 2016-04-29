@@ -104,53 +104,132 @@ p {font-size: 11px;}
 </head>
 <body>
 <section class="print_wrap">
-    <div class="line_col ta-r">
-        <div class="under_field w350 ta-l"><i>[sShapka_mode_worktime_529]</i><span></span></div><br /> <br />
-        <div class="under_field w350 ta-l"><i>[sFIO]<br>(ІПН [bankIdinn])</i><span></span></div><br />
-        <div class="under_field w350 ta-l"><i>Паспорт: [bankIdPassport]<br>Телефон: [phone]</i><span></span></div><br />
-        
-	</div>
     <div class="line_col ta-c m-t-25">
-        <b id="Add_common">З А Я В А - П Р О П О З И Ц І Я</b>
-        <b id="Add_persotrav">З А Я В А </b> 
-        <br /><br />
+        <b id="Add_common">І Н Ф О Р М А Ц І Й Н И Й &nbsp;&nbsp;&nbsp;&nbsp;Л И С Т - З А Я В А <br>про встановлення  режиму роботи об’єкта торгівлі, закладу ресторанного<br> 
+        	господарства та сфери послуг </b>
+        <br /><br /><br />
        
-       <div class="ta-l">Прошу узгодити режим роботи</div><br /> 
-       <div class="under_field_line ta-c">[sNameObject_RV]<span>(у родовому відмінку повне найменування об'єкта торгівлі, ресторанного господарства  або сфери послуг)</span></div><br/>
-       <div class="ta-l">який знаходиться за адресою:</div> 
-	   <div class="under_field_line ta-c">[sAdressObject]<span>(місцезнаходження об'єкта торгівлі, ресторанного господарства або сфери послуг)</span></div>
-		<div class="under_field_line ta-c">[sFioTrusted_Person]<span>(ім'я, по батькові та прізвище фізичної особи – підприємця або юридичної особи)</span></div>
-		<div class="under_field_line ta-c">[sAdressContragent]<span>(місцезнаходження юридичної особи або місце проживання фізичної особи – підприємця)</span></div>
-		<div class="under_field_line ta-c">[phone]<span>(телефон, телефакс)</span></div>
+       <div class="ta-l">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Відповідно до підпункту 9 пункту «а» та підпункту 4 пункту «б»,  статті 30 Закону України «Про місцеве самоврядування в Україні» прошу встановити <b><i>режим роботи об’єкта :</i></b></div><br /> 
+       <div class="under_field_line ta-c">[sNameObject_RV]<span>(об’єкт, на який видається документ)</span></div><br/>
+	   <div class="under_field_line ta-c">[sAdressObject]<span>(місцезнаходження (адреса) об’єкта, на який видається документ)</span></div>
+		<div class="under_field_line ta-c" id="fizlizo_NAME">[sName_ur]<span>(ім’я, по батькові та прізвище фізичної особи-підприємця)</span></div>
+		<div class="under_field_line ta-c" id="urlizo_NAME">[sPib_fiz]<span>(повне найменування юридичної особи)</span></div>
+		<div class="under_field_line ta-c" id="fizlizo_INN">[sfiz_FopInn]<span>(ідентифікаційний номер фізичної особи-підприємця, платника податків та інших обов’язкових платежів)</span></div>
+		<div class="under_field_line ta-c" id="urlizo_INN">[edrpou]<span>(ідентифікаційний код згідно з ЄДРПОУ, платника податків та інших обов’язкових платежів)</span></div>
+		<div class="under_field_line ta-c" id="fizlizo_DIR">[sPib_fiz]<span>(ім’я, по батькові та прізвище керівника юридичної особи / фізичної особи-підприємця / уповноваженої особи)</span></div>
+		<div class="under_field_line ta-c" id="urlizo_DIR">[sPib_ur]<span>(ім’я, по батькові та прізвище керівника юридичної особи / фізичної особи-підприємця / уповноваженої особи)</span></div>
+		<div class="under_field_line ta-c" id="fizlizo_ADR">[sAdres_2]<span>(місце проживання фізичної особи – підприємця)</span></div>
+		<div class="under_field_line ta-c" id="urlizo_ADR">[sAdres_1]<span>(місцезнаходження юридичної особи)</span></div>
+		
+    <div class="ta-l"><font size="+1", face="Times New Roman" color="#000000"><b>Режим роботи</b></font></div> 
+	<table cellspacing="0" cols="5" border="1" >
+		<colgroup width="20%"></colgroup>
+		<colgroup width="20%"></colgroup>
+		<colgroup width="25%"></colgroup>
+		<colgroup width="20%"></colgroup>
+		<colgroup width="30%"></colgroup>
+		<tr valign="middle">
+			<td height="15" align="CENTER">
+				<font face="Times New Roman" color="#000000">День <br />  тижня</font>
+			</td>
+			<td height="15" align="CENTER">
+				<font face="Times New Roman" color="#000000">Час початку <br /> робочого дня</font>
+			</td>
+			<td height="15" align="CENTER">
+				<font face="Times New Roman" color="#000000">Час <br /> перерви</font>
+			</td>
+			<td align="CENTER">
+				<font face="Times New Roman" color="#000000">Час закінчення <br /> робочого дня</font>
+			</td>
+			<td align="CENTER">
+				<font face="Times New Roman" color="#000000">Вихідний,  <br /> санітарний день</font>
+			</td>
+		</tr>
+		<tr valign="middle">
+			<td height="15" align="CENTER"><font face="Times New Roman" color="#000000">Понеділок</font></td>
+			<td height="15" align="CENTER"><font id="P1B" face="Times New Roman" color="#000000">[eTime_Beg_Mon]</font></td>
+			<td height="15" align="CENTER"><font id="P1E" face="Times New Roman" color="#000000">[sTime_Break_Mon]</font></td>
+			<td align="CENTER"><font id="P1P" face="Times New Roman" color="#000000">[eTime_End_Mon]</font></td>
+			<td align="CENTER"><font id="P1" face="Times New Roman" color="#000000">Вихідний, <br /> санітарний день</font></td>
+		</tr>
+		<tr valign="middle">
+			<td height="15" align="CENTER"><font face="Times New Roman" color="#000000">Вівторок</font></td>
+			<td height="15" align="CENTER"><font id="P2B" face="Times New Roman" color="#000000">[eTime_Beg_Tue]</font></td>
+			<td height="15" align="CENTER"><font id="P2E" face="Times New Roman" color="#000000">[sTime_Break_Tue]</font></td>
+			<td align="CENTER"><font id="P2P" face="Times New Roman" color="#000000">[eTime_End_Tue]</font></td>
+			<td align="CENTER"><font id="P2" face="Times New Roman" color="#000000">Вихідний, <br /> санітарний день</font></td>
+		</tr>
+		<tr valign="middle">
+			<td height="15" align="CENTER"><font face="Times New Roman" color="#000000">Середа</font></td>
+			<td height="15" align="CENTER"><font id="P3B" face="Times New Roman" color="#000000">[eTime_Beg_Wed]</font></td>
+			<td height="15" align="CENTER"><font id="P3E" face="Times New Roman" color="#000000">[sTime_Break_Wed]</font></td>
+			<td align="CENTER"><font id="P3P" face="Times New Roman" color="#000000">[eTime_End_Wed]</font></td>
+			<td align="CENTER"><font id="P3" face="Times New Roman" color="#000000">Вихідний, <br /> санітарний день</font></td>
+		</tr>
+		<tr valign="middle">
+			<td height="15" align="CENTER"><font face="Times New Roman" color="#000000">Четвер</font></td>
+			<td height="15" align="CENTER"><font id="P4B" face="Times New Roman" color="#000000">[eTime_Beg_Thu]</font></td>
+			<td height="15" align="CENTER"><font id="P4E" face="Times New Roman" color="#000000">[sTime_Break_Thu]</font></td>
+			<td align="CENTER"><font id="P4P" face="Times New Roman" color="#000000">[eTime_End_Thu]</font></td>
+			<td align="CENTER"><font id="P4" face="Times New Roman" color="#000000">Вихідний, <br /> санітарний день</font></td>
+		</tr>
+		<tr valign="middle">
+			<td height="15" align="CENTER"><font face="Times New Roman" color="#000000">П'ятниця</font></td>
+			<td height="15" align="CENTER"><font id="P5B" face="Times New Roman" color="#000000">[eTime_Beg_Fri]</font></td>
+			<td height="15" align="CENTER"><font id="P5E" face="Times New Roman" color="#000000">[sTime_Break_Fri]</font></td>
+			<td align="CENTER"><font id="P5P" face="Times New Roman" color="#000000">[eTime_End_Fri]</font></td>
+			<td align="CENTER"><font id="P5" face="Times New Roman" color="#000000">Вихідний, <br /> санітарний день</font></td>
+		</tr>
+		<tr valign="middle">
+			<td height="15" align="CENTER"><font face="Times New Roman" color="#000000">Субота</font></td>
+			<td height="15" align="CENTER"><font id="P6B" face="Times New Roman" color="#000000">[eTime_Beg_Sat]</font></td>
+			<td height="15" align="CENTER"><font id="P6E" face="Times New Roman" color="#000000">[sTime_Break_Sat]</font></td>
+			<td align="CENTER"><font id="P6P" face="Times New Roman" color="#000000">[eTime_End_Sat]</font></td>
+			<td align="CENTER"><font id="P6" face="Times New Roman" color="#000000">Вихідний, <br /> санітарний день</font></td>
+		</tr>
+		<tr valign="middle">
+			<td height="15" align="CENTER"><font face="Times New Roman" color="#000000">Неділя</font></td>
+			<td height="15" align="CENTER"><font id="P7B" face="Times New Roman" color="#000000">[eTime_Beg_Sun]</font></td>
+			<td height="15" align="CENTER"><font id="P7E" face="Times New Roman" color="#000000">[sTime_Break_Sun]</font></td>
+			<td align="CENTER"><font id="P7P" face="Times New Roman" color="#000000">[eTime_End_Sun]</font></td>
+			<td align="CENTER"><font id="P7" face="Times New Roman" color="#000000">Вихідний, <br /> санітарний день</font></td>
+		</tr>
+	</table>	
 		<br />
-		<div class="ta-l">Початок та закінчення роботи: <span><b>[sTime_Full]</b></span></div><br />
-		<div class="ta-l">Перерва: <span><b>[sTime_Break]</b></span></div><br />
-		<div class="ta-l">Вихідні дні: <span><b>[sWeekend]</b></span></div><br />
-		<div class="ta-l" id="Add_SpecialConditions">Особливі умови роботи: <span><b>[sSpecialConditions]</b></span></div><br />
-		<p></p>
-		<div class="ta-l">Кінцевий результат бажаю отримати: <span><b>особисто.</b></span></div><br />
-	
+		<div class="ta-l"><b>Загальна площа об’єкта <u>&nbsp;&nbsp;[nSquareObject]&nbsp;&nbsp;</u> кв.м, торговельна площа об’єкта <u>&nbsp;&nbsp;[nTorgSquareObject]&nbsp;&nbsp;</u> кв.м.<br />Кількість посадкових місць (для закладів ресторанного господарства) <u>&nbsp;&nbsp;[nKolvoMest]&nbsp;&nbsp;</u></b>
+		</div>
+		<br />
+		<div class="ta-l">Телефон : <span><b>[phone]</b></span></div>
+		<div class="date_subm m-t-85">
+    	    <div class="inv" align="CENTER">[date_today]<span>(дата)</span></div>
+			<div class="clear"></div>
+	    </div>
+	    <br />
+		<div class="ta-l">Режим роботи діє до зміни суб’єкта господарювання, припинення господарської діяльності тощо.</div>
 	</div>
-
-	<div class="date_subm m-t-85">
-        <div class="inv">[date_today]<span>(дата)</span></div>
-        <div class="signature"><span>(підпис заявника)</span></div>
-		<div class="clear"></div>
-    </div>
-	<br />
+	    <br />
+		<div class="under_field_line ta-c">&nbsp;&nbsp;&nbsp;<span>(підпис керівника юридичної особи/ фізичної особи-підприємця, уповноваженої особи, М.П.)</span></div>
+	    <br />
+		<div class="ta-l"><font size="-2", face="Times New Roman" color="#000000">Шляхом підписання цього документа відповідно до Закону України «Про захист персональних даних», надаю згоду управлінню економічного розвитку міста Чернігівської міської ради на обробку моїх особистих даних, даних суб’єкта господарювання у списках та/або за допомогою інформаційно-телекомунікаційної системи бази даних з метою погодження режиму роботи об’єкта торгівлі, ресторанного господарства та сфери послуг в м. Чернігові, підготовки відповідно до вимог чинного законодавства адміністративної та іншої інформації, а також внутрішніх документів управління економічного розвитку міста Чернігівської міської ради. Зобов`язуюсь при зміні персональних даних надати у найкоротший термін уточнену інформацію. Посвідчую про включення інформації про мене, суб’єкта господарювання.</font></div>
+		<div class="date_subm m-t-85">
+    	    <div class="inv" align="CENTER">[date_today]<span>(дата)</span></div>
+	        <div class="signature"><span>(особистий підпис)</span></div>
+			<div class="clear"></div>
+    	</div>
+		<br />
 	<b><div class="ta-l">Заповнюється посадовою особою центру муніципальних послуг міської ради:<span></span></div><br /></b>
 <div class="date_subm m-t-85">
-        <div class="inv">[sDate_Registrastion]<span>(дата реєстрації звернення)</span></div>
-        <div class="signature">[sExtension_Number]<span>(реєстраційний номер)</span></div>
+        <div class="inv" align="CENTER">[sDate_Registrastion]<span>(дата реєстрації звернення)</span></div>
+        <div class="signature" align="CENTER">[sExtension_Number]<span>(реєстраційний номер)</span></div>
 		<div class="clear"></div>
     </div>
 
 <div class="date_subm m-t-85">
-        <div class="inv"><span>(підпис адміністратора)</span></div>
-        <div class="signature">[sFioAdmin]<span>(ініціали та прізвище адміністратора)</span></div>
+        <div class="inv"><span>(підпис посадової особи)</span></div>
+        <div class="signature" align="CENTER">[sFioAdmin]<span>(ініціали та прізвище посадової особи)</span></div>
 		<div class="clear"></div>
     </div>	
 	<br />		
-		</section>
+</section>
 </body>
 </html>
