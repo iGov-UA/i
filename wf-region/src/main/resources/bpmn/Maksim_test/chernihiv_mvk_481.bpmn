@@ -60,7 +60,7 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
-    <serviceTask id="servicetask3" name="Повідомлення громадянина про доставку його звернення до канцелярії" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask3" name="Повідомлення громадянина про доставку його звернення до міської ради" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -90,7 +90,7 @@
     </boundaryEvent>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow4" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
-    <userTask id="usertask1" name="Обробка звернення у канцелярії міської ради" activiti:candidateGroups="dnepr_mvk_chancel">
+    <userTask id="usertask1" name="Обробка звернення в міської ради" activiti:candidateGroups="dnepr_mvk_chancel">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
@@ -143,46 +143,6 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask4" name="Обробка звернення переадресація в профільний відділ" activiti:candidateGroups="dnepr_mvk_boss">
-      <extensionElements>
-        <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="adress" name="Адреса проживання заявника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="Дата подачи заяви" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="topic" name="Тема звернення" type="enum" writable="false">
-          <activiti:value id="top1" name="Ремонт ліфта"></activiti:value>
-          <activiti:value id="top2" name="Підтоплення будинку"></activiti:value>
-          <activiti:value id="top3" name="Виключення квартири з житлового фонду"></activiti:value>
-          <activiti:value id="top4" name="Ремонт балкону, ремонт міжпанельних швів"></activiti:value>
-          <activiti:value id="top5" name="Обстеження житлових умов"></activiti:value>
-          <activiti:value id="top6" name="Капітальний ремонт квартири, будинку"></activiti:value>
-          <activiti:value id="top7" name="Облаштування пандусу"></activiti:value>
-          <activiti:value id="top8" name="Поновлення роботи вентеляційної системи"></activiti:value>
-          <activiti:value id="top9" name="Ремонт каналізації, ремонт санітарно-технічних систем у підвалі"></activiti:value>
-          <activiti:value id="top10" name="Ремонт під'їзду, підвального приміщення"></activiti:value>
-          <activiti:value id="top11" name="Ремонт покрівлі будівлі"></activiti:value>
-          <activiti:value id="top12" name="Ремонт фасаду будинку, ремонт труб зовнішнього зливостоку,ремонт відмостки"></activiti:value>
-          <activiti:value id="top13" name="Утримання сміттепроводу у будинку"></activiti:value>
-          <activiti:value id="top14" name="Освітлення приміщень будинку"></activiti:value>
-          <activiti:value id="top15" name="Установлення (підключення) домофону"></activiti:value>
-          <activiti:value id="top16" name="Прибирання прибудинкової території"></activiti:value>
-          <activiti:value id="top17" name="Фінансування робіт ремонту будинків"></activiti:value>
-          <activiti:value id="top18" name="Інші питання утримання будинків"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="reason" name="Суть звернення" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="date_registration" name="Дата реєстрації звернення" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="date_control" name="Контрольна дата (у форматі ДД/ММ/РРРР)" type="string"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${file1}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
-      </extensionElements>
-    </userTask>
     <sequenceFlow id="flow5" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
@@ -212,10 +172,10 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow7" name="status=='attr2_bad'" sourceRef="exclusivegateway1" targetRef="servicetask4">
+    <sequenceFlow id="flow7" sourceRef="exclusivegateway1" targetRef="servicetask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status=='attr2_bad'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow8" name="status=='status=='attr1_doc_ok'" sourceRef="exclusivegateway1" targetRef="usertask4">
+    <sequenceFlow id="flow8" sourceRef="exclusivegateway1" targetRef="servicetask6">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status=='attr1_doc_ok'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow9" sourceRef="servicetask4" targetRef="endevent1"></sequenceFlow>
@@ -252,7 +212,6 @@
     </serviceTask>
     <endEvent id="endevent3" name="End"></endEvent>
     <sequenceFlow id="flow14" sourceRef="servicetask6" targetRef="endevent3"></sequenceFlow>
-    <sequenceFlow id="flow15" sourceRef="usertask4" targetRef="servicetask6"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_chernihiv_mvk_481">
     <bpmndi:BPMNPlane bpmnElement="chernihiv_mvk_481" id="BPMNPlane_chernihiv_mvk_481">
@@ -277,9 +236,6 @@
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="92.0" width="105.0" x="650.0" y="112.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask4" id="BPMNShape_usertask4">
-        <omgdc:Bounds height="87.0" width="105.0" x="790.0" y="241.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
         <omgdc:Bounds height="40.0" width="40.0" x="682.0" y="264.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -287,10 +243,10 @@
         <omgdc:Bounds height="91.0" width="105.0" x="490.0" y="239.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
-        <omgdc:Bounds height="89.0" width="105.0" x="790.0" y="390.0"></omgdc:Bounds>
+        <omgdc:Bounds height="89.0" width="105.0" x="650.0" y="360.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
-        <omgdc:Bounds height="35.0" width="35.0" x="715.0" y="417.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="575.0" y="387.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="145.0" y="157.0"></omgdi:waypoint>
@@ -319,28 +275,18 @@
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
         <omgdi:waypoint x="682.0" y="284.0"></omgdi:waypoint>
         <omgdi:waypoint x="595.0" y="284.0"></omgdi:waypoint>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="92.0" x="584.0" y="264.0"></omgdc:Bounds>
-        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
-        <omgdi:waypoint x="722.0" y="284.0"></omgdi:waypoint>
-        <omgdi:waypoint x="790.0" y="284.0"></omgdi:waypoint>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="711.0" y="239.0"></omgdc:Bounds>
-        </bpmndi:BPMNLabel>
+        <omgdi:waypoint x="702.0" y="304.0"></omgdi:waypoint>
+        <omgdi:waypoint x="702.0" y="360.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
         <omgdi:waypoint x="490.0" y="284.0"></omgdi:waypoint>
         <omgdi:waypoint x="272.0" y="284.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
-        <omgdi:waypoint x="790.0" y="434.0"></omgdi:waypoint>
-        <omgdi:waypoint x="750.0" y="434.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
-        <omgdi:waypoint x="842.0" y="328.0"></omgdi:waypoint>
-        <omgdi:waypoint x="842.0" y="390.0"></omgdi:waypoint>
+        <omgdi:waypoint x="650.0" y="404.0"></omgdi:waypoint>
+        <omgdi:waypoint x="610.0" y="404.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
