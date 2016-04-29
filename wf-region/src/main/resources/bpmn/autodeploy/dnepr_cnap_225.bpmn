@@ -462,7 +462,7 @@ ${sNameOrgan}<br />
     <sequenceFlow id="flow30" sourceRef="exclusivegateway2" targetRef="servicetask11">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${proverkaCNAP=='ok'&& bFlag=='hard'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask11" name="Service Task">
+    <serviceTask id="servicetask11" name="Повідомлення громадянина" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
