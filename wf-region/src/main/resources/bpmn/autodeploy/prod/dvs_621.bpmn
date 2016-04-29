@@ -70,7 +70,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${sMailClerk}</activiti:expression>
+          <activiti:expression>tanyazol@gmail.com</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення. Довідка про неотримання аліментів або розмір аліментів.]]></activiti:string>
@@ -107,6 +107,7 @@
     </serviceTask>
     <userTask id="usertask1" name="Обробка даних" activiti:candidateGroups="dvs_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
+        <activiti:formProperty id="sNameOrgan" name="Назва органа" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Заявник:" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органа" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string" writable="false"></activiti:formProperty>
