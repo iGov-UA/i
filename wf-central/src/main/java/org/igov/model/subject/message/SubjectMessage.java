@@ -8,20 +8,19 @@ import javax.persistence.ManyToOne;
 import org.hibernate.annotations.Type;
 import org.igov.model.subject.Subject;
 import org.joda.time.DateTime;
-import org.igov.model.core.Entity;
+import org.igov.model.core.AbstractEntity;
 import org.igov.util.JSON.JsonDateTimeDeserializer;
 import org.igov.util.JSON.JsonDateTimeSerializer;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import javax.persistence.Transient;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.igov.model.subject.SubjectContact;
 
 @javax.persistence.Entity
-public class SubjectMessage extends Entity {
+public class SubjectMessage extends AbstractEntity {
 
     private static final long serialVersionUID = -5269544412868933212L;
 

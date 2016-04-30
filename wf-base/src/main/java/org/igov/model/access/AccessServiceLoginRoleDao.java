@@ -9,7 +9,7 @@ import java.util.List;
  * Date: 28.02.2016
  * Time: 18:49
  */
-public interface AccessServiceLoginRoleDao extends EntityDao<AccessServiceLoginRole> {
+public interface AccessServiceLoginRoleDao extends EntityDao<Long, AccessServiceLoginRole> {
 
     List<AccessServiceLoginRole> getUserRoles(String sLogin);
 

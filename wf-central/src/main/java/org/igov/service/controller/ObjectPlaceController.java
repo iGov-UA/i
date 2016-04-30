@@ -44,7 +44,7 @@ public class ObjectPlaceController {
     private PlaceTypeDao placeTypeDao;
 
     @Autowired
-    private BaseEntityDao baseEntityDao;
+    private BaseEntityDao<Long> baseEntityDao;
     @Autowired
     private EntityService entityService;
 

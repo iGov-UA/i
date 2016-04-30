@@ -4,7 +4,7 @@ import org.springframework.stereotype.Repository;
 import org.igov.model.core.GenericEntityDao;
 
 @Repository
-public class MerchantDaoImpl extends GenericEntityDao<Merchant> implements MerchantDao {
+public class MerchantDaoImpl extends GenericEntityDao<Long, Merchant> implements MerchantDao {
 
     public static final String S_ID = "sID";
 

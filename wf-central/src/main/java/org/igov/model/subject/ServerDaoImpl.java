@@ -9,7 +9,7 @@ import org.igov.model.core.GenericEntityDao;
  * Time: 21:33
  */
 @Repository
-public class ServerDaoImpl extends GenericEntityDao<Server> implements ServerDao {
+public class ServerDaoImpl extends GenericEntityDao<Long, Server> implements ServerDao {
 
     protected ServerDaoImpl() {
         super(Server.class);

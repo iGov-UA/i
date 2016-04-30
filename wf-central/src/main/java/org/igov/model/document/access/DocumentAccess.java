@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import net.sf.brunneng.jom.annotations.Identifier;
 import org.hibernate.annotations.Type;
+import org.igov.model.core.AbstractEntity;
 import org.joda.time.DateTime;
 import org.igov.util.JSON.JsonDateTimeDeserializer;
 import org.igov.util.JSON.JsonDateTimeSerializer;
@@ -14,7 +15,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "DocumentAccess")
-public class DocumentAccess extends org.igov.model.core.Entity {
+public class DocumentAccess extends AbstractEntity {
 
     @Column
     private Long nID_Document;

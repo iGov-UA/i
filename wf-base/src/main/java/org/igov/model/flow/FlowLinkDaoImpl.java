@@ -13,7 +13,7 @@ import org.igov.model.core.GenericEntityDao;
  */
 
 @Repository
-public class FlowLinkDaoImpl extends GenericEntityDao<FlowLink> implements FlowLinkDao {
+public class FlowLinkDaoImpl extends GenericEntityDao<Long, FlowLink> implements FlowLinkDao {
 
 
     public FlowLinkDaoImpl() {

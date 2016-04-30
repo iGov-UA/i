@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import org.igov.model.core.GenericEntityDao;
 
 @Repository
-public class SubjectDaoImpl extends GenericEntityDao<Subject> implements SubjectDao {
+public class SubjectDaoImpl extends GenericEntityDao<Long, Subject> implements SubjectDao {
 
     private static final Logger LOG = LoggerFactory.getLogger(SubjectDaoImpl.class);
 

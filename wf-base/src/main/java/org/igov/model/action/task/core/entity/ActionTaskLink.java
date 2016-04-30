@@ -1,7 +1,7 @@
 package org.igov.model.action.task.core.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.igov.model.core.Entity;
+import org.igov.model.core.AbstractEntity;
 
 import javax.persistence.Column;
 
@@ -10,7 +10,7 @@ import javax.persistence.Column;
  * @since 2016-02-07.
  */
 @javax.persistence.Entity
-public class ActionTaskLink extends Entity {
+public class ActionTaskLink extends AbstractEntity {
 
     @JsonProperty(value = "nID_Process")
     @Column(name = "nID_Process", nullable = false)

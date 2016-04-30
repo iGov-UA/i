@@ -330,12 +330,12 @@
             <column name="sSubjectInfo" type="STRING"/>
         </loadUpdateData>
 
-        <loadUpdateData tableName="SubjectOrganJoinAttribute" primaryKey="nID" file="data/SubjectOrganJoinAttribute.csv"  encoding="UTF-8" separator=";">
-            <column name="nID" type="NUMERIC"/>
+        <delete tableName="SubjectOrganJoinAttribute"/>
+        <loadData tableName="SubjectOrganJoinAttribute" file="data/SubjectOrganJoinAttribute.csv"  encoding="UTF-8" separator=";">
             <column name="nID_SubjectOrganJoin" type="NUMERIC"/>
             <column name="sName" type="STRING"/>
             <column name="sValue" type="STRING"/>
-        </loadUpdateData>
+        </loadData>
 
         <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/Currency.csv" tableName="Currency" separator=";">
             <column name="nID"          type="NUMERIC"/>

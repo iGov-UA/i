@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class CountryDaoImpl extends GenericEntityDao<Country>
+public class CountryDaoImpl extends GenericEntityDao<Long, Country>
         implements CountryDao {
 
     private static final Logger LOG = LoggerFactory.getLogger(CountryDaoImpl.class);

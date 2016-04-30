@@ -2,12 +2,12 @@ package org.igov.model.action.execute.item;
 
 import javax.persistence.Column;
 
-import org.igov.model.core.Entity;
+import org.igov.model.core.AbstractEntity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @javax.persistence.Entity
-public class ActionExecuteStatus extends Entity {
+public class ActionExecuteStatus extends AbstractEntity {
 
 	@JsonProperty(value = "sID")
 	@Column(name = "sID", nullable = false)

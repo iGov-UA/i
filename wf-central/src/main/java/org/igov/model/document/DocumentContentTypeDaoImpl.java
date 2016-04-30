@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class DocumentContentTypeDaoImpl extends GenericEntityDao<DocumentContentType>
+public class DocumentContentTypeDaoImpl extends GenericEntityDao<Long, DocumentContentType>
         implements DocumentContentTypeDao {
 
     protected DocumentContentTypeDaoImpl() {

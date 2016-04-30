@@ -1,6 +1,6 @@
 package org.igov.model.subject;
 
-import org.igov.model.core.Entity;
+import org.igov.model.core.AbstractEntity;
 
 import javax.persistence.Column;
 
@@ -10,7 +10,7 @@ import javax.persistence.Column;
  * Time: 21:26
  */
 @javax.persistence.Entity
-public class Server extends Entity {
+public class Server extends AbstractEntity {
 
     @Column(unique = true, nullable = false)
     private String sID;

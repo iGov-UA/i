@@ -5,7 +5,7 @@ import net.sf.brunneng.jom.configuration.bean.MatchedBeanPropertyMetadata;
 import net.sf.brunneng.jom.diff.ChangeType;
 import net.sf.brunneng.jom.diff.apply.IBeanFinder;
 import org.igov.model.core.BaseEntityDao;
-import org.igov.model.core.Entity;
+import org.igov.model.core.AbstractEntity;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ import java.util.List;
 public class EntityService implements InitializingBean {
 
     @Autowired
-    private BaseEntityDao baseEntityDao;
+    private BaseEntityDao<Long> baseEntityDao;
 
     private MergingContext updateOnlyMergingContext;
 
@@ -34,7 +34,7 @@ public class EntityService implements InitializingBean {
     private void initUpdateOnlyMergingContext() {
         updateOnlyMergingContext = new MergingContext();
         MatchedBeanPropertyMetadata allProperties = updateOnlyMergingContext.forBeansOfClass(
-                Entity.class).forMatchedProperties().all();
+                AbstractEntity.class).forMatchedProperties().all();
 
         allProperties.skipPropertyChanges(ChangeType.DELETE);
         allProperties.skipContainerEntryChanges(ChangeType.DELETE);
@@ -42,7 +42,7 @@ public class EntityService implements InitializingBean {
         updateOnlyMergingContext.addBeanFinder(new IBeanFinder() {
             @Override
             public Class getFoundBeanSuperclass() {
-                return Entity.class;
+                return AbstractEntity.class;
             }
 
             @Override
@@ -52,14 +52,14 @@ public class EntityService implements InitializingBean {
         });
     }
 
-    public <T extends Entity> T update(T sourceEntity) {
+    public <T extends AbstractEntity> T update(T sourceEntity) {
         T originalEntity = (T) baseEntityDao.findById(sourceEntity.getClass(), sourceEntity.getId());
 
         updateOnlyMergingContext.map(sourceEntity, originalEntity);
         return baseEntityDao.saveOrUpdate(originalEntity);
     }
 
-    public <T extends Entity> List<T> update(List<T> entities) {
+    public <T extends AbstractEntity> List<T> update(List<T> entities) {
         List<T> res = new ArrayList<>();
         for (T entity : entities) {
             res.add(update(entity));

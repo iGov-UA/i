@@ -4,7 +4,7 @@ import org.igov.model.core.EntityDao;
 
 import java.util.List;
 
-public interface CountryDao extends EntityDao<Country> {
+public interface CountryDao extends EntityDao<Long, Country> {
 
     public List<Country> getAll(Long nID_ua, String sID_two, String sID_three,
             String sNameShort_ua, String sNameShort_en);

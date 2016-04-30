@@ -71,7 +71,7 @@ public class ActionEventService {
     
     @Autowired
     @Qualifier("regionDao")
-    private GenericEntityDao<Region> regionDao;
+    private GenericEntityDao<Long, Region> regionDao;
 
     //@Autowired
     //private HistoryEvent_ServiceDao historyEventServiceDao;

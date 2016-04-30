@@ -5,7 +5,7 @@ import java.util.List;
 import org.igov.model.core.EntityDao;
 import org.joda.time.DateTime;
 
-public interface ActionExecuteOldDAO extends EntityDao<ActionExecuteOld> {
+public interface ActionExecuteOldDAO extends EntityDao<Long, ActionExecuteOld> {
 	
 	ActionExecuteOld getActionExecute(Long id);
 	List<ActionExecuteOld> getAllActionExecutes();

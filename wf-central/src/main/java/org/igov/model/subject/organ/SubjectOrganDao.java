@@ -5,7 +5,7 @@ import org.igov.model.subject.Subject;
 
 import java.util.List;
 
-public interface SubjectOrganDao extends EntityDao<SubjectOrgan> {
+public interface SubjectOrganDao extends EntityDao<Long, SubjectOrgan> {
 
     public SubjectOrgan getSubjectOrgan(String sOKPO);
 

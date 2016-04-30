@@ -9,7 +9,7 @@ import org.igov.service.exception.EntityNotFoundException;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class SubjectAccountDaoImpl extends GenericEntityDao<SubjectAccount> implements SubjectAccountDao {
+public class SubjectAccountDaoImpl extends GenericEntityDao<Long, SubjectAccount> implements SubjectAccountDao {
 
     public SubjectAccountDaoImpl() {
 	super(SubjectAccount.class);

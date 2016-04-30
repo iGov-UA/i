@@ -20,7 +20,7 @@ import static org.igov.model.object.place.PlaceHibernateResultTransformer.toTree
  * @since 20.07.2015
  */
 @Repository
-public class PlaceDaoImpl extends GenericEntityDao<Place> implements PlaceDao {
+public class PlaceDaoImpl extends GenericEntityDao<Long, Place> implements PlaceDao {
     private static final Logger LOG = LoggerFactory.getLogger(PlaceDaoImpl.class);
 
     @Autowired

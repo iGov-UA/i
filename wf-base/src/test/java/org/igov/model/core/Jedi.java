@@ -8,7 +8,7 @@ import javax.persistence.ManyToOne;
  * Test entity used in {@link GenericEntityDaoTest}
  */
 @javax.persistence.Entity
-public class Jedi extends Entity {
+public class Jedi extends AbstractEntity {
     private String name;
 
     @ManyToOne

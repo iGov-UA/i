@@ -1,19 +1,16 @@
 package org.igov.model.subject.organ;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.igov.model.core.Entity;
+import org.igov.model.core.AbstractEntity;
 
 import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
 /**
  * @author NickVeremeichyk
  * @since 2015-11-24.
  */
 @javax.persistence.Entity
-public class SubjectOrganJoinTax extends Entity {
+public class SubjectOrganJoinTax extends AbstractEntity {
 
     /**
      * ИД-шник корневой записи сущности SubjectOrganJoin, для каждой области - свой. (обязательное поле)

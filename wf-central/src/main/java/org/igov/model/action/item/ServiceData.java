@@ -7,7 +7,7 @@ import org.igov.model.subject.organ.SubjectOrgan;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
-import org.igov.model.core.Entity;
+import org.igov.model.core.AbstractEntity;
 
 import javax.persistence.*;
 
@@ -15,7 +15,7 @@ import javax.persistence.*;
  * User: goodg_000 Date: 04.05.2015 Time: 23:52
  */
 @javax.persistence.Entity
-public class ServiceData extends Entity {
+public class ServiceData extends AbstractEntity {
 
     @JsonProperty(value = "nID_Service")
     @ManyToOne(fetch = FetchType.EAGER)

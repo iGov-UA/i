@@ -5,13 +5,13 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import org.igov.model.core.Entity;
+import org.igov.model.core.AbstractEntity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @javax.persistence.Entity
-public class SubjectAccount extends Entity {
+public class SubjectAccount extends AbstractEntity {
 
     @Column
     private String sLogin;

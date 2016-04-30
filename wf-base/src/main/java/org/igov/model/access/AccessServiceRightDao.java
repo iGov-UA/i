@@ -10,7 +10,7 @@ import java.util.List;
  * Date: 28.02.2016
  * Time: 18:49
  */
-public interface AccessServiceRightDao extends EntityDao<AccessServiceRight> {
+public interface AccessServiceRightDao extends EntityDao<Long, AccessServiceRight> {
 
     List<AccessServiceRight> getAccessServiceRights(Long nID, String sService, String saMethod, String sHandlerBean);
 }

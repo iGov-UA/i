@@ -22,7 +22,7 @@ import java.util.Map;
 import org.igov.util.ToolLuna;
 
 @Repository
-public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<HistoryEvent_Service>
+public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryEvent_Service>
         implements HistoryEvent_ServiceDao {
 
     public static final String DASH = "-";

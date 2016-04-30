@@ -2,6 +2,7 @@ package org.igov.model.core;
 
 import com.google.common.base.Optional;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -9,7 +10,7 @@ import java.util.List;
  *
  * @param <T> entities
  */
-public interface EntityDao<T extends Entity> {
+public interface EntityDao<P extends Serializable, T extends Entity<P>> {
 
     /**
      * Find entity by id
@@ -17,16 +18,16 @@ public interface EntityDao<T extends Entity> {
      * @param id
      * @return absent if none found
      */
-    Optional<T> findById(Long id);
+    Optional<T> findById(P id);
 
     /**
      * Find by id or throw exception if none found
      *
      * @param id
      * @return entity
-     * @throws EntityNotFoundException if not found
+     * @throws org.igov.service.exception.EntityNotFoundException if not found
      */
-    T findByIdExpected(Long id);
+    T findByIdExpected(P id);
 
     /**
      * Returns first found entities.
@@ -44,7 +45,7 @@ public interface EntityDao<T extends Entity> {
      * @param attribute
      * @param value
      * @return Optional
-     * @throws EntityNotFoundException
+     * @throws org.igov.service.exception.EntityNotFoundException
      * @see EntityDao#findAllBy(String, Object)
      */
     T findByExpected(String attribute, Object value);
@@ -72,7 +73,7 @@ public interface EntityDao<T extends Entity> {
      * @param ids
      * @return
      */
-    List<T> findAll(List<Long> ids);
+    List<T> findAll(List<P> ids);
 
     /**
      * @param entity
@@ -92,7 +93,7 @@ public interface EntityDao<T extends Entity> {
      * @param id
      * @see EntityDao#delete(Entity)
      */
-    void delete(Long id);
+    void delete(P id);
 
     /**
      * @param field
@@ -105,7 +106,7 @@ public interface EntityDao<T extends Entity> {
 
     /**
      * @param entity
-     * @throws EntityNotFoundException if entity does not exist
+     * @throws org.igov.service.exception.EntityNotFoundException if entity does not exist
      */
     void delete(T entity);
 
@@ -128,7 +129,7 @@ public interface EntityDao<T extends Entity> {
      * @param id
      * @return true - if exists
      */
-    boolean exists(Long id);
+    boolean exists(P id);
 
     /**
      * Returns class of entity

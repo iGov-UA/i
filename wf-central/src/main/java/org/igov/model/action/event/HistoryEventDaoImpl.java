@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @Repository
-public class HistoryEventDaoImpl extends GenericEntityDao<HistoryEvent> implements HistoryEventDao {
+public class HistoryEventDaoImpl extends GenericEntityDao<Long, HistoryEvent> implements HistoryEventDao {
 
     protected HistoryEventDaoImpl() {
         super(HistoryEvent.class);

@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
-public class ActionExecuteOldDAOImpl extends GenericEntityDao<ActionExecuteOld>	implements ActionExecuteOldDAO {
+public class ActionExecuteOldDAOImpl extends GenericEntityDao<Long, ActionExecuteOld> implements ActionExecuteOldDAO {
 
 	@Autowired
 	ActionExecuteDAO actionExecuteDAO;

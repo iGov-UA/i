@@ -3,7 +3,7 @@ package org.igov.model.subject;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import org.igov.model.core.Entity;
+import org.igov.model.core.AbstractEntity;
 import org.igov.util.JSON.JsonDateTimeDeserializer;
 import org.igov.util.JSON.JsonDateTimeSerializer;
 import org.joda.time.DateTime;
@@ -13,7 +13,7 @@ import org.joda.time.DateTime;
  * Date: 31.03.2016
  * Time: 21:40
  */
-public class NewSubjectContact extends Entity {
+public class NewSubjectContact extends AbstractEntity {
     @JsonProperty(value = "oSubjectContactType")
     private SubjectContactType oSubjectContactType;
 

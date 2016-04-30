@@ -13,7 +13,8 @@ import java.util.List;
  * @since 2015-11-24.
  */
 @Repository
-public class SubjectOrganJoinTaxDaoImpl extends GenericEntityDao<SubjectOrganJoinTax> implements SubjectOrganJoinTaxDao {
+public class SubjectOrganJoinTaxDaoImpl extends GenericEntityDao<Long, SubjectOrganJoinTax>
+        implements SubjectOrganJoinTaxDao {
     private static final Logger LOG = LoggerFactory.getLogger(SubjectOrganJoinTaxDaoImpl.class);
 
     protected SubjectOrganJoinTaxDaoImpl() {

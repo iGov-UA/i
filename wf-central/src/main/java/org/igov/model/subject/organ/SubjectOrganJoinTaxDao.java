@@ -8,7 +8,7 @@ import java.util.List;
  * @author NickVeremeichyk
  * @since 2015-11-24.
  */
-public interface SubjectOrganJoinTaxDao extends EntityDao<SubjectOrganJoinTax> {
+public interface SubjectOrganJoinTaxDao extends EntityDao<Long, SubjectOrganJoinTax> {
     List<SubjectOrganJoinTax> getAll(String sIdUA, String sNameUA);
 
     SubjectOrganJoinTax setSubjectOrganJoinTax(Long nId, Integer nIdSubjectOrganJoin, String sIdUA, String sNameUA);

@@ -15,11 +15,11 @@ import org.igov.model.subject.Subject;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @Repository
-public class SubjectOrganDaoIml extends GenericEntityDao<SubjectOrgan> implements SubjectOrganDao {
+public class SubjectOrganDaoIml extends GenericEntityDao<Long, SubjectOrgan> implements SubjectOrganDao {
 
     @Autowired
     @Qualifier("subjectOrganJoinDao")
-    private GenericEntityDao<SubjectOrganJoin> subjectOrganJoinDao;
+    private GenericEntityDao<Long, SubjectOrganJoin> subjectOrganJoinDao;
 
     protected SubjectOrganDaoIml() {
         super(SubjectOrgan.class);

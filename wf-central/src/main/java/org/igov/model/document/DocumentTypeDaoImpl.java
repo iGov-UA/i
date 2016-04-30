@@ -14,7 +14,7 @@ import java.util.List;
  * @author olya
  */
 @Repository
-public class DocumentTypeDaoImpl extends GenericEntityDao<DocumentType> implements DocumentTypeDao {
+public class DocumentTypeDaoImpl extends GenericEntityDao<Long, DocumentType> implements DocumentTypeDao {
 
     protected DocumentTypeDaoImpl() {
         super(DocumentType.class);

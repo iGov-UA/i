@@ -28,7 +28,7 @@ import java.util.Properties;
 import org.igov.util.Tool;
 
 @Repository
-public class DocumentAccessDaoImpl extends GenericEntityDao<DocumentAccess> implements DocumentAccessDao {
+public class DocumentAccessDaoImpl extends GenericEntityDao<Long, DocumentAccess> implements DocumentAccessDao {
     private final static Logger LOG = LoggerFactory.getLogger(DocumentAccessDaoImpl.class);
     private final String sURL = "https://igov.org.ua/index#";
     private final String urlConn = "https://sms-inner.siteheart.com/api/otp_create_api.cgi";
