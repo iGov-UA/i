@@ -82,12 +82,9 @@ if [[ $sProject ]]; then
 	export TEMP=/tmp/$sProject
 	export TMP=/tmp/$sProject
 fi
+
 if [ "$bSkipDoc" == "true" ]; then
 	sBuildDoc="site"
-fi
-
-if [ "$bDockerOnly" == "true" ]; then
-	build_docker
 fi
 
 #Определяем сервер для установки
@@ -155,6 +152,10 @@ build_docker ()
 	python deploy_container.py --project $sProject --version $sVersion
 	exit 0
 }
+
+if [ "$bDockerOnly" == "true" ]; then
+	build_docker
+fi
 
 build_central-js ()
 {
