@@ -50,6 +50,10 @@ do
 			bDocker="$2"
 			shift
 			;;
+		--dockerOnly)
+			bDockerOnly="$2"
+			shift
+			;;
 		--gitCommit)
 			sGitCommit="$2"
 			shift
@@ -80,6 +84,10 @@ if [[ $sProject ]]; then
 fi
 if [ "$bSkipDoc" == "true" ]; then
 	sBuildDoc="site"
+fi
+
+if [ "$bDockerOnly" == "true" ]; then
+	build_docker
 fi
 
 #Определяем сервер для установки
@@ -114,10 +122,10 @@ build_docker ()
 	    exit 1
 	fi
 
-	if [ -z $sGitCommit ]; then
-	    echo "We want a git commmit variable!"
-	    exit 1
-	fi
+#	if [ -z $sGitCommit ]; then
+#	    echo "We want a git commmit variable!"
+#	    exit 1
+#	fi
 
 	git clone git@github.com:e-government-ua/iSystem.git
 	rsync -rtv iSystem/config/$sVersion/$sProject/ ./
@@ -139,31 +147,12 @@ build_docker ()
 
 	mkdir /tmp/$sProject
 	docker build -t $DOCKER_IMAGE .
-	docker tag -f  $DOCKER_IMAGE:latest $DOCKER_IMAGE:$DOCKER_TAG
+#	docker tag -f  $DOCKER_IMAGE:latest $DOCKER_IMAGE:$DOCKER_TAG
+	docker tag -f  $DOCKER_IMAGE:latest
 	docker push $DOCKER_IMAGE:latest
-	docker push $DOCKER_IMAGE:$DOCKER_TAG
+#	docker push $DOCKER_IMAGE:$DOCKER_TAG
 	echo "Build & push container to Docker registry finished."
-
 	python deploy_container.py --project $sProject --version $sVersion
-
-#	kubectl rolling-update $KUBE_RC --image=$DOCKER_IMAGE:$DOCKER_TAG
-#	echo "Rolling-update replication controller finished."
-#	kubectl get rc $KUBE_RC
-#	kubectl get rc $KUBE_RC > /dev/null 2>&1;
-#	if [ $? -ne 0 ]; then
-#  		echo "Replication controller does not exist, creating."
-#  		kubectl create -f kube/$KUBE_RC-rc.yaml
-#	else
-#  		echo "Deleting existing replication controller and creating new one"
-#		kubectl delete -f kube/$KUBE_RC-rc.yaml
-#		sleep 5
-#		kubectl create -f kube/$KUBE_RC-rc.yaml
- # 		if [ $? -ne 0 ]; then
-#    			echo "Could not create replication controller"
-#      			exit 1
- # 		fi;
-#	fi
-
 	exit 0
 }
 
