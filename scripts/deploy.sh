@@ -146,9 +146,8 @@ build_docker ()
 		mkdir /tmp/$sProject
 	fi
 
-	docker build -t $DOCKER_IMAGE .
+	docker build -t $DOCKER_IMAGE:latest .
 #	docker tag -f  $DOCKER_IMAGE:latest $DOCKER_IMAGE:$DOCKER_TAG
-	docker tag -f  $DOCKER_IMAGE:latest
 	docker push $DOCKER_IMAGE:latest
 #	docker push $DOCKER_IMAGE:$DOCKER_TAG
 	echo "Build & push container to Docker registry finished."
