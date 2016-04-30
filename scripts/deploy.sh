@@ -119,10 +119,10 @@ build_docker ()
 	    exit 1
 	fi
 
-#	if [ -z $sGitCommit ]; then
-#	    echo "We want a git commmit variable!"
-#	    exit 1
-#	fi
+	sCurrDir=`echo "$PWD" | sed 's!.*/!!'`
+	if ! [[ $sCurrDir == $sProject ]]; then
+	    cd $sProject
+	fi
 
 	git clone git@github.com:e-government-ua/iSystem.git
 	rsync -rtv iSystem/config/$sVersion/$sProject/ ./
