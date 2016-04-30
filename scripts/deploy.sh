@@ -138,11 +138,14 @@ build_docker ()
 	echo "Start building Docker image..."
 
 	if ! [ -f Dockerfile ]; then
-		echo "We have a proble. Dockerfile not found."
+		echo "Error. Dockerfile not found."
 		exit 1
 	fi
 
-	mkdir /tmp/$sProject
+	if ! [ -d /tmp/$sProject ]; then
+		mkdir /tmp/$sProject
+	fi
+
 	docker build -t $DOCKER_IMAGE .
 #	docker tag -f  $DOCKER_IMAGE:latest $DOCKER_IMAGE:$DOCKER_TAG
 	docker tag -f  $DOCKER_IMAGE:latest
