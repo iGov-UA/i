@@ -50,6 +50,14 @@ do
 			bDocker="$2"
 			shift
 			;;
+		--dockerOnly)
+			bDockerOnly="$2"
+			shift
+			;;
+		--gitCommit)
+			sGitCommit="$2"
+			shift
+			;;
 		*)
 			echo "bad option"
 			exit 1
@@ -74,6 +82,7 @@ if [[ $sProject ]]; then
 	export TEMP=/tmp/$sProject
 	export TMP=/tmp/$sProject
 fi
+
 if [ "$bSkipDoc" == "true" ]; then
 	sBuildDoc="site"
 fi
@@ -105,45 +114,50 @@ echo "Host $sHost will be a target server for deploy...."
 
 build_docker ()
 {
-#	if ! [ -x "$(command -v docker)" ]; then
-#	  echo 'Docker is not installed.' >&2
-#	  return
-#	fi
+	if ! [ -x "$(command -v docker)" ]; then
+	    echo "Docker is not installed."
+	    exit 1
+	fi
+
+	sCurrDir=`echo "$PWD" | sed 's!.*/!!'`
+	if ! [[ $sCurrDir == $sProject ]]; then
+	    cd $sProject
+	fi
+
+	git clone git@github.com:e-government-ua/iSystem.git
+	rsync -rtv iSystem/config/$sVersion/$sProject/ ./
+	cp iSystem/scripts/deploy_container.py ./
+	chmod +x deploy_container.py
+	rm -rf iSystem
 
 	readonly DOCKER_REPO=puppet.igov.org.ua:5000
-	readonly DOCKER_IMAGE=$sProject"_"$sVersion
-	readonly DOCKER_TAG=$sVersion
+	readonly DOCKER_IMAGE=$DOCKER_REPO/$sProject"-"$sVersion
+	readonly DOCKER_TAG=$sGitCommit
+	readonly KUBE_RC=$sProject"-"$sVersion
 
 	echo "Start building Docker image..."
 
 	if ! [ -f Dockerfile ]; then
-		echo "Dockerfile  not found. Creating Dockerfile."
-		if [ $sProject == "wf-central" ] || [ $sProject == "wf-region" ]; then
-			cat <<- _EOF_ > Dockerfile
-			FROM tomcat:jre8
-			COPY target/*.war /usr/local/tomcat/webapps
-			EXPOSE 8080
-			CMD ["catalina.sh", "run"]
-			_EOF_
-		fi
-		if [ $sProject == "central-js" ] || [ $sProject == "dashboard-js" ]; then
-			cat <<- _EOF_ > Dockerfile
-			FROM node
-			RUN mkdir -p /usr/src/app
-			WORKDIR /usr/src/app
-			COPY . /usr/src/app
-			EXPOSE 9000
-			CMD [ "npm", "start" ]
-			_EOF_
-		fi
+		echo "Error. Dockerfile not found."
+		exit 1
 	fi
 
-	docker build -t $DOCKER_REPO/$DOCKER_IMAGE .
-	docker tag  $DOCKER_REPO/$DOCKER_IMAGE:latest  $DOCKER_REPO/$DOCKER_IMAGE:$DOCKER_TAG
-	docker push $DOCKER_REPO/$DOCKER_IMAGE:latest
-	docker push $DOCKER_REPO/$DOCKER_IMAGE:$DOCKER_TAG
-	echo "Build & push to Docker registry finished."
+	if ! [ -d /tmp/$sProject ]; then
+		mkdir /tmp/$sProject
+	fi
+
+	docker build -t $DOCKER_IMAGE:latest .
+#	docker tag -f  $DOCKER_IMAGE:latest $DOCKER_IMAGE:$DOCKER_TAG
+	docker push $DOCKER_IMAGE:latest
+#	docker push $DOCKER_IMAGE:$DOCKER_TAG
+	echo "Build & push container to Docker registry finished."
+	python deploy_container.py --project $sProject --version $sVersion
+	exit 0
 }
+
+if [ "$bDockerOnly" == "true" ]; then
+	build_docker
+fi
 
 build_central-js ()
 {
@@ -154,10 +168,6 @@ build_central-js ()
 		return
 	fi
 	if [ "$bSkipDeploy" == "true" ]; then
-		while ps axg | grep -v grep | grep -q dashboard-js; do
-			echo "dashboard-js compilation is still running. we will wait until it finish."
-			sleep 5
-		done
 		cd central-js
 		npm cache clean
 		npm install
@@ -170,14 +180,11 @@ build_central-js ()
 		rm -rf /tmp/$sProject
 		return
 	else
-		while ps axg | grep -v grep | grep -q dashboard-js; do
-			echo "dashboard-js compilation is still running. we will wait until it finish."
-			sleep 5
-		done
 		cd central-js
 		npm cache clean
 		npm install
 		bower install
+		npm install grunt-contrib-imagemin
 		grunt build
 		cd dist
 		npm install --production
@@ -197,10 +204,6 @@ build_dashboard-js ()
 		return
 	fi
 	if [ "$bSkipDeploy" == "true" ]; then
-		while ps axg | grep -v grep | grep -q central-js; do
-			echo "central-js compilation is still running. we will wait until it finish."
-			sleep 5
-		done
 		cd dashboard-js
 		npm install
 		npm list grunt
@@ -214,10 +217,6 @@ build_dashboard-js ()
 		rm -rf /tmp/$sProject
 		return
 	else
-		while ps axg | grep -v grep | grep -q central-js; do
-			echo "central-js compilation is still running. we will wait until it finish."
-			sleep 5
-		done
 		cd dashboard-js
 		npm install
 		npm list grunt
@@ -361,9 +360,42 @@ else
 		build_region
 	fi
 	if [ $sProject == "central-js" ]; then
+		touch /tmp/$sProject/build.lock
+		if [ -f /tmp/dashboard-js/build.lock ]; then
+			if ps ax | grep -v grep | grep -q dashboard-js; then
+				while [ -f /tmp/dashboard-js/build.lock ]; do
+					if ps ax | grep -v grep | grep -q dashboard-js; then
+						sleep 10
+						echo "dashboard-js compilation is still running. we will wait until it finish."
+					else
+						break
+					fi
+				done
+			else
+				echo "dashboard-js compilation script is not running but lock file exist. removing lock file and starting compilation"
+				rm -f /tmp/dashboard-js/build.lock
+			fi
+		fi
 		build_central-js
 	fi
 	if [ $sProject == "dashboard-js" ]; then
+		sleep 10
+		touch /tmp/$sProject/build.lock
+		if [ -f /tmp/central-js/build.lock ]; then
+			if ps ax | grep -v grep | grep -q central-js; then
+				while [ -f /tmp/central-js/build.lock ]; do
+					if ps ax | grep -v grep | grep -q central-js; then
+						sleep 10
+						echo "central-js compilation is still running. we will wait until it finish."
+					else
+						break
+					fi
+				done
+			else
+				echo "central-js compilation script is not running but lock file exist. removing lock file and starting compilation"
+				rm -f /tmp/central-js/build.lock
+			fi
+		fi
 		build_dashboard-js
 	fi
 fi
@@ -378,6 +410,9 @@ if [ "$bSkipDeploy" == "true" ]; then
 	echo "Deploy dsiabled"
 	exit 0
 fi
+
+echo "Compilation finished removing lock file"
+rm -f /tmp/$sProject/build.lock
 
 echo "Connecting to remote host $sHost"
 cd $WORKSPACE
