@@ -130,8 +130,8 @@ build_docker ()
 	chmod +x deploy_container.py
 	rm -rf iSystem
 
-	readonly DOCKER_REPO=puppet.igov.org.ua:5000
-	readonly DOCKER_IMAGE=$DOCKER_REPO/$sProject"-"$sVersion
+	readonly DOCKER_REPO=264876730186.dkr.ecr.eu-west-1.amazonaws.com
+	readonly DOCKER_IMAGE=$DOCKER_REPO/"test-"$sVersion"."$sProject
 	readonly DOCKER_TAG=$sGitCommit
 	readonly KUBE_RC=$sProject"-"$sVersion
 
@@ -146,10 +146,10 @@ build_docker ()
 		mkdir /tmp/$sProject
 	fi
 
-	docker build -t $DOCKER_IMAGE:latest .
-#	docker tag -f  $DOCKER_IMAGE:latest $DOCKER_IMAGE:$DOCKER_TAG
+	docker build -t $DOCKER_IMAGE .
+	docker tag -f  $DOCKER_IMAGE:latest $DOCKER_IMAGE:$DOCKER_TAG
 	docker push $DOCKER_IMAGE:latest
-#	docker push $DOCKER_IMAGE:$DOCKER_TAG
+	docker push $DOCKER_IMAGE:$DOCKER_TAG
 	echo "Build & push container to Docker registry finished."
 	python deploy_container.py --project $sProject --version $sVersion
 	exit 0
