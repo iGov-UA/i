@@ -15,7 +15,6 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
     });
     var splittingRules = FieldMotionService.getSplittingRules();
     var replacingRules = FieldMotionService.getReplacingRules();
-    var lastSymbolRules = FieldMotionService.getLastSymbolsReplacingRules();
     form.forEach(function(e) {
       var val = fieldGetter(e);
       if (val && _.has(splittingRules, e.id)) {
