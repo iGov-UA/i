@@ -93,17 +93,11 @@ angular.module('iGovMarkers')
       Editable_1: {aField_ID:['sPhone_User1', 'sMail_User1', 'bankIdlastName1'], bValue: true}
     },
     motion: {
-      ReplaceTextLastSymbols_1: {
+      ReplaceTextSymbols_1: {
         sID_Field: "Registrationservice",
-        nSymbols: 2,
-        sValueNew: "ого",
+        sFrom: "кий",
+        sTo: "кого",
         sID_Element_sValue: "sRegistrationservice"
       }
-      // ReplaceTextSymbols_1: {
-      //   sID_Field: "Registrationservice",
-      //   sFrom: "кий",
-      //   sTo: "кого",
-      //   sID_Element_sValue: "sRegistrationservice"
-      // }
     }
 });

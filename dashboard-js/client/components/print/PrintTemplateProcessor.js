@@ -25,18 +25,11 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
         a.shift();
         template.find('#' + rule.el_id2).html(a.join(rule.splitter));
       }
-      // if (val && _.has(replacingRules, e.id)) {
-      //   rule = replacingRules[e.id];
-      //   //a = val.slice(0, val.length - rule.nSymbols) + rule.sValueNew;
-      //   a = val.replace(rule.sFrom, rule.sTo);
-      //   template.find('#' + rule.sID_Element_sValue).html(a);
-      // }
-      if(val && _.has(lastSymbolRules, e.id)) {
-        rule = lastSymbolRules[e.id];
-        a = val.split('');
-        a.splice(a.length - rule.symbols, rule.symbols, rule.valueNew);
-        a.join('');
-        template.find('#' + rule.el_id).html(a);
+      if (val && _.has(replacingRules, e.id)) {
+        rule = replacingRules[e.id];
+        //a = val.slice(0, val.length - rule.nSymbols) + rule.sValueNew;
+        a = val.replace(rule.sFrom, rule.sTo);
+        template.find('#' + rule.sID_Element_sValue).html(a);
       }
     });
     return template.html();
