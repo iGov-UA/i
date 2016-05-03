@@ -283,6 +283,10 @@ module.exports.signFormCallback = function (req, res) {
   var oServiceDataNID = req.session.oServiceDataNID;
   var codeValue = req.query.code;
 
+  if(!codeValue){
+    codeValue = req.query['amp;code'];
+  }
+
   if (oServiceDataNID) {
     //TODO fill sURL from oServiceData to use it below
     sURL = '';
