@@ -130,13 +130,6 @@ build_docker ()
 	chmod +x deploy_container.py
 	rm -rf iSystem
 
-	readonly DOCKER_REPO=puppet.igov.org.ua:5000
-	readonly DOCKER_IMAGE=$DOCKER_REPO/$sProject"-"$sVersion
-	readonly DOCKER_TAG=$sGitCommit
-	readonly KUBE_RC=$sProject"-"$sVersion
-
-	echo "Start building Docker image..."
-
 	if ! [ -f Dockerfile ]; then
 		echo "Error. Dockerfile not found."
 		exit 1
@@ -146,12 +139,7 @@ build_docker ()
 		mkdir /tmp/$sProject
 	fi
 
-	docker build -t $DOCKER_IMAGE:latest .
-#	docker tag -f  $DOCKER_IMAGE:latest $DOCKER_IMAGE:$DOCKER_TAG
-	docker push $DOCKER_IMAGE:latest
-#	docker push $DOCKER_IMAGE:$DOCKER_TAG
-	echo "Build & push container to Docker registry finished."
-	python deploy_container.py --project $sProject --version $sVersion
+	python deploy_container.py --project $sProject --version $sVersion --gitCommit $sGitCommit
 	exit 0
 }
 
