@@ -89,6 +89,10 @@ if [ -z $sJenkinsAPI ]; then
 	echo "Please provide Jenkins access credentials!"
 	exit 1
 fi
+if curl --silent --show-error http://$sJenkinsUser:$sJenkinsAPI@localhost:8080/ | grep "HTTP ERROR"; then
+	echo "Failed to connect to Jenkins with current credentials!"
+	exit 1
+fi
 
 if [[ $sProject ]]; then
 	if [ -d /tmp/$sProject ]; then
