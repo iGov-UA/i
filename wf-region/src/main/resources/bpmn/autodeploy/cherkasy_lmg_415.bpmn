@@ -209,7 +209,7 @@
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <serviceTask id="servicetask2" name="Повідомлення держслужбовця про звернення" activiti:async="true" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask2" name="Повідомлення держслужбовця про звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -257,7 +257,7 @@
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Адреса електронної пошти" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Телефон" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asType" name="Оберіть тип звернення:" type="enum" writable="false">
+        <activiti:formProperty id="asType" name="Тип звернення:" type="enum" writable="false">
           <activiti:value id="sEnumCertif" name="Видача Посвідчення мисливця"></activiti:value>
           <activiti:value id="sEnumCard" name="Видача Контрольної картки обліку добутої дичини та порушень правил полювання"></activiti:value>
           <activiti:value id="sEnumCertifDouble" name="Видача дублікату Посвідчення мисливця"></activiti:value>
@@ -486,7 +486,7 @@
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Адреса електронної пошти" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Телефон" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asType" name="Оберіть тип звернення:" type="enum" writable="false">
+        <activiti:formProperty id="asType" name="Тип звернення:" type="enum" writable="false">
           <activiti:value id="sEnumCertif" name="Видача Посвідчення мисливця"></activiti:value>
           <activiti:value id="sEnumCard" name="Видача Контрольної картки обліку добутої дичини та порушень правил полювання"></activiti:value>
           <activiti:value id="sEnumCertifDouble" name="Видача дублікату Посвідчення мисливця"></activiti:value>
@@ -510,15 +510,15 @@
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow12" sourceRef="servicetask3" targetRef="exclusivegateway2"></sequenceFlow>
     <sequenceFlow id="flow13" name="sEnumCertif" sourceRef="exclusivegateway2" targetRef="usertask1">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[asType=='sEnumCertif']]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asType=='sEnumCertif'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow14" name="asType != 'sEnumCertif'" sourceRef="exclusivegateway2" targetRef="usertask2">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[asType != 'sEnumCertif']]></conditionExpression>
+    <sequenceFlow id="flow14" name="asType!='sEnumCertif'" sourceRef="exclusivegateway2" targetRef="usertask2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asType!='sEnumCertif'}]]></conditionExpression>
     </sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow15" sourceRef="usertask2" targetRef="exclusivegateway3"></sequenceFlow>
     <sequenceFlow id="flow16" name="status !='sEnumApprove'" sourceRef="exclusivegateway3" targetRef="servicetask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[status !='sEnumApprove']]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status!='sEnumApprove'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask6" name="Лист-запрошення до візиту" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
