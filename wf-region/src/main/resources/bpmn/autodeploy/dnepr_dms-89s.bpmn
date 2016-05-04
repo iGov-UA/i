@@ -256,6 +256,7 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="sRegistrationAddress" name="Поточна адреса реєстрації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="snewAddress" name="Нова адреса реєстрації" type="string"></activiti:formProperty>
         <activiti:formProperty id="sArea" name="Місто або район, до якого належить старе місце проживання громадянина" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sWhenCome" name="Вкажіть дату зняття з реєстрації" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sRegistrationOrgan" name="Орган, що оформлює реєстрацію" type="invisible" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asResult" name="Результат зустрічі" type="enum">
           <activiti:value id="sReestr" name="Громадянин знятий з реєстрації"></activiti:value>
@@ -265,6 +266,8 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="sBody_2" name="[pattern/print/dms/kartkaBk.html]" type="invisible" default="Картка реєстрації зворотня" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_3" name="[pattern/print/dms/zajava_znFr.html]" type="invisible" default="Заява для зняття з реєстрації лицьова" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_4" name="[pattern/print/dms/zajava_znBk.html]" type="invisible" default="Заява для зняття з реєстрації зворотня" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_7" name="[pattern/print/dms/TalonFr.html]" type="invisible" default="Талон про зняття з реєстрації лицьова" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_8" name="[pattern/print/dms/TalonBk.html]" type="invisible" default="Талон про зняття з реєстрації зворотня" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"></activiti:taskListener>
       </extensionElements>
