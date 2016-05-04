@@ -185,6 +185,7 @@ var all = {
   ssl: {
     private_key: config.getProperty('BackProxy_Region.sKeyPath_BackProxy_Region') || process.env.PRIVATE_KEY,
     certificate: config.getProperty('BackProxy_Region.sCertPath_BackProxy_Region') || process.env.CERTIFICATE,
+    protocol: config.getProperty('sURLBackProxyRegionParts.protocol'),
     port: config.getProperty('sURLBackProxyRegionParts.port') || process.env.SSL_PORT
   },
 
@@ -192,12 +193,12 @@ var all = {
   userRoles: ['guest', 'user', 'admin'],
 
   request: {
-    debug: (config.getProperty('bDebug_Application') === "TRUE") || process.env.DEBUG
+    debug: (config.getProperty('bDebug_Application') === "TRUE")
   },
   server: {
     session: {
       secret: config.getProperty('BackProxySession_Region.sSecret_BackProxySession_Region') || process.env.SESSION_SECRET,
-      secure: config.getProperty('BackProxySession_Region.bSecure_BackProxySession_Region') || process.env.SESSION_SECURE,
+      secure: (config.getProperty('BackProxySession_Region.bSecure_BackProxySession_Region')  === "TRUE") || process.env.SESSION_SECURE,
       maxAge: config.getProperty('BackProxySession_Region.nLiveMS_BackProxySession_Region') || process.env.SESSION_MAX_AGE
     }
   }
