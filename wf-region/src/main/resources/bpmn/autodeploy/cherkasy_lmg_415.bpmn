@@ -10,11 +10,11 @@
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Адреса електронної пошти" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Телефон" type="string" default="+380" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asType" name="Оберіть тип звернення:" type="enum" required="true">
-          <activiti:value id="sEnumCertif" name="Видача Посвідчення мисливця"></activiti:value>
-          <activiti:value id="sEnumCard" name="Видача Контрольної картки обліку добутої дичини та порушень правил полювання"></activiti:value>
-          <activiti:value id="sEnumCertifDouble" name="Видача дублікату Посвідчення мисливця"></activiti:value>
-          <activiti:value id="sEnumCardDouble" name="Видача дублікату Контрольної картки обліку добутої дичини та порушень правил полювання"></activiti:value>
+        <activiti:formProperty id="asType" name="Оберіть документ, який бажаєте отримати:" type="enum" required="true">
+          <activiti:value id="sEnumCertif" name="Посвідчення мисливця"></activiti:value>
+          <activiti:value id="sEnumCard" name="Контрольна картка обліку добутої дичини та порушень правил полювання"></activiti:value>
+          <activiti:value id="sEnumCertifDouble" name="Дублікат Посвідчення мисливця"></activiti:value>
+          <activiti:value id="sEnumCardDouble" name="Дублікат Контрольної картки обліку добутої дичини та порушень правил полювання"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sCountryB" name="Країна народження" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sRegionB" name="Область народження" type="string" required="true"></activiti:formProperty>
@@ -257,11 +257,11 @@
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Адреса електронної пошти" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Телефон" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asType" name="Тип звернення:" type="enum" writable="false">
-          <activiti:value id="sEnumCertif" name="Видача Посвідчення мисливця"></activiti:value>
-          <activiti:value id="sEnumCard" name="Видача Контрольної картки обліку добутої дичини та порушень правил полювання"></activiti:value>
-          <activiti:value id="sEnumCertifDouble" name="Видача дублікату Посвідчення мисливця"></activiti:value>
-          <activiti:value id="sEnumCardDouble" name="Видача дублікату Контрольної картки обліку добутої дичини та порушень правил полювання"></activiti:value>
+        <activiti:formProperty id="asType" name="Документ, за яким звертається громадянин:" type="enum" writable="false">
+          <activiti:value id="sEnumCertif" name="Посвідчення мисливця"></activiti:value>
+          <activiti:value id="sEnumCard" name="Контрольна картка обліку добутої дичини та порушень правил полювання"></activiti:value>
+          <activiti:value id="sEnumCertifDouble" name="Дублікат Посвідчення мисливця"></activiti:value>
+          <activiti:value id="sEnumCardDouble" name="Дублікат Контрольної картки обліку добутої дичини та порушень правил полювання"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sCountryB" name="Країна народження" type="invisible" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sRegionB" name="Область народження" type="invisible" writable="false"></activiti:formProperty>
@@ -469,10 +469,10 @@
     <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
     <sequenceFlow id="flow5" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
     <sequenceFlow id="flow6" name="status=='sEnumDeny'" sourceRef="exclusivegateway1" targetRef="servicetask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[status=='sEnumDeny']]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status=='sEnumDeny'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow7" name="status=='sEnumApprove'" sourceRef="exclusivegateway1" targetRef="servicetask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[status=='sEnumApprove']]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status=='sEnumApprove'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow8" sourceRef="servicetask5" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow9" sourceRef="servicetask4" targetRef="endevent1"></sequenceFlow>
@@ -486,11 +486,13 @@
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Адреса електронної пошти" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Телефон" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asType" name="Тип звернення:" type="enum" writable="false">
-          <activiti:value id="sEnumCertif" name="Видача Посвідчення мисливця"></activiti:value>
-          <activiti:value id="sEnumCard" name="Видача Контрольної картки обліку добутої дичини та порушень правил полювання"></activiti:value>
-          <activiti:value id="sEnumCertifDouble" name="Видача дублікату Посвідчення мисливця"></activiti:value>
-          <activiti:value id="sEnumCardDouble" name="Видача дублікату Контрольної картки обліку добутої дичини та порушень правил полювання"></activiti:value>
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспорт" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asType" name="Документ, за яким звертається громадянин:" type="enum" writable="false">
+          <activiti:value id="sEnumCertif" name="Посвідчення мисливця"></activiti:value>
+          <activiti:value id="sEnumCard" name="Контрольна картка обліку добутої дичини та порушень правил полювання"></activiti:value>
+          <activiti:value id="sEnumCertifDouble" name="Дублікат Посвідчення мисливця"></activiti:value>
+          <activiti:value id="sEnumCardDouble" name="Дублікат Контрольної картки обліку добутої дичини та порушень правил полювання"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="status" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="sEnumApprove" name="Громадянина запрошено до отримання документів або складання іспиту"></activiti:value>
@@ -558,7 +560,7 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow17" name="status == 'sEnumApprove'" sourceRef="exclusivegateway3" targetRef="servicetask6">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[status == 'sEnumApprove']]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status == 'sEnumApprove'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow18" sourceRef="servicetask6" targetRef="endevent1"></sequenceFlow>
   </process>
@@ -629,7 +631,7 @@
         <omgdi:waypoint x="602.0" y="223.0"></omgdi:waypoint>
         <omgdi:waypoint x="515.0" y="223.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="504.0" y="189.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="515.0" y="176.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
@@ -657,7 +659,7 @@
         <omgdi:waypoint x="530.0" y="137.0"></omgdi:waypoint>
         <omgdi:waypoint x="570.0" y="137.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="519.0" y="147.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="58.0" x="519.0" y="147.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
