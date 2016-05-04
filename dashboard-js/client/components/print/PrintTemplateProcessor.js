@@ -27,8 +27,15 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
       if (val && _.has(replacingRules, e.id)) {
         rule = replacingRules[e.id];
         //a = val.slice(0, val.length - rule.nSymbols) + rule.sValueNew;
-        a = val.replace(rule.sFrom, rule.sTo);
-        template.find('#' + rule.sID_Element_sValue).html(a);
+        // a = val.replace(rule.sFrom, rule.sTo);
+        // template.find('#' + rule.sID_Element_sValue).html(a);
+        var a = val.split(' ');
+        var b = a[0].split('');
+        b.splice(b.length - rule.symbols, rule.symbols, rule.valueNew);
+        var c = b.join("");
+        a.splice(0, 1, c);
+        var result = a.join(' ');
+        template.find('.' + rule.el_id2).html(result);
       }
     });
     return template.html();

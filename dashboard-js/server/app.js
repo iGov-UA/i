@@ -15,7 +15,8 @@ var logger = require('./components/logger').setup();
 var app = express();
 var server;
 
-if (config.ssl.port) {
+//if (config.ssl.port) {
+if (config.ssl.protocol === 'https') {
 	var privateKey = fs.readFileSync(config.ssl.private_key).toString();
 	var certificate = fs.readFileSync(config.ssl.certificate).toString();
 
