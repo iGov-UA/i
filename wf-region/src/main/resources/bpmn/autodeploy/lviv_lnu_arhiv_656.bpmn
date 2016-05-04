@@ -56,7 +56,6 @@
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask9">
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>
-    
     <serviceTask id="servicetask1" name="Повідомлення працівника архіву про заявку" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -272,7 +271,7 @@ ${sNameOrgan}.&lt;br /&gt;
     </sequenceFlow>
     <sequenceFlow id="flow15" sourceRef="servicetask3" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow16" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
-    <sequenceFlow id="flow17" sourceRef="servicetask9" targetRef="usertask3"></sequenceFlow>
+    <sequenceFlow id="flow17" sourceRef="servicetask9" targetRef="servicetask1"></sequenceFlow>
     <sequenceFlow id="flow18" sourceRef="servicetask4" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow19" sourceRef="servicetask2" targetRef="usertask3"></sequenceFlow>
     <sequenceFlow id="flow21" sourceRef="usertask3" targetRef="exclusivegateway1"></sequenceFlow>
@@ -439,9 +438,8 @@ ${sWorkTime}.&lt;br /&gt;
         <omgdi:waypoint x="360.0" y="132.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
-        <omgdi:waypoint x="132.0" y="103.0"></omgdi:waypoint>
-        <omgdi:waypoint x="372.0" y="10.0"></omgdi:waypoint>
-        <omgdi:waypoint x="588.0" y="97.0"></omgdi:waypoint>
+        <omgdi:waypoint x="185.0" y="130.0"></omgdi:waypoint>
+        <omgdi:waypoint x="206.0" y="130.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
         <omgdi:waypoint x="472.0" y="598.0"></omgdi:waypoint>
