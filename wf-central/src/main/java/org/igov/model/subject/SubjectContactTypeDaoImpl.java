@@ -9,7 +9,8 @@ import org.igov.model.core.GenericEntityDao;
  * Time: 17:53
  */
 @Repository
-public class SubjectContactTypeDaoImpl extends GenericEntityDao<SubjectContactType> implements SubjectContactTypeDao {
+public class SubjectContactTypeDaoImpl extends GenericEntityDao<Long, SubjectContactType>
+        implements SubjectContactTypeDao {
 
     private final static String NAME_FIELD = "sName_EN";
 

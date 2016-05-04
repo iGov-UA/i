@@ -10,15 +10,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.beans.PropertyDescriptor;
+import java.io.Serializable;
 import java.util.List;
 
 /**
+ * P - type of primary key of entity
  * Убрать полностью не получилось
  * <p/>
  * use {@link GenericEntityDao} instead if possible
  */
 @Repository
-public class BaseEntityDao {
+public class BaseEntityDao<P extends Serializable> {
 
     private SessionFactory sessionFactory;
 
@@ -32,7 +34,7 @@ public class BaseEntityDao {
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends Entity> T findById(Class<T> entityType, Long id) {
+    public <T extends Entity<P>> T findById(Class<T> entityType, P id) {
         T entity = (T) getSession().get(entityType, id);
 
         if (entity == null) {
@@ -42,7 +44,7 @@ public class BaseEntityDao {
         return entity;
     }
 
-    private <T extends Entity> boolean hasOrderField(Class<T> entityClass, String fieldName) {
+    private <T extends Entity<P>> boolean hasOrderField(Class<T> entityClass, String fieldName) {
         PropertyDescriptor[] propertyDescriptors = PropertyUtils.getPropertyDescriptors(entityClass);
 
         boolean res = false;
@@ -57,7 +59,7 @@ public class BaseEntityDao {
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends Entity> List<T> findAll(Class<T> entityType) {
+    public <T extends Entity<P>> List<T> findAll(Class<T> entityType) {
         DetachedCriteria criteria = DetachedCriteria.forClass(entityType);
 
         final String orderFieldName = "order";
@@ -69,7 +71,7 @@ public class BaseEntityDao {
     }
     
     @SuppressWarnings("unchecked")
-    public <T extends Entity> List<T> findAll(Class<T> entityType, String orderFieldName) {
+    public <T extends Entity<P>> List<T> findAll(Class<T> entityType, String orderFieldName) {
         DetachedCriteria criteria = DetachedCriteria.forClass(entityType);
         if (hasOrderField(entityType, orderFieldName)) {
             criteria.addOrder(Order.asc(orderFieldName));
@@ -78,16 +80,16 @@ public class BaseEntityDao {
         return criteria.getExecutableCriteria(getSession()).list();
     }
 
-    public <T extends Entity> void delete(T entity) {
+    public <T extends Entity<P>> void delete(T entity) {
         getSession().delete(entity);
     }
 
-    public <T extends Entity> T saveOrUpdate(T entity) {
+    public <T extends Entity<P>> T saveOrUpdate(T entity) {
         getSession().saveOrUpdate(entity);
         return entity;
     }
 
-    public <T extends Entity> void saveOrUpdate(T[] entities) {
+    public <T extends Entity<P>> void saveOrUpdate(T[] entities) {
         for (T e : entities) {
             saveOrUpdate(e);
         }

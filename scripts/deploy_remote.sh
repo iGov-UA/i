@@ -125,7 +125,8 @@ if [ $sProject == "dashboard-js" ]; then
 	unset IFS
 	mv -f /sybase/dashboard-js /sybase/.backup/$sProject/$sDate
 	mv /sybase/.upload/dashboard-js /sybase/dashboard-js
-    cp -f /sybase/.configs/dashboard-js/process.json /sybase/dashboard-js/process.json
+    #cp -f /sybase/.configs/dashboard-js/process.json /sybase/dashboard-js/process.json
+    cp -f -R /sybase/.configs/dashboard-js/* /sybase/dashboard-js/
 	cd /sybase/dashboard-js
 	pm2 start process.json --name dashboard-js
 	pm2 info dashboard-js

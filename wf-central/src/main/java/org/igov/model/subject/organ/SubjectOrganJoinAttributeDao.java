@@ -8,7 +8,7 @@ import java.util.List;
  * Created by D.Zh. on 07.12.15.
  * dmitry.zhuravlyov@yahoo.com
  */
-public interface SubjectOrganJoinAttributeDao extends EntityDao<SubjectOrganJoinAttribute> {
+public interface SubjectOrganJoinAttributeDao extends EntityDao<SubjectOrganJoinAttributeId, SubjectOrganJoinAttribute> {
 
     List<SubjectOrganJoinAttribute> getSubjectOrganJoinAttributes(SubjectOrganJoin subjectOrganJoin);
 

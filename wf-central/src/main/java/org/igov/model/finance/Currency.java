@@ -1,7 +1,7 @@
 package org.igov.model.finance;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.igov.model.core.Entity;
+import org.igov.model.core.AbstractEntity;
 
 import javax.persistence.Column;
 
@@ -9,7 +9,7 @@ import javax.persistence.Column;
  * @author grigoriy-romanenko
  */
 @javax.persistence.Entity
-public class Currency extends Entity {
+public class Currency extends AbstractEntity {
 
     @JsonProperty(value = "sID_UA")
     @Column(length = 10, unique = true)

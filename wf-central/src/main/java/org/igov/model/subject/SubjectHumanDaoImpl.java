@@ -9,7 +9,7 @@ import org.igov.model.core.GenericEntityDao;
 import java.util.Arrays;
 
 @Repository
-public class SubjectHumanDaoImpl extends GenericEntityDao<SubjectHuman> implements SubjectHumanDao {
+public class SubjectHumanDaoImpl extends GenericEntityDao<Long, SubjectHuman> implements SubjectHumanDao {
 
     @Autowired
     private SubjectDao subjectDao;

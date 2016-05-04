@@ -2,7 +2,7 @@ package org.igov.model.finance;
 
 import org.igov.model.core.EntityDao;
 
-public interface MerchantDao extends EntityDao<Merchant> {
+public interface MerchantDao extends EntityDao<Long, Merchant> {
 
     Merchant getMerchant(String sID);
 

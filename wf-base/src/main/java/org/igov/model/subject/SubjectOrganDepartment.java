@@ -1,7 +1,7 @@
 package org.igov.model.subject;
 
 import javax.persistence.Column;
-import org.igov.model.core.Entity;
+import org.igov.model.core.AbstractEntity;
 
 /**
  * User: goodg_000
@@ -9,7 +9,7 @@ import org.igov.model.core.Entity;
  * Time: 14:57
  */
 @javax.persistence.Entity
-public class SubjectOrganDepartment extends Entity {
+public class SubjectOrganDepartment extends AbstractEntity {
 
     @Column
     private String sName;

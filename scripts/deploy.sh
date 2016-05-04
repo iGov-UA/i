@@ -50,6 +50,10 @@ do
 			bDocker="$2"
 			shift
 			;;
+		--dockerOnly)
+			bDockerOnly="$2"
+			shift
+			;;
 		--gitCommit)
 			sGitCommit="$2"
 			shift
@@ -78,6 +82,7 @@ if [[ $sProject ]]; then
 	export TEMP=/tmp/$sProject
 	export TMP=/tmp/$sProject
 fi
+
 if [ "$bSkipDoc" == "true" ]; then
 	sBuildDoc="site"
 fi
@@ -114,9 +119,9 @@ build_docker ()
 	    exit 1
 	fi
 
-	if [ -z $sGitCommit ]; then
-	    echo "We want a git commmit variable!"
-	    exit 1
+	sCurrDir=`echo "$PWD" | sed 's!.*/!!'`
+	if ! [[ $sCurrDir == $sProject ]]; then
+	    cd $sProject
 	fi
 
 	git clone git@github.com:e-government-ua/iSystem.git
@@ -125,47 +130,22 @@ build_docker ()
 	chmod +x deploy_container.py
 	rm -rf iSystem
 
-	readonly DOCKER_REPO=puppet.igov.org.ua:5000
-	readonly DOCKER_IMAGE=$DOCKER_REPO/$sProject"-"$sVersion
-	readonly DOCKER_TAG=$sGitCommit
-	readonly KUBE_RC=$sProject"-"$sVersion
-
-	echo "Start building Docker image..."
-
 	if ! [ -f Dockerfile ]; then
-		echo "We have a proble. Dockerfile not found."
+		echo "Error. Dockerfile not found."
 		exit 1
 	fi
 
-	mkdir /tmp/$sProject
-	docker build -t $DOCKER_IMAGE .
-	docker tag -f  $DOCKER_IMAGE:latest $DOCKER_IMAGE:$DOCKER_TAG
-	docker push $DOCKER_IMAGE:latest
-	docker push $DOCKER_IMAGE:$DOCKER_TAG
-	echo "Build & push container to Docker registry finished."
+	if ! [ -d /tmp/$sProject ]; then
+		mkdir /tmp/$sProject
+	fi
 
-	python deploy_container.py --project $sProject --version $sVersion
-
-#	kubectl rolling-update $KUBE_RC --image=$DOCKER_IMAGE:$DOCKER_TAG
-#	echo "Rolling-update replication controller finished."
-#	kubectl get rc $KUBE_RC
-#	kubectl get rc $KUBE_RC > /dev/null 2>&1;
-#	if [ $? -ne 0 ]; then
-#  		echo "Replication controller does not exist, creating."
-#  		kubectl create -f kube/$KUBE_RC-rc.yaml
-#	else
-#  		echo "Deleting existing replication controller and creating new one"
-#		kubectl delete -f kube/$KUBE_RC-rc.yaml
-#		sleep 5
-#		kubectl create -f kube/$KUBE_RC-rc.yaml
- # 		if [ $? -ne 0 ]; then
-#    			echo "Could not create replication controller"
-#      			exit 1
- # 		fi;
-#	fi
-
+	python deploy_container.py --project $sProject --version $sVersion --gitCommit $sGitCommit
 	exit 0
 }
+
+if [ "$bDockerOnly" == "true" ]; then
+	build_docker
+fi
 
 build_central-js ()
 {

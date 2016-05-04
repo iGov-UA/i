@@ -12,7 +12,7 @@ import java.util.List;
  * @author grigoriy-romanenko
  */
 @Repository
-public class ObjectEarthTargetDaoImpl extends GenericEntityDao<ObjectEarthTarget>
+public class ObjectEarthTargetDaoImpl extends GenericEntityDao<Long, ObjectEarthTarget>
         implements ObjectEarthTargetDao {
 
     protected ObjectEarthTargetDaoImpl() {

@@ -1,7 +1,9 @@
 package org.igov.model.subject.organ;
 
-import org.springframework.stereotype.Repository;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
 import org.igov.model.core.GenericEntityDao;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -10,7 +12,8 @@ import java.util.List;
  * dmitry.zhuravlyov@yahoo.com
  */
 @Repository
-public class SubjectOrganJoinAttributeDaoImpl extends GenericEntityDao<SubjectOrganJoinAttribute> implements SubjectOrganJoinAttributeDao{
+public class SubjectOrganJoinAttributeDaoImpl extends GenericEntityDao<SubjectOrganJoinAttributeId, SubjectOrganJoinAttribute>
+        implements SubjectOrganJoinAttributeDao {
 
     protected SubjectOrganJoinAttributeDaoImpl() {
         super(SubjectOrganJoinAttribute.class);
@@ -18,13 +21,15 @@ public class SubjectOrganJoinAttributeDaoImpl extends GenericEntityDao<SubjectOr
 
     @Override
     public List<SubjectOrganJoinAttribute> getSubjectOrganJoinAttributes(SubjectOrganJoin subjectOrganJoin) {
-       //return findAllBy("subjectOrganJoinId", subjectOrganJoin.getId());
+        //return findAllBy("subjectOrganJoinId", subjectOrganJoin.getId());
         return getSubjectOrganJoinAttributesByParent(subjectOrganJoin.getId());
     }
-    
+
     @Override
     public List<SubjectOrganJoinAttribute> getSubjectOrganJoinAttributesByParent(Long nID_SubjectOrganJoin) {
-       return findAllBy("subjectOrganJoinId", nID_SubjectOrganJoin);
+        Criteria criteria = createCriteria();
+        criteria.add(Restrictions.eq("id.subjectOrganJoinId", nID_SubjectOrganJoin));
+        return criteria.list();
     }
-    
+
 }

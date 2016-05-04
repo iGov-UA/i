@@ -14,7 +14,8 @@ import java.util.List;
  * Time: 15:42
  */
 @Repository
-public class AccessServiceRightDaoImpl extends GenericEntityDao<AccessServiceRight> implements AccessServiceRightDao {
+public class AccessServiceRightDaoImpl extends GenericEntityDao<Long, AccessServiceRight>
+        implements AccessServiceRightDao {
 
     protected AccessServiceRightDaoImpl() {
         super(AccessServiceRight.class);

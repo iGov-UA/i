@@ -2,10 +2,10 @@ package org.igov.model.subject;
 
 import javax.persistence.Column;
 
-import org.igov.model.core.Entity;
+import org.igov.model.core.AbstractEntity;
 
 @javax.persistence.Entity
-public class SubjectAccountType extends Entity {
+public class SubjectAccountType extends AbstractEntity {
     
     @Column
     private String sID;

@@ -1,5 +1,7 @@
 package org.igov.model.access;
 
+import org.igov.model.core.AbstractEntity;
+
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -11,7 +13,7 @@ import javax.persistence.ManyToOne;
  * Time: 17:38
  */
 @Entity
-public class AccessServiceRoleRightInclude extends org.igov.model.core.Entity {
+public class AccessServiceRoleRightInclude extends AbstractEntity {
 
     @ManyToOne
     @JoinColumn(name="nID_AccessServiceRole", nullable = false, updatable = false)

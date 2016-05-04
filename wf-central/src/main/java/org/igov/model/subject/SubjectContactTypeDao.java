@@ -7,7 +7,7 @@ import org.igov.model.core.EntityDao;
  * Date: 27.12.2015
  * Time: 17:52
  */
-public interface SubjectContactTypeDao extends EntityDao<SubjectContactType> {
+public interface SubjectContactTypeDao extends EntityDao<Long, SubjectContactType> {
 
     public SubjectContactType getEmailType();
 

@@ -6,7 +6,7 @@ import org.igov.model.core.EntityDao;
 /**
  * Created by Богдан on 25.10.2015.
  */
-public interface FlowLinkDao extends EntityDao<FlowLink> {
+public interface FlowLinkDao extends EntityDao<Long, FlowLink> {
 
     /**
      * Gets flow link by service ID

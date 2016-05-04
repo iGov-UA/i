@@ -1,6 +1,6 @@
 package org.igov.model.subject;
 
-import org.igov.model.core.Entity;
+import org.igov.model.core.AbstractEntity;
 
 import javax.persistence.Column;
 
@@ -10,7 +10,7 @@ import javax.persistence.Column;
  * Time: 13:35
  */
 @javax.persistence.Entity
-public class SubjectContactType extends Entity {
+public class SubjectContactType extends AbstractEntity {
 
     @Column
     private String sName_EN;

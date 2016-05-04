@@ -4,7 +4,7 @@ import org.igov.model.core.EntityDao;
 
 import java.util.List;
 
-public interface DocumentContentTypeDao extends EntityDao<DocumentContentType> {
+public interface DocumentContentTypeDao extends EntityDao<Long, DocumentContentType> {
 
     public DocumentContentType getDocumentContentType(String documentContentTypeName);
 

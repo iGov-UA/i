@@ -2,7 +2,7 @@ package org.igov.model.action.event;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.igov.model.core.Entity;
+import org.igov.model.core.AbstractEntity;
 
 import javax.persistence.Column;
 import javax.persistence.FetchType;
@@ -16,7 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @javax.persistence.Entity
-public class HistoryEvent extends Entity {
+public class HistoryEvent extends AbstractEntity {
 
     @JsonProperty(value = "nID_Subject")
     @Column(name = "nID_Subject", nullable = true)

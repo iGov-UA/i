@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
  * Time: 0:03
  */
 @Repository
-public class FlowSlotTicketDaoImpl extends GenericEntityDao<FlowSlotTicket> implements FlowSlotTicketDao {
+public class FlowSlotTicketDaoImpl extends GenericEntityDao<Long, FlowSlotTicket> implements FlowSlotTicketDao {
 
     private static final Logger LOG = LoggerFactory.getLogger(FlowSlotTicketDaoImpl.class);
 

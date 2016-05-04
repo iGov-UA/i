@@ -7,7 +7,7 @@ import org.igov.model.core.EntityDao;
  * Date: 21.06.2015
  * Time: 15:44
  */
-public interface FlowSlotTicketDao extends EntityDao<FlowSlotTicket> {
+public interface FlowSlotTicketDao extends EntityDao<Long, FlowSlotTicket> {
 
     FlowSlotTicket findFlowSlotTicket(Long nID_FlowSlot);
 

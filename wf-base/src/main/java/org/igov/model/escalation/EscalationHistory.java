@@ -9,14 +9,14 @@ import org.igov.util.JSON.JsonDateTimeDeserializer;
 import org.igov.util.JSON.JsonDateTimeSerializer;
 
 import javax.persistence.Column;
-import org.igov.model.core.Entity;
+import org.igov.model.core.AbstractEntity;
 
 /**
  * @author NickVeremeichyk
  * @since 2015-12-05.
  */
 @javax.persistence.Entity
-public class EscalationHistory extends Entity {
+public class EscalationHistory extends AbstractEntity {
     /**
      * sDate - дата
      */

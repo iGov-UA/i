@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 import org.igov.model.core.GenericEntityDao;
 
 @Repository
-public class ObjectCustomsDaoImpl extends GenericEntityDao<ObjectCustoms> implements ObjectCustomsDao
+public class ObjectCustomsDaoImpl extends GenericEntityDao<Long, ObjectCustoms> implements ObjectCustomsDao
 {
     private static final Logger LOG = LoggerFactory.getLogger(ObjectCustomsDaoImpl.class);
    

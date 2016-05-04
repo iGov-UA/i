@@ -33,7 +33,7 @@ public class GenericEntityDaoTest {
 
     @Autowired
     @Qualifier("jediDao")
-    private EntityDao<Jedi> testedObject;
+    private EntityDao<Long, Jedi> testedObject;
 
     @Test
     public void shouldFindJediById() throws Exception {

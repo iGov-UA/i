@@ -18,7 +18,7 @@ import org.igov.model.core.GenericEntityDao;
  * Time: 15:43
  */
 @Repository
-public class FlowSlotDaoImpl extends GenericEntityDao<FlowSlot> implements FlowSlotDao {
+public class FlowSlotDaoImpl extends GenericEntityDao<Long, FlowSlot> implements FlowSlotDao {
 
     protected FlowSlotDaoImpl() {
         super(FlowSlot.class);

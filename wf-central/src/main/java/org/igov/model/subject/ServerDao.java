@@ -7,5 +7,5 @@ import org.igov.model.core.EntityDao;
  * Date: 29.10.2015
  * Time: 21:32
  */
-public interface ServerDao extends EntityDao<Server> {
+public interface ServerDao extends EntityDao<Long, Server> {
 }

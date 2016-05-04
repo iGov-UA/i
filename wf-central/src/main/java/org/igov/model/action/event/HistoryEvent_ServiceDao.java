@@ -9,7 +9,7 @@ import java.util.Map;
 import org.igov.service.exception.EntityNotFoundException;
 import org.joda.time.DateTime;
 
-public interface HistoryEvent_ServiceDao extends EntityDao<HistoryEvent_Service> {
+public interface HistoryEvent_ServiceDao extends EntityDao<Long, HistoryEvent_Service> {
 
     HistoryEvent_Service addHistoryEvent_Service(HistoryEvent_Service event_service);
 

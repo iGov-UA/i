@@ -15,7 +15,7 @@ import java.util.List;
  */
 @Repository
 @SuppressWarnings("unchecked")
-public class EscalationHistoryDaoImpl extends GenericEntityDao<EscalationHistory> implements EscalationHistoryDao {
+public class EscalationHistoryDaoImpl extends GenericEntityDao<Long, EscalationHistory> implements EscalationHistoryDao {
 
     private static final int MAX_ROWS = 5000;
     private static final int DEFAULT_ROWS = 100;

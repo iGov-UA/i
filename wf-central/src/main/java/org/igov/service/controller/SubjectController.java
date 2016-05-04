@@ -397,7 +397,6 @@ public class SubjectController {
                     sValue = getCalculatedFormulaValue(sValue, mAttributeReturn);
                     //oSubjectOrganJoin.addAttribute(sName, sValue);
                     SubjectOrganJoinAttribute oSubjectOrganJoinAttribute = new SubjectOrganJoinAttribute();
-                    oSubjectOrganJoinAttribute.setId(nID);
                     oSubjectOrganJoinAttribute.setSubjectOrganJoinId(nID);
                     oSubjectOrganJoinAttribute.setName(sName);
                     oSubjectOrganJoinAttribute.setValue(sValue);

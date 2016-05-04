@@ -6,7 +6,7 @@ import org.igov.model.document.Document;
 import java.io.IOException;
 import java.util.List;
 
-public interface HistoryEventDao extends EntityDao<HistoryEvent> {
+public interface HistoryEventDao extends EntityDao<Long, HistoryEvent> {
 
     public HistoryEvent getHistoryEvent(Long id);
 

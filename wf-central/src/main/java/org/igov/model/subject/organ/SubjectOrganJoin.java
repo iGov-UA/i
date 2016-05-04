@@ -1,22 +1,16 @@
 package org.igov.model.subject.organ;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.igov.model.core.Entity;
+import org.igov.model.core.AbstractEntity;
 
 import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
-import javax.persistence.FetchType;
-import java.util.ArrayList;
-import java.util.List;
-import org.hibernate.annotations.Type;
 
 /**
  * @author dgroup
  * @since 05.07.2015
  */
 @javax.persistence.Entity
-public class SubjectOrganJoin extends Entity {
+public class SubjectOrganJoin extends AbstractEntity {
 
     @Column(name = "nID_SubjectOrgan")
     private Long subjectOrganId;

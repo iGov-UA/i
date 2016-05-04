@@ -90,15 +90,9 @@ angular.module('iGovMarkers')
       }
     },
     attributes: {
-      Editable_1: {aField_ID:['sPhone_User1', 'sMail_User1', 'bankIdlastName1'], bValue: true},
+      Editable_1: {aField_ID:['sPhone_User1', 'sMail_User1', 'bankIdlastName1'], bValue: true}
     },
     motion: {
-      // ReplaceTextLastSymbols_1: {
-      //   sID_Field: "nachalnikFamily",
-      //   nSymbols: 2,
-      //   sValueNew: "ко",
-      //   sID_Element_sValue: "sNachalnikFamily"
-      // },
       ReplaceTextSymbols_1: {
         sID_Field: "Registrationservice",
         sFrom: "кий",
