@@ -90,9 +90,13 @@ fi
 #Определяем сервер для установки
 if [[ $sVersion == "alpha" && $sProject == "central-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-central" ]]; then
 		sHost="test.igov.org.ua"
+		sJenkinsUser="viktor-karabedyants"
+		sJenkinsAPI="2381a2cce687ef20c9208a9c05018a28"
 fi
 if [[ $sVersion == "beta" && $sProject == "central-js" ]] || [[ $sVersion == "beta" && $sProject == "wf-central" ]]; then
 		sHost="test-version.igov.org.ua"
+		sJenkinsUser="viktor-karabedyants"
+		sJenkinsAPI="2381a2cce687ef20c9208a9c05018a28"
 		export PATH=/usr/local/bin:$PATH
 fi
 #if [[ $sVersion == "prod" && $sProject == "central-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-central" ]]; then
@@ -342,10 +346,20 @@ if [ -z $sProject ]; then
 	exit 0
 else
 	if [ $sProject == "wf-central" ]; then
-		build_central
+		if curl --silent --show-error http://$sJenkinsUser:$sJenkinsAPI@localhost:8080/job/alpha_Back/lastBuild/api/json | grep -q result\":null; then
+			echo "Building of alpha_Back project is running. Compilation of wf-central will start automatically."
+			exit 0
+		else
+			build_central
+		fi
 	fi
 	if [ $sProject == "wf-region" ]; then
-		build_region
+		if curl --silent --show-error http://$sJenkinsUser:$sJenkinsAPI@localhost:8080/job/alpha_Back/lastBuild/api/json | grep -q result\":null; then
+			echo "Building of alpha_Back project is running. Compilation of wf-region will start automatically."
+			exit 0
+		else
+			build_region
+		fi
 	fi
 	if [ $sProject == "central-js" ]; then
 		touch /tmp/$sProject/build.lock
