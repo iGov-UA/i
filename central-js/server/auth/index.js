@@ -9,6 +9,7 @@ var router = express.Router();
 
 // Registering oauth2 strategies
 require('./bankid/bankid.passport').setup(config);
+//Start mock bankId process
 router.use('/bankID', require('./bankid'));
 router.use('/eds', require('./eds'));
 router.use('/mpbds', require('./mpbds'));
