@@ -350,6 +350,7 @@ else
 			echo "Building of alpha_Back project is running. Compilation of wf-central will start automatically."
 			exit 0
 		else
+			echo "Building of alpha_Back project is not running."
 			build_central
 		fi
 	fi
@@ -358,6 +359,7 @@ else
 			echo "Building of alpha_Back project is running. Compilation of wf-region will start automatically."
 			exit 0
 		else
+			echo "Building of alpha_Back project is not running."
 			build_region
 		fi
 	fi
