@@ -46,6 +46,14 @@ do
 			IFS=',' read -r -a saCompile <<< "$2"
 			shift
 			;;
+		--jenkins-user)
+			sJenkinsUser="$2"
+			shift
+			;;
+		--jenkins-api)
+			sJenkinsAPI="$2"
+			shift
+			;;
 		--docker)
 			bDocker="$2"
 			shift
@@ -73,6 +81,19 @@ if [ -z $nSecondsWait ]; then
 	nSecondsWait=185
 fi
 
+if [ -z $sJenkinsUser ]; then
+	echo "Please provide Jenkins access credentials!"
+	exit 1
+fi
+if [ -z $sJenkinsAPI ]; then
+	echo "Please provide Jenkins access credentials!"
+	exit 1
+fi
+if curl --silent --show-error http://$sJenkinsUser:$sJenkinsAPI@localhost:8080/ | grep "HTTP ERROR"; then
+	echo "Failed to connect to Jenkins with current credentials!"
+	exit 1
+fi
+
 if [[ $sProject ]]; then
 	if [ -d /tmp/$sProject ]; then
 		rm -rf /tmp/$sProject
@@ -90,13 +111,9 @@ fi
 #Определяем сервер для установки
 if [[ $sVersion == "alpha" && $sProject == "central-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-central" ]]; then
 		sHost="test.igov.org.ua"
-		sJenkinsUser="viktor-karabedyants"
-		sJenkinsAPI="2381a2cce687ef20c9208a9c05018a28"
 fi
 if [[ $sVersion == "beta" && $sProject == "central-js" ]] || [[ $sVersion == "beta" && $sProject == "wf-central" ]]; then
 		sHost="test-version.igov.org.ua"
-		sJenkinsUser="viktor-karabedyants"
-		sJenkinsAPI="2381a2cce687ef20c9208a9c05018a28"
 		export PATH=/usr/local/bin:$PATH
 fi
 #if [[ $sVersion == "prod" && $sProject == "central-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-central" ]]; then
