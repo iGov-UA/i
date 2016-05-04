@@ -330,6 +330,9 @@ fi
 #		sHost="region.igov.org.ua"
 #fi
 
+if [ -z $bDockerOnly ]; then
+	bDockerOnly="false"
+fi
 if [ -z $sProject ]; then
 	build_base $saCompile
 	exit 0
@@ -337,7 +340,7 @@ else
 	if [ $bDockerOnly == "true" ]; then
 		build_docker
 		exit 0
-	fi	
+	fi
 	if [ -z $sHost ]; then
 		echo "Cloud not select host for deploy. Wrong version or project."
 		exit 1
