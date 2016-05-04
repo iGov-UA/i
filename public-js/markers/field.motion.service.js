@@ -85,11 +85,18 @@ function FieldMotionService(MarkersFactory) {
       }, {});
   };
 
-  this.getReplacingRules = function() {
-    return grepByPrefix(/*'ReplaceTextLastSymbols_'*/'ReplaceTextSymbols_').reduce(function(p, c) {
-        p[c.sID_Field] = c;
-        return p;
-      }, {});
+  // this.getReplacingRules = function() {
+  //   return grepByPrefix(/*'ReplaceTextLastSymbols_'*/'ReplaceTextSymbols_').reduce(function(p, c) {
+  //       p[c.sID_Field] = c;
+  //       return p;
+  //     }, {});
+  // };
+
+  this.getReplacingRules = function () {
+    return grepByPrefix('ReplaceTextSymbols_').reduce(function(p, c) {
+     p[c.sID_Field] = {symbols: c.nSymbols, valueNew: c.sValueNew, el_id1: c.sID_Field, el_id2: c.sID_Element_sValue};
+      return p;
+    }, {});
   };
 
   function evalCondition(entry, fieldId, formData, mentioned) {

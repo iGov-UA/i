@@ -1,10 +1,11 @@
 package org.igov.io;
 
-import static org.igov.util.ToolLuna.getProtectedNumber;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import static org.igov.util.ToolLuna.getProtectedNumber;
 
 /**
  * @author bw
@@ -17,7 +18,7 @@ public class GeneralConfig {
     @Value("${general.sHost}")
     private String sHost; //general.sHost=https://test.region.igov.org.ua
     @Value("${general.sHostCentral}")
-    private String sHostCentral; //general.sHost=https://test.igov.org.ua
+    private String sHostCentral; //general.sHost=https://test.igov.org.ua/index#
     @Value("${general.bTest}")
     private String sbTest;
     @Value("${general.auth.login}")
@@ -84,6 +85,26 @@ public class GeneralConfig {
     
     @Value("${general.msg.sMsgLogin}")
     private String sMsgLogin;
+
+    @Value("${general.OTP.sURL}")
+    private String sURL;
+
+    @Value("${general.UniSender.sURL}")
+    private String sUniSender_sURL;
+
+    @Value("${sContext_Subscribe}")
+    private String sContext_Subscribe;
+
+    @Value("${general.UniSender.sContext_CreateMail}")
+    private String sContext_CreateMail;
+
+    @Value("${general.UniSender.sContext_CreateCompain}")
+    private String sContext_CreateCompain;
+
+    @Value("${general.LiqPay.sURL_CheckOut}")
+    private String sURL_CheckOut;
+
+
 
     public String sMsgURL() {
         return sMsgURL;
@@ -248,6 +269,56 @@ public class GeneralConfig {
 
     public String getsCorezoidSecretKey() {
         return sCorezoidSecretKey;
+    }
+
+    public String getsURL()  {
+        return sURL != null ? sURL : "${general.OTP.sURL}";
+    }
+
+    public String sURL() {
+        return sURL;
+    }
+
+
+    public String getsUniSender_sURL() {
+        return sUniSender_sURL != null ? sUniSender_sURL : "${general.UniSender.sURL}";
+    }
+
+    public void setUniSender_sURL(String uniSender_sURL) {
+        sUniSender_sURL = uniSender_sURL;
+    }
+
+
+    public String getsContext_Subscribe() {
+        return sContext_Subscribe != null ? sContext_Subscribe : "${sContext_Subscribe}";
+    }
+
+    public void sContext_Subscribe(String sContext_Subscribe) {
+        this.sContext_Subscribe = sContext_Subscribe;
+    }
+
+    public String getsContext_CreateMail() {
+        return sContext_CreateMail != null ? sContext_CreateMail : "${general.UniSender.sContext_CreateMail}";
+    }
+
+    public void sContext_CreateMail(String sContext_CreateMail) {
+        this.sContext_CreateMail = sContext_CreateMail;
+    }
+
+    public String getsContext_CreateCompain() {
+        return sContext_CreateCompain != null ? sContext_CreateCompain : "${general.UniSender.sContext_CreateCompain}";
+    }
+
+    public void sContext_CreateCompain(String sContext_CreateCompain) {
+        this.sContext_CreateCompain = sContext_CreateCompain;
+    }
+
+    public String getsURL_CheckOut() {
+        return sURL_CheckOut != null ? sURL_CheckOut : "${general.LiqPay.sURL_CheckOut}";
+    }
+
+    public void sURL_CheckOut(String sURL_CheckOut) {
+        this.sURL_CheckOut = sURL_CheckOut;
     }
 
 }
