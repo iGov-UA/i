@@ -1,5 +1,9 @@
 'use strict';
 
+var errorStatusCodes = [4//**
+  , 5//**
+];
+
 module.exports.codes = {
   EXTERNAL_SERVICE_ERROR: 'ESE',
   INPUT_PARAMETER_ERROR: 'IPE',
@@ -24,6 +28,10 @@ module.exports.createError = function (code, error_description, error) {
     message: error_description,
     nested: error
   };
+};
+
+module.exports.isHttpError = function (statusCode) {
+  return errorStatusCodes.indexOf(statusCode / 100) > -1;
 };
 
 module.exports[404] = function pageNotFound(req, res) {
