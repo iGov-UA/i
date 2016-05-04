@@ -347,20 +347,20 @@ if [ -z $sProject ]; then
 else
 	if [ $sProject == "wf-central" ]; then
 		if curl --silent --show-error http://$sJenkinsUser:$sJenkinsAPI@localhost:8080/job/alpha_Back/lastBuild/api/json | grep -q result\":null; then
-			echo "Building of alpha_Back project is running. Compilation of wf-central will start automatically."
-			exit 0
-		else
 			echo "Building of alpha_Back project is not running."
 			build_central
+		else
+			echo "Building of alpha_Back project is running. Compilation of wf-central will start automatically."
+			exit 0
 		fi
 	fi
 	if [ $sProject == "wf-region" ]; then
 		if curl --silent --show-error http://$sJenkinsUser:$sJenkinsAPI@localhost:8080/job/alpha_Back/lastBuild/api/json | grep -q result\":null; then
-			echo "Building of alpha_Back project is running. Compilation of wf-region will start automatically."
-			exit 0
-		else
 			echo "Building of alpha_Back project is not running."
 			build_region
+		else
+			echo "Building of alpha_Back project is running. Compilation of wf-region will start automatically."
+			exit 0
 		fi
 	fi
 	if [ $sProject == "central-js" ]; then
