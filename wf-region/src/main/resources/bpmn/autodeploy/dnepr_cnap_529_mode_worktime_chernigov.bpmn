@@ -548,7 +548,7 @@
         <activiti:formProperty id="markers11" name="Розкриття атрібутів щодо специфіки вводу" type="markers" default="${markerService.loadFromFile('dnepr_cnap_529_mode_worktime_1_chernigov.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers12" name="Розкриття атрібутів щодо специфіки вводу" type="markers" default="${markerService.loadFromFile('dnepr_cnap_529_mode_worktime_2_chernigov.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers13" name="Розкриття атрібутів щодо специфіки вводу" type="markers" default="${markerService.loadFromFile('dnepr_cnap_529_mode_worktime_2_Print_chernigov.json')}"></activiti:formProperty>
-        <activiti:formProperty id="form_signed" name="Накладення ЕЦП на заяву" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="form_signed" name="Заява з наложеною ЕЦП" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/skv/dnepr_cnap_529_mode_worktime_print_chernigov_start.html"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -1706,9 +1706,8 @@ ${sAddress}&lt;br /&gt;
 &lt;p&gt;
 Ваше звернення щодо встановлення  режиму роботи об’єкта торгівлі, закладу ресторанного господарства та сфери послуг - опрацьовано.&lt;br /&gt;
 Реєстраційні дані щодо встановлення режиму роботи об’єкта надані у документі, що вкладено в цій email, та який підписано електроним цифровим підписом.
-Для підтвердження електроного цифрового підпису Ви можете скористуватися &lt;a href=&quot;https://igov.org.ua/ecp&quot; target=&quot;_blank&quot;&gt; посиланням &lt;/a&gt;   
- 
-
+Для підтвердження електроного цифрового підпису Ви можете скористуватися &lt;a href=&quot;https://igov.org.ua/ecp&quot; target=&quot;_blank&quot;&gt; посиланням &lt;/a&gt;&lt;br /&gt;   
+&lt;br /&gt; 
 ${sNameOrgan}&lt;br /&gt;
 ${sWorkTime}&lt;br /&gt;
 ${sAddress}&lt;br /&gt;
@@ -1752,7 +1751,7 @@ ${sAddress}&lt;br /&gt;
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask5" name="Повідомлення громадянина про успішне подання зверенння" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask5" name="Повідомлення громадянина про успішне подання зверенння" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -1768,6 +1767,7 @@ ${sAddress}&lt;br /&gt;
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 Ваш запит щодо встановлення режиму роботи об’єктів торгівлі та сфери послуг успішно зареєстровано і буде опрацьовано впродовж визначений Законом термін.&lt;br /&gt;
 &lt;br /&gt;
+Інформація щодо Вашого звернення, яку Ви підписали електроним цифровим підписом, вкладено в цій email.&lt;br /&gt;   
 Ви отримаєте додаткове повідомлення за результатами розгляду зверення.&lt;br /&gt;
 ${sNameOrgan}&lt;br /&gt;
 ${sWorkTime}&lt;br /&gt;
@@ -1777,6 +1777,9 @@ ${sNameOrgan}&lt;br /&gt;
 ${sAddress}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>${PrintForm_1},${form_signed}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -1818,7 +1821,7 @@ ${sAddress}&lt;br /&gt;
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Зареєстровано звернення на тему: погодження режиму роботи об’єктів торгівлі та сфери послуг]]></activiti:string>
+          <activiti:string><![CDATA[Перевірено звернення на тему: погодження режиму роботи об’єктів торгівлі та сфери послуг]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
