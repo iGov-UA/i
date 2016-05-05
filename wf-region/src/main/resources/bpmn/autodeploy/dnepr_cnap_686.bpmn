@@ -157,27 +157,38 @@
           <activiti:value id="tf1702_1" name="Так"></activiti:value>
           <activiti:value id="tf1702_2" name="Ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="Info_6_2" name="--------------------------------------" type="label" default="--------------------------------------"></activiti:formProperty>
-<!-- Указать код нового основного вида деятельности -->        
-<!-- Указать код прежнего основного вида деятельности -->        
-        <activiti:formProperty id="Info_6_3" name="--------------------------------------" type="label" default="--------------------------------------"></activiti:formProperty>
+        <activiti:formProperty id="sKVED_new_0002_01" name="Код нового основного виду діяльності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sKVED_new_Plus_0002_01" name="Позначка нового виду діяльності" type="string" default=" "></activiti:formProperty>
+
+<!-- маркер показать поля для ввода если (asSelectIzmKVED_0002_01 == tf1702_1) -->        
+        <activiti:formProperty id="markers_Show_sKVED_new_0002_01" name="показать поля если (asSelectIzmKVED_0002_01 == tf1702_1)" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_sKVED_new_0002_01&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_new_0002_01&quot;,&quot;sKVED_new_Plus_0002_01&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectIzmKVED_0002_01&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf1702_1'&quot;}}}"></activiti:formProperty>
+<!-- маркер установить плюс для нового основного вида деятельности если (sKVED_new_0002_01 != ".") -->        
+        <activiti:formProperty id="markers_sKVED_new_0002_02" name="поставити + для нового основного виду" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sKVED_new_0002_02&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_new_Plus_0002_01&quot;],&quot;asID_Field_sValue&quot;:[&quot;+&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sKVED_new_0002_01&quot;},&quot;sCondition&quot;:&quot;[sClient] != '.'&quot;}}}"></activiti:formProperty>
+<!-- маркер установить в пробел поля для ввода если (asSelectIzmKVED_0002_01 == tf1702_1) -->        
+        <activiti:formProperty id="markers_sKVED_new_0002_03" name="установить в пробел поля для ввода если (asSelectIzmKVED_0002_01 == tf1702_1)" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sKVED_new_0002_03&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_new_0002_01&quot;],&quot;asID_Field_sValue&quot;:[&quot; &quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectIzmKVED_0002_01&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf1702_1'&quot;}}}"></activiti:formProperty>
+<!-- маркер установить в точки поля для ввода если (asSelectIzmKVED_0002_01 == tf1702_2) -->        
+        <activiti:formProperty id="markers_sKVED_new_0002_04" name="установить в точку поля для ввода если (asSelectIzmKVED_0002_01 == tf1702_2)" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sKVED_new_0002_04&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_new_0002_01&quot;],&quot;asID_Field_sValue&quot;:[&quot;.&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectIzmKVED_0002_01&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf1702_2'&quot;}}}"></activiti:formProperty>
+<!-- скрыть маркеры и строки -->        
+        <activiti:formProperty id="markers_Hides_KVED_new_0002_00" name="спрятать маркеры и строки" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hides_KVED_new_0002_00&quot;:{&quot;aField_ID&quot;:[&quot;markers_Show_sKVED_new_0002_00&quot;,&quot;markers_sKVED_new_0002_02&quot;,&quot;markers_sKVED_new_0002_03&quot;,&quot;markers_sKVED_new_0002_04&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;bankIdlastName&quot;},&quot;sCondition&quot;:&quot;[sClient] == '.'&quot;}}}"></activiti:formProperty>
+
 
         <activiti:formProperty id="asSelectIzmKVED_0002_02" name="Додаються нові види економічної діяльності" type="enum" default="tf1702_2" required="true">
           <activiti:value id="tf1702_1" name="Так"></activiti:value>
           <activiti:value id="tf1702_2" name="Ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="Info_6_4" name="--------------------------------------" type="label" default="--------------------------------------"></activiti:formProperty>
+<!-- маркер показать поля для ввода если (asSelectIzmKVED_0002_02 == tf1702_1) -->        
+        <activiti:formProperty id="markers_Show_asSelectNumKVED_0002_01" name="показать поля если (asSelectIzmKVED_0002_02 == tf1702_1)" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_asSelectNumKVED_0002_01&quot;:{&quot;aField_ID&quot;:[&quot;asSelectNumKVED_0002_01&quot;,&quot;sKVED_0002_01&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectIzmKVED_0002_02&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf1702_1'&quot;}}}"></activiti:formProperty>
+
         <activiti:formProperty id="asSelectNumKVED_0002_01" name="Оберіть кількість видів діяльності які Ви додаєте/активуєте" type="enum" default="tf1600">
           <activiti:value id="tf1600" name="1"></activiti:value>
           <activiti:value id="tf1601" name="до  5"></activiti:value>
           <activiti:value id="tf1602" name="до 10"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="markers_Hide03_0002_01" name="спрятать маркеры" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide03_0002_01&quot;:{&quot;aField_ID&quot;:[&quot;markers1600&quot;,&quot;markers1601&quot;,&quot;markers1602&quot;,&quot;markers1603&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;bankIdlastName&quot;},&quot;sCondition&quot;:&quot;[sClient] == '.'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers_0002_1600" name="відкрити 1 КВЕД для вводу" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_0002_1600&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_0002_01&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectNumKVED_0002_01&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf1600'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers_0002_1601" name="відкрити 5 КВЕДів для вводу" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_0002_1601&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_0002_01&quot;,&quot;sKVED_0002_02&quot;,&quot;sKVED_0002_03&quot;,&quot;sKVED_0002_04&quot;,&quot;sKVED_0002_05&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectNumKVED_0002_01&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf1601'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers_0002_1602" name="відкрити 10 КВЕДів для вводу" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_0002_1602&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_0002_01&quot;,&quot;sKVED_0002_02&quot;,&quot;sKVED_0002_03&quot;,&quot;sKVED_0002_04&quot;,&quot;sKVED_0002_05&quot;,&quot;sKVED_0002_06&quot;,&quot;sKVED_0002_07&quot;,&quot;sKVED_0002_08&quot;,&quot;sKVED_0002_09&quot;,&quot;sKVED_0002_10&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectNumKVED_0002_01&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf1602'&quot;}}}"></activiti:formProperty>
 
-        <activiti:formProperty id="sKVED_0002_01" name="Код виду діяльності" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sKVED_0002_01" name="Код виду діяльності" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sKVED_0002_02" name="Код другого виду діяльності" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sKVED_0002_03" name="Код третього виду діяльності" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sKVED_0002_04" name="Код четвертого виду діяльності" type="string" default=" "></activiti:formProperty>
@@ -187,73 +198,24 @@
         <activiti:formProperty id="sKVED_0002_08" name="Код восьмого виду діяльності" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sKVED_0002_09" name="Код дев'ятого виду діяльності" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sKVED_0002_10" name="Код десятого виду діяльності" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="Info_6_5" name="--------------------------------------" type="label" default="--------------------------------------"></activiti:formProperty>
 
-        <activiti:formProperty id="asSelectIzmKVED_0002_03" name="Видаляються види економічної діяльності" type="enum" default="tf1702_2" required="true">
-          <activiti:value id="tf1702_1" name="Так"></activiti:value>
-          <activiti:value id="tf1702_2" name="Ні"></activiti:value>
-        </activiti:formProperty>
+<!-- маркеры установить/убрать плюс для нового вида деятельности если (sKVED_0002_01 != "") -->        
+        <activiti:formProperty id="markers_sKVED_0002_01_1" name="поставити + для нового виду" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sKVED_0002_01_1&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_Plus_0002_01&quot;],&quot;asID_Field_sValue&quot;:[&quot;+&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sKVED_0002_01&quot;},&quot;sCondition&quot;:&quot;[sClient] != ''&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers_sKVED_0002_01_2" name="убрать + для нового виду" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sKVED_0002_01_2&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_Plus_0002_01&quot;],&quot;asID_Field_sValue&quot;:[&quot; &quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sKVED_0002_01&quot;},&quot;sCondition&quot;:&quot;[sClient] == ''&quot;}}}"></activiti:formProperty>
 
-        
-        <activiti:formProperty id="asSelectNumKVED_0003_01" name="Оберіть кількість видів діяльності які Ви видаляєте/деактивуєте" type="enum" default="tf1600">
-          <activiti:value id="tf1600" name="1"></activiti:value>
-          <activiti:value id="tf1601" name="до  5"></activiti:value>
-          <activiti:value id="tf1602" name="до 10"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="markers_Hide03_0003_01" name="спрятать маркеры" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide03_0003_01&quot;:{&quot;aField_ID&quot;:[&quot;markers1600&quot;,&quot;markers1601&quot;,&quot;markers1602&quot;,&quot;markers1603&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;bankIdlastName&quot;},&quot;sCondition&quot;:&quot;[sClient] == '.'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers_0003_1600" name="відкрити 1 КВЕД для вводу" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_0003_1600&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_0003_01&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectNumKVED_0003_01&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf1600'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers_0003_1601" name="відкрити 5 КВЕДів для вводу" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_0003_1601&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_0003_01&quot;,&quot;sKVED_0003_02&quot;,&quot;sKVED_0003_03&quot;,&quot;sKVED_0003_04&quot;,&quot;sKVED_0003_05&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectNumKVED_0003_01&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf1601'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers_0003_1602" name="відкрити 10 КВЕДів для вводу" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_0003_1602&quot;:{&quot;aField_ID&quot;:[&quot;sKVED_0003_01&quot;,&quot;sKVED_0003_02&quot;,&quot;sKVED_0003_03&quot;,&quot;sKVED_0003_04&quot;,&quot;sKVED_0003_05&quot;,&quot;sKVED_0003_06&quot;,&quot;sKVED_0003_07&quot;,&quot;sKVED_0003_08&quot;,&quot;sKVED_0003_09&quot;,&quot;sKVED_0003_10&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectNumKVED_0003_01&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf1602'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sKVED_Plus_0002_01" name="+ на Код виду діяльності" type="string" default=" "></activiti:formProperty>
 
-        <activiti:formProperty id="sKVED_0003_01" name="Код виду діяльності" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sKVED_0003_02" name="Код другого виду діяльності" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED_0003_03" name="Код третього виду діяльності" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED_0003_04" name="Код четвертого виду діяльності" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED_0003_05" name="Код п'ятого виду діяльності" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED_0003_06" name="Код шостого виду діяльності" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED_0003_07" name="Код сьомого виду діяльності" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED_0003_08" name="Код восьмого виду діяльності" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED_0003_09" name="Код дев'ятого виду діяльності" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED_0003_10" name="Код десятого виду діяльності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sKVED_Plus_0002_02" name="+ на Код другого виду діяльності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sKVED_Plus_0002_03" name="+ на Код третього виду діяльності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sKVED_Plus_0002_04" name="+ на Код четвертого виду діяльності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sKVED_Plus_0002_05" name="+ на Код п'ятого виду діяльності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sKVED_Plus_0002_06" name="+ на Код шостого виду діяльності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sKVED_Plus_0002_07" name="+ на Код сьомого виду діяльності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sKVED_Plus_0002_08" name="+ на Код восьмого виду діяльності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sKVED_Plus_0002_09" name="+ на Код дев'ятого виду діяльності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sKVED_Plus_0002_10" name="+ на Код десятого виду діяльності" type="string" default=" "></activiti:formProperty>
 
-        
-        <activiti:formProperty id="markers_Hide03_01" name="спрятать маркеры" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide03_01&quot;:{&quot;aField_ID&quot;:[&quot;markers1600&quot;,&quot;markers1601&quot;,&quot;markers1602&quot;,&quot;markers1603&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;bankIdlastName&quot;},&quot;sCondition&quot;:&quot;[sClient] == '.'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers1600" name="відкрити 1 КВЕД для вводу" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1600&quot;:{&quot;aField_ID&quot;:[&quot;sKVED01&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectNumKVED&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf1600'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers1601" name="відкрити 5 КВЕДів для вводу" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1601&quot;:{&quot;aField_ID&quot;:[&quot;sKVED01&quot;,&quot;sKVED02&quot;,&quot;sKVED03&quot;,&quot;sKVED04&quot;,&quot;sKVED05&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectNumKVED&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf1601'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers1602" name="відкрити 10 КВЕДів для вводу" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1602&quot;:{&quot;aField_ID&quot;:[&quot;sKVED01&quot;,&quot;sKVED02&quot;,&quot;sKVED03&quot;,&quot;sKVED04&quot;,&quot;sKVED05&quot;,&quot;sKVED06&quot;,&quot;sKVED07&quot;,&quot;sKVED08&quot;,&quot;sKVED09&quot;,&quot;sKVED10&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectNumKVED&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf1602'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers1603" name="відкрити 20 КВЕДів для вводу" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1603&quot;:{&quot;aField_ID&quot;:[&quot;sKVED01&quot;,&quot;sKVED02&quot;,&quot;sKVED03&quot;,&quot;sKVED04&quot;,&quot;sKVED05&quot;,&quot;sKVED06&quot;,&quot;sKVED07&quot;,&quot;sKVED08&quot;,&quot;sKVED09&quot;,&quot;sKVED10&quot;,&quot;sKVED11&quot;,&quot;sKVED12&quot;,&quot;sKVED13&quot;,&quot;sKVED14&quot;,&quot;sKVED15&quot;,&quot;sKVED16&quot;,&quot;sKVED17&quot;,&quot;sKVED18&quot;,&quot;sKVED19&quot;,&quot;sKVED20&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectNumKVED&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf1603'&quot;}}}"></activiti:formProperty>
 
-        <activiti:formProperty id="sKVED01" name="Код виду діяльності" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sKVED02" name="Код другого виду діяльності" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED03" name="Код третього виду діяльності" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED04" name="Код четвертого виду діяльності" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED05" name="Код п'ятого виду діяльності" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED06" name="Код шостого виду діяльності" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED07" name="Код сьомого виду діяльності" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED08" name="Код восьмого виду діяльності" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED09" name="Код дев'ятого виду діяльності" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED10" name="Код десятого виду діяльності" type="string" default=" "></activiti:formProperty>
-
-        <activiti:formProperty id="sKVED11" name="Код одинадцятого виду діяльності" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED12" name="Код дванадцятого виду діяльності" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED13" name="Код тринадцятого виду діяльності" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED14" name="Код чотирнадцятого виду діяльності" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED15" name="Код п'ятнадцятого виду діяльності" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED16" name="Код шістнадцятого виду діяльності" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED17" name="Код сімнадцятого виду діяльності" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED18" name="Код вісімнадцятого виду діяльності" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED19" name="Код дев'ятнадцятого виду діяльності" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED20" name="Код двадцятого виду діяльності" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED21" name="Код двадцять першого виду діяльності" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED22" name="Код двадцять другого виду діяльності" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED23" name="Код двадцять третього виду діяльності" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED24" name="Код двадцять четвертого виду діяльності" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED25" name="Код двадцять п'ятого виду діяльності" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED26" name="Код двадцять шостого виду діяльності" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED27" name="Код двадцять сьомого виду діяльності" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED28" name="Код двадцять восьмого виду діяльності" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED29" name="Код двадцять дев'ятого виду діяльності" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sKVED30" name="Код тридцятого виду діяльності" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="markers_Hide_01_07" name="показать строки если есть изменения №7" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide_01_07&quot;:{&quot;aField_ID&quot;:[&quot;Info_7_0&quot;,&quot;Info_7_1&quot;,&quot;Info_7_2&quot;,&quot;sVar2BankIdlastName_N002&quot;,&quot;sVar2BankIdfirstName_N002&quot;,&quot;sVar2BankIdmiddleName_N002&quot;,&quot;sVar2BankIdinn_N002&quot;,&quot;sVar2NameObmeg_N002&quot;,&quot;Info_7_3&quot;,&quot;sVar2BankIdlastName_N003&quot;,&quot;sVar2BankIdfirstName_N003&quot;,&quot;sVar2BankIdmiddleName_N003&quot;,&quot;sVar2BankIdinn_N003&quot;,&quot;sVar2NameObmeg_N003&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectIzm_07&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf1702_1'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="Info_7_0" name="======================================" type="label" default="======================================"></activiti:formProperty>
         <activiti:formProperty id="Info_7_1" name="Зміна відомостей про осіб, які можуть вчиняти дії від імені фізичної особи - підприємця;у тому числі підписувати договори, подавати документи для державної реєстрації тощо." type="label" default=" "></activiti:formProperty>
