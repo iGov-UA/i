@@ -16,7 +16,6 @@ import org.igov.io.db.kv.statical.impl.FileStorage;
 import org.igov.model.action.event.HistoryEventType;
 import org.igov.model.document.*;
 import org.igov.model.subject.Subject;
-import org.igov.service.business.access.BankIDConfig;
 import org.igov.service.business.access.BankIDUtils;
 import org.igov.service.business.action.ActionEventService;
 import org.igov.service.business.document.access.handler.HandlerFactory;
@@ -62,8 +61,8 @@ public class DocumentController {
 
     @Autowired
     GeneralConfig generalConfig;
-    @Autowired
-    BankIDConfig bankIDConfig;
+    //@Autowired
+    //BankIDConfig bankIDConfig;
     @Autowired
     ActionEventService actionEventService;
     @Autowired
@@ -357,7 +356,7 @@ public class DocumentController {
 
         Subject subject_Upload = oManageSubject.syncSubject_Upload(sID_Subject_Upload);
 
-        String oSignData = BankIDUtils.checkECP(bankIDConfig.sClientId(), bankIDConfig.sClientSecret(),
+        String oSignData = BankIDUtils.checkECP(generalConfig, generalConfig.getLogin_BankID_PB_Auth(), generalConfig.getPassword_Auth_Receipt_PB_Bank(),
                 generalConfig.sHostCentral(), aoContent, sName);
 
         return documentDao.setDocument(
