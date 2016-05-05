@@ -389,7 +389,7 @@
         <activiti:formProperty id="sNameOrgan" name="Назва органа в емейл" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="шапка" type="invisible" default="Черкаському обласному управлінню лісового та мисливського господарства"></activiti:formProperty>
         <activiti:formProperty id="status" name="Обробка заяви" type="enum" required="true">
-          <activiti:value id="sEnumApprove" name="Громадянина запрошено до отримання документів або складання іспиту"></activiti:value>
+          <activiti:value id="sEnumApprove" name="Громадянина запрошено до  складання іспиту"></activiti:value>
           <activiti:value id="sEnumDeny" name="Відмова громадянину у видачі документів"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
@@ -487,6 +487,7 @@
     <sequenceFlow id="flow11" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
     <userTask id="usertask2" name="Розгляд документів" activiti:candidateGroups="ulmg_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
+        <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище " type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
@@ -502,7 +503,7 @@
           <activiti:value id="sEnumCardDouble" name="Дублікат Контрольної картки обліку добутої дичини та порушень правил полювання"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="status" name="Обробка заяви" type="enum" required="true">
-          <activiti:value id="sEnumApprove" name="Громадянина запрошено до отримання документів або складання іспиту"></activiti:value>
+          <activiti:value id="sEnumApprove" name="Громадянина запрошено до отримання документів"></activiti:value>
           <activiti:value id="sEnumDeny" name="Відмова громадянину у видачі документів"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
