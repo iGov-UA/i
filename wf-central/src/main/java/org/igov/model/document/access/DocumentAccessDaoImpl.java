@@ -5,7 +5,7 @@ import org.igov.io.sms.OtpText;
 import org.igov.io.sms.OtpPassword;
 import org.igov.io.sms.OtpCreate;
 import org.igov.io.sms.OtpPass;
-import org.igov.io.mail.unisender.ManagerOTP;
+import org.igov.io.sms.ManagerOTP;
 import com.google.common.collect.Iterables;
 import com.google.gson.Gson;
 import org.slf4j.Logger;import org.slf4j.LoggerFactory;
@@ -30,8 +30,9 @@ import org.igov.util.Tool;
 @Repository
 public class DocumentAccessDaoImpl extends GenericEntityDao<Long, DocumentAccess> implements DocumentAccessDao {
     private final static Logger LOG = LoggerFactory.getLogger(DocumentAccessDaoImpl.class);
-    private final String sURL = "https://igov.org.ua/index#";
-    private final String urlConn = "https://sms-inner.siteheart.com/api/otp_create_api.cgi";
+    
+    //private final String sURL = "https://igov.org.ua/index#";
+    //private final String urlConn = "https://sms-inner.siteheart.com/api/otp_create_api.cgi";
     @Autowired
     GeneralConfig generalConfig;
     @Autowired
@@ -236,21 +237,27 @@ public class DocumentAccessDaoImpl extends GenericEntityDao<Long, DocumentAccess
     //public String getDocumentAccess(Integer nID_Access, String sSecret) throws Exception;
 
     private <T> String getOtpPassword(DocumentAccess docAcc) throws Exception {
-        Properties prop = new Properties();
+        /*Properties oProperties = new Properties();
         File file = new File(System.getProperty("catalina.base") + "/conf/merch.properties");
         FileInputStream fis = new FileInputStream(file);
-        prop.load(fis);
-        OtpPassword otp = new OtpPassword();
-        otp.setMerchant_id(prop.getProperty("merchant_id"));
-        otp.setMerchant_password(prop.getProperty("merchant_password"));
+        oProperties.load(fis);
         fis.close();
-        OtpCreate otpCreate = new OtpCreate();
-        otpCreate.setCategory("qwerty");
-        otpCreate.setFrom("10060");
+        */
+        
+        OtpPassword oOtpPassword = new OtpPassword();
+        //oOtpPassword.setMerchant_id(prop.getProperty("merchant_id"));
+        //oOtpPassword.setMerchant_password(prop.getProperty("merchant_password"));
+        String sURL=generalConfig.getURL_OTP_Send();
+        oOtpPassword.setMerchant_id(generalConfig.getMerchantId_OTP_Send());
+        oOtpPassword.setMerchant_password(generalConfig.getMerchantPassword_OTP_Send());
+        
+        OtpCreate oOtpCreate = new OtpCreate();
+        oOtpCreate.setCategory("qwerty");
+        oOtpCreate.setFrom("10060");
         if (!docAcc.getTelephone().isEmpty() || docAcc.getTelephone() != null) {
-            otpCreate.setPhone(docAcc.getTelephone());
+            oOtpCreate.setPhone(docAcc.getTelephone());
         } else {
-            otpCreate.setPhone("null");
+            oOtpCreate.setPhone("null");
         }
         SmsTemplate smsTemplate1 = new SmsTemplate();
         smsTemplate1.setText("text:" + "Parol: ");
@@ -273,14 +280,14 @@ public class DocumentAccessDaoImpl extends GenericEntityDao<Long, DocumentAccess
         list.add((T) new OtpPass("2"));
         list.add((T) new OtpText("-"));
         list.add((T) new OtpPass("2"));
-        otpCreate.setSms_template(list);
+        oOtpCreate.setSms_template(list);
         List<OtpCreate> listOtpCreate = new ArrayList<>();
-        listOtpCreate.add(otpCreate);
-        otp.setOtp_create(listOtpCreate);
+        listOtpCreate.add(oOtpCreate);
+        oOtpPassword.setOtp_create(listOtpCreate);
         Gson g = new Gson();
-        String jsonObj = g.toJson(otp);
-        URL url = new URL(urlConn);
-        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        String jsonObj = g.toJson(oOtpPassword);
+        URL oURL = new URL(sURL);
+        HttpURLConnection con = (HttpURLConnection) oURL.openConnection();
         con.setRequestMethod("POST");
         con.setRequestProperty("content-type", "application/json;charset=UTF-8");
         con.setDoOutput(true);
