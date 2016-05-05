@@ -21,10 +21,6 @@
         <activiti:formProperty id="kidsDoc" name="Свідоцтво про народження; Серія та номер документу, дата і орган, що його видав" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть підрозділ ДМС або ЦНАП району (міста), до якого належить місце реєстрації отримувача паспорта" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="RegistrationAddress" name="Місце реєстрації або проживання;Область, Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="regis" name="Чи потрібно реєструвати особу за цією адресою?; Якщо реєстрація вже оформлена, оберіть варіант ні" type="enum" required="true">
-          <activiti:value id="yesR" name="Так"></activiti:value>
-          <activiti:value id="noR" name="Ні"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="Family" name="Сімейний стан" type="enum" required="true">
           <activiti:value id="none" name="неодружений(-а)"></activiti:value>
           <activiti:value id="two" name="одружений(-а)"></activiti:value>
@@ -59,7 +55,6 @@
         <activiti:formProperty id="sArea" name="район/місто звернення" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="Registrationservice" name="Відділ ДМС" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible" default="Заявка актуальна"></activiti:formProperty>
-        <activiti:formProperty id="sRecviziti" name="Реквізити для держмита" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('dms/passport.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -132,7 +127,7 @@ execution.setVariable('Registrationservice', per4)
 									&lt;/p&gt;
                                     &lt;p&gt;[cancelTask]&lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
-									${sNameOrgan},&lt;br /&gt;
+									${sNameOrgan},&lt;br&gt;
 									[pattern/mail/_common_signature_end.html]   
 									[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -156,10 +151,6 @@ execution.setVariable('Registrationservice', per4)
         <activiti:formProperty id="kidsDoc" name="Свідоцтво про народження; Серія та номер документу, дата і орган, що його видав" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="RegistrationAddress" name="Місце реєстрації або проживання; Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sArea" name="Місто або район, до якого належить місце проживання отримувача паспорта" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="regis" name="Чи потрібно реєструвати особу за цією адресою?" type="enum" writable="false">
-          <activiti:value id="yesR" name="Так"></activiti:value>
-          <activiti:value id="noR" name="Ні"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="Family" name="Сімейний стан" type="enum" writable="false">
           <activiti:value id="none" name="неодружений(-а)"></activiti:value>
           <activiti:value id="two" name="одружений(-а)"></activiti:value>
@@ -179,7 +170,7 @@ execution.setVariable('Registrationservice', per4)
           <activiti:value id="accept" name="Призначити зустріч у відділенні"></activiti:value>
           <activiti:value id="decline" name="Відмовити в наданні послуги"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="decisionComment" name="Коментар до рішення; Наприклад, пояснення чому громадянину було відмовлено в наданні цієї послуги &lt;br /&gt; АБО &lt;br /&gt; Додаткові деталі для закінчення процессу оформлення паспорта" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="decisionComment" name="Коментар до рішення. Наприклад, пояснення чому громадянину було відмовлено в наданні цієї послуги АБО додаткові деталі для закінчення процессу оформлення паспорта" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sRecviziti" name="Реквізити для сплати держмита" type="textArea"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -209,16 +200,12 @@ execution.setVariable('Registrationservice', per4)
           <activiti:expression>[pattern/mail/_common_header.html]
                                     &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
-										На жаль, Вам відмовлено у надані послуги.&lt;br /&gt;
+										На жаль, Вам відмовлено у надані послуги або Ви скасували заявку.&lt;br&gt;
                                         При необхідності оформлення паспорта громадянина України по досягненні 16-річного віку Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
 										Коментар Державного службовця:&lt;br /&gt;
 											&lt;b&gt;&lt;i&gt;${decisionComment}&lt;/i&gt;&lt;/b&gt;
-									&lt;/p&gt;
-									&lt;p&gt;
-										При вниникненні питань Ви можете звернутися до чергового:&lt;br /&gt;
-										${sPhoneOrgan}
 									&lt;/p&gt;
 									[pattern/mail/_common_signature_start.html]
                                     ${sNameOrgan}.&lt;/p&gt;
@@ -248,42 +235,33 @@ execution.setVariable('Registrationservice', per4)
           <activiti:expression>[pattern/mail/_common_header.html]
                                     &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
-                                        Спеціалісти ${sOrganType} успішно опрацювли Вашу заяву.&lt;br /&gt;
-										Для того щоб закінчити процедуру оформлення паспорта громадянина України по досягненні 16-річного віку необхідно:&lt;br /&gt;
+                                        Спеціалісти ${sOrganType} успішно опрацювли Вашу заяву.&lt;br&gt;
+										Для того щоб закінчити процедуру оформлення паспорта громадянина України по досягненні 16-річного віку необхідно:&lt;br&gt;
 										&lt;ul&gt;
 										&lt;li&gt;Прийти до ${sOrganType} за адресою: ${sAddress} з необхідними документами та звернутись до ${sKab205}.&lt;/li&gt;
 										&lt;li&gt;Заповнити та підписати заяву для видачі паспорту згідно зразка.&lt;/li&gt;
 										&lt;/ul&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
-										&lt;b&gt;Деталі зустрічі:&lt;/b&gt;&lt;br /&gt;
+										&lt;b&gt;Деталі зустрічі:&lt;/b&gt;&lt;br&gt;
 										День та час - ${date_of_visit}
 									&lt;/p&gt;
 									&lt;p&gt;
-										&lt;b&gt;Необхідні документи, які треба принести до ${sOrganType} при оформленні паспорта громадянина України по досягненні 16-річного віку:&lt;/b&gt;&lt;br/&gt;
+										&lt;b&gt;Необхідні документи, які треба принести до ${sOrganType} при оформленні паспорта громадянина України по досягненні 16-річного віку:&lt;/b&gt;&lt;br&gt;
 										&lt;ul&gt;
 										&lt;li&gt;свідоцтво про народження;&lt;/li&gt;
 										&lt;li&gt;оригінали паспортів батьків;&lt;/li&gt;
-										&lt;li&gt;дві фотокартки розміром 3,5 х 4,5 см (фотокартки, що подаються для оформлення паспорта, мають бути виконані з одного негатива, із зображенням обличчя виключно анфас, без головного убору, виготовленими на тонкому білому або кольоровому фотопапері без кутика; для громадян, які постійно носять окуляри, обов'язкове фотографування в окулярах);&lt;/li&gt;
+										&lt;li&gt;якщо оформлюється не ID-картка, дві фотокартки розміром 3,5 х 4,5 см (фотокартки, що подаються для оформлення паспорта, мають бути виконані з одного негатива, із зображенням обличчя виключно анфас, без головного убору, виготовленими на тонкому білому або кольоровому фотопапері без кутика; для громадян, які постійно носять окуляри, обов'язкове фотографування в окулярах);&lt;/li&gt;
 										&lt;/ul&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
-									&lt;b&gt;Зверніть увагу:&lt;/b&gt;&lt;br /&gt; 
-										Якщо отримувач паспорта не зареєстрований за адресою проживання, то для завершення процедури реєстрації необхідно сплатити держмито у розмірі 0,85 коп. І принести з собою квитанцію про сплату з мокрою печаткою банку.&lt;br /&gt; 
-										Реквізити для сплати:&lt;/b&gt;&gt;&lt;br /&gt;
-										&lt;i&gt;${sRecviziti}&lt;/i&gt;
-									&lt;/p&gt;
 									&lt;p&gt;
 										Коментар Державного службовця:&lt;br /&gt;
 										&lt;b&gt;&lt;i&gt;${decisionComment}&lt;/i&gt;&lt;/b&gt;
 									&lt;/p&gt;
-									&lt;p&gt;
-										При вниникненні питань Ви можете звернутися до чергового:&lt;br /&gt;
-										${sPhoneOrgan}
-									&lt;/p&gt;
-                                    &lt;p&gt;[cancelTask]&lt;/p&gt;
+									&lt;p&gt;[cancelTask]&lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
-									${sNameOrgan},&lt;br /&gt;
+									${sNameOrgan},&lt;br&gt;
 									[pattern/mail/_common_signature_end.html]   
 									[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -375,14 +353,10 @@ execution.setVariable('Registrationservice', per4)
           <activiti:expression>[pattern/mail/_common_header.html]
                                     &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
-                                        На жаль Ви не з'явились до ${sOrganType} у призначений день і час.&lt;br /&gt;
+                                        На жаль Ви не з'явились до ${sOrganType} у призначений день і час або Ви скасували заявку.&lt;br&gt;
                                         При необхідності оформлення паспорта громадянина України по досягненні 16-річного віку Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;
 									&lt;/p&gt;
-									&lt;p&gt;
-										При вниникненні питань Ви можете звернутися до чергового:&lt;br /&gt;
-										${sPhoneOrgan}
-                                    &lt;/p&gt;
-                                    [pattern/mail/_common_signature_start.html]
+									[pattern/mail/_common_signature_start.html]
 									${sNameOrgan},&lt;/p&gt;
 									[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -407,12 +381,12 @@ execution.setVariable('Registrationservice', per4)
           <activiti:expression>[pattern/mail/_common_header.html]
 								  &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
-                              		Ви отримали послугу "Оформлення паспорта громадянина України по досягненні 16-річного віку".&lt;br /&gt;
-                              		Будь ласка, оцініть якість надання цієї послуги за допомогою форми нижче.&lt;br /&gt;
+                              		Ви отримали послугу "Оформлення паспорта громадянина України по досягненні 16-річного віку".&lt;br&gt;
+                              		Будь ласка, оцініть якість надання цієї послуги за допомогою форми нижче.&lt;br&gt;
                               		Дякуємо.
 									&lt;/p&gt;
                                     [pattern/mail/_common_signature_start.html]
-									${sNameOrgan},&lt;br /&gt;
+									${sNameOrgan},&lt;br&gt;
 									[pattern/mail/_common_signature_end.html]   
 									[pattern/mail/_common_feedback.html]
 									[pattern/mail/_common_footer.html]</activiti:expression>
