@@ -1,7 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dnepr_cnap_42" name="Відомча реєстрація великотоннажних та інших технологічних транспортних засобів, що не підлягають експлуатації на вулично-дорожній мережі загального користування" isExecutable="true">
-    <startEvent id="startevent1" name="Start"></startEvent>
+    <startEvent id="startevent1" name="Start">
+     <extensionElements>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати рішення" type="select" default="0"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asChoiceSubject" name="Оберіть суб'єкт звернення" type="enum" required="true">
+          <activiti:value id="sEnumFiz" name="Фізична особа"></activiti:value>
+          <activiti:value id="sEnumUr" name="Юридична особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asReason" name="Оберіть суть звернення" type="enum" required="true">
+          <activiti:value id="sEnumRegistration" name="Реєстрація ТТЗ"></activiti:value>
+          <activiti:value id="sEnumReRegistration" name="Перереєстрація ТТЗ"></activiti:value>
+          <activiti:value id="sEnumTemporaryRegistration" name="Тимчасова реєстрація ТТЗ"></activiti:value>
+          <activiti:value id="sEnumRemoveRegistration" name="Зняття з обліку ТТЗ"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sAdressFiz" name="Адреса проживання фізичної особи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAdressUr" name="Юридична адреса" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAdressParking" name="Адреса стоянки великотоннажного та іншого технологічного транспортного засобу" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sLabel1" name=" " type="label" default="&lt;strong&gt;Дані про великотоннажний та інший технологічний транспортний засіб (ТТЗ)&lt;/strong&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sType" name="Тип ТТЗ" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sModel" name="Марка, модель ТТЗ" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nYearOfManufacture" name="Рік випуску" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCountryManufacture" name="Виробник (держава)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sIdentificationNumber" name="Ідентифікаційні номери (заводський, шасі/рами)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sEngineNumber" name="Номер двигуна;(Також у дужках зазначається латинська літера V, знак рівності та об'єм двигуна ТТЗ)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile1" name="Копія паспорта (для повнолітніх фізичних осіб та осіб віком від 16 до 18 років) або свідоцтво про народження (для осіб віком до 16 років)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile2" name="Акт технічного огляду" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile3" name="Позитивний висновок експертизи, проведеної фахівцями експертно-технічного центру, на відповідність технологічного транспортного засобу нормативно-правовим актам з охорони праці України;(для технологічних транспортних засобів, виготовлених за межами України чи переобладнаних або самостійно зібраних)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile4" name="Копія наказу про призначення посадової особи, відповідальної за безпечну експлуатацію та технічний стан ТТЗ" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile5" name="Копія експлуатаційної документації;(паспорт на транспортний засіб та інструкція з експлуатації)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile6" name="Копії документів, що підтверджують оплату вартості бланків, номерних знаків, виданих під час  реєстрації, та послуг за проведення технічного огляду (з відміткою банку)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile7" name="Копія сертифікату відповідності, свідоцтва про визнання відповідності, декларації про відповідність для технологічного транспортного засобу, на який розповсюджуються відповідні вимоги" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile8" name="Одного будь-якого з наведених документів що підтверджують правомірність придбання ТТЗ" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asDocument" name="Оберіть назву завантаженного документу" type="enum" required="true">
+          <activiti:value id="sEnumDoc1" name="Довідка-рахунок, який видан підприємством-виготовлювачем або іншим суб'єктом господарювання, що реалізує технологічний транспортний засіб"></activiti:value>
+          <activiti:value id="sEnumDoc2" name="Акт приймання-передачі, виданий підприємством-виготовлювачем ТТЗ чи його вузлів і агрегатів"></activiti:value>
+          <activiti:value id="sEnumDoc3" name="Договір купівлі-продажу, міни, дарування, лізингу, позички, застави, біржової угоди, договір про спільне володіння, користування і розпорядження майном, що перебуває у спільній частковій власності"></activiti:value>
+          <activiti:value id="sEnumDoc4" name="Документ, що підтверджує реалізацію технологічного транспортного засобу на аукціоні"></activiti:value>
+          <activiti:value id="sEnumDoc5" name="Договір оренди майна із зазначенням у ньому домовленості між сторонами щодо реєстрації ТТЗ за орендарем та доручення на право керування і використання цього транспортного засобу"></activiti:value>
+          <activiti:value id="sEnumDoc6" name="Вантажна митна декларація на технологічний транспортний засіб, що ввозиться, або посвідченням митного органу про реєстрацію ввезених на митну територію України ТТЗ, вузлів і агрегатів"></activiti:value>
+          <activiti:value id="sEnumDoc7" name="Рішення уповноваженого органу про відчуження ТТЗ"></activiti:value>
+          <activiti:value id="sEnumDoc8" name="Виконавчий напис нотаріуса про витребування від боржника майна"></activiti:value>
+          <activiti:value id="sEnumDoc9" name="Рішення суду про визнання права власності на ТТЗ"></activiti:value>
+          <activiti:value id="sEnumDoc10" name="Договір про спільне володіння, користування у разі отримання ТТЗ кількома громадянами в рахунок майнових паїв"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва ЦНАП" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса ЦНАП" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapkaGolova" name="Шапка для прінтформи" type="invisible"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <serviceTask id="servicetask2" name="Повідомлення чиновнику" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
