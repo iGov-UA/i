@@ -16,7 +16,7 @@
           <activiti:value id="sOpost" name="На поштову адресу"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sPlase_of_reg" name="Поштова адреса" type="string"></activiti:formProperty>
-        <activiti:formProperty id="marker1" name="Поштова адреса" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sPlase_of_reg&quot;],&quot;asID_Field&quot;:{&quot;sService&quot;:&quot;asResultWay&quot;},&quot;sCondition&quot;:&quot;[sService]=='На поштову адресу'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker1" name="Поштова адреса" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sPlase_of_reg&quot;],&quot;asID_Field&quot;:{&quot;sService&quot;:&quot;asResultWay&quot;},&quot;sCondition&quot;:&quot;[sService]=='sOpost'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="електронна пошта" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
       </extensionElements>
@@ -111,6 +111,8 @@ ${sNameOrgan},&lt;br&gt;
         <activiti:formProperty id="docID" name="Реєстраційний номер" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/ternopil_oda_209.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="принтформа якщо на поштову адресу" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_2&quot;:{&quot;aElement_ID&quot;:[&quot;sOpost&quot;,&quot;physicalCopy_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sChoiceObject&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sOpost'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="принтформа якщо на електронну адресу" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_3&quot;:{&quot;aElement_ID&quot;:[&quot;sEpost&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sChoiceObject&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEpost'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow50" sourceRef="usertask1" targetRef="exclusivegateway2"></sequenceFlow>
