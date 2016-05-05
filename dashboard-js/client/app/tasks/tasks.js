@@ -32,12 +32,6 @@
             function (processes) {
               return processes.list();
             }
-          ],
-          userProcesses: [
-            'taskFilterService',
-            function (taskFilterService) {
-              return taskFilterService.getProcesses();
-            }
           ]
         }
       })
