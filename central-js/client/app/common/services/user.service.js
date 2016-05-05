@@ -87,7 +87,7 @@ angular.module('app').factory('UserService', function ($http, $q, AdminService, 
             bankIDLogin = undefined;
             bankIDAccount = undefined;
             ErrorsFactory.addFail({sBody:'Помилка сервіса!',asParam:['soResponse: '+JSON.stringify(oResponse)]});
-            return bankIDAccount;
+            return oResponse.data;
         }));
     }
   };
