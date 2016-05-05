@@ -98,8 +98,8 @@ public class DocumentAccessHandler_PB extends AbstractDocumentAccessHandler {
         //}
 
         try {
-            sessionId = UkrDocUtil.getSessionId(generalConfig.getSID_login(), generalConfig.getSID_password(), 
-            		generalConfig.sURL_GenerationSID() + "?lang=UA");
+            sessionId = UkrDocUtil.getSessionId(generalConfig.getLogin_Auth_Receipt_PB_Bank(), generalConfig.getPassword_Auth_Receipt_PB_Bank(), 
+            		generalConfig.getURL_GenerateSID_Auth_Receipt_PB_Bank() + "?lang=UA");
             String authHeader = "sid:" + sessionId;
             byte[] authHeaderBytes = Base64.encode(authHeader.getBytes(StandardCharsets.UTF_8));
             String authHeaderEncoded = new String(authHeaderBytes);

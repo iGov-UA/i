@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.igov.io.mail.unisender;
+package org.igov.io.sms;
 
 import com.google.gson.Gson;
 import java.io.BufferedReader;
@@ -35,7 +35,7 @@ public class ManagerOTP {
     
     private final static Logger LOG = LoggerFactory.getLogger(ManagerOTP.class);
     //private final String sURL = "https://igov.org.ua/index#";
-    private final String sURL = "https://sms-inner.siteheart.com/api/otp_create_api.cgi";
+    //private final String sURL = "https://sms-inner.siteheart.com/api/otp_create_api.cgi";
     @Autowired
     GeneralConfig generalConfig;
     
@@ -43,16 +43,19 @@ public class ManagerOTP {
     
     public <T> String sendPasswordOTP(String sPhone, String sText, boolean bTextOnly) throws Exception {
         LOG.info("(sPhone={},sText={})",sPhone,sText);
-        Properties oProperties = new Properties();
+        /*Properties oProperties = new Properties();
         File oFile = new File(System.getProperty("catalina.base") + "/conf/merch.properties");
         FileInputStream oFileInputStream = new FileInputStream(oFile);
         oProperties.load(oFileInputStream);
-        oFileInputStream.close();
-
+        oFileInputStream.close();*/
+        
         OtpPassword oOtpPassword = new OtpPassword();
-        oOtpPassword.setMerchant_id(oProperties.getProperty("merchant_id"));
-        oOtpPassword.setMerchant_password(oProperties.getProperty("merchant_password"));
-
+        //oOtpPassword.setMerchant_id(oProperties.getProperty("merchant_id"));
+        //oOtpPassword.setMerchant_password(oProperties.getProperty("merchant_password"));
+        String sURL=generalConfig.getURL_OTP_Send();
+        oOtpPassword.setMerchant_id(generalConfig.getMerchantId_OTP_Send());
+        oOtpPassword.setMerchant_password(generalConfig.getMerchantPassword_OTP_Send());
+        
         OtpCreate oOtpCreate = new OtpCreate();
         oOtpCreate.setCategory("qwerty");
         oOtpCreate.setFrom("10060");
