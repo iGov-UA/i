@@ -49,10 +49,10 @@ public class AccessServiceLoginRoleFilterTest {
     @Autowired
     private AccessServiceLoginRoleFilter accessServiceLoginRoleFilter;
 
-    @Value("${general.auth.login}")
+    @Value("${general.Auth.sLogin}")
     private String generalAuthLogin;
 
-    @Value("${general.auth.password}")
+    @Value("${general.Auth.sPassword}")
     private String generalAuthPassword;
 
     private MockMvc mockMvc;

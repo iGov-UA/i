@@ -26,9 +26,9 @@ public class ActivitiRestAuthProvider implements AuthenticationProvider {
 
     private static final String GENERAL_ROLE = "ROLE_USER";
     private final Logger LOG = LoggerFactory.getLogger(ActivitiRestAuthProvider.class);
-    @Value("${general.auth.login}")
+    @Value("${general.Auth.sLogin}")
     private String sGeneralUsername;
-    @Value("${general.auth.password}")
+    @Value("${general.Auth.sPassword}")
     private String sGeneralPassword;
 
     private IdentityService oIdentityService;

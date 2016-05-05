@@ -5,7 +5,7 @@ import org.igov.io.sms.OtpText;
 import org.igov.io.sms.OtpPassword;
 import org.igov.io.sms.OtpCreate;
 import org.igov.io.sms.OtpPass;
-import org.igov.io.mail.unisender.ManagerOTP;
+import org.igov.io.sms.ManagerOTP;
 import com.google.common.collect.Iterables;
 import com.google.gson.Gson;
 import org.slf4j.Logger;import org.slf4j.LoggerFactory;

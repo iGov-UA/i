@@ -35,7 +35,7 @@ import org.activiti.engine.HistoryService;
 import org.igov.service.business.action.task.core.ActionTaskService;
 import org.igov.service.business.action.task.systemtask.misc.CancelTaskUtil;
 import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
-import org.igov.io.mail.unisender.ManagerOTP;
+import org.igov.io.sms.ManagerOTP;
 
 import org.igov.service.controller.security.AccessContract;
 import org.igov.util.JSON.JsonDateTimeSerializer;
