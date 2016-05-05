@@ -1096,4 +1096,11 @@
         <dropColumn tableName="SubjectOrganJoinAttribute" columnName="nID"/>
     </changeSet>
 
+    <changeSet id="issue-1263-1" author="brunneng">
+        <!-- need to add onDelete="CASCADE" -->
+        <dropForeignKeyConstraint baseTableName="HistoryEvent" constraintName="FK_HistoryEventService_HistoryEvent"/>
+        <addForeignKeyConstraint constraintName="FK_HistoryEventService_HistoryEvent" referencedTableName="HistoryEvent_Service" referencedColumnNames="nID"
+                                 baseColumnNames="nID_HistoryEvent_Service" baseTableName="HistoryEvent" onDelete="CASCADE"/>
+    </changeSet>
+
 </databaseChangeLog>
