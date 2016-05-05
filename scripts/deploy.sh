@@ -418,6 +418,10 @@ else
 	echo "Compilation finished removing lock file"
 	rm -f /tmp/$sProject/build.lock
 	
+	if [ "$bDocker" == "true" ]; then
+		build_docker
+	fi
+	
 	if [ "$bSkipDeploy" == "true" ]; then
 		echo "Deploy dsiabled"
 		exit 0
