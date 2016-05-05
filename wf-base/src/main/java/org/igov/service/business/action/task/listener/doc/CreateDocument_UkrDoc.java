@@ -113,8 +113,8 @@ public class CreateDocument_UkrDoc extends AbstractModelTask implements TaskList
 
             LOG.info("Found attachments for the process {}: {}", delegateTask.getId(), attach2 != null ? attach2.size() : 0);
 
-            String sessionId = UkrDocUtil.getSessionId(generalConfig.getSID_login2(), generalConfig.getSID_password2(),
-                    generalConfig.sURL_AuthSID_PB() + "?lang=UA");
+            String sessionId = UkrDocUtil.getSessionId(generalConfig.getLogin_Auth_UkrDoc_SED(), generalConfig.getPassword_Auth_UkrDoc_SED(),
+                    generalConfig.getURL_GenerateSID_Auth_UkrDoc_SED() + "?lang=UA");
 
             LOG.info("Retrieved session ID:" + sessionId);
 

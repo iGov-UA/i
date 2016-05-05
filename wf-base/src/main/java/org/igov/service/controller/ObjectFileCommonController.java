@@ -19,7 +19,7 @@ import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
 import org.igov.model.action.task.core.AttachmentCover;
 import org.igov.model.action.task.core.BuilderAttachModelCover;
 import org.igov.model.action.task.core.entity.AttachmentEntityI;
-import org.igov.service.business.access.BankIDConfig;
+//import org.igov.service.business.access.BankIDConfig;
 import org.igov.service.business.access.BankIDUtils;
 import org.igov.service.business.action.task.core.AbstractModelTask;
 import org.igov.service.business.action.task.core.ActionTaskService;
@@ -74,8 +74,8 @@ public class ObjectFileCommonController {
 
     @Autowired
     private GeneralConfig generalConfig;
-    @Autowired
-    private BankIDConfig bankIDConfig;
+    //@Autowired
+    //private BankIDConfig bankIDConfig;
 
     @Autowired
     private ActionTaskService oActionTaskService;
@@ -257,8 +257,8 @@ public class ObjectFileCommonController {
                     FileServiceIOException.Error.REDIS_ERROR, e.getMessage());
         }
 
-        String soSignData = BankIDUtils.checkECP(bankIDConfig.sClientId(),
-                bankIDConfig.sClientSecret(), generalConfig.sHostCentral(),
+        String soSignData = BankIDUtils.checkECP(generalConfig, generalConfig.getLogin_BankID_PB_Auth(),
+                generalConfig.getPassword_BankID_PB_Auth(), generalConfig.sHostCentral(),
                 upload, fileName);
 
         return soSignData;
@@ -467,8 +467,8 @@ public class ObjectFileCommonController {
 
         byte[] content = IOUtils.toByteArray(attachmentStream);
 
-        String soSignData = BankIDUtils.checkECP(bankIDConfig.sClientId(),
-                bankIDConfig.sClientSecret(), generalConfig.sHostCentral(),
+        String soSignData = BankIDUtils.checkECP(generalConfig, generalConfig.getLogin_BankID_PB_Auth(),
+                generalConfig.getPassword_BankID_PB_Auth(), generalConfig.sHostCentral(),
                 content, attachmentRequested.getName());
 
         return soSignData;

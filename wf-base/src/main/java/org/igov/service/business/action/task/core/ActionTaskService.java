@@ -71,7 +71,7 @@ import org.igov.model.action.task.core.TaskAssigneeCover;
 import org.igov.model.action.task.core.entity.TaskAssigneeI;
 import org.igov.model.flow.FlowSlotTicket;
 import org.igov.model.flow.FlowSlotTicketDao;
-import org.igov.service.business.access.BankIDConfig;
+//import org.igov.service.business.access.BankIDConfig;
 import org.igov.service.business.action.event.HistoryEventService;
 import org.igov.service.business.action.task.form.QueueDataFormType;
 import org.igov.service.exception.CRCInvalidException;
@@ -115,8 +115,8 @@ public class ActionTaskService {
 	};
 
     private static final Logger LOG = LoggerFactory.getLogger(ActionTaskService.class);
-    @Autowired
-    private BankIDConfig oBankIDConfig;
+    //@Autowired
+    //private BankIDConfig oBankIDConfig;
     //@Autowired
     //private ExceptionCommonController exceptionController;
     //@Autowired

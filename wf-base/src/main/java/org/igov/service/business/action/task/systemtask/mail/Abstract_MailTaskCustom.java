@@ -35,7 +35,7 @@ import org.activiti.engine.HistoryService;
 import org.igov.service.business.action.task.core.ActionTaskService;
 import org.igov.service.business.action.task.systemtask.misc.CancelTaskUtil;
 import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
-import org.igov.io.mail.unisender.ManagerOTP;
+import org.igov.io.sms.ManagerOTP;
 
 import org.igov.service.controller.security.AccessContract;
 import org.igov.util.JSON.JsonDateTimeSerializer;
@@ -71,22 +71,22 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
     public TaskService taskService;
     @Autowired
     public HistoryService historyService;
-    @Value("${mailServerHost}")
+    @Value("${general.Mail.sHost}")
     public String mailServerHost;
-    @Value("${mailServerPort}")
+    @Value("${general.Mail.nPort}")
     public String mailServerPort;
-    @Value("${mailServerDefaultFrom}")
+    @Value("${general.Mail.sAddressDefaultFrom}")
     public String mailServerDefaultFrom;
-    @Value("${mailServerUsername}")
+    @Value("${general.Mail.sUsername}")
     public String mailServerUsername;
-    @Value("${mailServerPassword}")
+    @Value("${general.Mail.sPassword}")
     public String mailServerPassword;
-    @Value("${mailAddressNoreply}")
+    @Value("${general.Mail.sAddressNoreply}")
     public String mailAddressNoreplay;
 
-    @Value("${mailServerUseSSL}")
+    @Value("${general.Mail.bUseSSL}")
     private boolean bSSL;
-    @Value("${mailServerUseTLS}")
+    @Value("${general.Mail.bUseTLS}")
     private boolean bTLS;
 
     public Expression from;

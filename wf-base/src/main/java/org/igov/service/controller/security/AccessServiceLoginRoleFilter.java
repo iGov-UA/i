@@ -23,7 +23,7 @@ public class AccessServiceLoginRoleFilter extends GenericFilterBean {
 
     private final Logger LOG = LoggerFactory.getLogger(AccessServiceLoginRoleFilter.class);
 
-    @Value("${general.auth.login}")
+    @Value("${general.Auth.sLogin}")
     private String generalAuthLogin;
 
     @Autowired
