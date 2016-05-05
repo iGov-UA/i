@@ -71,22 +71,22 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
     public TaskService taskService;
     @Autowired
     public HistoryService historyService;
-    @Value("${general.Mail.sHost)")
+    @Value("${general.Mail.sHost}")
     public String mailServerHost;
-    @Value("${general.Mail.nPort)")
+    @Value("${general.Mail.nPort}")
     public String mailServerPort;
-    @Value("${general.Mail.sAddressDefaultFrom)")
+    @Value("${general.Mail.sAddressDefaultFrom}")
     public String mailServerDefaultFrom;
-    @Value("${general.Mail.sUsername)")
+    @Value("${general.Mail.sUsername}")
     public String mailServerUsername;
-    @Value("${general.Mail.sPassword)")
+    @Value("${general.Mail.sPassword}")
     public String mailServerPassword;
-    @Value("${general.Mail.sAddressNoreply)")
+    @Value("${general.Mail.sAddressNoreply}")
     public String mailAddressNoreplay;
 
-    @Value("${general.Mail.bUseSSL)")
+    @Value("${general.Mail.bUseSSL}")
     private boolean bSSL;
-    @Value("${general.Mail.bUseTLS)")
+    @Value("${general.Mail.bUseTLS}")
     private boolean bTLS;
 
     public Expression from;

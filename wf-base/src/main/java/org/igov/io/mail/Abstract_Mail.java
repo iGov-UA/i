@@ -15,23 +15,23 @@ import org.springframework.beans.factory.annotation.Value;
  */
 public abstract class Abstract_Mail {
 
-    @Value("${general.Mail.sAddressDefaultFrom)")
+    @Value("${general.Mail.sAddressDefaultFrom}")
     private String sFrom; //"noreplay@gmail.com";
-    @Value("${general.Mail.sAddressNoreply)")
+    @Value("${general.Mail.sAddressNoreply}")
     private String saTo; //"noreplay@gmail.com";
     private String sHead = "Subject";
     private String sBody = "Text";
-    @Value("${general.Mail.sUsername)")
+    @Value("${general.Mail.sUsername}")
     private String sAuthUser; //"user";
-    @Value("${general.Mail.sPassword)")
+    @Value("${general.Mail.sPassword}")
     private String sAuthPassword; //"password";
-    @Value("${general.Mail.sHost)")
+    @Value("${general.Mail.sHost}")
     private String sHost; //"gmail.com";
-    @Value("${general.Mail.nPort)")
+    @Value("${general.Mail.nPort}")
     private Integer nPort; //Integer.valueOf(mailServerPort);
-    @Value("${general.Mail.bUseSSL)")
+    @Value("${general.Mail.bUseSSL}")
     private boolean bSSL;
-    @Value("${general.Mail.bUseTLS)")
+    @Value("${general.Mail.bUseTLS}")
     private boolean bTLS;
     public Abstract_Mail() {
     }

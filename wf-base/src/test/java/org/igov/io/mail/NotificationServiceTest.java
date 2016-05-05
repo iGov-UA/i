@@ -36,7 +36,6 @@ public class NotificationServiceTest {
         //server.stop();
     }
 
-    @Ignore
     @Test
     public void testSendTaskCreatedInfoEmail() throws EmailException {
       /*notificationService.sendTaskCreatedInfoEmail("test.email@gmail.com", 123L);
