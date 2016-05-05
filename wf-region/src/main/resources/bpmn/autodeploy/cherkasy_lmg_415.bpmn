@@ -16,6 +16,8 @@
           <activiti:value id="sEnumCertifDouble" name="Дублікат Посвідчення мисливця"></activiti:value>
           <activiti:value id="sEnumCardDouble" name="Дублікат Контрольної картки обліку добутої дичини та порушень правил полювання"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання послуги?" type="queueData" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nID_Department_visitDay" name="Департамент" type="invisible" default="146"></activiti:formProperty>
         <activiti:formProperty id="sCountryB" name="Країна народження" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sRegionB" name="Область народження" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDistrictB" name="Район народження" type="string" required="true"></activiti:formProperty>
@@ -202,6 +204,7 @@
         <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sSum" name="Сума до сплати" type="invisible" default="1 млн грн"></activiti:formProperty>
         <activiti:formProperty id="sRekv" name="Реквізити" type="invisible" default="Р\р: 010101010101, МФО:1001010 Призначення платежу: Надання адміністративної послуги"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="шапка" type="invisible" default="Черкаському обласному управлінню лісового та мисливського господарства"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="extended_marker1" type="markers" default="${markerService.loadFromFile('forest/cherkasy_lmg_415_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="extended_marker2" type="markers" default="${markerService.loadFromFile('forest/cherkasy_lmg_415_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="extended_marker3" type="markers" default="${markerService.loadFromFile('forest/cherkasy_lmg_415_3.json')}"></activiti:formProperty>
@@ -241,6 +244,7 @@
 				&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 				&lt;p&gt; Ваше звернення щодо enum{[asType]}  було зареєстровано у системі.&lt;br/&gt;
 				Повідомлення про результат розгляду буде спрямоване на Ваш e-mail.&lt;/p&gt;
+				&lt;p&gt;[cancelTask]&lt;/p&gt;
 				&lt;br /&gt;
 				[pattern/mail/_common_signature_start.html]
 				${sNameOrgan}
@@ -251,6 +255,7 @@
     </serviceTask>
     <userTask id="usertask1" name="Розгляд документів (Видача посвідчення)" activiti:candidateGroups="ulmg_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
+        <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище " type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
@@ -381,6 +386,8 @@
         <activiti:formProperty id="nPetNum7" name="Паспорт, посвідчення 7" type="invisible" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPetMark8" name="Порода 8" type="invisible" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nPetNum8" name="Паспорт, посвідчення 8" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органа в емейл" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="шапка" type="invisible" default="Черкаському обласному управлінню лісового та мисливського господарства"></activiti:formProperty>
         <activiti:formProperty id="status" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="sEnumApprove" name="Громадянина запрошено до отримання документів або складання іспиту"></activiti:value>
           <activiti:value id="sEnumDeny" name="Відмова громадянину у видачі документів"></activiti:value>
@@ -499,6 +506,8 @@
           <activiti:value id="sEnumDeny" name="Відмова громадянину у видачі документів"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органа в емейл" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="шапка" type="invisible" default="Черкаському обласному управлінню лісового та мисливського господарства"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/cherkasy_lmg_415_z.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody2" name="[pattern/print/cherkasy_lmg_415_z.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
