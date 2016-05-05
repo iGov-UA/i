@@ -33,7 +33,6 @@
         <activiti:formProperty id="sAddress" name="Адреса ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="назва органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sNotification_day" name="Кінець терміну ліцензії" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPosluga_name" name="назва послуги" type="invisible" default="Видача ліцензії на право роздрібної торгівлі тютюновими виробами"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -58,7 +57,6 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <serviceTask id="servicetask4" name="Лист заявнику" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -106,7 +104,6 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="sT_dfs_torg" name="Орган ДФС за місцем торгівлі" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sT_dfs_reestr" name="Орган ДФС за місцем реєстрації суб'єкта господарювання" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_bigin" name="Дата з якої буде діяти ліцензія" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNotification_day" name="Кінець терміну ліцензії" type="string"></activiti:formProperty>
         <activiti:formProperty id="asVariants" name="Результат розгляду заяви" type="enum" required="true">
           <activiti:value id="sEnamDok_ok" name="Заяву оформлено вірно, ліцензію видати"></activiti:value>
           <activiti:value id="sEnamDok_bad" name="Заява оформлена не вірно відмова."></activiti:value>
@@ -265,17 +262,7 @@ ${sNameOrgan}.&lt;br /&gt;
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow16" sourceRef="servicetask8" targetRef="endevent2"></sequenceFlow>
-    <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
-    <script>
-var src=execution.getVariable('date_bigin')
-var year=src.substr(0,4)
-var month=src.substr(5,2)
-var day=src.substr(8,2)
-var timer=year+'-'+month+'-'+day
-execution.setVariable('sNotification_day', timer)
-      </script>
-    </scriptTask>
-    <sequenceFlow id="flow17" sourceRef="scripttask1" targetRef="servicetask3"></sequenceFlow>
+    <sequenceFlow id="flow19" sourceRef="servicetask1" targetRef="servicetask3"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_nicolaev_dfs_593">
     <bpmndi:BPMNPlane bpmnElement="nicolaev_dfs_593" id="BPMNPlane_nicolaev_dfs_593">
@@ -324,16 +311,9 @@ execution.setVariable('sNotification_day', timer)
       <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
         <omgdc:Bounds height="55.0" width="105.0" x="780.0" y="282.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="180.0" y="10.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="85.0" y="117.0"></omgdi:waypoint>
         <omgdi:waypoint x="130.0" y="117.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="182.0" y="90.0"></omgdi:waypoint>
-        <omgdi:waypoint x="232.0" y="65.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
         <omgdi:waypoint x="355.0" y="117.0"></omgdi:waypoint>
@@ -401,9 +381,9 @@ execution.setVariable('sNotification_day', timer)
         <omgdi:waypoint x="885.0" y="309.0"></omgdi:waypoint>
         <omgdi:waypoint x="900.0" y="309.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
-        <omgdi:waypoint x="232.0" y="65.0"></omgdi:waypoint>
-        <omgdi:waypoint x="302.0" y="90.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
+        <omgdi:waypoint x="235.0" y="117.0"></omgdi:waypoint>
+        <omgdi:waypoint x="250.0" y="117.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
