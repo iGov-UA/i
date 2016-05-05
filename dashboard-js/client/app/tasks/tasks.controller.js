@@ -8,24 +8,26 @@
   tasksCtrl.$inject = [
     '$scope', 'tasks', 'processes', 'Modal', 'identityUser', '$localStorage', '$filter', 'lunaService',
     'taskFilterService', 'defaultSearchHandlerService',
-    '$stateParams', '$q', '$timeout', '$state', 'tasksStateModel', 'userProcesses', 'stateModel'
+    '$stateParams', '$q', '$timeout', '$state', 'tasksStateModel', 'stateModel'
   ];
   function tasksCtrl(
     $scope, tasks, processes, Modal, identityUser, $localStorage, $filter, lunaService,
     taskFilterService, defaultSearchHandlerService,
-    $stateParams, $q, $timeout, $state, tasksStateModel, userProcesses, stateModel
+    $stateParams, $q, $timeout, $state, tasksStateModel, stateModel
   ) {
 
     $scope.tasks = null;
     $scope.sSelectedTask = $stateParams.type;
-    $scope.userProcesses = userProcesses;
 
     $scope.printModalState = {show: false}; // wrapping in object required for 2-way binding
     $scope.taskDefinitions = taskFilterService.getTaskDefinitions();
     $scope.model = stateModel;
-
+    $scope.userProcesses = taskFilterService.getDefaultProcesses();
     $scope.model.userProcess = $scope.userProcesses[0];
 
+    taskFilterService.getProcesses().then(function (userProcesses) {
+      $scope.userProcesses = userProcesses;
+    });
 
     $scope.filteredTasks = null;
     $scope.$storage = $localStorage.$default({
