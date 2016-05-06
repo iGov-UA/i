@@ -85,7 +85,7 @@ ${sNameOrgan}.&lt;br /&gt;
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow4" sourceRef="servicetask3" targetRef="servicetask4"></sequenceFlow>
-    <userTask id="usertask1" name="Обробка в податковій" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask1" name="Обробка в податковій(1 етап)" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asOsoba" name="Тип особи" type="enum" writable="false">
@@ -183,7 +183,7 @@ ${sWorkTime}.&lt;br /&gt;
     <sequenceFlow id="flow8" name="Документи ОК" sourceRef="exclusivegateway1" targetRef="servicetask6">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asVariants == 'sEnamDok_ok'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask2" name="Видача документа" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask2" name="Видача документа (2 етап)" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asOsoba" name="Тип особи" type="enum" writable="false">
@@ -315,6 +315,10 @@ if(mmm =='01'&amp;&amp;ddd=='01')
   ddd2='31'
   mmm2='12'
   yyyy2=yyyy
+  }
+if(mmm2 =='1'||'2'||'3'||'4'||'5'||'6'||'7'||'8'||'9')
+  {
+  mmm2 = '0' + mmm2
   }
 timeE = ddd2+'-'+mmm2+'-'+yyyy2	
 execution.setVariable('date_big', timeB)
