@@ -357,8 +357,7 @@ public class DocumentController {
 
         Subject subject_Upload = oManageSubject.syncSubject_Upload(sID_Subject_Upload);
 
-        String oSignData = BankIDUtils.checkECP(bankIDConfig.sClientId(), bankIDConfig.sClientSecret(),
-                generalConfig.sHostCentral(), aoContent, sName);
+        String oSignData = BankIDUtils.checkECP(generalConfig, aoContent, sName);
 
         return documentDao.setDocument(
                 nID_Subject,
@@ -433,8 +432,7 @@ public class DocumentController {
 
         Subject subject_Upload = oManageSubject.syncSubject_Upload(sID_Subject_Upload);
 
-        String soSignData = BankIDUtils.checkECP(bankIDConfig.sClientId(), bankIDConfig.sClientSecret(),
-                generalConfig.sHostCentral(), aoContent, sName);
+        String soSignData = BankIDUtils.checkECP(generalConfig, aoContent, sName);
 
         Long nID_Document = documentDao.setDocument(
                 nID_Subject,
