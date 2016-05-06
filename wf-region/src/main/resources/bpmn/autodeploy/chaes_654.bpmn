@@ -8,10 +8,10 @@
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
+        
         
         <activiti:formProperty id="bankIdbirthDay" name="День народження" type="string" required="true"></activiti:formProperty>
-        		
+        
 		<activiti:formProperty id="sPassportSeria" name="Серія паспорту" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPassportNumber" name="Номер паспорту" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPassportIssuedBy" name="Ким виданий паспорт" type="string" required="true"></activiti:formProperty>
@@ -23,69 +23,41 @@
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
 
-        <activiti:formProperty id="asNumberApplication" name="Це перше звернення?" type="enum" default="sFirst">
+
+        <activiti:formProperty id="asNumberApplication" name="Це перше звернення?" type="enum" default="sFirst" required="true">
           <activiti:value id="sFirst" name="первинне"></activiti:value>
           <activiti:value id="sSecond" name="повторне звернення"></activiti:value>
-        </activiti:formProperty>
-        
+        </activiti:formProperty>        
         <activiti:formProperty id="transfer_type" name="Прошу в разі призначення допомоги кошти перераховувати; оберіть зручний для Вас спосіб перерахування коштів" type="enum" required="true">
           <activiti:value id="post" name="через національного оператора поштового зв'язку"></activiti:value>
           <activiti:value id="bank" name="на рахунок у банку"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="post_office" name="№ відділення поштового зв'язку (індекс)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="bank_name" name="Назва банку" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="mfo" name="МФО банку" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="edrpou" name="ЄДРПОУ банку" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="bank_account" name="Номер рахунку в банку" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="post_office" name="№ відділення поштового зв'язку (індекс)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bank_name" name="Назва банку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="mfo" name="МФО банку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="edrpou" name="ЄДРПОУ банку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bank_account" name="Номер рахунку в банку" type="string" required="true"></activiti:formProperty>
 
 
 
+		<activiti:formProperty id="nFilePassprotParrent" name="Паспорт батька та матері" type="file" required="true"></activiti:formProperty>
+		<activiti:formProperty id="nFileScanINN" name="Ідентифікаційний код матері та батька, або опікуна" type="file" required="true"></activiti:formProperty>
+		<activiti:formProperty id="nFileBirthCertificate" name="Свідоцтво про народження потерпілої дитини," type="file" required="true"></activiti:formProperty>
+		<activiti:formProperty id="nFileChernobylCertificateChild" name="Чорнобильське посвідчення дитини з вкладкою" type="file" required="true"></activiti:formProperty>
+		<activiti:formProperty id="nFileMedicalDisabledChild" name="Медичний висновок на дитину-інваліда" type="file" required="true"></activiti:formProperty>
+		<activiti:formProperty id="nFilePersonalAccountBank" name="Виписка про відкриття особового рахунку з банку" type="file" required="true"></activiti:formProperty>
+		<activiti:formProperty id="nFileConclusionMCCHouseTraining" name="Висновок ЛКК про надомне навчання." type="file" required="true"></activiti:formProperty>
 
-        <activiti:formProperty id="file2" name="Заява на видачу ордера" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file3" name="Акт обстеження житлових умов" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file4" name="Довідка про склад сім'ї" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asIsWork" name="Вы працюєте?" type="enum" required="true">
-          <activiti:value id="yes" name="Так"></activiti:value>
-          <activiti:value id="no" name="Ні"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="file5" name="Довідка з місця роботи про працевлаштування" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file5_1" name="Довідки з  ЖЕКу для не працевлаштованих (на всіх повнолітніх членів сім’ї)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="merried" name="Оберіть, будь ласка, свій сімейний стан" type="enum" required="true">
-          <activiti:value id="Enum1" name="Одруженний(-а)"></activiti:value>
-          <activiti:value id="Enum2" name="Неодруженний(-а)"></activiti:value>
-          <activiti:value id="Enum3" name="Розлучений(-а)"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="file8" name="Копії паспортів на всіх членів сім'ї (1,2,10 стр); якщо копій більше ніж одна, то запакуйте в архів *.zip" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Паспорт громадянина" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file6" name="Копія свідоцтва про одруження" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file9" name="Копія свідоцтва про розлучення" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="child" name="Чи маєте Ви неповнолітніх дітей?" type="enum" required="true">
-          <activiti:value id="yes" name="Так"></activiti:value>
-          <activiti:value id="no" name="Ні"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="file7" name="Копія свідоцтв про народження дітей; якщо копій більше ніж одна, то запакуйте в архів *.zip" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file1" name="Рішення підприємства про закріплення службового житла за працівником" type="file"></activiti:formProperty>
+
         <activiti:formProperty id="sNameOrgan" name="название органа в подписи письма" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="график работы" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для справок" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адрес органа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapkaGolova" name="шапка принтформы" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk1" name="Пошта ЦНАП" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
-
-
-
-
         <activiti:formProperty id="sPassportDateFormat" name="Дата видачі паспорту" type="invisible" default=" "></activiti:formProperty>
-        
 		
-		<activiti:formProperty id="markers1" name="Вибір отримання коштів" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;post_office&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;transfer_type&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'post'&quot;},&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;bank_name&quot;,&quot;mfo&quot;,&quot;edrpou&quot;,&quot;bank_account&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;transfer_type&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'bank'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers2" name="Звернення (первинне, вторинне)" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;file1&quot;,&quot;file2&quot;,&quot;file3&quot;,&quot;file4&quot;,&quot;file5&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;choice_visit&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'visit_1'&quot;},&quot;ShowFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;file4&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;choice_visit&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'visit_2'&quot;}}}"></activiti:formProperty>
-        
-        
-        
-        
-        <activiti:formProperty id="familyStatus" name="Сімейний стан" type="markers" default="${markerService.loadFromFile('mvk/familyStatus.json')}"></activiti:formProperty>
-        <activiti:formProperty id="familyStatusForNewPskov" name="Сімейний стан для Новопсков" type="markers" default="${markerService.loadFromFile('mvk/familyStatusForNewPskov.json')}"></activiti:formProperty>
+		<activiti:formProperty id="markers1" name="Вибір отримання коштів" type="markers" default="${markerService.loadFromFile('сhernobyl/chaes_654_bill.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Підтягування додаткових документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -111,8 +83,6 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    
-    
     <sequenceFlow id="flow15" sourceRef="servicetask2" targetRef="servicetask8"></sequenceFlow>
     <serviceTask id="servicetask8" name="Інформування громадян" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
@@ -144,39 +114,69 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    
     <sequenceFlow id="flow4" sourceRef="servicetask8" targetRef="usertask1"></sequenceFlow>
     <userTask id="usertask1" name="Перевірка даних" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Орган обслуговування" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sClFIO" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdAdressFactual" name="Адреса;(місце реєстрації)" type="string" writable="false"></activiti:formProperty>
         
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний телефон заявника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Електронна пошта заявника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="merried" name="Сімейний стан заявника" type="enum" writable="false">
-          <activiti:value id="Enum1" name="Одруженний(-а)"></activiti:value>
-          <activiti:value id="Enum2" name="Неодруженний(-а)"></activiti:value>
-          <activiti:value id="Enum3" name="Розлучений(-а)"></activiti:value>
+        
+        
+        <activiti:formProperty id="bankIdbirthDay" name="День народження" type="string" writable="false"></activiti:formProperty>
+        
+		<activiti:formProperty id="sPassportSeria" name="Серія паспорту" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPassportNumber" name="Номер паспорту" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPassportIssuedBy" name="Ким виданий паспорт" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="dPassportDate" name="Дата видачі паспорту" type="date" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="bankIdinn" name="Ідентифікаційний код" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAdressFactual" name="Адреса (місце реєстрації)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdressFactual" name="Фактична адреса проживання" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
+
+
+        <activiti:formProperty id="asNumberApplication" name="Це перше звернення?" type="enum" default="sFirst" writable="false">
+          <activiti:value id="sFirst" name="первинне"></activiti:value>
+          <activiti:value id="sSecond" name="повторне звернення"></activiti:value>
+        </activiti:formProperty>        
+        <activiti:formProperty id="transfer_type" name="Прошу в разі призначення допомоги кошти перераховувати; оберіть зручний для Вас спосіб перерахування коштів" type="enum" writable="false">
+          <activiti:value id="post" name="через національного оператора поштового зв'язку"></activiti:value>
+          <activiti:value id="bank" name="на рахунок у банку"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="child" name="Чи має заявник неповнолітніх дітей?" type="enum" writable="false">
-          <activiti:value id="yes" name="Так"></activiti:value>
-          <activiti:value id="no" name="Ні"></activiti:value>
-        </activiti:formProperty>
+        <activiti:formProperty id="post_office" name="№ відділення поштового зв'язку (індекс)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bank_name" name="Назва банку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="mfo" name="МФО банку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="edrpou" name="ЄДРПОУ банку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bank_account" name="Номер рахунку в банку" type="string" writable="false"></activiti:formProperty>
+
+        
+        
+        
         <activiti:formProperty id="asDocument" name="Перевірка вхідних данних" type="enum" required="true">
           <activiti:value id="OK" name="Всі дані ВІДПОВІДАЮТЬ законодавству"></activiti:value>
           <activiti:value id="NO" name="Надані дані НЕ відповідають законодавству"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="В разі відмови в наданні послуги зазначте підставу для відмови (дані будуть надіслані громадянинові по електронній пошті)*" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/architecture/zayava_407.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sShapkaGolova" name="шапка принтформы" type="invisible"></activiti:formProperty>
+
+
+        <activiti:formProperty id="sBody_1" name="[pattern/print/сhernobyl/chaes_654_print.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
+
+        
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${file1},${file2},${file3},${file4},${file5},{file5_1},${file6},${file7},${file8},${file9},${bankId_scan_passport}]]></activiti:expression>
+            <activiti:expression>
+				${nFilePassprotParrent},
+				${nFileScanINN},
+				${nFileBirthCertificate},
+				${nFileChernobylCertificateChild},
+				${nFileMedicalDisabledChild},
+				${nFilePersonalAccountBank},
+				${nFileConclusionMCCHouseTraining}
+            </activiti:expression>
           </activiti:field>
         </activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow11" sourceRef="usertask1" targetRef="exclusivegateway2"></sequenceFlow>
@@ -253,32 +253,60 @@
     <sequenceFlow id="flow12" sourceRef="servicetask6" targetRef="usertask2_green"></sequenceFlow>
     <userTask id="usertask2_green" name="Рішення прийняте" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdAdressFactual" name="Адреса;(місце реєстрації)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний телефон заявника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Електронна пошта заявника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="merried" name="Сімейний стан заявника" type="enum" writable="false">
-          <activiti:value id="Enum1" name="Одруженний(-а)"></activiti:value>
-          <activiti:value id="Enum2" name="Неодруженний(-а)"></activiti:value>
-          <activiti:value id="Enum3" name="Розлучений(-а)"></activiti:value>
+        
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Орган обслуговування" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sClFIO" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        
+
+        <activiti:formProperty id="bankIdbirthDay" name="День народження" type="string" writable="false"></activiti:formProperty>
+        
+		<activiti:formProperty id="sPassportSeria" name="Серія паспорту" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPassportNumber" name="Номер паспорту" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPassportIssuedBy" name="Ким виданий паспорт" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="dPassportDate" name="Дата видачі паспорту" type="date" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="bankIdinn" name="Ідентифікаційний код" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAdressFactual" name="Адреса (місце реєстрації)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdressFactual" name="Фактична адреса проживання" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
+
+
+        <activiti:formProperty id="asNumberApplication" name="Це перше звернення?" type="enum" default="sFirst" writable="false">
+          <activiti:value id="sFirst" name="первинне"></activiti:value>
+          <activiti:value id="sSecond" name="повторне звернення"></activiti:value>
+        </activiti:formProperty>        
+        <activiti:formProperty id="transfer_type" name="Прошу в разі призначення допомоги кошти перераховувати; оберіть зручний для Вас спосіб перерахування коштів" type="enum" writable="false">
+          <activiti:value id="post" name="через національного оператора поштового зв'язку"></activiti:value>
+          <activiti:value id="bank" name="на рахунок у банку"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="child" name="Чи має заявник неповнолітніх дітей?" type="enum" writable="false">
-          <activiti:value id="yes" name="Так"></activiti:value>
-          <activiti:value id="no" name="Ні"></activiti:value>
-        </activiti:formProperty>
+        <activiti:formProperty id="post_office" name="№ відділення поштового зв'язку (індекс)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bank_name" name="Назва банку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="mfo" name="МФО банку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="edrpou" name="ЄДРПОУ банку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bank_account" name="Номер рахунку в банку" type="string" writable="false"></activiti:formProperty>
+
+        
         <activiti:formProperty id="asResult" name="Рішення держслужбовця" type="enum" required="true">
           <activiti:value id="Yes" name="Видати ордер"></activiti:value>
           <activiti:value id="Not" name="Відмовити у видачі ордеру"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="decisionComment" name="Коментар до рішення; Наприклад, пояснення чому громадянину було відмовлено в наданні згоди &lt;br /&gt; АБО &lt;br /&gt; Деталі отримання документу" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/architecture/zayava_407.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sShapkaGolova" name="шапка принтформы" type="invisible"></activiti:formProperty>
+        
+        <activiti:formProperty id="decisionComment" name="Укажіть інформацію для громадянина(дані будуть надіслані по електронній пошті)*" type="textArea" required="true"></activiti:formProperty>
+
+        <activiti:formProperty id="sBody_1" name="[pattern/print/сhernobyl/chaes_654_print.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
+        
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${file1},${file2},${file3},${file4},${file5},{file5_1},${file6},${file7},${file8},${file9},${bankId_scan_passport}]]></activiti:expression>
+            <activiti:expression>
+				${nFilePassprotParrent},
+				${nFileScanINN},
+				${nFileBirthCertificate},
+				${nFileChernobylCertificateChild},
+				${nFileMedicalDisabledChild},
+				${nFilePersonalAccountBank},
+				${nFileConclusionMCCHouseTraining}
+            </activiti:expression>          
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
