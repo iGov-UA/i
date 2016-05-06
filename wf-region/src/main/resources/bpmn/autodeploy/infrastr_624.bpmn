@@ -91,8 +91,9 @@
         </activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть місто, у якому Ви плануєте отримувати паспорт" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="nDocEdu" name="Копия документу, що підтверджує отримання морської освіти або копія довідки з морського навчального закладу про отримання такої освіти для заявників, які навчаються в українських морських навчальних закладах." type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nDoc" name="Скан-копії документів" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nDoc" name="Скан-копії документів" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nDocDiplom" name="Копія морського диплому або свідоцтва" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="warning0" name="Зверніть увагу" type="label" default="Вам потрібно завантажити за &lt;a href=&quot;https://drive.google.com/file/d/0B68lQ-z45GpYSlh2LWhpVzBlTlVrU1pvQVFfYy1mVWZkbDlR/view?usp=sharing&quot;&gt;посиланням&lt;/a&gt; та заповнити анкету для видачі/обміну посвідчення особи моряка."></activiti:formProperty>
+        <activiti:formProperty id="nDocAnketa" name="Кольорова скан-копія заповненої анкети" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Телефон органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса органу" type="invisible"></activiti:formProperty>
@@ -102,6 +103,7 @@
         <activiti:formProperty id="sSex" name="Стать" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPort" name="Назва порту" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('infrastr/sea_passp.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="Validate fields" type="markers" default="${markerService.loadFromFile('infrastr/sea_passpValid.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow2" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -147,6 +149,113 @@ var sex1='Ч / M'
 if (sex=='sWoman'){
     sex1='Ж / W'}
 execution.setVariable('sSex', sex1)
+var place=execution.getVariable('asPlace_of_birth')
+var place1='АРК / UKRAINE' 
+if (place=='null'){
+    place1=execution.getVariable('sAreabirthEng')}
+else {
+if (place=='sSimf'){
+place1='CІМФЕРОПІЛЬ / SIMFEROPOL'}
+if (place=='sSevas'){
+place1='CЕВАСТОПІЛЬ / SEVASTOPOL'}
+if (place=='sVinic'){
+place1='ВІННИЦЬКА ОБЛ / UKRAINE'}
+if (place=='sVinicT'){
+place1='ВІННИЦЯ / VINNYTSIA'}
+if (place=='sVolin'){
+place1='ВОЛИНСЬКА ОБЛ / UKRAINE'}
+if (place=='sLutsk'){
+place1='ЛУЦЬК / LUTSK'}
+if (place=='sDnipro'){
+place1='ДНІПРОПЕТРОВСЬКА ОБЛ / UKRAINE'}
+if (place=='sDniproT'){
+place1='ДНІПРОПЕТРОВСЬК / DNIPROPETROVSK'}
+if (place=='sDon'){
+place1='ДОНЕЦЬКА ОБЛ / UKRAINE'}
+if (place=='sDonT'){
+place1='ДОНЕЦЬК / DONETSK'}
+if (place=='sZhit'){
+place1='ЖИТОМИРСЬКА ОБЛ / UKRAINE'}
+if (place=='sZhitT'){
+place1='ЖИТОМИР / ZHYTOMYR'}
+if (place=='sZakarp'){
+place1='ЗАКАРПАТСЬКА ОБЛ / UKRAINE'}
+if (place=='sUzhgor'){
+place1='УЖГОРОД / UZHHOROD'}
+if (place=='sZapor'){
+place1='ЗАПОРІЗЬКА ОБЛ / UKRAINE'}
+if (place=='sZaporT'){
+place1='ЗАПОРІЖЖЯ / ZAPORIZHZHIA'}
+if (place=='sIvFrank'){
+place1='ІВАНО-ФРАНКІВСЬКА ОБЛ / UKRAINE'}
+if (place=='sIvFrankT'){
+place1='ІВАНО-ФРАНКІВСЬК / IVANO-FRANKIVSK'}
+if (place=='sKiev'){
+place1='КИЇВСЬКА ОБЛ / UKRAINE'}
+if (place=='sKievT'){
+place1='КИЇВ / KYIV'}
+if (place=='sKirov'){
+place1='КІРОВОГРАДСЬКА ОБЛ / UKRAINE'}
+if (place=='sKirovT'){
+place1='КІРОВОГРАД / KIROVOHRAD'}
+if (place=='sLug'){
+place1='ЛУГАНСЬКА ОБЛ / UKRAINE'}
+if (place=='sLugT'){
+place1='ЛУГАНСЬК / LUHANSK'}
+if (place=='sLviv'){
+place1='ЛЬВІВСЬКА ОБЛ / UKRAINE'}
+if (place=='sLvivT'){
+place1='ЛЬВІВ / LVIV'}
+if (place=='sMikol'){
+place1='МИКОЛАЇВСЬКА ОБЛ / UKRAINE'}
+if (place=='sMikolT'){
+place1='МИКОЛАЇВ / MYKOLAIV'}
+if (place=='sOdessa'){
+place1='ОДЕСЬКА ОБЛ / UKRAINE'}
+if (place=='sOdessaT'){
+place1='ОДЕСА / ODESA'}
+if (place=='sPolt'){
+place1='ПОЛТАВСЬКА ОБЛ / UKRAINE'}
+if (place=='sPoltT'){
+place1='ПОЛТАВА / POLTAVA'}
+if (place=='sRovn'){
+place1='РІВНЕНСЬКА ОБЛ / UKRAINE'}
+if (place=='sRovnT'){
+place1='РІВНЕ / RIVNE'}
+if (place=='sSumi'){
+place1='СУМСЬКА ОБЛ / UKRAINE'}
+if (place=='sSumiT'){
+place1='СУМИ / SUMY'}
+if (place=='sTern'){
+place1='ТЕРНОПІЛЬСЬКА ОБЛ / UKRAINE'}
+if (place=='sTernT'){
+place1='ТЕРНОПІЛЬ / TERNOPIL'}
+if (place=='sKhark'){
+place1='ХАРКІВСЬКА ОБЛ / UKRAINE'}
+if (place=='sKharkT'){
+place1='ХАРКІВ / KHARKIV'}
+if (place=='sKhers'){
+place1='ХЕРСОНСЬКА ОБЛ / UKRAINE'}
+if (place=='sKhersT'){
+place1='ХЕРСОН / KHERSON'}
+if (place=='sKhmel'){
+place1='ХМЕЛЬНИЦЬКА ОБЛ / UKRAINE'}
+if (place=='sKhmelT'){
+place1='ХМЕЛЬНИЦЬКИЙ / KHMELNYTSKYI'}
+if (place=='sCherk'){
+place1='ЧЕРКАСЬКА ОБЛ / UKRAINE'}
+if (place=='sCherkT'){
+place1='ЧЕРКАСИ / CHERKASY'}
+if (place=='sChernov'){
+place1='ЧЕРНІВЕЦЬКА ОБЛ / UKRAINE'}
+if (place=='sChernovT'){
+place1='ЧЕРНІВЦІ / CHERNIVTSI'}
+if (place=='sChern'){
+place1='ЧЕРНІГІВСЬКА ОБЛ / UKRAINE'}
+if (place=='sChernT'){
+place1='ЧЕРНІГІВ / CHERNIHIV'}
+}
+execution.setVariable('sPlace_of_birth', place1)
 	</script>
     </scriptTask>
     <sequenceFlow id="flow31" sourceRef="scripttask1" targetRef="servicetask4"></sequenceFlow>
@@ -206,59 +315,7 @@ execution.setVariable('sSex', sex1)
         <activiti:formProperty id="firstName" name="Ім'я  англійською" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDate_of_birth" name="Дата народження" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asPlace_of_birth" name="Місце народження для України" type="enum" writable="false">
-          <activiti:value id="sARK" name="Автономна Республіка Крим"></activiti:value>
-          <activiti:value id="sSimf" name="Cімферопіль"></activiti:value>
-          <activiti:value id="sSevas" name="Cевастопіль"></activiti:value>
-          <activiti:value id="sVinic" name="Вінницька обл"></activiti:value>
-          <activiti:value id="sVinicT" name="Вінниця"></activiti:value>
-          <activiti:value id="sVolin" name="Вінницька обл"></activiti:value>
-          <activiti:value id="sLutsk" name="Луцьк"></activiti:value>
-          <activiti:value id="sDnipro" name="Дніпропетровська обл"></activiti:value>
-          <activiti:value id="sDniproT" name="Дніпропетровськ"></activiti:value>
-          <activiti:value id="sDon" name="Донецька обл"></activiti:value>
-          <activiti:value id="sDonT" name="Донецьк"></activiti:value>
-          <activiti:value id="sZhit" name="Житомирська обл"></activiti:value>
-          <activiti:value id="sZhitT" name="Житомир"></activiti:value>
-          <activiti:value id="sZakarp" name="Закарпатська обл"></activiti:value>
-          <activiti:value id="sUzhgor" name="Ужгород"></activiti:value>
-          <activiti:value id="sZapor" name="Запорізька обл"></activiti:value>
-          <activiti:value id="sZaporT" name="Запоріжжя"></activiti:value>
-          <activiti:value id="sIvFrank" name="Івано-Франківська обл"></activiti:value>
-          <activiti:value id="sIvFrankT" name="Івано-Франківськ"></activiti:value>
-          <activiti:value id="sKiev" name="Київська обл"></activiti:value>
-          <activiti:value id="sKievT" name="Київ"></activiti:value>
-          <activiti:value id="sKirov" name="Кіровоградська обл"></activiti:value>
-          <activiti:value id="sKirovT" name="Кіровоград"></activiti:value>
-          <activiti:value id="sLug" name="Луганська обл"></activiti:value>
-          <activiti:value id="sLugT" name="Луганськ"></activiti:value>
-          <activiti:value id="sLviv" name="Львівська обл"></activiti:value>
-          <activiti:value id="sLvivT" name="Львів"></activiti:value>
-          <activiti:value id="sMikol" name="Миколаївська обл"></activiti:value>
-          <activiti:value id="sMikolT" name="Миколаїв"></activiti:value>
-          <activiti:value id="sOdessa" name="Одеська обл"></activiti:value>
-          <activiti:value id="sOdessaT" name="Одеса"></activiti:value>
-          <activiti:value id="sPolt" name="Полтавська обл"></activiti:value>
-          <activiti:value id="sPoltT" name="Полтава"></activiti:value>
-          <activiti:value id="sRovn" name="Рівненська обл"></activiti:value>
-          <activiti:value id="sRovnT" name="Рівне"></activiti:value>
-          <activiti:value id="sSumi" name="Сумська обл"></activiti:value>
-          <activiti:value id="sSumiT" name="Суми"></activiti:value>
-          <activiti:value id="sTern" name="Тернопільська обл"></activiti:value>
-          <activiti:value id="sTernT" name="Тернопіль"></activiti:value>
-          <activiti:value id="sKhark" name="Харківська обл"></activiti:value>
-          <activiti:value id="sKharkT" name="Харків"></activiti:value>
-          <activiti:value id="sKhers" name="Херсонська обл"></activiti:value>
-          <activiti:value id="sKhersT" name="Херсон"></activiti:value>
-          <activiti:value id="sKhmel" name="Хмельницька обл"></activiti:value>
-          <activiti:value id="sKhmelT" name="Хмельницький"></activiti:value>
-          <activiti:value id="sCherk" name="Черкаська обл"></activiti:value>
-          <activiti:value id="sCherkT" name="Черкаси"></activiti:value>
-          <activiti:value id="sChernov" name="Чернівецька обл"></activiti:value>
-          <activiti:value id="sChernovT" name="Чернівці"></activiti:value>
-          <activiti:value id="sChern" name="Чернігівська обл"></activiti:value>
-          <activiti:value id="sChernT" name="Чернігів"></activiti:value>
-        </activiti:formProperty>
+        <activiti:formProperty id="sPlace_of_birth" name="Місце народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAreabirthNotUkr" name="Місце народження; Країна, область, район і населений пункт" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAreabirthEng" name="Країна народження англійською" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCountry" name="Громадянство" type="string" writable="false"></activiti:formProperty>
@@ -276,25 +333,31 @@ execution.setVariable('sSex', sex1)
           <activiti:value id="sYes1" name="Так, потрібно обміняти"></activiti:value>
           <activiti:value id="sNo1" name="Ні, буде отримувати вперше"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="workerDecision" name="Рішення посадової особи" type="enum" required="true">
-          <activiti:value id="accept" name="Призначити зустріч у відділенні"></activiti:value>
-          <activiti:value id="decline" name="Відмовити в наданні послуги"></activiti:value>
+        <activiti:formProperty id="asWorkerDecision" name="Рішення посадової особи" type="enum" required="true">
+          <activiti:value id="sAccept" name="Документи в порядку, надіслати рахунок для сплати"></activiti:value>
+          <activiti:value id="sDecline" name="Відмовити у прийнятті особової справи"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="decisionComment" name="Коментар до рішення, наприклад, пояснення чому громадянину було відмовлено в наданні цієї послуги АБО додаткові деталі для закінчення процессу оформлення паспорта" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="asDeclineReason" name="У разі відмови оберіть підставу" type="enum">
+          <activiti:value id="sNoDoc" name="Заявником не надано усіх документів та інформації, необхідних для оформлення і видачі посвідчення"></activiti:value>
+          <activiti:value id="sAlready" name="Заявник вже отримав посвідчення, яке є дійсним на день звернення"></activiti:value>
+          <activiti:value id="sBaseError" name="Дані, отримані з бази даних, не підтверджують інформацію, надану заявником"></activiti:value>
+          <activiti:value id="sFakeDoc" name="Один або декілька документів не пройшли процедуру перевірки легітимності в Єдиному державному реєстрі документів моряків"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDecisionComment" name="Додатковий коментар до рішення" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/infr/seaman_passp.html]" type="invisible" default="Зразок паспорта" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPort" name="Назва порту" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nDoc}</activiti:expression>
+            <activiti:expression>${nDocEdu},${nDocDiplom},${nDocAnketa}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow7" name="${workerDecision=='decline'}" sourceRef="exclusivegateway1" targetRef="servicetask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${workerDecision=='decline'}]]></conditionExpression>
+    <sequenceFlow id="flow7" name="${asWorkerDecision=='sDecline'}" sourceRef="exclusivegateway1" targetRef="servicetask5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asWorkerDecision=='sDecline'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask5" name="E-Mail відмова в наданні послуги" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
@@ -311,12 +374,12 @@ execution.setVariable('sSex', sex1)
           <activiti:expression>[pattern/mail/_common_header.html]
                                     &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
-										На жаль, Вам відмовлено у надані послуги.&lt;br&gt;
+										На жаль, Вам відмовлено у прийнятті особової справи.&lt;br&gt;
                                         При необхідності видачі/обміну посвідчення особи моряка Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
-										Коментар посадової особи:&lt;br&gt;
-											&lt;b&gt;&lt;i&gt;${decisionComment}&lt;/i&gt;&lt;/b&gt;
+										Причина відмови: enum{[asDeclineReason]}&lt;br&gt;
+											&lt;b&gt;&lt;i&gt;${sDecisionComment}&lt;/i&gt;&lt;/b&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
 										При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
@@ -329,8 +392,8 @@ execution.setVariable('sSex', sex1)
     </serviceTask>
     <sequenceFlow id="flow8" sourceRef="servicetask5" targetRef="endevent3"></sequenceFlow>
     <endEvent id="endevent3" name="End"></endEvent>
-    <sequenceFlow id="flow10" name="${workerDecision=='accept'}" sourceRef="exclusivegateway1" targetRef="servicetask6">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${workerDecision=='accept'}]]></conditionExpression>
+    <sequenceFlow id="flow10" name="${asWorkerDecision=='sAccept'}" sourceRef="exclusivegateway1" targetRef="servicetask6">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asWorkerDecision=='sAccept'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask6" name="E-Mail призначення візиту" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
@@ -358,8 +421,7 @@ execution.setVariable('sSex', sex1)
 										Реквізити для сплати доступні за посиланням...
 									&lt;/p&gt;
 									&lt;p&gt;
-										Коментар посадової особи:&lt;br&gt;
-										&lt;b&gt;&lt;i&gt;${decisionComment}&lt;/i&gt;&lt;/b&gt;
+										&lt;b&gt;&lt;i&gt;${sDecisionComment}&lt;/i&gt;&lt;/b&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
 										При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
@@ -379,17 +441,29 @@ execution.setVariable('sSex', sex1)
         <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="lastName" name="Прізвище англійською" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="firstName" name="Ім'я  англійською" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDate_of_birth" name="Дата народження" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPlace_of_birth" name="Місце народження" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCountry" name="Громадянство" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSex" name="Стать" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asHavePassport" name="Чи має громадянин посвідчення особи моряка?" type="enum" writable="false">
+          <activiti:value id="sYes1" name="Так, потрібно обміняти"></activiti:value>
+          <activiti:value id="sNo1" name="Ні, буде отримувати вперше"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="result" name="Результат зустрічі" type="enum">
           <activiti:value id="reestr" name="Громадянин сплатив за послугу"></activiti:value>
           <activiti:value id="nejav" name="Громадянин не сплатив за послугу"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="decisionComment1" name="Коментар до рішення, наприклад, пояснення чому громадянину було відмовлено в наданні цієї послуги АБО додаткові деталі для закінчення процессу оформлення паспорта" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sDecisionComment1" name="Коментар до рішення, наприклад, пояснення чому громадянину було відмовлено в наданні цієї послуги АБО додаткові деталі для закінчення процессу оформлення паспорта" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/infr/seaman_passp.html]" type="invisible" default="Зразок паспорта" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPort" name="Назва порту" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${svid1},${pasp1},${pasp2}</activiti:expression>
+            <activiti:expression>${nDocEdu},${nDocDiplom},${nDocAnketa}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
