@@ -1435,7 +1435,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
         String sToken = Tool.getGeneratedToken();
         try {
-            String sID_Order = generalConfig.sID_Order_ByProcess(nID_Process);
+            String sID_Order = generalConfig.getOrderId_ByProcess(nID_Process);
             String sReturn = oActionTaskService.updateHistoryEvent_Service(
                     HistoryEvent_Service_StatusType.OPENED_REMARK_EMPLOYEE_QUESTION,
                     sID_Order,
@@ -1587,7 +1587,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         ) throws CommonServiceException {
         try {
             /* issue #1131
-            String sID_Order = generalConfig.sID_Order_ByProcess(nID_Process);
+            String sID_Order = generalConfig.getOrderId_ByProcess(nID_Process);
             Map<String, String> params = new HashMap<>();
             params.put("sID_Order", sID_Order);
             String soResponse = "";
@@ -1812,7 +1812,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     	try {
             Map<String, String> params = new HashMap<>();
             if(nID_Process!=null){
-                String sID_Order = generalConfig.sID_Order_ByProcess(nID_Process);
+                String sID_Order = generalConfig.getOrderId_ByProcess(nID_Process);
                 params.put("sID_Order", sID_Order);
             }
             params.put("nID_Message", nID_Message);

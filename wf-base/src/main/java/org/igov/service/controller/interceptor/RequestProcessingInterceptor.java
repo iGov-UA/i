@@ -267,7 +267,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
         String snID_Process = String.valueOf(omResponseBody.get("id"));
         Long nID_Process = Long.valueOf(snID_Process);
-        String sID_Order = generalConfig.sID_Order_ByProcess(nID_Process);
+        String sID_Order = generalConfig.getOrderId_ByProcess(nID_Process);
         String snID_Subject = String.valueOf(omRequestBody.get("nID_Subject"));
         mParam.put("nID_Subject", snID_Subject);
 
@@ -356,7 +356,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             if (snID_Process != null) {
                 LOG.info("Parsing snID_Process: " + snID_Process + " to long");
                 Long nID_Process = Long.valueOf(snID_Process);
-                String sID_Order = generalConfig.sID_Order_ByProcess(nID_Process);
+                String sID_Order = generalConfig.getOrderId_ByProcess(nID_Process);
                 String snMinutesDurationProcess = getTotalTimeOfExecution(snID_Process);
                 mParam.put("nTimeMinutes", snMinutesDurationProcess);
                 LOG.info("(sID_Order={},nMinutesDurationProcess={})", sID_Order, snMinutesDurationProcess);
@@ -425,7 +425,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         String snID_Process = oHistoricTaskInstance.getProcessInstanceId();
         //LOG.info("(snID_Process={})", snID_Process);
         Long nID_Process = Long.valueOf(snID_Process);
-        String sID_Order = generalConfig.sID_Order_ByProcess(nID_Process);
+        String sID_Order = generalConfig.getOrderId_ByProcess(nID_Process);
         LOG.info("(sID_Order={})", sID_Order);
 
         String sSubjectInfo = mRequestParam.get("sSubjectInfo");

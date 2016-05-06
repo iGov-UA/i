@@ -146,7 +146,7 @@ public class NotificationPatterns {
                 sClientFIO = "громадянин";
             }
             String sURL = (new StringBuilder(generalConfig.getSelfHostCentral()).append("/order/search?sID_Order=")
-                    .append(generalConfig.sID_Order_ByProcess(nID_Process))
+                    .append(generalConfig.getOrderId_ByProcess(nID_Process))
                     .append("&sToken=").append(sToken)).toString();
 
             String sText = "<b>Шановний (-а) " + sClientFIO + "!</b><br><br>"
@@ -184,7 +184,7 @@ public class NotificationPatterns {
         StringBuilder emailBody = new StringBuilder(sBody);
         emailBody.append("<br/>").append(createTable_TaskProperties(soData)).append("<br/>");
         String link = (new StringBuilder(generalConfig.getSelfHostCentral()).append("/order/search?sID_Order=")
-                .append(generalConfig.sID_Order_ByProcess(nID_Process))
+                .append(generalConfig.getOrderId_ByProcess(nID_Process))
                 .append("&sToken=").append(sToken)).toString();
         emailBody.append(link).append("<br/>");
         return emailBody.toString();

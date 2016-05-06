@@ -29,7 +29,7 @@ public class MessageService {
      * @return массив сообщений (строка JSON)
      */
     public String gerOrderMessagesByProcessInstanceID(Long nID_Process) throws Exception {
-        String sID_Order = oGeneralConfig.sID_Order_ByProcess(nID_Process);
+        String sID_Order = oGeneralConfig.getOrderId_ByProcess(nID_Process);
         Map<String, String> params = new HashMap<>();
         params.put("sID_Order", sID_Order);
         String soResponse = "";

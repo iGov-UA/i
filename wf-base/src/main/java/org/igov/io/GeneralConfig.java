@@ -248,8 +248,6 @@ public class GeneralConfig {
         return sURL_CheckOut_LiqPay;
     }
 
-    
-    
     public Integer getSelfServerId() {
         Integer nID_Server = null;
         try {
@@ -268,19 +266,17 @@ public class GeneralConfig {
         }
         return nID_Server;
     }
-    
-    
-    public String sID_Order_ByOrder(Long nID_Order) {
-        return sID_Order_ByOrder(getSelfServerId(), nID_Order);
+    public String getOrderId_ByOrder(Long nID_Order) {
+        return getOrderId_ByOrder(getSelfServerId(), nID_Order);
     }
-    public String sID_Order_ByOrder(Integer nID_Server, Long nID_Order) {
+    public String getOrderId_ByOrder(Integer nID_Server, Long nID_Order) {
         return new StringBuilder(nID_Server + "").append("-").append(nID_Order).toString();
     }
-    public String sID_Order_ByProcess(Long nID_Process) {
-        return sID_Order_ByOrder(getProtectedNumber(nID_Process));
+    public String getOrderId_ByProcess(Long nID_Process) {
+        return GeneralConfig.this.getOrderId_ByOrder(getProtectedNumber(nID_Process));
     }
-    public String sID_Order_ByProcess(Integer nID_Server, Long nID_Process) {
-        return sID_Order_ByOrder(getSelfServerId(), getProtectedNumber(nID_Process));
+    public String getOrderId_ByProcess(Integer nID_Server, Long nID_Process) {
+        return getOrderId_ByOrder(getSelfServerId(), getProtectedNumber(nID_Process));
     }
     
 }

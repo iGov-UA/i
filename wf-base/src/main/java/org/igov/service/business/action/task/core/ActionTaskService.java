@@ -1630,7 +1630,7 @@ public class ActionTaskService {
         nID_Process = String.valueOf(ToolLuna.getValidatedOriginalNumber(nID_Order));
 
         //String sID_Order,
-        String sID_Order = oGeneralConfig.sID_Order_ByOrder(nID_Order);
+        String sID_Order = oGeneralConfig.getOrderId_ByOrder(nID_Order);
 
         HistoryEvent_Service_StatusType oHistoryEvent_Service_StatusType = HistoryEvent_Service_StatusType.REMOVED;
         String sUserTaskName = oHistoryEvent_Service_StatusType.getsName_UA();
