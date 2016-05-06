@@ -257,13 +257,13 @@
     </serviceTask>
     <userTask id="usertask1" name="Розгляд документів (Видача посвідчення)" activiti:candidateGroups="ulmg_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="sDelete_day" name="Дата видалення тікета з черги" type="string"></activiti:formProperty>
         <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="Дата і час візиту громадянина" type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище " type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Адреса електронної пошти" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asType" name="Документ, за яким звертається громадянин:" type="enum" writable="false">
@@ -281,7 +281,6 @@
         <activiti:formProperty id="sRegionB" name="Область народження" type="invisible" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDistrictB" name="Район народження" type="invisible" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCityB" name="Місто/село народження" type="invisible" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспорт" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорта" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sJobPlace" name="Місце роботи" type="invisible" writable="false"></activiti:formProperty>
@@ -578,6 +577,7 @@
     <userTask id="usertask3" name="Результат візиту" activiti:candidateGroups="ulmg_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="visitDay" name="Дата і час візиту громадянина" type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище " type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
@@ -612,7 +612,7 @@ var seconds='00'
 var delta=10
 if (day!='01')
     {
-        day=day+delta
+        day=day-(-delta)
     }
 else
     {
