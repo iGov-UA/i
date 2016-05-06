@@ -257,6 +257,7 @@
     <userTask id="usertask1" name="Розгляд документів (Видача посвідчення)" activiti:candidateGroups="ulmg_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="visitDay" name="Дата і час візиту громадянина" type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище " type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
@@ -269,6 +270,11 @@
           <activiti:value id="sEnumCertifDouble" name="Дублікат Посвідчення мисливця"></activiti:value>
           <activiti:value id="sEnumCardDouble" name="Дублікат Контрольної картки обліку добутої дичини та порушень правил полювання"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="status" name="Обробка заяви" type="enum" required="true">
+          <activiti:value id="sEnumApprove" name="Громадянина запрошено до  складання іспиту"></activiti:value>
+          <activiti:value id="sEnumDeny" name="Відмова громадянину у видачі документів"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDecisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sCountryB" name="Країна народження" type="invisible" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sRegionB" name="Область народження" type="invisible" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDistrictB" name="Район народження" type="invisible" writable="false"></activiti:formProperty>
@@ -389,11 +395,6 @@
         <activiti:formProperty id="nPetNum8" name="Паспорт, посвідчення 8" type="invisible" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органа в емейл" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="шапка" type="invisible" default="Черкаському обласному управлінню лісового та мисливського господарства"></activiti:formProperty>
-        <activiti:formProperty id="status" name="Обробка заяви" type="enum" required="true">
-          <activiti:value id="sEnumApprove" name="Громадянина запрошено до  складання іспиту"></activiti:value>
-          <activiti:value id="sEnumDeny" name="Відмова громадянину у видачі документів"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sDecisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/cherkasy_lmg_415_a.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/cherkasy_lmg_415_z.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/cherkasy_lmg_415_a.html]" type="invisible" default="Анкета мисливця; вкажіть альбомну орієнтацію паперу для друку" writable="false"></activiti:formProperty>
@@ -488,6 +489,7 @@
     <userTask id="usertask2" name="Розгляд документів" activiti:candidateGroups="ulmg_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="visitDay" name="Дата і час візиту громадянина" type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище " type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
@@ -572,7 +574,7 @@
     <sequenceFlow id="flow17" name="status == 'sEnumApprove'" sourceRef="exclusivegateway3" targetRef="servicetask6">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status == 'sEnumApprove'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask3" name="Результат візиту" activiti:candidateGroups="ulmg_${sID_Public_SubjectOrganJoin}" >
+    <userTask id="usertask3" name="Результат візиту" activiti:candidateGroups="ulmg_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище " type="string" writable="false"></activiti:formProperty>
@@ -593,8 +595,8 @@
           <activiti:value id="sEnumOK" name="Громадянин з'явився на прийом"></activiti:value>
           <activiti:value id="sEnumNO" name="Громадянин не з'явився на прийом"></activiti:value>
         </activiti:formProperty>
-        </extensionElements>
-        </userTask>
+      </extensionElements>
+    </userTask>
     <serviceTask id="servicetask7" name="Видалення тікета" activiti:delegateExpression="#{releaseTicketsOfQueue}"></serviceTask>
     <intermediateCatchEvent id="timerintermediatecatchevent1" name="TimerCatchEvent">
       <timerEventDefinition>
