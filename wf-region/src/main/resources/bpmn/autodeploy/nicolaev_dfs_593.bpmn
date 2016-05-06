@@ -33,6 +33,8 @@
         <activiti:formProperty id="sAddress" name="Адреса ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="назва органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="date_big" name="Початок ліцензії" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="date_end" name="Кінець ліцензії" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPosluga_name" name="назва послуги" type="invisible" default="Видача ліцензії на право роздрібної торгівлі тютюновими виробами"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -103,7 +105,8 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="sT_objekt" name="Тип об'єкта торгівлі:;(магазин,кафе,кіоск)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sT_dfs_torg" name="Орган ДФС за місцем торгівлі" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sT_dfs_reestr" name="Орган ДФС за місцем реєстрації суб'єкта господарювання" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="date_bigin" name="Дата з якої буде діяти ліцензія" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_big" name="Дата початку ліцензії" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_end" name="Кінець ліцензії" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asVariants" name="Результат розгляду заяви" type="enum" required="true">
           <activiti:value id="sEnamDok_ok" name="Заяву оформлено вірно, ліцензію видати"></activiti:value>
           <activiti:value id="sEnamDok_bad" name="Заява оформлена не вірно відмова."></activiti:value>
@@ -143,8 +146,6 @@ ${sNameOrgan}.&lt;br /&gt;
 ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}.&lt;br /&gt;
-${sAddress}.&lt;br /&gt;
-${sWorkTime}.&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -262,7 +263,59 @@ ${sNameOrgan}.&lt;br /&gt;
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow16" sourceRef="servicetask8" targetRef="endevent2"></sequenceFlow>
-    <sequenceFlow id="flow19" sourceRef="servicetask1" targetRef="servicetask3"></sequenceFlow>
+    <sequenceFlow id="flow19" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
+    <scriptTask id="scripttask1" name="Script1" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>
+var yyyy = ''
+var mmm = ''
+var ddd = ''
+var timeB = ''
+var yyyy2 = ''
+var mmm2 = ''
+var ddd2 = ''
+var timeE = ''
+var eest = ''
+    timeB=execution.getVariable('date_bigin').toString()
+    eest=timeB.substr(20,4)
+    if(eest == 'EEST'){yyyy=timeB.substr(25,4)}
+    else{yyyy=timeB.substr(24,4)}
+    mmm=timeB.substr(4,3)
+if (mmm == 'Jan'){ mmm='01'}
+if (mmm == 'Feb'){ mmm='02'}
+if (mmm == 'Mar'){ mmm='03'}
+if (mmm == 'Apr'){ mmm='04'}
+if (mmm == 'May'){ mmm='05'}
+if (mmm == 'Jun'){ mmm='06'}
+if (mmm == 'Jul'){ mmm='07'}
+if (mmm == 'Aug'){ mmm='08'}
+if (mmm == 'Sep'){ mmm='09'}
+if (mmm == 'Oct'){ mmm='10'}
+if (mmm == 'Nov'){ mmm='11'}
+if (mmm == 'Dec'){ mmm='12'}
+	ddd=timeB.substr(8,2)
+timeB = ddd+'-'+mmm+'-'+yyyy
+yyyy2 = yyyy-(-1)
+if (ddd == '01')
+{
+ mmm2=mmm-1
+   if(mmm =='05'||'07'||'08'||'10'||'12')
+   {ddd2='30'}
+   else
+   {ddd2='31'}
+   if(mmm =='03')
+   {ddd2='28'}
+}
+else
+{
+mmm2=mmm
+ddd2=ddd-1
+}
+timeE = ddd2+'-'+mmm2+'-'+yyyy2	
+execution.setVariable('date_big', timeB)
+execution.setVariable('date_end', timeE)  
+      </script>
+    </scriptTask>
+    <sequenceFlow id="flow20" sourceRef="scripttask1" targetRef="servicetask3"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_nicolaev_dfs_593">
     <bpmndi:BPMNPlane bpmnElement="nicolaev_dfs_593" id="BPMNPlane_nicolaev_dfs_593">
@@ -310,6 +363,9 @@ ${sNameOrgan}.&lt;br /&gt;
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
         <omgdc:Bounds height="55.0" width="105.0" x="780.0" y="282.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="194.0" y="20.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="85.0" y="117.0"></omgdi:waypoint>
@@ -382,8 +438,12 @@ ${sNameOrgan}.&lt;br /&gt;
         <omgdi:waypoint x="900.0" y="309.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
-        <omgdi:waypoint x="235.0" y="117.0"></omgdi:waypoint>
-        <omgdi:waypoint x="250.0" y="117.0"></omgdi:waypoint>
+        <omgdi:waypoint x="182.0" y="90.0"></omgdi:waypoint>
+        <omgdi:waypoint x="246.0" y="75.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
+        <omgdi:waypoint x="246.0" y="75.0"></omgdi:waypoint>
+        <omgdi:waypoint x="302.0" y="90.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
