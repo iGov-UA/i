@@ -63,7 +63,7 @@ public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListene
             headers.set("Authorization", "promin.privatbank.ua/EXCL " + sessionId);
             headers.set("Content-Type", "application/json; charset=utf-8");
 
-            String resp = new RestRequest().get(generalConfig.getsUkrDocServerAddress() + url, null, StandardCharsets.UTF_8, String.class, headers);
+            String resp = new RestRequest().get(generalConfig.getURL_UkrDoc_SED() + url, null, StandardCharsets.UTF_8, String.class, headers);
 
             LOG.info("Ukrdoc response getDocument:" + resp);
             JSONObject respJson = new JSONObject(resp);
@@ -87,8 +87,8 @@ public class GetDocument_UkrDoc extends AbstractModelTask implements TaskListene
                             String fileNameOrigin = file.getString("file"); //a10300000.jpg
                             String fileName = file.getString("name");
 
-                            LOG.info("view_url:" + generalConfig.getsUkrDocServerAddress() + view_url + " fileName: " + fileName);
-                            ResponseEntity<byte[]> responseEntity = new RestRequest().getResponseEntity(generalConfig.getsUkrDocServerAddress() + view_url, MediaType.APPLICATION_JSON,
+                            LOG.info("view_url:" + generalConfig.getURL_UkrDoc_SED() + view_url + " fileName: " + fileName);
+                            ResponseEntity<byte[]> responseEntity = new RestRequest().getResponseEntity(generalConfig.getURL_UkrDoc_SED() + view_url, MediaType.APPLICATION_JSON,
                                     StandardCharsets.UTF_8, byte[].class, headers);
                             LOG.info("Ukrdoc response getContentFile getBody: " + responseEntity.getBody() 
                                     + " getHeaders: " + responseEntity.getHeaders().entrySet());

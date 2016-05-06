@@ -33,7 +33,7 @@ public class MessageService {
         Map<String, String> params = new HashMap<>();
         params.put("sID_Order", sID_Order);
         String soResponse = "";
-        String sURL = oGeneralConfig.sHostCentral() + "/wf/service/subject/message/getServiceMessages";
+        String sURL = oGeneralConfig.getSelfHostCentral() + "/wf/service/subject/message/getServiceMessages";
         soResponse = oHttpRequester.getInside(sURL, params);
         LOG.info("(soResponse={})", soResponse);
         return soResponse;

@@ -52,9 +52,9 @@ public class ManagerOTP {
         OtpPassword oOtpPassword = new OtpPassword();
         //oOtpPassword.setMerchant_id(oProperties.getProperty("merchant_id"));
         //oOtpPassword.setMerchant_password(oProperties.getProperty("merchant_password"));
-        String sURL=generalConfig.getURL_OTP_Send();
-        oOtpPassword.setMerchant_id(generalConfig.getMerchantId_OTP_Send());
-        oOtpPassword.setMerchant_password(generalConfig.getMerchantPassword_OTP_Send());
+        String sURL=generalConfig.getURL_Send_OTP();
+        oOtpPassword.setMerchant_id(generalConfig.getMerchantId_OTP());
+        oOtpPassword.setMerchant_password(generalConfig.getMerchantPassword_OTP());
         
         OtpCreate oOtpCreate = new OtpCreate();
         oOtpCreate.setCategory("qwerty");

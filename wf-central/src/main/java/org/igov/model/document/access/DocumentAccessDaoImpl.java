@@ -91,7 +91,7 @@ public class DocumentAccessDaoImpl extends GenericEntityDao<Long, DocumentAccess
                     "<br>" +
                     "<b>Код документу:</b> %" + id + "%<br>" +
                     "<br>" +
-                    "Щоб переглянути цей документ, зайдіть на <a href=\"" + generalConfig.sHostCentral()
+                    "Щоб переглянути цей документ, зайдіть на <a href=\"" + generalConfig.getSelfHostCentral()
                     + "\">iGov.org.ua</a>, пункт меню <b>Документи</b>, вкладка <b>Пошук документу за кодом</b>. Там оберіть тип документу, того, хто його надає та введіть код.<br>"
                     +
                     "<br>" +
@@ -159,7 +159,7 @@ public class DocumentAccessDaoImpl extends GenericEntityDao<Long, DocumentAccess
             //o.setDateAnswerExpire(null);
             //SEND SMS with this code
             String sReturn;
-            if (generalConfig.bTest()) {
+            if (generalConfig.isSelfTest()) {
                 sAnswer = "4444";
             }
             oDocumentAccess.setAnswer(sAnswer);
@@ -167,7 +167,7 @@ public class DocumentAccessDaoImpl extends GenericEntityDao<Long, DocumentAccess
             saveOrUpdate(oDocumentAccess);
             LOG.info("oDocumentAccess.getId()={}:Ok!", oDocumentAccess.getId());
 
-            if (generalConfig.bTest()) {
+            if (generalConfig.isSelfTest()) {
                 sReturn = "test";
             } else {
                 sReturn = oManagerOTP.sendPasswordOTP(sPhone, sAnswer, false);
@@ -247,9 +247,9 @@ public class DocumentAccessDaoImpl extends GenericEntityDao<Long, DocumentAccess
         OtpPassword oOtpPassword = new OtpPassword();
         //oOtpPassword.setMerchant_id(prop.getProperty("merchant_id"));
         //oOtpPassword.setMerchant_password(prop.getProperty("merchant_password"));
-        String sURL=generalConfig.getURL_OTP_Send();
-        oOtpPassword.setMerchant_id(generalConfig.getMerchantId_OTP_Send());
-        oOtpPassword.setMerchant_password(generalConfig.getMerchantPassword_OTP_Send());
+        String sURL=generalConfig.getURL_Send_OTP();
+        oOtpPassword.setMerchant_id(generalConfig.getMerchantId_OTP());
+        oOtpPassword.setMerchant_password(generalConfig.getMerchantPassword_OTP());
         
         OtpCreate oOtpCreate = new OtpCreate();
         oOtpCreate.setCategory("qwerty");

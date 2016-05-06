@@ -160,7 +160,7 @@ public class CreateDocument_UkrDoc extends AbstractModelTask implements TaskList
             headers.set("Authorization", "promin.privatbank.ua/EXCL " + sessionId);
             headers.set("Content-Type", "application/json; charset=utf-8");
 
-            String resp = new RestRequest().post(generalConfig.getsUkrDocServerAddress(), json.toJSONString(),
+            String resp = new RestRequest().post(generalConfig.getURL_UkrDoc_SED(), json.toJSONString(),
                     null, StandardCharsets.UTF_8, String.class, headers);
 
             LOG.info("Ukrdoc response:" + resp);

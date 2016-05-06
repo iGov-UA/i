@@ -79,7 +79,7 @@ public class UniSender {
 
     @PostConstruct
     public void initialize() {
-    	this.sAuthKey = generalConfig.getsKey_Sender();
+    	this.sAuthKey = generalConfig.getKey_UniSender_Mail();
         if(StringUtils.isBlank(sAuthKey)){
             LOG.error("Please check api_key in UniSender property file configuration");
         }        

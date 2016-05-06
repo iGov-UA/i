@@ -1591,7 +1591,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             Map<String, String> params = new HashMap<>();
             params.put("sID_Order", sID_Order);
             String soResponse = "";
-            String sURL = generalConfig.sHostCentral() + "/wf/service/subject/message/getServiceMessages";
+            String sURL = generalConfig.getSelfHostCentral() + "/wf/service/subject/message/getServiceMessages";
             soResponse = httpRequester.getInside(sURL, params);
             LOG.info("(soResponse={})", soResponse);
             */
@@ -1816,7 +1816,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 params.put("sID_Order", sID_Order);
             }
             params.put("nID_Message", nID_Message);
-            String sURL = generalConfig.sHostCentral() + "/wf/service/subject/message/getMessageFile";
+            String sURL = generalConfig.getSelfHostCentral() + "/wf/service/subject/message/getMessageFile";
             byte[] soResponse = httpRequester.getInsideBytes(sURL, params);
 
             LOG.info("Size of file {}", soResponse.length);

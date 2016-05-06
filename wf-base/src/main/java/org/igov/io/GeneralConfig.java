@@ -14,16 +14,15 @@ import static org.igov.util.ToolLuna.getProtectedNumber;
 public class GeneralConfig {
 
     private final static Logger LOG = LoggerFactory.getLogger(GeneralConfig.class);
-    //public static Boolean bTest = null;
     
     @Value("${general.Self.bTest}")
-    private String sbTest;
+    private Boolean bTest_Self;
     @Value("${general.Self.nID_Server}")
-    private String snID_Server;
+    private Integer nID_Server_Self;
     @Value("${general.Self.sHost}")
-    private String sHost; //general.sHost=https://test.region.igov.org.ua
+    private String sHost_Self;
     @Value("${general.sHostCentral}")
-    private String sHostCentral; //general.sHost=https://test.igov.org.ua/index#
+    private String sHostCentral_Self;
     @Value("${general.Auth.sLogin}")
     private String sLogin_Auth;
     @Value("${general.Auth.sPassword}")
@@ -52,11 +51,11 @@ public class GeneralConfig {
     private String sURL_UkrDoc_SED;
     
     @Value("${general.Mail.UniSender.bEnable}")
-    private String sbEnable_UniSender_Mail;
+    private Boolean bEnable_UniSender_Mail;
     @Value("${general.Mail.UniSender.sKeyAPI}")
     private String sKey_UniSender_Mail;
     @Value("${general.Mail.UniSender.nID_SendList}")
-    private String nID_SendList_UniSender_Mail;
+    private Integer nID_SendList_UniSender_Mail;
     @Value("${general.Mail.UniSender.sURL}")
     private String sURL_UniSender_Mail;
     @Value("${general.Mail.UniSender.sContext_Subscribe}")
@@ -99,30 +98,38 @@ public class GeneralConfig {
     private String sLogin_MSG_Monitor;
     
     @Value("${general.OTP.sURL_Send}")
-    private String sURL_OTP_Send;
+    private String sURL_Send_OTP;
     @Value("${general.OTP.sID_Merchant}")
-    private String sMerchantId_OTP_Send;
+    private String sMerchantId_OTP;
     @Value("${general.OTP.sPasswordMerchant}")
-    private String sMerchantPassword_OTP_Send;
-   
+    private String sMerchantPassword_OTP;
     
     @Value("${general.LiqPay.sURL_CheckOut}")
     private String sURL_CheckOut_LiqPay;
 
-
-    public String sMsgURL() {
+    
+    public boolean isSelfTest() {
+        boolean b = true;
+        try {
+            b = (bTest_Self == null ? b : bTest_Self);
+            //LOG.info("(sbTest={})", sbTest_Self);
+        } catch (Exception oException) {
+            LOG.error("Bad: {} (sbTest={})", oException.getMessage(), bTest_Self);
+            LOG.debug("FAIL:", oException);
+        }
+        return b;
+    }
+    
+    public String getURL_MSG_Monitor() {
         return sURL_MSG_Monitor;
     }
-
-    public String sMsgBusId() {
+    public String getBusinessId_MSG_Monitor() {
         return sBusinessId_MSG_Monitor;
     }
-
-    public String sMsgTemplateMsgId() {
+    public String getTemplateId_MSG_Monitor() {
         return sTemplateId_MSG_Monitor;
     }
-
-    public String sMsgLogin() {
+    public String getLogin_MSG_Monitor() {
         return sLogin_MSG_Monitor;
     }
         
@@ -148,176 +155,132 @@ public class GeneralConfig {
         return sURL_ResourceSignature_BankID_PB_Auth != null ? sURL_ResourceSignature_BankID_PB_Auth : "https://bankid.privatbank.ua/ResourceService/checked/signatureData";
     }
     
-    
-    public String sHost() {
-        //general.sHost=https://test-version.region.igov.org.ua    
-        //return sHost != null ? sHost : "https://test.region.igov.org.ua";
-        return sHost;
+    public String getSelfHost() {
+        return sHost_Self;
     }
-
-    public String sHostCentral() {
-        //general.sHost=https://test-version.region.igov.org.ua    
-        //return sHostCentral != null ? sHostCentral : "https://test.igov.org.ua";
-        return sHostCentral;
+    public String getSelfHostCentral() {
+        return sHostCentral_Self;
     }
-
-    public String sAuthLogin() {
+    public String getAuthLogin() {
         return sLogin_Auth;
     }
-
-    public String sAuthPassword() {
+    public String getAuthPassword() {
         return sPassword_Auth;
     }
-
     
     public String getLogin_Auth_Receipt_PB_Bank() {
-        return sLogin_Auth_Receipt_PB_Bank != null ? sLogin_Auth_Receipt_PB_Bank : "igov";
+        return sLogin_Auth_Receipt_PB_Bank;
     }
-
     public String getPassword_Auth_Receipt_PB_Bank() {
-        return sPassword_Auth_Receipt_PB_Bank != null ? sPassword_Auth_Receipt_PB_Bank : "igov-sess";
+        return sPassword_Auth_Receipt_PB_Bank;
     }
-
     public String getURL_GenerateSID_Auth_Receipt_PB_Bank() {
-        return sURL_GenerateSID_Auth_Receipt_PB_Bank != null ? sURL_GenerateSID_Auth_Receipt_PB_Bank : "https://auth-id.igov.org.ua/ChameleonServer/sessions/open";
+        return sURL_GenerateSID_Auth_Receipt_PB_Bank;
     }
-
     public String sURL_DocumentKvitanciiForIgov() {
         return sURL_DocumentSimple_Receipt_PB_Bank;
     }
-
     public String sURL_DocumentKvitanciiForAccounts() {
         return sURL_DocumentByAccounts_Receipt_PB_Bank;
     }
-
     public String sURL_DocumentKvitanciiCallback() {
         return sURL_DocumentCallback_Receipt_PB_Bank;
     }
     
-    
     public String getLogin_Auth_UkrDoc_SED() {
-        return sLogin_Auth_UkrDoc_SED != null ? sLogin_Auth_UkrDoc_SED : "igov";
+        return sLogin_Auth_UkrDoc_SED;
     }
-
     public String getPassword_Auth_UkrDoc_SED() {
-        return sPassword_Auth_UkrDoc_SED != null ? sPassword_Auth_UkrDoc_SED : "igov-sess";
+        return sPassword_Auth_UkrDoc_SED;
     }
-    
     public String getURL_GenerateSID_Auth_UkrDoc_SED() {
-        return sURL_GenerateSID_Auth_UkrDoc_SED != null ? sURL_GenerateSID_Auth_UkrDoc_SED : "https://auth-id.igov.org.ua/Stage/ChameleonServer/sessions/open";
+        return sURL_GenerateSID_Auth_UkrDoc_SED;
+    }
+    public String getURL_UkrDoc_SED() {
+        return sURL_UkrDoc_SED;
+    }
+    
+    public String getUser_Coreziod_Exchange() {
+        return sUser_Corezoid_Exchange;
+    }
+    public String getSecretKey_Coreziod_Exchange() {
+        return sSecretKey_Corezoid_Exchange;
+    }
+
+    public String getURL_Send_OTP()  {
+        return sURL_Send_OTP;
+    }
+    public String getMerchantId_OTP()  {
+        return sMerchantId_OTP;
+    }
+    public String getMerchantPassword_OTP()  {
+        return sMerchantPassword_OTP;
+    }
+    
+    public Boolean isEnable_UniSender_Mail() {
+        return bEnable_UniSender_Mail;
+    }
+    public String getURL_UniSender_Mail() {
+        return sURL_UniSender_Mail;
+    }
+    public String getContext_Subscribe_UniSender_Mail() {
+        return sContext_Subscribe_UniSender_Mail;
+    }
+    public String getContext_CreateMail_UniSender_Mail() {
+        return sContext_CreateMail_UniSender_Mail;
+    }
+    public String getContext_CreateCompain_UniSender_Mail() {
+        return sContext_CreateCompain_UniSender_Mail;
+    }
+    public String getKey_UniSender_Mail() {
+        return sKey_UniSender_Mail;
+    }
+    public long getSendListId_UniSender_Mail() {
+        try {
+            return nID_SendList_UniSender_Mail;
+        } catch (NumberFormatException oException) {
+            LOG.warn("can't parse nID_SendList_Unisender!: {} (nID_SendList_Unisender={})", oException.getMessage(), nID_SendList_UniSender_Mail);
+            return 5998742; //default list_id
+        }
+    }
+    
+    public String getURL_CheckOut_LiqPay() {
+        return sURL_CheckOut_LiqPay;
     }
 
     
-    public boolean bTest() {
-        /*if (bTest != null) {
-         return bTest;
-         }*/
-        boolean b = true;
-        try {
-            b = (sbTest == null ? b : sbTest.trim().length() > 0 ? !"false".equalsIgnoreCase(sbTest.trim()) : true);
-            LOG.info("(sbTest={})", sbTest);
-        } catch (Exception oException) {
-            LOG.error("Bad: {} (sbTest={})", oException.getMessage(), sbTest);
-            LOG.debug("FAIL:", oException);
-        }
-        //bTest = b;
-        return b;
-    }
-
-    public String sID_Order_ByOrder(Long nID_Order) {
-        return sID_Order_ByOrder(nID_Server(), nID_Order);
-    }
-
-    public String sID_Order_ByOrder(Integer nID_Server, Long nID_Order) {
-        return new StringBuilder(nID_Server + "").append("-").append(nID_Order).toString();
-    }
-
-    public String sID_Order_ByProcess(Long nID_Process) {
-        return sID_Order_ByOrder(getProtectedNumber(nID_Process));
-    }
-
-    public String sID_Order_ByProcess(Integer nID_Server, Long nID_Process) {
-        return GeneralConfig.this.sID_Order_ByOrder(nID_Server(), getProtectedNumber(nID_Process));
-    }
-
-    public int nID_Server() {
+    
+    public Integer getSelfServerId() {
         Integer nID_Server = null;
         try {
-            if (snID_Server == null) {
+            if (nID_Server_Self == null) {
                 nID_Server = 0;
-                throw new NumberFormatException("snID_Server=" + snID_Server);
+                throw new NumberFormatException("snID_Server=" + nID_Server_Self);
             }
-            nID_Server = Integer.parseInt(snID_Server);
+            nID_Server = nID_Server_Self;
             if (nID_Server == null || nID_Server < 0) {
                 nID_Server = 0;
                 throw new NumberFormatException("nID_Server=" + nID_Server);
             }
         } catch (NumberFormatException oNumberFormatException) {
             nID_Server = 0;
-            LOG.warn("can't parse nID_Server: {} (nID_Server={})", oNumberFormatException.getMessage(), snID_Server);
+            LOG.warn("can't parse nID_Server: {} (nID_Server={})", oNumberFormatException.getMessage(), nID_Server_Self);
         }
         return nID_Server;
     }
-
-    public String getsKey_Sender() {
-        return sKey_UniSender_Mail != null ? sKey_UniSender_Mail : "591335ic471gpqoc43dbtg6n7s1e8bchpbp4wdxa";
+    
+    
+    public String sID_Order_ByOrder(Long nID_Order) {
+        return sID_Order_ByOrder(getSelfServerId(), nID_Order);
     }
-
-    public String getUseUniSender() {
-        return sbEnable_UniSender_Mail;
+    public String sID_Order_ByOrder(Integer nID_Server, Long nID_Order) {
+        return new StringBuilder(nID_Server + "").append("-").append(nID_Order).toString();
     }
-
-    public long getUniSenderListId() {
-
-        try {
-            return Integer.parseInt(nID_SendList_UniSender_Mail);
-        } catch (NumberFormatException oException) {
-            LOG.warn("can't parse nID_SendList_Unisender!: {} (nID_SendList_Unisender={})", oException.getMessage(), nID_SendList_UniSender_Mail);
-        }
-        return 5998742; //default list_id
+    public String sID_Order_ByProcess(Long nID_Process) {
+        return sID_Order_ByOrder(getProtectedNumber(nID_Process));
     }
-
-    public String getsUkrDocServerAddress() {
-        return sURL_UkrDoc_SED != null ? sURL_UkrDoc_SED : "https://doc.stage.it.loc/docs";
-    }
-
-    public String getSnID_Server() {
-        return snID_Server;
-    }
-
-    public String getsCorezoidUser() {
-        return sUser_Corezoid_Exchange;
-    }
-
-    public String getsCorezoidSecretKey() {
-        return sSecretKey_Corezoid_Exchange;
-    }
-
-    public String getURL_OTP_Send()  {
-        return sURL_OTP_Send != null ? sURL_OTP_Send : "https://sms-inner.siteheart.com/api/otp_create_api.cgi";
-    }
-    public String getMerchantId_OTP_Send()  {
-        return sMerchantId_OTP_Send;
-    }
-    public String getMerchantPassword_OTP_Send()  {
-        return sMerchantPassword_OTP_Send;
+    public String sID_Order_ByProcess(Integer nID_Server, Long nID_Process) {
+        return sID_Order_ByOrder(getSelfServerId(), getProtectedNumber(nID_Process));
     }
     
-    public String getURL_UniSender_Mail() {
-        return sURL_UniSender_Mail != null ? sURL_UniSender_Mail : "http://178.33.176.144/";
-    }
-    public String getContext_Subscribe_UniSender_Mail() {
-        return sContext_Subscribe_UniSender_Mail != null ? sContext_Subscribe_UniSender_Mail : "/api/subscribe";
-    }
-    public String getContext_CreateMail_UniSender_Mail() {
-        return sContext_CreateMail_UniSender_Mail != null ? sContext_CreateMail_UniSender_Mail : "/api/createEmailMessage";
-    }
-    public String getContext_CreateCompain_UniSender_Mail() {
-        return sContext_CreateCompain_UniSender_Mail != null ? sContext_CreateCompain_UniSender_Mail : "/api/createCampaign";
-    }
-
-    public String getsURL_CheckOut() {
-        return sURL_CheckOut_LiqPay != null ? sURL_CheckOut_LiqPay : "${general.LiqPay.sURL_CheckOut}";
-    }
-
 }

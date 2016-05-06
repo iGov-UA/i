@@ -63,7 +63,7 @@ public class BpServiceHandler {
         Map<String, Object> variables = new HashMap<>();
         variables.put("nID_Proccess_Feedback", snID_Process);
         variables.put("processName", processName);
-        Integer nID_Server = generalConfig.nID_Server();
+        Integer nID_Server = generalConfig.getSelfServerId();
         String sID_Order = generalConfig.sID_Order_ByProcess(Long.valueOf(snID_Process));
         //get process variables
         HistoricTaskInstance details = historyService
@@ -108,7 +108,7 @@ public class BpServiceHandler {
     public void checkBpAndStartEscalationProcess(final Map<String, Object> mTaskParam) throws Exception {
         String snID_Process = (String) mTaskParam.get("sProcessInstanceId");
         String processName = (String) mTaskParam.get("sID_BP_full");
-        Integer nID_Server = generalConfig.nID_Server();
+        Integer nID_Server = generalConfig.getSelfServerId();
         String sID_Order = generalConfig.sID_Order_ByProcess(Long.valueOf(snID_Process));
         try {
             String jsonHistoryEvent = historyEventService.getHistoryEvent(sID_Order);

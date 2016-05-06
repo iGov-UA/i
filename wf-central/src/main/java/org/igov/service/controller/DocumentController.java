@@ -357,7 +357,7 @@ public class DocumentController {
         Subject subject_Upload = oManageSubject.syncSubject_Upload(sID_Subject_Upload);
 
         String oSignData = BankIDUtils.checkECP(generalConfig, generalConfig.getLogin_BankID_PB_Auth(), generalConfig.getPassword_Auth_Receipt_PB_Bank(),
-                generalConfig.sHostCentral(), aoContent, sName);
+                generalConfig.getSelfHostCentral(), aoContent, sName);
 
         return documentDao.setDocument(
                 nID_Subject,
@@ -433,7 +433,7 @@ public class DocumentController {
         Subject subject_Upload = oManageSubject.syncSubject_Upload(sID_Subject_Upload);
 
         String soSignData = BankIDUtils.checkECP(generalConfig, generalConfig.getLogin_BankID_PB_Auth(), generalConfig.getPassword_BankID_PB_Auth(),
-                generalConfig.sHostCentral(), aoContent, sName);
+                generalConfig.getSelfHostCentral(), aoContent, sName);
 
         Long nID_Document = documentDao.setDocument(
                 nID_Subject,

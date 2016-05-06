@@ -30,11 +30,11 @@ public class MsgService {
 
     @PostConstruct
     public void initIt() throws Exception {
-	sBusId = generalConfig.sMsgBusId();
-	sTemplateMsgId = generalConfig.sMsgTemplateMsgId();
-	sMsgLogin = generalConfig.sMsgLogin();
+	sBusId = generalConfig.getBusinessId_MSG_Monitor();
+	sTemplateMsgId = generalConfig.getTemplateId_MSG_Monitor();
+	sMsgLogin = generalConfig.getLogin_MSG_Monitor();
 
-	sServiceURL = generalConfig.sMsgURL();
+	sServiceURL = generalConfig.getURL_MSG_Monitor();
 	System.setProperty("MsgURL", sServiceURL);
 
 	LOG.debug("ServiceURL={}, BusID={}, sTemplateMsgId={}, sMsgLogin={}", sServiceURL, sBusId, sTemplateMsgId,

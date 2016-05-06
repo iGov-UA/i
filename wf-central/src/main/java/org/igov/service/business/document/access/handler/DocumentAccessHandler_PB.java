@@ -93,7 +93,7 @@ public class DocumentAccessHandler_PB extends AbstractDocumentAccessHandler {
 
         String finalUri = uriDoc + keyIdParam + keyID + callBackKey + callBackValue;
 
-        //if (generalConfig.bTest()) {
+        //if (generalConfig.isSelfTest()) {
             SSLCertificateValidation.disable();
         //}
 

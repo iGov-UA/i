@@ -96,8 +96,8 @@ public class FinanceCommonController {
                 LOG.error("FAIL:sAccessKey=", oException1);
             }
 
-            //generalConfig.sHost() + "/wf/service/finance/setPaymentStatus_TaskActiviti_Direct?sID_Order="+sID_Order+"&sID_PaymentSystem="+sID_PaymentSystem+"&sData=&sID_Transaction=&sStatus_Payment="
-            String sURL = new StringBuilder(generalConfig.sHost())
+            //generalConfig.getSelfHost() + "/wf/service/finance/setPaymentStatus_TaskActiviti_Direct?sID_Order="+sID_Order+"&sID_PaymentSystem="+sID_PaymentSystem+"&sData=&sID_Transaction=&sStatus_Payment="
+            String sURL = new StringBuilder(generalConfig.getSelfHost())
                     .append("/wf/service/finance/setPaymentStatus_TaskActiviti_Direct?")
                     .append("sID_Order=").append(sID_Order)
                     .append("&sID_PaymentSystem=").append(sID_PaymentSystem)
@@ -121,7 +121,7 @@ public class FinanceCommonController {
                     .append("</form>").toString();
 
             String saToMail = "bvv4ik@gmail.com,dmitrij.zabrudskij@privatbank.ua";
-            String sHead = (generalConfig.bTest() ? "(test)" : "(PROD)")
+            String sHead = (generalConfig.isSelfTest() ? "(test)" : "(PROD)")
                     + "/finance/setPaymentStatus_TaskActiviti:������ ��� ������� �������� ��������� ���������� � ������� � ��������-������!";
             String sBody = "oException.getMessage()=" + oException.getMessage() + "<br>" +
                     "<br>" +

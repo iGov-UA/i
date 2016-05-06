@@ -127,7 +127,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     private void protocolize(HttpServletRequest oRequest, HttpServletResponse oResponse, boolean bSaveHistory)
             throws IOException {
         LOG.info("Method 'protocolize' started");
-        int nLen = generalConfig.bTest() ? 300 : 200;
+        int nLen = generalConfig.isSelfTest() ? 300 : 200;
 
         Map<String, String> mRequestParam = new HashMap<>();
         Enumeration paramsName = oRequest.getParameterNames();
@@ -321,7 +321,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 mParamSync.put("sPhone", sPhone);
                 LOG.info("Вносим параметры в коллекцию (sMailTo {}, snID_Subject {}, sPhone {})", sMailTo, snID_Subject,
                         sPhone);
-                String sURL = generalConfig.sHostCentral() + URI_SYNC_CONTACTS;
+                String sURL = generalConfig.getSelfHostCentral() + URI_SYNC_CONTACTS;
                 LOG.info("(Подключаемся к центральному порталу)");
                 String sResponse = httpRequester.getInside(sURL, mParamSync);
                 LOG.info("(Подключение осуществлено)");
@@ -368,7 +368,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 try {
                     if (bProcessClosed && sProcessName.indexOf("system") != 0) {//issue 962
                         //LOG.info(String.format("start process feedback for process with snID_Process=%s", snID_Process));
-                        if (!generalConfig.bTest()) {
+                        if (!generalConfig.isSelfTest()) {
                             String snID_Proccess_Feedback = bpHandler
                                     .startFeedbackProcess(snID_Task, snID_Process, sProcessName);
                             mParam.put("nID_Proccess_Feedback", snID_Proccess_Feedback);

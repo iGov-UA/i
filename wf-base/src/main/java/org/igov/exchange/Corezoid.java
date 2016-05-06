@@ -32,15 +32,15 @@ public class Corezoid {
     GeneralConfig generalConfig;
     
     public String sendToCorezoid(String nID_Corezoid, Map<String, Object> data) throws Exception {
-            LOG.info("conveyerID: " + nID_Corezoid + " user: " + generalConfig.getsCorezoidUser() 
-                    + " secretKey: " + generalConfig.getsCorezoidSecretKey() + " data: " + data);
+            LOG.info("conveyerID: " + nID_Corezoid + " user: " + generalConfig.getUser_Coreziod_Exchange() 
+                    + " secretKey: " + generalConfig.getSecretKey_Coreziod_Exchange() + " data: " + data);
             JSONObject requestData = new JSONObject();
             requestData.accumulateAll(data);
             LOG.info("requestData: " + requestData);
             String ref = "iGov" + System.currentTimeMillis() + new Random(System.currentTimeMillis()).nextInt(1000);
             RequestOperation operation = RequestOperation.create(nID_Corezoid, ref, requestData);
             List<RequestOperation> ops = Arrays.asList(operation);
-            CorezoidMessage message = CorezoidMessage.request(generalConfig.getsCorezoidSecretKey(), generalConfig.getsCorezoidUser(), ops);
+            CorezoidMessage message = CorezoidMessage.request(generalConfig.getSecretKey_Coreziod_Exchange(), generalConfig.getUser_Coreziod_Exchange(), ops);
             HttpManager http = new HttpManager();
             String resut = http.send(message);
             LOG.info("resut: " + resut);

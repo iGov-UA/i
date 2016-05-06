@@ -2319,7 +2319,7 @@ public class ActionTaskService {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 		Map<String, Object> taskInfo = new HashMap<String, Object>();
 		taskInfo.put("id", task.getId());
-		taskInfo.put("url", oGeneralConfig.sHost() + "/wf/service/runtime/tasks/" + task.getId());
+		taskInfo.put("url", oGeneralConfig.getSelfHost() + "/wf/service/runtime/tasks/" + task.getId());
 		taskInfo.put("owner", task.getOwner());
 		taskInfo.put("assignee", task.getAssignee());
 		taskInfo.put("delegationState", (task instanceof Task) ? ((Task)task).getDelegationState() : null);
@@ -2336,11 +2336,11 @@ public class ActionTaskService {
 		taskInfo.put("parentTaskId", task.getParentTaskId());
 		taskInfo.put("parentTaskUrl", "");
 		taskInfo.put("executionId", task.getExecutionId());
-		taskInfo.put("executionUrl", oGeneralConfig.sHost() + "/wf/service/runtime/executions/" + task.getExecutionId());
+		taskInfo.put("executionUrl", oGeneralConfig.getSelfHost() + "/wf/service/runtime/executions/" + task.getExecutionId());
 		taskInfo.put("processInstanceId", task.getProcessInstanceId());
-		taskInfo.put("processInstanceUrl", oGeneralConfig.sHost() + "/wf/service/runtime/process-instances/" + task.getProcessInstanceId());
+		taskInfo.put("processInstanceUrl", oGeneralConfig.getSelfHost() + "/wf/service/runtime/process-instances/" + task.getProcessInstanceId());
 		taskInfo.put("processDefinitionId", task.getProcessDefinitionId());
-		taskInfo.put("processDefinitionUrl", oGeneralConfig.sHost() + "/wf/service/repository/process-definitions/" + task.getProcessDefinitionId());
+		taskInfo.put("processDefinitionUrl", oGeneralConfig.getSelfHost() + "/wf/service/repository/process-definitions/" + task.getProcessDefinitionId());
 		taskInfo.put("variables", new LinkedList());
 		if (flowSlotTicket != null){
 			LOG.info("Populating flow slot ticket");

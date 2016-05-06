@@ -278,7 +278,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
     }
 
     private String replaceTags_LIQPAY(String textStr, DelegateExecution execution) throws Exception {
-        String LIQPAY_CALLBACK_URL = generalConfig.sHost()
+        String LIQPAY_CALLBACK_URL = generalConfig.getSelfHost()
                 + "/wf/service/finance/setPaymentStatus_TaskActiviti?sID_Order=%s&sID_PaymentSystem=Liqpay&sData=%s&sPrefix=%s";
 
         StringBuffer outputTextBuffer = new StringBuffer();
@@ -331,7 +331,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
                     : execution.getVariable(String.format(PATTERN_SUBJECT_ID, "")).toString());
             nID_Subject = (nID_Subject == null ? 0 : nID_Subject);
             LOG.info("{}={}", pattern_subject, nID_Subject);
-            boolean bTest = generalConfig.bTest();
+            boolean bTest = generalConfig.isSelfTest();
             String htmlButton = liqBuy.getPayButtonHTML_LiqPay(
                     sID_Merchant, sSum, oID_Currency, sLanguage,
                     sDescription, sID_Order, sURL_CallbackStatusNew,
@@ -353,7 +353,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
             if (matcherPrefix.find()) {
                 prefix = matcherPrefix.group();
             }
-            String URL_SERVICE_MESSAGE = generalConfig.sHostCentral()
+            String URL_SERVICE_MESSAGE = generalConfig.getSelfHostCentral()
                     + "/wf/service/subject/message/setMessageRate";
 
             String sURI = ToolWeb.deleteContextFromURL(URL_SERVICE_MESSAGE);

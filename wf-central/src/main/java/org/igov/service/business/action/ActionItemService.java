@@ -70,7 +70,7 @@ public class ActionItemService {
                     service.setLaw(null);
                     //service.setSub(service.getServiceDataList().size());
 
-                    List<ServiceData> serviceDataFiltered = service.getServiceDataFiltered(generalConfig.bTest());
+                    List<ServiceData> serviceDataFiltered = service.getServiceDataFiltered(generalConfig.isSelfTest());
                     service.setSub(serviceDataFiltered != null ? serviceDataFiltered.size() : 0);
                     //service.setTests(service.getTestsCount());
                     //service.setStatus(service.getTests(); service.getTestsCount());
@@ -147,7 +147,7 @@ public class ActionItemService {
             boolean serviceMatchedToIds = false;
             boolean nationalService = false;
 
-            //List<ServiceData> serviceDatas = service.getServiceDataFiltered(generalConfig.bTest());
+            //List<ServiceData> serviceDatas = service.getServiceDataFiltered(generalConfig.isSelfTest());
             List<ServiceData> aServiceData = oService.getServiceDataFiltered(true);
             if (aServiceData != null) {
                 for (Iterator<ServiceData> oServiceDataIterator = aServiceData.iterator(); oServiceDataIterator
@@ -225,7 +225,7 @@ public class ActionItemService {
     public ResponseEntity regionsToJsonResponse(Service oService) {
         oService.setSubcategory(null);
 
-        List<ServiceData> aServiceData = oService.getServiceDataFiltered(generalConfig.bTest());
+        List<ServiceData> aServiceData = oService.getServiceDataFiltered(generalConfig.isSelfTest());
         for (ServiceData oServiceData : aServiceData) {
             oServiceData.setService(null);
 

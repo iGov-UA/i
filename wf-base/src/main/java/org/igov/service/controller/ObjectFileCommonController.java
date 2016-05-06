@@ -258,7 +258,7 @@ public class ObjectFileCommonController {
         }
 
         String soSignData = BankIDUtils.checkECP(generalConfig, generalConfig.getLogin_BankID_PB_Auth(),
-                generalConfig.getPassword_BankID_PB_Auth(), generalConfig.sHostCentral(),
+                generalConfig.getPassword_BankID_PB_Auth(), generalConfig.getSelfHostCentral(),
                 upload, fileName);
 
         return soSignData;
@@ -468,7 +468,7 @@ public class ObjectFileCommonController {
         byte[] content = IOUtils.toByteArray(attachmentStream);
 
         String soSignData = BankIDUtils.checkECP(generalConfig, generalConfig.getLogin_BankID_PB_Auth(),
-                generalConfig.getPassword_BankID_PB_Auth(), generalConfig.sHostCentral(),
+                generalConfig.getPassword_BankID_PB_Auth(), generalConfig.getSelfHostCentral(),
                 content, attachmentRequested.getName());
 
         return soSignData;
