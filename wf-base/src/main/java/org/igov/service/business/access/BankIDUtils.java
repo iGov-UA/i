@@ -33,9 +33,13 @@ public class BankIDUtils {
     
     private static final Logger LOG = LoggerFactory.getLogger(ActionTaskCommonController.class);
     
-    public static String checkECP(GeneralConfig generalConfig, String clientId, String clientSecret, String redirectUrl, byte[] fileByteArray,
+    public static String checkECP(GeneralConfig generalConfig, byte[] fileByteArray,
             String fileName) {
-
+        
+        String clientId = generalConfig.getLogin_BankID_PB_Auth();
+        String clientSecret = generalConfig.getPassword_BankID_PB_Auth();
+        String redirectUrl = generalConfig.getSelfHostCentral();
+                        
         LOG.info("(clientID={}, clientSecret={}, redirectUrl={})", clientId, clientSecret,  redirectUrl);
 
         try {
