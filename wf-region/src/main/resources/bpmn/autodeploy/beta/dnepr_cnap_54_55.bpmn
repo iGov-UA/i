@@ -50,8 +50,8 @@
         <activiti:formProperty id="markers2" name="Якщо  тварини" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;perelic_animals&quot;],&quot;asID_Field&quot;:{&quot;sClient1&quot;:&quot;asDozvil&quot;,&quot;sClient2&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sClient1] == 'sEnumAnimals'&amp;&amp;[sClient2] != 'don_mariupolT'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers5" name="Якщо  корма" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;perelic_provender&quot;],&quot;asID_Field&quot;:{&quot;sClient1&quot;:&quot;asDozvil&quot;,&quot;sClient2&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sClient1] == 'sEnumProvender'&amp;&amp;[sClient2] != 'don_mariupolT'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="rdozvil" name="назви документів" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers9" name="назва доку по тваринам" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_9&quot;:{&quot;aField_ID&quot;:[&quot;rdozvil&quot;],&quot;asID_Field_sValue&quot;:[&quot;Перелік продуктів тваринного походження&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asDozvil&quot;},&quot;sCondition&quot;:&quot;[sReason]=='sEnumAnimals'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers10" name="назва доку по кормам" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_10&quot;:{&quot;aField_ID&quot;:[&quot;rdozvil&quot;],&quot;asID_Field_sValue&quot;:[&quot;Перелік добавок, преміксів і кормів&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asDozvil&quot;},&quot;sCondition&quot;:&quot;[sReason]=='sEnumProvender'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers9" name="назва доку по тваринам" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_9&quot;:{&quot;aField_ID&quot;:[&quot;rdozvil&quot;],&quot;asID_Field_sValue&quot;:[&quot;&lt;ol&gt;&lt;li&gt;Довідка про здатність провадити відповідну діяльність&lt;/li&gt;&lt;li&gt;Перелік продуктів тваринного походження&lt;/li&gt;&lt;/ol&gt;&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asDozvil&quot;},&quot;sCondition&quot;:&quot;[sReason]=='sEnumAnimals'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers10" name="назва доку по кормам" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_10&quot;:{&quot;aField_ID&quot;:[&quot;rdozvil&quot;],&quot;asID_Field_sValue&quot;:[&quot;&lt;ol&gt;&lt;li&gt;Довідка про здатність провадити відповідну діяльність&lt;/li&gt;&lt;li&gt;Перелік добавок, преміксів і кормів&lt;/li&gt;&lt;/ol&gt;&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asDozvil&quot;},&quot;sCondition&quot;:&quot;[sReason]=='sEnumProvender'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow12" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -255,7 +255,7 @@ ${comment_2} &lt;br /&gt;
 2. Для уповоноваженої особи - довіренність.&lt;br /&gt;
 3. Роздруковану заяву, яку ви подавали в електронному вигляді (знаходиться у додатку до листа), засвідчену особистим підписом керівника  юридичної  особи, фізичної особи-підприємця або уповноваженої ними особи.&lt;br /&gt;
 4. Оригінал довідки про здатність провадити відповідну діяльність, в якій зазначається інформація про наявність кваліфікованого персоналу, технологічного обладнання, перелік товарів, що виготовляються. &lt;br /&gt;
-5. ${rdozvil}.&lt;br /&gt;&lt;br /&gt;
+5. Перелік продукції (преміксів, кормів або продуктів тваринного походження).&lt;br /&gt;&lt;br /&gt;
 &lt;/p&gt;
 ${sPhoneOrgan}&lt;br /&gt;
 &lt;br /&gt;
@@ -360,12 +360,13 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:formProperty id="kved_text" name="Впишіть види діяльності, відповідно до вказаних кодів КВЕД" type="string"></activiti:formProperty>
         <activiti:formProperty id="perelic_text" name="Впишіть ассортимент продукції, відповідно до доданих заявником документів (прикріплених файлів)" type="string"></activiti:formProperty>
         <activiti:formProperty id="comment_2" name="У разі відмови у наданні дозволу внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="nReestrVet" name="Номер реєстрації" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sReestrDateVet" name="Дата видачі Експлуатаційного дозволу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nReestrVet" name="Реєстраційний номер потужності" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReestrDateVet" name="Дата державної реєстрації потужності " type="string"></activiti:formProperty>
         <activiti:formProperty id="sStartDateVet" name="Дата початку строку дії Експлуатаційного дозволу (у форматі ДД місяць РРРР)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEndDateVet" name="Дата закінчення строку дії Експлуатаційного дозволу (у форматі ДД місяць РРРР)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDozvNumb" name="Номер Експлуатаційного дозволу" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPibVet" name="Прізвище та ініціали працівника ветеринарної служби" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="rishen" name="Завантажте копію рішення" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sShapkaVet" name="Начальнику управління ветеринарної медицини в " type="invisible"></activiti:formProperty>
         <activiti:formProperty id="rdozvil" name="назви документів" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/dnepr_cnap_55vet.html" type="file"></activiti:formProperty>
@@ -448,7 +449,7 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${PrintForm_1},${PrintForm_2}</activiti:expression>
+            <activiti:expression>${PrintForm_1},${rishen},${Printform_2}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -508,50 +509,7 @@ execution.setVariable('rNumber', per2)
 execution.setVariable('sNameOrgan', per4)
 	  </script>
     </scriptTask>
-    <serviceTask id="servicetask13" name="Повідомлення про рішення" activiti:delegateExpression="#{MailTaskWithAttachments}">
-      <extensionElements>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Експлуатаційний дозвіл для провадження діяльності на потужностях (об’єктах)]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${PrintForm_1},${PrintForm_2}</activiti:expression>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Вам enum{[decision_2]} для провадження діяльності на потужностях (об’єктах) enum{[asDozvil]}.&lt;br /&gt; 
-${comment_2} &lt;br /&gt; 
-Копія рішення знаходиться у додатку до листа.&lt;br /&gt;
-Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у ЦНАПі.&lt;br /&gt;&lt;br /&gt;
-При собі треба мати:&lt;br /&gt;
-1. Документ, що посвідчує особу.&lt;br /&gt;
-2. Для уповоноваженої особи - довіренність.&lt;br /&gt;
-3. Роздруковану заяву, яку ви подавали в електронному вигляді (знаходиться у додатку до листа), засвідчену особистим підписом керівника  юридичної  особи, фізичної особи-підприємця або уповноваженої ними особи.&lt;br /&gt;
-4. Оригінал довідки про здатність провадити відповідну діяльність, в якій зазначається інформація про наявність кваліфікованого персоналу, технологічного обладнання, перелік товарів, що виготовляються. &lt;br /&gt;
-5. ${rdozvil}.&lt;br /&gt;&lt;br /&gt;
-&lt;/p&gt;
-${sPhoneOrgan}&lt;br /&gt;
-&lt;br /&gt;
-&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-${sAddress}&lt;br /&gt;
-&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
-        </activiti:field>
-      </extensionElements>
-      </serviceTask>
-    <sequenceFlow id="flow65" sourceRef="usertask4" targetRef="servicetask13"></sequenceFlow>
-    <sequenceFlow id="flow66" sourceRef="servicetask13" targetRef="endevent2"></sequenceFlow>
+    <sequenceFlow id="flow65" sourceRef="usertask4" targetRef="servicetask4"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_54_55">
     <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_54_55" id="BPMNPlane_dnepr_cnap_54_55">
@@ -583,7 +541,7 @@ ${sNameOrgan}&lt;br /&gt;
         <omgdc:Bounds height="55.0" width="141.0" x="296.0" y="139.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
-        <omgdc:Bounds height="56.0" width="125.0" x="178.0" y="273.0"></omgdc:Bounds>
+        <omgdc:Bounds height="56.0" width="125.0" x="20.0" y="273.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
         <omgdc:Bounds height="40.0" width="40.0" x="538.0" y="146.0"></omgdc:Bounds>
@@ -606,15 +564,12 @@ ${sNameOrgan}&lt;br /&gt;
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
         <omgdc:Bounds height="55.0" width="105.0" x="229.0" y="-20.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask13" id="BPMNShape_servicetask13">
-        <omgdc:Bounds height="55.0" width="115.0" x="25.0" y="273.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
         <omgdi:waypoint x="105.0" y="87.0"></omgdi:waypoint>
         <omgdi:waypoint x="119.0" y="87.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
-        <omgdi:waypoint x="240.0" y="273.0"></omgdi:waypoint>
+        <omgdi:waypoint x="82.0" y="273.0"></omgdi:waypoint>
         <omgdi:waypoint x="82.0" y="184.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
@@ -637,7 +592,7 @@ ${sNameOrgan}&lt;br /&gt;
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow50" id="BPMNEdge_flow50">
         <omgdi:waypoint x="332.0" y="300.0"></omgdi:waypoint>
-        <omgdi:waypoint x="303.0" y="301.0"></omgdi:waypoint>
+        <omgdi:waypoint x="145.0" y="301.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow54" id="BPMNEdge_flow54">
         <omgdi:waypoint x="558.0" y="115.0"></omgdi:waypoint>
@@ -687,11 +642,7 @@ ${sNameOrgan}&lt;br /&gt;
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow65" id="BPMNEdge_flow65">
         <omgdi:waypoint x="82.0" y="350.0"></omgdi:waypoint>
-        <omgdi:waypoint x="82.0" y="328.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow66" id="BPMNEdge_flow66">
-        <omgdi:waypoint x="82.0" y="273.0"></omgdi:waypoint>
-        <omgdi:waypoint x="82.0" y="184.0"></omgdi:waypoint>
+        <omgdi:waypoint x="82.0" y="329.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
