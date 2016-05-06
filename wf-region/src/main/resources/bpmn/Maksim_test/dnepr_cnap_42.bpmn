@@ -21,6 +21,9 @@
           <activiti:value id="sEnumTemporaryRegistration" name="Тимчасова реєстрація ТТЗ"></activiti:value>
           <activiti:value id="sEnumRemoveRegistration" name="Зняття з обліку ТТЗ"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sNameCompany" name="Повне найменування юридичної особи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCompanyBoss" name="Керівник юридичної особи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTrustedPerson" name="Уповноважена особа" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdressFiz" name="Адреса проживання фізичної особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdressUr" name="Юридична адреса" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdressParking" name="Адреса стоянки великотоннажного та іншого технологічного транспортного засобу" type="string" required="true"></activiti:formProperty>
@@ -39,7 +42,7 @@
         <activiti:formProperty id="nFile6" name="Копії документів, що підтверджують оплату вартості бланків, номерних знаків, виданих під час  реєстрації, та послуг за проведення технічного огляду (з відміткою банку)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile7" name="Копія сертифікату відповідності, свідоцтва про визнання відповідності, декларації про відповідність для технологічного транспортного засобу, на який розповсюджуються відповідні вимоги" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile8" name="Одного будь-якого з наведених документів що підтверджують правомірність придбання ТТЗ" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asDocument" name="Оберіть назву завантаженного документу" type="enum" required="true">
+        <activiti:formProperty id="asDocument" name="Оберіть назву завантаженного документу що підтверджує правомірність придбання ТТЗ" type="enum" required="true">
           <activiti:value id="sEnumDoc1" name="Довідка-рахунок, який видан підприємством-виготовлювачем або іншим суб'єктом господарювання, що реалізує технологічний транспортний засіб"></activiti:value>
           <activiti:value id="sEnumDoc2" name="Акт приймання-передачі, виданий підприємством-виготовлювачем ТТЗ чи його вузлів і агрегатів"></activiti:value>
           <activiti:value id="sEnumDoc3" name="Договір купівлі-продажу, міни, дарування, лізингу, позички, застави, біржової угоди, договір про спільне володіння, користування і розпорядження майном, що перебуває у спільній частковій власності"></activiti:value>
@@ -111,7 +114,65 @@ ${sNameOrgan}.&lt;br /&gt;
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
-    <userTask id="usertask1" name="Обробка ЦНАП (1-й крок) "></userTask>
+    <userTask id="usertask1" name="Обробка ЦНАП (1-й крок) ">
+      <extensionElements>
+        <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asChoiceSubject" name="Суб'єкт звернення" type="enum" writable="false">
+          <activiti:value id="sEnumFiz" name="Фізична особа"></activiti:value>
+          <activiti:value id="sEnumUr" name="Юридична особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asReason" name="Суть звернення" type="enum" writable="false">
+          <activiti:value id="sEnumRegistration" name="Реєстрація ТТЗ"></activiti:value>
+          <activiti:value id="sEnumReRegistration" name="Перереєстрація ТТЗ"></activiti:value>
+          <activiti:value id="sEnumTemporaryRegistration" name="Тимчасова реєстрація ТТЗ"></activiti:value>
+          <activiti:value id="sEnumRemoveRegistration" name="Зняття з обліку ТТЗ"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sNameCompany" name="Повне найменування юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCompanyBoss" name="Керівник юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTrustedPerson" name="Уповноважена особа" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdressFiz" name="Адреса проживання фізичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdressUr" name="Юридична адреса (для юридичної особи)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdressParking" name="Адреса стоянки великотоннажного та іншого технологічного транспортного засобу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sType" name="Тип ТТЗ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sModel" name="Марка, модель ТТЗ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nYearOfManufacture" name="Рік випуску" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCountryManufacture" name="Виробник (держава)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sIdentificationNumber" name="Ідентифікаційні номери (заводський, шасі/рами)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sEngineNumber" name="Номер двигуна;(Також у дужках зазначається латинська літера V, знак рівності та об'єм двигуна ТТЗ)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asDocument" name="Назва завантаженного документу що підтверджує правомірність придбання ТТЗ" type="enum" writable="false">
+          <activiti:value id="sEnumDoc1" name="Довідка-рахунок, який видан підприємством-виготовлювачем або іншим суб'єктом господарювання, що реалізує технологічний транспортний засіб"></activiti:value>
+          <activiti:value id="sEnumDoc2" name="Акт приймання-передачі, виданий підприємством-виготовлювачем ТТЗ чи його вузлів і агрегатів"></activiti:value>
+          <activiti:value id="sEnumDoc3" name="Договір купівлі-продажу, міни, дарування, лізингу, позички, застави, біржової угоди, договір про спільне володіння, користування і розпорядження майном, що перебуває у спільній частковій власності"></activiti:value>
+          <activiti:value id="sEnumDoc4" name="Документ, що підтверджує реалізацію технологічного транспортного засобу на аукціоні"></activiti:value>
+          <activiti:value id="sEnumDoc5" name="Договір оренди майна із зазначенням у ньому домовленості між сторонами щодо реєстрації ТТЗ за орендарем та доручення на право керування і використання цього транспортного засобу"></activiti:value>
+          <activiti:value id="sEnumDoc6" name="Вантажна митна декларація на технологічний транспортний засіб, що ввозиться, або посвідченням митного органу про реєстрацію ввезених на митну територію України ТТЗ, вузлів і агрегатів"></activiti:value>
+          <activiti:value id="sEnumDoc7" name="Рішення уповноваженого органу про відчуження ТТЗ"></activiti:value>
+          <activiti:value id="sEnumDoc8" name="Виконавчий напис нотаріуса про витребування від боржника майна"></activiti:value>
+          <activiti:value id="sEnumDoc9" name="Рішення суду про визнання права власності на ТТЗ"></activiti:value>
+          <activiti:value id="sEnumDoc10" name="Договір про спільне володіння, користування у разі отримання ТТЗ кількома громадянами в рахунок майнових паїв"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sExtensionNumber" name="Реєстраційний номер ЦНАП" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAdminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateRegistration" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
+          <activiti:value id="accept" name="З документами все гаразд, заява зареєстрована, та відправлена в управління праці"></activiti:value>
+          <activiti:value id="reject" name="Відмовити у розгляді без реєстрації у звязку з відсутністю необхідних документів"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sShapkaGolova" name="Шапка для прінтформи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern/print/dneprOblSnap/cnap_503_print.html]" type="invisible" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression>${nFile1},${nFile2},${nFile3},${nFile4},${nFile5},${nFile6},${nFile7},${nFile8}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
     <sequenceFlow id="flow4" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow5" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
@@ -171,7 +232,57 @@ ${sNameOrgan}.&lt;br /&gt;
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow8" sourceRef="exclusivegateway1" targetRef="servicetask5"></sequenceFlow>
-    <userTask id="usertask2" name="Обробка ЦНАП (2-й крок)"></userTask>
+    <userTask id="usertask2" name="Обробка ЦНАП (2-й крок)">
+      <extensionElements>
+        <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asChoiceSubject" name="Суб'єкт звернення" type="enum" writable="false">
+          <activiti:value id="sEnumFiz" name="Фізична особа"></activiti:value>
+          <activiti:value id="sEnumUr" name="Юридична особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asReason" name="Суть звернення" type="enum" writable="false">
+          <activiti:value id="sEnumRegistration" name="Реєстрація ТТЗ"></activiti:value>
+          <activiti:value id="sEnumReRegistration" name="Перереєстрація ТТЗ"></activiti:value>
+          <activiti:value id="sEnumTemporaryRegistration" name="Тимчасова реєстрація ТТЗ"></activiti:value>
+          <activiti:value id="sEnumRemoveRegistration" name="Зняття з обліку ТТЗ"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sNameCompany" name="Повне найменування юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCompanyBoss" name="Керівник юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTrustedPerson" name="Уповноважена особа" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdressFiz" name="Адреса проживання фізичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdressUr" name="Юридична адреса (для юридичної особи)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdressParking" name="Адреса стоянки великотоннажного та іншого технологічного транспортного засобу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sType" name="Тип ТТЗ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sModel" name="Марка, модель ТТЗ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nYearOfManufacture" name="Рік випуску" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCountryManufacture" name="Виробник (держава)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sIdentificationNumber" name="Ідентифікаційні номери (заводський, шасі/рами)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sEngineNumber" name="Номер двигуна;(Також у дужках зазначається латинська літера V, знак рівності та об'єм двигуна ТТЗ)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asDocument" name="Назва завантаженного документу що підтверджує правомірність придбання ТТЗ" type="enum" writable="false">
+          <activiti:value id="sEnumDoc1" name="Довідка-рахунок, який видан підприємством-виготовлювачем або іншим суб'єктом господарювання, що реалізує технологічний транспортний засіб"></activiti:value>
+          <activiti:value id="sEnumDoc2" name="Акт приймання-передачі, виданий підприємством-виготовлювачем ТТЗ чи його вузлів і агрегатів"></activiti:value>
+          <activiti:value id="sEnumDoc3" name="Договір купівлі-продажу, міни, дарування, лізингу, позички, застави, біржової угоди, договір про спільне володіння, користування і розпорядження майном, що перебуває у спільній частковій власності"></activiti:value>
+          <activiti:value id="sEnumDoc4" name="Документ, що підтверджує реалізацію технологічного транспортного засобу на аукціоні"></activiti:value>
+          <activiti:value id="sEnumDoc5" name="Договір оренди майна із зазначенням у ньому домовленості між сторонами щодо реєстрації ТТЗ за орендарем та доручення на право керування і використання цього транспортного засобу"></activiti:value>
+          <activiti:value id="sEnumDoc6" name="Вантажна митна декларація на технологічний транспортний засіб, що ввозиться, або посвідченням митного органу про реєстрацію ввезених на митну територію України ТТЗ, вузлів і агрегатів"></activiti:value>
+          <activiti:value id="sEnumDoc7" name="Рішення уповноваженого органу про відчуження ТТЗ"></activiti:value>
+          <activiti:value id="sEnumDoc8" name="Виконавчий напис нотаріуса про витребування від боржника майна"></activiti:value>
+          <activiti:value id="sEnumDoc9" name="Рішення суду про визнання права власності на ТТЗ"></activiti:value>
+          <activiti:value id="sEnumDoc10" name="Договір про спільне володіння, користування у разі отримання ТТЗ кількома громадянами в рахунок майнових паїв"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sExtensionNumber" name="Реєстраційний номер ЦНАП" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateRegistration" name="Дата реєстрації звернення ЦНАП" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asDecision" name="Рішення управління праці" type="enum" required="true">
+          <activiti:value id="sEnumAccept" name="Рішення позитивне. Запросити заявника"></activiti:value>
+          <activiti:value id="sEnumReject" name="Рішення з відмовою. Надіслати рішення на Email"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="nReference" name="В разі відмови обов'язково завантажте сканкопію рішення" type="file"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
     <sequenceFlow id="flow9" sourceRef="servicetask5" targetRef="usertask2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow10" sourceRef="usertask2" targetRef="exclusivegateway2"></sequenceFlow>
