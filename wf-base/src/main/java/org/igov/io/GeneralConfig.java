@@ -17,7 +17,7 @@ public class GeneralConfig {
     @Value("${general.Self.bTest}")
     private String sbTest_Self;
     @Value("${general.Self.nID_Server}")
-    private Integer nID_Server_Self;
+    private String snID_Server_Self;
     @Value("${general.Self.sHost}")
     private String sHost_Self;
     @Value("${general.sHostCentral}")
@@ -50,7 +50,7 @@ public class GeneralConfig {
     private String sURL_UkrDoc_SED;
     
     @Value("${general.Mail.UniSender.bEnable}")
-    private Boolean bEnable_UniSender_Mail;
+    private String sbEnable_UniSender_Mail;
     @Value("${general.Mail.UniSender.sKeyAPI}")
     private String sKey_UniSender_Mail;
     @Value("${general.Mail.UniSender.nID_SendList}")
@@ -278,7 +278,7 @@ public class GeneralConfig {
     }
     
     public Boolean isEnable_UniSender_Mail() {
-        return bEnable_UniSender_Mail;
+        return Boolean.valueOf(sbEnable_UniSender_Mail);
     }
     public String getURL_UniSender_Mail() {
         return sURL_UniSender_Mail;
@@ -311,18 +311,18 @@ public class GeneralConfig {
     public Integer getSelfServerId() {
         Integer nID_Server = null;
         try {
-            if (nID_Server_Self == null) {
+            if (snID_Server_Self == null) {
                 nID_Server = 0;
-                throw new NumberFormatException("snID_Server=" + nID_Server_Self);
+                throw new NumberFormatException("snID_Server=" + snID_Server_Self);
             }
-            nID_Server = nID_Server_Self;
+            nID_Server = Integer.valueOf(snID_Server_Self);
             if (nID_Server == null || nID_Server < 0) {
                 nID_Server = 0;
                 throw new NumberFormatException("nID_Server=" + nID_Server);
             }
         } catch (NumberFormatException oNumberFormatException) {
             nID_Server = 0;
-            LOG.warn("can't parse nID_Server: {} (nID_Server={})", oNumberFormatException.getMessage(), nID_Server_Self);
+            LOG.warn("can't parse nID_Server: {} (nID_Server={})", oNumberFormatException.getMessage(), snID_Server_Self);
         }
         return nID_Server;
     }
