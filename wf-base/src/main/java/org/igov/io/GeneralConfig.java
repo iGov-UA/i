@@ -54,7 +54,7 @@ public class GeneralConfig {
     @Value("${general.Mail.UniSender.sKeyAPI}")
     private String sKey_UniSender_Mail;
     @Value("${general.Mail.UniSender.nID_SendList}")
-    private Integer nID_SendList_UniSender_Mail;
+    private String snID_SendList_UniSender_Mail;
     @Value("${general.Mail.UniSender.sURL}")
     private String sURL_UniSender_Mail;
     @Value("${general.Mail.UniSender.sContext_Subscribe}")
@@ -297,9 +297,9 @@ public class GeneralConfig {
     }
     public long getSendListId_UniSender_Mail() {
         try {
-            return nID_SendList_UniSender_Mail;
+            return Integer.valueOf(snID_SendList_UniSender_Mail);
         } catch (NumberFormatException oException) {
-            LOG.warn("can't parse nID_SendList_Unisender!: {} (nID_SendList_Unisender={})", oException.getMessage(), nID_SendList_UniSender_Mail);
+            LOG.warn("can't parse nID_SendList_Unisender!: {} (nID_SendList_Unisender={})", oException.getMessage(), snID_SendList_UniSender_Mail);
             return 5998742; //default list_id
         }
     }
