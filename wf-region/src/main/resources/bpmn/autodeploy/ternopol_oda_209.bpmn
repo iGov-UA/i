@@ -6,8 +6,8 @@
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Телефон" type="string" default="+38"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Телефон" type="string" default="+380"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; на цей e-mail Ви отримаєте результат обробки Вашего звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, до якого будете подавати запит" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="sRequestData" name="Вкажіть загальний опис запитуваної інформації або вид, назву, реквізити чи зміст документа" type="textArea" required="true"></activiti:formProperty>
@@ -16,38 +16,11 @@
           <activiti:value id="sOpost" name="На поштову адресу"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sPlase_of_reg" name="Поштова адреса" type="string"></activiti:formProperty>
-        <activiti:formProperty id="marker1" name="Поштова адреса" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sPlase_of_reg&quot;],&quot;asID_Field&quot;:{&quot;sService&quot;:&quot;asResultWay&quot;},&quot;sCondition&quot;:&quot;[sService]=='На поштову адресу'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker1" name="Поштова адреса" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sPlase_of_reg&quot;],&quot;asID_Field&quot;:{&quot;sService&quot;:&quot;asResultWay&quot;},&quot;sCondition&quot;:&quot;[sService]=='sOpost'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="електронна пошта" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <scriptTask id="scripttask1" name="Передача значений" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>
-var per1 = 'post'
-var per2 = 'grup'
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'TernODA'){
-per1 = 'dpi@te.gov.ua'
-per2 = '6100000000'
-}
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'MykolODA'){
-per1 = 'murahovskaya@gmail.com'
-per2 = '4800000000'
-}
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'PidgRDA'){
-per1 = 'pub_info@ko.te.ua'
-per2 = '6124800000'
-}
-if (execution.getVariable('sID_UA') == '2600000000'){
-per1 = 'Івано-Франківської обласної державної адміністрації'
-per2 = 'Івано-Франківська обласна держана адміністрація, м. Івано-Франківськ, вул. Грушевського, 21'
-var per3 = 'zhigan.roman@gmail.com'
-}
-
-execution.setVariable('postV', per1)
-execution.setVariable('group', per2)
-	  </script>
-    </scriptTask>
-    <sequenceFlow id="flow69" sourceRef="scripttask1" targetRef="servicetask6"></sequenceFlow>
     <sequenceFlow id="flow64" sourceRef="startevent1" targetRef="servicetask8"></sequenceFlow>
     <serviceTask id="servicetask8" name="Повідомлення про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
@@ -111,6 +84,7 @@ ${sNameOrgan},&lt;br&gt;
         <activiti:formProperty id="docID" name="Реєстраційний номер" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/ternopil_oda_209.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="принтформа якщо на поштову адресу" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_2&quot;:{&quot;aElement_ID&quot;:[&quot;physicalCopy_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asResultWay&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sOpost'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow50" sourceRef="usertask1" targetRef="exclusivegateway2"></sequenceFlow>
@@ -308,14 +282,11 @@ ${sNameOrgan},&lt;br&gt;
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="10.0" y="136.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="156.0" y="10.0"></omgdc:Bounds>
+      <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
+        <omgdc:Bounds height="64.0" width="131.0" x="66.0" y="122.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
         <omgdc:Bounds height="74.0" width="105.0" x="230.0" y="117.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
-        <omgdc:Bounds height="64.0" width="131.0" x="66.0" y="122.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="64.0" width="145.0" x="380.0" y="122.0"></omgdc:Bounds>
@@ -350,21 +321,17 @@ ${sNameOrgan},&lt;br&gt;
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
         <omgdc:Bounds height="99.0" width="105.0" x="849.0" y="239.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow69" id="BPMNEdge_flow69">
-        <omgdi:waypoint x="208.0" y="65.0"></omgdi:waypoint>
-        <omgdi:waypoint x="282.0" y="117.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow64" id="BPMNEdge_flow64">
         <omgdi:waypoint x="45.0" y="153.0"></omgdi:waypoint>
         <omgdi:waypoint x="66.0" y="154.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow65" id="BPMNEdge_flow65">
-        <omgdi:waypoint x="335.0" y="154.0"></omgdi:waypoint>
-        <omgdi:waypoint x="380.0" y="154.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow68" id="BPMNEdge_flow68">
         <omgdi:waypoint x="197.0" y="154.0"></omgdi:waypoint>
         <omgdi:waypoint x="230.0" y="154.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow65" id="BPMNEdge_flow65">
+        <omgdi:waypoint x="335.0" y="154.0"></omgdi:waypoint>
+        <omgdi:waypoint x="380.0" y="154.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow50" id="BPMNEdge_flow50">
         <omgdi:waypoint x="525.0" y="154.0"></omgdi:waypoint>

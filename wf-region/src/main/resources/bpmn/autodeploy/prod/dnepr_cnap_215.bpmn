@@ -9,7 +9,6 @@
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні данні" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Сканований паспорт громадянина" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="Укажіть сьогоднішню дату" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="customer" name="Заявник" type="enum" required="true">
@@ -34,15 +33,21 @@
         <activiti:formProperty id="doc_change" name="Копія рішення вищого органу управління громадського об’єднання про зміну; файл в форматі PDF повинен мати ЕЦП" type="file"></activiti:formProperty>
         <activiti:formProperty id="objFounder" name="Відомості про керівні органи; із зазначенням прізвища, ім'я, по батькові (за наявності), дати народження, адреси місця проживання" type="file"></activiti:formProperty>
         <activiti:formProperty id="statute" name="Статут з внесеними змінами" type="file"></activiti:formProperty>
-        <activiti:formProperty id="statute_0" name="Примірник оригіналу статуту " type="file"></activiti:formProperty>
+        <activiti:formProperty id="statute_0" name="Примірник оригіналу статуту" type="file"></activiti:formProperty>
         <activiti:formProperty id="svidotstvo" name="Дублікат свідоцтва" type="file"></activiti:formProperty>
         <activiti:formProperty id="confidant_info" name="Відомості про особу (осіб), уповноважену представляти громадське об'єднання; із зазначенням прізвища, ім'я, по батькові, дати народження, контактного номера телефону" type="file"></activiti:formProperty>
         <activiti:formProperty id="confidant_zgoda" name="Письмова згода цієї особи (представляти громадське об'єднання)" type="file"></activiti:formProperty>
         <activiti:formProperty id="info_2" name="Заповніть реєстраційну картку" type="label" default="Завантажте &lt;a href=&quot;http://ddr.minjust.gov.ua/files/main/13.06/ATT00022.doc&quot; target=&quot;_blank&quot;&gt;бланк&lt;/a&gt;, заповніть, накладіть на нього електронно-цифровий підпис та додайте у наступному полі."></activiti:formProperty>
         <activiti:formProperty id="objReestr" name="Заповнена реєстраційна картка про внесення змін до відомостей про юридичну особу" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="rNumber" name="номер району" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="rName" name="район" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="remail" name="пошта району" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sDocConfidant" name="Довіреність на право представляти інтереси субʼєкта господарювання в органах місцевого самоврядування" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адреса адміністративного органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="пошта посадовця" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sListDocumentsPrint" name="перелік документів у заяву" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="markers11" name="Якщо довірена особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_11&quot;:{&quot;aField_ID&quot;:[&quot;sDocConfidant&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;customer&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'confidant'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="якщо повідомлено про зміни у складі керівних органів" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;objFounder&quot;,&quot;doc_change&quot;,&quot;protocol&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;try&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'chief'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="якщо змінюється місцезнаходження громадського об’єднання" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;svidotstvo&quot;,&quot;oplata_1&quot;,&quot;oplata_2&quot;,&quot;info&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;try&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'adres'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="якщо змінюється уповноважена особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;confidant_info&quot;,&quot;confidant_zgoda&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;try&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'confidant'&quot;}}}"></activiti:formProperty>
@@ -52,10 +57,9 @@
     </startEvent>
     <userTask id="usertask1" name="обробка вхідних данних" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="rName" name="Район" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні данні" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="дата подання звернення" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="customer" name="Заявник" type="enum" writable="false">
@@ -77,17 +81,13 @@
           <activiti:value id="accept" name="Заповнені дані вірні, інформація направлена на розгляд, очікується рішення"></activiti:value>
           <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sListDocumentsPrint" name="перелік документів у заяву" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відхилення звернення внесіть, будь ласка, причину" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_215_print.html]" type="invisible" default="заява про зміни громадського об’єднання" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="markers6" name="принтформа якщо повідомлено про зміни у складі керівних органів" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_6&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;objReestr_pf&quot;,&quot;objFounder_pf&quot;,&quot;chief_pf&quot;,&quot;doc_change_pf&quot;,&quot;protocol_pf&quot;,&quot;end&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;try&quot;},&quot;sCondition&quot;:&quot;[sCond]=='chief'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers7" name="принтформа якщо змінюється місцезнаходження громадського об’єднання" type="markers" default="{&quot;motion&quot;: {&quot;ShowElementsOnTrue_7&quot;: {&quot;aElement_ID&quot;: [&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;objReestr_pf&quot;,&quot;svidotstvo_pf&quot;,&quot;oplata_1_pf&quot;,&quot;oplata_2_pf&quot;,&quot;end&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;try&quot;},&quot;sCondition&quot;: &quot;[sCond]=='adres'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers8" name="принтформа якщо змінюється уповноважена особа" type="markers" default="{&quot;motion&quot;: {&quot;ShowElementsOnTrue_8&quot;: {&quot;aElement_ID&quot;: [&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;objReestr_pf&quot;,&quot;confidant_info_pf&quot;,&quot;confidant_zgoda_pf&quot;,&quot;end&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;try&quot;},&quot;sCondition&quot;: &quot;[sCond]=='confidant'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers9" name="принтформа якщо повідомляється про зміни до статуту громадського об’єднання" type="markers" default="{&quot;motion&quot;: {&quot;ShowElementsOnTrue_9&quot;: {&quot;aElement_ID&quot;: [&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;2&quot;,&quot;3&quot;, &quot;4&quot;,&quot;objReestr_pf&quot;,&quot;statute_pf&quot;,&quot;statute_0_pf&quot;,&quot;oplata_1_pf&quot;,&quot;oplata_2_pf&quot;,&quot;doc_change_pf&quot;,&quot;protocol_pf&quot;,&quot;svidotstvo_pf&quot;,&quot;end&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;try&quot;},&quot;sCondition&quot;: &quot;[sCond]=='statute'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers10" name="принтформа якщо повідомляється про зміни у найменуванні" type="markers" default="{&quot;motion&quot;: {&quot;ShowElementsOnTrue_10&quot;: {&quot;aElement_ID&quot;: [&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;2&quot;,&quot;3&quot;, &quot;4&quot;,&quot;objReestr_pf&quot;,&quot;end&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;try&quot;},&quot;sCondition&quot;: &quot;[sCond]=='name'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${oplata_1},${oplata_2},${protocol},${doc_change},${objFounder},${statute},,${statute_0}б${svidotstvo},${confidant_info},${confidant_zgoda},${objReestr},${form_signed}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport},${oplata_1},${oplata_2},${protocol},${doc_change},${objFounder},${statute},${sDocConfidant},${statute_0},${svidotstvo},${confidant_info},${confidant_zgoda},${objReestr},${form_signed}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -95,10 +95,9 @@
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <userTask id="usertask3" name="рішення" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="rName" name="Район" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні данні" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="дата подання звернення" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="objName" name="Найменування громадського об’єднання" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail" type="string" writable="false"></activiti:formProperty>
@@ -122,16 +121,13 @@
         <activiti:formProperty id="rishen" name="завантажте копію рішення" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_215_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_215_print.html]" type="invisible" default="заява про про зміни громадського об’єднання" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="markers6" name="принтформа якщо повідомлено про зміни у складі керівних органів" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_6&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;objReestr_pf&quot;,&quot;objFounder_pf&quot;,&quot;chief_pf&quot;,&quot;doc_change_pf&quot;,&quot;protocol_pf&quot;,&quot;end&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;try&quot;},&quot;sCondition&quot;:&quot;[sCond]=='chief'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers7" name="принтформа якщо змінюється місцезнаходження громадського об’єднання" type="markers" default="{&quot;motion&quot;: {&quot;ShowElementsOnTrue_7&quot;: {&quot;aElement_ID&quot;: [&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;objReestr_pf&quot;,&quot;svidotstvo_pf&quot;,&quot;oplata_1_pf&quot;,&quot;oplata_2_pf&quot;,&quot;end&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;try&quot;},&quot;sCondition&quot;: &quot;[sCond]=='adres'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers8" name="принтформа якщо змінюється уповноважена особа" type="markers" default="{&quot;motion&quot;: {&quot;ShowElementsOnTrue_8&quot;: {&quot;aElement_ID&quot;: [&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;objReestr_pf&quot;,&quot;confidant_info_pf&quot;,&quot;confidant_zgoda_pf&quot;,&quot;end&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;try&quot;},&quot;sCondition&quot;: &quot;[sCond]=='confidant'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers9" name="принтформа якщо повідомляється про зміни до статуту громадського об’єднання" type="markers" default="{&quot;motion&quot;: {&quot;ShowElementsOnTrue_9&quot;: {&quot;aElement_ID&quot;: [&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;2&quot;,&quot;3&quot;, &quot;4&quot;,&quot;objReestr_pf&quot;,&quot;statute_pf&quot;,&quot;statute_0_pf&quot;,&quot;oplata_1_pf&quot;,&quot;oplata_2_pf&quot;,&quot;doc_change_pf&quot;,&quot;protocol_pf&quot;,&quot;svidotstvo_pf&quot;,&quot;end&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;try&quot;},&quot;sCondition&quot;: &quot;[sCond]=='statute'&quot;}}}"></activiti:formProperty>
-      </extensionElements>
+        <activiti:formProperty id="sListDocumentsPrint" name="перелік документів у заяву" type="invisible"></activiti:formProperty>
+       </extensionElements>
     </userTask>
     <serviceTask id="servicetask4" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${remail}</activiti:expression>
+          <activiti:expression>${sMailClerk}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення: Прийняття повідомлення про зміни у громадському об'єднанні]]></activiti:string>
@@ -167,9 +163,9 @@
 Ваш запит щодо прийняття повідомлення про зміни у громадському об'єднанні буде опрацьовано впродовж 5 робочих днів.&lt;br /&gt;
 &lt;br /&gt;
 Ви отримаєте додаткове повідомлення за результатами розгляду запиту.&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]&lt;br /&gt;
+${sPhoneOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2]&lt;br /&gt;
+${sNameOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
@@ -190,10 +186,10 @@
 &lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
 На жаль, Ваше звернення щодо прийняття повідомлення про зміни у громадському об'єднанні відхилено через недостатню або неправильну інформацію.&lt;br /&gt;
 ${comment_1}&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]&lt;br /&gt;
+${sPhoneOrgan}&lt;br /&gt;
 Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2]&lt;br /&gt;
+${sNameOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
@@ -219,17 +215,12 @@ ${comment_1}&lt;br /&gt;
 Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у ЦНАПі.&lt;br /&gt;
 ${comment_2}&lt;br /&gt;
 При собі треба мати:&lt;br /&gt;
-1. Документ, що посвідчує особу.&lt;br /&gt;
-2. Для уповоноваженої особи - довіренність.&lt;br /&gt;
-3. Роздруковану заяву про внесення змін у громадському об'єднанні (знаходиться у додатку до листа), яку ви подавали в електронному вигляді, засвідчену особистим  підписом  керівника  громадського об'єднання або  уповноваженої особи.&lt;br /&gt;
-&lt;br /&gt;
-Адреса [pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:3]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]&lt;br /&gt;
-Графік роботи: [pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:4]&lt;br /&gt;
-Скановані документи знаходиться у додатку до листа.&lt;br /&gt;&lt;br /&gt;
+${sListDocumentsLetter}&lt;br /&gt;
+${sAddress}&lt;br /&gt;
+${sPhoneOrgan}&lt;br /&gt;
+${sWorkTime}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2]&lt;br /&gt;	   
+${sNameOrgan}&lt;br /&gt;   
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
@@ -237,48 +228,75 @@ ${comment_2}&lt;br /&gt;
       </extensionElements>
     </serviceTask>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>
-var per1 = 'remail'
-var per2 = 'rNumber'
-var per4 = 'rName'
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'vin_teplic'){
-per1 = 'teplikcnap@ukr.net'
-per2 = '59'
-per4 = 'смт. Теплик'
+       <script>
+var per1 = "&lt;li&gt;Документ, що посвідчує особу.&lt;/li&gt;"
+var per2 = "&lt;li&gt;Роздруковану заяву, яку ви подавали в електронному вигляді (знаходиться у додатку до листа), засвідчену особистим підписом.&lt;/li&gt;"
+var per3 = " "
+var per4 = " "
+var per5 = " "
+var per6 = " "
+var per7 = " "
+var per8 = " "
+var per9 = " "
+var per10 = " "
+var per11 = " "
+var per12 = " "
+var per13 = " "
+var per14 = " "
+var per15 = " "
+var per16 = " "
+var per17 = " "
+var per18 = " "
+var per19 = " "
+var per20 = " "
+var per21 = " "
+var per22 = " "
+var res = 'res'
+var res2 = 'res2'
+if(execution.getVariable('protocol') != null){
+per3 = "&lt;li&gt;Копію  протоколу засідання вищого керівного органу громадського об’єднання.&lt;/li&gt;"
+per13 = "&lt;li&gt;Копія  протоколу засідання вищого керівного органу громадського об’єднання.&lt;/li&gt;"
 }
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'vilnogirskT'){
-per1 = 'cnap.vilnogirsk@gmail.com'
-per2 = '25'
-per4 = 'Вільногірськ'
+if(execution.getVariable('doc_change') != null){
+per4 = "&lt;li&gt;Копію рішення вищого органу управління громадського об’єднання про зміну.&lt;/li&gt;"
+per14 = "&lt;li&gt;Копія рішення вищого органу управління громадського об’єднання про зміну.&lt;/li&gt;"
 }
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'dndzT'){
-per1 = 'dozvildndz@ukr.net'
-per2 = '26'
-per4 = 'Дніпродзержинськ'
+if(execution.getVariable('objFounder') != null){
+per5 = "&lt;li&gt;Відомості про керівні органи.&lt;/li&gt;"
+per15 = "&lt;li&gt;Відомості про керівні органи.&lt;/li&gt;"
 }
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'kiev_bucha'){
-per1 = 'stepashkanelya@gmail.com'
-per2 = '212'
-per4 = 'Буча (Київської області)'
+if(execution.getVariable('statute') != null){
+per6 = "&lt;li&gt;Статут з внесеними змінами.&lt;/li&gt;"
+per16 = "&lt;li&gt;Статут з внесеними змінами.&lt;/li&gt;"
 }
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'nik_nikT'){
-per1 = 'mk_kadrter@ukr.net'
-per2 = '321'
-per4 = 'Миколаїв'
+if(execution.getVariable('statute_0') != null){
+per7 = "&lt;li&gt;Примірник оригіналу статуту.&lt;/li&gt;"
+per17 = "&lt;li&gt;Примірник оригіналу статуту.&lt;/li&gt;"
 }
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'lviv_chervonogradT'){
-per1 = 'cnap80100@ukr.net'
-per2 = '299'
-per4 = 'ЦНАП Червоноградської міськради'
+if(execution.getVariable('sDocConfidant') != null){
+per8 = "&lt;li&gt;Довіреність на право представляти інтереси субʼєкта господарювання в органах місцевого самоврядування.&lt;/li&gt;"
+per18 = "&lt;li&gt;Довіреність на право представляти інтереси субʼєкта господарювання в органах місцевого самоврядування.&lt;/li&gt;"
 }
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'kiev_vish'){
-per1 = 'dozvol_zenter@ukr.net'
-per2 = '227'
-per4 = 'ЦНАП Вишгородської РДА'
+if(execution.getVariable('svidotstvo') != null){
+per9 = "&lt;li&gt;Дублікат свідоцтва.&lt;/li&gt;"
+per19 = "&lt;li&gt;Дублікат свідоцтва.&lt;/li&gt;"
 }
-execution.setVariable('remail', per1)
-execution.setVariable('rNumber', per2)
-execution.setVariable('rName', per4)
+if(execution.getVariable('confidant_info') != null){
+per10 = "&lt;li&gt;Відомості про особу (осіб), уповноважену представляти громадське об'єднання - із зазначенням прізвища, ім'я, по батькові, дати народження, контактного номера телефону.&lt;/li&gt;"
+per20 = "&lt;li&gt;Відомості про особу (осіб), уповноважену представляти громадське об'єднання - із зазначенням прізвища, ім'я, по батькові, дати народження, контактного номера телефону.&lt;/li&gt;"
+}
+if(execution.getVariable('confidant_zgoda') != null){
+per11 = "&lt;li&gt;Письмову згоду довіреної особи (представляти громадське об'єднання).&lt;/li&gt;"
+per21 = "&lt;li&gt;Письмова згода довіреної особи (представляти громадське об'єднання).&lt;/li&gt;"
+}
+if(execution.getVariable('objReestr') != null){
+per12 = "&lt;li&gt;Заповнену реєстраційну картку про внесення змін до відомостей про юридичну особу.&lt;/li&gt;"
+per22 = "&lt;li&gt;Заповнена реєстраційна картка про внесення змін до відомостей про юридичну особу.&lt;/li&gt;"
+}
+res = '&lt;ol&gt;'+per1+per2+per3+per4+per5+per6+per7+per8+per9+per10+per11+per12+'&lt;/ol&gt;'
+res2 = '&lt;ol&gt;'+per13+per14+per15+per16+per17+per18+per19+per20+per21+per22+'&lt;/ol&gt;'
+execution.setVariable('sListDocumentsLetter', res)
+execution.setVariable('sListDocumentsPrint', res2)
 	  </script>
     </scriptTask>
     <serviceTask id="servicetask2" name="отримання додаткових документiв" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
