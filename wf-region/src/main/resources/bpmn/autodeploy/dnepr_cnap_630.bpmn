@@ -8,13 +8,19 @@
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sSubekt" name="Назва структурного підрозділу, населенного пункту, який виступає заявником" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNameObject" name="Назва пам'ятки" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAdresObject" name="Адреса, за якою розташована пам'ятка" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNumberObject" name="Охоронний номер пам'ятки" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sTypeWork" name="Укажіть вид робіт; наприклад: ремонтні роботи, реставраційні, проведення підпоховання, благоустрій пам'ятки тощо" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asTypeApplication" name="Оберіть варіант подання звернення" type="enum" required="true">
+          <activiti:value id="type_1" name="заповнити поля заяви"></activiti:value>
+          <activiti:value id="type_2" name="прикріпити заяву сформовану на фірмовому бланку"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sSubekt" name="Назва структурного підрозділу, населенного пункту, який виступає заявником" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sNameObject" name="Назва пам'ятки" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sAdresObject" name="Адреса, за якою розташована пам'ятка" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sNumberObject" name="Охоронний номер пам'ятки" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sTypeWork" name="Укажіть вид робіт; наприклад: ремонтні роботи, реставраційні, проведення підпоховання, благоустрій пам'ятки тощо" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sDocApplication" name="Заява на фірмовому бланку" type="file"></activiti:formProperty>
+       
         <activiti:formProperty id="sDocProject" name="Ескізний проект; вказати всі єлементи пам'ятки, їх розміри та матеріали" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocShow" name="Перелік запланованих робіт" type="file"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу" type="invisible"></activiti:formProperty>
@@ -24,16 +30,22 @@
         <activiti:formProperty id="sMailCnap" name="пошта співробітника ЦНАП" type="invisible" default="darja.grek@gmail.com"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="пошта посадовця" type="invisible" default="darja.grek@gmail.com"></activiti:formProperty>
         <activiti:formProperty id="sShapka628" name="шапка у принтформу" type="invisible"></activiti:formProperty>
-        </extensionElements>
+        <activiti:formProperty id="markers1" name="Якщо буде заповнювати" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sSubekt&quot;,&quot;sNameObject&quot;,&quot;sAdresObject&quot;,&quot;sNumberObject&quot;,&quot;sTypeWork&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asTypeApplication&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'type_1'&quot;}}}"></activiti:formProperty>
+   		<activiti:formProperty id="markers2" name="Якщо  хоче бланк" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;sDocApplication&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asTypeApplication&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'type_2'&quot;}}}"></activiti:formProperty>
+       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="прийняття рішення про надання послуги" activiti:candidateGroups="kultura_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="Район" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-    	<activiti:formProperty id="sSubekt" name="Назва структурного підрозділу, населенного пункту, який виступає заявником; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
+    	<activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
- 		<activiti:formProperty id="sNameObject" name="Назва пам'ятки; ;writable=false" type="string"></activiti:formProperty>
+ 		<activiti:formProperty id="asTypeApplication" name="Оберіть варіант подання звернення" type="enum" writable="false">
+          <activiti:value id="type_1" name="заповнити поля заяви"></activiti:value>
+          <activiti:value id="type_2" name="прикріпити заяву сформовану на фірмовому бланку"></activiti:value>
+        </activiti:formProperty>
+    	<activiti:formProperty id="sSubekt" name="Назва структурного підрозділу, населенного пункту, який виступає заявником; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameObject" name="Назва пам'ятки; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdresObject" name="Адреса, за якою розташована пам'ятка; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNumberObject" name="Охоронний номер пам'ятки; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeWork" name="Вид робіт; ;writable=false" type="string"></activiti:formProperty>
@@ -52,7 +64,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${sDocProject},${sDocShow}</activiti:expression>
+            <activiti:expression>${sDocProject},${sDocShow},${sDocApplication}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -61,10 +73,14 @@
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="Район" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sSubekt" name="Назва структурного підрозділу, населенного пункту, який виступає заявником; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
- 		<activiti:formProperty id="sNameObject" name="Назва пам'ятки; ;writable=false" type="string"></activiti:formProperty>
+ 		<activiti:formProperty id="asTypeApplication" name="Оберіть варіант подання звернення" type="enum" writable="false">
+          <activiti:value id="type_1" name="заповнити поля заяви"></activiti:value>
+          <activiti:value id="type_2" name="прикріпити заяву сформовану на фірмовому бланку"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sSubekt" name="Назва структурного підрозділу, населенного пункту, який виступає заявником; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameObject" name="Назва пам'ятки; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdresObject" name="Адреса, за якою розташована пам'ятка; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNumberObject" name="Охоронний номер пам'ятки; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeWork" name="Вид робіт; ;writable=false" type="string"></activiti:formProperty>
