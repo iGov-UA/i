@@ -74,7 +74,7 @@
     </boundaryEvent>
     <sequenceFlow id="flow1" sourceRef="boundaryerror1" targetRef="endevent2"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
-    <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="servicetask4"></sequenceFlow>
+    <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <scriptTask id="scripttask1" name="Передача значений" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
       var src=execution.getVariable('date_of_visit')
@@ -425,6 +425,7 @@ execution.setVariable('sMaxPay', maxpay)
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow30" sourceRef="servicetask2" targetRef="endevent4"></sequenceFlow>
+    <sequenceFlow id="flow35" sourceRef="scripttask1" targetRef="servicetask4"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_dms-89">
     <bpmndi:BPMNPlane bpmnElement="dnepr_dms-89" id="BPMNPlane_dnepr_dms-89">
@@ -494,8 +495,9 @@ execution.setVariable('sMaxPay', maxpay)
         <omgdi:waypoint x="140.0" y="210.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="174.0" y="147.0"></omgdi:waypoint>
-        <omgdi:waypoint x="230.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="121.0" y="107.0"></omgdi:waypoint>
+        <omgdi:waypoint x="124.0" y="68.0"></omgdi:waypoint>
+        <omgdi:waypoint x="157.0" y="67.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
         <omgdi:waypoint x="489.0" y="147.0"></omgdi:waypoint>
@@ -565,6 +567,11 @@ execution.setVariable('sMaxPay', maxpay)
       <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
         <omgdi:waypoint x="837.0" y="498.0"></omgdi:waypoint>
         <omgdi:waypoint x="837.0" y="511.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
+        <omgdi:waypoint x="262.0" y="67.0"></omgdi:waypoint>
+        <omgdi:waypoint x="281.0" y="68.0"></omgdi:waypoint>
+        <omgdi:waypoint x="282.0" y="107.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
