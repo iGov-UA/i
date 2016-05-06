@@ -26,8 +26,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="sDocDovidka" name="Довідка про те, що за місцем реєстрації батька або матері посвідчення не видавалися" type="file"></activiti:formProperty>
         <activiti:formProperty id="info_0" name=" " type="label" default="Для деяких районів Ви можете замовити цю довідку через &lt;a href=&quot;https://test.igov.org.ua/service/687/general&quot; target=&quot;_blank&quot;&gt;iGov.org.ua&lt;/a&gt;"></activiti:formProperty>
-        <activiti:formProperty id="info_1" name=" " type="label" default="Зверніть увагу вписувати необхідно тільки тих дітей, яким необхідне посвідчення"></activiti:formProperty>
-        <activiti:formProperty id="sCountChildren" name="Укажіть кількість дітей" type="enum" required="true">
+         <activiti:formProperty id="sCountChildren" name="Укажіть кількість дітей" type="enum" required="true">
           <activiti:value id="three" name="3"></activiti:value>
           <activiti:value id="four" name="4"></activiti:value>
           <activiti:value id="five" name="5"></activiti:value>
@@ -42,6 +41,8 @@
           <activiti:value id="fourteen" name="14"></activiti:value>
           <activiti:value id="fifteen" name="15 і більше"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="info_1" name="Зверніть увагу" type="label" default="вписувати необхідно тільки тих дітей, яким необхідне посвідчення"></activiti:formProperty>
+       
         <activiti:formProperty id="sPibChild1" name="ПІБ першої дитини" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sDateChild1" name="Дата народження першої дитини" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sPibChild2" name="ПІБ другої дитини" type="string" default=" "></activiti:formProperty>
@@ -270,7 +271,7 @@
           <activiti:value id="accept" name="позитивне рішення - запросити громадянина для отримання оригіналів документів"></activiti:value>
           <activiti:value id="reject" name="відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDateVisit2" name="Вкажіть дату і час - коли прийти громадянину за документами, додаткові відомості щодо візиту" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateVisit2" name="Вкажіть дату і час - коли прийти громадянину за документами, у разі потреби - додаткові відомості щодо візиту" type="string"></activiti:formProperty>
         <activiti:formProperty id="comment_2" name="У разі відхилення внесіть, будь ласка, причину" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka494" name="шапка у принтформу" type="invisible"></activiti:formProperty>
@@ -329,7 +330,6 @@
 &lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;
 На жаль, Ваше звернення відхилено через недостатню або неправильну інформацію.&lt;br /&gt;
 ${comment_1}&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
 Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;
 &lt;br /&gt;
 ${sPhoneOrgan}&lt;br /&gt;
@@ -428,8 +428,8 @@ var per3 = " "
 var per4 = " "
 var per5 = " "
 var per6 = " "
-var per7 = "Роздруковану заяву, яку ви подавали в електронному вигляді (знаходиться у додатку до листа), засвідчену особистим підписом"
-var per8 = "Фотокартки 3*4 (батьків та дітей віком з 6 років) по 1 шт"
+var per7 = "&lt;li&gt;Роздруковану заяву, яку ви подавали в електронному вигляді (знаходиться у додатку до листа), засвідчену особистим підписом&lt;/li&gt;"
+var per8 = "&lt;li&gt;Фотокартки 3*4 (батьків та дітей віком з 6 років) по 1 шт&lt;/li&gt;"
 var res = 'res'
 var res2 = 'res2'
 if(execution.getVariable('sDocMarriage') != null){

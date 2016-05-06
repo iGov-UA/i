@@ -95,6 +95,8 @@
         <activiti:formProperty id="print3" name="принт3" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="print4" name="принт4" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="print5" name="принт5" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="date_big" name="Початок ліцензії" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="date_end" name="Кінець ліцензії" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPosluga_name" name="назва послуги" type="invisible" default="Видача ліцензії на право роздрібної торгівлі алкогольними напоями або сидром та перрі"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -109,7 +111,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${sMailClerk}</activiti:expression>
+          <activiti:expression>akylish88@gmail.com</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression>Нова заявка. ${sPosluga_name}</activiti:expression>
@@ -148,7 +150,7 @@ ${sWorkTime}.&lt;br /&gt;
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow4" sourceRef="servicetask3" targetRef="servicetask4"></sequenceFlow>
-    <userTask id="usertask1" name="Обробка в податковій" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask1" name="Обробка в податковій (1 етап)" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asOsoba" name="Тип особи" type="enum" writable="false">
@@ -168,7 +170,8 @@ ${sWorkTime}.&lt;br /&gt;
         <activiti:formProperty id="sT_objekt" name="Тип об'єкта торгівлі:;(магазин,кафе,кіоск)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sT_dfs_torg" name="Орган ДФС за місцем торгівлі" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sT_dfs_reestr" name="Орган ДФС за місцем реєстрації суб'єкта господарювання" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="date_bigin" name="Дата з якої буде діяти ліцензія" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_big" name="Дата початку ліцензії" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_end" name="Кінець ліцензії" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sReestrat_ekka" name="Реєстраційне посвідчення на ЕККА" type="invisible" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sReestrat_model" name="Модель реєстратора розрахункових операцій" type="invisible" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sReestrat_modif" name="Модифікація реєстратора розрахункових операцій" type="invisible" writable="false"></activiti:formProperty>
@@ -291,7 +294,7 @@ ${sWorkTime}.&lt;br /&gt;
     <sequenceFlow id="flow8" name="Документи ОК" sourceRef="exclusivegateway1" targetRef="servicetask6">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asVariants == 'sEnamDok_ok'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask2" name="Видача документа" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask2" name="Видача документа (2 етап)" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asOsoba" name="Тип особи" type="enum" writable="false">
@@ -395,7 +398,68 @@ execution.setVariable('print4', per4)
 execution.setVariable('print5', per5)
       </script>
     </scriptTask>
-    <sequenceFlow id="flow19" sourceRef="scripttask1" targetRef="servicetask3"></sequenceFlow>
+    <sequenceFlow id="flow19" sourceRef="scripttask1" targetRef="scripttask2"></sequenceFlow>
+    <scriptTask id="scripttask2" name="Script2" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>
+var yyyy = ''
+var mmm = ''
+var ddd = ''
+var timeB = ''
+var yyyy2 = ''
+var mmm2 = ''
+var ddd2 = ''
+var timeE = ''
+var eest = ''
+    timeB=execution.getVariable('date_bigin').toString()
+    eest=timeB.substr(20,4)
+    if(eest == 'EEST'){yyyy=timeB.substr(25,4)}
+    else{yyyy=timeB.substr(24,4)}
+    mmm=timeB.substr(4,3)
+if (mmm == 'Jan'){ mmm='01'}
+if (mmm == 'Feb'){ mmm='02'}
+if (mmm == 'Mar'){ mmm='03'}
+if (mmm == 'Apr'){ mmm='04'}
+if (mmm == 'May'){ mmm='05'}
+if (mmm == 'Jun'){ mmm='06'}
+if (mmm == 'Jul'){ mmm='07'}
+if (mmm == 'Aug'){ mmm='08'}
+if (mmm == 'Sep'){ mmm='09'}
+if (mmm == 'Oct'){ mmm='10'}
+if (mmm == 'Nov'){ mmm='11'}
+if (mmm == 'Dec'){ mmm='12'}
+	ddd=timeB.substr(8,2)
+timeB = ddd+'-'+mmm+'-'+yyyy
+yyyy2 = yyyy-(-1)
+if (ddd == '01')
+  {
+  mmm2=mmm-1
+    if(mmm =='05'||'07'||'08'||'10'||'12')
+      {ddd2='30'}
+    if(mmm =='06'||'09'||'11'||'04'||'02')
+      {ddd2='31'}
+    if(mmm =='03')
+      {ddd2='28'}
+  }
+  else
+  {
+    mmm2=mmm
+    ddd2=ddd-1
+  }
+if(mmm =='01'&amp;&amp;ddd=='01')
+  {
+  ddd2='31'
+  mmm2='12'
+  yyyy2=yyyy
+  }
+if(mmm2 =='1'||'2'||'3'||'4'||'5'||'6'||'7'||'8'||'9')
+  {
+  mmm2 = '0' + mmm2
+  }  
+timeE = ddd2+'-'+mmm2+'-'+yyyy2	
+execution.setVariable('date_big', timeB)
+execution.setVariable('date_end', timeE) </script>
+    </scriptTask>
+    <sequenceFlow id="flow20" sourceRef="scripttask2" targetRef="servicetask3"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_nicolaev_dfs_592">
     <bpmndi:BPMNPlane bpmnElement="nicolaev_dfs_592" id="BPMNPlane_nicolaev_dfs_592">
@@ -446,6 +510,9 @@ execution.setVariable('print5', per5)
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
         <omgdc:Bounds height="55.0" width="105.0" x="130.0" y="10.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
+        <omgdc:Bounds height="55.0" width="105.0" x="250.0" y="10.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="85.0" y="117.0"></omgdi:waypoint>
@@ -522,7 +589,11 @@ execution.setVariable('print5', per5)
         <omgdi:waypoint x="900.0" y="309.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
-        <omgdi:waypoint x="182.0" y="65.0"></omgdi:waypoint>
+        <omgdi:waypoint x="235.0" y="37.0"></omgdi:waypoint>
+        <omgdi:waypoint x="250.0" y="37.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
+        <omgdi:waypoint x="302.0" y="65.0"></omgdi:waypoint>
         <omgdi:waypoint x="302.0" y="90.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
