@@ -177,13 +177,13 @@ public class GeneralConfig {
     public String getURL_GenerateSID_Auth_Receipt_PB_Bank() {
         return sURL_GenerateSID_Auth_Receipt_PB_Bank;
     }
-    public String sURL_DocumentKvitanciiForIgov() {
+    public String getURL_DocumentSimple_Receipt_PB_Bank() {
         return sURL_DocumentSimple_Receipt_PB_Bank;
     }
-    public String sURL_DocumentKvitanciiForAccounts() {
+    public String getURL_DocumentByAccounts_Receipt_PB_Bank() {
         return sURL_DocumentByAccounts_Receipt_PB_Bank;
     }
-    public String sURL_DocumentKvitanciiCallback() {
+    public String getURL_DocumentCallback_Receipt_PB_Bank() {
         return sURL_DocumentCallback_Receipt_PB_Bank;
     }
     

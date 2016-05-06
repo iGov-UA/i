@@ -75,7 +75,7 @@ public class DocumentAccessHandler_PB extends AbstractDocumentAccessHandler {
         String sessionId;
         String keyIdParam;
         String callBackKey = "&callbackUrl=";
-        String callBackValue = generalConfig.sURL_DocumentKvitanciiCallback();
+        String callBackValue = generalConfig.getURL_DocumentCallback_Receipt_PB_Bank();
         String keyID = this.accessCode;
         Collection<Long> correctDocTypes = Lists.newArrayList(0L, 1L);
         String uriDoc;
@@ -86,7 +86,7 @@ public class DocumentAccessHandler_PB extends AbstractDocumentAccessHandler {
                     "Incorrect DocumentTypeId. DocumentTypeId = " + this.documentTypeId);
         } else {
             uriDoc = Long.valueOf(0L).equals(this.documentTypeId) ?
-                    generalConfig.sURL_DocumentKvitanciiForIgov() : generalConfig.sURL_DocumentKvitanciiForAccounts();
+                    generalConfig.getURL_DocumentSimple_Receipt_PB_Bank() : generalConfig.getURL_DocumentByAccounts_Receipt_PB_Bank();
 
             keyIdParam = Long.valueOf(0L).equals(this.documentTypeId) ? "?keyID=" : "?id=";
         }
