@@ -15,7 +15,7 @@ public class GeneralConfig {
     private final static Logger LOG = LoggerFactory.getLogger(GeneralConfig.class);
 
     @Value("${general.Self.bTest}")
-    private Boolean bTest_Self;
+    private String sbTest_Self;
     @Value("${general.Self.nID_Server}")
     private Integer nID_Server_Self;
     @Value("${general.Self.sHost}")
@@ -171,10 +171,10 @@ public class GeneralConfig {
     public boolean isSelfTest() {
         boolean b = true;
         try {
-            b = (bTest_Self == null ? b : bTest_Self);
+            b = (sbTest_Self == null ? b : Boolean.valueOf(sbTest_Self));
             //LOG.info("(sbTest={})", sbTest_Self);
         } catch (Exception oException) {
-            LOG.error("Bad: {} (sbTest={})", oException.getMessage(), bTest_Self);
+            LOG.error("Bad: {} (sbTest={})", oException.getMessage(), sbTest_Self);
             LOG.debug("FAIL:", oException);
         }
         return b;
