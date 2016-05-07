@@ -23,7 +23,7 @@ angular.module('app').service('ValidationService', ['moment', 'amMoment', 'angul
 
 // TODO .value('defaultDateFormat', 'YYYY-MM-DD' );
 
-function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory, $interpolate) {
+function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory) {
 
   this.markers = MarkersFactory.getMarkers();
 
@@ -689,11 +689,10 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
       }
       console.log("bValid=" + bValid);
 
-      debugger;
-
-
       if (!bValid) {
-        options.lastError = options.sMessage || ('Невірний номер, введіть номер у форматі ' + options.saExtension);
+        //var sFileExtensionErrorMessage = $interpolate(options.sMessage);
+        //debugger;
+        options.lastError = 'Недопустимий формат файлу! \n Повинно бути: ' + options.saExtension + '!';
       }
       return bValid;
     }
