@@ -39,10 +39,10 @@ public class NotificationPatterns {
 
       /*
       String sHead = String.format("Ви подали заяву №%s на послугу через портал %s", nID_Protected,
-              generalConfig.sHostCentral());
+              generalConfig.getSelfHostCentral());
 
       String sBody = String.format("Ви подали заяву №%s на послугу через портал %s", nID_Protected,
-              generalConfig.sHostCentral()) +
+              generalConfig.getSelfHostCentral()) +
               "<br>(Ви завжди можете подивитись її статус на порталі у разділі \"Мій журнал\")" +
               "<br>" +
               "При надходжені Вашої заявки у систему госоргану - Вам буде додатково направлено персональний лист - повідомленя.<br>";
@@ -52,7 +52,7 @@ public class NotificationPatterns {
 
             String sBody = String.format("Ваша заявка %s прийнята!", sID_Order) +
                     "<br>Ви завжди зможете переглянути її поточний статус у розділі <a href=\"" + generalConfig
-                    .sHostCentral() + "/order/search?sID_Order=" + sID_Order
+                    .getSelfHostCentral() + "/order/search?sID_Order=" + sID_Order
                     + "\">\"Мій журнал\"</a>. Також на кожному етапі Ви будете отримувати email-повідомлення.	";
             
             /*
@@ -71,11 +71,11 @@ public class NotificationPatterns {
 
             // issue #1151
             //String sBody = String.format("Ваша заявка %s прийнята!", sID_Order) +
-            //        "<br>Ви завжди зможете переглянути її поточний статус у розділі <a href=\""+generalConfig.sHostCentral() + "/order/search?sID_Order=" + sID_Order+"\">\"Мій журнал\"</a>. Також на кожному етапі Ви будете отримувати email-повідомлення.	";
+            //        "<br>Ви завжди зможете переглянути її поточний статус у розділі <a href=\""+generalConfig.getSelfHostCentral() + "/order/search?sID_Order=" + sID_Order+"\">\"Мій журнал\"</a>. Також на кожному етапі Ви будете отримувати email-повідомлення.	";
             
 
             String sBody = String.format("Шановний(-а) %s!", sRecipient)
-                    + "<br>Ваше звернення <a href=\""+generalConfig.sHostCentral() + "/order/search?sID_Order=" + sID_Order+"\">" + sID_Order + "</a> успішно зареєстровано (номер також відправлено Вам електронною поштою на " + sEmail + "). Результати будуть спрямовані також на email."
+                    + "<br>Ваше звернення <a href=\""+generalConfig.getSelfHostCentral() + "/order/search?sID_Order=" + sID_Order+"\">" + sID_Order + "</a> успішно зареєстровано (номер також відправлено Вам електронною поштою на " + sEmail + "). Результати будуть спрямовані також на email."
                     + "<br>Звертаємо увагу, що іноді листи потрапляють у спам або у розділ \"Реклама\" (для Gmail).";
             */
 
@@ -145,8 +145,8 @@ public class NotificationPatterns {
             if (sClientFIO == null) {
                 sClientFIO = "громадянин";
             }
-            String sURL = (new StringBuilder(generalConfig.sHostCentral()).append("/order/search?sID_Order=")
-                    .append(generalConfig.sID_Order_ByProcess(nID_Process))
+            String sURL = (new StringBuilder(generalConfig.getSelfHostCentral()).append("/order/search?sID_Order=")
+                    .append(generalConfig.getOrderId_ByProcess(nID_Process))
                     .append("&sToken=").append(sToken)).toString();
 
             String sText = "<b>Шановний (-а) " + sClientFIO + "!</b><br><br>"
@@ -183,8 +183,8 @@ public class NotificationPatterns {
     public String createEmailBody(Long nID_Process, String soData, String sBody, String sToken) throws UnsupportedEncodingException {
         StringBuilder emailBody = new StringBuilder(sBody);
         emailBody.append("<br/>").append(createTable_TaskProperties(soData)).append("<br/>");
-        String link = (new StringBuilder(generalConfig.sHostCentral()).append("/order/search?sID_Order=")
-                .append(generalConfig.sID_Order_ByProcess(nID_Process))
+        String link = (new StringBuilder(generalConfig.getSelfHostCentral()).append("/order/search?sID_Order=")
+                .append(generalConfig.getOrderId_ByProcess(nID_Process))
                 .append("&sToken=").append(sToken)).toString();
         emailBody.append(link).append("<br/>");
         return emailBody.toString();

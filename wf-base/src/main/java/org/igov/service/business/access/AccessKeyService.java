@@ -40,10 +40,10 @@ public class AccessKeyService {
     public String getAccessKeyCentral(String sData, AccessContract oAccessContract) throws Exception {
         String sURI = "/wf/service/access/getAccessKey";
         Map<String, String> mParam = new HashMap<String, String>();
-        mParam.put(AuthenticationTokenSelector.ACCESS_LOGIN, generalConfig.sAuthLogin());//"activiti-master"//mParam.put("sAccessLogin", "activiti-master");
+        mParam.put(AuthenticationTokenSelector.ACCESS_LOGIN, generalConfig.getAuthLogin());//"activiti-master"//mParam.put("sAccessLogin", "activiti-master");
         mParam.put(AuthenticationTokenSelector.ACCESS_CONTRACT, oAccessContract.name());//"RequestAndLogin"//AccessContract.RequestAndLogin//param.put("sAccessContract", "Request");
         mParam.put("sData", sData);
-        return httpRequester.getInside(generalConfig.sHostCentral() + sURI, mParam);
+        return httpRequester.getInside(generalConfig.getSelfHostCentral() + sURI, mParam);
         //JSONParser parser = new JSONParser();
         //JSONObject jsonObject = (JSONObject) parser.parse(soJSON_Merchant);
         //return (String) jsonObject.get("string");
@@ -55,10 +55,10 @@ public class AccessKeyService {
         /*String sURI = "/wf/service/access/getAccessKey";
         Map<String, String> mParam = new HashMap<String, String>();
         
-        mParam.put(AuthenticationTokenSelector.ACCESS_LOGIN, generalConfig.sAuthLogin());//"activiti-master"
+        mParam.put(AuthenticationTokenSelector.ACCESS_LOGIN, generalConfig.getAuthLogin());//"activiti-master"
         mParam.put(AuthenticationTokenSelector.ACCESS_CONTRACT, AccessContract.RequestAndLogin.name());//"RequestAndLogin"
         mParam.put("sData", sData);
-        return httpRequester.get(generalConfig.sHost() + sURI, mParam);
+        return httpRequester.get(generalConfig.getSelfHost() + sURI, mParam);
         */
     }
 

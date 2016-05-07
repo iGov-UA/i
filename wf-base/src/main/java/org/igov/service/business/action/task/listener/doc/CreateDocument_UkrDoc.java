@@ -113,8 +113,8 @@ public class CreateDocument_UkrDoc extends AbstractModelTask implements TaskList
 
             LOG.info("Found attachments for the process {}: {}", delegateTask.getId(), attach2 != null ? attach2.size() : 0);
 
-            String sessionId = UkrDocUtil.getSessionId(generalConfig.getSID_login2(), generalConfig.getSID_password2(),
-                    generalConfig.sURL_AuthSID_PB() + "?lang=UA");
+            String sessionId = UkrDocUtil.getSessionId(generalConfig.getLogin_Auth_UkrDoc_SED(), generalConfig.getPassword_Auth_UkrDoc_SED(),
+                    generalConfig.getURL_GenerateSID_Auth_UkrDoc_SED() + "?lang=UA");
 
             LOG.info("Retrieved session ID:" + sessionId);
 
@@ -160,7 +160,7 @@ public class CreateDocument_UkrDoc extends AbstractModelTask implements TaskList
             headers.set("Authorization", "promin.privatbank.ua/EXCL " + sessionId);
             headers.set("Content-Type", "application/json; charset=utf-8");
 
-            String resp = new RestRequest().post(generalConfig.getsUkrDocServerAddress(), json.toJSONString(),
+            String resp = new RestRequest().post(generalConfig.getURL_UkrDoc_SED(), json.toJSONString(),
                     null, StandardCharsets.UTF_8, String.class, headers);
 
             LOG.info("Ukrdoc response:" + resp);

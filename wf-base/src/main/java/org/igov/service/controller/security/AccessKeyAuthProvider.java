@@ -25,7 +25,7 @@ public class AccessKeyAuthProvider implements AuthenticationProvider {
 
     private static final String GENERAL_ROLE = "ROLE_USER";
     private final Logger LOG = LoggerFactory.getLogger(AccessKeyAuthProvider.class);
-    @Value("${general.auth.login}")
+    @Value("${general.Auth.sLogin}")
     private String sAccessLogin; // = sGeneralUsername; // == null ? "anonymous" : sGeneralUsername;
     private AccessDataService oAccessDataService;
 

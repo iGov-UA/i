@@ -74,7 +74,7 @@ public class Liqpay {
         log.info("sAccessKey="+sAccessKey_Merchant);
         */
 
-        String soJSON_Merchant = httpRequester.getInside(generalConfig.sHostCentral() + URI, paramMerchant);
+        String soJSON_Merchant = httpRequester.getInside(generalConfig.getSelfHostCentral() + URI, paramMerchant);
         LOG.info("(soJSON_Merchant={})", soJSON_Merchant);
 
         JSONParser parser = new JSONParser();
@@ -98,7 +98,7 @@ public class Liqpay {
             if (jsonObject.get("sURL_CallbackPaySuccess") != null) {
                 sURL_CallbackPaySuccess = (String) jsonObject.get("sURL_CallbackPaySuccess");
             } else {
-                sURL_CallbackPaySuccess = generalConfig.sHostCentral(); //"https://igov.org.ua";
+                sURL_CallbackPaySuccess = generalConfig.getSelfHostCentral(); //"https://igov.org.ua";
             }
         }
         LOG.info("(sURL_CallbackPaySuccess={})", sURL_CallbackPaySuccess);

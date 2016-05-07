@@ -39,11 +39,11 @@ public class SubjectCover {
     
     public Map getSubjectsBy(Set<String> accounts) {
         Map<String, Map> result = null;
-        //String URL = String.format(URI_GET_GetSubjects, accounts, generalConfig.nID_Server());
+        //String URL = String.format(URI_GET_GetSubjects, accounts, generalConfig.getSelfServerId());
         try {
             Map<String, String> param = new HashMap();
             param.put("saAccount", JsonRestUtils.toJson(accounts));
-            param.put("nID_Server", String.valueOf(generalConfig.nID_Server())); 
+            param.put("nID_Server", String.valueOf(generalConfig.getSelfServerId())); 
             String responce = doRemoteRequest(URI_GET_GetSubjects, param);
             result = JsonRestUtils.readObject(responce, Map.class); 
         } catch (JsonProcessingException ex) {
@@ -55,7 +55,7 @@ public class SubjectCover {
     }
     
     private String doRemoteRequest(String sServiceContext, Map<String, String> mParam){
-        String sURL = generalConfig.sHostCentral() + sServiceContext;
+        String sURL = generalConfig.getSelfHostCentral() + sServiceContext;
         LOG.info("(sURL={},mParam={})", sURL, mParam);
         String soResponse = null;
         try {

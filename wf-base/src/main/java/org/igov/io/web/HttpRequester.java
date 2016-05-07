@@ -54,8 +54,8 @@ public class HttpRequester {
         StringBuilder osReturn = new StringBuilder();
         try {
             HttpURLConnection oConnection = (HttpURLConnection) oURL.openConnection();
-            String sUser = generalConfig.sAuthLogin();
-            String sPassword = generalConfig.sAuthPassword();
+            String sUser = generalConfig.getAuthLogin();
+            String sPassword = generalConfig.getAuthPassword();
             String sAuth = ToolWeb.base64_encode(sUser + ":" + sPassword);
             oConnection.setRequestProperty("authorization", "Basic " + sAuth);
 
@@ -126,8 +126,8 @@ public class HttpRequester {
 
             oConnection = (HttpURLConnection) oURL.openConnection();
 
-            String sUser = generalConfig.sAuthLogin();
-            String sPassword = generalConfig.sAuthPassword();
+            String sUser = generalConfig.getAuthLogin();
+            String sPassword = generalConfig.getAuthPassword();
             String sAuth = ToolWeb.base64_encode(sUser + ":" + sPassword);
             oConnection.setRequestProperty("authorization", "Basic " + sAuth);
 
@@ -191,8 +191,8 @@ public class HttpRequester {
 
             oConnection = (HttpURLConnection) oURL.openConnection();
 
-            String sUser = generalConfig.sAuthLogin();
-            String sPassword = generalConfig.sAuthPassword();
+            String sUser = generalConfig.getAuthLogin();
+            String sPassword = generalConfig.getAuthPassword();
             String sAuth = ToolWeb.base64_encode(sUser + ":" + sPassword);
             oConnection.setRequestProperty("authorization", "Basic " + sAuth);
 

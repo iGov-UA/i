@@ -65,7 +65,7 @@ public class EscalationService {
             List<EscalationRule> aEscalationRule = escalationRuleDao.findAll();
             
             for (EscalationRule oEscalationRule : aEscalationRule) {
-                runEscalationRule(oEscalationRule, oGeneralConfig.sHost());//REGIONAL_SERVER_PATH
+                runEscalationRule(oEscalationRule, oGeneralConfig.getSelfHost());//REGIONAL_SERVER_PATH
             }
             if(nFailsTotal>0){
                 //LOG.warn("FAIL: (nFailsTotal={})", nFailsTotal);

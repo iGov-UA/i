@@ -127,7 +127,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
     private void protocolize(HttpServletRequest oRequest, HttpServletResponse oResponse, boolean bSaveHistory)
             throws IOException {
         LOG.info("Method 'protocolize' started");
-        int nLen = generalConfig.bTest() ? 300 : 200;
+        int nLen = generalConfig.isSelfTest() ? 300 : 200;
 
         Map<String, String> mRequestParam = new HashMap<>();
         Enumeration paramsName = oRequest.getParameterNames();
@@ -267,7 +267,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
         String snID_Process = String.valueOf(omResponseBody.get("id"));
         Long nID_Process = Long.valueOf(snID_Process);
-        String sID_Order = generalConfig.sID_Order_ByProcess(nID_Process);
+        String sID_Order = generalConfig.getOrderId_ByProcess(nID_Process);
         String snID_Subject = String.valueOf(omRequestBody.get("nID_Subject"));
         mParam.put("nID_Subject", snID_Subject);
 
@@ -321,7 +321,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 mParamSync.put("sPhone", sPhone);
                 LOG.info("Вносим параметры в коллекцию (sMailTo {}, snID_Subject {}, sPhone {})", sMailTo, snID_Subject,
                         sPhone);
-                String sURL = generalConfig.sHostCentral() + URI_SYNC_CONTACTS;
+                String sURL = generalConfig.getSelfHostCentral() + URI_SYNC_CONTACTS;
                 LOG.info("(Подключаемся к центральному порталу)");
                 String sResponse = httpRequester.getInside(sURL, mParamSync);
                 LOG.info("(Подключение осуществлено)");
@@ -356,7 +356,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             if (snID_Process != null) {
                 LOG.info("Parsing snID_Process: " + snID_Process + " to long");
                 Long nID_Process = Long.valueOf(snID_Process);
-                String sID_Order = generalConfig.sID_Order_ByProcess(nID_Process);
+                String sID_Order = generalConfig.getOrderId_ByProcess(nID_Process);
                 String snMinutesDurationProcess = getTotalTimeOfExecution(snID_Process);
                 mParam.put("nTimeMinutes", snMinutesDurationProcess);
                 LOG.info("(sID_Order={},nMinutesDurationProcess={})", sID_Order, snMinutesDurationProcess);
@@ -368,7 +368,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 try {
                     if (bProcessClosed && sProcessName.indexOf("system") != 0) {//issue 962
                         //LOG.info(String.format("start process feedback for process with snID_Process=%s", snID_Process));
-                        if (!generalConfig.bTest()) {
+                        if (!generalConfig.isSelfTest()) {
                             String snID_Proccess_Feedback = bpHandler
                                     .startFeedbackProcess(snID_Task, snID_Process, sProcessName);
                             mParam.put("nID_Proccess_Feedback", snID_Proccess_Feedback);
@@ -425,7 +425,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         String snID_Process = oHistoricTaskInstance.getProcessInstanceId();
         //LOG.info("(snID_Process={})", snID_Process);
         Long nID_Process = Long.valueOf(snID_Process);
-        String sID_Order = generalConfig.sID_Order_ByProcess(nID_Process);
+        String sID_Order = generalConfig.getOrderId_ByProcess(nID_Process);
         LOG.info("(sID_Order={})", sID_Order);
 
         String sSubjectInfo = mRequestParam.get("sSubjectInfo");

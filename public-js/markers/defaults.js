@@ -100,9 +100,9 @@ angular.module('iGovMarkers')
     motion: {
       ReplaceTextSymbols_1: {
         sID_Field: "Registrationservice",
-        sFrom: "кий",
-        sTo: "кого",
-        sID_Element_sValue: "sRegistrationservice"
+        nSymbols: 2,
+        sValueNew: "ого",
+        sID_Element_sValue: "registration-service"
       }
     }
 });

@@ -47,7 +47,7 @@ public class CancelTaskUtil {
                 .toString();
         //String sAccessKey = accessDataDao.setAccessData(sURL_ForAccessKey);
         String sAccessKey = accessCover.getAccessKey(sURL_ForAccessKey);
-        String sURL_CancelTaskAction = new StringBuilder(generalConfig.sHost())
+        String sURL_CancelTaskAction = new StringBuilder(generalConfig.getSelfHost())
                 .append(sURL_ForAccessKey)
                 .append("&").append(AuthenticationTokenSelector.ACCESS_KEY).append("=").append(sAccessKey)//.append("&sAccessKey=").append(sAccessKey)
                 .toString();

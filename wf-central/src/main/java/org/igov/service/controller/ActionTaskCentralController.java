@@ -328,8 +328,8 @@ public class ActionTaskCentralController {
         String sURL = sHost + "/service/action/task/getStartFormData?nID_Task=" + nID_Task;
         ResponseEntity<String> osResponseEntityReturn = oHttpEntityInsedeCover.oReturn_RequestGet_JSON(sURL);
         
-        /*String sUser = generalConfig.sAuthLogin();
-        String sPassword = generalConfig.sAuthPassword();
+        /*String sUser = generalConfig.getAuthLogin();
+        String sPassword = generalConfig.getAuthPassword();
         String sAuth = SignUtil.base64_encode(sUser + ":" + sPassword);
         HttpHeaders oHttpHeaders = new HttpHeaders();
         oHttpHeaders.add("Authorization", "Basic " + sAuth);

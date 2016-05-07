@@ -24,7 +24,7 @@ public enum TaskReportField {
         @Override
         public String replaceValue(String currentRow, Task curTask, SimpleDateFormat sDateFormat, GeneralConfig oGeneralConfig) {
             Long nID_Process = new Long(curTask.getProcessInstanceId());
-            String sID_Order = oGeneralConfig.sID_Order_ByProcess(nID_Process);
+            String sID_Order = oGeneralConfig.getOrderId_ByProcess(nID_Process);
             return currentRow.replace(this.getPattern(), sID_Order);
         }
 
@@ -32,7 +32,7 @@ public enum TaskReportField {
 		public String replaceValue(String currentRow,
 				HistoricTaskInstance curTask, SimpleDateFormat sDateFormat, GeneralConfig oGeneralConfig) {
                         Long nID_Process = new Long(curTask.getProcessInstanceId());
-                        String sID_Order = oGeneralConfig.sID_Order_ByProcess(nID_Process);
+                        String sID_Order = oGeneralConfig.getOrderId_ByProcess(nID_Process);
 			return currentRow.replace(this.getPattern(), sID_Order);
 		}
     },
