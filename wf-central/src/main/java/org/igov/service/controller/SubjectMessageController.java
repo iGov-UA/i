@@ -678,6 +678,7 @@ public class SubjectMessageController {
                     LOG.info("No SubjectMessage records found, create new!");
                     oHistoryEvent_Service.setsToken("");
                     historyEventServiceDao.saveOrUpdate(oHistoryEvent_Service);
+                    //test-trigger/////
                     /*throw new CommonServiceException(
                      ExceptionCommonController.BUSINESS_ERROR_CODE,
                      "Record Not Found",
