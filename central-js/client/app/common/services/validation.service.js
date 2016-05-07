@@ -23,13 +23,14 @@ angular.module('app').service('ValidationService', ['moment', 'amMoment', 'angul
 
 // TODO .value('defaultDateFormat', 'YYYY-MM-DD' );
 
-function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory) {
+function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory, $interpolate) {
 
   this.markers = MarkersFactory.getMarkers();
 
   var self = this;
 
   self.sFormat = 'YYYY-MM-DD';
+  self.oFormDataParams = null;
 
   // Це для того, щоб бачити дати в українському форматі.
   // FIXME: хардкод значення locale
@@ -48,8 +49,9 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
    * @param form - форма, яку треба валідувати за маркерами валідації. Обов'язковий параметр.
    * @param {object} markers - маркери валідації. Необов'язковий параметр. Якщо він відсутній, то спрацюють маркери за замовчуванням, див. _resolveValidationMarkers
    * @param {boolean} immediateValidation - необов'язковий, вказує, чи треба проводити першу валідацію одразу після призначення валідаторів.
+   * @param (object) data - необов'язковий, але необхідний, якщо значення, які необхідно провалыдувати, не передаються засобами сервісу штатного валідатора в параметрах modelValue та viewValue
    */
-  self.validateByMarkers = function (form, markers, immediateValidation) {
+  self.validateByMarkers = function (form, markers, immediateValidation, data) {
 
     // Якщо маркери валідації прийшли зовні - то використати їх
     function _resolveValidationMarkers(markers) {
@@ -65,6 +67,7 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
     if (!markers || !markers.validate || markers.validate.length < 1) {
       return;
     }
+    self.oFormDataParams = data.formData.params || {};
 
     angular.forEach(markers.validate, function (marker, markerName) {
 
@@ -76,9 +79,13 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
     });
   };
 
-  self.setValidatorByMarker = function(marker, markerName, formField, immediateValidation, forceValidation) {
+  self.setValidatorByMarker = function (marker, markerName, formField, immediateValidation, forceValidation) {
     if (markerName.indexOf('CustomFormat_') == 0)
       markerName = 'CustomFormat'; //in order to use different format rules at the same time
+    if (markerName.indexOf('FileExtensions_') == 0) {
+      markerName = 'FileExtensions';
+    }
+
     var keyByMarkerName = self.validatorNameByMarkerName[markerName];
     var fieldNameIsListedInMarker = formField && formField.$name && _.indexOf(marker.aField_ID, formField.$name) !== -1;
     var existingValidator = formField && formField.$validators && formField.$validators[keyByMarkerName];
@@ -127,7 +134,8 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
     Numbers_Accounts: 'numbersaccounts',
     DateElapsed_1: 'dateofbirth',
     CustomFormat: 'CustomFormat',
-    FileSign: 'FileSign'
+    FileSign: 'FileSign',
+    FileExtensions: 'FileExtensions'
   };
 
   /**
@@ -137,7 +145,7 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
    * @param formField - поле форми, яке будемо валідувати даним маркером, Необов`язковий параметр.
    * @returns {function|null} функція-замикання або null для неіснуючого валідатора (тобто такого, що не знаходиться за даним markerName).
    */
-  self.getValidatorByName = function(markerName, markerOptions, formField) {
+  self.getValidatorByName = function (markerName, markerOptions, formField) {
     var fValidator = self.validatorFunctionsByFieldId[markerName];
     // замикання для збереження опцій
     var validationClosure = function (modelValue, viewValue) {
@@ -634,6 +642,58 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
 
       if (bValid === false) {
         options.lastError = options.sMessage || ('Підпис не валідний або відсутній');
+      }
+      return bValid;
+    },
+
+    'FileExtensions': function (modelValue, viewValue, options) {
+      //debugger;
+      console.log("viewValue=" + viewValue);
+      if (modelValue === null || modelValue === '') {
+        return true;
+      }
+      var bValid = true;
+
+      console.log("modelValue=" + modelValue);
+      if (bValid && (!options || options.saExtension === null)) {
+        bValid = false;
+      }
+      console.log("options.saExtension=" + options.saExtension);
+
+      var sFileName = "";
+
+      var params = self.oFormDataParams;
+      for(var paramObj in params){
+        if(params[paramObj].value.id && params[paramObj].fileName){
+          if(modelValue.id === params[paramObj].value.id){
+            sFileName = params[paramObj].fileName;
+            break;
+          }
+        }
+      }
+
+      var aExtensions = options.saExtension.split(',');
+      for(var convertedItem = 0; convertedItem < aExtensions.length; convertedItem++){
+        aExtensions[convertedItem] = $.trim(aExtensions[convertedItem]);
+        aExtensions[convertedItem].toLowerCase();
+      }
+
+      var ext = sFileName.split('.').pop().toLowerCase();
+      for (var checkingItem = 0; checkingItem < aExtensions.length; checkingItem++){
+        if (ext === aExtensions[checkingItem]){
+          bValid = true;
+          break;
+        } else {
+          bValid = false;
+        }
+      }
+      console.log("bValid=" + bValid);
+
+      debugger;
+
+
+      if (!bValid) {
+        options.lastError = options.sMessage || ('Невірний номер, введіть номер у форматі ' + options.saExtension);
       }
       return bValid;
     }
