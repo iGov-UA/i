@@ -14,7 +14,6 @@
         access: {
           requiresLogin: true
         },
-        templateUrl: 'app/tasks/base.html',
         resolve: {
           tasksStateModel: function () {
             return {};
@@ -37,10 +36,14 @@
       })
       .state('tasks.typeof', {
         url: '/:type',
-        templateUrl: 'app/tasks/tasks.html',
-        controller: 'TasksCtrl',
         access: {
           requiresLogin: true
+        },
+        views: {
+          '@': {
+            templateUrl: 'app/tasks/tasks.html',
+            controller: 'TasksCtrl'
+          }
         }
       })
       .state('tasks.typeof.view', {
