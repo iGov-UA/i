@@ -74,7 +74,7 @@
                 }
               },
               'task-view-history@baTask': {
-                templateUrl: '/app/tasks/taskFormHistory.html'
+                templateUrl: 'app/tasks/taskFormHistory.html'
               }
             }
           })
