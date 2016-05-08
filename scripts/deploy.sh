@@ -61,6 +61,14 @@ do
 			sGitCommit="$2"
 			shift
 			;;
+		--dockerOnly)
+			bDockerOnly="$2"
+			shift
+			;;
+		--gitCommit)
+			sGitCommit="$2"
+			shift
+			;;
 		*)
 			echo "bad option"
 			exit 1
@@ -427,6 +435,9 @@ else
 		exit 0
 	fi
 fi
+
+echo "Compilation finished removing lock file"
+rm -f /tmp/$sProject/build.lock
 
 echo "Connecting to remote host $sHost"
 cd $WORKSPACE
