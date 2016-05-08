@@ -58,12 +58,6 @@ public class GeneralConfig {
     private String snID_SendList_UniSender_Mail;
     @Value("${general.Mail.UniSender.sURL}")
     private String sURL_UniSender_Mail;
-    @Value("${general.Mail.UniSender.sContext_Subscribe}")
-    private String sContext_Subscribe_UniSender_Mail;
-    @Value("${general.Mail.UniSender.sContext_CreateMail}")
-    private String sContext_CreateMail_UniSender_Mail;
-    @Value("${general.Mail.UniSender.sContext_CreateCompain}")
-    private String sContext_CreateCompain_UniSender_Mail;
     
     @Value("${general.Auth.BankID.PB.sLogin}")
     private String sLogin_BankID_PB_Auth;
@@ -119,6 +113,18 @@ public class GeneralConfig {
         }
         return b;
     }
+    public String getSelfHost() {
+        return sHost_Self;
+    }
+    public String getSelfHostCentral() {
+        return sHostCentral_Self;
+    }
+    public String getAuthLogin() {
+        return sLogin_Auth;
+    }
+    public String getAuthPassword() {
+        return sPassword_Auth;
+    }
     
     public String getURL_MSG_Monitor() {
         return sURL_MSG_Monitor;
@@ -153,19 +159,6 @@ public class GeneralConfig {
     }
     public String getURL_ResourceSignature_BankID_PB_Auth() {
         return sURL_ResourceSignature_BankID_PB_Auth != null ? sURL_ResourceSignature_BankID_PB_Auth : "https://bankid.privatbank.ua/ResourceService/checked/signatureData";
-    }
-    
-    public String getSelfHost() {
-        return sHost_Self;
-    }
-    public String getSelfHostCentral() {
-        return sHostCentral_Self;
-    }
-    public String getAuthLogin() {
-        return sLogin_Auth;
-    }
-    public String getAuthPassword() {
-        return sPassword_Auth;
     }
     
     public String getLogin_Auth_Receipt_PB_Bank() {
@@ -222,15 +215,6 @@ public class GeneralConfig {
     }
     public String getURL_UniSender_Mail() {
         return sURL_UniSender_Mail;
-    }
-    public String getContext_Subscribe_UniSender_Mail() {
-        return sContext_Subscribe_UniSender_Mail;
-    }
-    public String getContext_CreateMail_UniSender_Mail() {
-        return sContext_CreateMail_UniSender_Mail;
-    }
-    public String getContext_CreateCompain_UniSender_Mail() {
-        return sContext_CreateCompain_UniSender_Mail;
     }
     public String getKey_UniSender_Mail() {
         return sKey_UniSender_Mail;
