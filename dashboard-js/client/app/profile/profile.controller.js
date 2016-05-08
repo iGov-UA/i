@@ -21,6 +21,18 @@
     $scope.newPassword = "";
     $scope.newPassword2 = "";
 
+    Profile.getSubjects(user.id).then(function(data){
+      if (data.aSubjectAccount && data.aSubjectAccount.length > 0 ){
+        (data.aSubjectAccount[0].oSubject.aSubjectAccountContact).forEach(function(contact) {
+          if(contact.oSubjectContactType.nID==0){
+            $scope.phone=contact.sValue;
+          }
+        });
+      }
+    }, function (err) {
+      console.log(err);
+    });
+
     $scope.changePassword = function () {
         if($scope.newPassword2 == $scope.newPassword){
           Profile.changePassword(user.id, $scope.oldPassword, $scope.newPassword).then(function(data){
