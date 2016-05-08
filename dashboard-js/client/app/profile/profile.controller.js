@@ -14,13 +14,8 @@
 
     var user = Auth.getCurrentUser();
     $scope.userName = user.firstName + ' ' + user.lastName;
-    $scope.login = user.firstName;
+    $scope.login = user.id;
     $scope.email = user.email;
-    // Profile.changePassword('tester', 'tester1', 'tester', function(data){
-    //     console.log(data);
-    // }).then(function(data){
-    //   console.log(data);
-    // });
 
     $scope.oldPassword = "";
     $scope.newPassword = "";
@@ -28,7 +23,7 @@
 
     $scope.changePassword = function () {
         if($scope.newPassword2 == $scope.newPassword){
-          Profile.changePassword(user.firstName, $scope.oldPassword, $scope.newPassword).then(function(data){
+          Profile.changePassword(user.id, $scope.oldPassword, $scope.newPassword).then(function(data){
             Modal.inform.info()("Пароль змінено");
             $scope.cancel();
           }, function (err) {
