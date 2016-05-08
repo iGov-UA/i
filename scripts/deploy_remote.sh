@@ -23,9 +23,9 @@ if [ ! -d /sybase/.backup/configs/$sDate ]; then
 fi
 cp -rp /sybase/.configs /sybase/.backup/configs/$sDate/
 
-ssh-agent bash -c 'ssh-add /sybase/secret/sshKey; git clone git@github.com:e-government-ua/iSystem.git /sybase/iSystem'
+sudo ssh-agent bash -c 'ssh-add /sybase/secret/sshKey; git clone git@github.com:e-government-ua/iSystem.git /sybase/iSystem'
 rsync -rtv /sybase/iSystem/config/$sVersion/.configs/ /sybase/.configs
-rm -rf /sybase/iSystem
+sudo rm -rf /sybase/iSystem
 
 fallback ()
 {
