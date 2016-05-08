@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="gni_69" name="ДФС - Надання витягу з реєстру платників єдиного податку" isExecutable="true">
+    <documentation>Рефакторинг: 28.04.2016. 
+Аналитик: Ставицкий В.Д.</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
@@ -8,148 +10,91 @@
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати рішення" type="select" default="0" required="true"></activiti:formProperty>        
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
-        <activiti:formProperty id="area" name="Виберіть відділення фіскальної служби; в якому вам буде зручно отримати довідку" type="enum" required="true">
-         <activiti:value id="dnepr_and" name="Дніпропетровськ - АНД (пров. Універсальний, 12)|0461"></activiti:value>
-          <activiti:value id="dnepr_babush" name="Дніпропетровськ - Бабушкінський (вул. Героїв Сталінграду, 25)|0462"></activiti:value>
-          <activiti:value id="dnepr_october" name="Дніпропетровськ - Жовтневий (вул. Високовольтна, 24)|0463"></activiti:value>
-          <activiti:value id="dnepr_left" name="Дніпропетровськ - Лівобережний (пр-т Газети Правда, 95-А)|0464"></activiti:value>
-          <activiti:value id="dnepr_kirov" name="Дніпропетровськ - Кіровський (вул. Горького, 22)|0465"></activiti:value>
-          <activiti:value id="dnepr_red_guard" name="Дніпропетровськ - Красногвардійський (вул. Театральна, 1-А)|0466"></activiti:value>
-          <activiti:value id="dnepr_lenin" name="Дніпропетровськ - Ленінський (вул. Шаумяна, 5)|0467"></activiti:value>
-          <activiti:value id="uvileine" name="смт Ювілейне (вул. Теплична, 13)|0417"></activiti:value>
-          <activiti:value id="apostol" name="Апостолове  (вул. Леніна, 63)|0414"></activiti:value>
-          <activiti:value id="varvarivka" name="с.Варварівка (вул. Пристанційна, 1)|0435"></activiti:value>
-          <activiti:value id="vasilkovka" name="смт.Васильківка (вул. Партизанська, 150)|0415"></activiti:value>
-          <activiti:value id="volnogorsk" name="Вільногірськ (б-р Миру, 15)|0401"></activiti:value>
-          <activiti:value id="verhnedneprovsk" name="Верхньодніпровськ (пл. Щербицького, 2)|0416"></activiti:value>
-          <activiti:value id="dniprodzerzhinsk" name="Дніпродзержинськ (вул. Медична, 9)|0403"></activiti:value>
-          <activiti:value id="zhovtivodi" name="Жовті Води (вул. Першотравнева, 24А)|0404"></activiti:value>
-          <activiti:value id="krrog1" name="Кривий Ріг (вул. Кобилянського, 148 а)|0418"></activiti:value>
-          <activiti:value id="krrog2" name="Кривий Ріг (пр-т. Джержинського, 42)|0481"></activiti:value>
-          <activiti:value id="krrog3" name="Кривий Ріг (пр-т. Металургів, 16)|0482"></activiti:value>
-          <activiti:value id="krrog4" name="Кривий Ріг (вул. Кремлівська, 4)|0483"></activiti:value>
-          <activiti:value id="krinichki" name="смт. Кринички (вул. Нагірна, 2)|0419"></activiti:value>
-          <activiti:value id="magdalinovka" name="смт. Магдалинівка (вул. Радянська, 44)|0420"></activiti:value>
-          <activiti:value id="marganec" name="Марганець (вул. П.Тичини, 11)|0406"></activiti:value>
-          <activiti:value id="tomakovka" name="смт. Томаківка (вул. Леніна, 41)|0432"></activiti:value>
-          <activiti:value id="mezhova" name="смт. Межова (вул. Фрунзе, 1)|0421"></activiti:value>
-          <activiti:value id="nikopol" name="Нікополь (пр-т. Трубників, 27)|0407"></activiti:value>
-          <activiti:value id="novomoskovsk" name="Новомосковськ (вул. М.Головко, 30)|0408"></activiti:value>
-          <activiti:value id="ordgo" name="Орджонікідзе (вул. Горького, 7)|0409"></activiti:value>
-          <activiti:value id="pavlograd" name="Павлоград (вул. Верстатобудівельників, 14-А)|0410"></activiti:value>
-          <activiti:value id="pershotravensk" name="Першотравенськ (вул. Шкільна, 35)|0411"></activiti:value>
-          <activiti:value id="petrikivka" name="смт. Петриківка (вул. Леніна, 38)|0426"></activiti:value>
-          <activiti:value id="petropavlivka" name="смт. Петропавлівка (вул. Радянська, 62)|0425"></activiti:value>
-          <activiti:value id="pokrovske" name="смт. Покровське (вул. 40 років жовтня, 13)|0427"></activiti:value>
-          <activiti:value id="5xatki" name="П'ятихатки (вул. Шевченка, 116)|0428"></activiti:value>
-          <activiti:value id="sinelnikove" name="Синельниково (вул. Воїнів-інтернаціоналістів, 2)|0412"></activiti:value>
-          <activiti:value id="solone" name="смт. Солоне (вул. Гагаріна, 12А)|0430"></activiti:value>
-          <activiti:value id="sofievka" name="смт. Софіївка (вул. Меліоративна, 3)|0431"></activiti:value>
-          <activiti:value id="ternovka" name="Тернівка (вул. Петрова, 9)|0413"></activiti:value>
-          <activiti:value id="carichanka" name="смт. Царичанка (вул. 14-ї дивізії, 8)|0433"></activiti:value>
-          <activiti:value id="shiroke" name="смт. Широке (вул. К.Маркса, 1А)|0434"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="subekt" name="Ви хочете замовити витяг по собі або по іншому підприємству?" type="enum" default="fiz">
           <activiti:value id="fiz" name="по собі"></activiti:value>
           <activiti:value id="ur" name="по іншому підприємству"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="markers2" name="Маркеры2" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;nomer&quot;,&quot;naimenov&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'ur'&quot;}}}"></activiti:formProperty>
+        </activiti:formProperty>        
         <activiti:formProperty id="nomer" name="Вкажіть код ЄДРПОУ або ІНН; тільки цифрові позначення" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="naimenov" name="Найменування підприємства" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="organ" name="Навіщо Вам потрібна ця довідка?" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="info_1" type="label" default="&lt;a href=&quot;https://docs.google.com/document/d/17kd6pC_2PwfDgk1zJpZ6D1BkTRMJqDQLIAYq_9Pvri0/edit&quot; target=&quot;_blank&quot;&gt;примітка&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="info_2" name="Заповніть бланк" type="label" default="Завантажте &lt;a href=&quot;https://docs.google.com/document/d/1op393ACpXsaPwewbuvn4yir-8oskEXy83RcSXOuUnco/edit&quot; target=&quot;_blank&quot;&gt;бланк&lt;/a&gt;, заповніть, накладіть на нього електронно-цифровий підпис та додайте у наступному полі."></activiti:formProperty>
         <activiti:formProperty id="zapit" name="Заповнений бланк" type="file" required="true"></activiti:formProperty>
-     	<activiti:formProperty id="rName" name="номер району" type="invisible"></activiti:formProperty>
-     	<activiti:formProperty id="markers30" name="маркер Амур-Нижньодніпровський району" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_30&quot;:{&quot;aField_ID&quot;:[&quot;rName&quot;], &quot;asID_Field_sValue&quot;:[&quot;29&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='dnepr_and'&quot;}}}"></activiti:formProperty>
-		<activiti:formProperty id="markers31" name="маркер Бабушкінський району" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_31&quot;:{&quot;aField_ID&quot;:[&quot;rName&quot;], &quot;asID_Field_sValue&quot;:[&quot;30&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='dnepr_babush'&quot;}}}"></activiti:formProperty>
-		<activiti:formProperty id="markers32" name="маркер Дніпропетровськ - Жовтневий" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_32&quot;:{&quot;aField_ID&quot;:[&quot;rName&quot;], &quot;asID_Field_sValue&quot;:[&quot;31&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='dnepr_october'&quot;}}}"></activiti:formProperty>
-		<activiti:formProperty id="markers33" name="маркер Дніпропетровськ - Лівобережний" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_33&quot;:{&quot;aField_ID&quot;:[&quot;rName&quot;], &quot;asID_Field_sValue&quot;:[&quot;32&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='dnepr_left'&quot;}}}"></activiti:formProperty>
-		<activiti:formProperty id="markers34" name="маркер Дніпропетровськ - Кіровський" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_34&quot;:{&quot;aField_ID&quot;:[&quot;rName&quot;], &quot;asID_Field_sValue&quot;:[&quot;33&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='dnepr_kirov'&quot;}}}"></activiti:formProperty>
-		<activiti:formProperty id="markers35" name="маркер Дніпропетровськ - Красногвардійський" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_35&quot;:{&quot;aField_ID&quot;:[&quot;rName&quot;], &quot;asID_Field_sValue&quot;:[&quot;34&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='dnepr_red_guard'&quot;}}}"></activiti:formProperty>
-		<activiti:formProperty id="markers36" name="маркер Дніпропетровськ - Ленінський" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_36&quot;:{&quot;aField_ID&quot;:[&quot;rName&quot;], &quot;asID_Field_sValue&quot;:[&quot;35&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='dnepr_lenin'&quot;}}}"></activiti:formProperty>
-		<activiti:formProperty id="markers37" name="маркер с.Варварівка" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_37&quot;:{&quot;aField_ID&quot;:[&quot;rName&quot;], &quot;asID_Field_sValue&quot;:[&quot;28&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='varvarivka'&quot;}}}"></activiti:formProperty>
-		<activiti:formProperty id="markers38" name="маркер смт.Васильківка" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_38&quot;:{&quot;aField_ID&quot;:[&quot;rName&quot;], &quot;asID_Field_sValue&quot;:[&quot;13&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='vasilkovka'&quot;}}}"></activiti:formProperty>
-		<activiti:formProperty id="markers39" name="маркер Вільногірськ" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_39&quot;:{&quot;aField_ID&quot;:[&quot;rName&quot;], &quot;asID_Field_sValue&quot;:[&quot;1&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='volnogorsk'&quot;}}}"></activiti:formProperty>
-		<activiti:formProperty id="markers40" name="маркер Верхньодніпровськ" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_40&quot;:{&quot;aField_ID&quot;:[&quot;rName&quot;], &quot;asID_Field_sValue&quot;:[&quot;14&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='verhnedneprovsk'&quot;}}}"></activiti:formProperty>
-		<activiti:formProperty id="markers41" name="маркер Жовті Води" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_41&quot;:{&quot;aField_ID&quot;:[&quot;rName&quot;], &quot;asID_Field_sValue&quot;:[&quot;3&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='zhovtivodi'&quot;}}}"></activiti:formProperty>
-		<activiti:formProperty id="markers42" name="маркер Кривий Ріг" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_42&quot;:{&quot;aField_ID&quot;:[&quot;rName&quot;], &quot;asID_Field_sValue&quot;:[&quot;16&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='krrog1'&quot;}}}"></activiti:formProperty>
-		<activiti:formProperty id="markers43" name="маркер центр Кривий Ріг" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_43&quot;:{&quot;aField_ID&quot;:[&quot;rName&quot;], &quot;asID_Field_sValue&quot;:[&quot;36&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='krrog2'&quot;}}}"></activiti:formProperty>
-		<activiti:formProperty id="markers44" name="маркер південний Кривий Ріг" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_44&quot;:{&quot;aField_ID&quot;:[&quot;rName&quot;], &quot;asID_Field_sValue&quot;:[&quot;37&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='krrog3'&quot;}}}"></activiti:formProperty>
-		<activiti:formProperty id="markers45" name="маркер півничний Кривий Ріг" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_45&quot;:{&quot;aField_ID&quot;:[&quot;rName&quot;], &quot;asID_Field_sValue&quot;:[&quot;38&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='krrog4'&quot;}}}"></activiti:formProperty>
-		<activiti:formProperty id="markers46" name="маркер смт. Кринички" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_46&quot;:{&quot;aField_ID&quot;:[&quot;rName&quot;], &quot;asID_Field_sValue&quot;:[&quot;17&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='krinichki'&quot;}}}"></activiti:formProperty>
-		<activiti:formProperty id="markers47" name="маркер смт. Магдалинівка" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_47&quot;:{&quot;aField_ID&quot;:[&quot;rName&quot;], &quot;asID_Field_sValue&quot;:[&quot;18&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='magdalinovka'&quot;}}}"></activiti:formProperty>
-		<activiti:formProperty id="markers48" name="маркер смт Ювілейне" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_48&quot;:{&quot;aField_ID&quot;:[&quot;rName&quot;], &quot;asID_Field_sValue&quot;:[&quot;15&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='uvileine'&quot;}}}"></activiti:formProperty>
-		<activiti:formProperty id="markers49" name="маркер Марганець" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_49&quot;:{&quot;aField_ID&quot;:[&quot;rName&quot;], &quot;asID_Field_sValue&quot;:[&quot;4&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='marganec'&quot;}}}"></activiti:formProperty>
-		<activiti:formProperty id="markers50" name="маркер смт. Межова" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_50&quot;:{&quot;aField_ID&quot;:[&quot;rName&quot;], &quot;asID_Field_sValue&quot;:[&quot;19&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='mezhova'&quot;}}}"></activiti:formProperty>
-		<activiti:formProperty id="markers51" name="маркер м.Нікополь" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_51&quot;:{&quot;aField_ID&quot;:[&quot;rName&quot;], &quot;asID_Field_sValue&quot;:[&quot;5&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='nikopol'&quot;}}}"></activiti:formProperty>
-		<activiti:formProperty id="markers52" name="маркер м.Новомосковськ" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_52&quot;:{&quot;aField_ID&quot;:[&quot;rName&quot;], &quot;asID_Field_sValue&quot;:[&quot;6&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='novomoskovsk'&quot;}}}"></activiti:formProperty>
-		<activiti:formProperty id="markers53" name="маркер м.Павлоград" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_53&quot;:{&quot;aField_ID&quot;:[&quot;rName&quot;], &quot;asID_Field_sValue&quot;:[&quot;8&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='pavlograd'&quot;}}}"></activiti:formProperty>
-		<activiti:formProperty id="markers54" name="маркер м.Першотравенськ" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_54&quot;:{&quot;aField_ID&quot;:[&quot;rName&quot;], &quot;asID_Field_sValue&quot;:[&quot;9&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='pershotravensk'&quot;}}}"></activiti:formProperty>
-		<activiti:formProperty id="markers55" name="маркер м.Орджонікідзе" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_55&quot;:{&quot;aField_ID&quot;:[&quot;rName&quot;], &quot;asID_Field_sValue&quot;:[&quot;7&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='ordgo'&quot;}}}"></activiti:formProperty>
-		<activiti:formProperty id="markers56" name="маркер смт. Петриківка" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_56&quot;:{&quot;aField_ID&quot;:[&quot;rName&quot;], &quot;asID_Field_sValue&quot;:[&quot;21&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='petrikivka'&quot;}}}"></activiti:formProperty>
-		<activiti:formProperty id="markers57" name="маркер смт. Петропавлівка" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_57&quot;:{&quot;aField_ID&quot;:[&quot;rName&quot;], &quot;asID_Field_sValue&quot;:[&quot;20&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='petropavlivka'&quot;}}}"></activiti:formProperty>
-		<activiti:formProperty id="markers58" name="маркер смт. Покровське" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_58&quot;:{&quot;aField_ID&quot;:[&quot;rName&quot;], &quot;asID_Field_sValue&quot;:[&quot;22&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='pokrovske'&quot;}}}"></activiti:formProperty>
-		<activiti:formProperty id="markers59" name="маркер П'ятихатки" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_59&quot;:{&quot;aField_ID&quot;:[&quot;rName&quot;], &quot;asID_Field_sValue&quot;:[&quot;23&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='5xatki'&quot;}}}"></activiti:formProperty>
-		<activiti:formProperty id="markers60" name="маркер Синельниково" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_60&quot;:{&quot;aField_ID&quot;:[&quot;rName&quot;], &quot;asID_Field_sValue&quot;:[&quot;10&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='sinelnikove'&quot;}}}"></activiti:formProperty>
-		<activiti:formProperty id="markers61" name="маркер смт. Солоне" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_61&quot;:{&quot;aField_ID&quot;:[&quot;rName&quot;], &quot;asID_Field_sValue&quot;:[&quot;24&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='solone'&quot;}}}"></activiti:formProperty>
- 		<activiti:formProperty id="markers62" name="маркер смт. Софіївка" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_62&quot;:{&quot;aField_ID&quot;:[&quot;rName&quot;], &quot;asID_Field_sValue&quot;:[&quot;33&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='sofievka'&quot;}}}"></activiti:formProperty>
-		<activiti:formProperty id="markers63" name="маркер Тернівка" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_63&quot;:{&quot;aField_ID&quot;:[&quot;rName&quot;], &quot;asID_Field_sValue&quot;:[&quot;34&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='ternovka'&quot;}}}"></activiti:formProperty>
-		<activiti:formProperty id="markers64" name="маркер смт. Царичанка" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_64&quot;:{&quot;aField_ID&quot;:[&quot;rName&quot;], &quot;asID_Field_sValue&quot;:[&quot;35&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='carichanka'&quot;}}}"></activiti:formProperty>
-		<activiti:formProperty id="markers65" name="маркер смт. Широке" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_65&quot;:{&quot;aField_ID&quot;:[&quot;rName&quot;], &quot;asID_Field_sValue&quot;:[&quot;36&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='shiroke'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers66" name="маркер смт. Томаківка" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_66&quot;:{&quot;aField_ID&quot;:[&quot;rName&quot;], &quot;asID_Field_sValue&quot;:[&quot;39&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='tomakovka'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адреса органу" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nCodeTaxOrgan" name="код податкового відділення" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nEGRPOU" name="ЕГРПОУ" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="markersShowFill" name="отображать поля" type="markers" default="${markerService.loadFromFile('dfs/dnepr_dfs_dovid_nodeb_show_fill.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <userTask id="usertask1" name="надання адміністративної послуги" activiti:candidateGroups="dfs_dnepr_vutyag_nalog_${area}_${subekt}">
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
+    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
+      <errorEventDefinition></errorEventDefinition>
+    </boundaryEvent>
+    <sequenceFlow id="flow2" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
+    <serviceTask id="servicetask2" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
+        <activiti:field name="to">
+          <activiti:string><![CDATA[valery.stavitsky@gmail.com]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Запит про отримання витягу з реєстру платників єдиного податку]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow4" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
+    <serviceTask id="servicetask3" name="Інформування громадянина" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Запит про отримання витягу з реєстру платників єдиного податку]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+			<p>
+				Ваша заява на отримання витягу з реєстру платників єдиного податку, передана в роботу.
+			</p>			
+			<br>
+			За наявності питань можете звернутись за наступними контактами<br>
+			${sAddress}<br>
+			${sPhoneOrgan}<br>
+			${sWorkTime}<br><br>
+			[pattern/mail/_common_signature_start.html]
+			${sNameOrgan}.<br>
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow5" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
+    <userTask id="usertask1" name="надання адміністративної послуги" activiti:candidateGroups="dfs_dnepr_vutyag_nalog_${sID_Public_SubjectOrganJoin}_${subekt}">
+      <extensionElements>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Орган обслуговування" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="fio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name=" ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="long" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="area" name="Виберіть відділення фіскальної служби; в якому вам буде зручно отримати довідку" type="enum" writable="false">
-          <activiti:value id="dnepr_and" name="Дніпропетровськ - АНД (пров. Універсальний, 12)|0461"></activiti:value>
-          <activiti:value id="dnepr_babush" name="Дніпропетровськ - Бабушкінський (вул. Героїв Сталінграду, 25)|0462"></activiti:value>
-          <activiti:value id="dnepr_october" name="Дніпропетровськ - Жовтневий (вул. Високовольтна, 24)|0463"></activiti:value>
-          <activiti:value id="dnepr_left" name="Дніпропетровськ - Лівобережний (пр-т Газети Правда, 95-А)|0464"></activiti:value>
-          <activiti:value id="dnepr_kirov" name="Дніпропетровськ - Кіровський (вул. Горького, 22)|0465"></activiti:value>
-          <activiti:value id="dnepr_red_guard" name="Дніпропетровськ - Красногвардійський (вул. Театральна, 1-А)|0466"></activiti:value>
-          <activiti:value id="dnepr_lenin" name="Дніпропетровськ - Ленінський (вул. Шаумяна, 5)|0467"></activiti:value>
-          <activiti:value id="uvileine" name="смт Ювілейне (вул. Теплична, 13)|0417"></activiti:value>
-          <activiti:value id="apostol" name="Апостолове  (вул. Леніна, 63)|0414"></activiti:value>
-          <activiti:value id="varvarivka" name="с.Варварівка (вул. Пристанційна, 1)|0435"></activiti:value>
-          <activiti:value id="vasilkovka" name="смт.Васильківка (вул. Партизанська, 150)|0415"></activiti:value>
-          <activiti:value id="volnogorsk" name="Вільногірськ (б-р Миру, 15)|0401"></activiti:value>
-          <activiti:value id="verhnedneprovsk" name="Верхньодніпровськ (пл. Щербицького, 2)|0416"></activiti:value>
-          <activiti:value id="dniprodzerzhinsk" name="Дніпродзержинськ (вул. Медична, 9)|0403"></activiti:value>
-          <activiti:value id="zhovtivodi" name="Жовті Води (вул. Першотравнева, 24А)|0404"></activiti:value>
-          <activiti:value id="krrog1" name="Кривий Ріг (вул. Кобилянського, 148 а)|0418"></activiti:value>
-          <activiti:value id="krrog2" name="Кривий Ріг (пр-т. Джержинського, 42)|0481"></activiti:value>
-          <activiti:value id="krrog3" name="Кривий Ріг (пр-т. Металургів, 16)|0482"></activiti:value>
-          <activiti:value id="krrog4" name="Кривий Ріг (вул. Кремлівська, 4)|0483"></activiti:value>
-          <activiti:value id="krinichki" name="смт. Кринички (вул. Нагірна, 2)|0419"></activiti:value>
-          <activiti:value id="magdalinovka" name="смт. Магдалинівка (вул. Радянська, 44)|0420"></activiti:value>
-          <activiti:value id="marganec" name="Марганець (вул. П.Тичини, 11)|0406"></activiti:value>
-          <activiti:value id="tomakovka" name="смт. Томаківка (вул. Леніна, 41)|0432"></activiti:value>
-          <activiti:value id="mezhova" name="смт. Межова (вул. Фрунзе, 1)|0421"></activiti:value>
-          <activiti:value id="nikopol" name="Нікополь (пр-т. Трубників, 27)|0407"></activiti:value>
-          <activiti:value id="novomoskovsk" name="Новомосковськ (вул. М.Головко, 30)|0408"></activiti:value>
-          <activiti:value id="ordgo" name="Орджонікідзе (вул. Горького, 7)|0409"></activiti:value>
-          <activiti:value id="pavlograd" name="Павлоград (вул. Верстатобудівельників, 14-А)|0410"></activiti:value>
-          <activiti:value id="pershotravensk" name="Першотравенськ (вул. Шкільна, 35)|0411"></activiti:value>
-          <activiti:value id="petrikivka" name="смт. Петриківка (вул. Леніна, 38)|0426"></activiti:value>
-          <activiti:value id="petropavlivka" name="смт. Петропавлівка (вул. Радянська, 62)|0425"></activiti:value>
-          <activiti:value id="pokrovske" name="смт. Покровське (вул. 40 років жовтня, 13)|0427"></activiti:value>
-          <activiti:value id="5xatki" name="П'ятихатки (вул. Шевченка, 116)|0428"></activiti:value>
-          <activiti:value id="sinelnikove" name="Синельниково (вул. Воїнів-інтернаціоналістів, 2)|0412"></activiti:value>
-          <activiti:value id="solone" name="смт. Солоне (вул. Гагаріна, 12А)|0430"></activiti:value>
-          <activiti:value id="sofievka" name="смт. Софіївка (вул. Меліоративна, 3)|0431"></activiti:value>
-          <activiti:value id="ternovka" name="Тернівка (вул. Петрова, 9)|0413"></activiti:value>
-          <activiti:value id="carichanka" name="смт. Царичанка (вул. 14-ї дивізії, 8)|0433"></activiti:value>
-          <activiti:value id="shiroke" name="смт. Широке (вул. К.Маркса, 1А)|0434"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="subekt" name="Тип суб'єкта правових відносин" type="enum" writable="false">
           <activiti:value id="fiz" name="Фізична особа"></activiti:value>
           <activiti:value id="ur" name="Юридична особа"></activiti:value>
@@ -177,125 +122,89 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <serviceTask id="servicetask4" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
-      <extensionElements>
-        <activiti:field name="to">
-          <activiti:string><![CDATA[darja.grek@gmail.com]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:string><![CDATA[Запит про отримання витягу з реєстру платників єдиного податку]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний колего!&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-У черзі на обробку зареєстровано нове звернення.&lt;br /&gt;
-Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
-Район: enum{[area]}&lt;br /&gt;
-Опрацюйте це звернення на &lt;a href="http://region.igov.org.ua"&gt;порталі&lt;/a&gt;&lt;br /&gt;
-[pattern/mail/_common_signature.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
-         </activiti:field>
-      </extensionElements>
-    </serviceTask>
-    <serviceTask id="servicetask2" name="повідомлення громадянина про отримання витягу" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
-      <extensionElements>
-        <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
-        </activiti:field>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:string><![CDATA[Запит про отримання витягу з реєстру платників єдиного податку]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваша заява на отримання витягу з реєстру платників єдиного податку опрацьована. &lt;br /&gt;&lt;br /&gt;
-Отримати витяг Ви зможете за адресою:&lt;br /&gt;
-[pattern_dictonary:dnepr_dfs.csv:value{[rName]}:3]&lt;br /&gt;
-Для отримання витягу при візиті до відділення фіскальної служби Вам необхідно мати наступні документи:&lt;br&gt;
-1. № запиту (Ви його отримали листом після подачі заяви)&lt;br&gt;
-2. Оригінал паспорта громадянина України&lt;br /&gt;&lt;br /&gt;
-[pattern_dictonary:dnepr_dfs.csv:value{[rName]}:5]&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_dfs.csv:value{[rName]}:2]&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
-    <serviceTask id="servicetask3" name="повідомлення громадянина про відмову у наданні витягу" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
-      <extensionElements>
-        <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
-        </activiti:field>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:string><![CDATA[Запит про отримання витягу з реєстру платників єдиного податку]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-На жаль, Вам відмовлено у наданні витягу з реєстру платників єдиного податку.&lt;br/&gt;
-Підстава: enum{[decision_reject]}&lt;br/&gt;
-${comment_1}&lt;br/&gt;
-[pattern_dictonary:dnepr_dfs.csv:value{[rName]}:5]&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_dfs.csv:value{[rName]}:2]&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
+    <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow4" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
-    <endEvent id="endevent1" name="End"></endEvent>
-    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <sequenceFlow id="flow10" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
-    <sequenceFlow id="flow19" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
-    <sequenceFlow id="flow20" sourceRef="exclusivegateway1" targetRef="servicetask2">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_1=='accept'}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow21" sourceRef="exclusivegateway1" targetRef="servicetask3">
+    <sequenceFlow id="flow7" name="відмова" sourceRef="exclusivegateway1" targetRef="servicetask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_1=='reject'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow22" sourceRef="servicetask3" targetRef="endevent1"></sequenceFlow>
-    <sequenceFlow id="flow24" sourceRef="servicetask2" targetRef="endevent1"></sequenceFlow>
-    <sequenceFlow id="flow26" sourceRef="servicetask1" targetRef="servicetask4"></sequenceFlow>
-    <sequenceFlow id="flow27" sourceRef="servicetask4" targetRef="usertask1"></sequenceFlow>
+    <serviceTask id="servicetask4" name="повідомлення громадянина про відмову у наданні витягу" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Запит про отримання витягу з реєстру платників єдиного податку]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>                                    
+			<p>
+				На жаль, Вам відмовлено у наданні витягу з реєстру платників єдиного податку.<br/>
+				Підстава: enum{[decision_reject]}<br/>
+				<b>${comment_1}</b>
+			</p>
+			<br><br>
+			Для уточнення причини відказу скористуйтесь наступними контактами<br>
+			${sAddress}<br>
+			${sPhoneOrgan}<br>
+			${sWorkTime}<br><br>
+			[pattern/mail/_common_signature_start.html]
+			${sNameOrgan}.<br />
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow8" sourceRef="servicetask4" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow9" name="позитивно" sourceRef="exclusivegateway1" targetRef="servicetask5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_1=='accept'}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask5" name="повідомлення громадянина про отримання витягу" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Запит про отримання витягу з реєстру платників єдиного податку]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+          	<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+          	<p>
+				Ваша заява на отримання витягу з реєстру платників єдиного податку опрацьована. 
+          	</p>			
+			<br><br>
+				Отримати витяг Ви зможете за наступними контактами:<br>
+			${sAddress}<br>
+			${sPhoneOrgan}<br>
+			${sWorkTime}<br><br>
+			<p>
+				Щоб отримати витяг, при візиті до відділення фіскальної служби,<br> 
+				Вам необхідно мати при собі оригінал паспорта громадянина України<br> 
+				та назвати номер запиту №[sID_Order]
+			</p>			
+			<br><br>			
+			[pattern/mail/_common_feedback.html]
+			[pattern/mail/_common_signature_start.html]
+			${sNameOrgan}.<br />
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow10" sourceRef="servicetask5" targetRef="endevent1"></sequenceFlow>
+    <endEvent id="endevent1" name="End"></endEvent>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_gni_69">
     <bpmndi:BPMNPlane bpmnElement="gni_69" id="BPMNPlane_gni_69">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="61.0" y="40.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
-        <omgdc:Bounds height="55.0" width="162.0" x="360.0" y="110.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
-        <omgdc:Bounds height="55.0" width="162.0" x="360.0" y="30.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
-        <omgdc:Bounds height="55.0" width="162.0" x="360.0" y="260.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
-        <omgdc:Bounds height="75.0" width="151.0" x="180.0" y="181.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
-        <omgdc:Bounds height="40.0" width="40.0" x="420.0" y="200.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="127.0" y="270.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
         <omgdc:Bounds height="55.0" width="170.0" x="131.0" y="30.0"></omgdc:Bounds>
@@ -303,41 +212,75 @@ ${comment_1}&lt;br/&gt;
       <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
         <omgdc:Bounds height="30.0" width="30.0" x="130.0" y="57.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
-        <omgdi:waypoint x="441.0" y="165.0"></omgdi:waypoint>
-        <omgdi:waypoint x="440.0" y="200.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
+      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
+        <omgdc:Bounds height="63.0" width="162.0" x="360.0" y="26.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
+        <omgdc:Bounds height="63.0" width="161.0" x="567.0" y="26.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="63.0" width="162.0" x="567.0" y="168.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="459.0" y="179.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
+        <omgdc:Bounds height="76.0" width="151.0" x="240.0" y="104.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
+        <omgdc:Bounds height="71.0" width="156.0" x="238.0" y="214.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="127.0" y="124.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="96.0" y="57.0"></omgdi:waypoint>
         <omgdi:waypoint x="131.0" y="57.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
         <omgdi:waypoint x="145.0" y="87.0"></omgdi:waypoint>
-        <omgdi:waypoint x="144.0" y="270.0"></omgdi:waypoint>
+        <omgdi:waypoint x="144.0" y="124.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
-        <omgdi:waypoint x="440.0" y="240.0"></omgdi:waypoint>
-        <omgdi:waypoint x="441.0" y="260.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
-        <omgdi:waypoint x="420.0" y="220.0"></omgdi:waypoint>
-        <omgdi:waypoint x="331.0" y="218.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
-        <omgdi:waypoint x="255.0" y="256.0"></omgdi:waypoint>
-        <omgdi:waypoint x="144.0" y="270.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
-        <omgdi:waypoint x="360.0" y="287.0"></omgdi:waypoint>
-        <omgdi:waypoint x="162.0" y="287.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="301.0" y="57.0"></omgdi:waypoint>
         <omgdi:waypoint x="360.0" y="57.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
-        <omgdi:waypoint x="441.0" y="85.0"></omgdi:waypoint>
-        <omgdi:waypoint x="441.0" y="110.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="522.0" y="57.0"></omgdi:waypoint>
+        <omgdi:waypoint x="567.0" y="57.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="647.0" y="89.0"></omgdi:waypoint>
+        <omgdi:waypoint x="648.0" y="168.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+        <omgdi:waypoint x="567.0" y="199.0"></omgdi:waypoint>
+        <omgdi:waypoint x="499.0" y="199.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
+        <omgdi:waypoint x="479.0" y="179.0"></omgdi:waypoint>
+        <omgdi:waypoint x="479.0" y="142.0"></omgdi:waypoint>
+        <omgdi:waypoint x="391.0" y="142.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="100.0" x="422.0" y="125.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
+        <omgdi:waypoint x="240.0" y="142.0"></omgdi:waypoint>
+        <omgdi:waypoint x="162.0" y="141.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
+        <omgdi:waypoint x="479.0" y="219.0"></omgdi:waypoint>
+        <omgdi:waypoint x="479.0" y="249.0"></omgdi:waypoint>
+        <omgdi:waypoint x="394.0" y="249.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="100.0" x="410.0" y="259.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
+        <omgdi:waypoint x="238.0" y="249.0"></omgdi:waypoint>
+        <omgdi:waypoint x="144.0" y="249.0"></omgdi:waypoint>
+        <omgdi:waypoint x="144.0" y="159.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

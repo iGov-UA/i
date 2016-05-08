@@ -208,7 +208,7 @@ execution.setVariable('sMaxPay', maxpay)
 									&lt;p&gt;
 									   &lt;b&gt;Реквізити для сплати:&lt;/b&gt;&lt;br&gt;
 										&lt;i&gt;${sRecvizitiAdmin}&lt;br&gt;
-										Призначення платежу: зняття з реєстрації місця проживання​&lt;/i&gt;
+										Призначення платежу: адмін. збір за реєстрацію/зняття з реєстрації місця проживання&lt;/i&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
 									   &lt;b&gt;Деталі зустрічі:&lt;/b&gt;&lt;br&gt;
@@ -256,6 +256,7 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="sRegistrationAddress" name="Поточна адреса реєстрації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="snewAddress" name="Нова адреса реєстрації" type="string"></activiti:formProperty>
         <activiti:formProperty id="sArea" name="Місто або район, до якого належить старе місце проживання громадянина" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sWhenCome" name="Вкажіть дату зняття з реєстрації" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sRegistrationOrgan" name="Орган, що оформлює реєстрацію" type="invisible" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asResult" name="Результат зустрічі" type="enum">
           <activiti:value id="sReestr" name="Громадянин знятий з реєстрації"></activiti:value>
@@ -265,6 +266,8 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="sBody_2" name="[pattern/print/dms/kartkaBk.html]" type="invisible" default="Картка реєстрації зворотня" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_3" name="[pattern/print/dms/zajava_znFr.html]" type="invisible" default="Заява для зняття з реєстрації лицьова" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_4" name="[pattern/print/dms/zajava_znBk.html]" type="invisible" default="Заява для зняття з реєстрації зворотня" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_7" name="[pattern/print/dms/TalonFr.html]" type="invisible" default="Талон про зняття з реєстрації лицьова" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_8" name="[pattern/print/dms/TalonBk.html]" type="invisible" default="Талон про зняття з реєстрації зворотня" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"></activiti:taskListener>
       </extensionElements>
@@ -406,7 +409,7 @@ execution.setVariable('sMaxPay', maxpay)
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="158.0" y="107.0"></omgdi:waypoint>
-        <omgdi:waypoint x="158.0" y="62.0"></omgdi:waypoint>
+        <omgdi:waypoint x="159.0" y="68.0"></omgdi:waypoint>
         <omgdi:waypoint x="184.0" y="63.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
@@ -460,7 +463,7 @@ execution.setVariable('sMaxPay', maxpay)
         <omgdi:waypoint x="737.0" y="452.0"></omgdi:waypoint>
         <omgdi:waypoint x="804.0" y="452.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="86.0" x="718.0" y="419.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="86.0" x="718.0" y="419.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
@@ -471,7 +474,7 @@ execution.setVariable('sMaxPay', maxpay)
         <omgdi:waypoint x="717.0" y="472.0"></omgdi:waypoint>
         <omgdi:waypoint x="717.0" y="545.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="83.0" x="630.0" y="495.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="83.0" x="630.0" y="495.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">

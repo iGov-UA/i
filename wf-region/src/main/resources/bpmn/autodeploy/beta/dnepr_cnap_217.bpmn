@@ -9,7 +9,6 @@
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні данні" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Сканований паспорт громадянина" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="Укажіть сьогоднішню дату" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="customer" name="Заявник" type="enum" required="true">
@@ -29,19 +28,23 @@
         <activiti:formProperty id="oplata_1" name="Платіжний документ (квитанція) про оплату за видачу дубліката; можна завантажити електронну квітанцію, сформовану в інтернет-банку" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="oplata_2" name="Платіжний документ (квитанція) про оплату за публікацію інформації" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="dovidka" name="Довідка, видана органом внутрішніх справ, про реєстрацію заяви про втрату оригіналу свідоцтва про реєстрацію та/або статуту" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="text" name="Зверніть увагу" type="label" default="Замовляючи послугу Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність."></activiti:formProperty>
-        <activiti:formProperty id="rNumber" name="номер району" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="rName" name="район" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="remail" name="пошта району" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sDocConfidant" name="Довіреність на право представляти інтереси субʼєкта господарювання в органах місцевого самоврядування" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адреса адміністративного органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="пошта посадовця" type="invisible" default="darja.grek@gmail.com"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sListDocumentsPrint" name="перелік документів у заяву" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="markers7" name="Якщо довірена особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_7&quot;:{&quot;aField_ID&quot;:[&quot;sDocConfidant&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;customer&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'confidant'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="form_signed" name=" " type="file"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="обробка вхідних данних" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="rName" name="Район" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні данні" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="дата подання звернення" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="customer" name="Заявник" type="enum" writable="false">
@@ -63,10 +66,11 @@
         </activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відхилення звернення внесіть, будь ласка, причину" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_217_print.html]" type="invisible" default="заява про втрату оригіналів установчих документів юридичної особи" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sListDocumentsPrint" name="перелік документів у заяву" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${oplata_1},${oplata_2},${dovidka},${form_signed}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport},${oplata_1},${oplata_2},${dovidka},${form_signed},${sDocConfidant}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -74,10 +78,9 @@
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <userTask id="usertask3" name="рішення" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="rName" name="Район" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні данні" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="дата подання звернення" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="customer" name="Заявник" type="enum" writable="false">
@@ -99,6 +102,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="comment_2" name="У разі залишення заяви без розгляду внесіть, будь ласка, причину" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="rishen" name="завантажте копію дубліката (або рішення)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sListDocumentsPrint" name="перелік документів у заяву" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_217_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_217_print.html]" type="invisible" default="заява про про втрату оригіналів установчих документів юридичної особи" writable="false"></activiti:formProperty>
       </extensionElements>
@@ -106,7 +110,7 @@
     <serviceTask id="servicetask4" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${remail}</activiti:expression>
+          <activiti:expression>${sMailClerk}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення: Видача дубліката оригіналу свідоцтва про реєстрацію громадського об’єднання та/або статуту]]></activiti:string>
@@ -141,11 +145,11 @@
 &lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
 Ваш запит щодо видачі дубліката оригіналу свідоцтва про реєстрацію громадського об’єднання та/або статуту буде опрацьовано впродовж 3 робочих днів.&lt;br /&gt;
 &lt;br /&gt;
-Ви отримаєте додаткове повідомлення за результатами розгляду запиту.&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]&lt;br /&gt;
+${sPhoneOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2]&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]</activiti:expression>
+${sNameOrgan}&lt;br /&gt;
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -165,11 +169,12 @@
 &lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
 На жаль, Ваше звернення щодо видачі дубліката оригіналу свідоцтва про реєстрацію громадського об’єднання та/або статуту відхилено через недостатню або неправильну інформацію.&lt;br /&gt;
 ${comment_1}&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]&lt;br /&gt;
+${sPhoneOrgan}&lt;br /&gt;
 Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2]&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]</activiti:expression>
+${sNameOrgan}&lt;br /&gt;
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -191,20 +196,16 @@ ${comment_1}&lt;br /&gt;
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
 Щодо Вашого звернення отримано рішення - enum{[decision_2]}.&lt;br /&gt;
-Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у ЦНАПі.&lt;br /&gt;
-${comment_2}&lt;br /&gt;
 Сканований документ знаходиться у додатку до листа.&lt;br /&gt;&lt;br /&gt;
+${comment_2}&lt;br /&gt;
+Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у ЦНАПі.&lt;br /&gt;
 При собі треба мати:&lt;br /&gt;
-1. Документ, що посвідчує особу.&lt;br /&gt;
-2. Для уповоноваженої особи - довіренність.&lt;br /&gt;
-3. Роздруковану заяву про втрату оригіналів установчих документів юридичної особи (знаходиться у додатку до листа), яку ви подавали в електронному вигляді, засвідчену особистим  підписом  керівника  громадського об'єднання або  уповноваженої особи.&lt;br /&gt;
-&lt;br /&gt;
-Адреса [pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:3]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]&lt;br /&gt;
-Графік роботи: [pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:4]&lt;br /&gt;
+${sListDocumentsLetter}&lt;br /&gt;
+${sAddress}&lt;br /&gt;
+${sPhoneOrgan}&lt;br /&gt;
+${sWorkTime}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2]&lt;br /&gt;	   
+${sNameOrgan}&lt;br /&gt;   
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
@@ -213,47 +214,35 @@ ${comment_2}&lt;br /&gt;
     </serviceTask>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
-var per1 = 'remail'
-var per2 = 'rNumber'
-var per4 = 'rName'
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'vin_teplic'){
-per1 = 'teplikcnap@ukr.net'
-per2 = '59'
-per4 = 'смт. Теплик'
+var per1 = "&lt;li&gt;Документ, що посвідчує особу.&lt;/li&gt;"
+var per2 = "&lt;li&gt;Роздруковану заяву, яку ви подавали в електронному вигляді (знаходиться у додатку до листа), засвідчену особистим підписом.&lt;/li&gt;"
+var per3 = " "
+var per4 = " "
+var per5 = " "
+var per6 = " "
+var per7 = " "
+var per8 = " "
+var res = 'res'
+var res2 = 'res2'
+if(execution.getVariable('oplata_1') != null){
+per3 = "&lt;li&gt;Платіжний документ (квитанція) про оплату за видачу дубліката.&lt;/li&gt;"
+per7 = "&lt;li&gt;Документ про підтвердження внесення реєстраційного збору за видачу дубліката оригіналу установчих документів та змін до них у зв'язку з їх втратою або пошкодженням.&lt;/li&gt;"
 }
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'vilnogirskT'){
-per1 = 'cnap.vilnogirsk@gmail.com'
-per2 = '25'
-per4 = 'Вільногірськ'
+if(execution.getVariable('oplata_2') != null){
+per4 = "&lt;li&gt;Платіжний документ (квитанція) про оплату за публікацію інформації.&lt;/li&gt;"
+per8 = "&lt;li&gt;Документ, що підтверджує внесення плати за публікацію у спеціальному друкованому засобі масової інформації повідомлення про втрату оригіналів установчих документів.&lt;/li&gt;"
 }
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'dndzT'){
-per1 = 'dozvildndz@ukr.net'
-per2 = '26'
-per4 = 'Дніпродзержинськ'
+if(execution.getVariable('dovidka') != null){
+per5 = "&lt;li&gt;Довідку, видана органом внутрішніх справ, про реєстрацію заяви про втрату оригіналу свідоцтва про реєстрацію та/або статуту.&lt;/li&gt;"
+per9 = "&lt;li&gt;Довідка, видана органом внутрішніх справ за місцезнаходженням юридичної особи, про реєстрацію заяви про втрату оригіналів установчих документів.&lt;/li&gt;"
 }
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'kiev_bucha'){
-per1 = 'stepashkanelya@gmail.com'
-per2 = '212'
-per4 = 'Буча (Київської області)'
+if(execution.getVariable('sDocConfidant') != null){
+per6 = "&lt;li&gt;Довіреність на право представляти інтереси субʼєкта господарювання в органах місцевого самоврядування.&lt;/li&gt;"
 }
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'nik_nikT'){
-per1 = 'mk_kadrter@ukr.net'
-per2 = '321'
-per4 = 'Миколаїв'
-}
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'lviv_chervonogradT'){
-per1 = 'cnap80100@ukr.net'
-per2 = '299'
-per4 = 'ЦНАП Червоноградської міськради'
-}
-if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'kiev_vish'){
-per1 = 'dozvol_zenter@ukr.net'
-per2 = '227'
-per4 = 'ЦНАП Вишгородської РДА'
-}
-execution.setVariable('remail', per1)
-execution.setVariable('rNumber', per2)
-execution.setVariable('rName', per4)
+res = '&lt;ol&gt;'+per1+per2+per3+per4+per5+per6+'&lt;/ol&gt;'
+res2 = '&lt;ol&gt;'+per7+per8+per9+per6+'&lt;/ol&gt;'
+execution.setVariable('sListDocumentsLetter', res)
+execution.setVariable('sListDocumentsPrint', res2)
 	  </script>
     </scriptTask>
     <serviceTask id="servicetask2" name="отримання додаткових документiв" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>

@@ -108,12 +108,12 @@ angular.module('app').config(function($stateProvider) {
         },
         BankIDAccount: function($q, UserService) {
           return UserService.account().then(function(result){
-            if(!result){
-              return $q.reject('Отсутствуют данные пользователя');
+            if(result.hasOwnProperty('code') && result.hasOwnProperty('message')){
+              return $q.reject('Ошибка при получении данных пользователя ' + result.message);
             } else {
               return result;
             }
-          });
+          })
         },
         processDefinitions: function(ServiceService, oServiceData) {
           return ServiceService.getProcessDefinitions(oServiceData, true);
