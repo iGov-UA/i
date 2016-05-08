@@ -13,9 +13,11 @@ function createHttpError(error, statusCode) {
 exports.index = function (req, res) {
   var saAccount = req.params.saAccount;
   var nID_SubjectAccountType = req.params.nID_SubjectAccountType;
+
   var options = {
-    path: 'subject/getSubjectsBy?saAccount=['+saAccount+']&nID_SubjectAccountType=' + nID_SubjectAccountType,
-    json: true
+    path: ' https://test.igov.org.ua/wf/service/subject/getSubjectsBy?saAccount=["'+saAccount+'"]&nID_SubjectAccountType=' + nID_SubjectAccountType,
+    json: true,
+    doNotUseActivityConfigUrl: true
   };
 
   activiti.get(options, function (error, statusCode, result) {
