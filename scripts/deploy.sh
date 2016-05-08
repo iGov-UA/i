@@ -433,5 +433,5 @@ cd $WORKSPACE
 rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' scripts/deploy_remote.sh sybase@$sHost:/sybase/
 ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $sHost << EOF
 chmod +x /sybase/deploy_remote.sh
-/sybase/deploy_remote.sh $sProject $sDate $nSecondsWait
+/sybase/deploy_remote.sh $sProject $sDate $nSecondsWait $sVersion
 EOF

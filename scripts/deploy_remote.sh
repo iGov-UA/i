@@ -3,15 +3,29 @@
 sProject=$1
 sDate=$2
 nSecondsWait=$3
+sVersion=$4
 
 if [ -z $sProject ]; then
 	echo "Empty Project variable"
+	exit 1
+fi
+if [ -z $sVersion ]; then
+	echo "Empty Version variable"
 	exit 1
 fi
 if [ -z $sDate ]; then
 	echo "Empty Date variable"
 	exit 1
 fi
+
+if [ ! -d /sybase/.backup/configs/$sDate ]; then
+	mkdir -p /sybase/.backup/configs/$sDate
+fi
+cp -rp /sybase/.configs /sybase/.backup/configs/$sDate/
+
+ssh-agent bash -c 'ssh-add /sybase/secret/sshKey; git clone git@github.com:e-government-ua/iSystem.git /sybase/iSystem'
+rsync -rtv /sybase/iSystem/config/$sVersion/.configs/ /sybase/.configs
+rm -rf /sybase/iSystem
 
 fallback ()
 {
