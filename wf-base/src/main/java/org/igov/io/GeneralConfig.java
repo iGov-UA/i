@@ -14,11 +14,11 @@ import static org.igov.util.ToolLuna.getProtectedNumber;
 public class GeneralConfig {
 
     private final static Logger LOG = LoggerFactory.getLogger(GeneralConfig.class);
-    
+
     @Value("${general.Self.bTest}")
-    private Boolean bTest_Self;
+    private String sbTest_Self;
     @Value("${general.Self.nID_Server}")
-    private Integer nID_Server_Self;
+    private String snID_Server_Self;
     @Value("${general.Self.sHost}")
     private String sHost_Self;
     @Value("${general.sHostCentral}")
@@ -51,19 +51,13 @@ public class GeneralConfig {
     private String sURL_UkrDoc_SED;
     
     @Value("${general.Mail.UniSender.bEnable}")
-    private Boolean bEnable_UniSender_Mail;
+    private String sbEnable_UniSender_Mail;
     @Value("${general.Mail.UniSender.sKeyAPI}")
     private String sKey_UniSender_Mail;
     @Value("${general.Mail.UniSender.nID_SendList}")
-    private Integer nID_SendList_UniSender_Mail;
+    private String snID_SendList_UniSender_Mail;
     @Value("${general.Mail.UniSender.sURL}")
     private String sURL_UniSender_Mail;
-    @Value("${general.Mail.UniSender.sContext_Subscribe}")
-    private String sContext_Subscribe_UniSender_Mail;
-    @Value("${general.Mail.UniSender.sContext_CreateMail}")
-    private String sContext_CreateMail_UniSender_Mail;
-    @Value("${general.Mail.UniSender.sContext_CreateCompain}")
-    private String sContext_CreateCompain_UniSender_Mail;
     
     @Value("${general.Auth.BankID.PB.sLogin}")
     private String sLogin_BankID_PB_Auth;
@@ -111,13 +105,25 @@ public class GeneralConfig {
     public boolean isSelfTest() {
         boolean b = true;
         try {
-            b = (bTest_Self == null ? b : bTest_Self);
+            b = (sbTest_Self == null ? b : Boolean.valueOf(sbTest_Self));
             //LOG.info("(sbTest={})", sbTest_Self);
         } catch (Exception oException) {
-            LOG.error("Bad: {} (sbTest={})", oException.getMessage(), bTest_Self);
+            LOG.error("Bad: {} (sbTest={})", oException.getMessage(), sbTest_Self);
             LOG.debug("FAIL:", oException);
         }
         return b;
+    }
+    public String getSelfHost() {
+        return sHost_Self;
+    }
+    public String getSelfHostCentral() {
+        return sHostCentral_Self;
+    }
+    public String getAuthLogin() {
+        return sLogin_Auth;
+    }
+    public String getAuthPassword() {
+        return sPassword_Auth;
     }
     
     public String getURL_MSG_Monitor() {
@@ -153,19 +159,6 @@ public class GeneralConfig {
     }
     public String getURL_ResourceSignature_BankID_PB_Auth() {
         return sURL_ResourceSignature_BankID_PB_Auth != null ? sURL_ResourceSignature_BankID_PB_Auth : "https://bankid.privatbank.ua/ResourceService/checked/signatureData";
-    }
-    
-    public String getSelfHost() {
-        return sHost_Self;
-    }
-    public String getSelfHostCentral() {
-        return sHostCentral_Self;
-    }
-    public String getAuthLogin() {
-        return sLogin_Auth;
-    }
-    public String getAuthPassword() {
-        return sPassword_Auth;
     }
     
     public String getLogin_Auth_Receipt_PB_Bank() {
@@ -218,28 +211,19 @@ public class GeneralConfig {
     }
     
     public Boolean isEnable_UniSender_Mail() {
-        return bEnable_UniSender_Mail;
+        return Boolean.valueOf(sbEnable_UniSender_Mail);
     }
     public String getURL_UniSender_Mail() {
         return sURL_UniSender_Mail;
-    }
-    public String getContext_Subscribe_UniSender_Mail() {
-        return sContext_Subscribe_UniSender_Mail;
-    }
-    public String getContext_CreateMail_UniSender_Mail() {
-        return sContext_CreateMail_UniSender_Mail;
-    }
-    public String getContext_CreateCompain_UniSender_Mail() {
-        return sContext_CreateCompain_UniSender_Mail;
     }
     public String getKey_UniSender_Mail() {
         return sKey_UniSender_Mail;
     }
     public long getSendListId_UniSender_Mail() {
         try {
-            return nID_SendList_UniSender_Mail;
+            return Integer.valueOf(snID_SendList_UniSender_Mail);
         } catch (NumberFormatException oException) {
-            LOG.warn("can't parse nID_SendList_Unisender!: {} (nID_SendList_Unisender={})", oException.getMessage(), nID_SendList_UniSender_Mail);
+            LOG.warn("can't parse nID_SendList_Unisender!: {} (nID_SendList_Unisender={})", oException.getMessage(), snID_SendList_UniSender_Mail);
             return 5998742; //default list_id
         }
     }
@@ -251,18 +235,18 @@ public class GeneralConfig {
     public Integer getSelfServerId() {
         Integer nID_Server = null;
         try {
-            if (nID_Server_Self == null) {
+            if (snID_Server_Self == null) {
                 nID_Server = 0;
-                throw new NumberFormatException("snID_Server=" + nID_Server_Self);
+                throw new NumberFormatException("snID_Server=" + snID_Server_Self);
             }
-            nID_Server = nID_Server_Self;
+            nID_Server = Integer.valueOf(snID_Server_Self);
             if (nID_Server == null || nID_Server < 0) {
                 nID_Server = 0;
                 throw new NumberFormatException("nID_Server=" + nID_Server);
             }
         } catch (NumberFormatException oNumberFormatException) {
             nID_Server = 0;
-            LOG.warn("can't parse nID_Server: {} (nID_Server={})", oNumberFormatException.getMessage(), nID_Server_Self);
+            LOG.warn("can't parse nID_Server: {} (nID_Server={})", oNumberFormatException.getMessage(), snID_Server_Self);
         }
         return nID_Server;
     }
@@ -277,6 +261,6 @@ public class GeneralConfig {
     }
     public String getOrderId_ByProcess(Integer nID_Server, Long nID_Process) {
         return getOrderId_ByOrder(getSelfServerId(), getProtectedNumber(nID_Process));
-    }
+    }    
     
 }

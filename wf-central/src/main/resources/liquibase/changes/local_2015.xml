@@ -1067,7 +1067,7 @@
         </addColumn>
     </changeSet>
 
-    <changeSet id="issue-1215" author="VadymBuz">
+    <changeSet id="issue-1215_add_col" author="VadymBuz" failOnError="false">
         <addColumn tableName="SubjectMessage">
             <column name="sSubjectInfo" type="varchar(255)">
             </column>
@@ -1076,12 +1076,15 @@
             <column name="sSubjectInfo" type="varchar(255)">
             </column>
         </addColumn>
+    </changeSet>
+
+    <changeSet id="issue-1215_add_FK" author="VadymBuz" failOnError="false">
         <addForeignKeyConstraint baseTableName="SubjectMessage" baseColumnNames="nID_Subject" constraintName="FK_Subject_SubjectMessage" referencedTableName="Subject"
                                  referencedColumnNames="nID"/>
         <addForeignKeyConstraint baseTableName="HistoryEvent" baseColumnNames="nID_Subject" constraintName="FK_Subject_HistoryEvent" referencedTableName="Subject"
                                  referencedColumnNames="nID"/>
     </changeSet>
-    
+        
     <changeSet id="issue-1218-addColumn_nID_Sex" author="askosyr">
     	<preConditions onFail="MARK_RAN">
             <not><columnExists tableName="SubjectHuman" columnName="nID_Sex"/></not>
