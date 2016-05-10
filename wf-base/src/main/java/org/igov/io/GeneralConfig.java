@@ -98,9 +98,9 @@ public class GeneralConfig {
     
     @Value("${general.OTP.sURL_Send}")
     private String sURL_Send_OTP;
-    @Value("${general.OTP.sID_Merchant}")
+    @Value("${general.OTP.sMerchantId}")
     private String sMerchantId_OTP;
-    @Value("${general.OTP.sPasswordMerchant}")
+    @Value("${general.OTP.sMerchantPassword}")
     private String sMerchantPassword_OTP;
     
     @Value("${general.LiqPay.sURL_CheckOut}")
