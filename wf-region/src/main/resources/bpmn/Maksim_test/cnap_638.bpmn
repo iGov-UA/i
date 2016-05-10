@@ -6,7 +6,7 @@
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати рішення" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По-батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
@@ -17,13 +17,6 @@
         </activiti:formProperty>
         <activiti:formProperty id="sNameCompany" name="Назва установи заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Адреса реєстрації заявника (або юридична адреса);(поштовий індекс, місто, вулиця, номер дому, номер квартири)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asChoiceReason" name="Підстава видалення зелених насаджень" type="enum" required="true">
-          <activiti:value id="sEnumBad" name="незадовільний стан зелених насаджень"></activiti:value>
-          <activiti:value id="sEnumBuild" name="будівництво об’єкта архітектури"></activiti:value>
-          <activiti:value id="sEnumEmergency" name="ліквідація аварійної ситуації на інженерних мережах"></activiti:value>
-          <activiti:value id="sEnumLight" name="відновлення світлового режиму в житловому приміщенні, що затіняється деревами"></activiti:value>
-          <activiti:value id="sEnumRepair" name="проведення ремонтних робіт в охоронній зоні "></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="sAdress2" name="Адреса находження зелених насаджень" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорту" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_inn" name="Скан-копія ІПН" type="file" required="true"></activiti:formProperty>
@@ -55,6 +48,7 @@
 &lt;strong&gt;Шановний(-а) колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
 У Вас в черзі на обробку нове звернення щодо видачи акту обстеження зелених насаджень на земельній ділянці.&lt;br /&gt;
 Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
+Номер звернення: [sID_Order]&lt;br /&gt;
 Відпрацюйте це звернення на &lt;a href="https://region.igov.org.ua" target="_blank"&gt;порталі&lt;/a&gt;
 [pattern/mail/_common_signature.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
@@ -102,13 +96,6 @@ ${sNameOrgan}.&lt;br /&gt;
         </activiti:formProperty>
         <activiti:formProperty id="sNameCompany" name="Назва установи заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Адреса реєстрації заявника (або юридична адреса)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asChoiceReason" name="Підстава видалення зелених насаджень" type="enum" writable="false">
-          <activiti:value id="sEnumBad" name="незадовільний стан зелених насаджень"></activiti:value>
-          <activiti:value id="sEnumBuild" name="будівництво об’єкта архітектури"></activiti:value>
-          <activiti:value id="sEnumEmergency" name="ліквідація аварійної ситуації на інженерних мережах"></activiti:value>
-          <activiti:value id="sEnumLight" name="відновлення світлового режиму в житловому приміщенні, що затіняється деревами"></activiti:value>
-          <activiti:value id="sEnumRepair" name="проведення ремонтних робіт в охоронній зоні "></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="sAdress2" name="Адреса находження зелених насаджень" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sExtensionNumber" name="Реєстраційний номер ЦНАП" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string"></activiti:formProperty>
@@ -210,22 +197,15 @@ ${sNameOrgan}.&lt;br /&gt;
         </activiti:formProperty>
         <activiti:formProperty id="sNameCompany" name="Назва установи заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Адреса реєстрації заявника (або юридична адреса)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asChoiceReason" name="Підстава видалення зелених насаджень" type="enum" writable="false">
-          <activiti:value id="sEnumBad" name="незадовільний стан зелених насаджень"></activiti:value>
-          <activiti:value id="sEnumBuild" name="будівництво об’єкта архітектури"></activiti:value>
-          <activiti:value id="sEnumEmergency" name="ліквідація аварійної ситуації на інженерних мережах"></activiti:value>
-          <activiti:value id="sEnumLight" name="відновлення світлового режиму в житловому приміщенні, що затіняється деревами"></activiti:value>
-          <activiti:value id="sEnumRepair" name="проведення ремонтних робіт в охоронній зоні "></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="sAdress2" name="Адреса находження зелених насаджень" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sExtensionNumber" name="Реєстраційний номер ЦНАП" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration" name="Дата реєстрації ЦНАП" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asStatus" name="Обробка після рішення міської ради" type="enum" required="true">
-          <activiti:value id="sEnumGood" name="Ордер готов. Запросити громадянина до ЦНАПу"></activiti:value>
+        <activiti:formProperty id="asStatus" name="Обробка після рішення управління" type="enum" required="true">
+          <activiti:value id="sEnumGood" name="Акт готов. Запросити громадянина до ЦНАПу"></activiti:value>
           <activiti:value id="sEnumBad" name="Відправити заявнику копію рішення у разі негативного рішення"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="nReference" name="Сканкопія рішення" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nReference" name="Сканкопія акту, або рішення про відмову" type="file" required="true"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow10" sourceRef="servicetask5" targetRef="usertask2"></sequenceFlow>
