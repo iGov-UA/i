@@ -35,6 +35,7 @@ import org.activiti.engine.HistoryService;
 import org.igov.service.business.action.task.core.ActionTaskService;
 import org.igov.service.business.action.task.systemtask.misc.CancelTaskUtil;
 import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
+import org.igov.io.sms.ManagerOTP;
 
 import org.igov.service.controller.security.AccessContract;
 import org.igov.util.JSON.JsonDateTimeSerializer;
@@ -70,28 +71,31 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
     public TaskService taskService;
     @Autowired
     public HistoryService historyService;
-    @Value("${mailServerHost}")
+    @Value("${general.Mail.sHost}")
     public String mailServerHost;
-    @Value("${mailServerPort}")
+    @Value("${general.Mail.nPort}")
     public String mailServerPort;
-    @Value("${mailServerDefaultFrom}")
+    @Value("${general.Mail.sAddressDefaultFrom}")
     public String mailServerDefaultFrom;
-    @Value("${mailServerUsername}")
+    @Value("${general.Mail.sUsername}")
     public String mailServerUsername;
-    @Value("${mailServerPassword}")
+    @Value("${general.Mail.sPassword}")
     public String mailServerPassword;
-    @Value("${mailAddressNoreply}")
+    @Value("${general.Mail.sAddressNoreply}")
     public String mailAddressNoreplay;
 
-    @Value("${mailServerUseSSL}")
+    @Value("${general.Mail.bUseSSL}")
     private boolean bSSL;
-    @Value("${mailServerUseTLS}")
+    @Value("${general.Mail.bUseTLS}")
     private boolean bTLS;
 
     public Expression from;
     public Expression to;
     public Expression subject;
     public Expression text;
+    
+    protected Expression sPhone_SMS;
+    protected Expression sText_SMS;    
     protected Expression sID_Merchant;
     protected Expression sSum;
     protected Expression sID_Currency;
@@ -99,6 +103,10 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
     protected Expression sDescription;
     protected Expression nID_Subject;
     //private static final String PATTERN_DELIMITER = "_";
+    
+    @Autowired
+    public ManagerOTP oManagerOTP;
+    
     @Autowired
     AccessKeyService accessCover;
     @Autowired
@@ -142,7 +150,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
         }
 
         if (sTextReturn.contains(TAG_sID_Order)) {
-            String sID_Order = generalConfig.sID_Order_ByOrder(nID_Order);
+            String sID_Order = generalConfig.getOrderId_ByOrder(nID_Order);
             LOG.info("TAG_sID_Order:(sID_Order={})", sID_Order);
             sTextReturn = sTextReturn.replaceAll("\\Q" + TAG_sID_Order + "\\E", "" + sID_Order);
         }
@@ -270,7 +278,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
     }
 
     private String replaceTags_LIQPAY(String textStr, DelegateExecution execution) throws Exception {
-        String LIQPAY_CALLBACK_URL = generalConfig.sHost()
+        String LIQPAY_CALLBACK_URL = generalConfig.getSelfHost()
                 + "/wf/service/finance/setPaymentStatus_TaskActiviti?sID_Order=%s&sID_PaymentSystem=Liqpay&sData=%s&sPrefix=%s";
 
         StringBuffer outputTextBuffer = new StringBuffer();
@@ -323,7 +331,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
                     : execution.getVariable(String.format(PATTERN_SUBJECT_ID, "")).toString());
             nID_Subject = (nID_Subject == null ? 0 : nID_Subject);
             LOG.info("{}={}", pattern_subject, nID_Subject);
-            boolean bTest = generalConfig.bTest();
+            boolean bTest = generalConfig.isSelfTest();
             String htmlButton = liqBuy.getPayButtonHTML_LiqPay(
                     sID_Merchant, sSum, oID_Currency, sLanguage,
                     sDescription, sID_Order, sURL_CallbackStatusNew,
@@ -345,7 +353,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
             if (matcherPrefix.find()) {
                 prefix = matcherPrefix.group();
             }
-            String URL_SERVICE_MESSAGE = generalConfig.sHostCentral()
+            String URL_SERVICE_MESSAGE = generalConfig.getSelfHostCentral()
                     + "/wf/service/subject/message/setMessageRate";
 
             String sURI = ToolWeb.deleteContextFromURL(URL_SERVICE_MESSAGE);
@@ -359,7 +367,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
                     //+ (processDefinition != null && processDefinition.getName() != null ? processDefinition.getName().trim() : "")
                     + "&sID_Rate=" + prefix.replaceAll("_", "")
                     //+ "&nID_SubjectMessageType=1" + "&nID_Protected="+ nID_Protected
-                    + "&sID_Order=" + generalConfig.sID_Order_ByOrder(nID_Order);
+                    + "&sID_Order=" + generalConfig.getOrderId_ByOrder(nID_Order);
 
             String sQueryParam = String.format(sQueryParamPattern);
             if (nID_Subject != null) {
@@ -496,6 +504,41 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
     public Mail Mail_BaseFromTask(DelegateExecution oExecution)
             throws Exception {
 
+        String sPhone_SMS = getStringFromFieldExpression(this.sPhone_SMS, oExecution);
+        if(sPhone_SMS!=null){
+            String sText_SMS = getStringFromFieldExpression(this.sText_SMS, oExecution);
+            if(sText_SMS!=null){
+                sText_SMS = replaceTags(sText_SMS, oExecution);
+                
+                //sPhone_SMS="38"+sPhone_SMS;
+                String sReturn;
+
+                sPhone_SMS = sPhone_SMS.replaceAll("\\ ", "");
+                sReturn = oManagerOTP.sendPasswordOTP(sPhone_SMS, sText_SMS, true);
+                LOG.info("(sReturn={})",sReturn);
+                
+                /*sReturn = oManagerOTP.sendPasswordOTP(sPhone_SMS.substring(1), sText_SMS, true);
+                LOG.info("(sReturn={})",sReturn);
+
+                sReturn = oManagerOTP.sendPasswordOTP(sPhone_SMS.substring(2), sText_SMS, true);
+                LOG.info("(sReturn={})",sReturn);
+
+                sReturn = oManagerOTP.sendPasswordOTP(sPhone_SMS.substring(3), sText_SMS, true);
+                LOG.info("(sReturn={})",sReturn);*/
+                
+                /*sReturn = oManagerOTP.sendPasswordOTP("+38"+sPhone_SMS, sText_SMS, true);
+                LOG.info("(sReturn={})",sReturn);
+                
+                sReturn = oManagerOTP.sendPasswordOTP("38"+sPhone_SMS, sText_SMS, true);
+                LOG.info("(sReturn={})",sReturn);
+                
+                sReturn = oManagerOTP.sendPasswordOTP("8"+sPhone_SMS, sText_SMS, true);
+                LOG.info("(sReturn={})",sReturn);*/
+
+
+            }
+        }
+        
         String sFromMail = getStringFromFieldExpression(this.from, oExecution);
         String saToMail = getStringFromFieldExpression(this.to, oExecution);
         String sHead = getStringFromFieldExpression(this.subject, oExecution);
