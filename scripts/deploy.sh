@@ -334,6 +334,12 @@ if [[ $sVersion == "beta" && $sProject == "dashboard-js" ]] || [[ $sVersion == "
 		sHost="test-version.region.igov.org.ua"
 		export PATH=/usr/local/bin:$PATH
 fi
+if [ $sVersion == "delta" ]; then
+	sHost="none"
+fi
+if [ $sVersion == "omega" ]; then
+	sHost="none"
+fi
 #if [[ $sVersion == "prod" && $sProject == "dashboard-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-region" ]]; then
 #		sHost="region.igov.org.ua"
 #fi
@@ -349,7 +355,7 @@ else
 		build_docker
 		exit 0
 	fi
-	if [ -z $sHost ] && [ $bDockerOnly != "true"] && [ $bDocker != "true"]; then
+	if [ -z $sHost ]; then
 		echo "Cloud not select host for deploy. Wrong version or project."
 		exit 1
 	fi
