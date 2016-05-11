@@ -29,8 +29,8 @@
         </activiti:formProperty>
         <activiti:formProperty id="post_office" name="№ відділення поштового зв'язку (індекс)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bank_name" name="Назва банку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="mfo" name="МФО банку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="edrpou" name="ЄДРПОУ банку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="mfo" name="МФО банку;шість цифр" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="edrpou" name="ЄДРПОУ банку;вісім цифр" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bank_account" name="Номер рахунку в банку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFilePassprotParrent" name="Паспорт батька та матері" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFileScanINN" name="Ідентифікаційний код матері та батька, або опікуна" type="file" required="true"></activiti:formProperty>
@@ -63,7 +63,6 @@
     <sequenceFlow id="flow16" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="groovy" activiti:autoStoreVariables="false">
     	<script><![CDATA[
-    		
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
@@ -224,13 +223,13 @@ execution.setVariable("dPassportDate",strDate)
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFilePassprotParrent},
+            <activiti:expression>${nFilePassprotParrent},
 				${nFileScanINN},
 				${nFileBirthCertificate},
 				${nFileChernobylCertificateChild},
 				${nFileMedicalDisabledChild},
 				${nFilePersonalAccountBank},
-				${nFileConclusionMCCHouseTraining}]]></activiti:expression>
+				${nFileConclusionMCCHouseTraining}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -351,13 +350,13 @@ execution.setVariable("dPassportDate",strDate)
         <activiti:formProperty id="sBody_1" name="[pattern/print/сhernobyl/chaes_654_print.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFilePassprotParrent},
+            <activiti:expression>${nFilePassprotParrent},
 				${nFileScanINN},
 				${nFileBirthCertificate},
 				${nFileChernobylCertificateChild},
 				${nFileMedicalDisabledChild},
 				${nFilePersonalAccountBank},
-				${nFileConclusionMCCHouseTraining}]]></activiti:expression>
+				${nFileConclusionMCCHouseTraining}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
