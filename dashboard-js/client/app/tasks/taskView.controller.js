@@ -239,7 +239,8 @@
 
         $scope.isFormPropertyDisabled = isItemFormPropertyDisabled;
 
-        $scope.print = function () {
+        $scope.print = function (form) {
+          $scope.validateForm(form);
           if ($scope.selectedTask && $scope.taskForm) {
             if ($scope.hasUnPopulatedFields()) {
               Modal.inform.error()('Не всі поля заповнені!');

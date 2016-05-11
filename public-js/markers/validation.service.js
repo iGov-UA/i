@@ -259,7 +259,6 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
         return false;
       }
 
-      // Строга відповідніcть (нестрога - var bValid = moment(modelValue, options.sFormat).isValid())
       var bValid = (moment(modelValue, options.sFormat).format(options.sFormat) === modelValue);
 
       if (bValid === false) {

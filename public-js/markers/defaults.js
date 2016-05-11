@@ -17,7 +17,8 @@ angular.module('iGovMarkers')
           'lastName_UA3','firstName_UA3','middleName_UA3',
           'lastName_UA4','firstName_UA4','middleName_UA4',
           'lastName_UA5','firstName_UA5','middleName_UA5',
-          'sFamily_UA','sName_UA','sSurname_UA', 'adminFio'
+          'sFamily_UA','sName_UA','sSurname_UA', 'adminFio',
+          'CNAPName'
         ]
       }
       ,TextRU: {
