@@ -116,11 +116,11 @@
           <activiti:value id="sEnumDeny" name="Відмова заявнику у видачі розрахунку"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sComment" name="Якщо ви відмовляєте заявнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="file1" name="Завантажте скановану копію розрахунку; з накладеним ЕЦП (електронно-цифровим підписом)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file1" name="Завантажте скановану копію розрахунку, з накладеним ЕЦП (електронно-цифровим підписом)" type="file" required="true"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
-    <serviceTask id="servicetask4" name="Лист з відмовою" activiti:async="true" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask4" name="Лист з відмовою" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
