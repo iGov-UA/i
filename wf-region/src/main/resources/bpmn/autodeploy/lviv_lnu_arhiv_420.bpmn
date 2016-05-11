@@ -61,7 +61,6 @@
           <activiti:value id="sEnamOtr_samost2" name="Особисто"></activiti:value>
           <activiti:value id="sEnamOtr_predst2" name="Через представника за довіреністю"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="file_oplat" name="Квитанція про оплату" type="file"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
@@ -124,7 +123,7 @@ ${sNameOrgan}.&lt;br /&gt;
     <sequenceFlow id="flow20" name="nulp_arhiv" sourceRef="exclusivegateway3" targetRef="usertask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Public_SubjectOrganJoin == 'nulp_arhiv'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask1" name="Перевірка інформації ЛНУ Івана Франка" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask1" name="Перевірка інформації ЛНУ Івана Франка (1-й етап)" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sVutag" name="З якого наказу необхідно видати витяг" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
@@ -182,7 +181,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="супровідний текст" type="invisible" default="Якщо заявка прийнята, вона з'явиться в необроблених і вам треба буде зробити відмітку чи виданий документ.У разі відмови робота по цій заявці завершена."></activiti:formProperty>
       </extensionElements>
     </userTask>
-    <userTask id="usertask3" name="Перевірка зверннення Політехніка" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask3" name="Перевірка зверннення Політехніка (1-й етап)" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sVutag" name="З якого наказу необхідно видати витяг" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
@@ -337,7 +336,7 @@ ${sNameOrgan}.&lt;br /&gt;
     </serviceTask>
     <sequenceFlow id="flow5" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
-    <userTask id="usertask2" name="Виконнання заявки" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask2" name="Виконнання заявки (2-й етап)" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sVutag" name="З якого наказу необхідно видати витяг" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>

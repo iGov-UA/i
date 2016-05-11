@@ -95,7 +95,7 @@ ${sNameOrgan}.&lt;br /&gt;
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow16" sourceRef="servicetask8" targetRef="usertask1"></sequenceFlow>
-    <userTask id="usertask1" name="Прийняття рішення: доцільність запиту" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask1" name="Прийняття рішення: доцільність запиту (1 етап)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="place_of_liv" name="Адреса проживання" type="string" writable="false"></activiti:formProperty>
@@ -214,7 +214,7 @@ ${sPhoneOrgan}.&lt;br /&gt;
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow18" sourceRef="servicetask10" targetRef="usertask2"></sequenceFlow>
-    <userTask id="usertask2" name="Обробка даних профільним спеціалістом" activiti:candidateGroups="spec_118_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask2" name="Обробка даних профільним спеціалістом (2й - етап)" activiti:candidateGroups="spec_118_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="place_of_liv" name="Адреса проживання" type="string" writable="false"></activiti:formProperty>
@@ -247,7 +247,7 @@ ${sPhoneOrgan}.&lt;br /&gt;
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow28" sourceRef="usertask2" targetRef="usertask4_green"></sequenceFlow>
-    <userTask id="usertask4_green" name="Отримання рішення від спеціаліста" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask4_green" name="Отримання рішення від спеціаліста (3й - етап)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="place_of_liv" name="Адреса проживання" type="string" writable="false"></activiti:formProperty>
@@ -430,8 +430,8 @@ ${sNameOrgan}.&lt;br /&gt;
         </activiti:field>
       </extensionElements>
     </serviceTask>
-     <sequenceFlow id="flow33" sourceRef="servicetask4" targetRef="usertask3"></sequenceFlow>
-    <userTask id="usertask3" name="ЦНАП після міської ради" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
+    <sequenceFlow id="flow33" sourceRef="servicetask4" targetRef="usertask3"></sequenceFlow>
+    <userTask id="usertask3" name="Обробка після рішення місцевої ради (2й - етап)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="place_of_liv" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
@@ -460,7 +460,7 @@ ${sNameOrgan}.&lt;br /&gt;
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-   <sequenceFlow id="flow34" sourceRef="usertask3" targetRef="exclusivegateway2"></sequenceFlow>
+    <sequenceFlow id="flow34" sourceRef="usertask3" targetRef="exclusivegateway2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_kuznetsovsk_mvk-118">
     <bpmndi:BPMNPlane bpmnElement="kuznetsovsk_mvk-118" id="BPMNPlane_kuznetsovsk_mvk-118">

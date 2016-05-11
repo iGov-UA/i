@@ -334,9 +334,21 @@ if [[ $sVersion == "beta" && $sProject == "dashboard-js" ]] || [[ $sVersion == "
 		sHost="test-version.region.igov.org.ua"
 		export PATH=/usr/local/bin:$PATH
 fi
+if [ $sVersion == "delta" ]; then
+	sHost="none"
+fi
+if [ $sVersion == "omega" ]; then
+	sHost="none"
+fi
 #if [[ $sVersion == "prod" && $sProject == "dashboard-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-region" ]]; then
 #		sHost="region.igov.org.ua"
 #fi
+if [ $sVersion == "delta" ]; then
+	sHost="none"
+fi
+if [ $sVersion == "omega" ]; then
+	sHost="none"
+fi
 
 if [ -z $bDockerOnly ]; then
 	bDockerOnly="false"
