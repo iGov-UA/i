@@ -11,7 +11,7 @@ import java.util.List;
  * Time: 18:20
  */
 @Repository
-public class SubjectContactDaoImpl extends GenericEntityDao<SubjectContact> implements SubjectContactDao {
+public class SubjectContactDaoImpl extends GenericEntityDao<Long, SubjectContact> implements SubjectContactDao {
 
     public SubjectContactDaoImpl() {
         super(SubjectContact.class);

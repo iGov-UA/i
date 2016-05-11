@@ -24,6 +24,10 @@
         <constructor-arg value="org.igov.io.GeneralConfig" />
     </bean>
 
+    <bean id="msgService" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="org.igov.service.business.msg.MsgService" />
+    </bean>
+
 	<bean id="methodCallRunner" class="org.mockito.Mockito" factory-method="mock">
         <constructor-arg value="org.igov.util.MethodsCallRunnerUtil" />
     </bean>
@@ -50,9 +54,9 @@
     </bean>            
 
     <bean id="oManagerOTP" class="org.mockito.Mockito" factory-method="mock">
-        <constructor-arg value="org.igov.io.mail.unisender.ManagerOTP" />
+        <constructor-arg value="org.igov.io.sms.ManagerOTP" />
     </bean>
     
-    <context:property-placeholder location="classpath:email.properties" ignore-unresolvable="true"/>
+    <context:property-placeholder location="classpath:AS.properties" ignore-unresolvable="true"/>
     <context:property-placeholder location="classpath:test.properties" ignore-unresolvable="true"/>
 </beans>

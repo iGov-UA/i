@@ -1,7 +1,7 @@
 package org.igov.model.flow;
 
 import org.hibernate.annotations.Type;
-import org.igov.model.core.Entity;
+import org.igov.model.core.AbstractEntity;
 import org.joda.time.DateTime;
 
 import javax.persistence.*;
@@ -16,7 +16,7 @@ import java.util.List;
  * Time: 15:30
  */
 @javax.persistence.Entity
-public class FlowSlotTicket extends Entity {
+public class FlowSlotTicket extends AbstractEntity {
 
     @ManyToMany(fetch = FetchType.EAGER, targetEntity=FlowSlot.class)
     @JoinTable(name = "FlowSlotTicket_FlowSlot",

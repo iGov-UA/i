@@ -68,8 +68,8 @@ public class BpServiceImpl implements BpService {
     }
 
     private String getServerUrl(Integer nID_server) {
-        String serverUrl = generalConfig.sHost() + uriWf;
-        String url = generalConfig.sHostCentral() + uriGetServer;
+        String serverUrl = generalConfig.getSelfHost() + uriWf;
+        String url = generalConfig.getSelfHostCentral() + uriGetServer;
         Map<String, String> params = new HashMap<>();
         params.put("nID", "" + nID_server);
         try {

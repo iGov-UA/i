@@ -3,7 +3,7 @@ package org.igov.model.subject;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import org.igov.model.core.Entity;
+import org.igov.model.core.AbstractEntity;
 
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
@@ -22,7 +22,7 @@ import java.util.List;
  * Time: 13:34
  */
 @javax.persistence.Entity
-public class SubjectContact extends Entity {
+public class SubjectContact extends AbstractEntity {
 
     //@JsonIgnore
     @ManyToOne

@@ -4,7 +4,7 @@ import org.igov.model.core.GenericEntityDao;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class EscalationRuleFunctionDaoImpl extends GenericEntityDao<EscalationRuleFunction>
+public class EscalationRuleFunctionDaoImpl extends GenericEntityDao<Long, EscalationRuleFunction>
         implements EscalationRuleFunctionDao {
 
     protected EscalationRuleFunctionDaoImpl() {

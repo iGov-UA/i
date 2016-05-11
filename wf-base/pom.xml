@@ -48,9 +48,9 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <configuration>
                     <warName>${project.artifactId}</warName>
-                    <warSourceExcludes>**/db.properties</warSourceExcludes>
-                    <warSourceExcludes>**/email.properties</warSourceExcludes>
-                    <warSourceExcludes>**/bankID.properties</warSourceExcludes>
+                    <warSourceExcludes>**/DB.SQL.properties</warSourceExcludes>
+                    <!--warSourceExcludes>**/email.properties</warSourceExcludes-->
+                    <!--warSourceExcludes>**/bankID.properties</warSourceExcludes-->
                 </configuration>
             </plugin>
             <plugin>
@@ -179,7 +179,23 @@
                     <headerFooter>true</headerFooter>
                     <imagesDir>../resources/images</imagesDir>
                 </configuration>
-            </plugin>       		
+            </plugin>
+            <!--
+            	## Please install igov-maven-plugin from https://github.com/e-government-ua/ilog before activation
+            <plugin>
+                <groupId>org.igov</groupId>
+                <artifactId>log-plugin</artifactId>
+                <version>1.0.1</version>
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>replace-long-calls</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            -->
         </plugins>
         <pluginManagement>
             <plugins>
@@ -554,6 +570,16 @@
 			<artifactId>commons-discovery</artifactId>
 			<version>0.4</version>
 		</dependency>
+        <dependency>
+            <groupId>com.pb.ksv</groupId>
+            <artifactId>msgcore</artifactId>
+           	<version>2.0.1.032</version>
+        </dependency>        
+		<dependency>
+			<groupId>com.pb</groupId>
+  			<artifactId>gsvutil</artifactId>
+			<version>1.7.1</version>  			
+		</dependency>        
     </dependencies>
     <profiles>
         <profile>

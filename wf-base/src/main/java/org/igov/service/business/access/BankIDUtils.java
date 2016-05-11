@@ -25,14 +25,21 @@ import java.io.OutputStream;
 import java.io.StringWriter;
 import java.net.*;
 import java.util.List;
+import org.igov.io.GeneralConfig;
 
 public class BankIDUtils {
 
     private static final String EMPTY_JSON = "{}";
+    
     private static final Logger LOG = LoggerFactory.getLogger(ActionTaskCommonController.class);
-    public static String checkECP(String clientId, String clientSecret, String redirectUrl, byte[] fileByteArray,
+    
+    public static String checkECP(GeneralConfig generalConfig, byte[] fileByteArray,
             String fileName) {
-
+        
+        String clientId = generalConfig.getLogin_BankID_PB_Auth();
+        String clientSecret = generalConfig.getPassword_BankID_PB_Auth();
+        String redirectUrl = generalConfig.getSelfHostCentral();
+                        
         LOG.info("(clientID={}, clientSecret={}, redirectUrl={})", clientId, clientSecret,  redirectUrl);
 
         try {
@@ -40,12 +47,12 @@ public class BankIDUtils {
 
             CloseableHttpClient httpClient = HttpClientBuilder.create().build();
 
-            String code = doAuthorizeCall(clientId, clientSecret, redirectUrl, context, httpClient);
+            String code = doAuthorizeCall(generalConfig, clientId, clientSecret, redirectUrl, context, httpClient);
 
-            String accessToken = doGetAccessToken(clientId, clientSecret, redirectUrl, context, httpClient, code);
+            String accessToken = doGetAccessToken(generalConfig, clientId, clientSecret, redirectUrl, context, httpClient, code);
 
             if (accessToken != null) {
-                String json = submitDocumentForCheckingECP(fileByteArray, fileName, accessToken);
+                String json = submitDocumentForCheckingECP(generalConfig, fileByteArray, fileName, accessToken);
 
                 if (json != null) {
                     JSONParser parser = new JSONParser();
@@ -67,12 +74,13 @@ public class BankIDUtils {
         return EMPTY_JSON;
     }
 
-    protected static String submitDocumentForCheckingECP(byte[] fileByteArray,
+    protected static String submitDocumentForCheckingECP(GeneralConfig generalConfig, byte[] fileByteArray,
             String fileName, String accessToken) throws MalformedURLException,
             IOException, ProtocolException {
         StringWriter writer;
-        String url = "https://bankid.privatbank.ua/ResourceService/checked/signatureData";
-        URL urlAddr = new URL(url);
+        String sURL = generalConfig.getURL_ResourceSignature_BankID_PB_Auth();//"https://bankid.privatbank.ua/ResourceService/checked/signatureData"
+        
+        URL urlAddr = new URL(sURL);
         HttpURLConnection connection = (HttpURLConnection) urlAddr
                 .openConnection();
         connection.setRequestMethod("POST");
@@ -98,13 +106,13 @@ public class BankIDUtils {
         return json;
     }
 
-    protected static String doGetAccessToken(String clientID, String clientSecret, String redirectUrl,
+    protected static String doGetAccessToken(GeneralConfig generalConfig, String clientID, String clientSecret, String redirectUrl,
             HttpClientContext context,
             CloseableHttpClient httpClient, String code)
             throws URISyntaxException, IOException, ClientProtocolException, ParseException {
         String sha1 = DigestUtils.sha1Hex(clientID + clientSecret + code);
 
-        URI uri2 = getGettingAccessToeknURI(clientID, redirectUrl, code, sha1);
+        URI uri2 = getGettingAccessToeknURI(generalConfig, clientID, redirectUrl, code, sha1);
 
         HttpGet getRequestAccessToken = new HttpGet(uri2);
 
@@ -128,11 +136,11 @@ public class BankIDUtils {
         return accessToken;
     }
 
-    protected static String doAuthorizeCall(String clientID, String clientSecret, String redirectUrl,
+    protected static String doAuthorizeCall(GeneralConfig generalConfig, String clientID, String clientSecret, String redirectUrl,
             HttpClientContext context,
             CloseableHttpClient httpClient) throws URISyntaxException, IOException, ClientProtocolException {
 
-        URI uri = createAuthorizeURI(clientID, clientSecret, redirectUrl);
+        URI uri = createAuthorizeURI(generalConfig, clientID, clientSecret, redirectUrl);
 
         HttpGet getAuthorizeRequest = new HttpGet(uri);
 
@@ -151,12 +159,12 @@ public class BankIDUtils {
         return code;
     }
 
-    protected static URI getGettingAccessToeknURI(String clientID,
+    protected static URI getGettingAccessToeknURI(GeneralConfig generalConfig, String clientID,
             String redirectUrl, String code, String sha1)
             throws URISyntaxException {
         URI uri2 = new URIBuilder().setScheme("https")
-                .setHost("bankid.privatbank.ua")
-                .setPath("/DataAccessService/oauth/token")
+                .setHost(generalConfig.getHost_AccessToken_BankID_PB_Auth())//"bankid.privatbank.ua"
+                .setPath(generalConfig.getPath_AccessToken_BankID_PB_Auth())//"/DataAccessService/oauth/token"
                 .setParameter("grant_type", "authorization_code")
                 .setParameter("client_id", clientID)
                 .setParameter("client_secret", sha1)
@@ -166,11 +174,11 @@ public class BankIDUtils {
         return uri2;
     }
 
-    protected static URI createAuthorizeURI(String clientID,
+    protected static URI createAuthorizeURI(GeneralConfig generalConfig, String clientID,
             String clientSecret, String redirectUrl) throws URISyntaxException {
         URI uri = new URIBuilder().setScheme("https")
-                .setHost("bankid.privatbank.ua")
-                .setPath("/DataAccessService/das/authorize")
+                .setHost(generalConfig.getHost_Authorize_BankID_PB_Auth())//"bankid.privatbank.ua"
+                .setPath(generalConfig.getPath_Authorize_BankID_PB_Auth())//"/DataAccessService/das/authorize"
                 .setParameter("response_type", "code")
                 .setParameter("client_id", clientID)
                 .setParameter("client_secret", clientSecret)

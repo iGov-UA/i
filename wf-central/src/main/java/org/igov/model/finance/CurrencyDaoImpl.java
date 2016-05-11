@@ -11,7 +11,7 @@ import java.util.List;
  * @author grigoriy-romanenko
  */
 @Repository
-public class CurrencyDaoImpl extends GenericEntityDao<Currency>
+public class CurrencyDaoImpl extends GenericEntityDao<Long, Currency>
         implements CurrencyDao {
 
     protected CurrencyDaoImpl() {

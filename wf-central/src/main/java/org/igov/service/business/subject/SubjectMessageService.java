@@ -40,7 +40,7 @@ public class SubjectMessageService {
 
     @Autowired
     @Qualifier("subjectMessageTypeDao")
-    private EntityDao<SubjectMessageType> subjectMessageTypeDao;
+    private EntityDao<Long, SubjectMessageType> subjectMessageTypeDao;
 
     public static String sMessageHead(Long nID_SubjectMessageType, String sID_Order) {
         String sHead = "";

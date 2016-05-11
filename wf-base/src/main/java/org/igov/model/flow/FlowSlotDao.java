@@ -12,7 +12,7 @@ import org.igov.model.core.EntityDao;
  * Date: 21.06.2015
  * Time: 15:44
  */
-public interface FlowSlotDao extends EntityDao<FlowSlot> {
+public interface FlowSlotDao extends EntityDao<Long, FlowSlot> {
 
     /**
      * Gets flow slots by service data ID ordered by date in given interval

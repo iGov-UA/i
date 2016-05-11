@@ -4,7 +4,7 @@ import org.igov.model.core.EntityDao;
 
 import java.util.List;
 
-public interface SubjectMessagesDao extends EntityDao<SubjectMessage> {
+public interface SubjectMessagesDao extends EntityDao<Long, SubjectMessage> {
 
     void setMessage(SubjectMessage message);
 

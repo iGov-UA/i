@@ -9,7 +9,7 @@ import java.util.List;
  * @author NickVeremeichyk
  * @since 2016-02-07.
  */
-public interface ActionTaskLinkDao extends EntityDao<ActionTaskLink> {
+public interface ActionTaskLinkDao extends EntityDao<Long, ActionTaskLink> {
 
     ActionTaskLink getByCriteria(Long nIdProcess, String sKey, Long nIdSubjectHolder);
 

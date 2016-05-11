@@ -1,7 +1,7 @@
 package org.igov.model.object;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.igov.model.core.Entity;
+import org.igov.model.core.AbstractEntity;
 
 import javax.persistence.Column;
 
@@ -9,7 +9,7 @@ import javax.persistence.Column;
  * @author grigoriy-romanenko
  */
 @javax.persistence.Entity
-public class ObjectEarthTarget extends Entity {
+public class ObjectEarthTarget extends AbstractEntity {
 
     @JsonProperty(value = "sID_UA")
     @Column(length = 10, unique = true, nullable = false)

@@ -45,6 +45,10 @@ var getRequestURL = function(options) {
 		pathname: '/' + (options.root || config.activiti.rest) + '/' + options.path,
 		query: options.query
 	});
+
+  if (options.doNotUseActivityConfigUrl){
+    requestURL = options.path;
+  }
         console.log('config.activiti.prot=' + config.activiti.prot);
         console.log('config.activiti.host=' + config.activiti.host);
         console.log('path=' + '/' + (options.root || config.activiti.rest) + '/' + options.path);

@@ -1,8 +1,7 @@
 package org.igov.model.access;
 
-import org.igov.model.core.Entity;
+import org.igov.model.core.AbstractEntity;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -14,7 +13,7 @@ import javax.persistence.ManyToOne;
  * Time: 18:39
  */
 @javax.persistence.Entity
-public class AccessServiceLoginRole extends Entity {
+public class AccessServiceLoginRole extends AbstractEntity {
 
     /**
      * Login of user which require access to service

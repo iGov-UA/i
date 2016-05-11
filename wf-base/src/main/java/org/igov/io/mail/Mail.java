@@ -30,6 +30,7 @@ import java.util.Properties;
 
 import org.igov.io.GeneralConfig;
 import org.igov.util.MethodsCallRunnerUtil;
+import org.igov.service.business.msg.MsgService;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -53,6 +54,9 @@ public class Mail extends Abstract_Mail {
     
     @Autowired
     UniSender oUniSender;
+    
+    @Autowired
+    MsgService msgService; 
     
     private final static Logger LOG = LoggerFactory.getLogger(Mail.class);
     private static final Logger LOG_BIG = LoggerFactory.getLogger("MailBig");
@@ -81,7 +85,7 @@ public class Mail extends Abstract_Mail {
         }
         LOG.info("(getHead()={})", getHead());
         
-        Boolean bUniSender = "true".equals(generalConfig.getUseUniSender());
+        Boolean bUniSender = generalConfig.isEnable_UniSender_Mail();
         LOG.info("(bUniSender={})", bUniSender);
         //LOG.debug("(getFrom()={})", getFrom());
         //LOG.debug("(getTo()={})", getTo());
@@ -156,11 +160,40 @@ public class Mail extends Abstract_Mail {
                 } catch (Exception oException) {
                     LOG.warn("Try send via alter channel! (getTo()={})", oException.getMessage(), getTo());
                     LOG.trace("FAIL:", oException);
+                    
+                    StringBuffer sbBody = new StringBuffer(500);
+                    sbBody.append("host: ");
+                    sbBody.append(getHost());
+                    sbBody.append(":");
+                    sbBody.append(getPort());
+                    sbBody.append("\nAuthUser:");
+                    sbBody.append(getAuthUser());
+                    sbBody.append("\nfrom:");
+                    sbBody.append(getFrom());
+                    sbBody.append("\nto:");
+                    sbBody.append(getTo());
+                    sbBody.append("\nhead:");
+                    sbBody.append(getHead());
+//                    sbBody.append(getBody());
+                    
+                    try {
+			msgService.setEventSystem("WARNING", null, null, "sendWithUniSender", "Error send via UniSender", sbBody.toString(), oException.getMessage(), null);
+		    } catch (Exception e) {
+			LOG.trace("Ошибка при регистрации сообщения в Сервисе Хранения Ошибок.",e);
+		    }
+                    
                     try{
                         sendOld();
                     } catch (Exception oException1) {
                         LOG.warn("Final send trying fail: {} (getTo()={})", oException1.getMessage(), getTo());
                         LOG.trace("FAIL:", oException);
+                        
+                        try {
+                            msgService.setEventSystem("WARNING", null, null, "sendOld", "Error send final", sbBody.toString(), oException.getMessage(), null);
+    		    	} catch (Exception e) {
+    		    	    LOG.trace("Ошибка при регистрации сообщения в Сервисе Хранения Ошибок.",e);
+    		    	}
+                        
                         throw oException1;
                         //sendOld();
                     }
@@ -331,8 +364,8 @@ public class Mail extends Abstract_Mail {
         LOG.info("Init...");
         Object oID_Message = null;
         try {
-            String sKey_Sender = generalConfig.getsKey_Sender();
-            long nID_Sender = generalConfig.getUniSenderListId();
+            String sKey_Sender = generalConfig.getKey_UniSender_Mail();
+            long nID_Sender = generalConfig.getSendListId_UniSender_Mail();
             if(StringUtils.isBlank(sKey_Sender)){
                 throw new IllegalArgumentException("Please check api_key in UniSender property file configuration");
             }

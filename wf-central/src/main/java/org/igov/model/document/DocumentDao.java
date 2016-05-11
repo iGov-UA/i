@@ -6,7 +6,7 @@ import org.igov.model.core.EntityDao;
 import java.io.IOException;
 import java.util.List;
 
-public interface DocumentDao extends EntityDao<Document> {
+public interface DocumentDao extends EntityDao<Long, Document> {
 
     public Document getDocument(Long id);
 

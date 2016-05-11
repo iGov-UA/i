@@ -15,7 +15,7 @@ import org.hibernate.criterion.Restrictions;
 import org.igov.model.subject.SubjectContact;
 
 @Repository
-public class SubjectMessagesDaoImpl extends GenericEntityDao<SubjectMessage> implements SubjectMessagesDao {
+public class SubjectMessagesDaoImpl extends GenericEntityDao<Long, SubjectMessage> implements SubjectMessagesDao {
 
     protected SubjectMessagesDaoImpl() {
         super(SubjectMessage.class);

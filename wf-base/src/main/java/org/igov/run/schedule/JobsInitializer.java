@@ -60,7 +60,7 @@ public class JobsInitializer implements InitializingBean, ApplicationContextAwar
             LOG.error("FAIL: ", oException.getMessage());
             LOG.debug("FAIL: ", oException);
         }
-        if (!generalConfig.bTest()) {
+        if (!generalConfig.isSelfTest()) {
             LOG.info("scheduleJob...");
             scheduler.scheduleJob(oJobDetail_Escalation_Standart, oCronTrigger_EveryNight_Deep);
         } else {
@@ -83,7 +83,7 @@ public class JobsInitializer implements InitializingBean, ApplicationContextAwar
             LOG.error("FAIL: ", oException.getMessage());
             LOG.debug("FAIL: ", oException);
         }
-        if (true || !generalConfig.bTest()) {
+        if (true || !generalConfig.isSelfTest()) {
             LOG.info("scheduleJob...");
             scheduler.scheduleJob(oJobDetail_BuilderFlowSlots_Standart, oCronTrigger_EveryNight_Deep);
         } else {

@@ -3,15 +3,29 @@
 sProject=$1
 sDate=$2
 nSecondsWait=$3
+sVersion=$4
 
 if [ -z $sProject ]; then
 	echo "Empty Project variable"
+	exit 1
+fi
+if [ -z $sVersion ]; then
+	echo "Empty Version variable"
 	exit 1
 fi
 if [ -z $sDate ]; then
 	echo "Empty Date variable"
 	exit 1
 fi
+
+if [ ! -d /sybase/.backup/configs/$sDate ]; then
+	mkdir -p /sybase/.backup/configs/$sDate
+fi
+cp -rp /sybase/.configs /sybase/.backup/configs/$sDate/
+
+sudo ssh-agent bash -c 'ssh-add /sybase/secret/sshKey; git clone git@github.com:e-government-ua/iSystem.git /sybase/iSystem'
+rsync -rtv /sybase/iSystem/config/$sVersion/.configs/ /sybase/.configs
+sudo rm -rf /sybase/iSystem
 
 fallback ()
 {
@@ -30,7 +44,7 @@ fallback ()
 	cd /sybase/tomcat_${sProject}$1/bin/ && ./_startup.sh
 	sleep 15
 	#Проверяем статус службы. Если нашлась ошибка в логе - завершаем скрипт с критической ошибкой.
-	if grep ERROR /sybase/tomcat_${sProject}$1/logs/catalina.out | grep -v log4j | grep -v stopServer; then
+	if grep ERROR /sybase/tomcat_${sProject}$1/logs/catalina.out | grep -v "but failOnError was false" | grep -v log4j | grep -v stopServer; then
 		echo "Fatal error found in tomcat_${sProject}$1/logs/catalina.out! Can't start previous configuration."
 		exit 1
 	fi
@@ -125,7 +139,8 @@ if [ $sProject == "dashboard-js" ]; then
 	unset IFS
 	mv -f /sybase/dashboard-js /sybase/.backup/$sProject/$sDate
 	mv /sybase/.upload/dashboard-js /sybase/dashboard-js
-    cp -f /sybase/.configs/dashboard-js/process.json /sybase/dashboard-js/process.json
+    #cp -f /sybase/.configs/dashboard-js/process.json /sybase/dashboard-js/process.json
+    cp -f -R /sybase/.configs/dashboard-js/* /sybase/dashboard-js/
 	cd /sybase/dashboard-js
 	pm2 start process.json --name dashboard-js
 	pm2 info dashboard-js
@@ -152,7 +167,7 @@ if [ $sProject == "wf-central"  ] || [ $sProject == "wf-region" ]; then
 	fi
 	done
 	#Проверяем на наличие ошибок вторичный инстанс
-	if grep ERROR /sybase/tomcat_${sProject}_double/logs/catalina.out | grep -v log4j | grep -v stopServer; then
+	if grep ERROR /sybase/tomcat_${sProject}_double/logs/catalina.out | grep -v "but failOnError was false" | grep -v log4j | grep -v stopServer; then
 		fallback _double
 	else
 		echo "Everything is OK. Continuing deployment ..."
@@ -166,8 +181,8 @@ if [ $sProject == "wf-central"  ] || [ $sProject == "wf-region" ]; then
 		#Развернем новое приложение на вторичном инстансе
 		deploy-tomcat
 			
-		#Проверяем на наличие ошибок вторичный инстанс
-		if grep ERROR /sybase/tomcat_${sProject}/logs/catalina.out | grep -v log4j | grep -v stopServer; then
+		#Проверяем на наличие ошибок вторичный инстанс //
+		if grep ERROR /sybase/tomcat_${sProject}/logs/catalina.out | grep -v "but failOnError was false" | grep -v log4j | grep -v stopServer; then
 			grep -B 3 -A 2 ERROR /sybase/tomcat_${sProject}/logs/catalina.out
 			#Откатываемся назад
 			fallback

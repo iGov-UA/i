@@ -109,7 +109,11 @@
             <column name="sName" type="STRING"/>
             <column name="sNote" type="STRING"/>
         </loadUpdateData>
-        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/Service.csv" tableName="Service" separator=";">
+
+        <!-- 2 связанные таблицы Service, ServiceData перезагружаются каждый раз -->
+        <delete tableName="ServiceData"/>
+        <delete tableName="Service"/>
+        <loadData encoding="UTF-8" file="data/Service.csv" tableName="Service" separator=";">
             <column name="nID" type="NUMERIC"/>
             <column name="sName" type="STRING"/>
             <column name="nOrder" type="NUMERIC"/>
@@ -119,7 +123,7 @@
             <column name="sLaw" type="STRING"/>
             <column name="nOpenedLimit" type="NUMERIC"/>
             <column name="sSubjectOperatorName" type="STRING"/>
-        </loadUpdateData>
+        </loadData>
 
         <loadUpdateData primaryKey  = "nID"
                         encoding    = "UTF-8"
@@ -167,7 +171,7 @@
             <column name="sURL"         type="STRING"/>
         </loadUpdateData>
 
-        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/ServiceData.csv" tableName="ServiceData" separator=";">
+        <loadData encoding="UTF-8" file="data/ServiceData.csv" tableName="ServiceData" separator=";">
             <column name="nID" type="NUMERIC"/>
             <column name="nID_Service" type="NUMERIC"/>
             <column name="nID_Place"    type="NUMERIC"/>
@@ -182,7 +186,7 @@
             <column name="sNote" type="STRING"/>
             <column name="asAuth" type="STRING"/>
             <column name="nID_Server" type="NUMERIC"/>
-        </loadUpdateData>
+        </loadData>
 
         <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/DocumentContentType.csv" tableName="DocumentContentType" separator=";">
             <column name="nID" type="NUMERIC"/>
@@ -225,7 +229,12 @@
             <column name="sDateAnswerExpire" type="STRING"/>
         </loadUpdateData>
 
-        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/SubjectOrganJoin.csv" tableName="SubjectOrganJoin" separator=";">
+        <!-- 3 связанные таблицы SubjectOrganJoin, SubjectOrganJoinTax, SubjectOrganJoinAttribute
+        перезагружаются каждый раз -->
+        <delete tableName="SubjectOrganJoinAttribute"/>
+        <delete tableName="SubjectOrganJoinTax"/>
+        <delete tableName="SubjectOrganJoin"/>
+        <loadData encoding="UTF-8" file="data/SubjectOrganJoin.csv" tableName="SubjectOrganJoin" separator=";">
             <column name="nID"              type="NUMERIC"/>
             <column name="nID_SubjectOrgan" type="NUMERIC"/>
             <column name="sNameUa"          type="STRING"/>
@@ -237,7 +246,20 @@
             <column name="nID_Region"       type="NUMERIC"/>
             <column name="nID_City"         type="NUMERIC"/>
             <column name="sID_UA"           type="STRING"/>
-        </loadUpdateData>
+        </loadData>
+
+        <loadData tableName="SubjectOrganJoinTax" file="data/SubjectOrganJoinTax.csv"  encoding="UTF-8" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="nID_SubjectOrganJoin" type="NUMERIC"/>
+            <column name="sID_UA" type="STRING"/>
+            <column name="sName_UA" type="STRING"/>
+        </loadData>
+
+        <loadData tableName="SubjectOrganJoinAttribute" file="data/SubjectOrganJoinAttribute.csv"  encoding="UTF-8" separator=";">
+            <column name="nID_SubjectOrganJoin" type="NUMERIC"/>
+            <column name="sName" type="STRING"/>
+            <column name="sValue" type="STRING"/>
+        </loadData>
 
         <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/HistoryEvent_Service.csv"
                         tableName="HistoryEvent_Service" separator=";">
@@ -301,13 +323,6 @@
             <column name="sReference_LocalISO" type="STRING"/>
         </loadUpdateData>
 
-        <loadUpdateData tableName="SubjectOrganJoinTax" primaryKey="nID" file="data/SubjectOrganJoinTax.csv"  encoding="UTF-8" separator=";">
-            <column name="nID" type="NUMERIC"/>
-            <column name="nID_SubjectOrganJoin" type="NUMERIC"/>
-            <column name="sID_UA" type="STRING"/>
-            <column name="sName_UA" type="STRING"/>
-        </loadUpdateData>
-        
          <loadUpdateData tableName="ObjectCustoms" primaryKey="nID" encoding="UTF-8" file="data/ObjectCustoms.csv" separator=";" >
             <column name="nID" type = "NUMERIC" />
             <column name="sID_UA" type = "STRING" />
@@ -328,13 +343,6 @@
             <column name="sBody_Indirectly" type="STRING"/>
             <column name="nID_HistoryEvent_Service" type="NUMERIC"/>
             <column name="sSubjectInfo" type="STRING"/>
-        </loadUpdateData>
-
-        <loadUpdateData tableName="SubjectOrganJoinAttribute" primaryKey="nID" file="data/SubjectOrganJoinAttribute.csv"  encoding="UTF-8" separator=";">
-            <column name="nID" type="NUMERIC"/>
-            <column name="nID_SubjectOrganJoin" type="NUMERIC"/>
-            <column name="sName" type="STRING"/>
-            <column name="sValue" type="STRING"/>
         </loadUpdateData>
 
         <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/Currency.csv" tableName="Currency" separator=";">
@@ -367,7 +375,12 @@
         </loadUpdateData>
         
     </changeSet>
-  
+
+    <changeSet id="Drop out-of-date HistoryEvent_Service" author="brunneng" runAlways="true" dbms="postgresql">
+        <sql splitStatements="true" dbms="postgresql">
+            delete from "HistoryEvent_Service" where "nID_ServiceData" is not null and "nID_ServiceData" not in (select "nID" from "ServiceData");
+        </sql>
+    </changeSet>
 
 
 </databaseChangeLog>

@@ -62,7 +62,7 @@ public class EscalationHelper implements ApplicationContextAware {
                         oEscalationHandler.execute(mTaskParam, asRecipientMail, sPatternFile);
                     }
                 } else {
-                    String sHead = String.format((oGeneralConfig.bTest() ? "(TEST)" : "") + "Заявка № %s:%s!",
+                    String sHead = String.format((oGeneralConfig.isSelfTest() ? "(TEST)" : "") + "Заявка № %s:%s!",
                             mTaskParam.get("sID_BP"),
                             mTaskParam.get("nID_task_activiti") + "");
                     LOG.info("Escalation not need! (sBeanHandler={},sHead={},sCondition={})", sBeanHandler, sHead, sCondition);

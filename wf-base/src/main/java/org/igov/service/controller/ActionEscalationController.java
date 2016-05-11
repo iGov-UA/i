@@ -49,7 +49,7 @@ public class ActionEscalationController {
     public void runEscalationRule(
             @ApiParam(value = "номер-ид правила эскалации", required = true) @RequestParam(value = "nID") Long nID)
             throws Exception {
-        oEscalationService.runEscalationRule(nID, generalConfig.sHost());
+        oEscalationService.runEscalationRule(nID, generalConfig.getSelfHost());
     }
 
     @ApiOperation(value = "Запуск всех правил эскалаций")

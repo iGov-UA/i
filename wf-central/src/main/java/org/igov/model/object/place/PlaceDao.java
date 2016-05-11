@@ -8,7 +8,7 @@ import org.igov.model.object.place.PlaceHierarchy;
  * @author dgroup
  * @since 20.07.2015
  */
-public interface PlaceDao extends EntityDao<Place> {
+public interface PlaceDao extends EntityDao<Long, Place> {
     PlaceHierarchy getTreeDown(PlaceHibernateHierarchyRecord rootRecord);
 
     PlaceHierarchy getTreeUp(Long placeId, String uaId, Boolean tree);

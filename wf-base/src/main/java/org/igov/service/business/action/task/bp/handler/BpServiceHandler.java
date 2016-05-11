@@ -63,8 +63,8 @@ public class BpServiceHandler {
         Map<String, Object> variables = new HashMap<>();
         variables.put("nID_Proccess_Feedback", snID_Process);
         variables.put("processName", processName);
-        Integer nID_Server = generalConfig.nID_Server();
-        String sID_Order = generalConfig.sID_Order_ByProcess(Long.valueOf(snID_Process));
+        Integer nID_Server = generalConfig.getSelfServerId();
+        String sID_Order = generalConfig.getOrderId_ByProcess(Long.valueOf(snID_Process));
         //get process variables
         HistoricTaskInstance details = historyService
                 .createHistoricTaskInstanceQuery()
@@ -108,8 +108,8 @@ public class BpServiceHandler {
     public void checkBpAndStartEscalationProcess(final Map<String, Object> mTaskParam) throws Exception {
         String snID_Process = (String) mTaskParam.get("sProcessInstanceId");
         String processName = (String) mTaskParam.get("sID_BP_full");
-        Integer nID_Server = generalConfig.nID_Server();
-        String sID_Order = generalConfig.sID_Order_ByProcess(Long.valueOf(snID_Process));
+        Integer nID_Server = generalConfig.getSelfServerId();
+        String sID_Order = generalConfig.getOrderId_ByProcess(Long.valueOf(snID_Process));
         try {
             String jsonHistoryEvent = historyEventService.getHistoryEvent(sID_Order);
             LOG.info("get history event for bp: (jsonHistoryEvent={})", jsonHistoryEvent);
@@ -132,7 +132,7 @@ public class BpServiceHandler {
         LOG.info(" >>Start escalation process. (nID_Proccess_Escalation={})", escalationProcessId);
         try {
             LOG.info(" updateHistoryEvent: " + snID_Process + " taskName: " + taskName + " params: " + params);
-            //для тестирования закоменчено historyEventService.updateHistoryEvent(generalConfig.sID_Order_ByProcess(Long.valueOf(snID_Process)), taskName, false, HistoryEvent_Service_StatusType.OPENED_ESCALATION, params);
+            //для тестирования закоменчено historyEventService.updateHistoryEvent(generalConfig.getOrderId_ByProcess(Long.valueOf(snID_Process)), taskName, false, HistoryEvent_Service_StatusType.OPENED_ESCALATION, params);
             EscalationHistory escalationHistory = escalationHistoryService.create(Long.valueOf(snID_Process),
                     Long.valueOf(mTaskParam.get("sTaskId").toString()),
                     Long.valueOf(escalationProcessId), EscalationHistoryService.STATUS_CREATED);
@@ -242,7 +242,7 @@ public class BpServiceHandler {
         if (processVariables != null) {
             try {
                 String snID_Process = processVariables.get("processID").toString();
-                String sID_Order = generalConfig.sID_Order_ByProcess(Long.valueOf(snID_Process));
+                String sID_Order = generalConfig.getOrderId_ByProcess(Long.valueOf(snID_Process));
                 String jsonHistoryEvent = historyEventService.getHistoryEvent(sID_Order);
                 LOG.info("get history event for bp: (jsonHistoryEvent={})", jsonHistoryEvent);
 

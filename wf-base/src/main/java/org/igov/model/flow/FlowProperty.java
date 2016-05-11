@@ -7,7 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import org.igov.model.core.Entity;
+import org.igov.model.core.AbstractEntity;
 
 /**
  * The property of flow. Stored in regional server.
@@ -17,7 +17,7 @@ import org.igov.model.core.Entity;
  * Time: 15:18
  */
 @javax.persistence.Entity
-public class FlowProperty extends Entity {
+public class FlowProperty extends AbstractEntity {
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)

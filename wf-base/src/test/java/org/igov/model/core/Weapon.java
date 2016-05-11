@@ -4,7 +4,7 @@ package org.igov.model.core;
  * @see Jedi
  */
 @javax.persistence.Entity
-public class Weapon extends Entity {
+public class Weapon extends AbstractEntity {
     private String name;
 
     public Weapon() {

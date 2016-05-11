@@ -7,7 +7,7 @@ import org.igov.model.action.item.Service;
 import org.igov.model.action.item.ServiceData;
 import org.igov.model.action.item.Subcategory;
 import org.igov.model.core.BaseEntityDao;
-import org.igov.model.core.Entity;
+import org.igov.model.core.AbstractEntity;
 import org.igov.model.object.place.Place;
 import org.igov.model.object.place.PlaceDao;
 import org.igov.service.business.core.EntityService;
@@ -49,7 +49,7 @@ public class ActionItemController {
     @Autowired
     GeneralConfig generalConfig;
     @Autowired
-    private BaseEntityDao baseEntityDao;
+    private BaseEntityDao<Long> baseEntityDao;
     @Autowired
     private EntityService entityService;
     @Autowired
@@ -385,7 +385,7 @@ public class ActionItemController {
         return tryClearGetServicesCache(response);
     }
 
-    private <T extends Entity> ResponseEntity deleteEmptyContentEntity(Class<T> entityClass, Long nID) {
+    private <T extends AbstractEntity> ResponseEntity deleteEmptyContentEntity(Class<T> entityClass, Long nID) {
         T entity = baseEntityDao.findById(entityClass, nID);
         if (entity.getClass() == Service.class) {
             if (((Service) entity).getServiceDataList().isEmpty()) {
@@ -428,12 +428,12 @@ public class ActionItemController {
         return tryClearGetServicesCache(JsonRestUtils.toJsonResponse(HttpStatus.OK, "success", "ServicesTree removed"));
     }
 
-    private <T extends Entity> ResponseEntity deleteApropriateEntity(T entity) {
+    private <T extends AbstractEntity> ResponseEntity deleteApropriateEntity(T entity) {
         baseEntityDao.delete(entity);
         return JsonRestUtils.toJsonResponse(HttpStatus.OK, "success", entity.getClass() + " id: " + entity.getId() + " removed");
     }
 
-    private <T extends Entity> ResponseEntity recursiveForceServiceDelete(Class<T> entityClass, Long nID) {
+    private <T extends AbstractEntity> ResponseEntity recursiveForceServiceDelete(Class<T> entityClass, Long nID) {
         T entity = baseEntityDao.findById(entityClass, nID);
         // hibernate will handle recursive deletion of all child entities
         // because of annotation: @OneToMany(mappedBy = "category",cascade = CascadeType.ALL, orphanRemoval = true)
@@ -444,7 +444,7 @@ public class ActionItemController {
     private ResponseEntity regionsToJsonResponse(Service oService) {
         oService.setSubcategory(null);
 
-        List<ServiceData> aServiceData = oService.getServiceDataFiltered(generalConfig.bTest());
+        List<ServiceData> aServiceData = oService.getServiceDataFiltered(generalConfig.isSelfTest());
         for (ServiceData oServiceData : aServiceData) {
             oServiceData.setService(null);
 
@@ -566,7 +566,7 @@ public class ActionItemController {
 							+ "Если указан другой ID, фильтр не применяется.", required = false) @RequestParam(value = "asID_Place_UA", required = false) final List<String> asID_Place_UA,
 			@ApiParam(value = "булевый флаг. Возвращать или нет пустые категории и подкатегории (по умолчанию false)", required = true) @RequestParam(value = "bShowEmptyFolders", required = false, defaultValue = "false") final boolean bShowEmptyFolders) {
 
-        final boolean bTest = generalConfig.bTest();
+        final boolean bTest = generalConfig.isSelfTest();
 
         SerializableResponseEntity<String> entity = cachedInvocationBean
                 .invokeUsingCache(new CachedInvocationBean.Callback<SerializableResponseEntity<String>>(
@@ -651,7 +651,7 @@ public class ActionItemController {
             boolean serviceMatchedToIds = false;
             boolean nationalService = false;
 
-            //List<ServiceData> serviceDatas = service.getServiceDataFiltered(generalConfig.bTest());
+            //List<ServiceData> serviceDatas = service.getServiceDataFiltered(generalConfig.isSelfTest());
             List<ServiceData> aServiceData = oService.getServiceDataFiltered(true);
             if (aServiceData != null) {
                 for (Iterator<ServiceData> oServiceDataIterator = aServiceData.iterator(); oServiceDataIterator
@@ -920,7 +920,7 @@ public class ActionItemController {
                     service.setLaw(null);
                     //service.setSub(service.getServiceDataList().size());
 
-                    List<ServiceData> serviceDataFiltered = service.getServiceDataFiltered(generalConfig.bTest());
+                    List<ServiceData> serviceDataFiltered = service.getServiceDataFiltered(generalConfig.isSelfTest());
                     service.setSub(serviceDataFiltered != null ? serviceDataFiltered.size() : 0);
                     //service.setTests(service.getTestsCount());
                     //service.setStatus(service.getTests(); service.getTestsCount());

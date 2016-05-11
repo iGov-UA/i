@@ -1,42 +1,52 @@
 package org.igov.model.subject.organ;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.igov.model.core.Entity;
 
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 
 /**
  * Created by D.Zh. on 05.12.15.
  * dmitry.zhuravlyov@yahoo.com
  */
 @javax.persistence.Entity
-public class SubjectOrganJoinAttribute extends Entity {
+public class SubjectOrganJoinAttribute implements Entity<SubjectOrganJoinAttributeId> {
 
-    @Column(name = "nID_SubjectOrganJoin", length = 30, unique = false)
-    private Long subjectOrganJoinId;
-
-    @JsonProperty(value = "sName")
-    @Column(name = "sName", length = 15, unique = false)
-    private String name;
+    @EmbeddedId
+    private SubjectOrganJoinAttributeId id = new SubjectOrganJoinAttributeId();
 
     @JsonProperty(value = "sValue")
     @Column(name = "sValue", length = 150, unique = false)
     private String value;
 
+    @Override
+    @JsonIgnore
+    public SubjectOrganJoinAttributeId getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(SubjectOrganJoinAttributeId id) {
+        this.id = id;
+    }
+
     public Long getSubjectOrganJoinId() {
-        return subjectOrganJoinId;
+        return id.getSubjectOrganJoinId();
     }
 
     public void setSubjectOrganJoinId(Long subjectOrganJoinId) {
-        this.subjectOrganJoinId = subjectOrganJoinId;
+        id.setSubjectOrganJoinId(subjectOrganJoinId);
     }
 
+    @JsonProperty(value = "sName")
     public String getName() {
-        return name;
+        return id.getName();
     }
 
     public void setName(String name) {
-        this.name = name;
+        id.setName(name);
     }
 
     public String getValue() {
@@ -50,8 +60,8 @@ public class SubjectOrganJoinAttribute extends Entity {
     @Override
     public String toString() {
         return "SubjectOrganJoinAttribute{" +
-                "subjectOrganJoinId=" + subjectOrganJoinId +
-                ", name='" + name + '\'' +
+                "subjectOrganJoinId=" + id.getSubjectOrganJoinId() +
+                ", name='" + id.getName() + '\'' +
                 ", value='" + value + '\'' +
                 '}';
     }

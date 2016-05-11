@@ -29,7 +29,7 @@ public class DeleteProccess implements JavaDelegate {
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
-        if (generalConfig.bTest()) {
+        if (generalConfig.isSelfTest()) {
             List<ProcessInstance> processInstances = runtimeService.createProcessInstanceQuery().list();
             for (ProcessInstance processInstance : processInstances) {
                 runtimeService.deleteProcessInstance(processInstance.getProcessInstanceId(), "deprecated");

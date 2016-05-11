@@ -28,7 +28,7 @@ public class EscalationHandler_StartEscalationProcess implements EscalationHandl
         String sHead = null;
         try {
             sHead = String
-                    .format((oGeneralConfig.bTest() ? "(TEST)" : "") + "Зависла заявка № %s:%s ! Прийміть міри!",
+                    .format((oGeneralConfig.isSelfTest() ? "(TEST)" : "") + "Зависла заявка № %s:%s ! Прийміть міри!",
                             mParam.get("sID_BP"),
                             mParam.get("nID_task_activiti").toString());
 

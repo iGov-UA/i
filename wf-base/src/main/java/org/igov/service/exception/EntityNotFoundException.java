@@ -9,7 +9,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
  * @see EntityDao#findByIdExpected(Long)
  */
 public class EntityNotFoundException extends EmptyResultDataAccessException {
-    public EntityNotFoundException(Long id) {
+    public EntityNotFoundException(Object id) {
         this(String.format("Entity with id=%s does not exist", id));
     }
 
@@ -21,7 +21,7 @@ public class EntityNotFoundException extends EmptyResultDataAccessException {
         super(message, 1, ex);
     }
 
-    public EntityNotFoundException(Long id, Throwable ex) {
+    public EntityNotFoundException(Object id, Throwable ex) {
         this(String.format("Entity with id=%s does not exist", id), ex);
     }
 }

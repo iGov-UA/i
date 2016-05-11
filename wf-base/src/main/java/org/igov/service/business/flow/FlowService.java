@@ -51,15 +51,15 @@ public class FlowService implements ApplicationContextAware {
 
     @Autowired
     @Qualifier("flowPropertyDao")
-    private GenericEntityDao<FlowProperty> flowPropertyDao;
+    private GenericEntityDao<Long, FlowProperty> flowPropertyDao;
 
     @Autowired
     @Qualifier("flowPropertyClassDao")
-    private GenericEntityDao<FlowPropertyClass> flowPropertyClassDao;
+    private GenericEntityDao<Long, FlowPropertyClass> flowPropertyClassDao;
 
     @Autowired
     @Qualifier("subjectOrganDepartmentDao")
-    private GenericEntityDao<SubjectOrganDepartment> subjectOrganDepartmentDao;
+    private GenericEntityDao<Long, SubjectOrganDepartment> subjectOrganDepartmentDao;
 
     @Autowired
     private RepositoryService repositoryService;

@@ -1,7 +1,7 @@
 package org.igov.model.object.place;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.igov.model.core.Entity;
+import org.igov.model.core.AbstractEntity;
 
 import javax.persistence.Column;
 
@@ -10,7 +10,7 @@ import javax.persistence.Column;
  * @since 20.07.2015
  */
 @javax.persistence.Entity
-public class PlaceTree extends Entity {
+public class PlaceTree extends AbstractEntity {
 
     @Column(name = "nID_Place")
     @JsonProperty("nID_Place")

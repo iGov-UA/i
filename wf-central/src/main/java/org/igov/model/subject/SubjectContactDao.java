@@ -9,7 +9,7 @@ import java.util.List;
  * Date: 27.12.2015
  * Time: 18:18
  */
-public interface SubjectContactDao extends EntityDao<SubjectContact> {
+public interface SubjectContactDao extends EntityDao<Long, SubjectContact> {
 
     List<SubjectContact> findContacts(Subject subject);
 }

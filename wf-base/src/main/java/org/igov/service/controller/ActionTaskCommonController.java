@@ -1435,7 +1435,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
         String sToken = Tool.getGeneratedToken();
         try {
-            String sID_Order = generalConfig.sID_Order_ByProcess(nID_Process);
+            String sID_Order = generalConfig.getOrderId_ByProcess(nID_Process);
             String sReturn = oActionTaskService.updateHistoryEvent_Service(
                     HistoryEvent_Service_StatusType.OPENED_REMARK_EMPLOYEE_QUESTION,
                     sID_Order,
@@ -1587,11 +1587,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         ) throws CommonServiceException {
         try {
             /* issue #1131
-            String sID_Order = generalConfig.sID_Order_ByProcess(nID_Process);
+            String sID_Order = generalConfig.getOrderId_ByProcess(nID_Process);
             Map<String, String> params = new HashMap<>();
             params.put("sID_Order", sID_Order);
             String soResponse = "";
-            String sURL = generalConfig.sHostCentral() + "/wf/service/subject/message/getServiceMessages";
+            String sURL = generalConfig.getSelfHostCentral() + "/wf/service/subject/message/getServiceMessages";
             soResponse = httpRequester.getInside(sURL, params);
             LOG.info("(soResponse={})", soResponse);
             */
@@ -1812,11 +1812,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     	try {
             Map<String, String> params = new HashMap<>();
             if(nID_Process!=null){
-                String sID_Order = generalConfig.sID_Order_ByProcess(nID_Process);
+                String sID_Order = generalConfig.getOrderId_ByProcess(nID_Process);
                 params.put("sID_Order", sID_Order);
             }
             params.put("nID_Message", nID_Message);
-            String sURL = generalConfig.sHostCentral() + "/wf/service/subject/message/getMessageFile";
+            String sURL = generalConfig.getSelfHostCentral() + "/wf/service/subject/message/getMessageFile";
             byte[] soResponse = httpRequester.getInsideBytes(sURL, params);
 
             LOG.info("Size of file {}", soResponse.length);
@@ -1988,7 +1988,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     	String year = eventHandler.getYear();
     	String status = eventHandler.getStatus();
         String nID_DocumentTemplate = eventHandler.getnID_DocumentTemplate();
-        String sHasFile = String.valueOf(eventHandler.isbFile());
+        Boolean bHasFile = eventHandler.isbFile();
 
     	String sKey = documentId + ":" + year;
         String sKeyFromPkSection = documentIdFromPkSection + ":" + year;
@@ -2026,10 +2026,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 					runtimeService.setVariable(task.getProcessInstanceId(), "sID_Document_UkrDoc", sKeyFromPkSection);
                                         taskService.setVariable(task.getId(), "nID_DocumentTemplate_UkrDoc", nID_DocumentTemplate);
 					runtimeService.setVariable(task.getProcessInstanceId(), "nID_DocumentTemplate_UkrDoc", nID_DocumentTemplate);
-                                        taskService.setVariable(task.getId(), "bFile_UkrDoc", sHasFile);
-					runtimeService.setVariable(task.getProcessInstanceId(), "bFile_UkrDoc", sHasFile);
-					LOG.info("Set variable sStatusName_UkrDoc {} and sID_Document_UkrDoc {} and nID_DocumentTemplate {} and sHasFile {} for process instance with ID {}", 
-                                                status, sKeyFromPkSection, nID_DocumentTemplate, sHasFile, task.getProcessInstanceId());
+                                        taskService.setVariable(task.getId(), "bFile_UkrDoc", bHasFile);
+					runtimeService.setVariable(task.getProcessInstanceId(), "bFile_UkrDoc", bHasFile);
+					LOG.info("Set variable sStatusName_UkrDoc {} and sID_Document_UkrDoc {} and nID_DocumentTemplate {} and bHasFile {} for process instance with ID {}", 
+                                                status, sKeyFromPkSection, nID_DocumentTemplate, bHasFile, task.getProcessInstanceId());
 					taskService.complete(task.getId());
 					LOG.info("Completed task {}", task.getId());
 				}

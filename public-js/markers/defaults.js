@@ -88,22 +88,21 @@ angular.module('iGovMarkers')
       ,FileSign : {
         aField_ID: ['bankId_scan_inn1','bankId_scan_passport1']
       }
+      ,FileExtensions_1: { //унифицированный валидатор расщирений файлов
+        aField_ID: ['file1','file2'],
+        saExtension: 'jpg,pdf,png',
+        sMessage: 'Недопустимий формат файлу! Повинно бути: {saExtension}!'
+      }
     },
     attributes: {
-      Editable_1: {aField_ID:['sPhone_User1', 'sMail_User1', 'bankIdlastName1'], bValue: true},
+      Editable_1: {aField_ID:['sPhone_User1', 'sMail_User1', 'bankIdlastName1'], bValue: true}
     },
     motion: {
-      // ReplaceTextLastSymbols_1: {
-      //   sID_Field: "nachalnikFamily",
-      //   nSymbols: 2,
-      //   sValueNew: "ко",
-      //   sID_Element_sValue: "sNachalnikFamily"
-      // },
       ReplaceTextSymbols_1: {
         sID_Field: "Registrationservice",
-        sFrom: "кий",
-        sTo: "кого",
-        sID_Element_sValue: "sRegistrationservice"
+        nSymbols: 2,
+        sValueNew: "ого",
+        sID_Element_sValue: "registration-service"
       }
     }
 });

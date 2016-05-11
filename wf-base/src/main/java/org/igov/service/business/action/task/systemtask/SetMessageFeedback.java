@@ -60,16 +60,16 @@ public class SetMessageFeedback implements JavaDelegate {
 		Map<String, String> parts = new HashMap<String, String>();
 		
 		parts.put("nID_Protected", nID_Protected != null ? nID_Protected : "0");
-		parts.put("nID_Server", String.valueOf(generalConfig.nID_Server()));
+		parts.put("nID_Server", String.valueOf(generalConfig.getSelfServerId()));
 		parts.put("sBody_Indirectly", sBody_Indirectly);
 		parts.put("sID_Rate_Indirectly", sID_Rate_Indirectly);
 		parts.put("nID_Proccess_Feedback", nID_Proccess_Feedback);
 		// Post
 		
-		LOG.info("Calling URL with parametes {}|{}", generalConfig.sHostCentral() + URI, parts);
+		LOG.info("Calling URL with parametes {}|{}", generalConfig.getSelfHostCentral() + URI, parts);
 		
 		try {
-			httpRequester.getInside(generalConfig.sHostCentral() + URI, parts);
+			httpRequester.getInside(generalConfig.getSelfHostCentral() + URI, parts);
 		} catch (Exception oException) {
 			LOG.error("Error: {}, Exception occured while calling setMessageFeedback_Indirectly method", oException.getMessage());
             LOG.trace("FAIL:", oException);

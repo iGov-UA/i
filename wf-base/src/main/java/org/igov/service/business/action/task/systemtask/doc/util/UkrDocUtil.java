@@ -103,7 +103,7 @@ public class UkrDocUtil {
                 if (attachInfo.getName() != null && !attachInfo.getName().contains("user form")) {
                     List<String> info = new LinkedList<String>();
                     info.add(URLEncoder.encode(attachInfo.getName()));
-                    info.add(String.format(DOWNLOAD_FILE_FROM_PATTERN, generalConfig.sHost(), URLEncoder.encode(((AttachmentEntity) attachInfo).getContentId()), URLEncoder.encode(attachInfo.getName()), URLEncoder.encode(attachInfo.getType())));
+                    info.add(String.format(DOWNLOAD_FILE_FROM_PATTERN, generalConfig.getSelfHost(), URLEncoder.encode(((AttachmentEntity) attachInfo).getContentId()), URLEncoder.encode(attachInfo.getName()), URLEncoder.encode(attachInfo.getType())));
                     attachmentsInfo.add(info);
                 }
             }

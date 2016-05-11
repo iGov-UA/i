@@ -3,12 +3,12 @@ package org.igov.model.object;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Objects;
-import org.igov.model.core.Entity;
+import org.igov.model.core.AbstractEntity;
 
 import javax.persistence.Column;
 
 @javax.persistence.Entity
-public class ObjectCustoms extends Entity
+public class ObjectCustoms extends AbstractEntity
 {
     @JsonProperty(value = "sID_UA")
     @Column(name="sID_UA", length=30, nullable=false)

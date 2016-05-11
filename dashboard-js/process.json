@@ -2,29 +2,42 @@
   "name": "dashboard-js",
   "script": "./server/app.js",
   "args": "",
+   "error_file": "/sybase/logs/region_front/dashboard-js_err.log",
+   "out_file": "/sybase/logs/region_front/dashboard-js_out.log",
   "log_date_format" : "YYYY-MM-DD_HH:mm:ss.SSS",
-  "env": {
-    "NODE_ENV": "production",
-    "DOMAIN": "",
-    "ACTIVITI_PROT": "",
-    "ACTIVITI_HOST": "",
-    "ACTIVITI_PORT": "",
-    "ACTIVITI_REST": "",
-    "ACTIVITI_USER": "",
-    "ACTIVITI_PASSWORD": "",
-    "SESSION_SECRET": "",
-    "SESSION_SECURE": true,
-    "SESSION_MAX_AGE": 14400000, // 4h*60m*60s*1000ms
-    "BANK_ID_HOST": "",
-    "BANK_ID_APP_ID": "",
-    "BANK_ID_PATH": "",
-    "BANK_ID_TOKEN_PATH": "",
-    "BANK_ID_SECRET": "",
-    "BANK_ID_USER_PATH": "",
-    "SSL_PORT": "8080",
-    "PORT": "8080",
-    "PRIVATE_KEY": "",
-    "CERTIFICATE": "",
-    "NODE_TLS_REJECT_UNAUTHORIZED":""
+
+  "env":{
+    "sProfile_Application": "development",
+    "bDebug_Application": "TRUE",
+    "bTest": "TRUE",
+
+    "NODE_TLS_REJECT_UNAUTHORIZED":"0",
+
+    "BackProxySession_Region":{
+      "sSecret_BackProxySession_Region": "put yor session secret here",
+      "sKey1_BackProxySession_Region": "slot1 for session",
+      "sKey2_BackProxySession_Region": "slot2 for session",
+      "bSecure_BackProxySession_Region": "FALSE",
+      "nLiveMS_BackProxySession_Region": 14400000
+    },
+
+    "Back_Region":{
+      "sURL_Back_Region": "https://test.region.igov.org.ua:443/wf/service",
+      "sLogin_Back_Region": "activiti-master",
+      "sPassword_Back_Region": "UjhtJnEvf!"
+    },
+
+    "BackProxy_Region": {
+      "sURL_BackProxy_Region": "http://localhost:9001",
+      "sKeyPath_BackProxy_Region": "/sybase/cert/server.key",
+      "sCertPath_BackProxy_Region": "/sybase/cert/server.cert"
+    },
+
+    "BackSession_Region":{
+      "nIdleMS_BackSession_Region": 3000,
+      "nTimeoutMS_BackSession_Region": 3000,
+      "nIntervalMS_BackSession_Region": 1000
+    }
+
   }
 }

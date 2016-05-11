@@ -225,7 +225,7 @@ public class SubjectMessageController {
                     }
                 }
             }
-            String sURL_Redirect = generalConfig.sHostCentral() + "/feedback?sID_Order=" + sID_Order + "&sSecret=" + sToken;
+            String sURL_Redirect = generalConfig.getSelfHostCentral() + "/feedback?sID_Order=" + sID_Order + "&sSecret=" + sToken;
             LOG.info("Redirecting to URL:{}", sURL_Redirect);
             oResponse.sendRedirect(sURL_Redirect);
 
@@ -262,7 +262,7 @@ public class SubjectMessageController {
         //setServiceRate(sID_Order, sID_Rate);
         // storing message for feedback
         /*try {
-         String sURL_Redirect = generalConfig.sHostCentral() + "/feedback?sID_Order=" + sID_Order + "&sSecret=" + sToken;
+         String sURL_Redirect = generalConfig.getSelfHostCentral() + "/feedback?sID_Order=" + sID_Order + "&sSecret=" + sToken;
          LOG.info("Redirecting to URL:" + sURL_Redirect);
          oResponse.sendRedirect(sURL_Redirect);
          } catch (Exception e) {
@@ -678,6 +678,7 @@ public class SubjectMessageController {
                     LOG.info("No SubjectMessage records found, create new!");
                     oHistoryEvent_Service.setsToken("");
                     historyEventServiceDao.saveOrUpdate(oHistoryEvent_Service);
+                    //test-trigger/////
                     /*throw new CommonServiceException(
                      ExceptionCommonController.BUSINESS_ERROR_CODE,
                      "Record Not Found",

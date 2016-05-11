@@ -106,48 +106,67 @@ p {font-size: 11px;}
 <section class="print_wrap">
     <div class="line_col ta-r">
         <div class="under_field w350 ta-l"><i>[sShapka_mode_worktime_529]</i><span></span></div><br /> <br />
-        <div class="under_field w350 ta-l"><i>[sFIO]<br>(ІПН [bankIdinn])</i><span></span></div><br />
-        <div class="under_field w350 ta-l"><i>Паспорт: [bankIdPassport]<br>Телефон: [phone]</i><span></span></div><br />
-        
+        <div id="hide_izyum">
+        	<div class="under_field w350 ta-l"><i>[sFIO]<br>(ІПН [bankIdinn])</i><span></span></div><br />
+        	<div class="under_field w350 ta-l"><i>Паспорт: [bankIdPassport]<br>Телефон: [phone]</i><span></span></div><br /><br />
+        </div>
 	</div>
     <div class="line_col ta-c m-t-25">
         <b id="Add_common">З А Я В А - П Р О П О З И Ц І Я</b>
         <b id="Add_persotrav">З А Я В А </b> 
+        <b id="Add_izyum">З А Я В А <br />на погодження режиму роботи</b> 
         <br /><br />
        
        <div class="ta-l">Прошу узгодити режим роботи</div><br /> 
        <div class="under_field_line ta-c">[sNameObject_RV]<span>(у родовому відмінку повне найменування об'єкта торгівлі, ресторанного господарства  або сфери послуг)</span></div><br/>
        <div class="ta-l">який знаходиться за адресою:</div> 
 	   <div class="under_field_line ta-c">[sAdressObject]<span>(місцезнаходження об'єкта торгівлі, ресторанного господарства або сфери послуг)</span></div>
-		<div class="under_field_line ta-c">[sFioTrusted_Person]<span>(ім'я, по батькові та прізвище фізичної особи – підприємця або юридичної особи)</span></div>
+	   <div class="under_field_line ta-c" id="show_kved">[sKVED]<span>(вид діяльності згідно з КВЕД)</span></div>
+		<div class="under_field_line ta-c">[sFioTrusted_Person] ([sEdrpou])<span>(ім'я, по батькові та прізвище фізичної особи – підприємця або юридичної особи, ідентифікаційний код згідно з ЄДРПОУ або ІПН)</span></div>
 		<div class="under_field_line ta-c">[sAdressContragent]<span>(місцезнаходження юридичної особи або місце проживання фізичної особи – підприємця)</span></div>
 		<div class="under_field_line ta-c">[phone]<span>(телефон, телефакс)</span></div>
 		<br />
+		<div class="ta-l" id="show_Izyum"> Зареєстрований ______________________________________________________________<br /> 
+						   Реєстраційне свідоцтво № ______________________________________ від  _______________<br /><br />
+		</div>
+
 		<div class="ta-l">Початок та закінчення роботи: <span><b>[sTime_Full]</b></span></div><br />
-		<div class="ta-l">Перерва: <span><b>[sTime_Break]</b></span></div><br />
-		<div class="ta-l">Вихідні дні: <span><b>[sWeekend]</b></span></div><br />
-		<div class="ta-l" id="Add_SpecialConditions">Особливі умови роботи: <span><b>[sSpecialConditions]</b></span></div><br />
+		<div class="ta-l">Перерва: <span><b>[sTime_Break]</b></span></div>
+		<br />
+		<div class="ta-l">Вихідні дні: <span><b>[sWeekend]</b></span></div>
+		<br />
+		<div class="ta-l" id="Add_SpecialConditions">Особливі умови роботи: <span><b>[sSpecialConditions]</b></span></div>
+		<br />
+		<div class="ta-l" id="show_Plosha">
+				Тип об'єкту, спеціалізація <b><u>&nbsp;&nbsp;[asEnumSpesialObject]&nbsp;&nbsp;</u></b> <br />
+				Загальна площа об’єкта <b><u>&nbsp;&nbsp;[nSquareObject]&nbsp;&nbsp;</u></b> кв.м, в т.ч. торговельна площа <b><u>&nbsp;&nbsp;[nTorgSquareObject]&nbsp;&nbsp;</u></b> кв.м.<br />
+				кількість робочих місць <b><u>&nbsp;&nbsp;[nKolvoWork]&nbsp;&nbsp;</u></b><br />
+				Кількість посадкових місць (для закладів ресторанного господарства) <b><u>&nbsp;&nbsp;[nKolvoMest]&nbsp;&nbsp;</u></b><br />
+				Дата відкриття <b><u>&nbsp;&nbsp;[sDateOpen]&nbsp;&nbsp;</u></b> <br />
+				<font id="P3E" size="-1" face="Times New Roman" color="#000000">Зобов'язуюсь дотримуватись вимог законодавства та інших нормативних документів, що регламентують торговельну діяльність (діяльність у сфері послуг).</font><br />
+				Документи, що додаються до заяви: <br />
+				[sAddDoc]
+		</div>
 		<p></p>
 		<div class="ta-l">Кінцевий результат бажаю отримати: <span><b>особисто.</b></span></div><br />
-	
 	</div>
 
 	<div class="date_subm m-t-85">
-        <div class="inv">[date_today]<span>(дата)</span></div>
+        <div class="inv" align="CENTER">[date_today]<span>(дата)</span></div>
         <div class="signature"><span>(підпис заявника)</span></div>
 		<div class="clear"></div>
     </div>
 	<br />
-	<b><div class="ta-l">Заповнюється посадовою особою центру муніципальних послуг міської ради:<span></span></div><br /></b>
+	<b><div class="ta-l">Заповнюється відповідальною посадовою особою:<span></span></div><br /></b>
 <div class="date_subm m-t-85">
-        <div class="inv">[sDate_Registrastion]<span>(дата реєстрації звернення)</span></div>
-        <div class="signature">[sExtension_Number]<span>(реєстраційний номер)</span></div>
+        <div class="inv" align="CENTER">[sDate_Registrastion]<span>(дата реєстрації звернення)</span></div>
+        <div class="signature" align="CENTER">[sExtension_Number]<span>(реєстраційний номер)</span></div>
 		<div class="clear"></div>
     </div>
 
 <div class="date_subm m-t-85">
         <div class="inv"><span>(підпис адміністратора)</span></div>
-        <div class="signature">[sFioAdmin]<span>(ініціали та прізвище адміністратора)</span></div>
+        <div class="signature" align="CENTER">[sFioAdmin]<span>(ініціали та прізвище адміністратора)</span></div>
 		<div class="clear"></div>
     </div>	
 	<br />		
