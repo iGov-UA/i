@@ -355,7 +355,7 @@ else
 		build_docker
 		exit 0
 	fi
-	if [[ -z $sHost ]; then
+	if [ -z $sHost ]; then
 		echo "Cloud not select host for deploy. Wrong version or project."
 		exit 1
 	fi
