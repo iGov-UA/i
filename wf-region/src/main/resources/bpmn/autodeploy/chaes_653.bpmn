@@ -29,23 +29,31 @@
         </activiti:formProperty>
         <activiti:formProperty id="post_office" name="№ відділення поштового зв'язку (індекс)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bank_name" name="Назва банку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="mfo" name="МФО банку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="edrpou" name="ЄДРПОУ банку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="mfo" name="МФО банку;шість цифр" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="edrpou" name="ЄДРПОУ банку;вісім цифр" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bank_account" name="Номер рахунку в банку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFilePassprotParrent" name="Паспорт батька та матері" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFileScanINN" name="Ідентифікаційний код матері та батька, або опікуна" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFileBirthCertificate" name="Свідоцтво про народження потерпілої дитини," type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFileChernobylCertificateChild" name="Чорнобильське посвідчення дитини з вкладкою" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFileMedicalDisabledChild" name="Медичний висновок на дитину-інваліда" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFilePersonalAccountBank" name="Виписка про відкриття особового рахунку з банку" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFileConclusionMCCHouseTraining" name="Висновок ЛКК про надомне навчання." type="file" required="true"></activiti:formProperty>
+
+		<activiti:formProperty id="bankId_scan_passport" name="Паспорт" type="file" required="true"></activiti:formProperty>
+		<activiti:formProperty id="bankId_scan_inn" name="Ідентифікаційний код" type="file" required="true"></activiti:formProperty>
+		<activiti:formProperty id="nFileChernobylCertificateChild" name="Чорнобильське посвідчення дитини з вкладкою" type="file" required="true"></activiti:formProperty>
+		<activiti:formProperty id="nFileMSEKDisability" name="Довідка МСЕК про встановлення інвалідності" type="file" required="true"></activiti:formProperty>
+		<activiti:formProperty id="nFilePersonalAccountBank" name="Виписка про відкриття особового рахунку з банку" type="file" required="true"></activiti:formProperty>
+		<activiti:formProperty id="nFileInformationEvacuation" name="Довідка про евакуацію." type="file" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="nPage" name="Вкажіть загальну кількість сторінок відсканованих документів" type="string" default="12" required="true"></activiti:formProperty>
+
+
         <activiti:formProperty id="sNameOrgan" name="название органа в подписи письма" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="график работы" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для справок" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адрес органа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapkaGolova" name="шапка принтформы" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk1" name="Пошта ЦНАП" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
-        <activiti:formProperty id="sPassportDateFormat" name="Дата видачі паспорту" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nDocument" name="количество документов" type="invisible" default="7"></activiti:formProperty>
+        
+               
+        
+        <activiti:formProperty id="sCompensationCategory" name="Категорія компенсацій (галочка на формі)" type="invisible" default="5_2"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Вибір отримання коштів" type="markers" default="${markerService.loadFromFile('сhernobyl/chaes_654_bill.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -54,8 +62,82 @@
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>
-    <sequenceFlow id="flow2" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
-    <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
+    <sequenceFlow id="flow2" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>    
+    <sequenceFlow id="flow16" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
+    <scriptTask id="scripttask1" name="Script Task" scriptFormat="groovy" activiti:autoStoreVariables="false">
+    	<script><![CDATA[
+import java.util.regex.Matcher
+import java.util.regex.Pattern
+
+/* константные переменные для регулярных выражений*/
+def regSeriaStr = "(([Сс]ерия|СЕРИЯ|[Сс]ерія|СЕРІЯ).\\s*)?"
+def regPassoprt = "(([Пп]аспорт|ПАСПОРТ).\\w?.\\s*)?"
+def regNumberStr = "(([Нн]омер|НОМЕР).\\s*)?"
+
+def regSeriaVal = "[ЄІЇҐА-ЯA-Z]{2}"
+def regNumberVal = "[0-9]{6}"
+def regFrom = "(([Вв]ід|[Оо]т|ВІД|ОТ)\\D{0,4})?"
+def regYearVal = "[0-9]{2}\\W[0-9]{2}\\W(19|20|21)?[0-9]{2}"
+
+def patSerNum = Pattern.compile(regSeriaStr + "\\D{0,4}"
++ regNumberStr + "\\D{0,4}"
++ regPassoprt + "\\D{0,4}"
++ regSeriaVal + "\\D{0,4}"
++ regNumberStr + "\\D{0,4}"
++ regPassoprt + "\\D{0,4}" 
++ regNumberVal + "\\s*" /**/
+)
+
+def patDate = Pattern.compile(
+regFrom + "\\s*" + 
+regYearVal +"\\s*"
+)
+
+def str0 = execution.getVariable("bankIdPassport")
+
+def strSerial = ""
+def strNumber = ""
+def strDate = ""
+def strIssuedBy = ""
+
+def matSerNum = patSerNum.matcher(str0)
+
+
+if(matSerNum.find()){
+    strSerialNumber = matSerNum.group()
+    str0 = str0.replaceAll(strSerialNumber, "")
+   /* */
+strSerialNumber = strSerialNumber.replaceAll(regPassoprt, "")
+strSerialNumber = strSerialNumber.replaceAll(regSeriaStr, "")
+strSerialNumber = strSerialNumber.replaceAll(regNumberStr, "")
+ /**/   
+
+    def matSer = Pattern.compile(regSeriaVal).matcher(strSerialNumber)
+    if(matSer.find()){
+        strSerial = matSer.group()
+    }
+
+    def matNum = Pattern.compile(regNumberVal).matcher(strSerialNumber)
+    if(matNum.find()){
+        strNumber = matNum.group()
+    }  
+}
+
+def matDate = patDate.matcher(str0)
+
+if(matDate.find()){
+    strDate = matDate.group()
+    strIssuedBy = str0.replaceAll(strDate, "")
+}
+
+execution.setVariable("sPassportSeria",strSerial)
+execution.setVariable("sPassportNumber",strNumber)
+execution.setVariable("sPassportIssuedBy",strIssuedBy)
+execution.setVariable("dPassportDate",strDate)
+
+    	]]></script>
+    </scriptTask>
+    <sequenceFlow id="flow3" sourceRef="scripttask1" targetRef="servicetask2"></sequenceFlow>
     <serviceTask id="servicetask2" name="Лист-звернення до держслужбовця" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -89,8 +171,7 @@
 		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<p>
 				Ваш запит взято в роботу
-			</p>
-			
+			</p>			
 			<br>
 			За наявності питань можете звернутись за наступними контактами<br>
 			${sAddress}<br>
@@ -131,22 +212,30 @@
         <activiti:formProperty id="mfo" name="МФО банку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="edrpou" name="ЄДРПОУ банку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bank_account" name="Номер рахунку в банку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nPage" name="Вкажіть загальну кількість сторінок відсканованих документів" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asDocument" name="Перевірка вхідних данних" type="enum" required="true">
           <activiti:value id="OK" name="Всі дані ВІДПОВІДАЮТЬ законодавству"></activiti:value>
           <activiti:value id="NO" name="Надані дані НЕ відповідають законодавству"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="В разі відмови в наданні послуги зазначте підставу для відмови (дані будуть надіслані громадянинові по електронній пошті)*" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/сhernobyl/chaes_654_print.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="название органа в подписи письма" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="nDocument" name="количество документов" type="invisible" default="7"></activiti:formProperty>
+
+        <activiti:formProperty id="sCompensationCategory" name="Категорія компенсацій (галочка на формі)" type="invisible" default="5_2"></activiti:formProperty>        
+        <activiti:formProperty id="markersPrint1" name="Для прінтформи" type="markers" default="${markerService.loadFromFile('сhernobyl/chaes_654_print.json')}"></activiti:formProperty>
+        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFilePassprotParrent},
-				${nFileScanINN},
-				${nFileBirthCertificate},
+            <activiti:expression>
+				${bankId_scan_passport},
+				${bankId_scan_inn},
 				${nFileChernobylCertificateChild},
-				${nFileMedicalDisabledChild},
+				${nFileMSEKDisability},
 				${nFilePersonalAccountBank},
-				${nFileConclusionMCCHouseTraining}]]></activiti:expression>
+				${nFileInformationEvacuation}
+			</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -200,7 +289,7 @@
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Звернення на тему: Оформлення щорічної допомоги на оздоровлення постраждалим внаслідок аварії на ЧАЕС]]></activiti:expression>
+          <activiti:expression><![CDATA[Оформлення щорічної допомоги на оздоровлення постраждалим внаслідок аварії на ЧАЕС]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
@@ -250,21 +339,35 @@
         <activiti:formProperty id="mfo" name="МФО банку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="edrpou" name="ЄДРПОУ банку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bank_account" name="Номер рахунку в банку" type="string" writable="false"></activiti:formProperty>
+
+        <activiti:formProperty id="nPage" name="Вкажіть закальну кількість сторінок відсканованих документів" type="string" required="true"></activiti:formProperty>
+
+
         <activiti:formProperty id="asResult" name="Рішення держслужбовця" type="enum" required="true">
           <activiti:value id="Yes" name="Видати ордер"></activiti:value>
           <activiti:value id="Not" name="Відмовити у видачі ордеру"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Укажіть інформацію для громадянина(дані будуть надіслані по електронній пошті)*" type="textArea" required="true"></activiti:formProperty>
+        
         <activiti:formProperty id="sBody_1" name="[pattern/print/сhernobyl/chaes_654_print.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
+
+        <activiti:formProperty id="sNameOrgan" name="название органа в подписи письма" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="nDocument" name="количество документов" type="invisible" default="7"></activiti:formProperty>
+
+        <activiti:formProperty id="sCompensationCategory" name="Категорія компенсацій (галочка на формі)" type="invisible" default="5_2"></activiti:formProperty>        
+        <activiti:formProperty id="markersPrint1" name="Для прінтформи" type="markers" default="${markerService.loadFromFile('сhernobyl/chaes_654_print.json')}"></activiti:formProperty>
+        
+        
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFilePassprotParrent},
-				${nFileScanINN},
-				${nFileBirthCertificate},
+            <activiti:expression>
+				${bankId_scan_passport},
+				${bankId_scan_inn},
 				${nFileChernobylCertificateChild},
-				${nFileMedicalDisabledChild},
+				${nFileMSEKDisability},
 				${nFilePersonalAccountBank},
-				${nFileConclusionMCCHouseTraining}]]></activiti:expression>
+				${nFileInformationEvacuation}
+			</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -286,7 +389,7 @@
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Оформлення компенсаційних виплат дітям дошкільного та шкільного віку, які постраждали внаслідок Чорнобильської катастрофи]]></activiti:string>
+          <activiti:string><![CDATA[Оформлення щорічної допомоги на оздоровлення постраждалим внаслідок аварії на ЧАЕС]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
@@ -314,8 +417,8 @@
     <sequenceFlow id="flow10" sourceRef="servicetask5" targetRef="endevent1"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_chaes_653">
-    <bpmndi:BPMNPlane bpmnElement="chaes_653" id="BPMNPlane_chaes_653">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_chaes_654">
+    <bpmndi:BPMNPlane bpmnElement="chaes_654" id="BPMNPlane_chaes_654">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="34.0" y="100.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -355,6 +458,9 @@
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="143.0" y="200.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="191.0" y="10.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="69.0" y="117.0"></omgdi:waypoint>
         <omgdi:waypoint x="119.0" y="117.0"></omgdi:waypoint>
@@ -364,8 +470,8 @@
         <omgdi:waypoint x="160.0" y="200.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="224.0" y="117.0"></omgdi:waypoint>
-        <omgdi:waypoint x="284.0" y="117.0"></omgdi:waypoint>
+        <omgdi:waypoint x="243.0" y="65.0"></omgdi:waypoint>
+        <omgdi:waypoint x="336.0" y="85.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
         <omgdi:waypoint x="389.0" y="117.0"></omgdi:waypoint>
@@ -422,6 +528,10 @@
       <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
         <omgdi:waypoint x="160.0" y="299.0"></omgdi:waypoint>
         <omgdi:waypoint x="160.0" y="235.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
+        <omgdi:waypoint x="171.0" y="80.0"></omgdi:waypoint>
+        <omgdi:waypoint x="243.0" y="65.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
