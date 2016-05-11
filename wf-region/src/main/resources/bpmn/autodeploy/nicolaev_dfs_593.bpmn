@@ -277,9 +277,6 @@ var mmm2 = ''
 var ddd2 = ''
 var timeE = ''
 var eest = ''
-
-var xxx = ''
-
     timeB=execution.getVariable('date_bigin').toString()
     eest=timeB.substr(20,4)
     if(eest == 'EEST'){yyyy=timeB.substr(25,4)}
@@ -321,15 +318,13 @@ if(mmm =='01'&amp;&amp;ddd=='01')
   mmm2='12'
   yyyy2=yyyy
   }
-xxx= mmm2 
 if(mmm2 =='1'||'2'||'3'||'4'||'5'||'6'||'7'||'8'||'9')
   {
-  mmm2 = '0' + xxx.substr(1,1)
+  mmm2 = '0' + mmm2.substr(1,1)
   }
 timeE = ddd2+'-'+mmm2+'-'+yyyy2	
 execution.setVariable('date_big', timeB)
 execution.setVariable('date_end', timeE) 
-execution.setVariable('xxxxx', xxx) 
       </script>
     </scriptTask>
     <sequenceFlow id="flow20" sourceRef="scripttask1" targetRef="servicetask3"></sequenceFlow>
