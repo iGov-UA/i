@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
  * Time: 15:42
  */
 @Repository
-public class AccessServiceRoleDaoImpl extends GenericEntityDao<AccessServiceRole> implements AccessServiceRoleDao {
+public class AccessServiceRoleDaoImpl extends GenericEntityDao<Long, AccessServiceRole> implements AccessServiceRoleDao {
 
     protected AccessServiceRoleDaoImpl() {
         super(AccessServiceRole.class);

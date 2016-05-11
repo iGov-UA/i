@@ -77,7 +77,9 @@ public class ActionTaskCentralController {
                 null,//nTimeMinutes
                 null,//nID_Proccess_Feedback,
                 null,//nID_Proccess_Escalation,
-                HistoryEvent_Service_StatusType.OPENED_REMARK_CLIENT_ANSWER.getnID() //nID_StatusType
+                HistoryEvent_Service_StatusType.OPENED_REMARK_CLIENT_ANSWER.getnID(), //nID_StatusType
+                    null,//sSubjectInfo
+                    null //nID_Subject
             );
             
             /*
@@ -326,8 +328,8 @@ public class ActionTaskCentralController {
         String sURL = sHost + "/service/action/task/getStartFormData?nID_Task=" + nID_Task;
         ResponseEntity<String> osResponseEntityReturn = oHttpEntityInsedeCover.oReturn_RequestGet_JSON(sURL);
         
-        /*String sUser = generalConfig.sAuthLogin();
-        String sPassword = generalConfig.sAuthPassword();
+        /*String sUser = generalConfig.getAuthLogin();
+        String sPassword = generalConfig.getAuthPassword();
         String sAuth = SignUtil.base64_encode(sUser + ":" + sPassword);
         HttpHeaders oHttpHeaders = new HttpHeaders();
         oHttpHeaders.add("Authorization", "Basic " + sAuth);

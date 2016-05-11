@@ -14,7 +14,7 @@ import java.util.List;
  * Time: 18:51
  */
 @Repository
-public class AccessServiceLoginRoleDaoImpl extends GenericEntityDao<AccessServiceLoginRole>
+public class AccessServiceLoginRoleDaoImpl extends GenericEntityDao<Long, AccessServiceLoginRole>
         implements AccessServiceLoginRoleDao {
 
 

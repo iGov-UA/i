@@ -2,7 +2,7 @@ package org.igov.model.document.access;
 
 import org.igov.model.core.EntityDao;
 
-public interface DocumentAccessDao extends EntityDao<DocumentAccess> {
+public interface DocumentAccessDao extends EntityDao<Long, DocumentAccess> {
     Long getIdAccess() throws Exception;
 
     String setDocumentLink(Long nID_Document, String sFIO, String sTarget, String sTelephone, Long nMS,

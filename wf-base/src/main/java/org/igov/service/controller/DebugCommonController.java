@@ -34,7 +34,6 @@ import java.util.List;
 import org.igov.model.flow.FlowServiceDataDao;
 import org.igov.model.flow.Flow_ServiceData;
 import org.igov.service.business.flow.FlowService;
-import org.igov.service.business.flow.slot.ClearSlotsResult;
 import org.igov.service.business.flow.slot.Days;
 import org.igov.service.business.flow.slot.Day;
 import org.igov.service.business.flow.slot.FlowSlotVO;
@@ -300,7 +299,7 @@ public class DebugCommonController {
         LOG.info(" oDateEnd = {}", oDateEnd);
 
         Days res = oFlowService.getFlowSlots(nID_Service, nID_ServiceData, sID_BP, nID_SubjectOrganDepartment,
-                oDateStart, oDateEnd, bAll, WORK_DAYS_NEEDED); //WORK_DAYS_NEEDED
+                oDateStart, oDateEnd, bAll, WORK_DAYS_NEEDED, 1); //WORK_DAYS_NEEDED
         LOG.info(" Days = {}", res);
 
         nFreeWorkDaysFact = res.getaDay().size();

@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
-public class EscalationRuleDaoImpl extends GenericEntityDao<EscalationRule>
+public class EscalationRuleDaoImpl extends GenericEntityDao<Long, EscalationRule>
         implements EscalationRuleDao {
     protected EscalationRuleDaoImpl() {
         super(EscalationRule.class);

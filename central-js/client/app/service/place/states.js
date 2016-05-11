@@ -14,6 +14,14 @@ angular.module('app').config(function($stateProvider) {
           templateUrl: 'app/service/index.html',
           controller: 'PlaceController'
         }
+      }, resolve: {
+        isLoggedIn : function(UserService){
+          return UserService.isLoggedIn().then(function () {
+            return true;
+          }).catch(function () {
+            return false;
+          });
+        }
       }
     })
     .state('index.service.general.place.error', {
@@ -32,6 +40,15 @@ angular.module('app').config(function($stateProvider) {
           templateUrl: 'app/service/place/templates/link.html',
           controller: 'PlaceController'
         }
+      },
+      resolve: {
+        isLoggedIn : function(UserService){
+          return UserService.isLoggedIn().then(function () {
+            return true;
+          }).catch(function () {
+            return false;
+          });
+        }
       }
     }) // built-in:
     .state('index.service.general.place.built-in', {
@@ -40,6 +57,15 @@ angular.module('app').config(function($stateProvider) {
         'content@index.service.general.place': {
           templateUrl: 'app/service/place/templates/content.html',
           controller: 'PlaceController'
+        }
+      },
+      resolve: {
+        isLoggedIn : function(UserService){
+          return UserService.isLoggedIn().then(function () {
+            return true;
+          }).catch(function () {
+            return false;
+          });
         }
       }
     })
@@ -108,12 +134,12 @@ angular.module('app').config(function($stateProvider) {
         },
         BankIDAccount: function($q, UserService) {
           return UserService.account().then(function(result){
-            if(!result){
-              return $q.reject('Отсутствуют данные пользователя');
+            if(result.hasOwnProperty('code') && result.hasOwnProperty('message')){
+              return $q.reject('Ошибка при получении данных пользователя ' + result.message);
             } else {
               return result;
             }
-          });
+          })
         },
         processDefinitions: function(ServiceService, oServiceData) {
           return ServiceService.getProcessDefinitions(oServiceData, true);
@@ -158,6 +184,9 @@ angular.module('app').config(function($stateProvider) {
           } else {
             return ActivitiService.getForm(oServiceData, processDefinitionId);
           }
+        },
+        formData : function(FormDataFactory, activitiForm, BankIDAccount, oServiceData){
+          return  new FormDataFactory().initialize(activitiForm, BankIDAccount, oServiceData);
         },
         countOrder: function ($stateParams, ServiceService, oService, oServiceData) {
           var nID_Service = oService.nID;

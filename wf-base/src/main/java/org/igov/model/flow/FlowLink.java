@@ -3,14 +3,14 @@ package org.igov.model.flow;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import org.igov.model.core.Entity;
+import org.igov.model.core.AbstractEntity;
 
 /**
  * Created by Богдан on 23.10.2015.
  */
 
 @javax.persistence.Entity
-public class FlowLink extends Entity {
+public class FlowLink extends AbstractEntity {
 
     @ManyToOne(targetEntity = Flow_ServiceData.class)
     @JoinColumn(name = "nID_Flow_ServiceData")

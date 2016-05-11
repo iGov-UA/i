@@ -1,13 +1,13 @@
 package org.igov.model.subject;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.igov.model.core.Entity;
+import org.igov.model.core.AbstractEntity;
 
 import javax.persistence.Column;
 import java.util.List;
 
 @javax.persistence.Entity
-public class Subject extends Entity {
+public class Subject extends AbstractEntity {
 
     @JsonProperty(value = "sID")
     @Column(name = "sID", nullable = true)

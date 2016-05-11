@@ -14,7 +14,7 @@ function isCipherEnabled (){
 }
 
 var initPrivateKey = function () {
-  if (config.bankid.enableCipher === 'true' && config.bankid.privateKey && !privateKeyFromConfigs) {
+  if ((config.bankid.enableCipher === 'true' || config.bankid.enableCipher === true) && config.bankid.privateKey && !privateKeyFromConfigs) {
     try {
       var key = fs.readFileSync(config.bankid.privateKey);
       privateKeyFromConfigs = {

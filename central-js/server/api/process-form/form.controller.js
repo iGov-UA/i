@@ -3,7 +3,7 @@ var url = require('url')
   , FormData = require('form-data')
   , config = require('../../config/environment')
   //, config = require('../../config')
-  , accountService = require('../../auth/bankid/bankid.service.js')
+  , bankIDService = require('../../auth/bankid/bankid.service.js')
   , _ = require('lodash')
   , StringDecoder = require('string_decoder').StringDecoder
   , async = require('async')
@@ -93,7 +93,7 @@ module.exports.scanUpload = function (req, res) {
 
     var uploadResults = [];
     var uploadScan = function (documentScan, callback) {
-      var scanContentRequest = accountService.prepareScanContentRequest(documentScan.scan.link, accessToken);
+      var scanContentRequest = bankIDService.prepareScanContentRequest(documentScan.scan.link, accessToken);
 
       var form = new FormData();
       form.append('file', scanContentRequest, {
@@ -229,7 +229,8 @@ module.exports.signForm = function (req, res) {
       }
 
       if (patternFileName) {
-        var reqParams = activiti.buildRequest(req, '/wf/service/object/file/getPatternFile', {sPathFile: patternFileName.replace(/^pattern\//, '')}, config.server.sServerRegion);
+        //var reqParams = activiti.buildRequest(req, '/wf/service/object/file/getPatternFile', {sPathFile: patternFileName.replace(/^pattern\//, '')}, config.server.sServerRegion);
+        var reqParams = activiti.buildRequest(req, 'service/object/file/getPatternFile', {sPathFile: patternFileName.replace(/^pattern\//, '')}, sURL);
         request(reqParams, function (error, response, body) {
           for (var key in formData.params) {
             if (formData.params.hasOwnProperty(key)) {
@@ -256,7 +257,7 @@ module.exports.signForm = function (req, res) {
       function (formData, callback) {
         var accessToken = req.session.access.accessToken;
         createHtml(formData, function (formToUpload) {
-          accountService.signHtmlForm(accessToken, callbackURL, formToUpload, function (error, result) {
+          bankIDService.signHtmlForm(accessToken, callbackURL, formToUpload, function (error, result) {
             if (error) {
               callback(error, null);
             } else {
@@ -282,12 +283,16 @@ module.exports.signFormCallback = function (req, res) {
   var oServiceDataNID = req.session.oServiceDataNID;
   var codeValue = req.query.code;
 
+  if(!codeValue){
+    codeValue = req.query['amp;code'];
+  }
+
   if (oServiceDataNID) {
     //TODO fill sURL from oServiceData to use it below
     sURL = '';
   }
 
-  var signedFormForUpload = accountService
+  var signedFormForUpload = bankIDService
     .prepareSignedContentRequest(req.session.access.accessToken, codeValue);
 
   async.waterfall([

@@ -6,21 +6,21 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.Type;
+import org.igov.model.subject.Subject;
 import org.joda.time.DateTime;
-import org.igov.model.core.Entity;
+import org.igov.model.core.AbstractEntity;
 import org.igov.util.JSON.JsonDateTimeDeserializer;
 import org.igov.util.JSON.JsonDateTimeSerializer;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import javax.persistence.Transient;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.igov.model.subject.SubjectContact;
 
 @javax.persistence.Entity
-public class SubjectMessage extends Entity {
+public class SubjectMessage extends AbstractEntity {
 
     private static final long serialVersionUID = -5269544412868933212L;
 
@@ -75,6 +75,15 @@ public class SubjectMessage extends Entity {
     @JsonProperty(value = "nID_HistoryEvent_Service")
     @Column(name = "nID_HistoryEvent_Service", nullable = true)
     private Long nID_HistoryEvent_Service;
+
+    @JsonProperty(value = "sSubjectInfo")
+    @Column(name = "sSubjectInfo")
+    private String sSubjectInfo;
+
+    @JsonProperty(value = "oSubject")
+    @JoinColumn(name = "nID_Subject", insertable = false, updatable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Subject oSubject;
 
     public String getHead() {
         return head;
@@ -163,5 +172,15 @@ public class SubjectMessage extends Entity {
         this.oMail = oMail;
     }
 
-    
+    public Subject getoSubject() {
+        return oSubject;
+    }
+
+    public String getsSubjectInfo() {
+        return sSubjectInfo;
+    }
+
+    public void setsSubjectInfo(String sSubjectInfo) {
+        this.sSubjectInfo = sSubjectInfo;
+    }
 }

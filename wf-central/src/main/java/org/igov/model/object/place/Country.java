@@ -1,12 +1,12 @@
 package org.igov.model.object.place;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.igov.model.core.Entity;
+import org.igov.model.core.AbstractEntity;
 
 import javax.persistence.Column;
 
 @javax.persistence.Entity
-public class Country extends Entity {
+public class Country extends AbstractEntity {
 
     /**
      * nID_UA - ИД-номер Код, в Украинском классификкаторе (уникальный-ключ, long)

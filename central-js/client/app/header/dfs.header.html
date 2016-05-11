@@ -1,3 +1,4 @@
+
 <nav class="navbar-top-fixed" ng-show="navBarStatusVisible">
   <div class="container">
     <a ng-click="logout()" style="top: -1px; margin-bottom: 1px; margin-left: 10px;height:27px;vertical-align: middle;" class="glyphicon glyphicon-log-out pull-right" aria-hidden="true">
@@ -6,12 +7,27 @@
     <span style="margin-top: 1px; font-size: 15px;" class="pull-right">{{userName}}</span>
   </div>
 </nav>
+
 <nav class="navbar navbar-static-top dfs-header-container">
   <div class="container">
-    <span class="dfs-header"></span>
+    <span class="dfs-header">
+      <img src="../../assets/images/baners/logo_sfs_og.jpg" class="dfs-header-logo">
+      <span class="dfs-header-flag">
+        <i></i>
+      </span>
+    </span>
+
     <a href="/">
-      <span class="dfs-header-title"></span>
+      <span class="dfs-header-title">
+        <h1>Державна фіскальна служба України</h1>
+        <span>Офіційний портал</span>
+      </span>
     </a>
+
+    <form class="dfs-header-search hidden-sm hidden-xs" method="get" action="http://sfs.gov.ua/search/">
+      <input type="text" placeholder=" Пошук по сайту" name="query">
+      <button type="submit"><i class="glyphicon glyphicon-search"></i></button>
+    </form>
     <div class="collapse navbar-collapse navbar-dfs" collapse="navBarIsCollapsed">
       <ul class="nav navbar-nav navbar-right">
         <li class="menu-item" ng-class="{selected: state.is('index')}">

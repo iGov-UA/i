@@ -938,16 +938,16 @@
             </column>
         </addColumn>
     </changeSet>
-    
-    <changeSet id="issue-1053-remove-sMail-from-SubjectMessage" author="lesha1980" runOnChange="true" dbms="postgresql" failOnError="false">
-       <preConditions onFail="MARK_RAN">
-           <columnExists tableName="SubjectMessage" columnName="sMail"/>
-           <sqlCheck expectedResult="0">select count("sMail") from "SubjectMessage"
-                  </sqlCheck>
-       </preConditions>
+
+    <!-- Precondition is danger stuff, because column can be deleted unpredictably.
+         Therefore changeset was commented out.
+         Uncomment this when time to delete column "sMail" will come, also don't forget to remove this column
+         from SubjectMessage.csv and corresponding loadUpdateData tableName="SubjectMessage"
+    <changeSet id="issue-1053-remove-sMail-from-SubjectMessage" author="lesha1980">
        <comment>remove column 'sMail' from table 'SubjectMessage'</comment>
        <dropColumn tableName="SubjectMessage" columnName="sMail"/>
     </changeSet>
+    -->
  
     <!--changeSet id="issue-1050-2.1" author="grigoriy-romanenko-and-bw"-->
     <changeSet id="issue-1050-all" author="grigoriy-romanenko" failOnError="false">
@@ -1065,6 +1065,45 @@
         <addColumn tableName="HistoryEvent_Service">
             <column name="nID_ServiceData" type="bigint" defaultValue="null"/>
         </addColumn>
+    </changeSet>
+
+    <changeSet id="issue-1215_add_col" author="VadymBuz" failOnError="false">
+        <addColumn tableName="SubjectMessage">
+            <column name="sSubjectInfo" type="varchar(255)">
+            </column>
+        </addColumn>
+        <addColumn tableName="HistoryEvent">
+            <column name="sSubjectInfo" type="varchar(255)">
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="issue-1215_add_FK" author="VadymBuz" failOnError="false">
+        <addForeignKeyConstraint baseTableName="SubjectMessage" baseColumnNames="nID_Subject" constraintName="FK_Subject_SubjectMessage" referencedTableName="Subject"
+                                 referencedColumnNames="nID"/>
+        <addForeignKeyConstraint baseTableName="HistoryEvent" baseColumnNames="nID_Subject" constraintName="FK_Subject_HistoryEvent" referencedTableName="Subject"
+                                 referencedColumnNames="nID"/>
+    </changeSet>
+        
+    <changeSet id="issue-1218-addColumn_nID_Sex" author="askosyr">
+    	<preConditions onFail="MARK_RAN">
+            <not><columnExists tableName="SubjectHuman" columnName="nID_Sex"/></not>
+        </preConditions>
+        <addColumn tableName="SubjectHuman">
+            <column name="nID_Sex" type="bigint">              
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="issue-1262-1" author="brunneng">
+        <dropColumn tableName="SubjectOrganJoinAttribute" columnName="nID"/>
+    </changeSet>
+
+    <changeSet id="issue-1263-1" author="brunneng">
+        <!-- need to add onDelete="CASCADE" -->
+        <dropForeignKeyConstraint baseTableName="HistoryEvent" constraintName="FK_HistoryEventService_HistoryEvent"/>
+        <addForeignKeyConstraint constraintName="FK_HistoryEventService_HistoryEvent" referencedTableName="HistoryEvent_Service" referencedColumnNames="nID"
+                                 baseColumnNames="nID_HistoryEvent_Service" baseTableName="HistoryEvent" onDelete="CASCADE"/>
     </changeSet>
 
 </databaseChangeLog>

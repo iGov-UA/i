@@ -12,7 +12,7 @@ import org.igov.model.core.EntityDao;
  * Date: 21.06.2015
  * Time: 15:44
  */
-public interface FlowSlotDao extends EntityDao<FlowSlot> {
+public interface FlowSlotDao extends EntityDao<Long, FlowSlot> {
 
     /**
      * Gets flow slots by service data ID ordered by date in given interval
@@ -66,4 +66,11 @@ public interface FlowSlotDao extends EntityDao<FlowSlot> {
      */
     int updateSlots(Long nID_Flow_ServiceData, Collection<DateTime> dates, String newDuration);
 
+    /**
+     * @param nID_FlowSlot id of first slot
+     * @param countOfSlots required count of slots including first
+     * @return list of subsequent flow slots starting from slot with id <b>nID_FlowSlot</b>
+     * and next (<b>countOfSlots</b> - 1) slots.
+     */
+    List<FlowSlot> findFlowSlotsChain(Long nID_FlowSlot, int countOfSlots);
 }

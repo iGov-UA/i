@@ -31,9 +31,9 @@ public class DocumentContentTypeUtil {
 		synchronized (documentContentTypesIdByName){
 			if (documentContentTypesIdByName.isEmpty()){
 				String URI = "/wf/service/document/getDocumentContentTypes";
-				LOG.info("Getting URL: {}", generalConfig.sHostCentral() + URI);
+				LOG.info("Getting URL: {}", generalConfig.getSelfHostCentral() + URI);
 				try {
-					String soJSON_DocumentTypes = httpRequester.getInside(generalConfig.sHostCentral() + URI, new HashMap<String, String>());
+					String soJSON_DocumentTypes = httpRequester.getInside(generalConfig.getSelfHostCentral() + URI, new HashMap<String, String>());
 			        LOG.info("Received answer: {}", soJSON_DocumentTypes);
 			        
 			        JSONArray jsonArray = new JSONArray(soJSON_DocumentTypes);

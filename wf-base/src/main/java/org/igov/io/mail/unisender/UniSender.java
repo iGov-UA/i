@@ -47,11 +47,10 @@ public class UniSender {
     final static private Logger LOG = LoggerFactory.getLogger(UniSender.class);
     private static final Logger LOG_BIG = LoggerFactory.getLogger("MailBig");
     
-    //final static private String API_URL = "http://api.unisender.com/";
-    final static private String API_URL = "http://178.33.176.144/";
-    final static private String SUBSCRIBE_URI = "/api/subscribe";
-    final static private String CREATE_EMAIL_MESSAGE_URI = "/api/createEmailMessage";
-    final static private String CREATE_CAMPAIGN_URI = "/api/createCampaign";
+    final static private String sContext_Subscribe = "/api/subscribe";
+    final static private String sContext_CreateMail = "/api/createEmailMessage";
+    final static private String sContext_CreateCompain = "/api/createCampaign";
+    
     final static private String AND = "&";
     private String sAuthKey;
     private String sLang;
@@ -69,7 +68,7 @@ public class UniSender {
         this.sAuthKey = sAuthKey;
         this.sLang = sLang;
 
-        this.osURL = new StringBuilder(this.API_URL);
+        this.osURL = new StringBuilder(generalConfig.getURL_UniSender_Mail());
         osURL.append(this.sLang);
     }
 
@@ -79,13 +78,13 @@ public class UniSender {
 
     @PostConstruct
     public void initialize() {
-    	this.sAuthKey = generalConfig.getsKey_Sender();
+    	this.sAuthKey = generalConfig.getKey_UniSender_Mail();
         if(StringUtils.isBlank(sAuthKey)){
             LOG.error("Please check api_key in UniSender property file configuration");
         }        
         this.sLang = "en";
         
-        this.osURL = new StringBuilder(this.API_URL);
+        this.osURL = new StringBuilder(generalConfig.getURL_UniSender_Mail());
         osURL.append(this.sLang);
     }
     /**
@@ -108,7 +107,7 @@ public class UniSender {
 
         //mandatory part
         StringBuilder osURL = new StringBuilder(this.osURL);
-        osURL.append(SUBSCRIBE_URI);
+        osURL.append(sContext_Subscribe);
         mParam.add("format", "json");
         mParam.add("api_key", sAuthKey);
         mParam.add("list_ids", StringUtils.join(oSubscribeRequest.getListIds(), ","));
@@ -191,7 +190,7 @@ public class UniSender {
 
         //mandatory part
         StringBuilder osURL = new StringBuilder(this.osURL);
-        osURL.append(CREATE_EMAIL_MESSAGE_URI);
+        osURL.append(sContext_CreateMail);
         mParamObject.add("format", "json");
         mParamObject.add("api_key", sAuthKey);
         mParamObject.add("sender_name", oCreateEmailMessageRequest.getSenderName());
@@ -269,7 +268,7 @@ public class UniSender {
 
         //mandatory part
         StringBuilder osURL = new StringBuilder(this.osURL);
-        osURL.append(CREATE_CAMPAIGN_URI);
+        osURL.append(sContext_CreateCompain);
         mParam.add("format", "json");
         mParam.add("api_key", sAuthKey);
         mParam.add("message_id", oCreateCampaignRequest.getMessageId());

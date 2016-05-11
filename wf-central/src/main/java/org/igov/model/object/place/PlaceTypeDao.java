@@ -12,7 +12,7 @@ import java.util.List;
  * @since 28.08.2015
  */
 @Repository
-public class PlaceTypeDao extends GenericEntityDao<PlaceType> {
+public class PlaceTypeDao extends GenericEntityDao<Long, PlaceType> {
 
     protected PlaceTypeDao() {
         super(PlaceType.class);

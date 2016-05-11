@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @Repository
-public class HistoryEventDaoImpl extends GenericEntityDao<HistoryEvent> implements HistoryEventDao {
+public class HistoryEventDaoImpl extends GenericEntityDao<Long, HistoryEvent> implements HistoryEventDao {
 
     protected HistoryEventDaoImpl() {
         super(HistoryEvent.class);
@@ -145,7 +145,8 @@ public class HistoryEventDaoImpl extends GenericEntityDao<HistoryEvent> implemen
     }
 
     @Override
-    public Long setHistoryEvent(Long nID_Subject, Long nID_HistoryEventType, String sEventName_Custom, String sMessage, Long nID_HistoryEvent_Service, Long nID_Document )
+    public Long setHistoryEvent(Long nID_Subject, Long nID_HistoryEventType, String sEventName_Custom, String sMessage,
+								Long nID_HistoryEvent_Service, Long nID_Document, String sSubjectInfo)
             throws IOException {
         HistoryEvent historyEvent = new HistoryEvent();
         historyEvent.setSubjectKey(nID_Subject);
@@ -155,6 +156,7 @@ public class HistoryEventDaoImpl extends GenericEntityDao<HistoryEvent> implemen
         historyEvent.setDate(new Date());
         historyEvent.setnID_HistoryEvent_Service(nID_HistoryEvent_Service);
         historyEvent.setnID_Document(nID_Document);
+		historyEvent.setsSubjectInfo(sSubjectInfo);
         return saveOrUpdate(historyEvent).getId();
     }
 }

@@ -1,5 +1,6 @@
 package org.igov.service.business.action.task.systemtask.doc.handler;
 
+import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,9 +14,11 @@ public class UkrDocEventHandler {
     private String year;
     private String pkDocumentId;
     private String nID_DocumentTemplate;
+    private boolean bFile;
 
     public void processEvent(String event) {
         JSONObject eventJson = new JSONObject(event);
+        
         Object dataObj = eventJson.get("data");
 
         Object docStateEvent = ((JSONObject) dataObj).get("docStateEvent");
@@ -28,6 +31,15 @@ public class UkrDocEventHandler {
                 nID_DocumentTemplate = String.valueOf(((JSONObject) cardsDocument).get("IdXMLT"));
             }
         }
+        
+        Object extensions = ((JSONObject) docStateEvent).get("extensions");
+        Object files = ((JSONObject) extensions).get("files");
+        if (files != null && ((JSONArray)files).length() > 0) {
+            bFile = true;
+        } else{
+            bFile = false;
+        }
+        
         Object state = ((JSONObject) docStateEvent).get("state");
         if (state != null) {
             status = String.valueOf(((JSONObject) state).get("current"));
@@ -60,5 +72,9 @@ public class UkrDocEventHandler {
 
     public String getnID_DocumentTemplate() {
         return nID_DocumentTemplate;
+    }
+
+    public boolean isbFile() {
+        return bFile;
     }
 }

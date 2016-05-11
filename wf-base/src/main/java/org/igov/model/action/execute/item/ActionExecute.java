@@ -7,7 +7,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.Type;
-import org.igov.model.core.Entity;
+import org.igov.model.core.AbstractEntity;
 import org.igov.util.JSON.JsonDateDeserializer;
 import org.igov.util.JSON.JsonDateSerializer;
 import org.joda.time.DateTime;
@@ -17,7 +17,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @javax.persistence.Entity
-public class ActionExecute extends Entity {
+public class ActionExecute extends AbstractEntity {
 
     @JsonProperty(value = "nID_ActionExecuteStatus")
     @ManyToOne(fetch = FetchType.EAGER)

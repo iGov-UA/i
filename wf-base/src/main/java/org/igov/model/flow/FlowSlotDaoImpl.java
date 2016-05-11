@@ -4,6 +4,7 @@ import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.igov.util.ToolDuration;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Repository;
 import org.igov.util.db.QueryBuilder;
@@ -17,7 +18,7 @@ import org.igov.model.core.GenericEntityDao;
  * Time: 15:43
  */
 @Repository
-public class FlowSlotDaoImpl extends GenericEntityDao<FlowSlot> implements FlowSlotDao {
+public class FlowSlotDaoImpl extends GenericEntityDao<Long, FlowSlot> implements FlowSlotDao {
 
     protected FlowSlotDaoImpl() {
         super(FlowSlot.class);
@@ -64,6 +65,7 @@ public class FlowSlotDaoImpl extends GenericEntityDao<FlowSlot> implements FlowS
         criteria.add(Restrictions.ge("sDate", startDate));
         criteria.add(Restrictions.lt("sDate", stopDate));
         criteria.add(Restrictions.eq("flow.id", nID_Flow_ServiceData));
+        criteria.addOrder(Order.asc("sDate"));
 
         return criteria.list();
     }
@@ -85,5 +87,31 @@ public class FlowSlotDaoImpl extends GenericEntityDao<FlowSlot> implements FlowS
         qb.append("where s.flow.id = :FLOW_ID and ", nID_Flow_ServiceData);
         qb.appendInSafe("s.sDate", "DATE", new ArrayList<>(dates));
         return qb.toQuery().executeUpdate();
+    }
+
+    private FlowSlot findSlotByDate(Flow_ServiceData flow, DateTime targetDateTime) {
+        Criteria criteria = createCriteria();
+        criteria.add(Restrictions.eq("flow", flow));
+        criteria.add(Restrictions.eq("sDate", targetDateTime));
+        return (FlowSlot)criteria.uniqueResult();
+    }
+
+    @Override
+    public List<FlowSlot> findFlowSlotsChain(Long nID_FlowSlot, int countOfSlots) {
+        List<FlowSlot> res = new ArrayList<>();
+
+        FlowSlot currSlot = findByIdExpected(nID_FlowSlot);
+        res.add(currSlot);
+
+        while (currSlot != null && res.size() < countOfSlots) {
+            int minutes = ToolDuration.parseDuration(currSlot.getsDuration()).getMinutes();
+            DateTime nextSlotDate = currSlot.getsDate().plusMinutes(minutes);
+            currSlot = findSlotByDate(currSlot.getFlow(), nextSlotDate);
+            if (currSlot != null) {
+                res.add(currSlot);
+            }
+        }
+
+        return res;
     }
 }

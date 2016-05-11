@@ -16,7 +16,8 @@ angular.module('appBoilerPlate', ['ngCookies',
   'dialogs.main',
   'pascalprecht.translate',
   'dialogs.default-translations',
-  'textAngular']);
+  'textAngular',
+  'iGovMarkers']);
 
 angular.module('documents', ['appBoilerPlate']);
 angular.module('auth', ['appBoilerPlate']);
@@ -32,9 +33,17 @@ angular.module('app', [
   'order',
   'about',
   'feedback'
-]).config(function ($urlRouterProvider, $locationProvider) {
+]).config(function ($urlRouterProvider, $locationProvider, datepickerConfig, datepickerPopupConfig) {
   $urlRouterProvider.otherwise('/');
   $locationProvider.html5Mode(true);
+  datepickerConfig.datepickerMode = 'year';
+  datepickerConfig.formatMonthTitle = 'yyyy';
+  datepickerConfig.formatYearTitle = 'Рік';
+  datepickerConfig.formatDayTitle = 'MMM yyyy';
+  datepickerConfig.formatDay = 'd';
+  datepickerConfig.formatMonth = 'MMM';
+  datepickerConfig.startingDay = 1;
+  datepickerPopupConfig.clearText = 'Очистити';
 }).run(function ($rootScope, $state) {
   $rootScope.state = $state;
   $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
@@ -48,5 +57,3 @@ angular.module('app', [
     }
   });
 });
-
-

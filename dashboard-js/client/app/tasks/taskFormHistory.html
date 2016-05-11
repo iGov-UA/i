@@ -1,0 +1,15 @@
+<div class="tasks-form-history" ng-show="taskData.aMessage.length > 0">
+  <h4>Історія диалогу:</h4>
+
+  <div ng-repeat="oMessage in taskData.aMessage">
+    <div>
+      <span><b>{{oMessage.sDate}}</b>&nbsp;{{oMessage.sHead}}</span>
+    </div>
+
+    <div ng-bind-html="oMessage.sBody"></div>
+
+    <div ng-repeat="oFile in oMessage.osData.aFile">
+      Прикріплено файл: <a href="{{getMessageFileUrl(oMessage, oFile)}}" target="_blank">{{oFile.sFileName}}</a>
+    </div>
+  </div>
+</div>

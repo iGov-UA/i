@@ -6,7 +6,8 @@
 module.exports.codes = {
   EXTERNAL_SERVICE_ERROR : 'ESE',
   INPUT_PARAMETER_ERROR : 'IPE',
-  LOGIC_SERVICE_ERROR : 'LSE'
+  LOGIC_SERVICE_ERROR : 'LSE',
+  FORBIDDEN_ERROR : 'FORBIDDEN'
 };
 
 module.exports.createError = function (code, error_description, error) {

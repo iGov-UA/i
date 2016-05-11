@@ -291,7 +291,7 @@ angular.module('journal').controller('JournalSearchController', function (
   }
 
   $scope.getAuthMethods = function () {
-    return ["BankID","EDS"];
+    return ["BankID","EDS","mpbds"];
   };
 
   $scope.getRedirectUrl = getRedirectURI;

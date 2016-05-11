@@ -75,7 +75,7 @@ public class DocumentAccessHandler_PB extends AbstractDocumentAccessHandler {
         String sessionId;
         String keyIdParam;
         String callBackKey = "&callbackUrl=";
-        String callBackValue = generalConfig.sURL_DocumentKvitanciiCallback();
+        String callBackValue = generalConfig.getURL_DocumentCallback_Receipt_PB_Bank();
         String keyID = this.accessCode;
         Collection<Long> correctDocTypes = Lists.newArrayList(0L, 1L);
         String uriDoc;
@@ -86,20 +86,20 @@ public class DocumentAccessHandler_PB extends AbstractDocumentAccessHandler {
                     "Incorrect DocumentTypeId. DocumentTypeId = " + this.documentTypeId);
         } else {
             uriDoc = Long.valueOf(0L).equals(this.documentTypeId) ?
-                    generalConfig.sURL_DocumentKvitanciiForIgov() : generalConfig.sURL_DocumentKvitanciiForAccounts();
+                    generalConfig.getURL_DocumentSimple_Receipt_PB_Bank() : generalConfig.getURL_DocumentByAccounts_Receipt_PB_Bank();
 
             keyIdParam = Long.valueOf(0L).equals(this.documentTypeId) ? "?keyID=" : "?id=";
         }
 
         String finalUri = uriDoc + keyIdParam + keyID + callBackKey + callBackValue;
 
-        //if (generalConfig.bTest()) {
+        //if (generalConfig.isSelfTest()) {
             SSLCertificateValidation.disable();
         //}
 
         try {
-            sessionId = UkrDocUtil.getSessionId(generalConfig.getSID_login(), generalConfig.getSID_password(), 
-            		generalConfig.sURL_GenerationSID() + "?lang=UA");
+            sessionId = UkrDocUtil.getSessionId(generalConfig.getLogin_Auth_Receipt_PB_Bank(), generalConfig.getPassword_Auth_Receipt_PB_Bank(), 
+            		generalConfig.getURL_GenerateSID_Auth_Receipt_PB_Bank() + "?lang=UA");
             String authHeader = "sid:" + sessionId;
             byte[] authHeaderBytes = Base64.encode(authHeader.getBytes(StandardCharsets.UTF_8));
             String authHeaderEncoded = new String(authHeaderBytes);

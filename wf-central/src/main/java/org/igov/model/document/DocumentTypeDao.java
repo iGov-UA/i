@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * @author olya
  */
-public interface DocumentTypeDao extends EntityDao<DocumentType> {
+public interface DocumentTypeDao extends EntityDao<Long, DocumentType> {
 
     public List<DocumentType> getDocumentTypes();
 

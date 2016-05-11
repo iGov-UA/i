@@ -1,0 +1,54 @@
+<div ng-repeat="item in taskForm" class="task-form-property">
+
+        <span ng-if="['string', 'long'].indexOf(item.type) > -1">
+          <field-title></field-title>
+          <simple-field></simple-field>
+        </span>
+        <span ng-if="['date'].indexOf(item.type) > -1">
+          <field-title></field-title>
+          <date-field></date-field>
+        </span>
+
+  <textarea-field></textarea-field>
+
+  <user-field></user-field>
+
+  <enum-field></enum-field>
+
+  <file-formfield></file-formfield>
+
+        <span style="display: none;" ng-if="['invisible'].indexOf(item.type) > -1">
+          <field-title></field-title>
+        </span>
+
+        <span ng-if="['label'].indexOf(item.type) > -1">
+          <field-title></field-title>
+          <label>{{item.value}}</label>
+        </span>
+
+        <span ng-if="['queueData'].indexOf(item.type) > -1">
+          <field-title></field-title>
+          <label title="{{nID_FlowSlotTicket_FieldQueueData(item.value)}}">{{sDate_FieldQueueData(item.value)}}</label>
+        </span>
+
+  <div ng-if="clarify && item.writable && (item.type==='string' || item.type==='textArea' || item.type==='date')"> <!--item.writable-->
+    <input type="checkbox" ng-model="clarifyFields[item.id].clarify" id="{{item.id}}_clarify"/>
+    <label for="{{item.id}}_clarify">Уточнити</label>
+
+    <div ng-if="clarifyFields[item.id].clarify">
+            <textarea ng-model="clarifyFields[item.id].text" class="form-control"
+                      placeholder="Уточнення для {{sFieldLabel(item.name)}}"></textarea>
+    </div>
+  </div>
+</div>
+
+<div ng-show="taskData.aAttachment">
+  <p ng-repeat="item in taskData.aAttachment">
+    Файл: <a href="/api/tasks/{{taskId}}/attachments/{{item.id}}/content/{{($index+1)}}"
+             target="_blank"><b>{{item.description}}</b> ({{item.name}})</a>
+    <button type="button" class="btn btn-success"
+            ng-disabled="checkSignState.inProcess"
+            ng-click="checkAttachmentSign(taskId, item.id, item.description)"
+            ng-if="sSelectedTask=='selfAssigned'">Перевірити підпис</button>
+  </p>
+</div>

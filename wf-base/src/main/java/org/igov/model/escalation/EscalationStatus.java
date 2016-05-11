@@ -2,14 +2,14 @@ package org.igov.model.escalation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.Column;
-import org.igov.model.core.Entity;
+import org.igov.model.core.AbstractEntity;
 
 /**
  * @author NickVeremeichyk
  * @since 2015-12-05.
  */
 @javax.persistence.Entity
-public class EscalationStatus extends Entity {
+public class EscalationStatus extends AbstractEntity {
     /**
      * sID - строка-ИД (уникальный)
      */

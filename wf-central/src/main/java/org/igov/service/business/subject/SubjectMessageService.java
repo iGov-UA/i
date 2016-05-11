@@ -40,7 +40,7 @@ public class SubjectMessageService {
 
     @Autowired
     @Qualifier("subjectMessageTypeDao")
-    private EntityDao<SubjectMessageType> subjectMessageTypeDao;
+    private EntityDao<Long, SubjectMessageType> subjectMessageTypeDao;
 
     public static String sMessageHead(Long nID_SubjectMessageType, String sID_Order) {
         String sHead = "";
@@ -138,6 +138,80 @@ public class SubjectMessageService {
             message.setSubjectMessageType(subjectMessageType);
         }
       
+        return message;
+    }
+
+    /*issue1215 Перегружен ради добавлениия нового параметра (sSubjectInfo) в /setTaskQuestions, чтобы не рушить
+    существующие сервисыБ которые используют этот метод  */
+    public SubjectMessage createSubjectMessage(String sHead, String sBody, Long nID_subject, String sMail,
+                                               String sContacts, String sData, Long nID_subjectMessageType, String sSubjectInfo)throws CommonServiceException{
+        SubjectContact subjectContact = null;
+        Subject subject = new Subject();
+        SubjectMessage message = null;
+
+        if(sMail != null && !sMail.isEmpty())
+        {
+            LOG.info("(createSubjectMessage: sMail{}, nID_subject{}) ", sMail, nID_subject);
+            if (nID_subject != null)
+            {
+                LOG.info("(createSubjectMessage: nID_subject{}) ", nID_subject);
+
+                subjectContact = syncMail(sMail, nID_subject);
+                if(subjectContact != null)
+                    LOG.info("(syncMail with nID_Subject after calling method: SubjectContact ID{},nID_Subject{}, ContactType{}, Date{}, sValue{})",
+                            subjectContact.getId(), subjectContact.getSubject().getId(), subjectContact.getSubjectContactType().getsName_EN(),
+                            subjectContact.getsDate(), subjectContact.getsValue());
+                else
+                    LOG.info("(syncMail with nID_Subject after calling method: SubjectContact null)");
+
+
+            }
+            if (nID_subject == null)
+            {
+                LOG.info("(createSubjectMessage: nID_subject{}) ", nID_subject);
+
+                subjectContact = syncMail(sMail, subject);
+
+                if(subjectContact != null)
+                    LOG.info("(syncMail without nID_Subject after calling method: SubjectContact ID{},nID_Subject{}, ContactType{}, Date{}, sValue{})",
+                            subjectContact.getId(), subjectContact.getSubject().getId(), subjectContact.getSubjectContactType().getsName_EN(),
+                            subjectContact.getsDate(), subjectContact.getsValue());
+                else
+                    LOG.info("(syncMail without nID_Subject after calling method: subjectContact null)");
+
+                if(subject != null)
+                    LOG.info("(syncMail without nID_Subject after calling method: oSubject ID{},sID{}, sLabel{}, sLabaleShort{})",
+                            subject.getId(), subject.getsID(), subject.getsLabel(), subject.getsLabelShort());
+                else
+                    LOG.info("(syncMail without nID_Subject after calling method: subject null)");
+
+
+            }
+        }
+
+        message = new SubjectMessage();
+        message.setHead(sHead);
+        message.setBody(sBody == null ? "" : sBody);
+
+        LOG.info("(createSubjectMessage: subject Id{})", subject.getId());
+
+        message.setId_subject((nID_subject == null) ? ((subject.getId() == null) ? 0 : subject.getId()) : nID_subject);
+        LOG.info("(createSubjectMessage: message subject Id{})", message.getId_subject());
+        SubjectContact oSubjectContact = (subjectContact == null) ? null : subjectContact;
+        message.setoMail(oSubjectContact);
+        //if(oSubjectContact==null){
+        message.setMail(sMail == null ? "" : sMail);
+        //}
+        message.setContacts((sContacts == null) ? "" : sContacts);
+        message.setData((sData == null) ? "" : sData);
+        message.setDate(new DateTime());
+        message.setsSubjectInfo((sSubjectInfo == null) ? "" : sSubjectInfo);
+        LOG.info("(createSubjectMessage: message sSubjectInfo{})", message.getsSubjectInfo());
+        if (nID_subjectMessageType != null) {
+            SubjectMessageType subjectMessageType = subjectMessageTypeDao.findByIdExpected(nID_subjectMessageType);
+            message.setSubjectMessageType(subjectMessageType);
+        }
+
         return message;
     }
 

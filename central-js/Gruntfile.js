@@ -1,13 +1,69 @@
 // Generated on 2015-04-13 using generator-angular-fullstack 2.0.13
 'use strict';
 
+//var _ = require('lodash');
+
+function getCustomConfig() {
+  try {
+    return require('./process-custom.json').env
+  } catch (e) {
+    console.log('Can\'t load process-custom.json. ' + e);
+    return null;
+  }
+}
+
+function getConfig() {
+  try {
+    return require('./process.json').env
+  } catch (e) {
+    console.log('Can\'t load process.json. ' + e);
+    return null;
+  }
+}
+
 module.exports = function (grunt) {
   var localConfig;
   try {
     localConfig = require('./server/config/local.env');
+    console.log('USE process.json. local.env is old version !!!!!!!!!');
   } catch (e) {
-    localConfig = {};
+    var defaultConfig = getConfig();
+    var customConfig = getCustomConfig();
+
+    if (defaultConfig && customConfig) {
+      console.log('using process-custom.json as config file');
+      localConfig = customConfig;
+    } else if (!defaultConfig && customConfig) {
+      console.log('using process-custom.json as config file');
+      localConfig = customConfig;
+    } else if (defaultConfig && !customConfig) {
+      console.log('using process.json as config file');
+      localConfig = defaultConfig;
+    } else {
+      localConfig = {};
+    }
   }
+
+  function parseUrl(url) {
+    var pattern = "^(([^:/\\?#]+):)?(//(([^:/\\?#]*)(?::([^/\\?#]*))?))?([^\\?#]*)(\\?([^#]*))?(#(.*))?$",
+      regex = new RegExp(pattern),
+      parts = regex.exec(url);
+
+    return {
+      protocol: parts[2],
+      host: parts[5],
+      port: parts[6],
+      suffix: parts[7]
+    };
+  }
+
+  var sURLBackProxyCentralParts;
+  try {
+    sURLBackProxyCentralParts = parseUrl(localConfig.BackProxy_Central.sURL_BackProxy_Central);
+  } catch (e) {
+    sURLBackProxyCentralParts = {};
+  }
+
 
   // Load grunt tasks automatically, when needed
   require('jit-grunt')(grunt, {
@@ -31,6 +87,7 @@ module.exports = function (grunt) {
     yeoman: {
       // configurable paths
       client: require('./bower.json').appPath || 'client',
+      root: '..',
       dist: 'dist'
     },
     express: {
@@ -51,7 +108,8 @@ module.exports = function (grunt) {
     },
     open: {
       server: {
-        url: localConfig.SERVER_PROTOCOL + '://localhost:<%= express.options.port %>'
+        url: (localConfig.SERVER_PROTOCOL || sURLBackProxyCentralParts.protocol) + '://localhost:<%= express.options.port %>'
+        //url: localConfig.BackProxy_Central.sHostProtocol_BackProxy_Central + '://localhost:<%= express.options.port %>'
       }
     },
     watch: {
@@ -61,6 +119,7 @@ module.exports = function (grunt) {
       injectJS: {
         files: [
           '<%= yeoman.client %>/{app,components}/**/*.js',
+          '<%= yeoman.root %>/public-js/*/*.js',
           '!<%= yeoman.client %>/{app,components}/**/*.spec.js',
           '!<%= yeoman.client %>/{app,components}/**/*.mock.js',
           '!<%= yeoman.client %>/app/app.js'],
@@ -101,6 +160,7 @@ module.exports = function (grunt) {
           '{.tmp,<%= yeoman.client %>}/{app,components}/**/*.css',
           '{.tmp,<%= yeoman.client %>}/{app,components}/**/*.html',
           '{.tmp,<%= yeoman.client %>}/{app,components}/**/*.js',
+          '{.tmp,<%= yeoman.root %>}/public-js/*/*.js',
           '!{.tmp,<%= yeoman.client %>}{app,components}/**/*.spec.js',
           '!{.tmp,<%= yeoman.client %>}/{app,components}/**/*.mock.js',
           '<%= yeoman.client %>/assets/images/{,*//*}*.{png,jpg,jpeg,gif,webp,svg}'
@@ -144,13 +204,16 @@ module.exports = function (grunt) {
       },
       all: [
         '<%= yeoman.client %>/{app,components}/**/*.js',
+        '<%= yeoman.root %>/public-js/*/*.js',
         '!<%= yeoman.client %>/{app,components}/**/*.spec.js',
         '!<%= yeoman.client %>/{app,components}/**/*.mock.js'
       ],
       test: {
         src: [
           '<%= yeoman.client %>/{app,components}/**/*.spec.js',
-          '<%= yeoman.client %>/{app,components}/**/*.mock.js'
+          '<%= yeoman.client %>/{app,components}/**/*.mock.js',
+          '<%= yeoman.root %>/public-js/*/*.spec.js',
+          '<%= yeoman.root %>/public-js/*/*.mock.js'
         ]
       }
     },
@@ -364,6 +427,13 @@ module.exports = function (grunt) {
             '!server/**/*.test.js',
             '!server/**/*.mock.js'
           ]
+        }, {
+          expand: true,
+          cwd: '<%= yeoman.root %>',
+          dest: '<%= yeoman.dist %>/public',
+          src: [
+            'public-js/*/*.js'
+          ]
         }]
       },
       styles: {
@@ -436,7 +506,7 @@ module.exports = function (grunt) {
         src: ['server/**/*.test.js']
       },
 
-      mochaTest : {
+      mochaTest: {
         options: {
           reporter: 'spec',
           ui: 'bdd',
@@ -463,7 +533,7 @@ module.exports = function (grunt) {
         NODE_ENV: 'test'
       },
       prod: {
-        NODE_ENV: 'production'
+        NODE_ENV: 'prod'
       },
       all: localConfig
     },
@@ -492,8 +562,15 @@ module.exports = function (grunt) {
       scripts: {
         options: {
           transform: function (filePath) {
-            filePath = filePath.replace('/client/', '');
-            filePath = filePath.replace('/.tmp/', '');
+            console.log('before ' + filePath);
+            if(filePath.indexOf('public-js') > -1){
+              filePath = filePath.replace('/../', './../../');
+            } else {
+              filePath = filePath.replace('/client/', '');
+              filePath = filePath.replace('/.tmp/', '');
+              filePath = filePath.replace('/../', '');
+            }
+            console.log('after ' + filePath);
             return '<script src="' + filePath + '"></script>';
           },
           starttag: '<!-- injector:js -->',
@@ -501,6 +578,7 @@ module.exports = function (grunt) {
         },
         files: {
           '<%= yeoman.client %>/index.html': [
+            ['<%= yeoman.root %>/public-js/*/module.js', '<%= yeoman.root %>/public-js/*/*.js'],
             ['{.tmp,<%= yeoman.client %>}/{app,components}/**/*.js',
               '!{.tmp,<%= yeoman.client %>}/app/app.js',
               '!{.tmp,<%= yeoman.client %>}/{app,components}/**/*.spec.js',
@@ -584,7 +662,7 @@ module.exports = function (grunt) {
     if (target === 'dist') {
       return grunt.task.run([
         'build',
-        'test:client',
+        // 'test:client',
         'env:all',
         'env:prod',
         'express:prod',
@@ -628,8 +706,8 @@ module.exports = function (grunt) {
 
   grunt.registerTask('karma-only', function (target) {
     grunt.task.run([
-        'karma'
-      ]);
+      'karma'
+    ]);
   });
 
   grunt.registerTask('test', function (target) {

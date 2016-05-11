@@ -7,6 +7,6 @@ import org.igov.model.core.EntityDao;
  * Date: 28.02.2016
  * Time: 18:49
  */
-public interface AccessServiceRoleRightIncludeDao extends EntityDao<AccessServiceRoleRightInclude> {
+public interface AccessServiceRoleRightIncludeDao extends EntityDao<Long, AccessServiceRoleRightInclude> {
 
 }

@@ -5,10 +5,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import org.igov.model.core.Entity;
+import org.igov.model.core.AbstractEntity;
 
 @javax.persistence.Entity
-public class EscalationRule extends Entity {
+public class EscalationRule extends AbstractEntity {
 
     /**
      * ИД-строка бизнеспроцесса

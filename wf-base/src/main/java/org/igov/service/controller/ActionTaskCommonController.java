@@ -481,7 +481,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
      * @param nID_Process  номер-ИД процесса (опциональный, но обязательный если не задан nID_Task и sID_Order)
      * @param sID_Order номер-ИД заявки (опциональный, но обязательный если не задан nID_Task и nID_Process)
      * @param sLogin (опциональный) логин, по которому проверяется вхождение пользователя в одну из групп, на которые распространяется данная задача
-     * @param bIncludeGroups (опциональный) если задано значение true - в отдельном элементе aGroups возвращается массив отождествленных групп, на которые распространяется данная задача
+     * @param bIncludeGroups (опциональный) если задано значение true - в отдельном элементе aGroup возвращается массив отождествленных групп, на которые распространяется данная задача
      * @param bIncludeStartForm (опциональный) если задано значение true - в отдельном элементе aFieldStartForm возвращается массив полей стартовой формы
      * @param bIncludeAttachments (опциональный) если задано значение true - в отдельном элементе aAttachment возвращается массив элементов-объектов Attachment (без самого контента)
      * @param bIncludeMessages (опциональный) если задано значение true - в отдельном элементе aMessage возвращается массив сообщений по задаче
@@ -503,7 +503,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
      * <br> <b>"oData"</b> : {
      * <br> ... - объекты FormProperty типа queueData
      * <br>}
-     * <br> ... другие опциональные объекты: aGroups, aFieldStartForm, aAttachment и aMessage
+     * <br> ... другие опциональные объекты: aGroup, aFieldStartForm, aAttachment и aMessage
      * <br>}
      */
     @ApiOperation(value = "Получение данных по таске", notes = "#####  ActionCommonTaskController: Сервис получения данных по таске #####\n\n"
@@ -523,7 +523,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             + "  },\n"
             + "  \"aField\":[...] - массив объектов полей Таски с их атрибутами\n"
             + "  \"oData\":{...} - oбъекты электронной очереди Таски либо значение NULL, если элементов электронной очереди в таске нет\n"
-            + " ... другие опциональные объекты: aGroups, aFieldStartForm, aAttachment и aMessage\n"
+            + " ... другие опциональные объекты: aGroup, aFieldStartForm, aAttachment и aMessage\n"
             + "}\n"
             + "\n```\n"
             + "\n"
@@ -557,7 +557,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "номер-ИД процесса (опциональный, но обязательный если не задан nID_Task и sID_Order)", required = false) @RequestParam(value = "nID_Process", required = false) Long nID_Process,
             @ApiParam(value = "номер-ИД заявки (опциональный, но обязательный если не задан nID_Task и nID_Process)", required = false) @RequestParam(value = "sID_Order", required = false) String sID_Order,
             @ApiParam(value = "(опциональный) логин, по которому проверяется вхождение пользователя в одну из групп, на которые распространяется данная задача", required = false) @RequestParam(value = "sLogin", required = false) String sLogin,
-            @ApiParam(value = "(опциональный) если задано значение true - в отдельном элементе aGroups возвращается массив отождествленных групп, на которые распространяется данная задача", required = false) @RequestParam(value = "bIncludeGroups", required = false) Boolean bIncludeGroups,
+            @ApiParam(value = "(опциональный) если задано значение true - в отдельном элементе aGroup возвращается массив отождествленных групп, на которые распространяется данная задача", required = false) @RequestParam(value = "bIncludeGroups", required = false) Boolean bIncludeGroups,
             @ApiParam(value = "(опциональный) если задано значение true - в отдельном элементе aFieldStartForm возвращается массив полей стартовой формы", required = false) @RequestParam(value = "bIncludeStartForm", required = false) Boolean bIncludeStartForm,
             @ApiParam(value = "(опциональный) если задано значение true - в отдельном элементе aAttachment возвращается массив элементов-объектов Attachment (без самого контента)", required = false) @RequestParam(value = "bIncludeAttachments", required = false) Boolean bIncludeAttachments,
             @ApiParam(value = "(опциональный) если задано значение true - в отдельном элементе aMessage возвращается массив сообщений по задаче", required = false) @RequestParam(value = "bIncludeMessages", required = false) Boolean bIncludeMessages)
@@ -598,8 +598,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
         List<FormProperty> aField = null;
         try{
-            aField = oActionTaskService.getFormPropertiesByTaskID(nID_Task);
-            response.put("aField", aField);
+//            aField = oActionTaskService.getFormPropertiesByTaskID(nID_Task);
+//            response.put("aField", aField);
+            response.put("aField", oActionTaskService.getFormPropertiesMapByTaskID(nID_Task));
+            
         } catch (ActivitiObjectNotFoundException e) {
             LOG.info(String.format("Must search Task [id = '%s'] in history!!!", nID_Task));
             response.put("aField", oActionTaskService.getHistoricFormPropertiesByTaskID(nID_Task));
@@ -608,7 +610,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         response.put("oData", oActionTaskService.getQueueData(aField));
 
         if (bIncludeGroups.equals(Boolean.TRUE)){
-            response.put("aGroups", oActionTaskService.getGroupIDsByTaskID(nID_Task));
+            response.put("aGroup", oActionTaskService.getGroupIDsByTaskID(nID_Task));
         }
         if (bIncludeStartForm.equals(Boolean.TRUE)){
             response.put("aFieldStartForm", oActionTaskService.getStartFormData(nID_Task));
@@ -634,7 +636,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
         response.put("sStatusName", oActionTaskService.getTaskName(nID_Task));
         response.put("sID_Status", oActionTaskService.getsIDUserTaskByTaskId(nID_Task));
-
+        response.put("nID_Task", nID_Task);
+        response.putAll(oActionTaskService.getTaskData(nID_Task));
+        
         String sDateTimeCreate = JsonDateTimeSerializer.DATETIME_FORMATTER.print(
                 oActionTaskService.getTaskDateTimeCreate(nID_Task).getTime()
         );
@@ -844,6 +848,34 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         oActionTaskService.deleteProcess(nID_Order, sLogin, sReason);
     }
 
+    @ApiOperation(value = "DeleteProcess", notes = "#####  ActionCommonTaskController: описания нет #####\n\n")
+    @RequestMapping(value = "/delete-process-simple", method = RequestMethod.DELETE)
+    public
+    @ResponseBody
+    void deleteProcessSimple(@RequestParam(value = "nID_Process") String snID_Process,
+            @RequestParam(value = "sLogin", required = false) String sLogin,
+            @RequestParam(value = "sReason", required = false) String sReason    )
+            throws Exception {
+
+        oActionTaskService.deleteProcessSimple(snID_Process, sLogin, sReason);
+    }
+    
+
+    @ApiOperation(value = "DeleteProcess", notes = "#####  ActionCommonTaskController: описания нет #####\n\n")
+    @RequestMapping(value = "/delete-process-list", method = RequestMethod.DELETE)
+    public
+    @ResponseBody
+    void deleteProcesList(@RequestParam(value = "sanID_Process") String sanID_Process,
+            @RequestParam(value = "sLogin", required = false) String sLogin,
+            @RequestParam(value = "sReason", required = false) String sReason    )
+            throws Exception {
+        String[] asnID_Process = sanID_Process.split(",");
+        for(String snID_Process : asnID_Process){
+            oActionTaskService.deleteProcessSimple(snID_Process, sLogin, sReason);
+        }
+    }
+    
+    
     /**
      * Получение статистики по бизнес процессу за указанный период
      *
@@ -1361,8 +1393,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 //     * @param nID_Server - ид сервера
      * @param sHead         -- строка заголовка письма //опциональный (если не задан, то
      *                      "Необходимо уточнить данные")
-     * @param sBody         -- строка тела письма //опциональный (если не задан, то
-     *                      пустота)
+     * @param sBody         -- строка тела письма //опциональный (если не задан, то пустота)
+     * @param sSubjectInfo  -- строка-информация о субъекте //опциональный
+	 * @param nID_Subject   -- ID гражданина //опциональный
      * @throws CommonServiceException
      * @throws CRCInvalidException
      */
@@ -1395,17 +1428,19 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "строка-массива параметров", required = true) @RequestParam(value = "saField") String soParams,
             @ApiParam(value = "строка электронного адреса гражданина", required = true) @RequestParam(value = "sMail") String sMail,
             @ApiParam(value = "строка заголовка письма", required = false) @RequestParam(value = "sHead", required = false) String sHead,
-            @ApiParam(value = "строка тела сообщения-коммента (общего)", required = false) @RequestParam(value = "sBody", required = false) String sBody)
-            throws CommonServiceException, CRCInvalidException {
+            @ApiParam(value = "строка тела сообщения-коммента (общего)", required = false) @RequestParam(value = "sBody", required = false) String sBody,
+			@ApiParam(value = "строка информация о субьекте", required = false) @RequestParam(value = "sSubjectInfo", required = false) String sSubjectInfo,
+			@ApiParam(value = "номер - ИД субьекта",required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject
+	)throws CommonServiceException, CRCInvalidException {
 
         String sToken = Tool.getGeneratedToken();
         try {
-            String sID_Order = generalConfig.sID_Order_ByProcess(nID_Process);
+            String sID_Order = generalConfig.getOrderId_ByProcess(nID_Process);
             String sReturn = oActionTaskService.updateHistoryEvent_Service(
                     HistoryEvent_Service_StatusType.OPENED_REMARK_EMPLOYEE_QUESTION,
                     sID_Order,
                     saField,
-                    "Необхідно уточнити дані" + (sBody == null ? "" : ", за коментарем: " + sO(sBody)), sToken, null);
+                    "Необхідно уточнити дані" + (sBody == null ? "" : ", за коментарем: " + sO(sBody)), sToken, null,sSubjectInfo, nID_Subject);
             LOG.info("(sReturn={})", sReturn);
             //oActionTaskService.setInfo_ToActiviti("" + nID_Process, saField, sBody);
             //createSetTaskQuestionsMessage(sID_Order, sO(sBody), saField);//issue 1042
@@ -1552,11 +1587,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         ) throws CommonServiceException {
         try {
             /* issue #1131
-            String sID_Order = generalConfig.sID_Order_ByProcess(nID_Process);
+            String sID_Order = generalConfig.getOrderId_ByProcess(nID_Process);
             Map<String, String> params = new HashMap<>();
             params.put("sID_Order", sID_Order);
             String soResponse = "";
-            String sURL = generalConfig.sHostCentral() + "/wf/service/subject/message/getServiceMessages";
+            String sURL = generalConfig.getSelfHostCentral() + "/wf/service/subject/message/getServiceMessages";
             soResponse = httpRequester.getInside(sURL, params);
             LOG.info("(soResponse={})", soResponse);
             */
@@ -1777,11 +1812,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     	try {
             Map<String, String> params = new HashMap<>();
             if(nID_Process!=null){
-                String sID_Order = generalConfig.sID_Order_ByProcess(nID_Process);
+                String sID_Order = generalConfig.getOrderId_ByProcess(nID_Process);
                 params.put("sID_Order", sID_Order);
             }
             params.put("nID_Message", nID_Message);
-            String sURL = generalConfig.sHostCentral() + "/wf/service/subject/message/getMessageFile";
+            String sURL = generalConfig.getSelfHostCentral() + "/wf/service/subject/message/getMessageFile";
             byte[] soResponse = httpRequester.getInsideBytes(sURL, params);
 
             LOG.info("Size of file {}", soResponse.length);
@@ -1953,6 +1988,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     	String year = eventHandler.getYear();
     	String status = eventHandler.getStatus();
         String nID_DocumentTemplate = eventHandler.getnID_DocumentTemplate();
+        Boolean bHasFile = eventHandler.isbFile();
 
     	String sKey = documentId + ":" + year;
         String sKeyFromPkSection = documentIdFromPkSection + ":" + year;
@@ -1990,7 +2026,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 					runtimeService.setVariable(task.getProcessInstanceId(), "sID_Document_UkrDoc", sKeyFromPkSection);
                                         taskService.setVariable(task.getId(), "nID_DocumentTemplate_UkrDoc", nID_DocumentTemplate);
 					runtimeService.setVariable(task.getProcessInstanceId(), "nID_DocumentTemplate_UkrDoc", nID_DocumentTemplate);
-					LOG.info("Set variable sStatusName_UkrDoc {} and sID_Document_UkrDoc {} and nID_DocumentTemplate {} for process instance with ID {}", status, sKeyFromPkSection, nID_DocumentTemplate, task.getProcessInstanceId());
+                                        taskService.setVariable(task.getId(), "bFile_UkrDoc", bHasFile);
+					runtimeService.setVariable(task.getProcessInstanceId(), "bFile_UkrDoc", bHasFile);
+					LOG.info("Set variable sStatusName_UkrDoc {} and sID_Document_UkrDoc {} and nID_DocumentTemplate {} and bHasFile {} for process instance with ID {}", 
+                                                status, sKeyFromPkSection, nID_DocumentTemplate, bHasFile, task.getProcessInstanceId());
 					taskService.complete(task.getId());
 					LOG.info("Completed task {}", task.getId());
 				}
@@ -2107,7 +2146,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             + "\"message\":\"Error! user has not been found\"\n"
             + "}\n"
             + "\n```\n")
-    @RequestMapping(value = "/changePassword", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/changePassword", method = {RequestMethod.POST})
     public
     @ResponseBody
     String changePassword(

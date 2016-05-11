@@ -9,7 +9,7 @@ import org.igov.model.core.EntityDao;
  * @author NickVeremeichyk
  * @since 2015-12-05.
  */
-public interface EscalationHistoryDao extends EntityDao<EscalationHistory> {
+public interface EscalationHistoryDao extends EntityDao<Long, EscalationHistory> {
 
     List<EscalationHistory> getAllByCriteria(Long nIdProcess,
                           Long nIdProcessRoot,

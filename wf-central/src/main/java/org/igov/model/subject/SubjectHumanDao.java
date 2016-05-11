@@ -2,7 +2,7 @@ package org.igov.model.subject;
 
 import org.igov.model.core.EntityDao;
 
-public interface SubjectHumanDao extends EntityDao<SubjectHuman> {
+public interface SubjectHumanDao extends EntityDao<Long, SubjectHuman> {
 
     SubjectHuman getSubjectHuman(String sINN);
 

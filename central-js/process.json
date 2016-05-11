@@ -2,48 +2,56 @@
   "name": "central-js",
   "script": "./server/app.js",
   "args": "",
+  "error_file": "/sybase/logs/central_front/central-js_err.log",
+  "out_file": "/sybase/logs/central_front/central-js_out.log",
+  "merge_logs" : true,
   "log_date_format" : "YYYY-MM-DD_HH:mm:ss.SSS",
   "env": {
-    "NODE_ENV": "local",
-    "DOMAIN": "http://localhost:9000",
-    "DEBUG": "true",
-
     "sServerRegion": "https://test.region.igov.org.ua",
-    "SERVER_PROTOCOL": "http",
-    "SERVER_PORT": "9000",
-    "SERVER_KEY": "/sybase/cert/server.key",
-    "SERVER_CERT": "/sybase/cert/server.crt",
+    "bCompile_Application": "FALSE",
+    "sProfile_Application": "test-alpha",
+    "sDomain": "http://localhost:9000",
+    "bDebug_Application": "TRUE",
 
-    "SESSION_SECRET": "put yor session secret here",
-    "SESSION_KEY_ONE": "solt1 for session",
-    "SESSION_KEY_TWO": "solt2 for session",
-    "SESSION_SECURE": false,
-    "SESSION_MAX_AGE": 14400000,
+    "BackProxy_Central": {
+      "sURL_BackProxy_Central": "http://test.igov.org.ua:9000",
+      "sKeyPath_BackProxy_Central": "/sybase/cert/server.key",
+      "sCertPath_BackProxy_Central": "/sybase/cert/server.crt"
+    },
 
-    "ACTIVITI_PROTOCOL": "https",
-    "ACTIVITI_HOSTNAME": "test.igov.org.ua",
-    "ACTIVITI_PORT": "8080",
-    "ACTIVITI_PATH": "/wf/service",
-    "ACTIVITI_USER": "activiti-master",
-    "ACTIVITI_PASSWORD": "UjhtJnEvf!",
+    "BackProxySession_Central":{
+      "sSecret_BackProxySession_Central": "put yor session secret here",
+      "sKey1_BackProxySession_Central": "solt1 for session",
+      "sKey2_BackProxySession_Central": "solt2 for session",
+      "bSecure_BackProxySession_Central": "FALSE",
+      "nLiveMS_BackProxySession_Central": 14400000
+    },
 
-    "BANKID_SPROTOCOL_ACCESS_SERVICE": "https",
-    "BANKID_SHOST_ACCESS_SERVICE": "bankid.privatbank.ua",
-    "BANKID_SPROTOCOL_RESOURC_SERVICE": "https",
-    "BANKID_SHOST_RESOURCE_SERVICE": "bankid.privatbank.ua",
-    "BANKID_CLIENTID": "testIgov",
-    "BANKID_CLIENT_SECRET": "testIgovSecret",
-    "BANKID_PRIVATE_KEY": "/sybase/cert/bankid.key",
-    "BANKID_PRIVATE_KEY_PASSPHRASE": "some passprhase for the key",
-    "BANKID_ENABLE_CIPHER" : false,
+    "Back_Central":{
+      "sURL_Back_Central": "https://test.igov.org.ua:8080/wf/service",
+      "sLogin_Back_Central": "activiti-master",
+      "sPassword_Back_Central": "UjhtJnEvf!"
+    },
+
+    "Auth_BankID":{
+      "sURL_Access_Auth_BankID": "https://bankid.privatbank.ua",
+      "sURL_Resource_Auth_BankID": "https://bankid.privatbank.ua",
+      "sClientID_Auth_BankID": "testIgov",
+      "sClientSecret_Auth_BankID": "testIgovSecret",
+      "sPrivateKeyPath_Auth_BankID": "./iGov_sgn.pem",
+      "sPrivateKeyPassphrase_Auth_BankID": "1234567899",
+      "bCrypt_Auth_BankID": "FALSE"
+    },
+
     "NODE_TLS_REJECT_UNAUTHORIZED":"0",
 
-    "KC_SPROTOCOL_ACCESS_SERVICE" : "https",
-    "KC_SHOST_ACCESS_SERVICE" : "test.kyivcard.com.ua",
-    "SOC_CARD_APIVERSION" : "1.0",
-    "SOC_CARD_API_CLIENTID" : "put here client id",
-    "SOC_CARD_API_CLIENT_SECRET": "put here client secret",
-    "SOC_CARD_PRIVATE_KEY" : "/sybase/cert/server.key",
-    "SOC_CARD_PRIVATE_KEY_PASSPHRASE" : "put here passphrase for private key"
+    "Auth_CardKyanyn":{
+      "sURL_Auth_CardKyanyn": "https://test.kyivcard.com.ua",
+      "sVersion_Auth_CardKyanyn": "1.0",
+      "sClientID_Auth_CardKyanyn": "put here client id",
+      "sClientSecret_Auth_CardKyanyn": "put here client secret",
+      "sPrivateKeyPath_Auth_CardKyanyn": "/sybase/cert/server.key",
+      "sPrivateKeyPassphrase_Auth_CardKyanyn": "put here passphrase for private key"
+    }
   }
 }

@@ -10,6 +10,7 @@ import org.igov.model.subject.message.SubjectMessagesDao;
 import org.igov.service.business.action.task.bp.BpService;
 import org.igov.service.business.msg.MsgSend;
 import org.igov.service.business.msg.MsgSendImpl;
+import org.igov.service.business.msg.MsgService;
 import org.igov.service.business.subject.SubjectMessageService;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.util.JSON.JsonRestUtils;
@@ -53,6 +54,8 @@ public class DebugCentralController {
     private GeneralConfig generalConfig;
     @Autowired
     private BpService bpService;
+    @Autowired
+    private MsgService msgService;
 
     @Autowired
     private SubjectMessageService subjectMessageService;
@@ -149,7 +152,7 @@ public class DebugCentralController {
                     }
                 }
             }
-            String sURL_Redirect = generalConfig.sHostCentral() + "/feedback?sID_Order=" + sID_Order + "&sSecret=" + sToken;
+            String sURL_Redirect = generalConfig.getSelfHostCentral() + "/feedback?sID_Order=" + sID_Order + "&sSecret=" + sToken;
             LOG.info("Redirecting to URL:{}", sURL_Redirect);
             oResponse.sendRedirect(sURL_Redirect);
 
@@ -242,9 +245,10 @@ public class DebugCentralController {
         //List subjectMessages;
         try {
             
-            IMsgObjR msg = new MsgSendImpl(sType, sFunction).addnID_Server(nID_Server).addnID_Subject(nID_Server).addsBody(sBody).
-        	    addsError(sError).addsHead(sHead).addsmData(smData).save();
-                        
+//            IMsgObjR msg = new MsgSendImpl(sType, sFunction).addnID_Server(nID_Server).addnID_Subject(nID_Server).addsBody(sBody).
+//        	    addsError(sError).addsHead(sHead).addsmData(smData).save();
+            IMsgObjR msg = msgService.setEventSystem(sType, nID_Subject, nID_Server, sFunction, sHead, sBody, sError, smData);
+            
 //            //oLog_External.info("sType={},nID_Subject={},nID_Server={},sFunction={},sHead={},sBody={},sError={},smData={}",sType,nID_Subject,nID_Server,sFunction,sHead,sBody,sError,smData);
 //            //LOG_MIN.info("sType={},nID_Subject={},sFunction={},sHead={},sBody={},sError={}",sType,nID_Subject,sFunction,sHead,sBody,sError);
 //            List<String> asParam = new LinkedList();

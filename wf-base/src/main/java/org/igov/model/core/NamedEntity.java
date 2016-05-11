@@ -13,7 +13,7 @@ import javax.persistence.MappedSuperclass;
  * Time: 15:07
  */
 @MappedSuperclass
-public abstract class NamedEntity extends Entity {
+public abstract class NamedEntity extends AbstractEntity {
 
     @JsonProperty(value = "sName")
     @Column(name = "sName", nullable = false)

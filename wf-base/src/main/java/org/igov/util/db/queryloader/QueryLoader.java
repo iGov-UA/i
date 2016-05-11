@@ -18,7 +18,7 @@ import static org.springframework.util.Assert.notNull;
  * @since 02.08.15
  */
 @Component
-@Resource.Classpath("db.properties")
+@Resource.Classpath("DB.SQL.properties")
 public class QueryLoader {
 
     @Property("queryloader.db.profile")

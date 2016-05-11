@@ -21,7 +21,6 @@ public class HistoryEventServiceImpl implements HistoryEventService {
     private final String URI_ADD_HISTORY_EVENT = "/wf/service/action/event/addHistoryEvent_Service";
     private final String URI_ADD_SERVICE_MESSAGE = "/wf/service/subject/message/setServiceMessage";
 
-
     @Autowired
     private HttpRequester httpRequester;
     @Autowired
@@ -40,14 +39,14 @@ public class HistoryEventServiceImpl implements HistoryEventService {
     public String doRemoteRequest(String sURL, Map<String, String> mParam, String sID_Order, String sUserTaskName)
             throws Exception {
         mParam.put("sID_Order", sID_Order);
-        if(sUserTaskName!=null){
+        if (sUserTaskName != null) {
             mParam.put("sUserTaskName", sUserTaskName);
         }
         return doRemoteRequest(sURL, mParam);
     }
 
     @Override
-    public String updateHistoryEvent(String sID_Order,String sUserTaskName, boolean addAccessKey, HistoryEvent_Service_StatusType nID_StatusType, Map<String, String> params) 
+    public String updateHistoryEvent(String sID_Order, String sUserTaskName, boolean addAccessKey, HistoryEvent_Service_StatusType nID_StatusType, Map<String, String> params)
             throws Exception {
         if (params == null) {
             params = new HashMap<>();
@@ -71,7 +70,7 @@ public class HistoryEventServiceImpl implements HistoryEventService {
 
     @Override
     public String addServiceMessage(Map<String, String> mParam) throws Exception {
-        String sURL = generalConfig.sHostCentral() + URI_ADD_SERVICE_MESSAGE;
+        String sURL = generalConfig.getSelfHostCentral() + URI_ADD_SERVICE_MESSAGE;
         LOG.info("(sURL={},mParam={})", sURL, mParam);
         String soResponse = httpRequester.getInside(sURL, mParam);
         LOG.info("(soResponse={})", soResponse);
@@ -79,12 +78,14 @@ public class HistoryEventServiceImpl implements HistoryEventService {
     }
 
     private String doRemoteRequest(String sServiceContext, Map<String, String> mParam) throws Exception {
-        String sURL = generalConfig.sHostCentral() + sServiceContext;
-        LOG.info("(sURL={},mParam={})", sURL, mParam);
-        String soResponse = httpRequester.getInside(sURL, mParam);
-        LOG.info("(soResponse={})", soResponse);
+        String soResponse = "";
+        if (!generalConfig.getSelfHostCentral().contains("ksds.nads.gov.ua") && !generalConfig.getSelfHostCentral().contains("staff.igov.org.ua")) {
+            String sURL = generalConfig.getSelfHostCentral() + sServiceContext;
+            LOG.info("(sURL={},mParam={})", sURL, mParam);
+            soResponse = httpRequester.getInside(sURL, mParam);
+            LOG.info("(soResponse={})", soResponse);
+        }
         return soResponse;
     }
-
 
 }

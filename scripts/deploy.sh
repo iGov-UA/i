@@ -1,12 +1,7 @@
 #!/bin/bash
 
-#Строка запуска скрипта выглядит так
-# ./deploy.sh --version alpha --project wf-region --exclude-test true --compile \*
-# ./deploy.sh --version alpha --project wf-central --exclude-test false --compile wf-base storage-temp storage-static
-
 #Setting-up variables
 export LANG=en_US.UTF-8
-
 #This will cause the shell to exit immediately if a simple command exits with a nonzero exit value.
 set -e
 
@@ -46,8 +41,24 @@ do
 			IFS=',' read -r -a saCompile <<< "$2"
 			shift
 			;;
+		--jenkins-user)
+			sJenkinsUser="$2"
+			shift
+			;;
+		--jenkins-api)
+			sJenkinsAPI="$2"
+			shift
+			;;
 		--docker)
 			bDocker="$2"
+			shift
+			;;
+		--dockerOnly)
+			bDockerOnly="$2"
+			shift
+			;;
+		--gitCommit)
+			sGitCommit="$2"
 			shift
 			;;
 		--dockerOnly)
@@ -68,49 +79,6 @@ done
 
 unset IFS
 sDate=`date "+%Y.%m.%d-%H.%M.%S"`
-
-if [ -z $nSecondsWait ]; then
-	nSecondsWait=185
-fi
-
-if [[ $sProject ]]; then
-	if [ -d /tmp/$sProject ]; then
-		rm -rf /tmp/$sProject
-	fi
-	mkdir /tmp/$sProject
-	export TMPDIR=/tmp/$sProject
-	export TEMP=/tmp/$sProject
-	export TMP=/tmp/$sProject
-fi
-
-if [ "$bSkipDoc" == "true" ]; then
-	sBuildDoc="site"
-fi
-
-#Определяем сервер для установки
-if [[ $sVersion == "alpha" && $sProject == "central-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-central" ]]; then
-		sHost="test.igov.org.ua"
-fi
-if [[ $sVersion == "beta" && $sProject == "central-js" ]] || [[ $sVersion == "beta" && $sProject == "wf-central" ]]; then
-		sHost="test-version.igov.org.ua"
-		export PATH=/usr/local/bin:$PATH
-fi
-#if [[ $sVersion == "prod" && $sProject == "central-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-central" ]]; then
-#		sHost="igov.org.ua"
-#fi
-
-if [[ $sVersion == "alpha" && $sProject == "dashboard-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-region" ]]; then
-		sHost="test.region.igov.org.ua"
-fi
-if [[ $sVersion == "beta" && $sProject == "dashboard-js" ]] || [[ $sVersion == "beta" && $sProject == "wf-region" ]]; then
-		sHost="test-version.region.igov.org.ua"
-		export PATH=/usr/local/bin:$PATH
-fi
-#if [[ $sVersion == "prod" && $sProject == "dashboard-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-region" ]]; then
-#		sHost="region.igov.org.ua"
-#fi
-
-echo "Host $sHost will be a target server for deploy...."
 
 build_docker ()
 {
@@ -142,11 +110,6 @@ build_docker ()
 	python deploy_container.py --project $sProject --version $sVersion --gitCommit $sGitCommit
 	exit 0
 }
-
-if [ "$bDockerOnly" == "true" ]; then
-	build_docker
-fi
-
 build_central-js ()
 {
 	if [ "$bSkipBuild" == "true" ]; then
@@ -182,7 +145,6 @@ build_central-js ()
 		cd ..
 	fi
 }
-
 build_dashboard-js ()
 {
 	if [ "$bSkipBuild" == "true" ]; then
@@ -220,7 +182,6 @@ build_dashboard-js ()
 		cd ..
 	fi
 }
-
 build_base ()
 {
 	if [ "$bSkipTest" ==  "true" ]; then
@@ -262,7 +223,6 @@ build_base ()
 		esac
 	done
 }
-
 build_central ()
 {
 	if [ "$bSkipBuild" == "true" ]; then
@@ -299,7 +259,6 @@ build_central ()
 		rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' target/wf-central.war sybase@$sHost:/sybase/.upload/
 	fi
 }
-
 build_region ()
 {
 	if [ "$bSkipBuild" == "true" ]; then
@@ -337,15 +296,92 @@ build_region ()
 	fi
 }
 
+if [ -z $nSecondsWait ]; then
+	nSecondsWait=185
+fi
+if [ -z $sJenkinsUser ]; then
+	echo "Please provide Jenkins access credentials!"
+	exit 1
+fi
+#if [ -z $sJenkinsAPI ]; then
+#	echo "Please provide Jenkins access credentials!"
+#	exit 1
+#fi
+#if curl --silent --show-error http://$sJenkinsUser:$sJenkinsAPI@localhost:8080/ | grep "HTTP ERROR"; then
+#	echo "Failed to connect to Jenkins with current credentials!"
+#	exit 1
+#fi
+if [ "$bSkipDoc" == "true" ]; then
+	sBuildDoc="site"
+fi
+
+#Определяем сервер для установки
+if [[ $sVersion == "alpha" && $sProject == "central-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-central" ]]; then
+		sHost="test.igov.org.ua"
+fi
+if [[ $sVersion == "beta" && $sProject == "central-js" ]] || [[ $sVersion == "beta" && $sProject == "wf-central" ]]; then
+		sHost="test-version.igov.org.ua"
+		export PATH=/usr/local/bin:$PATH
+fi
+#if [[ $sVersion == "prod" && $sProject == "central-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-central" ]]; then
+#		sHost="igov.org.ua"
+#fi
+
+if [[ $sVersion == "alpha" && $sProject == "dashboard-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-region" ]]; then
+		sHost="test.region.igov.org.ua"
+fi
+if [[ $sVersion == "beta" && $sProject == "dashboard-js" ]] || [[ $sVersion == "beta" && $sProject == "wf-region" ]]; then
+		sHost="test-version.region.igov.org.ua"
+		export PATH=/usr/local/bin:$PATH
+fi
+#if [[ $sVersion == "prod" && $sProject == "dashboard-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-region" ]]; then
+#		sHost="region.igov.org.ua"
+#fi
+
+if [ -z $bDockerOnly ]; then
+	bDockerOnly="false"
+fi
 if [ -z $sProject ]; then
 	build_base $saCompile
 	exit 0
 else
+	if [ $bDockerOnly == "true" ]; then
+		build_docker
+		exit 0
+	fi
+	if [ -z $sHost ]; then
+		echo "Cloud not select host for deploy. Wrong version or project."
+		exit 1
+	fi
+	echo "Host $sHost will be a target server for deploy...."
+	if [[ $sProject ]]; then
+		if [ -d /tmp/$sProject ]; then
+			rm -rf /tmp/$sProject
+		fi
+		mkdir /tmp/$sProject
+		export TMPDIR=/tmp/$sProject
+		export TEMP=/tmp/$sProject
+		export TMP=/tmp/$sProject
+	fi
 	if [ $sProject == "wf-central" ]; then
-		build_central
+		sleep 15
+#		if curl --silent --show-error http://$sJenkinsUser:$sJenkinsAPI@localhost:8080/job/alpha_Back/lastBuild/api/json | grep -q result\":null; then
+#			echo "Building of alpha_Back project is running. Compilation of wf-central will start automatically."
+#			exit 0
+#		else
+#			echo "Building of alpha_Back project is not running."
+			build_central
+#		fi
 	fi
 	if [ $sProject == "wf-region" ]; then
-		build_region
+		sleep 15
+#		if curl --silent --show-error http://$sJenkinsUser:$sJenkinsAPI@localhost:8080/job/alpha_Back/lastBuild/api/json | grep -q result\":null; then
+#			echo "Building of alpha_Back project is running. Compilation of wf-region will start automatically."
+#			exit 0
+#		else
+#			echo "Building of alpha_Back project is not running."
+			build_region
+#		fi
 	fi
 	if [ $sProject == "central-js" ]; then
 		touch /tmp/$sProject/build.lock
@@ -386,17 +422,18 @@ else
 		fi
 		build_dashboard-js
 	fi
-fi
-if [ "$bDocker" == "true" ]; then
-	build_docker
-fi
-if [ -z $sHost ]; then
-    echo "Cloud not select host for deploy. Wrong version or project."
-	exit 1
-fi
-if [ "$bSkipDeploy" == "true" ]; then
-	echo "Deploy dsiabled"
-	exit 0
+
+	echo "Compilation finished removing lock file"
+	rm -f /tmp/$sProject/build.lock
+	
+	if [ "$bDocker" == "true" ]; then
+		build_docker
+	fi
+	
+	if [ "$bSkipDeploy" == "true" ]; then
+		echo "Deploy dsiabled"
+		exit 0
+	fi
 fi
 
 echo "Compilation finished removing lock file"
@@ -407,5 +444,5 @@ cd $WORKSPACE
 rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' scripts/deploy_remote.sh sybase@$sHost:/sybase/
 ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $sHost << EOF
 chmod +x /sybase/deploy_remote.sh
-/sybase/deploy_remote.sh $sProject $sDate $nSecondsWait
+/sybase/deploy_remote.sh $sProject $sDate $nSecondsWait $sVersion
 EOF

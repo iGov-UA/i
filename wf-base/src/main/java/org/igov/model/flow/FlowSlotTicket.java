@@ -1,29 +1,28 @@
 package org.igov.model.flow;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.Type;
+import org.igov.model.core.AbstractEntity;
 import org.joda.time.DateTime;
 
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import org.igov.model.core.Entity;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Ticked assigned to specified FlowSlot.
+ * Ticked assigned to one or more FlowSlot's.
  * <p/>
  * User: goodg_000
  * Date: 14.06.2015
  * Time: 15:30
  */
 @javax.persistence.Entity
-public class FlowSlotTicket extends Entity {
+public class FlowSlotTicket extends AbstractEntity {
 
-    @JsonProperty(value = "nID_FlowSlot")
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "nID_FlowSlot")
-    private FlowSlot oFlowSlot;
+    @ManyToMany(fetch = FetchType.EAGER, targetEntity=FlowSlot.class)
+    @JoinTable(name = "FlowSlotTicket_FlowSlot",
+            joinColumns = @JoinColumn(name = "nID_FlowSlotTicket"),
+            inverseJoinColumns = @JoinColumn(name = "nID_FlowSlot"))
+    private List<FlowSlot> aFlowSlot = new ArrayList<>();
 
     /**
      * Many-to-one soft reference to subject, which is stored in central server.
@@ -46,12 +45,12 @@ public class FlowSlotTicket extends Entity {
     @Type(type = DATETIME_TYPE)
     private DateTime sDateEdit;
 
-    public FlowSlot getoFlowSlot() {
-        return oFlowSlot;
+    public List<FlowSlot> getaFlowSlot() {
+        return aFlowSlot;
     }
 
-    public void setoFlowSlot(FlowSlot oFlowSlot) {
-        this.oFlowSlot = oFlowSlot;
+    public void setaFlowSlot(List<FlowSlot> aFlowSlot) {
+        this.aFlowSlot = aFlowSlot;
     }
 
     public Long getnID_Subject() {

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_cnap_628" name="Дозвіл на відновлення земляних робіт" isExecutable="true">
+  <process id="dnepr_cnap_628" name="Дозвіл на проведення земельних робіт (надання висновку)" isExecutable="true">
     <documentation>https://github.com/e-government-ua/iBP/issues/628</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
@@ -13,30 +13,21 @@
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asSubekt" name="Оберіть суб'єкт підприємницької діяльності" type="enum" required="true">
-          <activiti:value id="fiz" name="фізична особа-підприємець"></activiti:value>
-          <activiti:value id="ur" name="юридична особа"></activiti:value>
+          <activiti:value id="fiz" name="фізична особа"></activiti:value>
+          <activiti:value id="ur" name="фоп або юридична особа"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asSubekt_2" name="Звернення подаю" type="enum" required="true">
           <activiti:value id="personally" name="особисто"></activiti:value>
-          <activiti:value id="confidant" name="довірена особа"></activiti:value>
+          <activiti:value id="confidant" name="як довірена особа"></activiti:value>
+          <activiti:value id="zemelka" name="як представник землевпорядної організації"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sNameUr" name="Назва підприємства, установи, організації" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sAdresUr" name="Місцезнаходження юридичної особи" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sAdresFiz" name="Адреса реєстрації" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sAdresZemlya" name="Адреса земельної ділянки, на який будуть відбуватися земляні роботи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sOwnerZemlya" name="Кому належить земляна ділянка?;ПІБ" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="info" name=" " type="label" default="&lt;b&gt;Данні відповідального за виконання робіт:&lt;/b&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sPibResponsible" name="ПІБ" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPostResponsible" name="Посада" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sWorkPlace" name="Місце роботи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAdresResponsible" name="Aдреса" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sContactResponsible" name="Контактні данні; емайл, телефон" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asFoul" name="Чи були зупинені роботи внаслідок виявлених порушень законодавства про охорону культурної спадщини?" type="enum" required="true">
-          <activiti:value id="yes" name="так"></activiti:value>
-          <activiti:value id="no" name="ні"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sDocOrder" name="Звіт про проведення фахівцями досліджень відповідної теріторії" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDocNoOffense" name="Підтвердження усунення правопорушень законодавства про охорону культурної спадщини" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDocOrder" name="Завантажити проект землеустрою" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDocNoOffense" name="Заява від імені землевпорядної організації" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocConfidant" name="Довіреність на право представляти інтереси субʼєкта господарювання в органах місцевого самоврядування" type="file"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="сканована копія паспорту" type="file"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу" type="invisible"></activiti:formProperty>
@@ -46,11 +37,11 @@
         <activiti:formProperty id="sMailCnap" name="пошта співробітника ЦНАП" type="invisible" default="darja.grek@gmail.com"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="пошта посадовця" type="invisible" default="darja.grek@gmail.com"></activiti:formProperty>
         <activiti:formProperty id="sArea" name="назва населеного пункту" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sShapka628" name="Керівнику департамента культури, туризму, національностей та релігій облдержадміністрації" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapka628" name="Управління культури, національностей та релігій Дніпропетровської ОДА" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Якщо  юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sNameUr&quot;,&quot;sAdresUr&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSubekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="Якщо  фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;sAdresFiz&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSubekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="маркер якщо довірена особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;sDocConfidant&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSubekt_2&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'confidant'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers4" name="Якщо були порушення" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;sDocNoOffense&quot;],&quot;asID_Field&quot;:{&quot;sClient1&quot;:&quot;asFoul&quot;},&quot;sCondition&quot;:&quot;[sClient1] == 'yes'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers4" name="Якщо представник землевпорядної" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;sDocNoOffense&quot;],&quot;asID_Field&quot;:{&quot;sClient1&quot;:&quot;asSubekt_2&quot;},&quot;sCondition&quot;:&quot;[sClient1] == 'zemelka'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="прийняття рішення про надання послуги" activiti:candidateGroups="kultura_${sID_Public_SubjectOrganJoin}">
@@ -74,17 +65,7 @@
         <activiti:formProperty id="sAdresFiz" name="Адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdresZemlya" name="Адреса земельної ділянки, на який будуть відбуватися земляні роботи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sOwnerZemlya" name="Кому належить земляна ділянка?; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="info" name=" " type="label" default="Данні відповідального за виконання робіт:"></activiti:formProperty>
-        <activiti:formProperty id="sPibResponsible" name="ПІБ; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPostResponsible" name="Посада; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sWorkPlace" name="Місце роботи; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAdresResponsible" name="Aдреса; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sContactResponsible" name="Контактні данні; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asFoul" name="Чи були зупинені роботи внаслідок виявлених порушень законодавства про охорону культурної спадщини?; ;writable=false" type="enum">
-          <activiti:value id="yes" name="так"></activiti:value>
-          <activiti:value id="no" name="ні"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="reestr_numb" name="Реєстраційний номер" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="reestr_numb" name="Реєстраційний номер ЦНАП" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="date_reestr" name="Укажіть дату реєстрації звернення" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="pib_admin" name="Прізвище та ініціали адміністратора" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="decision_1" name="Прийняття рішення про надання послуги" type="enum" required="true">
@@ -125,17 +106,7 @@
         <activiti:formProperty id="sAdresFiz" name="Адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdresZemlya" name="Адреса земельної ділянки, на який будуть відбуватися земляні роботи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sOwnerZemlya" name="Кому належить земляна ділянка?; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="info" name=" " type="label" default="Данні відповідального за виконання робіт:"></activiti:formProperty>
-        <activiti:formProperty id="sPibResponsible" name="ПІБ; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPostResponsible" name="Посада; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sWorkPlace" name="Місце роботи; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAdresResponsible" name="Aдреса; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sContactResponsible" name="Контактні данні; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asFoul" name="Чи були зупинені роботи внаслідок виявлених порушень законодавства про охорону культурної спадщини?; ;writable=false" type="enum">
-          <activiti:value id="yes" name="так"></activiti:value>
-          <activiti:value id="no" name="ні"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="reestr_numb" name="Реєстраційний номер" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="reestr_numb" name="Реєстраційний номер ЦНАП" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_reestr" name="Укажіть дату реєстрації звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="pib_admin" name="Прізвище та ініціали адміністратора" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decision_2" name="Прийняття рішення про надання дозволу" type="enum" required="true">
@@ -160,7 +131,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове  звернення. Дозвіл на відновлення земляних робіт]]></activiti:string>
+          <activiti:string><![CDATA[Нове  звернення. Дозвіл на проведення земельних робіт (надання висновку)]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -182,7 +153,7 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Дозвіл на відновлення земляних робіт]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Дозвіл на проведення земельних робіт (надання висновку)]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -209,7 +180,7 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:expression>"${email}"</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Дозвіл на відновлення земляних робіт]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Дозвіл на проведення земельних робіт (надання висновку)]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -235,7 +206,7 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:expression>"${email}"</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Дозвіл на відновлення земляних робіт]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Дозвіл на проведення земельних робіт (надання висновку)]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>"${rishen}",${PrintForm_1}</activiti:expression>
@@ -271,7 +242,7 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове  звернення. Дозвіл на відновлення земляних робіт]]></activiti:string>
+          <activiti:string><![CDATA[Нове  звернення. Дозвіл на проведення земельних робіт (надання висновку)]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -294,7 +265,7 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове  звернення. Дозвіл на відновлення земляних робіт]]></activiti:string>
+          <activiti:string><![CDATA[Нове  звернення. Дозвіл на проведення земельних робіт (надання висновку)]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -316,10 +287,10 @@ var per5 = " "
 var per6 = "res"
 var per7 = "res2"
 if(execution.getVariable('sDocOrder') != null){
-per3 = "&lt;li&gt;Звіт про проведення фахівцями досліджень відповідної теріторії.&lt;/li&gt;"
+per3 = "&lt;li&gt;Проект землеустрою.&lt;/li&gt;"
 }
 if(execution.getVariable('sDocNoOffense') != null){
-per4 = "&lt;li&gt;Підтвердження усунення правопорушень законодавства про охорону культурної спадщини.&lt;/li&gt;"
+per4 = "&lt;li&gt;Заява від імені землевпорядної організації.&lt;/li&gt;"
 }
 if(execution.getVariable('sDocConfidant') != null){
 per5 = "&lt;li&gt;Довіреність на право представляти інтереси субʼєкта господарювання в органах місцевого самоврядування.&lt;/li&gt;"

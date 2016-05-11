@@ -870,6 +870,17 @@ label .snippet {
   -moz-columns: 350px;
 }
 
+.igov-columns-3-sfs {
+  columns: 250px;
+  -webkit-columns: 250px;
+  -moz-columns: 250px;
+}
+
+.sfs-container {
+  padding-left: 8%;
+  padding-right: 8%;
+}
+
 .s-field-notes {
   color: #aaaaaa;
   text-align: left;
@@ -1081,7 +1092,7 @@ input.ng-touched.ng-invalid-email, input.ng-touched.ng-invalid-tel {
     position: absolute;
     right: 50px;
     bottom: 65px;
-    background-color: #FFFFFF;
+    background-color: #fff;
     border-radius: 5px;
 
     .navbar-right {
@@ -1193,22 +1204,144 @@ input.ng-touched.ng-invalid-email, input.ng-touched.ng-invalid-tel {
 }
 
 .dfs-header-container .container {
-  height: 175px;
+  height: 108px;
+  padding-left: 8%;
+  padding-right: 8%;
   position: relative;
+
+  .dfs-header {
+    height: 108px;
+    background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #4670ac), color-stop(100%, #2b4a77));
+    background-image: -webkit-linear-gradient(#4670ac, #2b4a77);
+    background-image: -moz-linear-gradient(#4670ac, #2b4a77);
+    background-image: -o-linear-gradient(#4670ac, #2b4a77);
+    background-image: -ms-linear-gradient(#4670ac, #2b4a77);
+    background-image: linear-gradient(#4670ac, #2b4a77);
+
+    .dfs-header-logo {
+        position: absolute;
+        width: 86px;
+        height: 86px;
+        left: 160px;
+        top: 7px;
+
+        @media (min-width: 767px) and (max-width: 992px) {
+          left: 100px;
+        }
+
+        @media (min-width: 100px) and (max-width: 767px) {
+          left: 70px;
+        }
+
+        @media (min-width: 2042px) and (max-width: 2720px) {
+          left: 200px;
+        }
+
+        @media (min-width: 2720px) and (max-width: 4084px) {
+          left: 270px;
+        }
+
+   }
+
+    .dfs-header-flag {
+      position: absolute;
+      left: 253px;
+      top: 20px;
+      width: 3px;
+      height: 68px;
+      background: #f8ea1b;
+
+      @media (min-width: 767px) and (max-width: 992px) {
+        left: 193px;
+      }
+
+      @media (min-width: 100px) and (max-width: 767px) {
+        left: 163px;
+      }
+
+      @media (min-width: 2042px) and (max-width: 2720px) {
+        left: 295px;
+      }
+
+      @media (min-width: 2720px) and (max-width: 4084px) {
+        left: 365px;
+      }
+
+      i {
+        position: absolute;
+        background: #00518c;
+        width: 100%;
+        height: 50%;
+      }
+    }
+  }
+
+
+
+  .dfs-header-search {
+    position: absolute;
+    bottom: 11px;
+    left: 270px;
+    font-size: 13px;
+
+    @media (min-width: 767px) and (max-width: 992px) {
+      right: 100px;
+    }
+
+    @media (min-width: 2042px) and (max-width: 2720px) {
+      left: 310px;
+    }
+
+    @media (min-width: 2720px) and (max-width: 4084px) {
+      left: 380px;
+    }
+
+    input {
+      width: 190px;
+      height: 23px;
+      border: none;
+      outline: none;
+      padding-left: 5px;
+    }
+
+    button {
+      width: 23px;
+      height: 23px;
+      border: none;
+      outline: none;
+      background-color: #fff;
+      margin-left: -5px;
+      color: lightgrey;
+    }
+  }
 
   .navbar-dfs {
     position: absolute;
-    right: 45px;
-    bottom: 8px;
-    background-color: #FFFFFF;
+    background: none;
+    right: 200px;
+    bottom: 15px;
+
+    @media (min-width: 767px) and (max-width: 992px) {
+      right: 100px;
+    }
+
+    @media (min-width: 2042px) and (max-width: 2720px) {
+      right: 200px;
+    }
+
+    @media (min-width: 2720px) and (max-width: 4084px) {
+      right: 240px;
+    }
 
     .navbar-right {
       margin-right: 0;
 
       .menu-item {
+        padding: 0 10px;
+        border-left: 1px solid #476b8f;
+
         &:first-child {
-          border-bottom-left-radius: 5px;
-          border-top-left-radius: 5px;
+          border: none;
         }
 
         &.selected {
@@ -1217,15 +1350,21 @@ input.ng-touched.ng-invalid-email, input.ng-touched.ng-invalid-tel {
         }
 
         a {
-          color: #2A4789 !important;
+          color: #fff;
           margin-top: 0;
           padding: 3px 10px;
+          &:hover {
+            background-color: transparent;
+            color: #fff;
+            text-decoration: underline;
+          }
         }
 
         h4 {
-          line-height: 1;
-          font-size: 15px;
-          font-weight: bold !important;
+          color: #fff;
+          font-size: 12px;
+          font-weight: 400;
+          margin: 0;
         }
       }
     }
@@ -1257,7 +1396,13 @@ input.ng-touched.ng-invalid-email, input.ng-touched.ng-invalid-tel {
 }
 
 .dfs-header {
-  background-image: url(/assets/images/baners/igov-dfs.png);
+  height: 108px;
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #4670ac), color-stop(100%, #2b4a77));
+  background-image: -webkit-linear-gradient(#4670ac, #2b4a77);
+  background-image: -moz-linear-gradient(#4670ac, #2b4a77);
+  background-image: -o-linear-gradient(#4670ac, #2b4a77);
+  background-image: -ms-linear-gradient(#4670ac, #2b4a77);
+  background-image: linear-gradient(#4670ac, #2b4a77);
 }
 
 .region-header-title, .kyiv-header-title, .ternopil-header-title, .kharkiv-header-title, .dfs-header-title {
@@ -1300,11 +1445,37 @@ input.ng-touched.ng-invalid-email, input.ng-touched.ng-invalid-tel {
 }
 
 .dfs-header-title {
-  background-image: url(/assets/images/baners/igov-dfs_title.png);
-  width: 365px;
-  height: 46px;
-  top: 32px;
-  left: 268px;
+  color: #fff;
+  font-family: Arial;
+  left:270px;
+  top: 20px;
+  margin-bottom: 20px;
+
+    @media (min-width: 767px) and (max-width: 992px) {
+      left: 230px;
+    }
+
+    @media (min-width: 100px) and (max-width: 767px) {
+      left: 200px;
+    }
+
+    @media (min-width: 2042px) and (max-width: 2720px) {
+      left: 310px;
+    }
+
+    @media (min-width: 2720px) and (max-width: 4084px) {
+      left: 380px;
+    }
+
+    h1 {
+      font-size: 20px;
+      font-weight: 400;
+      margin-bottom: 0;
+    }
+
+    span {
+      font-size: 12px;
+    }
 }
 
 /*<span class="kyiv-header" style="position:absolute;top:35px;left:100px;width:428px;height:95px;"></span>*/

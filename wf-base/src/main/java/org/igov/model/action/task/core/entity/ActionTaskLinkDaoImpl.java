@@ -17,7 +17,7 @@ import java.util.List;
  */
 @Repository
 @SuppressWarnings("unchecked")
-public class ActionTaskLinkDaoImpl extends GenericEntityDao<ActionTaskLink> implements ActionTaskLinkDao {
+public class ActionTaskLinkDaoImpl extends GenericEntityDao<Long, ActionTaskLink> implements ActionTaskLinkDao {
     private static final Logger LOG = LoggerFactory.getLogger(ActionTaskLinkDaoImpl.class);
     protected ActionTaskLinkDaoImpl() {
         super(ActionTaskLink.class);

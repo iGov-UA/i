@@ -2,19 +2,21 @@ package org.igov.model.action.event;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.igov.model.core.Entity;
+import org.igov.model.core.AbstractEntity;
 
 import javax.persistence.Column;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import org.igov.model.document.Document;
+import org.igov.model.subject.Subject;
+
 import javax.persistence.Transient;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @javax.persistence.Entity
-public class HistoryEvent extends Entity {
+public class HistoryEvent extends AbstractEntity {
 
     @JsonProperty(value = "nID_Subject")
     @Column(name = "nID_Subject", nullable = true)
@@ -57,6 +59,15 @@ public class HistoryEvent extends Entity {
     @JsonIgnore
     @Column(name = "nID_Document", nullable = true)
     private Long nID_Document;
+
+    @JsonProperty(value = "sSubjectInfo")
+    @Column(name = "sSubjectInfo")
+    private String sSubjectInfo;
+
+    @JsonProperty(value = "oSubject")
+    @JoinColumn(name = "nID_Subject", insertable = false, updatable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Subject oSubject;
 
     public void setnID_HistoryEvent_Service(Long nID_HistoryEvent_Service) {
         this.nID_HistoryEvent_Service = nID_HistoryEvent_Service;
@@ -121,5 +132,17 @@ public class HistoryEvent extends Entity {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public String getsSubjectInfo() {
+        return sSubjectInfo;
+    }
+
+    public void setsSubjectInfo(String sSubjectInfo) {
+        this.sSubjectInfo = sSubjectInfo;
+    }
+
+    public Subject getoSubject() {
+        return oSubject;
     }
 }

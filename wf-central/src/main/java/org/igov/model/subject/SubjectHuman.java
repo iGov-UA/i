@@ -11,8 +11,9 @@ import org.igov.model.core.NamedEntity;
 import javax.persistence.*;
 
 @javax.persistence.Entity
-@AttributeOverrides({ @AttributeOverride(name = "name",
-        column = @Column(name = "sName", nullable = true)) })
+@AttributeOverrides({
+    @AttributeOverride(name = "name",
+            column = @Column(name = "sName", nullable = true))})
 public class SubjectHuman extends NamedEntity {
 
     public static String getSubjectId(SubjectHumanIdType subjectHumanIdType, String sCode_Subject) {
@@ -40,7 +41,7 @@ public class SubjectHuman extends NamedEntity {
 
     @JsonProperty(value = "oSubject")
     @OneToOne
-    @Cascade({ CascadeType.SAVE_UPDATE })
+    @Cascade({CascadeType.SAVE_UPDATE})
     @JoinColumn(name = "nID_Subject", nullable = false)
     private Subject oSubject;
 
@@ -75,15 +76,19 @@ public class SubjectHuman extends NamedEntity {
     @JsonProperty(value = "oDefaultEmail")
     @ManyToOne
     @JoinColumn(name = "nID_SubjectContact_DefaultEmail")
-    @Cascade({ CascadeType.SAVE_UPDATE })
+    @Cascade({CascadeType.SAVE_UPDATE})
     private SubjectContact defaultEmail;
 
     @JsonProperty(value = "oDefaultPhone")
     @ManyToOne
     @JoinColumn(name = "nID_SubjectContact_DefaultPhone")
-    @Cascade({ CascadeType.SAVE_UPDATE })
+    @Cascade({CascadeType.SAVE_UPDATE})
     private SubjectContact defaultPhone;
 
+    @JsonProperty(value = "oSex")
+    @Enumerated(EnumType.ORDINAL)
+    private SubjectHumanSex nID_Sex;
+    
     private transient List<SubjectContact> aContact;
 
     public Subject getoSubject() {
@@ -173,4 +178,13 @@ public class SubjectHuman extends NamedEntity {
     public void setaContact(List<SubjectContact> aContact) {
         this.aContact = aContact;
     }
+
+	public SubjectHumanSex getnID_Sex() {
+		return nID_Sex;
+	}
+
+	public void setnID_Sex(SubjectHumanSex nID_Sex) {
+		this.nID_Sex = nID_Sex;
+	}
+    
 }

@@ -21,7 +21,7 @@ import java.util.List;
 import org.igov.model.subject.Subject;
 
 @Repository
-public class DocumentDaoImpl extends GenericEntityDao<Document> implements DocumentDao {
+public class DocumentDaoImpl extends GenericEntityDao<Long, Document> implements DocumentDao {
 
     @Autowired
     QueryLoader queryLoader;
@@ -30,7 +30,7 @@ public class DocumentDaoImpl extends GenericEntityDao<Document> implements Docum
 
     @Autowired
     @Qualifier("documentOperatorDao")
-    private EntityDao<DocumentOperator_SubjectOrgan> documentOperatorDao;
+    private EntityDao<Long, DocumentOperator_SubjectOrgan> documentOperatorDao;
 
     @Autowired
     private IBytesDataStorage durableBytesDataStorage;
