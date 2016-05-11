@@ -256,8 +256,8 @@ public class ObjectFileCommonController {
             throw new FileServiceIOException(
                     FileServiceIOException.Error.REDIS_ERROR, e.getMessage());
         }
-        String soSignData = BankIDUtils.checkECP(generalConfig,
-                upload, fileName);
+
+        String soSignData = BankIDUtils.checkECP(generalConfig, upload, fileName);
 
         return soSignData;
     }
@@ -465,8 +465,7 @@ public class ObjectFileCommonController {
 
         byte[] content = IOUtils.toByteArray(attachmentStream);
 
-        String soSignData = BankIDUtils.checkECP(generalConfig,
-                content, attachmentRequested.getName());
+        String soSignData = BankIDUtils.checkECP(generalConfig, content, attachmentRequested.getName());
 
         return soSignData;
     }

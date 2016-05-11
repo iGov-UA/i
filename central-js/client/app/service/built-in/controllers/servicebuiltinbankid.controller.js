@@ -199,7 +199,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
 
   $scope.validateForm = function(form) {
     var bValid = true;
-    ValidationService.validateByMarkers(form, null, true);
+    ValidationService.validateByMarkers(form, null, true, this.data);
     return form.$valid && bValid;
   };
 

@@ -65,7 +65,7 @@
                         }, defer.reject)
                       } else {
                         tasks.taskForm(oTask.id).then(function (result) {
-                          defer.resolve(JSON.parse(result).formProperties);
+                          defer.resolve(result.formProperties);
                         }, defer.reject);
                       }
                       return defer.promise;
@@ -74,7 +74,7 @@
                 }
               },
               'task-view-history@baTask': {
-                templateUrl: '/app/tasks/taskFormHistory.html'
+                templateUrl: 'app/tasks/taskFormHistory.html'
               }
             }
           })

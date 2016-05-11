@@ -92,6 +92,11 @@ angular.module('iGovMarkers')
       ,FileSign : {
         aField_ID: ['bankId_scan_inn1','bankId_scan_passport1']
       }
+      ,FileExtensions_1: { //унифицированный валидатор расщирений файлов
+        aField_ID: ['file1','file2'],
+        saExtension: 'jpg,pdf,png',
+        sMessage: 'Недопустимий формат файлу! Повинно бути: {saExtension}!'
+      }
     },
     attributes: {
       Editable_1: {aField_ID:['sPhone_User1', 'sMail_User1', 'bankIdlastName1'], bValue: true}

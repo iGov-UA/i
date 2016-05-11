@@ -77,7 +77,8 @@ public class CreateDocument_UkrDoc extends AbstractModelTask implements TaskList
 
         if (sID_DocumentValue == null || "".equals(sID_DocumentValue.trim())) {
             String sLoginAuthorValue = getStringFromFieldExpression(this.sLoginAuthor, execution);
-            String sHeadValue = getStringFromFieldExpression(this.sHead, execution);
+            String sHeadValue = getStringFromFieldExpression(this.sHead, execution)
+                    + " (" + generalConfig.getOrderId_ByProcess(Long.valueOf(execution.getProcessInstanceId())) + ")";
             String sBodyValue = getStringFromFieldExpression(this.sBody, execution);
             String nID_PatternValue = getStringFromFieldExpression(this.nID_Pattern, execution);
             String sID_Order_GovPublicValue = getStringFromFieldExpression(this.sID_Order_GovPublic, execution);

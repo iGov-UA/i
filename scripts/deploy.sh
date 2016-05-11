@@ -61,6 +61,14 @@ do
 			sGitCommit="$2"
 			shift
 			;;
+		--dockerOnly)
+			bDockerOnly="$2"
+			shift
+			;;
+		--gitCommit)
+			sGitCommit="$2"
+			shift
+			;;
 		*)
 			echo "bad option"
 			exit 1
@@ -295,14 +303,14 @@ if [ -z $sJenkinsUser ]; then
 	echo "Please provide Jenkins access credentials!"
 	exit 1
 fi
-if [ -z $sJenkinsAPI ]; then
-	echo "Please provide Jenkins access credentials!"
-	exit 1
-fi
-if curl --silent --show-error http://$sJenkinsUser:$sJenkinsAPI@localhost:8080/ | grep "HTTP ERROR"; then
-	echo "Failed to connect to Jenkins with current credentials!"
-	exit 1
-fi
+#if [ -z $sJenkinsAPI ]; then
+#	echo "Please provide Jenkins access credentials!"
+#	exit 1
+#fi
+#if curl --silent --show-error http://$sJenkinsUser:$sJenkinsAPI@localhost:8080/ | grep "HTTP ERROR"; then
+#	echo "Failed to connect to Jenkins with current credentials!"
+#	exit 1
+#fi
 if [ "$bSkipDoc" == "true" ]; then
 	sBuildDoc="site"
 fi
@@ -326,9 +334,21 @@ if [[ $sVersion == "beta" && $sProject == "dashboard-js" ]] || [[ $sVersion == "
 		sHost="test-version.region.igov.org.ua"
 		export PATH=/usr/local/bin:$PATH
 fi
+if [ $sVersion == "delta" ]; then
+	sHost="none"
+fi
+if [ $sVersion == "omega" ]; then
+	sHost="none"
+fi
 #if [[ $sVersion == "prod" && $sProject == "dashboard-js" ]] || [[ $sVersion == "alpha" && $sProject == "wf-region" ]]; then
 #		sHost="region.igov.org.ua"
 #fi
+if [ $sVersion == "delta" ]; then
+	sHost="none"
+fi
+if [ $sVersion == "omega" ]; then
+	sHost="none"
+fi
 
 if [ -z $bDockerOnly ]; then
 	bDockerOnly="false"
@@ -357,23 +377,23 @@ else
 	fi
 	if [ $sProject == "wf-central" ]; then
 		sleep 15
-		if curl --silent --show-error http://$sJenkinsUser:$sJenkinsAPI@localhost:8080/job/alpha_Back/lastBuild/api/json | grep -q result\":null; then
-			echo "Building of alpha_Back project is running. Compilation of wf-central will start automatically."
-			exit 0
-		else
-			echo "Building of alpha_Back project is not running."
+#		if curl --silent --show-error http://$sJenkinsUser:$sJenkinsAPI@localhost:8080/job/alpha_Back/lastBuild/api/json | grep -q result\":null; then
+#			echo "Building of alpha_Back project is running. Compilation of wf-central will start automatically."
+#			exit 0
+#		else
+#			echo "Building of alpha_Back project is not running."
 			build_central
-		fi
+#		fi
 	fi
 	if [ $sProject == "wf-region" ]; then
 		sleep 15
-		if curl --silent --show-error http://$sJenkinsUser:$sJenkinsAPI@localhost:8080/job/alpha_Back/lastBuild/api/json | grep -q result\":null; then
-			echo "Building of alpha_Back project is running. Compilation of wf-region will start automatically."
-			exit 0
-		else
-			echo "Building of alpha_Back project is not running."
+#		if curl --silent --show-error http://$sJenkinsUser:$sJenkinsAPI@localhost:8080/job/alpha_Back/lastBuild/api/json | grep -q result\":null; then
+#			echo "Building of alpha_Back project is running. Compilation of wf-region will start automatically."
+#			exit 0
+#		else
+#			echo "Building of alpha_Back project is not running."
 			build_region
-		fi
+#		fi
 	fi
 	if [ $sProject == "central-js" ]; then
 		touch /tmp/$sProject/build.lock
@@ -428,10 +448,13 @@ else
 	fi
 fi
 
+echo "Compilation finished removing lock file"
+rm -f /tmp/$sProject/build.lock
+
 echo "Connecting to remote host $sHost"
 cd $WORKSPACE
 rsync -az -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' scripts/deploy_remote.sh sybase@$sHost:/sybase/
 ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $sHost << EOF
 chmod +x /sybase/deploy_remote.sh
-/sybase/deploy_remote.sh $sProject $sDate $nSecondsWait
+/sybase/deploy_remote.sh $sProject $sDate $nSecondsWait $sVersion
 EOF
