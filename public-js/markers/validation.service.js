@@ -14,7 +14,7 @@
  * Більше вимог до валідації: i/issues/375, 654 та 685.
  */
 
-angular.module('app').service('ValidationService', ['moment', 'amMoment', 'angularMomentConfig', 'iGovMarkers', ValidationService])
+angular.module('iGovMarkers').service('ValidationService', ['moment', 'amMoment', 'angularMomentConfig', 'iGovMarkers', ValidationService])
   .constant('angularMomentConfig', {
     preprocess: 'utc',
     timezone: 'Europe/Kiev',
@@ -225,6 +225,23 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
      * Для валідації формату використовується  moment.js
      */
     'DateFormat': function (modelValue, viewValue, options) {
+      if (!options || !options.sFormat) {
+        return false;
+      }
+
+      // Строга відповідніcть (нестрога - var bValid = moment(modelValue, options.sFormat).isValid())
+      var bValid = (moment(modelValue, options.sFormat).format(options.sFormat) === modelValue);
+
+      if (bValid === false) {
+        options.lastError = options.sMessage || ('Дата може бути тільки формату ' + options.sFormat);
+      }
+
+      return bValid;
+    },
+
+      //test
+
+    'DocumentDate': function (modelValue, viewValue, options) {
       if (!options || !options.sFormat) {
         return false;
       }
