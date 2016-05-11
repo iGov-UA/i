@@ -35,7 +35,7 @@
         <activiti:formProperty id="sAddress" name="Адреса" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="шапка" type="invisible" default="Черкаському обласному управлінню лісового та мисливського господарства"></activiti:formProperty>
-        <activiti:formProperty id="sDateCreateProcess" name="Дата заповнення заяви" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="marker_ur" name="Поля Юридичної особи" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sImya_ur&quot;,&quot;edrpou&quot;,&quot;sPib_ur&quot;,&quot;sAdres_1&quot;],&quot;asID_Field&quot;:{&quot;sClient1&quot;:&quot;asSubekt&quot;},&quot;sCondition&quot;:&quot;[sClient1] == 'sEnumUr'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -104,8 +104,11 @@
           <activiti:value id="sEnumApprove" name="надано лісорубний квиток"></activiti:value>
           <activiti:value id="sEnumDeny" name="відмовлено у видачі лісорубного квитка"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sDecisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="шапка" type="invisible" default="Черкаському обласному управлінню лісового та мисливського господарства"></activiti:formProperty>
-        <activiti:formProperty id="sDateCreateProcess" name="Дата заповнення заяви" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="markers_pf" name="юр-физ" type="markers" default="${markerService.loadFromFile('forest/cherkasy_lmg_416_pf.json')}"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/ULMG/cherkasy_lmg_416_z.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody2" name="[pattern/print/ULMG/cherkasy_lmg_416_z.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -126,7 +129,7 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Запрошення до отримання «Посвідчення мисливця» або «Контрольної картки обліку добутої дичини й порушень правил полювання»]]></activiti:string>
+          <activiti:string><![CDATA[Запрошення до отримання «Лісорубного квитка»]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -203,6 +206,9 @@
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
         <omgdc:Bounds height="65.0" width="105.0" x="120.0" y="145.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
+        <omgdc:Bounds height="30.0" width="30.0" x="196.0" y="190.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="65.0" width="105.0" x="240.0" y="145.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -223,9 +229,6 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="790.0" y="160.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="196.0" y="190.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="193.0" y="240.0"></omgdc:Bounds>
