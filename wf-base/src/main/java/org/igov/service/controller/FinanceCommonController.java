@@ -3,6 +3,7 @@ package org.igov.service.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import java.io.BufferedReader;
 import org.apache.commons.codec.binary.Base64;
 import org.igov.io.GeneralConfig;
 import org.igov.io.mail.Mail;
@@ -80,7 +81,16 @@ public class FinanceCommonController {
         String sDataDecoded = null;
 
         try {
-            data = parseData(data);
+            StringBuilder osRequestBody = new StringBuilder("");
+            BufferedReader oReader = request.getReader();
+            String line;
+            if (oReader != null) {
+                while ((line = oReader.readLine()) != null) {
+                    osRequestBody.append(line);
+                }
+            }
+            request.getReader();
+            data = parseData(osRequestBody.toString());
             if (data != null) {
                 sDataDecoded = new String(Base64.decodeBase64(data.getBytes()));
                 LOG.info("(sDataDecoded={})", sDataDecoded);
@@ -156,7 +166,8 @@ public class FinanceCommonController {
     }
     
     private static String parseData(String data) {
-        if(data != null){
+        LOG.info("data before: " + data);
+        if(data != null && data.length() > 0){
             data = data.contains("data") ? data.substring(data.indexOf("data")) : null;
             if (data != null) {
                 int indexAmpersant = data.indexOf("&");
@@ -165,7 +176,7 @@ public class FinanceCommonController {
                 }
             }
         }
-        LOG.info("data: " + data);
+        LOG.info("data after: " + data);
         return data;
     }
 

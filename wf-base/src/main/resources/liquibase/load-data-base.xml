@@ -5,8 +5,8 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <changeSet id="Drop out-of-date Flow_ServiceData" author="brunneng" dbms="postgresql" runAlways="true">
         <!-- Используем временную таблицу Flow_ServiceData_Tmp, чтобы удалить строки из Flow_ServiceData которых нет в Flow_ServiceData.csv -->
+    <!--changeSet id="Drop out-of-date Flow_ServiceData" author="brunneng" dbms="postgresql" runAlways="true">
         <createTable tableName="Flow_ServiceData_Tmp">
             <column name="nID" type="bigint">
                 <constraints primaryKey="true" nullable="false" unique="true"/>
@@ -26,7 +26,7 @@
         </sql>
 
         <dropTable tableName="Flow_ServiceData_Tmp"/>
-    </changeSet>
+    </changeSet-->
 
     <changeSet id="Update data" author="brunneng" runOnChange="true">
 
