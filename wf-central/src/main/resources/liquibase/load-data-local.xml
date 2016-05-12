@@ -376,11 +376,11 @@
         
     </changeSet>
 
-    <!--changeSet id="Drop out-of-date HistoryEvent_Service" author="brunneng" runAlways="true" dbms="postgresql">
+    <changeSet id="Drop out-of-date HistoryEvent_Service" author="brunneng" runOnChange="true" runAlways="true" dbms="postgresql">
         <sql splitStatements="true" dbms="postgresql">
             delete from "HistoryEvent_Service" where "nID_ServiceData" is not null and "nID_ServiceData" not in (select "nID" from "ServiceData");
         </sql>
-    </changeSet-->
+    </changeSet>
 
 
 </databaseChangeLog>
