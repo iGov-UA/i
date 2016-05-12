@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 
 import static org.igov.service.business.finance.LiqpayService.TASK_MARK;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Api(tags = { "FinanceCommonController -- Финансы общие (в т.ч. платежи)" })
 @Controller
@@ -54,7 +55,7 @@ public class FinanceCommonController {
 	    @ApiParam(value = "Строка-ИД платежной системы", required = true) @RequestParam String sID_PaymentSystem,
 	    @ApiParam(value = "Строка со вспомогательными данными", required = true) @RequestParam String sData,
 	    @ApiParam(value = "Строка-префикс платежа (если их несколько в рамках заявки)", required = false) @RequestParam(value = "sPrefix", required = false) String sPrefix,
-            @ApiParam(value = "Строка-Данные от платежной системы", required = false) @RequestParam(value = "data", required = false) String data,
+            @ApiParam(value = "Строка-Данные от платежной системы", required = false) @RequestBody(required = false) String data,
             @ApiParam(value = "Строка-Подпись платежной системы", required = false) @RequestParam(value = "signature", required = false) String signature,
             HttpServletRequest request
     ) throws Exception {
@@ -64,7 +65,7 @@ public class FinanceCommonController {
         if (sPrefix == null) {
             sPrefix = "";
         }
-
+        
         String URI = request.getRequestURI() + "?" + request.getQueryString();
         //LOG.info("/setPaymentStatus_TaskActiviti");
 
@@ -79,6 +80,7 @@ public class FinanceCommonController {
         String sDataDecoded = null;
 
         try {
+            data = parseData(data);
             if (data != null) {
                 sDataDecoded = new String(Base64.decodeBase64(data.getBytes()));
                 LOG.info("(sDataDecoded={})", sDataDecoded);
@@ -151,6 +153,20 @@ public class FinanceCommonController {
             throw oException;
         }
         return sData;
+    }
+    
+    private static String parseData(String data) {
+        if(data != null){
+            data = data.contains("data") ? data.substring(data.indexOf("data")) : null;
+            if (data != null) {
+                int indexAmpersant = data.indexOf("&");
+                if (indexAmpersant >= 0) {
+                    data = data.substring(0, indexAmpersant);
+                }
+            }
+        }
+        LOG.info("data: " + data);
+        return data;
     }
 
     @ApiOperation(value = "/finance/setPaymentStatus_TaskActiviti_Direct", notes = "##### Контроллер платежей. Регистрация проведенного платежа - по прямому вызову\n")
