@@ -247,7 +247,11 @@ public class DebugCentralController {
             
 //            IMsgObjR msg = new MsgSendImpl(sType, sFunction).addnID_Server(nID_Server).addnID_Subject(nID_Server).addsBody(sBody).
 //        	    addsError(sError).addsHead(sHead).addsmData(smData).save();
-            IMsgObjR msg = msgService.setEventSystem(sType, nID_Subject, nID_Server, sFunction, sHead, sBody, sError, smData);
+            try {
+                IMsgObjR msg = msgService.setEventSystem(sType, nID_Subject, nID_Server, sFunction, sHead, sBody, sError, smData);
+	    } catch (Exception e) {
+        	LOG.error("Ошибка работы с Сервисом Сохранения сообщений:", e);
+	    }
             
 //            //oLog_External.info("sType={},nID_Subject={},nID_Server={},sFunction={},sHead={},sBody={},sError={},smData={}",sType,nID_Subject,nID_Server,sFunction,sHead,sBody,sError,smData);
 //            //LOG_MIN.info("sType={},nID_Subject={},sFunction={},sHead={},sBody={},sError={}",sType,nID_Subject,sFunction,sHead,sBody,sError);
