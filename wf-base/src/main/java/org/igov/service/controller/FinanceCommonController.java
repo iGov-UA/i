@@ -96,8 +96,6 @@ public class FinanceCommonController {
                 LOG.info("(sDataEncoded={})", data);
                 sDataDecoded = new String(Base64.decodeBase64(data.getBytes()));
                 LOG.info("(sDataDecoded={})", sDataDecoded);
-                sDataDecoded = URLDecoder.decode(data, "UTF-8");
-                LOG.info("(sDataDecoded={})", sDataDecoded);
             }
             oLiqpayService.setPaymentStatus(sID_Order, sDataDecoded, sID_PaymentSystem, sPrefix);
             //setPaymentStatus(sID_Order, null, sID_PaymentSystem);
