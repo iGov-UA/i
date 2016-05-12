@@ -9,9 +9,9 @@ public class LiqpayCallbackEntity {
     private String order_id;
     private String type;
     private String transaction_id;
-    private String sender_phone;
     private String status;
-    private String token;
+    private transient String sender_phone;
+    private transient String token;
 
     public String getVersion() {
         return version;

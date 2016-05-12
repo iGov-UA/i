@@ -303,14 +303,14 @@ if [ -z $sJenkinsUser ]; then
 	echo "Please provide Jenkins access credentials!"
 	exit 1
 fi
-#if [ -z $sJenkinsAPI ]; then
-#	echo "Please provide Jenkins access credentials!"
-#	exit 1
-#fi
-#if curl --silent --show-error http://$sJenkinsUser:$sJenkinsAPI@localhost:8080/ | grep "HTTP ERROR"; then
-#	echo "Failed to connect to Jenkins with current credentials!"
-#	exit 1
-#fi
+if [ -z $sJenkinsAPI ]; then
+	echo "Please provide Jenkins access credentials!"
+	exit 1
+fi
+if curl --silent --show-error http://$sJenkinsUser:$sJenkinsAPI@localhost:8080/ | grep "HTTP ERROR"; then
+	echo "Failed to connect to Jenkins with current credentials!"
+	exit 1
+fi
 if [ "$bSkipDoc" == "true" ]; then
 	sBuildDoc="site"
 fi
@@ -377,23 +377,23 @@ else
 	fi
 	if [ $sProject == "wf-central" ]; then
 		sleep 15
-#		if curl --silent --show-error http://$sJenkinsUser:$sJenkinsAPI@localhost:8080/job/alpha_Back/lastBuild/api/json | grep -q result\":null; then
-#			echo "Building of alpha_Back project is running. Compilation of wf-central will start automatically."
-#			exit 0
-#		else
-#			echo "Building of alpha_Back project is not running."
+		if curl --silent --show-error http://$sJenkinsUser:$sJenkinsAPI@localhost:8080/job/alpha_Back/lastBuild/api/json | grep -q result\":null; then
+			echo "Building of alpha_Back project is running. Compilation of wf-central will start automatically."
+			exit 0
+		else
+			echo "Building of alpha_Back project is not running."
 			build_central
-#		fi
+		fi
 	fi
 	if [ $sProject == "wf-region" ]; then
 		sleep 15
-#		if curl --silent --show-error http://$sJenkinsUser:$sJenkinsAPI@localhost:8080/job/alpha_Back/lastBuild/api/json | grep -q result\":null; then
-#			echo "Building of alpha_Back project is running. Compilation of wf-region will start automatically."
-#			exit 0
-#		else
-#			echo "Building of alpha_Back project is not running."
+		if curl --silent --show-error http://$sJenkinsUser:$sJenkinsAPI@localhost:8080/job/alpha_Back/lastBuild/api/json | grep -q result\":null; then
+			echo "Building of alpha_Back project is running. Compilation of wf-region will start automatically."
+			exit 0
+		else
+			echo "Building of alpha_Back project is not running."
 			build_region
-#		fi
+		fi
 	fi
 	if [ $sProject == "central-js" ]; then
 		touch /tmp/$sProject/build.lock
