@@ -97,7 +97,7 @@ deploy-tomcat ()
 	rm -rf /sybase/tomcat_${sProject}$1/webapps/*
 	cp -p /sybase/.upload/$sProject.war /sybase/tomcat_${sProject}$1/webapps/wf.war
 	#Запускаем томкат
-	cd /sybase/tomcat_${sProject}$1/bin/ && ./_startup.sh
+	cd /sybase/tomcat_${sProject}$1/bin/ && ./_startup.sh > /dev/null 2>&1
 	sleep 15
 }
 
@@ -167,8 +167,8 @@ if [ $sProject == "wf-central"  ] || [ $sProject == "wf-region" ]; then
 			echo "Tomcat started but application failed to start!"
 			echo "Restarting Tomcat..."
 			echo "======================================================="
-			/sybase/tomcat_${sProject}_double/bin/_shutdown.sh
-			/sybase/tomcat_${sProject}_double/bin/_startup.sh
+			/sybase/tomcat_${sProject}_double/bin/_shutdown.sh > /dev/null 2>&1
+			/sybase/tomcat_${sProject}_double/bin/_startup.sh > /dev/null 2>&1
 			break
 		fi
 	done
@@ -179,8 +179,8 @@ if [ $sProject == "wf-central"  ] || [ $sProject == "wf-region" ]; then
 		sleep 1
 		echo "waiting for server startup $nTimeout"
 		if grep ERROR /sybase/tomcat_${sProject}_double/logs/catalina.out | grep -v "but failOnError was false" | grep -v log4j | grep -v stopServer; then
-			cat catalina.out | sed -n -e '/ERROR/,$p'
-			/sybase/tomcat_${sProject}_double/bin/_shutdown.sh
+			cat /sybase/tomcat_${sProject}_double/logs/catalina.out | sed -n -e '/ERROR/,$p'
+			/sybase/tomcat_${sProject}_double/bin/_shutdown.sh > /dev/null 2>&1
 			exit 1
 		fi
 		if [ $nTimeout -ge $nSecondsWait ]; then
