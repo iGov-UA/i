@@ -93,7 +93,6 @@ public class FinanceCommonController {
             request.getReader();
             data = parseData(osRequestBody.toString());
             if (data != null) {
-                LOG.info("(sDataEncoded={})", data);
                 sDataDecoded = new String(Base64.decodeBase64(data.getBytes()));
                 LOG.info("(sDataDecoded={})", sDataDecoded);
             }
@@ -168,7 +167,6 @@ public class FinanceCommonController {
     }
     
     private static String parseData(String data) {
-        LOG.info("data before: " + data);
         if(data != null && data.length() > 0){
             data = data.contains("data") ? data.substring(data.indexOf("data")) : null;
             if (data != null) {
