@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import java.io.BufferedReader;
+import java.net.URLDecoder;
 import org.apache.commons.codec.binary.Base64;
 import org.igov.io.GeneralConfig;
 import org.igov.io.mail.Mail;
@@ -92,7 +93,10 @@ public class FinanceCommonController {
             request.getReader();
             data = parseData(osRequestBody.toString());
             if (data != null) {
+                LOG.info("(sDataEncoded={})", data);
                 sDataDecoded = new String(Base64.decodeBase64(data.getBytes()));
+                LOG.info("(sDataDecoded={})", sDataDecoded);
+                sDataDecoded = URLDecoder.decode(data, "UTF-8");
                 LOG.info("(sDataDecoded={})", sDataDecoded);
             }
             oLiqpayService.setPaymentStatus(sID_Order, sDataDecoded, sID_PaymentSystem, sPrefix);
@@ -170,6 +174,7 @@ public class FinanceCommonController {
         if(data != null && data.length() > 0){
             data = data.contains("data") ? data.substring(data.indexOf("data")) : null;
             if (data != null) {
+                data = data.replaceFirst("data=", "");
                 int indexAmpersant = data.indexOf("&");
                 if (indexAmpersant >= 0) {
                     data = data.substring(0, indexAmpersant);
