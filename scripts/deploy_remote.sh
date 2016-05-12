@@ -97,7 +97,7 @@ deploy-tomcat ()
 	rm -rf /sybase/tomcat_${sProject}$1/webapps/*
 	cp -p /sybase/.upload/$sProject.war /sybase/tomcat_${sProject}$1/webapps/wf.war
 	#Запускаем томкат
-	cd /sybase/tomcat_${sProject}$1/bin/ && ./_startup.sh
+	cd /sybase/tomcat_${sProject}$1/bin/ && ./_startup.sh > /dev/null 2>&1
 	sleep 15
 }
 
@@ -147,50 +147,60 @@ if [ $sProject == "dashboard-js" ]; then
 fi
 
 if [ $sProject == "wf-central"  ] || [ $sProject == "wf-region" ]; then
-	#Сразу создадим бекапы
 	echo "Starting backup of DOUBLE"
 	backup _double
-	
-	#Развернем новое приложение на вторичном инстансе
 	echo "Starting deploy of DOUBLE"
 	deploy-tomcat _double
 	
 	nTimeout=0
 	until grep -q "FrameworkServlet 'dispatcher': initialization completed in" /sybase/tomcat_${sProject}_double/logs/catalina.out || [ $nTimeout -eq $nSecondsWait ]; do
-	((nTimeout++))
-	sleep 1
-	echo "waiting for server startup $nTimeout"
-	if [ $nTimeout -ge $nSecondsWait ]; then
-		echo "timeout reached"
-		grep -B 3 -A 2 ERROR /sybase/tomcat_${sProject}_double/logs/catalina.out
-		fallback _double
-	fi
+		((nTimeout++))
+		sleep 1
+		echo "waiting for server startup $nTimeout"
+		if [ $nTimeout -ge $nSecondsWait ]; then
+			echo "timeout reached"
+			cat /sybase/tomcat_${sProject}_double/logs/catalina.out | grep -v log4j | sed -n -e '/ERROR/,$p'
+#			fallback _double
+			exit 1
+		fi
+		if grep "Destroying Web application" /sybase/tomcat_${sProject}_double/logs/catalina.out; then
+			echo "Tomcat started but application failed to start!"
+			echo "Restarting Tomcat..."
+			echo "======================================================="
+			/sybase/tomcat_${sProject}_double/bin/_shutdown.sh > /dev/null 2>&1
+			/sybase/tomcat_${sProject}_double/bin/_startup.sh > /dev/null 2>&1
+			break
+		fi
 	done
-	#Проверяем на наличие ошибок вторичный инстанс
-	if grep ERROR /sybase/tomcat_${sProject}_double/logs/catalina.out | grep -v "but failOnError was false" | grep -v log4j | grep -v stopServer; then
-		fallback _double
+
+	nTimeout=0
+	until grep -q "FrameworkServlet 'dispatcher': initialization completed in" /sybase/tomcat_${sProject}_double/logs/catalina.out || [ $nTimeout -eq $nSecondsWait ]; do
+		((nTimeout++))
+		sleep 1
+		echo "waiting for server startup $nTimeout"
+		if grep ERROR /sybase/tomcat_${sProject}_double/logs/catalina.out | grep -v "but failOnError was false" | grep -v log4j | grep -v stopServer; then
+			cat /sybase/tomcat_${sProject}_double/logs/catalina.out | sed -n -e '/ERROR/,$p'
+			/sybase/tomcat_${sProject}_double/bin/_shutdown.sh > /dev/null 2>&1
+			exit 1
+		fi
+		if [ $nTimeout -ge $nSecondsWait ]; then
+			echo "timeout reached"
+			exit 1
+		fi
+	done
+
+	echo "Everything is OK. Continuing deployment ..."
+	cat /sybase/.configs/nginx/${sProject}_double_upstream.conf > /sybase/nginx/conf/sites/${sProject}_upstream.conf
+	sudo /sybase/nginx/sbin/nginx -s reload
+	backup
+	deploy-tomcat
+	if grep ERROR /sybase/tomcat_${sProject}/logs/catalina.out | grep -v "but failOnError was false" | grep -v log4j | grep -v stopServer; then
+		grep -B 3 -A 2 ERROR /sybase/tomcat_${sProject}/logs/catalina.out
+		fallback
 	else
 		echo "Everything is OK. Continuing deployment ..."
-		cat /sybase/.configs/nginx/${sProject}_double_upstream.conf > /sybase/nginx/conf/sites/${sProject}_upstream.conf
+		cat /sybase/.configs/nginx/${sProject}_upstream.conf > /sybase/nginx/conf/sites/${sProject}_upstream.conf
 		sudo /sybase/nginx/sbin/nginx -s reload
-
-		#Разворачиваем приложение в основной инстанс
-		#Сразу создадим бекапы
-		backup
-			
-		#Развернем новое приложение на вторичном инстансе
-		deploy-tomcat
-			
-		#Проверяем на наличие ошибок вторичный инстанс //
-		if grep ERROR /sybase/tomcat_${sProject}/logs/catalina.out | grep -v "but failOnError was false" | grep -v log4j | grep -v stopServer; then
-			grep -B 3 -A 2 ERROR /sybase/tomcat_${sProject}/logs/catalina.out
-			#Откатываемся назад
-			fallback
-		else
-			echo "Everything is OK. Continuing deployment ..."
-			cat /sybase/.configs/nginx/${sProject}_upstream.conf > /sybase/nginx/conf/sites/${sProject}_upstream.conf
-			sudo /sybase/nginx/sbin/nginx -s reload
-			cd /sybase/tomcat_${sProject}_double/bin/ && ./_shutdown_force.sh
-		fi
+		cd /sybase/tomcat_${sProject}_double/bin/ && ./_shutdown_force.sh
 	fi
 fi

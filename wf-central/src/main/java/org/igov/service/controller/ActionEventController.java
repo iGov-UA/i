@@ -568,6 +568,7 @@ public class ActionEventController {
 		            JSONObject json = (JSONObject) new JSONParser().parse(osResponseEntityReturn.getBody());
 		            // sPhone
 		            line.add(json.get("phone") != null ? json.get("phone").toString() : "");
+                    // nID_ServiceData
                     line.add(historyEventService.getnID_ServiceData() != null ? historyEventService.getnID_ServiceData().toString() : "");
 
 		            csvWriter.writeNext(line.toArray(new String[line.size()]));
@@ -578,6 +579,4 @@ public class ActionEventController {
 			LOG.error("Error occurred while creating CSV file {}", e.getMessage());
 		} 
     }
-    //test
-    //test2
 }

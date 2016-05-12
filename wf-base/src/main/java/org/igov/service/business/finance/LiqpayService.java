@@ -65,11 +65,11 @@ public class LiqpayService {
         String sID_Transaction = "Pay_" + snID_Task;
         String sStatus_Payment = null;
         //parse sData			
-        if (sData != null) {
+        if (sData != null && sData.length() > 0) {
             try {			
 
                 Gson oGson = new Gson();
-                LiqpayCallbackEntity oLiqpayCallbackModel = oGson.fromJson(sData, LiqpayCallbackEntity.class);
+                LiqpayCallbackEntity oLiqpayCallbackModel = oGson.fromJson(sData.substring(0, sData.length()-1), LiqpayCallbackEntity.class);
                 //log.info("sID_PaymentSystem="+sID_PaymentSystem);			
                 LOG.info("(oLiqpayCallbackModel.getOrder_id()={})", oLiqpayCallbackModel.getOrder_id());
                 sID_Transaction = oLiqpayCallbackModel.getTransaction_id();
