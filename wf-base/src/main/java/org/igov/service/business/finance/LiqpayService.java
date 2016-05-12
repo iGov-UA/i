@@ -68,11 +68,11 @@ public class LiqpayService {
             try {
                 Gson oGson = new Gson();
                 LiqpayCallbackEntity oLiqpayCallbackModel;
-                try {
+                //try {
                     oLiqpayCallbackModel = oGson.fromJson(sData, LiqpayCallbackEntity.class);
-                } catch (Exception ex) {
-                    oLiqpayCallbackModel = oGson.fromJson(sData.substring(0, sData.length() - 1), LiqpayCallbackEntity.class);
-                }
+                //} catch (Exception ex) {
+                //    oLiqpayCallbackModel = oGson.fromJson(sData.substring(0, sData.length() - 1), LiqpayCallbackEntity.class);
+                //}
                 sID_Transaction = oLiqpayCallbackModel.getTransaction_id();
                 LOG.info("(oLiqpayCallbackModel.getTransaction_id()={})", sID_Transaction);
                 sStatus_Payment = oLiqpayCallbackModel.getStatus();
