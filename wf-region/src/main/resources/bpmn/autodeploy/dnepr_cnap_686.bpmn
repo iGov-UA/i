@@ -552,7 +552,7 @@
         <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
         <activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible" default="*;101;22010300, ${sClientFIO}"></activiti:formProperty>
 
-        <activiti:formProperty id="asDecisionFirst" name="Результат аналізу звернення" type="enum" required="true">
+        <activiti:formProperty id="asDecisionFirst_01" name="Результат аналізу звернення" type="enum" required="true">
           <activiti:value id="sYes" name="Так - Заява прийнята для обробки"></activiti:value>
           <activiti:value id="sNo" name="Ні - Заява не прийнята для обробки"></activiti:value>
         </activiti:formProperty>
@@ -603,7 +603,7 @@
         <activiti:formProperty id="sUniqNum" name="Номер опису (або унікальний номер) :" type="string" default="_"></activiti:formProperty>
         <activiti:formProperty id="sComment" name="У разі негативного рішення вкажіть, будь ласка, причину" type="textArea" default="Причина: "></activiti:formProperty>
         <activiti:formProperty id="fDecisionDoc" name="Копія рішення для заявника:" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_686_print.html]" type="invisible" default="Заява про реєстрацію змін - оригінал" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/dnepr_cnap_686_print.html]" type="invisible" default="Заява про реєстрацію змін - оригінал" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener> 
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"> 
           <activiti:field name="aFieldInheritedAttachmentID"> 
@@ -745,14 +745,14 @@
           <activiti:value id="petrikivka" name="Петриківський ЦНАП"></activiti:value>
         </activiti:formProperty>
 
-        <activiti:formProperty id="asDecisionFirst" name="Результат аналізу звернення" type="enum" required="true">
+        <activiti:formProperty id="asDecisionFirst_03" name="Результат аналізу звернення" type="enum" required="true">
           <activiti:value id="sYes" name="Так - Заява прийнята для обробки"></activiti:value>
           <activiti:value id="sNo" name="Ні - Заява не прийнята для обробки"></activiti:value>
         </activiti:formProperty>
 
         <activiti:formProperty id="sComment" name="У разі негативного рішення вкажіть, будь ласка, причину" type="textArea" default="Причина: "></activiti:formProperty>
 
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_686_print.html]"    type="invisible" default="Заява про реєстрацію змін - оригінал" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_3" name="[pattern/print/dnepr_cnap_686_print.html]"    type="invisible" default="Заява про реєстрацію змін - оригінал" writable="false"></activiti:formProperty>
 
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener> 
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"> 
@@ -795,7 +795,7 @@
         <activiti:formProperty id="sUniqNum" name="Номер опису (або унікальний номер) :" type="string" default="_"></activiti:formProperty>
         <activiti:formProperty id="sComment" name="У разі негативного рішення вкажіть, будь ласка, причину" type="textArea" default="Причина: "></activiti:formProperty>
         <activiti:formProperty id="fDecisionDoc" name="Копія рішення для заявника:" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_686_print.html]" type="invisible" default="Заява про реєстрацію змін - оригінал" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_4" name="[pattern/print/dnepr_cnap_686_print.html]" type="invisible" default="Заява про реєстрацію змін - оригінал" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener> 
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"> 
           <activiti:field name="aFieldInheritedAttachmentID"> 
@@ -1117,11 +1117,11 @@
     <sequenceFlow id="flow39" sourceRef="servicetask13" targetRef="usertask2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow41" name="Прийнято до роботи" sourceRef="exclusivegateway4" targetRef="servicetask13">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecisionFirst== 'sYes'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecisionFirst_01== 'sYes'}]]></conditionExpression>
     </sequenceFlow>
     <endEvent id="endevent3" name="End"></endEvent>
     <sequenceFlow id="flow42" name="Відмова в обробці" sourceRef="exclusivegateway4" targetRef="servicetask14">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecisionFirst== 'sNo'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecisionFirst_01== 'sNo'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask14" name="Е-mail повідомлення заявнику про відмову в обробці заявки" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
@@ -1185,7 +1185,7 @@
     
     </serviceTask>
     <sequenceFlow id="flow50" name="Відмова в обробці" sourceRef="exclusivegateway7" targetRef="servicetask15">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecisionFirst== 'sNo'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecisionFirst_03== 'sNo'}]]></conditionExpression>
     </sequenceFlow>
     <endEvent id="endevent4" name="End"></endEvent>
     <sequenceFlow id="flow51" sourceRef="servicetask15" targetRef="endevent4"></sequenceFlow>
@@ -1213,7 +1213,7 @@
     </serviceTask>
 
     <sequenceFlow id="flow52" name="Прийнято до роботи" sourceRef="exclusivegateway7" targetRef="servicetask16">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecisionFirst== 'sYes'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecisionFirst_03== 'sYes'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow53" sourceRef="servicetask16" targetRef="usertask4"></sequenceFlow>
     <sequenceFlow id="flow54" sourceRef="usertask4" targetRef="exclusivegateway5"></sequenceFlow>
