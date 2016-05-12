@@ -166,29 +166,41 @@ if [ $sProject == "wf-central"  ] || [ $sProject == "wf-region" ]; then
 		if grep "Destroying Web application" /sybase/tomcat_${sProject}_double/logs/catalina.out; then
 			echo "Tomcat started but application failed to start!"
 			echo "Restarting Tomcat..."
+			echo "======================================================="
 			/sybase/tomcat_${sProject}_double/bin/_shutdown.sh
 			/sybase/tomcat_${sProject}_double/bin/_startup.sh
 			break
 		fi
 	done
-	if grep ERROR /sybase/tomcat_${sProject}_double/logs/catalina.out | grep -v "but failOnError was false" | grep -v log4j | grep -v stopServer; then
-		cat catalina.out | sed -n -e '/ERROR/,$p'
-#		fallback _double
-		exit 1
+
+	nTimeout=0
+	until grep -q "FrameworkServlet 'dispatcher': initialization completed in" /sybase/tomcat_${sProject}_double/logs/catalina.out || [ $nTimeout -eq $nSecondsWait ]; do
+		((nTimeout++))
+		sleep 1
+		echo "waiting for server startup $nTimeout"
+		if grep ERROR /sybase/tomcat_${sProject}_double/logs/catalina.out | grep -v "but failOnError was false" | grep -v log4j | grep -v stopServer; then
+			cat catalina.out | sed -n -e '/ERROR/,$p'
+			/sybase/tomcat_${sProject}_double/bin/_shutdown.sh
+			exit 1
+		fi
+		if [ $nTimeout -ge $nSecondsWait ]; then
+			echo "timeout reached"
+			exit 1
+		fi
+	done
+
+	echo "Everything is OK. Continuing deployment ..."
+	cat /sybase/.configs/nginx/${sProject}_double_upstream.conf > /sybase/nginx/conf/sites/${sProject}_upstream.conf
+	sudo /sybase/nginx/sbin/nginx -s reload
+	backup
+	deploy-tomcat
+	if grep ERROR /sybase/tomcat_${sProject}/logs/catalina.out | grep -v "but failOnError was false" | grep -v log4j | grep -v stopServer; then
+		grep -B 3 -A 2 ERROR /sybase/tomcat_${sProject}/logs/catalina.out
+		fallback
 	else
 		echo "Everything is OK. Continuing deployment ..."
-		cat /sybase/.configs/nginx/${sProject}_double_upstream.conf > /sybase/nginx/conf/sites/${sProject}_upstream.conf
+		cat /sybase/.configs/nginx/${sProject}_upstream.conf > /sybase/nginx/conf/sites/${sProject}_upstream.conf
 		sudo /sybase/nginx/sbin/nginx -s reload
-		backup
-		deploy-tomcat
-		if grep ERROR /sybase/tomcat_${sProject}/logs/catalina.out | grep -v "but failOnError was false" | grep -v log4j | grep -v stopServer; then
-			grep -B 3 -A 2 ERROR /sybase/tomcat_${sProject}/logs/catalina.out
-			fallback
-		else
-			echo "Everything is OK. Continuing deployment ..."
-			cat /sybase/.configs/nginx/${sProject}_upstream.conf > /sybase/nginx/conf/sites/${sProject}_upstream.conf
-			sudo /sybase/nginx/sbin/nginx -s reload
-			cd /sybase/tomcat_${sProject}_double/bin/ && ./_shutdown_force.sh
-		fi
+		cd /sybase/tomcat_${sProject}_double/bin/ && ./_shutdown_force.sh
 	fi
 fi
