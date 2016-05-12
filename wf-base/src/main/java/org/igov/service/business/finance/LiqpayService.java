@@ -34,8 +34,7 @@ public class LiqpayService {
             throws Exception {
         if (!LIQPAY_PAYMENT_SYSTEM.equals(sID_PaymentSystem)) {
             LOG.error("not liqpay system");
-            throw new Exception("not liqpay system");
-            //return;			
+            throw new Exception("not liqpay system");			
         }
 
         LOG.info("(sData={})", sData);
@@ -69,18 +68,18 @@ public class LiqpayService {
             try {
                 Gson oGson = new Gson();
                 LiqpayCallbackEntity oLiqpayCallbackModel;
-                try {
+                //try {
                     oLiqpayCallbackModel = oGson.fromJson(sData, LiqpayCallbackEntity.class);
-                } catch (Exception ex) {
-                    oLiqpayCallbackModel = oGson.fromJson(sData.substring(0, sData.length() - 1), LiqpayCallbackEntity.class);
-                }
+                //} catch (Exception ex) {
+                //    oLiqpayCallbackModel = oGson.fromJson(sData.substring(0, sData.length() - 1), LiqpayCallbackEntity.class);
+                //}
                 sID_Transaction = oLiqpayCallbackModel.getTransaction_id();
                 LOG.info("(oLiqpayCallbackModel.getTransaction_id()={})", sID_Transaction);
                 sStatus_Payment = oLiqpayCallbackModel.getStatus();
                 sStatus_Payment_Description = oLiqpayCallbackModel.getStatusDescription();
                 LOG.info("(oLiqpayCallbackModel.getStatus()={})", sStatus_Payment);
             } catch (Exception e) {
-                LOG.error("Error: {}, can't parse json! ", e.getMessage());
+                LOG.error("Error: {}, can't parse json! ", e);
                 throw e;
             }
         } else {

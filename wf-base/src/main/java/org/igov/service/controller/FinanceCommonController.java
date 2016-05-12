@@ -97,7 +97,6 @@ public class FinanceCommonController {
                 LOG.info("(sDataDecoded={})", sDataDecoded);
             }
             oLiqpayService.setPaymentStatus(sID_Order, sDataDecoded, sID_PaymentSystem, sPrefix);
-            //setPaymentStatus(sID_Order, null, sID_PaymentSystem);
         } catch (Exception oException) {
             LOG.error("FAIL:", oException);
             String snID_Subject = "0";
@@ -171,9 +170,9 @@ public class FinanceCommonController {
             data = data.contains("data") ? data.substring(data.indexOf("data")) : null;
             if (data != null) {
                 data = data.replaceFirst("data=", "");
-                int indexAmpersant = data.indexOf("&");
-                if (indexAmpersant >= 0) {
-                    data = data.substring(0, indexAmpersant);
+                int index = data.indexOf("}");
+                if (index >= 0) {
+                    data = data.substring(0, index + 1);
                 }
             }
         }
