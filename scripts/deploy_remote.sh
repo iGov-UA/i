@@ -31,7 +31,7 @@ fallback ()
 {
 	echo "Fatal error! Executing fallback task..."
 	#Убиваем процесс. Нет смысла ждать его корректной остановки.
-	cd /sybase/tomcat_${sProject}$1/bin/ && ./_shutdown_force.sh
+	cd /sybase/tomcat_${sProject}$1/bin/ && ./_shutdown.sh
 	#Удаляем новые конфиги
 	rm -rf /sybase/tomcat_${sProject}$1/conf
 	#Копируем старые конфиги обратно
@@ -201,6 +201,25 @@ if [ $sProject == "wf-central"  ] || [ $sProject == "wf-region" ]; then
 		echo "Everything is OK. Continuing deployment ..."
 		cat /sybase/.configs/nginx/${sProject}_upstream.conf > /sybase/nginx/conf/sites/${sProject}_upstream.conf
 		sudo /sybase/nginx/sbin/nginx -s reload
+
+		#Разворачиваем приложение в основной инстанс
+		#Сразу создадим бекапы
+		backup
+			
+		#Развернем новое приложение на вторичном инстансе
+		deploy-tomcat
+			
+		#Проверяем на наличие ошибок вторичный инстанс //
+		if grep ERROR /sybase/tomcat_${sProject}/logs/catalina.out | grep -v "but failOnError was false" | grep -v log4j | grep -v stopServer; then
+			grep -B 3 -A 2 ERROR /sybase/tomcat_${sProject}/logs/catalina.out
+			#Откатываемся назад
+			fallback
+		else
+			echo "Everything is OK. Continuing deployment ..."
+			cat /sybase/.configs/nginx/${sProject}_upstream.conf > /sybase/nginx/conf/sites/${sProject}_upstream.conf
+			sudo /sybase/nginx/sbin/nginx -s reload
+			cd /sybase/tomcat_${sProject}_double/bin/ && ./_shutdown.sh
+		fi
 		cd /sybase/tomcat_${sProject}_double/bin/ && ./_shutdown_force.sh
 	fi
 fi
