@@ -74,7 +74,7 @@ public class LiqpayService {
                 LOG.info("(oLiqpayCallbackModel.getOrder_id()={})", oLiqpayCallbackModel.getOrder_id());
                 sID_Transaction = oLiqpayCallbackModel.getTransaction_id();
                 LOG.info("(oLiqpayCallbackModel.getTransaction_id()={})", sID_Transaction);
-                sStatus_Payment = oLiqpayCallbackModel.getStatus();
+                sStatus_Payment = oLiqpayCallbackModel.getStatusDescription();
                 LOG.info("(oLiqpayCallbackModel.getStatus()={})", sStatus_Payment);
             } catch (Exception e) {
                 LOG.error("Error: {}, can't parse json! ", e.getMessage());
