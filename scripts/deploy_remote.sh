@@ -147,11 +147,8 @@ if [ $sProject == "dashboard-js" ]; then
 fi
 
 if [ $sProject == "wf-central"  ] || [ $sProject == "wf-region" ]; then
-	#Сразу создадим бекапы
 	echo "Starting backup of DOUBLE"
 	backup _double
-	
-	#Развернем новое приложение на вторичном инстансе
 	echo "Starting deploy of DOUBLE"
 	deploy-tomcat _double
 	
@@ -169,33 +166,23 @@ if [ $sProject == "wf-central"  ] || [ $sProject == "wf-region" ]; then
 		if grep "Destroying Web application" /sybase/tomcat_${sProject}_double/logs/catalina.out; then
 			echo "Tomcat started but application failed to start!"
 			echo "Restarting Tomcat..."
-			/sybase/tomcat_${sProject}_double/_shutdown.sh
-			/sybase/tomcat_${sProject}_double/_startup.sh
+			/sybase/tomcat_${sProject}_double/bin/_shutdown.sh
+			/sybase/tomcat_${sProject}_double/bin/_startup.sh
 			break
 		fi
 	done
-	#Проверяем на наличие ошибок вторичный инстанс
 	if grep ERROR /sybase/tomcat_${sProject}_double/logs/catalina.out | grep -v "but failOnError was false" | grep -v log4j | grep -v stopServer; then
 		cat catalina.out | sed -n -e '/ERROR/,$p'
 #		fallback _double
 		exit 1
-	fi
 	else
 		echo "Everything is OK. Continuing deployment ..."
 		cat /sybase/.configs/nginx/${sProject}_double_upstream.conf > /sybase/nginx/conf/sites/${sProject}_upstream.conf
 		sudo /sybase/nginx/sbin/nginx -s reload
-
-		#Разворачиваем приложение в основной инстанс
-		#Сразу создадим бекапы
 		backup
-			
-		#Развернем новое приложение на вторичном инстансе
 		deploy-tomcat
-			
-		#Проверяем на наличие ошибок вторичный инстанс //
 		if grep ERROR /sybase/tomcat_${sProject}/logs/catalina.out | grep -v "but failOnError was false" | grep -v log4j | grep -v stopServer; then
 			grep -B 3 -A 2 ERROR /sybase/tomcat_${sProject}/logs/catalina.out
-			#Откатываемся назад
 			fallback
 		else
 			echo "Everything is OK. Continuing deployment ..."
