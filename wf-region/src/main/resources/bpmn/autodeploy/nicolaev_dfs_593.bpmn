@@ -254,7 +254,6 @@ ${sWorkTime}.&lt;br /&gt;
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 Будь ласка оцініть якість наданої вам послуги. &lt;br /&gt;
 [pattern/mail/_common_feedback.html]
-${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
@@ -298,7 +297,7 @@ yyyy2 = yyyy-(-1)
 if (ddd == '01')
   {
   mmm2=mmm-1
-  mmm2 = '0'+mmm2
+  if (mmm2&lt;10){mmm2 = '0'+mmm2}
     if(mmm =='05'||'07'||'08'||'10'||'12')
       {ddd2='30'}
     if(mmm =='06'||'09'||'11'||'04'||'02')
