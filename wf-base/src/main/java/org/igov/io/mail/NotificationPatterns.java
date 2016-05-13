@@ -53,7 +53,7 @@ public class NotificationPatterns {
             String sBody = String.format("Ваша заявка %s прийнята!", sID_Order) +
                     "<br>Ви завжди зможете переглянути її поточний статус у розділі <a href=\"" + generalConfig
                     .getSelfHostCentral() + "/order/search?sID_Order=" + sID_Order
-                    + "\">\"Мій журнал\"</a>. Також на кожному етапі Ви будете отримувати email-повідомлення.	";
+                    + "\">\"Мій журнал\"</a>. Також на кожному етапі Ви будете отримувати email-повідомлення." ;
             
             /*
             Long nID_Task = oActionTaskService.getTaskIDbyProcess(null, sID_Order, Boolean.FALSE);
