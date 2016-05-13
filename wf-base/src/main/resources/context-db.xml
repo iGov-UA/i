@@ -17,6 +17,10 @@
             <property name="password" value="${jdbc.password}"/>
         </bean>
 
+        <bean class="org.igov.util.LoggingBean">
+            <property name="message" value="dataSource: [url=${jdbc.url}, username=${jdbc.username}]"/>
+        </bean>
+
         <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
             <property name="dataSource" ref="dataSource"/>
             <property name="packagesToScan">
