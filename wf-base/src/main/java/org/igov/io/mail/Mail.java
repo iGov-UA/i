@@ -97,6 +97,7 @@ public class Mail extends Abstract_Mail {
         LOG_BIG.debug("(getHead()={})", getHead());
         LOG_BIG.debug("(getBody={})", getBody());
         
+/*
         if(getTo().contains("Lyud84@mail.ru")
                 || getTo().contains("vira.haman@ideabank.ua")
                 || getTo().contains("akostyuk@winnerauto.ua")
@@ -150,10 +151,10 @@ public class Mail extends Abstract_Mail {
 || getTo().contains("ayhimenko@rambler.ru")
 || getTo().contains("dolg2014@ukr.ne")
 //|| getTo().contains("zhigan.roman@gmail.com")
-                        
+
                 ){
             LOG_BIG.warn("SKIPED!(getTo={})", getTo());
-        }else{
+        }else{*/
             if(bUniSender){
                 try{
                     sendWithUniSender();
@@ -194,14 +195,16 @@ public class Mail extends Abstract_Mail {
     		    	    LOG.trace("Ошибка при регистрации сообщения в Сервисе Хранения Ошибок.",e);
     		    	}
                         
+                        /*
                         throw oException1;
+                        */
                         //sendOld();
                     }
                 }
             } else {
                 sendOld();
             }
-        }
+//        }
         
     }
 
