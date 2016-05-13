@@ -8,7 +8,7 @@
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPostAddress" name="Поштова адреса" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний телефон" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sLabel1" name="Суть запиту" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sDocument" name="Вид, назва, реквізити, зміст документа, що запитується" type="textArea"></activiti:formProperty>
@@ -95,7 +95,7 @@
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
-    <serviceTask id="servicetask3" name="Лист з інфо" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask3" name="Лист з інфо" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -110,7 +110,7 @@
           <activiti:expression>[pattern/mail/_common_header.html]
 			&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 			&lt;p&gt;Відповідь на Ваш  запит на отримання публічної інформації - готова&lt;br /&gt;	&lt;/p&gt;
-			&lt;p&gt;Згідно до Вашої заяви, відповідь відправлено enum{[asGet]}&lt;br /&gt;	&lt;/p&gt;
+			Скан-копію відповіді прикріплено до цього листа.&lt;br /&gt;
 			Оригінал відповіді можете отримати за адресою:
 			&lt;br /&gt;
 			&lt;br /&gt;
@@ -123,6 +123,9 @@
 			[pattern/mail/_common_signature_end.html]
 			[pattern/mail/_common_feedback.html]
 			[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>${file1}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -170,8 +173,8 @@
 			&lt;p&gt;
 			Відповідь на Ваш  запит на отримання публічної інформації - готова&lt;br /&gt;
 			&lt;/p&gt;
-			Скан-копію відповіді прикріплено до цього листа.&lt;br /&gt;
 			
+			&lt;p&gt;Згідно до Вашої заяви, відповідь відправлено enum{[asGet]}&lt;br /&gt;	&lt;/p&gt;
 			Оригінал відповіді можете отримати за адресою:
 			&lt;br /&gt;
 			&lt;br /&gt;
@@ -185,10 +188,8 @@
 			[pattern/mail/_common_feedback.html]
 			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${file1}</activiti:expression>
-        </activiti:field>
-      </extensionElements>
+        
+        </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>

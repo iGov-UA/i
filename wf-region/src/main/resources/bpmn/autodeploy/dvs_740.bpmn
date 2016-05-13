@@ -11,7 +11,7 @@
         <activiti:formProperty id="bankId_scan_passport" name="Копія паспорту" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_inn" name="Копія довідки про присвоєння реєстраційного номера облікової картки платника податків" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPostAddress" name="Поштова адреса" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний телефон" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sLabel1" name="Реквізити виконавчого листа (рішення)" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sDocNumber" name="Номер виконавчого документа" type="string" required="true"></activiti:formProperty>
@@ -23,7 +23,7 @@
         <activiti:formProperty id="sBankName" name="Повне найменування банку; із зазначенням міста в якому зареєстрована установа" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sOKPO" name="МФО банку, ЄДРПОУ обов’язково тільки у разі якщо одержувачем є банк" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sCardNumber" name="№ пластикової картки чи особистого рахунку; у разі наявності" type="string"></activiti:formProperty>
-        <activiti:formProperty id="file1" name="Скан-копія виконавчого документа та копія рішення суду; об'єднайте документи у один .pdf файл або .zip архів" type="file"></activiti:formProperty>
+        <activiti:formProperty id="file1" name="Скан-копія виконавчого документа та копія рішення суду; об'єднайте документи у один .pdf файл або .zip архів" type="file"  required="true"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса" type="invisible"></activiti:formProperty>
@@ -79,7 +79,7 @@
         <activiti:formProperty id="bankIdinn" name="Ідентифікаційний номер платника податків одержувача" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPostAddress" name="Поштова адреса" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Ваш e-mail" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="e-mail" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sLabel1" name="Реквізити виконавчого листа (рішення)" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sDocNumber" name="Номер виконавчого документа" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="dDocDate" name="Дата видачі виконавчого документа" type="date" writable="false"></activiti:formProperty>
@@ -88,14 +88,14 @@
         <activiti:formProperty id="sLabel2" name="Реквізити замовника, для перерахування коштів" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sRahunok" name="Розрахунковий рахунок банку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBankName" name="Повне найменування банку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sOKPO" name="МФО банку, (ЄДРПОУ обов’язково тільки у разі якщо одержувачем є банк)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sOKPO" name="МФО банку, (ЄДРПОУ обов’язково тільки у разі якщо одержувачем є банк)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCardNumber" name="№ пластикової картки чи особистого рахунку (у разі наявності)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asStatus" name="Статус запиту" type="enum" required="true">
-          <activiti:value id="sEnumDeny" name="рішення виконано у повному обсязі, таке рішення підлягає поверненню заявнику (разом з копіями документів, що підтверджують виконання рішення у повному обсязі)"></activiti:value>
-          <activiti:value id="sEnumApprove" name="рішення внесено до Реєстру рішень, виконання яких гарантується державою, та прийнято дообліку"></activiti:value>
+          <activiti:value id="sEnumReady" name="рішення виконано у повному обсязі, таке рішення підлягає поверненню заявнику (разом з копіями документів, що підтверджують виконання рішення у повному обсязі)" ></activiti:value>
+          <activiti:value id="sEnumApprove" name="рішення внесено до Реєстру рішень, виконання яких гарантується державою, та прийнято до обліку"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sComment" name="Якщо ви відмовляєте заявнику у наданні послуги, обов'язково вкажіть причину у цьому полі" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="file2" name="Завантажте необхідні файли для відправки замовнику: супровідний лист та довідку з ЄДРВП, або повідомлення про прийняття рішення до обліку із зазначенням черги. Об'єднайте документи у один .pdf файл або .zip архів" type="file"></activiti:formProperty>
+        <activiti:formProperty id="file2" name="Завантажте необхідні файли для відправки замовнику: супровідний лист та довідку з ЄДРВП, або повідомлення про прийняття рішення до обліку із зазначенням черги. Об'єднайте документи у один .pdf файл або .zip архів" type="file"  required="true">></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression>${file1}, ${bankId_scan_passport}, ${bankId_scan_inn}</activiti:expression>
