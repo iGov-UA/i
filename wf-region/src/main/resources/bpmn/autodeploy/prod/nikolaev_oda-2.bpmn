@@ -266,7 +266,7 @@ execution.setVariable('nCountIsAdult', 'a' + countIsAdult)
     <serviceTask id="servicetask2" name="Повідомлення чиновника про нову заявку" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
+          <activiti:expression>${sMailClerk}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -504,7 +504,7 @@ execution.setVariable('nCountIsAdult', 'a' + countIsAdult)
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow27" sourceRef="servicetask7" targetRef="usertask3"></sequenceFlow>
-    <userTask id="usertask3" name="Підготовка витягу з рішення виконавчого комітету Ммр щодо взяття на квартирний облік" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask3" name="Підготовка витягу з рішення виконавчого комітету щодо взяття на квартирний облік" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Орган обслуговування" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sClFio0" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>

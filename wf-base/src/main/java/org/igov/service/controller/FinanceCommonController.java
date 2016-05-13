@@ -93,12 +93,14 @@ public class FinanceCommonController {
             request.getReader();
             data = parseData(osRequestBody.toString());
             if (data != null) {
-                LOG.info("(sDataEncoded={})", data);
                 sDataDecoded = new String(Base64.decodeBase64(data.getBytes()));
+                int index = sDataDecoded.indexOf("}");
+                if (index >= 0) {
+                    sDataDecoded = sDataDecoded.substring(0, index + 1);
+                }
                 LOG.info("(sDataDecoded={})", sDataDecoded);
             }
             oLiqpayService.setPaymentStatus(sID_Order, sDataDecoded, sID_PaymentSystem, sPrefix);
-            //setPaymentStatus(sID_Order, null, sID_PaymentSystem);
         } catch (Exception oException) {
             LOG.error("FAIL:", oException);
             String snID_Subject = "0";
@@ -168,7 +170,6 @@ public class FinanceCommonController {
     }
     
     private static String parseData(String data) {
-        LOG.info("data before: " + data);
         if(data != null && data.length() > 0){
             data = data.contains("data") ? data.substring(data.indexOf("data")) : null;
             if (data != null) {
