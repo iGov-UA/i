@@ -116,9 +116,9 @@
         <activiti:formProperty id="adres_ur" name="Місцезнаходження юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="layout" name="Місце розташування земельної ділянки (адреса)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="square" name="Площа земельної ділянки (га)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="reestr_numb" name="Реєстраційний номер" type="string"></activiti:formProperty>
-        <activiti:formProperty id="date_reestr" name="Укажіть дату реєстрації звернення" type="string"></activiti:formProperty>
-        <activiti:formProperty id="pib_admin" name="Прізвище, ім'я та по батькові Державного кадастрового реєстратора" type="string"></activiti:formProperty>
+        <activiti:formProperty id="reestr_numb" name="Реєстраційний номер" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_reestr" name="Укажіть дату реєстрації звернення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="pib_admin" name="Прізвище, ім'я та по батькові Державного кадастрового реєстратора" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decision_2" name="Прийняте рішення щодо надання реєстрації" type="enum" required="true">
           <activiti:value id="accept" name="земельну ділянку зареєстровано"></activiti:value>
           <activiti:value id="reject" name="відмовлено у здійсненні державної реєстрації земельної ділянки"></activiti:value>
@@ -317,7 +317,7 @@ execution.setVariable('sListDocumentsPrint', res2)
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_1=='accept'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow22" name="ЦНАП-ЦНАП" sourceRef="exclusivegateway4" targetRef="usertask2">
-              <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bFlag=='easy'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bFlag=='easy'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow44" name="відхилення" sourceRef="exclusivegateway2" targetRef="servicetask9">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_1=='reject'}]]></conditionExpression>
@@ -591,7 +591,7 @@ ${sNameOrgan}<br />
         <omgdi:waypoint x="651.0" y="329.0"></omgdi:waypoint>
         <omgdi:waypoint x="600.0" y="329.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="595.0" y="308.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="62.0" x="602.0" y="295.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
@@ -657,7 +657,7 @@ ${sNameOrgan}<br />
         <omgdi:waypoint x="671.0" y="349.0"></omgdi:waypoint>
         <omgdi:waypoint x="671.0" y="391.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="671.0" y="349.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="87.0" x="680.0" y="348.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow65" id="BPMNEdge_flow65">
