@@ -523,8 +523,8 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 /*                
                 LOG.info("SKIP:(sReturn})");
 */
-
-/*        
+                
+/* 
                 sReturn = oManagerOTP.sendPasswordOTP(sPhone_SMS.substring(1), sText_SMS, true);
                 LOG.info("(sReturn={})",sReturn);
 
@@ -533,8 +533,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 
                 sReturn = oManagerOTP.sendPasswordOTP(sPhone_SMS.substring(3), sText_SMS, true);
                 LOG.info("(sReturn={})",sReturn);
-                
-*/                
+*/
                 /*sReturn = oManagerOTP.sendPasswordOTP("+38"+sPhone_SMS, sText_SMS, true);
                 LOG.info("(sReturn={})",sReturn);
                 
