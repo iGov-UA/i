@@ -61,6 +61,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="sDocNumber" name="Внесіть номер довідки" type="string"></activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відмови у наданні довідки внесіть, будь ласка, причину" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="rishen" name="Завантажте копію довідки" type="file"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/ternopil/ternopol_rcnap_117_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/ternopol_rcnap_117_print.html]" type="invisible" default="Бланк довідки (Тернопіль)" writable="false"></activiti:formProperty>
       </extensionElements>
@@ -126,7 +127,7 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:expression>[pattern/mail/_common_header.html]
 Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}!&lt;br /&gt;&lt;br /&gt;
 &lt;br /&gt;
-Ваше звернення передано на розгляд до адмыныстративного органу.&lt;br /&gt;
+Ваше звернення передано на розгляд до адміністративного органу.&lt;br /&gt;
 Ви отримаєте додаткове повідомлення за результатами розгляду запиту.
 &lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
@@ -158,9 +159,6 @@ ${sPhoneOrgan}&lt;br /&gt;
 ${sNameOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>"${rishen}"</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
