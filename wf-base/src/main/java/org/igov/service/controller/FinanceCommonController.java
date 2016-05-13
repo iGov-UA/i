@@ -94,6 +94,10 @@ public class FinanceCommonController {
             data = parseData(osRequestBody.toString());
             if (data != null) {
                 sDataDecoded = new String(Base64.decodeBase64(data.getBytes()));
+                int index = sDataDecoded.indexOf("}");
+                if (index >= 0) {
+                    sDataDecoded = sDataDecoded.substring(0, index + 1);
+                }
                 LOG.info("(sDataDecoded={})", sDataDecoded);
             }
             oLiqpayService.setPaymentStatus(sID_Order, sDataDecoded, sID_PaymentSystem, sPrefix);
@@ -170,9 +174,9 @@ public class FinanceCommonController {
             data = data.contains("data") ? data.substring(data.indexOf("data")) : null;
             if (data != null) {
                 data = data.replaceFirst("data=", "");
-                int index = data.indexOf("}");
-                if (index >= 0) {
-                    data = data.substring(0, index + 1);
+                int indexAmpersant = data.indexOf("&");
+                if (indexAmpersant >= 0) {
+                    data = data.substring(0, indexAmpersant);
                 }
             }
         }

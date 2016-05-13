@@ -1,9 +1,8 @@
 #!/bin/bash
-
-sProject=$1
-sDate=$2
-nSecondsWait=$3
-sVersion=$4
+sProject=$1 #
+sDate=$2 #
+nSecondsWait=$3 #
+sVersion=$4 #
 
 if [ -z $sProject ]; then
 	echo "Empty Project variable"
