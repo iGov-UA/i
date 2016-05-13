@@ -62,7 +62,7 @@
         <activiti:formProperty id="sNameInshaZonaLen" name="Назва іншого типу покриття" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="nInshaZonaLen" name="Інший тип покриття (довжина), м" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="nInshaZonaWidth" name="Інший тип покриття (ширина), м" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="asEnumOnRoad" name="Роботи проводяться на проїжджій частині дороги?" type="enum">
+        <activiti:formProperty id="asEnumOnRoad" name="Роботи проводяться на проїжджій частині дороги?" type="enum" required="true">
           <activiti:value id="sEnumElement_OnRoad" name="Так"></activiti:value>
           <activiti:value id="sEnumElement_NotOnRoad" name="Ні"></activiti:value>
         </activiti:formProperty>
@@ -160,13 +160,13 @@
           <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecision_1_Comment" name="У разі відхилення запиту внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddDoc" name="Вкажіть  сьогоднішню дату" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAttribToApproveOrgan_433" name="Організацій та установи з якими  необхідно погодити виконання планових робіт" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="markers21" name="Настроювання принтформи " type="markers" default="${markerService.loadFromFile('skv/cnap_433_DozvilDestructionObjects_Print_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/skv/cnap_433_DozvilDestructionObjects_print.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть центр надання адмінпослуг" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -248,13 +248,13 @@
         </activiti:formProperty>
         <activiti:formProperty id="sDecision_2_Comment" name="У разі відмови внесіть, будь ласка, коментар (підставу) у цьому полі" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="nFile_Rishennya" name="Завантажте копію рішення" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddDoc" name="Вкажіть  сьогоднішню дату" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAttribToApproveOrgan_433" name="Організацій та установи з якими  необхідно погодити виконання планових робіт" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="markers22" name="Настроювання принтформи " type="markers" default="${markerService.loadFromFile('skv/cnap_433_DozvilDestructionObjects_Print_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/skv/cnap_433_DozvilDestructionObjects_print.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть центр надання адмінпослуг" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
