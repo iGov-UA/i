@@ -11,6 +11,7 @@
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAdress" name="Адреса проживання заявника;(поштовий індекс, місто, вулиця, номер дому, номер квартири)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asChoice" name="Тип листа-довідки" type="enum" required="true">
           <activiti:value id="sEnumATO" name="Перевезення (перезахоронення) загиблого в зоні АТО"></activiti:value>
           <activiti:value id="sEnumSt" name="Перевезення (перезахоронення) померлого"></activiti:value>
@@ -25,7 +26,7 @@
         <activiti:formProperty id="sLostRelative2" name="Прізвище, ім`я, по батькові померлого" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateBirth2" name="Рік народження померлого" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateDeath2" name="Рік смерті" type="long" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sCauseDeath2" name="Прізвище, ім`я, по батькові померлого" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCauseDeath2" name="Причина смерті" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорту" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile1" name="Копія свідоцтва про смерть, виданого відділом державної реєстрації управління юстиції" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile2" name="Копія лікарського свідоцтва про смерть або довідки про причину смерті, виданих бюро судово-медичної експертизи" type="file" required="true"></activiti:formProperty>
@@ -41,7 +42,7 @@
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sShapkaGolova" name="Шапка для прінтформи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapka220" name="Шапка для прінтформи" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -103,6 +104,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdress" name="Адреса проживання заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asChoice" name="Тип листа-довідки" type="enum" writable="false">
           <activiti:value id="sEnumATO" name="Перевезення (перезахоронення) загиблого в зоні АТО"></activiti:value>
           <activiti:value id="sEnumSt" name="Перевезення (перезахоронення) трупу"></activiti:value>
@@ -117,7 +119,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="sLostRelative2" name="Прізвище, ім`я, по батькові померлого" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateBirth2" name="Рік народження померлого" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateDeath2" name="Рік смерті" type="long" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCauseDeath2" name="Прізвище, ім`я, по батькові померлого" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCauseDeath2" name="Причина смерті" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sExtensionNumber" name="Реєстраційний номер ЦНАП" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string"></activiti:formProperty>
@@ -212,7 +214,8 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-       <activiti:formProperty id="asChoice" name="Тип листа-довідки" type="enum" writable="false">
+        <activiti:formProperty id="sAdress" name="Адреса проживання заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asChoice" name="Тип листа-довідки" type="enum" writable="false">
           <activiti:value id="sEnumATO" name="Перевезення (перезахоронення) загиблого в зоні АТО"></activiti:value>
           <activiti:value id="sEnumSt" name="Перевезення (перезахоронення) трупу"></activiti:value>
         </activiti:formProperty>
@@ -226,7 +229,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="sLostRelative2" name="Прізвище, ім`я, по батькові померлого" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateBirth2" name="Рік народження померлого" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateDeath2" name="Рік смерті" type="long" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCauseDeath2" name="Прізвище, ім`я, по батькові померлого" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCauseDeath2" name="Причина смерті" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sExtensionNumber" name="Реєстраційний номер ЦНАП" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration" name="Дата реєстрації ЦНАП" type="string" writable="false"></activiti:formProperty>
