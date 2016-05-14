@@ -31,7 +31,8 @@ angular.module('app')
           };
 
           scope.isVisible = function () {
-            return location.host() === 'localhost' || location.host() === 'test.igov.org.ua';
+            //return location.host() === 'localhost' || location.host() === 'test.igov.org.ua';
+            return getCookie('bServerTest') === 'true';
           };
 
           function getCookie(name) {
