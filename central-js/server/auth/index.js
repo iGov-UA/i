@@ -14,6 +14,11 @@ require('./bankid/bankid.passport').setup(config);
 router.use('/bankID', require('./bankid-mock'));
 
 router.use('/bankID', require('./bankid'));
+
+//Mock eds process
+router.use('/eds', require('./eds-mock'));
+
+
 router.use('/eds', require('./eds'));
 router.use('/mpbds', require('./mpbds'));
 router.use('/email', require('./email'));

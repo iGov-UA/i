@@ -54,7 +54,8 @@ var defaultConfig = getConfig();
 var customConfig = getCustomConfig();
 
 if (defaultConfig && customConfig) {
-  processProps = customConfig;
+  //processProps = customConfig;
+  processProps = _.merge(defaultConfig, customConfig);
 } else if (!defaultConfig && customConfig) {
   processProps = customConfig;
 } else if (defaultConfig && !customConfig) {
