@@ -128,6 +128,8 @@ var all = {
 
   bCompile: (processProps.bCompile_Application === "TRUE"),
 
+  bTest: (processProps.bTest === "TRUE"),
+
   debug: (processProps.bDebug_Application === "TRUE"),
 
 
