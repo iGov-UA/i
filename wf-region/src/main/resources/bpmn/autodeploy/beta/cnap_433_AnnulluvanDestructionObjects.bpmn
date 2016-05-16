@@ -14,6 +14,10 @@
         <activiti:formProperty id="bankIdAddress" name="Адреса реєстрації" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта для зворотнього звя'язку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNumber_DestructionObjects" name="Номер дозволу на порушення об’єкту благоустрою, що потрібно анулювати" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sDate_DestructionObjects" name="Дата видачі дозволу на порушення об’єкту благоустрою, що потрібно анулювати" type="date" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFile_Dozvol_DestructionObjects" name="Копія дозволу на порушення об’єкту благоустрою" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sAdressObject" name="Місцезнаходження (адреса) об'єкта, на який видається дозвіл" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="kved" name="Вид діяльності згідно з КВЕД" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameCompany_Fop" name="У давальному відмінку повне найменування юридичної особи/прізвище, імя, по батькові фізичної особи - підприємця" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="inn_edrpou" name="Ідентифікаційний код згідно з ЄДРПОУ або ідентифікаційний номер фізичної особи – підприємця; тільки цифрові позначення" type="string" required="true"></activiti:formProperty>
@@ -29,56 +33,13 @@
         <activiti:formProperty id="sDovirenistConfidant" name="Номер та дата довіреності; По формату довіреність №___від ДД.ММ.РРРР" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="nFile_PassportConfidant" name="Скан-копія паспорту уповноваженої особи" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="nFile_DovirenistConfidant" name="Скан-копія довіреності на уповноважену особу" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sAdressObject" name="Місцезнаходження (адреса) об'єкта, на який видається дозвіл" type="string" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="sBeg" name="Роботи плануються вести від ..." type="string" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="sEnd" name="До ..." type="string" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="sTargetWork" name="Мета проведення робіт" type="string" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="sFormatWork" name="Характер робіт (згідно з проектом)" type="string" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="sInfo2" name=" " type="label" default="Термін проведення робіт"></activiti:formProperty>
-        <activiti:formProperty id="sDate_Beg" name="З ..." type="date" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDate_End" name="До ...." type="date" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="sInfo10" name=" " type="label" default="Порушення зеленої зони"></activiti:formProperty>
-        <activiti:formProperty id="nZelenaZonaLen" name="Зелена зона (довжина), м" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nZelenaZonaWidth" name="Зелена зона (ширина), м" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sInfo11" name=" " type="label" default="Порушення асфальтобетонного покриття проїжджої частини"></activiti:formProperty>
-        <activiti:formProperty id="nAsfaltZonaLen" name="Асфальтобетонне покриття проїжджої частини (довжина), м" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nAsfaltZonaWidth" name="Асфальтобетонне покриття проїжджої частини (ширина), м" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sInfo12" name=" " type="label" default="Порушення асфальтобетонного покриття тротуару"></activiti:formProperty>
-        <activiti:formProperty id="nAsfaltTrotuarZonaLen" name="Асфальтобетонне покриття тротуару (довжина), м" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nAsfaltTrotuarZonaWidth" name="Асфальтобетонне покриття тротуару (ширина), м" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sInfo13" name=" " type="label" default="Порушення асфальтобетонного покриття дворової території"></activiti:formProperty>
-        <activiti:formProperty id="nAsfaltDvorZonaLen" name="Асфальтобетонне покриття дворової території (довжина), м" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nAsfaltDvorZonaWidth" name="Асфальтобетонне покриття дворової території (ширина), м" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sInfo14" name=" " type="label" default="Порушення щебеневого покриття"></activiti:formProperty>
-        <activiti:formProperty id="nShebenZonaLen" name="Щебеневе покриття (довжина), м" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nShebenZonaWidth" name="Щебеневе покриття (ширина), м" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sInfo15" name=" " type="label" default="Порушення грунтового покриття"></activiti:formProperty>
-        <activiti:formProperty id="nGruntZonaLen" name="Грунтове покриття (довжина), м" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nGruntZonaWidth" name="Грунтове покриття (ширина), м" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sInfo16" name=" " type="label" default="Порушення тротуарної плитки"></activiti:formProperty>
-        <activiti:formProperty id="nTrotuarPlitkaZonaLen" name="Тротуарна плитка (довжина), м" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nTrotuarPlitkaZonaWidth" name="Тротуарна плитка (ширина), м" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sInfo17" name=" " type="label" default="Порушення іншого типу покриття"></activiti:formProperty>
-        <activiti:formProperty id="sNameInshaZonaLen" name="Назва іншого типу покриття" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nInshaZonaLen" name="Інший тип покриття (довжина), м" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nInshaZonaWidth" name="Інший тип покриття (ширина), м" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="asEnumOnRoad" name="Роботи проводяться на проїжджій частині дороги?" type="enum" default="sEnumElement_NotOnRoad" required="true">
-          <activiti:value id="sEnumElement_OnRoad" name="Так"></activiti:value>
-          <activiti:value id="sEnumElement_NotOnRoad" name="Ні"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="nFile_SchemaRuhu" name="Копія схеми організації дорожнього руху та тимчасової схеми об`їзду з урахуванням маршрутів руху транспорту та пішоходів, погоджену з Державтоінспекцією" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sInfo1" name=" " type="label" default="&lt;b&gt;Відповідальна особа за виконання робіт&lt;/b&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sNameMainWorker" name="ПІБ відповідального виконавця" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPostMainWorker" name="Посада відповідального виконавця" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="workPhone" name="Мобільний телефон відповідального виконавця" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="asEnumTypeGet_Document" name="Спосіб одержання дозвільного документа" type="enum" default="sEnumElement_Personally" required="true">
           <activiti:value id="sEnumElement_Personally" name="особисто"></activiti:value>
           <activiti:value id="sEnumElement_Post" name="поштою"></activiti:value>
           <activiti:value id="sEnumElement_eMail" name="за допомогою засобів телекомунікацій"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sAdresPost" name="Адреса для відправки документів поштою" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nFile_CopyProject" name="Копія робочого проекту або проекту виробничих робіт (план-схема місця проведення робіт у разі проведення аварійних робіт)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="Розкриття атрібутів щодо специфіки вводу" type="markers" default="${markerService.loadFromFile('skv/cnap_433_DozvilDestructionObjects_1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="Розкриття атрібутів щодо специфіки вводу" type="markers" default="${markerService.loadFromFile('skv/cnap_433_AnnulluvanDestructionObjects_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Вкажіть  сьогоднішню дату" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddDoc" name="Вкажіть  сьогоднішню дату" type="invisible" default="1. Document1."></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible"></activiti:formProperty>
@@ -86,7 +47,6 @@
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAttribToApproveOrgan_433" name="Організацій та установи з якими  необхідно погодити виконання планових робіт" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka_dozvil_na_Porushennya_Object_433" name="На яку посадову особи пишеться заява" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -100,6 +60,9 @@
         <activiti:formProperty id="bankIdAddress" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта для зворотнього звя'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNumber_DestructionObjects" name="Номер дозволу на порушення об’єкту благоустрою, що потрібно анулювати" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDate_DestructionObjects" name="Дата видачі дозволу на порушення об’єкту благоустрою, що потрібно анулювати" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdressObject" name="Місцезнаходження (адреса) об'єкта, на який видається дозвіл" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="kved" name="Вид діяльності згідно з КВЕД" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameCompany_Fop" name="У давальному відмінку повне найменування юридичної особи/прізвище, імя, по батькові фізичної особи - підприємця" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="inn_edrpou" name="Ідентифікаційний код згідно з ЄДРПОУ або ідентифікаційний номер фізичної особи – підприємця; тільки цифрові позначення" type="string" writable="false"></activiti:formProperty>
@@ -111,39 +74,6 @@
         </activiti:formProperty>
         <activiti:formProperty id="sFio_Confidant" name="ПІБ уповноваженої особи" type="string" default="${sConfidant_lastName} ${sConfidant_firstName} ${sConfidant_middleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDovirenistConfidant" name="Номер та дата довіреності; По формату довіреність №___від ДД.ММ.РРРР" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAdressObject" name="Місцезнаходження (адреса) об'єкта, на який видається дозвіл" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBeg" name="Роботи плануються вести від ..." type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sEnd" name="До ..." type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTargetWork" name="Мета проведення робіт" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sFormatWork" name="Характер робіт (згідно з проектом)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sInfo2" name=" " type="label" default="Термін проведення робіт"></activiti:formProperty>
-        <activiti:formProperty id="sDate_Beg" name="З ..." type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDate_End" name="До ...." type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nZelenaZonaLen" name="Зелена зона (довжина), м" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nZelenaZonaWidth" name="Зелена зона (ширина), м" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nAsfaltZonaLen" name="Асфальтобетонне покриття проїжджої частини (довжина), м" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nAsfaltZonaWidth" name="Асфальтобетонне покриття проїжджої частини (ширина), м" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nAsfaltTrotuarZonaLen" name="Асфальтобетонне покриття тротуару (довжина), м" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nAsfaltTrotuarZonaWidth" name="Асфальтобетонне покриття тротуару (ширина), м" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nAsfaltDvorZonaLen" name="Асфальтобетонне покриття дворової території (довжина), м" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nAsfaltDvorZonaWidth" name="Асфальтобетонне покриття дворової території (ширина), м" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nShebenZonaLen" name="Щебеневе покриття (довжина), м" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nShebenZonaWidth" name="Щебеневе покриття (ширина), м" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nGruntZonaLen" name="Грунтове покриття (довжина), м" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nGruntZonaWidth" name="Грунтове покриття (ширина), м" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nTrotuarPlitkaZonaLen" name="Тротуарна плитка (довжина), м" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nTrotuarPlitkaZonaWidth" name="Тротуарна плитка (ширина), м" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNameInshaZonaLen" name="Назва іншого типу покриття" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nInshaZonaLen" name="Інший тип покриття (довжина), м" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nInshaZonaWidth" name="Інший тип покриття (ширина), м" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asEnumOnRoad" name="Роботи проводяться на проїжджій частині дороги?" type="enum" writable="false">
-          <activiti:value id="sEnumElement_OnRoad" name="Так"></activiti:value>
-          <activiti:value id="sEnumElement_NotOnRoad" name="Ні"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sInfo3" name=" " type="label" default="Відповідальна особа за виконання робіт"></activiti:formProperty>
-        <activiti:formProperty id="sNameMainWorker" name="ПІБ відповідального виконавця" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPostMainWorker" name="Посада відповідального виконавця" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="workPhone" name="Мобільний телефон відповідального виконавця" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asEnumTypeGet_Document" name="Спосіб одержання дозвільного документа" type="enum" writable="false">
           <activiti:value id="sEnumElement_Personally" name="особисто"></activiti:value>
           <activiti:value id="sEnumElement_Post" name="поштою"></activiti:value>
@@ -165,14 +95,13 @@
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAttribToApproveOrgan_433" name="Організацій та установи з якими  необхідно погодити виконання планових робіт" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers21" name="Настроювання принтформи " type="markers" default="${markerService.loadFromFile('skv/cnap_433_DozvilDestructionObjects_Print_1.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sBody1" name="[pattern/print/skv/cnap_433_DozvilDestructionObjects_print.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers21" name="Настроювання принтформи " type="markers" default="${markerService.loadFromFile('skv/cnap_433_AnnulluvanDestructionObjects_Print_1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/skv/cnap_433_AnnulluvanDestructionObjects_print.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть центр надання адмінпослуг" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${nFile_PassportConfidant},${nFile_DovirenistConfidant},${nFile_SchemaRuhu},${nFile_CopyProject}</activiti:expression>
+            <activiti:expression> ${bankId_scan_passport}, ${nFile_Dozvol_DestructionObjects}, ${nFile_PassportConfidant}, ${nFile_DovirenistConfidant}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -187,6 +116,9 @@
         <activiti:formProperty id="bankIdAddress" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта для зворотнього звя'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNumber_DestructionObjects" name="Номер дозволу на порушення об’єкту благоустрою, що потрібно анулювати" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDate_DestructionObjects" name="Дата видачі дозволу на порушення об’єкту благоустрою, що потрібно анулювати" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdressObject" name="Місцезнаходження (адреса) об'єкта, на який видається дозвіл" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="kved" name="Вид діяльності згідно з КВЕД" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameCompany_Fop" name="У давальному відмінку повне найменування юридичної особи/прізвище, імя, по батькові фізичної особи - підприємця" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="inn_edrpou" name="Ідентифікаційний код згідно з ЄДРПОУ або ідентифікаційний номер фізичної особи – підприємця; тільки цифрові позначення" type="string" writable="false"></activiti:formProperty>
@@ -198,39 +130,6 @@
         </activiti:formProperty>
         <activiti:formProperty id="sFio_Confidant" name="ПІБ уповноваженої особи" type="string" default="${sConfidant_lastName} ${sConfidant_firstName} ${sConfidant_middleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDovirenistConfidant" name="Номер та дата довіреності; По формату довіреність №___від ДД.ММ.РРРР" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAdressObject" name="Місцезнаходження (адреса) об'єкта, на який видається дозвіл" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBeg" name="Роботи плануються вести від ..." type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sEnd" name="До ..." type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTargetWork" name="Мета проведення робіт" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sFormatWork" name="Характер робіт (згідно з проектом)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sInfo2" name=" " type="label" default="Термін проведення робіт"></activiti:formProperty>
-        <activiti:formProperty id="sDate_Beg" name="З ..." type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDate_End" name="До ...." type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nZelenaZonaLen" name="Зелена зона (довжина), м" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nZelenaZonaWidth" name="Зелена зона (ширина), м" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nAsfaltZonaLen" name="Асфальтобетонне покриття проїжджої частини (довжина), м" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nAsfaltZonaWidth" name="Асфальтобетонне покриття проїжджої частини (ширина), м" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nAsfaltTrotuarZonaLen" name="Асфальтобетонне покриття тротуару (довжина), м" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nAsfaltTrotuarZonaWidth" name="Асфальтобетонне покриття тротуару (ширина), м" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nAsfaltDvorZonaLen" name="Асфальтобетонне покриття дворової території (довжина), м" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nAsfaltDvorZonaWidth" name="Асфальтобетонне покриття дворової території (ширина), м" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nShebenZonaLen" name="Щебеневе покриття (довжина), м" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nShebenZonaWidth" name="Щебеневе покриття (ширина), м" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nGruntZonaLen" name="Грунтове покриття (довжина), м" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nGruntZonaWidth" name="Грунтове покриття (ширина), м" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nTrotuarPlitkaZonaLen" name="Тротуарна плитка (довжина), м" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nTrotuarPlitkaZonaWidth" name="Тротуарна плитка (ширина), м" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNameInshaZonaLen" name="Назва іншого типу покриття" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nInshaZonaLen" name="Інший тип покриття (довжина), м" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nInshaZonaWidth" name="Інший тип покриття (ширина), м" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asEnumOnRoad" name="Роботи проводяться на проїжджій частині дороги?" type="enum" writable="false">
-          <activiti:value id="sEnumElement_OnRoad" name="Так"></activiti:value>
-          <activiti:value id="sEnumElement_NotOnRoad" name="Ні"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sInfo3" name=" " type="label" default="Відповідальна особа за виконання робіт"></activiti:formProperty>
-        <activiti:formProperty id="sNameMainWorker" name="ПІБ відповідального виконавця" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPostMainWorker" name="Посада відповідального виконавця" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="workPhone" name="Мобільний телефон відповідального виконавця" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asEnumTypeGet_Document" name="Спосіб одержання дозвільного документа" type="enum" writable="false">
           <activiti:value id="sEnumElement_Personally" name="особисто"></activiti:value>
           <activiti:value id="sEnumElement_Post" name="поштою"></activiti:value>
@@ -243,8 +142,8 @@
         <activiti:formProperty id="sPib_Admin" name="Прізвище та ініціали адміністратора" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapka_dozvil_na_Porushennya_Object_433" name="Керівнику якого робочого органу" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="asEnum_decision_2" name="Прийняття рішення про надання послуги" type="enum" required="true">
-          <activiti:value id="accept" name="Рішення готове. Видан дозвіл на порушення об’єктів благоустрою"></activiti:value>
-          <activiti:value id="reject" name="Відмова в видачі дозволу на порушення об’єктів благоустрою"></activiti:value>
+          <activiti:value id="accept" name="Рішення готове. Дозвіл аннульовано на порушення об’єктів благоустрою"></activiti:value>
+          <activiti:value id="reject" name="Відмова в анулюванні дозволу на порушення об’єктів благоустрою"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecision_2_Comment" name="У разі відмови внесіть, будь ласка, коментар (підставу) у цьому полі" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="nFile_Rishennya" name="Завантажте копію рішення" type="file" required="true"></activiti:formProperty>
@@ -253,14 +152,13 @@
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAttribToApproveOrgan_433" name="Організацій та установи з якими  необхідно погодити виконання планових робіт" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers22" name="Настроювання принтформи " type="markers" default="${markerService.loadFromFile('skv/cnap_433_DozvilDestructionObjects_Print_1.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sBody1" name="[pattern/print/skv/cnap_433_DozvilDestructionObjects_print.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers22" name="Настроювання принтформи " type="markers" default="${markerService.loadFromFile('skv/cnap_433_AnnulluvanDestructionObjects_Print_1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/skv/cnap_433_AnnulluvanDestructionObjects_print.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть центр надання адмінпослуг" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${nFile_PassportConfidant},${nFile_DovirenistConfidant},${nFile_SchemaRuhu},${nFile_CopyProject}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport},${nFile_Dozvol_DestructionObjects},${nFile_PassportConfidant},${nFile_DovirenistConfidant}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -275,7 +173,7 @@
           <activiti:expression>${sMailClerk}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове звернення на тему: видача дозволу на порушення об’єктів благоустрою]]></activiti:string>
+          <activiti:string><![CDATA[Нове звернення на тему: аннулювання дозволу на порушення об’єктів благоустрою]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
@@ -293,12 +191,12 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Додано звернення на тему: видача дозволу на порушення об’єктів благоустрою]]></activiti:string>
+          <activiti:string><![CDATA[Додано звернення на тему: аннулювання дозволу на порушення об’єктів благоустрою]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-&lt;p&gt; Ваше звернення щодо надання дозволу на порушення об’єктів благоустрою успішно зареєстровано і буде опрацьовано впродовж визначений Законом термін.&lt;br /&gt;
+&lt;p&gt; Ваше звернення щодо аннулювання дозволу на порушення об’єктів благоустрою успішно зареєстровано і буде опрацьовано впродовж визначений Законом термін.&lt;br /&gt;
 Повідомлення про результат розгляду буде спрямоване на Ваш e-mail.&lt;/p&gt;
 &lt;br /&gt;
 ${sNameOrgan}&lt;br /&gt;
@@ -325,12 +223,12 @@ ${sAddress}&lt;br /&gt;
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Відхилено звернення на тему: видача дозволу на порушення об’єктів благоустрою]]></activiti:string>
+          <activiti:string><![CDATA[Відхилено звернення на тему: аннулювання дозволу на порушення об’єктів благоустрою]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-&lt;p&gt; На жаль, Ваше звернення, щодо надання дозволу на порушення об’єктів благоустрою не прийнято в роботу. &lt;br /&gt;
+&lt;p&gt; На жаль, Ваше звернення, щодо аннулювання дозволу на порушення об’єктів благоустрою не прийнято в роботу. &lt;br /&gt;
 Причина відмови: ${sDecision_1_Comment} &lt;br /&gt;
 &lt;br /&gt;
 ${sNameOrgan}&lt;br /&gt;
@@ -353,12 +251,12 @@ ${sAddress}&lt;br /&gt;
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Зареєстровано звернення на тему: видача дозволу на порушення об’єктів благоустрою]]></activiti:string>
+          <activiti:string><![CDATA[Зареєстровано звернення на тему: аннулювання дозволу на порушення об’єктів благоустрою]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-&lt;p&gt;Ви подавали звернення, щодо надання дозволу на порушення об’єктів благоустрою.&lt;br /&gt;
+&lt;p&gt;Ви подавали звернення, щодо аннулювання дозволу на порушення об’єктів благоустрою.&lt;br /&gt;
 &lt;p&gt;Послуга успішно зареєстрована.&lt;/p&gt;
 &lt;p&gt;Номер Вашого замовлення: ${sReestr_numb} від ${sDate_Reestr}. &lt;/p&gt; &lt;br /&gt;.
 &lt;p&gt;Ви отримаєте відповідь у визначений Законом термін на цю email-адресу.&lt;/p&gt;
@@ -399,7 +297,7 @@ ${sAddress}&lt;br /&gt;
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення опрацьовано: видача дозволу на порушення об’єктів благоустрою]]></activiti:string>
+          <activiti:string><![CDATA[Звернення опрацьовано: аннулювання дозволу на порушення об’єктів благоустрою]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${nFile_Rishennya}</activiti:expression>
@@ -407,7 +305,7 @@ ${sAddress}&lt;br /&gt;
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-&lt;p&gt;Ви подавали звернення щодо надання дозволу на порушення об’єктів благоустрою. &lt;br /&gt;
+&lt;p&gt;Ви подавали звернення щодо аннулювання дозволу на порушення об’єктів благоустрою. &lt;br /&gt;
 Рішення міської ради отримано, звернення оброблено. &lt;br /&gt;
 Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у ЦНАПі.&lt;br /&gt;&lt;br /&gt;
 
@@ -437,12 +335,12 @@ ${sAddress}&lt;br /&gt;
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Відмова в видачі рішення на тему: видача дозволу на порушення об’єктів благоустрою]]></activiti:string>
+          <activiti:string><![CDATA[Відмова в видачі рішення на тему: аннулювання дозволу на порушення об’єктів благоустрою]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-&lt;p&gt;На жаль Вам відмовлено в видачі рішення щодо надання дозволу на порушення об’єктів благоустрою. &lt;br /&gt;
+&lt;p&gt;На жаль Вам відмовлено в видачі рішення щодо аннулювання дозволу на порушення об’єктів благоустрою. &lt;br /&gt;
 Причина відмови: ${sDecision_2_Comment} &lt;br /&gt;
 
 ${sNameOrgan}&lt;br /&gt;
@@ -469,13 +367,8 @@ ${sAddress}&lt;br /&gt;
     </scriptTask>
     <sequenceFlow id="flow16" sourceRef="scripttask1" targetRef="scripttask2"></sequenceFlow>
     <scriptTask id="scripttask2" name="Заполнить addDoc" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var per1 = '1. Копія робочого проекту або проекту виробничих робіт (план-схема місця проведення робіт у разі проведення аварійних робіт). &lt;br&gt;'
+      <script>var per1 = '1. Копія дозволу на порушення об’єкту благоустрою. &lt;br&gt;'
 var per2 = 1
-if (execution.getVariable('asEnumOnRoad') == 'sEnumElement_OnRoad')
-{
-	per2 = per2 + 1
-	per1 = per1 + per2.toString() + '. Копія схеми організації дорожнього руху та тимчасової схеми об`їзду з урахуванням маршрутів руху транспорту та пішоходів, погоджену з Державтоінспекцією &lt;br&gt;' 
-}
 if (execution.getVariable('asEnumSelectType_How') == 'sEnumElement_Confidant')
 {
 	per2 = per2 + 1
