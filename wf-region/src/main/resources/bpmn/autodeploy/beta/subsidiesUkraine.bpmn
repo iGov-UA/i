@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="subsidiesUkraine" name="Отримання субсидії на оплату житлово-комунальних послуг" isExecutable="true" activiti:candidateStarterGroups="dnepr_upzsn">
     <startEvent id="startevent1" name="Start" activiti:initiator="initiator">
       <extensionElements>
@@ -270,7 +270,7 @@
         <activiti:formProperty id="sBody_2" name="[pattern/print/UPSZN/subsidy_declaration.html]" type="invisible" default="Декларація" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${declaration0},${declaration1},${declaration2},${declaration3},${declaration4},${declaration5}</activiti:expression>
+            <activiti:expression><![CDATA[${declaration0},${declaration1},${declaration2},${declaration3},${declaration4},${declaration5}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -293,53 +293,53 @@
     <serviceTask id="servicetask1" name="негативна відповідь" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="from">
-          <activiti:expression>noreply@igov.org.ua</activiti:expression>
+          <activiti:expression><![CDATA[noreply@igov.org.ua]]></activiti:expression>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;На жаль, Ваше звернення щодо отримання  субсидії на оплату житлово-комунальних послуг відхилене.&lt;/p&gt;
-&lt;p&gt;Причина вказана у файлі, який прикріплено до цього листа.&lt;/p&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p>На жаль, Ваше звернення щодо отримання  субсидії на оплату житлово-комунальних послуг відхилене.</p>
+<p>Причина вказана у файлі, який прикріплено до цього листа.</p>
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:2]<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Звернення на тему "Отримання субсидії на оплату житлово-комунальних послуг"</activiti:expression>
+          <activiti:expression><![CDATA[Звернення на тему "Отримання субсидії на оплату житлово-комунальних послуг"]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${decision}</activiti:expression>
+          <activiti:expression><![CDATA[${decision}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <serviceTask id="servicetask2" name="позитивна відповідь" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${decision}</activiti:expression>
+          <activiti:expression><![CDATA[${decision}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
-          <activiti:expression>noreply@igov.org.ua</activiti:expression>
+          <activiti:expression><![CDATA[noreply@igov.org.ua]]></activiti:expression>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Звернення на тему "Отримання субсидії на оплату житлово-комунальних послуг"</activiti:expression>
+          <activiti:expression><![CDATA[Звернення на тему "Отримання субсидії на оплату житлово-комунальних послуг"]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
- &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-&lt;p&gt;Ваше звернення щодо отримання  субсидії на оплату житлово-комунальних послуг опрацьоване.&lt;/p&gt;
-&lt;p&gt;Розмір субсидії вказаний у файлі, який прикріплено до цього листа.&lt;/p&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+ <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+<p>Ваше звернення щодо отримання  субсидії на оплату житлово-комунальних послуг опрацьоване.</p>
+<p>Розмір субсидії вказаний у файлі, який прикріплено до цього листа.</p>
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:2]<br />
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -352,57 +352,57 @@
     <serviceTask id="servicetask3" name="відповідь у разі засідання комісії" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="from">
-          <activiti:expression>noreply@igov.org.ua</activiti:expression>
+          <activiti:expression><![CDATA[noreply@igov.org.ua]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${decision}</activiti:expression>
+          <activiti:expression><![CDATA[${decision}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Звернення на тему "Отримання субсидії на оплату житлово-комунальних послуг"</activiti:expression>
+          <activiti:expression><![CDATA[Звернення на тему "Отримання субсидії на оплату житлово-комунальних послуг"]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
- &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-&lt;p&gt;Ваше звернення щодо отримання  субсидії на оплату житлово-комунальних послуг опрацьоване.&lt;/p&gt;
-&lt;p&gt;Ваші документи підлягають комісійному розгляду. Про дату і час засідання комісії Вас буде поінформовано додатково.&lt;/p&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+ <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+<p>Ваше звернення щодо отримання  субсидії на оплату житлово-комунальних послуг опрацьоване.</p>
+<p>Ваші документи підлягають комісійному розгляду. Про дату і час засідання комісії Вас буде поінформовано додатково.</p>
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:2]<br />
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <serviceTask id="servicetask4" name="імейл про успішну реєстрацію заяви" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
-          <activiti:expression>noreply@igov.org.ua</activiti:expression>
+          <activiti:expression><![CDATA[noreply@igov.org.ua]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Звернення на тему "Отримання субсидії на оплату житлово-комунальних послуг"</activiti:expression>
+          <activiti:expression><![CDATA[Звернення на тему "Отримання субсидії на оплату житлово-комунальних послуг"]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;Ваше звернення щодо отримання  субсидії на оплату житлово-комунальних послуг зареєстроване. Ви отримаєте відповідь протягом 20 робочих днів.&lt;/p&gt;
-&lt;p&gt;Контакти підрозділу соцзахисту, яке буде займатися обробкою Вашого звернення:&lt;/p&gt;
-&lt;p&gt;[pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:2]
-&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p>Ваше звернення щодо отримання  субсидії на оплату житлово-комунальних послуг зареєстроване. Ви отримаєте відповідь протягом 30 робочих днів.</p>
+<p>Контакти підрозділу соцзахисту, яке буде займатися обробкою Вашого звернення:</p>
+<p>[pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:2]
+<br />
 [pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:3]
-&lt;br /&gt;
+<br />
 [pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:4]
-&lt;br /&gt;
-[pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:5]&lt;/p&gt;
+<br />
+[pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:5]</p>
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:2]<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -410,24 +410,24 @@
     <serviceTask id="servicetask5" name="Невірно заповнена заява" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
-          <activiti:expression>noreply@igov.org.ua</activiti:expression>
+          <activiti:expression><![CDATA[noreply@igov.org.ua]]></activiti:expression>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;На жаль, Ваше звернення щодо отримання  субсидії на оплату житлово-комунальних послуг відхилене через недостатню або неправильну інформацію.&lt;/p&gt;
-&lt;p&gt;${comment}&lt;/p&gt;
-&lt;p&gt;Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p>На жаль, Ваше звернення щодо отримання  субсидії на оплату житлово-комунальних послуг відхилене через недостатню або неправильну інформацію.</p>
+<p>${comment}</p>
+<p>Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua">iGov.org.ua</a></p>
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:2]<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Звернення на тему "Отримання субсидії на оплату житлово-комунальних послуг"</activiti:expression>
+          <activiti:expression><![CDATA[Звернення на тему "Отримання субсидії на оплату житлово-комунальних послуг"]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
