@@ -368,7 +368,7 @@ execution.setVariable('sListDocumentsPrint', res2)
           <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відхилення звернення внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="rishen" name="Завантажте копію витягу або лист з обгрунтуванням причин відмови" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="rishen" name="Завантажте копію витягу або лист з обгрунтуванням причин відмови" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_286_print.html]" type="invisible" default="Заявка на реєстрацію земельної ділянки" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapka286" name="шапка у принтформу" type="invisible" default="Державному кадастровому реєстратору"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист" type="invisible"></activiti:formProperty>
@@ -465,10 +465,11 @@ execution.setVariable('sListDocumentsPrint', res2)
         </activiti:formProperty>
         <activiti:formProperty id="comment_2" name="У разі відмови внесіть, будь ласка, коментар" type="textArea" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
         <activiti:field name="aFieldInheritedAttachmentID">
           <activiti:expression><![CDATA[${rishen}]]></activiti:expression>
         </activiti:field>
+        </activiti:taskListener>
         </extensionElements>
     </userTask>
     <sequenceFlow id="flow67" sourceRef="servicetask12" targetRef="usertask4"></sequenceFlow>
