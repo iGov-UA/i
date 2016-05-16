@@ -364,18 +364,9 @@ execution.setVariable("dPassportDate",strDate)
         <activiti:formProperty id="sCompensationCategory" name="Категорія компенсацій (галочка на формі)" type="invisible"></activiti:formProperty>        
         <activiti:formProperty id="markers2" name="Для прінтформи" type="markers" default="${markerService.loadFromFile('сhernobyl/chaes_654_print.json')}"></activiti:formProperty>
         
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>        
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>
-            	${nFilePassprotParrent},
-				${nFileScanINN},
-				${nFileBirthCertificate},
-				${nFileChernobylCertificateChild},
-				${nFileMedicalDisabledChild},
-				${nFilePersonalAccountBank},
-				${nFileConclusionMCCHouseTraining}
-			</activiti:expression>
+            <activiti:expression>${nFilePassprotParrent}, ${nFileScanINN}, ${nFileBirthCertificate}, ${nFileChernobylCertificateChild}, ${nFileMedicalDisabledChild}, ${nFilePersonalAccountBank}, ${nFileConclusionMCCHouseTraining}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
