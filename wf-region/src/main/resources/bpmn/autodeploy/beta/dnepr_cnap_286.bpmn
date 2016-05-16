@@ -465,7 +465,10 @@ execution.setVariable('sListDocumentsPrint', res2)
         </activiti:formProperty>
         <activiti:formProperty id="comment_2" name="У разі відмови внесіть, будь ласка, коментар" type="textArea" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-      </extensionElements>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"></activiti:taskListener>
+        <activiti:field name="aFieldInheritedAttachmentID">
+          <activiti:expression>${rishen}</activiti:expression>
+         </activiti:field>
     </userTask>
     <sequenceFlow id="flow67" sourceRef="servicetask12" targetRef="usertask4"></sequenceFlow>
     <serviceTask id="servicetask13" name="Повідомлення громадянила" activiti:delegateExpression="#{MailTaskWithAttachment}">
