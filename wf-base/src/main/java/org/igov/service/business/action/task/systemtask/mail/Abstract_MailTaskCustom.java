@@ -94,8 +94,6 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
     public Expression subject;
     public Expression text;
     
-    protected Expression sPhone_SMS;
-    protected Expression sText_SMS;    
     protected Expression sID_Merchant;
     protected Expression sSum;
     protected Expression sID_Currency;
@@ -503,51 +501,6 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 
     public Mail Mail_BaseFromTask(DelegateExecution oExecution)
             throws Exception {
-
-  /*      
-        String sPhone_SMS = getStringFromFieldExpression(this.sPhone_SMS, oExecution);
-        if(sPhone_SMS!=null){
-            String sText_SMS = getStringFromFieldExpression(this.sText_SMS, oExecution);
-            if(sText_SMS!=null){
-                sText_SMS = replaceTags(sText_SMS, oExecution);
-                
-                //sPhone_SMS="38"+sPhone_SMS;
-                String sReturn;
-
-                sPhone_SMS = sPhone_SMS.replaceAll("\\ ", "");
-*/
-                /*
-                sReturn = oManagerOTP.sendPasswordOTP(sPhone_SMS, sText_SMS, true);
-                LOG.info("(sReturn={})",sReturn);
-                */
-/*                
-                LOG.info("SKIP:(sReturn})");
-*/
-                
-/* 
-                sReturn = oManagerOTP.sendPasswordOTP(sPhone_SMS.substring(1), sText_SMS, true);
-                LOG.info("(sReturn={})",sReturn);
-
-                sReturn = oManagerOTP.sendPasswordOTP(sPhone_SMS.substring(2), sText_SMS, true);
-                LOG.info("(sReturn={})",sReturn);
-
-                sReturn = oManagerOTP.sendPasswordOTP(sPhone_SMS.substring(3), sText_SMS, true);
-                LOG.info("(sReturn={})",sReturn);
-*/
-                /*sReturn = oManagerOTP.sendPasswordOTP("+38"+sPhone_SMS, sText_SMS, true);
-                LOG.info("(sReturn={})",sReturn);
-                
-                sReturn = oManagerOTP.sendPasswordOTP("38"+sPhone_SMS, sText_SMS, true);
-                LOG.info("(sReturn={})",sReturn);
-                
-                sReturn = oManagerOTP.sendPasswordOTP("8"+sPhone_SMS, sText_SMS, true);
-                LOG.info("(sReturn={})",sReturn);*/
-
-/*
-            }
-        }
-  */      
-        
         
         String sFromMail = getStringFromFieldExpression(this.from, oExecution);
         String saToMail = getStringFromFieldExpression(this.to, oExecution);
