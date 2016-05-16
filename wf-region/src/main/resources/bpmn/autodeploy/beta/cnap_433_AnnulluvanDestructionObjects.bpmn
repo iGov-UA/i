@@ -14,9 +14,9 @@
         <activiti:formProperty id="bankIdAddress" name="Адреса реєстрації" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта для зворотнього звя'язку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNumber_DestructionObjects" name="Номер дозволу на порушення об’єкту благоустрою, що потрібно анулювати" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sDate_DestructionObjects" name="Дата видачі дозволу на порушення об’єкту благоустрою, що потрібно анулювати" type="date" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nFile_Dozvol_DestructionObjects" name="Копія дозволу на порушення об’єкту благоустрою" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sNumber_DestructionObjects" name="Номер дозволу на порушення об’єкту благоустрою, що потрібно анулювати" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDate_DestructionObjects" name="Дата видачі дозволу на порушення об’єкту благоустрою, що потрібно анулювати" type="date" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Dozvol_DestructionObjects" name="Копія дозволу на порушення об’єкту благоустрою" type="file" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdressObject" name="Місцезнаходження (адреса) об'єкта, на який видається дозвіл" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="kved" name="Вид діяльності згідно з КВЕД" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameCompany_Fop" name="У давальному відмінку повне найменування юридичної особи/прізвище, імя, по батькові фізичної особи - підприємця" type="string" required="true"></activiti:formProperty>
@@ -142,7 +142,7 @@
         <activiti:formProperty id="sPib_Admin" name="Прізвище та ініціали адміністратора" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapka_dozvil_na_Porushennya_Object_433" name="Керівнику якого робочого органу" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="asEnum_decision_2" name="Прийняття рішення про надання послуги" type="enum" required="true">
-          <activiti:value id="accept" name="Рішення готове. Дозвіл аннульовано на порушення об’єктів благоустрою"></activiti:value>
+          <activiti:value id="accept" name="Рішення готове. Дозвіл анульовано на порушення об’єктів благоустрою"></activiti:value>
           <activiti:value id="reject" name="Відмова в анулюванні дозволу на порушення об’єктів благоустрою"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecision_2_Comment" name="У разі відмови внесіть, будь ласка, коментар (підставу) у цьому полі" type="textArea"></activiti:formProperty>
@@ -173,7 +173,7 @@
           <activiti:expression>${sMailClerk}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове звернення на тему: аннулювання дозволу на порушення об’єктів благоустрою]]></activiti:string>
+          <activiti:string><![CDATA[Нове звернення на тему: анулювання дозволу на порушення об’єктів благоустрою]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
@@ -191,12 +191,12 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Додано звернення на тему: аннулювання дозволу на порушення об’єктів благоустрою]]></activiti:string>
+          <activiti:string><![CDATA[Додано звернення на тему: анулювання дозволу на порушення об’єктів благоустрою]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-&lt;p&gt; Ваше звернення щодо аннулювання дозволу на порушення об’єктів благоустрою успішно зареєстровано і буде опрацьовано впродовж визначений Законом термін.&lt;br /&gt;
+&lt;p&gt; Ваше звернення щодо анулювання дозволу на порушення об’єктів благоустрою успішно зареєстровано і буде опрацьовано впродовж визначений Законом термін.&lt;br /&gt;
 Повідомлення про результат розгляду буде спрямоване на Ваш e-mail.&lt;/p&gt;
 &lt;br /&gt;
 ${sNameOrgan}&lt;br /&gt;
@@ -223,12 +223,12 @@ ${sAddress}&lt;br /&gt;
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Відхилено звернення на тему: аннулювання дозволу на порушення об’єктів благоустрою]]></activiti:string>
+          <activiti:string><![CDATA[Відхилено звернення на тему: анулювання дозволу на порушення об’єктів благоустрою]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-&lt;p&gt; На жаль, Ваше звернення, щодо аннулювання дозволу на порушення об’єктів благоустрою не прийнято в роботу. &lt;br /&gt;
+&lt;p&gt; На жаль, Ваше звернення, щодо анулювання дозволу на порушення об’єктів благоустрою не прийнято в роботу. &lt;br /&gt;
 Причина відмови: ${sDecision_1_Comment} &lt;br /&gt;
 &lt;br /&gt;
 ${sNameOrgan}&lt;br /&gt;
@@ -251,12 +251,12 @@ ${sAddress}&lt;br /&gt;
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Зареєстровано звернення на тему: аннулювання дозволу на порушення об’єктів благоустрою]]></activiti:string>
+          <activiti:string><![CDATA[Зареєстровано звернення на тему: анулювання дозволу на порушення об’єктів благоустрою]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-&lt;p&gt;Ви подавали звернення, щодо аннулювання дозволу на порушення об’єктів благоустрою.&lt;br /&gt;
+&lt;p&gt;Ви подавали звернення, щодо анулювання дозволу на порушення об’єктів благоустрою.&lt;br /&gt;
 &lt;p&gt;Послуга успішно зареєстрована.&lt;/p&gt;
 &lt;p&gt;Номер Вашого замовлення: ${sReestr_numb} від ${sDate_Reestr}. &lt;/p&gt; &lt;br /&gt;.
 &lt;p&gt;Ви отримаєте відповідь у визначений Законом термін на цю email-адресу.&lt;/p&gt;
@@ -297,7 +297,7 @@ ${sAddress}&lt;br /&gt;
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення опрацьовано: аннулювання дозволу на порушення об’єктів благоустрою]]></activiti:string>
+          <activiti:string><![CDATA[Звернення опрацьовано: анулювання дозволу на порушення об’єктів благоустрою]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${nFile_Rishennya}</activiti:expression>
@@ -305,7 +305,7 @@ ${sAddress}&lt;br /&gt;
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-&lt;p&gt;Ви подавали звернення щодо аннулювання дозволу на порушення об’єктів благоустрою. &lt;br /&gt;
+&lt;p&gt;Ви подавали звернення щодо анулювання дозволу на порушення об’єктів благоустрою. &lt;br /&gt;
 Рішення міської ради отримано, звернення оброблено. &lt;br /&gt;
 Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у ЦНАПі.&lt;br /&gt;&lt;br /&gt;
 
@@ -335,12 +335,12 @@ ${sAddress}&lt;br /&gt;
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Відмова в видачі рішення на тему: аннулювання дозволу на порушення об’єктів благоустрою]]></activiti:string>
+          <activiti:string><![CDATA[Відмова в видачі рішення на тему: анулювання дозволу на порушення об’єктів благоустрою]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-&lt;p&gt;На жаль Вам відмовлено в видачі рішення щодо аннулювання дозволу на порушення об’єктів благоустрою. &lt;br /&gt;
+&lt;p&gt;На жаль Вам відмовлено в видачі рішення щодо анулювання дозволу на порушення об’єктів благоустрою. &lt;br /&gt;
 Причина відмови: ${sDecision_2_Comment} &lt;br /&gt;
 
 ${sNameOrgan}&lt;br /&gt;
