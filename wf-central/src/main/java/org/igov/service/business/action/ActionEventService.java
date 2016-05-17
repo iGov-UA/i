@@ -348,6 +348,7 @@ public class ActionEventService {
             String sSubjectInfo,
             Long nID_Subject
     ) throws CommonServiceException {
+        LOG.info("method updateActionStatus_Central started");
 
         //TODO: Remove lete (for back compatibility)
         /*if (sID_Order.indexOf(DASH) <= 0) {
@@ -418,6 +419,7 @@ public class ActionEventService {
         if(nID_Subject == null){
          nID_Subject = oHistoryEvent_Service.getnID_Subject();
         }
+        LOG.info("soData is"+soData);
         if (soData == null || "[]".equals(soData)) { //My journal. change status of task
             Map<String, String> mParamMessage = new HashMap<>();
             mParamMessage.put(HistoryEventMessage.SERVICE_STATE, sUserTaskName);
@@ -439,6 +441,7 @@ public class ActionEventService {
             HistoryEventType oHistoryEventType = null;
             Boolean bQuestion = null;
 
+            LOG.info("checking status type");
             if(oHistoryEvent_Service_StatusType==HistoryEvent_Service_StatusType.OPENED_REMARK_CLIENT_ANSWER){
                 oHistoryEventType = HistoryEventType.SET_TASK_ANSWERS;
                 bQuestion=true;
@@ -502,7 +505,7 @@ public class ActionEventService {
         if (isChanged) {
             historyEventServiceDao.updateHistoryEvent_Service(oHistoryEvent_Service);
         }
-        
+        LOG.info("method updateActionStatus_Central finished");
         return oHistoryEvent_Service;
     }
     
