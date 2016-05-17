@@ -10,8 +10,7 @@
         <activiti:formProperty id="bankIdPassport" name="Паспортні данні" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
-      
-        <activiti:formProperty id="sPibEng" name="Прізвище Ім'я По Батькові англійською мовою" type="string" default= " "></activiti:formProperty>
+        <activiti:formProperty id="sPibEng" name="Прізвище Ім'я По Батькові англійською мовою" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sDateBorn" name="Дата народження особи" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPlaceBorn" name="Місце народження особи;(якщо місце народження невідоме, зазначається країна народження)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPlaceRegistration" name="Місце проживання (перебування) особи;(індекс, область, район, місто (селище, село), вулиця, будинок, корпус, квартира)" type="string" required="true"></activiti:formProperty>
@@ -24,20 +23,20 @@
         <activiti:formProperty id="sMailClerk" name="пошта посадовця" type="invisible" default="darja.grek@gmail.com"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист" type="invisible"></activiti:formProperty>
-         </extensionElements>
+      </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="рішення" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-         <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні данні" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-  		<activiti:formProperty id="sPibEng" name="Прізвище Ім'я По Батькові англійською мовою" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPibEng" name="Прізвище Ім'я По Батькові англійською мовою" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateBorn" name="Дата народження особи" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPlaceBorn" name="Місце народження особи;(якщо місце народження невідоме, зазначається країна народження)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPlaceRegistration" name="Місце проживання (перебування) особи;(індекс, область, район, місто (селище, село), вулиця, будинок, корпус, квартира)" type="string" writable="false"></activiti:formProperty>
-  	    <activiti:formProperty id="decision" name="результат надання послуги" type="enum" required="true">
+        <activiti:formProperty id="decision" name="результат надання послуги" type="enum" required="true">
           <activiti:value id="accept" name="запросити людину для отримання довідки про державну реєстрацію заповіту"></activiti:value>
           <activiti:value id="reject" name="відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
         </activiti:formProperty>
@@ -115,7 +114,7 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-Довідку про державну реєстрацію заповіту готова.
+Довідка про державну реєстрацію заповіту готова.
 Ви або уповноважена Вами особа (при наявності довіреності) можете отримати довідку собисто.&lt;br /&gt;
 Сканована копія знаходиться у додатку до листа.&lt;br /&gt;
 &lt;br /&gt;
@@ -209,7 +208,7 @@ ${sNameOrgan}&lt;br /&gt;
         <omgdi:waypoint x="544.0" y="154.0"></omgdi:waypoint>
         <omgdi:waypoint x="458.0" y="154.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="525.0" y="137.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="4.0" x="525.0" y="137.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
@@ -217,7 +216,7 @@ ${sNameOrgan}&lt;br /&gt;
         <omgdi:waypoint x="564.0" y="234.0"></omgdi:waypoint>
         <omgdi:waypoint x="458.0" y="234.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="524.0" y="220.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="6.0" x="524.0" y="220.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
