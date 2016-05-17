@@ -401,7 +401,7 @@ ${sNameOrgan}<br />
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow25" sourceRef="servicetask9" targetRef="servicetask10"></sequenceFlow>
-    <userTask id="usertask3" name="Обробка послуги працівником ДГК">
+    <userTask id="usertask3" name="Обробка послуги працівником ДГК" activiti:candidateGroups="dgk_${sID_Public_SubjectOrganJoin}">
     <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім`я" type="string" writable="false"></activiti:formProperty>
@@ -468,7 +468,7 @@ ${sNameOrgan}<br />
        </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow27" sourceRef="usertask3" targetRef="servicetask11"></sequenceFlow>
-    <userTask id="usertask4" name="Оброблення працвником ЦНАПУ після ДГК">
+    <userTask id="usertask4" name="Оброблення працвником ЦНАПУ після ДГК" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
     <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім`я" type="string" writable="false"></activiti:formProperty>
