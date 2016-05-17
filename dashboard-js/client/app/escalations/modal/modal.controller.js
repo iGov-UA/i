@@ -35,13 +35,10 @@ angular.module('dashboardJsApp')
     function getProcessNameByID(sID){
       var aProcesses = getTheProcesses(processesList);
       for(var i = 0; i < aProcesses.length; i++){
-        console.log("i = " + i + " aProcesses[i].sID = " + aProcesses[i].sID);
         if(aProcesses[i].sID === sID){
-          //debugger;
           return aProcesses[i].sName;
         }
       }
-      //debugger;
       return "";
     }
 
@@ -80,7 +77,7 @@ angular.module('dashboardJsApp')
     $scope.ruleBpIsIncorrect = false;
 
     $scope.resolveBP = function () {
-      initEditableRule();
+      console.log("Start resolve BP")
       if ($scope.processes != '' && $scope.processes.length > 0) {
         $scope.ruleBpIsIncorrect = $scope.processes.every(function (process) {
           if ($scope.rule.bp.sID == process.sID) {
@@ -90,6 +87,12 @@ angular.module('dashboardJsApp')
           return true;
         });
       }
+    };
+
+    $scope.initEscalationModalDialog = function(){
+      initEditableRule();
+      $(".modal-dialog").addClass("escalation-modal-dialog");
+      $scope.resolveBP();
     };
 
     $scope.save = function () {
