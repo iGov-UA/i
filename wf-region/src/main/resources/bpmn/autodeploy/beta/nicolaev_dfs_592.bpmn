@@ -184,7 +184,7 @@ ${sWorkTime}.&lt;br /&gt;
           <activiti:value id="sEnamDok_ok" name="Заявку оформлено вірно, видати ліцензію"></activiti:value>
           <activiti:value id="sEnamDok_bad" name="Заявка оформлена не вірно відмова."></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="Komment_organ" name="Коментар по розгляду заявки;(Вкажіть корисну інформацію, в разі відмови поясніть причину відмови)" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="Komment_organ" name="Коментар по розгляду заявки;(Вкажіть корисну інформацію, в разі відмови поясніть причину відмови)" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="print2" name="принт2" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="print3" name="принт3" type="invisible"></activiti:formProperty>
@@ -365,7 +365,6 @@ ${sWorkTime}.&lt;br /&gt;
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 Будь ласка оцініть якість наданої вам послуги. &lt;br /&gt;
 [pattern/mail/_common_feedback.html]
-${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
@@ -433,6 +432,7 @@ yyyy2 = yyyy-(-1)
 if (ddd == '01')
   {
   mmm2=mmm-1
+  if (mmm2&lt;10){mmm2 = '0'+mmm2}
     if(mmm =='05'||'07'||'08'||'10'||'12')
       {ddd2='30'}
     if(mmm =='06'||'09'||'11'||'04'||'02')
@@ -451,13 +451,10 @@ if(mmm =='01'&amp;&amp;ddd=='01')
   mmm2='12'
   yyyy2=yyyy
   }
-if(mmm2 =='1'||'2'||'3'||'4'||'5'||'6'||'7'||'8'||'9')
-  {
-  mmm2 = '0' + mmm2
-  }  
 timeE = ddd2+'-'+mmm2+'-'+yyyy2	
 execution.setVariable('date_big', timeB)
-execution.setVariable('date_end', timeE) </script>
+execution.setVariable('date_end', timeE)
+      </script>
     </scriptTask>
     <sequenceFlow id="flow20" sourceRef="scripttask2" targetRef="servicetask3"></sequenceFlow>
   </process>
