@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="common_mreo_3" name="(загальна) - Отримання дублікату посвідчення водія" isExecutable="true">
+  <process id="common_mreo_3_3" name="(загальна) - Заміна посвідчення водія у зв'язку зі зміною особистих даних" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть сервісний центр, де Ви б бажали отримати послугу" type="select" default="0"></activiti:formProperty>
@@ -10,8 +10,8 @@
         <activiti:formProperty id="sOKPO" name="Код отримувача" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBillMFO" name="МФО" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBill" name="Розрахунковий рахунок" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sDescription1" name="Призначення платежу" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sPrice1" name="Вартість послуги" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sDescription0" name="Призначення платежу" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sPrice0" name="Вартість послуги" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string"></activiti:formProperty>
@@ -29,7 +29,7 @@
           <activiti:value id="attr2" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="renamed_doc" name="Документ, що підтверджує зміну прізвища; назва документу, серія, номер, дата видачі, орган ким видано" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="medical_doc" name="Медична довідка форма 083/о; серія, номер, дата видачі, орган ким видано" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="medical_doc" name="Медична довідка форма 127; серія, номер, дата видачі, орган ким видано" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Ваш контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="marker1" name="show/hide fields" type="markers" default="${markerService.loadFromFile('mvd/dnepr_mreo_2_1.json')}"></activiti:formProperty>
@@ -61,7 +61,7 @@
           <activiti:value id="attr2" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="renamed_doc" name="Документ, що підтверджує зміну прізвища; назва документу, серія, номер, дата видачі, орган ким видано" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="medical_doc" name="Медична довідка форма 083/о; серія, номер, дата видачі, орган ким видано" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="medical_doc" name="Медична довідка форма 127; серія, номер, дата видачі, орган ким видано" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Рішення про надання послуги" type="enum" required="true">
@@ -138,8 +138,9 @@
 1. Громадянський паспорт&lt;br /&gt;
 2. Копію квитанції про сплату послуги&lt;br /&gt;
 3. ІПН &lt;br /&gt;
-4. Довідку з територіального відділку поліції (у випадку викрадення посвідчення) або пояснення від водія ( у разі втрати)&lt;br /&gt;
-5. Медичну довідку (форма 083/о)&lt;br /&gt;
+4. Медичну довідку (форма 083/о) &lt;br /&gt;
+5. Діюче посвідчення водія &lt;br /&gt;
+6. Копію документу, що підтверджує зміни особистих даних, завірену в установчому порядку &lt;br /&gt;
 
 &lt;/p&gt;
 
@@ -147,8 +148,8 @@
 Розрахунковий рахунок: ${sBill} &lt;br /&gt;
 Код банку отримувача: ${sBillMFO} &lt;br /&gt;
 Код отримувача: ${sOKPO} &lt;br /&gt;
-Сума: ${sPrice1} &lt;br /&gt;
-Призначення платежу: ${sDescription1} &lt;br /&gt;
+Сума: ${sPrice0} &lt;br /&gt;
+Призначення платежу: ${sDescription0} &lt;br /&gt;
 
 Дата візиту: &lt;br /&gt;
 ${comment}&lt;br /&gt;
@@ -272,8 +273,8 @@ ${sMail_Signature}&lt;br&gt;
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide2 == 'reject2'}]]></conditionExpression>
     </sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_common_mreo_3">
-    <bpmndi:BPMNPlane bpmnElement="common_mreo_3" id="BPMNPlane_common_mreo_3">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_common_mreo_3_3">
+    <bpmndi:BPMNPlane bpmnElement="common_mreo_3_3" id="BPMNPlane_common_mreo_3_3">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="40.0" y="120.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
