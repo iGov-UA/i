@@ -1,0 +1,38 @@
+{
+	"motion":
+	{
+ 		"ShowFieldsOnCondition_0":
+		{
+			"sNote":		["For Hide Invisible"],
+			"aField_ID":	["date_today","sAddDoc","sNameOrgan","sPhoneOrgan","sAddress","sWorkTime","sShapka_dozvil_na_Porushennya_Object_433"],
+			"asID_Field":	{"sClient":"sID_Public_SubjectOrganJoin"},
+			"sCondition":	"[sClient] == 'Not_Correct'"
+		},
+ 		"ShowFieldsOnCondition_1":
+		{
+			"sNote":		["For Show Confidant"],
+			"aField_ID":	["sConfidant_lastName","sConfidant_firstName", "sConfidant_middleName", "sDovirenistConfidant", "nFile_PassportConfidant", "nFile_DovirenistConfidant"],
+			"asID_Field":	{"sClient":"asEnumSelectType_How"},
+			"sCondition":	"[sClient] == 'sEnumElement_Confidant'"
+		},
+		"RequiredFieldsOnCondition_1": 
+		{
+			"aField_ID":	["sConfidant_lastName","sConfidant_firstName", "sConfidant_middleName", "sDovirenistConfidant", "nFile_PassportConfidant", "nFile_DovirenistConfidant"],
+			"asID_Field":	{"sClient":"asEnumSelectType_How"},
+			"sCondition":	"[sClient] == 'sEnumElement_Confidant'"
+		},
+ 		"ShowFieldsOnCondition_2":
+		{
+			"sNote":		["For Show Type Oderzannya"],
+			"aField_ID":	["sAdresPost"],
+			"asID_Field":	{"sClient":"asEnumTypeGet_Document"},
+			"sCondition":	"[sClient] == 'sEnumElement_Post'"
+		},
+		"RequiredFieldsOnCondition_2": 
+		{
+			"aField_ID":	["sAdresPost"],
+			"asID_Field":	{"sClient":"asEnumTypeGet_Document"},
+			"sCondition":	"[sClient] == 'sEnumElement_Post'"
+		}
+   	}
+}
