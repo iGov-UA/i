@@ -15,7 +15,7 @@
           <activiti:value id="sPaspChange" name="так, хочу замінити"></activiti:value>
           <activiti:value id="sPaspMore" name="так, потрібно отримати другий"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sWarning2" name="Зверніть увагу" type="label" default="Для отримання другого закордонного паспорту перший повинен бути діючим, та потреба у другому має бути обргунтована (наявність діючих віз, документи про регулярні відрідження за кордон)"></activiti:formProperty>
+        <activiti:formProperty id="sWarning2" name="Зверніть увагу" type="label" default="Для отримання другого закордонного паспорту перший повинен бути діючим, та потреба у другому має бути обргунтована у заяві (наявність діючих віз, документи про регулярні відрідження за кордон тощо)"></activiti:formProperty>
         <activiti:formProperty id="asBiometrical" name="Ви бажаєте замовити біометричний паспорт?" type="enum" default="sBiomNo" required="true">
           <activiti:value id="sBiomNo" name="ні"></activiti:value>
           <activiti:value id="sBiomYes" name="так"></activiti:value>
@@ -265,7 +265,7 @@ ${sNameOrgan},&lt;br&gt;
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow25" sourceRef="servicetask3" targetRef="usertask2"></sequenceFlow>
-    <userTask id="usertask2" name="обробка дмс" activiti:candidateGroups="dms_zagran_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask2" name="Заявка прийнята ДМС" activiti:candidateGroups="dms_zagran_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
