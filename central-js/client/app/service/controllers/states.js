@@ -89,3 +89,99 @@ angular.module('app').controller('ServiceStatisticsController', function($scope,
       $scope.loaded = true;
     });
 });
+
+
+// контроллер для загрузки статистики во вкладке "О портале" https://github.com/e-government-ua/i/issues/1230
+angular.module('app').controller('ServiceHistoryReportController', ['$scope', 'ServiceService', 'AdminService', function($scope, ServiceService, AdminService) {
+
+  $scope.bAdmin = AdminService.isAdmin();
+
+  $scope.predicate = 'nID_ServiceData';
+  $scope.reverse = true;
+  $scope.order = function(predicate) {
+    $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
+    $scope.predicate = predicate;
+  };
+
+  var result;
+  var dateFrom;
+  var dateTo;
+  var exclude;
+
+  $scope.getTimeInterval = function (date) {
+    var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    var chosenDate = date.toString();
+    var dateSplited = chosenDate.split(' ');
+    selectedTime = dateSplited[4];
+    selectedDay = dateSplited[2];
+    selectedYear = dateSplited[3];
+    selectedMonth = '';
+
+    if(dateSplited[1].indexOf(months)){
+      selectedMonth = months.indexOf(dateSplited[1])+1;
+      if(selectedMonth < 10){
+        selectedMonth = '0' + selectedMonth;
+      }
+    }
+    result = selectedYear + '-' + selectedMonth + '-' + selectedDay + ' ' + selectedTime;
+    return result
+
+  };
+
+  $scope.downloadStatistic = function() {
+    var prot = location.protocol;
+    var host = location.hostname;
+    if($scope.statistics !== undefined) {
+      if ($scope.sanIDServiceExclude !== undefined) {
+        if ($scope.sanIDServiceExclude.match(/^(\d+,)*\d+$/)) {
+          window.open(prot + host + "/wf/service/action/event/getServiceHistoryReport?sDateAt=" + dateFrom + "&sDateTo=" + dateTo)
+        } else {
+          return false
+        }
+      }
+      window.open(prot + host + "/wf/service/action/event/getServiceHistoryReport?sDateAt=" + dateFrom + "&sDateTo=" + dateTo)
+    }
+  };
+
+  $scope.getDates = function () {
+
+    dateFrom = $scope.getTimeInterval($scope.begin);
+    dateTo = $scope.getTimeInterval($scope.end);
+    exclude = $scope.sanIDServiceExclude;
+
+    ServiceService.getServiceHistoryReport(dateFrom, dateTo, exclude).then(function (res) {
+      var resp = res.data;
+      var responseSplited = resp.split(';');
+      var correct = responseSplited[12].split('\n');
+      responseSplited.splice(0, 13, correct[1]);
+
+      $scope.statistics = [];
+      var statistic = {};
+
+      for(i=0; i<responseSplited.length; i++){
+        var n = 12*i;
+        if(n + 2 > responseSplited.length){
+          break
+        }
+        statistic.sID_Order = responseSplited[n];
+        statistic.nID_Server = Number(responseSplited[1 + n]);
+        statistic.nID_Service = Number(responseSplited[2 + n]);
+        statistic.sID_Place = Number(responseSplited[3 + n]);
+        statistic.nID_Subject = Number(responseSplited[4 + n]);
+        statistic.nRate = Number(responseSplited[5 + n]);
+        statistic.sTextFeedback = responseSplited[6 + n];
+        statistic.sUserTaskName = responseSplited[7 + n];
+        statistic.sHead = responseSplited[8 + n];
+        statistic.sBody = responseSplited[9 + n];
+        statistic.nTimeMinutes = Number(responseSplited[10 + n]);
+        statistic.sPhone = responseSplited[11 + n];
+        statistic.nID_ServiceData = '';
+
+        $scope.statistics.push(statistic);
+        statistic = {};
+      }
+
+    });
+  }
+
+}]);

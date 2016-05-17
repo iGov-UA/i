@@ -22,6 +22,13 @@ module.exports.getServiceStatistics = function(req, res) {
   activiti.sendGetRequest(req, res, '/action/event/getStatisticServiceCounts?nID_Service=' + req.params.nID);
 };
 
+
+module.exports.getServiceHistoryReport = function(req, res) {
+  var params = req.params;
+  params = _.extend(params);
+  activiti.sendGetRequest(req, res, '/action/event/getServiceHistoryReport?sDateAt=', _.extend(req.query, params))
+};
+
 module.exports.setService = function(req, res) {
   var callback = function (error, response, body) {
     catalogController.pruneCache();
