@@ -78,8 +78,8 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
 
                 
         
-        String sAttachmentsForSend = getStringFromFieldExpression(this.saAttachmentsForSend, oExecution);
-        sAttachmentsForSend = sAttachmentsForSend == null ? "" : sAttachmentsForSend;
+        String sAttachmentsForSend = this.saAttachmentsForSend==null || "".equals(this.saAttachmentsForSend) ? "" : getStringFromFieldExpression(this.saAttachmentsForSend, oExecution);
+        //sAttachmentsForSend = sAttachmentsForSend == null ? "" : sAttachmentsForSend;
         LOG.info("(sAttachmentsForSend={})", sAttachmentsForSend);
         List<Attachment> aAttachment = new ArrayList<>();
         String[] asID_Attachment = sAttachmentsForSend.split(",");
@@ -97,7 +97,7 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
             }
         }
 
-        if (aAttachment != null && !aAttachment.isEmpty()) {
+        if (!aAttachment.isEmpty()) {
             InputStream oInputStream_Attachment = null;
             String sFileName = "document";
             String sFileExt = "txt";
@@ -135,9 +135,9 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
 
                 LOG.info("oMultiPartEmail.attach: Ok!");
             }
-        } else {
-            LOG.error("aAttachment has nothing!");
-            throw new ActivitiObjectNotFoundException("add the file to send");
+        //} else {
+        //    LOG.error("aAttachment has nothing!");
+        //    throw new ActivitiObjectNotFoundException("add the file to send");
         }
 
         // send the email
