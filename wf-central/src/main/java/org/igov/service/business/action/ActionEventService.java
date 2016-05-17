@@ -5,44 +5,33 @@
  */
 package org.igov.service.business.action;
 
-import io.swagger.annotations.ApiParam;
 import org.igov.io.web.HttpRequester;
 import org.igov.model.action.event.*;
 import org.igov.model.core.GenericEntityDao;
 import org.igov.model.document.Document;
 import org.igov.model.document.DocumentDao;
 import org.igov.model.object.place.Region;
+import org.igov.model.subject.message.SubjectMessage;
+import org.igov.model.subject.message.SubjectMessagesDao;
 import org.igov.service.business.action.event.HistoryEventService;
-import org.igov.service.controller.ExceptionCommonController;
+import org.igov.service.business.action.task.core.ActionTaskService;
+import org.igov.service.business.subject.SubjectMessageService;
 import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.CommonServiceException;
-import org.igov.service.exception.EntityNotFoundException;
+import org.igov.util.ToolLuna;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
-import static org.igov.model.action.event.HistoryEvent_ServiceDaoImpl.DASH;
-import org.igov.model.action.event.HistoryEvent_Service_StatusType;
 
-import org.igov.model.subject.message.SubjectMessage;
-import org.igov.model.subject.message.SubjectMessagesDao;
-import org.igov.service.business.action.task.core.ActionTaskService;
+import static org.igov.model.action.event.HistoryEvent_ServiceDaoImpl.DASH;
 import static org.igov.service.business.action.task.core.ActionTaskService.createTable_TaskProperties;
-import org.igov.service.business.subject.SubjectMessageService;
 import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
-import org.igov.util.ToolLuna;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  *
@@ -449,20 +438,25 @@ public class ActionEventService {
             Long nID_SubjectMessageType = null;
             HistoryEventType oHistoryEventType = null;
             Boolean bQuestion = null;
-                    
+
             if(oHistoryEvent_Service_StatusType==HistoryEvent_Service_StatusType.OPENED_REMARK_CLIENT_ANSWER){
                 oHistoryEventType = HistoryEventType.SET_TASK_ANSWERS;
                 bQuestion=true;
                 nID_SubjectMessageType = 4L;
+                LOG.info("oHistoryEvent_Service_StatusType is set to OPENED_REMARK_CLIENT_ANSWER");
+                LOG.info("nID_SubjectMessageType is set to"+nID_SubjectMessageType);
                 isChanged=true;
                 oHistoryEvent_Service.setSoData("[]");
             }else if(oHistoryEvent_Service_StatusType==HistoryEvent_Service_StatusType.OPENED_REMARK_EMPLOYEE_QUESTION){
                 oHistoryEventType = HistoryEventType.SET_TASK_QUESTIONS;
                 bQuestion=false;
                 nID_SubjectMessageType = 5L;
+                LOG.info("oHistoryEvent_Service_StatusType is set to OPENED_REMARK_EMPLOYEE_QUESTION");
+                LOG.info("nID_SubjectMessageType is set to"+nID_SubjectMessageType);
             }
             
             if(nID_SubjectMessageType!=null){
+                LOG.info("nID_SubjectMessageType is not null");
                 osBody.append("<br/>").append(ActionTaskService.createTable_TaskProperties(soData, bQuestion)).append("<br/>");
                 
                 //oActionEventService.createHistoryEventForTaskQuestions(oHistoryEventType, soData, sBody, sID_Order, nID_Subject);
@@ -482,6 +476,7 @@ public class ActionEventService {
                 SubjectMessage oSubjectMessage = oSubjectMessageService.createSubjectMessage(sMessageHead(nID_SubjectMessageType,
                             sID_Order), osBody.toString(), nID_Subject, "", "", soData, nID_SubjectMessageType, sSubjectInfo);
                     oSubjectMessage.setnID_HistoryEvent_Service(oHistoryEvent_Service.getId());
+                    LOG.info("setting message");
                     subjectMessagesDao.setMessage(oSubjectMessage);
                     
                     //oHistoryEvent_Service.setSoData(soData);
