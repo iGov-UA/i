@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="kherson_rags_758" name="Попередній запис на прийом щодо державної реєстрації смерті" isExecutable="true">
+  <process id="kherson_racs_758" name="Попередній запис на прийом щодо державної реєстрації смерті" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="info" name="Зверніть увагу: ця послуга є платною, при заповненні полів треба буде завантажити документ, що засвідчує внесення плати." type="label" default="Ви можете здійснити оплату зручним для Вас способом за  &lt;a href=&quot;https://docs.google.com/document/d/1ibhrD8pz64ZEKRoIT02v_4XTxCA51PepweDWa5TjzCM/edit&quot; target=&quot;_blank&quot;&gt;реквізитами&lt;/a&gt; "></activiti:formProperty>
@@ -22,7 +22,7 @@
         <activiti:formProperty id="sShapka" name="шапка у принтформу" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <userTask id="usertask1" name="результат візиту" activiti:candidateGroups="zed_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask1" name="результат візиту" activiti:candidateGroups="racs_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -163,8 +163,8 @@ ${sNameOrgan}&lt;br /&gt;
     </boundaryEvent>
     <sequenceFlow id="flow40" sourceRef="boundaryerror1" targetRef="endevent3"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_kherson_rags_758">
-    <bpmndi:BPMNPlane bpmnElement="kherson_rags_758" id="BPMNPlane_kherson_rags_758">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_kherson_racs_758">
+    <bpmndi:BPMNPlane bpmnElement="kherson_racs_758" id="BPMNPlane_kherson_racs_758">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="87.0" y="29.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
