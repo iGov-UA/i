@@ -112,10 +112,10 @@ angular.module('app').controller('ServiceHistoryReportController', ['$scope', 'S
     var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     var chosenDate = date.toString();
     var dateSplited = chosenDate.split(' ');
-    selectedTime = dateSplited[4];
-    selectedDay = dateSplited[2];
-    selectedYear = dateSplited[3];
-    selectedMonth = '';
+    var selectedTime = dateSplited[4];
+    var selectedDay = dateSplited[2];
+    var selectedYear = dateSplited[3];
+    var selectedMonth = '';
 
     if(dateSplited[1].indexOf(months)){
       selectedMonth = months.indexOf(dateSplited[1])+1;
