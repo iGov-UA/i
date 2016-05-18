@@ -73,6 +73,54 @@
         </div>
       </div>
       <div class="form-group">
+        <table style="margin: auto">
+          <thead>
+          <tr>
+            <th colspan="4">Умова ініціалізації правила:</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr class="text-left">
+            <td colspan="4">
+              <input type="checkbox"
+                     ng-model="oRuleStart.bNow"
+                     ng-click="setRuleStarterNow()"
+                     style="cursor:pointer;">
+              Невідкладне спрацювання
+            </td>
+          </tr>
+          <tr class="text-left">
+            <td colspan="4">
+              <input type="checkbox"
+                     ng-model="oRuleStart.bLater"
+                     ng-click="setRuleStarterLater()"
+                     style="cursor:pointer;">
+              Спрацювання з відсрочкою від дня початку бізнес-процесу
+            </td>
+          </tr>
+          <tr ng-show="oRuleStart.bLater">
+            <td style="text-align: right; margin: 5px">якщо минуло днів </td>
+            <td>
+              <select ng-model="thisRule.sCondition"
+                      ng-options="oConditionItem.sFormula as oConditionItem.sFullName for oConditionItem in aConditions"
+                      class="form-control" style="margin: 5px; cursor:pointer;">
+              </select>
+            </td>
+            <td>
+              <input type="number"
+                     ng-maxlength="3"
+                     ng-model="thisRule.oData.nDaysLimit"
+                     ng-required="true"
+                     class="form-control"
+                     style="max-width: 75px; text-align: center; margin: 5px">
+            </td>
+            <td style="margin: 5px"> днів</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <!--
+      <div class="form-group">
         <label class="col-md-4 col-xs-4 control-label">Формула умови:</label>
 
         <div class="col-md-8 col-xs-8">
@@ -88,30 +136,47 @@
                  placeholder="nDaysLimit:3,asRecipientMail:[test@email.com]">
         </div>
       </div>
+      -->
       <div class="form-group">
-        <label class="col-md-4 col-xs-4 control-label">Файл шаблона:</label>
+        <label class="col-md-4 col-xs-4 control-label">Файл шаблону:</label>
 
         <div class="col-md-8 col-xs-8">
           <input type="checkbox"
                  ng-model="fileEscalationTemplate.isDefault"
-                 ng-change="isDefaultEscalationTemplateChanged()"> використовувати шаблон за замовчуванням<br/>
+                 ng-change="isDefaultEscalationTemplateChanged()"
+                 style="cursor:pointer;"> використовувати шаблон за замовчуванням<br/>
           <input class="form-control" id="inputName4" ng-hide="fileEscalationTemplate.isDefault"
                  ng-model="thisRule.sPatternFile">
         </div>
       </div>
       <div class="form-group">
-        <label class="col-md-4 col-xs-4 control-label">ID функції ескалації:</label>
+        <label class="col-md-4 col-xs-4 control-label">Запустити функції ескалації:</label>
 
-        <div class="col-md-4 col-xs-4">
+        <div class="col-md-8 col-xs-8">
+          <select class="form-control" ng-model="thisRule.nID_EscalationRuleFunction.nID"
+                  ng-options="oFuncItem.nID as oFuncItem.sName for oFuncItem in ruleFunctions"></select>
+        </div>
+
+        <!--<div class="col-md-4 col-xs-4">
           <input class="form-control" id="inputName5" ng-model="thisRule.nID_EscalationRuleFunction.nID"
                  placeholder="Надіслати e-mail (EscalationHandler_SendMailAlert)">
         </div>
         <div class="col-md-4 col-xs-4">
           <div>{{thisRule.nID_EscalationRuleFunction.sName}}</div>
+        </div>-->
+      </div>
+      <div class="form-group text-center" ng-if="thisRule.nID_EscalationRuleFunction.nID == 1">
+        <label>
+          <span ng-if="thisRule.oData.aEmails.length < 2">Адреса єлектронної скриньки:</span>
+          <span ng-if="thisRule.oData.aEmails.length > 1">Адреси єлектронних скриньок:</span>
+        </label>
+        [ <a href="" ng-click="addContact()">додати</a> ]
+        <div ng-repeat="contact in thisRule.oData.aEmails">
+          <input type="email" ng-model="contact.email" required>
+          [ <a href="" ng-click="removeContact(contact)">Х</a> ]
         </div>
       </div>
     </div>
-
 
     <div class="modal-footer">
       <button type="submit" class="btn btn-primary" ng-click="save()">ОК</button>
