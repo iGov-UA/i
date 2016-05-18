@@ -93,7 +93,6 @@ angular.module('app').controller('ServiceStatisticsController', function($scope,
 
 // контроллер для загрузки статистики во вкладке "О портале" https://github.com/e-government-ua/i/issues/1230
 angular.module('app').controller('ServiceHistoryReportController', ['$scope', 'ServiceService', 'AdminService', function($scope, ServiceService, AdminService) {
-'use strict';
 
   $scope.bAdmin = AdminService.isAdmin();
 
@@ -131,11 +130,11 @@ angular.module('app').controller('ServiceHistoryReportController', ['$scope', 'S
 
   $scope.downloadStatistic = function() {
     var prot = location.protocol;
-    var host = location.hostname;
     if($scope.statistics !== undefined) {
       if ($scope.sanIDServiceExclude !== undefined) {
         if ($scope.sanIDServiceExclude.match(/^(\d+,)*\d+$/)) {
-          window.open(prot + "/wf/service/action/event/getServiceHistoryReport?sDateAt=" + dateFrom + "&sDateTo=" + dateTo)
+          window.open(prot + "/wf/service/action/event/getServiceHistoryReport?sDateAt=" + dateFrom + "&sDateTo=" + dateTo + '&sanID_Service_Exclude=' + exclude)
+          return
         } else {
           return false
         }
