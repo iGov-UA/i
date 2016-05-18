@@ -25,7 +25,7 @@ print a
 
 subprocess.call("ssh-agent bash -c 'ssh-add /sybase/.secret/id_rsa_iSystem; git clone git@github.com:e-government-ua/iSystem.git'", shell=True)
 subprocess.call("rsync -rt iSystem/config/$sVersion/$sProject/ ./$sProject/", shell=True)
-#subprocess.call("rsync -rt iSystem/scripts/ scripts/", shell=True)
+subprocess.call("rsync -rt iSystem/scripts/ scripts/", shell=True)
 subprocess.call("rm -rf iSystem", shell=True)
 subprocess.call("chmod +x scripts/*", shell=True)
 
