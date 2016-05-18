@@ -158,7 +158,7 @@ angular.module('app').controller('ServiceHistoryReportController', ['$scope', 'S
       $scope.statistics = [];
       var statistic = {};
 
-      for(i=0; i<responseSplited.length; i++){
+      for(var i=0; i<responseSplited.length; i++){
         var n = 12*i;
         if(n + 2 > responseSplited.length){
           break
