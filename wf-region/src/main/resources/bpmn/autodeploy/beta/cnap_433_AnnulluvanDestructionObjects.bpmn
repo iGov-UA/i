@@ -23,7 +23,7 @@
         <activiti:formProperty id="inn_edrpou" name="Ідентифікаційний код згідно з ЄДРПОУ або ідентифікаційний номер фізичної особи – підприємця; тільки цифрові позначення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sFIODirector_Company" name="Прізвище, імя, по батькові керівника юридичної особи/фізичної особи – підприємця/уповноваженої особи) " type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdressCompany" name="Місцезнаходження юридичної особи / місце проживання фізичної особи – підприємця" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asEnumSelectType_How" name="Спосіб подання документів" type="enum" default="sEnumElement_Personally">
+        <activiti:formProperty id="asEnumSelectType_How" name="Спосіб подання документів" type="enum" default="sEnumElement_Personally" required="true">
           <activiti:value id="sEnumElement_Personally" name="особисто"></activiti:value>
           <activiti:value id="sEnumElement_Confidant" name="через уповноважену особу (за дорученням)"></activiti:value>
         </activiti:formProperty>
@@ -33,7 +33,7 @@
         <activiti:formProperty id="sDovirenistConfidant" name="Номер та дата довіреності; По формату довіреність №___від ДД.ММ.РРРР" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="nFile_PassportConfidant" name="Скан-копія паспорту уповноваженої особи" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="nFile_DovirenistConfidant" name="Скан-копія довіреності на уповноважену особу" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="asEnumTypeGet_Document" name="Спосіб одержання дозвільного документа" type="enum" default="sEnumElement_Personally" required="true">
+        <activiti:formProperty id="asEnumTypeGet_Document" name="Спосіб одержання документа" type="enum" default="sEnumElement_Personally" required="true">
           <activiti:value id="sEnumElement_Personally" name="особисто"></activiti:value>
           <activiti:value id="sEnumElement_Post" name="поштою"></activiti:value>
           <activiti:value id="sEnumElement_eMail" name="за допомогою засобів телекомунікацій"></activiti:value>
@@ -41,7 +41,7 @@
         <activiti:formProperty id="sAdresPost" name="Адреса для відправки документів поштою" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Розкриття атрібутів щодо специфіки вводу" type="markers" default="${markerService.loadFromFile('skv/cnap_433_AnnulluvanDestructionObjects_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Вкажіть  сьогоднішню дату" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAddDoc" name="Вкажіть  сьогоднішню дату" type="invisible" default="1. Document1."></activiti:formProperty>
+        <activiti:formProperty id="sAddDoc" name="Перелік додатків" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="string"></activiti:formProperty>
@@ -74,7 +74,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="sFio_Confidant" name="ПІБ уповноваженої особи" type="string" default="${sConfidant_lastName} ${sConfidant_firstName} ${sConfidant_middleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDovirenistConfidant" name="Номер та дата довіреності; По формату довіреність №___від ДД.ММ.РРРР" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asEnumTypeGet_Document" name="Спосіб одержання дозвільного документа" type="enum" writable="false">
+        <activiti:formProperty id="asEnumTypeGet_Document" name="Спосіб одержання документа" type="enum" writable="false">
           <activiti:value id="sEnumElement_Personally" name="особисто"></activiti:value>
           <activiti:value id="sEnumElement_Post" name="поштою"></activiti:value>
           <activiti:value id="sEnumElement_eMail" name="за допомогою засобів телекомунікацій"></activiti:value>
@@ -91,7 +91,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="sDecision_1_Comment" name="У разі відхилення запиту внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAddDoc" name="Вкажіть  сьогоднішню дату" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddDoc" name="Перелік додатків" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП" type="invisible"></activiti:formProperty>
@@ -130,7 +130,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="sFio_Confidant" name="ПІБ уповноваженої особи" type="string" default="${sConfidant_lastName} ${sConfidant_firstName} ${sConfidant_middleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDovirenistConfidant" name="Номер та дата довіреності; По формату довіреність №___від ДД.ММ.РРРР" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asEnumTypeGet_Document" name="Спосіб одержання дозвільного документа" type="enum" writable="false">
+        <activiti:formProperty id="asEnumTypeGet_Document" name="Спосіб одержання документа" type="enum" writable="false">
           <activiti:value id="sEnumElement_Personally" name="особисто"></activiti:value>
           <activiti:value id="sEnumElement_Post" name="поштою"></activiti:value>
           <activiti:value id="sEnumElement_eMail" name="за допомогою засобів телекомунікацій"></activiti:value>
@@ -148,7 +148,7 @@
         <activiti:formProperty id="sDecision_2_Comment" name="У разі відмови внесіть, будь ласка, коментар (підставу) у цьому полі" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="nFile_Rishennya" name="Завантажте копію рішення" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAddDoc" name="Вкажіть  сьогоднішню дату" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddDoc" name="Перелік додатків" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП" type="invisible"></activiti:formProperty>
@@ -196,15 +196,15 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-&lt;p&gt; Ваше звернення щодо анулювання дозволу на порушення об’єктів благоустрою успішно зареєстровано і буде опрацьовано впродовж визначений Законом термін.&lt;br /&gt;
+&lt;p&gt; Ваше звернення щодо анулювання дозволу на порушення об’єктів благоустрою успішно зареєстровано і буде опрацьовано впродовж визначеного Законом терміну.&lt;br /&gt;
 Повідомлення про результат розгляду буде спрямоване на Ваш e-mail.&lt;/p&gt;
 &lt;br /&gt;
 ${sNameOrgan}&lt;br /&gt;
+${sAddress}&lt;br /&gt;
 ${sWorkTime}&lt;br /&gt;
 ${sPhoneOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}&lt;br /&gt;
-${sAddress}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -232,11 +232,11 @@ ${sAddress}&lt;br /&gt;
 Причина відмови: ${sDecision_1_Comment} &lt;br /&gt;
 &lt;br /&gt;
 ${sNameOrgan}&lt;br /&gt;
+${sAddress}&lt;br /&gt;
 ${sPhoneOrgan}&lt;br /&gt;
 ${sWorkTime}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}&lt;br /&gt;
-${sAddress}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -262,11 +262,11 @@ ${sAddress}&lt;br /&gt;
 &lt;p&gt;Ви отримаєте відповідь у визначений Законом термін на цю email-адресу.&lt;/p&gt;
 &lt;br /&gt;
 ${sNameOrgan}&lt;br /&gt;
+${sAddress}&lt;br /&gt;
 ${sPhoneOrgan}&lt;br /&gt;
 ${sWorkTime}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}&lt;br /&gt;
-${sAddress}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -310,11 +310,11 @@ ${sAddress}&lt;br /&gt;
 Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у ЦНАПі.&lt;br /&gt;&lt;br /&gt;
 
 ${sNameOrgan}&lt;br /&gt;
+${sAddress}&lt;br /&gt;
 ${sPhoneOrgan}&lt;br /&gt;
 ${sWorkTime}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}&lt;br /&gt;
-${sAddress}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -344,11 +344,11 @@ ${sAddress}&lt;br /&gt;
 Причина відмови: ${sDecision_2_Comment} &lt;br /&gt;
 
 ${sNameOrgan}&lt;br /&gt;
+${sAddress}&lt;br /&gt;
 ${sPhoneOrgan}&lt;br /&gt;
 ${sWorkTime}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}&lt;br /&gt;
-${sAddress}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -372,7 +372,7 @@ var per2 = 1
 if (execution.getVariable('asEnumSelectType_How') == 'sEnumElement_Confidant')
 {
 	per2 = per2 + 1
-	per1 = per1 + per2.toString() + '. Копія довіреності на уповноважену особу &lt;br&gt;' 
+	per1 = per1 + per2.toString() + '. Копія довіреності на уповноважену особу. &lt;br&gt;' 
 }
 execution.setVariable('sAddDoc', per1) 
    	 </script>
