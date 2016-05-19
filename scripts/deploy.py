@@ -1,33 +1,39 @@
 #!/usr/bin/env python
 
-import sys
-import time
-import argparse
-import subprocess
+import os, argparse, subprocess
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-v', '--version', help='Project version', required=True)
-parser.add_argument('-p', '--project', help='Project name', default='base')
-parser.add_argument('-sd', '--skip-deploy', help='Skip deploy', default='false')
-parser.add_argument('-sb', '--skip-build', help='Skip build', default='false')
-parser.add_argument('-st', '--skip-test', help='Skip tests', default='false')
-parser.add_argument('-sdoc', '--skip-doc', help='Skip doc', default='false')
-parser.add_argument('-dt', '--deploy-timeout', help='Deploy timeout', default=200)
-parser.add_argument('-c', '--compile', help='Compile', default='*')
-parser.add_argument('-ju', '--jenkins-user', help='Jenkins username', required=True)
-parser.add_argument('-ja', '--jenkins-api', help='jenkins api key', required=True)
+parser.add_argument('-p', '--project', help='Project name', default=argparse.SUPPRESS)
+parser.add_argument('-sd', '--skip-deploy', help='Skip deploy', dest='skip-deploy', default='false')
+parser.add_argument('-sb', '--skip-build', help='Skip build', dest='skip-build', default='false')
+parser.add_argument('-st', '--skip-test', help='Skip tests', dest='skip-test', default='false')
+parser.add_argument('-sdoc', '--skip-doc', help='Skip doc', dest='skip-doc', default='false')
+parser.add_argument('-dt', '--deploy-timeout', help='Deploy timeout', dest='deploy-timeout', default="200")
+parser.add_argument('-c', '--compile', help='Compile', default=argparse.SUPPRESS)
+parser.add_argument('-ju', '--jenkins-user', help='Jenkins username', dest='jenkins-user', required=True)
+parser.add_argument('-ja', '--jenkins-api', help='jenkins api key', dest='jenkins-api', required=True)
 parser.add_argument('-d', '--docker', help='Build with docker', default='false')
 parser.add_argument('-do', '--dockerOnly', help='Only build with docker', default='false')
 parser.add_argument('-gc', '--gitCommit', help='Git commit', default='none')
-a = parser.parse_args()
+args = parser.parse_args()
 
-print a
+commandArr = ["bash", "scripts/deploy_private.sh"]
+
+for arg in vars(args):
+    commandArr.append('--'+arg)
+    commandArr.append(getattr(args, arg))
+print commandArr
+
+if os.path.exists("iSystem"):
+    subprocess.call("rm -rf iSystem", shell=True)
 
 subprocess.call("ssh-agent bash -c 'ssh-add /sybase/.secret/id_rsa_iSystem; git clone git@github.com:e-government-ua/iSystem.git'", shell=True)
-subprocess.call("rsync -rt iSystem/config/$sVersion/$sProject/ ./$sProject/", shell=True)
+
+if 'project' in args:
+    subprocess.call(["rsync","-rt","iSystem/config/" + args.version + "/" + args.project + "/", "./" + args.project + "/"])
+
 subprocess.call("rsync -rt iSystem/scripts/ scripts/", shell=True)
 subprocess.call("rm -rf iSystem", shell=True)
 subprocess.call("chmod +x scripts/*", shell=True)
-
-subprocess.call(["sh","scripts/main.sh","-v",a.version,"-p",a.project,"-ju",a.jenkins_user,"-ja",a.jenkins_api,"-st",a.skip_test,"-sb",a.skip_build,"-sdoc",a.skip_doc,"-sd",a.skip_deploy,"-d",a.docker,"-gc",a.gitCommit])
-
+subprocess.call(commandArr)
