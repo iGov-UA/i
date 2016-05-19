@@ -39,6 +39,10 @@
         <activiti:formProperty id="sVlasnName" name="ПІБ власника житла, за згодою якого здійснюється реєстрація" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sVlasnDoc" name="Дані документа, що засвідчує особу власника житла;Вид, серія, номер, дата видачі, найменування органу, який його видав" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sMilitDoc" name="Реквізити довідки, виданої командиром військової частини" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="asMilitStatus" name="Чи є Ви військовозобов'язаним?" type="enum" required="true">
+          <activiti:value id="sYesM" name="Так"></activiti:value>
+          <activiti:value id="sNoM" name="Ні"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="asRegistr" name="Чи потрібно Вам здійснити реєстрацію з одночасним зняттям з реєстрації?" type="enum" required="true">
           <activiti:value id="sYesR" name="Так"></activiti:value>
           <activiti:value id="sNoR" name="Ні"></activiti:value>
@@ -58,6 +62,7 @@
         <activiti:formProperty id="sKab89" name="Номер кабінету" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMinPay" name="мініальна сума адмінсбору" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMaxPay" name="максимальна сума адмінсбору" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="nMilit" name="Завантажте копію військового квитка або свідоцтва про приписку;Якщо декілька сторінок об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="lable" name="В залежності від підстави для реєстрації, будь ласка, завантажте" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="nSvidOwn" name="Свідоцтво про право власності, або договір куплі/продажу та витяг з державного реєстру речових прав на нерухоме майно;Якщо декілька сторінок об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nOrder" name="Ордер, або копія ордеру з печаткою ЖЕКу;Якщо декілька сторінок об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
@@ -158,6 +163,7 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="sNewAddress" name="Нова адреса реєстрації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sArea" name="Місто або район, до якого належить нове місце проживання громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asRegistrationDoc" name="Підставою для реєстрації у власному житлі" type="enum" writable="false">
+          <activiti:value id="sEpmty" name=" "></activiti:value>
           <activiti:value id="sOrder" name="Ордер"></activiti:value>
           <activiti:value id="sOwnDoc" name="Свідоцтво про право власності"></activiti:value>
           <activiti:value id="sRentDoc" name="Договір найму / піднайму / оренди "></activiti:value>
@@ -181,7 +187,7 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nSvidOwn},${nOrder},${nForma3},${nDocNaim},${nOther}</activiti:expression>
+            <activiti:expression>${nSvidOwn},${nOrder},${nForma3},${nDocNaim},${nOther},${nMilit}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -259,7 +265,7 @@ execution.setVariable('sMaxPay', maxpay)
 									&lt;p&gt;
 										&lt;b&gt;Реквізити для сплати:&lt;/b&gt;&lt;br&gt;
 										&lt;i&gt;${sRecvizitiAdmin}&lt;br&gt;
-										Призначення платежу: адмін. збір за реєстрацію/зняття з реєстрації місця проживання​&lt;/i&gt;
+										Призначення платежу: адмін. збір за реєстрацію місця проживання​&lt;/i&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
 										&lt;b&gt;Деталі зустрічі:&lt;/b&gt;&lt;br&gt;
@@ -322,6 +328,7 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="sNewAddress" name="Нова адреса реєстрації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sArea" name="Місто або район, до якого належить нове місце проживання громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asRegistrationDoc" name="Підстава для реєстрації у власному житлі" type="enum">
+          <activiti:value id="sEpmty" name=" "></activiti:value>
           <activiti:value id="sOrder" name="Ордер"></activiti:value>
           <activiti:value id="sOwnDoc" name="Свідоцтво про право власності"></activiti:value>
           <activiti:value id="sRentDoc" name="Договір найму / піднайму / оренди "></activiti:value>
@@ -354,7 +361,7 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nSvidOwn},${nOrder},${nForma3},${nDocNaim},${nOther}</activiti:expression>
+             <activiti:expression>${nSvidOwn},${nOrder},${nForma3},${nDocNaim},${nOther},${nMilit}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>

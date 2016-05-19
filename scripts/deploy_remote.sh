@@ -1,9 +1,8 @@
 #!/bin/bash
-
-sProject=$1
-sDate=$2
-nSecondsWait=$3
-sVersion=$4
+sProject=$1 #
+sDate=$2 #
+nSecondsWait=$3 #
+sVersion=$4 #
 
 if [ -z $sProject ]; then
 	echo "Empty Project variable"
@@ -31,7 +30,7 @@ fallback ()
 {
 	echo "Fatal error! Executing fallback task..."
 	#Убиваем процесс. Нет смысла ждать его корректной остановки.
-	cd /sybase/tomcat_${sProject}$1/bin/ && ./_shutdown_force.sh
+	cd /sybase/tomcat_${sProject}$1/bin/ && ./_shutdown.sh
 	#Удаляем новые конфиги
 	rm -rf /sybase/tomcat_${sProject}$1/conf
 	#Копируем старые конфиги обратно
@@ -190,7 +189,7 @@ if [ $sProject == "wf-central"  ] || [ $sProject == "wf-region" ]; then
 			echo "Everything is OK. Continuing deployment ..."
 			cat /sybase/.configs/nginx/${sProject}_upstream.conf > /sybase/nginx/conf/sites/${sProject}_upstream.conf
 			sudo /sybase/nginx/sbin/nginx -s reload
-			cd /sybase/tomcat_${sProject}_double/bin/ && ./_shutdown_force.sh
+			cd /sybase/tomcat_${sProject}_double/bin/ && ./_shutdown.sh
 		fi
 	fi
 fi

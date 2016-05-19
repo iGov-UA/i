@@ -35,10 +35,6 @@
         <activiti:formProperty id="sShapka" name="назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="date_big" name="Початок ліцензії" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="date_end" name="Кінець ліцензії" type="invisible"></activiti:formProperty>
-        
-        <activiti:formProperty id="stest1" name="тест1" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="stest2" name="тест2" type="invisible"></activiti:formProperty>
-        
         <activiti:formProperty id="sPosluga_name" name="назва послуги" type="invisible" default="Видача ліцензії на право роздрібної торгівлі тютюновими виробами"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -111,8 +107,6 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="sT_dfs_reestr" name="Орган ДФС за місцем реєстрації суб'єкта господарювання" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_big" name="Дата початку ліцензії" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_end" name="Кінець ліцензії" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="stest1" name="тест1" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="stest2" name="тест2" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asVariants" name="Результат розгляду заяви" type="enum" required="true">
           <activiti:value id="sEnamDok_ok" name="Заяву оформлено вірно, ліцензію видати"></activiti:value>
           <activiti:value id="sEnamDok_bad" name="Заява оформлена не вірно відмова."></activiti:value>
@@ -260,7 +254,6 @@ ${sWorkTime}.&lt;br /&gt;
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 Будь ласка оцініть якість наданої вам послуги. &lt;br /&gt;
 [pattern/mail/_common_feedback.html]
-${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
@@ -281,8 +274,6 @@ var mmm2 = ''
 var ddd2 = ''
 var timeE = ''
 var eest = ''
-var xxx = ''
-var xxx2 = ''
     timeB=execution.getVariable('date_bigin').toString()
     eest=timeB.substr(20,4)
     if(eest == 'EEST'){yyyy=timeB.substr(25,4)}
@@ -306,7 +297,7 @@ yyyy2 = yyyy-(-1)
 if (ddd == '01')
   {
   mmm2=mmm-1
-  xxx=mmm2
+  if (mmm2&lt;10){mmm2 = '0'+mmm2}
     if(mmm =='05'||'07'||'08'||'10'||'12')
       {ddd2='30'}
     if(mmm =='06'||'09'||'11'||'04'||'02')
@@ -317,7 +308,6 @@ if (ddd == '01')
   else
   {
     mmm2=mmm
-    xxx=mmm2
     ddd2=ddd-1
   }
 if(mmm =='01'&amp;&amp;ddd=='01')
@@ -326,16 +316,9 @@ if(mmm =='01'&amp;&amp;ddd=='01')
   mmm2='12'
   yyyy2=yyyy
   }
-if(mmm2 !='01'||'02'||'03'||'04'||'05'||'06'||'07'||'08'||'09'||'10'||'11'||'12')
-  {
-  xxx2=mmm2
-  mmm2 = '0'+mmm2
-  }
 timeE = ddd2+'-'+mmm2+'-'+yyyy2	
 execution.setVariable('date_big', timeB)
 execution.setVariable('date_end', timeE)
-execution.setVariable('stest1', xxx)
-execution.setVariable('stest2', xxx2)
       </script>
     </scriptTask>
     <sequenceFlow id="flow20" sourceRef="scripttask1" targetRef="servicetask3"></sequenceFlow>
