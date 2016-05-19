@@ -354,15 +354,16 @@ public class ActionEventService {
             sID_Order = "0-" + sID_Order;
             LOG.warn("Old format of parameter! (sID_Order={})",sID_Order);
         }*/
+
         HistoryEvent_Service oHistoryEvent_Service = null;
         try {
             oHistoryEvent_Service = getHistoryEventService(sID_Order);
         } catch (CRCInvalidException e) {
             e.printStackTrace();
         }
-
+        LOG.info("now we have got history event service");
         HistoryEvent_Service_StatusType oHistoryEvent_Service_StatusType = HistoryEvent_Service_StatusType.getInstance(nID_StatusType);
-
+        LOG.info("checking conditions started");
         boolean isChanged = false;
         if (sUserTaskName != null && !sUserTaskName.equals(oHistoryEvent_Service.getsUserTaskName())) {
             oHistoryEvent_Service.setsUserTaskName(sUserTaskName);
@@ -418,13 +419,17 @@ public class ActionEventService {
         if(nID_Subject == null){
          nID_Subject = oHistoryEvent_Service.getnID_Subject();
         }
+        LOG.info("checking conditions ended");
         if (soData == null || "[]".equals(soData)) { //My journal. change status of task
+            LOG.info("soData is null or empty array: "+soData);
             Map<String, String> mParamMessage = new HashMap<>();
             mParamMessage.put(HistoryEventMessage.SERVICE_STATE, sUserTaskName);
             mParamMessage.put(HistoryEventMessage.TASK_NUMBER, sID_Order);
             setHistoryEvent(HistoryEventType.ACTIVITY_STATUS_NEW, nID_Subject, mParamMessage, oHistoryEvent_Service.getId(),
                     null, sSubjectInfo);
-        }else{ //My journal. setTaskQuestions (issue 808, 809)
+        }else{
+            LOG.info("soData is not null or empty array: "+soData);
+            //My journal. setTaskQuestions (issue 808, 809)
             
             //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TODO: Move To Interceptor!!!
             /*
@@ -438,7 +443,7 @@ public class ActionEventService {
             Long nID_SubjectMessageType = null;
             HistoryEventType oHistoryEventType = null;
             Boolean bQuestion = null;
-
+            LOG.info("checking status type");
             if(oHistoryEvent_Service_StatusType==HistoryEvent_Service_StatusType.OPENED_REMARK_CLIENT_ANSWER){
                 oHistoryEventType = HistoryEventType.SET_TASK_ANSWERS;
                 bQuestion=true;
@@ -500,9 +505,10 @@ public class ActionEventService {
             
         }
         if (isChanged) {
+            LOG.info("updating");
             historyEventServiceDao.updateHistoryEvent_Service(oHistoryEvent_Service);
         }
-        
+        LOG.info("Mehtod updateActionStatus_Central started for task "+sID_Order);
         return oHistoryEvent_Service;
     }
     
