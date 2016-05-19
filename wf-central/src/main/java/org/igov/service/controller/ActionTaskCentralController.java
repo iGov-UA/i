@@ -67,7 +67,7 @@ public class ActionTaskCentralController {
              
             LOG.info("Update history! (sID_Order={})", sID_Order);
             sBody = sBody != null ? sBody : "На заявку "+ sID_Order + " дана відповідь громадянином";
-            
+            LOG.info("Method /setTaskAnswer_Central calling updateActionStatus_Central");
             oActionEventService.updateActionStatus_Central(
                 sID_Order,
                 null,//sUserTaskName
