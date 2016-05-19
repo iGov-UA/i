@@ -58,7 +58,7 @@ public class ActionTaskCentralController {
         ) throws CommonServiceException {
 
         try {
-
+            LOG.info("/setTaskAnswer_Central started");
             HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
 
             if(bAuth){
