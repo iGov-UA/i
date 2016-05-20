@@ -7,13 +7,13 @@
           <button class="btn btn-primary" ng-click="add()" ng-show="processesLoaded()">Додати правило</button>
         </td>
         <td></td>
-        
+
       </tr>
       <tr ng-repeat="rule in get() | orderBy:'-nID'">
         <td class="col-md-8">
            <b>ID: </b> {{rule.nID}},
-          <b>Якщо</b> {{rule.sCondition}}, 
-          <b>то</b> {{translate(rule.nID_EscalationRuleFunction.sName)}}.<br/> 
+          <b>Якщо</b> {{rule.sCondition}},
+          <b>то</b> {{translate(rule.nID_EscalationRuleFunction.sName)}}.<br/>
           <b>Параметри:</b> {{rule.soData}}. <br/>
           <b>Послуга:</b> {{rule.bpName}}
         </td>
@@ -23,7 +23,7 @@
               Редагувати
             </button>
             <button type="button" class="btn btn-warning" ng-click="copy(rule)" tooltip="Копіювати" tooltip-trigger="mouseenter" tooltip-placement="top"
-            tooltip-append-to-body="true" disabled=true>
+            tooltip-append-to-body="true">
               <i class="fa fa-copy"></i>
             </button>
             <button type="button" class="btn btn-danger" ng-click="delete(rule)" tooltip="Видалити" tooltip-trigger="mouseenter" tooltip-placement="top"
@@ -33,7 +33,7 @@
           </div>
         </td>
       </tr>
-     
+
     </tbody>
   </table>
 </div>
