@@ -58,16 +58,16 @@
           <div class="col-sm-3">
             <label for="date-from">Почати вибірку з дати : </label>
             <br>
-            <input type="datetime-local" id="date-from" ng-model="begin">
+            <input type="datetime-local" id="date-from" ng-model="statisticDateBegin.value">
           </div>
           <div class="col-sm-3">
             <label for="date-to">Закінчити вибірку на даті : </label>
             <br>
-            <input type="datetime-local" id="date-to" ng-model="end">
+            <input type="datetime-local" id="date-to" ng-model="statisticDateEnd.value">
           </div>
           <div class="col-sm-1">
             <br>
-            <input type="button" value="Завантажити" ng-disabled="isStatisticLoading.bState" class="load-statistic" ng-click="getStatisticTable()">
+            <input type="button" value="Отримати дані" ng-disabled="isStatisticLoading.bState" class="load-statistic" ng-click="getStatisticTable()">
           </div>
       </div>
     <br>
@@ -113,7 +113,7 @@
       </thead>
       <tbody>
         <tr ng-repeat="item in statistics | orderBy:predicate:reverse">
-          <th>{{item.sID_Order}}</th>
+          <th style="width:84px;">{{item.sID_Order}}</th>
           <th>{{item.nID_Server}}</th>
           <th>{{item.nID_Service}}</th>
           <th>{{item.sID_Place}}</th>

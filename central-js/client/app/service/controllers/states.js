@@ -97,6 +97,14 @@ angular.module('app').controller('ServiceHistoryReportController', ['$scope', 'S
   // поскольку статистика видна только админу, делаем проверку.
   $scope.bAdmin = AdminService.isAdmin();
 
+  $scope.statisticDateBegin = {
+    value: new Date(2016, 0, 1, 0, 0)
+  };
+  $scope.statisticDateEnd = {
+    value: new Date(2016, 0, 1, 0, 0)
+  };
+
+
   // сортировка по клику на заголовок в шапке
   $scope.predicate = 'sID_Order';
   $scope.reverse = true;
@@ -122,7 +130,7 @@ angular.module('app').controller('ServiceHistoryReportController', ['$scope', 'S
   // конвертируем дату и время с datepicker'а в нужный для запроса формат YYYY-MM-DD hh:mm:ss
   $scope.getTimeInterval = function (date) {
     var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    var chosenDate = date.toString();
+    var chosenDate = date.value.toString();
     var dateSplited = chosenDate.split(' ');
     var selectedTime = dateSplited[4];
     var selectedDay = dateSplited[2];
@@ -163,8 +171,8 @@ angular.module('app').controller('ServiceHistoryReportController', ['$scope', 'S
     //блокируем возможность повторно нажатия "Завантажити" пока предыдущий запрос находиться в работе
     $scope.switchStatisticLoadingStatus();
 
-    dateFrom = $scope.getTimeInterval($scope.begin);
-    dateTo = $scope.getTimeInterval($scope.end);
+    dateFrom = $scope.getTimeInterval($scope.statisticDateBegin);
+    dateTo = $scope.getTimeInterval($scope.statisticDateEnd);
     exclude = $scope.sanIDServiceExclude;
 
     ServiceService.getServiceHistoryReport(dateFrom, dateTo, exclude).then(function (res) {
