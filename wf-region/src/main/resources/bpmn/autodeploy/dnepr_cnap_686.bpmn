@@ -766,6 +766,20 @@
         <activiti:formProperty id="sComment" name="У разі негативного рішення вкажіть, будь ласка, причину" type="textArea" default="Причина: "></activiti:formProperty>
         <activiti:formProperty id="fDecisionDoc" name="Копія рішення для заявника:" type="file" default=" "></activiti:formProperty> 
 
+<!-- блок для квитанции старт -->
+        <activiti:formProperty id="sVarPayDate" name="Введіть дату сплати за послугу" type="string" required="true" default=" "></activiti:formProperty>
+	<!-- блок для определения в скрипте старт -->
+        <activiti:formProperty id="sVarBankOplata" name="Банк отримувача" type="invisible" default="ГУДКСУ У ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ"></activiti:formProperty>
+        <activiti:formProperty id="sVarBankMFO" name="МФО банк" type="invisible" default="805012"></activiti:formProperty>
+        <activiti:formProperty id="sVarPayCode" name="Код платежу" type="invisible" default="22010300"></activiti:formProperty>
+        <activiti:formProperty id="sVarWhoPayGetCode" name="КОД ОТРИМУВАЧА (ЄДРПОУ)" type="invisible" default="37870848"></activiti:formProperty>
+        <activiti:formProperty id="sVarWhoPayGet" name="ОТРИМУВАЧ ПЛАТЕЖУ" type="invisible" default="ВАСИЛЬКІВСЬКЕ УК (ВАСИЛЬКІВСЬКОГО РАЙОНУ)"></activiti:formProperty>
+        <activiti:formProperty id="sVarPayGetSchet" name="РАХУНОК" type="invisible" default="31419501700049"></activiti:formProperty>
+	<!-- блок для определения в скрипте конец -->
+
+
+<!-- блок для квитанции конец -->
+
 <!--        <activiti:formProperty id="fDoc_01" name="Копія нового паспорту (перша-друга сторінка)" type="file" writable="false"></activiti:formProperty>  -->
 <!--        <activiti:formProperty id="fDoc_02" name="Копія нового ІПН" type="file" writable="false"></activiti:formProperty>  -->
 <!--        <activiti:formProperty id="fDoc_03" name="Копія нового паспорту (перша-друга сторінка)" type="file" writable="false"></activiti:formProperty>  -->
@@ -774,6 +788,7 @@
 <!--        <activiti:formProperty id="fAppWithECP" name="Заява з ЕЦП" type="file" writable="false"></activiti:formProperty>  -->
 
         <activiti:formProperty id="sBody_2" name="[pattern/print/dnepr_cnap_686_print.html]" type="invisible" default="Заява про реєстрацію змін - оригінал" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_4" name="[pattern/print/dnepr_cnap_686_print_pay.html]" type="invisible" default="Квитанція про сплату за послугу" writable="false"></activiti:formProperty>
 
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener> 
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
