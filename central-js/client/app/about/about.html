@@ -58,16 +58,16 @@
           <div class="col-sm-3">
             <label for="date-from">Почати вибірку з дати : </label>
             <br>
-            <input type="datetime-local" id="date-from" ng-model="begin">
+            <input type="datetime-local" id="date-from" ng-model="statisticDateBegin.value">
           </div>
           <div class="col-sm-3">
             <label for="date-to">Закінчити вибірку на даті : </label>
             <br>
-            <input type="datetime-local" id="date-to" ng-model="end">
+            <input type="datetime-local" id="date-to" ng-model="statisticDateEnd.value">
           </div>
           <div class="col-sm-1">
             <br>
-            <input type="button" value="Завантажити" ng-disabled="isStatisticLoading.bState" class="load-statistic" ng-click="getStatisticTable()">
+            <input type="button" value="Отримати дані" ng-disabled="isStatisticLoading.bState" class="load-statistic" ng-click="getStatisticTable()">
           </div>
       </div>
     <br>
@@ -106,14 +106,14 @@
           <th ng-click="order('sUserTaskName')">sUserTaskName</th>
           <th ng-click="order('sHead')">sHead</th>
           <th ng-click="order('sBody')">sBody</th>
-          <th ng-click="order('nTimeMinutes')">nTimeMinutes</th>
+          <th ng-click="order('nTimeMinutes')">nTime Minutes</th>
           <th ng-click="order('sPhone')">sPhone</th>
-          <th ng-click="order('nID_ServiceData')">nID_ServiceData</th>
+          <th ng-click="order('nID_ServiceData')">nID_Service Data</th>
         </tr>
       </thead>
       <tbody>
         <tr ng-repeat="item in statistics | orderBy:predicate:reverse">
-          <th>{{item.sID_Order}}</th>
+          <th style="width:84px;">{{item.sID_Order}}</th>
           <th>{{item.nID_Server}}</th>
           <th>{{item.nID_Service}}</th>
           <th>{{item.sID_Place}}</th>
@@ -124,7 +124,7 @@
           <th>{{item.sHead}}</th>
           <th>{{item.sBody}}</th>
           <th>{{item.nTimeMinutes}}</th>
-          <th>{{item.sPhone}}</th>
+          <th style="width:110px;">{{item.sPhone}}</th>
           <th>{{item.nID_ServiceData}}</th>
         </tr>
       </tbody>
