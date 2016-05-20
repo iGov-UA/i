@@ -588,7 +588,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>  
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"> 
           <activiti:field name="aFieldInheritedAttachmentID"> 
-            <activiti:expression>${form_signed},${fDoc_05},${fDoc_04},${fDoc_03},${fDoc_02},${fDoc_01}</activiti:expression>  
+            <activiti:expression>${fDoc_05},${fDoc_04},${fDoc_03},${fDoc_02},${fDoc_01},${form_signed}</activiti:expression> 
           </activiti:field> 
         </activiti:taskListener> 
       </extensionElements>
@@ -762,20 +762,23 @@
           <activiti:value id="yesDecisionFile" name="Так - є скан копії рішення про реєстрацію змін"></activiti:value>
           <activiti:value id="noDecisionFile" name="Ні - скан копії рішення про реєстрацію змін відсутній"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="fDecisionDoc" name="Копія рішення для заявника:" type="file" default=" "></activiti:formProperty> 
         <activiti:formProperty id="sUniqNum" name="Номер опису (або унікальний номер) :" type="string" default="_"></activiti:formProperty>
         <activiti:formProperty id="sComment" name="У разі негативного рішення вкажіть, будь ласка, причину" type="textArea" default="Причина: "></activiti:formProperty>
-        <activiti:formProperty id="fDecisionDoc" name="Копія рішення для заявника:" type="file" default=" "></activiti:formProperty> 
 
 <!-- блок для квитанции старт -->
-        <activiti:formProperty id="sVarPayDate" name="Введіть дату сплати за послугу" type="string" required="true" default=" "></activiti:formProperty>
-	<!-- блок для определения в скрипте старт -->
+        <activiti:formProperty id="sVarPayDate" name="Введіть дату сплати за послугу" type="date" required="true"></activiti:formProperty>
+	<!-- блок для определения в скрипте - старт -->
         <activiti:formProperty id="sVarBankOplata" name="Банк отримувача" type="invisible" default="ГУДКСУ У ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ"></activiti:formProperty>
         <activiti:formProperty id="sVarBankMFO" name="МФО банк" type="invisible" default="805012"></activiti:formProperty>
         <activiti:formProperty id="sVarPayCode" name="Код платежу" type="invisible" default="22010300"></activiti:formProperty>
         <activiti:formProperty id="sVarWhoPayGetCode" name="КОД ОТРИМУВАЧА (ЄДРПОУ)" type="invisible" default="37870848"></activiti:formProperty>
         <activiti:formProperty id="sVarWhoPayGet" name="ОТРИМУВАЧ ПЛАТЕЖУ" type="invisible" default="ВАСИЛЬКІВСЬКЕ УК (ВАСИЛЬКІВСЬКОГО РАЙОНУ)"></activiti:formProperty>
         <activiti:formProperty id="sVarPayGetSchet" name="РАХУНОК" type="invisible" default="31419501700049"></activiti:formProperty>
-	<!-- блок для определения в скрипте конец -->
+        
+        <activiti:formProperty id="sSum" name="сумма платежа" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible"></activiti:formProperty> 
+	<!-- блок для определения в скрипте - конец -->
 
 
 <!-- блок для квитанции конец -->
@@ -793,7 +796,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener> 
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${form_signed},${fDoc_05},${fDoc_04},${fDoc_03},${fDoc_02},${fDoc_01}</activiti:expression> 
+            <activiti:expression>${fDoc_05},${fDoc_04},${fDoc_03},${fDoc_02},${fDoc_01},${form_signed}</activiti:expression> 
           </activiti:field> 
         </activiti:taskListener> 
 
@@ -948,7 +951,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener> 
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"> 
           <activiti:field name="aFieldInheritedAttachmentID"> 
-            <activiti:expression>${form_signed},${fDoc_05},${fDoc_04},${fDoc_03},${fDoc_02},${fDoc_01}</activiti:expression>  
+            <activiti:expression>${fDoc_05},${fDoc_04},${fDoc_03},${fDoc_02},${fDoc_01},${form_signed}</activiti:expression> 
           </activiti:field>  
         </activiti:taskListener> 
       </extensionElements>	
@@ -1119,7 +1122,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener> 
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"> 
           <activiti:field name="aFieldInheritedAttachmentID"> 
-            <activiti:expression>${form_signed},${fDoc_05},${fDoc_04},${fDoc_03},${fDoc_02},${fDoc_01}</activiti:expression> 
+            <activiti:expression>${fDoc_05},${fDoc_04},${fDoc_03},${fDoc_02},${fDoc_01},${form_signed}</activiti:expression> 
           </activiti:field> 
         </activiti:taskListener> 
       </extensionElements>
