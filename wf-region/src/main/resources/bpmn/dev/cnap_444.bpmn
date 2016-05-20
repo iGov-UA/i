@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="cnap_444" name="Довідка про право фізичної особи-власника сільськогосподарської продукції на отримання доходу від податкового агента без утримання податку (форма № 3 ДФ)" isExecutable="true">
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть територіальний орган ДВС" type="select" default="0" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="Реєстраційний номер облікової картки платника податків" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса заявника" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Ваш e-mail" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sLabel1" name="Відомості щодо земельних ділянок у власності заявника (розмір земельної ділянки у гектарах)" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sSize1" name="для ведення особистого селянського господарства; якщо розмір не було збільшено у результаті отриманої в натурі (на місцевості) земельної частки (паю)" type="string" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sSize2" name="для будівництва та обслуговування житлового будинку, господарських будівель і споруд (присадибних ділянок)" type="string" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sSize3" name="для ведення садівництва" type="string" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sSize4" name="для індивідуального дачного будівництва" type="string" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органа" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Час роботи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <serviceTask id="servicetask1" name="Завантаження" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <serviceTask id="servicetask2" name="Лист службовцю" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>tanyazol@gmail.com</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Нове звернення. Довідка форма № 3 ДФ]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask3" name="Лист громадянину" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Довідка форма № 3 ДФ]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+			&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+			&lt;p&gt;Ваше звернення щодо Довідки форма № 3 ДФ було зареєстровано у системі.&lt;br/&gt;
+			Повідомлення про результат послуги буде спрямоване на Ваш e-mail.&lt;/p&gt;
+			&lt;br /&gt;
+			${sPhoneOrgan}&lt;br /&gt;
+			[pattern/mail/_common_signature_start.html]
+			${sNameOrgan}&lt;br /&gt;
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <userTask id="usertask1" name="Обробка даних">
+      <extensionElements>
+        <activiti:formProperty id="sNameOrgan" name="Назва органа" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clFio" name="Заявник:" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="Реєстраційний номер облікової картки платника податків" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="e-mail" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLabel1" name="Відомості щодо земельних ділянок у власності заявника (розмір земельної ділянки у гектарах)" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sSize1" name="для ведення особистого селянського господарства; якщо розмір не було збільшено у результаті отриманої в натурі (на місцевості) земельної частки (паю)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSize2" name="для будівництва та обслуговування житлового будинку, господарських будівель і споруд (присадибних ділянок)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSize3" name="для ведення садівництва" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSize4" name="для індивідуального дачного будівництва" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="decide" name="Статус висновку" type="enum" required="true">
+          <activiti:value id="accept" name="Довідка готова, запросити заявника"></activiti:value>
+          <activiti:value id="reject" name="Відмова заявнику у видачі довідки"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="comment" name="Якщо ви відмовляєте заявнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sFioCnap" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNumberCnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_220_print1.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/dneprOblSnap/dnepr_cnap_220_print1.html]" type="invisible" default="Форма заяви громадянина 1" writable="false"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <serviceTask id="servicetask4" name="Лист успіх" activiti:delegateExpression="#{MailTaskWithAttachments}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Довідка форма № 3 ДФ]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+			&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+			&lt;p&gt;
+			Довідка форма № 3 ДФ - готова&lt;br /&gt;
+			&lt;/p&gt;
+			Копію довідки прикріплено до цього листа.&lt;br /&gt;
+			&lt;p&gt;
+			Оригінал довідки можете отримати за адресою:
+			&lt;br /&gt;
+			&lt;br /&gt;
+			${sAddress}&lt;br /&gt;
+			${sWorkTime}&lt;br /&gt;
+			&lt;br /&gt;
+			${sPhoneOrgan}&lt;br /&gt;
+			[pattern/mail/_common_signature_start.html]
+			${sNameOrgan}&lt;br /&gt;
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_feedback.html]
+			[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>${PrintForm_1}</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask5" name="Лист відмова" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Довідка форма № 3 ДФ]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+			&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+			На жаль, Ваше звернення щодо Довідки форма № 3 ДФ - відхилене.&lt;/p&gt;
+			&lt;p&gt;Причина в наступному: &lt;/p&gt;
+			&lt;p&gt;${comment}&lt;/p&gt;
+			&lt;p&gt;Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/ target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
+			&lt;br /&gt;
+			${sPhoneOrgan}&lt;br /&gt;
+			[pattern/mail/_common_signature_start.html]
+			${sNameOrgan}&lt;br /&gt;
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
+      <errorEventDefinition></errorEventDefinition>
+    </boundaryEvent>
+    <endEvent id="endevent2" name="End"></endEvent>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
+    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
+    <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
+    <sequenceFlow id="flow4" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow5" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
+    <sequenceFlow id="flow6" name="${decide=='accept'}" sourceRef="exclusivegateway1" targetRef="servicetask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='accept'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow7" name="${decide=='reject'}" sourceRef="exclusivegateway1" targetRef="servicetask5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='reject'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow8" sourceRef="servicetask5" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow9" sourceRef="servicetask4" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow10" sourceRef="boundaryerror1" targetRef="endevent2"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_cnap_444">
+    <bpmndi:BPMNPlane bpmnElement="cnap_444" id="BPMNPlane_cnap_444">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="60.0" y="180.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="130.0" y="170.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
+        <omgdc:Bounds height="30.0" width="30.0" x="190.0" y="210.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
+        <omgdc:Bounds height="55.0" width="105.0" x="270.0" y="170.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
+        <omgdc:Bounds height="55.0" width="105.0" x="400.0" y="170.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="540.0" y="170.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
+        <omgdc:Bounds height="55.0" width="105.0" x="680.0" y="100.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
+        <omgdc:Bounds height="55.0" width="105.0" x="680.0" y="240.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="660.0" y="177.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="810.0" y="180.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
+        <omgdc:Bounds height="35.0" width="35.0" x="187.0" y="250.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="95.0" y="197.0"></omgdi:waypoint>
+        <omgdi:waypoint x="130.0" y="197.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="235.0" y="197.0"></omgdi:waypoint>
+        <omgdi:waypoint x="270.0" y="197.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="375.0" y="197.0"></omgdi:waypoint>
+        <omgdi:waypoint x="400.0" y="197.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="505.0" y="197.0"></omgdi:waypoint>
+        <omgdi:waypoint x="540.0" y="197.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="645.0" y="197.0"></omgdi:waypoint>
+        <omgdi:waypoint x="660.0" y="197.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+        <omgdi:waypoint x="680.0" y="177.0"></omgdi:waypoint>
+        <omgdi:waypoint x="732.0" y="155.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="100.0" x="586.0" y="150.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
+        <omgdi:waypoint x="680.0" y="217.0"></omgdi:waypoint>
+        <omgdi:waypoint x="732.0" y="240.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="100.0" x="575.0" y="233.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
+        <omgdi:waypoint x="732.0" y="240.0"></omgdi:waypoint>
+        <omgdi:waypoint x="827.0" y="215.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
+        <omgdi:waypoint x="732.0" y="155.0"></omgdi:waypoint>
+        <omgdi:waypoint x="827.0" y="180.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
+        <omgdi:waypoint x="190.0" y="225.0"></omgdi:waypoint>
+        <omgdi:waypoint x="204.0" y="250.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

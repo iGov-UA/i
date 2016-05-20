@@ -3,7 +3,7 @@
   <process id="_test_mailer_ext" name="test_mailer_ext" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="mail" name="mail" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="mail" name="mail + sms" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По-Батькові" type="string" required="true"></activiti:formProperty>
@@ -56,7 +56,7 @@
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow5" sourceRef="servicetask2" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow7" sourceRef="servicetask1" targetRef="servicetask3"></sequenceFlow>
-    <serviceTask id="servicetask3" name="оповещение сотрудника" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask3" name="оповещение сотрудника" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[admin@igov.org.ua]]></activiti:string>
@@ -84,7 +84,7 @@
           <activiti:string><![CDATA[admin@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${mail},${mail2},kyrbatsky@gmail.com,kurbpa@gmail.com</activiti:expression>
+          <activiti:expression>${mail}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression>"Mail test + SMS ( Заявник: ${bankIdfirstName} ${bankIdmiddleName} ${bankIdlastName} )"</activiti:expression>
@@ -102,9 +102,7 @@
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Status Vashoho zvernennya №[sID_Order] zmineno.
-Detali: igov.org.ua/journal abo u Vashomu email
-</activiti:expression>
+          <activiti:expression>123</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${filecl}</activiti:expression>
