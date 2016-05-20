@@ -181,6 +181,27 @@ angular.module('dashboardJsApp')
       }
     };
 
+    $scope.changeDaysLimit = function(){
+      var value = $scope.thisRule.oData.nDaysLimit;
+      var rep = /[.,;":'a-zA-Zа-яА-Я\\=`ё/\*+!@#$%\^&_№?><]/;
+      if (rep.test(value)) {
+        value = value.replace(rep, '');
+        $scope.thisRule.oData.nDaysLimit = value;
+      }
+
+      if(angular.isNumber($scope.thisRule.oData.nDaysLimit)){
+        $scope.thisRule.oData.nDaysLimit.toFixed(0);
+      }
+
+      if($scope.thisRule.oData.nDaysLimit < -1){
+        $scope.thisRule.oData.nDaysLimit = -1;
+      }
+      if ($scope.thisRule.oData.nDaysLimit > 365){
+        $scope.thisRule.oData.nDaysLimit = 365;
+      }
+
+    };
+
     $scope.addContact = function(){
       $scope.thisRule.oData.aEmails.push({email:""});
     };
@@ -220,6 +241,11 @@ angular.module('dashboardJsApp')
     };
 
     $scope.save = function () {
+      if($scope.thisRule.oData.nDaysLimit === undefined ||
+        $scope.thisRule.oData.nDaysLimit === '' ||
+        isNaN($scope.thisRule.oData.nDaysLimit)){
+        $scope.thisRule.oData.nDaysLimit = 0;
+      }
 
       // todo уточнить возможность применения стандартного JSON
       //$scope.thisRule.soData = JSON.stringify($scope.thisRule.oData);
