@@ -108,7 +108,7 @@
             </td>
             <td>
               <input type="number"
-                     ng-maxlength="3"
+                     maxlength="3"
                      ng-model="thisRule.oData.nDaysLimit"
                      ng-required="true"
                      class="form-control"
@@ -145,12 +145,15 @@
                  ng-model="fileEscalationTemplate.isDefault"
                  ng-change="isDefaultEscalationTemplateChanged()"
                  style="cursor:pointer;"> використовувати шаблон за замовчуванням<br/>
-          <input class="form-control" id="inputName4" ng-hide="fileEscalationTemplate.isDefault"
-                 ng-model="thisRule.sPatternFile">
+          <div ng-hide="fileEscalationTemplate.isDefault">
+            <label>Введіть адресу розташування html-файлу шаблону:</label>
+            <input class="form-control" id="inputName4" ng-model="thisRule.sPatternFile">
+          </div>
+
         </div>
       </div>
       <div class="form-group">
-        <label class="col-md-4 col-xs-4 control-label">Запустити функції ескалації:</label>
+        <label class="col-md-4 col-xs-4 control-label">Здійснити у разі виконання умови:</label>
 
         <div class="col-md-8 col-xs-8">
           <select class="form-control" ng-model="thisRule.nID_EscalationRuleFunction.nID"
@@ -167,8 +170,8 @@
       </div>
       <div class="form-group text-center" ng-if="thisRule.nID_EscalationRuleFunction.nID == 1">
         <label>
-          <span ng-if="thisRule.oData.aEmails.length < 2">Адреса єлектронної скриньки:</span>
-          <span ng-if="thisRule.oData.aEmails.length > 1">Адреси єлектронних скриньок:</span>
+          <span ng-if="thisRule.oData.aEmails.length < 2">Адреса електронної скриньки:</span>
+          <span ng-if="thisRule.oData.aEmails.length > 1">Адреси електронних скриньок:</span>
         </label>
         [ <a href="" ng-click="addContact()">додати</a> ]
         <div ng-repeat="contact in thisRule.oData.aEmails">

@@ -154,7 +154,7 @@ angular.module('dashboardJsApp')
     };
 
     $scope.oRuleStart = {
-      bNow: true,
+      bNow: false,
       bLater: false
     };
 
@@ -181,16 +181,13 @@ angular.module('dashboardJsApp')
       }
     };
 
-
-    var saEmails = []; // список для сохранения в объект правила
-
     $scope.addContact = function(){
       $scope.thisRule.oData.aEmails.push({email:""});
     };
 
     $scope.removeContact = function(contact){
       for (var j = 0; j < $scope.thisRule.oData.aEmails.length; j++) {
-        if (contact === $scope.thisRule.oData.aEmails[j]) {
+        if (contact.email === $scope.thisRule.oData.aEmails[j].email) {
           $scope.thisRule.oData.aEmails.splice(j, 1);
         }
       }
@@ -200,107 +197,230 @@ angular.module('dashboardJsApp')
       $(".modal-dialog").addClass("escalation-modal-dialog");
       $scope.thisRule = angular.copy($scope.rule);
 
-      try {
-        $scope.thisRule.oData = JSON.parse($scope.thisRule.soData);
-      } catch (err) {
-        console.error(err);
-        $scope.thisRule.oData = {nDaysLimit: 0};
+      $scope.thisRule.oData = parseStringToDate($scope.thisRule.soData);
+
+      $scope.thisRule.oData.aEmails = []; // список для отображения в модальном окне
+      if(angular.isArray($scope.thisRule.oData.asRecipientMail)){
+        for(i = 0; i < $scope.thisRule.oData.asRecipientMail.length; i++){
+          $scope.thisRule.oData.aEmails.push({email:$scope.thisRule.oData.asRecipientMail[i]});
+        }
       }
 
       if (!$scope.thisRule.oData.nDaysLimit) {
         $scope.thisRule.oData.nDaysLimit = 0;
       }
+
       if ($scope.thisRule.oData.nDaysLimit < 0) {
-        $scope.setRuleStarterNow();
+        setStartConditionAsNow()
       } else {
-        $scope.setRuleStarterLater();
+        $scope.oRuleStart.bLater = true;
       }
-      $scope.thisRule.oData.aEmails = []; // список для отображения в модальном окне
 
       $scope.resolveBP();
     };
 
     $scope.save = function () {
-      saEmails = [];
-      for(i = 0; i < $scope.thisRule.oData.aEmails.length; i++){
-        saEmails.push($scope.thisRule.oData.aEmails[i].email);
-      }
+
+      // todo уточнить возможность применения стандартного JSON
       //$scope.thisRule.soData = JSON.stringify($scope.thisRule.oData);
-      //$scope.thisRule.soData = angular.toJson($scope.thisRule.oData);
       $scope.thisRule.soData = compileDataString($scope.thisRule.oData);
+
       $scope.thisRule.nID_EscalationRuleFunction = angular.copy(
         getEscalationFunctionByID($scope.thisRule.nID_EscalationRuleFunction.nID));
+
       for (var prop in $scope.rule) if ($scope.rule.hasOwnProperty(prop)) {
         $scope.rule[prop] = angular.copy($scope.thisRule[prop]);
       }
-      debugger;
+
       $modalInstance.close($scope.rule);
     };
-
-    var objectsDefinition = [
-      {keys: ["nDaysLimit"], type: "numeric", startSymbol: '', endSymbol: '', separatorSymbol: ''},
-      {keys: ["asRecipientMail"], type: "array", startSymbol: '[', endSymbol: ']', separatorSymbol: ','},
-      {keys: [], type: "object", startSymbol: '{', endSymbol: '}', separatorSymbol: ','},
-      {keys: [], type: "string", startSymbol: "'", endSymbol: "'", separatorSymbol: ","}
-    ];
-
-    // парсинг soData и запись результата в раздельные объекты oData
-    function parseDataString(soData) {
-      var result = {};
-      var findTwicePoint = true; // поиск двоеточия, как разделителя, между именем и значением свойства
-      var findElementSeparator = false; // поиск разделителя между элементами
-      var startInd = 1; // индекс начального символа
-      var endInd = 1; // индекс последнего индекса
-      i = 0; // счетчик итератора
-      var paramKey, paramValue;
-
-      for (i = 1; i < soData.length; i++) {
-        if (findTwicePoint && soData.charAt(i) === ':') {
-          // мы искали двоеточие и нашли его
-          endInd = i;
-          paramKey = $.trim(soData.substring(startInd, endInd)); //сохранили имя ключа в переменную
-          startInd = startInd + 1; // перевели курсор
-          findTwicePoint = false;
-          findElementSeparator = true;
-          //todo
-
-        }
-        if (findElementSeparator) {
-          // искали сепаратор...
-          if (soData.charAt(i) === ',') {
-            // ...и нашли его
-            //todo
-
-          }
-          if (soData.charAt(i) === '}' && i == soData.length - 1) {
-            // ...и дошли до окончания строки
-            //todo
-
-          }
-        }
-      }
-
-      i = 0; // сброс счетчика
-      return result;
-    }
 
     // составление soData из oData
     function compileDataString(oData) {
       var result = "";
-      result = result + '{' + 'nDaysLimit' + ':' + Number($scope.thisRule.oData.nDaysLimit).toFixed(0);
+      result = result + '{' + 'nDaysLimit' + ':' + Number(oData.nDaysLimit).toFixed(0);
       if($scope.thisRule.nID_EscalationRuleFunction.nID == 1){
         result = result + ",asRecipientMail:['";
-        for(i = 0; i < saEmails.length; i++){
-          result = result + saEmails[i] + "'";
-          if(i == saEmails.length - 1){
+        for(i = 0; i < oData.aEmails.length; i++){
+          result = result + oData.aEmails[i].email + "'";
+          if(i == oData.aEmails.length - 1){
             result = result + "]";
           } else {
-            result = result + ",";
+            result = result + ",'";
           }
         }
       }
       result = result + '}';
       return result;
+    }
+
+    // парсер для строки soData
+    function parseStringToDate(str, type) {
+      try {
+        return JSON.parse(str);
+      } catch (err) {
+        return parseIncorrectJSON(str, type);
+      }
+
+      function parseIncorrectJSON(str, type) {
+        var objDefinition = {
+          obj: { // объект
+            op: '{', // открывающий символ
+            cl: '}', // закрывающий символ
+            sl: ':', // разделитель между ключем и значением
+            su: ',' // разделитель между членами многочлена
+          },
+          arr: { // массив
+            op: '[',
+            cl: ']',
+            sl: '',
+            su: ','
+          },
+          str1: { // строка1
+            op: '"',
+            cl: '"',
+            sl: '',
+            su: ''
+          },
+          str2: { // строка2
+            op: "'",
+            cl: "'",
+            sl: '',
+            su: ''
+          }
+        };
+        var result; // возвращаемый результат
+        var needFirstSymb = true; // нужен поиск открывающего символа
+
+        // если тип передан и известен - создаем соответствующий тип результата
+        if (type) {
+          if (type.op === "{") {
+            result = {};
+          } else if (type.op === "[") {
+            result = [];
+          } else if (type.op === '"' || type.op === "'") {
+            result = "";
+          } else {
+            result = 0;
+          }
+          needFirstSymb = false;
+        }
+
+        var ind = 0; // index
+
+        if (needFirstSymb) {// нам нужно найти открывающий символ
+          // определяем тип объекта по открывающемуся символу
+          var thisType;
+          for (var key in objDefinition) {
+            if (str.charAt(0) === objDefinition[key].op) {
+              needFirstSymb = false;
+              thisType = angular.copy(objDefinition[key]);
+              break;
+            }
+          }
+          // если открывающего символа нет - значит это Число и передаем строку как результат
+          if (needFirstSymb) {
+            result = Number(str);
+            return result
+          }
+          // находим закрывающий символ с конца строки
+          var closeSymbIndex = 0
+          ind = str.length - 1;
+          for (ind; ind >= 0; ind--) {
+            if (str.charAt(ind) === thisType.cl) {
+              closeSymbIndex = ind;
+              break;
+            }
+          }
+          if (closeSymbIndex == 0) {// если закрывающего символа не нашли - значит это была Строка и возвращаем ее как результат
+            result = str;
+            return result;
+          }
+          // извлекаем подстроку между открывающим и закрывающим символом
+          var substring = str.substring(1, closeSymbIndex);
+          // запускаем парсинг извлеченной подстроки (с передачей типа объекта)
+          result = parseStringToDate($.trim(substring), thisType);
+        } else {// не нужно искать открывющий символ
+          // по типу переданной строки, определяем, требуется ли разделение на многочлены
+          var needSeparate;
+          if (type.su === '') {
+            needSeparate = false;
+          } else {
+            needSeparate = true;
+          }
+          // если требуется разделение на члены
+          if (needSeparate) {
+            // выполняем деление массива на члены (объекта на подобъекты)
+            var tempArray = [];//временный массив для хранения элементов объекта/массива, которые необходимо распарсить
+
+            var startInd = 0; // индекс первого символа
+            var endInd = 0; // индекс последнего символа
+            var level = 0; // глубина вложенности
+            var ignoreNextSymbol = false;
+            var expClSymb = []; // ожидаемые закрывающие символы
+            for (ind = 0; ind < str.length; ind++) {
+              // если попадаем на экранирующий символ - следующий будем пропускать
+              if (str.charAt(ind) == '\u005C' && ignoreNextSymbol == false) {
+                ignoreNextSymbol = true;
+              }
+
+              if (ignoreNextSymbol == false) {
+                // если натыкаемся на открывающийся или закрывающийся символ - меняем уровень вложенности
+                for (var checkOp in objDefinition) { // пересмотр вероятных символов открытия
+                  if (str.charAt(ind) == objDefinition[checkOp].op) {
+                    level = level + 1;
+                    expClSymb[level] = objDefinition[checkOp].cl;
+                    break;
+                  }
+                }
+                if (str.charAt(ind) == expClSymb[level]) {
+                  expClSymb[level] = '';
+                  level = level - 1;
+                }
+                // если натыкаемся на символ сепаратора в нулевом уровне - вычленяем подстроку и переводим курсор
+                if (level == 0) {
+                  if (str.charAt(ind) == type.su) {
+                    tempArray.push($.trim(str.substring(startInd, ind)));
+                    startInd = ind + 1;
+                  } else if (ind == str.length - 1) {
+                    tempArray.push($.trim(str.substring(startInd)));
+                  }
+                }
+              }
+
+              // снимаем экранирование
+              if (ind > 0) {
+                if (ignoreNextSymbol == true && str.charAt(ind - 1) == '\u005C') {
+                  ignoreNextSymbol == false;
+                }
+              }
+
+            }
+            // поочередно каждый член (подобъект) передаем на парсинг
+            for (var i = 0; i < tempArray.length; i++) {
+              // если расчлененный был массивом - пушим в него результат
+              if (type.op === "[") {
+                result.push(parseStringToDate(tempArray[i]));
+              }
+
+              // если это был объект
+              if (type.op === "{") {
+                // находим позицию двоеточия
+                var twicePos = tempArray[i].search(/:/);
+                // вычленяем название параметра
+                var propertyName = $.trim(tempArray[i].substring(0, twicePos));
+                // вычленяем значение параметра, которое отправляем на парсинг
+                // сохраняем полученные значения в результат
+                result[propertyName] = parseStringToDate($.trim(tempArray[i].substring(twicePos + 1)));
+              }
+            }
+          } else {// если нам не требуется разделение на члены
+            // сохраняем подстроку в результат
+            result = str;
+          }
+        }
+        return result;
+      }
     }
 
   }
