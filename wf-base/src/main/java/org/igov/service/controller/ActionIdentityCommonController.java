@@ -1,8 +1,8 @@
 package org.igov.service.controller;
 
-import java.util.*;
-
-import io.swagger.annotations.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.activiti.engine.IdentityService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.identity.Group;
@@ -18,6 +18,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @Api(tags = { "ActionIdentityCommonController" })
@@ -197,6 +202,38 @@ public class ActionIdentityCommonController {
         }
 
         identityService.deleteGroup(sID);
+    }
+
+    /**
+     * Добавляет пользователя как члена групы
+     *
+     * @param sID_Group строка текст, айди групы, в которую нужно добавить пользователя
+     * @param sLogin    строка текст, логин пользователя, которого необходимо добавить
+     */
+    @ApiOperation(value = "Добавляет пользователя как члена групы")
+    @RequestMapping(value = "/setUserGroup", method = RequestMethod.POST)
+    @ResponseBody
+    public void setUserGroup(
+            @ApiParam(value = "строка текст, айди групы, в которую нужно добавить пользователя", required = true) @RequestParam(value = "sID_Group", required = true) String sID_Group,
+            @ApiParam(value = "строка текст, логин пользователя, которого необходимо добавить", required = true) @RequestParam(value = "sLogin", required = true) String sLogin)
+            throws Exception {
+        identityService.createMembership(sLogin, sID_Group);
+    }
+
+    /**
+     * Удаляет членство пользователя в групе
+     *
+     * @param sID_Group строка текст, айди групы, из которой необходимо удалить юзера
+     * @param sLogin    строка текст, логин пользователя, которого необходимо удалить
+     */
+    @ApiOperation(value = "Удаляет членство пользователя в групе")
+    @RequestMapping(value = "/removeUserGroup", method = RequestMethod.DELETE)
+    @ResponseBody
+    public void removeUserGroup(
+            @ApiParam(value = "строка текст, айди групы, из которой необходимо удалить юзера", required = true) @RequestParam(value = "sID_Group", required = true) String sID_Group,
+            @ApiParam(value = "строка текст, логин пользователя, которого необходимо удалить", required = true) @RequestParam(value = "sLogin", required = true) String sLogin)
+            throws Exception {
+        identityService.deleteMembership(sLogin, sID_Group);
     }
 
 }

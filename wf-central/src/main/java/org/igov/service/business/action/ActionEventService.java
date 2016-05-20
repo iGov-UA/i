@@ -349,6 +349,7 @@ public class ActionEventService {
             Long nID_Subject
     ) throws CommonServiceException {
         LOG.info("Mehtod updateActionStatus_Central started for task "+sID_Order);
+        LOG.info("Status type is "+nID_StatusType);
         //TODO: Remove lete (for back compatibility)
         /*if (sID_Order.indexOf(DASH) <= 0) {
             sID_Order = "0-" + sID_Order;
