@@ -11,6 +11,7 @@
       .state('profile', {
         url: '/profile',
         templateUrl: 'app/profile/profile.html',
+        controller: 'ProfileCtrl',
         access: {
           requiresLogin: true
         }

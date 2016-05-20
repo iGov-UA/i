@@ -4,9 +4,8 @@ var activiti = require('../../components/activiti');
 
 exports.getAllRules = function (req, res) {
   var options = {
-    path: 'escalation/getEscalationRules',
-    query: {
-    }
+    path: 'action/escalation/getEscalationRules',
+    query: {}
   };
 
   activiti.get(options, function (error, statusCode, result) {
@@ -20,7 +19,7 @@ exports.getAllRules = function (req, res) {
 
 exports.setRule = function (req, res) {
   var options = {
-    path: 'escalation/setEscalationRule',
+    path: 'action/escalation/setEscalationRule',
     query: {
       nID: req.query.nID,
       sID_BP: req.query.sID_BP,
@@ -44,7 +43,7 @@ exports.setRule = function (req, res) {
 
 exports.deleteRule = function (req, res) {
   var options = {
-    path: 'escalation/removeEscalationRule',
+    path: 'action/escalation/removeEscalationRule',
     query: {
       nID: req.query.nID
     }
@@ -62,9 +61,8 @@ exports.deleteRule = function (req, res) {
 
 exports.getAllEscalationFunctions = function (req, res) {
   var options = {
-    path: 'escalation/getEscalationRuleFunctions',
-    query: {
-    }
+    path: 'action/escalation/getEscalationRuleFunctions',
+    query: {}
   };
 
   activiti.get(options, function (error, statusCode, result) {
@@ -86,7 +84,7 @@ exports.setRuleFunction = function (req, res) {
     queryToSend.nID = req.query.nID;
   }
   var options = {
-    path: 'escalation/setEscalationRuleFunction',
+    path: 'action/escalation/setEscalationRuleFunction',
     query: queryToSend
   };
 
@@ -101,7 +99,7 @@ exports.setRuleFunction = function (req, res) {
 
 exports.deleteRuleFunction = function (req, res) {
   var options = {
-    path: 'escalation/removeEscalationRuleFunction',
+      path: 'action/escalation/removeEscalationRuleFunction',
     query: {
       nID: req.query.nID
     }
