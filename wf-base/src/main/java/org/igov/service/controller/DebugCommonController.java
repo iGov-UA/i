@@ -93,9 +93,9 @@ public class DebugCommonController {
             @RequestParam(value = "bUnisender", required = false) Boolean bUnisender)
             throws IOException, MessagingException, EmailException {
 
-        oMail._To("bvv4ik@gmail.com");
-        oMail._Body(sBody == null ? "<a href=\"http:\\\\google.com\">Google</a> It's test Проверка ! ��� ��������!"
-                : sBody);
+        //oMail._To("bvv4ik@gmail.com");
+        oMail._To(sMailTo!=null?sMailTo:"bvv4ik@gmail.com");
+        oMail._Body(sBody == null ? "<a href=\"http:\\\\google.com\">Google</a> It's test Проверка!" : sBody);
 
         LOG.info("(oMail.getHead()={})", oMail.getHead());
         LOG.info("(oMail.getBody()={})", oMail.getBody());
