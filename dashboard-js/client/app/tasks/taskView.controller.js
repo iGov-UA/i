@@ -316,6 +316,7 @@
                   $scope.lightweightRefreshAfterSubmit();
                 })(sMessage + " " + (result && result.length > 0 ? (': ' + result) : ''));
 
+                $scope.$emit('task-submitted', $scope.selectedTask);
               })
               .catch(defaultErrorHandler);
           }
