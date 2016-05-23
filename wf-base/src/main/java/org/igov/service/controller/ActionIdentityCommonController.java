@@ -8,6 +8,7 @@ import org.activiti.engine.TaskService;
 import org.activiti.engine.identity.Group;
 import org.activiti.engine.identity.User;
 import org.activiti.engine.task.Task;
+import org.apache.commons.lang3.StringUtils;
 import org.igov.service.exception.CommonServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -217,7 +218,12 @@ public class ActionIdentityCommonController {
             @ApiParam(value = "строка текст, айди групы, в которую нужно добавить пользователя", required = true) @RequestParam(value = "sID_Group", required = true) String sID_Group,
             @ApiParam(value = "строка текст, логин пользователя, которого необходимо добавить", required = true) @RequestParam(value = "sLogin", required = true) String sLogin)
             throws Exception {
-        identityService.createMembership(sLogin, sID_Group);
+        if(!StringUtils.isAnyEmpty(sID_Group,sLogin))
+        {
+            log.info("Group id and user login are not empty");
+            identityService.createMembership(sLogin, sID_Group);
+            log.info("Membership for user "+sLogin+" in group "+sID_Group+" created");
+        }
     }
 
     /**
@@ -233,7 +239,12 @@ public class ActionIdentityCommonController {
             @ApiParam(value = "строка текст, айди групы, из которой необходимо удалить юзера", required = true) @RequestParam(value = "sID_Group", required = true) String sID_Group,
             @ApiParam(value = "строка текст, логин пользователя, которого необходимо удалить", required = true) @RequestParam(value = "sLogin", required = true) String sLogin)
             throws Exception {
-        identityService.deleteMembership(sLogin, sID_Group);
+        if(!StringUtils.isAnyEmpty(sID_Group,sLogin))
+        {
+            log.info("Group id and user login are not empty");
+            identityService.deleteMembership(sLogin, sID_Group);
+            log.info("Membership for user "+sLogin+" in group "+sID_Group+" removed");
+        }
     }
 
 }
