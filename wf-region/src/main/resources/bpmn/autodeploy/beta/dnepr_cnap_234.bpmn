@@ -45,7 +45,7 @@
         <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="marker1" name="mark" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_m&quot;:{&quot;aField_ID&quot;:[&quot;zapit&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;pidstavi&quot;},&quot;sCondition&quot;:&quot;[sReason]=='z2'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="Region" type="markers" default="${markerService.loadFromFile('dneprCnap/dnepr_225.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="Region" type="markers" default="${markerService.loadFromFile('dneprCnap/dnepr_cnap_234.json')}"></activiti:formProperty>
         <activiti:formProperty id="bFlag" name="Перемикач регіонів" type="invisible" default="easy"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -69,7 +69,8 @@
           <activiti:string><![CDATA[Звернення на тему: Надання відомостей з Державного земельного кадастру у формі викопіювань з кадастрової карти (плану) та іншої картографічної документації Державного земельного кадастру]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[[sID_Order]&lt;br&gt;
+[pattern/mail/_common_header.html]
 			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<p>
 			Ваше звернення щодо надання відомостей з Державного земельного кадастру у формі викопіювань з кадастрової карти (плану) та іншої картографічної документації Державного земельного кадастру  успішно зареєстроване.<br />

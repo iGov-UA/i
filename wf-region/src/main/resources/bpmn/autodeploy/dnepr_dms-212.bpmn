@@ -106,7 +106,7 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:expression>[pattern/mail/_common_header.html]
                                     &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
-										Ваш запит був успішно зареєстрований у нашій системі. 
+										Ваш запит був успішно зареєстрований у нашій системі [sID_Order]. 
 								    &lt;/p&gt;
 									&lt;p&gt;
 										Спеціалісти ${sOrganType} оброблять Вашу заявку протягом 1-3 днів та надішлють Вам email з підтвердженням та запрошенням прийти до ${sOrganType} у обраний час. 
@@ -127,7 +127,7 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Дані паспорта громадянина; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDate_of_birth" name="Дата народження" type="string" writable="false"></activiti:formProperty>
@@ -143,7 +143,7 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="sChildCitizenship" name="Громадянство" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sRegistrationAddress" name="Попередня адреса реєстрації (за наявності)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sArea" name="Місто або район, до якого належить нове місце проживання дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNewAddress" name="Нова адреса реєстрації дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNewAddress" name="Нова адреса реєстрації дитини; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="День та час зустрічі: " type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asRegistr" name="Чи потрібна реєстрація з одночасним зняттям з реєстрації?" type="enum" writable="false">
           <activiti:value id="sYesR" name="Так"></activiti:value>
@@ -155,6 +155,14 @@ execution.setVariable('sMaxPay', maxpay)
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment" name="Коментар до рішення: наприклад, пояснення чому громадянину було відмовлено в наданні цієї послуги АБО додаткові деталі для закінчення процессу реєстрації" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sRecvizitiAdmin" name="Реквізити для сплати адмінсбору" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dms/zajava_regFrChild.html]" type="invisible" default="Заява для реєстрації лицьова" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/dms/zajava_regBkChild.html]" type="invisible" default="Заява для реєстрації зворотня" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_10" name="[pattern/print/dms/zajava_znFrChild.html]" type="invisible" default="Заява для зняття з реєстрації лицьова" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_11" name="[pattern/print/dms/zajava_znBk.html]" type="invisible" default="Заява для зняття з реєстрації зворотня" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dms/zajava_regFrChild.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/dms/zajava_regBkChild.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_3" name="File label;File title;pattern/print/dms/zajava_znFrChild.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_4" name="File label;File title;pattern/print/dms/zajava_znBk.html" type="file"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -236,7 +244,7 @@ execution.setVariable('sMaxPay', maxpay)
 									&lt;p&gt;
 										&lt;b&gt;Реквізити для сплати:&lt;/b&gt;&gt;&lt;br&gt;
 										&lt;i&gt;${sRecvizitiAdmin}&lt;br&gt;
-										Призначення платежу: адмін. збір за реєстрацію/зняття з реєстрації місця проживання&lt;/i&gt;
+										Призначення платежу: адмін. збір за реєстрацію місця проживання&lt;/i&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
 										&lt;b&gt;Деталі зустрічі:&lt;/b&gt;&lt;br&gt;
@@ -245,8 +253,8 @@ execution.setVariable('sMaxPay', maxpay)
 									&lt;p&gt;
 										&lt;b&gt;Необхідні документи, які треба принести до ${sOrganType} при реєстраціі місця проживання:&lt;/b&gt;&lt;br /&gt;
 										&lt;ul&gt;
-										&lt;li&gt;паспорт одного з батьків (до якого реєструється дитина);&lt;/li&gt;
-										&lt;li&gt;свідоцтво про народження або свідоцтво про належність до громадянства України;&lt;/li&gt;
+										&lt;li&gt;оригінал та копію паспорту одного з батьків (до якого реєструється дитина);&lt;/li&gt;
+										&lt;li&gt;оригінал та копію свідоцтва про народження або свідоцтва про належність до громадянства України;&lt;/li&gt;
 										&lt;li&gt;квитанцію про сплату адміністративного збору.&lt;/li&gt;
 										&lt;/ul&gt;
 									&lt;/p&gt;
@@ -282,7 +290,7 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Дані паспорта громадянина; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDate_of_birth" name="Дата народження" type="string" writable="false"></activiti:formProperty>
@@ -298,7 +306,7 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="sChildCitizenship" name="Громадянство" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sRegistrationAddress" name="Попередня адреса реєстрації (за наявності)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sArea" name="Місто або район, до якого належить нове місце проживання дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNewAddress" name="Нова адреса реєстрації дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNewAddress" name="Нова адреса реєстрації дитини; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asRegistr" name="Чи потрібна реєстрація з одночасним зняттям з реєстрації?" type="enum" writable="false">
           <activiti:value id="sYesR" name="Так"></activiti:value>
           <activiti:value id="sNoR" name="Ні"></activiti:value>

@@ -104,7 +104,7 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:expression>[pattern/mail/_common_header.html]
                                     &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
-										Ваш запит був успішно зареєстрований у нашій системі. 
+										Ваш запит був успішно зареєстрований у нашій системі [sID_Order]. 
 								    &lt;/p&gt;
 									&lt;p&gt;
 										Спеціалісти ${sOrganType} оброблять Вашу заявку протягом 1-3 днів та надішлють Вам email з підтвердженням та запрошенням прийти до ${sOrganType} у обраний час. 
@@ -134,7 +134,7 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="sNationality" name="Громадянство" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sArea" name="Місто або район, до якого належить старе місце проживання громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sRegistrationAddress" name="Поточна адреса реєстрації" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="snewAddress" name="Нова адреса реєстрації" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNewAddress" name="Нова адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="День та час зустрічі: " type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asDecision" name="Рішення держслужбовця" type="enum" required="true">
           <activiti:value id="sAccept" name="Призначити зустріч у відділенні"></activiti:value>
@@ -142,6 +142,10 @@ execution.setVariable('sMaxPay', maxpay)
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment" name="Коментар до рішення: наприклад, пояснення чому громадянину було відмовлено в наданні цієї послуги АБО додаткові деталі для закінчення процессу зняття з реєстрації" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sRecvizitiAdmin" name="Реквізити для сплати адмінсбору" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sBody_3" name="[pattern/print/dms/zajava_znFr.html]" type="invisible" default="Заява для зняття з реєстрації лицьова" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_4" name="[pattern/print/dms/zajava_znBk.html]" type="invisible" default="Заява для зняття з реєстрації зворотня" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_3" name="File label;File title;pattern/print/dms/zajava_znFr.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_4" name="File label;File title;pattern/print/dms/zajava_znBk.html" type="file"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -265,7 +269,7 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="sAreabirth" name="Місце народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNationality" name="Громадянство" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sRegistrationAddress" name="Поточна адреса реєстрації" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="snewAddress" name="Нова адреса реєстрації" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNewAddress" name="Нова адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sArea" name="Місто або район, до якого належить старе місце проживання громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sWhenCome" name="Вкажіть дату зняття з реєстрації" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sRegistrationOrgan" name="Орган, що оформлює реєстрацію" type="invisible" writable="false"></activiti:formProperty>

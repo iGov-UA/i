@@ -14,14 +14,12 @@
         <activiti:formProperty id="sDocument" name="Вид, назва, реквізити, зміст документа, що запитується" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sLabel2" name="або" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sInfo" name="Загальний опис інформації, що запитується" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sFax" name="Номер факсу" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Час роботи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers" name="Факс" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sFax&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asGet&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumFax'&quot;}}}"></activiti:formProperty>
-      </extensionElements>
+        </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Лист службовцю" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
@@ -53,7 +51,7 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 			&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-			&lt;p&gt; Ваше звернення щодо запиту на отримання публічної інформації було зареєстровано у системі.&lt;br/&gt;
+			&lt;p&gt; Ваше звернення №[sID_Order] щодо запиту на отримання публічної інформації було зареєстровано у системі.&lt;br/&gt;
 			Повідомлення про результат послуги буде спрямоване на Ваш e-mail.&lt;/p&gt;
 			&lt;br /&gt;
 			${sPhoneOrgan}&lt;br /&gt;
@@ -74,18 +72,12 @@
         <activiti:formProperty id="sLabel1" name="Суть запиту" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sDocument" name="Вид, назва, реквізити, зміст документа, що запитується" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sInfo" name="Загальний опис інформації, що запитується" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asGet" name="Спосіб отримання відповіді на запит" type="enum" writable="false">
-          <activiti:value id="sEnumPost" name="Поштою"></activiti:value>
-          <activiti:value id="sEnumFax" name="Факсом"></activiti:value>
-          <activiti:value id="sEnumEmail" name="Електронною поштою"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sFax" name="Номер факсу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asStatus" name="Статус запиту" type="enum" required="true">
-          <activiti:value id="sEnumDeny" name="Відмова заявнику у видачі довідки"></activiti:value>
+          <activiti:value id="sEnumDeny" name="Відмова заявнику у видачі інформації"></activiti:value>
           <activiti:value id="sEnumApprove" name="Інформація готова, відправити email"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sComment" name="Якщо ви відмовляєте заявнику у наданні послуги, обов'язково вкажіть у цьому полі: ПІБ та посаду особи, відповідальної за розгляд запиту розпорядником інформації, дату, мотивовану підставу та порядок оскарження відмови" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="file1" name="Завантажте скановану копію довідки, з накладеним ЕЦП (електронно-цифровим підписом)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="file1" name="Завантажте скановану копію відповіді" type="file"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
