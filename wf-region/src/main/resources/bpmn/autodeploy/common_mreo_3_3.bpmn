@@ -4,9 +4,9 @@
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть сервісний центр, де Ви б бажали отримати послугу" type="select" default="0"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Адреса МРЕВ" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса МРЕВ" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWork_Time" name="Графік прийому громадян" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sMail_Employee" name="Відповідальна особа" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMail_Employee" name="Відповідальна особа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sOKPO" name="Код отримувача" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBillMFO" name="МФО" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBill" name="Розрахунковий рахунок" type="label" default=" "></activiti:formProperty>
@@ -29,11 +29,12 @@
           <activiti:value id="attr2" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="renamed_doc" name="Документ, що підтверджує зміну прізвища; назва документу, серія, номер, дата видачі, орган ким видано" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="medical_doc" name="Медична довідка форма 127; серія, номер, дата видачі, орган ким видано" type="textArea"></activiti:formProperty>
+       
+        <activiti:formProperty id="medical_scan" name="Дійсна медична довідка форма 083/о" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Ваш контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="marker1" name="show/hide fields" type="markers" default="${markerService.loadFromFile('mvd/dnepr_mreo_2_1.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sMail_Signature" name="sMail_Signature" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMail_Signature" name="sMail_Signature" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Підтягування документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -61,7 +62,7 @@
           <activiti:value id="attr2" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="renamed_doc" name="Документ, що підтверджує зміну прізвища; назва документу, серія, номер, дата видачі, орган ким видано" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="medical_doc" name="Медична довідка форма 127; серія, номер, дата видачі, орган ким видано" type="textArea" writable="false"></activiti:formProperty>
+        
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Рішення про надання послуги" type="enum" required="true">
@@ -99,7 +100,7 @@
           <activiti:value id="attr2" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="renamed_doc" name="Документ, що підтверджує зміну прізвища; назва документу, серія, номер, дата видачі, орган ким видано" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="medical_doc" name="Медична довідка форма 127; серія, номер, дата видачі, орган ким видано" type="textArea" writable="false"></activiti:formProperty>
+        
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Рішення про надання послуги" type="enum" writable="false">
@@ -111,6 +112,7 @@
           <activiti:value id="accept2" name="Підтверджую, що громадянин отримав посвідчення"></activiti:value>
           <activiti:value id="reject2" name="Громадянин не з'являється для отримання посвядчення. Закрити заявку."></activiti:value>
         </activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <endEvent id="endevent6" name="End"></endEvent>
