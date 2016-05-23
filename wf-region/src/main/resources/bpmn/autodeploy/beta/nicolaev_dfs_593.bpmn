@@ -71,7 +71,8 @@
           <activiti:expression>${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 &lt;p&gt; Ваше звернення щодо послуги ${sPosluga_name} прийнято в роботу. &lt;br /&gt;
 Повідомлення про результат розгляду буде спрямоване на Ваш e-mail.&lt;/p&gt;
@@ -318,7 +319,7 @@ if(mmm =='01'&amp;&amp;ddd=='01')
   }
 timeE = ddd2+'-'+mmm2+'-'+yyyy2	
 execution.setVariable('date_big', timeB)
-execution.setVariable('date_end', timeE)  
+execution.setVariable('date_end', timeE)
       </script>
     </scriptTask>
     <sequenceFlow id="flow20" sourceRef="scripttask1" targetRef="servicetask3"></sequenceFlow>
