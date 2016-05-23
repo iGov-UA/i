@@ -28,7 +28,7 @@ exports.setup = function (config) {
         if(options.eds){
           return {eds : true};
         } else if (options.mpbds){
-          return {bank : 'mpbds'};
+          return {bank : 'mcid'};
         } else {
           return {};
         }
