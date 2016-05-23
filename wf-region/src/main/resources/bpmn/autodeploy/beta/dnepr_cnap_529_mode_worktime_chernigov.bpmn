@@ -539,7 +539,7 @@
         <activiti:formProperty id="sDate_Registrastion" name="Дата реєстрації" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sFioAdmin" name="П.І.Б. посадової особи, яка прийняла заяву" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Центр надання адмінпослуг" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="пошта оргструктури (району)" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="пошта оргструктури (району)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адрес оргструктури (району)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Вкажіть  сьогоднішню дату" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для довідки оргструктури (району)" type="invisible"></activiti:formProperty>
@@ -549,7 +549,7 @@
         <activiti:formProperty id="markers12" name="Розкриття атрібутів щодо специфіки вводу" type="markers" default="${markerService.loadFromFile('dnepr_cnap_529_mode_worktime_2_chernigov.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers13" name="Розкриття атрібутів щодо специфіки вводу" type="markers" default="${markerService.loadFromFile('dnepr_cnap_529_mode_worktime_2_Print_chernigov.json')}"></activiti:formProperty>
         <activiti:formProperty id="form_signed" name="Заява з наложеною ЕЦП" type="file"></activiti:formProperty>
-        <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/skv/dnepr_cnap_529_mode_worktime_print_chernigov_start.html"></activiti:formProperty>
+        <activiti:formProperty id="PrintFormAutoSign_1" name="Заява з наложеною ЕЦП" type="invisible" default="pattern/print/skv/dnepr_cnap_529_mode_worktime_print_chernigov_start.html"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -1099,7 +1099,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFileDerzReestration}, ${nFileOwnership}</activiti:expression>
+            <activiti:expression>${PrintFormAutoSign_1}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -1763,7 +1763,9 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:string><![CDATA[Зареєстровано звернення на тему: погодження режиму роботи об’єктів торгівлі та сфери послуг]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>
+[sID_Order]&lt;br&gt;
+[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 Ваш запит щодо встановлення режиму роботи об’єктів торгівлі та сфери послуг успішно зареєстровано і буде опрацьовано впродовж визначений Законом термін.&lt;br /&gt;
 &lt;br /&gt;
@@ -1776,7 +1778,8 @@ ${sPhoneOrgan}&lt;br /&gt;
 ${sNameOrgan}&lt;br /&gt;
 ${sAddress}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]
+		  </activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${PrintFormAutoSign_1},${form_signed}</activiti:expression>
@@ -1987,7 +1990,7 @@ execution.setVariable('sInfo_6', per6)
 execution.setVariable('sInfo_7', per7) 
    	 </script>
     </scriptTask>
-    <sequenceFlow id="flow17" sourceRef="scripttask2" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow17" sourceRef="scripttask2" targetRef="servicetask4"></sequenceFlow>
     <sequenceFlow id="flow18" sourceRef="scripttask1" targetRef="scripttask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_529_mode_worktime_chernigov">
@@ -2120,7 +2123,7 @@ execution.setVariable('sInfo_7', per7)
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
         <omgdi:waypoint x="320.0" y="115.0"></omgdi:waypoint>
-        <omgdi:waypoint x="615.0" y="142.0"></omgdi:waypoint>
+        <omgdi:waypoint x="320.0" y="142.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
         <omgdi:waypoint x="225.0" y="87.0"></omgdi:waypoint>
