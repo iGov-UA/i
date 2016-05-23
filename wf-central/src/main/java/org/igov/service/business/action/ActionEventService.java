@@ -292,8 +292,10 @@ public class ActionEventService {
     public void setHistoryEvent(HistoryEventType eventType,
             Long nID_Subject, Map<String, String> mParamMessage, Long nID_HistoryEvent_Service, Long nID_Document, String sSubjectInfo) {
         try {
+            LOG.info("Method setHistoryEvent started");
             String eventMessage = HistoryEventMessage.createJournalMessage(
                     eventType, mParamMessage);
+            LOG.info("Creating journal message ended");
             historyEventDao.setHistoryEvent(nID_Subject, eventType.getnID(),
                     eventMessage, eventMessage, nID_HistoryEvent_Service, nID_Document, sSubjectInfo);
         } catch (IOException e) {            
@@ -424,6 +426,7 @@ public class ActionEventService {
         if (soData == null || "[]".equals(soData)) { //My journal. change status of task
             LOG.info("soData is null or empty array: "+soData);
             Map<String, String> mParamMessage = new HashMap<>();
+            LOG.info("SERVICE_STATE: "+sUserTaskName);
             mParamMessage.put(HistoryEventMessage.SERVICE_STATE, sUserTaskName);
             mParamMessage.put(HistoryEventMessage.TASK_NUMBER, sID_Order);
             setHistoryEvent(HistoryEventType.ACTIVITY_STATUS_NEW, nID_Subject, mParamMessage, oHistoryEvent_Service.getId(),

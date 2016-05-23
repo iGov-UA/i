@@ -26,8 +26,6 @@
         <activiti:formProperty id="nFile1" name="Правовстановлюючий документ на об’єкт нерухомого майна;(при наявності об’єкту нерухомого майна)" type="file"></activiti:formProperty>
         <activiti:formProperty id="nFile2" name="Викопіювання з кадастрової карти (плану)" type="file"></activiti:formProperty>
         <activiti:formProperty id="nFile3" name="Письмова згода землекористувача (землевласника) у разі ії вилучення (викуп) земельної ділянки" type="file"></activiti:formProperty>
-        <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання послуги?" type="queueData"></activiti:formProperty>
-        <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
@@ -279,7 +277,8 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:string><![CDATA[Рішення міської ради про надання дозволу на розробку технічної документації із землеустрою щодо поділу (об’єднання) земельних ділянок.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 Ваше звернення щодо отримання рішення міської ради про надання дозволу на розробку технічної документації із землеустрою - відправлене до міської ради.&lt;br /&gt;
 Спеціалісти з органу місцевого самоврядування повинні дати відповідь протягом 30-ти календарних днів з дня реєстрації заяви.&lt;br /&gt; 
@@ -331,7 +330,7 @@ ${sNameOrgan}.&lt;br /&gt;
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow17" sourceRef="servicetask5" targetRef="exclusivegateway3"></sequenceFlow>
+    <sequenceFlow id="flow17" sourceRef="servicetask5" targetRef="usertask1"></sequenceFlow>
     <sequenceFlow id="flow18" name="Новопсков" sourceRef="exclusivegateway3" targetRef="usertask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Public_SubjectOrganJoin=='lug_newpsc'}]]></conditionExpression>
     </sequenceFlow>
@@ -466,8 +465,8 @@ ${sNameOrgan}.&lt;br /&gt;
         <omgdi:waypoint x="897.0" y="185.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
-        <omgdi:waypoint x="412.0" y="129.0"></omgdi:waypoint>
-        <omgdi:waypoint x="412.0" y="80.0"></omgdi:waypoint>
+        <omgdi:waypoint x="465.0" y="164.0"></omgdi:waypoint>
+        <omgdi:waypoint x="494.0" y="165.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
         <omgdi:waypoint x="432.0" y="60.0"></omgdi:waypoint>

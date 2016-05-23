@@ -57,14 +57,7 @@
           <activiti:expression>Нова заявка про ${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а) колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-У Вас в черзі на обробку нове звернення про ${sPosluga_name}&lt;br /&gt;
-Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
-enum{[asOsoba]}&lt;br /&gt;
-Опрацюйте це звернення на &lt;a href="https://region.igov.org.ua" target="_blank"&gt;порталі&lt;/a&gt;
-[pattern/mail/_common_signature.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -80,7 +73,8 @@ enum{[asOsoba]}&lt;br /&gt;
           <activiti:expression>Заявка про ${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 &lt;p&gt; Ваше звернення щодо ${sPosluga_name} прийнято в роботу. &lt;br /&gt;
 Повідомлення про результат розгляду буде спрямоване на Ваш e-mail.&lt;/p&gt;
