@@ -516,6 +516,7 @@
         <activiti:formProperty id="sShapka" name="шапка" type="invisible" default="Черкаському обласному управлінню лісового та мисливського господарства"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/ULMG/cherkasy_lmg_415_z.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody2" name="[pattern/print/ULMG/cherkasy_lmg_415_z.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDelete_day" name="таймер " type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -611,73 +612,28 @@ var year=src.substr(0,4);
 var month=src.substr(5,2);
 var day=src.substr(8,2);
 var hour=src.substr(11,2);
-var minutes=src.substr(14,2); 
+var minutes=src.substr(14,2);
 var seconds='00';
-var delta='10';
+var delta='25';
 
 var date1 = year+'-'+month+'-'+day+' '+hour+':'+minutes+':'+seconds;
 var date2 = Date.parse(date1)
 var unixdate= date2/1000;
 
 var unixdate=unixdate+86400*delta;
+
 var new_src = new Date(unixdate*1000);
-
-var day = new Array();
-day[1] = "01";
-day[2] = "02";
-day[3] = "03";
-day[4] = "04";
-day[5] = "05";
-day[6] = "06";
-day[7] = "07";
-day[8] = "08";
-day[9] = "09";
-day[10] = "10";
-day[11] = "11";
-day[12] = "12";
-day[13] = "13";
-day[14] = "14";
-day[15] = "15";
-day[16] = "16";
-day[17] = "17";
-day[18] = "18";
-day[19] = "19";
-day[20] = "20";
-day[21] = "21";
-day[22] = "22";
-day[23] = "23";
-day[24] = "24";
-day[25] = "25";
-day[26] = "26";
-day[27] = "27";
-day[28] = "28";
-day[29] = "29";
-day[30] = "30";
-day[31] = "31";
-var d = day[new_src.getDate()];
-
-var month = new Array();
-month[0] = "01";
-month[1] = "02";
-month[2] = "03";
-month[3] = "04";
-month[4] = "05";
-month[5] = "06";
-month[6] = "07";
-month[7] = "08";
-month[8] = "09";
-month[9] = "10";
-month[10] = "11";
-month[11] = "12";
-var m = month[new_src.getMonth()];
-
+var d = new_src.getDate();
+if (d &lt; 10) d = "0"+d;
+var m = new_src.getMonth();
+var m = (+m + +1);
+if (m &lt; 10) m = "0"+m;
 
 var new_year = new_src.getFullYear();
 var new_hour = new_src.getHours();
 var new_minutes = new_src.getMinutes();
 var timer = new_year+'-'+m+'-'+d+'T'+new_hour+':'+new_minutes+':'+seconds;
-execution.setVariable('sDelete_day', timer)
-</script>
+execution.setVariable('sDelete_day', timer)</script>
     </scriptTask>
     <sequenceFlow id="flow23" sourceRef="scripttask1" targetRef="servicetask2"></sequenceFlow>
     <boundaryEvent id="boundarytimer1" name="Timer" attachedToRef="usertask3" cancelActivity="true">
