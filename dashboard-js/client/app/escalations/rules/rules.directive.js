@@ -95,7 +95,8 @@ angular.module('dashboardJsApp')
       };
 
       $scope.copy = function (rule) {
-
+        rule.isCopied = true;
+        openModal(rule);
       };
 
       $scope.delete = function (rule) {

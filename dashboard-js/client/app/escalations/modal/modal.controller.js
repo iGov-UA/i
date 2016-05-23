@@ -43,10 +43,25 @@ angular.module('dashboardJsApp')
       nID_EscalationRuleFunction: {nID: 2}
     };
 
+    $scope.sModalTitle = "";
+
     var getTheRule = function (a) {
-      if (a != null && a != undefined)
-        return angular.copy(a);
+      debugger;
+      if (a != null && a != undefined){
+        if(a.isCopied){
+          for (var prop in exampleRule) if (exampleRule.hasOwnProperty(prop) && a.hasOwnProperty(prop)) {
+            exampleRule[prop] = angular.copy(a[prop]);
+          }
+          $scope.sModalTitle = "Копіювання правила";
+          return exampleRule;
+        } else {
+          $scope.sModalTitle = "Редагування правила";
+          return angular.copy(a);
+        }
+      }
+      $scope.sModalTitle = "Створення правила";
       return exampleRule;
+
     };
 
     $scope.ruleFunctions = null;
@@ -257,6 +272,7 @@ angular.module('dashboardJsApp')
       for (var prop in $scope.rule) if ($scope.rule.hasOwnProperty(prop)) {
         $scope.rule[prop] = angular.copy($scope.thisRule[prop]);
       }
+      debugger;
 
       $modalInstance.close($scope.rule);
     };
