@@ -24,6 +24,7 @@ public class HistoryEventMessage {
 
     public static String createJournalMessage(HistoryEventType eventType, Map<String, String> values) {
         String eventMessage = "";
+        LOG.info("Method createJournalMessage map "+values);
         try {
             eventMessage = eventType.getsTemplate();
             for (String key : values.keySet()) {
