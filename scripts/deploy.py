@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import os, argparse, subprocess
+import os, argparse, subprocess, STDOUT, STDERR
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-v', '--version', help='Project version', required=True)
