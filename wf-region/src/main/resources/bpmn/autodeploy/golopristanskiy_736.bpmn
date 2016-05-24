@@ -42,7 +42,8 @@
         <activiti:formProperty id="sAreaPetition" name="Якою радою видане клопотання;Укажіть назву населеного пунку наприклад:'Савинською'" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="dPetition" name="Дата клопотання" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="nPetition" name="Номер клопотання" type="string" required="true"></activiti:formProperty>
-        
+
+		<activiti:formProperty id="markersAdresStartTask" name="Маркер адреса стартТаски" type="markers" default="${markerService.loadFromFile('adress_start.json')}"></activiti:formProperty>
 		<activiti:formProperty id="markersStarTask" name="Маркер стартТаски" type="markers" default="${markerService.loadFromFile('mvk/golopristanskiyRDA_736_start.json')}"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible" default=" "></activiti:formProperty>
@@ -133,8 +134,8 @@
           <activiti:value id="res5" name="розвиток особистого селянського подвір’я"></activiti:value>
         </activiti:formProperty>        
         <activiti:formProperty id="aReason" name="Уточніть мету отримання кредиту" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="dSumCredit" name="Бажана сума кредиту в тыс. грн.; цифрами" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sSumCredit" name="Бажана сума кредиту в тыс. грн.; ця ж сума прописом" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="dSumCredit" name="Бажана сума кредиту в тыс. грн., цифрами" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSumCredit" name="Бажана сума кредиту в тыс. грн., ця ж сума прописом" type="string"></activiti:formProperty>
         
         <activiti:formProperty id="asWork" name="Працюєте" type="enum" writable="false">
           <activiti:value id="yes" name="Так"></activiti:value>
@@ -144,7 +145,7 @@
 
         <activiti:formProperty id="dPetition" name="Дата клопотання" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nPetition" name="Номер клопотання" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAreaPetition" name="Якою радою видане клопотання;Укажіть назву населеного пунку наприклад:'Савинською'" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAreaPetition" name="Якою радою видане клопотання" type="string"></activiti:formProperty>
 
 
         <activiti:formProperty id="decide1" name="Рішення відповідність наданних даних" type="enum" required="true">
@@ -158,6 +159,8 @@
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible" default=" "></activiti:formProperty>
 
         <activiti:formProperty id="sBody_1" name="[pattern/print/mvk/golopristanskiy_736_print.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
+
+		<activiti:formProperty id="markersAdresPrint" name="Маркер адреса принтформы" type="markers" default="${markerService.loadFromFile('adress_print.json')}"></activiti:formProperty>
         <activiti:formProperty id="markersPrint1" name="Для прінтформи" type="markers" default="${markerService.loadFromFile('mvk/golopristanskiyRDA_736_print.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
