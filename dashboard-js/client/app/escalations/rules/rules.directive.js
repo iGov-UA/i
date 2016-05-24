@@ -1,7 +1,7 @@
 angular.module('dashboardJsApp')
   .directive('rules', function () {
 
-    var controller = function ($scope, $modal, processes) {
+    var controller = function ($scope, $modal, processes, Modal) {
 
       var getAllFunc = $scope.funcs.getAllFunc;
       var setFunc = $scope.funcs.setFunc;
@@ -89,8 +89,11 @@ angular.module('dashboardJsApp')
       };
 
       $scope.delete = function (rule) {
+        Modal.confirm.delete(function(event){
         deleteFunc(rule)
           .then($scope.fillData);
+          console.info("Rule ID " + rule.nID + " has deleted");
+        })('правило для послуги ' + rule.bpName + ' (ID правила ' + rule.nID + ')');
       };
 
       var setRuleBPName = function (rule) {
