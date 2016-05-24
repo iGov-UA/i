@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import os, argparse, subprocess, STDOUT, STDERR
+import os, argparse, subprocess
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-v', '--version', help='Project version', required=True)
@@ -36,4 +36,4 @@ if 'project' in args:
 subprocess.call("rsync -rt iSystem/scripts/ scripts/", shell=True)
 subprocess.call("rm -rf iSystem", shell=True)
 subprocess.call("chmod +x scripts/*", shell=True)
-subprocess.call(commandArr, stdout=STDOUT, stderr=STDERR)
+subprocess.call(commandArr, stdout=subprocess.STDOUT, stderr=subprocess.STDERR)
