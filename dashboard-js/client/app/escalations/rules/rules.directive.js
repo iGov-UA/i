@@ -3,21 +3,10 @@ angular.module('dashboardJsApp')
 
     var controller = function ($scope, $modal, processes) {
 
-
-      //var getFunc = $scope.funcs.getFunc;
       var getAllFunc = $scope.funcs.getAllFunc;
       var setFunc = $scope.funcs.setFunc;
       var deleteFunc = $scope.funcs.deleteFunc;
 
-      // $scope.exampleRule = {
-      //   id: 1,
-      //   sID_BP: 'dnepr_spravka_o_doxodax',
-      //   sID_UserTask: '*',
-      //   sCondition: 'nElapsedDays==nDaysLimit',
-      //   soData: 'nDaysLimit:3,asRecipientMail:[test@email.com]',
-      //   sPatternFile: 'escalation/escalation_template.html',
-      //   nID_EscalationRuleFunction: 'EscalationHandler_SendMailAlert',
-      // };
 
       var openModal = function (rule) {
         var modalInstance = $modal.open({
@@ -135,12 +124,6 @@ angular.module('dashboardJsApp')
       $scope.processesLoaded = function () {
         return $scope.processesList ? true : false;
       };
-
-      //  $scope.processesLoadError = function() {
-      //   if (processesList && processesList == "error")
-      //   return true;
-      // return false;
-      // }
 
       $scope.translate = function (text) {
         if (text == 'Отсылка уведомления на электронную почту') return 'відправити повідомлення на e-mail';
