@@ -36,4 +36,4 @@ if 'project' in args:
 subprocess.call("rsync -rt iSystem/scripts/ scripts/", shell=True)
 subprocess.call("rm -rf iSystem", shell=True)
 subprocess.call("chmod +x scripts/*", shell=True)
-subprocess.call(commandArr, stdout=subprocess.STDOUT, stderr=subprocess.STDOUT)
+subprocess.call(commandArr, stdout=subprocess.STDOUT)
