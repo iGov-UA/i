@@ -39,6 +39,7 @@ module.exports.index = function (accessToken, callback, disableDecryption) {
     console.log("---------------  innToCheck in result !!!!" + innToCheck);
 
     if (body.customer && Admin.isAdminInn(innToCheck)) {
+      console.log("---------------  user with inn " + innToCheck + " is admin");
       body.admin = {
         inn: innToCheck,
         token: Admin.generateAdminToken()
