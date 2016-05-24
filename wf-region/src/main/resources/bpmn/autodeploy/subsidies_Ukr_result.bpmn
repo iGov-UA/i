@@ -58,7 +58,7 @@
           <activiti:expression>noreply@igov.org.ua</activiti:expression>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>an@igov.org.ua</activiti:expression>
+          <activiti:expression>[pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:6]</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression>Нове звернення на порталі igov.org.ua на тему: Отримання інформації про призначення субсидії на оплату житлово-комунальних послуг. Заявник ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}</activiti:expression>
@@ -71,7 +71,7 @@
     <sequenceFlow id="flow1" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
     <userTask id="usertask1" name="Перевірка даних" activiti:candidateGroups="${group}">
       <extensionElements>
-        <activiti:formProperty id="area" name="название р-на соцзащиты" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="area" name="Назва" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Призвіще" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
