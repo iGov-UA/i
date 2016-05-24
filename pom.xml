@@ -10,6 +10,94 @@
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
 
+    <profiles>
+
+        <profile>
+            <id>alpha</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <sRevision>a</sRevision>
+                <sRevisionLibPostfix>-SNAPSHOT</sRevisionLibPostfix>
+                <sRevisionSubPath></sRevisionSubPath>
+                <!--igov.storage-static.version>1.0.0a-SNAPSHOT</igov.storage-static.version>
+                <igov.storage-temp.version>1.0.0a-SNAPSHOT</igov.storage-temp.version>
+                <igov.wf-base.version>1.0.0a-SNAPSHOT</igov.wf-base.version>
+                <igov.wf-central.version>1.0.0a-SNAPSHOT</igov.wf-central.version>
+                <igov.wf-region.version>1.0.0a-SNAPSHOT</igov.wf-region.version>
+                <liquibase.custom.data.path>${liquibase.data.path}</liquibase.custom.data.path>
+                <activiti.custom.data.path>${activiti.data.path}</activiti.custom.data.path-->
+            </properties>
+        </profile>
+        <profile>
+            <id>beta</id>
+            <!--activation>
+                <property>
+                    <name>parameter.sVer</name>
+                    <value>b</value>
+                </property>
+            </activation-->
+            <properties>
+                <sRevision>b</sRevision>
+                <sRevisionLibPostfix>-SNAPSHOT</sRevisionLibPostfix>
+                <sRevisionSubPath>/beta</sRevisionSubPath>
+                <!--igov.storage-static.version>1.0.0b-SNAPSHOT</igov.storage-static.version>
+                <igov.storage-temp.version>1.0.0b-SNAPSHOT</igov.storage-temp.version>
+                <igov.wf-base.version>1.0.0b-SNAPSHOT</igov.wf-base.version>
+                <igov.wf-central.version>1.0.0b-SNAPSHOT</igov.wf-central.version>
+                <igov.wf-region.version>1.0.0b-SNAPSHOT</igov.wf-region.version>
+                <liquibase.custom.data.path>${liquibase.data.path}/beta</liquibase.custom.data.path>
+                <activiti.custom.data.path>${activiti.data.path}/beta</activiti.custom.data.path-->
+            </properties>
+        </profile>
+        <profile>
+            <id>delta</id>
+            <properties>
+                <sRevision>d</sRevision>
+                <sRevisionLibPostfix>-SNAPSHOT</sRevisionLibPostfix>
+                <sRevisionSubPath>/delta</sRevisionSubPath>
+                <!--igov.storage-static.version>1.0.0d-SNAPSHOT</igov.storage-static.version>
+                <igov.storage-temp.version>1.0.0d-SNAPSHOT</igov.storage-temp.version>
+                <igov.wf-base.version>1.0.0d-SNAPSHOT</igov.wf-base.version>
+                <igov.wf-central.version>1.0.0d-SNAPSHOT</igov.wf-central.version>
+                <igov.wf-region.version>1.0.0d-SNAPSHOT</igov.wf-region.version>
+                <liquibase.custom.data.path>${liquibase.data.path}/delta</liquibase.custom.data.path>
+                <activiti.custom.data.path>${activiti.data.path}/delta</activiti.custom.data.path-->
+            </properties>
+        </profile>
+        <profile>
+            <id>omega</id>
+            <properties>
+                <sRevision>o</sRevision>
+                <sRevisionLibPostfix>-SNAPSHOT</sRevisionLibPostfix>
+                <sRevisionSubPath>/prod</sRevisionSubPath>
+                <!--igov.storage-static.version>1.0.0o-SNAPSHOT</igov.storage-static.version>
+                <igov.storage-temp.version>1.0.0o-SNAPSHOT</igov.storage-temp.version>
+                <igov.wf-base.version>1.0.0o-SNAPSHOT</igov.wf-base.version>
+                <igov.wf-central.version>1.0.0o-SNAPSHOT</igov.wf-central.version>
+                <igov.wf-region.version>1.0.0o-SNAPSHOT</igov.wf-region.version>
+                <liquibase.custom.data.path>${liquibase.data.path}/prod</liquibase.custom.data.path>
+                <activiti.custom.data.path>${activiti.data.path}/prod</activiti.custom.data.path-->
+            </properties>
+        </profile>
+        <profile>
+            <id>release</id>
+            <properties>
+                <sRevision></sRevision>
+                <sRevisionLibPostfix>-RELEASE</sRevisionLibPostfix>
+                <sRevisionSubPath>/prod</sRevisionSubPath>
+                <!--igov.storage-static.version>1.0.0-RELEASE</igov.storage-static.version>
+                <igov.storage-temp.version>1.0.0-RELEASE</igov.storage-temp.version>
+                <igov.wf-base.version>1.0.0-RELEASE</igov.wf-base.version>
+                <igov.wf-central.version>1.0.0-RELEASE</igov.wf-central.version>
+                <igov.wf-region.version>1.0.0-RELEASE</igov.wf-region.version>
+                <liquibase.custom.data.path>${liquibase.data.path}/prod</liquibase.custom.data.path>
+                <activiti.custom.data.path>${activiti.data.path}/prod</activiti.custom.data.path-->
+            </properties>
+        </profile>
+    </profiles>
+
     <properties>
         <!--compiler properties -->
         <source.version>1.8</source.version>
@@ -69,6 +157,14 @@
         <dbunit.version>2.5.1</dbunit.version>
         <maven.build.timestamp.format>yyMMdd_HHmm</maven.build.timestamp.format>
         <buildNumber>${maven.build.timestamp}</buildNumber>
+        
+        <igov.storage-static.version>1.0.0${sRevision}${sRevisionLibPostfix}</igov.storage-static.version>
+        <igov.storage-temp.version>1.0.0${sRevision}${sRevisionLibPostfix}</igov.storage-temp.version>
+        <igov.wf-base.version>1.0.0${sRevision}${sRevisionLibPostfix}</igov.wf-base.version>
+        <igov.wf-central.version>1.0.0${sRevision}${sRevisionLibPostfix}</igov.wf-central.version>
+        <igov.wf-region.version>1.0.0${sRevision}${sRevisionLibPostfix}</igov.wf-region.version>
+        <liquibase.custom.data.path>${liquibase.data.path}${sRevisionSubPath}</liquibase.custom.data.path>
+        <activiti.custom.data.path>${activiti.data.path}${sRevisionSubPath}</activiti.custom.data.path>
     </properties>
 
     <distributionManagement>
@@ -125,57 +221,6 @@
         <module>wf-central</module>
     </modules>
 
-    <profiles>
-
-        <profile>
-            <id>alpha</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
-                <sRevision>a</sRevision>
-                <igov.storage-static.version>1.0.0a-SNAPSHOT</igov.storage-static.version>
-                <igov.storage-temp.version>1.0.0a-SNAPSHOT</igov.storage-temp.version>
-                <igov.wf-base.version>1.0.0a-SNAPSHOT</igov.wf-base.version>
-                <igov.wf-central.version>1.0.0a-SNAPSHOT</igov.wf-central.version>
-                <igov.wf-region.version>1.0.0a-SNAPSHOT</igov.wf-region.version>
-                <liquibase.custom.data.path>${liquibase.data.path}</liquibase.custom.data.path>
-                <activiti.custom.data.path>${activiti.data.path}</activiti.custom.data.path>
-            </properties>
-        </profile>
-        <profile>
-            <id>beta</id>
-            <!--activation>
-                <property>
-                    <name>parameter.sVer</name>
-                    <value>b</value>
-                </property>
-            </activation-->
-            <properties>
-                <sRevision>b</sRevision>
-                <igov.storage-static.version>1.0.0b-SNAPSHOT</igov.storage-static.version>
-                <igov.storage-temp.version>1.0.0b-SNAPSHOT</igov.storage-temp.version>
-                <igov.wf-base.version>1.0.0b-SNAPSHOT</igov.wf-base.version>
-                <igov.wf-central.version>1.0.0b-SNAPSHOT</igov.wf-central.version>
-                <igov.wf-region.version>1.0.0b-SNAPSHOT</igov.wf-region.version>
-                <liquibase.custom.data.path>${liquibase.data.path}/beta</liquibase.custom.data.path>
-                <activiti.custom.data.path>${activiti.data.path}/beta</activiti.custom.data.path>
-            </properties>
-        </profile>
-        <profile>
-            <id>release</id>
-            <properties>
-                <sRevision></sRevision>
-                <igov.storage-static.version>1.0.0-RELEASE</igov.storage-static.version>
-                <igov.storage-temp.version>1.0.0-RELEASE</igov.storage-temp.version>
-                <igov.wf-base.version>1.0.0-RELEASE</igov.wf-base.version>
-                <igov.wf-central.version>1.0.0-RELEASE</igov.wf-central.version>
-                <igov.wf-region.version>1.0.0-RELEASE</igov.wf-region.version>
-                <liquibase.custom.data.path>${liquibase.data.path}/prod</liquibase.custom.data.path>
-                <activiti.custom.data.path>${activiti.data.path}/prod</activiti.custom.data.path>
-            </properties>
-        </profile>
-    </profiles>
 
     <dependencyManagement>
         <dependencies>
@@ -192,6 +237,17 @@
                 <version>${logback-classic.version}</version>
                 <type>jar</type>
             </dependency>
+
+  <dependency>
+    <groupId>org.apache.logging.log4j</groupId>
+    <artifactId>log4j-api</artifactId>
+    <version>2.5</version>
+  </dependency>
+  <dependency>
+    <groupId>org.apache.logging.log4j</groupId>
+    <artifactId>log4j-core</artifactId>
+    <version>2.5</version>
+  </dependency>
 
             <dependency>
                 <groupId>commons-collections</groupId>
