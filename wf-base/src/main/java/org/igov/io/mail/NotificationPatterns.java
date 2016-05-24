@@ -53,7 +53,9 @@ public class NotificationPatterns {
             String sBody = String.format("Ваша заявка %s прийнята!", sID_Order) +
                     "<br>Ви завжди зможете переглянути її поточний статус у розділі <a href=\"" + generalConfig
                     .getSelfHostCentral() + "/order/search?sID_Order=" + sID_Order
-                    + "\">\"Мій журнал\"</a>. Також на кожному етапі Ви будете отримувати email-повідомлення.	";
+                    + "\">\"Мій журнал\"</a>. Також на кожному етапі Ви будете отримувати email-повідомлення."
+                    +"<br>У разі необхідності Ви можете спрямувати питання та пропозиції до <a href=\"https://docs.google.com/spreadsheets/d/15w9ui-Mz8fTWDHHpDNx52Fnn3lknKsyh68tsX5znKtY/edit#gid=1246904557\" target=\"_blank\">групи підтримки iGov</a> у Вашій області"
+                    ;
             
             /*
             Long nID_Task = oActionTaskService.getTaskIDbyProcess(null, sID_Order, Boolean.FALSE);
