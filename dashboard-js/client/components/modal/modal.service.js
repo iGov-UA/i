@@ -179,11 +179,6 @@ angular.module('dashboardJsApp')
           callBackYes = callBackYes || angular.noop;
           callBackNo = callBackNo || angular.noop;
 
-          /**
-           * Open a delete confirmation modal
-           * @param  {String} name   - name or info to show on modal
-           * @param  {All}           - any additional args are passed straight to callback
-           */
           return function() {
             var args = Array.prototype.slice.call(arguments),
               htmlConstruct = function(name){
@@ -224,19 +219,10 @@ angular.module('dashboardJsApp')
             return keepaliveModal;
           };
         },
-        /**
-         * Create a function to open a delete confirmation modal (ex. ng-click='myModalFn(name, arg1, arg2...)')
-         * @param  {Function} callBack - callback, ran when delete is confirmed
-         * @return {Function}     - the function to open the modal (ex. myModalFn)
-         */
+
         auth: function(callBack) {
           callBack = callBack || angular.noop;
 
-          /**
-           * Open a delete confirmation modal
-           * @param  {String} name   - name or info to show on modal
-           * @param  {All}           - any additional args are passed staight to del callback
-           */
           return function() {
             var args = Array.prototype.slice.call(arguments),
               name = args.shift(),
@@ -265,6 +251,51 @@ angular.module('dashboardJsApp')
 
             authModal.result.then(function(event) {
               callBack.apply(event, args);
+            });
+          };
+        },
+
+        /**
+         * Create a function to open a delete confirmation modal (ex. ng-click='myModalFn(name, arg1, arg2...)')
+         * @param  {Function} del - callback, ran when delete is confirmed
+         * @return {Function}     - the function to open the modal (ex. myModalFn)
+         */
+        delete: function(del) {
+          del = del || angular.noop;
+
+          /**
+           * Open a delete confirmation modal
+           * @param  {String} name   - name or info to show on modal
+           * @param  {All}           - any additional args are passed staight to del callback
+           */
+          return function() {
+            var args = Array.prototype.slice.call(arguments),
+              name = args.shift(),
+              deleteModal;
+
+            deleteModal = openModal({
+              modal: {
+                dismissable: true,
+                title: 'Підтвердити Видалення',
+                html: '<p>Ви дійсно бажаєте видалити <strong>' + name + '</strong> ?</p>',
+                buttons: [{
+                  classes: 'btn-danger',
+                  text: 'Підтвердити',
+                  click: function(e) {
+                    deleteModal.close(e);
+                  }
+                }, {
+                  classes: 'btn-default',
+                  text: 'Відмінити',
+                  click: function(e) {
+                    deleteModal.dismiss(e);
+                  }
+                }]
+              }
+            }, 'modal-danger');
+
+            deleteModal.result.then(function(event) {
+              del.apply(event, args);
             });
           };
         }
