@@ -2,7 +2,7 @@
 <html>
   <head lang="ua">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Надання довідки про участь в приватизації житла державного житлового фонду</title>
+    <title>Надання довідки про доходи фізичних осіб</title>
     <style type="text/css">
 
       body div.PrintFormClaim {
@@ -47,7 +47,7 @@
       }
 
       .smallText {
-        font-size: 12px;  
+        font-size: 12pt;  
         line-height: 1.1;
       }
 
@@ -140,9 +140,8 @@
         text-align: center;
         color: #606060;
         bottom: -16px;
-        font-size: 11px;
+        font-size: 10pt;
       }
-
 
       /* линия отреза */
       .lineCut{
@@ -306,82 +305,95 @@
   <body>
     <div class="PrintFormClaim">
 
-      <div class="layout" style="height:8cm">
-        <div class="w60p">
-          &#160;
+      <div class="whomBlock ml-8">
+        Додаток 13 <br>
+        до Положення про реєстрацію<br>
+        фізичних осіб у Державному<br>
+        реєстрі фізичних осіб - платників податків<br>
+        (пункт 4 розділу Х) <br>
+      </div><br> <br>
+      
+      <div class="whomBlock ml-10">
+
+        <div class="under_field w100p ta-l">
+          Голові/начальнику<br>
+          <u>[sNameOrgan]</u> <span>(найменування контролюючого органу)</span>
         </div>
-        <div class="w30p">
-          [sShapka736]
-          &#160;
+        <div class="under_field w100p ta-l">          
+          <u>[sFIOGolova736]</u> <span>(прізвище, ім’я, по батькові керівника контролюючого органу)</span>
         </div>
       </div>
-      <br> 
+      <br> <br>
+      <div class="whoBlock ml-10">
+        <div class="under_field w100p ta-l">
+          <u>[sFIO]</u> <span>(прізвище, ім’я, по батькові особи, яка подає заяву)</span>
+        </div>
+        <br>
+        <div class="under_field w100p ta-l">
+          <u>[bankIdinn]</u> <span>(реєстраційний номер облікової картки платника податків)</span>
+        </div>
+        <div class="under_field w100p ta-l">
+          <u>          
+            <span id="spanAdressRegistr">[bankIdAddressFactual]</span>
+            <span id="spanAdressFactual">[sAddressFactual]</span>
+          </u>
+          <span>(місце проживання)</span>
+        </div>
+        <br>
+      </div>
+      <br>
 
 
-      <div class="claimBlock">КЛОПОТАННЯ</div>
-      
+      <div class="claimBlock">ЗАЯВА</div>
+
       <br>
       <div class="ta-j">
-        Розглянувши клопотання 
-        <em>[sAreaPetition]</em> 
-        сільської (селищної) ради  № 
-        <em>[nPetition]</em>
-        від  
-        <em>[dPetition]&#160;р.,</em>         
-        <em>[sNameOrgan]</em>
-        просить Вас, в установленому порядку,  надати пільговий кредит
+        <span class="pl-paragraph"></span> Прошу надати мені відомості з 
+        Державного реєстру фізичних осіб – платників податків 
+        про суми виплачених доходів та утриманих податків/джерела 
+        виплачених доходів та утриманих податків
       </div>
       <div class="ta-j">
-        <div class="under_field ta-c w100p">
-          <u>[sClFIO]</u> 
-          <span>(кому, прізвище, ім”я, по-батькові)</span>
+        за період* з <em>[dStart1]</em>   по <em>[dStop1]</em> 
+      </div>
+      <div class="under_field ta-j w100p">
+        <b>для</b>
+        <u>[sAim]</u> 
+        <span>(мета)</span>
+      </div>
+      <div class="under_multifield  ta-j w100p">
+        <b>Паспортні дані </b>
+        <u>[bankIdPassport]</u> 
+      </div> 
+    
+      <br>       
+      <br> 
+      <div class="layout">        
+        <div class="w50"></div>
+        <div class="w250">          
+          <div class="under_field w250">
+            <i>&#160;</i> 
+            <span>(дата)</span>
+          </div>
+          &#160;
+        </div>
+        <div class="w100"></div>
+        <div class="w250">
+          <div class="under_field w250">
+            <i>&#160;</i> 
+            <span>(підпис фізичної особи)</span>
+          </div>
+          &#160;
         </div>
       </div>
-      
+            <br>       
       <br> 
-      <div class="under_field  ta-j w100p">
-        <b>в сумі <em>[dSumCredit]</em> тис.грн. </b>
-        <u>[sSumCredit]  тис.грн.</u> 
-        <span class="pl-200">(прописом)</span>
-      </div>    
-
-      <br> 
-      <div class="under_multifield ta-j">
-        <b>який\яка працює</b>
-        <u>
-          <span id="spanWork">[sWorkPlace]</span>           
-          <span id="spanNotWork">безробітній</span>
-        </u>
-      </div>     
-
-      <br> 
-      <div class="under_multifield ta-j">
-        <b>і постійно проживає</b>
-        <u>
-          <span id="spanAdressRegistr">[bankIdAddressFactual]</span>           
-          <span id="spanAdressFactual">[sAddressFactual]</span>
-        </u>
-      </div>  
-
-      <br> <br> 
-      <div class="under_multifield ta-j">
-        <b>Мета отримання кредиту: </b>
-        <u>[asReason] ([aReason])</u>
-      </div>  
-      
-
-      <br> <br> <br> <br> 
-      <div class="ta-j">
-        Голова <em>[sAreaAdjective]</em> &#160; районної ради
-          <div class="under_field w350">
-            <u>&#160;</u> 
-            <span>(підпис, прізвище та ініціали розбірливо)</span>
-          </div>
+      <div class="smallText">
+        _____________<br>    
+        * Відомості про доходи фізичних осіб накопичуються 
+        у Державному реєстрі  фізичних осіб – платників  податків, 
+        починаючи з 01 січня 1998 року.
       </div>
-      <br> 
-      <div class="ml-14">М.П.</div>
-      “___”____________________20____ р. 
-
     </div>
   </body>
 </html>
