@@ -48,6 +48,8 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
                 sPhone_SMS = sPhone_SMS.replaceAll("\\ ", "");
 
                 sReturn = oManagerOTP.sendPasswordOTP(sPhone_SMS, sText_SMS, true);
+                
+//                sReturn = oManagerSMS.sendSMS(sPhone_SMS, sText_SMS);
                 LOG.info("(sReturn={})",sReturn);
 /*                
                 LOG.info("SKIP:(sReturn})");
