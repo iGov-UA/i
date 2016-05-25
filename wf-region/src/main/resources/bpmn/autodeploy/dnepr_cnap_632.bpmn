@@ -20,16 +20,7 @@
           <activiti:value id="personally" name="особисто"></activiti:value>
           <activiti:value id="confidant" name="довірена особа"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sObject" name="Укажіть об’єкт, на який потрібно надати дозвіл" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAdresObject" name="Адреса об’єкта, на який видається дозвіл" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAdresFiz" name="Адреса реєстрації" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="kved" name="Вид діяльності згідно з КВЕД; тільки цифрові позначення" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно з ЄДРПОУ; тільки цифрові позначення" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sPibFiz" name="П.І.Б. фізичної особи–підприємця" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sNameUr" name="У давальному відмінку повне найменування юридичної особи" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sPibUr" name="П.І.Б. керівника юридичної особи або уповноваженої особи" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sAdresUr" name="Місцезнаходження юридичної особи" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sPhoneUr" name="Телефон юридичної особи" type="string" default="+380"></activiti:formProperty>
         <activiti:formProperty id="sDocBase" name="Дозвіл на проведення археологічних розвідок, розкопок" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocAkt" name="Копія кваліфікаційного документу (відкритого листа) - для проведення археологічних досліджень" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocProject" name="Копія Програми археологічних досліджень" type="file" required="true"></activiti:formProperty>
@@ -43,8 +34,8 @@
         <activiti:formProperty id="sMailClerk" name="пошта посадовця" type="invisible" default="darja.grek@gmail.com"></activiti:formProperty>
         <activiti:formProperty id="sArea" name="назва населеного пункту" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka628" name="шапка у принтформу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="Якщо  юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sNameUr&quot;,&quot;sAdresUr&quot;,&quot;sPhoneUr&quot;,&quot;sPibUr&quot;,&quot;edrpou&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSubekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers2" name="Якщо  фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;sAdresFiz&quot;,&quot;sPibFiz&quot;,&quot;sbankId_scan_passport&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSubekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="Якщо  юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sNameUr&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSubekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="Якщо  фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;sbankId_scan_passport&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSubekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="маркер якщо довірена особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;sDocConfidant&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSubekt_2&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'confidant'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -64,16 +55,7 @@
           <activiti:value id="personally" name="особисто"></activiti:value>
           <activiti:value id="confidant" name="довірена особа"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sObject" name="Укажіть об’єкт, на який потрібно надати дозвіл; ;writable=false" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sAdresObject" name="Адреса об’єкта, на який видається дозвіл; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAdresFiz" name="Адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="kved" name="Вид діяльності згідно з КВЕД; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно з ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPibFiz" name="П.І.Б. фізичної особи–підприємця; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameUr" name="У давальному відмінку повне найменування юридичної особи; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPibUr" name="П.І.Б. керівника юридичної особи або уповноваженої особи; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAdresUr" name="Місцезнаходження юридичної особи; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneUr" name="Телефон юридичної особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="reestr_numb" name="Реєстраційний номер" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="date_reestr" name="Укажіть дату реєстрації звернення" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="pib_admin" name="Прізвище та ініціали адміністратора" type="string" default=" "></activiti:formProperty>
@@ -85,8 +67,6 @@
         <activiti:formProperty id="sShapka628" name="шапка у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dnepr_cnap_632_print.html]" type="invisible" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="markers12" name="принтформа якщо юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_12&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zayava&quot;,&quot;zagolovok&quot;,&quot;obect_pf&quot;,&quot;obect_pf2&quot;,&quot;sAdresObject_pf&quot;,&quot;sNameUr_pf&quot;,&quot;kved_pf&quot;,&quot;edrpo_pf&quot;,&quot;sPibUr_pf&quot;,&quot;sAdresUr_pf&quot;,&quot;sPhoneUr_pf&quot;,&quot;end&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asSubekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='ur'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers13" name="принтформа якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zayava&quot;,&quot;zagolovok&quot;,&quot;obect_pf&quot;,&quot;obect_pf2&quot;,&quot;sAdresObject_pf&quot;,&quot;sPibFiz_pf&quot;,&quot;kved_pf&quot;,&quot;bankIdinn_pf&quot;,&quot;sAdresFiz_pf&quot;,&quot;phone_pf&quot;,&quot;end&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asSubekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='fiz'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -111,16 +91,7 @@
           <activiti:value id="personally" name="особисто"></activiti:value>
           <activiti:value id="confidant" name="довірена особа"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sObject" name="Укажіть об’єкт, на який потрібно надати дозвіл; ;writable=false" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sAdresObject" name="Адреса об’єкта, на який видається дозвіл; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAdresFiz" name="Адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="kved" name="Вид діяльності згідно з КВЕД; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно з ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPibFiz" name="П.І.Б. фізичної особи–підприємця; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameUr" name="У давальному відмінку повне найменування юридичної особи; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPibUr" name="П.І.Б. керівника юридичної особи або уповноваженої особи; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAdresUr" name="Місцезнаходження юридичної особи; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneUr" name="Телефон юридичної особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="reestr_numb" name="Реєстраційний номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_reestr" name="Укажіть дату реєстрації звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="pib_admin" name="Прізвище та ініціали адміністратора" type="string" writable="false"></activiti:formProperty>
@@ -132,8 +103,6 @@
         <activiti:formProperty id="comment_2" name="У разі відмови у реєстрації дозволу внесіть, будь ласка, коментар" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka628" name="шапка у принтформу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers12" name="принтформа якщо юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_12&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zayava&quot;,&quot;zagolovok&quot;,&quot;obect_pf&quot;,&quot;obect_pf2&quot;,&quot;sAdresObject_pf&quot;,&quot;sNameUr_pf&quot;,&quot;kved_pf&quot;,&quot;edrpo_pf&quot;,&quot;sPibUr_pf&quot;,sAdresUr_pf&quot;,&quot;,sPhoneUr_pf&quot;,&quot;end&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asSubekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='ur'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers13" name="принтформа якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zayava&quot;,&quot;zagolovok&quot;,&quot;obect_pf&quot;,&quot;obect_pf2&quot;,&quot;sAdresObject_pf&quot;,&quot;sPibFiz_pf&quot;,&quot;kved_pf&quot;,&quot;edrpo_pf&quot;,&quot;bankIdinn_pf&quot;,&quot;sAdresFiz_pf&quot;,&quot;phone_pf&quot;,&quot;end&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asSubekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='fiz'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_632_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dnepr_cnap_632_print.html]" type="invisible" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
