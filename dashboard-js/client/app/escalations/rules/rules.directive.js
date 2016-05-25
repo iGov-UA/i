@@ -49,7 +49,6 @@ angular.module('dashboardJsApp')
         });
       };
 
-
       $scope.rules = [];
       $scope.get = function () {
         return $scope.rules;
@@ -89,10 +88,9 @@ angular.module('dashboardJsApp')
       };
 
       $scope.delete = function (rule) {
-        Modal.confirm.delete(function(event){
-        deleteFunc(rule)
-          .then($scope.fillData);
-          console.info("Rule ID " + rule.nID + " has deleted");
+        Modal.confirm.delete(function (event) {
+          deleteFunc(rule)
+            .then($scope.fillData);
         })('правило для послуги ' + rule.bpName + ' (ID правила ' + rule.nID + ')');
       };
 
@@ -116,6 +114,7 @@ angular.module('dashboardJsApp')
               angular.forEach($scope.rules, function (rule, index) {
                 setRuleBPName(rule);
               });
+              fillAccordionGroups();
               $scope.areRulesPresent = true;
             });
 
@@ -132,6 +131,44 @@ angular.module('dashboardJsApp')
         if (text == 'Отсылка уведомления на электронную почту') return 'відправити повідомлення на e-mail';
         return text;
       };
+
+      $scope.aSuccessGroups = [];
+      $scope.aMissingGroups = [];
+
+      function fillAccordionGroups() {
+        var successGroupsTamp = {};
+        var missingGroupsTemp = {};
+        angular.forEach($scope.rules, function (rule, index) {
+          var result = $.grep($scope.processesList, function (e) {
+            return e.sID === rule.sID_BP;
+          });
+          if (result.length > 0) {
+            if (!successGroupsTamp[rule.sID_BP]) {
+              successGroupsTamp[rule.sID_BP] = [];
+            }
+            successGroupsTamp[rule.sID_BP].push(rule);
+          } else {
+            if (!missingGroupsTemp[rule.sID_BP]) {
+              missingGroupsTemp[rule.sID_BP] = [];
+            }
+            missingGroupsTemp[rule.sID_BP].push(rule);
+          }
+        });
+
+        for (var sucGr in successGroupsTamp) {
+          $scope.aSuccessGroups.push({
+            sTitle: $.trim(successGroupsTamp[sucGr][0].bpName + ' (' + successGroupsTamp[sucGr][0].sID_BP + ')'),
+            aContent: angular.copy(successGroupsTamp[sucGr])
+          });
+        }
+        for (var misGr in missingGroupsTemp) {
+          $scope.aMissingGroups.push({
+            sTitle: $.trim(missingGroupsTemp[misGr][0].sID_BP),
+            aContent: angular.copy(missingGroupsTemp[misGr])
+          });
+        }
+        debugger;
+      }
     };
 
     return {
