@@ -49,7 +49,7 @@ public class ManagerSMS {
 		sURL_Send, sMerchantId);
 
 	if (sURL_Send.startsWith("${") || sMerchantId.startsWith("${") || sMerchantPassword.startsWith("${")) {
-	    LOG.error("Сервис не готов к отсылке сообщений. Не заданы необходимые параметры");
+	    LOG.warn("Сервис не готов к отсылке сообщений. Не заданы необходимые параметры");
 	    return;
 	}
 	
@@ -59,7 +59,7 @@ public class ManagerSMS {
 
     public String sendSMS(String sPhone, String sText) throws IllegalArgumentException, IOException {
 	if (!isReadySendSMS) {
-	    LOG.error("Сервис не готов к отсылке сообщений.");
+	    LOG.warn("Сервис не готов к отсылке сообщений.");
 	    return "";
 	}
 
