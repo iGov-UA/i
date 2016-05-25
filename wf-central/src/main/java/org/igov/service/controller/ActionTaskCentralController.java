@@ -58,7 +58,7 @@ public class ActionTaskCentralController {
         ) throws CommonServiceException {
 
         try {
-
+            LOG.info("/setTaskAnswer_Central started");
             HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
 
             if(bAuth){
@@ -66,8 +66,9 @@ public class ActionTaskCentralController {
             }
              
             LOG.info("Update history! (sID_Order={})", sID_Order);
+            LOG.info("Look, arguments are sBody: "+sBody+" saField: "+saField);
             sBody = sBody != null ? sBody : "На заявку "+ sID_Order + " дана відповідь громадянином";
-            
+            LOG.info("Method /setTaskAnswer_Central calling updateActionStatus_Central");
             oActionEventService.updateActionStatus_Central(
                 sID_Order,
                 null,//sUserTaskName

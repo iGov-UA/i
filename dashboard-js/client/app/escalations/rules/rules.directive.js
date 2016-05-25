@@ -1,23 +1,12 @@
 angular.module('dashboardJsApp')
   .directive('rules', function () {
 
-    var controller = function ($scope, $modal, processes) {
+    var controller = function ($scope, $modal, processes, Modal) {
 
-
-      //var getFunc = $scope.funcs.getFunc;
       var getAllFunc = $scope.funcs.getAllFunc;
       var setFunc = $scope.funcs.setFunc;
       var deleteFunc = $scope.funcs.deleteFunc;
 
-      // $scope.exampleRule = {
-      //   id: 1,
-      //   sID_BP: 'dnepr_spravka_o_doxodax',
-      //   sID_UserTask: '*',
-      //   sCondition: 'nElapsedDays==nDaysLimit',
-      //   soData: 'nDaysLimit:3,asRecipientMail:[test@email.com]',
-      //   sPatternFile: 'escalation/escalation_template.html',
-      //   nID_EscalationRuleFunction: 'EscalationHandler_SendMailAlert',
-      // };
 
       var openModal = function (rule) {
         var modalInstance = $modal.open({
@@ -49,7 +38,7 @@ angular.module('dashboardJsApp')
                   i++;
                   return true;
                 }
-                );
+              );
               if (ruleNotExistedBefore) {
                 setRuleBPName(editedRule);
                 $scope.rules.push(editedRule);
@@ -80,7 +69,7 @@ angular.module('dashboardJsApp')
 
       $scope.getRules = function () {
 
-      }
+      };
 
       $scope.isShowWarning = function () {
         return !$scope.inProgress && !$scope.isSlotsPresent;
@@ -95,19 +84,25 @@ angular.module('dashboardJsApp')
       };
 
       $scope.copy = function (rule) {
-
+        rule.isCopied = true;
+        openModal(rule);
       };
 
       $scope.delete = function (rule) {
+        Modal.confirm.delete(function(event){
         deleteFunc(rule)
           .then($scope.fillData);
+          console.info("Rule ID " + rule.nID + " has deleted");
+        })('правило для послуги ' + rule.bpName + ' (ID правила ' + rule.nID + ')');
       };
-      
-      var setRuleBPName = function(rule){
-        var result = $.grep($scope.processesList, function(e){ return e.sID === rule.sID_BP; });
-        rule.bpName = (result.length>0) ? result[0].sName : rule.sID_BP+", бізнес-процес некоректний.";
-      }
-      
+
+      var setRuleBPName = function (rule) {
+        var result = $.grep($scope.processesList, function (e) {
+          return e.sID === rule.sID_BP;
+        });
+        rule.bpName = (result.length > 0) ? result[0].sName : rule.sID_BP + ", бізнес-процес некоректний.";
+      };
+
       $scope.fillData = function () {
 
         $scope.inProgress = true;
@@ -118,7 +113,7 @@ angular.module('dashboardJsApp')
           getAllFunc()
             .then(function (data) {
               $scope.rules = data;
-              angular.forEach($scope.rules, function(rule, index){
+              angular.forEach($scope.rules, function (rule, index) {
                 setRuleBPName(rule);
               });
               $scope.areRulesPresent = true;
@@ -129,18 +124,10 @@ angular.module('dashboardJsApp')
         });
       };
 
-    $scope.processesLoaded = function() {
-      if ($scope.processesList)
-      return true;
-    return false;
-    }
-    
-    //  $scope.processesLoadError = function() {
-    //   if (processesList && processesList == "error")
-    //   return true;
-    // return false;
-    // }
-    
+      $scope.processesLoaded = function () {
+        return $scope.processesList ? true : false;
+      };
+
       $scope.translate = function (text) {
         if (text == 'Отсылка уведомления на электронную почту') return 'відправити повідомлення на e-mail';
         return text;
@@ -153,7 +140,7 @@ angular.module('dashboardJsApp')
         funcs: '='
       },
       controller: controller,
-      templateUrl: 'app/escalations/rules/rules.html',
+      templateUrl: 'app/escalations/rules/rules.html'
     }
   }
-    );
+);
