@@ -406,9 +406,11 @@ execution.setVariable('notification_day', timer)</script>
     </userTask>
     <sequenceFlow id="flow40" sourceRef="usertask2" targetRef="servicetask7"></sequenceFlow>
     <scriptTask id="scripttask2" name="Зміна флагу" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var src=execution.getVariable('flag')
-src='true'
-execution.setVariable('flag', src)</script>
+		<script>
+			var src=execution.getVariable('flag')
+			src='true'
+			execution.setVariable('flag', src)
+		</script>
     </scriptTask>
     <sequenceFlow id="flow45" sourceRef="scripttask2" targetRef="parallelgateway2"></sequenceFlow>
     <parallelGateway id="parallelgateway2" name="Parallel Gateway"></parallelGateway>
