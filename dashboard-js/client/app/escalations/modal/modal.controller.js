@@ -46,7 +46,6 @@ angular.module('dashboardJsApp')
     $scope.sModalTitle = "";
 
     var getTheRule = function (a) {
-      debugger;
       if (a != null && a != undefined){
         if(a.isCopied){
           for (var prop in exampleRule) if (exampleRule.hasOwnProperty(prop) && a.hasOwnProperty(prop)) {
@@ -61,7 +60,6 @@ angular.module('dashboardJsApp')
       }
       $scope.sModalTitle = "Створення правила";
       return exampleRule;
-
     };
 
     $scope.ruleFunctions = null;
@@ -272,7 +270,6 @@ angular.module('dashboardJsApp')
       for (var prop in $scope.rule) if ($scope.rule.hasOwnProperty(prop)) {
         $scope.rule[prop] = angular.copy($scope.thisRule[prop]);
       }
-      debugger;
 
       $modalInstance.close($scope.rule);
     };
@@ -366,7 +363,7 @@ angular.module('dashboardJsApp')
             return result
           }
           // находим закрывающий символ с конца строки
-          var closeSymbIndex = 0
+          var closeSymbIndex = 0;
           ind = str.length - 1;
           for (ind; ind >= 0; ind--) {
             if (str.charAt(ind) === thisType.cl) {
