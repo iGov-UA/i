@@ -26,7 +26,7 @@ public class ManagerSMS {
     private String sMerchantId = null;
     private String sMerchantPassword = null;
 
-    // Признак готовности сервива отсылать сообщения
+    // Признак готовности сервиса отсылать сообщения
     private boolean isReadySendSMS = false;
 
     @Autowired
@@ -41,21 +41,25 @@ public class ManagerSMS {
 	sURL_Send = generalConfig.getURL_Send_SMS();
 	sMerchantId = generalConfig.getMerchantId_SMS();
 	sMerchantPassword = generalConfig.getMerchantPassword_SMS();
+//	sURL_Send = "https://sms-inner.siteheart.com/api/send_sms.api";
+//	sMerchantId = "1070";
+//	sMerchantPassword = "111";
 
 	LOG.debug("general.SMS.sURL_Send={}, general.SMS.sMerchantId={}, general.SMS.sMerchantPassword=*****",
 		sURL_Send, sMerchantId);
 
 	if (sURL_Send.startsWith("${") || sMerchantId.startsWith("${") || sMerchantPassword.startsWith("${")) {
-	    LOG.debug("Сервис не готов к отсылке сообщений. Не заданы необходимые параметры");
-
+	    LOG.error("Сервис не готов к отсылке сообщений. Не заданы необходимые параметры");
 	    return;
 	}
-	LOG.debug("Сервис готов к отсылке сообщений.");
+	
+	LOG.info("Сервис готов к отсылке сообщений.");
 	isReadySendSMS = true;
     }
 
-    public String sendSMS(String sPhone, String sText) throws IOException {
+    public String sendSMS(String sPhone, String sText) throws IllegalArgumentException, IOException {
 	if (!isReadySendSMS) {
+	    LOG.error("Сервис не готов к отсылке сообщений.");
 	    return "";
 	}
 
@@ -97,11 +101,19 @@ public class ManagerSMS {
 
     }
 
-    public static void main(String[] args) {
-	// ManagerSMS managerSMS = new ManagerSMS();
-	//
-	// managerSMS.init();
-	// managerSMS.sendSMS("+380923046007", "text");
-    }
+//    public static void main(String[] args) {
+//	 ManagerSMS managerSMS = new ManagerSMS();
+//	
+//	 managerSMS.init();
+//	 try {
+//	    String ret = managerSMS.sendSMS("+380923046007", "text test");
+//	    
+//	    System.out.println(ret);
+//	} catch (IllegalArgumentException e) {
+//	    e.printStackTrace();
+//	} catch (IOException e) {
+//	    e.printStackTrace();
+//	}
+//    }
 
 }
