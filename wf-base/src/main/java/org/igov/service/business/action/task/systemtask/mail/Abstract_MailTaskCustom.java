@@ -36,7 +36,7 @@ import org.igov.service.business.action.task.core.ActionTaskService;
 import org.igov.service.business.action.task.systemtask.misc.CancelTaskUtil;
 import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
 import org.igov.io.sms.ManagerOTP;
-
+import org.igov.io.sms.ManagerSMS;
 import org.igov.service.controller.security.AccessContract;
 import org.igov.util.JSON.JsonDateTimeSerializer;
 import static org.igov.util.ToolLuna.getProtectedNumber;
@@ -105,6 +105,9 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
     @Autowired
     public ManagerOTP oManagerOTP;
     
+    @Autowired
+    public ManagerSMS oManagerSMS;
+
     @Autowired
     AccessKeyService accessCover;
     @Autowired
