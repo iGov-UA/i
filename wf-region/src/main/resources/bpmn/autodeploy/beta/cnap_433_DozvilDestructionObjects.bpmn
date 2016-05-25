@@ -83,7 +83,7 @@
         <activiti:formProperty id="sAddDoc" name="Перелік додатків" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAttribToApproveOrgan_433" name="Організацій та установи з якими  необхідно погодити виконання планових робіт" type="invisible"></activiti:formProperty>
@@ -298,7 +298,7 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-&lt;p&gt; Ваше звернення щодо надання дозволу на порушення об’єктів благоустрою успішно зареєстровано і буде опрацьовано впродовж визначеного Законом терміну.&lt;br /&gt;
+&lt;p&gt; Ваше звернення [sID_Order] щодо надання дозволу на порушення об’єктів благоустрою успішно зареєстровано і буде опрацьовано впродовж визначеного Законом терміну.&lt;br /&gt;
 Повідомлення про результат розгляду буде спрямоване на Ваш e-mail.&lt;/p&gt;
 &lt;br /&gt;
 ${sNameOrgan}&lt;br /&gt;
@@ -418,6 +418,7 @@ ${sWorkTime}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">

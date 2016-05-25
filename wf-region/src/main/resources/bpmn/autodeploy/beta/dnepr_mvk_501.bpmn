@@ -31,12 +31,13 @@
         <activiti:formProperty id="nFile2" name="Витяг з Державного земельного кадастру про  земельну ділянку" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sLabel3" name="Увага!" type="label" default="У разі спільної чи часткової власності на нерухоме майно, &lt;br&gt; що розташоване на зазначеній в заяві земельній ділянці,&lt;br&gt; необхідно письмова згода співввласника(оформлена згідно чинного законодавства)."></activiti:formProperty>
         <activiti:formProperty id="nFile3" name="Згода співвласників" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sShapka501" name="Шапка клопотання" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса установи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Часи роботи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Контактний телефон" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="Шапка клопотання" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSato" name="Шапка клопотання" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_339_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('dnepr_mvk_501.json')}"></activiti:formProperty>
       </extensionElements>
@@ -70,7 +71,8 @@
           <activiti:string><![CDATA[Затвердження проекту землеустрою щодо відведення земельної ділянки.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 &lt;p&gt; Ваше звернення щодо затвердження проекту землеустрою щодо відведення земельної ділянки було зареєстровано у системі.&lt;br/&gt;
 Повідомлення про результат послуги буде спрямоване на Ваш e-mail.&lt;/p&gt;
@@ -119,10 +121,10 @@ ${sNameOrgan}&lt;br&gt;
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка клопотання" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSato" name="Шапка клопотання" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers12" name="принтформа якщо юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_12&quot;:{&quot;aElement_ID&quot;:[&quot;ur_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sChoiceObject&quot;},&quot;sCondition&quot;:&quot;[sCond]=='ur'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers13" name="принтформа якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;fiz_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sChoiceObject&quot;},&quot;sCondition&quot;:&quot;[sCond]=='fiz'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/dneprMVK/dnepr_mvk_501_print.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sShapka501" name="Шапка заяви" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -275,7 +277,7 @@ ${sNameOrgan}&lt;br&gt;
 if (execution.getVariable('sChoiceATO') == 'yes') {
 res = 'від учасника АТО'
 }
-execution.setVariable('sShapka', res)</script>
+execution.setVariable('sSato', res)</script>
     </scriptTask>
     <sequenceFlow id="flow16" sourceRef="scripttask1" targetRef="servicetask2"></sequenceFlow>
   </process>

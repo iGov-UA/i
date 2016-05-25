@@ -245,7 +245,7 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 				&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-				&lt;p&gt; Ваше звернення щодо enum{[anType]}  було зареєстровано у системі.&lt;br/&gt;
+				&lt;p&gt; Ваше звернення №[sID_Order] щодо enum{[anType]}  було зареєстровано у системі.&lt;br/&gt;
 				Повідомлення про результат розгляду буде спрямоване на Ваш e-mail.&lt;/p&gt;
 				&lt;p&gt;[cancelTask]&lt;/p&gt;
 				&lt;br /&gt;
@@ -611,73 +611,28 @@ var year=src.substr(0,4);
 var month=src.substr(5,2);
 var day=src.substr(8,2);
 var hour=src.substr(11,2);
-var minutes=src.substr(14,2); 
+var minutes=src.substr(14,2);
 var seconds='00';
-var delta='10';
+var delta='25';
 
 var date1 = year+'-'+month+'-'+day+' '+hour+':'+minutes+':'+seconds;
 var date2 = Date.parse(date1)
 var unixdate= date2/1000;
 
 var unixdate=unixdate+86400*delta;
+
 var new_src = new Date(unixdate*1000);
-
-var day = new Array();
-day[1] = "01";
-day[2] = "02";
-day[3] = "03";
-day[4] = "04";
-day[5] = "05";
-day[6] = "06";
-day[7] = "07";
-day[8] = "08";
-day[9] = "09";
-day[10] = "10";
-day[11] = "11";
-day[12] = "12";
-day[13] = "13";
-day[14] = "14";
-day[15] = "15";
-day[16] = "16";
-day[17] = "17";
-day[18] = "18";
-day[19] = "19";
-day[20] = "20";
-day[21] = "21";
-day[22] = "22";
-day[23] = "23";
-day[24] = "24";
-day[25] = "25";
-day[26] = "26";
-day[27] = "27";
-day[28] = "28";
-day[29] = "29";
-day[30] = "30";
-day[31] = "31";
-var d = day[new_src.getDate()];
-
-var month = new Array();
-month[0] = "01";
-month[1] = "02";
-month[2] = "03";
-month[3] = "04";
-month[4] = "05";
-month[5] = "06";
-month[6] = "07";
-month[7] = "08";
-month[8] = "09";
-month[9] = "10";
-month[10] = "11";
-month[11] = "12";
-var m = month[new_src.getMonth()];
-
+var d = new_src.getDate();
+if (d &lt; 10) d = "0"+d;
+var m = new_src.getMonth();
+var m = (+m + +1);
+if (m &lt; 10) m = "0"+m;
 
 var new_year = new_src.getFullYear();
 var new_hour = new_src.getHours();
 var new_minutes = new_src.getMinutes();
 var timer = new_year+'-'+m+'-'+d+'T'+new_hour+':'+new_minutes+':'+seconds;
-execution.setVariable('sDelete_day', timer)
-</script>
+execution.setVariable('sDelete_day', timer)</script>
     </scriptTask>
     <sequenceFlow id="flow23" sourceRef="scripttask1" targetRef="servicetask2"></sequenceFlow>
     <boundaryEvent id="boundarytimer1" name="Timer" attachedToRef="usertask3" cancelActivity="true">
@@ -710,7 +665,7 @@ execution.setVariable('sDelete_day', timer)
         <omgdc:Bounds height="75.0" width="105.0" x="704.0" y="100.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
-        <omgdc:Bounds height="55.0" width="105.0" x="567.0" y="360.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="567.0" y="340.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
         <omgdc:Bounds height="69.0" width="105.0" x="458.0" y="185.0"></omgdc:Bounds>
@@ -740,7 +695,7 @@ execution.setVariable('sDelete_day', timer)
         <omgdc:Bounds height="30.0" width="30.0" x="342.0" y="287.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
-        <omgdc:Bounds height="55.0" width="105.0" x="112.0" y="360.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="112.0" y="340.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
         <omgdc:Bounds height="55.0" width="105.0" x="164.0" y="29.0"></omgdc:Bounds>
@@ -759,8 +714,8 @@ execution.setVariable('sDelete_day', timer)
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
         <omgdi:waypoint x="756.0" y="239.0"></omgdi:waypoint>
-        <omgdi:waypoint x="755.0" y="387.0"></omgdi:waypoint>
-        <omgdi:waypoint x="672.0" y="387.0"></omgdi:waypoint>
+        <omgdi:waypoint x="755.0" y="367.0"></omgdi:waypoint>
+        <omgdi:waypoint x="672.0" y="367.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="14.0" width="75.0" x="765.0" y="225.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
@@ -806,7 +761,7 @@ execution.setVariable('sDelete_day', timer)
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
         <omgdi:waypoint x="619.0" y="328.0"></omgdi:waypoint>
-        <omgdi:waypoint x="619.0" y="360.0"></omgdi:waypoint>
+        <omgdi:waypoint x="619.0" y="340.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="14.0" width="78.0" x="628.0" y="309.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
@@ -831,16 +786,16 @@ execution.setVariable('sDelete_day', timer)
         <omgdi:waypoint x="282.0" y="100.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
-        <omgdi:waypoint x="567.0" y="387.0"></omgdi:waypoint>
-        <omgdi:waypoint x="217.0" y="387.0"></omgdi:waypoint>
+        <omgdi:waypoint x="567.0" y="367.0"></omgdi:waypoint>
+        <omgdi:waypoint x="217.0" y="367.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
         <omgdi:waypoint x="357.0" y="317.0"></omgdi:waypoint>
-        <omgdi:waypoint x="356.0" y="387.0"></omgdi:waypoint>
-        <omgdi:waypoint x="217.0" y="387.0"></omgdi:waypoint>
+        <omgdi:waypoint x="356.0" y="367.0"></omgdi:waypoint>
+        <omgdi:waypoint x="217.0" y="367.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
-        <omgdi:waypoint x="164.0" y="360.0"></omgdi:waypoint>
+        <omgdi:waypoint x="164.0" y="340.0"></omgdi:waypoint>
         <omgdi:waypoint x="164.0" y="298.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>

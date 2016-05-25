@@ -46,6 +46,7 @@
         <activiti:formProperty id="sBasedDocument" name="Документ, що посвідчує перехід права власності; формат: договір № ___ від ДД.ММ.РРРР)" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="nSquare" name="Площа земельної ділянки (га)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdressZemelDilyanki" name="Адреса земельної ділянки" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTargetDestination" name="Цільове призначення із зазначенням об’єкта, що фактично розташований на земельній ділянці; при наявності споруд та нерухомого майна" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFioNewOwner" name="Новий власник нерухомого майна(П.І.Б.)" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sContractNumber" name="Номер договору оренди земельної ділянки" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="oContractDate" name="Дата договору оренди земельної ділянки; у форматі ДД.ММ.РРРР" type="string" required="true"></activiti:formProperty>
@@ -64,7 +65,7 @@
         <activiti:formProperty id="markers2" name="Розкриття атрібутів щодо специфіки вводу" type="markers" default="${markerService.loadFromFile('dneprCnap/dnepr_cnap_190_12.json')}"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="string"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Вкажіть сьогоднішню дату" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП" type="invisible"></activiti:formProperty>
@@ -107,6 +108,7 @@
         <activiti:formProperty id="sBasedDocument" name="Документ, що посвідчує перехід права власності" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nSquare" name="Площа земельної ділянки (га)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdressZemelDilyanki" name="Адреса земельної ділянки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTargetDestination" name="Цільове призначення із зазначенням об’єкта, що фактично розташований на земельній ділянці; при наявності споруд та нерухомого майна" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFioNewOwner" name="Новий власник нерухомого майна" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sContractNumber" name="Номер договору оренди земельної ділянки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="oContractDate" name="Дата договору оренди земельної ділянки;(у форматі ДД.ММ.РРРР)" type="string" writable="false"></activiti:formProperty>
@@ -168,6 +170,7 @@
         <activiti:formProperty id="sBasedDocument" name="Документ, що посвідчує перехід права власності" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nSquare" name="Площа земельної ділянки (га)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdressZemelDilyanki" name="Адреса земельної ділянки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTargetDestination" name="Цільове призначення із зазначенням об’єкта, що фактично розташований на земельній ділянці; при наявності споруд та нерухомого майна" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFioNewOwner" name="Новий власник нерухомого майна" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sContractNumber" name="Номер договору оренди земельної ділянки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="oContractDate" name="Дата договору оренди земельної ділянки;(у форматі ДД.ММ.РРРР)" type="string" writable="false"></activiti:formProperty>
@@ -221,7 +224,7 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-&lt;p&gt; Ваше звернення щодо розірвання договору оренди земельної ділянки або припинення права постійного користування земельною ділянкою  успішно зареєстровано і буде опрацьовано впродовж визначеного Законом терміну.&lt;br /&gt;
+&lt;p&gt; Ваше звернення [sID_Order] щодо розірвання договору оренди земельної ділянки або припинення права постійного користування земельною ділянкою  успішно зареєстровано і буде опрацьовано впродовж визначеного Законом терміну.&lt;br /&gt;
 Повідомлення про результат розгляду буде спрямоване на Ваш e-mail.&lt;/p&gt;
 &lt;br /&gt;
 ${sNameOrgan}&lt;br /&gt;
@@ -253,13 +256,14 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-&lt;p&gt; На жаль, Ваше звернення, щодо розірвання договору оренди земельної ділянки або припинення права постійного користування земельною ділянкою не прийнято в роботу. &lt;br /&gt;
+&lt;p&gt; На жаль, Ваше звернення [sID_Order] щодо розірвання договору оренди земельної ділянки або припинення права постійного користування земельною ділянкою не прийнято в роботу. &lt;br /&gt;
 Причина відмови: ${sDecision_1_Comment} &lt;br /&gt;
 &lt;br /&gt;
 ${sNameOrgan}&lt;br /&gt;
 ${sAddress}&lt;br /&gt;
 ${sPhoneOrgan}&lt;br /&gt;
 ${sWorkTime}&lt;br /&gt;
+[pattern/mail/_common_feedback.html]
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
@@ -281,7 +285,7 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-&lt;p&gt;Ви подавали звернення, щодо розірвання договору оренди земельної ділянки або припинення права постійного користування земельною ділянкою.&lt;br /&gt;
+&lt;p&gt;Ви подавали звернення [sID_Order] щодо розірвання договору оренди земельної ділянки або припинення права постійного користування земельною ділянкою.&lt;br /&gt;
 &lt;p&gt;Послуга успішно зареєстрована.&lt;/p&gt;
 &lt;p&gt;Номер Вашого замовлення: ${sExtension_Number} від ${sDate_Registrastion}. &lt;/p&gt; &lt;br /&gt;.
 &lt;p&gt;Ви отримаєте відповідь у визначений Законом термін на цю email-адресу.&lt;/p&gt;
@@ -330,7 +334,7 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-&lt;p&gt;Ви подавали звернення щодо розірвання договору оренди земельної ділянки або припинення права постійного користування земельною ділянкою. &lt;br /&gt;
+&lt;p&gt;Ви подавали звернення [sID_Order] щодо розірвання договору оренди земельної ділянки або припинення права постійного користування земельною ділянкою. &lt;br /&gt;
 Рішення міської ради отримано, звернення оброблено. &lt;br /&gt;
 Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у ЦНАПі.&lt;br /&gt;
 &lt;br /&gt;
@@ -338,6 +342,7 @@ ${sNameOrgan}&lt;br /&gt;
 ${sAddress}&lt;br /&gt;
 ${sPhoneOrgan}&lt;br /&gt;
 ${sWorkTime}&lt;br /&gt;
+[pattern/mail/_common_feedback.html]
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
@@ -372,6 +377,7 @@ ${sNameOrgan}&lt;br /&gt;
 ${sAddress}&lt;br /&gt;
 ${sPhoneOrgan}&lt;br /&gt;
 ${sWorkTime}&lt;br /&gt;
+[pattern/mail/_common_feedback.html]
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]

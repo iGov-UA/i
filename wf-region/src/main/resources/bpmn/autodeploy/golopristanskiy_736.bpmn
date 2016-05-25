@@ -13,39 +13,45 @@
         <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта громадянина України заявника; Сторінки 1, 2, 10, 11. При наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву чи pdf-файлі" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asPreferentialQueue" name="Чи перебуваєте на пільговій квартирній черзі" type="enum" default="no" required="true">
+        
+		<activiti:formProperty id="asAdress" name="Проживаєте за місцем реєстрації" default="yes" type="enum" required="true">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="no" name="Ні"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="aReason" name="Мета отримання кредиту" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFilePreferentialQueue" name="Копія клопотання з вашого населенного пункту" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sArea" name="Ким видане клопотання;Укажіть назву населеного пунку в орудному відмінку (Ким? Чим?)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="dSumCredit" name="Бажана сума кредиту в тыс. грн.; цифрами, роздільник - крапка" type="double" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sSumCredit" name="Бажана сума кредиту в тыс. грн.; ця ж сума прописом" type="string" required="true"></activiti:formProperty>
+        </activiti:formProperty>		
+		<activiti:formProperty id="sAddressFactual" name="Фактична адреса проживання" type="string" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="asReason" name="Оберіть категорію, під які цілі Вам потрібен кредит" type="enum" required="true">
+          <activiti:value id="res1" name="будівництво житла"></activiti:value>
+          <activiti:value id="res2" name="придбання будинку (квартири)"></activiti:value>
+          <activiti:value id="res3" name="добудова та реконструкція житла"></activiti:value>
+          <activiti:value id="res4" name="будівництво інженерних мереж"></activiti:value>
+          <activiti:value id="res5" name="розвиток особистого селянського подвір’я"></activiti:value>
+        </activiti:formProperty>        
+        <activiti:formProperty id="aReason" name="Уточніть мету отримання кредиту" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="dSumCredit" name="Бажана сума кредиту, грн.; цифрами" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSumCredit" name="Бажана сума кредиту, грн.; ця ж сума прописом" type="string" required="true"></activiti:formProperty>
+        
+        
         <activiti:formProperty id="asWork" name="Працюєте" type="enum" required="true">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="no" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sWorkPlace" name="Місце роботи та посада" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFilePreferentialQueue" name="Копія документу, який підтверджує перебування на пільговій квартирній черзі;Наприклад, Довідка з місця роботи" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sMoreFiles" name="Чи потрібні ще поля для завантаження файлів" type="enum" default="no">
-          <activiti:value id="no" name="Ні"></activiti:value>
-          <activiti:value id="yes1" name="одне"></activiti:value>
-          <activiti:value id="yes2" name="два"></activiti:value>
-          <activiti:value id="yes3" name="три"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="nFile1" name="Додати документ" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nFile2" name="Додати документ" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nFile3" name="Додати документ" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nfileToLive" name="Завантажте копію довідки про період реєстрації за місцем проживання" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="markersHideFields" name="hide fields" type="markers" default="${markerService.loadFromFile('newField.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markersPreferentialQueue" name="Пільгова черга" type="markers" default="${markerService.loadFromFile('mvk/chernihiv_mvk_479.json')}"></activiti:formProperty>
+        
+        <activiti:formProperty id="nFilePetition" name="Копія клопотання з вашого населенного пункту" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAreaPetition" name="Клопотання якої ради;Укажіть назву населеного пунку наприклад:'Савинської'" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="dPetition" name="Дата клопотання" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nPetition" name="Номер клопотання" type="string" required="true"></activiti:formProperty>
+
+		<activiti:formProperty id="markersAdresStartTask" name="Маркер адреса стартТаски" type="markers" default="${markerService.loadFromFile('adress_start.json')}"></activiti:formProperty>
+		<activiti:formProperty id="markersStarTask" name="Маркер стартТаски" type="markers" default="${markerService.loadFromFile('mvk/golopristanskiyRDA_736_start.json')}"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sMailClerk1" name="Пошта" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sShapkaGolova" name="підпис в шапке" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sShapka736" name="підпис в шапке" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sAreaAdjective" name="населений пункт " type="invisible" default=" "></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -104,39 +110,65 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow65" sourceRef="servicetask5" targetRef="usertask3"></sequenceFlow>
-    <userTask id="usertask3" name="Перевірка даних в ЦНАП" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask3" name="Перевірка даних в РДА" activiti:candidateGroups="rda_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Орган обслуговування" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sClFIO" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="Ідентифікаційний код" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="AddressFactual" name="Адреса реєстрації, за якою необхідна довідка" type="string" writable="false"></activiti:formProperty>
+
+		<activiti:formProperty id="asAdress" name="Проживаєте за місцем реєстрації" default="yes" type="enum" writable="false">
+          <activiti:value id="yes" name="Так"></activiti:value>
+          <activiti:value id="no" name="Ні"></activiti:value>
+        </activiti:formProperty>		
+		<activiti:formProperty id="sAddressFactual" name="Фактична адреса проживання" type="string" writable="false"></activiti:formProperty>
+
         <activiti:formProperty id="phone" name="Контактний телефон заявника" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail заявника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="aReason" name="причина надання довідки довідки" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asPreferentialQueue" name="Ви перебуваєте на пільговій квартирній черзі" type="enum" writable="false">
+        
+        <activiti:formProperty id="nPetition" name="Номер клопотання" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="dPetition" name="Дата клопотання" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAreaPetition" name="Клопотання якої ради" type="string"></activiti:formProperty>
+
+        <activiti:formProperty id="asReason" name="Оберіть категорію, під які цілі Вам потрібен кредит" type="enum" writable="false">
+          <activiti:value id="res1" name="будівництво житла"></activiti:value>
+          <activiti:value id="res2" name="придбання будинку (квартири)"></activiti:value>
+          <activiti:value id="res3" name="добудова та реконструкція житла"></activiti:value>
+          <activiti:value id="res4" name="будівництво інженерних мереж"></activiti:value>
+          <activiti:value id="res5" name="розвиток особистого селянського подвір’я"></activiti:value>
+        </activiti:formProperty>        
+        <activiti:formProperty id="aReason" name="Уточніть мету отримання кредиту" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="dSumCredit" name="Бажана сума кредиту, цифрами" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSumCredit" name="Бажана сума кредиту, ця ж сума прописом" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="asWork" name="Працюєте" type="enum" writable="false">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="no" name="Ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="form_number" name="Номер справи" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkPlace" name="Місце роботи та посада" type="string" writable="false"></activiti:formProperty>
+
+
         <activiti:formProperty id="decide1" name="Рішення відповідність наданних даних" type="enum" required="true">
           <activiti:value id="accept" name="Дані відповідають вимогам"></activiti:value>
           <activiti:value id="reject" name="Послуга не може бути надана"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="В разі відмови в наданні послуги зазначте підставу для відмови" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/mvk/chernihiv_mvk_479_print.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sShapkaGolova" name="підпис в шапке" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="markersPrint1" name="Для прінтформи" type="markers" default="${markerService.loadFromFile('mvk/chernihiv_mvk_479_print.json')}"></activiti:formProperty>
+        
+        <activiti:formProperty id="sShapka736" name="підпис в шапке" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sAreaAdjective" name="населений пункт " type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible" default=" "></activiti:formProperty>
+
+        <activiti:formProperty id="sBody_1" name="[pattern/print/mvk/golopristanskiy_736_print.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
+
+		<activiti:formProperty id="markersAdresPrint" name="Маркер адреса принтформы" type="markers" default="${markerService.loadFromFile('adress_print.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markersPrint1" name="Для прінтформи" type="markers" default="${markerService.loadFromFile('mvk/golopristanskiyRDA_736_print.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},
-            	${bankId_scan_inn},
-            	${nFilePreferentialQueue},
-            	${nFile1},
-            	${nFile2},
-            	${nFile3}]]></activiti:expression>
+            <activiti:expression>
+				${bankId_scan_passport},
+            	${nFilePetition}
+            </activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>

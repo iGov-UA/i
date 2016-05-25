@@ -47,6 +47,7 @@
         <activiti:formProperty id="sWorkTime" name="графік роботи ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для справок" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk_dgk" name="Пошта ДГК" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Region" type="markers" default="${markerService.loadFromFile('dneprCnap/dnepr_225.json')}"></activiti:formProperty>
         <activiti:formProperty id="bFlag" name="Перемикач регіонів" type="invisible" default="easy"></activiti:formProperty>
       </extensionElements>
@@ -70,7 +71,8 @@
           <activiti:string><![CDATA[Звернення на тему: Внесення до Державного земельного кадастру відомостей (змін до них) про земельну ділянку]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[[sID_Order]<br>
+            [pattern/mail/_common_header.html]
 			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<p>
 			Ваше звернення щодо внесення до Державного земельного кадастру відомостей (змін до них) про земельну ділянку успішно зареєстроване.<br />
