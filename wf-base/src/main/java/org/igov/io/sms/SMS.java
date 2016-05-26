@@ -12,7 +12,7 @@ public class SMS {
 
     private String phone = null;
     private String text = null;
-    private String from = SMSFrom.FROM_10060.getSMSFrom();
+    private String from = SMSFrom.FROM_IGOV.getSMSFrom();
     private String sms_category = null;
     private LocalDateTime date_expired = null;
     private String order_id = null;
