@@ -20,7 +20,7 @@ public class SMS {
     private static final String PHONE_REGEX = "^\\+[0-9]{10,12}$";
 
     public SMS(String sPhone, String sText) throws IllegalArgumentException {
-	LOG.debug("sPhone={}, sText={}={}", sPhone, sText);
+	LOG.debug("sPhone={}, sText={}", sPhone, sText);
 
 	if (sPhone == null || sText == null) {
 	    throw new IllegalArgumentException("parameters is null");

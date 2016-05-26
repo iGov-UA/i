@@ -77,7 +77,7 @@ public class ManagerSMS {
 
 	String stringSmsReqest = oGson.toJson(smsReqest);
 
-	LOG.info("(sURL={},jsonObj={})", sURL_Send, stringSmsReqest);
+	LOG.info("sURL={}, jsonObj:\n{}", sURL_Send, stringSmsReqest);
 
 	URL oURL = new URL(sURL_Send);
 	HttpURLConnection oHttpURLConnection = (HttpURLConnection) oURL.openConnection();
@@ -97,7 +97,11 @@ public class ManagerSMS {
 	    os.append(s);
 	}
 	oBufferedReader.close();
-	return os.toString();
+	
+	String ret = os.toString();
+
+	LOG.info("Ответ:\n{}", ret);
+	return ret;
 
     }
 
