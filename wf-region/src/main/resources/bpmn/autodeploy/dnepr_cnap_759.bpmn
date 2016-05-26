@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_cnap_759" name="Державна реєстрація змін до відомостей про фізичну особу – підприємця (з заповненням заяви онлайн)" isExecutable="true">
+  <process id="dnepr_cnap_759" name="Державна реєстрація змін до відомостей про юридичну особу (з заповненням заяви онлайн)" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="InfoStart" name="Щоб скористатися цією послугою, Вам потрібно скористатися електронно-цифровим підписом (ЕЦП) (наприклад податкової або банку, що Вас обслуговує)." type="label" default="Довідник, як отримати ЕЦП, за цим &lt;a href=&quot;https://docs.google.com/document/d/1Bai40Xw-XUcJfYR96CQD7-gSjsCtAlC3DMqbbcI-fxw/edit&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;."></activiti:formProperty>
@@ -12,8 +12,8 @@
         <activiti:formProperty id="phone" name="Вкажіть Ваш контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Вкажіть Вашу E-Mail адресу для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="Info_0_0" name="======================================" type="label" default="======================================"></activiti:formProperty>
-        <activiti:formProperty id="Info_10_0" name="До яких даних фізичної особи-підприємця Ви бажаєте внести зміни?" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="Info_10_1" name="======================================" type="label" default="======================================"></activiti:formProperty>
+        <activiti:formProperty id="Info_10_00" name="До яких даних юридичної особи Ви бажаєте внести зміни?" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="Info_10_01" name="======================================" type="label" default="======================================"></activiti:formProperty>
         <activiti:formProperty id="asSelectIzm_01" name="1. Прізвище, та/або імені, та/або по батькові" type="enum" default="tf1702_2" required="true">
           <activiti:value id="tf1702_1" name="Так"></activiti:value>
           <activiti:value id="tf1702_2" name="Ні"></activiti:value>
@@ -23,7 +23,10 @@
         <activiti:formProperty id="sVar2BankIdfirstName" name="Нове ім'я" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sVar2BankIdmiddleName" name="Нове по батькові" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="fDoc_01" name="Копія нового паспорту (перша-друга сторінка)" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="Info_1_0" name="======================================" type="label" default="======================================"></activiti:formProperty>
+
+<!-- РАБОТА -->
+
+        <activiti:formProperty id="Info_1_01" name="======================================" type="label" default="======================================"></activiti:formProperty>
         <activiti:formProperty id="asSelectIzm_02" name="2. ІПН" type="enum" default="tf1702_2" required="true">
           <activiti:value id="tf1702_1" name="Так"></activiti:value>
           <activiti:value id="tf1702_2" name="Ні"></activiti:value>
