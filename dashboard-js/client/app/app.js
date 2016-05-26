@@ -12,7 +12,9 @@ angular.module('dashboardJsApp', [
   'ui.event',
   'angularMoment',
   'ngClipboard',
-  'iGovMarkers'
+  'iGovMarkers',
+  'ngMessages',
+  'smart-table'
 ]).config(function($urlRouterProvider, $locationProvider) {
   $urlRouterProvider
     .otherwise('/');

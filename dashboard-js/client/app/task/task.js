@@ -37,7 +37,7 @@
             views: {
               '@': {
                 controller: 'baTask',
-                templateUrl: 'app/task/baTask.html',
+                templateUrl: 'app/task/baTask.html'
               },
               'task-view@baTask': {
                 templateUrl: 'app/tasks/taskForm.html',

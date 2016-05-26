@@ -1,6 +1,8 @@
 'use strict';
 
 var activiti = require('../../components/activiti');
+var NodeCache = require("node-cache");
+var cache = new NodeCache();
 //var logger = require('../../components/logger').setup();
       //logger.info('Express server listening on %d, in %s mode', config.port, app.get('env'));
 
@@ -20,7 +22,7 @@ exports.index = function (req, res) {
     if (error) {
       res.send(error);
     } else {
-        
+
       //logger.info('Express server listening on %d, in %s mode', config.port, app.get('env'));
 //      logger.info('result='+result);
       res.status(200).send(result);
@@ -38,11 +40,18 @@ exports.getLoginBPs = function (req, res) {
     path: 'action/task/getLoginBPs',
     query: query
   };
-  activiti.get(options, function (error, statusCode, result) {
-    if (error) {
-      res.send(error);
-    } else {
-      res.json(result);
-    }
-  });
+  var cacheKey = JSON.stringify(options);
+  var cachedValue = cache.get(cacheKey);
+  if (cachedValue) {
+    res.json(cachedValue);
+  } else {
+    activiti.get(options, function (error, statusCode, result) {
+      if (error) {
+        res.send(error);
+      } else {
+        cache.set(cacheKey, result, 86400);
+        res.json(result);
+      }
+    });
+  }
 };
