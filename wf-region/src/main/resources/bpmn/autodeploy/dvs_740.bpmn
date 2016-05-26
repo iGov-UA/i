@@ -99,7 +99,6 @@
         <activiti:formProperty id="sComment" name="Якщо ви відмовляєте заявнику у наданні послуги, обов'язково вкажіть причину у цьому полі" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="file2" name="Завантажте необхідні файли для відправки замовнику: супровідний лист та довідку з ЄДРВП, або повідомлення про прийняття рішення до обліку із зазначенням черги. Об'єднайте документи у один .pdf файл або .zip архів" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sEskalation" name="sEskalation" type="string"></activiti:formProperty>
-        <activiti:formProperty id="Now" name="Now" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression>${file1}, ${bankId_scan_passport}, ${bankId_scan_inn}</activiti:expression>
@@ -143,13 +142,10 @@
     <sequenceFlow id="flow8" sourceRef="servicetask4" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow9" sourceRef="usertask1" targetRef="servicetask4"></sequenceFlow>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var now = new Date.now();
-var delta='0,042';
+      <script>var delta='5';
+var unixdate= Math.round((new Date()).getTime() / 1000);
 
-var unixdate= now/1000;
-
-var unixdate=unixdate+86400*delta; 
-
+var unixdate=unixdate+60*delta;
 var new_src = new Date(unixdate*1000);
 var d = new_src.getDate();
 if (d &lt; 10) d = "0"+d;
@@ -160,9 +156,9 @@ if (m &lt; 10) m = "0"+m;
 var new_year = new_src.getFullYear();
 var new_hour = new_src.getHours();
 var new_minutes = new_src.getMinutes();
-var timer = new_year+'-'+m+'-'+d+'T'+new_hour+':'+new_minutes+':'+seconds;
-execution.setVariable('sEskalation', timer)
-execution.setVariable('Now', now)</script>
+var timer = new_year+'-'+m+'-'+d+'T'+new_hour+':'+new_minutes+':00';
+execution.setVariable('sEskalation', timer);
+</script>
     </scriptTask>
     <sequenceFlow id="flow10" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow11" sourceRef="scripttask1" targetRef="servicetask1"></sequenceFlow>
