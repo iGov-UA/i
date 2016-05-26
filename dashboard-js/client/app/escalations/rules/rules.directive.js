@@ -172,7 +172,13 @@ angular.module('dashboardJsApp')
       $scope.getConditionDefinition = function (rule) {
         var sFormula = rule.sCondition.replace(/\s+/g, '');
 
-        var nDaysLimit = getDaysLimit(rule);
+        var sConditionParamSubstring = rule.soData.replace(/\s+/g, '').match(/nDaysLimit\:\-??\d+/)[0];
+
+        if (sConditionParamSubstring.search('-') + 1) {
+          return "Негайне виконання";
+        }
+
+        var nDaysLimit = parseInt(sConditionParamSubstring.match(/\d+/)[0]);
 
         var sDaysDef;
         if (nDaysLimit == 1) {
@@ -194,10 +200,6 @@ angular.module('dashboardJsApp')
 
         return sConditionDefinition;
       };
-
-      function getDaysLimit(rule) {
-        return parseInt(rule.soData.replace(/\s+/g, '').match(/nDaysLimit\:\d+/)[0].match(/\d+/)[0]);
-      }
 
       $scope.getParametersDefinition = function (rule) {
         if (rule.nID_EscalationRuleFunction.sBeanHandler === "EscalationHandler_SendMailAlert") {
