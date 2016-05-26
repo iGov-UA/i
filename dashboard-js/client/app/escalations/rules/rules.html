@@ -25,18 +25,23 @@
             {{oGroup.sTitle}}
             <span class="badge pull-right">{{oGroup.aContent.length}}</span>
           </accordion-heading>
-          <!--<table st-table="oGroup.aContent">
-
-          </table>-->
-          <table>
-            <tr ng-repeat="rule in oGroup.aContent | orderBy:'nID'">
-              <td class="col-md-8">
-                <b>ID: </b> {{rule.nID}},
-                <b>Якщо</b> {{rule.sCondition}},
-                <b>то</b> {{translate(rule.nID_EscalationRuleFunction.sName)}}.<br/>
-                <b>Параметри:</b> {{rule.soData}}. <br/>
-                <b>Послуга:</b> {{rule.bpName}}
-              </td>
+          <table st-table="oGroup.aContent" class="table table-striped">
+            <thead>
+            <tr>
+              <th class="text-center" style="cursor:pointer;" st-sort="nID">Ід.</th>
+              <th class="text-center" style="cursor:pointer;" st-sort="sID_UserTask">Стадія бізнес-процесу</th>
+              <th class="text-center">Умова</th>
+              <th class="text-center" style="cursor:pointer;" st-sort="nID_EscalationRuleFunction.sName">Наслідок</th>
+              <th class="text-center">Додаткові параметри</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr tr ng-repeat="rule in oGroup.aContent | orderBy:'nID'">
+              <td class="text-center">{{rule.nID}}</td>
+              <td class="text-center">{{rule.sID_UserTask}}</td>
+              <td>{{getConditionDefinition(rule)}}</td>
+              <td>{{translate(rule.nID_EscalationRuleFunction.sName)}}</td>
+              <td>{{getParametersDefinition(rule)}}</td>
               <td class="col-md-4 rulebuttons">
                 <div class="btn-group">
                   <button type="button" class="btn btn-default" ng-click="edit(rule)">
@@ -55,6 +60,7 @@
                 </div>
               </td>
             </tr>
+            </tbody>
           </table>
         </accordion-group>
       </accordion>
@@ -65,15 +71,23 @@
       </tab-heading>
       <accordion close-others="true">
         <accordion-group heading="{{oMissingBP.sTitle}}" ng-repeat="oMissingBP in aMissingGroups | orderBy:'sTitle'">
-          <table>
-            <tr ng-repeat="rule in oMissingBP.aContent | orderBy:'nID'">
-              <td class="col-md-8">
-                <b>ID: </b> {{rule.nID}},
-                <b>Якщо</b> {{rule.sCondition}},
-                <b>то</b> {{translate(rule.nID_EscalationRuleFunction.sName)}}.<br/>
-                <b>Параметри:</b> {{rule.soData}}. <br/>
-                <b>Послуга:</b> {{rule.bpName}}
-              </td>
+          <table st-table="oGroup.aContent" class="table table-striped">
+            <thead>
+            <tr>
+              <th class="text-center" style="cursor:pointer;" st-sort="nID">Ід.</th>
+              <th class="text-center" style="cursor:pointer;" st-sort="sID_UserTask">Стадія бізнес-процесу</th>
+              <th class="text-center">Умова</th>
+              <th class="text-center" style="cursor:pointer;" st-sort="nID_EscalationRuleFunction.sName">Наслідок</th>
+              <th class="text-center">Додаткові параметри</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr tr ng-repeat="rule in oGroup.aContent | orderBy:'nID'">
+              <td class="text-center">{{rule.nID}}</td>
+              <td class="text-center">{{rule.sID_UserTask}}</td>
+              <td>{{getConditionDefinition(rule)}}</td>
+              <td>{{translate(rule.nID_EscalationRuleFunction.sName)}}</td>
+              <td>{{getParametersDefinition(rule)}}</td>
               <td class="col-md-4 rulebuttons">
                 <div class="btn-group">
                   <button type="button" class="btn btn-default" ng-click="edit(rule)">
@@ -92,6 +106,7 @@
                 </div>
               </td>
             </tr>
+            </tbody>
           </table>
         </accordion-group>
       </accordion>

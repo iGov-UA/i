@@ -157,7 +157,7 @@ angular.module('dashboardJsApp')
 
         for (var sucGr in successGroupsTamp) {
           $scope.aSuccessGroups.push({
-            sTitle: $.trim(successGroupsTamp[sucGr][0].bpName + ' (' + successGroupsTamp[sucGr][0].sID_BP + ')'),
+            sTitle: $.trim(successGroupsTamp[sucGr][0].bpName + ' (код: ' + successGroupsTamp[sucGr][0].sID_BP + ')'),
             aContent: angular.copy(successGroupsTamp[sucGr])
           });
         }
@@ -167,7 +167,58 @@ angular.module('dashboardJsApp')
             aContent: angular.copy(missingGroupsTemp[misGr])
           });
         }
-        debugger;
+      }
+
+      $scope.getConditionDefinition = function (rule) {
+        var sFormula = rule.sCondition.replace(/\s+/g, '');
+
+        var nDaysLimit = getDaysLimit(rule);
+
+        var sDaysDef;
+        if (nDaysLimit == 1) {
+          sDaysDef = "день"
+        } else if (nDaysLimit > 1 && nDaysLimit < 5) {
+          sDaysDef = "дні"
+        } else {
+          sDaysDef = "днів"
+        }
+
+        var sConditionDefinition;
+        if (sFormula === "nElapsedDays>nDaysLimit") {
+          sConditionDefinition = "Минуло понад " + nDaysLimit + " " + sDaysDef;
+        } else if (sFormula === "nElapsedDays>=nDaysLimit") {
+          sConditionDefinition = "Минуло понад " + nDaysLimit + " " + sDaysDef + " включно";
+        } else {
+          sConditionDefinition = "Минуло рівно " + nDaysLimit + " " + sDaysDef;
+        }
+
+        return sConditionDefinition;
+      };
+
+      function getDaysLimit(rule) {
+        return parseInt(rule.soData.replace(/\s+/g, '').match(/nDaysLimit\:\d+/)[0].match(/\d+/)[0]);
+      }
+
+      $scope.getParametersDefinition = function (rule) {
+        if (rule.nID_EscalationRuleFunction.sBeanHandler === "EscalationHandler_SendMailAlert") {
+          var sData = rule.soData.replace(/\s+/g, '');
+
+          var result = sData.match(/asRecipientMail\:\[.*\]/)[0].match(/\[.*\]/)[0];
+          var substrMy = result.substring(1, result.length - 1);
+          var arr = substrMy.split(',');
+          for (var i = 0; i < arr.length; i++) {
+            arr[i] = arr[i].replace(/[\'\"]+/g, '');
+          }
+
+          if (arr.length > 0) {
+            return arr.toString().replace(/\,+/g, ', ');
+          } else {
+            return "Адреси електронних скриньок не задані";
+          }
+        } else {
+          return "";
+        }
+
       }
     };
 
