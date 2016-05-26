@@ -98,6 +98,13 @@ public class GeneralConfig {
     @Value("${general.OTP.sMerchantPassword}")
     private String sMerchantPassword_OTP;
     
+    @Value("${general.SMS.sURL_Send}")
+    private String sURL_Send_SMS;
+    @Value("${general.SMS.sMerchantId}")
+    private String sMerchantId_SMS;
+    @Value("${general.SMS.sMerchantPassword}")
+    private String sMerchantPassword_SMS;
+
     @Value("${general.LiqPay.sURL_CheckOut}")
     private String sURL_CheckOut_LiqPay;
 
@@ -208,6 +215,16 @@ public class GeneralConfig {
     }
     public String getMerchantPassword_OTP()  {
         return sMerchantPassword_OTP;
+    }
+    
+    public String getURL_Send_SMS()  {
+        return sURL_Send_SMS;
+    }
+    public String getMerchantId_SMS()  {
+        return sMerchantId_SMS;
+    }
+    public String getMerchantPassword_SMS()  {
+        return sMerchantPassword_SMS;
     }
     
     public Boolean isEnable_UniSender_Mail() {

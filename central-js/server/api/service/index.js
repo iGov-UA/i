@@ -6,6 +6,7 @@ var controller = require('./index.controller');
 
 router.get('/', controller.index);
 router.get('/:nID([0-9]+)/statistics', controller.getServiceStatistics);
+router.get('/getServiceHistoryReport', controller.getServiceHistoryReport);
 router.post('/', controller.setService);
 router.delete('/', controller.removeServiceData);
 

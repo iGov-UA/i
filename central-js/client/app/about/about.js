@@ -6,7 +6,8 @@ angular.module('about').config(function ($stateProvider, statesRepositoryProvide
         url: 'about',
         views: {
           'main@': {
-            templateUrl: 'app/about/about.html'
+            templateUrl: 'app/about/about.html',
+            controller: 'ServiceHistoryReportController'
           }
         }
       })
