@@ -38,12 +38,9 @@ public class ManagerSMS {
      */
     @PostConstruct
     private void init() {
-	sURL_Send = generalConfig.getURL_Send_SMS();
-	sMerchantId = generalConfig.getMerchantId_SMS();
-	sMerchantPassword = generalConfig.getMerchantPassword_SMS();
-//	sURL_Send = "https://sms-inner.siteheart.com/api/send_sms.api";
-//	sMerchantId = "1070";
-//	sMerchantPassword = "111";
+	sURL_Send = generalConfig.getURL_Send_SMS().trim();
+	sMerchantId = generalConfig.getMerchantId_SMS().trim();
+	sMerchantPassword = generalConfig.getMerchantPassword_SMS().trim();
 
 	LOG.debug("general.SMS.sURL_Send={}, general.SMS.sMerchantId={}, general.SMS.sMerchantPassword=*****",
 		sURL_Send, sMerchantId);
@@ -100,7 +97,7 @@ public class ManagerSMS {
 	
 	String ret = os.toString();
 
-	LOG.info("Ответ:\n{}", ret);
+	LOG.debug("Ответ:\n{}", ret);
 	return ret;
 
     }
