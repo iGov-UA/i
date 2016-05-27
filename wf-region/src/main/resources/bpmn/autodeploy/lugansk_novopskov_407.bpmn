@@ -107,7 +107,7 @@
     <sequenceFlow id="flow14" name="Документи не відповідають" sourceRef="exclusivegateway2" targetRef="servicetask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDocument=='NO'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask4" name="Відмова" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask4" name="Відмова" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -123,7 +123,9 @@
         </activiti:field>
         <activiti:field name="sText_SMS">
           <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
-        </activiti:field>                
+        </activiti:field>             
+        <activiti:field name="saAttachmentsForSend">
+        </activiti:field>   
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
@@ -148,7 +150,7 @@
     <sequenceFlow id="flow13" name="Документи відповідають" sourceRef="exclusivegateway2" targetRef="servicetask6">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDocument=='OK'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask6" name="Документи відповідають" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask6" name="Документи відповідають" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:expression><![CDATA[noreply@igov.org.ua]]></activiti:expression>
@@ -164,7 +166,9 @@
         </activiti:field>
         <activiti:field name="sText_SMS">
           <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno na "Vzyato v robotu". Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
-        </activiti:field>        
+        </activiti:field>     
+        <activiti:field name="saAttachmentsForSend">
+        </activiti:field>   
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 			<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br><br>
@@ -226,7 +230,7 @@
     <sequenceFlow id="flow8" name="Ордер видано" sourceRef="exclusivegateway1" targetRef="servicetask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResult=='Yes'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask5" name="Згода" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask5" name="Згода" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -243,6 +247,8 @@
         <activiti:field name="sText_SMS">
           <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field> 
+        <activiti:field name="saAttachmentsForSend">
+        </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
