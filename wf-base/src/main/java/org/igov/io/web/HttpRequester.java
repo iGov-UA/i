@@ -223,12 +223,24 @@ public class HttpRequester {
     public void simplifySSLConnection(boolean bSkip, HttpsURLConnection oConnectHTTPS) {
         if(bSkip){
             LOG.info("Skip Sertificate!");
-            oConnectHTTPS.setHostnameVerifier(new HostnameVerifier() {
+            javax.net.ssl.HttpsURLConnection.setDefaultHostnameVerifier(
+                new javax.net.ssl.HostnameVerifier(){
+
+                    public boolean verify(String hostname,
+                            javax.net.ssl.SSLSession sslSession) {
+                        //if (hostname.equals("localhost")) {
+                            return true;
+                        //}
+                        //return false;
+                    }
+                });            
+            
+            /*oConnectHTTPS.setHostnameVerifier(new HostnameVerifier() {
                 @Override
                 public boolean verify(String arg0, SSLSession arg1) {
                     return true;
                 }
-            });
+            });*/
         }
         /*if (oConnectHTTPS != null) {
             //HttpsURLConnection oConnectHTTPS = (HttpsURLConnection) oConnectAbstract;
