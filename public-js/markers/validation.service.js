@@ -164,6 +164,9 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
           formField.lastErrorMessage = savedOptions.lastError;
         }
       }
+      if(result === null){
+        result = true;
+      }
       return result;
     };
     return validationClosure;

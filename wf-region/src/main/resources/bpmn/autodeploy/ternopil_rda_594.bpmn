@@ -46,8 +46,8 @@
           <activiti:value id="sZemlya" name="на видачу державного акту на право власності на земельну ділянку на ім’я малолітніх (неповнолітніх) дітей"></activiti:value>
           <activiti:value id="sInshe" name="інше"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sInshi" name="На що саме Ви хочете отримати дозвіл?$; Прошу дати дозвіл на " type="string" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPrychyna" name="Вкажіть причину вчинення правочину; у зв'язку з чим" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sInshi" name="На що саме Ви хочете отримати дозвіл?; Прошу дати дозвіл на " type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPrychyna" name="Вкажіть причину вчинення правочину; у зв'язку з " type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sAddress_mayno" name="Вкажіть адресу квартири (майна) на відчуження; " type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdress_kvart" name="Вкажіть адресу квартири, якою дитина забезпечується взамін; у разі відчуження житла" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sData_mayno" name="Дата, до якої буде надано підтверджуючі документи на нове житло дитини; повинні бути надані органу опіки та піклування у місяцний строк" type="date"></activiti:formProperty>
@@ -61,13 +61,19 @@
         <activiti:formProperty id="nSvidotstvo" name="Копія свідоцтва про народження дитини (дітей); у разі декількох дітей прохання завантажувати одним архівом" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nDovidka" name="Довідка з місця проживання, про склад сім'ї та реєстрацію (Форма-3) або витяг з домової книги" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nRishennya_mkv_opikun" name="Копія рішення виконавчого комітету міської ради про встановлення опіки над дитиною; для опікунів, піклувальників" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nRishennya_mkv_mayno" name="Копія рішення виконавчого комітету міської ради про встановлення опіки над майном дитини; для опікунів, піклувальників" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nRishennya_mkv_mayno" name="Копія рішення виконавчого комітету міської ради про встановлення опіки над майном дитини; для опікунів, піклувальників"></activiti:formProperty>
         <activiti:formProperty id="nSviditstvo_odr" name="Копія свідоцтва про укладення або розірвання шлюбу між батьками дитини; у разі наявності" type="file"></activiti:formProperty>
         <activiti:formProperty id="nDoc_mayno" name="Документи на право власності на відчужуване майно, де малолітні (неповнолітні) діти мають право власності (користування)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nDoc_avto" name="Документ, що підтверджує право власності на автомобіль" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nDoc_hroshi" name="Документ, що підтверджує право володіння дитини грошовими заощадженнями" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nDoc_zemlya" name="Документ, що підтверджує право власності (кориcтування) на земельну ділянку" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nDoc_zemlya" name="Документ, що підтверджує право власності (кориcтування) на земельну ділянку" type="file"></activiti:formProperty>
         <activiti:formProperty id="nDocument" name="Документ, що підтверджує право власності, володіння або користування дитини; стосовно чого вчинятиметься правочин" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sShapka264_1" name="Шапка заяви" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органа" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Час роботи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('ternopil/tern_594.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -143,7 +149,8 @@
         <activiti:formProperty id="comment_5" name="Якщо назви якогось документу не вистачає у переліку в заяві - впишіть його назву у це поле" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers21" name="Настроювання принтформи " type="markers" default="${markerService.loadFromFile('ternopil/tern_594_cont1.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/tern_rda_594.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/tern_rda_594.html]" type="invisible" default="Заява громадянина 1" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/ternopil/tern_rda_594_1.html]" type="invisible" default="Заява громадянина 2" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -199,18 +206,6 @@
         <activiti:formProperty id="sBank_kasa" name="Вкажіть назву банку, ощадної каси в якій знаходяться грошові заощадження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPloshcha" name="Вкажіть площу земельної ділянки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdress_Zemlya" name="Вкажіть адресу земельної ділянки" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nPassport" name="Копії паспорта другого з батьків (опікунів, піклувальників)" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nKod" name="Копія довідки про присвоєння реєстраційних номерів облікової картки платника податків другого з батьків (опікунів, піклувальників)" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nSvidotstvo" name="Копія свідотства про народження дитини (дітей); у разі декількох дітей прохання завантажувати одним архівом" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nDovidka" name="Довідка з місця проживання, про склад сім'ї та реєстрацію (Форма-3) або витяг з домової книги" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nRishennya_mkv_opikun" name="Копія рішення виконавчого комітету міської ради про встановлення опіки над дитиною (для опікунів, піклувальників)" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nRishennya_mkv_mayno" name="Копія рішення виконавчого комітету міської ради про встановлення опіки над майном дитини (для опікунів, піклувальників)" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nSviditstvo_odr" name="Копія свідоцтва про укладення або розірвання шлюбу між батьками дитини (у разі наявності)" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nDoc_mayno" name="Документи на право власності на відчужуване майно, де малолітні (неповнолітні) діти мають право власності (користування)" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nDoc_avto" name="Документ, що підтверджеє право власності на автомобіль" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nDoc_hroshi" name="Документ, що підтверджує право володіння дитини грошовими заощадженнями" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nDoc_zemlya" name="Документ, що підтверджує право власності (коритування) на земельну ділянку" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nDocument" name="Документ, що підтверджує право власності, володіння або користування дитини; стосовно чого вчинятиметься правочин" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_visit" name="Укажіть дату - коли прийти громадянам (у форматі дд.мм.рррр)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="time_visit" name="Укажіть час - о котрій прийти громадянам (наприклад 15:00)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="room" name="Укажіть кабінет, де буде проводитися співбесіда" type="string" writable="false"></activiti:formProperty>
@@ -223,6 +218,7 @@
           <activiti:value id="reject" name="Готова відмова у отриманні дозволу"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment_6" name="У разі відхилення звернення внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="docFile" name="Додайте скан-копію відповіді" type="file" required="true"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">

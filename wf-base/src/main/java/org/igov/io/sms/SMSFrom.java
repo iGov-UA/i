@@ -1,8 +1,7 @@
 package org.igov.io.sms;
 
 public enum SMSFrom {
-    FROM_10060("10060"), 
-    FROM_PRIVATBANK("PrivatBank");
+    FROM_IGOV("iGov");
 
     private final String sFrom;
 

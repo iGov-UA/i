@@ -18,7 +18,7 @@
           <activiti:value id="no" name="Ні"></activiti:value>
         </activiti:formProperty>	
         <activiti:formProperty id="sAddressFactual" name="Місце проживання; область, місто, вулиця, дім, квартира" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний телефон" type="long" default="38" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваша електронна пошта; на неї Ви будете отримувати повідомлення про стан Вашої заяви" type="string" required="true"></activiti:formProperty>
 
 
@@ -84,7 +84,7 @@
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<p>
-				Ваша заява на отримання довідки про оходи фізичних осіб, передана в роботу.
+				Ваша заява на отримання довідки про доходи фізичних осіб чекає на первинну обробку.
 			</p>			
 			<br>
 			За наявності питань можете звернутись за наступними контактами<br>
@@ -105,7 +105,7 @@
         <activiti:formProperty id="sFIO" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="Ваш ІПН" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний телефон" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваша електронна пошта; на неї Ви будете отримувати повідомлення про стан Вашої заяви" type="string" writable="false"></activiti:formProperty>
 
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
@@ -181,7 +181,7 @@
     <sequenceFlow id="flow10" name="позитивно" sourceRef="exclusivegateway1" targetRef="servicetask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${aDecision=='accept'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask5" name="повідомлення громадянина про отримання витягу" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask5" name="повідомлення громадянина про отримання витягу" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -207,14 +207,6 @@
 			${sAddress}<br>
 			${sPhoneOrgan}<br>
 			${sWorkTime}<br><br>
-			
-			<p>
-				Для отримання довідки Вам необхідно мати при при візиті до відділення фіскальної служби наступні документи:<br>
-				- № запиту (Ви його отримали листом після подачі заяви)<br>
-				- заяву на отримання довідки про доходи (Ви можете її заповнити вдома або зробити це на місці, 
-				<a href="https://dl.dropboxusercontent.com/u/91233927/zajva_taxes.doc" target="_blank">шаблон заяви</a>)<br>
-				- оригінал паспорта громадянина України
-			</p>
 			<p>
 				Щоб отримати довідку, при візиті до відділення фіскальної служби,<br> 
 				Вам необхідно мати при собі оригінал паспорта громадянина України<br> 
@@ -222,7 +214,7 @@
 			</p>
 			<p>
 				Ви можете ознайомитися з законодавством, за яким надається послуга, 
-				за <a href="https://docs.google.com/document/d/1zVUw9mFYi8yN8jYnoox8mW1F2RFe7IUq6ThBcTEPv3E/edit" target="_blank">цим</a> посиланням
+				за <a href="https://docs.google.com/document/d/1zVUw9mFYi8yN8jYnoox8mW1F2RFe7IUq6ThBcTEPv3E/edit" target="_blank">цим посиланням</a>
 			</p> 		
 			<br><br>			
 			[pattern/mail/_common_feedback.html]

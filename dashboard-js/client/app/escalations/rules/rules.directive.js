@@ -49,7 +49,6 @@ angular.module('dashboardJsApp')
         });
       };
 
-
       $scope.rules = [];
       $scope.get = function () {
         return $scope.rules;
@@ -89,10 +88,9 @@ angular.module('dashboardJsApp')
       };
 
       $scope.delete = function (rule) {
-        Modal.confirm.delete(function(event){
-        deleteFunc(rule)
-          .then($scope.fillData);
-          console.info("Rule ID " + rule.nID + " has deleted");
+        Modal.confirm.delete(function (event) {
+          deleteFunc(rule)
+            .then($scope.fillData);
         })('правило для послуги ' + rule.bpName + ' (ID правила ' + rule.nID + ')');
       };
 
@@ -116,6 +114,7 @@ angular.module('dashboardJsApp')
               angular.forEach($scope.rules, function (rule, index) {
                 setRuleBPName(rule);
               });
+              fillAccordionGroups();
               $scope.areRulesPresent = true;
             });
 
@@ -132,6 +131,97 @@ angular.module('dashboardJsApp')
         if (text == 'Отсылка уведомления на электронную почту') return 'відправити повідомлення на e-mail';
         return text;
       };
+
+      $scope.aSuccessGroups = [];
+      $scope.aMissingGroups = [];
+
+      function fillAccordionGroups() {
+        var successGroupsTamp = {};
+        var missingGroupsTemp = {};
+        angular.forEach($scope.rules, function (rule, index) {
+          var result = $.grep($scope.processesList, function (e) {
+            return e.sID === rule.sID_BP;
+          });
+          if (result.length > 0) {
+            if (!successGroupsTamp[rule.sID_BP]) {
+              successGroupsTamp[rule.sID_BP] = [];
+            }
+            successGroupsTamp[rule.sID_BP].push(rule);
+          } else {
+            if (!missingGroupsTemp[rule.sID_BP]) {
+              missingGroupsTemp[rule.sID_BP] = [];
+            }
+            missingGroupsTemp[rule.sID_BP].push(rule);
+          }
+        });
+
+        for (var sucGr in successGroupsTamp) {
+          $scope.aSuccessGroups.push({
+            sTitle: $.trim(successGroupsTamp[sucGr][0].bpName + ' (код: ' + successGroupsTamp[sucGr][0].sID_BP + ')'),
+            aContent: angular.copy(successGroupsTamp[sucGr])
+          });
+        }
+        for (var misGr in missingGroupsTemp) {
+          $scope.aMissingGroups.push({
+            sTitle: $.trim(missingGroupsTemp[misGr][0].sID_BP),
+            aContent: angular.copy(missingGroupsTemp[misGr])
+          });
+        }
+      }
+
+      $scope.getConditionDefinition = function (rule) {
+        var sFormula = rule.sCondition.replace(/\s+/g, '');
+
+        var sConditionParamSubstring = rule.soData.replace(/\s+/g, '').match(/nDaysLimit\:\-??\d+/)[0];
+
+        if (sConditionParamSubstring.search('-') + 1) {
+          return "Негайне виконання";
+        }
+
+        var nDaysLimit = parseInt(sConditionParamSubstring.match(/\d+/)[0]);
+
+        var sDaysDef;
+        if (nDaysLimit == 1) {
+          sDaysDef = "день"
+        } else if (nDaysLimit > 1 && nDaysLimit < 5) {
+          sDaysDef = "дні"
+        } else {
+          sDaysDef = "днів"
+        }
+
+        var sConditionDefinition;
+        if (sFormula === "nElapsedDays>nDaysLimit") {
+          sConditionDefinition = "Минуло понад " + nDaysLimit + " " + sDaysDef;
+        } else if (sFormula === "nElapsedDays>=nDaysLimit") {
+          sConditionDefinition = "Минуло понад " + nDaysLimit + " " + sDaysDef + " включно";
+        } else {
+          sConditionDefinition = "Минуло рівно " + nDaysLimit + " " + sDaysDef;
+        }
+
+        return sConditionDefinition;
+      };
+
+      $scope.getParametersDefinition = function (rule) {
+        if (rule.nID_EscalationRuleFunction.sBeanHandler === "EscalationHandler_SendMailAlert") {
+          var sData = rule.soData.replace(/\s+/g, '');
+
+          var result = sData.match(/asRecipientMail\:\[.*\]/)[0].match(/\[.*\]/)[0];
+          var substrMy = result.substring(1, result.length - 1);
+          var arr = substrMy.split(',');
+          for (var i = 0; i < arr.length; i++) {
+            arr[i] = arr[i].replace(/[\'\"]+/g, '');
+          }
+
+          if (arr.length > 0) {
+            return arr.toString().replace(/\,+/g, ', ');
+          } else {
+            return "Адреси електронних скриньок не задані";
+          }
+        } else {
+          return "";
+        }
+
+      }
     };
 
     return {

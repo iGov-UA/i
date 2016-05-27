@@ -38,12 +38,9 @@ public class ManagerSMS {
      */
     @PostConstruct
     private void init() {
-	sURL_Send = generalConfig.getURL_Send_SMS();
-	sMerchantId = generalConfig.getMerchantId_SMS();
-	sMerchantPassword = generalConfig.getMerchantPassword_SMS();
-//	sURL_Send = "https://sms-inner.siteheart.com/api/send_sms.api";
-//	sMerchantId = "1070";
-//	sMerchantPassword = "111";
+	sURL_Send = generalConfig.getURL_Send_SMS().trim();
+	sMerchantId = generalConfig.getMerchantId_SMS().trim();
+	sMerchantPassword = generalConfig.getMerchantPassword_SMS().trim();
 
 	LOG.debug("general.SMS.sURL_Send={}, general.SMS.sMerchantId={}, general.SMS.sMerchantPassword=*****",
 		sURL_Send, sMerchantId);
@@ -77,7 +74,7 @@ public class ManagerSMS {
 
 	String stringSmsReqest = oGson.toJson(smsReqest);
 
-	LOG.info("(sURL={},jsonObj={})", sURL_Send, stringSmsReqest);
+	LOG.info("sURL={}, jsonObj:\n{}", sURL_Send, stringSmsReqest);
 
 	URL oURL = new URL(sURL_Send);
 	HttpURLConnection oHttpURLConnection = (HttpURLConnection) oURL.openConnection();
@@ -97,7 +94,11 @@ public class ManagerSMS {
 	    os.append(s);
 	}
 	oBufferedReader.close();
-	return os.toString();
+	
+	String ret = os.toString();
+
+	LOG.debug("Ответ:\n{}", ret);
+	return ret;
 
     }
 
