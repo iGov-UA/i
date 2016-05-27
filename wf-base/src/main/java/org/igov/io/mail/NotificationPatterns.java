@@ -42,14 +42,18 @@ public class NotificationPatterns {
               "При надходжені Вашої заявки у систему госоргану - Вам буде додатково направлено персональний лист - повідомленя.<br>";
       */
         try {
-            bankIdFirstName = bankIdFirstName.toLowerCase();
-            char[] chars = bankIdFirstName.toCharArray();
-            chars[0] = Character.toUpperCase(chars[0]);
-            bankIdFirstName = String.valueOf(chars);
+            String sHead;
+            if(bankIdFirstName == null || bankIdFirstName.equalsIgnoreCase("null")) {
+                sHead = "Вітаємо, Ваша заявка прийнята!";
+            } else {
+                bankIdFirstName = bankIdFirstName.toLowerCase();
+                char[] chars = bankIdFirstName.toCharArray();
+                chars[0] = Character.toUpperCase(chars[0]);
+                bankIdFirstName = String.valueOf(chars);
+                sHead = String.format("Вітаємо %s, Ваша заявка %s прийнята!", bankIdFirstName, sID_Order);
+            }
 
-            String sHead = String.format("Вітаємо %s, Ваша заявка %s прийнята!", bankIdFirstName, sID_Order);
-
-            String sBody = String.format("Вітаємо %s, Ваша заявка %s прийнята!", bankIdFirstName, sID_Order) +
+            String sBody = sHead +
                     "<br>Ви завжди зможете переглянути її поточний статус у розділі <a href=\"" + generalConfig
                     .getSelfHostCentral() + "/order/search?sID_Order=" + sID_Order
                     + "\">\"Мій журнал\"</a>. Також на кожному етапі Ви будете отримувати email-повідомлення."
