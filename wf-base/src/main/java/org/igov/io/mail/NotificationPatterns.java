@@ -44,12 +44,13 @@ public class NotificationPatterns {
         try {
             String sHead;
             if(bankIdFirstName == null || bankIdFirstName.equalsIgnoreCase("null")) {
-                sHead = "Вітаємо, Ваша заявка прийнята!";
+                sHead = String.format("Вітаємо, Ваша заявка %s прийнята!", sID_Order);
             } else {
                 bankIdFirstName = bankIdFirstName.toLowerCase();
                 char[] chars = bankIdFirstName.toCharArray();
                 chars[0] = Character.toUpperCase(chars[0]);
                 bankIdFirstName = String.valueOf(chars);
+
                 sHead = String.format("Вітаємо %s, Ваша заявка %s прийнята!", bankIdFirstName, sID_Order);
             }
 
