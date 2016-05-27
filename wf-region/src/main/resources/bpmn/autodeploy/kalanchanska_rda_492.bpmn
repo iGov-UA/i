@@ -141,7 +141,7 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow4" sourceRef="servicetask2" targetRef="servicetask6"></sequenceFlow>
-        <serviceTask id="servicetask6" name="Документи відповідають" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+        <serviceTask id="servicetask6" name="Документи відповідають" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:expression><![CDATA[noreply@igov.org.ua]]></activiti:expression>
@@ -152,6 +152,8 @@
         <activiti:field name="sText_SMS">
           <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano</activiti:expression>
         </activiti:field>        
+        <activiti:field name="saAttachmentsForSend">
+        </activiti:field>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
@@ -305,7 +307,7 @@
     <sequenceFlow id="flow14" name="Документи не відповідають" sourceRef="exclusivegateway2" targetRef="servicetask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDocument=='NO'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask4" name="Відмова" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask4" name="Відмова" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -316,6 +318,8 @@
         <activiti:field name="sText_SMS">
           <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>        
+        <activiti:field name="saAttachmentsForSend">
+        </activiti:field>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
@@ -349,7 +353,7 @@
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDocument=='OK'}]]></conditionExpression>
     </sequenceFlow>
 
-    <serviceTask id="servicetask5" name="Згода" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask5" name="Згода" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -360,6 +364,8 @@
         <activiti:field name="sText_SMS">
           <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field> 
+        <activiti:field name="saAttachmentsForSend">
+        </activiti:field>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
