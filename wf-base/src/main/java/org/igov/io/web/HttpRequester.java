@@ -12,8 +12,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.Map;
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLSession;
 
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.apache.commons.io.IOUtils;
@@ -116,16 +120,44 @@ public class HttpRequester {
     }
 
     public String getInside(String sURL, Map<String, String> mParam) throws Exception {
+        
+        /*javax.net.ssl.HttpsURLConnection.setDefaultHostnameVerifier(
+        new javax.net.ssl.HostnameVerifier(){
+
+            public boolean verify(String sss,
+                    javax.net.ssl.SSLSession sslSession) {
+                return true;
+            }
+        });*/
+        ///Boolean bSkip
+        //generalConfig.getAuthLogin()
+        
+        
+        
+        
         URL oURL = new URL(getFullURL(sURL, mParam));
         InputStream oInputStream;
         BufferedReader oBufferedReader_InputStream;
         HttpURLConnection oConnection;
+        
+        
+        
+        //HttpsURLConnection.verify(
         Integer nStatus;
         StringBuilder osReturn = new StringBuilder();
         try {
 
-            oConnection = (HttpURLConnection) oURL.openConnection();
 
+            boolean bSkipValidationSSL = generalConfig.isSelfTest();
+            URLConnection oConnectAbstract = oURL.openConnection();
+            if (oConnectAbstract instanceof HttpsURLConnection) {
+                //simplifySSLConnection(bSkipValidationSSL ? null : (HttpsURLConnection) oConnectAbstract);
+                simplifySSLConnection(bSkipValidationSSL, (HttpsURLConnection) oConnectAbstract);
+            }
+            
+            //oConnection = (HttpURLConnection) oURL.openConnection();
+            oConnection = (HttpURLConnection) oConnectAbstract;
+            
             String sUser = generalConfig.getAuthLogin();
             String sPassword = generalConfig.getAuthPassword();
             String sAuth = ToolWeb.base64_encode(sUser + ":" + sPassword);
@@ -180,6 +212,63 @@ public class HttpRequester {
         }
         return osReturn.toString();
     }
+    
+    /**
+     * Веривикация сертификата при HTTPS-соединении.
+     *
+     * @param oConnectHTTPS соединение (если null, то верификация будет
+     * пропущенна)
+     */
+    //public void simplifySSLConnection(HttpsURLConnection oConnectHTTPS) {
+    public void simplifySSLConnection(boolean bSkip, HttpsURLConnection oConnectHTTPS) {
+        if(bSkip){
+            LOG.info("Skip Sertificate!");
+            oConnectHTTPS.setHostnameVerifier(new HostnameVerifier() {
+                @Override
+                public boolean verify(String arg0, SSLSession arg1) {
+                    return true;
+                }
+            });
+        }
+        /*if (oConnectHTTPS != null) {
+            //HttpsURLConnection oConnectHTTPS = (HttpsURLConnection) oConnectAbstract;
+            oConnectHTTPS.setHostnameVerifier(new HostnameVerifier() {
+                @Override
+                public boolean verify(String arg0, SSLSession arg1) {
+                    return true;
+                }
+            });
+        } else {
+            TrustManager[] trustAllCerts = {
+                new X509TrustManager() {
+                    public X509Certificate[] getAcceptedIssuers() {
+                        return null;
+                    }
+
+                    public void checkClientTrusted(X509Certificate[] certs, String authType) {
+                    }
+
+                    public void checkServerTrusted(X509Certificate[] certs, String authType) {
+                    }
+                }
+            };
+            try {
+                SSLContext oSSLContext = SSLContext.getInstance("SSL");
+                oSSLContext.init(null, trustAllCerts, new SecureRandom());
+                HttpsURLConnection.setDefaultSSLSocketFactory(oSSLContext.getSocketFactory());
+            } catch (Exception oException) {
+                _RiseWarn(oException, "simplifySSLConnection", "", "Fail getting SSLContext");
+            }
+            HostnameVerifier oHostnameVerifier = new HostnameVerifier() {
+                public boolean verify(String urlHostName, SSLSession session) {
+                    _RiseWarn("simplifySSLConnection", "URL Host(urlHostName)=" + urlHostName, " vs. " + session.getPeerHost());
+                    return true;
+                }
+            };
+            HttpsURLConnection.setDefaultHostnameVerifier(oHostnameVerifier);
+        }*/
+    }
+    
     
     public byte[] getInsideBytes(String sURL, Map<String, String> mParam) throws Exception {
         URL oURL = new URL(getFullURL(sURL, mParam));
