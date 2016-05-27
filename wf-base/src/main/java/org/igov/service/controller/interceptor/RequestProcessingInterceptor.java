@@ -307,10 +307,10 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
         String sMailTo = JsonRequestDataResolver.getEmail(omRequestBody);
         String sPhone = String.valueOf(JsonRequestDataResolver.getPhone(omRequestBody));
-        String  bankIdfirstName = JsonRequestDataResolver.getBankIdFirstName(omRequestBody);
+        String  bankIdFirstName = JsonRequestDataResolver.getBankIdFirstName(omRequestBody);
         if (sMailTo != null) {
             LOG.info("Send notification mail... (sMailTo={})", sMailTo);
-            oNotificationPatterns.sendTaskCreatedInfoEmail(sMailTo, sID_Order, bankIdfirstName);
+            oNotificationPatterns.sendTaskCreatedInfoEmail(sMailTo, sID_Order, bankIdFirstName);
         }
 
         if (sMailTo != null || sPhone != null) {

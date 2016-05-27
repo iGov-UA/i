@@ -29,7 +29,7 @@ public class NotificationPatterns {
     @Autowired
     private ActionTaskService oActionTaskService;
 
-    public void sendTaskCreatedInfoEmail(String sMailTo, String sID_Order, String bankIdfirstName) throws EmailException {
+    public void sendTaskCreatedInfoEmail(String sMailTo, String sID_Order, String bankIdFirstName) throws EmailException {
 
       /*
       String sHead = String.format("Ви подали заяву №%s на послугу через портал %s", nID_Protected,
@@ -42,9 +42,19 @@ public class NotificationPatterns {
               "При надходжені Вашої заявки у систему госоргану - Вам буде додатково направлено персональний лист - повідомленя.<br>";
       */
         try {
-            String sHead = String.format("Вітаємо %s, Ваша заявка %s прийнята!", bankIdfirstName, sID_Order);
+            String sHead;
+            if(bankIdFirstName == null || bankIdFirstName.equalsIgnoreCase("null")) {
+                sHead = String.format("Вітаємо, Ваша заявка %s прийнята!", sID_Order);
+            } else {
+                bankIdFirstName = bankIdFirstName.toLowerCase();
+                char[] chars = bankIdFirstName.toCharArray();
+                chars[0] = Character.toUpperCase(chars[0]);
+                bankIdFirstName = String.valueOf(chars);
 
-            String sBody = String.format("Вітаємо %s, Ваша заявка %s прийнята!", bankIdfirstName, sID_Order) +
+                sHead = String.format("Вітаємо %s, Ваша заявка %s прийнята!", bankIdFirstName, sID_Order);
+            }
+
+            String sBody = sHead +
                     "<br>Ви завжди зможете переглянути її поточний статус у розділі <a href=\"" + generalConfig
                     .getSelfHostCentral() + "/order/search?sID_Order=" + sID_Order
                     + "\">\"Мій журнал\"</a>. Також на кожному етапі Ви будете отримувати email-повідомлення."
@@ -55,7 +65,7 @@ public class NotificationPatterns {
             Long nID_Task = oActionTaskService.getTaskIDbyProcess(null, sID_Order, Boolean.FALSE);
             Map<String, Object> mContact = oActionTaskService.getStartFormData(nID_Task);
 
-            String sFirstName = (String) mContact.get("bankIdfirstName");
+            String sFirstName = (String) mContact.get("bankIdFirstName");
             LOG.info("sFirstName = {}", sFirstName);
             String sMiddleName = (String) mContact.get("bankIdmiddleName");
             LOG.info("sMiddleName = {}", sMiddleName);
