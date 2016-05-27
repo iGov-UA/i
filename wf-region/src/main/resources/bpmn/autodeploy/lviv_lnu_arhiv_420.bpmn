@@ -127,9 +127,7 @@ ${sNameOrgan}.&lt;br /&gt;
     <userTask id="usertask1" name="Перевірка інформації ЛНУ Івана Франка (1-й етап)" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sVutag" name="З якого наказу необхідно видати витяг" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asZminapib" name="Чи змінювалось прізвище/ім'я з моменту навчання/праці" type="enum" writable="false">
           <activiti:value id="sEnamPib_ni" name="Ні"></activiti:value>
           <activiti:value id="sEnamPib_tak" name="Так"></activiti:value>
@@ -184,10 +182,12 @@ ${sNameOrgan}.&lt;br /&gt;
     </userTask>
     <userTask id="usertask3" name="Перевірка зверннення Політехніка (1-й етап)" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
       <extensionElements>
+        <activiti:formProperty id="asDocs" name="З якої категорії треба наказ" type="enum" required="true">
+          <activiti:value id="sEnamDov_rob" name="Наказ щодо працівників"></activiti:value>
+          <activiti:value id="sEnamDov_navch" name="Наказ щодо студентів"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sVutag" name="З якого наказу необхідно видати витяг" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asZminapib" name="Чи змінювалось прізвище/ім'я з моменту навчання/праці" type="enum" writable="false">
           <activiti:value id="sEnamPib_ni" name="Ні"></activiti:value>
           <activiti:value id="sEnamPib_tak" name="Так"></activiti:value>
@@ -343,9 +343,7 @@ ${sNameOrgan}.&lt;br /&gt;
     <userTask id="usertask2" name="Виконнання заявки (2-й етап)" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sVutag" name="З якого наказу необхідно видати витяг" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asZminapib" name="Чи змінювалось прізвище/ім'я з моменту навчання" type="enum" writable="false">
           <activiti:value id="sEnamPib_ni" name="Ні"></activiti:value>
           <activiti:value id="sEnamPib_tak" name="Так"></activiti:value>
