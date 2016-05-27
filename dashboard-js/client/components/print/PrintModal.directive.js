@@ -12,6 +12,7 @@ angular.module('dashboardJsApp').directive('printModal', ['$window', function ($
 
       scope.hideModal = function () {
         scope.printModalState.show = false;
+        scope.convertDisabledEnumFiedsToReadonlySimpleText();
       };
       scope.printContent = function () {
         var elementToPrint = element[0].getElementsByClassName('ng-modal-dialog-content')[0];

@@ -87,7 +87,6 @@
           $scope.model.printTemplate = $scope.printTemplateList[0];
         }
         $scope.taskForm.taskData = taskData;
-        console.log($scope.taskForm.taskData)
 
         if (!oTask.endTime) {
           $scope.taskForm.forEach(function (field) {
@@ -320,6 +319,7 @@
                     sMessage = oField.value;
                   }
                 });
+                $scope.convertDisabledEnumFiedsToReadonlySimpleText();
 
 
                 Modal.inform.success(function (result) {
@@ -481,7 +481,7 @@
           }
         }
 
-
+        $scope.convertDisabledEnumFiedsToReadonlySimpleText();
       }
     ]);
 })();
