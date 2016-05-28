@@ -149,7 +149,6 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
       // в принтформе, вместо которого будет подставляться Дата создания процесса
       // (в формате "YYYY-MM-DD hh:mm", "YYYY-MM-DD" и "hh:mm")
 
-        // проверку можно будет убрать если будет на дельту добавлен сертификат, на данный момент есть ошибка "Can't get: java.security.cert.CertificateException: No name matching test-delta.igov.org.ua found" что не дает возможности пользоваться услугами
         try {
           if (angular.isDefined(form.taskData) && angular.isDefined(form.taskData.oProcess)) {
             printTemplate = this.populateSystemTag(printTemplate, "[sDateTimeCreateProcess]", function () {
@@ -163,7 +162,7 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
             });
           }
         } catch (e) {
-          Modal.inform.error()($scope.taskForm.taskData.message)
+          Modal.inform.error()(form.taskData.message)
         }
       return $sce.trustAsHtml(processMotion(printTemplate, form, fieldGetter));
     }
