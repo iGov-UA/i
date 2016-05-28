@@ -469,7 +469,7 @@
                     var objCandidate = $scope.originalTaskForm.taskData.aField[i].mEnum;
                     $scope.taskForm.taskData.aField[i].sValue = objCandidate[keyCandidate];
                   } catch (e) {
-                Modal.inform.error()(e)
+                Modal.inform.error()($scope.taskForm.taskData.message)
               }
             }
           }
@@ -484,7 +484,7 @@
                 $scope.taskForm.taskData.aField[i].sType = $scope.originalTaskForm.taskData.aField[i].sType;
                 $scope.taskForm.taskData.aField[i].sValue = $scope.originalTaskForm.taskData.aField[i].sValue;
               } catch (e) {
-                Modal.inform.error()(e)
+                Modal.inform.error()($scope.taskForm.taskData.message)
               }
             }
           }

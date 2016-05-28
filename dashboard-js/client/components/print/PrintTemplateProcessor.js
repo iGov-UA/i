@@ -163,7 +163,7 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
             });
           }
         } catch (e) {
-          Modal.inform.error()(e)
+          Modal.inform.error()($scope.taskForm.taskData.message)
         }
       return $sce.trustAsHtml(processMotion(printTemplate, form, fieldGetter));
     }
