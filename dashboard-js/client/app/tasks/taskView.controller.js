@@ -463,13 +463,13 @@
                   $scope.taskForm[i].value = $scope.originalTaskForm[i].enumValues[j].name;
                 }
               }
-              try { // проверку можно будет убрать если будет на дельту добавлен сертификат, на данный момент есть ошибка "Can't get: java.security.cert.CertificateException: No name matching test-delta.igov.org.ua found" что не дает возможности пользоваться услугами
-                    $scope.taskForm.taskData.aField[i].sType = "string";
-                    var keyCandidate = $scope.originalTaskForm.taskData.aField[i].sValue;
-                    var objCandidate = $scope.originalTaskForm.taskData.aField[i].mEnum;
-                    $scope.taskForm.taskData.aField[i].sValue = objCandidate[keyCandidate];
-                  } catch (e) {
-                Modal.inform.error()(e)
+              try {
+                $scope.taskForm.taskData.aField[i].sType = "string";
+                var keyCandidate = $scope.originalTaskForm.taskData.aField[i].sValue;
+                var objCandidate = $scope.originalTaskForm.taskData.aField[i].mEnum;
+                $scope.taskForm.taskData.aField[i].sValue = objCandidate[keyCandidate];
+              } catch (e) {
+                Modal.inform.error()($scope.taskForm.taskData.message)
               }
             }
           }
@@ -484,7 +484,7 @@
                 $scope.taskForm.taskData.aField[i].sType = $scope.originalTaskForm.taskData.aField[i].sType;
                 $scope.taskForm.taskData.aField[i].sValue = $scope.originalTaskForm.taskData.aField[i].sValue;
               } catch (e) {
-                Modal.inform.error()(e)
+                Modal.inform.error()($scope.taskForm.taskData.message)
               }
             }
           }
