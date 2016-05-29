@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="znes_bud_393" name="Надання дозволу на знесення аварійних  будівель" isExecutable="true">
+  <process id="znes_bud_393" name="Надання дозволу на знесення аварійних будівель" isExecutable="true">
     <documentation>Смоктій К.В. Последние правки: 29.05.2016</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
@@ -127,6 +127,9 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:field name="sText_SMS">
           <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano</activiti:expression>
         </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
       </extensionElements>
     </serviceTask>
     <serviceTask id="servicetask2" name="Повідомлення посадовця " activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -188,6 +191,9 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:field name="sText_SMS">
           <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno na "Perevireno". Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
       </extensionElements>
     </serviceTask>
     <serviceTask id="servicetask4" name="Повідомлення про відмову + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
@@ -223,6 +229,9 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:field name="sText_SMS">
           <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno na "Vidhileno". Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
       </extensionElements>
     </serviceTask>
     <serviceTask id="servicetask5" name="Повідомлення про отримання дозволу на знесення аварійних будівель + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
@@ -257,6 +266,9 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:field name="sText_SMS">
           <activiti:expression>Vashe zvernennya [sID_Order] obrobleno, dozvil nadano ta oformleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow9" sourceRef="servicetask3" targetRef="usertask2"></sequenceFlow>
@@ -284,6 +296,9 @@ ${sNameOrgan}&lt;br /&gt;
         </activiti:field>
         <activiti:field name="sText_SMS">
           <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno na "Vidhileno". Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
