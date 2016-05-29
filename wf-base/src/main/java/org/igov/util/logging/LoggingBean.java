@@ -24,6 +24,7 @@ public class LoggingBean implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
+        LOG.warn("Class-path root: " + getClass().getClassLoader().getResources("/").nextElement());
         LOG.warn(message);
     }
 }
