@@ -38,6 +38,6 @@ public class CustomPreparedStatementSpy extends PreparedStatementSpy {
     @Override
     protected String dumpedSql() {
         // removing new lines and multiple spaces.
-        return super.dumpedSql().replaceAll("\n", "").replaceAll(" +", " ");
+        return super.dumpedSql().replaceAll("\n", "");
     }
 }
