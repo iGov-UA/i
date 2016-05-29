@@ -5,6 +5,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Required;
 
+import java.net.URL;
+import java.util.Enumeration;
+
 /**
  * Used to log message on bean creation
  * User: goodg_000
@@ -24,7 +27,13 @@ public class LoggingBean implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        LOG.warn("Class-path root: " + getClass().getClassLoader().getResources("/").nextElement());
+        Enumeration<URL> resources = getClass().getClassLoader().getResources("/");
+        if (resources.hasMoreElements()) {
+            LOG.warn("Class-path root: " + resources.nextElement());
+        }
+        else {
+            LOG.warn("No resources found at '/'");
+        }
         LOG.warn(message);
     }
 }
