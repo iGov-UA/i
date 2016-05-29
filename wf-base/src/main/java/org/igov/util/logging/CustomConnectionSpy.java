@@ -306,7 +306,7 @@ public class CustomConnectionSpy implements Connection {
     }
 
     private PreparedStatement wrapInSpy(String sql, PreparedStatement statement) {
-        return isInterestingSql(sql) ? new PreparedStatementSpy(sql, connectionSpy, statement) : statement;
+        return isInterestingSql(sql) ? new CustomPreparedStatementSpy(sql, connectionSpy, statement) : statement;
     }
 
     private boolean isInterestingSql(String sql) {
