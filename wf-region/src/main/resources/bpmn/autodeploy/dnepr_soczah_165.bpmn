@@ -68,7 +68,7 @@
         <activiti:formProperty id="group" name="група" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <userTask id="usertask2" name="перевірка документів" activiti:candidateGroups="${group}">
+    <userTask id="usertask2" name="перевірка документів і вхідних данних" activiti:candidateGroups="${group}">
       <extensionElements>
         <activiti:formProperty id="area" name="Район" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -125,7 +125,7 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask1" name="прийняте рішення" activiti:candidateGroups="${group}">
+    <userTask id="usertask1" name="прийняття рішення" activiti:candidateGroups="${group}">
       <extensionElements>
         <activiti:formProperty id="area" name="Район" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -185,7 +185,8 @@
           <activiti:string><![CDATA[Нове  звернення. Призначення державної допомоги у зв'язку з вагітністю та пологами]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний колего!&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 У черзі на обробку зареєстровано нове звернення.&lt;br /&gt;
 Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
@@ -207,7 +208,8 @@
           <activiti:string><![CDATA[Звернення на тему: Призначення державної допомоги у зв'язку з вагітністю та пологами]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 Ваше звернення щодо призначення державної допомоги у зв'язку з вагітністю та пологами прийнято в роботу.&lt;br /&gt;
 Вам призначено дату і час візиту для надання оригіналу довідки про вагітність -  ${date_visit}.&lt;br /&gt;
@@ -242,7 +244,8 @@
           <activiti:string><![CDATA[Звернення на тему: Призначення державної допомоги у зв'язку з вагітністю та пологами]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 Ваше звернення щодо Призначення державної допомоги у зв'язку з вагітністю та пологами направлено на доопрацювання.&lt;br /&gt;
 &lt;br /&gt;
@@ -281,7 +284,8 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
           <activiti:string><![CDATA[Звернення на тему: Призначення державної допомоги у зв'язку з вагітністю та пологами]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 На жаль, Ваше звернення щодо призначення державної допомоги у зв'язку з вагітністю та пологами відхилено через недостатню або неправильну інформацію.&lt;br /&gt;
 ${comment_1}&lt;br /&gt;
@@ -319,7 +323,8 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
           <activiti:expression>"${rishen}"</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 Ви отримали схвалення щодо свого звернення - Призначення державної допомоги у зв'язку з вагітністю та пологами.&lt;br /&gt;
 &lt;br /&gt;
@@ -353,7 +358,8 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
           <activiti:string><![CDATA[Звернення на тему: Призначення державної допомоги у зв'язку з вагітністю та пологами]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 На жаль, Вам відмовлено у призначенні державної допомоги у зв'язку з вагітністю та пологами.&lt;br /&gt;
 ${comment_2}&lt;br /&gt;
