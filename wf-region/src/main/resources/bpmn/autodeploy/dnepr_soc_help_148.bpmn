@@ -32,7 +32,7 @@
         <activiti:formProperty id="group" name="група" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <userTask id="usertask2" name="перевірка документів" activiti:candidateGroups="${group}">
+    <userTask id="usertask2" name="перевірка документів і вхідних данних" activiti:candidateGroups="${group}">
       <extensionElements>
         <activiti:formProperty id="area" name="Район" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -73,7 +73,7 @@
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>
-    <serviceTask id="servicetask4" name="повідомлення громадянина про призначення одноразової винагороди" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask4" name="повідомлення громадянина про призначення одноразової винагороди" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -85,7 +85,8 @@
           <activiti:string><![CDATA[Звернення на тему: Призначення одноразової винагороди жінкам, яким присвоєно почесне звання України "Мати-героїня"]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 Ви отримали схвалення щодо свого звернення - призначення одноразової винагороди жінкам, яким присвоєно почесне звання України "Мати-героїня".&lt;br /&gt;
 &lt;br /&gt;
@@ -95,6 +96,15 @@
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+            <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -116,7 +126,8 @@
           <activiti:string><![CDATA[Нове  звернення. Призначення одноразової винагороди жінкам, яким присвоєно почесне звання України "Мати-героїня"]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний колего!&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 У черзі на обробку зареєстровано нове звернення.&lt;br /&gt;
 Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
@@ -127,7 +138,7 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow36" sourceRef="servicetask5" targetRef="usertask2"></sequenceFlow>
-    <serviceTask id="servicetask6" name="повідомлення громадянина про відмову у  призначенні одноразової винагороди" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask6" name="повідомлення громадянина про відмову у  призначенні одноразової винагороди" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
@@ -139,7 +150,8 @@
           <activiti:string><![CDATA[Звернення на тему: Призначення одноразової винагороди жінкам, яким присвоєно почесне звання України "Мати-героїня"]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 На жаль, Вам відмовлено у призначенні одноразової винагороди жінкам, яким присвоєно почесне звання України "Мати-героїня".&lt;br /&gt; &lt;/p&gt;
 ${comment_1}&lt;br /&gt;&lt;br /&gt;
@@ -149,6 +161,15 @@ ${comment_1}&lt;br /&gt;&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+            <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
