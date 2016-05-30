@@ -1,12 +1,9 @@
 package org.igov.service.business.msg;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.sql.Timestamp;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 import org.igov.util.JSON.JsonRestUtils;
 import org.slf4j.Logger;
@@ -28,7 +25,7 @@ import com.pb.util.gsv.net.HTTPClient;
  * 
  *         Пример использования:
  * 
- *         IMsgObjR msg = new MsgSendImpl("WARNING", "org.igov.getManyMoney").
+ *         IMsgObjR msg = new MsgSendImpl("http://msg.igov.org.ua/MSG", "TEST", "WARNING", "sFunction", "HMXHVKM80002M0", "name@gmail.com").
  *         			addnID_Server(1L).
  *         			addnID_Subject(1L).
  *         			addsBody("sBody").
@@ -82,44 +79,8 @@ import com.pb.util.gsv.net.HTTPClient;
  */
 public class MsgSendImpl implements MsgSend {
     private static final Logger LOG = LoggerFactory.getLogger(MsgSendImpl.class);
-
-    public static final String MSG_URL;
-    private static final String TemplateMsgId;
-    private static final String BusId_DEFAULT;
-    private static final String MSG_LOGIN;
     
     private static final String MSG_DEFAULT = "DEFAULT";
-
-    private static final Properties prop = new Properties();
-    private static InputStream inputStream = MsgSendImpl.class.getClassLoader().getResourceAsStream("msg.properties");
-
-    static {
-	String MsgURL;
-	String sBusId;
-	String propTemplateMsgId;
-	String msgLogin;
-	try {
-	    prop.load(inputStream);
-
-	    MsgURL = prop.getProperty("MsgURL", "http://msg.igov.org.ua/MSG");
-	    sBusId = prop.getProperty("BusId", "TEST");
-	    propTemplateMsgId = prop.getProperty("TemplateMsgId", "HMXHVKM80002M0");
-	    msgLogin = prop.getProperty("MsgLogin", "");
-	} catch (IOException e) {
-	    MsgURL = "http://msg.igov.org.ua/MSG";
-	    sBusId = "TEST";
-	    propTemplateMsgId = "HMXHVKM80002M0";
-	    msgLogin = "";
-	}
-
-	MSG_URL = MsgURL;
-	BusId_DEFAULT = sBusId;
-	TemplateMsgId = propTemplateMsgId; 
-	MSG_LOGIN = msgLogin;
-	
-	System.setProperty("MsgURL", MSG_URL);
-
-    }
 
     private static final int MSG_CODE_LENGTH = 30 - 3;
     
@@ -128,7 +89,11 @@ public class MsgSendImpl implements MsgSend {
     
     public static final HTTPClient httpClient = new HTTPClient();
 
-    private String sBusId = BusId_DEFAULT;
+    private String sTemplateMsgId = null;
+    private String sMsgLogin = null;
+
+    private String sMsgURL = null;
+    private String sBusId = null;
     private String sMsgCode = null;
     private MsgType msgType = null;
     private MsgLevel msgLevel = MsgLevel.DEVELOPER;
@@ -152,11 +117,12 @@ public class MsgSendImpl implements MsgSend {
      * @param sFunction - строка с именем функции где произошла ошибка
      * 
      */
-    public MsgSendImpl(String sType, String sFunction) {
-	LOG.debug("ServiceURL={}, BusID={}, sType={}, sFunction={}", MSG_URL, sBusId, sType, sFunction);
+    public MsgSendImpl(String sMsgURL, String sBusId, String sType, String sFunction, String sTemplateMsgId, String sMsgLogin ) {
+	LOG.debug("sMsgURL={}, sBusId={}, Type={}, Function={}, TemplateMsgId={}, MsgLogin={}", sMsgURL, sBusId,
+		sType, sFunction, sTemplateMsgId, sMsgLogin);
 
-	if (sType == null || sFunction == null) {
-	    throw new IllegalArgumentException("Constructor parameters: sType=" + sType + ", sFunction=" + sFunction);
+	if (sMsgURL ==null || sBusId == null || sType == null || sFunction == null || sTemplateMsgId == null || sMsgLogin == null ) {
+	    throw new IllegalArgumentException("parameters is null");
 	}
 
 	try {
@@ -165,7 +131,7 @@ public class MsgSendImpl implements MsgSend {
 	    msgType = MsgType.INF_MESSAGE;
 	}
 	
-	String sf = sFunction.trim().toUpperCase().replaceAll("\\.","_");
+	String sf = sFunction.trim().toUpperCase().replaceAll("[\\.\\(\\)]","_");
 	LOG.debug("Modified sFunction={}", sf);
 	
 	if (!sf.matches(ALLOWED_CHARS_MSG_CODE)) {
@@ -176,16 +142,14 @@ public class MsgSendImpl implements MsgSend {
 	    sf = sf.substring(sf.length() - MSG_CODE_LENGTH);
 	}
 
+	this.sMsgURL = sMsgURL;
+	this.sBusId = sBusId;
 	this.sMsgCode = msgType.getAbbr() + "-" + sf;
 	this.sFunction = sFunction;
+	this.sTemplateMsgId = sTemplateMsgId;
+	this.sMsgLogin = sMsgLogin;
 
 	LOG.debug("MsgCode={}", this.sMsgCode);
-    }
-
-    public MsgSend addBusId(String sBusId) {
-	this.sBusId = sBusId;
-	LOG.debug("set sBusId={}", this.sBusId);
-	return this;
     }
 
     public MsgSend addsHead(String sHead) {
@@ -354,7 +318,7 @@ public class MsgSendImpl implements MsgSend {
     private String buildJSON() {
 	StringBuilder sb = new StringBuilder(500);
 	sb.append("{\"r\":[{\"_type_comment\" : \"Создание сообщения\",\"type\":\"MSG_ADD\",\"sid\" : \"\", \"login\":\"");
-	sb.append(MSG_LOGIN);
+	sb.append(this.sMsgLogin);
 	sb.append("\", \"s\":{\"Type\":\"");
 	sb.append(msgType.name());
 	sb.append("\",\"MsgCode\":\"");
@@ -363,7 +327,9 @@ public class MsgSendImpl implements MsgSend {
 	sb.append(sBusId);
 	sb.append("\",\"Descr\":\"");
 	sb.append(sFunction);
-	sb.append("\",\"TemplateMsgId\":\"" + TemplateMsgId + "\", \"ext\":{\"LocalMsg\":[{\"Level\":\"");
+	sb.append("\",\"TemplateMsgId\":\"");
+	sb.append(this.sTemplateMsgId);
+	sb.append("\", \"ext\":{\"LocalMsg\":[{\"Level\":\"");
 	sb.append(this.msgLevel);
 	sb.append("\",\"Lang\":\"");
 	sb.append(this.msgLang.name());
@@ -380,15 +346,14 @@ public class MsgSendImpl implements MsgSend {
      * Создание шаблона сообщения с новым кодом
      * @throws Exception 
      */
-    private void createMsg() throws Exception {
+    private void createMsg(  ) throws Exception {
 	MsgCreate msgCreate = new MsgCreate(buildJSON());
-	msgCreate.doReqest();
+	msgCreate.doReqest(this.sMsgURL);
     }
 
-//     public static void main(String[] args) throws IOException {
+//     public static void main(String[] args)  {
 //         try {
-////	    IMsgObjR msg = new MsgSendImpl("WARNING", "getFunction ").save();
-// 	    new MsgSendImpl("WARNING", "org.getFunction-2");
+//             MsgSendImpl msg = new MsgSendImpl("", "", "WARNING", "org.getFunction(2)", "", "");
 //	} catch (Exception e) {
 //	    e.printStackTrace();
 //	}
