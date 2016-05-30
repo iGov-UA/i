@@ -3,37 +3,35 @@
   <process id="dnepr_cnap_262" name="Дніпропетровська обл. - Видача довідки про реєстрацію громадянина за даною адресою на день смерті" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0"></activiti:formProperty>
+       
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні данні" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="Укажіть сьогоднішню дату" type="date" required="true"></activiti:formProperty>
+ 
         <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="area" name="Оберіть свій населений пункт" type="enum" required="true">
-          <activiti:value id="vilnogirsk" name="м.Вільногірськ"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Cканована копія паспорту" type="file" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="doc_death" name="Свідоцтво про смерть" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="house_book" name="Сканкопія будинкової книги" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="rName" name="номер району" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers30" name="маркер м.Вільногірськ" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_30&quot;:{&quot;aField_ID&quot;:[&quot;rName&quot;], &quot;asID_Field_sValue&quot;:[&quot;25&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='vilnogirsk'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="rmail" name="пошти" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers3" name="маркер почта Вільногорськ" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;rmail&quot;], &quot;asID_Field_sValue&quot;:[&quot;darja.grek@gmail.com&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='vilnogirsk'&quot;}}}"></activiti:formProperty>
-      </extensionElements>
+        <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адреса адміністративного органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="пошта посадовця" type="invisible" default="darja.grek@gmail.com"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок" type="invisible"></activiti:formProperty>
+        </extensionElements>
     </startEvent>
     <userTask id="usertask3" name="рішення" activiti:candidateGroups="dnepr_cnap_vilnogirskT">
       <extensionElements>
+        <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні данні" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="Укажіть сьогоднішню дату" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="area" name="Оберіть свій населений пункт" type="enum" writable="false">
-          <activiti:value id="vilnogirsk" name="м.Вільногірськ"></activiti:value>
-        </activiti:formProperty>
+      
         <activiti:formProperty id="decision_2" name="прийняте рішення" type="enum" required="true">
           <activiti:value id="accept" name="довідка готова"></activiti:value>
           <activiti:value id="reject" name="відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
@@ -60,7 +58,8 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+[pattern/mail/_common_header.html]
 &lt;strong&gt;Шановний(-а) колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
 У Вас в черзі на обробку нове звернення.&lt;br /&gt;
 Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
@@ -71,7 +70,7 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask6" name="повідомлення громадянина про відхилення звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask6" name="повідомлення громадянина про відхилення звернення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
@@ -83,19 +82,30 @@
           <activiti:string><![CDATA[Звернення на тему: Видача довідки про реєстрацію громадянина за даною адресою на день смерті]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+[pattern/mail/_common_header.html]
 &lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;
 На жаль, Ваше звернення щодо про реєстрацію громадянина за даною адресою на день смерті, відхилено через недостатню або неправильну інформацію.&lt;br /&gt;
 ${comment_2}&lt;br /&gt;&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:5]&lt;br /&gt;
+${sPhoneOrgan}&lt;br /&gt;
 Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:2]&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]</activiti:expression>
+${sNameOrgan}&lt;br /&gt;
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+         <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+		 <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask7" name="повідомлення громадянина про готовність довідки" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask7" name="повідомлення громадянина про готовність довідки" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -110,7 +120,8 @@ ${comment_2}&lt;br /&gt;&lt;br /&gt;
           <activiti:expression>${rishen}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+[pattern/mail/_common_header.html]
 &lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
 Довідка про про реєстрацію громадянина за даною адресою на день смерті готова (сканована копія знаходиться у додатку до листа).&lt;br /&gt;
 Ви або уповноважена Вами особа (при наявності довіреності) можете отримати довідку собисто під підпис у ЦНАПі.&lt;br /&gt;
@@ -120,17 +131,22 @@ ${comment_2}&lt;br /&gt;&lt;br /&gt;
 2. Для уповоноваженої особи - довіренність.&lt;br /&gt;
 3. Свідоцтво про смерть.&lt;br /&gt;
 4. Будинкову книгу (оригінал).&lt;br /&gt;&lt;br /&gt;
-Адреса [pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:2]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:3]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:5]&lt;br /&gt;
-Графік роботи: [pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:4]&lt;br /&gt;
+${sAddress}&lt;br /&gt;
+${sPhoneOrgan}&lt;br /&gt;
+${sWorkTime}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rName]}:2]&lt;br /&gt;	   
+${sNameOrgan}&lt;br /&gt;   
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
-      </extensionElements>
+         <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] vidhileno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+	     </extensionElements>
     </serviceTask>
     <serviceTask id="servicetask2" name="отримання додаткових документiв" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask2">
