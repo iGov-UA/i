@@ -42,7 +42,7 @@
         <activiti:formProperty id="sPhoneOrgan" name="телефон для справок" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адрес органа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapkaGolova" name="шапка принтформы" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk1" name="Пошта ЦНАП" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_345_1.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -53,7 +53,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${sMailClerk1}]]></activiti:expression>
+          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення. Дозвіл на розроблення проекту землеустрою щодо відведення земельної ділянки.]]></activiti:string>
@@ -63,10 +63,19 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask3" name="Повідомлення громадянина про успішну реєстрацію у системі" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask3" name="Повідомлення громадянина про успішну реєстрацію у системі" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+       <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano</activiti:expression>
+        </activiti:field>  
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
@@ -144,10 +153,19 @@
     <sequenceFlow id="flow5" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
-    <serviceTask id="servicetask4" name="Відмова громадянину" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask4" name="Відмова громадянину" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+       <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>  
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
@@ -219,10 +237,16 @@
     </userTask>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow11" sourceRef="usertask2" targetRef="exclusivegateway2"></sequenceFlow>
-    <serviceTask id="servicetask6" name="Позитивна відповідь громадянину" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask6" name="Позитивна відповідь громадянину" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+       <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
@@ -256,10 +280,16 @@
     <sequenceFlow id="flow12" name="decision2 == 'dec_ok'" sourceRef="exclusivegateway2" targetRef="servicetask6">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision2 == 'dec_ok'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask7" name="Відповідь з відмовою" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask7" name="Відповідь з відмовою" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+       <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
@@ -271,7 +301,8 @@
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 			<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br><br>
 			<p> 
-				Ваше звернення с приводу видачи дозволу на розроблення проекту землеустрою щодо відведення земельної ділянки - опрацьовано.<br>
+				Ваше звернення с приводу видачі дозволу на розроблення проекту землеустрою щодо відведення земельної ділянки - опрацьовано.<br>
+				Вам відмовлено. <br>
 				Рішення в додатку до цього листа.
 			</p>
 			<br />

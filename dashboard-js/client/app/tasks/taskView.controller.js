@@ -6,10 +6,10 @@
     .controller('TaskViewCtrl', [
       '$scope', '$stateParams', 'taskData', 'oTask', 'PrintTemplateService', 'iGovMarkers', 'tasks',
       'taskForm', 'iGovNavbarHelper', 'Modal', 'Auth', 'defaultSearchHandlerService',
-      '$state', 'stateModel',
+      '$state', 'stateModel', 'ValidationService',
       function ($scope, $stateParams, taskData, oTask, PrintTemplateService, iGovMarkers, tasks,
                 taskForm, iGovNavbarHelper, Modal, Auth, defaultSearchHandlerService,
-                $state, stateModel) {
+                $state, stateModel, ValidationService) {
         var defaultErrorHandler = function (response, msgMapping) {
           defaultSearchHandlerService.handleError(response, msgMapping);
           if ($scope.taskForm) {
@@ -35,6 +35,13 @@
         $scope.selectedTask = oTask;
         $scope.taskId = oTask.id;
         $scope.nID_Process = oTask.processInstanceId;
+        $scope.markers = ValidationService.getValidationMarkers();
+
+        $scope.validateForm = function(form) {
+          var bValid = true;
+          ValidationService.validateByMarkers(form, null, true);
+          return form.$valid && bValid;
+        };
 
         var addIndexForFileItems = function (val) {
           var idx = 0;
@@ -265,7 +272,10 @@
           }
         };
 
-        $scope.submitTask = function () {
+
+        $scope.submitTask = function (form) {
+          $scope.validateForm(form);
+
           if ($scope.selectedTask && $scope.taskForm) {
             $scope.taskForm.isSubmitted = true;
 
@@ -453,10 +463,14 @@
                   $scope.taskForm[i].value = $scope.originalTaskForm[i].enumValues[j].name;
                 }
               }
-              $scope.taskForm.taskData.aField[i].sType = "string";
-              var keyCandidate = $scope.originalTaskForm.taskData.aField[i].sValue;
-              var objCandidate = $scope.originalTaskForm.taskData.aField[i].mEnum;
-              $scope.taskForm.taskData.aField[i].sValue = objCandidate[keyCandidate];
+              try {
+                $scope.taskForm.taskData.aField[i].sType = "string";
+                var keyCandidate = $scope.originalTaskForm.taskData.aField[i].sValue;
+                var objCandidate = $scope.originalTaskForm.taskData.aField[i].mEnum;
+                $scope.taskForm.taskData.aField[i].sValue = objCandidate[keyCandidate];
+              } catch (e) {
+                Modal.inform.error()($scope.taskForm.taskData.message)
+              }
             }
           }
         };
@@ -465,12 +479,16 @@
             if ($scope.originalTaskForm[i].type === "enum" && isItemFormPropertyDisabled($scope.originalTaskForm[i])) {
               $scope.taskForm[i].type = "enum";
               $scope.taskForm[i].value = $scope.originalTaskForm[i].value;
-              $scope.taskForm.taskData.aField[i].sType = $scope.originalTaskForm.taskData.aField[i].sType;
-              $scope.taskForm.taskData.aField[i].sValue = $scope.originalTaskForm.taskData.aField[i].sValue;
+              try {
+                $scope.taskForm.taskData.aField[i].sType = "string";
+                $scope.taskForm.taskData.aField[i].sType = $scope.originalTaskForm.taskData.aField[i].sType;
+                $scope.taskForm.taskData.aField[i].sValue = $scope.originalTaskForm.taskData.aField[i].sValue;
+              } catch (e) {
+                Modal.inform.error()($scope.taskForm.taskData.message)
+              }
             }
           }
         }
-
         $scope.convertDisabledEnumFiedsToReadonlySimpleText();
       }
     ]);
