@@ -463,12 +463,12 @@
                   $scope.taskForm[i].value = $scope.originalTaskForm[i].enumValues[j].name;
                 }
               }
-              try { 
-                    $scope.taskForm.taskData.aField[i].sType = "string";
-                    var keyCandidate = $scope.originalTaskForm.taskData.aField[i].sValue;
-                    var objCandidate = $scope.originalTaskForm.taskData.aField[i].mEnum;
-                    $scope.taskForm.taskData.aField[i].sValue = objCandidate[keyCandidate];
-                  } catch (e) {
+              try {
+                $scope.taskForm.taskData.aField[i].sType = "string";
+                var keyCandidate = $scope.originalTaskForm.taskData.aField[i].sValue;
+                var objCandidate = $scope.originalTaskForm.taskData.aField[i].mEnum;
+                $scope.taskForm.taskData.aField[i].sValue = objCandidate[keyCandidate];
+              } catch (e) {
                 Modal.inform.error()($scope.taskForm.taskData.message)
               }
             }

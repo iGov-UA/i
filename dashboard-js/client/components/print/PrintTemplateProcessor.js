@@ -1,7 +1,7 @@
 'use strict';
 
 //angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Auth', '$filter', 'FieldMotionService', '$lunaService', function ($sce, Auth, $filter, FieldMotionService, lunaService) {
-angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Auth', '$filter', 'FieldMotionService', 'Modal', function ($sce, Auth, $filter, FieldMotionService, Modal) {
+angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Auth', '$filter', 'FieldMotionService', function ($sce, Auth, $filter, FieldMotionService) {
   function processMotion(printTemplate, form, fieldGetter) {
     var formData = form.reduce(function(prev, curr) {
       prev[curr.id] = curr;
@@ -148,22 +148,21 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
       // #998 реализовать поддержку системного тэга [sDateTimeCreateProcess], [sDateCreateProcess] и [sTimeCreateProcess]
       // в принтформе, вместо которого будет подставляться Дата создания процесса
       // (в формате "YYYY-MM-DD hh:mm", "YYYY-MM-DD" и "hh:mm")
-
-        try {
-          if (angular.isDefined(form.taskData) && angular.isDefined(form.taskData.oProcess)) {
-            printTemplate = this.populateSystemTag(printTemplate, "[sDateTimeCreateProcess]", function () {
-              return $filter('date')(form.taskData.oProcess.sDateCreate.replace(' ', 'T'), 'yyyy-MM-dd HH:mm');
-            });
-            printTemplate = this.populateSystemTag(printTemplate, "[sDateCreateProcess]", function () {
-              return $filter('date')(form.taskData.oProcess.sDateCreate.replace(' ', 'T'), 'yyyy-MM-dd');
-            });
-            printTemplate = this.populateSystemTag(printTemplate, "[sTimeCreateProcess]", function () {
-              return $filter('date')(form.taskData.oProcess.sDateCreate.replace(' ', 'T'), 'HH:mm');
-            });
-          }
-        } catch (e) {
-          Modal.inform.error()(form.taskData.message)
+      try {
+        if (angular.isDefined(form.taskData) && angular.isDefined(form.taskData.oProcess)) {
+          printTemplate = this.populateSystemTag(printTemplate, "[sDateTimeCreateProcess]", function () {
+            return $filter('date')(form.taskData.oProcess.sDateCreate.replace(' ', 'T'), 'yyyy-MM-dd HH:mm');
+          });
+          printTemplate = this.populateSystemTag(printTemplate, "[sDateCreateProcess]", function () {
+            return $filter('date')(form.taskData.oProcess.sDateCreate.replace(' ', 'T'), 'yyyy-MM-dd');
+          });
+          printTemplate = this.populateSystemTag(printTemplate, "[sTimeCreateProcess]", function () {
+            return $filter('date')(form.taskData.oProcess.sDateCreate.replace(' ', 'T'), 'HH:mm');
+          });
         }
+      } catch (e) { 
+        Modal.inform.error()(form.taskData.message)
+      }
       return $sce.trustAsHtml(processMotion(printTemplate, form, fieldGetter));
     }
   }
