@@ -7,7 +7,9 @@ var environmentConfig = require('../../config/environment');
 var config = environmentConfig.activiti;
 var request = require('request');
 var catalogController = require('../catalog/catalog.controller.js');
+var NodeCache = require("node-cache");
 
+var nodeCache = new NodeCache({stdTTL: 10800, checkperiod: 11000});//Chache for 3 hours
 var sHost = config.protocol + '://' + config.hostname + config.path;
 
 var buildUrl = function(path){
@@ -15,11 +17,65 @@ var buildUrl = function(path){
 };
 
 module.exports.index = function(req, res) {
-  activiti.sendGetRequest(req, res, '/action/item/getService?nID=' + req.query.nID);
+  var apiURL = '/action/item/getService?nID=' + req.query.nID
+    , callback = function (error, response, body) {
+    if (error) {
+      res.statusCode = 500;
+      res.send(error);
+    } else {
+      res.statusCode = response.statusCode;
+      nodeCache.set(apiURL, body);
+      res.send(body);
+    }
+  };
+
+  nodeCache.get(apiURL, function( err, value ){
+    if( !err ){
+      if(value == undefined){
+        return activiti.sendGetRequest(req, res, apiURL, null, callback);
+      }else{
+        return res.send(value);
+      }
+    }else{
+      console.log('Error during get from cache the getService: ',err);
+    }
+  });
+  //activiti.sendGetRequest(req, res, '/action/item/getService?nID=' + req.query.nID);
 };
 
 module.exports.getServiceStatistics = function(req, res) {
-  activiti.sendGetRequest(req, res, '/action/event/getStatisticServiceCounts?nID_Service=' + req.params.nID);
+  var apiURL = '/action/event/getStatisticServiceCounts?nID_Service=' + req.params.nID
+    , callback = function (error, response, body) {
+    if (error) {
+      res.statusCode = 500;
+      res.send(error);
+    } else {
+      res.statusCode = response.statusCode;
+      nodeCache.set(apiURL, body);
+      res.send(body);
+    }
+  };
+
+  nodeCache.get(apiURL, function( err, value ){
+    if( !err ){
+      if(value == undefined){
+        return activiti.sendGetRequest(req, res, apiURL, null, callback);
+      }else{
+        return res.send(value);
+      }
+    }else{
+      console.log('Error during get from cache the getStatisticServiceCounts: ',err);
+    }
+  });
+  //activiti.sendGetRequest(req, res, '/action/event/getStatisticServiceCounts?nID_Service=' + req.params.nID, null, callback);
+  //activiti.sendGetRequest(req, res, '/action/event/getStatisticServiceCounts?nID_Service=' + req.params.nID);
+};
+
+
+module.exports.getServiceHistoryReport = function(req, res) {
+  var params = req.params;
+  params = _.extend(params);
+  activiti.sendGetRequest(req, res, '/action/event/getServiceHistoryReport?sDateAt=', _.extend(req.query, params))
 };
 
 module.exports.setService = function(req, res) {

@@ -1,6 +1,6 @@
 <p
   ng-if="item.type == 'file' && !isFormPropertyDisabled(item) && item.id.indexOf('PrintForm') === -1"
-  ng-class="{submitted:isTaskSubmitted()}">
+  ng-class="{submitted:item.required && isTaskSubmitted()}">
               <field-title></field-title>
               <file-field name="{{item.id}}"
                           ng-disabled="isFormPropertyDisabled(item)"
@@ -8,7 +8,7 @@
                           ng-required="{{item.required}}">Add File
               </file-field>
 
-<span class="validation-message" ng-messages="isTaskSubmitted() && form[item.id].$error">
+<span class="validation-message" ng-messages="isTaskSubmitted() && item.required && form[item.id].$error">
   <span ng-message="required">Необхідно заповнити.</span>
   <span ng-message="pattern">Значення має бути числом.</span>
   <span ng-message="email">Помилка в email.</span>

@@ -1,5 +1,7 @@
 package org.igov.io;
 
+import java.util.HashMap;
+import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,6 +21,11 @@ public class GeneralConfig {
     private String sbTest_Self;
     @Value("${general.Self.nID_Server}")
     private String snID_Server_Self;
+    
+    @Value("${general.Self.saServerReplace}")
+    private String saServerReplace;
+    private Map<Integer,Integer> mServerReplace = null;
+
     @Value("${general.Self.sHost}")
     private String sHost_Self;
     @Value("${general.sHostCentral}")
@@ -98,6 +105,13 @@ public class GeneralConfig {
     @Value("${general.OTP.sMerchantPassword}")
     private String sMerchantPassword_OTP;
     
+    @Value("${general.SMS.sURL_Send}")
+    private String sURL_Send_SMS;
+    @Value("${general.SMS.sMerchantId}")
+    private String sMerchantId_SMS;
+    @Value("${general.SMS.sMerchantPassword}")
+    private String sMerchantPassword_SMS;
+
     @Value("${general.LiqPay.sURL_CheckOut}")
     private String sURL_CheckOut_LiqPay;
 
@@ -210,6 +224,16 @@ public class GeneralConfig {
         return sMerchantPassword_OTP;
     }
     
+    public String getURL_Send_SMS()  {
+        return sURL_Send_SMS;
+    }
+    public String getMerchantId_SMS()  {
+        return sMerchantId_SMS;
+    }
+    public String getMerchantPassword_SMS()  {
+        return sMerchantPassword_SMS;
+    }
+    
     public Boolean isEnable_UniSender_Mail() {
         return Boolean.valueOf(sbEnable_UniSender_Mail);
     }
@@ -232,6 +256,52 @@ public class GeneralConfig {
         return sURL_CheckOut_LiqPay;
     }
 
+    
+    public Integer getServerId(Integer nID_Server) {
+        if(mServerReplace==null){
+            mServerReplace=new HashMap();
+            if(saServerReplace!=null && !"".equals(saServerReplace.trim())){
+                String saServerReplace_Trimed =  saServerReplace.trim();
+                for(String sServerReplace : saServerReplace_Trimed.split("\\,")){
+                //  //mServerReplace.put(nID_Server, nID_Server)
+                    if(sServerReplace!=null && !"".equals(sServerReplace.trim())){
+                        sServerReplace =  sServerReplace.trim();
+
+                    }
+                    int n=0;
+                    Integer nAt=null;
+                    Integer nTo=null;
+                    for(String s : sServerReplace.split("\\>")){
+                        if(n==0){
+                            nAt = Integer.valueOf(s);
+                        }
+                        if(n==1){
+                            nTo = Integer.valueOf(s);
+                        }
+                    //  //mServerReplace.put(nID_Server, nID_Server)
+                        n++;
+                    }
+                    if(nAt!=null&&nTo!=null){
+                        mServerReplace.put(nAt, nTo);
+                    }
+                }
+            }
+        }
+        LOG.info("nID_Server={}, mServerReplace={}", nID_Server, mServerReplace);
+        Integer nID_Server_Return = nID_Server;
+        if(mServerReplace!=null&&!mServerReplace.isEmpty()&&nID_Server!=null){
+            nID_Server_Return = mServerReplace.get(nID_Server);
+            if(nID_Server_Return==null){
+                nID_Server_Return = nID_Server;
+            }
+        }
+        return nID_Server_Return;
+        //saServerReplace
+        //saServerReplace=0>5,1>4    
+    }
+    //private String saServerReplace;
+    
+    
     public Integer getSelfServerId() {
         Integer nID_Server = null;
         try {
