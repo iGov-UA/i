@@ -31,6 +31,7 @@ import javax.mail.MessagingException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import org.igov.io.GeneralConfig;
 import org.igov.model.flow.FlowServiceDataDao;
 import org.igov.model.flow.Flow_ServiceData;
 import org.igov.service.business.flow.FlowService;
@@ -54,6 +55,9 @@ public class DebugCommonController {
     public static final int DAYS_IN_HALF_YEAR = 180;
     private static final String SUFFIX_AUTO = "auto";
 
+    @Autowired
+    GeneralConfig generalConfig;
+    
     @Autowired
     private FlowService oFlowService;
 
@@ -93,9 +97,10 @@ public class DebugCommonController {
             @RequestParam(value = "bUnisender", required = false) Boolean bUnisender)
             throws IOException, MessagingException, EmailException {
 
-        oMail._To("bvv4ik@gmail.com");
-        oMail._Body(sBody == null ? "<a href=\"http:\\\\google.com\">Google</a> It's test Проверка ! ��� ��������!"
-                : sBody);
+        //oMail._To("bvv4ik@gmail.com");
+        
+        oMail._To(sMailTo!=null&&generalConfig.isSelfTest()?sMailTo:"bvv4ik@gmail.com");
+        oMail._Body(sBody == null ? "<a href=\"http:\\\\google.com\">Google</a> It's test Проверка!" : sBody);
 
         LOG.info("(oMail.getHead()={})", oMail.getHead());
         LOG.info("(oMail.getBody()={})", oMail.getBody());

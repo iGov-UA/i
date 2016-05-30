@@ -12,13 +12,14 @@ import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.task.Task;
-import org.igov.service.business.action.task.bp.handler.BpServiceHandler;
-import org.igov.service.business.escalation.EscalationHistoryService;
-import org.igov.service.business.action.event.HistoryEventService;
 import org.igov.io.GeneralConfig;
 import org.igov.io.mail.NotificationPatterns;
 import org.igov.io.web.HttpRequester;
+import org.igov.model.action.event.HistoryEvent_Service_StatusType;
 import org.igov.model.escalation.EscalationHistory;
+import org.igov.service.business.action.event.HistoryEventService;
+import org.igov.service.business.action.task.bp.handler.BpServiceHandler;
+import org.igov.service.business.escalation.EscalationHistoryService;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
@@ -37,8 +38,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
-
-import org.igov.model.action.event.HistoryEvent_Service_StatusType;
 
 import static org.igov.util.Tool.sCut;
 
@@ -308,9 +307,10 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
         String sMailTo = JsonRequestDataResolver.getEmail(omRequestBody);
         String sPhone = String.valueOf(JsonRequestDataResolver.getPhone(omRequestBody));
+        String  bankIdFirstName = JsonRequestDataResolver.getBankIdFirstName(omRequestBody);
         if (sMailTo != null) {
             LOG.info("Send notification mail... (sMailTo={})", sMailTo);
-            oNotificationPatterns.sendTaskCreatedInfoEmail(sMailTo, sID_Order);
+            oNotificationPatterns.sendTaskCreatedInfoEmail(sMailTo, sID_Order, bankIdFirstName);
         }
 
         if (sMailTo != null || sPhone != null) {

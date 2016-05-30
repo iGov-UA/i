@@ -5,9 +5,9 @@
                      ng-disabled="true"
                      ng-required="{{item.required}}"
                      ng-model="item.value"
-                     ng-class="{submitted:isTaskSubmitted()}"/>
+                     ng-class="{submitted:item.required && isTaskSubmitted()}"/>
 
-  <span class="validation-message" ng-messages="isTaskSubmitted() && form[item.id].$error">
+  <span class="validation-message" ng-messages="isTaskSubmitted() && item.required && form[item.id].$error">
   <span ng-message="required">Необхідно заповнити.</span>
   <span ng-message="pattern">Значення має бути числом.</span>
   <span ng-message="email">Помилка в email.</span>
