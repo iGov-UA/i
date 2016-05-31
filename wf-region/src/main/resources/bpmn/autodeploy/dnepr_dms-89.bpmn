@@ -62,6 +62,7 @@
         <activiti:formProperty id="sKab89" name="Номер кабінету" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMinPay" name="мініальна сума адмінсбору" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMaxPay" name="максимальна сума адмінсбору" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sFlag" name="Флаг" type="string"></activiti:formProperty>
         <activiti:formProperty id="nMilit" name="Завантажте копію військового квитка або свідоцтва про приписку;Якщо декілька сторінок об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="lable" name="В залежності від підстави для реєстрації, будь ласка, завантажте" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="nSvidOwn" name="Свідоцтво про право власності, або договір куплі/продажу та витяг з державного реєстру речових прав на нерухоме майно;Якщо декілька сторінок об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
@@ -241,7 +242,7 @@ execution.setVariable('sMaxPay', maxpay)
     <sequenceFlow id="flow31" sourceRef="servicetask8" targetRef="endevent3"></sequenceFlow>
     <endEvent id="endevent3" name="End"></endEvent>
     <sequenceFlow id="flow10" name="${asDecision=='sAccept'}" sourceRef="exclusivegateway1" targetRef="servicetask6">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision=='sAccept'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision=='sAccept'&&sFlag!='true'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask6" name="E-Mail призначення візиту" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
@@ -291,7 +292,6 @@ execution.setVariable('sMaxPay', maxpay)
 											&lt;li&gt;проходження служби у військовій частині (довідка про проходження служби у військовій частині, видана командиром військової частини),&lt;/li&gt; 
 										&lt;/ul&gt;
 										&lt;li&gt;оригінал та копію військового квитка або посвідчення про приписку (для громадян, які підлягають взяттю на військовий облік або перебувають на військовому обліку);&lt;/li&gt;
-										&lt;li&gt;свідоцтво про народження або свідоцтво про належність до громадянства України, якщо реєструється місце проживання дитини, яка не досягла 16-річного віку;&lt;/li&gt;
 										&lt;/ul&gt;
 									&lt;/p&gt;
 									&lt;p&gt;	
@@ -317,7 +317,7 @@ execution.setVariable('sMaxPay', maxpay)
     </serviceTask>
     <sequenceFlow id="flow34" sourceRef="servicetask6" targetRef="usertask2_red"></sequenceFlow>
     <sequenceFlow id="flow35" sourceRef="exclusivegateway1" targetRef="servicetask10">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision=='sAccept'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision=='sAccept'&&sFlag=='true'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask10" name="E-Mail призначення візиту Днепр" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
@@ -367,7 +367,8 @@ execution.setVariable('sMaxPay', maxpay)
 											&lt;li&gt;проходження служби у військовій частині (довідка про проходження служби у військовій частині, видана командиром військової частини),&lt;/li&gt; 
 										&lt;/ul&gt;
 										&lt;li&gt;оригінал та копію військового квитка або посвідчення про приписку (для громадян, які підлягають взяттю на військовий облік або перебувають на військовому обліку);&lt;/li&gt;
-										&lt;li&gt;свідоцтво про народження або свідоцтво про належність до громадянства України, якщо реєструється місце проживання дитини, яка не досягла 16-річного віку;&lt;/li&gt;
+										&lt;li&gt;заяву про реєстрацію місця проживання, що знаходиться у додатках до листа;&lt;/li&gt;
+										&lt;li&gt;якщо Ви реєструєте нове місце проживання з одночасним зняттям з попередньго, то заяву про зняття з реєстрації (знаходиться у додатках до листа);&lt;/li&gt;
 										&lt;/ul&gt;
 									&lt;/p&gt;
 									&lt;p&gt;	
