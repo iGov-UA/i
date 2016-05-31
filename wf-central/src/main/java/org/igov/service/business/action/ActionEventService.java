@@ -427,7 +427,7 @@ public class ActionEventService {
             LOG.info("soData is null or empty array: "+soData);
             Map<String, String> mParamMessage = new HashMap<>();
             LOG.info("SERVICE_STATE: "+sUserTaskName);
-            mParamMessage.put(HistoryEventMessage.SERVICE_STATE, sUserTaskName);
+            mParamMessage.put(HistoryEventMessage.SERVICE_STATE, sUserTaskName == null ? "" : sUserTaskName);
             mParamMessage.put(HistoryEventMessage.TASK_NUMBER, sID_Order);
             setHistoryEvent(HistoryEventType.ACTIVITY_STATUS_NEW, nID_Subject, mParamMessage, oHistoryEvent_Service.getId(),
                     null, sSubjectInfo);
