@@ -223,15 +223,15 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
 
         /// test strings
         LOG.warn("Start get Orders history");
-        LOG.warn("=== param nID_Subject = " + nID_Subject);
+        LOG.info("=== param nID_Subject = " + nID_Subject);
         Criteria oCriteriaSubject = getSession().createCriteria(HistoryEvent_Service.class);
         oCriteriaSubject.add(Restrictions.eq("nID_Subject", nID_Subject));
         oCriteriaSubject.setMaxResults(100);
         List<HistoryEvent_Service> aSubjects = (List<HistoryEvent_Service>) oCriteriaSubject.list();
         if(aSubjects == null){
-            LOG.warn("List<HistoryEvent_Service> oCriteriaSubject.list() create null");
+            LOG.info("List<HistoryEvent_Service> oCriteriaSubject.list() create null");
         } else {
-            LOG.warn("List<HistoryEvent_Service> oCriteriaSubject.list() size = " + aSubjects.size());
+            LOG.info("List<HistoryEvent_Service> oCriteriaSubject.list() size = " + aSubjects.size());
         }
 
         LOG.info("=== param nID_Service = " + nID_Service);
@@ -240,9 +240,9 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
         oCriteriaService.setMaxResults(100);
         List<HistoryEvent_Service> aService = (List<HistoryEvent_Service>) oCriteriaService.list();
         if(aService == null){
-            LOG.warn("List<HistoryEvent_Service> oCriteriaService.list() create null");
+            LOG.info("List<HistoryEvent_Service> oCriteriaService.list() create null");
         } else {
-            LOG.warn("List<HistoryEvent_Service> oCriteriaService.list() size = " + aService.size());
+            LOG.info("List<HistoryEvent_Service> oCriteriaService.list() size = " + aService.size());
         }
 
         LOG.info("=== param sID_UA = " + sID_UA);
@@ -251,9 +251,9 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
         oCriteriaID_UA.setMaxResults(100);
         List<HistoryEvent_Service> aID_UA = (List<HistoryEvent_Service>) oCriteriaID_UA.list();
         if(aID_UA == null){
-            LOG.warn("List<HistoryEvent_Service> oCriteriaID_UA.list() create null");
+            LOG.info("List<HistoryEvent_Service> oCriteriaID_UA.list() create null");
         } else {
-            LOG.warn("List<HistoryEvent_Service> oCriteriaID_UA.list() size = " + aID_UA.size());
+            LOG.info("List<HistoryEvent_Service> oCriteriaID_UA.list() size = " + aID_UA.size());
         }
         /// end test strings
 
@@ -288,5 +288,4 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
         
 		return aHistoryEvent_Service;
 	}
-    
 }
