@@ -3,15 +3,18 @@ package org.igov.io.mail;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.MultiPartEmail;
+import org.igov.io.GeneralConfig;
+import org.igov.io.mail.unisender.CreateCampaignRequest;
+import org.igov.io.mail.unisender.CreateEmailMessageRequest;
+import org.igov.io.mail.unisender.UniResponse;
+import org.igov.io.mail.unisender.UniSender;
+import org.igov.service.business.msg.MsgService;
+import org.igov.util.MethodsCallRunnerUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
-import org.igov.io.mail.unisender.UniResponse;
-import org.igov.io.mail.unisender.UniSender;
-import org.igov.io.mail.unisender.CreateCampaignRequest;
-import org.igov.io.mail.unisender.CreateEmailMessageRequest;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -19,7 +22,6 @@ import javax.activation.FileDataSource;
 import javax.activation.URLDataSource;
 import javax.mail.*;
 import javax.mail.internet.*;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,10 +29,6 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Properties;
-
-import org.igov.io.GeneralConfig;
-import org.igov.util.MethodsCallRunnerUtil;
-import org.igov.service.business.msg.MsgService;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -76,8 +74,13 @@ public class Mail extends Abstract_Mail {
         LOG.info("(getTo()={})", getTo());
         String sTo=getTo();
         String sToNew=sTo;
-        sToNew=sToNew.replace("\"", "");
-        sToNew=sToNew.replace("\"", "");
+//        String toName = getToName();
+        String toName = "TESTTONAME";
+//        if (!(toName == null || toName.equals("null"))){
+            sToNew = String.format("%s <%s>", toName, sTo);
+//        }
+//        sToNew=sToNew.replace("\"", "");
+        sToNew=sToNew.replaceAll("\"", "");
         //sTo=sTo.replaceAll("\"", "");
         if(!sToNew.equals(sTo)){
             LOG.info("(getTo()(fixed)={})", sToNew);
@@ -94,6 +97,7 @@ public class Mail extends Abstract_Mail {
         LOG_BIG.info("(bUniSender={})", bUniSender);
         LOG_BIG.debug("(getFrom()={})", getFrom());
         LOG_BIG.debug("(getTo()={})", getTo());
+        LOG_BIG.debug("(getToName()={})", getToName());
         LOG_BIG.debug("(getHead()={})", getHead());
         LOG_BIG.debug("(getBody={})", getBody());
         
@@ -173,6 +177,8 @@ public class Mail extends Abstract_Mail {
                     sbBody.append(getFrom());
                     sbBody.append("\nto:");
                     sbBody.append(getTo());
+                    sbBody.append("\ntoName:");
+                    sbBody.append(getToName());
                     sbBody.append("\nhead:");
                     sbBody.append(getHead());
 //                    sbBody.append(getBody());
