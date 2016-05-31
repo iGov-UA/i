@@ -19,6 +19,7 @@ public abstract class Abstract_Mail {
     private String sFrom; //"noreplay@gmail.com";
     @Value("${general.Mail.sAddressNoreply}")
     private String saTo; //"noreplay@gmail.com";
+    private String sToName; //"Андрій Хветкевич";
     private String sHead = "Subject";
     private String sBody = "Text";
     @Value("${general.Mail.sUsername}")
@@ -51,6 +52,15 @@ public abstract class Abstract_Mail {
 
     public Abstract_Mail _To(String saTo) {
         this.saTo = saTo;
+        return this;
+    }
+
+    public String getToName() {
+        return sToName;
+    }
+
+    public Abstract_Mail _ToName(String saToName){
+        this.sToName = saToName;
         return this;
     }
 
