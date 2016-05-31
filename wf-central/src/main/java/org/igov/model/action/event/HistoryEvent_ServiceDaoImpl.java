@@ -257,9 +257,19 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
         }
         /// end test strings
 
-        oCriteria.add(Restrictions.eq("nID_Subject", nID_Subject));
-        oCriteria.add(Restrictions.eq("nID_Service", nID_Service));
-        oCriteria.add(Restrictions.eq("sID_UA", sID_UA));
+        if(nID_Subject == null && nID_Service == null && sID_UA == null){
+            return new LinkedList<>();
+        }
+
+        if(nID_Subject != null){
+            oCriteria.add(Restrictions.eq("nID_Subject", nID_Subject));
+        }
+        if(nID_Service != null){
+            oCriteria.add(Restrictions.eq("nID_Service", nID_Service));
+        }
+        if(sID_UA != null){
+            oCriteria.add(Restrictions.eq("sID_UA", sID_UA));
+        }
 
         if(nLimit>0){
             oCriteria.setMaxResults(nLimit);

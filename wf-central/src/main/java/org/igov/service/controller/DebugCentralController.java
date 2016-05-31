@@ -326,26 +326,7 @@ public class DebugCentralController {
         result.put("nID_Subject", obj.getnID_Subject());
         result.put("sID_UA", obj.getsID_UA());
         result.put("sUserTaskName", obj.getsUserTaskName());
-
-        /*
-        result.put("sID", obj.getsID());
-        result.put("sBody", obj.getsBody());
-        result.put("sHead", obj.getsHead());
-        result.put("sID_Rate_Indirectly", obj.getsID_Rate_Indirectly());
         result.put("sID_StatusType", obj.getsID_StatusType());
-        result.put("sName_UA_StatusType", obj.getsName_UA_StatusType());
-        result.put("soData", obj.getSoData());
-        result.put("sToken", obj.getsToken());
-        result.put("nID_Proccess_Escalation", obj.getnID_Proccess_Escalation());
-        result.put("nID_Proccess_Feedback", obj.getnID_Proccess_Feedback());
-        result.put("nID_Protected", obj.getnID_Protected());
-        result.put("nID_Region", obj.getnID_Region());
-        result.put("nID_Server", obj.getnID_Server());
-        result.put("nID_ServiceData", obj.getnID_ServiceData());
-        result.put("nID_StatusType", obj.getnID_StatusType());
-        result.put("nRate", obj.getnRate());
-        result.put("nTimeMinutes", obj.getnTimeMinutes());
-        */
 
         return JSONValue.toJSONString(result);
     }
