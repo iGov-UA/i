@@ -7,18 +7,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.igov.service.business.finance.Currency;
 import org.igov.service.business.object.Language;
 import org.igov.service.business.access.AccessKeyService;
 import org.igov.io.web.HttpRequester;
 import org.igov.io.GeneralConfig;
-import org.igov.util.Tool;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.igov.util.ToolWeb.base64_encode;
-import static org.igov.util.ToolWeb.aByte_SHA1;
 import org.igov.service.controller.security.AccessContract;
 import org.igov.util.ToolWeb;
 import static org.igov.util.ToolWeb.getSignature;
@@ -63,17 +60,6 @@ public class Liqpay {
         Map<String, String> paramMerchant = new HashMap<String, String>();
         paramMerchant.put("sID", sID_Merchant);
         
-        /*
-        paramMerchant.put("nID_Subject", String.valueOf(nID_Subject));
-        //String sAccessKey_Merchant = accessDataDao.setAccessData(httpRequester.getFullURL(URI, paramMerchant));
-        String sAccessKey_Merchant = accessCover.getAccessKeyCentral(httpRequester.getFullURL(URI, paramMerchant));
-        //paramMerchant.put("sAccessContract", "Request");
-        //paramMerchant.put("sAccessKey", sAccessKey_Merchant);
-        //paramMerchant.put(AuthenticationTokenSelector.ACCESS_CONTRACT, AccessContract.RequestAndLogin.name());
-        //paramMerchant.put(AuthenticationTokenSelector.ACCESS_KEY, sAccessKey_Merchant);
-        log.info("sAccessKey="+sAccessKey_Merchant);
-        */
-
         String soJSON_Merchant = httpRequester.getInside(generalConfig.getSelfHostCentral() + URI, paramMerchant);
         LOG.info("(soJSON_Merchant={})", soJSON_Merchant);
 

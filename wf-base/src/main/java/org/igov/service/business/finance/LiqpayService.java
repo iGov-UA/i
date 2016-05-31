@@ -6,7 +6,8 @@
 package org.igov.service.business.finance;
 
 import com.google.gson.Gson;
-import java.io.EOFException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.activiti.engine.RuntimeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 public class LiqpayService {
 
     private static final Logger LOG = LoggerFactory.getLogger(LiqpayService.class);
+    private static final Pattern TAG_PATTERN_STATUS = Pattern.compile("\"status\":\"[0-9]+$\"");
 
     public static final String LIQPAY_PAYMENT_SYSTEM = "Liqpay";
     public static final String TASK_MARK = "TaskActiviti_";
@@ -34,7 +36,7 @@ public class LiqpayService {
             throws Exception {
         if (!LIQPAY_PAYMENT_SYSTEM.equals(sID_PaymentSystem)) {
             LOG.error("not liqpay system");
-            throw new Exception("not liqpay system");			
+            throw new Exception("not liqpay system");
         }
 
         LOG.info("(sData={})", sData);
@@ -68,11 +70,13 @@ public class LiqpayService {
             try {
                 Gson oGson = new Gson();
                 LiqpayCallbackEntity oLiqpayCallbackModel;
-                //try {
+                try {
                     oLiqpayCallbackModel = oGson.fromJson(sData, LiqpayCallbackEntity.class);
-                //} catch (Exception ex) {
-                //    oLiqpayCallbackModel = oGson.fromJson(sData.substring(0, sData.length() - 1), LiqpayCallbackEntity.class);
-                //}
+
+                } catch (Exception ex) {
+                    LOG.error("Can't parse answer! " + sData, ex);
+                    oLiqpayCallbackModel = setParamValue(sData);
+                }
                 sID_Transaction = oLiqpayCallbackModel.getTransaction_id();
                 LOG.info("(oLiqpayCallbackModel.getTransaction_id()={})", sID_Transaction);
                 sStatus_Payment = oLiqpayCallbackModel.getStatus();
@@ -127,5 +131,27 @@ public class LiqpayService {
                     e.getMessage(), snID_Task, sID_Transaction, sStatus_Payment);
             throw e;
         }
+    }
+
+    private LiqpayCallbackEntity setParamValue(String sData) {
+        LiqpayCallbackEntity oLiqpayCallbackModel = new LiqpayCallbackEntity();
+        oLiqpayCallbackModel.setTransaction_id("");
+        oLiqpayCallbackModel.setStatus("");
+        //"payment_id":180792515,"status":"success"
+        Pattern TAG_PATTERN_STATUS = Pattern.compile("\"status\":\"[a-zA-Z]+\"");
+        String status = "";
+        Matcher matcherPrefix = TAG_PATTERN_STATUS.matcher(sData);
+        if (matcherPrefix.find()) {
+            status = matcherPrefix.group();
+            LOG.info("status: " + status);
+        }
+        Pattern TAG_PATTERN_PAYMENY_ID = Pattern.compile("\"payment_id\":\"[0-9]+\"");
+        String payment_id = "";
+        matcherPrefix = TAG_PATTERN_PAYMENY_ID.matcher(sData);
+        if (matcherPrefix.find()) {
+            payment_id = matcherPrefix.group();
+            LOG.info("payment_id: " + payment_id);
+        }
+        return oLiqpayCallbackModel;
     }
 }
