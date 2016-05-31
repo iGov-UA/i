@@ -420,6 +420,15 @@
     </userTask>
     <serviceTask id="servicetask4" name="Лист-відмова" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
+      <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
@@ -442,10 +451,7 @@
 			[pattern/mail/_common_signature_end.html]
 			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
-        </activiti:field>
-      </extensionElements>
+        </extensionElements>
     </serviceTask>
     <serviceTask id="servicetask5" name="Лист-запрошення на екзамен" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
