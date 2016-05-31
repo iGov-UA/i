@@ -5,44 +5,33 @@
  */
 package org.igov.service.business.action;
 
-import io.swagger.annotations.ApiParam;
 import org.igov.io.web.HttpRequester;
 import org.igov.model.action.event.*;
 import org.igov.model.core.GenericEntityDao;
 import org.igov.model.document.Document;
 import org.igov.model.document.DocumentDao;
 import org.igov.model.object.place.Region;
+import org.igov.model.subject.message.SubjectMessage;
+import org.igov.model.subject.message.SubjectMessagesDao;
 import org.igov.service.business.action.event.HistoryEventService;
-import org.igov.service.controller.ExceptionCommonController;
+import org.igov.service.business.action.task.core.ActionTaskService;
+import org.igov.service.business.subject.SubjectMessageService;
 import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.CommonServiceException;
-import org.igov.service.exception.EntityNotFoundException;
+import org.igov.util.ToolLuna;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
-import static org.igov.model.action.event.HistoryEvent_ServiceDaoImpl.DASH;
-import org.igov.model.action.event.HistoryEvent_Service_StatusType;
 
-import org.igov.model.subject.message.SubjectMessage;
-import org.igov.model.subject.message.SubjectMessagesDao;
-import org.igov.service.business.action.task.core.ActionTaskService;
+import static org.igov.model.action.event.HistoryEvent_ServiceDaoImpl.DASH;
 import static org.igov.service.business.action.task.core.ActionTaskService.createTable_TaskProperties;
-import org.igov.service.business.subject.SubjectMessageService;
 import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
-import org.igov.util.ToolLuna;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  *
@@ -303,8 +292,10 @@ public class ActionEventService {
     public void setHistoryEvent(HistoryEventType eventType,
             Long nID_Subject, Map<String, String> mParamMessage, Long nID_HistoryEvent_Service, Long nID_Document, String sSubjectInfo) {
         try {
+            LOG.info("Method setHistoryEvent started");
             String eventMessage = HistoryEventMessage.createJournalMessage(
                     eventType, mParamMessage);
+            LOG.info("Creating journal message ended");
             historyEventDao.setHistoryEvent(nID_Subject, eventType.getnID(),
                     eventMessage, eventMessage, nID_HistoryEvent_Service, nID_Document, sSubjectInfo);
         } catch (IOException e) {            
@@ -359,21 +350,23 @@ public class ActionEventService {
             String sSubjectInfo,
             Long nID_Subject
     ) throws CommonServiceException {
-
+        LOG.info("Mehtod updateActionStatus_Central started for task "+sID_Order);
+        LOG.info("Status type is "+nID_StatusType);
         //TODO: Remove lete (for back compatibility)
         /*if (sID_Order.indexOf(DASH) <= 0) {
             sID_Order = "0-" + sID_Order;
             LOG.warn("Old format of parameter! (sID_Order={})",sID_Order);
         }*/
+
         HistoryEvent_Service oHistoryEvent_Service = null;
         try {
             oHistoryEvent_Service = getHistoryEventService(sID_Order);
         } catch (CRCInvalidException e) {
             e.printStackTrace();
         }
-
+        LOG.info("now we have got history event service");
         HistoryEvent_Service_StatusType oHistoryEvent_Service_StatusType = HistoryEvent_Service_StatusType.getInstance(nID_StatusType);
-
+        LOG.info("checking conditions started");
         boolean isChanged = false;
         if (sUserTaskName != null && !sUserTaskName.equals(oHistoryEvent_Service.getsUserTaskName())) {
             oHistoryEvent_Service.setsUserTaskName(sUserTaskName);
@@ -429,13 +422,18 @@ public class ActionEventService {
         if(nID_Subject == null){
          nID_Subject = oHistoryEvent_Service.getnID_Subject();
         }
+        LOG.info("checking conditions ended");
         if (soData == null || "[]".equals(soData)) { //My journal. change status of task
+            LOG.info("soData is null or empty array: "+soData);
             Map<String, String> mParamMessage = new HashMap<>();
+            LOG.info("SERVICE_STATE: "+sUserTaskName);
             mParamMessage.put(HistoryEventMessage.SERVICE_STATE, sUserTaskName);
             mParamMessage.put(HistoryEventMessage.TASK_NUMBER, sID_Order);
             setHistoryEvent(HistoryEventType.ACTIVITY_STATUS_NEW, nID_Subject, mParamMessage, oHistoryEvent_Service.getId(),
                     null, sSubjectInfo);
-        }else{ //My journal. setTaskQuestions (issue 808, 809)
+        }else{
+            LOG.info("soData is not null or empty array: "+soData);
+            //My journal. setTaskQuestions (issue 808, 809)
             
             //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TODO: Move To Interceptor!!!
             /*
@@ -449,20 +447,25 @@ public class ActionEventService {
             Long nID_SubjectMessageType = null;
             HistoryEventType oHistoryEventType = null;
             Boolean bQuestion = null;
-                    
+            LOG.info("checking status type");
             if(oHistoryEvent_Service_StatusType==HistoryEvent_Service_StatusType.OPENED_REMARK_CLIENT_ANSWER){
                 oHistoryEventType = HistoryEventType.SET_TASK_ANSWERS;
                 bQuestion=true;
                 nID_SubjectMessageType = 4L;
+                LOG.info("oHistoryEvent_Service_StatusType is set to OPENED_REMARK_CLIENT_ANSWER");
+                LOG.info("nID_SubjectMessageType is set to"+nID_SubjectMessageType);
                 isChanged=true;
                 oHistoryEvent_Service.setSoData("[]");
             }else if(oHistoryEvent_Service_StatusType==HistoryEvent_Service_StatusType.OPENED_REMARK_EMPLOYEE_QUESTION){
                 oHistoryEventType = HistoryEventType.SET_TASK_QUESTIONS;
                 bQuestion=false;
                 nID_SubjectMessageType = 5L;
+                LOG.info("oHistoryEvent_Service_StatusType is set to OPENED_REMARK_EMPLOYEE_QUESTION");
+                LOG.info("nID_SubjectMessageType is set to"+nID_SubjectMessageType);
             }
             
             if(nID_SubjectMessageType!=null){
+                LOG.info("nID_SubjectMessageType is not null");
                 osBody.append("<br/>").append(ActionTaskService.createTable_TaskProperties(soData, bQuestion)).append("<br/>");
                 
                 //oActionEventService.createHistoryEventForTaskQuestions(oHistoryEventType, soData, sBody, sID_Order, nID_Subject);
@@ -482,6 +485,7 @@ public class ActionEventService {
                 SubjectMessage oSubjectMessage = oSubjectMessageService.createSubjectMessage(sMessageHead(nID_SubjectMessageType,
                             sID_Order), osBody.toString(), nID_Subject, "", "", soData, nID_SubjectMessageType, sSubjectInfo);
                     oSubjectMessage.setnID_HistoryEvent_Service(oHistoryEvent_Service.getId());
+                    LOG.info("setting message");
                     subjectMessagesDao.setMessage(oSubjectMessage);
                     
                     //oHistoryEvent_Service.setSoData(soData);
@@ -505,9 +509,10 @@ public class ActionEventService {
             
         }
         if (isChanged) {
+            LOG.info("updating");
             historyEventServiceDao.updateHistoryEvent_Service(oHistoryEvent_Service);
         }
-        
+        LOG.info("Mehtod updateActionStatus_Central started for task "+sID_Order);
         return oHistoryEvent_Service;
     }
     
