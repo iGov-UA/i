@@ -74,15 +74,9 @@ public class Mail extends Abstract_Mail {
         LOG.info("(getTo()={})", getTo());
         String sTo=getTo();
         String sToNew=sTo;
-//        String toName = getToName();
-//        String toName = "TESTTONAME";
-//        if (!(toName == null || toName.equals("null"))){
-//            sToNew = String.format("%s <%s>", toName, sTo);
-//        }
         sToNew=sToNew.replace("\"", "");
         sToNew=sToNew.replace("\"", "");
-//        sToNew=sToNew.replaceAll("\"", "");
-//        sTo=sTo.replaceAll("\"", "");
+        //sTo=sTo.replaceAll("\"", "");
         if(!sToNew.equals(sTo)){
             LOG.info("(getTo()(fixed)={})", sToNew);
             _To(sToNew);
@@ -98,7 +92,6 @@ public class Mail extends Abstract_Mail {
         LOG_BIG.info("(bUniSender={})", bUniSender);
         LOG_BIG.debug("(getFrom()={})", getFrom());
         LOG_BIG.debug("(getTo()={})", getTo());
-        LOG_BIG.debug("(getToName()={})", getToName());
         LOG_BIG.debug("(getHead()={})", getHead());
         LOG_BIG.debug("(getBody={})", getBody());
         
@@ -178,8 +171,6 @@ public class Mail extends Abstract_Mail {
                     sbBody.append(getFrom());
                     sbBody.append("\nto:");
                     sbBody.append(getTo());
-                    sbBody.append("\ntoName:");
-                    sbBody.append(getToName());
                     sbBody.append("\nhead:");
                     sbBody.append(getHead());
 //                    sbBody.append(getBody());
