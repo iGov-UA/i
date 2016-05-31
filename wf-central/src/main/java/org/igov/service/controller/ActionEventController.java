@@ -259,8 +259,8 @@ public class ActionEventController {
                     oHistoryEvent_Service.getnID_Subject(), oHistoryEvent_Service.getnID_Service(), oHistoryEvent_Service.getsID_UA(), oHistoryEvent_Service.getsUserTaskName(), bExcludeClosed));
             nOpened++;
             if (bExcludeClosed
-                    || oHistoryEvent_Service.getsID_StatusType().toLowerCase().startsWith("closed")
-                    || oHistoryEvent_Service.getsID_StatusType().toLowerCase().startsWith("removed")
+                    && (oHistoryEvent_Service.getsID_StatusType().toLowerCase().startsWith("closed")
+                    || oHistoryEvent_Service.getsID_StatusType().toLowerCase().startsWith("removed"))
                     ) {
                 nOpened--;
             }
