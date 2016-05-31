@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -23,6 +24,7 @@ import org.igov.service.exception.DocumentNotFoundException;
 import org.json.simple.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
@@ -40,9 +42,12 @@ public class UkrDocUtil {
                 + "<session><user auth='EXCL' login='" + login + "' password='" + password + "'/></session>";
 
         LOG.info("Sending request to SID generator. URL:{}, request:{}", uriSid, xml);
-
+        List<MediaType> mediaTypes = new ArrayList<>();
+        mediaTypes.add(MediaType.TEXT_XML);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setAccept(mediaTypes);
         String xmlResponse = new RestRequest().post(uriSid, xml, MediaType.TEXT_XML,
-                StandardCharsets.UTF_8, String.class, null);
+                StandardCharsets.UTF_8, String.class, httpHeaders);
 
         LOG.info("Response from SID generator: {}", xmlResponse);
 
