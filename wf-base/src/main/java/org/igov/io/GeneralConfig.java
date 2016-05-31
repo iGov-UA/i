@@ -24,7 +24,7 @@ public class GeneralConfig {
     
     @Value("${general.Self.saServerReplace}")
     private String saServerReplace;
-    private Map<Integer,Integer> mServerReplace;
+    private Map<Integer,Integer> mServerReplace = null;
 
     @Value("${general.Self.sHost}")
     private String sHost_Self;
@@ -258,36 +258,42 @@ public class GeneralConfig {
 
     
     public Integer getServerId(Integer nID_Server) {
-        if(mServerReplace==null && saServerReplace!=null && !"".equals(saServerReplace.trim())){
-            String saServerReplace_Trimed =  saServerReplace.trim();
+        if(mServerReplace==null){
             mServerReplace=new HashMap();
-            for(String sServerReplace : saServerReplace_Trimed.split("\\,")){
-            //  //mServerReplace.put(nID_Server, nID_Server)
-                if(sServerReplace!=null && !"".equals(sServerReplace.trim())){
-                    sServerReplace =  sServerReplace.trim();
-                    
-                }
-                int n=0;
-                Integer nAt=null;
-                Integer nTo=null;
-                for(String s : sServerReplace.split("\\>")){
-                    if(n==0){
-                        nAt = Integer.valueOf(s);
-                    }
-                    if(n==1){
-                        nTo = Integer.valueOf(s);
-                    }
+            if(saServerReplace!=null && !"".equals(saServerReplace.trim())){
+                String saServerReplace_Trimed =  saServerReplace.trim();
+                for(String sServerReplace : saServerReplace_Trimed.split("\\,")){
                 //  //mServerReplace.put(nID_Server, nID_Server)
-                    n++;
-                }
-                if(nAt!=null&&nTo!=null){
-                    mServerReplace.put(nAt, nTo);
+                    if(sServerReplace!=null && !"".equals(sServerReplace.trim())){
+                        sServerReplace =  sServerReplace.trim();
+
+                    }
+                    int n=0;
+                    Integer nAt=null;
+                    Integer nTo=null;
+                    for(String s : sServerReplace.split("\\>")){
+                        if(n==0){
+                            nAt = Integer.valueOf(s);
+                        }
+                        if(n==1){
+                            nTo = Integer.valueOf(s);
+                        }
+                    //  //mServerReplace.put(nID_Server, nID_Server)
+                        n++;
+                    }
+                    if(nAt!=null&&nTo!=null){
+                        mServerReplace.put(nAt, nTo);
+                    }
                 }
             }
         }
-        Integer nID_Server_Return = mServerReplace.get(nID_Server);
-        if(nID_Server_Return==null){
-            nID_Server_Return = nID_Server;
+        LOG.info("nID_Server={}, mServerReplace={}", nID_Server, mServerReplace);
+        Integer nID_Server_Return = nID_Server;
+        if(mServerReplace!=null&&!mServerReplace.isEmpty()&&nID_Server!=null){
+            nID_Server_Return = mServerReplace.get(nID_Server);
+            if(nID_Server_Return==null){
+                nID_Server_Return = nID_Server;
+            }
         }
         return nID_Server_Return;
         //saServerReplace
