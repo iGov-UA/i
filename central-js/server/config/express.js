@@ -37,7 +37,7 @@ module.exports = function (app) {
   app.use(methodOverride());
   app.use(cookieParser());
 
-<<<<<<< HEAD
+ <<<<<<< HEAD
   //if ('prod' === env || 'test-alpha' === env || 'test-beta' === env) {
   if(config.bCompile){
 =======

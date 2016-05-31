@@ -22,8 +22,6 @@ import org.springframework.stereotype.Service;
 public class LiqpayService {
 
     private static final Logger LOG = LoggerFactory.getLogger(LiqpayService.class);
-    private static final Pattern TAG_PATTERN_STATUS = Pattern.compile("\"status\":\"[0-9]+$\"");
-
     public static final String LIQPAY_PAYMENT_SYSTEM = "Liqpay";
     public static final String TASK_MARK = "TaskActiviti_";
     public static final String PAYMENT_SUCCESS = "success";
@@ -71,8 +69,8 @@ public class LiqpayService {
                 Gson oGson = new Gson();
                 LiqpayCallbackEntity oLiqpayCallbackModel;
                 try {
-                    oLiqpayCallbackModel = oGson.fromJson(sData, LiqpayCallbackEntity.class);
-
+                    //oLiqpayCallbackModel = oGson.fromJson(sData, LiqpayCallbackEntity.class);
+                    oLiqpayCallbackModel = setParamValue(sData);
                 } catch (Exception ex) {
                     LOG.error("Can't parse answer! " + sData, ex);
                     oLiqpayCallbackModel = setParamValue(sData);
@@ -135,21 +133,21 @@ public class LiqpayService {
 
     private LiqpayCallbackEntity setParamValue(String sData) {
         LiqpayCallbackEntity oLiqpayCallbackModel = new LiqpayCallbackEntity();
-        oLiqpayCallbackModel.setTransaction_id("");
-        oLiqpayCallbackModel.setStatus("");
         //"payment_id":180792515,"status":"success"
         Pattern TAG_PATTERN_STATUS = Pattern.compile("\"status\":\"[a-zA-Z]+\"");
         String status = "";
         Matcher matcherPrefix = TAG_PATTERN_STATUS.matcher(sData);
         if (matcherPrefix.find()) {
-            status = matcherPrefix.group();
+            status = matcherPrefix.group().replaceFirst("\"status\":\"", "").replaceFirst("\"", "");
+            oLiqpayCallbackModel.setStatus(status);
             LOG.info("status: " + status);
         }
-        Pattern TAG_PATTERN_PAYMENY_ID = Pattern.compile("\"payment_id\":\"[0-9]+\"");
+        Pattern TAG_PATTERN_PAYMENY_ID = Pattern.compile("\"payment_id\":[0-9]+");
         String payment_id = "";
         matcherPrefix = TAG_PATTERN_PAYMENY_ID.matcher(sData);
         if (matcherPrefix.find()) {
-            payment_id = matcherPrefix.group();
+            payment_id = matcherPrefix.group().replaceFirst("\"payment_id\":", "");
+            oLiqpayCallbackModel.setTransaction_id(payment_id);
             LOG.info("payment_id: " + payment_id);
         }
         return oLiqpayCallbackModel;
