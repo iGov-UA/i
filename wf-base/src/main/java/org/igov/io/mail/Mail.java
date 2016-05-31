@@ -74,17 +74,17 @@ public class Mail extends Abstract_Mail {
         LOG.info("(getTo()={})", getTo());
         String sTo=getTo();
         String sToNew=sTo;
-//        String toName = "TESTTONAME";
+        String toName = "TESTTONAME";
 
-//        sToNew = String.format("\"%s\" <%s>", toName, sTo);
+        sToNew = String.format("\"%s\" <%s>", toName, sTo);
 
         sToNew=sToNew.replace("\"", "");
         sToNew=sToNew.replace("\"", "");
         //sTo=sTo.replaceAll("\"", "");
-        if(!sToNew.equals(sTo)){
-            LOG.info("(getTo()(fixed)={})", sToNew);
-            _To(sToNew);
-        }
+//        if(!sToNew.equals(sTo)){
+//            LOG.info("(getTo()(fixed)={})", sToNew);
+//            _To(sToNew);
+//        }
         LOG.info("(getHead()={})", getHead());
         
         Boolean bUniSender = generalConfig.isEnable_UniSender_Mail();
