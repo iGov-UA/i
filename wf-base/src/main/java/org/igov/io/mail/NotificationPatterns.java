@@ -54,7 +54,7 @@ public class NotificationPatterns {
                     "<br>Ви завжди зможете переглянути її поточний статус у розділі <a href=\"" + generalConfig
                     .getSelfHostCentral() + "/order/search?sID_Order=" + sID_Order
                     + "\">\"Мій журнал\"</a>. Також на кожному етапі Ви будете отримувати email-повідомлення."
-                    +"<br>У разі необхідності Ви можете спрямувати питання та пропозиції до <a href=\"https://docs.google.com/spreadsheets/d/15w9ui-Mz8fTWDHHpDNx52Fnn3lknKsyh68tsX5znKtY/edit#gid=1246904557\" target=\"_blank\">групи підтримки iGov</a> у Вашій області"
+                    +"<br>У разі необхідності Ви можете спрямувати питання та пропозиції скориставшись формою за <a href=\"https://docs.google.com/forms/d/1ueU6PQa-OSA2Tsisxx2RbRWRJ9rLsFlPBlHsr7W-4gE/viewform\" target=\"_blank\">посиланням</a>"
                     ;
             
             /*

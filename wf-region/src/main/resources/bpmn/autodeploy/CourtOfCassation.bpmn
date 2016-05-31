@@ -9,6 +9,7 @@
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="sSurname" name="Учасник судового процесу, від імені якого подається документ" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNumberCase" name="Номер судової справи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sCategoryDoc1" name="Оберіть категорію процесуального документу" type="enum" required="true">
@@ -45,6 +46,7 @@
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name=" ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSurname" name="Учасник судового процесу, від імені якого подається документ; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNumberCase" name="Номер судової справи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sCategoryDoc1" name="Категорія процесуального документу" type="enum" writable="false">
@@ -136,20 +138,19 @@
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
-         <activiti:field name="sPhone_SMS">
+        <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
           <activiti:expression>Vashe zvernennya [sID_Order] peredano na rozglyad. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
-		 <activiti:field name="saAttachmentsForSend">
+        <activiti:field name="saAttachmentsForSend">
           <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    
-<serviceTask id="servicetask5" name="повідомлення-передача данних до суду" activiti:delegateExpression="#{MailTaskWithAttachments}">
-         <extensionElements>
+    <serviceTask id="servicetask5" name="повідомлення-передача данних до суду" activiti:delegateExpression="#{MailTaskWithAttachments}">
+      <extensionElements>
         <activiti:field name="to">
           <activiti:string><![CDATA[darja.grek@gmail.com]]></activiti:string>
         </activiti:field>
@@ -163,25 +164,24 @@
           <activiti:expression>[sID_Order]&lt;br&gt;
 [pattern/mail/_common_header.html]
 &lt;b&gt;Шановний колего!&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Співробітники канцелярії зареєстрували новий документ, який знаходиться у додатку до листа.
-Додаткові відомості щодо звернення:
-Заявник - ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
-Номер справи - ${sNumberCase}&lt;br /&gt;
+Співробітники канцелярії зареєстрували новий документ, який знаходиться у додатку до листа.&lt;br /&gt;
+Додаткові відомості щодо звернення:&lt;br /&gt;
+Заявник - &lt;b&gt; ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;/b&gt;&lt;br /&gt;
+Номер справи - &lt;b&gt;${sNumberCase}&lt;/b&gt;&lt;br /&gt;
 Паспортні дані заявника - ${bankIdPassport}&lt;br /&gt;
 ІПН заявника - ${bankIdinn}&lt;br /&gt;
 E-Mail адреса заявника - ${email}&lt;br /&gt;
-Учасник судового процесу, від імені якого подається документ - ${sSurname}&lt;br /&gt;
-Категорія процесуального документу - enum{[sCategoryDoc1]} ${sOther1}&lt;br /&gt;
-Реєстраційний номер заяви - ${sNumberAplication}
+Учасник судового процесу, від імені якого подається документ - &lt;b&gt;${sSurname}&lt;/b&gt;&lt;br /&gt;
+Категорія процесуального документу - &lt;b&gt;enum{[sCategoryDoc1]} ${sOther1}&lt;/b&gt;&lt;br /&gt;
+Реєстраційний номер заяви -&lt;b&gt; ${sNumberAplication}&lt;/b&gt;
 [pattern/mail/_common_signature.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
-         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${sDoc1}, ${PrintForm_1}</activiti:expression>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>${PrintForm_1},${sDoc1}</activiti:expression>
         </activiti:field>
       </extensionElements>
-       </serviceTask> 
-    
+    </serviceTask>
     <serviceTask id="servicetask3" name="повідомлення громадянина про відмову у реєстрації документів" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
@@ -206,13 +206,13 @@ E-Mail адреса заявника - ${email}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
-         <activiti:field name="sPhone_SMS">
+        <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
           <activiti:expression>Vashe zvernennya [sID_Order] vidhileno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
-		 <activiti:field name="saAttachmentsForSend">
+        <activiti:field name="saAttachmentsForSend">
           <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
@@ -316,6 +316,9 @@ execution.setVariable('sListDocumentsLetter', per1)
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="55.0" width="150.0" x="280.0" y="271.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
+        <omgdc:Bounds height="55.0" width="149.0" x="280.0" y="189.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
         <omgdc:Bounds height="57.0" width="161.0" x="127.0" y="111.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -336,9 +339,6 @@ execution.setVariable('sListDocumentsLetter', per1)
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="61.0" y="122.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
-        <omgdc:Bounds height="55.0" width="149.0" x="280.0" y="189.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
         <omgdi:waypoint x="420.0" y="139.0"></omgdi:waypoint>
