@@ -75,13 +75,14 @@ public class Mail extends Abstract_Mail {
         String sTo=getTo();
         String sToNew=sTo;
 //        String toName = getToName();
-        String toName = "TESTTONAME";
+//        String toName = "TESTTONAME";
 //        if (!(toName == null || toName.equals("null"))){
-            sToNew = String.format("%s <%s>", toName, sTo);
+//            sToNew = String.format("%s <%s>", toName, sTo);
 //        }
-//        sToNew=sToNew.replace("\"", "");
-        sToNew=sToNew.replaceAll("\"", "");
-        //sTo=sTo.replaceAll("\"", "");
+        sToNew=sToNew.replace("\"", "");
+        sToNew=sToNew.replace("\"", "");
+//        sToNew=sToNew.replaceAll("\"", "");
+//        sTo=sTo.replaceAll("\"", "");
         if(!sToNew.equals(sTo)){
             LOG.info("(getTo()(fixed)={})", sToNew);
             _To(sToNew);
