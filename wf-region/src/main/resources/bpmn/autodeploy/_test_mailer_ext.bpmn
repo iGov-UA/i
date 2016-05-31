@@ -62,8 +62,10 @@
           <activiti:string><![CDATA[admin@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${mail},${mail2},kyrbatsky@gmail.com,kurbpa@gmail.com</activiti:expression>
+          <activiti:expression><activiti:expression><![CDATA[${bankIdlastName} ${bankIdfirstName} <${email}>]]></activiti:expression></activiti:expression>
         </activiti:field>
+        
+        <!-- ${mail},${mail2},kyrbatsky@gmail.com,kurbpa@gmail.com -->
         <activiti:field name="subject">
           <activiti:expression>"Mail test ( Заявник: ${bankIdfirstName} ${bankIdmiddleName} ${bankIdlastName} )"</activiti:expression>
         </activiti:field>
