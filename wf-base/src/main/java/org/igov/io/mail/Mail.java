@@ -221,6 +221,9 @@ public class Mail extends Abstract_Mail {
             oMultiPartEmail.setHostName(getHost());
             String[] asTo=getTo().split("\\,");//sTo
             for(String s : asTo){
+                String toName = "TESTTONAME";
+
+                s = String.format("\"%s\" <%s>", toName, s);
                 LOG.info("oMultiPartEmail.addTo (s={})", s);
                 oMultiPartEmail.addTo(s, "receiver");
             }
