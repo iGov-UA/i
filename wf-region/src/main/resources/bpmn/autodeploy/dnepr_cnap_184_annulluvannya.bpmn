@@ -522,7 +522,7 @@ execution.setVariable('sAddPrintSpisok', per6)
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Public_SubjectOrganJoin=='zhvodT' && asPurpose=='first_permission'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow41" sourceRef="usertask3" targetRef="scripttask2"></sequenceFlow>
-    <serviceTask id="servicetask8" name="повідомлення громадянина про рішення о скасуванні + СМС" activiti:class="#{MailTaskWithAttachmentsAndSMS}">
+        <serviceTask id="servicetask8" name="повідомлення громадянина про рішення о скасуванні + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>

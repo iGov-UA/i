@@ -449,7 +449,7 @@ execution.setVariable('sAddPrintSpisok', per6)
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow38" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow42" sourceRef="servicetask4" targetRef="usertask2"></sequenceFlow>
-    <serviceTask id="servicetask8" name="повідомлення громадянина про рішення відхилення + СМС">
+    <serviceTask id="servicetask8" name="повідомлення громадянина про рішення відхилення + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
