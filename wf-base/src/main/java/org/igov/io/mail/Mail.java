@@ -367,6 +367,21 @@ public class Mail extends Abstract_Mail {
         return this;
     }
 
+    public static String sMailOnly(String sMail){
+        String sMailNew=sMail;
+        try{
+            if(sMailNew.contains("\\<")){
+                String[] asMail=sMailNew.split("\\<");
+                sMailNew = asMail[1];
+                asMail=sMailNew.split("\\>");
+                sMailNew = asMail[0];
+            }
+        }catch(Exception oException){
+            LOG.warn("FAIL: {} (sMail={},sMailNew={})", oException.getMessage(), sMail, sMailNew);
+        }
+        return sMail;
+    }
+    
     public void sendWithUniSender() throws EmailException{
         LOG.info("Init...");
         Object oID_Message = null;
@@ -387,11 +402,13 @@ public class Mail extends Abstract_Mail {
             if(getTo().contains(",")){
                 String[] asMail=getTo().split("\\,");
                 for(String sMail : asMail){
+                    sMail = sMailOnly(sMail);
                     UniResponse oUniResponse_Subscribe = oUniSender.subscribe(Collections.singletonList(String.valueOf(nID_Sender)), sMail);
                     LOG.info("(sMail={},oUniResponse_Subscribe={})", sMail, oUniResponse_Subscribe);
                 }
             }else{
-                UniResponse oUniResponse_Subscribe = oUniSender.subscribe(Collections.singletonList(String.valueOf(nID_Sender)), getTo());
+                String sMail = sMailOnly(getTo());
+                UniResponse oUniResponse_Subscribe = oUniSender.subscribe(Collections.singletonList(String.valueOf(nID_Sender)), sMail);
                 LOG.info("(oUniResponse_Subscribe={})", oUniResponse_Subscribe);
             }
             
