@@ -133,8 +133,14 @@
     <sequenceFlow id="flow13" sourceRef="servicetask3" targetRef="endevent2"></sequenceFlow>
     <endEvent id="endevent3" name="End"></endEvent>
     <sequenceFlow id="flow14" sourceRef="servicetask2" targetRef="endevent3"></sequenceFlow>
-    <serviceTask id="servicetask2" name="положительное решение" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask2" name="положительное решение" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
+      <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення на тему "Отримання допомоги при народженні дитини"]]></activiti:string>
         </activiti:field>
@@ -160,8 +166,14 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask3" name="отрицательное решение" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask3" name="отрицательное решение" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
+      <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
@@ -210,8 +222,17 @@ execution.setVariable('area', per3)</script>
     </scriptTask>
     <sequenceFlow id="flow22" sourceRef="scripttask1" targetRef="servicetask5"></sequenceFlow>
     <sequenceFlow id="flow23" sourceRef="servicetask5" targetRef="usertask1"></sequenceFlow>
-    <serviceTask id="servicetask5" name="имейл про регистрацию заявки" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask5" name="имейл про регистрацию заявки" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
+      <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення на тему "Отримання допомоги при народженні дитини"]]></activiti:string>
         </activiti:field>
@@ -243,8 +264,17 @@ execution.setVariable('area', per3)</script>
     <sequenceFlow id="flow24" sourceRef="exclusivegateway1" targetRef="servicetask6">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_step1=='attr2_bad'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask6" name="имейл про отказ в обработке" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask6" name="имейл про отказ в обработке" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
+      <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
