@@ -1,7 +1,6 @@
 package org.igov.service.business.action.task.listener.doc;
 
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +23,6 @@ import org.activiti.engine.task.Attachment;
 import org.activiti.engine.task.IdentityLink;
 import org.activiti.engine.task.Task;
 import org.igov.io.GeneralConfig;
-//import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.web.RestRequest;
 import org.igov.service.business.action.task.core.AbstractModelTask;
 import org.igov.service.business.action.task.systemtask.doc.util.UkrDocUtil;
@@ -66,147 +64,137 @@ public class CreateDocument_UkrDoc extends AbstractModelTask implements TaskList
 
     @Autowired
     TaskService taskService;
-    //@Autowired
-    //private IBytesDataInmemoryStorage oBytesDataInmemoryStorage;
 
     @Override
     public void notify(DelegateTask delegateTask) {
 
         DelegateExecution execution = delegateTask.getExecution();
         String sID_DocumentValue = getStringFromFieldExpression(this.sID_Document, execution);
+        try {
+            if (sID_DocumentValue == null || "".equals(sID_DocumentValue.trim())) {
+                String sLoginAuthorValue = getStringFromFieldExpression(this.sLoginAuthor, execution);
+                String sHeadValue = getStringFromFieldExpression(this.sHead, execution)
+                        + " (" + generalConfig.getOrderId_ByProcess(Long.valueOf(execution.getProcessInstanceId())) + ")";
+                String sBodyValue = getStringFromFieldExpression(this.sBody, execution);
+                String nID_PatternValue = getStringFromFieldExpression(this.nID_Pattern, execution);
+                String sID_Order_GovPublicValue = getStringFromFieldExpression(this.sID_Order_GovPublic, execution);
+                String sSourceChannelValue = getStringFromFieldExpression(this.sSourceChannel, execution);
+                String sDepartNameFullValue = getStringFromFieldExpression(this.sDepartNameFull, execution);
+                String sSexValue = getStringFromFieldExpression(this.sSex, execution);
+                String sAddressValue = getStringFromFieldExpression(this.sAddress, execution);
+                String bankIdlastName = getStringFromFieldExpression(this.bankIdlastName, execution);
+                String bankIdfirstName = getStringFromFieldExpression(this.bankIdfirstName, execution);
+                String bankIdmiddleName = getStringFromFieldExpression(this.bankIdmiddleName, execution);
+                String shortFIO = "_", fullIO = "_";
+                LOG.info("Parameters of the task sLogin:{}, sHead:{}, sBody:{}, nId_PatternValue:{}, bankIdlastName:{}, bankIdfirstName:{}, bankIdmiddleName:{}", sLoginAuthorValue, sHeadValue, sBodyValue, nID_PatternValue, bankIdlastName, bankIdfirstName, bankIdmiddleName);
 
-        if (sID_DocumentValue == null || "".equals(sID_DocumentValue.trim())) {
-            String sLoginAuthorValue = getStringFromFieldExpression(this.sLoginAuthor, execution);
-            String sHeadValue = getStringFromFieldExpression(this.sHead, execution)
-                    + " (" + generalConfig.getOrderId_ByProcess(Long.valueOf(execution.getProcessInstanceId())) + ")";
-            String sBodyValue = getStringFromFieldExpression(this.sBody, execution);
-            String nID_PatternValue = getStringFromFieldExpression(this.nID_Pattern, execution);
-            String sID_Order_GovPublicValue = getStringFromFieldExpression(this.sID_Order_GovPublic, execution);
-            String sSourceChannelValue = getStringFromFieldExpression(this.sSourceChannel, execution);
-            String sDepartNameFullValue = getStringFromFieldExpression(this.sDepartNameFull, execution);
-            String sSexValue = getStringFromFieldExpression(this.sSex, execution);
-            String sAddressValue = getStringFromFieldExpression(this.sAddress, execution);
-            String bankIdlastName = getStringFromFieldExpression(this.bankIdlastName, execution);
-            String bankIdfirstName = getStringFromFieldExpression(this.bankIdfirstName, execution);
-            String bankIdmiddleName = getStringFromFieldExpression(this.bankIdmiddleName, execution);
-            String shortFIO = "_", fullIO = "_";
-            LOG.info("Parameters of the task sLogin:{}, sHead:{}, sBody:{}, nId_PatternValue:{}, bankIdlastName:{}, bankIdfirstName:{}, bankIdmiddleName:{}", sLoginAuthorValue, sHeadValue, sBodyValue, nID_PatternValue, bankIdlastName, bankIdfirstName, bankIdmiddleName);
+                if (bankIdlastName != null && bankIdfirstName != null && bankIdmiddleName != null
+                        && bankIdfirstName.length() > 0 && bankIdmiddleName.length() > 0) {
+                    fullIO = new StringBuilder(bankIdfirstName).append(" ").append(bankIdmiddleName).toString();
+                    shortFIO = new StringBuilder(bankIdlastName).append(". ")
+                            .append(bankIdfirstName.substring(0, 1)).append(". ")
+                            .append(bankIdmiddleName.substring(0, 1)).append(".").toString();
+                }
 
-            if (bankIdlastName != null && bankIdfirstName != null && bankIdmiddleName != null
-                    && bankIdfirstName.length() > 0 && bankIdmiddleName.length() > 0) {
-                fullIO = new StringBuilder(bankIdfirstName).append(" ").append(bankIdmiddleName).toString();
-                shortFIO = new StringBuilder(bankIdlastName).append(". ")
-                        .append(bankIdfirstName.substring(0, 1)).append(". ")
-                        .append(bankIdmiddleName.substring(0, 1)).append(".").toString();
-            }
+                List<Attachment> attachments = new LinkedList<Attachment>();
+                List<Attachment> attach2 = taskService.getTaskAttachments(delegateTask.getId());
+                if (attach2 != null && !attach2.isEmpty()) {
+                    attachments = attach2;
+                }
 
-            List<Attachment> attachments = new LinkedList<Attachment>();
+                LOG.info("Found attachments for the process {}: {}", delegateTask.getId(), attach2 != null ? attach2.size() : 0);
 
-//            List<Attachment> attach1 = taskService.getProcessInstanceAttachments(delegateTask.getProcessInstanceId());
-//            if (attach1 != null && !attach1.isEmpty()) {
-//                attachments = attach1;
-//            }
+                String sessionId = UkrDocUtil.getSessionId(generalConfig.getLogin_Auth_UkrDoc_SED(), generalConfig.getPassword_Auth_UkrDoc_SED(),
+                        generalConfig.getURL_GenerateSID_Auth_UkrDoc_SED() + "?lang=UA");
 
-            List<Attachment> attach2 = taskService.getTaskAttachments(delegateTask.getId());
-            if (attach2 != null && !attach2.isEmpty()) {
-                attachments = attach2;
-            }
+                LOG.info("Retrieved session ID:" + sessionId);
 
-            LOG.info("Found attachments for the process {}: {}", delegateTask.getId(), attach2 != null ? attach2.size() : 0);
+                if (attachments.isEmpty()) {
+                    DelegateExecution oExecution = delegateTask.getExecution();
+                    // получить группу бп
+                    Set<IdentityLink> identityLink = delegateTask.getCandidates();
+                    // получить User группы
+                    List<User> aUser = oExecution.getEngineServices().getIdentityService()
+                            .createUserQuery()
+                            .memberOfGroup(identityLink.iterator().next().getGroupId())
+                            .list();
 
-            String sessionId = UkrDocUtil.getSessionId(generalConfig.getLogin_Auth_UkrDoc_SED(), generalConfig.getPassword_Auth_UkrDoc_SED(),
-                    generalConfig.getURL_GenerateSID_Auth_UkrDoc_SED() + "?lang=UA");
-
-            LOG.info("Retrieved session ID:" + sessionId);
-
-            if (attachments.isEmpty()) {
-                DelegateExecution oExecution = delegateTask.getExecution();
-                // получить группу бп
-                Set<IdentityLink> identityLink = delegateTask.getCandidates();
-                // получить User группы
-                List<User> aUser = oExecution.getEngineServices().getIdentityService()
-                        .createUserQuery()
-                        .memberOfGroup(identityLink.iterator().next().getGroupId())
-                        .list();
-
-                LOG.info("Finding any assigned user-member of group. (aUser={})", aUser);
-                if (aUser == null || aUser.size() == 0 || aUser.get(0) == null || aUser.get(0).getId() == null) {
-                    //TODO  what to do if no user?
-                } else {
+                    LOG.info("Finding any assigned user-member of group. (aUser={})", aUser);
+                    if (aUser == null || aUser.size() == 0 || aUser.get(0) == null || aUser.get(0).getId() == null) {
+                        //TODO  what to do if no user?
+                    } else {
 	            // setAuthenticatedUserId первого попавщегося
-                    //TODO Shall we implement some logic for user selection.
-                    oExecution.getEngineServices().getIdentityService().setAuthenticatedUserId(aUser.get(0).getId());
-                    // получить информацию по стартовой форме бп
-                    FormData oStartFormData = oExecution.getEngineServices().getFormService()
-                            .getStartFormData(oExecution.getProcessDefinitionId());
-                    LOG.info("beginning of addAttachmentsToTask(startformData, task):execution.getProcessDefinitionId()={}",
-                            oExecution.getProcessDefinitionId());
-                    attachments = addAttachmentsToTask(oStartFormData, delegateTask);
+                        //TODO Shall we implement some logic for user selection.
+                        oExecution.getEngineServices().getIdentityService().setAuthenticatedUserId(aUser.get(0).getId());
+                        // получить информацию по стартовой форме бп
+                        FormData oStartFormData = oExecution.getEngineServices().getFormService()
+                                .getStartFormData(oExecution.getProcessDefinitionId());
+                        LOG.info("beginning of addAttachmentsToTask(startformData, task):execution.getProcessDefinitionId()={}",
+                                oExecution.getProcessDefinitionId());
+                        attachments = addAttachmentsToTask(oStartFormData, delegateTask);
+                    }
                 }
-            }
 
-            LOG.info("Processing {} attachments", attachments.size());
+                LOG.info("Processing {} attachments", attachments.size());
 
-            Map<String, Object> urkDocRequest = UkrDocUtil.makeJsonRequestObject(sHeadValue, sBodyValue, sLoginAuthorValue, nID_PatternValue,
-                    attachments, execution.getId(), generalConfig, sID_Order_GovPublicValue, sSourceChannelValue, shortFIO, fullIO,
-                    sDepartNameFullValue, sSexValue, sAddressValue);
+                Map<String, Object> urkDocRequest = UkrDocUtil.makeJsonRequestObject(sHeadValue, sBodyValue, sLoginAuthorValue, nID_PatternValue,
+                        attachments, execution.getId(), generalConfig, sID_Order_GovPublicValue, sSourceChannelValue, shortFIO, fullIO,
+                        sDepartNameFullValue, sSexValue, sAddressValue);
 
-            JSONObject json = new JSONObject();
-            json.putAll(urkDocRequest);
+                JSONObject json = new JSONObject();
+                json.putAll(urkDocRequest);
 
-            LOG.info("Created ukr doc request object:" + json.toJSONString());
+                LOG.info("Created ukr doc request object:" + json.toJSONString());
 
-            HttpHeaders headers = new HttpHeaders();
-            //headers.set("Authorization", "Bearer " + sessionId);
-            headers.set("Authorization", "promin.privatbank.ua/EXCL " + sessionId);
-            headers.set("Content-Type", "application/json; charset=utf-8");
+                HttpHeaders headers = new HttpHeaders();
+                headers.set("Authorization", "promin.privatbank.ua/EXCL " + sessionId);
+                headers.set("Content-Type", "application/json; charset=utf-8");
 
-            String resp = new RestRequest().post(generalConfig.getURL_UkrDoc_SED(), json.toJSONString(),
-                    null, StandardCharsets.UTF_8, String.class, headers);
+                String resp = new RestRequest().post(generalConfig.getURL_UkrDoc_SED(), json.toJSONString(),
+                        null, StandardCharsets.UTF_8, String.class, headers);
 
-            LOG.info("Ukrdoc response:" + resp);
-            org.activiti.engine.impl.util.json.JSONObject respJson = new org.activiti.engine.impl.util.json.JSONObject(resp);
-            Object details = respJson.get("details");
+                LOG.info("Ukrdoc response:" + resp);
+                org.activiti.engine.impl.util.json.JSONObject respJson = new org.activiti.engine.impl.util.json.JSONObject(resp);
+                Object details = respJson.get("details");
 
-            if (details != null) {
-                String documentId = ((org.activiti.engine.impl.util.json.JSONObject) details).get("id") + ":"
-                        + ((org.activiti.engine.impl.util.json.JSONObject) details).get("year");
-                runtimeService.setVariable(execution.getProcessInstanceId(), UKRDOC_ID_DOCUMENT_VARIABLE_NAME, documentId);
-                runtimeService.setVariable(execution.getProcessInstanceId(), "sID_Document_UkrDoc", documentId);
-                LOG.info("Set variable to runtime process:{}", documentId);
+                if (details != null) {
+                    String documentId = ((org.activiti.engine.impl.util.json.JSONObject) details).get("id") + ":"
+                            + ((org.activiti.engine.impl.util.json.JSONObject) details).get("year");
+                    runtimeService.setVariable(execution.getProcessInstanceId(), UKRDOC_ID_DOCUMENT_VARIABLE_NAME, documentId);
+                    runtimeService.setVariable(execution.getProcessInstanceId(), "sID_Document_UkrDoc", documentId);
+                    LOG.info("Set variable to runtime process:{}", documentId);
 
-                LOG.info("Looking for a new task to set form properties");
-                List<Task> tasks = taskService.createTaskQuery().processInstanceId(execution.getId()).active().list();
-                LOG.info("Get {} active tasks for the process", tasks);
-                for (Task task : tasks) {
-                    TaskFormData formData = formService.getTaskFormData(task.getId());
-                    for (FormProperty formProperty : formData.getFormProperties()) {
-                        if (formProperty.getId().equals("sID_Document_UkrDoc")) {
-                            LOG.info("Found form property with the id " + "sID_Document_UkrDoc" + ". Setting value {}", documentId);
-                            if (formProperty instanceof FormPropertyImpl) {
-                                ((FormPropertyImpl) formProperty).setValue(documentId);
+                    LOG.info("Looking for a new task to set form properties");
+                    List<Task> tasks = taskService.createTaskQuery().processInstanceId(execution.getId()).active().list();
+                    LOG.info("Get {} active tasks for the process", tasks);
+                    for (Task task : tasks) {
+                        TaskFormData formData = formService.getTaskFormData(task.getId());
+                        for (FormProperty formProperty : formData.getFormProperties()) {
+                            if (formProperty.getId().equals("sID_Document_UkrDoc")) {
+                                LOG.info("Found form property with the id " + "sID_Document_UkrDoc" + ". Setting value {}", documentId);
+                                if (formProperty instanceof FormPropertyImpl) {
+                                    ((FormPropertyImpl) formProperty).setValue(documentId);
+                                }
+                            }
+                        }
+                        StartFormData startFormData = formService.getStartFormData(execution.getProcessDefinitionId());
+                        for (FormProperty formProperty : startFormData.getFormProperties()) {
+                            if (formProperty.getId().equals("sID_Document_UkrDoc")) {
+                                LOG.info("Found start form property with the id " + "sID_Document_UkrDoc" + ". Setting value {}", documentId);
+                                if (formProperty instanceof FormPropertyImpl) {
+                                    ((FormPropertyImpl) formProperty).setValue(documentId);
+                                }
                             }
                         }
                     }
-                    StartFormData startFormData = formService.getStartFormData(execution.getProcessDefinitionId());
-                    for (FormProperty formProperty : startFormData.getFormProperties()) {
-                        if (formProperty.getId().equals("sID_Document_UkrDoc")) {
-                            LOG.info("Found start form property with the id " + "sID_Document_UkrDoc" + ". Setting value {}", documentId);
-                            if (formProperty instanceof FormPropertyImpl) {
-                                ((FormPropertyImpl) formProperty).setValue(documentId);
-                            }
-                        }
-                    }
                 }
+            } else {
+                LOG.info("Skip create document. Document has already been created: " + sID_DocumentValue);
             }
-            //String nID_Task = delegateTask.getId();
-            //LOG.info("close task aythomaticaly: " + nID_Task + "...");
-            //taskService.complete(delegateTask.getId(), new HashMap());
-            //LOG.info("close task aythomaticaly: " + nID_Task + " ok!");
-        } else{
-            LOG.info("Skip create document. Document has already been created: " + sID_DocumentValue);
+        } catch (Exception ex) {
+            LOG.error("", ex);
+            throw ex;
         }
-
     }
 
 }
