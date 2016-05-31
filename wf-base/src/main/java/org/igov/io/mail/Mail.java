@@ -74,6 +74,10 @@ public class Mail extends Abstract_Mail {
         LOG.info("(getTo()={})", getTo());
         String sTo=getTo();
         String sToNew=sTo;
+//        String toName = "TESTTONAME";
+
+//        sToNew = String.format("\"%s\" <%s>", toName, sTo);
+
         sToNew=sToNew.replace("\"", "");
         sToNew=sToNew.replace("\"", "");
         //sTo=sTo.replaceAll("\"", "");
@@ -171,6 +175,8 @@ public class Mail extends Abstract_Mail {
                     sbBody.append(getFrom());
                     sbBody.append("\nto:");
                     sbBody.append(getTo());
+//                    sbBody.append("\ntoName:");
+//                    sbBody.append(getToName());
                     sbBody.append("\nhead:");
                     sbBody.append(getHead());
 //                    sbBody.append(getBody());
