@@ -258,7 +258,7 @@ public class ActionEventController {
             LOG.info(String.format("getCountOrders Checking HistoryEvet_Service nID_Subject = %s, nID_Service = %s, sID_UA = %s, sUserTaskName = %s, bExcludeClosed = %s",
                     oHistoryEvent_Service.getnID_Subject(), oHistoryEvent_Service.getnID_Service(), oHistoryEvent_Service.getsID_UA(), oHistoryEvent_Service.getsUserTaskName(), bExcludeClosed));
             nOpened++;
-            if (bExcludeClosed || oHistoryEvent_Service.getsUserTaskName().startsWith("Заявка закрита") || oHistoryEvent_Service.getsUserTaskName().indexOf("закрита") != -1 || oHistoryEvent_Service.getsUserTaskName().indexOf("Закрита") != -1) {
+            if (bExcludeClosed || oHistoryEvent_Service.getsID_StatusType().toLowerCase().indexOf("closed") != -1) {
                 nOpened--;
             }
             LOG.info("getCountOrders nOpened change to " + nOpened);
