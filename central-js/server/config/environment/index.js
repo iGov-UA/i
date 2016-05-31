@@ -54,7 +54,8 @@ var defaultConfig = getConfig();
 var customConfig = getCustomConfig();
 
 if (defaultConfig && customConfig) {
-  processProps = customConfig;
+  //processProps = customConfig;
+  processProps = _.merge(defaultConfig, customConfig);
 } else if (!defaultConfig && customConfig) {
   processProps = customConfig;
 } else if (defaultConfig && !customConfig) {
@@ -127,6 +128,8 @@ var all = {
   root: path.normalize(__dirname + '/../../..'),
 
   bCompile: (processProps.bCompile_Application === "TRUE"),
+
+  bTest: (processProps.bTest === "TRUE"),
 
   debug: (processProps.bDebug_Application === "TRUE"),
 

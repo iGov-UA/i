@@ -40,7 +40,7 @@ public class SubjectServerControllerScenario {
     @Test
     public void shouldSuccessfullyGetServer() throws Exception {
 
-        Long testServerId = 0L;
+        Long testServerId = 5L;//0L;
 
         String jsonData = mockMvc.perform(get("/subject/getServer")
                 .param("nID", testServerId.toString())).

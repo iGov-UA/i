@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.igov.io.GeneralConfig;
 
 @Controller
 @Api(tags = { "ActionTaskCentralController -- Действия задачи центрально" })
@@ -33,6 +34,9 @@ public class ActionTaskCentralController {
 
     private static final Logger LOG = LoggerFactory.getLogger(ActionTaskCentralController.class);
 
+    @Autowired
+    public GeneralConfig generalConfig;
+    
     @Autowired
     HttpRequester httpRequester;
     @Autowired
@@ -58,7 +62,7 @@ public class ActionTaskCentralController {
         ) throws CommonServiceException {
 
         try {
-
+            LOG.info("/setTaskAnswer_Central started");
             HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
 
             if(bAuth){
@@ -66,8 +70,9 @@ public class ActionTaskCentralController {
             }
              
             LOG.info("Update history! (sID_Order={})", sID_Order);
+            LOG.info("Look, arguments are sBody: "+sBody+" saField: "+saField);
             sBody = sBody != null ? sBody : "На заявку "+ sID_Order + " дана відповідь громадянином";
-            
+            LOG.info("Method /setTaskAnswer_Central calling updateActionStatus_Central");
             oActionEventService.updateActionStatus_Central(
                 sID_Order,
                 null,//sUserTaskName
@@ -144,6 +149,7 @@ public class ActionTaskCentralController {
             String sHost = null;
             int dash_position = sID_Order.indexOf("-");
             int nID_Server = dash_position != -1 ? Integer.parseInt(sID_Order.substring(0, dash_position)) : 0;
+            nID_Server = generalConfig.getServerId(nID_Server);
             Optional<Server> oOptionalServer = serverDao.findById(Long.valueOf(nID_Server + ""));
             if (!oOptionalServer.isPresent()) {
                 throw new RecordNotFoundException();
@@ -319,6 +325,7 @@ public class ActionTaskCentralController {
         nID_Server = historyEventService.getnID_Server();
         nID_Server = nID_Server == null ? 0 : nID_Server;
 
+        nID_Server = generalConfig.getServerId(nID_Server);
         Optional<Server> oOptionalServer = serverDao.findById(new Long(nID_Server));
         if (!oOptionalServer.isPresent()) {
             throw new RecordNotFoundException("Server with nID_Server " + nID_Server + " wasn't found.");

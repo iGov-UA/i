@@ -179,7 +179,23 @@
                     <headerFooter>true</headerFooter>
                     <imagesDir>../resources/images</imagesDir>
                 </configuration>
-            </plugin>       		
+            </plugin>
+            <!--
+            	## Please install igov-maven-plugin from https://github.com/e-government-ua/ilog before activation
+            <plugin>
+                <groupId>org.igov</groupId>
+                <artifactId>log-plugin</artifactId>
+                <version>1.0.1</version>
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>replace-long-calls</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            -->
         </plugins>
         <pluginManagement>
             <plugins>
@@ -215,22 +231,6 @@
                         </lifecycleMappingMetadata>
                     </configuration>
                 </plugin>
-                <!--
-                    ## Please install igov-maven-plugin from https://github.com/e-government-ua/ilog before activation
-                <plugin>
-                    <groupId>org.igov</groupId>
-                    <artifactId>log-plugin</artifactId>
-                    <version>1.0.1</version>
-                    <executions>
-                        <execution>
-                            <phase>process-sources</phase>
-                            <goals>
-                                <goal>replace-long-calls</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-                -->
             </plugins>
         </pluginManagement>
     </build>
@@ -512,7 +512,13 @@
             <artifactId>properties</artifactId>
             <version>2.0.RC3</version>
         </dependency>
-        
+
+        <dependency>
+            <groupId>com.googlecode.log4jdbc</groupId>
+            <artifactId>log4jdbc</artifactId>
+            <version>1.2</version>
+        </dependency>
+
         <!-- Springfox -->
         <dependency>
             <groupId>io.springfox</groupId>

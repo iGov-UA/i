@@ -35,7 +35,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
 
   var currentState = $state.$current;
 
-  $scope.paramsBackup = null
+  $scope.paramsBackup = null;
 
   $scope.oServiceData = oServiceData;
   $scope.account = BankIDAccount; // FIXME потенційний хардкод
@@ -328,7 +328,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
             return;
         }
         if(!oReturn.id){
-            ErrorsFactory.logFail({sBody:"У поверненому об'єкти немае номера створеної заявки!",asParam:["soReturn: "+JSON.stringify(oReturn)]});
+            ErrorsFactory.logFail({sBody:"У поверненому об'єкті немає номера створеної заявки!",asParam:["soReturn: "+JSON.stringify(oReturn)]});
             return;
         }
 
