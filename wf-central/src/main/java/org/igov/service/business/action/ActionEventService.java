@@ -125,9 +125,9 @@ public class ActionEventService {
              5;Київ;"8000000000"
              16;Київська;"3200000000"*/
             if (magicID) {
-                nCount += 53;
+//                nCount += 53;
             } else if ("8000000000".equals(region.getsID_UA()) || "3200000000".equals(region.getsID_UA())) {
-                nCount += 69;
+//                nCount += 69;
             }
         } else if (nID_Service == 1) {
             /*https://igov.org.ua/service/1/general
