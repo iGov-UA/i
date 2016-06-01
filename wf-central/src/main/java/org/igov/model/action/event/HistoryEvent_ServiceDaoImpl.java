@@ -221,53 +221,35 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
     public List<HistoryEvent_Service> getOrdersHistory(Long nID_Subject, Long nID_Service, String sID_UA, int nLimit) {
         Criteria oCriteria = getSession().createCriteria(HistoryEvent_Service.class);
 
-        /// test strings
-        LOG.warn("Start get Orders history");
-        LOG.info("=== param nID_Subject = " + nID_Subject);
-        Criteria oCriteriaSubject = getSession().createCriteria(HistoryEvent_Service.class);
-        oCriteriaSubject.add(Restrictions.eq("nID_Subject", nID_Subject));
-        oCriteriaSubject.setMaxResults(100);
-        List<HistoryEvent_Service> aSubjects = (List<HistoryEvent_Service>) oCriteriaSubject.list();
-        if(aSubjects == null){
-            LOG.info("List<HistoryEvent_Service> oCriteriaSubject.list() create null");
-        } else {
-            LOG.info("List<HistoryEvent_Service> oCriteriaSubject.list() size = " + aSubjects.size());
-        }
-
-        LOG.info("=== param nID_Service = " + nID_Service);
-        Criteria oCriteriaService = getSession().createCriteria(HistoryEvent_Service.class);
-        oCriteriaService.add(Restrictions.eq("nID_Service", nID_Service));
-        oCriteriaService.setMaxResults(100);
-        List<HistoryEvent_Service> aService = (List<HistoryEvent_Service>) oCriteriaService.list();
-        if(aService == null){
-            LOG.info("List<HistoryEvent_Service> oCriteriaService.list() create null");
-        } else {
-            LOG.info("List<HistoryEvent_Service> oCriteriaService.list() size = " + aService.size());
-        }
-
-        LOG.info("=== param sID_UA = " + sID_UA);
-        Criteria oCriteriaID_UA = getSession().createCriteria(HistoryEvent_Service.class);
-        oCriteriaID_UA.add(Restrictions.eq("sID_UA", sID_UA));
-        oCriteriaID_UA.setMaxResults(100);
-        List<HistoryEvent_Service> aID_UA = (List<HistoryEvent_Service>) oCriteriaID_UA.list();
-        if(aID_UA == null){
-            LOG.info("List<HistoryEvent_Service> oCriteriaID_UA.list() create null");
-        } else {
-            LOG.info("List<HistoryEvent_Service> oCriteriaID_UA.list() size = " + aID_UA.size());
-        }
-        /// end test strings
-
         if(nID_Subject == null && nID_Service == null && sID_UA == null){
             return new LinkedList<>();
         }
 
         if(nID_Subject != null){
+            LOG.info("Add criteria nID_Subject = " + nID_Subject);
+            Criteria cr = getSession().createCriteria(HistoryEvent_Service.class);
+            cr.add(Restrictions.eq("nID_Subject", nID_Subject));
+            List<HistoryEvent_Service> arr = (List<HistoryEvent_Service>) cr.list();
+            LOG.info("This criteria return list size = " + arr.size());
+
             oCriteria.add(Restrictions.eq("nID_Subject", nID_Subject));
         }
         if(nID_Service != null){
+            LOG.info("Add criteria nID_Subject = " + nID_Service);
+            Criteria cr = getSession().createCriteria(HistoryEvent_Service.class);
+            cr.add(Restrictions.eq("nID_Service", nID_Service));
+            List<HistoryEvent_Service> arr = (List<HistoryEvent_Service>) cr.list();
+            LOG.info("This criteria return list size = " + arr.size());
+
             oCriteria.add(Restrictions.eq("nID_Service", nID_Service));
         }
         if(sID_UA != null){
+            LOG.info("Add criteria nID_Subject = " + sID_UA);
+            Criteria cr = getSession().createCriteria(HistoryEvent_Service.class);
+            cr.add(Restrictions.eq("sID_UA", sID_UA));
+            List<HistoryEvent_Service> arr = (List<HistoryEvent_Service>) cr.list();
+            LOG.info("This criteria return list size = " + arr.size());
+
             oCriteria.add(Restrictions.eq("sID_UA", sID_UA));
         }
 
