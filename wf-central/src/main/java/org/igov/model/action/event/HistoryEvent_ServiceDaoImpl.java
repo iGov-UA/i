@@ -244,6 +244,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
 
             oCriteria.add(Restrictions.eq("nID_Service", nID_Service));
         }
+        /*
         if(sID_UA != null){
             LOG.info("Add criteria sID_UA = " + sID_UA);
             Criteria cr = getSession().createCriteria(HistoryEvent_Service.class);
@@ -253,6 +254,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
 
             oCriteria.add(Restrictions.eq("sID_UA", sID_UA));
         }
+        */
 
         //if(nLimit>0){
          //   oCriteria.setMaxResults(nLimit);
@@ -262,8 +264,21 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
             LOG.warn("Result List<HistoryEvent_Service> is NULL");
             aHistoryEvent_Service = new LinkedList<>();
         }
-        LOG.info("Result List<HistoryEvent_Service> size = " + aHistoryEvent_Service.size());
-        return aHistoryEvent_Service;
+
+        if(sID_UA == null){
+            LOG.info("Result List<HistoryEvent_Service> size = " + aHistoryEvent_Service.size());
+            return aHistoryEvent_Service;
+        }
+        LOG.info("preResult List<HistoryEvent_Service> size = " + aHistoryEvent_Service.size());
+
+        List<HistoryEvent_Service> resultList = new LinkedList<>();
+        for(HistoryEvent_Service obj : aHistoryEvent_Service){
+            if(obj.getsID_UA().equals(sID_UA)){
+                resultList.add(obj);
+            }
+        }
+        LOG.info("Result List<HistoryEvent_Service> size = " + resultList.size());
+        return resultList;
     }
 
 	@Override
