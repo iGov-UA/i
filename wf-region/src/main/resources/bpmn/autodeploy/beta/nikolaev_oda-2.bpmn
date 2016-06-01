@@ -480,9 +480,9 @@ execution.setVariable('AreaName', per2)
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-		    Звернення № [sID_Order]<br>
-		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>		    		    
 		    <p>
+				Оброблено звернення № [sID_Order].<br>
 				На жаль Вам відмовлено в наданні послуги.
 			</p>
 		    	Причина в наступному:<br>
@@ -645,7 +645,7 @@ execution.setVariable('AreaName', per2)
         <activiti:formProperty id="markers_For_Print_2" name="hide-show fields table" type="markers" default="${markerService.loadFromFile('mvk/nikolaev_mvk_408_hide-show_for_print_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers_For_Print_3" name="hide-show fields sFIO" type="markers" default="${markerService.loadFromFile('mvk/nikolaev_mvk_408_hide-show_for_print_3.json')}"></activiti:formProperty>
 
-
+		<activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression>${nFileCertificateOfEmploymentCenter0}, ${nFileCertificateOfEmployment0}, ${nFileBTI0}, ${nfile_Privilege}, ${nFileINN0}, 

@@ -64,7 +64,9 @@
           <activiti:expression><![CDATA[Нове звернення на порталі igov.org.ua на тему: Видача ордера на службове жиле приміщення]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
+          <activiti:expression><![CDATA[
+          	Звернення № [sID_Order]<br>
+          	[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -122,15 +124,18 @@
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression>Za Vashym zvernennyam [sID_Order] vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>             
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>" "</activiti:expression>
         </activiti:field>   
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-			<p>За даними держоргану Вам ВІДМОВЛЕНО у наданні ордера на службове жиле приміщення.</p>
+		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>			
+			<p>
+				Оброблено звернення № [sID_Order].<br>
+				За даними держоргану Вам ВІДМОВЛЕНО у наданні ордера на службове жиле приміщення.
+			</p>
 			<p>
 				Коментар Державного службовця:<br>
 				<b><i>${decisionComment}</i></b>
@@ -176,7 +181,7 @@
 			<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br><br>
 			<p> 
 				Документи відповідають. <br>  
-				Ваше звернення щодо отримання  ордера на службове жиле приміщення успішно зареєстроване.<br>
+				Ваше звернення № [sID_Order], щодо отримання  ордера на службове жиле приміщення успішно зареєстроване.<br>
 				Ви отримаєте відповідь протягом тридцяти календарних днів.
 			</p>
 			<br>
@@ -256,6 +261,7 @@
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<p>
+				Оброблено звернення № [sID_Order].<br>
 				Вітаємо, Вам НАДАНО ордер на службове жиле приміщення.
 			</p>
 			<p>
