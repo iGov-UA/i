@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
+import org.igov.io.GeneralConfig;
 
 import static org.igov.util.ToolJS.getCalculatedFormulaValue;
 
@@ -32,6 +33,10 @@ public class SubjectController {
 
     private static final String JSON_TYPE = "Accept=application/json";
 
+    @Autowired
+    public GeneralConfig generalConfig;
+    
+    
     @Autowired
     private SubjectOrganJoinTaxDao subjectOrganJoinTaxDao;
 
@@ -500,8 +505,9 @@ public class SubjectController {
             + "\n```\n")
     @RequestMapping(value = "/getServer", method = RequestMethod.GET)
     public @ResponseBody
-    ResponseEntity getService(@ApiParam(value = "nID сервера", required = true) @RequestParam(value = "nID") Long nID) throws RecordNotFoundException {
-        Optional<Server> serverOpt = serverDao.findById(nID);
+    ResponseEntity getService(@ApiParam(value = "nID сервера", required = true) @RequestParam(value = "nID") Integer nID) throws RecordNotFoundException {
+        nID = generalConfig.getServerId(nID);
+        Optional<Server> serverOpt = serverDao.findById(Long.valueOf(nID));
         if (!serverOpt.isPresent()) {
             throw new RecordNotFoundException();
         }
