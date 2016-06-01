@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dnepr_cnap_278_inshe_pravo" name="Державна реєстрація іншого речового права та його обтяжень" isExecutable="true">
+    <documentation>Смоктій К.В. Последние правки: 01.06.2016</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть центр надання адмінпослуг" type="select" required="true"></activiti:formProperty>
@@ -156,7 +157,7 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
-    <userTask id="usertask1" name="Обробка вхідної документації ЦНАПом (1-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask1" name="[Етап I] Обробка вхідної документації ЦНАПом (1-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="Центр надання адмінпослуг" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sClientFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -165,190 +166,6 @@
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAttribRekvizit_URL" name="Зверніть увагу - ця послуга є платною" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sInfo_2" name="Інформація про то, кто звільняється від сплати адміністративного збору" type="label" default="наведено за &lt;a href=&quot;https://goo.gl/1uehlH&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;"></activiti:formProperty>
-        <activiti:formProperty id="asEnumZvilnennyVidSplati" name="Чи звільняєтеся Ви від сплати адміністративного збору?" type="enum" writable="false">
-          <activiti:value id="sElementSplata_No" name="Ні"></activiti:value>
-          <activiti:value id="sElementSplata_Yes" name="Так"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asEnumType_Registration" name="Вид реєстрації" type="enum" writable="false">
-          <activiti:value id="sElementTypeR_Appearance" name="Виникнення"></activiti:value>
-          <activiti:value id="sElementTypeR_Stop" name="Припинення"></activiti:value>
-          <activiti:value id="sElementTypeR_Transition" name="Перехід"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sReason_Document" name="Назви та перелік документів, що є підставою для державної реєстрації права власності" type="string" writable="false"></activiti:formProperty>
-       <activiti:formProperty id="asEnumForm_Vlasnist" name="Оберіть форму власності" type="enum" writable="false">
-          <activiti:value id="sElementFormV_Private" name="Приватна"></activiti:value>
-          <activiti:value id="sElementFormV_Comunal" name="Комунальна"></activiti:value>
-          <activiti:value id="sElementFormV_Goverment" name="Державна"></activiti:value>
-          <activiti:value id="sElementFormV_OtherState" name="Власність інших держав"></activiti:value>
-          <activiti:value id="sElementFormV_OtherOrg" name="Власність міжнародних організацій і юридичних осіб інших держав"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asEnumVid_Common" name="Оберіть вид спільної власності" type="enum" writable="false">
-          <activiti:value id="sElementVidC_NotCommon" name="Не є спільною власністю"></activiti:value>
-          <activiti:value id="sElementVidC_Common" name="спільна сумісна"></activiti:value>
-          <activiti:value id="sElementVidC_PartCommon" name="спільна часткова"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asEnumType_Object" name="Тип об'єкта" type="enum" writable="false">
-          <activiti:value id="sElementTypeO_dilyanka" name="Земельна ділянка"></activiti:value>
-          <activiti:value id="sElementTypeO_nezhytlove" name="Нежитлове приміщення"></activiti:value>
-          <activiti:value id="sElementTypeO_zhytlove" name="Житлове приміщення"></activiti:value>
-          <activiti:value id="sElementTypeO_kvartyra" name="Квартира"></activiti:value>
-          <activiti:value id="sElementTypeO_nezav_budiv" name="Об’єкт незавершеного будівництва"></activiti:value>
-          <activiti:value id="sElementTypeO_zhytl_budynok" name="Житловий будинок"></activiti:value>
-          <activiti:value id="sElementTypeO_budivlya" name="Будівля"></activiti:value>
-          <activiti:value id="sElementTypeO_sporuda" name="Споруда"></activiti:value>
-          <activiti:value id="sElementTypeO_inshyi" name="Інший"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sInshyi_Type_Object" name="Інший тип об'єкта" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNumber_obj" name="Реєстраційний номер об'єкта нерухомого майна" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sLabel_1" name="Місцезнаходження об’єкта нерухомого майна" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sObj_region" name="Область" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sObj_area" name="Район" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sObj_city" name="Населений пункт" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sObj_name" name="Іменований об’єкт" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sObj_street" name="Вулиця" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sObj_bild" name="№ будинку/земельної ділянки" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sObj_section" name="№ корп./секції" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sObj_flat" name="№ блоку/гар./кв." type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sObj_room" name="№ кімн./прим." type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="landNumb" name="Кадастровий номер земельної ділянки" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sReestrNumber_zem" name="Реєстраційний номер земельної ділянки" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asEnumSubject_Law" name="Суб’єкт права є заявником" type="enum" writable="false">
-          <activiti:value id="sElementSubject_Law_yes" name="Так"></activiti:value>
-          <activiti:value id="sElementSubject_Law_no" name="Ні"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asEnumSubject_Law_who" name="Оберіть суб’єкт права" type="enum" writable="false">
-          <activiti:value id="sElement_Fiz" name="Фізична особа"></activiti:value>
-          <activiti:value id="sElement_Ur" name="Юридична особа"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sName_Subject" name="Прізвище, ім’я, по батькові фізичної особи або найменування юридичної особи" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="edrpou" name="ЄДРПОУ юридичної особи" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPodatk_number" name="Податковий номер" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asEnumTypePers_document" name="Документ, що посвідчує особу" type="enum" writable="false">
-          <activiti:value id="sElementTypePersD_passport" name="Паспорт"></activiti:value>
-          <activiti:value id="sElementTypePersD_another" name="Інший"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sTypeAnother_Doc" name="Вкажіть інший тип документа" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNumber_doc" name="Серія, номер" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDate_doc" name="Дата видачі" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sOrgan_doc" name="Ким видан" type="string" writable="false"></activiti:formProperty>
-	    <activiti:formProperty id="sLabel_3" name=" " type="label" default="Відомості про заявника (уповноважену особу)"></activiti:formProperty>
-        <activiti:formProperty id="sPib_upovnovazh" name="Прізвище, ім’я, по батькові" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPodatk_number_upovnovazh" name="Податковий номер" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asEnumTypePers_document_upovnovazh" name="Документ, що посвідчує особу" type="enum" writable="false">
-          <activiti:value id="sElementTypePersD_passport_upovnovazh" name="Паспорт"></activiti:value>
-          <activiti:value id="sElementTypePersD_another_upovnovazh" name="Інший"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sTypeAnother_Doc_upovnovazh" name="Вкажіть інший тип документа" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNumber_doc_upovnovazh" name="Серія, номер" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDate_doc_upovnovazh" name="Дата видачі" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sOrgan_doc_upovnovazh" name="Ким видан" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDoc_upovnovazh" name="Документ, що підтверджує повноваження особи" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNumber_Doc_upovnovazh" name="Серія, номер" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDate_Doc_upovnovazh" name="Дата видачі" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sOrgan_Doc_upovnovazh" name="Ким видан" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asEnumTerm" name="Розгляд заяви у скорочені строки" type="enum" writable="false">
-          <activiti:value id="sElementEnum_Short_term" name="Так"></activiti:value>
-          <activiti:value id="sElementEnum_Long_term" name="Ні"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asEnumLenTerm" name="У який термін потрібно розглянути заяву" type="enum" writable="false">
-          <activiti:value id="sElementLenTerm_seven_days" name="сім робочих днів"></activiti:value>
-          <activiti:value id="sElementLenTerm_two_days" name="два робочі дні"></activiti:value>
-          <activiti:value id="sElementLenTerm_one_day" name="протягом 24 годин з моменту прийняття заяви"></activiti:value>
-          <activiti:value id="sElementLenTerm_two_hours" name="протягом 2 годин з моменту прийняття заяви"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asEnumDelivery_Document" name="Спосіб отримання витягу з Державного реєстру прав" type="enum" writable="false">
-          <activiti:value id="sElementEmail_doc" name="В електронному вигляді"></activiti:value>
-          <activiti:value id="sElementPaper_doc" name="У паперовому вигляді"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sAdminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNumber_cnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDate_registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asEnum_decision_1" name="Обробка заяви" type="enum" required="true">
-          <activiti:value id="attr1_wait" name="Документи передані держреєстратору"></activiti:value>
-          <activiti:value id="attr2_finish" name="Відмова громадянину у разі надання неповного пакету документів"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sDecisionComment1" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile_Confidant_passport},${nFile_Confidant_Doc_Povnovazennya},${nFile_PaymentVityag},${nFile_PaymenAdminSbor},${nFile_Reason_Document},${bankId_scan_passport},${nFile_Signed_Zayava},${bankId_scan_inn},${nFile_Podatk_number_upovnovazh},${nFile_FreeSplata},${nFile_DocPosvidchueOsobu},${nFile_DocPosvidchueUrOsobu}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
-      </extensionElements>
-    </userTask>
-    <sequenceFlow id="flow4" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
-    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow5" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
-    <serviceTask id="servicetask3" name="Відмова громадянину в разі неповного пакету документів" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
-      <extensionElements>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:string><![CDATA[Відхилено звернення на тему: державна реєстрація права власності на нерухоме майно]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-На жаль, Ваше звернення [sID_Order] щодо державної реєстрації права власності на нерухоме майно - відхилине.&lt;/p&gt;
-&lt;p&gt;Причина в наступному:&lt;/p&gt;
-&lt;p&gt;${sDecisionComment1}&lt;/p&gt;&lt;br /&gt;
-Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-${sAddress}&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
-    <sequenceFlow id="flow6" name="asEnum_decision_1=='attr2_finish'" sourceRef="exclusivegateway1" targetRef="servicetask3">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asEnum_decision_1=='attr2_finish'}]]></conditionExpression>
-    </sequenceFlow>
-    <serviceTask id="servicetask4" name="Повідомлення про успішне замовлення послуги" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
-      <extensionElements>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: державна реєстрація права власності на нерухоме майно]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення [sID_Order] щодо державної реєстрації права власності на нерухоме майно - відправлене в Реєстраційну службу міського управління юстиції.&lt;br /&gt;
-&lt;br /&gt; 
-&lt;p&gt;Номер Вашого замовлення: ${sNumber_cnap} від ${sDate_registrastion}&lt;/p&gt;&lt;br /&gt; 
-${sWorkTime}&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-${sAddress}&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
-    <sequenceFlow id="flow7" name="asEnum_decision_1=='attr1_wait'" sourceRef="exclusivegateway1" targetRef="servicetask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asEnum_decision_1=='attr1_wait'}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow8" sourceRef="servicetask3" targetRef="endevent1"></sequenceFlow>
-    <userTask id="usertask2" name="Підготовка відповіді після рішення Реєстраційної служби міського управління юстиції (2-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
-      <extensionElements>
-         <activiti:formProperty id="sNameOrgan" name="Центр надання адмінпослуг" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sClientFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="Ідентифікаційний номер фізичної особи" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAttribRekvizit_URL" name="Зверніть увагу - ця послуга є платною" type="label"  default=" "></activiti:formProperty>
         <activiti:formProperty id="sInfo_2" name="Інформація про то, кто звільняється від сплати адміністративного збору" type="label" default="наведено за &lt;a href=&quot;https://goo.gl/1uehlH&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="asEnumZvilnennyVidSplati" name="Чи звільняєтеся Ви від сплати адміністративного збору?" type="enum" writable="false">
           <activiti:value id="sElementSplata_No" name="Ні"></activiti:value>
@@ -416,7 +233,209 @@ ${sAddress}&lt;br /&gt;
         <activiti:formProperty id="sNumber_doc" name="Серія, номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDate_doc" name="Дата видачі" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sOrgan_doc" name="Ким видан" type="string" writable="false"></activiti:formProperty>
-	    <activiti:formProperty id="sLabel_3" name=" " type="label" default="Відомості про заявника (уповноважену особу)"></activiti:formProperty>
+        <activiti:formProperty id="sLabel_3" name=" " type="label" default="Відомості про заявника (уповноважену особу)"></activiti:formProperty>
+        <activiti:formProperty id="sPib_upovnovazh" name="Прізвище, ім’я, по батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPodatk_number_upovnovazh" name="Податковий номер" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asEnumTypePers_document_upovnovazh" name="Документ, що посвідчує особу" type="enum" writable="false">
+          <activiti:value id="sElementTypePersD_passport_upovnovazh" name="Паспорт"></activiti:value>
+          <activiti:value id="sElementTypePersD_another_upovnovazh" name="Інший"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sTypeAnother_Doc_upovnovazh" name="Вкажіть інший тип документа" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNumber_doc_upovnovazh" name="Серія, номер" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDate_doc_upovnovazh" name="Дата видачі" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sOrgan_doc_upovnovazh" name="Ким видан" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc_upovnovazh" name="Документ, що підтверджує повноваження особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNumber_Doc_upovnovazh" name="Серія, номер" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDate_Doc_upovnovazh" name="Дата видачі" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sOrgan_Doc_upovnovazh" name="Ким видан" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asEnumTerm" name="Розгляд заяви у скорочені строки" type="enum" writable="false">
+          <activiti:value id="sElementEnum_Short_term" name="Так"></activiti:value>
+          <activiti:value id="sElementEnum_Long_term" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asEnumLenTerm" name="У який термін потрібно розглянути заяву" type="enum" writable="false">
+          <activiti:value id="sElementLenTerm_seven_days" name="сім робочих днів"></activiti:value>
+          <activiti:value id="sElementLenTerm_two_days" name="два робочі дні"></activiti:value>
+          <activiti:value id="sElementLenTerm_one_day" name="протягом 24 годин з моменту прийняття заяви"></activiti:value>
+          <activiti:value id="sElementLenTerm_two_hours" name="протягом 2 годин з моменту прийняття заяви"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asEnumDelivery_Document" name="Спосіб отримання витягу з Державного реєстру прав" type="enum" writable="false">
+          <activiti:value id="sElementEmail_doc" name="В електронному вигляді"></activiti:value>
+          <activiti:value id="sElementPaper_doc" name="У паперовому вигляді"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sAdminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNumber_cnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDate_registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asEnum_decision_1" name="Обробка заяви" type="enum" required="true">
+          <activiti:value id="attr1_wait" name="Документи передані держреєстратору"></activiti:value>
+          <activiti:value id="attr2_finish" name="Відмова громадянину у разі надання неповного пакету документів"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDecisionComment1" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression>${nFile_Confidant_passport},${nFile_Confidant_Doc_Povnovazennya},${nFile_PaymentVityag},${nFile_PaymenAdminSbor},${nFile_Reason_Document},${bankId_scan_passport},${nFile_Signed_Zayava},${bankId_scan_inn},${nFile_Podatk_number_upovnovazh},${nFile_FreeSplata},${nFile_DocPosvidchueOsobu},${nFile_DocPosvidchueUrOsobu}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow4" sourceRef="servicetask2" targetRef="servicetask8"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow5" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
+    <serviceTask id="servicetask3" name="Відмова громадянину в разі неповного пакету документів + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Відхилено звернення на тему: державна реєстрація права власності на нерухоме майно]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+На жаль, Ваше звернення [sID_Order] щодо державної реєстрації права власності на нерухоме майно - відхилине.&lt;/p&gt;
+&lt;p&gt;Причина в наступному:&lt;/p&gt;
+&lt;p&gt;${sDecisionComment1}&lt;/p&gt;&lt;br /&gt;
+Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
+${sWorkTime}&lt;br /&gt;
+${sPhoneOrgan}&lt;br /&gt;
+[pattern/mail/_common_signature_start.html]
+${sAddress}&lt;br /&gt;
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+	    <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno na "Vidhileno". Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow6" name="asEnum_decision_1=='attr2_finish'" sourceRef="exclusivegateway1" targetRef="servicetask3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asEnum_decision_1=='attr2_finish'}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask4" name="Повідомлення про успішну перевірку замовлення послуги + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Перевірено звернення на тему: державна реєстрація права власності на нерухоме майно]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+Ваше звернення [sID_Order] щодо державної реєстрації права власності на нерухоме майно - відправлене в Реєстраційну службу міського управління юстиції.&lt;br /&gt;
+&lt;br /&gt; 
+&lt;p&gt;Номер Вашого замовлення: ${sNumber_cnap} від ${sDate_registrastion}&lt;/p&gt;&lt;br /&gt; 
+${sWorkTime}&lt;br /&gt;
+${sPhoneOrgan}&lt;br /&gt;
+[pattern/mail/_common_signature_start.html]
+${sAddress}&lt;br /&gt;
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+	    <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno na "Perevireno". Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow7" name="asEnum_decision_1=='attr1_wait'" sourceRef="exclusivegateway1" targetRef="servicetask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asEnum_decision_1=='attr1_wait'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow8" sourceRef="servicetask3" targetRef="endevent1"></sequenceFlow>
+    <userTask id="usertask2" name="[Етап II] Підготовка відповіді після рішення Реєстраційної служби міського управління юстиції (2-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
+      <extensionElements>
+        <activiti:formProperty id="sNameOrgan" name="Центр надання адмінпослуг" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sClientFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="Ідентифікаційний номер фізичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAttribRekvizit_URL" name="Зверніть увагу - ця послуга є платною" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sInfo_2" name="Інформація про то, кто звільняється від сплати адміністративного збору" type="label" default="наведено за &lt;a href=&quot;https://goo.gl/1uehlH&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;"></activiti:formProperty>
+        <activiti:formProperty id="asEnumZvilnennyVidSplati" name="Чи звільняєтеся Ви від сплати адміністративного збору?" type="enum" writable="false">
+          <activiti:value id="sElementSplata_No" name="Ні"></activiti:value>
+          <activiti:value id="sElementSplata_Yes" name="Так"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asEnumType_Registration" name="Вид реєстрації" type="enum" writable="false">
+          <activiti:value id="sElementTypeR_Appearance" name="Виникнення"></activiti:value>
+          <activiti:value id="sElementTypeR_Stop" name="Припинення"></activiti:value>
+          <activiti:value id="sElementTypeR_Transition" name="Перехід"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sReason_Document" name="Назви та перелік документів, що є підставою для державної реєстрації права власності" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asEnumForm_Vlasnist" name="Оберіть форму власності" type="enum" writable="false">
+          <activiti:value id="sElementFormV_Private" name="Приватна"></activiti:value>
+          <activiti:value id="sElementFormV_Comunal" name="Комунальна"></activiti:value>
+          <activiti:value id="sElementFormV_Goverment" name="Державна"></activiti:value>
+          <activiti:value id="sElementFormV_OtherState" name="Власність інших держав"></activiti:value>
+          <activiti:value id="sElementFormV_OtherOrg" name="Власність міжнародних організацій і юридичних осіб інших держав"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asEnumVid_Common" name="Оберіть вид спільної власності" type="enum" writable="false">
+          <activiti:value id="sElementVidC_NotCommon" name="Не є спільною власністю"></activiti:value>
+          <activiti:value id="sElementVidC_Common" name="спільна сумісна"></activiti:value>
+          <activiti:value id="sElementVidC_PartCommon" name="спільна часткова"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asEnumType_Object" name="Тип об'єкта" type="enum" writable="false">
+          <activiti:value id="sElementTypeO_dilyanka" name="Земельна ділянка"></activiti:value>
+          <activiti:value id="sElementTypeO_nezhytlove" name="Нежитлове приміщення"></activiti:value>
+          <activiti:value id="sElementTypeO_zhytlove" name="Житлове приміщення"></activiti:value>
+          <activiti:value id="sElementTypeO_kvartyra" name="Квартира"></activiti:value>
+          <activiti:value id="sElementTypeO_nezav_budiv" name="Об’єкт незавершеного будівництва"></activiti:value>
+          <activiti:value id="sElementTypeO_zhytl_budynok" name="Житловий будинок"></activiti:value>
+          <activiti:value id="sElementTypeO_budivlya" name="Будівля"></activiti:value>
+          <activiti:value id="sElementTypeO_sporuda" name="Споруда"></activiti:value>
+          <activiti:value id="sElementTypeO_inshyi" name="Інший"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sInshyi_Type_Object" name="Інший тип об'єкта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNumber_obj" name="Реєстраційний номер об'єкта нерухомого майна" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLabel_1" name="Місцезнаходження об’єкта нерухомого майна" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sObj_region" name="Область" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObj_area" name="Район" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObj_city" name="Населений пункт" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObj_name" name="Іменований об’єкт" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObj_street" name="Вулиця" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObj_bild" name="№ будинку/земельної ділянки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObj_section" name="№ корп./секції" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObj_flat" name="№ блоку/гар./кв." type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObj_room" name="№ кімн./прим." type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="landNumb" name="Кадастровий номер земельної ділянки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sReestrNumber_zem" name="Реєстраційний номер земельної ділянки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asEnumSubject_Law" name="Суб’єкт права є заявником" type="enum" writable="false">
+          <activiti:value id="sElementSubject_Law_yes" name="Так"></activiti:value>
+          <activiti:value id="sElementSubject_Law_no" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asEnumSubject_Law_who" name="Оберіть суб’єкт права" type="enum" writable="false">
+          <activiti:value id="sElement_Fiz" name="Фізична особа"></activiti:value>
+          <activiti:value id="sElement_Ur" name="Юридична особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sName_Subject" name="Прізвище, ім’я, по батькові фізичної особи або найменування юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="edrpou" name="ЄДРПОУ юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPodatk_number" name="Податковий номер" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asEnumTypePers_document" name="Документ, що посвідчує особу" type="enum" writable="false">
+          <activiti:value id="sElementTypePersD_passport" name="Паспорт"></activiti:value>
+          <activiti:value id="sElementTypePersD_another" name="Інший"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sTypeAnother_Doc" name="Вкажіть інший тип документа" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNumber_doc" name="Серія, номер" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDate_doc" name="Дата видачі" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sOrgan_doc" name="Ким видан" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLabel_3" name=" " type="label" default="Відомості про заявника (уповноважену особу)"></activiti:formProperty>
         <activiti:formProperty id="sPib_upovnovazh" name="Прізвище, ім’я, по батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPodatk_number_upovnovazh" name="Податковий номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asEnumTypePers_document_upovnovazh" name="Документ, що посвідчує особу" type="enum" writable="false">
@@ -466,7 +485,7 @@ ${sAddress}&lt;br /&gt;
     <sequenceFlow id="flow9" sourceRef="servicetask4" targetRef="usertask2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow10" sourceRef="usertask2" targetRef="exclusivegateway2"></sequenceFlow>
-    <serviceTask id="servicetask5" name="Повідомлення про готовність Витягу (паперовий)" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask5" name="Повідомлення про готовність Витягу (паперовий) + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -500,12 +519,18 @@ ${sAddress}&lt;br /&gt;
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${nFile_Otvet}</activiti:expression>
         </activiti:field>
+	    <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno, vityag oformleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow11" name="asEnum_decision_2=='attr3_finish'" sourceRef="exclusivegateway2" targetRef="servicetask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asEnum_decision_2=='attr3_finish'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask6" name="Повідомлення про відмову Реєстраційної служби" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask6" name="Повідомлення про відмову Реєстраційної служби + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -528,16 +553,23 @@ ${sPhoneOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sAddress}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>        </activiti:field>
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${nFile_Otvet}</activiti:expression>
+        </activiti:field>
+	    <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno na "Vidhileno". Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow12" name="asEnum_decision_2=='attr5_finish'" sourceRef="exclusivegateway2" targetRef="servicetask6">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asEnum_decision_2=='attr5_finish'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask7" name="Повідомлення про готовність Витягу (електронний)" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask7" name="Повідомлення про готовність Витягу (електронний) + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -564,6 +596,12 @@ ${sAddress}&lt;br /&gt;
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${nFile_Otvet}</activiti:expression>
+        </activiti:field>
+	    <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno, vityag oformleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -640,9 +678,44 @@ if(execution.getVariable('asEnumTerm') == 'sElementEnum_Short_term'){execution.s
 if(execution.getVariable('asEnumDelivery_Document') == 'sElementEmail_doc'){execution.setVariable('sElementEmail_doc_pr', gal)}
 if(execution.getVariable('asEnumDelivery_Document') == 'sElementPaper_doc'){execution.setVariable('sElementPaper_doc_pr', gal)}</script>
     </scriptTask>
+    <serviceTask id="servicetask8" name="Повідомлення про успішне замовлення послуги" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Нове звернення на тему: державна реєстрація права власності на нерухоме майно]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+Ваше звернення [sID_Order] успішно зареєстровано та буде розглянуто. &lt;br /&gt; 
+Ви отримаєте відповідь у визначений Законом термін на цю email-адресу.&lt;br /&gt;
+${sWorkTime}&lt;br /&gt;
+${sPhoneOrgan}&lt;br /&gt;
+[pattern/mail/_common_signature_start.html]
+${sAddress}&lt;br /&gt;
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow17" sourceRef="servicetask8" targetRef="usertask1"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_278">
-    <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_278" id="BPMNPlane_dnepr_cnap_278">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_278_inshe_pravo">
+    <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_278_inshe_pravo" id="BPMNPlane_dnepr_cnap_278_inshe_pravo">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="30.0" y="100.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -691,6 +764,9 @@ if(execution.getVariable('asEnumDelivery_Document') == 'sElementPaper_doc'){exec
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
         <omgdc:Bounds height="55.0" width="105.0" x="190.0" y="0.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
+        <omgdc:Bounds height="57.0" width="171.0" x="322.0" y="-1.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="205.0" y="162.0"></omgdi:waypoint>
         <omgdi:waypoint x="204.0" y="213.0"></omgdi:waypoint>
@@ -704,8 +780,8 @@ if(execution.getVariable('asEnumDelivery_Document') == 'sElementPaper_doc'){exec
         <omgdi:waypoint x="272.0" y="118.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
-        <omgdi:waypoint x="377.0" y="118.0"></omgdi:waypoint>
-        <omgdi:waypoint x="420.0" y="118.0"></omgdi:waypoint>
+        <omgdi:waypoint x="324.0" y="72.0"></omgdi:waypoint>
+        <omgdi:waypoint x="407.0" y="56.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
         <omgdi:waypoint x="472.0" y="163.0"></omgdi:waypoint>
@@ -715,14 +791,14 @@ if(execution.getVariable('asEnumDelivery_Document') == 'sElementPaper_doc'){exec
         <omgdi:waypoint x="452.0" y="230.0"></omgdi:waypoint>
         <omgdi:waypoint x="389.0" y="230.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="381.0" y="190.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="381.0" y="190.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
         <omgdi:waypoint x="472.0" y="250.0"></omgdi:waypoint>
         <omgdi:waypoint x="472.0" y="290.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="95.0" x="423.0" y="256.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="95.0" x="423.0" y="256.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
@@ -773,6 +849,10 @@ if(execution.getVariable('asEnumDelivery_Document') == 'sElementPaper_doc'){exec
         <omgdi:waypoint x="131.0" y="592.0"></omgdi:waypoint>
         <omgdi:waypoint x="47.0" y="592.0"></omgdi:waypoint>
         <omgdi:waypoint x="47.0" y="478.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
+        <omgdi:waypoint x="407.0" y="56.0"></omgdi:waypoint>
+        <omgdi:waypoint x="472.0" y="73.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
