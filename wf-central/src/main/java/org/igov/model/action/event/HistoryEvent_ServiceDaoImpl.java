@@ -271,9 +271,9 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
             oCriteria.add(Restrictions.eq("sID_UA", sID_UA));
         }
 
-        if(nLimit>0){
-            oCriteria.setMaxResults(nLimit);
-        }
+        //if(nLimit>0){
+         //   oCriteria.setMaxResults(nLimit);
+        //}
         List<HistoryEvent_Service> aHistoryEvent_Service = (List<HistoryEvent_Service>) oCriteria.list();
         if (aHistoryEvent_Service == null) {
             aHistoryEvent_Service = new LinkedList<>();
