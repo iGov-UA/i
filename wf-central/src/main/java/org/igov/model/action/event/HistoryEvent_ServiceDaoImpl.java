@@ -227,62 +227,24 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
             return new LinkedList<>();
         }
 
-        if(nID_Subject != null){/*
-            LOG.info("Add criteria nID_Subject = " + nID_Subject);
-            Criteria cr = getSession().createCriteria(HistoryEvent_Service.class);
-            cr.add(Restrictions.eq("nID_Subject", nID_Subject));
-            List<HistoryEvent_Service> arr = (List<HistoryEvent_Service>) cr.list();
-            LOG.info("This criteria return list size = " + arr.size());*/
-
+        if(nID_Subject != null){
             oCriteria.add(Restrictions.eq("nID_Subject", nID_Subject));
         }
-        if(nID_Service != null){/*
-            LOG.info("Add criteria nID_Service = " + nID_Service);
-            Criteria cr = getSession().createCriteria(HistoryEvent_Service.class);
-            cr.add(Restrictions.eq("nID_Service", nID_Service));
-            List<HistoryEvent_Service> arr = (List<HistoryEvent_Service>) cr.list();
-            LOG.info("This criteria return list size = " + arr.size());*/
-
+        if(nID_Service != null){
             oCriteria.add(Restrictions.eq("nID_Service", nID_Service));
         }
-
         if(sID_UA != null){
-            /*
-            LOG.info("Add criteria sID_UA = " + sID_UA);
-            Criteria cr = getSession().createCriteria(HistoryEvent_Service.class);
-            cr.add(Restrictions.like("sID_UA", sID_UA, MatchMode.EXACT));
-            List<HistoryEvent_Service> arr = (List<HistoryEvent_Service>) cr.list();
-            LOG.info("This criteria return list size = " + arr.size());
-            */
-
             oCriteria.add(Restrictions.eq("sID_UA", sID_UA));
         }
 
-
-        //if(nLimit>0){
-         //   oCriteria.setMaxResults(nLimit);
-        //}
         List<HistoryEvent_Service> aHistoryEvent_Service = (List<HistoryEvent_Service>) oCriteria.list();
         if (aHistoryEvent_Service == null) {
             LOG.warn("Result List<HistoryEvent_Service> is NULL");
             aHistoryEvent_Service = new LinkedList<>();
         }
 
-        //if(sID_UA == null){
-            LOG.info("Result List<HistoryEvent_Service> size = " + aHistoryEvent_Service.size());
-            return aHistoryEvent_Service;
-        //}
-        /*
-        LOG.info("preResult List<HistoryEvent_Service> size = " + aHistoryEvent_Service.size());
-
-        List<HistoryEvent_Service> resultList = new LinkedList<>();
-        for(HistoryEvent_Service obj : aHistoryEvent_Service){
-            if(obj.getsID_UA().equals(sID_UA)){
-                resultList.add(obj);
-            }
-        }
-        LOG.info("Result List<HistoryEvent_Service> size = " + resultList.size());
-        return resultList;*/
+        LOG.info("Result List<HistoryEvent_Service> size = " + aHistoryEvent_Service.size());
+        return aHistoryEvent_Service;
     }
 
 	@Override
