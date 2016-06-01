@@ -3,6 +3,7 @@ package org.igov.model.action.event;
 import org.hibernate.Criteria;
 import org.hibernate.NullPrecedence;
 import org.hibernate.Session;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -226,35 +227,37 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
             return new LinkedList<>();
         }
 
-        if(nID_Subject != null){
+        if(nID_Subject != null){/*
             LOG.info("Add criteria nID_Subject = " + nID_Subject);
             Criteria cr = getSession().createCriteria(HistoryEvent_Service.class);
             cr.add(Restrictions.eq("nID_Subject", nID_Subject));
             List<HistoryEvent_Service> arr = (List<HistoryEvent_Service>) cr.list();
-            LOG.info("This criteria return list size = " + arr.size());
+            LOG.info("This criteria return list size = " + arr.size());*/
 
             oCriteria.add(Restrictions.eq("nID_Subject", nID_Subject));
         }
-        if(nID_Service != null){
+        if(nID_Service != null){/*
             LOG.info("Add criteria nID_Service = " + nID_Service);
             Criteria cr = getSession().createCriteria(HistoryEvent_Service.class);
             cr.add(Restrictions.eq("nID_Service", nID_Service));
             List<HistoryEvent_Service> arr = (List<HistoryEvent_Service>) cr.list();
-            LOG.info("This criteria return list size = " + arr.size());
+            LOG.info("This criteria return list size = " + arr.size());*/
 
             oCriteria.add(Restrictions.eq("nID_Service", nID_Service));
         }
-        /*
+
         if(sID_UA != null){
+            /*
             LOG.info("Add criteria sID_UA = " + sID_UA);
             Criteria cr = getSession().createCriteria(HistoryEvent_Service.class);
-            cr.add(Restrictions.eq("sID_UA", sID_UA));
+            cr.add(Restrictions.like("sID_UA", sID_UA, MatchMode.EXACT));
             List<HistoryEvent_Service> arr = (List<HistoryEvent_Service>) cr.list();
             LOG.info("This criteria return list size = " + arr.size());
+            */
 
             oCriteria.add(Restrictions.eq("sID_UA", sID_UA));
         }
-        */
+
 
         //if(nLimit>0){
          //   oCriteria.setMaxResults(nLimit);
@@ -265,10 +268,11 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
             aHistoryEvent_Service = new LinkedList<>();
         }
 
-        if(sID_UA == null){
+        //if(sID_UA == null){
             LOG.info("Result List<HistoryEvent_Service> size = " + aHistoryEvent_Service.size());
             return aHistoryEvent_Service;
-        }
+        //}
+        /*
         LOG.info("preResult List<HistoryEvent_Service> size = " + aHistoryEvent_Service.size());
 
         List<HistoryEvent_Service> resultList = new LinkedList<>();
@@ -278,7 +282,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
             }
         }
         LOG.info("Result List<HistoryEvent_Service> size = " + resultList.size());
-        return resultList;
+        return resultList;*/
     }
 
 	@Override

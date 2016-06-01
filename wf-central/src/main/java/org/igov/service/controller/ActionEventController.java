@@ -259,10 +259,8 @@ public class ActionEventController {
         }
 
         List<HistoryEvent_Service> aHistoryEvent_Service = historyEventServiceDao.getOrdersHistory(nID_Subject, nID_Service, sID_UA, nLimit);
-        LOG.info("getCountOrders aHistoryEvent_Service size = " + aHistoryEvent_Service.size());
+
         for (HistoryEvent_Service oHistoryEvent_Service : aHistoryEvent_Service) {
-            LOG.info(String.format("getCountOrders Checking HistoryEvet_Service nID_Subject = %s, nID_Service = %s, sID_UA = %s, sUserTaskName = %s, bExcludeClosed = %s",
-                    oHistoryEvent_Service.getnID_Subject(), oHistoryEvent_Service.getnID_Service(), oHistoryEvent_Service.getsID_UA(), oHistoryEvent_Service.getsUserTaskName(), bExcludeClosed));
             nOpened++;
             if (bExcludeClosed
                     && (oHistoryEvent_Service.getsID_StatusType().toLowerCase().startsWith("closed")
@@ -270,7 +268,6 @@ public class ActionEventController {
                     ) {
                 nOpened--;
             }
-            LOG.info("getCountOrders nOpened change to " + nOpened);
         }
         m.put("nOpened", nOpened);
         return JSONValue.toJSONString(m);
