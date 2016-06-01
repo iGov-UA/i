@@ -102,6 +102,11 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
       var markerOptions = angular.copy(marker) || {};
       markerOptions.key = keyByMarkerName;
 
+      // TODO на бете иногда не передается $validators из-за чего форма виснет, хардкод
+      if(!formField.$validators) {
+        return true
+      }
+
       formField.$validators[keyByMarkerName] = self.getValidatorByName(markerName, markerOptions, formField);
 
       // ...і проводимо першу валідацію, якщо треба
