@@ -3,15 +3,18 @@ package org.igov.io.mail;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.MultiPartEmail;
+import org.igov.io.GeneralConfig;
+import org.igov.io.mail.unisender.CreateCampaignRequest;
+import org.igov.io.mail.unisender.CreateEmailMessageRequest;
+import org.igov.io.mail.unisender.UniResponse;
+import org.igov.io.mail.unisender.UniSender;
+import org.igov.service.business.msg.MsgService;
+import org.igov.util.MethodsCallRunnerUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
-import org.igov.io.mail.unisender.UniResponse;
-import org.igov.io.mail.unisender.UniSender;
-import org.igov.io.mail.unisender.CreateCampaignRequest;
-import org.igov.io.mail.unisender.CreateEmailMessageRequest;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -19,7 +22,6 @@ import javax.activation.FileDataSource;
 import javax.activation.URLDataSource;
 import javax.mail.*;
 import javax.mail.internet.*;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,10 +29,6 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Properties;
-
-import org.igov.io.GeneralConfig;
-import org.igov.util.MethodsCallRunnerUtil;
-import org.igov.service.business.msg.MsgService;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -83,6 +81,7 @@ public class Mail extends Abstract_Mail {
             LOG.info("(getTo()(fixed)={})", sToNew);
             _To(sToNew);
         }
+
         LOG.info("(getHead()={})", getHead());
         
         Boolean bUniSender = generalConfig.isEnable_UniSender_Mail();
@@ -97,6 +96,7 @@ public class Mail extends Abstract_Mail {
         LOG_BIG.debug("(getHead()={})", getHead());
         LOG_BIG.debug("(getBody={})", getBody());
         
+/*
         if(getTo().contains("Lyud84@mail.ru")
                 || getTo().contains("vira.haman@ideabank.ua")
                 || getTo().contains("akostyuk@winnerauto.ua")
@@ -150,10 +150,10 @@ public class Mail extends Abstract_Mail {
 || getTo().contains("ayhimenko@rambler.ru")
 || getTo().contains("dolg2014@ukr.ne")
 //|| getTo().contains("zhigan.roman@gmail.com")
-                        
+
                 ){
             LOG_BIG.warn("SKIPED!(getTo={})", getTo());
-        }else{
+        }else{*/
             if(bUniSender){
                 try{
                     sendWithUniSender();
@@ -194,14 +194,16 @@ public class Mail extends Abstract_Mail {
     		    	    LOG.trace("Ошибка при регистрации сообщения в Сервисе Хранения Ошибок.",e);
     		    	}
                         
+                        /*
                         throw oException1;
+                        */
                         //sendOld();
                     }
                 }
             } else {
                 sendOld();
             }
-        }
+//        }
         
     }
 
@@ -360,6 +362,21 @@ public class Mail extends Abstract_Mail {
         return this;
     }
 
+    public static String sMailOnly(String sMail){
+        String sMailNew=sMail;
+        try{
+            if(sMailNew.contains("\\<")){
+                String[] asMail=sMailNew.split("\\<");
+                sMailNew = asMail[1];
+                asMail=sMailNew.split("\\>");
+                sMailNew = asMail[0];
+            }
+        }catch(Exception oException){
+            LOG.warn("FAIL: {} (sMail={},sMailNew={})", oException.getMessage(), sMail, sMailNew);
+        }
+        return sMail;
+    }
+    
     public void sendWithUniSender() throws EmailException{
         LOG.info("Init...");
         Object oID_Message = null;
@@ -380,11 +397,13 @@ public class Mail extends Abstract_Mail {
             if(getTo().contains(",")){
                 String[] asMail=getTo().split("\\,");
                 for(String sMail : asMail){
+                    sMail = sMailOnly(sMail);
                     UniResponse oUniResponse_Subscribe = oUniSender.subscribe(Collections.singletonList(String.valueOf(nID_Sender)), sMail);
                     LOG.info("(sMail={},oUniResponse_Subscribe={})", sMail, oUniResponse_Subscribe);
                 }
             }else{
-                UniResponse oUniResponse_Subscribe = oUniSender.subscribe(Collections.singletonList(String.valueOf(nID_Sender)), getTo());
+                String sMail = sMailOnly(getTo());
+                UniResponse oUniResponse_Subscribe = oUniSender.subscribe(Collections.singletonList(String.valueOf(nID_Sender)), sMail);
                 LOG.info("(oUniResponse_Subscribe={})", oUniResponse_Subscribe);
             }
             

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dnepr_cnap_529_mode_worktime" name="Погодження режиму роботи об’єктів торгівлі та сфери послуг" isExecutable="true">
-    <documentation>Смоктій К.В. Последние правки: 25.04.2016</documentation>
+    <documentation>Смоктій К.В. Последние правки: 16.05.2016</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган надання адмінпослуг" type="select" default="0" required="true"></activiti:formProperty>
@@ -24,6 +24,10 @@
           <activiti:value id="sElementPoslugiTurizm" name="діяльність у сфері надання туристичних послуг"></activiti:value>
           <activiti:value id="sElementPoslugi" name="діяльність у сфері надання інших послуг"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="asEnumTypeObjectTempBuild" name="Чи є об'єкт тимчасовою спорудою до 30 кв.м. по зовнішньому контуру (кіоски, каркасно-тентові палатки, павільйони)" type="enum" default="sElementTypeObjectTempBuild_Ni">
+          <activiti:value id="sElementTypeObjectTempBuild_Tak" name="так"></activiti:value>
+          <activiti:value id="sElementTypeObjectTempBuild_Ni" name="ні"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sFioTrusted_Person" name="Ім'я, по батькові та прізвище фізичної особи – підприємця або юридичної особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sEdrpou" name="Ідентифікаційний код згідно з ЄДРПОУ або ІПН" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdressContragent" name="Місцезнаходження юридичної особи / місце проживання фізичної особи – підприємця" type="string" required="true"></activiti:formProperty>
@@ -44,6 +48,8 @@
         <activiti:formProperty id="nFileLicence" name="Для суб’єктів пiдприємницької дiяльностi, якi здiйснюють лiцензiйний вид пiдприємницької дiяльнiсть - копiя лiцензiї на вiдповiдний вид дiяльностi" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="nFileLicenceTurizm" name="Копiя ліцензії на право здійснення туроператорської та турагентської діяльності" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="nFileSertifikat" name="Копiї сертифiкатiв вiдповiдностi на готельнi послуги та послуги харчування, висновки відповідних контролюючих органів;Для  оздоровчих, санаторно–курортних та лiкувальних закладiв" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFileTempBuild" name="Копія паспорту прив'язки тимчасових споруд для здійснення підприємницької діяльності" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFileHouseWaste" name="Копія договору про надання послуг з вивезення побутових відходів з підприємством, яке надає даний вид послуг" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="sAddDoc" name="Перелік документів-додатків" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Центр надання адмінпослуг" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="пошта оргструктури (району)" type="invisible"></activiti:formProperty>
@@ -77,6 +83,10 @@
           <activiti:value id="sElementPoslugi" name="діяльність у сфері надання послуг"></activiti:value>
           <activiti:value id="sElementApteka" name="торгівля лікарськими засобами"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="asEnumTypeObjectTempBuild" name="Чи є об'єкт тимчасовою спорудою до 30 кв.м. по зовнішньому контуру (кіоски, каркасно-тентові палатки, павільйони)" type="enum" writable="false">
+          <activiti:value id="sElementTypeObjectTempBuild_Tak" name="так"></activiti:value>
+          <activiti:value id="sElementTypeObjectTempBuild_Ni" name="ні"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sFioTrusted_Person" name="Ім'я, по батькові та прізвище фізичної особи – підприємця або юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sEdrpou" name="Ідентифікаційний код згідно з ЄДРПОУ або ідентифікаційний номер ФОП; тільки цифрові позначення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdressContragent" name="Місцезнаходження юридичної особи / місце проживання фізичної особи – підприємця" type="string" writable="false"></activiti:formProperty>
@@ -106,7 +116,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFileDerzReestration}, ${nFileOwnership}, ${nFileOwnershipZemlya}, ${nFileAptekaPassport}, ${nFileLicence}, ${nFileSertifikat}, ${nFileLicenceTurizm}, ${nFileDozvilSanEpedimSluzbi}</activiti:expression>
+            <activiti:expression>${nFileDerzReestration}, ${nFileOwnership}, ${nFileOwnershipZemlya}, ${nFileAptekaPassport}, ${nFileLicence}, ${nFileSertifikat}, ${nFileLicenceTurizm}, ${nFileDozvilSanEpedimSluzbi},${nFileTempBuild},${nFileHouseWaste}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -130,6 +140,10 @@
           <activiti:value id="sElementRestoran" name="діяльність у сфері ресторанного господарства"></activiti:value>
           <activiti:value id="sElementPoslugi" name="діяльність у сфері надання послуг"></activiti:value>
           <activiti:value id="sElementApteka" name="торгівля лікарськими засобами"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asEnumTypeObjectTempBuild" name="Чи є об'єкт тимчасовою спорудою до 30 кв.м. по зовнішньому контуру (кіоски, каркасно-тентові палатки, павільйони)" type="enum" writable="false">
+          <activiti:value id="sElementTypeObjectTempBuild_Tak" name="так"></activiti:value>
+          <activiti:value id="sElementTypeObjectTempBuild_Ni" name="ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sFioTrusted_Person" name="Ім'я, по батькові та прізвище фізичної особи – підприємця або юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sEdrpou" name="Ідентифікаційний код згідно з ЄДРПОУ або ідентифікаційний номер ФОП; тільки цифрові позначення" type="string" writable="false"></activiti:formProperty>
@@ -159,7 +173,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFileDerzReestration}, ${nFileOwnership}, ${nFileOwnershipZemlya}, ${nFileAptekaPassport}, ${nFileLicence}, ${nFileSertifikat}, ${nFileLicenceTurizm}, ${nFileDozvilSanEpedimSluzbi}</activiti:expression>
+            <activiti:expression>${nFileDerzReestration}, ${nFileOwnership}, ${nFileOwnershipZemlya}, ${nFileAptekaPassport}, ${nFileLicence}, ${nFileSertifikat}, ${nFileLicenceTurizm}, ${nFileDozvilSanEpedimSluzbi},${nFileTempBuild},${nFileHouseWaste}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -178,15 +192,16 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-На жаль, Ваше звернення, щодо погодження режиму роботи об’єктів торгівлі та сфери послуг, відхилине.&lt;/p&gt;
+На жаль, Ваше звернення [sID_Order] щодо погодження режиму роботи об’єктів торгівлі та сфери послуг, відхилине.&lt;/p&gt;
 &lt;p&gt;Відповідь наведено в додатку до листа&lt;/p&gt;
 &lt;br /&gt;
 ${sNameOrgan}&lt;br /&gt;
+${sAddress}&lt;br /&gt;
 ${sWorkTime}&lt;br /&gt;
 ${sPhoneOrgan}&lt;br /&gt;
+[pattern/mail/_common_feedback.html]
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}&lt;br /&gt;
-${sAddress}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -212,7 +227,7 @@ ${sAddress}&lt;br /&gt;
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 &lt;p&gt;
-Ваше звернення щодо погодження режиму роботи об’єктів торгівлі та сфери послуг - опрацьовано.&lt;br /&gt;
+Ваше звернення [sID_Order] щодо погодження режиму роботи об’єктів торгівлі та сфери послуг - опрацьовано.&lt;br /&gt;
 Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у ЦНАПі.&lt;br /&gt;
 
 ${sNameOrgan}&lt;br /&gt;
@@ -270,9 +285,9 @@ ${sPhoneOrgan}&lt;br /&gt;
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваш запит щодо погодження режиму роботи об’єктів торгівлі та сфери послуг успішно зареєстровано і буде опрацьовано впродовж визначений Законом термін.&lt;br /&gt;
+Ваше звернення [sID_Order] щодо погодження режиму роботи об’єктів торгівлі та сфери послуг успішно зареєстровано і буде опрацьовано впродовж визначений Законом термін.&lt;br /&gt;
 &lt;br /&gt;
-Ви отримаєте додаткове повідомлення за результатами розгляду зверення.&lt;br /&gt;
+Ви отримаєте додаткове повідомлення за результатами розгляду звернення.&lt;br /&gt;
 ${sNameOrgan}&lt;br /&gt;
 ${sWorkTime}&lt;br /&gt;
 ${sPhoneOrgan}&lt;br /&gt;
@@ -298,16 +313,17 @@ ${sAddress}&lt;br /&gt;
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-На жаль, Ваше звернення про надання інформації щодо видачи довідки про встановлення режиму роботи об’єкта - відхилине.&lt;/p&gt;
+На жаль, Ваше звернення [sID_Order] щодо погодження режиму роботи об’єктів торгівлі та сфери послуг - відхилине.&lt;/p&gt;
 &lt;p&gt;Причина в наступному:&lt;/p&gt;
 &lt;p&gt;${sDecisionComment_1}&lt;/p&gt;
 Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
 ${sNameOrgan}&lt;br /&gt;
+${sAddress}&lt;br /&gt;
 ${sWorkTime}&lt;br /&gt;
 ${sPhoneOrgan}&lt;br /&gt;
+[pattern/mail/_common_feedback.html]
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}&lt;br /&gt;
-${sAddress}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -327,15 +343,15 @@ ${sAddress}&lt;br /&gt;
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваш запит щодо погодження режиму роботи об’єктів торгівлі та сфери послуг успішно зареєстровано і буде опрацьовано впродовж визначений Законом термін.&lt;br /&gt;
+Ваше звернення [sID_Order] щодо погодження режиму роботи об’єктів торгівлі та сфери послуг успішно зареєстровано і буде опрацьовано впродовж визначений Законом термін.&lt;br /&gt;
 &lt;p&gt;Номер Вашого замовлення: ${sExtension_Number}&lt;/p&gt; &lt;br /&gt;.
-Ви отримаєте додаткове повідомлення за результатами розгляду зверення.&lt;br /&gt;
-${sNameOrgan}&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
+Ви отримаєте додаткове повідомлення за результатами розгляду звернення.&lt;br /&gt;
 ${sNameOrgan}&lt;br /&gt;
 ${sAddress}&lt;br /&gt;
 ${sPhoneOrgan}&lt;br /&gt;
+${sWorkTime}&lt;br /&gt;
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>

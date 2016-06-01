@@ -19,8 +19,9 @@
         <activiti:formProperty id="sAdress" name="Адреса фактичного проживання;(поштовий індекс, місто, вулиця, номер дому, номер квартири)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Мобільний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail для зворотного зв'язку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPeriod" name="Період навчання/праці" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPeriod" name="Період навчання/праці;(вкажіть у форматі хххх-хххх)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPosada" name="Посада" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sKafedra" name="Кафедра роботи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asRob_type" name="Посада основна чи за сумісництвом" type="enum" required="true">
           <activiti:value id="sEnamRob_osn" name="Основна робота"></activiti:value>
           <activiti:value id="sEnamRob_sumisn" name="Робота за сумісництвом"></activiti:value>
@@ -41,6 +42,8 @@
         </activiti:formProperty>
         <activiti:formProperty id="file_diplom" name="Копія диплома;(якщо зображень кілька, вантажте zip архівом)" type="file"></activiti:formProperty>
         <activiti:formProperty id="sFakulty" name="Факультет" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSpecial" name="Спеціальність" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDiplom" name="Серія, номер і реєстраційний номер диплома" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sArmy" name="Вкажіть роки служби в армії" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAkademka" name="Вкажіть період академічної відпустки" type="string"></activiti:formProperty>
         <activiti:formProperty id="asVidrax" name="Чи було вас відраховано, або залишено на повторний курс" type="enum" required="true">
@@ -97,7 +100,8 @@
           <activiti:string><![CDATA[Заявка на довідку про підтвердження роботи або навчання]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 &lt;p&gt; Ваше звернення щодо отримання довідки про підтвердження роботи або навчання в ВНЗ прийнято до роботи.
 Повідомлення про результат розгляду буде спрямоване на Ваш e-mail.&lt;/p&gt;
@@ -118,9 +122,7 @@ ${sNameOrgan}.&lt;br /&gt;
     </sequenceFlow>
     <userTask id="usertask1" name="Перевірка інформації ЛНУ(1й-етап)" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asZminapib" name="Чи змінилось прізвище/ім'я з моменту навчання/роботи" type="enum" writable="false">
           <activiti:value id="sEnamPib_ni" name="Ні"></activiti:value>
           <activiti:value id="sEnamPib_tak" name="Так"></activiti:value>
@@ -140,7 +142,6 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="sEnamRob_sumisn" name="Робота за сумісництвом"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sPidrozdil" name="Структурний підрозділ" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sArmy" name="Роки служби в армії" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asNavch_form" name="Форма навчання" type="enum" writable="false">
           <activiti:value id="asDenna" name="денна"></activiti:value>
           <activiti:value id="asZaoch" name="заочна"></activiti:value>
@@ -154,7 +155,7 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="sEnamMol_spesialist" name="молодший спеціаліст"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sFakulty" name="Факультет" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sArmy" name="Вкажіть роки служби в армії" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sArmy" name="Роки служби в армії" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAkademka" name="Вкажіть період академічної відпустки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asVidrax" name="Чи було вас відраховано, або залишено на повторний курс" type="enum" writable="false">
           <activiti:value id="sEnamVid_ni" name="Ні"></activiti:value>
@@ -179,9 +180,11 @@ ${sNameOrgan}.&lt;br /&gt;
     </userTask>
     <userTask id="usertask3" name="Перевірка інформації Політехніка(1й-етап)" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asDocs" name="Назва затребуваного документу" type="enum" writable="false">
+          <activiti:value id="sEnamDov_rob" name="Довідка про підтвердження роботи"></activiti:value>
+          <activiti:value id="sEnamDov_navch" name="Довідка про підтвердження навчання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asZminapib" name="Чи змінилось прізвище/ім'я з моменту навчання/роботи" type="enum" writable="false">
           <activiti:value id="sEnamPib_ni" name="Ні"></activiti:value>
           <activiti:value id="sEnamPib_tak" name="Так"></activiti:value>
@@ -190,18 +193,14 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="sAdress" name="Адреса фактичного проживання;(поштовий індекс, місто, вулиця, номер дому, номер квартири)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Мобільний телефон" type="string" default="+380" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail для зворотного зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asDocs" name="Назва затребуваного документу" type="enum" writable="false">
-          <activiti:value id="sEnamDov_rob" name="Довідка про підтвердження роботи"></activiti:value>
-          <activiti:value id="sEnamDov_navch" name="Довідка про підтвердження навчання"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="sPeriod" name="період навчання/праці" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPosada" name="Посада" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sKafedra" name="Кафедра роботи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asRob_type" name="Посада основна чи за сумісництвом" type="enum" writable="false">
           <activiti:value id="sEnamRob_osn" name="Основна робота"></activiti:value>
           <activiti:value id="sEnamRob_sumisn" name="Робота за сумісництвом"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sPidrozdil" name="Структурний підрозділ" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sArmy" name="Роки служби в армії" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asNavch_form" name="Форма навчання" type="enum" writable="false">
           <activiti:value id="asDenna" name="денна"></activiti:value>
           <activiti:value id="asZaoch" name="заочна"></activiti:value>
@@ -215,7 +214,9 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="sEnamMol_spesialist" name="молодший спеціаліст"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sFakulty" name="Факультет" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sArmy" name="Вкажіть роки служби в армії" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSpecial" name="Спеціальність" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDiplom" name="Серія і номер диплома" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sArmy" name="Роки служби в армії" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAkademka" name="Вкажіть період академічної відпустки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asVidrax" name="Чи було вас відраховано, або залишено на повторний курс" type="enum" writable="false">
           <activiti:value id="sEnamVid_ni" name="Ні"></activiti:value>
@@ -234,7 +235,10 @@ ${sNameOrgan}.&lt;br /&gt;
         </activiti:formProperty>
         <activiti:formProperty id="Komment_rishenia" name="Коментар по рішенню;(Вкажіть з якого числа можна отримати довідку, в разі відмови вкажіть причину відмови)" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="file_oplata" name="Квитанція на оплату" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="назва органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern\print\vnz\lviv_nulp_421_print.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="супровідний текст" type="invisible" default="Якщо заявка прийнята, вона з'явиться в необроблених і вам треба буде зробити відмітку чи виданий документ.У разі відмови робота по цій заявці завершена."></activiti:formProperty>
+        <activiti:formProperty id="print_marker1" name="Printmarker" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_1&quot;:{&quot;aElement_ID&quot;:[&quot;NAV&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asDocs&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnamDov_navch'&quot;},&quot;ShowElementsOnTrue_2&quot;:{&quot;aElement_ID&quot;:[&quot;ROB&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asDocs&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnamDov_rob'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -338,9 +342,7 @@ ${sNameOrgan}.&lt;br /&gt;
     <endEvent id="endevent1" name="End"></endEvent>
     <userTask id="usertask2" name="Виконнання заявки (2й-етап)" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asZminapib" name="Чи змінилось прізвище/ім'я з моменту навчання/роботи" type="enum" writable="false">
           <activiti:value id="sEnamPib_ni" name="Ні"></activiti:value>
           <activiti:value id="sEnamPib_tak" name="Так"></activiti:value>

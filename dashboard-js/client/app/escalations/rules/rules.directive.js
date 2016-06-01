@@ -1,23 +1,12 @@
 angular.module('dashboardJsApp')
   .directive('rules', function () {
 
-    var controller = function ($scope, $modal, processes) {
+    var controller = function ($scope, $modal, processes, Modal) {
 
-
-      //var getFunc = $scope.funcs.getFunc;
       var getAllFunc = $scope.funcs.getAllFunc;
       var setFunc = $scope.funcs.setFunc;
       var deleteFunc = $scope.funcs.deleteFunc;
 
-      // $scope.exampleRule = {
-      //   id: 1,
-      //   sID_BP: 'dnepr_spravka_o_doxodax',
-      //   sID_UserTask: '*',
-      //   sCondition: 'nElapsedDays==nDaysLimit',
-      //   soData: 'nDaysLimit:3,asRecipientMail:[test@email.com]',
-      //   sPatternFile: 'escalation/escalation_template.html',
-      //   nID_EscalationRuleFunction: 'EscalationHandler_SendMailAlert',
-      // };
 
       var openModal = function (rule) {
         var modalInstance = $modal.open({
@@ -49,7 +38,7 @@ angular.module('dashboardJsApp')
                   i++;
                   return true;
                 }
-                );
+              );
               if (ruleNotExistedBefore) {
                 setRuleBPName(editedRule);
                 $scope.rules.push(editedRule);
@@ -59,7 +48,6 @@ angular.module('dashboardJsApp')
 
         });
       };
-
 
       $scope.rules = [];
       $scope.get = function () {
@@ -80,7 +68,7 @@ angular.module('dashboardJsApp')
 
       $scope.getRules = function () {
 
-      }
+      };
 
       $scope.isShowWarning = function () {
         return !$scope.inProgress && !$scope.isSlotsPresent;
@@ -95,19 +83,24 @@ angular.module('dashboardJsApp')
       };
 
       $scope.copy = function (rule) {
-
+        rule.isCopied = true;
+        openModal(rule);
       };
 
       $scope.delete = function (rule) {
-        deleteFunc(rule)
-          .then($scope.fillData);
+        Modal.confirm.delete(function (event) {
+          deleteFunc(rule)
+            .then($scope.fillData);
+        })('правило для послуги ' + rule.bpName + ' (ID правила ' + rule.nID + ')');
       };
-      
-      var setRuleBPName = function(rule){
-        var result = $.grep($scope.processesList, function(e){ return e.sID === rule.sID_BP; });
-        rule.bpName = (result.length>0) ? result[0].sName : rule.sID_BP+", бізнес-процес некоректний.";
-      }
-      
+
+      var setRuleBPName = function (rule) {
+        var result = $.grep($scope.processesList, function (e) {
+          return e.sID === rule.sID_BP;
+        });
+        rule.bpName = (result.length > 0) ? result[0].sName : rule.sID_BP + ", бізнес-процес некоректний.";
+      };
+
       $scope.fillData = function () {
 
         $scope.inProgress = true;
@@ -118,9 +111,10 @@ angular.module('dashboardJsApp')
           getAllFunc()
             .then(function (data) {
               $scope.rules = data;
-              angular.forEach($scope.rules, function(rule, index){
+              angular.forEach($scope.rules, function (rule, index) {
                 setRuleBPName(rule);
               });
+              fillAccordionGroups();
               $scope.areRulesPresent = true;
             });
 
@@ -129,22 +123,105 @@ angular.module('dashboardJsApp')
         });
       };
 
-    $scope.processesLoaded = function() {
-      if ($scope.processesList)
-      return true;
-    return false;
-    }
-    
-    //  $scope.processesLoadError = function() {
-    //   if (processesList && processesList == "error")
-    //   return true;
-    // return false;
-    // }
-    
+      $scope.processesLoaded = function () {
+        return $scope.processesList ? true : false;
+      };
+
       $scope.translate = function (text) {
         if (text == 'Отсылка уведомления на электронную почту') return 'відправити повідомлення на e-mail';
         return text;
       };
+
+      $scope.aSuccessGroups = [];
+      $scope.aMissingGroups = [];
+
+      function fillAccordionGroups() {
+        var successGroupsTamp = {};
+        var missingGroupsTemp = {};
+        angular.forEach($scope.rules, function (rule, index) {
+          var result = $.grep($scope.processesList, function (e) {
+            return e.sID === rule.sID_BP;
+          });
+          if (result.length > 0) {
+            if (!successGroupsTamp[rule.sID_BP]) {
+              successGroupsTamp[rule.sID_BP] = [];
+            }
+            successGroupsTamp[rule.sID_BP].push(rule);
+          } else {
+            if (!missingGroupsTemp[rule.sID_BP]) {
+              missingGroupsTemp[rule.sID_BP] = [];
+            }
+            missingGroupsTemp[rule.sID_BP].push(rule);
+          }
+        });
+
+        for (var sucGr in successGroupsTamp) {
+          $scope.aSuccessGroups.push({
+            sTitle: $.trim(successGroupsTamp[sucGr][0].bpName + ' (код: ' + successGroupsTamp[sucGr][0].sID_BP + ')'),
+            aContent: angular.copy(successGroupsTamp[sucGr])
+          });
+        }
+        for (var misGr in missingGroupsTemp) {
+          $scope.aMissingGroups.push({
+            sTitle: $.trim(missingGroupsTemp[misGr][0].sID_BP),
+            aContent: angular.copy(missingGroupsTemp[misGr])
+          });
+        }
+      }
+
+      $scope.getConditionDefinition = function (rule) {
+        var sFormula = rule.sCondition.replace(/\s+/g, '');
+
+        var sConditionParamSubstring = rule.soData.replace(/\s+/g, '').match(/nDaysLimit\:\-??\d+/)[0];
+
+        if (sConditionParamSubstring.search('-') + 1) {
+          return "Негайне виконання";
+        }
+
+        var nDaysLimit = parseInt(sConditionParamSubstring.match(/\d+/)[0]);
+
+        var sDaysDef;
+        if (nDaysLimit == 1) {
+          sDaysDef = "день"
+        } else if (nDaysLimit > 1 && nDaysLimit < 5) {
+          sDaysDef = "дні"
+        } else {
+          sDaysDef = "днів"
+        }
+
+        var sConditionDefinition;
+        if (sFormula === "nElapsedDays>nDaysLimit") {
+          sConditionDefinition = "Минуло понад " + nDaysLimit + " " + sDaysDef;
+        } else if (sFormula === "nElapsedDays>=nDaysLimit") {
+          sConditionDefinition = "Минуло понад " + nDaysLimit + " " + sDaysDef + " включно";
+        } else {
+          sConditionDefinition = "Минуло рівно " + nDaysLimit + " " + sDaysDef;
+        }
+
+        return sConditionDefinition;
+      };
+
+      $scope.getParametersDefinition = function (rule) {
+        if (rule.nID_EscalationRuleFunction.sBeanHandler === "EscalationHandler_SendMailAlert") {
+          var sData = rule.soData.replace(/\s+/g, '');
+
+          var result = sData.match(/asRecipientMail\:\[.*\]/)[0].match(/\[.*\]/)[0];
+          var substrMy = result.substring(1, result.length - 1);
+          var arr = substrMy.split(',');
+          for (var i = 0; i < arr.length; i++) {
+            arr[i] = arr[i].replace(/[\'\"]+/g, '');
+          }
+
+          if (arr.length > 0) {
+            return arr.toString().replace(/\,+/g, ', ');
+          } else {
+            return "Адреси електронних скриньок не задані";
+          }
+        } else {
+          return "";
+        }
+
+      }
     };
 
     return {
@@ -153,7 +230,7 @@ angular.module('dashboardJsApp')
         funcs: '='
       },
       controller: controller,
-      templateUrl: 'app/escalations/rules/rules.html',
+      templateUrl: 'app/escalations/rules/rules.html'
     }
   }
-    );
+);

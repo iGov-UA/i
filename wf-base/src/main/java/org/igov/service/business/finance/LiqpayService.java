@@ -6,6 +6,8 @@
 package org.igov.service.business.finance;
 
 import com.google.gson.Gson;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.activiti.engine.RuntimeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,22 +22,19 @@ import org.springframework.stereotype.Service;
 public class LiqpayService {
 
     private static final Logger LOG = LoggerFactory.getLogger(LiqpayService.class);
-    
     public static final String LIQPAY_PAYMENT_SYSTEM = "Liqpay";
     public static final String TASK_MARK = "TaskActiviti_";
     public static final String PAYMENT_SUCCESS = "success";
     public static final String PAYMENT_SUCCESS_TEST = "sandbox";
-    
+
     @Autowired
     private RuntimeService runtimeService;
-    
-    
+
     public void setPaymentStatus(String sID_Order, String sData, String sID_PaymentSystem, String sPrefix)
             throws Exception {
         if (!LIQPAY_PAYMENT_SYSTEM.equals(sID_PaymentSystem)) {
             LOG.error("not liqpay system");
             throw new Exception("not liqpay system");
-            //return;			
         }
 
         LOG.info("(sData={})", sData);
@@ -63,31 +62,34 @@ public class LiqpayService {
         //data=eyJwYXltZW50X2lkIjo2MzQ0NDcxOCwidHJhbnNhY3Rpb25faWQiOjYzNDQ0NzE4LCJzdGF0dXMiOiJzYW5kYm94IiwidmVyc2lvbiI6MywidHlwZSI6ImJ1eSIsInB1YmxpY19rZXkiOiJpMTAxNzI5NjgwNzgiLCJhY3FfaWQiOjQxNDk2Mywib3JkZXJfaWQiOiJUYXNrQWN0aXZpdGlfMTQ4NTAwMSIsImxpcXBheV9vcmRlcl9pZCI6IjQwMXUxNDM3MzI1MDIyMTgzMzAzIiwiZGVzY3JpcHRpb24iOiLQotC10YHRgtC+0LLQsNGPINGC0YDQsNC90LfQsNC60YbQuNGPIiwic2VuZGVyX3Bob25lIjoiMzgwOTc5MTM4MDA3IiwiYW1vdW50IjowLjAxLCJjdXJyZW5jeSI6IlVBSCIsInNlbmRlcl9jb21taXNzaW9uIjowLjAsInJlY2VpdmVyX2NvbW1pc3Npb24iOjAuMCwiYWdlbnRfY29tbWlzc2lvbiI6MC4wLCJhbW91bnRfZGViaXQiOjAuMDEsImFtb3VudF9jcmVkaXQiOjAuMDEsImNvbW1pc3Npb25fZGViaXQiOjAuMCwiY29tbWlzc2lvbl9jcmVkaXQiOjAuMCwiY3VycmVuY3lfZGViaXQiOiJVQUgiLCJjdXJyZW5jeV9jcmVkaXQiOiJVQUgiLCJzZW5kZXJfYm9udXMiOjAuMCwiYW1vdW50X2JvbnVzIjowLjB9			
         //signature=z77CQeBn3Z75n5UpJqXKG+KjZyI=			
         String sID_Transaction = "Pay_" + snID_Task;
-        String sStatus_Payment = null;
+        String sStatus_Payment = null, sStatus_Payment_Description = null;
         //parse sData			
-        if (sData != null) {
-            try {			
-
+        if (sData != null && sData.length() > 0) {
+            try {
                 Gson oGson = new Gson();
-                LiqpayCallbackEntity oLiqpayCallbackModel = oGson.fromJson(sData, LiqpayCallbackEntity.class);
-                //log.info("sID_PaymentSystem="+sID_PaymentSystem);			
-                LOG.info("(oLiqpayCallbackModel.getOrder_id()={})", oLiqpayCallbackModel.getOrder_id());
+                LiqpayCallbackEntity oLiqpayCallbackModel;
+                try {
+                    //oLiqpayCallbackModel = oGson.fromJson(sData, LiqpayCallbackEntity.class);
+                    oLiqpayCallbackModel = setParamValue(sData);
+                } catch (Exception ex) {
+                    LOG.error("Can't parse answer! " + sData, ex);
+                    oLiqpayCallbackModel = setParamValue(sData);
+                }
                 sID_Transaction = oLiqpayCallbackModel.getTransaction_id();
                 LOG.info("(oLiqpayCallbackModel.getTransaction_id()={})", sID_Transaction);
                 sStatus_Payment = oLiqpayCallbackModel.getStatus();
+                sStatus_Payment_Description = oLiqpayCallbackModel.getStatusDescription();
                 LOG.info("(oLiqpayCallbackModel.getStatus()={})", sStatus_Payment);
             } catch (Exception e) {
-                LOG.error("Error: {}, can't parse json! ", e.getMessage());
-                throw e;			
-
+                LOG.error("Error: {}, can't parse json! ", e);
+                throw e;
             }
         } else {
-            LOG.warn("incorrect input data: sData == null: (snID_Task={}, sID_Transaction={}, sStatus_Payment={})"
-                    , snID_Task, sID_Transaction, sStatus_Payment);
+            LOG.warn("incorrect input data: sData == null: (snID_Task={}, sID_Transaction={}, sStatus_Payment={}, sStatus_Payment_Description{})",
+                    snID_Task, sID_Transaction, sStatus_Payment, sStatus_Payment_Description);
         }
 
-        //check variables			
-        //if (sData != null && (sID_Transaction == null || nID_Task == null || !PAYMENT_SUCCESS.equals(sStatus_Payment))) {			
+        //check variables						
         if (sData != null && (sID_Transaction == null || sStatus_Payment == null)) {
             LOG.error("incorrect secondary input data: (nID_Task={}, sID_Transaction={}, sStatus_Payment={})",
                     snID_Task, sID_Transaction, sStatus_Payment);
@@ -107,11 +109,11 @@ public class LiqpayService {
                     + ", sID_Transaction=" + sID_Transaction + ", sStatus_Payment=" + sStatus_Payment);
         }
 
-        setPaymentTransaction_ToActiviti(snID_Task, sID_Transaction, sStatus_Payment, sPrefix);
+        setPaymentTransaction_ToActiviti(snID_Task, sID_Transaction, sStatus_Payment_Description, sPrefix);
     }
 
     public void setPaymentTransaction_ToActiviti(String snID_Task, String sID_Transaction, String sStatus_Payment,
-                                                  String sPrefix) throws Exception {
+            String sPrefix) throws Exception {
         //save info to process			
         try {
             LOG.info("try to get task. (snID_Task={}", snID_Task);
@@ -124,8 +126,30 @@ public class LiqpayService {
             LOG.info("completed set sID_Payment{}+{} to: snID_Process={}", sPrefix, sID_Payment, snID_Process);
         } catch (Exception e) {
             LOG.error("Error: {}, during changing: (snID_Task={}, sID_Transaction={}, sStatus_Payment={})",
-                    e.getMessage(), snID_Task,  sID_Transaction, sStatus_Payment);
+                    e.getMessage(), snID_Task, sID_Transaction, sStatus_Payment);
             throw e;
         }
-    }    
+    }
+
+    private LiqpayCallbackEntity setParamValue(String sData) {
+        LiqpayCallbackEntity oLiqpayCallbackModel = new LiqpayCallbackEntity();
+        //"payment_id":180792515,"status":"success"
+        Pattern TAG_PATTERN_STATUS = Pattern.compile("\"status\":\"[a-zA-Z]+\"");
+        String status = "";
+        Matcher matcherPrefix = TAG_PATTERN_STATUS.matcher(sData);
+        if (matcherPrefix.find()) {
+            status = matcherPrefix.group().replaceFirst("\"status\":\"", "").replaceFirst("\"", "");
+            oLiqpayCallbackModel.setStatus(status);
+            LOG.info("status: " + status);
+        }
+        Pattern TAG_PATTERN_PAYMENY_ID = Pattern.compile("\"payment_id\":[0-9]+");
+        String payment_id = "";
+        matcherPrefix = TAG_PATTERN_PAYMENY_ID.matcher(sData);
+        if (matcherPrefix.find()) {
+            payment_id = matcherPrefix.group().replaceFirst("\"payment_id\":", "");
+            oLiqpayCallbackModel.setTransaction_id(payment_id);
+            LOG.info("payment_id: " + payment_id);
+        }
+        return oLiqpayCallbackModel;
+    }
 }

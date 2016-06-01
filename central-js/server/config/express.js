@@ -37,8 +37,7 @@ module.exports = function (app) {
   app.use(methodOverride());
   app.use(cookieParser());
 
-  //if ('prod' === env || 'test-alpha' === env || 'test-beta' === env) {
-  if(config.bCompile){
+  if ('prod' === env || 'prod-backup' === env || 'test-alpha' === env || 'test-beta' === env || 'test-delta' === env || 'test-omega' === env) {
     app.use(favicon(path.join(config.root, 'public', 'favicon.ico')));
     app.use(express.static(path.join(config.root, 'public')));
     app.set('appPath', config.root + '/public');

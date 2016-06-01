@@ -33,8 +33,8 @@
         <activiti:formProperty id="sAddress" name="адрес органа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapkaGolova" name="шапка принтформы" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="bFlagZhovtyVoduCnap340" name="Флаг процесса" type="invisible" default="easy"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerkArchitect" name="Пошта архітектури" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
+        <activiti:formProperty id="sMailCler1k" name="Пошта ЦНАП" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerkArchitec1t" name="Пошта архітектури" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
         <activiti:formProperty id="markerPassport" name="Continue Passprot" type="markers" default="${markerService.loadFromFile('architecture/PassportTemporaryStructures.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -51,7 +51,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
+          <activiti:expression><![CDATA[${sMailCler1k}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Видача/заміна/продовження паспорту прив’язки тимчасової споруди, продовження терміну його дії чи внесення до нього змін]]></activiti:string>
@@ -74,7 +74,8 @@
           <activiti:string><![CDATA[Заявка на видачу/заміну/продовження паспорту прив’язки тимчасової споруди]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[[sID_Order]&lt;br&gt;
+[pattern/mail/_common_header.html]
 		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<p>
 				Ваше звернення щодо enum{[asPurpose]} прив’язки тимчасової споруди прийнято до роботи.
@@ -210,7 +211,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${sMailClerkArchitect}]]></activiti:expression>
+          <activiti:expression><![CDATA[${sMailClerkArchitec1t}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Заявка на видачу/заміну/продовження паспорту прив’язки тимчасової споруди]]></activiti:string>

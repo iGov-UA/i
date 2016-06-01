@@ -100,6 +100,11 @@
       });
     };
 
+    $scope.$on('task-submitted', function (e, task) {
+      $scope.tasks = $filter('filter')($scope.tasks, {id: '!' + task.id});
+      filterLoadedTasks();
+    });
+
     restoreTaskDefinitionFilter();
     $scope.taskDefinitionsFilterChange = function () {
       $scope.$storage[$stateParams.type + 'TaskDefinitionFilter'] = $scope.model.taskDefinition;

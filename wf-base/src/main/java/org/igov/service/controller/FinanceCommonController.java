@@ -3,6 +3,8 @@ package org.igov.service.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import java.io.BufferedReader;
+import java.net.URLDecoder;
 import org.apache.commons.codec.binary.Base64;
 import org.igov.io.GeneralConfig;
 import org.igov.io.mail.Mail;
@@ -80,13 +82,25 @@ public class FinanceCommonController {
         String sDataDecoded = null;
 
         try {
-            data = parseData(data);
+            StringBuilder osRequestBody = new StringBuilder("");
+            BufferedReader oReader = request.getReader();
+            String line;
+            if (oReader != null) {
+                while ((line = oReader.readLine()) != null) {
+                    osRequestBody.append(line);
+                }
+            }
+            request.getReader();
+            data = parseData(osRequestBody.toString());
             if (data != null) {
                 sDataDecoded = new String(Base64.decodeBase64(data.getBytes()));
+                int index = sDataDecoded.indexOf("}");
+                if (index >= 0) {
+                    sDataDecoded = sDataDecoded.substring(0, index + 1);
+                }
                 LOG.info("(sDataDecoded={})", sDataDecoded);
             }
             oLiqpayService.setPaymentStatus(sID_Order, sDataDecoded, sID_PaymentSystem, sPrefix);
-            //setPaymentStatus(sID_Order, null, sID_PaymentSystem);
         } catch (Exception oException) {
             LOG.error("FAIL:", oException);
             String snID_Subject = "0";
@@ -156,16 +170,17 @@ public class FinanceCommonController {
     }
     
     private static String parseData(String data) {
-        if(data != null){
+        if(data != null && data.length() > 0){
             data = data.contains("data") ? data.substring(data.indexOf("data")) : null;
             if (data != null) {
+                data = data.replaceFirst("data=", "");
                 int indexAmpersant = data.indexOf("&");
                 if (indexAmpersant >= 0) {
                     data = data.substring(0, indexAmpersant);
                 }
             }
         }
-        LOG.info("data: " + data);
+        LOG.info("data after: " + data);
         return data;
     }
 

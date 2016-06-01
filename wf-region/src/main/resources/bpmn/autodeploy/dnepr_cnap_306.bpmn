@@ -53,7 +53,9 @@
           <activiti:string><![CDATA[Надання будівельного паспорту забудови земельної ділянки]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>
+                        [sID_Order]&lt;br&gt;
+                        [pattern/mail/_common_header.html]
 			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 			&lt;p&gt;
 			Ваше звернення щодо Надання будівельного паспорту забудови земельної ділянки успішно зареєстроване.&lt;br /&gt;
@@ -77,7 +79,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>kamni@i.ua</activiti:expression>
+          <activiti:expression>klimkovichy@gmail.com</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression>Нове звернення на порталі igov.org.ua на тему: Надання будівельного паспорту забудови земельної ділянки. Заявник ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}</activiti:expression>
@@ -122,8 +124,8 @@
         <activiti:formProperty id="sArchName" name="Шапка заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="proverka" name="Оберіть відповідь Головного архітектурно-планувального управління" type="enum" required="true">
-          <activiti:value id="ok" name="містобудівні умови та обмеження надані"></activiti:value>
-          <activiti:value id="bad" name="надати містобудівні умови та обмеження неможливо"></activiti:value>
+          <activiti:value id="ok" name="будівельний паспорт забудови земельної ділянки надан"></activiti:value>
+          <activiti:value id="bad" name="надати будівельний паспорт забудови земельної ділянки неможливо"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="result" name="Завантажте скан-копію відповіді" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/BudPass.html" type="file"></activiti:formProperty>
@@ -336,7 +338,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>kamni@i.ua</activiti:expression>
+          <activiti:expression>klimkovichy@gmail.com</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression>ТЕСТ!
@@ -354,7 +356,7 @@
           <activiti:expression>noreply@igov.org.ua</activiti:expression>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>kamni@i.ua</activiti:expression>
+          <activiti:expression>klimkovichy@gmail.com</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression>Результат опрацювання звернення ГоловАПУ</activiti:expression>
@@ -396,9 +398,9 @@
           <activiti:value id="yes" name="ні, є інші співвласники"></activiti:value>
           <activiti:value id="no" name="так, ділянка належить лише мені"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="proverka" name="Відповідь Головного архітектурно-планувального управління" type="enum">
-          <activiti:value id="ok" name="містобудівні умови та обмеження надані"></activiti:value>
-          <activiti:value id="bad" name="надати містобудівні умови та обмеження неможливо"></activiti:value>
+        <activiti:formProperty id="proverka" name="Відповідь Головного архітектурно-планувального управління" type="enum" writable="false">
+          <activiti:value id="ok" name="будівельний паспорт забудови земельної ділянки надан"></activiti:value>
+          <activiti:value id="bad" name="надати будівельний паспорт забудови земельної ділянки неможливо"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="result" name="Завантажте скан-копію відповіді" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nRegion" name="Регион" type="invisible"></activiti:formProperty>
@@ -413,7 +415,7 @@
     <sequenceFlow id="flow32" sourceRef="usertask3" targetRef="exclusivegateway1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow33" sourceRef="servicetask7" targetRef="exclusivegateway3"></sequenceFlow>
-    <sequenceFlow id="flow34" sourceRef="exclusivegateway3" targetRef="servicetask3">
+    <sequenceFlow id="flow34" sourceRef="exclusivegateway3" targetRef="usertask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${nRegion!='466'&&nRegion!='24'&&nRegion!='23'}]]></conditionExpression>
     </sequenceFlow>
   </process>

@@ -1,5 +1,8 @@
 package org.igov.service.business.finance;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class LiqpayCallbackEntity {
     private String version;
     private String public_key;
@@ -9,10 +12,21 @@ public class LiqpayCallbackEntity {
     private String order_id;
     private String type;
     private String transaction_id;
-    private String sender_phone;
     private String status;
-    private String token;
-
+    private transient String sender_phone;
+    private transient String token;
+    private static final transient Map<String, String> statuses = new HashMap();
+    
+    static{
+        statuses.put("success", "Успешный платеж");
+        statuses.put("failure", "Неуспешный платеж");
+        statuses.put("error", "Неуспешный платеж. Некорректно заполнены данные");
+        statuses.put("subscribed", "Подписка успешно оформлена");
+        statuses.put("unsubscribed", "Подписка успешно деактивирована");
+        statuses.put("reversed", "Платеж возвращен");
+        statuses.put("sandbox", "Тестовый платеж");
+    }
+    
     public String getVersion() {
         return version;
     }
@@ -89,6 +103,10 @@ public class LiqpayCallbackEntity {
         return status;
     }
 
+    public String getStatusDescription() {
+        return statuses.containsKey(status) ? statuses.get(status) : status;
+    }
+    
     public void setStatus(String status) {
         this.status = status;
     }

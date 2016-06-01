@@ -252,10 +252,15 @@ public class ActionEventController {
 
         Map<String, Long> m = new HashMap<>();
         Long nOpened = (long) 0;
-        List<HistoryEvent_Service> aHistoryEvent_Service = historyEventServiceDao.getOrdersHistory(nID_Subject, nID_Service, sID_UA, nLimit);
+
+        List<HistoryEvent_Service> aHistoryEvent_Service = historyEventServiceDao.getOrdersHistory(nID_Subject, nID_Service, sID_UA);
+
         for (HistoryEvent_Service oHistoryEvent_Service : aHistoryEvent_Service) {
             nOpened++;
-            if (bExcludeClosed || oHistoryEvent_Service.getsUserTaskName().startsWith("Заявка закрита")) {
+            if (bExcludeClosed
+                    && (oHistoryEvent_Service.getsID_StatusType().toLowerCase().startsWith("closed")
+                    || oHistoryEvent_Service.getsID_StatusType().toLowerCase().startsWith("removed"))
+                    ) {
                 nOpened--;
             }
         }
@@ -555,6 +560,7 @@ public class ActionEventController {
 		    		Integer nID_Server = historyEventService.getnID_Server();
 		            nID_Server = nID_Server == null ? 0 : nID_Server;
 	
+                                nID_Server = generalConfig.getServerId(nID_Server);
 			    	Optional<Server> oOptionalServer = serverDao.findById(new Long(nID_Server));
 		            if (!oOptionalServer.isPresent()) {
 		                throw new RecordNotFoundException("Server with nID_Server " + nID_Server + " wasn't found.");
@@ -568,6 +574,7 @@ public class ActionEventController {
 		            JSONObject json = (JSONObject) new JSONParser().parse(osResponseEntityReturn.getBody());
 		            // sPhone
 		            line.add(json.get("phone") != null ? json.get("phone").toString() : "");
+                    // nID_ServiceData
                     line.add(historyEventService.getnID_ServiceData() != null ? historyEventService.getnID_ServiceData().toString() : "");
 
 		            csvWriter.writeNext(line.toArray(new String[line.size()]));
@@ -578,6 +585,4 @@ public class ActionEventController {
 			LOG.error("Error occurred while creating CSV file {}", e.getMessage());
 		} 
     }
-    //test
-    //test2
 }

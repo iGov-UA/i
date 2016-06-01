@@ -41,7 +41,7 @@
         <activiti:formProperty id="nFilePersonalAccountBank" name="Виписка про відкриття особового рахунку з банку" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFileConclusionMCCHouseTraining" name="Висновок ЛКК про надомне навчання" type="file" required="true"></activiti:formProperty>
 
-        <activiti:formProperty id="nPage" name="Вкажіть загальну кількість сторінок відсканованих документів" type="string" default="12" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nPage" name="Вкажіть загальну кількість сторінок відсканованих документів" type="long" default="10" required="true"></activiti:formProperty>
 
         <activiti:formProperty id="sNameOrgan" name="название органа в подписи письма" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="график работы" type="invisible"></activiti:formProperty>
@@ -53,7 +53,7 @@
         
                
         
-        <activiti:formProperty id="sCompensationCategory" name="Категорія компенсацій (галочка на формі)" type="invisible" default="5_2"></activiti:formProperty>
+        <activiti:formProperty id="sCompensationCategory" name="Категорія компенсацій (галочка на формі)" type="invisible" default="5_8"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Вибір отримання коштів" type="markers" default="${markerService.loadFromFile('сhernobyl/chaes_654_bill.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -212,29 +212,33 @@ execution.setVariable("dPassportDate",strDate)
         <activiti:formProperty id="mfo" name="МФО банку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="edrpou" name="ЄДРПОУ банку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bank_account" name="Номер рахунку в банку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nPage" name="Вкажіть загальну кількість сторінок відсканованих документів" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nPage" name="Вкажіть загальну кількість сторінок відсканованих документів" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="asDocument" name="Перевірка вхідних данних" type="enum" required="true">
           <activiti:value id="OK" name="Всі дані ВІДПОВІДАЮТЬ законодавству"></activiti:value>
           <activiti:value id="NO" name="Надані дані НЕ відповідають законодавству"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="decisionComment" name="В разі відмови в наданні послуги зазначте підставу для відмови (дані будуть надіслані громадянинові по електронній пошті)*" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="decisionComment" name="В разі відмови в наданні послуги зазначте підставу для відмови (дані будуть надіслані громадянинові по електронній пошті)" type="textArea"></activiti:formProperty>
+        
         <activiti:formProperty id="sBody_1" name="[pattern/print/сhernobyl/chaes_654_print.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="название органа в подписи письма" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nDocument" name="количество документов" type="invisible" default="7"></activiti:formProperty>
 
-        <activiti:formProperty id="sCompensationCategory" name="Категорія компенсацій (галочка на формі)" type="invisible" default="5_2"></activiti:formProperty>        
-        <activiti:formProperty id="markersPrint1" name="Для прінтформи" type="markers" default="${markerService.loadFromFile('сhernobyl/chaes_654_print.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="название органа в подписи письма" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="nDocument" name="количество документов" type="invisible"></activiti:formProperty>
+
+        <activiti:formProperty id="sCompensationCategory" name="Категорія компенсацій (галочка на формі)" type="invisible"></activiti:formProperty>        
+        <activiti:formProperty id="markers2" name="Для прінтформи" type="markers" default="${markerService.loadFromFile('сhernobyl/chaes_654_print.json')}"></activiti:formProperty>
         
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFilePassprotParrent},
+            <activiti:expression>
+            	${nFilePassprotParrent},
 				${nFileScanINN},
 				${nFileBirthCertificate},
 				${nFileChernobylCertificateChild},
 				${nFileMedicalDisabledChild},
 				${nFilePersonalAccountBank},
-				${nFileConclusionMCCHouseTraining}</activiti:expression>
+				${nFileConclusionMCCHouseTraining}
+			</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -258,7 +262,9 @@ execution.setVariable("dPassportDate",strDate)
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-			<p>За даними держоргану Вам ВІДМОВЛЕНО у наданні ордера на службове жиле приміщення.</p>
+			<p>
+				За даними держоргану Вам ВІДМОВЛЕНО у наданні компенсаційних виплат дітям дошкільного та шкільного віку, які постраждали внаслідок Чорнобильської катастрофи.
+			</p>
 			<p>
 				Коментар Державного службовця:<br>
 				<b><i>${decisionComment}</i></b>
@@ -292,11 +298,14 @@ execution.setVariable("dPassportDate",strDate)
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-			<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br><br>
-			<p> 
-				Документи відповідають. <br>  
-				Ваше звернення щодо отримання  ордера на службове жиле приміщення успішно зареєстроване.<br>
-				Ви отримаєте відповідь протягом тридцяти календарних днів.
+		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+			<p>
+				За даними держоргану Ваші документи відповідають умовам надання компенсаційних виплат дітям 
+				дошкільного та шкільного віку, які постраждали внаслідок Чорнобильської катастрофи
+			</p>
+			<p>
+				Всі надані дані були передані на обробку в центральний орган, для остаточного рішення. <br>
+				На протязі 30 календарних днів ми надішлемо Вам листа з остаточним рішенням     
 			</p>
 			<br>
 			За наявності питань можете звернутись за наступними контактами<br>
@@ -339,33 +348,25 @@ execution.setVariable("dPassportDate",strDate)
         <activiti:formProperty id="edrpou" name="ЄДРПОУ банку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bank_account" name="Номер рахунку в банку" type="string" writable="false"></activiti:formProperty>
 
-        <activiti:formProperty id="nPage" name="Вкажіть закальну кількість сторінок відсканованих документів" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nPage" name="Вкажіть закальну кількість сторінок відсканованих документів" type="long" required="true"></activiti:formProperty>
 
-
-        <activiti:formProperty id="asResult" name="Рішення держслужбовця" type="enum" required="true">
-          <activiti:value id="Yes" name="Видати ордер"></activiti:value>
-          <activiti:value id="Not" name="Відмовити у видачі ордеру"></activiti:value>
+		<activiti:formProperty id="asResult" name="Рішення держслужбовця" type="enum" required="true">
+          <activiti:value id="Yes" name="Надати допомогу"></activiti:value>
+          <activiti:value id="Not" name="Відмовити у видачі допомоги"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="decisionComment" name="Укажіть інформацію для громадянина(дані будуть надіслані по електронній пошті)*" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="decisionComment" name="Укажіть інформацію для громадянина(дані будуть надіслані по електронній пошті)" type="textArea"></activiti:formProperty>
         
         <activiti:formProperty id="sBody_1" name="[pattern/print/сhernobyl/chaes_654_print.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
 
         <activiti:formProperty id="sNameOrgan" name="название органа в подписи письма" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nDocument" name="количество документов" type="invisible" default="7"></activiti:formProperty>
+        <activiti:formProperty id="nDocument" name="количество документов" type="invisible"></activiti:formProperty>
 
-        <activiti:formProperty id="sCompensationCategory" name="Категорія компенсацій (галочка на формі)" type="invisible" default="5_2"></activiti:formProperty>        
-        <activiti:formProperty id="markersPrint1" name="Для прінтформи" type="markers" default="${markerService.loadFromFile('сhernobyl/chaes_654_print.json')}"></activiti:formProperty>
-        
+        <activiti:formProperty id="sCompensationCategory" name="Категорія компенсацій (галочка на формі)" type="invisible"></activiti:formProperty>        
+        <activiti:formProperty id="markers2" name="Для прінтформи" type="markers" default="${markerService.loadFromFile('сhernobyl/chaes_654_print.json')}"></activiti:formProperty>
         
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFilePassprotParrent},
-				${nFileScanINN},
-				${nFileBirthCertificate},
-				${nFileChernobylCertificateChild},
-				${nFileMedicalDisabledChild},
-				${nFilePersonalAccountBank},
-				${nFileConclusionMCCHouseTraining}</activiti:expression>
+            <activiti:expression>${nFilePassprotParrent}, ${nFileScanINN}, ${nFileBirthCertificate}, ${nFileChernobylCertificateChild}, ${nFileMedicalDisabledChild}, ${nFilePersonalAccountBank}, ${nFileConclusionMCCHouseTraining}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -393,14 +394,14 @@ execution.setVariable("dPassportDate",strDate)
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<p>
-				Вітаємо, Вам НАДАНО ордер на службове жиле приміщення.
+				Вітаємо, Вам будуть НАДАНІ компенсаційні виплати дітям дошкільного та шкільного віку, які постраждали внаслідок Чорнобильської катастрофи
 			</p>
 			<p>
 				Коментар Державного службовця:<br>
 				<b><i>${decisionComment}</i></b>
 			</p>
 			<br>
-			Ордер можна отримати за:<br>
+			Для отримання компенсації зверніться за наступними контактами:<br>
 			${sAddress}<br>
 			${sWorkTime}<br>
 			${sPhoneOrgan}<br><br><br>			

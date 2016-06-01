@@ -9,9 +9,16 @@ var router = express.Router();
 
 // Registering oauth2 strategies
 require('./bankid/bankid.passport').setup(config);
+
 //Mock bankId process
 router.use('/bankID', require('./bankid-mock'));
+
 router.use('/bankID', require('./bankid'));
+
+//Mock eds process
+router.use('/eds', require('./eds-mock'));
+
+
 router.use('/eds', require('./eds'));
 router.use('/mpbds', require('./mpbds'));
 router.use('/email', require('./email'));
@@ -20,6 +27,9 @@ if(config.hasSoccardAuth()){
   require('./soccard/soccard.passport').setup(config);
   router.use('/soccard', require('./soccard'));
 }
+
+//Registering cookies for mocking
+router.use('/isAuthenticated', require('./config-mock'));
 
 router.get('/isAuthenticated', authService.isAuthenticated(), authController.isAuthenticated);
 router.post('/logout', authService.isAuthenticated(), authController.logout);

@@ -43,6 +43,7 @@
         <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для справок" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="marker" name="mShowFields" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sKadastrObject&quot;,&quot;sVitiagNo&quot;,&quot;sVitiagDate&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;aDocErr&quot;},&quot;sCondition&quot;:&quot;[sClient]=='enum1'&quot;},&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;sDovidkaNo&quot;,&quot;sDovidkaDate&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;aDocErr&quot;},&quot;sCondition&quot;:&quot;[sClient]=='enum2'&quot;},&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;sCopyNo&quot;,&quot;sCopyDate&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;aDocErr&quot;},&quot;sCondition&quot;:&quot;[sClient]=='enum3'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Region" type="markers" default="${markerService.loadFromFile('dneprCnap/dnepr_225.json')}"></activiti:formProperty>
         <activiti:formProperty id="bFlag" name="Перемикач регіонів" type="invisible" default="easy"></activiti:formProperty>
@@ -80,7 +81,8 @@ if(execution.getVariable('aDocErr') == 'enum3'){execution.setVariable('iTemp3', 
           <activiti:string><![CDATA[Звернення на тему: Виправлення технічної помилки у відомостях з Державного земельного кадастру, допущеної органом, що здійснює його ведення, з видачею витягу]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[[sID_Order]<br/>
+            [pattern/mail/_common_header.html]
 			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<p>
 			Ваше звернення щодо виправлення технічної помилки у відомостях з Державного земельного кадастру, допущеної органом, що здійснює його ведення, з видачею витягу успішно зареєстроване.<br />

@@ -116,21 +116,23 @@
           <activiti:expression>Звернення на тему: ${sTopic}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-										Ваш запит був успішно зареєстрований у нашій системі. 
-								    &lt;/p&gt;
-									&lt;p&gt;
-										Спеціалісти відповідального органу опрацюють Вашу заявку та нададуть відповідь найближчим часом. 
-									&lt;/p&gt;
-									&lt;p&gt;
-									${sPhoneOrgan}.
-									&lt;/p&gt;
-                                    [pattern/mail/_common_signature_start.html]
-									${sNameOrgan},&lt;br&gt;
-									[pattern/mail/_common_signature_end.html]   
-									[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+                            [sID_Order]&lt;br&gt;
+                            [pattern/mail/_common_header.html]
+                            &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+                             &lt;p&gt;
+			    Ваш запит був успішно зареєстрований у нашій системі. 
+			    &lt;/p&gt;
+			    &lt;p&gt;
+			    Спеціалісти відповідального органу опрацюють Вашу заявку та нададуть відповідь найближчим часом. 
+			    &lt;/p&gt;
+			    &lt;p&gt;
+			    ${sPhoneOrgan}.
+			    &lt;/p&gt;
+                            [pattern/mail/_common_signature_start.html]
+				${sNameOrgan},&lt;br&gt;
+				[pattern/mail/_common_signature_end.html]   
+				[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -229,22 +231,22 @@
           <activiti:expression>Звернення на тему: ${sTopic}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-                                        Ваше звернення на тему: ${sTopic} розглянуте.&lt;br&gt;
-                                        На жаль змушені відмовити Вам у реєстрації звернення.
-                                    &lt;/p&gt;
-                                    &lt;p&gt;
-									Коментар державного службовця: &lt;br&gt;
-									&lt;i&gt;${decisionComment}&lt;/i&gt;
-									&lt;/p&gt;
-                                    &lt;p&gt;
-									${sPhoneOrgan}.
-									&lt;/p&gt;
-                                    [pattern/mail/_common_signature_start.html]
-									${sNameOrgan}.&lt;/p&gt;
-                                    [pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+			<p>
+			    Ваше звернення на тему: ${sTopic} розглянуте.<br>
+			    На жаль змушені відмовити Вам у реєстрації звернення.
+			</p>
+			<p>
+				Коментар державного службовця: <br>
+				<i>${decisionComment}</i>
+			</p>
+			<p>
+				${sPhoneOrgan}
+			</p>
+			[pattern/mail/_common_signature_start.html]
+			${sNameOrgan}.<br>
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -404,9 +406,11 @@ execution.setVariable('notification_day', timer)</script>
     </userTask>
     <sequenceFlow id="flow40" sourceRef="usertask2" targetRef="servicetask7"></sequenceFlow>
     <scriptTask id="scripttask2" name="Зміна флагу" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var src=execution.getVariable('flag')
-src='true'
-execution.setVariable('flag', src)</script>
+		<script>
+			var src=execution.getVariable('flag')
+			src='true'
+			execution.setVariable('flag', src)
+		</script>
     </scriptTask>
     <sequenceFlow id="flow45" sourceRef="scripttask2" targetRef="parallelgateway2"></sequenceFlow>
     <parallelGateway id="parallelgateway2" name="Parallel Gateway"></parallelGateway>

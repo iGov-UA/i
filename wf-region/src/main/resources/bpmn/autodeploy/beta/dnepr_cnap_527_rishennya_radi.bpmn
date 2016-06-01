@@ -196,11 +196,11 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваш запит щодо enum{[asTypeAction]} успішно зареєстровано і буде опрацьовано впродовж визначений Законом термін.&lt;br /&gt;
+Ваше звернення [sID_Order] щодо enum{[asTypeAction]} успішно зареєстровано і буде опрацьовано впродовж визначений Законом термін.&lt;br /&gt;
 &lt;br /&gt;
 Реєстраційний номер заяви: ${sReestr_numb};&lt;br /&gt;
 &lt;br /&gt;
-Ви отримаєте додаткове повідомлення за результатами розгляду зверення.&lt;br /&gt;
+Ви отримаєте додаткове повідомлення за результатами розгляду звернення.&lt;br /&gt;
 ${sWorkTime}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sAddress}&lt;br /&gt;
@@ -223,13 +223,15 @@ ${sAddress}&lt;br /&gt;
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;
-На жаль, Ваше звернення щодо enum{[asTypeAction]} відхилено через недостатню або неправильну інформацію.&lt;br /&gt;
+На жаль, Ваше звернення [sID_Order] щодо enum{[asTypeAction]} відхилено через недостатню або неправильну інформацію.&lt;br /&gt;
 &lt;br /&gt;
 ${sComment_1}&lt;br /&gt;
 Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
 ${sAddress}&lt;br /&gt;
+${sWorkTime}&lt;br /&gt;
+[pattern/mail/_common_feedback.html]
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -265,9 +267,10 @@ ${sComment_2}&lt;br /&gt;
 ${sWorkTime}&lt;br /&gt;
 ${sNameOrgan}&lt;br /&gt;
 ${sPhoneOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-[pattern/mail/_common_signature_end.html]   
 [pattern/mail/_common_feedback.html]
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan}&lt;br /&gt;
+[pattern/mail/_common_signature_end.html]   
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
@@ -303,7 +306,7 @@ ${sPhoneOrgan}&lt;br /&gt;
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення успішно зареєстровано та буде розглянуто. &lt;br /&gt; 
+Ваше звернення [sID_Order] успішно зареєстровано та буде розглянуто. &lt;br /&gt; 
 Ви отримаєте відповідь у визначений Законом термін на цю email-адресу.&lt;br /&gt;
 [pattern/mail/_common_signature.html]
 [pattern/mail/_common_footer.html]</activiti:expression>

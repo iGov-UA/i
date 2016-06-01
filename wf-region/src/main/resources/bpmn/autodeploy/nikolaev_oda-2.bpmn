@@ -10,7 +10,7 @@
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані заявника" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта громадянина України заявника; Сторінки 1, 2, 10, 11. При наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву чи pdf-файлі" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFileINN0" name="Копія ідентифіувційного коду заявника" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileINN0" name="Копія ідентифікаційного коду заявника" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="nWhereLives0" name="З якого року проживаєте в даному населеному пункті; чотори цифри" type="string" required="true"></activiti:formProperty>
@@ -179,8 +179,10 @@
         <activiti:formProperty id="sFalgNikolaevOda2" name="Флаг на заявление" type="invisible" default="normal"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="AreaName" name="назва органу" type="invisible" default=" "></activiti:formProperty>
+        
         <activiti:formProperty id="sAddress" name="адреса органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sShapkaGolova" name="підпис в шапке" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="nCountIsAdult" name="кількість дорослих" type="invisible" default=" "></activiti:formProperty>
@@ -259,6 +261,19 @@ for (int i = 1; i <= maxCountFamily; i++) {
 	}
 }
 execution.setVariable('nCountIsAdult', 'a' + countIsAdult)
+
+def per2 = " "
+def gr = [ "marganT", "nikopolT", "hmel_hmelT", "mvk_chernT", "persotravT", "pavlogradT", "mvk_lug_NovopskovskT", "mvk_nik_nikT", "khar_izyumT"]
+def name = [ "Марганецьку міську раду", "Нікопольську міську раду", "Хмельницьку міську раду", "Чернігівсьу міську раду", "Першотравенську міську раду", "Павлоградську міську раду", "Новопсковську селищну раду", "Миколаївську міську раду", "Ізюмську міську раду"]
+
+for (def i = 0; i<9; i++){
+	if(execution.getVariable('sID_Public_SubjectOrganJoin') == gr[i]){
+		per2 = name[i]
+		break
+	}
+}
+execution.setVariable('AreaName', per2)
+
 		]]></script>
 	</scriptTask>
     
@@ -266,11 +281,11 @@ execution.setVariable('nCountIsAdult', 'a' + countIsAdult)
     <serviceTask id="servicetask2" name="Повідомлення чиновника про нову заявку" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[valery.stavitsky@gmail.com]]></activiti:expression>
+          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
+        </activiti:field>       
         <activiti:field name="subject">
           <activiti:expression><![CDATA[Нове звернення громадян на тему:
           	Взяття на облік громадян, які потребують поліпшення житлових умов]]></activiti:expression>
@@ -281,10 +296,19 @@ execution.setVariable('nCountIsAdult', 'a' + countIsAdult)
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow22" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
-    <serviceTask id="servicetask3" name="Повідомлення про  подання звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask3" name="Повідомлення про  подання звернення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+		<activiti:field name="sPhone_SMS">
+			<activiti:expression>${phone}</activiti:expression>
+		</activiti:field>
+		<activiti:field name="sText_SMS">
+			<activiti:expression>Vashe zvernennya [sID_Order] zareestrovano</activiti:expression>
+		</activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -403,6 +427,7 @@ execution.setVariable('nCountIsAdult', 'a' + countIsAdult)
 		<activiti:formProperty id="sFalgNikolaevOda2" name="Флаг на заявление" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sShapkaGolova" name="підпис в шапке" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="AreaName" name="назва органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/mvk/nikolaev_mvk_408_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="Заява;Заява громадянина;pattern/print/mvk/nikolaev_mvk_408_print.html" type="file"></activiti:formProperty>
 
@@ -431,13 +456,22 @@ execution.setVariable('nCountIsAdult', 'a' + countIsAdult)
     <sequenceFlow id="flow3" name="Документи не відповідають" sourceRef="exclusivegateway1" targetRef="servicetask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'reject'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask5" name="Відправлення листа про відмову громадянину" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask5" name="Відправлення листа про відмову громадянину" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+		<activiti:field name="sPhone_SMS">
+			<activiti:expression>${phone}</activiti:expression>
+		</activiti:field>
+		<activiti:field name="sText_SMS">
+			<activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+		</activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression><![CDATA[Взяття на облік громадян, які потребують поліпшення житлових умов]]></activiti:expression>
@@ -470,7 +504,7 @@ execution.setVariable('nCountIsAdult', 'a' + countIsAdult)
     <sequenceFlow id="flow4" name="Документи в порядку" sourceRef="exclusivegateway1" targetRef="servicetask7">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'accept'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask7" name="Повідомлення громадянина, що документи пройшли первинну перевірку + надсилається заява" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask7" name="Повідомлення громадянина, що документи пройшли первинну перевірку + надсилається заява" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
@@ -478,11 +512,14 @@ execution.setVariable('nCountIsAdult', 'a' + countIsAdult)
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
-        <activiti:field name="subject">
-          <activiti:expression><![CDATA[Взяття на облік громадян, які потребують поліпшення житлових умов]]></activiti:expression>
-        </activiti:field>
+		<activiti:field name="sPhone_SMS">
+			<activiti:expression>${phone}</activiti:expression>
+		</activiti:field>
+		<activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Status Vashoho zvernennya [sID_Order] zmineno "Vzyato v robotu".  Na Vash email pryyshov lyst z zayavoyu, rozdrukuyte ta pidpyshit']]></activiti:expression>
+		</activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA["${PrintForm_1}"]]></activiti:expression>
+          <activiti:expression><![CDATA[${PrintForm_1}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
@@ -596,6 +633,7 @@ execution.setVariable('nCountIsAdult', 'a' + countIsAdult)
 		<activiti:formProperty id="sFalgNikolaevOda2" name="Флаг на заявление" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sShapkaGolova" name="підпис в шапке" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="AreaName" name="назва органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/mvk/nikolaev_mvk_408_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_2" name="Заява;Заява громадянина;pattern/print/mvk/nikolaev_mvk_408_print.html" type="file"></activiti:formProperty>
 
@@ -627,19 +665,25 @@ execution.setVariable('nCountIsAdult', 'a' + countIsAdult)
     <sequenceFlow id="flow19" name="Заявка оброблена" sourceRef="exclusivegateway2" targetRef="servicetask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${regChanged == 'yes'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask4" name="Відправлення листа громадянину" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask4" name="Відправлення листа громадянину" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
-        <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
-        </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
+		<activiti:field name="sPhone_SMS">
+			<activiti:expression>${phone}</activiti:expression>
+		</activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Status Vashoho zvernennya [sID_Order] zmineno "Vukonano". Na Vash email pryyshov lyst z zayavoyu, rozdrukuyte ta pidpyshit']]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
         <activiti:field name="subject">
           <activiti:expression><![CDATA[Взяття на облік громадян, які потребують поліпшення житлових умов]]></activiti:expression>
-        </activiti:field>
+        </activiti:field>      
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA["${PrintForm_2}"]]></activiti:expression>
+          <activiti:expression><![CDATA[${PrintForm_2}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]

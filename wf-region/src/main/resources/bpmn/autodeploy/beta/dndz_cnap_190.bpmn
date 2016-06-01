@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dndz_cnap_190" name="Розірвання договору оренди земельної ділянки або припинення права постійного користування земельною ділянкою" isExecutable="true">
-    <documentation>Смоктій К.В. Последние правки: 06.04.2016</documentation>
+    <documentation>Смоктій К.В. Последние правки: 17.05.2016</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть центр надання адмінпослуг" type="select" required="true"></activiti:formProperty>
@@ -46,12 +46,17 @@
         <activiti:formProperty id="sBasedDocument" name="Документ, що посвідчує перехід права власності; формат: договір № ___ від ДД.ММ.РРРР)" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="nSquare" name="Площа земельної ділянки (га)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdressZemelDilyanki" name="Адреса земельної ділянки" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTargetDestination" name="Цільове призначення із зазначенням об’єкта, що фактично розташований на земельній ділянці; при наявності споруд та нерухомого майна" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFioNewOwner" name="Новий власник нерухомого майна(П.І.Б.)" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sContractNumber" name="Номер договору оренди земельної ділянки" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="oContractDate" name="Дата договору оренди земельної ділянки; у форматі ДД.ММ.РРРР" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile_ContarctArenda" name="Копія договору оренди земельної ділянки або державний акт на право постійного користування земельною ділянкою;​Документ, що посвідчує право користування земельною ділянкою" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_ContarctArenda" name="Копія договору (з додатками) оренди земельної ділянки або державний акт на право постійного користування земельною ділянкою;​Документ, що посвідчує право користування земельною ділянкою" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_DovidkaProVidsutnistDolgaArendi" name="Копія довідки про відсутність заборгованості по орендній платі" type="file"></activiti:formProperty>
         <activiti:formProperty id="nFile_DPI_DovidkaProVidsutnistDolgaArendi" name="Копія довідки з ДПІ про плату за землю та  відсутність заборгованості" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile_DovidkaProVidsutnistDolgaArendiNovoMoskovsk" name="Копія Акту Новомосковської ОДПІ ГУ ДФС у Дніпропетровській області про відсутність заборгованості про сплату за оренду земельної ділянки" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile_CopyTehPassport" name="Копія технічного паспорту на будівлю (БТІ) (при наявності нерухомого майна чи споруди)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile_CopyOwnership" name="Копія свідоцтва про право власності на нерухоме майно або інші копії правоустановчих документів, на підставі яких придбана нерухомість; договори купівлі–продажу, дарування, спадкування, міни, рішення суду (при наявності нерухомого майна чи споруди)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile_PlanDogovorTerminate" name="Копія проекту додаткової угоди про розірвання договору оренди земельної ділянки" type="file"></activiti:formProperty>
         <activiti:formProperty id="nFile_ReasonDocument" name="Копія документу, який підтверджує підстави щодо розірвання договору оренди земельної ділянки" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_AktObstezennya" name="Копія Акт обстеження земельної ділянки" type="file"></activiti:formProperty>
         <activiti:formProperty id="nFile_OwnershipInsideBuildings" name="Для вбудованних приміщень обов'язково документ про право власності на приміщення" type="file"></activiti:formProperty>
@@ -103,6 +108,7 @@
         <activiti:formProperty id="sBasedDocument" name="Документ, що посвідчує перехід права власності" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nSquare" name="Площа земельної ділянки (га)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdressZemelDilyanki" name="Адреса земельної ділянки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTargetDestination" name="Цільове призначення із зазначенням об’єкта, що фактично розташований на земельній ділянці; при наявності споруд та нерухомого майна" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFioNewOwner" name="Новий власник нерухомого майна" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sContractNumber" name="Номер договору оренди земельної ділянки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="oContractDate" name="Дата договору оренди земельної ділянки;(у форматі ДД.ММ.РРРР)" type="string" writable="false"></activiti:formProperty>
@@ -123,7 +129,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${bankId_scan_inn},${nFile_DovirenistConfidant},${nFile_PassportConfidant},${nFile_ContarctArenda}, ${nFile_AdvertLicense}, ${nFile_DovidkaProVidsutnistDolgaArendi}, ${nFile_DPI_DovidkaProVidsutnistDolgaArendi}, ${nFile_ReasonDocument}, ${nFile_AktObstezennya}, ${nFile_OwnershipInsideBuildings}, ${nFile_UstanovchiDocumenti}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport},${bankId_scan_inn},${nFile_DovirenistConfidant},${nFile_PassportConfidant},${nFile_ContarctArenda}, ${nFile_AdvertLicense}, ${nFile_DovidkaProVidsutnistDolgaArendi}, ${nFile_DPI_DovidkaProVidsutnistDolgaArendi}, ${nFile_ReasonDocument}, ${nFile_AktObstezennya}, ${nFile_OwnershipInsideBuildings}, ${nFile_UstanovchiDocumenti}, ${nFile_DovidkaProVidsutnistDolgaArendiNovoMoskovsk}, ${nFile_PlanDogovorTerminate}, ${nFile_CopyTehPassport}, ${nFile_CopyOwnership}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -164,6 +170,7 @@
         <activiti:formProperty id="sBasedDocument" name="Документ, що посвідчує перехід права власності" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nSquare" name="Площа земельної ділянки (га)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdressZemelDilyanki" name="Адреса земельної ділянки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTargetDestination" name="Цільове призначення із зазначенням об’єкта, що фактично розташований на земельній ділянці; при наявності споруд та нерухомого майна" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFioNewOwner" name="Новий власник нерухомого майна" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sContractNumber" name="Номер договору оренди земельної ділянки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="oContractDate" name="Дата договору оренди земельної ділянки;(у форматі ДД.ММ.РРРР)" type="string" writable="false"></activiti:formProperty>
@@ -217,15 +224,15 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-&lt;p&gt; Ваше звернення щодо розірвання договору оренди земельної ділянки або припинення права постійного користування земельною ділянкою  успішно зареєстровано і буде опрацьовано впродовж визначений Законом термін.&lt;br /&gt;
+&lt;p&gt; Ваше звернення [sID_Order] щодо розірвання договору оренди земельної ділянки або припинення права постійного користування земельною ділянкою  успішно зареєстровано і буде опрацьовано впродовж визначеного Законом терміну.&lt;br /&gt;
 Повідомлення про результат розгляду буде спрямоване на Ваш e-mail.&lt;/p&gt;
 &lt;br /&gt;
 ${sNameOrgan}&lt;br /&gt;
+${sAddress}&lt;br /&gt;
 ${sWorkTime}&lt;br /&gt;
 ${sPhoneOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}&lt;br /&gt;
-${sAddress}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -249,15 +256,16 @@ ${sAddress}&lt;br /&gt;
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-&lt;p&gt; На жаль, Ваше звернення, щодо розірвання договору оренди земельної ділянки або припинення права постійного користування земельною ділянкою не прийнято в роботу. &lt;br /&gt;
+&lt;p&gt; На жаль, Ваше звернення [sID_Order] щодо розірвання договору оренди земельної ділянки або припинення права постійного користування земельною ділянкою не прийнято в роботу. &lt;br /&gt;
 Причина відмови: ${sDecision_1_Comment} &lt;br /&gt;
 &lt;br /&gt;
 ${sNameOrgan}&lt;br /&gt;
+${sAddress}&lt;br /&gt;
 ${sPhoneOrgan}&lt;br /&gt;
 ${sWorkTime}&lt;br /&gt;
+[pattern/mail/_common_feedback.html]
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}&lt;br /&gt;
-${sAddress}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -277,17 +285,17 @@ ${sAddress}&lt;br /&gt;
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-&lt;p&gt;Ви подавали звернення, щодо розірвання договору оренди земельної ділянки або припинення права постійного користування земельною ділянкою.&lt;br /&gt;
+&lt;p&gt;Ви подавали звернення [sID_Order] щодо розірвання договору оренди земельної ділянки або припинення права постійного користування земельною ділянкою.&lt;br /&gt;
 &lt;p&gt;Послуга успішно зареєстрована.&lt;/p&gt;
 &lt;p&gt;Номер Вашого замовлення: ${sExtension_Number} від ${sDate_Registrastion}. &lt;/p&gt; &lt;br /&gt;.
 &lt;p&gt;Ви отримаєте відповідь у визначений Законом термін на цю email-адресу.&lt;/p&gt;
 &lt;br /&gt;
 ${sNameOrgan}&lt;br /&gt;
+${sAddress}&lt;br /&gt;
 ${sPhoneOrgan}&lt;br /&gt;
 ${sWorkTime}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}&lt;br /&gt;
-${sAddress}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -326,15 +334,17 @@ ${sAddress}&lt;br /&gt;
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-&lt;p&gt;Ви подавали звернення щодо розірвання договору оренди земельної ділянки або припинення права постійного користування земельною ділянкою. &lt;br /&gt;
+&lt;p&gt;Ви подавали звернення [sID_Order] щодо розірвання договору оренди земельної ділянки або припинення права постійного користування земельною ділянкою. &lt;br /&gt;
 Рішення міської ради отримано, звернення оброблено. &lt;br /&gt;
 Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у ЦНАПі.&lt;br /&gt;
-${sNameOrgan}&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
+&lt;br /&gt;
 ${sNameOrgan}&lt;br /&gt;
 ${sAddress}&lt;br /&gt;
+${sPhoneOrgan}&lt;br /&gt;
+${sWorkTime}&lt;br /&gt;
+[pattern/mail/_common_feedback.html]
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -364,11 +374,12 @@ ${sAddress}&lt;br /&gt;
 Причина відмови: ${sDecision_2_Comment} &lt;br /&gt;
 
 ${sNameOrgan}&lt;br /&gt;
+${sAddress}&lt;br /&gt;
 ${sPhoneOrgan}&lt;br /&gt;
 ${sWorkTime}&lt;br /&gt;
+[pattern/mail/_common_feedback.html]
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}&lt;br /&gt;
-${sAddress}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>

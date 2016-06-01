@@ -239,8 +239,7 @@
 
         $scope.isFormPropertyDisabled = isItemFormPropertyDisabled;
 
-        $scope.print = function (form) {
-          $scope.validateForm(form);
+        $scope.print = function () {
           if ($scope.selectedTask && $scope.taskForm) {
             if ($scope.hasUnPopulatedFields()) {
               Modal.inform.error()('Не всі поля заповнені!');
@@ -327,6 +326,7 @@
                   $scope.lightweightRefreshAfterSubmit();
                 })(sMessage + " " + (result && result.length > 0 ? (': ' + result) : ''));
 
+                $scope.$emit('task-submitted', $scope.selectedTask);
               })
               .catch(defaultErrorHandler);
           }
@@ -463,10 +463,14 @@
                   $scope.taskForm[i].value = $scope.originalTaskForm[i].enumValues[j].name;
                 }
               }
-              $scope.taskForm.taskData.aField[i].sType = "string";
-              var keyCandidate = $scope.originalTaskForm.taskData.aField[i].sValue;
-              var objCandidate = $scope.originalTaskForm.taskData.aField[i].mEnum;
-              $scope.taskForm.taskData.aField[i].sValue = objCandidate[keyCandidate];
+              try {
+                $scope.taskForm.taskData.aField[i].sType = "string";
+                var keyCandidate = $scope.originalTaskForm.taskData.aField[i].sValue;
+                var objCandidate = $scope.originalTaskForm.taskData.aField[i].mEnum;
+                $scope.taskForm.taskData.aField[i].sValue = objCandidate[keyCandidate];
+              } catch (e) {
+                Modal.inform.error()($scope.taskForm.taskData.message)
+              }
             }
           }
         };
@@ -475,12 +479,16 @@
             if ($scope.originalTaskForm[i].type === "enum" && isItemFormPropertyDisabled($scope.originalTaskForm[i])) {
               $scope.taskForm[i].type = "enum";
               $scope.taskForm[i].value = $scope.originalTaskForm[i].value;
-              $scope.taskForm.taskData.aField[i].sType = $scope.originalTaskForm.taskData.aField[i].sType;
-              $scope.taskForm.taskData.aField[i].sValue = $scope.originalTaskForm.taskData.aField[i].sValue;
+              try {
+                $scope.taskForm.taskData.aField[i].sType = "string";
+                $scope.taskForm.taskData.aField[i].sType = $scope.originalTaskForm.taskData.aField[i].sType;
+                $scope.taskForm.taskData.aField[i].sValue = $scope.originalTaskForm.taskData.aField[i].sValue;
+              } catch (e) {
+                Modal.inform.error()($scope.taskForm.taskData.message)
+              }
             }
           }
         }
-
         $scope.convertDisabledEnumFiedsToReadonlySimpleText();
       }
     ]);

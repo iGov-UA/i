@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="spend_meeting_404" name="Повідомлення про проведення зборів, мітингів, маніфестацій і демонстрацій, спортивних, видовищних та інших масових заходів" isExecutable="true">
-    <documentation>Смоктій К.В. Последние правки: 18.03.2016</documentation>
+    <documentation>Смоктій К.В. Последние правки: 30.05.2016</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган надання адмінпослуг" type="select" default="0" required="true"></activiti:formProperty>
@@ -82,7 +82,7 @@
           <activiti:value id="idTime24" name="24:00"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="lCountPeople" name="Передбачувана кількість учасників" type="long" required="true"></activiti:formProperty>
-        <activiti:formProperty id="fPovidomlennyaProZahid" name="Завантажте Повідомлення про проведення зборів, мітингів і т.ін., що підписано відповідальними особами " type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="fPovidomlennyaProZahid" name="Завантажте Повідомлення про проведення зборів, мітингів і т.ін., що підписано відповідальними особами " type="file" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sLabel2" name=" " type="label" default="&lt;b&gt;Інформація щодо організаторів заходу&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="eCountOrganizatorov" name="Кількість організаторів заходу" type="enum" default="idCount1" required="true">
           <activiti:value id="idCount1" name="1"></activiti:value>
@@ -131,7 +131,7 @@
         <activiti:formProperty id="sInfoOrg2" name="Організатор заходу 1" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sInfoOrg3" name="Організатор заходу 1" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Центр надання адмінпослуг" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="пошта оргструктури (району)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="пошта оргструктури (району)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адрес оргструктури (району)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для довідки оргструктури (району)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи оргструктури (району)" type="invisible"></activiti:formProperty>
@@ -155,7 +155,7 @@
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації громадянина-заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний (особистий) номер телефону для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sLabel1" name=" " type="label" default="&lt;b&gt;Інформація щодо заходу&lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sLabel1" name=" " type="label" default="Інформація щодо заходу"></activiti:formProperty>
         <activiti:formProperty id="sMetaZahodu" name="Мета заходу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="eFormaZahodu" name="Форма заходу" type="enum" writable="false">
           <activiti:value id="zbori" name="збори"></activiti:value>
@@ -167,7 +167,7 @@
           <activiti:value id="look" name="видовищний масовий захід"></activiti:value>
           <activiti:value id="other" name="інший масовий захід"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sMistoZahodu" name="Місце проведення заходу або маршрути руху (текстовое описание маршрута " type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sMistoZahodu" name="Місце проведення заходу або маршрути руху (текстовий опис маршруту)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="dDate_Beg" name="Дата початку заходу" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="eTime_Beg" name="Час початку заходу" type="enum" writable="false">
           <activiti:value id="idTime0" name="00:00"></activiti:value>
@@ -225,7 +225,7 @@
           <activiti:value id="idTime24" name="24:00"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="lCountPeople" name="Передбачувана кількість учасників" type="long" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sLabel2" name=" " type="label" default="&lt;b&gt;Інформація щодо організаторів заходу&lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sLabel2" name=" " type="label" default="Інформація щодо організаторів заходу"></activiti:formProperty>
         <activiti:formProperty id="eCountOrganizatorov" name="Кількість організаторів заходу" type="enum" writable="false">
           <activiti:value id="idCount1" name="1"></activiti:value>
           <activiti:value id="idCount2" name="2"></activiti:value>
@@ -272,7 +272,7 @@
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації громадянина-заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний (особистий) номер телефону для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sLabel1" name=" " type="label" default="&lt;b&gt;Інформація щодо заходу&lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sLabel1" name=" " type="label" default="Інформація щодо заходу"></activiti:formProperty>
         <activiti:formProperty id="sMetaZahodu" name="Мета заходу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="eFormaZahodu" name="Форма заходу" type="enum" writable="false">
           <activiti:value id="zbori" name="збори"></activiti:value>
@@ -284,7 +284,7 @@
           <activiti:value id="look" name="видовищний масовий захід"></activiti:value>
           <activiti:value id="other" name="інший масовий захід"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sMistoZahodu" name="Місце проведення заходу або маршрути руху (текстовое описание маршрута " type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sMistoZahodu" name="Місце проведення заходу або маршрути руху (текстовий опис маршруту)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="dDate_Beg" name="Дата початку заходу" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="eTime_Beg" name="Час початку заходу" type="enum" writable="false">
           <activiti:value id="idTime0" name="00:00"></activiti:value>
@@ -342,7 +342,7 @@
           <activiti:value id="idTime24" name="24:00"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="lCountPeople" name="Передбачувана кількість учасників" type="long" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sLabel2" name=" " type="label" default="&lt;b&gt;Інформація щодо організаторів заходу&lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sLabel2" name=" " type="label" default="Інформація щодо організаторів заходу"></activiti:formProperty>
         <activiti:formProperty id="eCountOrganizatorov" name="Кількість організаторів заходу" type="enum" writable="false">
           <activiti:value id="idCount1" name="1"></activiti:value>
           <activiti:value id="idCount2" name="2"></activiti:value>
@@ -375,7 +375,7 @@
     <sequenceFlow id="flow7" name="Документы Ок" sourceRef="exclusivegateway1" targetRef="servicetask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_1=='accept'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask2" name="Повідомлення посадовця " activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask2" name="Повідомлення посадовця" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${sMailClerk}</activiti:expression>
@@ -391,10 +391,10 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask3" name="Повідомлення громадянина про розгляд звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask3" name="Повідомлення громадянина про розгляд звернення + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: повідомлення про проведення зборів, мітингів та ін.]]></activiti:string>
+          <activiti:string><![CDATA[Перевірено звернення на тему: повідомлення про проведення зборів, мітингів та ін.]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
@@ -405,20 +405,29 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Прийнято рішення щодо детального розгляду Вашого повідомлення.&lt;br /&gt; 
+Прийнято рішення щодо детального розгляду Вашого повідомлення (звернення [sID_Order]).&lt;br /&gt; 
 Ви отримаєте відповідь у визначений Законом термін на цю email-адресу.&lt;br /&gt;&lt;br /&gt;
 ${sNameOrgan}&lt;br /&gt;
+${sAddress}&lt;br /&gt;
 ${sWorkTime}&lt;br /&gt;
 ${sPhoneOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}&lt;br /&gt;
-${sAddress}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno na "Perevireno". Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask4" name="Повідомлення про відмову" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask4" name="Повідомлення про відмову + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
@@ -427,25 +436,35 @@ ${sAddress}&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: повідомлення про проведення зборів, мітингів та ін.]]></activiti:string>
+          <activiti:string><![CDATA[Відхилено звернення на тему: повідомлення про проведення зборів, мітингів та ін.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-На жаль, змушені відмовити Вам у наданні послуги.&lt;br /&gt; 
+На жаль, змушені відмовити Вам у наданні послуги (звернення [sID_Order]).&lt;br /&gt; 
 Підстава: ${comment_1}.&lt;br /&gt;&lt;br /&gt;
 ${sNameOrgan}&lt;br /&gt;
+${sAddress}&lt;br /&gt;
 ${sWorkTime}&lt;br /&gt;
 ${sPhoneOrgan}&lt;br /&gt;
+[pattern/mail/_common_feedback.html]
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}&lt;br /&gt;
-${sAddress}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno na "Vidhileno". Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask5" name="Повідомлення що Повідомлення прийнято до відома" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask5" name="Повідомлення що Повідомлення прийнято до відома + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
@@ -454,26 +473,36 @@ ${sAddress}&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: повідомлення про проведення зборів, мітингів та ін.]]></activiti:string>
+          <activiti:string><![CDATA[Опрацьовано звернення на тему: повідомлення про проведення зборів, мітингів та ін.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення успішно розглянуто та прийнято до відома.&lt;br /&gt;
+Ваше звернення [sID_Order] успішно розглянуто та прийнято до відома.&lt;br /&gt;
 &lt;br /&gt;
 ${sNameOrgan}&lt;br /&gt;
+${sAddress}&lt;br /&gt;
 ${sWorkTime}&lt;br /&gt;
 ${sPhoneOrgan}&lt;br /&gt;
+[pattern/mail/_common_feedback.html]
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}&lt;br /&gt;
-${sAddress}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno ta priynyato do vidoma. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow9" sourceRef="servicetask3" targetRef="usertask2"></sequenceFlow>
-    <serviceTask id="servicetask6" name="Повідомлення про  відмову" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask6" name="Повідомлення про  відмову + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
@@ -482,21 +511,31 @@ ${sAddress}&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: повідомлення про проведення зборів, мітингів та ін.]]></activiti:string>
+          <activiti:string><![CDATA[Відхилено звернення на тему: повідомлення про проведення зборів, мітингів та ін.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-На жаль, змушені відмовити Вам у наданні послуги.&lt;br /&gt; 
+На жаль, змушені відмовити Вам у наданні послуги (звернення [sID_Order]).&lt;br /&gt; 
 Підстава: ${comment_2}.&lt;br /&gt;&lt;br /&gt;
 ${sNameOrgan}&lt;br /&gt;
+${sAddress}&lt;br /&gt;
 ${sWorkTime}&lt;br /&gt;
 ${sPhoneOrgan}&lt;br /&gt;
+[pattern/mail/_common_feedback.html]
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}&lt;br /&gt;
-${sAddress}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno na "Vidhileno". Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -513,7 +552,7 @@ ${sAddress}&lt;br /&gt;
     <sequenceFlow id="flow15" sourceRef="servicetask6" targetRef="endevent2"></sequenceFlow>
     <endEvent id="endevent3" name="End"></endEvent>
     <sequenceFlow id="flow16" sourceRef="boundaryerror1" targetRef="endevent3"></sequenceFlow>
-    <serviceTask id="servicetask7" name=" Повідомлення громадянина  про успішну реєстрацію звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask7" name=" Повідомлення громадянина  про успішну реєстрацію звернення + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
@@ -527,16 +566,26 @@ ${sAddress}&lt;br /&gt;
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення успішно зареєстровано та буде розглянуто. &lt;br /&gt; 
+Ваше звернення [sID_Order] успішно зареєстровано та буде розглянуто. &lt;br /&gt; 
 Ви отримаєте відповідь у визначений Законом термін на цю email-адресу.&lt;br /&gt;
+&lt;br /&gt;
 ${sNameOrgan}&lt;br /&gt;
+${sAddress}&lt;br /&gt;
 ${sWorkTime}&lt;br /&gt;
 ${sPhoneOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}&lt;br /&gt;
-${sAddress}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -654,7 +703,8 @@ execution.setVariable('sInfoOrg3', per3)
         <omgdi:waypoint x="120.0" y="127.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="172.0" y="92.0"></omgdi:waypoint>
+        <omgdi:waypoint x="225.0" y="127.0"></omgdi:waypoint>
+        <omgdi:waypoint x="173.0" y="91.0"></omgdi:waypoint>
         <omgdi:waypoint x="172.0" y="78.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">

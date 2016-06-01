@@ -15,7 +15,7 @@
         <activiti:formProperty id="sAdress" name="Адреса фактичного проживання;(поштовий індекс, місто, вулиця, номер дому, номер квартири)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Мобільний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPeriod" name="Період навчання" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPeriod" name="Період навчання;(вкажіть у форматі хххх-хххх)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asNavch_form" name="Форма навчання" type="enum" required="true">
           <activiti:value id="asDenna" name="денна"></activiti:value>
           <activiti:value id="asZaoch" name="заочна"></activiti:value>
@@ -29,6 +29,8 @@
           <activiti:value id="sEnamMol_spesialist" name="молодший спеціаліст"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sFakulty" name="Факультет" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSpecial" name="Спеціальність" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDiplom" name="Серія, номер і реєстраційний номер диплома" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAkademka" name="Вкажіть період академічної відпустки" type="string"></activiti:formProperty>
         <activiti:formProperty id="file_diplom" name="Копія диплома;(якщо зображень кілька, вантажте zip архівом)" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="asVidrax" name="Чи було вас відраховано, або залишено на повторний курс" type="enum" required="true">
@@ -84,7 +86,8 @@
           <activiti:expression>Заявка по видачі довідки вищого навчального закладу з годинами та оцінками</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br&gt;&lt;br&gt;
 &lt;p&gt; Ваше звернення щодо отримання довідки вищого навчального закладу з годинами та оцінками прийнято до роботи.
 Повідомлення про результат розгляду буде спрямоване на Ваш e-mail.&lt;/p&gt;
@@ -126,6 +129,8 @@ ${sNameOrgan}.&lt;br&gt;
           <activiti:value id="sEnamMol_spesialist" name="молодший спеціаліст"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sFakulty" name="Факультет" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSpecial" name="Спеціальність" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDiplom" name="Серія, номер і реєстраційний номер диплома" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAkademka" name="Вкажіть період академічної відпустки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asVidrax" name="Чи було вас відраховано, або залишено на повторний курс" type="enum" writable="false">
           <activiti:value id="sEnamVid_ni" name="Ні"></activiti:value>
@@ -143,6 +148,8 @@ ${sNameOrgan}.&lt;br&gt;
           <activiti:value id="sEnamDok_bad" name="Відмова.Заявка оформлена НЕ вірно/відомості відсутні в архіві."></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="Komment_rishenia" name="Коментар по рішенню;(Вкажіть з якого числа можна отримати довідку, в разі відмови вкажіть причину відмови)" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="назва органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern\print\vnz\lviv_nulp_656_print.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="супровідний текст" type="invisible" default="Якщо заявка прийнята, вона з'явиться в необроблених і вам треба буде зробити відмітку чи виданий документ.У разі відмови робота по цій заявці завершена."></activiti:formProperty>
         <activiti:formProperty id="file_oplata" name="Квитанція на оплату" type="file"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>

@@ -1,7 +1,7 @@
 angular.module('dashboardJsApp')
   .directive('functions', function () {
 
-    var controller = function ($scope, $modal, processes) {
+    var controller = function ($scope, $modal, processes, Modal) {
 
       var getAllFunctionsFunc = $scope.funcs.getAllFunctionsFunc;
       var setRuleFunctionFunc = $scope.funcs.setRuleFunctionFunc;
@@ -15,7 +15,7 @@ angular.module('dashboardJsApp')
           resolve: {
             ruleFunctionToEdit: function () {
               return angular.copy(ruleFunction);
-            },
+            }
           }
         });
 
@@ -27,13 +27,13 @@ angular.module('dashboardJsApp')
               var functionNotExistedBefore = $scope.ruleFunctions.every(
                 function (element) {
                   if (element.nID == editedRuleFunction.nID) {
-                    $scope.ruleFunctions[i] = editedRuleFunction;                   
+                    $scope.ruleFunctions[i] = editedRuleFunction;
                     return false;
                   }
                   i++;
                   return true;
                 }
-                );
+              );
               if (functionNotExistedBefore) $scope.ruleFunctions.push(editedRuleFunction);
 
             });
@@ -57,35 +57,30 @@ angular.module('dashboardJsApp')
         openModal(ruleFunction);
       };
 
-
-
-      $scope.delete = function (rule) {
-         deleteRuleFunctionFunc(rule)
-           .then($scope.fillFunctionData);
+      $scope.delete = function (ruleFunction) {
+        Modal.confirm.delete(function (event) {
+          deleteRuleFunctionFunc(ruleFunction)
+            .then($scope.fillFunctionData);
+        })('функцію ' + $scope.translate(ruleFunction.sName));
       };
-
 
       $scope.fillFunctionData = function () {
 
         $scope.inProgress = true;
         $scope.areRulesPresent = false;
 
-
         getAllFunctionsFunc()
           .then(function (data) {
             $scope.ruleFunctions = data;
-
             $scope.areRuleFunctionsPresent = true;
           });
-
-
       };
 
       $scope.functionsLoaded = function () {
         if ($scope.ruleFunctions)
           return true;
         return false;
-      }
+      };
 
       $scope.translate = function (text) {
         if (text == 'Отсылка уведомления на электронную почту') return 'відправити повідомлення на e-mail';
@@ -103,4 +98,4 @@ angular.module('dashboardJsApp')
       templateUrl: 'app/escalations/functions/functions.html',
     }
   }
-    );
+);

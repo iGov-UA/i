@@ -34,7 +34,7 @@
         <activiti:formProperty id="sDocName" name="Назва документа" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocNumber" name="Номер та дата видачі" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocOrgan" name="Найменування органу, що його видав" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="dStartDate" name="Станом на (оберіть дату)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="dStartDate" name="Станом на (оберіть дату)" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса" type="invisible"></activiti:formProperty>
@@ -74,7 +74,7 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 			&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-			&lt;p&gt; Ваше звернення щодо Видачі розрахунку заборгованості зі сплати аліментів було зареєстровано у системі.&lt;br/&gt;
+			&lt;p&gt; Ваше звернення №[sID_Order] щодо Видачі розрахунку заборгованості зі сплати аліментів було зареєстровано у системі.&lt;br/&gt;
 			Повідомлення про результат послуги буде спрямоване на Ваш e-mail.&lt;/p&gt;
 			&lt;br /&gt;
 			${sPhoneOrgan}&lt;br /&gt;
@@ -106,17 +106,17 @@
         <activiti:formProperty id="sChildBirth3" name="Дата народження дитини (3)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sChildName4" name="ПІБ дитини (4)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sChildBirth4" name="Дата народження дитини (4)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dStartDate" name="Станом на:" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="dStartDate" name="Станом на:" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sLabel3" name="Згідно до виконавчого документа" type="label"></activiti:formProperty>
         <activiti:formProperty id="sDocName" name="Назва документа" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocNumber" name="Номер та дата видачі" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocOrgan" name="Найменування органу, що його видав" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asStatus" name="Статус висновку" type="enum" required="true">
-          <activiti:value id="sEnumAccept" name="Розрахунок готовий, запросити заявника"></activiti:value>
+          <activiti:value id="sEnumAccept" name="Розрахунок готовий"></activiti:value>
           <activiti:value id="sEnumDeny" name="Відмова заявнику у видачі розрахунку"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sComment" name="Якщо ви відмовляєте заявнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="file1" name="Завантажте скановану копію розрахунку, з накладеним ЕЦП (електронно-цифровим підписом)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file1" name="Завантажте скановану копію розрахунку, з накладеним ЕЦП (електронно-цифровим підписом)" type="file"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>

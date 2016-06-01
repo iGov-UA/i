@@ -8,12 +8,17 @@
           <activiti:value id="sEnumConsult" name="Консультаційне"></activiti:value>
           <activiti:value id="sEnumStandard" name="Стандартне"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sTestTest" name="Тестовое поле" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asAnonymousTr" name="Звернення анонімне" type="enum">
+          <activiti:value id="sEnumAnonymYes" name="Так"></activiti:value>
+          <activiti:value id="sEnumAnonymNo" name="Ні"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="ІПН" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asSex" name="Стать заявника" type="enum" required="true">
+          <activiti:value id="sEnumSexMen" name="Чоловіча"></activiti:value>
+          <activiti:value id="sEnumSexWoman" name="Жіноча"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sPhone" name="Контактний телефон;(у форматі +380ХХХХХХХХХ)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdditionalPhone" name="Додатковий телефон" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string"></activiti:formProperty>
@@ -30,11 +35,7 @@
         <activiti:formProperty id="sRename" name="Зверніть увагу" type="label" default="У зв'язку з переіменуванням вулиць, під час введення нової адреси звірте назву за &lt;a href=&quot;https://docs.google.com/spreadsheets/d/16j-w5pN0erlhdmTg5xl0bs9Gob1W0U3ivjIhy0BTHsU/edit?pli=1#gid=0&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;."></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Адреса проживання заявника" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdressProbl" name="Адреса за якої виникло питання" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDataToday" name="Дата подачі заяви" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="asSex" name="Стать заявника" type="enum" required="true">
-          <activiti:value id="sEnumSexMen" name="Чоловіча"></activiti:value>
-          <activiti:value id="sEnumSexWoman" name="Жіноча"></activiti:value>
-        </activiti:formProperty>
+        <activiti:formProperty id="sDataToday" name="Вкажіть сьогоднішню дату" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="asSpecialStatus" name="Маєте особливий статус" type="enum" required="true">
           <activiti:value id="sEnumStatusYes" name="Так"></activiti:value>
           <activiti:value id="sEnumStatusNo" name="Ні"></activiti:value>
@@ -62,12 +63,8 @@
           <activiti:value id="sEnumCat20" name="Інші категорії"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asKindTr" name="Вид звернення" type="enum">
-          <activiti:value id="sEnumSelf" name="Індівідуальне"></activiti:value>
+          <activiti:value id="sEnumSelf" name="Індивідуальне"></activiti:value>
           <activiti:value id="sEnumCollect" name="Колективне"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asAnonymousTr" name="Звернення анонімне" type="enum">
-          <activiti:value id="sEnumAnonymYes" name="Так"></activiti:value>
-          <activiti:value id="sEnumAnonymNo" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asTypeTr" name="Тип звернення" type="enum">
           <activiti:value id="sEnumApplication" name="Заява"></activiti:value>
@@ -343,22 +340,18 @@
         </activiti:formProperty>
         <activiti:formProperty id="asTop12" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum" required="true">
           <activiti:value id="sEnumTop120" name=" "></activiti:value>
-          <activiti:value id="sEnumTop121" name="Видача картки обліку об'єкта торговельного призначення , сфери послуг і виробництва продуктів харчування"></activiti:value>
-          <activiti:value id="sEnumTop122" name="Выдача карточки учета объекта торгового назначения, сферы услуг и производства продуктов питания"></activiti:value>
-          <activiti:value id="sEnumTop123" name="Демонтаж малих архітектурних форм ( робота без дозвільних документів на пішохідній зоні)"></activiti:value>
-          <activiti:value id="sEnumTop124" name="Демонтаж малых архитектурных форм (работа без разрешительных документов на пешеходной зоне"></activiti:value>
-          <activiti:value id="sEnumTop125" name="Діяльність гральних закладів"></activiti:value>
-          <activiti:value id="sEnumTop126" name="Діяльність дитячих атракціонів"></activiti:value>
-          <activiti:value id="sEnumTop127" name="Дотримання правил торгівлі в роздрібній мережі, на підприємствах ресторанного господарства"></activiti:value>
-          <activiti:value id="sEnumTop128" name="Обслуговування населення підприємствами сфери побуту"></activiti:value>
-          <activiti:value id="sEnumTop129" name="Обслуживание населения предприятиями сферы быта;"></activiti:value>
-          <activiti:value id="sEnumTop1210" name="Побутове обслуговування"></activiti:value>
-          <activiti:value id="sEnumTop1211" name="Прием и обработка документов на размещение МАФ на територии города и ведение електронного учета предприятий торговли, ресторанного хозяйства, сферы услуг и пищевой промышленности;"></activiti:value>
-          <activiti:value id="sEnumTop1212" name="Прийом і обробка документів на розміщення МАФ на території міста і ведення електронного обліку підприємств торгівлі , ресторанного господарства , сфери послуг і харчової промисловості"></activiti:value>
-          <activiti:value id="sEnumTop1213" name="РОБОТА: Робота кафе"></activiti:value>
-          <activiti:value id="sEnumTop1214" name="РОБОТА: Робота магазинів"></activiti:value>
-          <activiti:value id="sEnumTop1215" name="РОБОТА: Робота ринків"></activiti:value>
-          <activiti:value id="sEnumTop1216" name="Інші питання"></activiti:value>
+          <activiti:value id="sEnumTop121" name="Видача картки обліку об'єкта торговельного призначення, сфери послуг і виробництва продуктів харчування"></activiti:value>
+          <activiti:value id="sEnumTop122" name="Демонтаж малих архітектурних форм (робота без дозвільних документів на пішохідній зоні)"></activiti:value>
+          <activiti:value id="sEnumTop123" name="Діяльність гральних закладів"></activiti:value>
+          <activiti:value id="sEnumTop124" name="Діяльність дитячих атракціонів"></activiti:value>
+          <activiti:value id="sEnumTop125" name="Дотримання правил торгівлі в роздрібній мережі, на підприємствах ресторанного господарства"></activiti:value>
+          <activiti:value id="sEnumTop126" name="Обслуговування населення підприємствами сфери побуту"></activiti:value>
+          <activiti:value id="sEnumTop127" name="Побутове обслуговування"></activiti:value>
+          <activiti:value id="sEnumTop128" name="Прийом і обробка документів на розміщення МАФ на території міста і ведення електронного обліку підприємств торгівлі , ресторанного господарства , сфери послуг і харчової промисловості"></activiti:value>
+          <activiti:value id="sEnumTop129" name="РОБОТА: Робота кафе"></activiti:value>
+          <activiti:value id="sEnumTop1210" name="РОБОТА: Робота магазинів"></activiti:value>
+          <activiti:value id="sEnumTop1211" name="РОБОТА: Робота ринків"></activiti:value>
+          <activiti:value id="sEnumTop1212" name="Інші питання"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asTop13" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum" required="true">
           <activiti:value id="sEnumTop130" name=" "></activiti:value>
@@ -533,9 +526,8 @@
         </activiti:formProperty>
         <activiti:formProperty id="sReason" name="Опишіть суть звернення" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdditionalInformation" name="Додаткова інформація" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sDataReglament" name="Кінцева дата вирішення питання (згідно регламенту)" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneCall_SubjectContact_Client" name="Телефон, з якого був здійснен дзвінок" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asChannelAppeals" name="Канал звернення" type="enum">
+        <activiti:formProperty id="sDateReglament" name="Кількість днів для вирішення питання (згідно регламенту)" type="long"></activiti:formProperty>
+        <activiti:formProperty id="asChannelAppeals" name="Канал звернення" type="enum" required="true">
           <activiti:value id="sEnumAppeal1" name="Гаряча лінія губернатора"></activiti:value>
           <activiti:value id="sEnumAppeal2" name="Урядова гаряча лінія"></activiti:value>
           <activiti:value id="sEnumAppeal3" name="Колл-центр"></activiti:value>
@@ -543,7 +535,7 @@
           <activiti:value id="sEnumAppeal5" name="Портал"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sChannelApp" name="Канал звернення" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="asAnswerChannel" name="Канал відповіді" type="enum">
+        <activiti:formProperty id="asAnswerChannel" name="Канал відповіді" type="enum" required="true">
           <activiti:value id="sEnumAnsw1" name="Письмова відповідь"></activiti:value>
           <activiti:value id="sEnumAnsw2" name="Відповідь колл-центр"></activiti:value>
           <activiti:value id="sEnumAnsw3" name="Відповідь на e-mail"></activiti:value>
@@ -556,10 +548,11 @@
         <activiti:formProperty id="markers3" name="hideValidateFields3" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common3.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="hideShowFields4" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common4.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers5" name="hideShowFields5" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common5.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers6" name="hideShowFields6" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common6.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="scripttask4"></sequenceFlow>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="exclusivegateway6"></sequenceFlow>
     <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <serviceTask id="servicetask3" name="Повідомлення громадянина про доставку його звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
@@ -590,15 +583,16 @@
     </boundaryEvent>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow4" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
-    <userTask id="usertask1" name="Обробка звернення бек-офіс (оператор)" activiti:candidateGroups="sales">
+    <userTask id="usertask1" name="Обробка звернення бек-офіс (оператор)" activiti:candidateGroups="dmr_${asStatusSuper}">
       <extensionElements>
-        <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="ІПН" type="string"></activiti:formProperty>
+        <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="invisible" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
+	<activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhone" name="Контактний телефон" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdditionalPhone" name="Додатковий телефон" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDataToday" name="Дата подачі звернення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDataToday" name="Дата подачі звернення" type="date"></activiti:formProperty>
         <activiti:formProperty id="asSex" name="Стать заявника" type="enum">
           <activiti:value id="sEnumSexMen" name="Чоловіча"></activiti:value>
           <activiti:value id="sEnumSexWoman" name="Жіноча"></activiti:value>
@@ -929,21 +923,17 @@
         <activiti:formProperty id="asTop12" name="Підтематика. Торгівля" type="enum">
           <activiti:value id="sEnumTop120" name=" "></activiti:value>
           <activiti:value id="sEnumTop121" name="Видача картки обліку об'єкта торговельного призначення , сфери послуг і виробництва продуктів харчування"></activiti:value>
-          <activiti:value id="sEnumTop122" name="Выдача карточки учета объекта торгового назначения, сферы услуг и производства продуктов питания"></activiti:value>
-          <activiti:value id="sEnumTop123" name="Демонтаж малих архітектурних форм ( робота без дозвільних документів на пішохідній зоні)"></activiti:value>
-          <activiti:value id="sEnumTop124" name="Демонтаж малых архитектурных форм (работа без разрешительных документов на пешеходной зоне"></activiti:value>
-          <activiti:value id="sEnumTop125" name="Діяльність гральних закладів"></activiti:value>
-          <activiti:value id="sEnumTop126" name="Діяльність дитячих атракціонів"></activiti:value>
-          <activiti:value id="sEnumTop127" name="Дотримання правил торгівлі в роздрібній мережі, на підприємствах ресторанного господарства"></activiti:value>
-          <activiti:value id="sEnumTop128" name="Обслуговування населення підприємствами сфери побуту"></activiti:value>
-          <activiti:value id="sEnumTop129" name="Обслуживание населения предприятиями сферы быта;"></activiti:value>
-          <activiti:value id="sEnumTop1210" name="Побутове обслуговування"></activiti:value>
-          <activiti:value id="sEnumTop1211" name="Прием и обработка документов на размещение МАФ на територии города и ведение електронного учета предприятий торговли, ресторанного хозяйства, сферы услуг и пищевой промышленности;"></activiti:value>
-          <activiti:value id="sEnumTop1212" name="Прийом і обробка документів на розміщення МАФ на території міста і ведення електронного обліку підприємств торгівлі , ресторанного господарства , сфери послуг і харчової промисловості"></activiti:value>
-          <activiti:value id="sEnumTop1213" name="РОБОТА: Робота кафе"></activiti:value>
-          <activiti:value id="sEnumTop1214" name="РОБОТА: Робота магазинів"></activiti:value>
-          <activiti:value id="sEnumTop1215" name="РОБОТА: Робота ринків"></activiti:value>
-          <activiti:value id="sEnumTop1216" name="Інші питання"></activiti:value>
+          <activiti:value id="sEnumTop122" name="Демонтаж малих архітектурних форм ( робота без дозвільних документів на пішохідній зоні)"></activiti:value>
+          <activiti:value id="sEnumTop123" name="Діяльність гральних закладів"></activiti:value>
+          <activiti:value id="sEnumTop124" name="Діяльність дитячих атракціонів"></activiti:value>
+          <activiti:value id="sEnumTop125" name="Дотримання правил торгівлі в роздрібній мережі, на підприємствах ресторанного господарства"></activiti:value>
+          <activiti:value id="sEnumTop126" name="Обслуговування населення підприємствами сфери побуту"></activiti:value>
+          <activiti:value id="sEnumTop127" name="Побутове обслуговування"></activiti:value>
+          <activiti:value id="sEnumTop128" name="Прийом і обробка документів на розміщення МАФ на території міста і ведення електронного обліку підприємств торгівлі , ресторанного господарства , сфери послуг і харчової промисловості"></activiti:value>
+          <activiti:value id="sEnumTop129" name="РОБОТА: Робота кафе"></activiti:value>
+          <activiti:value id="sEnumTop1210" name="РОБОТА: Робота магазинів"></activiti:value>
+          <activiti:value id="sEnumTop1211" name="РОБОТА: Робота ринків"></activiti:value>
+          <activiti:value id="sEnumTop1212" name="Інші питання"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asTop13" name="Підтематика. Молодь, ґендерна рівність, фізична культура і спорт" type="enum">
           <activiti:value id="sEnumTop130" name=" "></activiti:value>
@@ -1123,8 +1113,7 @@
         <activiti:formProperty id="sPerformer" name="Виконавець" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNumberTownCouncil" name="Реєстраційний номер;(держстандарт В-1-12453/1)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sLoginUkrDoc" name="Логін працівника міськради" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneCall_SubjectContact_Client" name="Телефон, з якого був здійснен дзвінок" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDataReglament" name="Кінцева дата вирішення питання (згідно регламенту)" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sDateReglament" name="Кількість днів для вирішення питання (згідно регламенту)" type="long"></activiti:formProperty>
         <activiti:formProperty id="nDaysRemain" name="Ориентировочный срок ответа на обращение (дней)" type="invisible" default="10"></activiti:formProperty>
         <activiti:formProperty id="asAnswerChannel" name="Канал відповіді" type="enum">
           <activiti:value id="sEnumAnsw1" name="Письмова відповідь"></activiti:value>
@@ -1140,21 +1129,23 @@
         </activiti:formProperty>
         <activiti:formProperty id="sChannelApp" name="Канал звернення" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAnswer" name="Відповідь колл-центра" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAnswerExplanation" name="Коментар колл-центру" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAnswerStatus" name="Статус відповіді колл-центра" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDocument_Body_UkrDoc" name="Відповідь на звернення" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sID_Document_UkrDoc" name="Number UkrDoc" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEnumTop" name="Енам подтематика" type="invisible" default="В РАЗРАБОТКЕ"></activiti:formProperty>
         <activiti:formProperty id="sNameDepartment" name="Назва управлиння (департаменту)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="asStatusOperator" name="Обробка звернення" type="enum">
           <activiti:value id="sEnumSendEmail" name="Відправити швидку відповідь на е-mail"></activiti:value>
           <activiti:value id="sEnumSendInFrontOffice" name="Відправити до фронт-офісу для письмової відповіді"></activiti:value>
-          <activiti:value id="sEnumSendInUkrDoc" name="Відправити до департаменту (управління)"></activiti:value>
+          <activiti:value id="sEnumSendInUkrDoc" name="Відправити супервайзеру в УкрДок"></activiti:value>
           <activiti:value id="sEnumSendInDniprogaz" name="Відправити до Дніпрогазу"></activiti:value>
           <activiti:value id="sEnumSendInDniprooblenergo" name="Відправити до Дніпрообленерго"></activiti:value>
           <activiti:value id="sEnumSendInCallCenter" name="Відправити для вихідного дзвінка"></activiti:value>
           <activiti:value id="sEnumClose" name="Дзвінок здійснений заявнику. Питання вирішено"></activiti:value>
         </activiti:formProperty>
+	<activiti:formProperty id="sBody1" name="[pattern/print/dneprMVK/dnepr_mvk_291_common_print.html]" type="invisible" default="Форма письмової відповіді" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprMVK/dnepr_mvk_291_common_print.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sID_Document_UkrDoc" name="Number UkrDoc" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -1190,24 +1181,23 @@
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${PrintForm_1}</activiti:expression>
+          <activiti:expression>${nFileAnswer}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow7" name="asStatusOperator=='sEnumSendEmail'" sourceRef="exclusivegateway1" targetRef="servicetask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asStatusOperator=='sEnumSendEmail'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask2" name="Відправка документу на розгляд в профільне управління" activiti:candidateGroups="sales">
+    <userTask id="usertask2" name="Відправка документу на розгляд в профільне управління" activiti:candidateGroups="dnepr_dmr_common">
       <extensionElements>
+        <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPhone" name="Контактний телефон" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdditionalPhone" name="Додатковий телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDataToday" name="Дата подачі звернення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDataToday" name="Дата подачі звернення" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asSex" name="Стать заявника" type="enum" writable="false">
           <activiti:value id="sEnumSexMen" name="Чоловіча"></activiti:value>
           <activiti:value id="sEnumSexWoman" name="Жіноча"></activiti:value>
@@ -1538,21 +1528,17 @@
         <activiti:formProperty id="asTop12" name="Підтематика. Торгівля" type="enum">
           <activiti:value id="sEnumTop120" name=" "></activiti:value>
           <activiti:value id="sEnumTop121" name="Видача картки обліку об'єкта торговельного призначення , сфери послуг і виробництва продуктів харчування"></activiti:value>
-          <activiti:value id="sEnumTop122" name="Выдача карточки учета объекта торгового назначения, сферы услуг и производства продуктов питания"></activiti:value>
-          <activiti:value id="sEnumTop123" name="Демонтаж малих архітектурних форм ( робота без дозвільних документів на пішохідній зоні)"></activiti:value>
-          <activiti:value id="sEnumTop124" name="Демонтаж малых архитектурных форм (работа без разрешительных документов на пешеходной зоне"></activiti:value>
-          <activiti:value id="sEnumTop125" name="Діяльність гральних закладів"></activiti:value>
-          <activiti:value id="sEnumTop126" name="Діяльність дитячих атракціонів"></activiti:value>
-          <activiti:value id="sEnumTop127" name="Дотримання правил торгівлі в роздрібній мережі, на підприємствах ресторанного господарства"></activiti:value>
-          <activiti:value id="sEnumTop128" name="Обслуговування населення підприємствами сфери побуту"></activiti:value>
-          <activiti:value id="sEnumTop129" name="Обслуживание населения предприятиями сферы быта;"></activiti:value>
-          <activiti:value id="sEnumTop1210" name="Побутове обслуговування"></activiti:value>
-          <activiti:value id="sEnumTop1211" name="Прием и обработка документов на размещение МАФ на територии города и ведение електронного учета предприятий торговли, ресторанного хозяйства, сферы услуг и пищевой промышленности;"></activiti:value>
-          <activiti:value id="sEnumTop1212" name="Прийом і обробка документів на розміщення МАФ на території міста і ведення електронного обліку підприємств торгівлі , ресторанного господарства , сфери послуг і харчової промисловості"></activiti:value>
-          <activiti:value id="sEnumTop1213" name="РОБОТА: Робота кафе"></activiti:value>
-          <activiti:value id="sEnumTop1214" name="РОБОТА: Робота магазинів"></activiti:value>
-          <activiti:value id="sEnumTop1215" name="РОБОТА: Робота ринків"></activiti:value>
-          <activiti:value id="sEnumTop1216" name="Інші питання"></activiti:value>
+          <activiti:value id="sEnumTop122" name="Демонтаж малих архітектурних форм ( робота без дозвільних документів на пішохідній зоні)"></activiti:value>
+          <activiti:value id="sEnumTop123" name="Діяльність гральних закладів"></activiti:value>
+          <activiti:value id="sEnumTop124" name="Діяльність дитячих атракціонів"></activiti:value>
+          <activiti:value id="sEnumTop125" name="Дотримання правил торгівлі в роздрібній мережі, на підприємствах ресторанного господарства"></activiti:value>
+          <activiti:value id="sEnumTop126" name="Обслуговування населення підприємствами сфери побуту"></activiti:value>
+          <activiti:value id="sEnumTop127" name="Побутове обслуговування"></activiti:value>
+          <activiti:value id="sEnumTop128" name="Прийом і обробка документів на розміщення МАФ на території міста і ведення електронного обліку підприємств торгівлі , ресторанного господарства , сфери послуг і харчової промисловості"></activiti:value>
+          <activiti:value id="sEnumTop129" name="РОБОТА: Робота кафе"></activiti:value>
+          <activiti:value id="sEnumTop1210" name="РОБОТА: Робота магазинів"></activiti:value>
+          <activiti:value id="sEnumTop1211" name="РОБОТА: Робота ринків"></activiti:value>
+          <activiti:value id="sEnumTop1212" name="Інші питання"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asTop13" name="Підтематика. Молодь, ґендерна рівність, фізична культура і спорт" type="enum">
           <activiti:value id="sEnumTop130" name=" "></activiti:value>
@@ -1728,7 +1714,6 @@
         <activiti:formProperty id="sAdressProbl" name="Адреса за якої виникло питання" type="string"></activiti:formProperty>
         <activiti:formProperty id="sReason" name="Опишіть суть звернення" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sAdditionalInformation" name="Додаткова інформація" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneCall_SubjectContact_Client" name="Телефон, з якого був здійснен дзвінок" type="string"></activiti:formProperty>
         <activiti:formProperty id="sRegistrationNumberRGA" name="Реєстраційний номер ОДА" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNumberTownCouncil" name="Реєстраційний номер;(держстандарт В-1-12453/1)" type="string"></activiti:formProperty>
         <activiti:formProperty id="asAnswerChannel" name="Канал відповіді" type="enum">
@@ -1743,17 +1728,21 @@
           <activiti:value id="sEnumAppeal4" name="Фронт-офіс"></activiti:value>
           <activiti:value id="sEnumAppeal5" name="Портал"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sDateReglament" name="Кількість днів для вирішення питання (згідно регламенту)" type="long"></activiti:formProperty>
+        <activiti:formProperty id="nDaysRemain" name="Ориентировочный срок ответа на обращение (дней)" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAnswerExplanation" name="Коментар колл-центру" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sEnumTop" name="Енам подтематика" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sChannelApp" name="Канал звернення" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameDepartment" name="Назва управлиння (департаменту)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sLoginUkrDoc" name="Логін працівника міськради" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sID_Document_UkrDoc" name="Number UkrDoc" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_Document_UkrDoc" name="Number UkrDoc" type="string"></activiti:formProperty>
         <activiti:formProperty id="sStatusName_UkrDoc" name="Status UkrDoc" type="string"></activiti:formProperty>
-        <activiti:formProperty id="nID_DocumentTemplate_UkrDoc" name="Номер шаблона УкрДок" type="string"></activiti:formProperty>
         <activiti:formProperty id="sHead_Document_UkrDoc" name="Заголовок UkrDoc" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDocument_Body_UkrDoc" name="Тело ответа UkrDoc" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="nID_DocumentTemplate_UkrDoc" name="Шаблон ответного документа" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${CreateDocument_UkrDoc}">
           <activiti:field name="sLoginAuthor">
-            <activiti:expression>${sLoginUkrDoc}</activiti:expression>
+            <activiti:expression>EO180277SMV</activiti:expression>
           </activiti:field>
           <activiti:field name="nID_Pattern">
             <activiti:expression>10677</activiti:expression>
@@ -1951,7 +1940,7 @@ p {font-size: 14px;}
 
 
 &lt;/p&gt;
-Телефон для довідок: &lt;br /&gt;
+Телефон для довідок: 0-800-501-174&lt;br /&gt;
 &lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 Дніпропетровська міська рада,&lt;br /&gt;
@@ -1989,11 +1978,9 @@ execution.setVariable('sAnswerEmail', res)</script>
     <sequenceFlow id="flow28" name="sAnswerEmail=='noSendEmail'" sourceRef="exclusivegateway3" targetRef="usertask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sAnswerEmail=='noSendEmail'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask3" name="Вихідний дзвінок" activiti:candidateGroups="sales">
+    <userTask id="usertask3" name="Вихідний дзвінок" activiti:candidateGroups="dnepr_dmr_common">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPhone" name="Контактний телефон" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdditionalPhone" name="Додатковий телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
@@ -2322,21 +2309,17 @@ execution.setVariable('sAnswerEmail', res)</script>
         <activiti:formProperty id="asTop12" name="Підтематика. Торгівля" type="enum">
           <activiti:value id="sEnumTop120" name=" "></activiti:value>
           <activiti:value id="sEnumTop121" name="Видача картки обліку об'єкта торговельного призначення , сфери послуг і виробництва продуктів харчування"></activiti:value>
-          <activiti:value id="sEnumTop122" name="Выдача карточки учета объекта торгового назначения, сферы услуг и производства продуктов питания"></activiti:value>
-          <activiti:value id="sEnumTop123" name="Демонтаж малих архітектурних форм ( робота без дозвільних документів на пішохідній зоні)"></activiti:value>
-          <activiti:value id="sEnumTop124" name="Демонтаж малых архитектурных форм (работа без разрешительных документов на пешеходной зоне"></activiti:value>
-          <activiti:value id="sEnumTop125" name="Діяльність гральних закладів"></activiti:value>
-          <activiti:value id="sEnumTop126" name="Діяльність дитячих атракціонів"></activiti:value>
-          <activiti:value id="sEnumTop127" name="Дотримання правил торгівлі в роздрібній мережі, на підприємствах ресторанного господарства"></activiti:value>
-          <activiti:value id="sEnumTop128" name="Обслуговування населення підприємствами сфери побуту"></activiti:value>
-          <activiti:value id="sEnumTop129" name="Обслуживание населения предприятиями сферы быта;"></activiti:value>
-          <activiti:value id="sEnumTop1210" name="Побутове обслуговування"></activiti:value>
-          <activiti:value id="sEnumTop1211" name="Прием и обработка документов на размещение МАФ на територии города и ведение електронного учета предприятий торговли, ресторанного хозяйства, сферы услуг и пищевой промышленности;"></activiti:value>
-          <activiti:value id="sEnumTop1212" name="Прийом і обробка документів на розміщення МАФ на території міста і ведення електронного обліку підприємств торгівлі , ресторанного господарства , сфери послуг і харчової промисловості"></activiti:value>
-          <activiti:value id="sEnumTop1213" name="РОБОТА: Робота кафе"></activiti:value>
-          <activiti:value id="sEnumTop1214" name="РОБОТА: Робота магазинів"></activiti:value>
-          <activiti:value id="sEnumTop1215" name="РОБОТА: Робота ринків"></activiti:value>
-          <activiti:value id="sEnumTop1216" name="Інші питання"></activiti:value>
+          <activiti:value id="sEnumTop122" name="Демонтаж малих архітектурних форм ( робота без дозвільних документів на пішохідній зоні)"></activiti:value>
+          <activiti:value id="sEnumTop123" name="Діяльність гральних закладів"></activiti:value>
+          <activiti:value id="sEnumTop124" name="Діяльність дитячих атракціонів"></activiti:value>
+          <activiti:value id="sEnumTop125" name="Дотримання правил торгівлі в роздрібній мережі, на підприємствах ресторанного господарства"></activiti:value>
+          <activiti:value id="sEnumTop126" name="Обслуговування населення підприємствами сфери побуту"></activiti:value>
+          <activiti:value id="sEnumTop127" name="Побутове обслуговування"></activiti:value>
+          <activiti:value id="sEnumTop128" name="Прийом і обробка документів на розміщення МАФ на території міста і ведення електронного обліку підприємств торгівлі , ресторанного господарства , сфери послуг і харчової промисловості"></activiti:value>
+          <activiti:value id="sEnumTop129" name="РОБОТА: Робота кафе"></activiti:value>
+          <activiti:value id="sEnumTop1210" name="РОБОТА: Робота магазинів"></activiti:value>
+          <activiti:value id="sEnumTop1211" name="РОБОТА: Робота ринків"></activiti:value>
+          <activiti:value id="sEnumTop1212" name="Інші питання"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asTop13" name="Підтематика. Молодь, ґендерна рівність, фізична культура і спорт" type="enum">
           <activiti:value id="sEnumTop130" name=" "></activiti:value>
@@ -2513,7 +2496,6 @@ execution.setVariable('sAnswerEmail', res)</script>
         <activiti:formProperty id="sReason" name="Суть звернення" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sAdditionalInformation" name="Додаткова інформація" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sRegistrationNumberRGA" name="Реєстраційний номер ОДА" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneCall_SubjectContact_Client" name="Телефон, з якого був здійснен дзвінок" type="string"></activiti:formProperty>
         <activiti:formProperty id="asAnswerChannel" name="Канал відповіді" type="enum">
           <activiti:value id="sEnumAnsw1" name="Письмова відповідь"></activiti:value>
           <activiti:value id="sEnumAnsw2" name="Відповідь колл-центр"></activiti:value>
@@ -2527,17 +2509,19 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sEnumAppeal5" name="Портал"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sChannelApp" name="Канал звернення" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sDocument_Body_UkrDoc" name="Відповідь на звернення" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sQuickAnswer" name="Відповідь на звернення" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="nDaysRemain" name="Ориентировочный срок ответа на обращение (дней)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAnswer" name="Ответ кол-центра" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAnswerExplanation" name="Коментар колл-центру" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAnswerStatus" name="Статус ответа" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEnumTop" name="Енам подтематика" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sDocument_Body_UkrDoc" name="Відповідь управління" type="textArea"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${SendObject_Corezoid}">
           <activiti:field name="soJSON">
-            <activiti:expression>{"sFIO_Subject_Client":"value{[clFio]}","sPhonePrivate_SubjectContact_Client":"value{[sPhone]}","sPhoneCall_SubjectContact_Client":"value{[sPhoneCall_SubjectContact_Client]}","sID_Order":"[sID_Order]","sDate_Order":"[sDateCreate]","sAddress":"value{[sAdressProbl]}","sCategory":"enum{[asKindTr]}","sType":"enum{[asTypeTr]}","sHead":"enum{[asTopHead]}","sHeadSub":"value{[sEnumTop]}","sBody":"value{[sReason]}","nDaysRemain":"value{[nDaysRemain]}","sAnswer_UkrDoc":"value{[sQuickAnswer]}"}</activiti:expression>
+            <activiti:expression>{"sFIO_Subject_Client":"value{[clFio]}","sPhonePrivate_SubjectContact_Client":"value{[sPhone]}","sID_Order":"[sID_Order]","sDate_Order":"[sDateCreate]","sAddress":"value{[sAdressProbl]}","sCategory":"enum{[asKindTr]}","sType":"enum{[asTypeTr]}","sHead":"enum{[asTopHead]}","sHeadSub":"value{[sEnumTop]}","sBody":"value{[sReason]}","nDaysRemain":"value{[nDaysRemain]}","sAnswer_UkrDoc":"value{[sDocument_Body_UkrDoc]}","asAnonymousTr":"enum{[asAnonymousTr]}"}</activiti:expression>
           </activiti:field>
           <activiti:field name="sID_Conveyour">
-            <activiti:expression>78073</activiti:expression>
+            <activiti:expression>93682</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -2548,18 +2532,19 @@ execution.setVariable('sAnswerEmail', res)</script>
     <endEvent id="endevent7" name="End"></endEvent>
     <sequenceFlow id="flow31" sourceRef="usertask3" targetRef="exclusivegateway4"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow32" name="sAnswerStatus=='Successfull'||asAnswerChannel=='sEnumAnsw2'" sourceRef="exclusivegateway4" targetRef="endevent7">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sAnswerStatus=='Successfull'||asAnswerChannel=='sEnumAnsw2'}]]></conditionExpression>
+    <sequenceFlow id="flow32" name="sAnswerStatus=='Successfu&amp;&amp;'asAnswerChannel=='sEnumAnsw2'" sourceRef="exclusivegateway4" targetRef="endevent7">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sAnswerStatus=='Successfull'&&asAnswerChannel=='sEnumAnsw2'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask4" name="Обробка звернення супервайзером" activiti:candidateGroups="sales">
+    <userTask id="usertask4" name="Обробка звернення супервайзером" activiti:candidateGroups="dmr_supervisor">
       <extensionElements>
-        <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="ІПН" type="string"></activiti:formProperty>
+        <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="invisible" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
+	<activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhone" name="Контактний телефон" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdditionalPhone" name="Додатковий телефон" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDataToday" name="Дата подачі звернення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDataToday" name="Дата подачі звернення" type="date"></activiti:formProperty>
         <activiti:formProperty id="asSex" name="Стать заявника" type="enum">
           <activiti:value id="sEnumSexMen" name="Чоловіча"></activiti:value>
           <activiti:value id="sEnumSexWoman" name="Жіноча"></activiti:value>
@@ -2890,21 +2875,17 @@ execution.setVariable('sAnswerEmail', res)</script>
         <activiti:formProperty id="asTop12" name="Підтематика. Торгівля" type="enum">
           <activiti:value id="sEnumTop120" name=" "></activiti:value>
           <activiti:value id="sEnumTop121" name="Видача картки обліку об'єкта торговельного призначення , сфери послуг і виробництва продуктів харчування"></activiti:value>
-          <activiti:value id="sEnumTop122" name="Выдача карточки учета объекта торгового назначения, сферы услуг и производства продуктов питания"></activiti:value>
-          <activiti:value id="sEnumTop123" name="Демонтаж малих архітектурних форм ( робота без дозвільних документів на пішохідній зоні)"></activiti:value>
-          <activiti:value id="sEnumTop124" name="Демонтаж малых архитектурных форм (работа без разрешительных документов на пешеходной зоне"></activiti:value>
-          <activiti:value id="sEnumTop125" name="Діяльність гральних закладів"></activiti:value>
-          <activiti:value id="sEnumTop126" name="Діяльність дитячих атракціонів"></activiti:value>
-          <activiti:value id="sEnumTop127" name="Дотримання правил торгівлі в роздрібній мережі, на підприємствах ресторанного господарства"></activiti:value>
-          <activiti:value id="sEnumTop128" name="Обслуговування населення підприємствами сфери побуту"></activiti:value>
-          <activiti:value id="sEnumTop129" name="Обслуживание населения предприятиями сферы быта;"></activiti:value>
-          <activiti:value id="sEnumTop1210" name="Побутове обслуговування"></activiti:value>
-          <activiti:value id="sEnumTop1211" name="Прием и обработка документов на размещение МАФ на територии города и ведение електронного учета предприятий торговли, ресторанного хозяйства, сферы услуг и пищевой промышленности;"></activiti:value>
-          <activiti:value id="sEnumTop1212" name="Прийом і обробка документів на розміщення МАФ на території міста і ведення електронного обліку підприємств торгівлі , ресторанного господарства , сфери послуг і харчової промисловості"></activiti:value>
-          <activiti:value id="sEnumTop1213" name="РОБОТА: Робота кафе"></activiti:value>
-          <activiti:value id="sEnumTop1214" name="РОБОТА: Робота магазинів"></activiti:value>
-          <activiti:value id="sEnumTop1215" name="РОБОТА: Робота ринків"></activiti:value>
-          <activiti:value id="sEnumTop1216" name="Інші питання"></activiti:value>
+          <activiti:value id="sEnumTop122" name="Демонтаж малих архітектурних форм ( робота без дозвільних документів на пішохідній зоні)"></activiti:value>
+          <activiti:value id="sEnumTop123" name="Діяльність гральних закладів"></activiti:value>
+          <activiti:value id="sEnumTop124" name="Діяльність дитячих атракціонів"></activiti:value>
+          <activiti:value id="sEnumTop125" name="Дотримання правил торгівлі в роздрібній мережі, на підприємствах ресторанного господарства"></activiti:value>
+          <activiti:value id="sEnumTop126" name="Обслуговування населення підприємствами сфери побуту"></activiti:value>
+          <activiti:value id="sEnumTop127" name="Побутове обслуговування"></activiti:value>
+          <activiti:value id="sEnumTop128" name="Прийом і обробка документів на розміщення МАФ на території міста і ведення електронного обліку підприємств торгівлі , ресторанного господарства , сфери послуг і харчової промисловості"></activiti:value>
+          <activiti:value id="sEnumTop129" name="РОБОТА: Робота кафе"></activiti:value>
+          <activiti:value id="sEnumTop1210" name="РОБОТА: Робота магазинів"></activiti:value>
+          <activiti:value id="sEnumTop1211" name="РОБОТА: Робота ринків"></activiti:value>
+          <activiti:value id="sEnumTop1212" name="Інші питання"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asTop13" name="Підтематика. Молодь, ґендерна рівність, фізична культура і спорт" type="enum">
           <activiti:value id="sEnumTop130" name=" "></activiti:value>
@@ -3080,12 +3061,13 @@ execution.setVariable('sAnswerEmail', res)</script>
         <activiti:formProperty id="sAdressProbl" name="Адреса за якої виникло питання" type="string"></activiti:formProperty>
         <activiti:formProperty id="sReason" name="Суть звернення" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sAdditionalInformation" name="Додаткова інформація" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneCall_SubjectContact_Client" name="Телефон, з якого був здійснен дзвінок" type="string"></activiti:formProperty>
         <activiti:formProperty id="sRegistrationNumberRGA" name="Реєстраційний номер ОДА" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNumberTownCouncil" name="Реєстраційний номер;(держстандарт В-1-12453/1)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPerformer" name="Виконавець" type="string"></activiti:formProperty>
         <activiti:formProperty id="sLoginUkrDoc" name="Логін працівника міськради" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sDataReglament" name="Кінцева дата вирішення питання (згідно регламенту)" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sAnswer" name="Відповідь колл-центра" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAnswerExplanation" name="Коментар колл-центру" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateReglament" name="Кількість днів для вирішення питання (згідно регламенту)" type="long"></activiti:formProperty>
         <activiti:formProperty id="nDaysRemain" name="Ориентировочный срок ответа на обращение (дней)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="asAnswerChannel" name="Канал відповіді" type="enum">
           <activiti:value id="sEnumAnsw1" name="Письмова відповідь"></activiti:value>
@@ -3109,11 +3091,29 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sOperator_5" name="Оператор 5"></activiti:value>
           <activiti:value id="sOperator_6" name="Оператор 6"></activiti:value>
           <activiti:value id="sOperator_7" name="Оператор 7"></activiti:value>
+          <activiti:value id="sOperator_8" name="Оператор 8"></activiti:value>
+          <activiti:value id="sOperator_9" name="Оператор 9"></activiti:value>
+          <activiti:value id="sOperator_10" name="Оператор 10"></activiti:value>
+          <activiti:value id="sOperator_11" name="Оператор 11"></activiti:value>
+          <activiti:value id="sOperator_12" name="Оператор 12"></activiti:value>
+          <activiti:value id="sOperator_13" name="Оператор 13"></activiti:value>
+          <activiti:value id="sOperator_14" name="Оператор 14"></activiti:value>
+          <activiti:value id="sOperator_15" name="Оператор 15"></activiti:value>
+          <activiti:value id="sOperator_16" name="Оператор 16"></activiti:value>
+          <activiti:value id="sOperator_17" name="Оператор 17"></activiti:value>
+          <activiti:value id="sOperator_18" name="Оператор 18"></activiti:value>
+          <activiti:value id="sOperator_19" name="Оператор 19"></activiti:value>
+          <activiti:value id="sOperator_20" name="Оператор 20"></activiti:value>
+          <activiti:value id="sOperator_21" name="Оператор 21"></activiti:value>
+          <activiti:value id="sOperator_22" name="Оператор 22"></activiti:value>
+          <activiti:value id="sOperator_23" name="Оператор 23"></activiti:value>
+          <activiti:value id="sOperator_24" name="Оператор 24"></activiti:value>
+          <activiti:value id="sOperator_25" name="Оператор 25"></activiti:value>
         </activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile1}</activiti:expression>
+            <activiti:expression>${nFile1},${nFileAnswer}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -3121,9 +3121,7 @@ execution.setVariable('sAnswerEmail', res)</script>
     <userTask id="usertask5" name="Обробка Дніпрогаз канцелярія" activiti:candidateGroups="dnepr_gas_head">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPhone" name="Контактний телефон" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asDistrict" name="Район проживання" type="enum" writable="false">
           <activiti:value id="sEnumAnd" name="Амур-Нижньодніпровський"></activiti:value>
@@ -3136,7 +3134,7 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sEnumSamar" name="Самарський"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Адреса реєстрації заявника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="oDateToday" name="Дата подачи заяви" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="oDateToday" name="Дата подачи заяви" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asTop2" name="Тема звернення" type="enum" writable="false">
           <activiti:value id="sEnumTop21" name="Відсутність газифікації"></activiti:value>
           <activiti:value id="sEnumTop22" name="Газифікація будинку"></activiti:value>
@@ -3150,7 +3148,7 @@ execution.setVariable('sAnswerEmail', res)</script>
         </activiti:formProperty>
         <activiti:formProperty id="sReason" name="Суть звернення" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration" name="Дата реєстрації звернення" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asChannelAppeals" name="Канал звернення" type="enum" writable="false">
+        <activiti:formProperty id="asChannelAppeals" name="Канал звернення" type="enum" readable="false">
           <activiti:value id="sEnumAppeal1" name="Гаряча лінія губернатора"></activiti:value>
           <activiti:value id="sEnumAppeal2" name="Урядова гаряча лінія"></activiti:value>
           <activiti:value id="sEnumAppeal3" name="Колл-центр"></activiti:value>
@@ -3163,17 +3161,10 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sEnumAnsw3" name="Відповідь на e-mail"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asStatus" name="Обробка звернення" type="enum" required="true">
-          <activiti:value id="sEnumDep1" name="Виробничо-технічний відділ"></activiti:value>
-          <activiti:value id="sEnumDep2" name="Управління обліку та балансів"></activiti:value>
-          <activiti:value id="sEnumDep3" name="Юридичне управління"></activiti:value>
-          <activiti:value id="sEnumDep4" name="Канцелярія"></activiti:value>
-          <activiti:value id="sEnumDep5" name="ВЕС – 1"></activiti:value>
-          <activiti:value id="sEnumDep6" name="ВЕС – 2"></activiti:value>
-          <activiti:value id="sEnumDep7" name="ВЕС – 3"></activiti:value>
-          <activiti:value id="sEnumDep8" name="ВЕУ – 4"></activiti:value>
-          <activiti:value id="sEnumDep9" name="Управління інформаційних систем та технологій"></activiti:value>
+          <activiti:value id="sEnumDep1" name="Відправити до відділу по роботі з фізичними особами"></activiti:value>
+          <activiti:value id="sEnumDep2" name="Відправити до виробничо-технічного управління"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDecisionComment" name="Якщо ви відмовляєте заявнику у реєстрації звернення, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sRegistrationNumberRGA" name="Реєстраційний номер ОДА" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateControl" name="Контрольна дата (у форматі ДД/ММ/РРРР)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdminComment" name="Коментар для відділу" type="textArea" default="Прошу розглянути. Підготуйте відповідь згідно з чинним законодавством."></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -3190,11 +3181,9 @@ execution.setVariable('sAnswerEmail', res)</script>
     <userTask id="usertask6" name="Обробка Дніпрогаз відділ" activiti:candidateGroups="dnepr_gas_${asStatus}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPhone" name="Контактний телефон" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDataToday" name="Дата подачі звернення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDataToday" name="Дата подачі звернення" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asDistrict" name="Район проживання" type="enum" writable="false">
           <activiti:value id="sEnumAnd" name="Амур-Нижньодніпровський"></activiti:value>
           <activiti:value id="sEnumBab" name="Шевченківський (Бабушкінський)"></activiti:value>
@@ -3219,7 +3208,7 @@ execution.setVariable('sAnswerEmail', res)</script>
         </activiti:formProperty>
         <activiti:formProperty id="sReason" name="Суть звернення" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="oDateToday" name="Дата подачи заяви" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asChannelAppeals" name="Канал звернення" type="enum" writable="false">
+        <activiti:formProperty id="asChannelAppeals" name="Канал звернення" type="enum" readable="false">
           <activiti:value id="sEnumAppeal1" name="Гаряча лінія губернатора"></activiti:value>
           <activiti:value id="sEnumAppeal2" name="Урядова гаряча лінія"></activiti:value>
           <activiti:value id="sEnumAppeal3" name="Колл-центр"></activiti:value>
@@ -3232,6 +3221,7 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sEnumAnsw3" name="Відповідь на e-mail"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDocument_Body_UkrDoc" name="Відповідь для заявника" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sRegistrationNumberRGA" name="Реєстраційний номер ОДА" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdminComment" name="Коментар для відділу" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateControl" name="Контрольна дата (у форматі ДД/ММ/РРРР)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDepComment" name="Коментар відділу" type="textArea"></activiti:formProperty>
@@ -3253,11 +3243,9 @@ execution.setVariable('sAnswerEmail', res)</script>
     <userTask id="usertask7" name="Перевірка відповіді" activiti:candidateGroups="dnepr_gas_head">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPhone" name="Контактний телефон" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDataToday" name="Дата подачі звернення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDataToday" name="Дата подачі звернення" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asDistrict" name="Район проживання" type="enum" writable="false">
           <activiti:value id="sEnumAnd" name="Амур-Нижньодніпровський"></activiti:value>
           <activiti:value id="sEnumBab" name="Шевченківський (Бабушкінський)"></activiti:value>
@@ -3283,7 +3271,7 @@ execution.setVariable('sAnswerEmail', res)</script>
         </activiti:formProperty>
         <activiti:formProperty id="sReason" name="Суть звернення" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration" name="Дата реєстрації звернення" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asChannelAppeals" name="Канал звернення" type="enum">
+        <activiti:formProperty id="asChannelAppeals" name="Канал звернення" type="enum" readable="false">
           <activiti:value id="sEnumAppeal1" name="Гаряча лінія губернатора"></activiti:value>
           <activiti:value id="sEnumAppeal2" name="Урядова гаряча лінія"></activiti:value>
           <activiti:value id="sEnumAppeal3" name="Колл-центр"></activiti:value>
@@ -3295,19 +3283,13 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sEnumAnsw2" name="Відповідь колл-центр"></activiti:value>
           <activiti:value id="sEnumAnsw3" name="Відповідь на e-mail"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sRegistrationNumberRGA" name="Реєстраційний номер ОДА" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocument_Body_UkrDoc" name="Відповідь для заявника" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sDepComment" name="Коментар відділу" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asStatus" name="Відправити відповідь громадянину або у відділ на доопрацювання" type="enum">
           <activiti:value id="sEnumAnswer" name="Відправити громадянину відповідь"></activiti:value>
-          <activiti:value id="sEnumDep1" name="Виробничо-технічний відділ"></activiti:value>
-          <activiti:value id="sEnumDep2" name="Управління обліку та балансів"></activiti:value>
-          <activiti:value id="sEnumDep3" name="Юридичне управління"></activiti:value>
-          <activiti:value id="sEnumDep4" name="Канцелярія"></activiti:value>
-          <activiti:value id="sEnumDep5" name="ВЕС – 1"></activiti:value>
-          <activiti:value id="sEnumDep6" name="ВЕС – 2"></activiti:value>
-          <activiti:value id="sEnumDep7" name="ВЕС – 3"></activiti:value>
-          <activiti:value id="sEnumDep8" name="ВЕУ – 4"></activiti:value>
-          <activiti:value id="sEnumDep9" name="Управління інформаційних систем та технологій"></activiti:value>
+          <activiti:value id="sEnumDep1" name="Повернути до відділу по роботі з фізичними особами"></activiti:value>
+          <activiti:value id="sEnumDep2" name="Повернути до виробничо-технічного управління"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sAdminComment" name="Коментар, який Ви залишили для відділу" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sDateControl" name="Контрольна дата (у форматі ДД/ММ/РРРР)" type="string"></activiti:formProperty>
@@ -3323,16 +3305,14 @@ execution.setVariable('sAnswerEmail', res)</script>
     <exclusiveGateway id="exclusivegateway5" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow39" sourceRef="usertask7" targetRef="exclusivegateway5"></sequenceFlow>
     <sequenceFlow id="flow40" name="asStatus=='sEnumDep1'" sourceRef="exclusivegateway5" targetRef="usertask6">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asStatus=='sEnumDep1'||asStatus=='sEnumDep2'||asStatus=='sEnumDep3'||asStatus=='sEnumDep4'||asStatus=='sEnumDep5'||asStatus=='sEnumDep6'||asStatus=='sEnumDep7'||asStatus=='sEnumDep8'||asStatus=='sEnumDep9'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asStatus=='sEnumDep1'||asStatus=='sEnumDep2'}]]></conditionExpression>
     </sequenceFlow>
     <userTask id="usertask8" name="Обробка ИКЦ ТОВ Дніпрообленерго" activiti:candidateGroups="dnepr_dtek_head">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPhone" name="Контактний телефон" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDataToday" name="Дата подачі звернення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDataToday" name="Дата подачі звернення" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asDistrict" name="Район Вашого проживання" type="enum" writable="false">
           <activiti:value id="sEnumAnd" name="Амур-Нижньодніпровський"></activiti:value>
           <activiti:value id="sEnumBab" name="Шевченківський (Бабушкінський)"></activiti:value>
@@ -3355,7 +3335,7 @@ execution.setVariable('sAnswerEmail', res)</script>
         </activiti:formProperty>
         <activiti:formProperty id="sReason" name="Суть звернення" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration" name="Дата реєстрації звернення" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asChannelAppeals" name="Канал звернення" type="enum">
+        <activiti:formProperty id="asChannelAppeals" name="Канал звернення" type="enum" readable="false">
           <activiti:value id="sEnumAppeal1" name="Гаряча лінія губернатора"></activiti:value>
           <activiti:value id="sEnumAppeal2" name="Урядова гаряча лінія"></activiti:value>
           <activiti:value id="sEnumAppeal3" name="Колл-центр"></activiti:value>
@@ -3367,6 +3347,7 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sEnumAnsw2" name="Відповідь колл-центр"></activiti:value>
           <activiti:value id="sEnumAnsw3" name="Відповідь на e-mail"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sRegistrationNumberRGA" name="Реєстраційний номер ОДА" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocument_Body_UkrDoc" name="Відповідь для заявника" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="nFileAnswer" name="Завантажте файл з відповідю" type="file" default=" "></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -3386,8 +3367,8 @@ execution.setVariable('sAnswerEmail', res)</script>
     </sequenceFlow>
     <scriptTask id="scripttask2" name="Script автоадресація в відділ" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var depart = ["sEnumTopHead1","sEnumTopHead2","sEnumTopHead3","sEnumTopHead4","sEnumTopHead5","sEnumTopHead6","sEnumTopHead7","sEnumTopHead8","sEnumTopHead9","sEnumTopHead10","sEnumTopHead11","sEnumTopHead12","sEnumTopHead13","sEnumTopHead14","sEnumTopHead15","sEnumTopHead16","sEnumTopHead17","sEnumTopHead18","sEnumTopHead19","sEnumTopHead20","sEnumTopHead21","sEnumTopHead22"]
-var login = ["EO180277SMV", "EO180277SMV", "EO180277SMV", "EO180277SMV", "EO180277SMV", "EO180277SMV", "EO180277SMV", "EO180277SMV", "EO180277SMV", "EO180277SMV", "EO180277SMV", "EO180277SMV", "EO180277SMV", "EO180277SMV", "EO180277SMV", "EO180277SMV", "EO180277SMV", "EO180277SMV", "EO180277SMV", "EO180277SMV", "EO180277SMV", "EO180277SMV"]
-var departName = ["Управління житлового господарства Дніпропетровської міської ради", "Департамент комунального господарства  Дніпропетровської міської ради", "Департамент промисловості підпри-ємництва та інвестицій Дніпропетровської міської ради", "Департамент транспорту та зв’язку Дніпропетровської міської ради", "Департаменту корпоративних прав та правового забезпечення  Дніпропетровської міської ради", "Департамент охорони здоров’я Дніпропетровської міської ради", "Управління праці та соціального захисту населення  Дніпропетровської міської ради", "Управління-служби у справах дітей  Дніпропетровської міської ради", "Управління охорони навколишнього природного середовища Дніпропетровської міської ради", "Управління торгівлі", "Управління у справах молоді та спорту Дніпропетровської міської ради", "Управління освіти та науки Дніпропетровської міської ради", "Управління культури та мистецтв Дніпропетровської міської ради", "Управління контролю за благоустроєм міста Дніпропетровської міської ради", "Управління архитектури та будівництва", "Департамент взаємодії з правоохоронними органами, мобілізаційної та оборонної роботи і з питань надзвичайних ситуацій Дніпропетровської міської ради", "Фінансово-економічний департамент Дніпропетровської міської ради", "Дніпрогаз", "Дніпрообленерго", "Прес-служба Дніпропетровської міської ради", "Управління внутрішньої політики Дніпропетровської  міської ради", "Управління діловодства Дніпропетровської міської ради"]
+var login = ["PA220867GVV", "EO180277SMV", "EO180277SMV", "PA060977LMO", "PA270366ZIV", "PA180683MII", "PA070486BKM1", "PA010464GOP", "PA110859SVV", "PA131157LAV", "PA311076GPV", "PA020177MRV", "PA010762GGV1", "PA080459CLM", "PA130678KEV", "PA310349BAS", "PA260776VDV", "PA130562SOA", "PA080778MVV3", "PA100471VJI", "PA281091KISF", "PA160180SOO"]
+var departName = ["Управління житлового господарства Дніпропетровської  міської ради", "Комунальне господарство. Дніпрогаз", "Комунальне господарство. Електропостачання", "Департамент комунального господарства  Дніпропетровської міської ради", "Департамент промисловості підприємництва та інвестицій Дніпропетровської міської ради", "Департамент транспорту та зв’язку Дніпропетровської міської ради", "Департаменту корпоративних прав та правового забезпечення  Дніпропетровської міської ради", "Департамент охорони здоров’я Дніпропетровської міської ради", "Управління праці та соціального захисту населення  Дніпропетровської міської рад", "Управління-служби у справах дітей  Дніпропетровської міської ради", "Управління охорони навколишнього природного середовища Дніпропетровської міської ради", "Департамент споживчого ринку та сфери послуг Дніпропетровської міської ради", "Управління у  справах молоді та спорту Дніпропетровської міської ради", "Управління освіти та науки Дніпропетровської міської ради", "Управління культури та мистецтв Дніпропетровської  міської ради", "Управління контролю за благоустроєм міста  Дніпропетровської  міської ради", "Управління архитектури та будівництва", "Департамент взаємодії з правоохоронними органами, мобілізаційної та оборонної роботи і з питань надзвичайних ситуацій Дніпропетровської міської ради", "Фінансово-економічний департамент Дніпропетровської міської ради", "Прес-служба Дніпропетровської міської ради", "Управління внутрішньої політики Дніпропетровської  міської ради", "Діяльність місцевого самоврядування"]
 for (var i=0; i&lt;22; i++)
     {
         var per = depart[i]
@@ -3401,15 +3382,13 @@ execution.setVariable('sNameDepartment', per2)</script>
     </scriptTask>
     <sequenceFlow id="flow44" sourceRef="usertask1" targetRef="scripttask2"></sequenceFlow>
     <sequenceFlow id="flow46" sourceRef="scripttask2" targetRef="exclusivegateway1"></sequenceFlow>
-    <userTask id="usertask9" name="Формування письмової відповіді (Фронт офіс)" activiti:candidateGroups="sales">
+    <userTask id="usertask9" name="Формування письмової відповіді (Фронт офіс)" activiti:candidateGroups="dmr_front_office">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPhone" name="Контактний телефон" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdditionalPhone" name="Додатковий телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDataToday" name="Дата подачі звернення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDataToday" name="Дата подачі звернення" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asSex" name="Стать заявника" type="enum" writable="false">
           <activiti:value id="sEnumSexMen" name="Чоловіча"></activiti:value>
           <activiti:value id="sEnumSexWoman" name="Жіноча"></activiti:value>
@@ -3740,21 +3719,17 @@ execution.setVariable('sNameDepartment', per2)</script>
         <activiti:formProperty id="asTop12" name="Підтематика. Торгівля" type="enum">
           <activiti:value id="sEnumTop120" name=" "></activiti:value>
           <activiti:value id="sEnumTop121" name="Видача картки обліку об'єкта торговельного призначення , сфери послуг і виробництва продуктів харчування"></activiti:value>
-          <activiti:value id="sEnumTop122" name="Выдача карточки учета объекта торгового назначения, сферы услуг и производства продуктов питания"></activiti:value>
-          <activiti:value id="sEnumTop123" name="Демонтаж малих архітектурних форм ( робота без дозвільних документів на пішохідній зоні)"></activiti:value>
-          <activiti:value id="sEnumTop124" name="Демонтаж малых архитектурных форм (работа без разрешительных документов на пешеходной зоне"></activiti:value>
-          <activiti:value id="sEnumTop125" name="Діяльність гральних закладів"></activiti:value>
-          <activiti:value id="sEnumTop126" name="Діяльність дитячих атракціонів"></activiti:value>
-          <activiti:value id="sEnumTop127" name="Дотримання правил торгівлі в роздрібній мережі, на підприємствах ресторанного господарства"></activiti:value>
-          <activiti:value id="sEnumTop128" name="Обслуговування населення підприємствами сфери побуту"></activiti:value>
-          <activiti:value id="sEnumTop129" name="Обслуживание населения предприятиями сферы быта;"></activiti:value>
-          <activiti:value id="sEnumTop1210" name="Побутове обслуговування"></activiti:value>
-          <activiti:value id="sEnumTop1211" name="Прием и обработка документов на размещение МАФ на територии города и ведение електронного учета предприятий торговли, ресторанного хозяйства, сферы услуг и пищевой промышленности;"></activiti:value>
-          <activiti:value id="sEnumTop1212" name="Прийом і обробка документів на розміщення МАФ на території міста і ведення електронного обліку підприємств торгівлі , ресторанного господарства , сфери послуг і харчової промисловості"></activiti:value>
-          <activiti:value id="sEnumTop1213" name="РОБОТА: Робота кафе"></activiti:value>
-          <activiti:value id="sEnumTop1214" name="РОБОТА: Робота магазинів"></activiti:value>
-          <activiti:value id="sEnumTop1215" name="РОБОТА: Робота ринків"></activiti:value>
-          <activiti:value id="sEnumTop1216" name="Інші питання"></activiti:value>
+          <activiti:value id="sEnumTop122" name="Демонтаж малих архітектурних форм ( робота без дозвільних документів на пішохідній зоні)"></activiti:value>
+          <activiti:value id="sEnumTop123" name="Діяльність гральних закладів"></activiti:value>
+          <activiti:value id="sEnumTop124" name="Діяльність дитячих атракціонів"></activiti:value>
+          <activiti:value id="sEnumTop125" name="Дотримання правил торгівлі в роздрібній мережі, на підприємствах ресторанного господарства"></activiti:value>
+          <activiti:value id="sEnumTop126" name="Обслуговування населення підприємствами сфери побуту"></activiti:value>
+          <activiti:value id="sEnumTop127" name="Побутове обслуговування"></activiti:value>
+          <activiti:value id="sEnumTop128" name="Прийом і обробка документів на розміщення МАФ на території міста і ведення електронного обліку підприємств торгівлі , ресторанного господарства , сфери послуг і харчової промисловості"></activiti:value>
+          <activiti:value id="sEnumTop129" name="РОБОТА: Робота кафе"></activiti:value>
+          <activiti:value id="sEnumTop1210" name="РОБОТА: Робота магазинів"></activiti:value>
+          <activiti:value id="sEnumTop1211" name="РОБОТА: Робота ринків"></activiti:value>
+          <activiti:value id="sEnumTop1212" name="Інші питання"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asTop13" name="Підтематика. Молодь, ґендерна рівність, фізична культура і спорт" type="enum">
           <activiti:value id="sEnumTop130" name=" "></activiti:value>
@@ -3927,32 +3902,34 @@ execution.setVariable('sNameDepartment', per2)</script>
           <activiti:value id="sEnumTop228" name="Формування місцевих бюджетів"></activiti:value>
           <activiti:value id="sEnumTop229" name="Інші питання "></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sAdressProbl" name="Адреса за якої виникло питання" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sReason" name="Опишіть суть звернення" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sAdressProbl" name="Адреса за якої виникло питання" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sReason" name="Опишіть суть звернення" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdditionalInformation" name="Додаткова інформація" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sRegistrationNumberRGA" name="Реєстраційний номер ОДА" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sRegistrationNumberRGA" name="Реєстраційний номер ОДА" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPerformer" name="Виконавець" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNumberTownCouncil" name="Реєстраційний номер;(держстандарт В-1-12453/1)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sLoginUkrDoc" name="Логін працівника міськради" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneCall_SubjectContact_Client" name="Телефон, з якого був здійснен дзвінок" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asAnswerChannel" name="Канал відповіді" type="enum">
+        <activiti:formProperty id="asAnswerChannel" name="Канал відповіді" type="enum" writable="false">
           <activiti:value id="sEnumAnsw1" name="Письмова відповідь"></activiti:value>
           <activiti:value id="sEnumAnsw2" name="Відповідь колл-центр"></activiti:value>
           <activiti:value id="sEnumAnsw3" name="Відповідь на e-mail"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asChannelAppeals" name="Канал звернення" type="enum">
+        <activiti:formProperty id="asChannelAppeals" name="Канал звернення" type="enum" writable="false">
           <activiti:value id="sEnumAppeal1" name="Гаряча лінія губернатора"></activiti:value>
           <activiti:value id="sEnumAppeal2" name="Урядова гаряча лінія"></activiti:value>
           <activiti:value id="sEnumAppeal3" name="Колл-центр"></activiti:value>
           <activiti:value id="sEnumAppeal4" name="Фронт-офіс"></activiti:value>
           <activiti:value id="sEnumAppeal5" name="Портал"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDocument_Body_UkrDoc" name="Відповідь з управлиння" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sQuickAnswer" name="Відповідь на звернення" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAnswerExplanation" name="Коментар колл-центру" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocument_Body_UkrDoc" name="Відповідь з управлиння" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Document_UkrDoc" name="Номер картки документа УкрДок" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/dneprMVK/dnepr_mvk_291_common_print.html]" type="invisible" default="Форма письмової відповіді" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile1},${anID_Attach_UkrDoc}</activiti:expression>
+            <activiti:expression>${nFile1},${nFileAnswer},${anID_Attach_UkrDoc}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -3965,8 +3942,8 @@ execution.setVariable('sNameDepartment', per2)</script>
     <sequenceFlow id="flow50" name="asAnswerChannel=='sEnumAnsw1'" sourceRef="exclusivegateway2" targetRef="usertask9">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asAnswerChannel=='sEnumAnsw1'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow51" name="sAnswerStatus=='Successfull'||asAnswerChannel=='sEnumAnsw1'" sourceRef="exclusivegateway4" targetRef="usertask9">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sAnswerStatus=='Successfull'||asAnswerChannel=='sEnumAnsw1'}]]></conditionExpression>
+    <sequenceFlow id="flow51" name="sAnswerStatus=='Successfull'&amp;&amp;asAnswerChannel=='sEnumAnsw1'" sourceRef="exclusivegateway4" targetRef="usertask9">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sAnswerStatus=='Successfull'&&asAnswerChannel=='sEnumAnsw1'}]]></conditionExpression>
     </sequenceFlow>
     <exclusiveGateway id="exclusivegateway6" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow53" sourceRef="scripttask1" targetRef="exclusivegateway3"></sequenceFlow>
@@ -3980,7 +3957,6 @@ execution.setVariable('sNameDepartment', per2)</script>
     <sequenceFlow id="flow57" name="asAnswerChannel=='sEnumAnsw3'" sourceRef="exclusivegateway2" targetRef="servicetask6">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asAnswerChannel=='sEnumAnsw3'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow58" sourceRef="usertask2" targetRef="exclusivegateway7"></sequenceFlow>
     <sequenceFlow id="flow59" name="asAnswerChannel=='sEnumAnsw2'" sourceRef="exclusivegateway2" targetRef="usertask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asAnswerChannel=='sEnumAnsw2'}]]></conditionExpression>
     </sequenceFlow>
@@ -4010,21 +3986,18 @@ execution.setVariable('sChannelApp', per1)</script>
     </scriptTask>
     <sequenceFlow id="flow66" sourceRef="scripttask3" targetRef="usertask2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway7" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow67" sourceRef="exclusivegateway7" targetRef="exclusivegateway2">
+    <sequenceFlow id="flow67" sourceRef="usertask2" targetRef="exclusivegateway7"></sequenceFlow>
+    <sequenceFlow id="flow68" sourceRef="exclusivegateway7" targetRef="exclusivegateway2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sStatusName_UkrDoc=='Исполнен'&&nID_DocumentTemplate_UkrDoc=='11401'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow68" sourceRef="exclusivegateway7" targetRef="usertask2">
+    <sequenceFlow id="flow69" sourceRef="exclusivegateway7" targetRef="usertask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sStatusName_UkrDoc!='Исполнен'}]]></conditionExpression>
     </sequenceFlow>
-    <scriptTask id="scripttask4" name="Script Task" scriptFormat="groovy" activiti:autoStoreVariables="false">
-      <script>execution.setVariable('sDataToday', new Date().format("dd.MM.yyyy").toString())</script>
-    </scriptTask>
-    <sequenceFlow id="flow69" sourceRef="scripttask4" targetRef="exclusivegateway6"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__test_dnepr_mvk_291_common">
     <bpmndi:BPMNPlane bpmnElement="_test_dnepr_mvk_291_common" id="BPMNPlane__test_dnepr_mvk_291_common">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="-80.0" y="143.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="40.0" y="143.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
         <omgdc:Bounds height="91.0" width="131.0" x="206.0" y="113.0"></omgdc:Bounds>
@@ -4117,14 +4090,11 @@ execution.setVariable('sChannelApp', per1)</script>
         <omgdc:Bounds height="55.0" width="105.0" x="918.0" y="525.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway7" id="BPMNShape_exclusivegateway7">
-        <omgdc:Bounds height="40.0" width="40.0" x="1250.0" y="532.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask4" id="BPMNShape_scripttask4">
-        <omgdc:Bounds height="55.0" width="105.0" x="-20.0" y="133.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="1217.0" y="534.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="-45.0" y="160.0"></omgdi:waypoint>
-        <omgdi:waypoint x="-20.0" y="160.0"></omgdi:waypoint>
+        <omgdi:waypoint x="75.0" y="160.0"></omgdi:waypoint>
+        <omgdi:waypoint x="120.0" y="160.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
         <omgdi:waypoint x="337.0" y="158.0"></omgdi:waypoint>
@@ -4309,10 +4279,6 @@ execution.setVariable('sChannelApp', per1)</script>
           <omgdc:Bounds height="42.0" width="100.0" x="1364.0" y="510.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow58" id="BPMNEdge_flow58">
-        <omgdi:waypoint x="1172.0" y="553.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1250.0" y="552.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow59" id="BPMNEdge_flow59">
         <omgdi:waypoint x="1366.0" y="574.0"></omgdi:waypoint>
         <omgdi:waypoint x="1366.0" y="657.0"></omgdi:waypoint>
@@ -4339,18 +4305,18 @@ execution.setVariable('sChannelApp', per1)</script>
         <omgdi:waypoint x="1067.0" y="553.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow67" id="BPMNEdge_flow67">
-        <omgdi:waypoint x="1290.0" y="552.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1346.0" y="554.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1172.0" y="553.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1217.0" y="554.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow68" id="BPMNEdge_flow68">
-        <omgdi:waypoint x="1270.0" y="532.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1269.0" y="468.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1119.0" y="468.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1119.0" y="507.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1257.0" y="554.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1346.0" y="554.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow69" id="BPMNEdge_flow69">
-        <omgdi:waypoint x="85.0" y="160.0"></omgdi:waypoint>
-        <omgdi:waypoint x="120.0" y="160.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1237.0" y="534.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1237.0" y="464.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1118.0" y="464.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1119.0" y="507.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
