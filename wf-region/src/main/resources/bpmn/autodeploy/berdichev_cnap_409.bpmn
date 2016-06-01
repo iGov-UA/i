@@ -24,7 +24,7 @@
         <activiti:formProperty id="sPhoneOrgan" name="Контактний телефон" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka409" name="Шапка заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPlase409" name="Назва міськвиконкому" type="invisible"></activiti:formProperty>
-      </extensionElements>
+              </extensionElements>
     </startEvent>
     <sequenceFlow id="flow3" sourceRef="startevent1" targetRef="servicetask3"></sequenceFlow>
     <serviceTask id="servicetask3" name="Завантаження файлу" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -51,7 +51,7 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow9" sourceRef="servicetask4" targetRef="servicetask2"></sequenceFlow>
-    <serviceTask id="servicetask2" name="Повідомлення громадянину" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask2" name="Повідомлення громадянину смс+email" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -75,7 +75,16 @@ ${sNameOrgan}&lt;br&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
-      </extensionElements>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${privatePhone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
+             </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow6" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
     <userTask id="usertask1" name="Первинна перевірка документів від громадянина" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
