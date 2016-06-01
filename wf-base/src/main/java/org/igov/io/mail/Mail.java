@@ -76,7 +76,7 @@ public class Mail extends Abstract_Mail {
         String sToNew=sTo;
         String toName = "TESTTONAME";
 
-        sToNew = String.format("\"%s\" <%s>", toName, sTo);
+        _To(String.format("%s <%s>", toName, sTo));
 
         sToNew=sToNew.replace("\"", "");
         sToNew=sToNew.replace("\"", "");
