@@ -59,7 +59,7 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask4" name="Лист заявнику" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask4" name="Лист заявнику" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -74,7 +74,7 @@
           <activiti:expression>[sID_Order]&lt;br&gt;
 [pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt; Ваше звернення щодо послуги ${sPosluga_name} прийнято в роботу. &lt;br /&gt;
+&lt;p&gt; Ваше звернення [sID_Order] щодо послуги ${sPosluga_name} прийнято в роботу. &lt;br /&gt;
 Повідомлення про результат розгляду буде спрямоване на Ваш e-mail.&lt;/p&gt;
 &lt;br /&gt;
 ${sPhoneOrgan}.&lt;br /&gt;
@@ -82,6 +82,15 @@ ${sPhoneOrgan}.&lt;br /&gt;
 ${sNameOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -98,7 +107,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІНН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Юридична адреса суб'єкта господарювання" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Мобільний телефон" type="string" default="+380" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Мобільний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sT_Adress" name="Адреса місця торгівлі" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sT_indeks" name="Індекс" type="string" writable="false"></activiti:formProperty>
@@ -128,7 +137,7 @@ ${sNameOrgan}.&lt;br /&gt;
     <sequenceFlow id="flow5" sourceRef="servicetask4" targetRef="usertask1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
-    <serviceTask id="servicetask5" name="Відмова" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask5" name="Відмова" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -150,12 +159,21 @@ ${sNameOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Za Vashym zvernennyam  [sID_Order]  vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow7" name="Відмова" sourceRef="exclusivegateway1" targetRef="servicetask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asVariants == 'sEnamDok_bad'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask6" name="Заявнику все ок" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask6" name="Заявнику все ок" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -178,6 +196,16 @@ ${sAddress}.&lt;br /&gt;
 ${sWorkTime}.&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno.
+Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -298,7 +326,7 @@ yyyy2 = yyyy-(-1)
 if (ddd == '01')
   {
   mmm2=mmm-1
-  mmm2 = '0'+mmm2
+  if (mmm2&lt;10){mmm2 = '0'+mmm2}
     if(mmm =='05'||'07'||'08'||'10'||'12')
       {ddd2='30'}
     if(mmm =='06'||'09'||'11'||'04'||'02')
@@ -319,7 +347,7 @@ if(mmm =='01'&amp;&amp;ddd=='01')
   }
 timeE = ddd2+'-'+mmm2+'-'+yyyy2	
 execution.setVariable('date_big', timeB)
-execution.setVariable('date_end', timeE)  
+execution.setVariable('date_end', timeE)
       </script>
     </scriptTask>
     <sequenceFlow id="flow20" sourceRef="scripttask1" targetRef="servicetask3"></sequenceFlow>
