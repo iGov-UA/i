@@ -74,17 +74,13 @@ public class Mail extends Abstract_Mail {
         LOG.info("(getTo()={})", getTo());
         String sTo=getTo();
         String sToNew=sTo;
-        String toName = "TESTTONAME";
-
-        _To(String.format("%s <%s>", toName, sTo));
-
         sToNew=sToNew.replace("\"", "");
         sToNew=sToNew.replace("\"", "");
         //sTo=sTo.replaceAll("\"", "");
-//        if(!sToNew.equals(sTo)){
-//            LOG.info("(getTo()(fixed)={})", sToNew);
-//            _To(sToNew);
-//        }
+        if(!sToNew.equals(sTo)){
+            LOG.info("(getTo()(fixed)={})", sToNew);
+            _To(sToNew);
+        }
         LOG.info("(getHead()={})", getHead());
         
         Boolean bUniSender = generalConfig.isEnable_UniSender_Mail();
@@ -175,8 +171,6 @@ public class Mail extends Abstract_Mail {
                     sbBody.append(getFrom());
                     sbBody.append("\nto:");
                     sbBody.append(getTo());
-//                    sbBody.append("\ntoName:");
-//                    sbBody.append(getToName());
                     sbBody.append("\nhead:");
                     sbBody.append(getHead());
 //                    sbBody.append(getBody());
@@ -221,9 +215,6 @@ public class Mail extends Abstract_Mail {
             oMultiPartEmail.setHostName(getHost());
             String[] asTo=getTo().split("\\,");//sTo
             for(String s : asTo){
-                String toName = "TESTTONAME";
-
-                s = String.format("\"%s\" <%s>", toName, s);
                 LOG.info("oMultiPartEmail.addTo (s={})", s);
                 oMultiPartEmail.addTo(s, "receiver");
             }
