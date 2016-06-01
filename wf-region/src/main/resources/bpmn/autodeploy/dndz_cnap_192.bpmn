@@ -51,10 +51,19 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow16" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
-    <serviceTask id="servicetask3" name="Повідомлення про доставку замовлення до ЦНАПу" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask3" name="Повідомлення про доставку замовлення до ЦНАПу" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+       <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
@@ -122,10 +131,19 @@
       <script>execution.setVariable('date_registrastion', new Date().format("dd.MM.yyyy").toString())</script>
     </scriptTask>
     <sequenceFlow id="flow20" sourceRef="scripttask2" targetRef="servicetask4"></sequenceFlow>
-    <serviceTask id="servicetask4" name="лист про успішне замовлення послуги" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask4" name="лист про успішне замовлення послуги" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+       	<activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno na "Zvernennya peredane v upravlinnya arkhitektury" Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
@@ -181,10 +199,19 @@
     <sequenceFlow id="flow11" name="відмова" sourceRef="exclusivegateway2" targetRef="servicetask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status_dozvil=='attr4_finish'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask5" name="Відправка e-mail в разі відмови" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask5" name="Відправка e-mail в разі відмови" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+       	<activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
@@ -222,10 +249,19 @@
     <sequenceFlow id="flow12" name="надати" sourceRef="exclusivegateway2" targetRef="servicetask6">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status_dozvil=='attr3_finish'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask6" name="Інформування заявника про необхідність отримання результату" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask6" name="Інформування заявника про необхідність отримання результату" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+       	<activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>

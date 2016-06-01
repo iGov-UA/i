@@ -40,7 +40,7 @@
         <activiti:formProperty id="sPhoneOrgan" name="телефон для справок" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адрес органа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapkaGolova" name="шапка принтформы" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk1" name="Пошта ЦНАП" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
         <activiti:formProperty id="familyStatus" name="Сімейний стан" type="markers" default="${markerService.loadFromFile('mvk/familyStatus.json')}"></activiti:formProperty>
         <activiti:formProperty id="familyStatusForNewPskov" name="Сімейний стан для Новопсков" type="markers" default="${markerService.loadFromFile('mvk/familyStatusForNewPskov.json')}"></activiti:formProperty>
       </extensionElements>
@@ -58,13 +58,15 @@
           <activiti:expression><![CDATA[noreply@igov.org.ua]]></activiti:expression>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${sMailClerk1}]]></activiti:expression>
+          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression><![CDATA[Нове звернення на порталі igov.org.ua на тему: Видача ордера на службове жиле приміщення]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
+          <activiti:expression><![CDATA[
+          	Звернення № [sID_Order]<br>
+          	[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -87,19 +89,22 @@
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="no" name="Ні"></activiti:value>
         </activiti:formProperty>
-		<activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${file1},${file2},${file3},${file4},${file5},{file5_1},${file6},${file7},${file8},${file9},${bankId_scan_passport}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+
         <activiti:formProperty id="asDocument" name="Перевірка вхідних данних" type="enum" required="true">
           <activiti:value id="OK" name="Всі дані ВІДПОВІДАЮТЬ законодавству"></activiti:value>
           <activiti:value id="NO" name="Надані дані НЕ відповідають законодавству"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="В разі відмови в наданні послуги зазначте підставу для відмови (дані будуть надіслані громадянинові по електронній пошті)*" type="textArea"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+
 		<activiti:formProperty id="sBody_1" name="[pattern/print/architecture/zayava_407.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapkaGolova" name="шапка принтформы" type="invisible"></activiti:formProperty>
+
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+		<activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression>${file1},${file2},${file3},${file4},${file5},{file5_1},${file6},${file7},${file8},${file9},${bankId_scan_passport}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow11" sourceRef="usertask1" targetRef="exclusivegateway2"></sequenceFlow>
@@ -107,7 +112,7 @@
     <sequenceFlow id="flow14" name="Документи не відповідають" sourceRef="exclusivegateway2" targetRef="servicetask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDocument=='NO'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask4" name="Відмова" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask4" name="Відмова" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -118,10 +123,22 @@
         <activiti:field name="subject">
           <activiti:string><![CDATA[Отримання ордера на службове жиле приміщення.]]></activiti:string>
         </activiti:field>
+       <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Za Vashym zvernennyam [sID_Order] vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>             
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>   
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-			<p>За даними держоргану Вам ВІДМОВЛЕНО у наданні ордера на службове жиле приміщення.</p>
+		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>			
+			<p>
+				Оброблено звернення № [sID_Order].<br>
+				За даними держоргану Вам ВІДМОВЛЕНО у наданні ордера на службове жиле приміщення.
+			</p>
 			<p>
 				Коментар Державного службовця:<br>
 				<b><i>${decisionComment}</i></b>
@@ -142,7 +159,7 @@
     <sequenceFlow id="flow13" name="Документи відповідають" sourceRef="exclusivegateway2" targetRef="servicetask6">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDocument=='OK'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask6" name="Документи відповідають" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask6" name="Документи відповідають" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:expression><![CDATA[noreply@igov.org.ua]]></activiti:expression>
@@ -153,12 +170,21 @@
         <activiti:field name="subject">
           <activiti:expression><![CDATA[Звернення на тему: Видача ордера на службове жиле приміщення.]]></activiti:expression>
         </activiti:field>
+       <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno na "Vzyato v robotu". Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>     
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>   
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 			<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br><br>
 			<p> 
 				Документи відповідають. <br>  
-				Ваше звернення щодо отримання  ордера на службове жиле приміщення успішно зареєстроване.<br>
+				Ваше звернення № [sID_Order], щодо отримання  ордера на службове жиле приміщення успішно зареєстроване.<br>
 				Ви отримаєте відповідь протягом тридцяти календарних днів.
 			</p>
 			<br>
@@ -191,19 +217,22 @@
         <activiti:formProperty id="child" name="Чи має заявник неповнолітніх дітей?" type="enum" writable="false">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="no" name="Ні"></activiti:value>
-        </activiti:formProperty>        
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${file1},${file2},${file3},${file4},${file5},{file5_1},${file6},${file7},${file8},${file9},${bankId_scan_passport}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+        </activiti:formProperty>
         <activiti:formProperty id="asResult" name="Рішення держслужбовця" type="enum" required="true">
           <activiti:value id="Yes" name="Видати ордер"></activiti:value>
           <activiti:value id="Not" name="Відмовити у видачі ордеру"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Коментар до рішення; Наприклад, пояснення чому громадянину було відмовлено в наданні згоди &lt;br /&gt; АБО &lt;br /&gt; Деталі отримання документу" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/architecture/zayava_407.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
+
         <activiti:formProperty id="sShapkaGolova" name="шапка принтформы" type="invisible"></activiti:formProperty>
+        
+        <activiti:formProperty id="sBody_1" name="[pattern/print/architecture/zayava_407.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
+                
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression>${file1},${file2},${file3},${file4},${file5},{file5_1},${file6},${file7},${file8},${file9},${bankId_scan_passport}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow6" sourceRef="usertask2_green" targetRef="exclusivegateway1"></sequenceFlow>
@@ -214,7 +243,7 @@
     <sequenceFlow id="flow8" name="Ордер видано" sourceRef="exclusivegateway1" targetRef="servicetask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResult=='Yes'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask5" name="Згода" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask5" name="Згода" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -225,10 +254,20 @@
         <activiti:field name="subject">
           <activiti:string><![CDATA[Отримання ордера на службове жиле приміщення.]]></activiti:string>
         </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field> 
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<p>
+				Оброблено звернення № [sID_Order].<br>
 				Вітаємо, Вам НАДАНО ордер на службове жиле приміщення.
 			</p>
 			<p>

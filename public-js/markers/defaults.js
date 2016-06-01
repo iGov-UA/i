@@ -17,7 +17,8 @@ angular.module('iGovMarkers')
           'lastName_UA3','firstName_UA3','middleName_UA3',
           'lastName_UA4','firstName_UA4','middleName_UA4',
           'lastName_UA5','firstName_UA5','middleName_UA5',
-          'sFamily_UA','sName_UA','sSurname_UA'
+          'sFamily_UA','sName_UA','sSurname_UA', 'adminFio',
+          'CNAPName'
         ]
       }
       ,TextRU: {
@@ -33,6 +34,10 @@ angular.module('iGovMarkers')
       ,DateFormat: {
         aField_ID: ['dateFormat'],
         sFormat: 'YYYY-MM-DD'
+      }
+      ,DocumentDate: {
+        aField_ID: ['DocumentDate'],
+        sFormat: 'DD.MM.YYYY'
       }
       ,DateElapsed: {
         aField_ID: ['dateOrder'],
@@ -74,7 +79,7 @@ angular.module('iGovMarkers')
         sMessage: 'Перевірте правильність заповнення поля - площа приміщення може складатися максимум з 8 цифр'
       }
       ,Numbers_Accounts: { //разрешены цифры и дефисы, буквы любые запрещены
-        aField_ID: ['!'],
+        aField_ID: ['!', 'number_cnap'],
         //aField_ID: ['house_number', 'gas_number', 'coolwater_number', 'hotwater_number', 'waterback_number', 'warming_number', 'electricity_number', 'garbage_number'],
         sMessage: 'Перевірте правильність уведеного номеру (літери не дозволені до заповнення)'
       }

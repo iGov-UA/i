@@ -66,13 +66,13 @@
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Підтягування додаткових документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <userTask id="usertask1" name="Реєстрація звернення, результат обробки вхідних данних" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask1" name="[Етап I] Реєстрація звернення, результат обробки вхідних данних (1-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="Центр надання адмінпослуг" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sClientFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="Ідентифікаційний номер фізичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdAddress" name="Адреса реєстрації" type="string" default=" " writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddress" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asSubect" name="Запит на дозвіл подано від" type="enum" writable="false">
           <activiti:value id="ur" name="Юридична особа"></activiti:value>
           <activiti:value id="fiz" name="Фізична особа-підприємець"></activiti:value>
@@ -129,14 +129,14 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask2" name="Прийняття рішення щодо звернення" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask2" name="[Етап II] Прийняття рішення щодо звернення (2-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="Центр надання адмінпослуг" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sClientFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="Ідентифікаційний номер фізичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdAddress" name="Адреса реєстрації" type="string" default=" " writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddress" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asSubect" name="Запит на дозвіл подано від" type="enum" writable="false">
           <activiti:value id="ur" name="Юридична особа"></activiti:value>
           <activiti:value id="fiz" name="Фізична особа-підприємець"></activiti:value>

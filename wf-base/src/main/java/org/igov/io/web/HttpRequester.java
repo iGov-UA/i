@@ -41,8 +41,11 @@ public class HttpRequester {
 
     public String postInside(String sURL, Map<String, Object> mParam)
             throws Exception {
+        
+        boolean bSkipValidationSSL = generalConfig.isSelfTest();
+        simplifySSLConnection(bSkipValidationSSL);
+        
         String saParam = "";
-
         if (mParam != null) {
             for (Map.Entry<String, Object> entry : mParam.entrySet()) {
                 if (entry.getValue() != null) {
@@ -138,7 +141,8 @@ public class HttpRequester {
         //generalConfig.getAuthLogin()
         
         
-        
+        boolean bSkipValidationSSL = generalConfig.isSelfTest();
+        simplifySSLConnection(bSkipValidationSSL);
         
         URL oURL = new URL(getFullURL(sURL, mParam));
         InputStream oInputStream;
@@ -153,12 +157,11 @@ public class HttpRequester {
         try {
 
 
-            boolean bSkipValidationSSL = generalConfig.isSelfTest();
             URLConnection oConnectAbstract = oURL.openConnection();
-            if (oConnectAbstract instanceof HttpsURLConnection) {
+            /*if (oConnectAbstract instanceof HttpsURLConnection) {
                 //simplifySSLConnection(bSkipValidationSSL ? null : (HttpsURLConnection) oConnectAbstract);
                 simplifySSLConnection(bSkipValidationSSL, (HttpsURLConnection) oConnectAbstract);
-            }
+            }*/
             
             //oConnection = (HttpURLConnection) oURL.openConnection();
             oConnection = (HttpURLConnection) oConnectAbstract;
@@ -225,7 +228,8 @@ public class HttpRequester {
      * пропущенна)
      */
     //public void simplifySSLConnection(HttpsURLConnection oConnectHTTPS) {
-    public void simplifySSLConnection(boolean bSkip, HttpsURLConnection oConnectHTTPS) {
+    //public void simplifySSLConnection(boolean bSkip, HttpsURLConnection oConnectHTTPS) {
+    public void simplifySSLConnection(boolean bSkip) {
         if(bSkip){
             LOG.info("Skip Sertificate!");
             /*javax.net.ssl.HttpsURLConnection.setDefaultHostnameVerifier(

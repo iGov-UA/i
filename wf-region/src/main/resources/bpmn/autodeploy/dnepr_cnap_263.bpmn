@@ -10,8 +10,7 @@
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні данні" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Сканований паспорт громадянина" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="Укажіть сьогоднішню дату" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="adres_1" name="Адреса реєстрації громадянина" type="string" required="true"></activiti:formProperty>
+      <activiti:formProperty id="adres_1" name="Адреса реєстрації громадянина" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="balcony" name="Де розташовується (буде розташовуватись) підвісний балкон?" type="enum" required="true">
@@ -31,18 +30,19 @@
         <activiti:formProperty id="project" name="Проект переобладнання або перепланування, улаштування підвісного балкону, погоджений в установленому порядку" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="zgoda" name="Згода власників, співвласників (наймачів) або уповноважених ними осіб на переобладнання перепланування чи улаштування підвісного балкону приміщень, що перебувають у їх спільній власності; завантажте єдиним архівом" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="teh_passport" name="Копія технічного паспорту на приміщення (квартиру)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nArea" name="номер району" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sArea" name="район" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="пошта району" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адреса адміністративного органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="пошта посадовця" type="invisible" default="darja.grek@gmail.com"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <userTask id="usertask1" name="обробка вхідних данних" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask1" name="перевірка документів і вхідних данних" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="sArea" name="Район" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні данні" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="Укажіть сьогоднішню дату" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adres_1" name="Адреса реєстрації громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
@@ -71,13 +71,12 @@
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
-    <userTask id="usertask3" name="рішення" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask3" name="прийняття рішення" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="sArea" name="Район" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні данні" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="дата подання звернення" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adres_1" name="Адреса реєстрації громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
@@ -113,7 +112,8 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+[pattern/mail/_common_header.html]
 &lt;strong&gt;Шановний(-а) колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
 У Вас в черзі на обробку нове звернення.&lt;br /&gt;
 Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
@@ -123,7 +123,7 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask5" name="Повідомлення громадянина про успішне подання зверенння" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask5" name="Повідомлення громадянина про успішне подання зверенння" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -135,7 +135,8 @@
           <activiti:string><![CDATA[Звернення на тему: Видача дозволу на виконання перепланування, переобладнання та улаштування підвісного балкону]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+[pattern/mail/_common_header.html]
 &lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
 Ваше звернення щодо видачі дозволу на виконання enum{[balcony_work]} підвісного балкону enum{[balcony]}, що знаходиться за адресою ${locality} ${street} ${number_house}, отримано.&lt;br /&gt;
 Звернення буде опрацьовано управлінням архітектури, капітального будівництва та житлово-комунального господарства міської ради впродовж 30 календарних днів.&lt;br /&gt;
@@ -146,9 +147,18 @@
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[nArea]}:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]</activiti:expression>
         </activiti:field>
+         <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] perevireno i peredano na podalshiy rozglyad. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask6" name="повідомлення громадянина про відхилення звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask6" name="повідомлення громадянина про відхилення звернення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
@@ -160,7 +170,8 @@
           <activiti:string><![CDATA[Звернення на тему: Видача дозволу на виконання перепланування, переобладнання та улаштування підвісного балкону]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+[pattern/mail/_common_header.html]
 &lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;
 На жаль, Ваше звернення щодо видачі дозволу на виконання enum{[balcony_work]} підвісного балкону enum{[balcony]}, що знаходиться за адресою ${locality} ${street} ${number_house}, відхилено через недостатню або неправильну інформацію.&lt;br /&gt;
 ${comment_1}&lt;br /&gt;&lt;br /&gt;
@@ -170,9 +181,18 @@ ${comment_1}&lt;br /&gt;&lt;br /&gt;
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[nArea]}:2]&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]</activiti:expression>
         </activiti:field>
+         <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] vidhileno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask7" name="повідомлення громадянина про реєстрацію громадського об'єднання" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask7" name="повідомлення громадянина про реєстрацію громадського об'єднання" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -187,7 +207,8 @@ ${comment_1}&lt;br /&gt;&lt;br /&gt;
           <activiti:expression>${rishen},${PrintForm_1}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+[pattern/mail/_common_header.html]
 &lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
 Вам enum{[decision_2]} з enum{[balcony_work]} підвісного балкону enum{[balcony]}, що знаходиться за адресою ${locality} ${street} ${number_house}.
 Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у ЦНАПі.&lt;br /&gt;
@@ -209,6 +230,12 @@ ${comment_2}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_feedback.html]  
 [pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+         <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
