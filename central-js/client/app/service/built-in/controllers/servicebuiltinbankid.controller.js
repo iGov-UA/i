@@ -509,6 +509,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   };
 
   $scope.fillSelfPrevious = function () {
+
     $http.get('/api/order/getStartFormByTask', {
       params: {
         nID_Service: oService.nID,
@@ -574,9 +575,6 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
       }
   };
 
-  if($scope.selfOrdersCount.nOpened > 0){
-    $scope.fillSelfPrevious();
-  }
 
   // блокировка кнопок выбора файлов на время выполнения процесса загрузки ранее выбранного файла
   $rootScope.isFileProcessUploading = {

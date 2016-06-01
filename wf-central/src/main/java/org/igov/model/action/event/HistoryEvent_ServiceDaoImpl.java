@@ -219,7 +219,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<HistoryEvent_Service> getOrdersHistory(Long nID_Subject, Long nID_Service, String sID_UA, int nLimit) {
+    public List<HistoryEvent_Service> getOrdersHistory(Long nID_Subject, Long nID_Service, String sID_UA) {
         LOG.info(String.format("Start get orders history with parameters nID_Subject = %s, nID_Service = %s, sID_UA = %s", nID_Subject, nID_Service, sID_UA));
         Criteria oCriteria = getSession().createCriteria(HistoryEvent_Service.class);
 
@@ -233,7 +233,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
         if(nID_Service != null){
             oCriteria.add(Restrictions.eq("nID_Service", nID_Service));
         }
-        if(sID_UA != null){
+        if(sID_UA != null && sID_UA != ""){
             oCriteria.add(Restrictions.eq("sID_UA", sID_UA));
         }
 
