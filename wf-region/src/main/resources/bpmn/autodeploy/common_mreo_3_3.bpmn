@@ -6,7 +6,9 @@
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть сервісний центр, де Ви б бажали отримати послугу" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса МРЕВ" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWork_Time" name="Графік прийому громадян" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="visit" name="Зазначте бажану дату / час візиту до сервісного центра для отримання послуги; ця інформація допоможе співробітнику сервісного центра  зарезервувати для Вас зручний час візиту" type="string" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="nID_Department_visitDate" name="Department" type="invisible" ></activiti:formProperty>
+        <activiti:formProperty id="visitDate" name="Зазначте бажану дату / час візиту до сервісного центра для отримання послуги" type="queueData" required="true"></activiti:formProperty>
         <activiti:formProperty id="sMail_Employee" name="Відповідальна особа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sOKPO" name="Код отримувача" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBillMFO" name="МФО" type="label" default=" "></activiti:formProperty>
@@ -67,12 +69,12 @@
         
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="visit" name="Побажання громадянина щодо візиту для отримання послуги" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="visitDate" name="Побажання громадянина щодо візиту для отримання послуги" type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Рішення про надання послуги" type="enum" required="true">
-          <activiti:value id="accept" name="Зауваження відсутні. Надіслати громадянину дату / час візиту для отримання посвідчення"></activiti:value>
+          <activiti:value id="accept" name="Зауваження відсутні. "></activiti:value>
           <activiti:value id="reject" name="Відмовити громадянину в наданні послуги."></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="comment" name="Вкажіть дату візиту для отримання посвідчення або підставу для відмови в наданні послуги (Інформація буде спрямована громадянину на e-mail)" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="comment" name="Вкажіть номер віконця для отримання посвідчення або підставу для відмови в наданні послуги (Інформація буде спрямована громадянину на e-mail)" type="textArea" required="true"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -107,11 +109,11 @@
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Рішення про надання послуги" type="enum" writable="false">
-          <activiti:value id="accept" name="Зауваження відсутні. Надіслати громадянину дату / час візиту для отримання посвідчення"></activiti:value>
+          <activiti:value id="accept" name="Зауваження відсутні. "></activiti:value>
           <activiti:value id="reject" name="Відмовити громадянину в наданні послуги."></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="visit" name="Побажання громадянина щодо візиту для отримання послуги" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="comment" name="Надіслана громадянину дата візиту для отримання посвідчення" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="visitDate" name="Побажання громадянина щодо візиту для отримання послуги" type="queueData" writable="false"></activiti:formProperty>
+
         <activiti:formProperty id="decide2" name="Результат надання послуги" type="enum" required="true">
           <activiti:value id="accept2" name="Підтверджую, що громадянин отримав посвідчення"></activiti:value>
           <activiti:value id="reject2" name="Громадянин не з'являється для отримання посвядчення. Закрити заявку."></activiti:value>
@@ -157,7 +159,7 @@
 Сума: ${sPrice0} &lt;br /&gt;
 Призначення платежу: ${sDescription0} &lt;br /&gt;
 
-Дата візиту: &lt;br /&gt;
+Примітка: &lt;br /&gt;
 ${comment}&lt;br /&gt;
 &lt;p&gt;
 Графік прийому громадян:&lt;br /&gt;

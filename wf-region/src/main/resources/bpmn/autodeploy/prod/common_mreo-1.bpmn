@@ -19,9 +19,9 @@
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть сервісний центр, де Ви б бажали отримати послугу" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="sWork_Time" name="Графік прийому громадян" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="visitDate" name="Бажана дата візиту до МРЕВ" type="queueData" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nID_Department_visitDate" name="Департамент" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMail_Employee" name="Відповідальна особа" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Адреса/графік МРЕВ" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="nID_Department_visitDate" name="Департамент" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMail_Employee" name="Відповідальна особа" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса/графік МРЕВ" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Ваш контактний телефон" type="long" default="380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="markers" name="markersForValidations" type="markers" default="{}"></activiti:formProperty>
@@ -34,7 +34,7 @@
     </boundaryEvent>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow3" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
-    <userTask id="usertask1" name="Перевірка наявності обтяжень" activiti:candidateGroups="common_mreo_1_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask1" name="Перевірка наявності обтяжень" activiti:candidateGroups="sales">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
@@ -71,7 +71,7 @@
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'accept'}]]></conditionExpression>
     </sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
-    <userTask id="usertask2" name="Надання послуги: Огляд авто " activiti:candidateGroups="common_mreo_1_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask2" name="Надання послуги: Огляд авто " activiti:candidateGroups="sales">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
@@ -99,7 +99,7 @@
         </activiti:formProperty>
       </extensionElements>
     </userTask>
-    <userTask id="usertask3" name="Перевірка наданих документів" activiti:candidateGroups="common_mreo_1_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask3" name="Перевірка наданих документів" activiti:candidateGroups="sales">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
@@ -138,7 +138,7 @@
     </sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow16" sourceRef="usertask3" targetRef="exclusivegateway3"></sequenceFlow>
-    <userTask id="usertask4" name="Друк держ.номерів" activiti:candidateGroups="common_mreo_1_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask4" name="Друк держ.номерів" activiti:candidateGroups="sales">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
@@ -341,7 +341,7 @@ ${sWork_Time}
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask10" name="Повідомлення громадянину про успішне подання заяви" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask10" name="Повідомлення громадянину про успішне подання заяви" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -360,6 +360,15 @@ ${sWork_Time}
 Результат обробки звернення будуть спрямовані на цей е-мейл. &lt;br /&gt;
 [pattern/mail/_common_signature.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
