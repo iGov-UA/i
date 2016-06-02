@@ -93,7 +93,7 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask2" name="Повідомлення заявника про успішну заявку" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask2" name="Повідомлення заявника про успішну заявку" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -116,6 +116,15 @@ ${sNameOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow7" name="lnu_arhiv" sourceRef="exclusivegateway3" targetRef="usertask1">
@@ -134,7 +143,7 @@ ${sNameOrgan}.&lt;br /&gt;
         </activiti:formProperty>
         <activiti:formProperty id="sStareFIO" name="Старі прізвище, ім'я на момент навчання/роботи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Адреса реєстрації;(поштовий індекс, місто, вулиця, номер дому, номер квартири)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Мобільний телефон" type="string" default="+380" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Мобільний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPeriod" name="період навчання/праці" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPosada" name="Посада" type="string" writable="false"></activiti:formProperty>
@@ -194,7 +203,7 @@ ${sNameOrgan}.&lt;br /&gt;
         </activiti:formProperty>
         <activiti:formProperty id="sStareFIO" name="Старі прізвище, ім'я на момент навчання/роботи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Адреса реєстрації;(поштовий індекс, місто, вулиця, номер дому, номер квартири)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Мобільний телефон" type="string" default="+380" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Мобільний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPeriod" name="період навчання/праці" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPosada" name="Посада" type="string" writable="false"></activiti:formProperty>
@@ -258,7 +267,7 @@ ${sNameOrgan}.&lt;br /&gt;
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asVariants == 'sEnamDok_ok_opl'}]]></conditionExpression>
     </sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
-    <serviceTask id="servicetask6" name="Заявнику все ок(квитанція)" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask6" name="Заявнику все ок(квитанція)" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -286,9 +295,16 @@ ${sNameOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno.
+Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask5" name="Завнику все ок(без квитанції)" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask5" name="Завнику все ок(без квитанції)" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -312,9 +328,19 @@ ${sNameOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno.
+Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask3" name="Відмова в наданні довідки" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask3" name="Відмова в наданні довідки" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -336,6 +362,15 @@ ${sNameOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Za Vashym zvernennyam [sID_Order] vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow5" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
@@ -350,7 +385,7 @@ ${sNameOrgan}.&lt;br /&gt;
         </activiti:formProperty>
         <activiti:formProperty id="sStareFIO" name="Старі прізвище, ім'я на момент навчання/роботи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Адреса реєстрації;(поштовий індекс, місто, вулиця, номер дому, номер квартири)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Мобільний телефон" type="string" default="+380" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Мобільний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Komment_rishenia" name="Коментар по рішенню" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asVukonan" name="Чи виконана заявка на отримання довідки" type="enum" required="true">

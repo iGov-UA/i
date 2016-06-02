@@ -102,6 +102,11 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
       var markerOptions = angular.copy(marker) || {};
       markerOptions.key = keyByMarkerName;
 
+      // TODO на бете иногда не передается $validators из-за чего форма виснет, хардкод
+      if(!formField.$validators) {
+        return true
+      }
+
       formField.$validators[keyByMarkerName] = self.getValidatorByName(markerName, markerOptions, formField);
 
       // ...і проводимо першу валідацію, якщо треба
@@ -140,7 +145,8 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
     DateElapsed_1: 'dateofbirth',
     CustomFormat: 'CustomFormat',
     FileSign: 'FileSign',
-    FileExtensions: 'FileExtensions'
+    FileExtensions: 'FileExtensions',
+    FieldNotEmptyAndNonZero: 'FieldNotEmptyAndNonZero'
   };
 
   /**
@@ -725,7 +731,26 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
         options.lastError = self.interpolateMarkerMessage(options, "{", "}") || 'Недопустимий формат файлу! Повинно бути: ' + options.saExtension + '!';
       }
       return bValid;
+    },
+    
+    
+    /**
+     Логика: Не ипустота и не ноль
+     */
+    'FieldNotEmptyAndNonZero': function (sValue) {
+
+      if (!sValue) {
+        return false;
+      }
+
+      var bValid = true;
+      bValid = bValid && (sValue !== null);
+      bValid = bValid && (sValue.trim() !== "0");
+ 
+      return bValid;
     }
+    
+    
   };
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

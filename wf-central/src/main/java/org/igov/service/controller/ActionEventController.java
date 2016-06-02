@@ -252,13 +252,8 @@ public class ActionEventController {
 
         Map<String, Long> m = new HashMap<>();
         Long nOpened = (long) 0;
-        if(sID_UA != null){
-            if(sID_UA.equals("null")){
-                sID_UA = null;
-            }
-        }
 
-        List<HistoryEvent_Service> aHistoryEvent_Service = historyEventServiceDao.getOrdersHistory(nID_Subject, nID_Service, sID_UA, nLimit);
+        List<HistoryEvent_Service> aHistoryEvent_Service = historyEventServiceDao.getOrdersHistory(nID_Subject, nID_Service, sID_UA);
 
         for (HistoryEvent_Service oHistoryEvent_Service : aHistoryEvent_Service) {
             nOpened++;

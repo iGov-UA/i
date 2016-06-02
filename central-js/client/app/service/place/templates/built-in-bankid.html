@@ -95,7 +95,7 @@
       <div class="col-md-12">
         <div class="highlight">
           <form name="form" novalidate>
-            <div class="clearfix" ng-if="selfOrdersCount.nOpened > 0">
+            <div class="clearfix" ng-if="oServiceData.oPlace">
                 <a class="pull-right" ng-hide="paramsBackup !== null" href ng-click="fillSelfPrevious()">Заповнити даними попередньої заявки</a>
                 <a class="pull-right" ng-hide="paramsBackup === null" href ng-click="fillSelfPreviousBack()">Відмінити авто-заповнені дані</a>
             </div>
@@ -391,6 +391,7 @@
                 <div ng-message="CodeMFO">Такого коду банку не існує - (ви не можете вписувати літери)</div>
                 <div ng-message="FileSign">Підпис не валідний або відсутній</div>
                 <div ng-message="FileExtensions">{{ form[property.id].lastErrorMessage }}</div>
+                <div ng-message="FieldNotEmptyAndNonZero">Поле повинно бути заповнене валідним значенням</div>
               </div>
             </div>
             <div class="row">
