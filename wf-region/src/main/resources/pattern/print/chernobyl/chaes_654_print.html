@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html>
+  <head lang="ua">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Соц захист</title>
+    <style type="text/css">
+
+      body div.PrintFormClaim {
+        font-size: 12pt;
+        font-family: "Times New Roman";
+        padding: 1cm 1.5cm 1cm 2.5cm;
+        width: 21cm;
+        min-height: 100%;
+        height: 100%;
+      }
+
+      div.PrintFormClaim div {  
+        margin-top: 6pt;
+      }
+
+      div.PrintFormClaim u{
+        padding: 0 10px;
+      }
+
+      /* Подчеркивание с отступами не подходит для  */
+      div.PrintFormClaim em{
+        padding: 0 15px;
+        font-style: normal;
+        border-bottom: 1px  solid  black;  
+      } /* Отменяем подчеркивание у ссылки */
+
+
+      .whomBlock {
+        text-align: juice;
+      }
+
+      .whoBlock {
+        text-align: juice;
+      }
+
+      .claimBlock {
+        text-align: center;
+        margin-top: 6pt;
+        letter-spacing: 4px;
+        font-size: 14pt;
+        font-weight: 600;
+      }
+
+      .smallText {
+        font-size: 12px;  
+        line-height: 1.1;
+      }
+
+      div.PrintFormClaim table {
+        align-self: center;
+      }
+
+      div.PrintFormClaim td.bb {
+        border: 0px solid black;
+        border-bottom: 1px solid black;
+      }
+
+      div.PrintFormClaim td.notb {
+        border: 0px solid black;
+      }
+
+      div.PrintFormClaim td {
+        border: 1px solid black;
+        text-align:justify;
+      }
+
+      div.PrintFormClaim table {
+        align-self: center;
+        border-collapse: collapse; /* Отображать двойные линии как одинарные */
+      }
+
+      div.PrintFormClaim th {
+        border: 1px solid black;
+      }
+
+
+      .under_multifield{ /* Мой кейс, многострочный текст*/
+        border-bottom: 1px solid black;
+        text-align: justify;
+        clear: both;  
+      }
+      .under_multifield>b{
+        float: left;
+        padding: 0 10px 0 0;
+        font-weight: normal;
+        position: relative;
+        bottom: -3;
+        background-color: white;
+      }
+      .under_multifield>u{  
+        padding: 0 10px;
+        text-decoration: none; 
+        border-bottom: 1px  solid  black;
+        position: relative;
+        bottom: -2px;  
+        line-height: 125%;
+
+      }
+
+      .under_field { /* Блок с подписью */
+        margin: 0 0 15px 0;
+        border-bottom: 1px solid black;
+        position: relative;
+        display: inline-block;
+        clear: both;
+      }
+
+      .under_field>b { /*если не надо подчеркивать*/
+        padding: 0 10px 0 0;
+        font-weight: normal;
+        background: white;
+        display: inline-block;
+        position: relative;
+        left: 0;
+        font-style: normal;
+        bottom: -1;
+        background-color: white;
+      }
+
+      /*если надо подчеркнуть*/
+      .under_field>u { 
+        padding: 0 10px;
+        text-decoration: none; 
+        background: white;
+        display: inline-block;
+        position: relative;
+        left: 0;  
+      }
+
+      /*текст снизу*/
+      .under_field>span { 
+        position: absolute;
+        left: 0;
+        right: 0;
+        text-align: center;
+        color: #606060;
+        bottom: -16px;
+        font-size: 11px;
+      }
+      
+
+      /* линия отреза */
+      .lineCut{
+        border-bottom: 2px dashed  #000;
+      }
+      .lineCut>span{
+        bottom: 10px; 
+        background: white;
+        float: left; 
+        position: relative; 
+      }
+
+      /*чек-боксы*/
+      .check_box {
+        width: 22px; 
+        height: 22px; 
+        border: 1px solid #000; 
+        margin: 0 10px 0 5px;
+        display: inline-block;
+        text-align: center;
+      }
+      .text_box {height: 25px; 
+        border: 1px solid #000;  
+        margin-left: 5px;
+        display: inline-block; 
+        line-height: 23px; 
+      }
+
+      
+      /* номер дела, ярлык */
+      .numBusines {
+        border: 1px solid #000000;
+        margin-top: 25px;
+        float: right;
+      }
+
+      .numBusines>div{
+        height: 20px;
+        margin-right: 5px;
+        margin-left: 5px;
+        border-bottom: 1px solid black; 
+        position: relative; 
+        display: block;  
+      }
+
+      .numBusines>div>i {
+        height: 21px;   
+        left: 0;
+        padding-right: 5px; 
+        background: white; 
+        display: inline-block; 
+        position: relative;
+        font-style: normal;
+      }
+
+      .numBusines>div>span {
+        position: absolute; 
+        left: 0; 
+        right: 0; 
+        text-align: center; 
+        color: #606060; 
+        bottom: -16px; 
+        font-size: 11px;
+      }
+
+      .m-b-5 {margin-bottom: 5px;}
+      .m-b-30 {margin-bottom: 30px;}
+
+      .clear {clear: both;}
+      
+      
+
+      /* организация колонок */
+      .layout {
+        overflow: hidden;
+      }
+
+      .layout DIV {
+        float: left;
+        margin: 1%;
+      }
+      
+      /* выравнивание текста */
+      div.PrintFormClaim .ta-l { text-align: left;}
+      div.PrintFormClaim .ta-j { text-align: justify;}
+      div.PrintFormClaim .ta-r { text-align: right;}
+      div.PrintFormClaim .ta-c { text-align: center;}
+
+      /* ширина в процентах */            
+      .w1p {width: 1%;}      
+      .w4p {width: 4%;}      
+      .w60p {width: 60%;}
+      .w30p { width: 30%;}
+      .w33p { width: 33%;}      
+      .w100p { width: 100%;}
+
+      /* ширина */
+      .w50 {	width: 50px;}
+      .w100 {	width: 100px;}
+      .w150 {	width: 150px;}
+      .w200 {	width: 200px;}
+      .w250 {	width: 250px;}
+      .w300 {	width: 300px;}
+      .w350 {	width: 350px;}
+      .w450 {	width: 450px;}
+      .w400 {	width: 400px;}
+      .w500 {	width: 500px;}
+
+      /* отступ  */
+      .pl-25 { padding-left: 25px;}
+      .pl-50 { padding-left: 50px;}
+      .pl-75 { padding-left: 75px;}
+      .pl-100 { padding-left: 100px;}
+      .pl-150 { padding-left: 150px;}
+      .pl-200 { padding-left: 200px;}
+      .pl-250 { padding-left: 250px;}
+      .pl-300 { padding-left: 300px;}
+
+      .ml-5{ margin-left: 5cm;}
+      .ml-6{ margin-left: 6cm;}
+      .ml-7{ margin-left: 7cm;}
+      .ml-8{ margin-left: 8cm;}
+      .ml-9{ margin-left: 9cm;}
+      .ml-10{ margin-left: 10cm;}
+      .ml-11{ margin-left: 11cm;}
+      .ml-12{ margin-left: 12cm;}
+      .ml-13{ margin-left: 13cm;}
+      .ml-14{ margin-left: 14cm;}
+
+
+
+      /* междустрочные интервалы */
+      .line0 { line-height: 0; }
+      .line05 { line-height: 0.5;}
+      .line1 { line-height: 1;}
+      .line15 { line-height: 1.5;}
+      .line2 { line-height: 2;}
+      .line25 { line-height: 2.5;}
+      .line3 { line-height: 3;}
+
+      /*отступы по горизонтали*/
+      .pg-25 { padding: 0 25px;}
+      .pg-50 { padding: 0 50px;}
+      .pg-75 { padding: 0 75px;}
+      .pg-100 { padding: 0 100px;}
+
+      /* Форматирование текста*/
+      .i{font-style: italic;}
+      .b{font-weight: 600;}
+      .u{text-decoration: underline;}
+      .ub{border-bottom: 1px solid #000;}
+
+
+      .test{ border: 1px solid red;}
+
+    </style>
+  </head>
+  <body>
+    <div class="PrintFormClaim">
+
+      <!-- Приложение 1  ********  Для   -->
+
+      <div class="whomBlock ml-12">
+        <b>ЗАТВЕРДЖЕНО</b>  <br/>
+        Наказ Міністерства соціальної політики
+        України від 21 квітня 2015 № 441
+      </div>
+      <div class="whoBlock">
+        <div>Заповнюється: заявником /уповноваженим представником/</div>
+        <div>До органу праці та соціального захисту населення [sNameOrgan]
+          <div class="under_multifield">
+            <b>від</b><u>[sClFIO]</u>
+          </div>
+        </div>
+        <div class="under_multifield">
+          <b>зареєстрований за адресою:</b><u>[bankIdAdressFactual]</u>
+        </div>
+        <div class="under_multifield">
+          <b>проживаю за адресою:</b><u>[sAdressFactual]</u>
+        </div>
+        <div class="ta-J">
+          контактний телефон <em>[phone]</em>, паспорт:<em>[sPassportSeria]</em> серія №<em>[sPassportNumber]</em>,
+          виданий <em>[sPassportIssuedBy] [dPassportDate]</em> 
+          реєстраційний номер облікової картки платника податків 
+          або серія та номер паспорта з відміткою про відмову 
+          від прийняття такого номера <em>[bankIdinn]</em>
+          дата народження <em>[bankIdbirthDay]р.</em>
+        </div>        
+        <div class="ta-J">
+          звернення:
+          первинне<span class="check_box">&#160;<span id="spanFirst">&#10004;</span></span>
+          вторинне<span class="check_box">&#160;<span id="spanSecond">&#10004;</span></span>
+          номер основної особової справи <span class="text_box w150">&#160;</span>
+        </div>
+      </div> 
+      <div>
+        <div class="numBusines w200">
+          <div class="m-b-5"><i style="font-size: 22px;">№</i></div>
+          <div class="m-b-30"><span>(дата реєстрації заяви)</span></div>
+        </div>        
+        <div class="clear"></div>        
+      </div>
+      <div class="claimBlock">ЗАЯВА</div>
+      <div class="ta-c b">
+        про призначення усіх видів соціальної допомоги, компенсацій та пільг <br>
+        Прошу призначити (перерахувати) (потрібне підкреслити)
+      </div>
+      <div class="ta-j">
+        <table>
+          <col style="width: 95%">
+          <col style="width: 5%;">
+          <tr>
+            <td class="b" colspan="2">1. Державну допомогу сім'ям з дітьми, а саме:</td>
+          </tr>
+          <tr>
+            <td>допомогу у зв'язку з вагітністю та пологами</td>
+            <td>&#160;</td>
+          </tr>
+          <tr>
+            <td>допомогу при народженні дитини</td>
+            <td>&#160;</td>
+          </tr>
+          <tr>
+            <td>допомогу при усиновленні дитини</td>
+            <td>&#160;</td>
+          </tr>
+          <tr>
+            <td>допомогу' на дітей, над якими встановлено опіку чи піклування</td>
+            <td>&#160;</td>
+          </tr>
+          <tr>
+            <td>допомогу на дітей одиноким матерям</td>
+            <td>&#160;</td>
+          </tr>
+          <tr>
+            <td class="b">2. Державну соціальну допомогу малозабезпеченим сім'ям</td>
+            <td>&#160;</td>
+          </tr>
+          <tr>
+            <td class="b" colspan="2">3. Державну соціальну допомогу інвалідам 
+              з дитинства та дітям-інвалідам, а саме:</td>
+          </tr>
+          <tr>
+            <td>допомогу інвалідам з дитинства І групи</td>
+            <td>&#160;</td>
+          </tr>
+          <tr>
+            <td>допомогу інвалідам з дитинства II групи</td>
+            <td>&#160;</td>
+          </tr>
+          <tr>
+            <td>допомогу інвалідам з дитинства III групи</td>
+            <td>&#160;</td>
+          </tr>
+          <tr>
+            <td>допомогу' на дітей-інвалідів віком до 18 років</td>
+            <td>&#160;</td>
+          </tr>
+          <tr>
+            <td>надбавку на догляд за інвалідом з дитинства підгрупи АІ групи</td>
+            <td>&#160;</td>
+          </tr>
+          <tr>
+            <td>надбавку на догляд за інвалідом з дитинства підгрупи БІ групи</td>
+            <td>&#160;</td>
+          </tr>
+          <tr>
+            <td>одиноким інвалідам з дитинства II і III груп, 
+              які за висновком ЛКК закладу охорони здоров'я потребують постійного стороннього догляду</td>
+            <td>&#160;</td>
+          </tr>
+          <tr>
+            <td>надбавку на догляд за дитиною-інвалідом віком до 6 років</td>
+            <td>&#160;</td>
+          </tr>
+          <tr>
+            <td>надбавку на догляд за дитиною-інвалідом віком від 6 до 18 років</td>
+            <td>&#160;</td>
+          </tr>
+          <tr>
+            <td class="b" colspan="2">4. Державну соціальну допомогу особам, 
+              які не мають права на пенсію, та інвалідам, а саме:</td>
+          </tr>
+          <tr>
+            <td>допомогу інвалідам І групи</td>
+            <td>&#160;</td>
+          </tr>
+          <tr>
+            <td>допомогу жінкам, яким присвоєно звання України "Мати-героїня"</td>
+            <td>&#160;</td>
+          </tr>
+          <tr>
+            <td>допомогу інвалідам II групи</td>
+            <td>&#160;</td>
+          </tr>
+          <tr>
+            <td>допомогу інвалідам III групи</td>
+            <td>&#160;</td>
+          </tr>
+          <tr>
+            <td>допомогу священнослужителям, церковнослужителям</td>
+            <td>&#160;</td>
+          </tr>
+          <tr>
+            <td>допомогу особам, які досягли віку, що дає право на призначення допомоги</td>
+            <td>&#160;</td>
+          </tr>
+          <tr>
+            <td>допомогу на догляд одиноким малозабезпеченим особам, 
+              які за висновком ЛКК закладу охорони здоров'я потребують постійного 
+              стороннього догляду (крім інвалідів І групи)</td>
+            <td>&#160;</td>
+          </tr>
+          <tr>
+            <td>допомогу на догляд малозабезпеченим інвалідам підгрупи АІ групи</td>
+            <td>&#160;</td>
+          </tr>
+          <tr>
+            <td>допомогу на догляд малозабезпеченим інвалідам підгрупи БІ групи</td>
+            <td>&#160;</td>
+          </tr>
+          <tr>
+            <td class="b" colspan="2">5. Компенсаційні виплати та допомоги громадянам, 
+              які постраждали внаслідок Чорнобильської катастрофи</td>
+          </tr>
+          <tr>
+            <td>одноразову компенсацію учасникам ліквідації наслідків аварії на Чорнобильській АЕС, 
+              які стали інвалідами внаслідок Чорнобильської катастрофи</td>
+            <td class="ta-c"><span id="spanCategory5_1">&#10004;</span></td>
+          </tr>
+          <tr>
+            <td>одноразову компенсацію дітям, які стали інвалідами внаслідок Чорнобильської катастрофи</td>
+            <td class="ta-c"><span id="spanCategory5_2">&#10004;</span></td>
+          </tr>
+          <tr>
+            <td>одноразову компенсацію сім'ям, які втратили годувальника із числа осіб, 
+              віднесених до учасників ліквідації наслідків аварії на Чорнобильській АЕС 
+              та смерть яких пов'язана з Чорнобильською катастрофою</td>
+            <td class="ta-c"><span id="spanCategory5_3">&#10004;</span></td>
+          </tr>
+          <tr>
+            <td>щорічну допомогу на оздоровлення</td>
+            <td class="ta-c"><span id="spanCategory5_4">&#10004;</span></td>
+          </tr>
+          <tr>
+            <td>компенсацію вартості самостійного санаторно-курортного лікування</td>
+            <td class="ta-c"><span id="spanCategory5_5">&#10004;</span></td>
+          </tr>
+          <tr>
+            <td>компенсацію проїзду один раз на рік до будь-якого пункту України і назад автомобільним, або повітряним, 
+              або залізничним, або водним транспортом особам, віднесеним до кат.1 та 2</td>
+            <td class="ta-c"><span id="spanCategory5_6">&#10004;</span></td>
+          </tr>
+          <tr>
+            <td>компенсацію 50 (25) процентів вартості продуктів харчування за медичними (фізіологічними) нормами, 
+              встановленими Міністерством охорони здоров’я України, громадянам, які віднесені до категорій 1 та 2</td>
+            <td class="ta-c"><span id="spanCategory5_7">&#10004;</span></td>
+          </tr>
+          <tr>
+            <td>грошову компенсацію на дітей, які не харчуються в навчальних закладах, 
+              розташованих на територіях радіоактивного забруднення, 
+              та дітей, які с інвалідами внаслідок Чорнобильської катастрофи 
+              і не харчуються в навчальних закладах, 
+              а також за всі дні, коли вони не відвідували ці заклади</td>
+            <td class="ta-c"><span id="spanCategory5_8">&#10004;</span></td>
+          </tr>
+          <tr>
+            <td class="b">6. Тимчасову державну допомогу дітям</td>
+            <td>&#160;</td>
+          </tr>
+          <tr>
+            <td class="b">7. Соціальну допомогу на дітей-сиріт та дітей, 
+              позбавлених батьківського піклування, грошове забезпечення 
+              батькам-вихователям і прийомним батькам</td>
+            <td>&#160;</td>
+          </tr>
+          <tr>
+            <td class="b">8 Допомогу на догляд (щомісячну грошову допомогу малозабезпеченій особі, 
+              яка проживає разом з інвалідом І чи II групи внаслідок психічного розладу, 
+              який за висновком лікарської комісії медичного закладу потребує постійного 
+              стороннього догляду, на догляд за ним)</td>
+            <td>&#160;</td>
+          </tr>
+          <tr>
+            <td class="b">9 Компенсацію як фізичній особі, яка надає соціальні послуги</td>
+            <td>&#160;</td>
+          </tr>
+          <tr>
+            <td class="b">10 Компенсаційну виплату особі, 
+              яка здійснює догляд за інвалідом І групи або особою, яка досягла 80 р.</td>
+            <td>&#160;</td>
+          </tr>
+          <tr>
+            <td class="b">11. Грошову компенсацію замість санаторно-курортної путівки</td>
+            <td>&#160;</td>
+          </tr>
+          <tr>
+            <td class="b">12. Компенсацію вартості самостійного санаторно-курортного лікування</td>
+            <td>&#160;</td>
+          </tr>
+          <tr>
+            <td class="b">13 Пільгу на придбання твердого палива</td>
+            <td>&#160;</td>
+          </tr>
+          <tr>
+            <td class="b">14. Пільгу на придбання скрапленого газу</td>
+            <td>&#160;</td>
+          </tr>
+          <tr>
+            <td class="b">15. Одноразову винагороду жінці, якій присвоєно почесне звання України "Мати-героїня"</td>
+            <td>&#160;</td>
+          </tr>
+          <tr>
+            <td class="b">16. Одноразову матеріальну допомогу особі, яка постраждала від торгівлі людьми</td>
+            <td>&#160;</td>
+          </tr>
+          <tr>
+            <td class="b">17. Допомогу на поховання</td>
+            <td>&#160;</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="ta-j">
+        <b>До заяви відповідно до законодавства додано <em>[nDocument]</em> 
+          документів на <em>[nPage]</em> аркушах:</b> 
+      </div>
+      <div class="ta-j">
+        Прошу в разі призначення допомоги кошти готівкою перераховувати 
+      </div>
+      <div class="ta-j">
+        <span class="check_box"><span id="spanTransferPost">&#10004;</span></span>        
+        через національного оператора поштового зв'язку №<div class="under_field w200 ta-c"><u>[post_office]</u></div>;
+      </div>
+      <div class="ta-j b">
+        <span class="check_box"><span id="spanTransferBank">&#10004;</span></span>
+        на рахунок у банку №
+        <span id="spanTransferBank_3">
+          <span class="pg-75 ub">&#160;</span> 
+          МФО<span class="pg-50 ub">&#160;</span> 
+          код<span class="pg-50 ub">&#160;</span> 
+          банк<span class="pg-75 ub">&#160;</span>
+        </span>
+        <span id="spanTransferHouse_2">   
+          <em>[bank_account]</em>	
+          МФО <em>[mfo]</em> 
+          код <em>[edrpou]</em> 
+          банк <em>[bank_name]</em>
+        </span>
+      </div>
+      <div class="ta-j">
+        <span class="check_box"><span id="spanTransferHouse">&#10004;</span></span>
+        на особовий рахунок будинку-інтернату, установи (закладу), 
+        де інвалід з дитинства або дитина-інвалід
+        перебуває на повному державному утриманні №
+        <span id="spanTransferBank_2">  
+          <span class="pg-75 ub">&#160;</span> 
+          МФО<span class="pg-50 ub">&#160;</span> 
+          код<span class="pg-50 ub">&#160;</span> 
+          банк<span class="pg-75 ub">&#160;</span>
+        </span>
+        <span id="spanTransferHouse_3">   
+          <em>[bank_account]</em>	
+          МФО <em>[mfo]</em> 
+          код <em>[edrpou]</em> 
+          банк <em>[bank_name]</em>
+        </span>
+      </div>
+      <div class="ta-j i b">
+        <span class="pl-25"></span>Підтверджую відсутність змін у складі сім’ї 
+        та характеристиці житла (при повторному зверненні).
+      </div>
+      <div class="ta-j i b">
+        <span class="pl-25"></span>Я усвідомлюю, що наведені мною відомості про доходи та майно, 
+        що вплинули або могли вплинути на прийняте рішення щодо надання соціальної допомоги,
+        компенсацій та пільг, будуть перевірені згідно з чинним законодавством України.
+
+      </div>
+      <div class="ta-j i b">
+        <span class="pl-25"></span>Мене повідомлено, що в разі зміни обставин, 
+        які можуть вплинути на отримання мною соціальної допомоги, 
+        компенсації та пільг, 
+        я зобов'язуюсь повідомити органи праці та соціального захисту населення 
+      </div>
+      <div class="ta-j i b">
+        <span class="pl-25"></span>Про відмову в призначенні 
+        або припинення витати призначеної соціальної допомоги та/або повернення надміру нарахованих коштів 
+        у разі подання неповних чи недостовірних відомостей про доходи та майновий стан сім'ї мене попереджено.
+      </div>
+      <br>
+
+      <div class="layout b">
+        <div class="w50">&#160;</div>
+        <div class="w30p">
+          <div class="under_field w150">
+            <span>(підпис)</span>
+          </div>
+        </div>
+        <div class="w100">
+          &#160;
+        </div>
+        <div class="w30p">
+          <div class="under_field w150">
+            <span>(дата)</span>
+          </div></div>
+      </div>
+      <br> 
+
+      <div class="ta-j b">
+        Додаткова інформація, яка повідомляється одинокою матір'ю (підкреслити необхідне)
+      </div>
+      <table>          
+        <col style="width: 55%">
+        <col style="width: 15%">
+        <col style="width: 15%">
+        <col style="width: 15%">
+        <tr>
+          <td>
+            У шлюбі
+          </td>      
+          <td>
+            Перебувала
+          </td>     
+          <td>
+            Не перебувала
+          </td>     
+          <td>
+            Перебуваю
+          </td>
+        </tr>
+        <tr>
+          <td>
+            З особою, від якої маю дитину
+          </td>
+          <td>Проживаю</td>
+          <td>Не проживаю</td>
+          <td>&#160;</td>
+        </tr>
+        <tr>
+          <td>
+            Пенсію в разі втрати годувальника або соціальну пенсію (заповнюють лише вдови, вдівці)
+          </td>
+          <td>Отримую</td>
+          <td>Не отримую</td>
+          <td>&#160;</td>
+        </tr>
+      </table>   
+      <br/>
+      <div class="ta-j b">       
+        Інформація, яка повідомляється одержувачем державної соціальної допомоги інвалідам 
+        з дитинства та дітям-інвалідам щодо призначення пенсії в разі втрати годувальника:
+      </div>
+
+      <table>          
+        <col style="width: 80%">
+        <col style="width: 20%">
+        <tr>
+          <th>
+            Управління Пенсійного фонду, 
+            у якому перебуває на обліку одержувач допомоги
+          </th>      
+          <th>
+            Номер пенсійної справи
+          </th>
+        </tr>
+        <tr>
+          <td>&#160;</td>
+          <td>&#160;</td>
+        </tr>
+      </table>
+
+
+      <br/>
+      <div class="ta-j b">Інформація, 
+        яка повідомляється одержувачами компенсаційних виплат та допомог по догляду 
+        щодо отримання пенсій (допомог) особою, за якою здійснюється догляд:
+      </div>
+
+      <table>          
+        <col style="width: 80%">
+        <col style="width: 20%">
+        <tr>
+          <th>
+            П.І.Б., адреса, орган, у якому перебуває на обліку одержувач пенсії
+            (допомоги) (особа, за якою здійснюється догляд)
+          </th>      
+          <th>
+            Номер пенсійної справи
+          </th>
+        </tr>
+        <tr>
+          <td>&#160;</td>
+          <td>&#160;</td>
+        </tr>
+      </table>
+
+      <br/>
+      <div class="ta-j i">   
+        <span class="pl-25"></span>У випадку, якщо прийняття 
+        рішення щодо моєї заяви потребує окремого рішення 
+        місцевих органів виконавчої влади/місцевого самоврядування 
+        або утвореної ними комісії, прошу розглянути/не розглядати 
+        мою заяву відповідними місцевими органами виконавчої влади/місцевого 
+        самоврядування або утвореною ними комісією (потрібне підкреслити):
+      </div>
+      <div class="layout ta-j">         
+        <div class="w350 pl-25">
+          <div class="under_field w350">
+            <span>(підпис заявника/ уповноваженого представника сім'ї)</span>
+          </div>
+        </div>       
+        <div class=" w150"></div>       
+        <div class=" w150">
+          <div class="under_field w100p">
+            <span>(дата)
+            </span>
+          </div> &#160;
+        </div>
+      </div>
+
+      <br/>
+      <div style="border: 1px solid #000; padding: 5px">
+        <div class="ta-j">   
+          Заповнюється відповідальною особою управління праці 
+          та соціального захисту населення
+        </div>
+        <div class="ta-j">   
+          Відомості з паспорта та поданих документів звірені.
+          Заяву та документи на <em></em> аркушах прийнято
+          "___" _____________ 20___р. та зареєстровано під №
+          <span class="ub pg-100"> &#160;</span> 
+        </div>
+        <div class="under_multifield ta-j">
+          Для розгляду заяви необхідно додати до "___" _____________ 20___р. 
+          такі документи:
+          <div class="ub w100p">&#160;</div>
+          <div class="ub w100p">&#160;</div>
+          <div class="w100p">&#160;</div>
+        </div>
+        <div class="layout w100p">         
+          <div class=" w30p">
+            <div class="under_field w100p">
+              <b>Відповідальна особа</b>
+              <span>(прізвище та підпис відповідальної особи)</span>
+            </div>
+          </div>       
+          <div class=" w1p"></div>       
+          <div class=" w60p">
+            <div class="under_field w100p">
+              <b>Ознайомився</b>
+              <span>(підпис заявника / 
+                уповноваженого представника / 
+                власника, співвласника (наймача) житла)
+              </span>
+            </div> &#160;
+          </div>
+        </div>
+      </div>
+      <br/>
+      <br/>
+      <div class="lineCut"><span>&#9986;</span></div>
+      
+      
+      <br/><br/>      
+      <div style="border: 1px solid #000; padding: 5px">
+        <div class="ta-j">   
+          Заповнюється відповідальною особою управління праці 
+          та соціального захисту населення
+        </div>
+        <div class="ta-j">   
+          Відомості з паспорта та поданих документів звірені.
+          Заяву та документи на <em></em> аркушах прийнято
+          "___" _____________ 20___р. та зареєстровано під №
+          <span class="ub pg-100"> &#160;</span> 
+        </div>
+        <div class="under_multifield ta-j">
+          Для розгляду заяви необхідно додати до "___" _____________ 20___р. 
+          такі документи:
+          <div class="ub w100p">&#160;</div>
+          <div class="ub w100p">&#160;</div>
+          <div class="w100p">&#160;</div>
+        </div>
+        <div class="layout w100p">         
+          <div class=" w30p">
+            <div class="under_field w100p">
+              <b>Відповідальна особа</b>
+              <span>(прізвище та підпис відповідальної особи)</span>
+            </div>
+          </div>       
+          <div class=" w1p"></div>       
+          <div class=" w60p">
+            <div class="under_field w100p">
+              <b>Ознайомився</b>
+              <span>(підпис заявника / 
+                уповноваженого представника / 
+                власника, співвласника (наймача) житла)
+              </span>
+            </div> &#160;
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </body>
+</html>
