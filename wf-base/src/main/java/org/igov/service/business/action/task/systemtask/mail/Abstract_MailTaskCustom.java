@@ -49,6 +49,7 @@ import static org.igov.util.ToolLuna.getProtectedNumber;
 import org.igov.util.ToolWeb;
 import org.joda.time.format.DateTimeFormatter;
 import org.springframework.context.ApplicationContext;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 
@@ -562,6 +563,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
         params.put("sContacts", "0");
         params.put("sData", "0");
         params.put("sID_Order", sID_Order);
+        params.put("RequestMethod", RequestMethod.POST.name());
         LOG.info("try to save service message with params: (params={})", params);
         String jsonServiceMessage;
 		try {
