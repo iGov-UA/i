@@ -42,8 +42,6 @@
         <activiti:formProperty id="sShapkaGolova" name="шапка принтформы" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk1" name="Пошта ЦНАП" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
         <activiti:formProperty id="sFlag407" name="флаг для Новопскова" type="invisible" default="easy"></activiti:formProperty>
- <!--       
-  -->
         <activiti:formProperty id="familyStatus" name="Сімейний стан" type="markers" default="${markerService.loadFromFile('mvk/familyStatus.json')}"></activiti:formProperty> 
       </extensionElements>
     </startEvent>
@@ -98,7 +96,7 @@
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<p>
-				Ваш запит № [sID_Order] був успішно зареєстрований у нашій системі.
+				Ваш запит № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> був успішно зареєстрований у нашій системі.
 			</p>
 			<br>
 			За наявності питань можете звернутись за наступними контактами<br>
@@ -176,12 +174,15 @@
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>			
 			<p>
-				Оброблено звернення № [sID_Order].<br>
+				Оброблено звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a>.<br>
 				За даними держоргану Вам ВІДМОВЛЕНО у наданні ордера на службове жиле приміщення.
 			</p>
 			<p>
 				Коментар Державного службовця:<br>
 				<b><i>${decisionComment}</i></b>
+			</p>
+			<p>
+		    	Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/service/64/general">iGov.org.ua</a>
 			</p>
 			<br>
 			За наявності питань можете звернутись за наступними контактами<br>
@@ -224,7 +225,7 @@
 			<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br><br>
 			<p> 
 				Документи відповідають. <br>  
-				Ваше звернення № [sID_Order], щодо отримання  ордера на службове жиле приміщення успішно зареєстроване.<br>
+				Ваше звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a>, щодо отримання  ордера на службове жиле приміщення успішно зареєстроване.<br>
 				Ви отримаєте відповідь протягом тридцяти календарних днів.
 			</p>
 			<br>
@@ -305,7 +306,7 @@
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<p>
-				Оброблено звернення № [sID_Order].<br>
+				Оброблено звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a>.<br>
 				Вітаємо, Вам НАДАНО ордер на службове жиле приміщення.
 			</p>
 			<p>
