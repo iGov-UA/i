@@ -240,15 +240,15 @@ angular.module('journal').controller('JournalSearchController', function (
           if (sToken !== null) {
             oData = $.extend(oData, {sToken: sToken});
           }
-          if ($scope.aOrderMessages[0].aData) {
+          if ($scope.aField) {
             try {
-              angular.forEach($scope.aOrderMessages[0].aData, function (oField) {
+              angular.forEach($scope.aField, function (oField) {
                 if (oField.sType === "date") {
                   oField.sValueNew = oField.oFactory.value ? oField.oFactory.get() : oField.sValueNew;//.value
                   oField.oFactory = null;
                 }
               });
-              oData.saField = JSON.stringify($scope.aOrderMessages[0].aData);
+              oData.saField = JSON.stringify($scope.aField);
             } catch (sError) {
               ErrorsFactory.addFail({
                 sBody: 'Помилка сереалізації об`єкту з полями, у яких відповіді на зауваження!',
