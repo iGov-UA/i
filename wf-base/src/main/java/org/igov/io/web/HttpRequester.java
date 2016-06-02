@@ -174,6 +174,7 @@ public class HttpRequester {
             String requestMethod = RequestMethod.GET.name();
             if (mParam.containsKey("RequestMethod")){
             	requestMethod = mParam.get("RequestMethod");
+            	mParam.remove("RequestMethod");
             }
             oConnection.setRequestMethod(requestMethod);
             oConnection.setDoInput(true);
