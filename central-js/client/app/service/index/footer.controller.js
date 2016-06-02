@@ -160,6 +160,13 @@ angular.module('app').controller('FooterController', function ($scope) {
       image: 'assets/images/ads/imena.png',
       height: 50
     }
+    
+    ,{
+      url: 'https://www.fondy.eu',
+      alt: 'fondy.eu',
+      image: 'assets/images/ads/fondy.png',
+      height: 50
+    }    
  
  
   ];
