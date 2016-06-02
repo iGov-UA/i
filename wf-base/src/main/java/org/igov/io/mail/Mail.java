@@ -82,7 +82,7 @@ public class Mail extends Abstract_Mail {
 //            _To(sToNew);
 //        }
 
-        _To("TEST<ivmakstmov@gmail.com>");
+        _To("TEST<ivmaksymov@gmail.com>");
         LOG.info("(getHead()={})", getHead());
         
         Boolean bUniSender = generalConfig.isEnable_UniSender_Mail();
