@@ -3,15 +3,18 @@ package org.igov.io.mail;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.MultiPartEmail;
+import org.igov.io.GeneralConfig;
+import org.igov.io.mail.unisender.CreateCampaignRequest;
+import org.igov.io.mail.unisender.CreateEmailMessageRequest;
+import org.igov.io.mail.unisender.UniResponse;
+import org.igov.io.mail.unisender.UniSender;
+import org.igov.service.business.msg.MsgService;
+import org.igov.util.MethodsCallRunnerUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
-import org.igov.io.mail.unisender.UniResponse;
-import org.igov.io.mail.unisender.UniSender;
-import org.igov.io.mail.unisender.CreateCampaignRequest;
-import org.igov.io.mail.unisender.CreateEmailMessageRequest;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -19,7 +22,6 @@ import javax.activation.FileDataSource;
 import javax.activation.URLDataSource;
 import javax.mail.*;
 import javax.mail.internet.*;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,10 +29,6 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Properties;
-
-import org.igov.io.GeneralConfig;
-import org.igov.util.MethodsCallRunnerUtil;
-import org.igov.service.business.msg.MsgService;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -401,7 +399,7 @@ public class Mail extends Abstract_Mail {
                     .setSenderEmail(getFrom())
                     .setSubject(getHead())
                     .setBody(sBody)
-                    .setListId(String.valueOf(nID_Sender));
+                    .setListId(String.valueOf("TEST"));
 
                 try {
                     int nAttachments = oMultiparts.getCount();
