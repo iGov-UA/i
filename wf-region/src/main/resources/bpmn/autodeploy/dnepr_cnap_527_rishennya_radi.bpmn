@@ -347,7 +347,7 @@ ${sNameOrgan}&lt;br /&gt;
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow38" sourceRef="servicetask1" targetRef="servicetask7"></sequenceFlow>
     <sequenceFlow id="flow42" sourceRef="servicetask4" targetRef="usertask2"></sequenceFlow>
-    <serviceTask id="servicetask8" name="повідомлення громадянина про відхилення рішення + СМС"  activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask8" name="повідомлення громадянина про відхилення рішення + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -390,7 +390,7 @@ ${sNameOrgan}&lt;br /&gt;
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asEnum_decision_2=='decision_2_1'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow44" name="Видхилено" sourceRef="parallelgateway1" targetRef="servicetask8">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asEnum_decision_2=='accept'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asEnum_decision_2=='decision_2_2'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow45" sourceRef="servicetask8" targetRef="endevent1"></sequenceFlow>
   </process>
@@ -501,7 +501,7 @@ ${sNameOrgan}&lt;br /&gt;
         <omgdi:waypoint x="444.0" y="181.0"></omgdi:waypoint>
         <omgdi:waypoint x="381.0" y="182.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="397.0" y="166.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="37.0" x="397.0" y="166.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
