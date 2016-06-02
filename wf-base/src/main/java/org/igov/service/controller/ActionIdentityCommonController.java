@@ -144,9 +144,14 @@ public class ActionIdentityCommonController {
         for (User oUser : aoUsers) {
             Map<String, String> mUserInfo = new LinkedHashMap();
 
-            mUserInfo.put("FirstName", oUser.getFirstName() == null ? "" : oUser.getFirstName());
-            mUserInfo.put("LastName", oUser.getLastName() == null ? "" : oUser.getLastName());
-            mUserInfo.put("Email", oUser.getEmail() == null ? "" : oUser.getEmail());
+            mUserInfo.put("sLogin", oUser.getId() == null ? "" : oUser.getId());
+            mUserInfo.put("sPassword", oUser.getPassword() == null ? "" : oUser.getPassword());
+            mUserInfo.put("sFirstName", oUser.getFirstName() == null ? "" : oUser.getFirstName());
+            mUserInfo.put("sLastName", oUser.getLastName() == null ? "" : oUser.getLastName());
+            mUserInfo.put("sEmail", oUser.getEmail() == null ? "" : oUser.getEmail());
+             mUserInfo.put("FirstName", oUser.getFirstName() == null ? "" : oUser.getFirstName());
+             mUserInfo.put("LastName", oUser.getLastName() == null ? "" : oUser.getLastName());
+             mUserInfo.put("Email", oUser.getEmail() == null ? "" : oUser.getEmail());
             mUserInfo.put("Picture", null); // Временно ставим картинку null, позже будет изменение на Base64 или ссылка
             amsUsers.add(mUserInfo);
         }
