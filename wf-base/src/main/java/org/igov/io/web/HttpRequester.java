@@ -171,7 +171,12 @@ public class HttpRequester {
             String sAuth = ToolWeb.base64_encode(sUser + ":" + sPassword);
             oConnection.setRequestProperty("authorization", "Basic " + sAuth);
 
-            oConnection.setRequestMethod(RequestMethod.GET.name());
+            String requestMethod = RequestMethod.GET.name();
+            if (mParam.containsKey("RequestMethod")){
+            	requestMethod = mParam.get("RequestMethod");
+            	mParam.remove("RequestMethod");
+            }
+            oConnection.setRequestMethod(requestMethod);
             oConnection.setDoInput(true);
             oConnection.setDoOutput(true);
             nStatus = oConnection.getResponseCode();//???

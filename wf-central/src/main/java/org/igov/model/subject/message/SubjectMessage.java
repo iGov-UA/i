@@ -84,6 +84,9 @@ public class SubjectMessage extends AbstractEntity {
     @JoinColumn(name = "nID_Subject", insertable = false, updatable = false)
     @ManyToOne(fetch = FetchType.EAGER)
     private Subject oSubject;
+    
+    @JsonProperty(value = "sID_DataLink")
+    private String sID_DataLink;
 
     public String getHead() {
         return head;
@@ -183,4 +186,13 @@ public class SubjectMessage extends AbstractEntity {
     public void setsSubjectInfo(String sSubjectInfo) {
         this.sSubjectInfo = sSubjectInfo;
     }
+
+	public String getsID_DataLink() {
+		return sID_DataLink;
+	}
+
+	public void setsID_DataLink(String sID_DataLink) {
+		this.sID_DataLink = sID_DataLink;
+	}
+    
 }
