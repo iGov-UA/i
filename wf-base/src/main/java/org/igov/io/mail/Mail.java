@@ -451,7 +451,7 @@ public class Mail extends Abstract_Mail {
                     LOG.info("(oUniResponse_CreateCampaign={})", oUniResponse_CreateCampaign);
 
                 } else {
-                    throw new EmailException("error while email cration " + oUniResponse_CreateEmailMessage.getError());
+                    throw new EmailException("error while email creation " + oUniResponse_CreateEmailMessage.getError());
                 }
             }
         } catch (Exception oException) {
