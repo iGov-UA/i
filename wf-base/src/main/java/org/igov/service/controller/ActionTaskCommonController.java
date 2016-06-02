@@ -1,10 +1,8 @@
 package org.igov.service.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-
 import io.swagger.annotations.*;
 import liquibase.util.csv.CSVWriter;
-
 import org.activiti.engine.*;
 import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.FormProperty;
@@ -62,7 +60,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.activation.DataSource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import java.io.*;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;

@@ -37,4 +37,8 @@ public final class JsonRequestDataResolver {
     public static String getBankIdFirstName(JSONObject requestJson) throws ParseException {
         return getProperties(requestJson).get("bankIdfirstName");
     }
+
+    public static String getBankIdLastName(JSONObject requestJson) throws ParseException {
+        return getProperties(requestJson).get("bankIdlastName");
+    }
 }
