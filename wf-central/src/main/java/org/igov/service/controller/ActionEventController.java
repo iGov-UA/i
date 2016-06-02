@@ -237,7 +237,14 @@ public class ActionEventController {
      return oHistoryEvent_Service;
      }
 
-    @ApiOperation(value = "Определения числа заявок по определенной услуге в рамках места и в отношении определенного субьекта", notes = "Нет описания")
+    @ApiOperation(value = "Определения числа заявок по определенной услуге в рамках места и в отношении определенного субьекта", notes =
+            "Возвращает:\\n\\n\"\n" +
+            "     + \"\\n```json\\n\"\n" +
+            "     + \"{\\n\"\n" +
+            "     + \"  \\\"nOpened\\\": \\\"количество открытых заявок\\\",\\n\"\n" +
+            "     + \"  \\\"bIsLimitReached\\\": \\\"0 - если лимит по открытым заявкам не достигнут; 1 - лостигнут лимит\\\"\\n\"\n" +
+            "     + \"}\\n\"\n" +
+            "     + \"\\n```\\n\"")
     @ApiResponses(value = {
         @ApiResponse(code = 500, message = "Record not found")})
     @RequestMapping(value = "/getCountOrders", method = RequestMethod.GET)
@@ -250,16 +257,33 @@ public class ActionEventController {
             @ApiParam(value = "Булевый, true исключает закрытые из подсчета", required = false) @RequestParam(value = "bExcludeClosed", required = false, defaultValue = "false") Boolean bExcludeClosed)
             throws CommonServiceException {
 
-        Map<String, Long> m = new HashMap<>();
+        Map<String, Object> m = new HashMap<>();
         Long nOpened = (long) 0;
-        List<HistoryEvent_Service> aHistoryEvent_Service = historyEventServiceDao.getOrdersHistory(nID_Subject, nID_Service, sID_UA, nLimit);
+        Long nClosed = (long) 0;
+
+        List<HistoryEvent_Service> aHistoryEvent_Service = historyEventServiceDao.getOrdersHistory(nID_Subject, nID_Service, sID_UA);
+
         for (HistoryEvent_Service oHistoryEvent_Service : aHistoryEvent_Service) {
             nOpened++;
-            if (bExcludeClosed || oHistoryEvent_Service.getsUserTaskName().startsWith("Заявка закрита")) {
-                nOpened--;
+            if (oHistoryEvent_Service.getsID_StatusType().toLowerCase().startsWith("closed")
+                    || oHistoryEvent_Service.getsID_StatusType().toLowerCase().startsWith("removed")
+                    ) {
+                nClosed++;
             }
         }
-        m.put("nOpened", nOpened);
+
+        Long result = nOpened - nClosed;
+        if(bExcludeClosed){
+            m.put("nOpened", result);
+        } else {
+            m.put("nOpened", nOpened);
+        }
+
+        if(nLimit == 0 || result < nLimit){
+            m.put("bIsLimitReached", false); //false
+        } else {
+            m.put("bIsLimitReached", true); //true
+        }
         return JSONValue.toJSONString(m);
 
     }
@@ -569,6 +593,7 @@ public class ActionEventController {
 		            JSONObject json = (JSONObject) new JSONParser().parse(osResponseEntityReturn.getBody());
 		            // sPhone
 		            line.add(json.get("phone") != null ? json.get("phone").toString() : "");
+                    // nID_ServiceData
                     line.add(historyEventService.getnID_ServiceData() != null ? historyEventService.getnID_ServiceData().toString() : "");
 
 		            csvWriter.writeNext(line.toArray(new String[line.size()]));
@@ -579,6 +604,4 @@ public class ActionEventController {
 			LOG.error("Error occurred while creating CSV file {}", e.getMessage());
 		} 
     }
-    //test
-    //test2
 }

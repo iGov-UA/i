@@ -37,7 +37,7 @@ var createUploadProxy = function() {
 var getRequestURL = function(options) {
   //console.log('getRequestURL options:' + angular.toString(options));
         console.log('getRequestURL options:' + JSON.stringify(options));
-        
+
 	 var requestURL = url.format({
 		protocol: config.activiti.prot,
 		hostname: config.activiti.host,
@@ -52,8 +52,8 @@ var getRequestURL = function(options) {
         console.log('config.activiti.prot=' + config.activiti.prot);
         console.log('config.activiti.host=' + config.activiti.host);
         console.log('path=' + '/' + (options.root || config.activiti.rest) + '/' + options.path);
-        
-	//console.log('getRequestURL requestURL:' + angular.toString(requestURL));
+
+  //console.log('getRequestURL requestURL:' + angular.toString(requestURL));
 	console.log('getRequestURL requestURL:' + JSON.stringify(requestURL));
 	return requestURL;
 };

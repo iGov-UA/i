@@ -145,7 +145,8 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
     DateElapsed_1: 'dateofbirth',
     CustomFormat: 'CustomFormat',
     FileSign: 'FileSign',
-    FileExtensions: 'FileExtensions'
+    FileExtensions: 'FileExtensions',
+    FieldNotEmptyAndNonZero: 'FieldNotEmptyAndNonZero'
   };
 
   /**
@@ -730,7 +731,31 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
         options.lastError = self.interpolateMarkerMessage(options, "{", "}") || 'Недопустимий формат файлу! Повинно бути: ' + options.saExtension + '!';
       }
       return bValid;
+    },
+    
+    
+    /**
+     Логика: Не ипустота и не ноль
+     */
+    'FieldNotEmptyAndNonZero': function (sValue) {
+      console.log("[FieldNotEmptyAndNonZero]sValue=" + sValue);
+
+      if (!sValue) {
+        return false;
+      }
+
+      var bValid = true;
+      bValid = bValid && (sValue !== null);
+      console.log("[FieldNotEmptyAndNonZero](1)bValid=" + bValid);
+      bValid = bValid && (sValue!==null && sValue.trim() !== "");
+      console.log("[FieldNotEmptyAndNonZero](2)bValid=" + bValid);
+      bValid = bValid && (sValue!==null && sValue.trim() !== "0");
+      console.log("[FieldNotEmptyAndNonZero](3)bValid=" + bValid);
+ 
+      return bValid;
     }
+    
+    
   };
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

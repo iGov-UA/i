@@ -66,6 +66,8 @@ public class SubjectMessageService {
             sHead = "Запитання/коментар клієнта по заяві " + sID_Order;
         } else if (nID_SubjectMessageType == 9l) {
             sHead = "Выдповідь/коментар роюітника по заяві " + sID_Order;
+        } else if (nID_SubjectMessageType == 9l) {
+            sHead = "Отправлено письмо";
         }
 
         return sHead;

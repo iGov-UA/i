@@ -2,6 +2,7 @@ package org.igov.service.controller;
 
 import io.swagger.annotations.*;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.hibernate.Criteria;
 import org.igov.io.GeneralConfig;
 import org.igov.model.action.event.HistoryEvent_Service;
 import org.igov.model.action.event.HistoryEvent_ServiceDao;
@@ -12,8 +13,10 @@ import org.igov.service.business.msg.MsgSend;
 import org.igov.service.business.msg.MsgSendImpl;
 import org.igov.service.business.msg.MsgService;
 import org.igov.service.business.subject.SubjectMessageService;
+import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.util.JSON.JsonRestUtils;
+import org.json.simple.JSONValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -308,7 +311,25 @@ public class DebugCentralController {
             );
         }
         return Long.valueOf(0+"");//subjectMessages
-    }        
+    }
+
+    @RequestMapping(value="/action/event/getEventInfoByOrderID", method = {RequestMethod.GET})
+    public @ResponseBody String getEventInfoByOrderID(@RequestParam(value = "sID_Order", required = true) String sID_Order) throws CRCInvalidException {
+
+        Map<String, Object> result = new HashMap<>();
+
+        HistoryEvent_Service obj = historyEventServiceDao.getOrgerByID(sID_Order);
+
+        result.put("sID_Order", obj.getsID_Order());
+        result.put("nID_Task", obj.getnID_Task());
+        result.put("nID_Service", obj.getnID_Service());
+        result.put("nID_Subject", obj.getnID_Subject());
+        result.put("sID_UA", obj.getsID_UA());
+        result.put("sUserTaskName", obj.getsUserTaskName());
+        result.put("sID_StatusType", obj.getsID_StatusType());
+
+        return JSONValue.toJSONString(result);
+    }
     
 
 }
