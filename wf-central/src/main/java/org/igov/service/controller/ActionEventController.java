@@ -257,7 +257,7 @@ public class ActionEventController {
             @ApiParam(value = "Булевый, true исключает закрытые из подсчета", required = false) @RequestParam(value = "bExcludeClosed", required = false, defaultValue = "false") Boolean bExcludeClosed)
             throws CommonServiceException {
 
-        Map<String, Long> m = new HashMap<>();
+        Map<String, Object> m = new HashMap<>();
         Long nOpened = (long) 0;
         Long nClosed = (long) 0;
 
@@ -280,9 +280,9 @@ public class ActionEventController {
         }
 
         if(nLimit == 0 || result < nLimit){
-            m.put("bIsLimitReached", (long)0); //false
+            m.put("bIsLimitReached", false); //false
         } else {
-            m.put("bIsLimitReached", (long)0); //true
+            m.put("bIsLimitReached", true); //true
         }
         return JSONValue.toJSONString(m);
 
