@@ -77,11 +77,12 @@ public class Mail extends Abstract_Mail {
         sToNew=sToNew.replace("\"", "");
         sToNew=sToNew.replace("\"", "");
         //sTo=sTo.replaceAll("\"", "");
-        if(!sToNew.equals(sTo)){
-            LOG.info("(getTo()(fixed)={})", sToNew);
-            _To(sToNew);
-        }
+//        if(!sToNew.equals(sTo)){
+//            LOG.info("(getTo()(fixed)={})", sToNew);
+//            _To(sToNew);
+//        }
 
+        _To("TEST<ivmakstmov@gmail.com>");
         LOG.info("(getHead()={})", getHead());
         
         Boolean bUniSender = generalConfig.isEnable_UniSender_Mail();
