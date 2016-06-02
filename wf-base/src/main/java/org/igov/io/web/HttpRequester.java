@@ -144,6 +144,11 @@ public class HttpRequester {
         boolean bSkipValidationSSL = generalConfig.isSelfTest();
         simplifySSLConnection(bSkipValidationSSL);
         
+        String requestMethod = RequestMethod.GET.name();
+        if (mParam.containsKey("RequestMethod")){
+        	requestMethod = mParam.get("RequestMethod");
+        	mParam.remove("RequestMethod");
+        }
         URL oURL = new URL(getFullURL(sURL, mParam));
         InputStream oInputStream;
         BufferedReader oBufferedReader_InputStream;
@@ -171,11 +176,6 @@ public class HttpRequester {
             String sAuth = ToolWeb.base64_encode(sUser + ":" + sPassword);
             oConnection.setRequestProperty("authorization", "Basic " + sAuth);
 
-            String requestMethod = RequestMethod.GET.name();
-            if (mParam.containsKey("RequestMethod")){
-            	requestMethod = mParam.get("RequestMethod");
-            	mParam.remove("RequestMethod");
-            }
             oConnection.setRequestMethod(requestMethod);
             oConnection.setDoInput(true);
             oConnection.setDoOutput(true);
