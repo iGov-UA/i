@@ -110,10 +110,9 @@
         <activiti:formProperty id="sPhoneOrgan" name="телефон для справок" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адрес органа" type="invisible"></activiti:formProperty>
 
-        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk1" name="Пошта ЦНАП" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
         
-        
-        <activiti:formProperty id="marker_StartTask" name="Дітям" type="markers" default="${markerService.loadFromFile('сhernobyl/kalanchanska_rda_492_StartTask.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="Дітям" type="markers" default="${markerService.loadFromFile('сhernobyl/kalanchanska_rda_492_StartTask.json')}"></activiti:formProperty>
 
       </extensionElements>
     </startEvent>
@@ -130,7 +129,7 @@
           <activiti:expression><![CDATA[noreply@igov.org.ua]]></activiti:expression>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
+          <activiti:expression><![CDATA[${sMailClerk1}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression><![CDATA[Нове звернення на порталі igov.org.ua на тему: Видача довідки громадянам, які постраждали внаслідок Чорнобильської катастрофи]]></activiti:expression>
@@ -191,7 +190,7 @@
 
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdAdressFactual" name="Адреса (місце реєстрації)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
         
         <activiti:formProperty id="asDocumentTarget" name="Довідка для посвідчення" type="enum" writable="false">
