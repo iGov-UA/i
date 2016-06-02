@@ -738,7 +738,6 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
      Логика: Не ипустота и не ноль
      */
     'FieldNotEmptyAndNonZero': function (sValue) {
-      console.log("[FieldNotEmptyAndNonZero]sValue=" + sValue);
 
       if (!sValue) {
         return false;
@@ -746,11 +745,7 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
 
       var bValid = true;
       bValid = bValid && (sValue !== null);
-      console.log("[FieldNotEmptyAndNonZero](1)bValid=" + bValid);
-      bValid = bValid && (sValue!==null && sValue.trim() !== "");
-      console.log("[FieldNotEmptyAndNonZero](2)bValid=" + bValid);
-      bValid = bValid && (sValue!==null && sValue.trim() !== "0");
-      console.log("[FieldNotEmptyAndNonZero](3)bValid=" + bValid);
+      bValid = bValid && (sValue.trim() !== "0");
  
       return bValid;
     }
