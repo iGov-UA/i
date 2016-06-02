@@ -237,7 +237,14 @@ public class ActionEventController {
      return oHistoryEvent_Service;
      }
 
-    @ApiOperation(value = "Определения числа заявок по определенной услуге в рамках места и в отношении определенного субьекта", notes = "Нет описания")
+    @ApiOperation(value = "Определения числа заявок по определенной услуге в рамках места и в отношении определенного субьекта", notes =
+            "Возвращает:\\n\\n\"\n" +
+            "     + \"\\n```json\\n\"\n" +
+            "     + \"{\\n\"\n" +
+            "     + \"  \\\"nOpened\\\": \\\"количество открытых заявок\\\",\\n\"\n" +
+            "     + \"  \\\"bIsLimitReached\\\": \\\"0 - если лимит по открытым заявкам не достигнут; 1 - лостигнут лимит\\\"\\n\"\n" +
+            "     + \"}\\n\"\n" +
+            "     + \"\\n```\\n\"")
     @ApiResponses(value = {
         @ApiResponse(code = 500, message = "Record not found")})
     @RequestMapping(value = "/getCountOrders", method = RequestMethod.GET)
@@ -252,19 +259,31 @@ public class ActionEventController {
 
         Map<String, Long> m = new HashMap<>();
         Long nOpened = (long) 0;
+        Long nClosed = (long) 0;
 
         List<HistoryEvent_Service> aHistoryEvent_Service = historyEventServiceDao.getOrdersHistory(nID_Subject, nID_Service, sID_UA);
 
         for (HistoryEvent_Service oHistoryEvent_Service : aHistoryEvent_Service) {
             nOpened++;
-            if (bExcludeClosed
-                    && (oHistoryEvent_Service.getsID_StatusType().toLowerCase().startsWith("closed")
-                    || oHistoryEvent_Service.getsID_StatusType().toLowerCase().startsWith("removed"))
+            if (oHistoryEvent_Service.getsID_StatusType().toLowerCase().startsWith("closed")
+                    || oHistoryEvent_Service.getsID_StatusType().toLowerCase().startsWith("removed")
                     ) {
-                nOpened--;
+                nClosed++;
             }
         }
-        m.put("nOpened", nOpened);
+
+        Long result = nOpened - nClosed;
+        if(bExcludeClosed){
+            m.put("nOpened", result);
+        } else {
+            m.put("nOpened", nOpened);
+        }
+
+        if(nLimit == 0 || result < nLimit){
+            m.put("bIsLimitReached", (long)0); //false
+        } else {
+            m.put("bIsLimitReached", (long)0); //true
+        }
         return JSONValue.toJSONString(m);
 
     }
