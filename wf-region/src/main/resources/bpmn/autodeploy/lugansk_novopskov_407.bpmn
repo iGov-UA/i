@@ -11,30 +11,30 @@
         <activiti:formProperty id="bankIdAdressFactual" name="Адреса (місце реєстрації)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file2" name="Заява на видачу ордера" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file3" name="Акт обстеження житлових умов" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file4" name="Довідка про склад сім'ї" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileAppOrder" name="Заява на видачу ордера" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileActLivingConditions" name="Акт обстеження житлових умов" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileFamilyMembers" name="Довідка про склад сім'ї" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="asIsWork" name="Вы працюєте?" type="enum" required="true">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="no" name="Ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="file5" name="Довідка з місця роботи про працевлаштування" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file5_1" name="Довідки з  ЖЕКу для не працевлаштованих (на всіх повнолітніх членів сім’ї)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileCertificateEmployment" name="Довідка з місця роботи про працевлаштування" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileHousingDepartment" name="Довідки з  ЖЕКу для не працевлаштованих (на всіх повнолітніх членів сім’ї)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="merried" name="Оберіть, будь ласка, свій сімейний стан" type="enum" required="true">
           <activiti:value id="Enum1" name="Одруженний(-а)"></activiti:value>
           <activiti:value id="Enum2" name="Неодруженний(-а)"></activiti:value>
           <activiti:value id="Enum3" name="Розлучений(-а)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="file8" name="Копії паспортів на всіх членів сім'ї (1,2,10 стр); якщо копій більше ніж одна, то запакуйте в архів *.zip" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileCopyPasspots" name="Копії паспортів на всіх членів сім'ї (1,2,10 стр); якщо копій більше ніж одна, то запакуйте в архів *.zip" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Паспорт громадянина" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file6" name="Копія свідоцтва про одруження" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file9" name="Копія свідоцтва про розлучення" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileMerried" name="Копія свідоцтва про одруження" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileNotMerried" name="Копія свідоцтва про розлучення" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="child" name="Чи маєте Ви неповнолітніх дітей?" type="enum" required="true">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="no" name="Ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="file7" name="Копія свідоцтв про народження дітей; якщо копій більше ніж одна, то запакуйте в архів *.zip" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file1" name="Рішення підприємства про закріплення службового житла за працівником" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFileBirthCertificates" name="Копія свідоцтв про народження дітей; якщо копій більше ніж одна, то запакуйте в архів *.zip" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileDecisionHousingForEmployee" name="Рішення підприємства про закріплення службового житла за працівником" type="file"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="название органа в подписи письма" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="график работы" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для справок" type="invisible"></activiti:formProperty>
@@ -142,7 +142,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${file1},${file2},${file3},${file4},${file5},{file5_1},${file6},${file7},${file8},${file9},${bankId_scan_passport}</activiti:expression>
+            <activiti:expression>${nFileAppOrder},${nFileActLivingConditions},${nFileFamilyMembers},${nFileCertificateEmployment},{nFileHousingDepartment},${nFileMerried},${nFileBirthCertificates},${nFileCopyPasspots},${nFileNotMerried},${bankId_scan_passport},${nFileDecisionHousingForEmployee}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -265,9 +265,10 @@
         <activiti:formProperty id="decisionComment" name="Коментар до рішення; Наприклад, пояснення чому громадянину було відмовлено в наданні згоди &lt;br /&gt; АБО &lt;br /&gt; Деталі отримання документу" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sShapkaGolova" name="шапка принтформы" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/architecture/zayava_407.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
+
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${file1},${file2},${file3},${file4},${file5},{file5_1},${file6},${file7},${file8},${file9},${bankId_scan_passport}</activiti:expression>
+            <activiti:expression>${nFileAppOrder},${nFileActLivingConditions},${nFileFamilyMembers},${nFileCertificateEmployment},{nFileHousingDepartment},${nFileMerried},${nFileBirthCertificates},${nFileCopyPasspots},${nFileNotMerried},${bankId_scan_passport},${nFileDecisionHousingForEmployee}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
