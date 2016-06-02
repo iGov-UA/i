@@ -25,7 +25,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="zapit" name="Підстави для надання відповідної інформації з посиланням на норму закону, яка передбачає право відповідного органу державної влади або органу місцевого самоврядування запитувати таку інформацію; а також реквізити справи, у зв’язку з якою виникла потреба в отриманні інформації" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="landAddress" name="Місце розташування земельної ділянки" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="landNumb" name="Кадастровий номер;у форматі хххххххххх:хх:ххх:хххх" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="landNumb" name="Кадастровий номер;у форматі хххххххххх:хх:ххх:хххх" type="string"></activiti:formProperty>
         <activiti:formProperty id="shapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nRegion" name="Регион" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="m1" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
@@ -57,7 +57,7 @@
     <sequenceFlow id="flow6" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow15" sourceRef="scripttask1" targetRef="servicetask5"></sequenceFlow>
-    <serviceTask id="servicetask5" name="Лист-привітання громадянина" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask5" name="Лист-привітання громадянина" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -73,7 +73,7 @@
 [pattern/mail/_common_header.html]
 			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<p>
-			Ваше звернення щодо надання відомостей з Державного земельного кадастру у формі викопіювань з кадастрової карти (плану) та іншої картографічної документації Державного земельного кадастру  успішно зареєстроване.<br />
+			Ваше звернення [sID_Order] щодо надання відомостей з Державного земельного кадастру у формі викопіювань з кадастрової карти (плану) та іншої картографічної документації Державного земельного кадастру  успішно зареєстроване.<br />
 			Ви отримаєте відповідь протягом 10 робочих днів.
 			</p>
 			${sPhoneOrgan}.<br />
@@ -81,6 +81,15 @@
             ${sNameOrgan}.<br />
 			[pattern/mail/_common_signature_end.html]
 			[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -91,13 +100,166 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[crow79@online.ua]]></activiti:expression>
+          <activiti:expression><![CDATA[akylish88@gmail.com]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression><![CDATA[Нове звернення на порталі igov.org.ua на тему: Надання відомостей з Державного земельного кадастру у формі викопіювань з кадастрової карти (плану) та іншої картографічної документації Державного земельного кадастру . Заявник ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <userTask id="usertask1" name="Перевірка ЦНАП" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
+      <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім`я" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Домашня адреса" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="pidstavi" name="Заяву подає" type="enum" writable="false">
+          <activiti:value id="z1" name="Власник/користувач земельної ділянки"></activiti:value>
+          <activiti:value id="z2" name="Орган державної влади/Орган місцевого самоврядування"></activiti:value>
+          <activiti:value id="z3" name="Спадкоємець/Правонаступник"></activiti:value>
+          <activiti:value id="z4" name="Розробник документації із землеустрою/Суб’єкт оціночної діяльності відповідно до статті 6 Закону України Про оцінку земель"></activiti:value>
+          <activiti:value id="z5" name="Особа, в інтересах якої встановлене обмеження"></activiti:value>
+          <activiti:value id="z6" name="Нотаріус"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="zapit" name="Підстави для надання відповідної інформації з посиланням на норму закону, яка передбачає право відповідного органу державної влади або органу місцевого самоврядування запитувати таку інформацію; а також реквізити справи, у зв’язку з якою виникла потреба в отриманні інформації" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="landAddress" name="Місце розташування земельної ділянки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="landNumb" name="Кадастровий номер;у форматі хххххххххх:хх:ххх:хххх" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="shapka" name="Шапка заяви" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="m1" name="Информация про заявителя в принтформе" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="m2" name="Информация про заявителя в принтформе" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="m3" name="Информация про заявителя в принтформе" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="m4" name="Информация про заявителя в принтформе" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="m5" name="Информация про заявителя в принтформе" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="m6" name="Информация про заявителя в принтформе" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="proverkaCNAP" name="Рішення ЦНАП про прийняття або відхилення повідомлення" type="enum" required="true">
+          <activiti:value id="ok" name="Заяву прийнято"></activiti:value>
+          <activiti:value id="bad" name="Заяву відхилено"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="comment1" name="Якщо громадянину відмовлено, вкажіть причину у цьому полі" type="textArea" default=" "></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/vidomostiKadastr234.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/vidomostiKadastr234.html]" type="invisible" default="Заява про внесення відомостей" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="print_marker1" name="show/hidden text" type="markers" default="{&quot;motion&quot;: {&quot;ShowElementsOnTrue_1&quot;: {&quot;aElement_ID&quot;: [&quot;zmini1&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini1&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_2&quot;: {&quot;aElement_ID&quot;: [&quot;zmini2&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini2&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_3&quot;: {&quot;aElement_ID&quot;: [&quot;zmini3&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini3&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_4&quot;: {&quot;aElement_ID&quot;: [&quot;zmini4&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini4&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_5&quot;: {&quot;aElement_ID&quot;: [&quot;zmini5&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini5&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;}}}"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${bankId_scan_passport},${bankId_scan_inn},${oplata}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <serviceTask id="servicetask7" name="ЦНАП позитив" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Надання відомостей з Державного земельного кадастру у формі викопіювань з кадастрової карти (плану) та іншої картографічної документації Державного земельного кадастру]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+			<p>Ваше звернення пройшло попередню перевірку адміністратором ЦНАП і передано для опрацювання відповідальній особі. За кілька днів ви отримаєте результат опрацювання на цей email.<br />Ви можете роздрукувати своє повідомлення з прикріплення до цього листа.<br />
+<p>Якщо у вас виникли питання, Ви можете звернутись до 
+${sAddress}.<br />
+${sWorkTime}.<br />
+<p>
+${sPhoneOrgan}.<br />
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan}.<br />
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[${PrintForm_1}]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask8" name="Відмова ЦНАП" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Надання відомостей з Державного земельного кадастру у формі викопіювань з кадастрової карти (плану) та іншої картографічної документації Державного земельного кадастру]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+			<p>На жаль, Ваше звернення відхилене. </p>
+			<p>${comment1}</p>
+			За необхідності Ви можете подати ще одну заяву на порталі <a href="https://igov.org.ua/" target="_blank">igov.org.ua</a></p>
+<p>Якщо у вас виникли питання, Ви можете звернутись до 
+${sAddress}.<br />
+${sWorkTime}.<br />
+<p>
+${sPhoneOrgan}.<br />
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan}.<br />
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Za Vashym zvernennyam  [sID_Order]  vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask9" name="Повідомлення громадянина" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Надання відомостей з Державного земельного кадастру у формі викопіювань з кадастрової карти (плану) та іншої картографічної документації Державного земельного кадастру]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+			<p>Ваше звернення пройшло попередню перевірку адміністратором і передано для опрацювання відповідальній особі. За кілька днів ви отримаєте результат опрацювання на цей email.<br />
+			<p>Якщо у Вас з`явились питання, Ви можете звернутись до ${sNameOrgan}<br />
+${sAddress}<br />
+${sWorkTime}<br />
+${sPhoneOrgan}</p>
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan}<br />
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[${PrintForm_1}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -152,184 +314,18 @@
     <sequenceFlow id="flow4" name="Заявка прийнята і обробляється" sourceRef="exclusivegateway1" targetRef="servicetask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${proverka=='ok'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask3" name="Лист з довідкою" activiti:delegateExpression="#{MailTaskWithAttachments}">
-      <extensionElements>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:string><![CDATA[Надання відомостей з Державного земельного кадастру у формі викопіювань з кадастрової карти (плану) та іншої картографічної документації Державного земельного кадастру]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-			<p>Ваше звернення опрацьоване.<br />
-			Ви можете завантажити копію викопіювань з кадастрової карти (плану) та іншої картографічної документації Державного земельного кадастру з додатку до цього листа, та отримати оригінал у </p>
-${sAddress}.<br />
-${sWorkTime}.<br />;
-<p>Для отримання довідки потрібно особисто звернутися до адміністратора ЦНАП з документом, що посвідчує особу (паспорт) та оригіналом документу про оплату послуг. </p>
-${sPhoneOrgan}.<br />
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}.<br />
-[pattern/mail/_common_signature_end.html]   
-[pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[${result}]]></activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
     <sequenceFlow id="flow12" sourceRef="servicetask3" targetRef="endevent2"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow3" name="Недостатньо інформації" sourceRef="exclusivegateway1" targetRef="servicetask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${proverka=='bad'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow11" sourceRef="servicetask4" targetRef="endevent2"></sequenceFlow>
-    <serviceTask id="servicetask4" name="Відмова: Недостатньо даних" activiti:delegateExpression="#{MailTaskWithAttachments}">
-      <extensionElements>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:string><![CDATA[Надання відомостей з Державного земельного кадастру у формі викопіювань з кадастрової карти (плану) та іншої картографічної документації Державного земельного кадастру]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-			<p>На жаль, Ваш запит відхилено.</p>
-			<p>${comment}</p>
-			За необхідності Ви можете подати ще одне звернення на порталі <a href="https://igov.org.ua/" target="_blank">igov.org.ua</a>
-			<p>Якщо у вас виникли питання, Ви можете звернутись до 
-${sAddress}.<br />
-${sWorkTime}.<br />
-<p>
-${sPhoneOrgan}.<br />
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}.<br />
-[pattern/mail/_common_signature_end.html]   
-[pattern/mail/_common_footer.html]]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[${result}]]></activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
-    <userTask id="usertask1" name="Перевірка ЦНАП" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
-      <extensionElements>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім`я" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdAddressFactual" name="Домашня адреса" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="pidstavi" name="Заяву подає" type="enum" writable="false">
-          <activiti:value id="z1" name="Власник/користувач земельної ділянки"></activiti:value>
-          <activiti:value id="z2" name="Орган державної влади/Орган місцевого самоврядування"></activiti:value>
-          <activiti:value id="z3" name="Спадкоємець/Правонаступник"></activiti:value>
-          <activiti:value id="z4" name="Розробник документації із землеустрою/Суб’єкт оціночної діяльності відповідно до статті 6 Закону України Про оцінку земель"></activiti:value>
-          <activiti:value id="z5" name="Особа, в інтересах якої встановлене обмеження"></activiti:value>
-          <activiti:value id="z6" name="Нотаріус"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="zapit" name="Підстави для надання відповідної інформації з посиланням на норму закону, яка передбачає право відповідного органу державної влади або органу місцевого самоврядування запитувати таку інформацію; а також реквізити справи, у зв’язку з якою виникла потреба в отриманні інформації" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="landAddress" name="Місце розташування земельної ділянки" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="landNumb" name="Кадастровий номер;у форматі хххххххххх:хх:ххх:хххх" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="shapka" name="Шапка заяви" type="invisible" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="m1" name="Информация про заявителя в принтформе" type="invisible" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="m2" name="Информация про заявителя в принтформе" type="invisible" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="m3" name="Информация про заявителя в принтформе" type="invisible" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="m4" name="Информация про заявителя в принтформе" type="invisible" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="m5" name="Информация про заявителя в принтформе" type="invisible" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="m6" name="Информация про заявителя в принтформе" type="invisible" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="proverkaCNAP" name="Рішення ЦНАП про прийняття або відхилення повідомлення" type="enum" required="true">
-          <activiti:value id="ok" name="Заяву прийнято"></activiti:value>
-          <activiti:value id="bad" name="Заяву відхилено"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="comment1" name="Якщо громадянину відмовлено, вкажіть причину у цьому полі" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/vidomostiKadastr234.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/vidomostiKadastr234.html]" type="invisible" default="Заява про внесення відомостей" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="print_marker1" name="show/hidden text" type="markers" default="{&quot;motion&quot;: {&quot;ShowElementsOnTrue_1&quot;: {&quot;aElement_ID&quot;: [&quot;zmini1&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini1&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_2&quot;: {&quot;aElement_ID&quot;: [&quot;zmini2&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini2&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_3&quot;: {&quot;aElement_ID&quot;: [&quot;zmini3&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini3&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_4&quot;: {&quot;aElement_ID&quot;: [&quot;zmini4&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini4&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_5&quot;: {&quot;aElement_ID&quot;: [&quot;zmini5&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini5&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;}}}"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${bankId_scan_inn},${oplata}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
-      </extensionElements>
-    </userTask>
     <sequenceFlow id="flow18" sourceRef="servicetask6" targetRef="usertask1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow19" sourceRef="usertask1" targetRef="exclusivegateway2"></sequenceFlow>
-    <serviceTask id="servicetask7" name="ЦНАП позитив" activiti:delegateExpression="#{MailTaskWithAttachments}">
-      <extensionElements>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:string><![CDATA[Надання відомостей з Державного земельного кадастру у формі викопіювань з кадастрової карти (плану) та іншої картографічної документації Державного земельного кадастру]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-			<p>Ваше звернення пройшло попередню перевірку адміністратором ЦНАП і передано для опрацювання відповідальній особі. За кілька днів ви отримаєте результат опрацювання на цей email.<br />Ви можете роздрукувати своє повідомлення з прикріплення до цього листа.<br />
-<p>Якщо у вас виникли питання, Ви можете звернутись до 
-${sAddress}.<br />
-${sWorkTime}.<br />
-<p>
-${sPhoneOrgan}.<br />
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}.<br />
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[${PrintForm_1}]]></activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
     <sequenceFlow id="flow20" sourceRef="exclusivegateway2" targetRef="servicetask7">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${proverkaCNAP=='ok' && bFlag=='easy'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask8" name="Відмова ЦНАП" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
-      <extensionElements>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:string><![CDATA[Надання відомостей з Державного земельного кадастру у формі викопіювань з кадастрової карти (плану) та іншої картографічної документації Державного земельного кадастру]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-			<p>На жаль, Ваше звернення відхилене. </p>
-			<p>${comment1}</p>
-			За необхідності Ви можете подати ще одну заяву на порталі <a href="https://igov.org.ua/" target="_blank">igov.org.ua</a></p>
-<p>Якщо у вас виникли питання, Ви можете звернутись до 
-${sAddress}.<br />
-${sWorkTime}.<br />
-<p>
-${sPhoneOrgan}.<br />
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}.<br />
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
     <sequenceFlow id="flow21" sourceRef="exclusivegateway2" targetRef="servicetask8">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${proverkaCNAP=='bad'}]]></conditionExpression>
     </sequenceFlow>
@@ -353,35 +349,6 @@ if(execution.getVariable('pidstavi') == 'z6'){execution.setVariable('m6', gal)}
 </script>
     </scriptTask>
     <sequenceFlow id="flow23" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
-    <serviceTask id="servicetask9" name="Повідомлення громадянина" activiti:delegateExpression="#{MailTaskWithAttachments}">
-      <extensionElements>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:string><![CDATA[Надання відомостей з Державного земельного кадастру у формі викопіювань з кадастрової карти (плану) та іншої картографічної документації Державного земельного кадастру]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-			<p>Ваше звернення пройшло попередню перевірку адміністратором і передано для опрацювання відповідальній особі. За кілька днів ви отримаєте результат опрацювання на цей email.<br />
-			<p>Якщо у Вас з`явились питання, Ви можете звернутись до ${sNameOrgan}<br />
-${sAddress}<br />
-${sWorkTime}<br />
-${sPhoneOrgan}</p>
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}<br />
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[${PrintForm_1}]]></activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
     <sequenceFlow id="flow24" sourceRef="exclusivegateway2" targetRef="servicetask9">
        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${proverkaCNAP=='ok' && bFlag=='hard'}]]></conditionExpression>
     </sequenceFlow>
@@ -513,6 +480,82 @@ ${sNameOrgan}<br />
         </activiti:taskListener>
       </extensionElements>
     </userTask>
+    <serviceTask id="servicetask3" name="Лист з довідкою" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Надання відомостей з Державного земельного кадастру у формі викопіювань з кадастрової карти (плану) та іншої картографічної документації Державного земельного кадастру]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+			<p>Ваше звернення опрацьоване.<br />
+			Ви можете завантажити копію викопіювань з кадастрової карти (плану) та іншої картографічної документації Державного земельного кадастру з додатку до цього листа, та отримати оригінал у </p>
+${sAddress}.<br />
+${sWorkTime}.<br />;
+<p>Для отримання довідки потрібно особисто звернутися до адміністратора ЦНАП з документом, що посвідчує особу (паспорт) та оригіналом документу про оплату послуг. </p>
+${sPhoneOrgan}.<br />
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan}.<br />
+[pattern/mail/_common_signature_end.html]   
+[pattern/mail/_common_feedback.html]
+[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno.
+Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[${result}]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask4" name="Відмова: Недостатньо даних" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Надання відомостей з Державного земельного кадастру у формі викопіювань з кадастрової карти (плану) та іншої картографічної документації Державного земельного кадастру]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+			<p>На жаль, Ваш запит відхилено.</p>
+			<p>${comment}</p>
+			За необхідності Ви можете подати ще одне звернення на порталі <a href="https://igov.org.ua/" target="_blank">igov.org.ua</a>
+			<p>Якщо у вас виникли питання, Ви можете звернутись до 
+${sAddress}.<br />
+${sWorkTime}.<br />
+<p>
+${sPhoneOrgan}.<br />
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan}.<br />
+[pattern/mail/_common_signature_end.html]   
+[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Za Vashym zvernennyam  [sID_Order]  vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[${result}]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
     <sequenceFlow id="flow28" sourceRef="servicetask11" targetRef="usertask4"></sequenceFlow>
     <sequenceFlow id="flow29" sourceRef="usertask4" targetRef="exclusivegateway1"></sequenceFlow>
   </process>

@@ -119,7 +119,7 @@ ${sNameOrgan}&lt;br&gt;
     <sequenceFlow id="flow10" name="Документи не відповідають вимогам" sourceRef="exclusivegateway1" targetRef="servicetask1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision == 'sEnumDoc_bad'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask1" name="email-Відмова громадянину у подальшому розгляді" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask1" name="email-Відмова громадянину у подальшому розгляді" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -159,7 +159,7 @@ ${sNameOrgan}&lt;br&gt;
     <sequenceFlow id="flow12" name="Документи відповідають вимогам" sourceRef="exclusivegateway1" targetRef="servicetask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision == 'sEnumDoc_ok' && bFlag_region != 'true'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask5" name="email-підтверждення громадянину про прийняття документів" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask5" name="email-підтверждення громадянину про прийняття документів" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -232,7 +232,7 @@ ${sNameOrgan}&lt;br&gt;
     <sequenceFlow id="flow17" name="довідка зроблена" sourceRef="exclusivegateway2" targetRef="servicetask6">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDovidka == 'sEnumDovidka_ok'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask6" name="email-інформування заявника про необхідність отримання результату" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask6" name="email-інформування заявника про необхідність отримання результату" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -276,7 +276,7 @@ ${sNameOrgan}&lt;br&gt;
     <sequenceFlow id="flow25" name="Документи відповідають вимогам, Жовті Води" sourceRef="exclusivegateway1" targetRef="servicetask7">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision == 'sEnumDoc_ok' && bFlag_region == 'true'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask7" name="email-оповіщення співробітника ЖКГ" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask7" name="email-оповіщення співробітника ЖКГ" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -293,7 +293,7 @@ ${sNameOrgan}&lt;br&gt;
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow20" sourceRef="servicetask7" targetRef="servicetask8"></sequenceFlow>
-    <serviceTask id="servicetask8" name="Повідомлення громаданину про прийняття документів у відповідальному органі" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask8" name="Повідомлення громаданину про прийняття документів у відповідальному органі" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
