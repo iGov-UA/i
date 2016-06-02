@@ -375,7 +375,7 @@ public class Mail extends Abstract_Mail {
         }catch(Exception oException){
             LOG.warn("FAIL: {} (sMail={},sMailNew={})", oException.getMessage(), sMail, sMailNew);
         }
-        return sMail;
+        return sMailNew;
     }
     
     public void sendWithUniSender() throws EmailException{
