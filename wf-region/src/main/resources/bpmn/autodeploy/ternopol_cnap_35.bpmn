@@ -3,6 +3,7 @@
   <process id="ternopol_cnap_35" name="Тернопіль - ЦНАП - Розгляд відповідності намірів щодо місця розташування тимчасової споруди" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
@@ -13,6 +14,12 @@
         <activiti:formProperty id="adress2" name="Адреса розміщення тимчасової споруди для провадження підприємницької діяльності" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Вкажіть сьогоднішню дату" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="file1" name="Графічні матеріали із зазначенням бажаного місця розташування тимчасової споруди, виконані замовником у довільній формі на топографо-геодезичній основі М 1:500 кресленнями контурів тимчасової споруди з прив’язкою до місцевості" type="file" required="true"></activiti:formProperty>
+         <activiti:formProperty id="sNameOrgan" name="название органа в подписи письма" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="график работы" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон для справок" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адрес органа" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapkaArkh" name="шапка принтформы" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk1" name="Пошта ЦНАП" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -23,7 +30,7 @@
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow2" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="servicetask3"></sequenceFlow>
-    <userTask id="usertask1" name="Обробка Тернопільським ЦНАП (1-й крок)" activiti:candidateGroups="ternopol_cnap_35">
+    <userTask id="usertask1" name="Обробка Тернопільським ЦНАП (1-й крок)" activiti:candidateGroups="ternopol_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="name_company" name="Суб’єкт звернення;(назва юридичної особи або фізичної особи - підприємця)" type="string" writable="false"></activiti:formProperty>
@@ -58,7 +65,7 @@
     </sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow7" sourceRef="servicetask5" targetRef="endevent2"></sequenceFlow>
-    <userTask id="usertask2" name="Підготовка відповіді після рішення УМАК (2-й крок)" activiti:candidateGroups="ternopol_cnap_35">
+    <userTask id="usertask2" name="Підготовка відповіді після рішення УМАК (2-й крок)" activiti:candidateGroups="ternopol_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="name_company" name="Суб’єкт звернення; Назва юридичної особи або фізичної особи - підприємця" type="string" writable="false"></activiti:formProperty>
@@ -127,39 +134,15 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:string><![CDATA[msvidran@gmail.com]]></activiti:string>
+          <activiti:string><![CDATA[middayka@yandex.ru]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення. Розгляд відповідності намірів щодо місця розташування тимчасової споруди.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-                                    &lt;h3&gt;Шановний(-а) колего!&lt;/h3&gt;
-                                    &lt;p&gt;
-У Вас в черзі на обробку зареєстровано нове звернення щодо розгляду відповідності намірів щодо місця розташування тимчасової споруди.&lt;br /&gt;
-&lt;br /&gt;
-Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
-Опрацюйте це звернення на &lt;a href="https://region.igov.org.ua" target="_blank"&gt;порталі&lt;/a&gt;
-                                    &lt;/p&gt;
-                                    &lt;hr style="width: 100%; height: 0; margin: 30px 0 15px 0; background: #dddddd; border: 0; border-bottom: 1px solid #dddddd;" /&gt;
-                                    &lt;p&gt;
-                                    З повагою,&lt;br /&gt;
-					  				Команда Порталу державних послуг &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov&lt;/a&gt;
-                                        &lt;/p&gt;
-                                    &lt;/p&gt;
-                                &lt;/td&gt;
-                            &lt;/tr&gt;
-                        &lt;/table&gt;
-                    &lt;/td&gt;
-                &lt;/tr&gt;
-                &lt;!--content end--&gt;
-            &lt;/table&gt;
-        &lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;/tbody&gt;
-&lt;/table&gt;
-&lt;/body&gt;
-&lt;/html&gt;</activiti:expression>
+                  <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
+       </activiti:field>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -175,26 +158,21 @@
           <activiti:string><![CDATA[Розгляд відповідності намірів щодо місця розташування тимчасової споруди.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;Ваше звернення щодо розгляду відповідності намірів щодо місця розташування тимчасової споруди було зареєстровано у системі.&lt;br/&gt;&lt;/p&gt;
-Повідомлення про результат послуги буде спрямоване на Ваш e-mail.&lt;br/&gt;
-&lt;br /&gt;
-&lt;p&gt;Адреса: &lt;br /&gt;
-м.Тернопіль, вул.Князя Острозького 6, 1 поверх. &lt;br /&gt;
-&lt;br /&gt;
-Графік роботи ЦНАП-у:&lt;br /&gt;
-Понеділок, середа з 9.00 до 16.00&lt;br /&gt;
-Вівторок, четвер з 11.00 до 16.00&lt;br /&gt;
-П'ятниця з 9.00 до 13.00&lt;br /&gt;
-Без перерви на обід&lt;br /&gt;
-Телефон: (0352) 40-41-93 &lt;br /&gt; 
-&lt;/p&gt;
-&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-ЦНАП м.Тернопіль,&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+ <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+			<p>	
+				Ваше звернення щодо розгляду відповідності намірів щодо місця розташування тимчасової споруди було зареєстровано у системі.&lt;br/&gt;&lt;/p&gt;
+                Повідомлення про результат послуги буде спрямоване на Ваш e-mail.
+			</p>	
+			<br>
+			За наявності питань можете звернутись за наступними контактами<br>
+			${sAddress}<br>
+			${sWorkTime}<br>
+			${sPhoneOrgan}<br><br>
+			[pattern/mail/_common_signature_start.html]
+			${sNameOrgan}.<br>
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -210,29 +188,28 @@
           <activiti:string><![CDATA[Розгляд відповідності намірів щодо місця розташування тимчасової споруди.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;Ваше звернення про розгляд відповідності намірів щодо місця розташування тимчасової споруди - відхилине.&lt;/p&gt;
-&lt;p&gt;Причина в наступному:&lt;/p&gt;
-&lt;p&gt;${decisionComment}&lt;/p&gt;
-&lt;br /&gt;
-Адреса: &lt;br /&gt;
-м.Тернопіль, вул.Князя Острозького 6, 1 поверх. &lt;br /&gt;
-&lt;br /&gt;
-Графік роботи ЦНАП-у:&lt;br /&gt;
-Понеділок, середа з 9.00 до 16.00&lt;br /&gt;
-Вівторок, четвер з 11.00 до 16.00&lt;br /&gt;
-П'ятниця з 9.00 до 13.00&lt;br /&gt;
-Без перерви на обід&lt;br /&gt;
-Телефон: (0352) 40-41-93 &lt;br /&gt; 
-&lt;br /&gt;
-&lt;p&gt;Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="#current-page"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
-&lt;br /&gt;
-&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-ЦНАП м.Тенопіль,
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+        <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+			<p>
+				Ваше звернення про розгляд відповідності намірів щодо місця розташування тимчасової споруди - відхилине.
+			</p>
+			<p>
+				Коментар Державного службовця:<br>
+				<b><i>${decisionComment}</i></b>
+			</p>
+
+			<p>
+				Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="#current-page">iGov.org.ua</a>
+			</p>
+			<br>
+			За наявності питань можете звернутись за наступними контактами<br>
+			${sAddress}<br>
+			${sWorkTime}<br>
+			${sPhoneOrgan}<br><br>
+			[pattern/mail/_common_signature_start.html]
+			${sNameOrgan}.<br>
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -248,26 +225,24 @@
           <activiti:string><![CDATA[Розгляд відповідності намірів щодо місця розташування тимчасової споруди.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
- &lt;p&gt;Ваше звернення про розгляд відповідності намірів щодо місця розташування тимчасової споруди - відправлене в управління містобудування, архітектури та кадастру.&lt;br /&gt;
-Спеціалісти з органу місцевого самоврядування повинні дати відповідь протягом десяти робочих днів з дня реєстрації заяви.&lt;br /&gt; 
-&lt;p&gt;Номер Вашого замовлення: ${number_cnap}&lt;/p&gt; 
-&lt;br /&gt;
-Адреса: &lt;br /&gt;
-м.Тернопіль, вул.Князя Острозького 6, 1 поверх. &lt;br /&gt;
-&lt;br /&gt;
-Графік роботи ЦНАП-у:&lt;br /&gt;
-Понеділок, середа з 9.00 до 16.00&lt;br /&gt;
-Вівторок, четвер з 11.00 до 16.00&lt;br /&gt;
-П'ятниця з 9.00 до 13.00&lt;br /&gt;
-Без перерви на обід&lt;br /&gt;
-Телефон: (0352) 40-41-93 &lt;br /&gt; 
-&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-ЦНАП м.Тенопіль,&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+                <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+			<p>
+				Ваше звернення про розгляд відповідності намірів щодо місця розташування тимчасової споруди - відправлене в управління містобудування, архітектури та кадастру.&lt;br /&gt;
+                Спеціалісти з органу місцевого самоврядування повинні дати відповідь протягом десяти робочих днів з дня реєстрації заяви.
+			</p>
+			<p>
+				Номер Вашого замовлення: ${number_cnap}
+			</p>
+			<br>
+			За наявності питань можете звернутись за наступними контактами<br>
+			${sAddress}<br>
+			${sWorkTime}<br>
+			${sPhoneOrgan}<br><br>
+			[pattern/mail/_common_signature_start.html]
+			${sNameOrgan}.<br>
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -283,23 +258,21 @@
           <activiti:string><![CDATA[Розгляд відповідності намірів щодо місця розташування тимчасової споруди.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;Ваше звернення про розгляд відповідності намірів щодо місця розташування тимчасової споруди - опрацьоване.&lt;/p&gt;
-&lt;p&gt;Ви можете отримати розгляд відповідності намірів за адресою: м. Тернопіль, вул. Князя Острозького, 6, 1 поверх, зал №3.&lt;/p&gt;
-&lt;br /&gt;
-Графік роботи ЦНАП-у:&lt;br /&gt;
-Понеділок, середа з 9.00 до 16.00&lt;br /&gt;
-Вівторок, четвер з 11.00 до 16.00&lt;br /&gt;
-П'ятниця з 9.00 до 13.00&lt;br /&gt;
-Без перерви на обід&lt;br /&gt;
-Телефон: (0352) 40-41-93 &lt;br /&gt;  
-&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-ЦНАП м.Тенопіль&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+         <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+			<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+			<p>
+				Ваше звернення про розгляд відповідності намірів щодо місця розташування тимчасової споруди - опрацьоване.
+			</p>
+			<br ><br >
+			Відповідь Ви можете отримати за наступними контактами<br >
+			${sAddress}<br>
+			${sWorkTime}<br>
+			${sPhoneOrgan}<br><br><br>			
+			[pattern/mail/_common_signature_start.html]			
+			[pattern/mail/_common_feedback.html]
+			${sNameOrgan}.<br>
+			[pattern/mail/_common_signature_end.html]			
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
