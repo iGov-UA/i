@@ -47,6 +47,10 @@ public abstract class Abstract_Mail {
     }
 
     public String getTo() {
+        String[] adress = saTo.split(",");
+        if (adress.length == 1 || sToName != null || !"null".equalsIgnoreCase(sToName)) {
+            return String.format("%s <%s>", sToName, saTo); // "John Dow <email@adress.com>"
+        }
         return saTo;
     }
 

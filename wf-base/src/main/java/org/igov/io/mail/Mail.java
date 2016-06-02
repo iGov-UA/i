@@ -82,8 +82,6 @@ public class Mail extends Abstract_Mail {
             _To(sToNew);
         }
         LOG.info("(getHead()={})", getHead());
-        _To("test<ivmaksymov@gmail.com>");
-        LOG.info("(getTo()={})", getTo());// to delete
         
         Boolean bUniSender = generalConfig.isEnable_UniSender_Mail();
         LOG.info("(bUniSender={})", bUniSender);
@@ -155,8 +153,7 @@ public class Mail extends Abstract_Mail {
                 ){
             LOG_BIG.warn("SKIPED!(getTo={})", getTo());
         }else{*/
-        boolean testDoNotTouch = false;
-            if(testDoNotTouch){
+            if(bUniSender){
                 try{
                     sendWithUniSender();
                 } catch (Exception oException) {
