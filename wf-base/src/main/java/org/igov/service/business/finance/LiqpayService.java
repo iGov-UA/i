@@ -69,8 +69,8 @@ public class LiqpayService {
                 Gson oGson = new Gson();
                 LiqpayCallbackEntity oLiqpayCallbackModel;
                 try {
-                    //oLiqpayCallbackModel = oGson.fromJson(sData, LiqpayCallbackEntity.class);
-                    oLiqpayCallbackModel = setParamValue(sData);
+                    oLiqpayCallbackModel = oGson.fromJson(sData, LiqpayCallbackEntity.class);
+                    //oLiqpayCallbackModel = setParamValue(sData);
                 } catch (Exception ex) {
                     LOG.error("Can't parse answer! " + sData, ex);
                     oLiqpayCallbackModel = setParamValue(sData);
