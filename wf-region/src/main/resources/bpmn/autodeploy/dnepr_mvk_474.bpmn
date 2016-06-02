@@ -59,26 +59,36 @@
           <activiti:string><![CDATA[Нове звернення. Дозвіл на розроблення проекту землеустрою щодо відведення земельної ділянки.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
+          <activiti:expression><![CDATA[Звернення № [sID_Order]<br>
+          	[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask3" name="Повідомлення громадянина про успішну реєстрацію у системі" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask3" name="Повідомлення громадянина про успішну реєстрацію у системі" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+       <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano</activiti:expression>
+        </activiti:field>  
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Дозвіл на розроблення проекту землеустрою щодо відведення земельної ділянки.]]></activiti:string>
+          <activiti:string><![CDATA[iGov: Дозвіл на розроблення проекту землеустрою щодо відведення земельної ділянки.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<p>
-				Ваше звернення с приводу видачи дозволу на розроблення проекту землеустрою щодо відведення земельної ділянки було зареєстровано у системі.<br>
+				Ваше звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> з приводу видачи дозволу на розроблення проекту землеустрою щодо відведення земельної ділянки було зареєстровано у системі.<br>
 				Повідомлення про результат послуги буде спрямоване на Ваш e-mail.			
 			</p>
 			<br />
@@ -144,29 +154,38 @@
     <sequenceFlow id="flow5" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
-    <serviceTask id="servicetask4" name="Відмова громадянину" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask4" name="Відмова громадянину" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+       <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Za Vashym zvernennyam [sID_Order] vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>  
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Дозвіл на розроблення проекту землеустрою щодо відведення земельної ділянки.]]></activiti:string>
+          <activiti:string><![CDATA[iGov: Дозвіл на розроблення проекту землеустрою щодо відведення земельної ділянки.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 		    <p>
-		    	На жаль, Ваше звернення с приводу видачи дозволу на розроблення проекту землеустрою щодо відведення земельної ділянки - відхилине.
+		    	На жаль, Ваше звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> з приводу видачи дозволу на розроблення проекту землеустрою щодо відведення земельної ділянки - відхилине.
 		    </p>
 		    <p>
 		    	Причина в наступному:<br>
 				<b><i>${decisionComment}</i></b>
 		    </p>
 		    <p>
-		    	Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="#current-page">iGov.org.ua</a>
+		    	Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/service/27/general">iGov.org.ua</a>
 			</p>
 			<br />
 			За наявності питань можете звернутись за наступними контактами<br>
@@ -212,29 +231,35 @@
         <activiti:formProperty id="sPurpose" name="Цільове призначення ділянки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decision2" name="Відповідь після рішення сесії" type="enum" required="true">
           <activiti:value id="dec_ok" name="Рішення прийнято. Дозвіл готовий"></activiti:value>
-          <activiti:value id="dec_no" name="Відповідь надано"></activiti:value>
+          <activiti:value id="dec_no" name="Дозвіл не може бути наданий"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="nFileDecision" name="Відскануйте та завантажте дозвіл або рішення сесії" type="file" required="true"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow11" sourceRef="usertask2" targetRef="exclusivegateway2"></sequenceFlow>
-    <serviceTask id="servicetask6" name="Позитивна відповідь громадянину" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask6" name="Позитивна відповідь громадянину" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+       <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Дозвіл на розроблення проекту землеустрою щодо відведення земельної ділянки.]]></activiti:string>
+          <activiti:string><![CDATA[iGov: Дозвіл на розроблення проекту землеустрою щодо відведення земельної ділянки.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 			<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
 			<p> 
-				Ваше звернення с приводу видачи дозволу на розроблення проекту землеустрою щодо відведення земельної ділянки - опрацьовано.<br>
+				Ваше звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> з приводу видачи дозволу на розроблення проекту землеустрою щодо відведення земельної ділянки - опрацьовано.<br>
 				Дозвіл в додатку до цього листа.
 			</p>
 			<br />
@@ -242,8 +267,8 @@
 			${sAddress}<br>
 			${sWorkTime}<br>
 			${sPhoneOrgan}<br><br><br>			
-			[pattern/mail/_common_feedback.html]
 			[pattern/mail/_common_signature_start.html]
+			[pattern/mail/_common_feedback.html]
 			${sNameOrgan}.<br />
 			[pattern/mail/_common_signature_end.html]
 			[pattern/mail/_common_footer.html]]]></activiti:expression>
@@ -256,23 +281,33 @@
     <sequenceFlow id="flow12" name="decision2 == 'dec_ok'" sourceRef="exclusivegateway2" targetRef="servicetask6">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision2 == 'dec_ok'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask7" name="Відповідь з відмовою" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask7" name="Відповідь з відмовою" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+       <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Za Vashym zvernennyam [sID_Order] vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Дозвіл на розроблення проекту землеустрою щодо відведення земельної ділянки.]]></activiti:string>
+          <activiti:string><![CDATA[iGov: Дозвіл на розроблення проекту землеустрою щодо відведення земельної ділянки.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 			<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br><br>
 			<p> 
-				Ваше звернення с приводу видачи дозволу на розроблення проекту землеустрою щодо відведення земельної ділянки - опрацьовано.<br>
+				Ваше звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> з приводу видачі дозволу на розроблення проекту землеустрою щодо відведення земельної ділянки - опрацьовано.<br>
+				Вам відмовлено. <br>
 				Рішення в додатку до цього листа.
+			</p>			
+		    <p>
+		    	Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/service/27/general">iGov.org.ua</a>
 			</p>
 			<br />
 			За наявності питань можете звернутись за наступними контактами<br>

@@ -23,12 +23,14 @@
         <activiti:formProperty id="sBankName" name="Повне найменування банку; із зазначенням міста в якому зареєстрована установа" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sOKPO" name="МФО банку, ЄДРПОУ обов’язково тільки у разі якщо одержувачем є банк" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sCardNumber" name="№ пластикової картки чи особистого рахунку; у разі наявності" type="string"></activiti:formProperty>
-        <activiti:formProperty id="file1" name="Скан-копія виконавчого документа та копія рішення суду; об'єднайте документи у один .pdf файл або .zip архів" type="file"  required="true"></activiti:formProperty>
+        <activiti:formProperty id="file1" name="Скан-копія виконавчого документа та копія рішення суду; об'єднайте документи у один .pdf файл або .zip архів" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Час роботи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sEskalation" name="sEskalation" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="Now" name="Now" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Лист службовцю" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -91,11 +93,12 @@
         <activiti:formProperty id="sOKPO" name="МФО банку, (ЄДРПОУ обов’язково тільки у разі якщо одержувачем є банк)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCardNumber" name="№ пластикової картки чи особистого рахунку (у разі наявності)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asStatus" name="Статус запиту" type="enum" required="true">
-          <activiti:value id="sEnumReady" name="рішення виконано у повному обсязі, таке рішення підлягає поверненню заявнику (разом з копіями документів, що підтверджують виконання рішення у повному обсязі)" ></activiti:value>
+          <activiti:value id="sEnumReady" name="рішення виконано у повному обсязі, таке рішення підлягає поверненню заявнику (разом з копіями документів, що підтверджують виконання рішення у повному обсязі)"></activiti:value>
           <activiti:value id="sEnumApprove" name="рішення внесено до Реєстру рішень, виконання яких гарантується державою, та прийнято до обліку"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sComment" name="Якщо ви відмовляєте заявнику у наданні послуги, обов'язково вкажіть причину у цьому полі" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="file2" name="Завантажте необхідні файли для відправки замовнику: супровідний лист та довідку з ЄДРВП, або повідомлення про прийняття рішення до обліку із зазначенням черги. Об'єднайте документи у один .pdf файл або .zip архів" type="file"  required="true">></activiti:formProperty>
+        <activiti:formProperty id="file2" name="Завантажте необхідні файли для відправки замовнику: супровідний лист та довідку з ЄДРВП, або повідомлення про прийняття рішення до обліку із зазначенням черги. Об'єднайте документи у один .pdf файл або .zip архів" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sEskalation" name="sEskalation" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression>${file1}, ${bankId_scan_passport}, ${bankId_scan_inn}</activiti:expression>
@@ -133,17 +136,60 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
     <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow8" sourceRef="servicetask4" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow9" sourceRef="usertask1" targetRef="servicetask4"></sequenceFlow>
+    <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var delta='5';
+var unixdate= Math.round((new Date()).getTime() / 1000);
+
+var unixdate=unixdate+60*delta;
+var new_src = new Date(unixdate*1000);
+var d = new_src.getDate();
+if (d &lt; 10) d = "0"+d;
+var m = new_src.getMonth();
+var m = (+m + +1);
+if (m &lt; 10) m = "0"+m;
+
+var new_year = new_src.getFullYear();
+var new_hour = new_src.getHours();
+var new_minutes = new_src.getMinutes();
+var timer = new_year+'-'+m+'-'+d+'T'+new_hour+':'+new_minutes+':00';
+execution.setVariable('sEskalation', timer);
+</script>
+    </scriptTask>
+    <sequenceFlow id="flow10" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
+    <sequenceFlow id="flow11" sourceRef="scripttask1" targetRef="servicetask1"></sequenceFlow>
+    <boundaryEvent id="boundarytimer1" name="Timer" attachedToRef="usertask1" cancelActivity="true">
+      <timerEventDefinition>
+        <timeDate>${sEskalation}</timeDate>
+      </timerEventDefinition>
+    </boundaryEvent>
+    <serviceTask id="servicetask5" name="Service Task" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[НиШмаглаЯ]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>Чиновник не отработал заявку</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow12" sourceRef="boundarytimer1" targetRef="servicetask5"></sequenceFlow>
+    <sequenceFlow id="flow13" sourceRef="servicetask5" targetRef="endevent1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dvs_740">
     <bpmndi:BPMNPlane bpmnElement="dvs_740" id="BPMNPlane_dvs_740">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="100.0" y="180.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="50.0" y="180.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
         <omgdc:Bounds height="55.0" width="105.0" x="170.0" y="170.0"></omgdc:Bounds>
@@ -160,10 +206,15 @@
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="730.0" y="180.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="135.0" y="197.0"></omgdi:waypoint>
-        <omgdi:waypoint x="170.0" y="197.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="84.0" y="250.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundarytimer1" id="BPMNShape_boundarytimer1">
+        <omgdc:Bounds height="30.0" width="30.0" x="520.0" y="210.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
+        <omgdc:Bounds height="55.0" width="105.0" x="482.0" y="260.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
         <omgdi:waypoint x="275.0" y="197.0"></omgdi:waypoint>
         <omgdi:waypoint x="320.0" y="197.0"></omgdi:waypoint>
@@ -179,6 +230,23 @@
       <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
         <omgdi:waypoint x="565.0" y="197.0"></omgdi:waypoint>
         <omgdi:waypoint x="600.0" y="197.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
+        <omgdi:waypoint x="67.0" y="215.0"></omgdi:waypoint>
+        <omgdi:waypoint x="136.0" y="250.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
+        <omgdi:waypoint x="136.0" y="250.0"></omgdi:waypoint>
+        <omgdi:waypoint x="222.0" y="225.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
+        <omgdi:waypoint x="535.0" y="240.0"></omgdi:waypoint>
+        <omgdi:waypoint x="534.0" y="260.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
+        <omgdi:waypoint x="587.0" y="287.0"></omgdi:waypoint>
+        <omgdi:waypoint x="747.0" y="287.0"></omgdi:waypoint>
+        <omgdi:waypoint x="747.0" y="215.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

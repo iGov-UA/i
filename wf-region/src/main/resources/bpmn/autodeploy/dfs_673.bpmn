@@ -4,27 +4,38 @@
 	<documentation>Рефакторинг на основі dnepr_spravka_o_doxodax: Ставицький В.Д, 24.05.16</documentation>
     <startEvent id="startevent1" name="Start" activiti:initiator="initiator">
       <extensionElements>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Виберіть відділення фіскальної служби; в якому вам буде зручно отримати довідку" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта громадянина України заявника; Сторінки 1, 2, 10, 11. При наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву чи pdf-файлі" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="Ваш ІПН" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Виберіть відділення фіскальної служби; в якому вам буде зручно отримати довідку" type="select" default="0" required="true"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний телефон" type="long" default="38" required="true"></activiti:formProperty>
+
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string" required="true"></activiti:formProperty>
+       	<activiti:formProperty id="asAdress" name="Проживаєте за місцем реєстрації" default="yes" type="enum" required="true">
+          <activiti:value id="yes" name="Так"></activiti:value>
+          <activiti:value id="no" name="Ні"></activiti:value>
+        </activiti:formProperty>	
+        <activiti:formProperty id="sAddressFactual" name="Місце проживання; область, місто, вулиця, дім, квартира" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваша електронна пошта; на неї Ви будете отримувати повідомлення про стан Вашої заяви" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceLiving" name="Місце проживання; область, місто, вулиця, дім, квартира" type="string" required="true"></activiti:formProperty>
+
+
         <activiti:formProperty id="dStart" name="Період, за який Ви хочете отримати довідку, з; період може складати рік або квартал, не раніше ніж за 2 квартали до  поточного" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="dStop" name="Період, за який Ви хочете отримати довідку, по; період може складати рік або квартал, не раніше ніж за 2 квартали до  поточного" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAim" name="Навіщо Вам потрібна ця довідка?; наприклад: за місцем вимоги, для оформлення субсидій, інше" type="string" required="true"></activiti:formProperty>
 
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk1" name="Пошта" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="nCodeTaxOrgan" name="код податкового відділення" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="nEGRPOU" name="ЕГРПОУ" type="invisible" default=" "></activiti:formProperty>
-
+        <activiti:formProperty id="sFIOGolova736" name="ПІП голови органу" type="invisible" default=" "></activiti:formProperty>
+        
+		<activiti:formProperty id="markersAdresStartTask" name="Маркер адреса стартТаски" type="markers" default="${markerService.loadFromFile('adress_start.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -44,7 +55,7 @@
     <serviceTask id="servicetask2" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[valery.stavitsky@gmail.com]]></activiti:expression>
+          <activiti:expression><![CDATA[${sMailClerk1}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -58,22 +69,31 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow5" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
-    <serviceTask id="servicetask3" name="Інформування громадянина" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask3" name="Інформування громадянина" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
+       <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano</activiti:expression>
+        </activiti:field>        
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[iGov: Довідка про доходи фізичних осіб]]></activiti:string>
         </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<p>
-				Ваша заява на отримання довідки про оходи фізичних осіб, передана в роботу.
+				Ваша заява на отримання довідки про доходи фізичних осіб чекає на первинну обробку.
 			</p>			
 			<br>
 			За наявності питань можете звернутись за наступними контактами<br>
@@ -94,9 +114,16 @@
         <activiti:formProperty id="sFIO" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="Ваш ІПН" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний телефон" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваша електронна пошта; на неї Ви будете отримувати повідомлення про стан Вашої заяви" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceLiving" name="Місце проживання; область, місто, вулиця, дім, квартира" type="string" writable="false"></activiti:formProperty>
+
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
+       	<activiti:formProperty id="asAdress" name="Проживаєте за місцем реєстрації" default="yes" type="enum" writable="false">
+          <activiti:value id="yes" name="Так"></activiti:value>
+          <activiti:value id="no" name="Ні"></activiti:value>
+        </activiti:formProperty>	
+        <activiti:formProperty id="sAddressFactual" name="Місце проживання; область, місто, вулиця, дім, квартира" type="string" writable="false"></activiti:formProperty>
+
         <activiti:formProperty id="dStart1" name="Період, за який Ви хочете отримати довідку, з" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="dStop1" name="Період, за який Ви хочете отримати довідку, по" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAim" name="Навіщо Вам потрібна ця довідка?; наприклад: за місцем вимоги, для оформлення субсидій, інше" type="string" writable="false"></activiti:formProperty>
@@ -105,6 +132,20 @@
           <activiti:value id="reject" name="Відмовити у наданні довідки"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="aComment" name="Результат обробки" type="textArea"></activiti:formProperty>
+        
+        
+        <activiti:formProperty id="sFIOGolova736" name="ПІП голови органу" type="invisible" default=" "></activiti:formProperty>
+		<activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dfs/dfs_673_print.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
+		<activiti:formProperty id="markersAdresPrint" name="Маркер адреса принтформы" type="markers" default="${markerService.loadFromFile('adress_print.json')}"></activiti:formProperty>
+
+
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression>${bankId_scan_passport}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow7" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
@@ -112,10 +153,19 @@
     <sequenceFlow id="flow8" name="відмова" sourceRef="exclusivegateway1" targetRef="servicetask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${aDecision=='reject'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask4" name="відмова" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask4" name="відмова" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+       <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Za Vashym zvernennyam [sID_Order] vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>  
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -127,9 +177,13 @@
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>                                    
 			<p>
+				Ваше звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> було оброблено.<br>
 				Вам відмовлено у наданні довідки про про доходи фізичних осіб.<br/>
 				Підстава:<br>
 				<b>${aComment}</b>
+			</p>
+		    <p>
+		    	Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/service/655/general">iGov.org.ua</a>
 			</p>
 			<br><br>
 			Якщо у Вас виникли якісь запитання Ви можете звернутись за наступними контактами<br>
@@ -147,10 +201,19 @@
     <sequenceFlow id="flow10" name="позитивно" sourceRef="exclusivegateway1" targetRef="servicetask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${aDecision=='accept'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask5" name="повідомлення громадянина про отримання витягу" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask5" name="повідомлення громадянина про отримання витягу" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+       	<activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field> 
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
@@ -162,7 +225,7 @@
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
           	<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<p>
-				Ваша заява на отримання довідки про доходи прийнята в роботу.
+				Ваше звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> на отримання довідки про доходи прийнята в роботу.
 			</p>
           	<p>
           		Коментар чиновника:<br>
@@ -173,14 +236,6 @@
 			${sAddress}<br>
 			${sPhoneOrgan}<br>
 			${sWorkTime}<br><br>
-			
-			<p>
-				Для отримання довідки Вам необхідно мати при при візиті до відділення фіскальної служби наступні документи:<br>
-				- № запиту (Ви його отримали листом після подачі заяви)<br>
-				- заяву на отримання довідки про доходи (Ви можете її заповнити вдома або зробити це на місці, 
-				<a href="https://dl.dropboxusercontent.com/u/91233927/zajva_taxes.doc" target="_blank">шаблон заяви</a>)<br>
-				- оригінал паспорта громадянина України
-			</p>
 			<p>
 				Щоб отримати довідку, при візиті до відділення фіскальної служби,<br> 
 				Вам необхідно мати при собі оригінал паспорта громадянина України<br> 
@@ -188,7 +243,7 @@
 			</p>
 			<p>
 				Ви можете ознайомитися з законодавством, за яким надається послуга, 
-				за <a href="https://docs.google.com/document/d/1zVUw9mFYi8yN8jYnoox8mW1F2RFe7IUq6ThBcTEPv3E/edit" target="_blank">цим</a> посиланням
+				за <a href="https://docs.google.com/document/d/1zVUw9mFYi8yN8jYnoox8mW1F2RFe7IUq6ThBcTEPv3E/edit" target="_blank">цим посиланням</a>
 			</p> 		
 			<br><br>			
 			[pattern/mail/_common_feedback.html]
