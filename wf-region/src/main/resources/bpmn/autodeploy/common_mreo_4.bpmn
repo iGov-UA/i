@@ -233,7 +233,7 @@
     </userTask>
     <endEvent id="endevent6" name="End"></endEvent>
     <sequenceFlow id="flow21" sourceRef="servicetask2" targetRef="usertask2"></sequenceFlow>
-    <serviceTask id="servicetask2" name="Повідомлення громадянина сплату послуги" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask2" name="Повідомлення громадянина сплату послуги" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -245,7 +245,7 @@
           <activiti:string><![CDATA[Перереєстрація транспортного засобу на нового власника за договором купівлі-продажу]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression> [sID_Order]&lt;br&gt;[pattern/mail/_common_header.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 &lt;p&gt; Для отримання послуги Вам необхідно сплатити державний збір і надати квитанцію про сплату під час візиту за адресою  ${sAddress}.
 &lt;/p&gt;
@@ -281,10 +281,16 @@ ${sMail_Signature}
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${sBillToPay}</activiti:expression>
         </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow27" sourceRef="servicetask9" targetRef="usertask1"></sequenceFlow>
-    <serviceTask id="servicetask6" name="Повідомлення про відмову в наданні послуги" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask6" name="Повідомлення про відмову в наданні послуги" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -296,7 +302,7 @@ ${sMail_Signature}
           <activiti:string><![CDATA[Перереєстрація транспортного засобу на нового власника за договором купівлі-продажу]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression> [sID_Order]&lt;br&gt;[pattern/mail/_common_header.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 &lt;br /&gt;
 На жаль, Вам відмовлено в реєстраціі авто.&lt;br /&gt;
@@ -310,6 +316,16 @@ ${sMail_Signature}
 
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
+        
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow34" sourceRef="servicetask6" targetRef="endevent2"></sequenceFlow>
@@ -325,7 +341,7 @@ ${sMail_Signature}
           <activiti:string><![CDATA[Перереєстрація транспортного засобу на нового власника за договором купівлі-продажу: Оцінювання якості наданя послуги.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression> [sID_Order]&lt;br&gt;[pattern/mail/_common_header.html]
  &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 
 Дякуємо, Вам що скористались нашим сервісом!
@@ -355,7 +371,7 @@ ${sMail_Signature}
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask10" name="Повідомлення громадянину про успішне подання заяви" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask10" name="Повідомлення громадянину про успішне подання заяви" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -367,7 +383,7 @@ ${sMail_Signature}
           <activiti:string><![CDATA[Перереєстрація транспортного засобу на нового власника за договором купівлі-продажу]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression> [sID_Order]&lt;br&gt;[pattern/mail/_common_header.html]
  &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
 Ваше звернення успішно зареєстровано. &lt;br /&gt;
@@ -376,6 +392,15 @@ ${sMail_Signature}
 ${sMail_Signature}
 [pattern/mail/_common_signature_end.html] 
 [pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>

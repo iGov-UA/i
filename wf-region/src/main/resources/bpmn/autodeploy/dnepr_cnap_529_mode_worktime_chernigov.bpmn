@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dnepr_cnap_529_mode_worktime_chernigov" name="Погодження режиму роботи об’єкта торгівлі, закладу ресторанного господарства та сфери послуг" isExecutable="true">
-    <documentation>Смоктій К.В. Последние правки: 23.05.2016</documentation>
+    <documentation>Смоктій К.В. Последние правки: 31.05.2016</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган надання адмінпослуг" type="select" default="0" required="true"></activiti:formProperty>
@@ -241,7 +241,7 @@
           <activiti:value id="idTime22_00" name="22:00"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sTime_Break_Wed" name="Перерва у середу (з .. до .. або вкажіть 'немає')" type="string" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="sLabel_4" name=" " type="label" default="&lt;b&gt;Середа&lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sLabel_4" name=" " type="label" default="&lt;b&gt;Четвер&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="asEnumRW_Thu" name="Оберіть режим роботи: четвер" type="enum" required="true">
           <activiti:value id="sElementRW_Work" name="робочий день"></activiti:value>
           <activiti:value id="sElementRW_NotWork" name="вихідний/санітарний день"></activiti:value>
@@ -539,7 +539,7 @@
         <activiti:formProperty id="sDate_Registrastion" name="Дата реєстрації" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sFioAdmin" name="П.І.Б. посадової особи, яка прийняла заяву" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Центр надання адмінпослуг" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="пошта оргструктури (району)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="пошта оргструктури (району)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адрес оргструктури (району)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Вкажіть  сьогоднішню дату" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для довідки оргструктури (району)" type="invisible"></activiti:formProperty>
@@ -1656,7 +1656,7 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <serviceTask id="servicetask2" name="Відпрвка e-mail з відмовою" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask2" name="Відпрвка e-mail з відмовою + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -1670,7 +1670,7 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-На жаль, Ваше звернення, щодо погодження режиму роботи об’єктів торгівлі та сфери послуг, відхилине.&lt;/p&gt;
+На жаль, Ваше звернення, щодо погодження режиму роботи об’єктів торгівлі та сфери послуг, відхилино.&lt;/p&gt;
 &lt;p&gt;На підставі: ${sDecisionComment_2} &lt;/p&gt;
 &lt;br /&gt;
 ${sNameOrgan}&lt;br /&gt;
@@ -1686,11 +1686,17 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>"${PrintForm_1}"</activiti:expression>
         </activiti:field>
+	    <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno na "Vidhileno". Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
       </extensionElements>
     </serviceTask>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow10" sourceRef="usertask2" targetRef="exclusivegateway2"></sequenceFlow>
-    <serviceTask id="servicetask3" name="Відправка e-mail з позитивним рішенням" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask3" name="Відправка e-mail з позитивним рішенням + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -1722,6 +1728,12 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${PrintForm_1},${nFileVidpovid}</activiti:expression>
         </activiti:field>
+	    <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno, rezim pogodzeno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow11" name="asEnum_decision_2=='reject'" sourceRef="exclusivegateway2" targetRef="servicetask2">
@@ -1751,7 +1763,7 @@ ${sNameOrgan}&lt;br /&gt;
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask5" name="Повідомлення громадянина про успішне подання зверенння" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask5" name="Повідомлення громадянина про успішне подання зверенння + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -1769,7 +1781,7 @@ ${sNameOrgan}&lt;br /&gt;
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 Ваше звернення [sID_Order] щодо встановлення режиму роботи об’єктів торгівлі та сфери послуг успішно зареєстровано і буде опрацьовано впродовж визначений Законом термін.&lt;br /&gt;
 &lt;br /&gt;
-Ви отримаєте додаткове повідомлення за результатами розгляду зверення.&lt;br /&gt;
+Ви отримаєте додаткове повідомлення за результатами розгляду звернення.&lt;br /&gt;
 ${sNameOrgan}&lt;br /&gt;
 ${sAddress}&lt;br /&gt;
 ${sWorkTime}&lt;br /&gt;
@@ -1780,9 +1792,19 @@ ${sNameOrgan}&lt;br /&gt;
 [pattern/mail/_common_footer.html]
 		  </activiti:expression>
         </activiti:field>
+	    <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
+
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask6" name="Відправка e-mail в разі відмови" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask6" name="Відправка e-mail в разі відмови + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -1796,7 +1818,7 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-На жаль, Ваше звернення [sID_Order] щодо встановлення режиму роботи об’єкта торгівлі, закладу ресторанного господарства та сфери послуг - відхилине.&lt;/p&gt;
+На жаль, Ваше звернення [sID_Order] щодо встановлення режиму роботи об’єкта торгівлі, закладу ресторанного господарства та сфери послуг - відхилино.&lt;/p&gt;
 &lt;p&gt;Причина в наступному:&lt;/p&gt;
 &lt;p&gt;${sDecisionComment_1}&lt;/p&gt;
 Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
@@ -1810,9 +1832,18 @@ ${sNameOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
+	    <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno na "Vidhileno". Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask7" name="лист про успішне замовлення послуги" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask7" name="лист про успішне замовлення послуги + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -1827,8 +1858,8 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 Ваше звернення [sID_Order] щодо погодження режиму роботи об’єктів торгівлі та сфери послуг успішно зареєстровано і буде опрацьовано впродовж визначений Законом термін.&lt;br /&gt;
-&lt;p&gt;Номер Вашого замовлення: ${sExtension_Number} від ${sDate_Registrastion}.&lt;/p&gt; &lt;br /&gt;
-Ви отримаєте додаткове повідомлення за результатами розгляду зверення.&lt;br /&gt;
+&lt;p&gt;Реєстраційний номер Вашого звернення: ${sExtension_Number} від ${sDate_Registrastion}.&lt;/p&gt; &lt;br /&gt;
+Ви отримаєте додаткове повідомлення за результатами розгляду звернення.&lt;br /&gt;
 ${sNameOrgan}&lt;br /&gt;
 ${sAddress}&lt;br /&gt;
 ${sWorkTime}&lt;br /&gt;
@@ -1837,6 +1868,15 @@ ${sPhoneOrgan}&lt;br /&gt;
 ${sNameOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+	    <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno na "Perevireno". Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
