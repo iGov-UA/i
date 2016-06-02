@@ -42,8 +42,9 @@
         <activiti:formProperty id="sShapkaGolova" name="шапка принтформы" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk1" name="Пошта ЦНАП" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
         <activiti:formProperty id="sFlag407" name="флаг для Новопскова" type="invisible" default="easy"></activiti:formProperty>
- <!--        
-        <activiti:formProperty id="familyStatus" name="Сімейний стан" type="markers" default="${markerService.loadFromFile('mvk/familyStatus.json')}"></activiti:formProperty> -->
+ <!--       
+  -->
+        <activiti:formProperty id="familyStatus" name="Сімейний стан" type="markers" default="${markerService.loadFromFile('mvk/familyStatus.json')}"></activiti:formProperty> 
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -141,7 +142,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${file1},${file2},${file3},${file4},${file5},{file5_1},${file6},${file7},${file8},${file9},${bankId_scan_passport}]]></activiti:expression>
+            <activiti:expression>${file1},${file2},${file3},${file4},${file5},{file5_1},${file6},${file7},${file8},${file9},${bankId_scan_passport}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -266,7 +267,7 @@
         <activiti:formProperty id="sBody_1" name="[pattern/print/architecture/zayava_407.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${file1},${file2},${file3},${file4},${file5},{file5_1},${file6},${file7},${file8},${file9},${bankId_scan_passport}]]></activiti:expression>
+            <activiti:expression>${file1},${file2},${file3},${file4},${file5},{file5_1},${file6},${file7},${file8},${file9},${bankId_scan_passport}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
