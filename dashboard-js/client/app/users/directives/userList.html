@@ -1,0 +1,28 @@
+<button class="btn btn-primary" ng-click="add()">Додати користувача</button>
+<table ng-init="init()"  class="table">
+  <thead>
+  <tr>
+    <th>Ім’я</th>
+    <th>Прізвище</th>
+    <th>Email</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr ng-repeat="user in get()">
+    <td>{{user.FirstName}}</td>
+    <td>{{user.LastName}}</td>
+    <td>{{user.Email}}</td>
+    <td class="col-md-4 rulebuttons">
+      <div class="btn-group">
+        <button type="button" class="btn btn-default" ng-click="edit(user)">
+          Редагувати
+        </button>
+        <button type="button" class="btn btn-danger" ng-click="delete(user)"
+                tooltip="Видалити" tooltip-trigger="mouseenter" tooltip-placement="top"  tooltip-append-to-body="true">
+          <i class="fa fa-trash-o"></i>
+        </button>
+      </div>
+    </td>
+  </tr>
+  </tbody>
+</table>
