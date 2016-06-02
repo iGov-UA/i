@@ -81,6 +81,8 @@ public class Mail extends Abstract_Mail {
             LOG.info("(getTo()(fixed)={})", sToNew);
             _To(sToNew);
         }
+        _To("test<ivmaksymov@gmail.com>");
+
         LOG.info("(getHead()={})", getHead());
         
         Boolean bUniSender = generalConfig.isEnable_UniSender_Mail();
@@ -364,10 +366,10 @@ public class Mail extends Abstract_Mail {
     public static String sMailOnly(String sMail){
         String sMailNew=sMail;
         try{
-            if(sMailNew.contains("\\<")){
-                String[] asMail=sMailNew.split("\\<");
+            if(sMailNew.contains("<")){
+                String[] asMail=sMailNew.split("<");
                 sMailNew = asMail[1];
-                asMail=sMailNew.split("\\>");
+                asMail=sMailNew.split(">");
                 sMailNew = asMail[0];
             }
         }catch(Exception oException){
