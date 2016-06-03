@@ -6,7 +6,12 @@
       <span><b>{{oMessage.sDate}}</b>&nbsp;{{oMessage.sHead}}</span>
     </div>
 
-    <div ng-bind-html="oMessage.sBody"></div>
+    <div ng-if="oMessage.osData.length > 1" ng-bind-html="oMessage.sBody"></div>
+
+    <div ng-if="oMessage.osData.length <= 1">
+      <span ng-if="!oMessage.osData[0].sValueNew">{{oMessage.osData[0].sGeneralComment}}</span>
+      <span ng-if="oMessage.osData[0].sValueNew">{{oMessage.osData[0].sValueNew}}</span>
+    </div>
 
     <div ng-repeat="oFile in oMessage.osData.aFile">
       Прикріплено файл: <a href="{{getMessageFileUrl(oMessage, oFile)}}" target="_blank">{{oFile.sFileName}}</a>
