@@ -101,7 +101,6 @@
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adress2" name="Адреса розміщення тимчасової споруди для провадження підприємницької діяльності" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="Дата подачі заяви" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="status" name="Обробка заяви" type="enum">
           <activiti:value id="attr1_wait" name="Документи передані в Управління містобудування та архітектури міської ради"></activiti:value>
           <activiti:value id="attr2_finish" name="Відмова громадянину у разі надання неповного пакету документів"></activiti:value>
@@ -109,9 +108,12 @@
         <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
         <activiti:formProperty id="number_cnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string"></activiti:formProperty>
         <activiti:formProperty id="adminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string"></activiti:formProperty>
+
         <activiti:formProperty id="date_today" name="Вкажіть сьогоднішню дату" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="date_registrastion" name="Вкажіть дату реєстрації" type="invisible"></activiti:formProperty>
+
         <activiti:formProperty id="sBody" name="[pattern/print/dndz_cnap_192_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -156,7 +158,9 @@
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<p>	
-				Ваше звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> про надання інформації щодо можливості розміщення тимчасової споруди для провадження підприємницької діяльності - відправлене в управління містобудування, архітектури міської ради.<br>
+				Ваше звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> 
+				про надання інформації щодо можливості розміщення тимчасової споруди для провадження підприємницької 
+				діяльності - відправлене в управління містобудування, архітектури міської ради.<br>
 				Спеціалісти з органу місцевого самоврядування повинні дати відповідь протягом десяти робочих днів з дня реєстрації заяви
 			</p>
 			<p>
@@ -191,6 +195,7 @@
           <activiti:value id="attr4_finish" name="Відмова в видачі погодження"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Якщо відмова замовнику, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
+
         <activiti:formProperty id="date_today" name="Вкажіть сьогоднішню дату" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="date_registrastion" name="Вкажіть дату реєстрації" type="invisible"></activiti:formProperty>
       </extensionElements>
