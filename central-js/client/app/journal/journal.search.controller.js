@@ -142,17 +142,20 @@ console.log($scope)
                     try {
                       var aField = JSON.parse(oOrderMessage.sData.replace(/'/g, '\''));
                       angular.forEach(aField, function (oField) {
-                        if (!bExist(oField.sID)) {
-                          oField.sID = oField.id;
-                          oField.sName = oField.id;
-                          oField.sType = oField.type;
-                          oField.sValue = oField.value;
-                          oField.sValueNew = oField.value;
-                          oField.sNotify = oField.value;
-                          oField.id = "";
-                          oField.type = "";
-                          oField.value = "";
-                        }
+                        // если выполяеться данное условие, то в объекте будет только "общий" коммент от чиновника
+                        // плюс тип - string, поэтому остальные поля в любом случае будут undefined, в этом мне кажется нет необходимости
+
+                        // if (!bExist(oField.sID)) {
+                        //   oField.sID = oField.id;
+                        //   oField.sName = oField.id;
+                        //   oField.sType = oField.type;
+                        //   oField.sValue = oField.value;
+                        //   oField.sValueNew = oField.value;
+                        //   oField.sNotify = oField.value;
+                        //   oField.id = "";
+                        //   oField.type = "";
+                        //   oField.value = "";
+                        // }
                         if (oField.sType === "date") {
                           oField.oFactory = DatepickerFactory.prototype.createFactory();
                           oField.oFactory.value = oField.sValueNew;
