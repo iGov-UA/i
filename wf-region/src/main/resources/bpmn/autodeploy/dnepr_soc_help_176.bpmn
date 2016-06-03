@@ -39,7 +39,8 @@
           <activiti:string><![CDATA[Нове звернення. Видача посвідчень інвалідам з дитинства та дітям інвалідам, особам, які не мають права на пенсію та інвалідам.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+[pattern/mail/_common_header.html]
 &lt;strong&gt;Шановний(-а) колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
 У Вас в черзі на обробку зареєстровано нове звернення щодо видачі посвідчень інвалідам з дитинства та дітям інвалідам, особам, які не мають права на пенсію та інвалідам.&lt;br /&gt;
 Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
@@ -57,8 +58,8 @@
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="long" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="adress1" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="adress2" name="Адреса проживання" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="adress1" name="Адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="adress2" name="Адреса проживання; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decision" name="Рішення" type="enum" required="true">
@@ -90,7 +91,8 @@
           <activiti:string><![CDATA[Видача посвідчень інвалідам з дитинства та дітям інвалідам, особам, які не мають права на пенсію та інвалідам.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 &lt;p&gt;На жаль, Ваше звернення щодо видачи посвідчень інвалідам з дитинства та дітям інвалідам, особам, які не мають права на пенсію та інвалідам відхилене.&lt;/p&gt;
 &lt;p&gt;Причина: ${decision_comment}&lt;/p&gt;
@@ -126,7 +128,8 @@
           <activiti:string><![CDATA[Видача посвідчень інвалідам з дитинства та дітям інвалідам, особам, які не мають права на пенсію та інвалідам.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 &lt;p&gt;Ваше звернення щодо видачи посвідчень інвалідам з дитинства та дітям інвалідам, особам, які не мають права на пенсію та інвалідам опрацьовано.&lt;/p&gt;
 &lt;p&gt;Вам необхідно прийти в  [pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:2] за адресою: &lt;br /&gt;[pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:3].&lt;br /&gt; 
@@ -188,7 +191,8 @@ execution.setVariable('area', per3)</script>
           <activiti:string><![CDATA[Видача посвідчень інвалідам з дитинства та дітям інвалідам, особам, які не мають права на пенсію та інвалідам.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br&gt;
 &lt;p&gt;Ваше звернення щодо видачи посвідчень інвалідам з дитинства та дітям інвалідам, особам, які не мають права на пенсію та інвалідам зареєстровано у системі.&lt;br&gt;
 Повідомлення про результат послуги буде спрямоване на Ваш e-mail.&lt;/p&gt;

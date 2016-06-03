@@ -44,8 +44,8 @@
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="long" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="adress1" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="adress2" name="Адреса проживання" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="adress1" name="Адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="adress2" name="Адреса проживання; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="transfer_type" name="В разі призначення допомоги кошти перераховувати" type="enum" writable="false">
@@ -94,8 +94,8 @@
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="long" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="adress1" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="adress2" name="Адреса проживання" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="adress1" name="Адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="adress2" name="Адреса проживання; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="transfer_type" name="В разі призначення допомоги кошти перераховувати" type="enum" writable="false">
@@ -136,7 +136,8 @@
           <activiti:string><![CDATA[Призначення допомоги на дітей-сиріт та дітей, позбавлених батьківського піклування та грошового забезпечення прийомним батькам.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 Ви отримали схвалення щодо свого звернення про призначення допомоги на дітей-сиріт та дітей, позбавлених батьківського піклування та грошового забезпечення прийомним батькам..&lt;br /&gt;
 &lt;p&gt;Відповідь від управління праці та соціального захисту  населення знаходиться у додатку до листа.&lt;/p&gt;
@@ -172,7 +173,8 @@
           <activiti:string><![CDATA[Призначення допомоги на дітей-сиріт та дітей, позбавлених батьківського піклування та грошового забезпечення прийомним батькам.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 На жаль, Вам відмовлено у призначенні допомоги допомоги на дітей-сиріт та дітей, позбавлених батьківського піклування та грошового забезпечення прийомним батькам.&lt;br /&gt; 
 &lt;p&gt;Відповідь від управління праці та соціального захисту населення знаходиться у додатку до листа.&lt;/p&gt;
@@ -216,7 +218,8 @@
           <activiti:string><![CDATA[Призначення допомоги на дітей-сиріт та дітей, позбавлених батьківського піклування та грошового забезпечення прийомним батькам.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 &lt;p&gt;Ваше звернення щодо призначення допомоги на дітей-сиріт та дітей, позбавлених батьківського піклування та грошового забезпечення прийомним батькам в очикуванні недостатніх документів. Протягом трьох місяців Ви повині донести іх в  [pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:2] за адресою [pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:3] або заповнити заявку повторно на порталі &lt;a href="#current-page"&gt;iGov.org.ua&lt;/a&gt;, враховуючи коментар нижче.&lt;/p&gt;
 &lt;p&gt;Коментар спеціаліста: ${decision_comment1}&lt;/p&gt;
@@ -251,7 +254,8 @@
           <activiti:string><![CDATA[Нове звернення. Призначення допомоги на дітей-сиріт та дітей, позбавлених батьківського піклування та грошового забезпечення прийомним батькам.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+[pattern/mail/_common_header.html]
 &lt;strong&gt;Шановний(-а) колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
 У Вас в черзі на обробку зареєстровано нове звернення щодо призначення допомоги на дітей-сиріт та дітей, позбавлених батьківського піклування та грошового забезпечення прийомним батькам.&lt;br /&gt;
 Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
@@ -273,7 +277,8 @@
           <activiti:string><![CDATA[Призначення допомоги на дітей-сиріт та дітей, позбавлених батьківського піклування та грошового забезпечення прийомним батькам.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 &lt;p&gt;На жаль, Ваше звернення щодо допомоги на дітей-сиріт та дітей, позбавлених батьківського піклування та грошового забезпечення прийомним батькам відхилене.&lt;/p&gt;
 &lt;p&gt;Причина: ${decision_comment1}&lt;/p&gt;
@@ -330,7 +335,8 @@ execution.setVariable('area', per3)</script>
           <activiti:string><![CDATA[Призначення допомоги на дітей-сиріт та дітей, позбавлених батьківського піклування та грошового забезпечення прийомним батькам.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br&gt;
 &lt;p&gt;Ваше звернення щодо призначення допомоги на дітей-сиріт та дітей, позбавлених батьківського піклування та грошового забезпечення прийомним батькам зареєстровано у системі.&lt;br&gt;
 Повідомлення про результат послуги буде спрямоване на Ваш e-mail.&lt;/p&gt;
