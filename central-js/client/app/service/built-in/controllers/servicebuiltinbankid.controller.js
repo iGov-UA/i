@@ -61,8 +61,8 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   };
 
 
-  if ($scope.countOrder.bIsLimitReached) {
-    
+  if (!allowOrder) {
+
     $location.path("/");
     var modalInstance = $modal.open({
       animation: true,

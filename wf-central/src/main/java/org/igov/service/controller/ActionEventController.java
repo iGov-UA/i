@@ -242,7 +242,6 @@ public class ActionEventController {
             "     + \"\\n```json\\n\"\n" +
             "     + \"{\\n\"\n" +
             "     + \"  \\\"nOpened\\\": \\\"количество открытых заявок\\\",\\n\"\n" +
-            "     + \"  \\\"bIsLimitReached\\\": \\\"0 - если лимит по открытым заявкам не достигнут; 1 - лостигнут лимит\\\"\\n\"\n" +
             "     + \"}\\n\"\n" +
             "     + \"\\n```\\n\"")
     @ApiResponses(value = {
@@ -257,35 +256,22 @@ public class ActionEventController {
             @ApiParam(value = "Булевый, true исключает закрытые из подсчета", required = false) @RequestParam(value = "bExcludeClosed", required = false, defaultValue = "false") Boolean bExcludeClosed)
             throws CommonServiceException {
 
-        Map<String, Object> m = new HashMap<>();
+        Map<String, Long> m = new HashMap<>();
         Long nOpened = (long) 0;
-        Long nClosed = (long) 0;
 
         List<HistoryEvent_Service> aHistoryEvent_Service = historyEventServiceDao.getOrdersHistory(nID_Subject, nID_Service, sID_UA);
 
         for (HistoryEvent_Service oHistoryEvent_Service : aHistoryEvent_Service) {
             nOpened++;
-            if (oHistoryEvent_Service.getsID_StatusType().toLowerCase().startsWith("closed")
-                    || oHistoryEvent_Service.getsID_StatusType().toLowerCase().startsWith("removed")
+            if (bExcludeClosed && (oHistoryEvent_Service.getsID_StatusType().toLowerCase().startsWith("closed")
+                    || oHistoryEvent_Service.getsID_StatusType().toLowerCase().startsWith("removed"))
                     ) {
-                nClosed++;
+                nOpened--;
             }
         }
 
-        Long result = nOpened - nClosed;
-        if(bExcludeClosed){
-            m.put("nOpened", result);
-        } else {
-            m.put("nOpened", nOpened);
-        }
-
-        if(nLimit == 0 || result < nLimit){
-            m.put("bIsLimitReached", false); //false
-        } else {
-            m.put("bIsLimitReached", true); //true
-        }
+        m.put("nOpened", nOpened);
         return JSONValue.toJSONString(m);
-
     }
 
     //TODO: Сделать оограничение по строкам
