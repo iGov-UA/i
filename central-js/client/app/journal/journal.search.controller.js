@@ -255,7 +255,7 @@ console.log($scope)
               ErrorsFactory.addFail({
                 sBody: 'Помилка сереалізації об`єкту з полями, у яких відповіді на зауваження!',
                 sError: sError,
-                asParam: ['oData.saField: ' + $scope.aField]
+                asParam: ['oData.saField: ' + $scope.aOrderMessages[0].aData]
               });
             }
           }

@@ -452,6 +452,7 @@ public class SubjectMessageController {
 
         Long nID_HistoryEvent_Service;
         SubjectMessage oSubjectMessage;
+        LOG.info("setServiceMessage started for the sID_Order {}", sID_Order);
         try {
             HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
             nID_HistoryEvent_Service = oHistoryEvent_Service.getId();

@@ -81,7 +81,6 @@ public class Mail extends Abstract_Mail {
             LOG.info("(getTo()(fixed)={})", sToNew);
             _To(sToNew);
         }
-
         LOG.info("(getHead()={})", getHead());
         
         Boolean bUniSender = generalConfig.isEnable_UniSender_Mail();
@@ -365,16 +364,16 @@ public class Mail extends Abstract_Mail {
     public static String sMailOnly(String sMail){
         String sMailNew=sMail;
         try{
-            if(sMailNew.contains("\\<")){
-                String[] asMail=sMailNew.split("\\<");
+            if(sMailNew.contains("<")){
+                String[] asMail=sMailNew.split("<");
                 sMailNew = asMail[1];
-                asMail=sMailNew.split("\\>");
+                asMail=sMailNew.split(">");
                 sMailNew = asMail[0];
             }
         }catch(Exception oException){
             LOG.warn("FAIL: {} (sMail={},sMailNew={})", oException.getMessage(), sMail, sMailNew);
         }
-        return sMail;
+        return sMailNew;
     }
     
     public void sendWithUniSender() throws EmailException{
@@ -417,7 +416,7 @@ public class Mail extends Abstract_Mail {
                     .setSenderEmail(getFrom())
                     .setSubject(getHead())
                     .setBody(sBody)
-                    .setListId(String.valueOf(nID_Sender));
+                    .setListId(String.valueOf("TEST"));
 
                 try {
                     int nAttachments = oMultiparts.getCount();
@@ -452,7 +451,7 @@ public class Mail extends Abstract_Mail {
                     LOG.info("(oUniResponse_CreateCampaign={})", oUniResponse_CreateCampaign);
 
                 } else {
-                    throw new EmailException("error while email cration " + oUniResponse_CreateEmailMessage.getError());
+                    throw new EmailException("error while email creation " + oUniResponse_CreateEmailMessage.getError());
                 }
             }
         } catch (Exception oException) {

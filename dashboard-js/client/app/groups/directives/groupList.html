@@ -1,0 +1,26 @@
+<button class="btn btn-primary" ng-click="add()">Додати групу</button>
+<table ng-init="init()"  class="table">
+  <thead>
+  <tr>
+    <th>№</th>
+    <th>Назва</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr ng-repeat="group in get()">
+    <td>{{group.id}}</td>
+    <td>{{group.name}}</td>
+    <td class="col-md-4 rulebuttons">
+      <div class="btn-group">
+        <button type="button" class="btn btn-default" ng-click="edit(group)">
+          Редагувати
+        </button>
+        <button type="button" class="btn btn-danger" ng-click="delete(group)"
+                tooltip="Видалити" tooltip-trigger="mouseenter" tooltip-placement="top"  tooltip-append-to-body="true">
+          <i class="fa fa-trash-o"></i>
+        </button>
+      </div>
+    </td>
+  </tr>
+  </tbody>
+</table>

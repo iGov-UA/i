@@ -29,7 +29,7 @@ public class NotificationPatterns {
     @Autowired
     private ActionTaskService oActionTaskService;
 
-    public void sendTaskCreatedInfoEmail(String sMailTo, String sID_Order, String bankIdFirstName) throws EmailException {
+    public void sendTaskCreatedInfoEmail(String sMailTo, String sID_Order, String bankIdFirstName, String bankIdLastName) throws EmailException {
 
       /*
       String sHead = String.format("Ви подали заяву №%s на послугу через портал %s", nID_Protected,
@@ -46,11 +46,7 @@ public class NotificationPatterns {
             if(bankIdFirstName == null || bankIdFirstName.equalsIgnoreCase("null")) {
                 sHead = String.format("Вітаємо, Ваша заявка %s прийнята!", sID_Order);
             } else {
-                bankIdFirstName = bankIdFirstName.toLowerCase();
-                char[] chars = bankIdFirstName.toCharArray();
-                chars[0] = Character.toUpperCase(chars[0]);
-                bankIdFirstName = String.valueOf(chars);
-
+                bankIdFirstName = makeStringAsName(bankIdFirstName);
                 sHead = String.format("Вітаємо %s, Ваша заявка %s прийнята!", bankIdFirstName, sID_Order);
             }
 
@@ -87,7 +83,8 @@ public class NotificationPatterns {
 
             Mail oMail = context.getBean(Mail.class);
 
-            oMail._To(sMailTo)._Head(sHead)._Body(sBody);
+            oMail._To(sMailTo)._Head(sHead)._Body(sBody)._ToName(makeStringAsName(bankIdFirstName),
+                                                                 makeStringAsName(bankIdLastName));
 
             oMail.send();
             LOG.info("Send email with sID_Order={} to the sMailTo={}", sID_Order, sMailTo);
@@ -95,6 +92,15 @@ public class NotificationPatterns {
             LOG.warn("Refused: {} (sMailTo={},sID_Order={})", oException.getMessage(), sMailTo, sID_Order);
             LOG.error("FAIL:", oException);
         }
+    }
+
+
+
+    private String makeStringAsName(String name) {
+        name.toLowerCase();
+        char[] chars = name.toCharArray();
+        chars[0] = Character.toUpperCase(chars[0]);
+        return String.valueOf(chars);
     }
 
     public void sendVerifyEmail(String sMailTo, String sToken) throws EmailException {
@@ -171,7 +177,7 @@ public class NotificationPatterns {
 
             String sBody = osBody.toString();
             Mail oMail = context.getBean(Mail.class);
-            oMail._To(sMailTo)._Head(sHead)._Body(sBody);
+            oMail._To(sMailTo)._Head(sHead)._Body(sBody)._ToName(sClientFIO);
             oMail.send();
         } catch (Exception oException) {
             LOG.warn("FAIL: {} (sMailTo={},sToken={},nID_Process={},saField={})", oException.getMessage(), sMailTo,
