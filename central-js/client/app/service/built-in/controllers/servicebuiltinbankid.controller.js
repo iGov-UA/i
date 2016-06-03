@@ -60,7 +60,10 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     return $scope.data.formData.initialize($scope.activitiForm, BankIDAccount, oServiceData);
   };
 
-  if (!allowOrder) {
+
+  if ($scope.countOrder.bIsLimitReached) {
+    
+    $location.path("/");
     var modalInstance = $modal.open({
       animation: true,
       size: 'md',
