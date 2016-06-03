@@ -30,7 +30,7 @@ angular.module('journal').controller('JournalSearchController', function (
   $scope.aField = [];
   $scope.sOrderCommentNew = '';
   $scope.sOrderAnswerCommentNew = '';
-
+console.log($scope)
   $scope.bAuth = UserService.isLoggedIn().then(function () {
     $scope.bAuth = true;
   }).catch(function () {
@@ -97,6 +97,7 @@ angular.module('journal').controller('JournalSearchController', function (
             //   }
             // })) {
             oOrder = oResponse;
+          console.log(oOrder)
             if (/*ErrorsFactory.bSuccess(oFuncNote)*/!oResponse.message || oResponse.message.indexOf('not found') === -1) {
               $scope.oOrder = oOrder;
               $scope.oOrder.sDate = new Date (oOrder.sDate.replace(' ', 'T'));
@@ -130,6 +131,7 @@ angular.module('journal').controller('JournalSearchController', function (
         MessagesService.getServiceMessages(sID_Order, sToken).then(function (oResponse) {
           if (ErrorsFactory.bSuccessResponse(oResponse)) {
             if (bExist(oResponse.messages)) {
+              console.log(oResponse)
               $scope.aOrderMessages = oResponse.messages;
               if (events) {
                 $scope.aOrderMessages = $scope.aOrderMessages.concat(events);
