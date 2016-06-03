@@ -74,7 +74,8 @@
               <div class="form-group" ng-repeat="oField in oOrderMessage.aData track by oField.sID"
                    ng-switch on="oField.sType">
                     <label class="col-md-6 control-label" style="padding-right: 0; padding-top: 0">
-                      {{oField.sName}}:
+                      <span ng-if="oField.sName">{{oField.sName}} :</span>
+                      <!--<span ng-if="!oField.sName">{{oField.sGeneralComment}}</span>-->
                       <br /><span style="color: #CC0000" ng-if="oOrderMessage.oSubjectMessageType.nID !== 4">{{oField.sNotify}}</span>
                     </label>
                     <div class="col-md-6">
