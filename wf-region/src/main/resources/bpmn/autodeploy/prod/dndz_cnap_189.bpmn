@@ -10,7 +10,7 @@
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Телефон; в форматі 380..." type="string" default="+38" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Телефон; в форматі 380..." type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="orgName" name="Назва релігійної громади/організації" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="eventName" name="Назва релігійного обряду" type="string" required="true"></activiti:formProperty>
@@ -45,7 +45,7 @@
     <sequenceFlow id="flow2" sourceRef="boundaryerror1" targetRef="endevent2"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="mailtask1"></sequenceFlow>
-    <serviceTask id="mailtask1" name="Повідомлення про успішне замовлення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="mailtask1" name="Повідомлення про успішне замовлення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
@@ -61,13 +61,22 @@
 [pattern/mail/_common_header.html]
 &lt;h3&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 &lt;p&gt;
-Ваше зверення щодо надання дозволу релігійним організаціям на проведення релігійних заходів, які проводяться поза межами культових споруд було успішно зареєстроване.&lt;br /&gt;
+Ваше зверення [sID_Order] щодо надання дозволу релігійним організаціям на проведення релігійних заходів, які проводяться поза межами культових споруд було успішно зареєстроване.&lt;br /&gt;
 Спеціалісти Центру надання адміністративних послуг м.Дніпродзержинська, повинні дати відповідь найближчім часом. &lt;br /&gt;
 ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -129,7 +138,7 @@ ${sNameOrgan}.&lt;br /&gt;
     <sequenceFlow id="flow6" name="${decide == 'decline'}" sourceRef="exclusivegateway1" targetRef="mailtask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'decline'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="mailtask2" name="Відмова у реєстрації звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="mailtask2" name="Відмова у реєстрації звернення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
@@ -157,6 +166,15 @@ ${sNameOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Za Vashym zvernennyam  [sID_Order]  vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow8" sourceRef="mailtask2" targetRef="endevent1"></sequenceFlow>
@@ -164,7 +182,7 @@ ${sNameOrgan}.&lt;br /&gt;
     <sequenceFlow id="flow13" name="${decide == 'accept'}" sourceRef="exclusivegateway1" targetRef="mailtask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'accept'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="mailtask4" name="Відправка опису" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="mailtask4" name="Відправка опису" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -192,6 +210,15 @@ ${sPhoneOrgan}.&lt;br /&gt;
 ${sNameOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html];</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -260,6 +287,13 @@ ${sWorkTime}.&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno.
+Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>"${rishen}</activiti:expression>
         </activiti:field>
@@ -301,6 +335,12 @@ ${sAddress}.&lt;br /&gt;
 ${sWorkTime}.&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Za Vashym zvernennyam  [sID_Order]  vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>"${rishen}</activiti:expression>
