@@ -521,7 +521,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
         String sBodySource = getStringFromFieldExpression(this.text, oExecution);
         String sBody = replaceTags(sBodySource, oExecution);
         
-        saveServiceMessage(sHead, saToMail, sBody, generalConfig.getOrderId_ByProcess(Long.valueOf(oExecution.getProcessInstanceId())));
+        //saveServiceMessage(sHead, saToMail, sBody, generalConfig.getOrderId_ByProcess(Long.valueOf(oExecution.getProcessInstanceId())));
 
         Mail oMail = context.getBean(Mail.class);
 
