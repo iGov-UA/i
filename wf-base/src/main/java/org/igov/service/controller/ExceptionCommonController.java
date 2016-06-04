@@ -47,6 +47,7 @@ public class ExceptionCommonController {
         String sClass = exception.getStackTrace()[0].getClassName();
         String sFileName = exception.getStackTrace()[0].getFileName();
         String sMethod = exception.getStackTrace()[0].getMethodName();//getCause().
+        LOG.error("Error:{}. REST API Exception", exception);
         LOG.error("Error:{}. REST API Exception", exception.getMessage());
         LOG.trace("FAIL:", exception);
         new Log(this.getClass(), exception)
@@ -64,6 +65,7 @@ public class ExceptionCommonController {
     public
     @ResponseBody
     ResponseEntity<String> catchRuntimeException(RuntimeException exception) {
+        LOG.error("Error:{}. REST API Exception", exception);
         LOG.error("Error:{}. REST System Exception", exception.getMessage());
         LOG.trace("FAIL:", exception);
         new Log(this.getClass(), exception)
@@ -84,6 +86,7 @@ public class ExceptionCommonController {
     public
     @ResponseBody
     ResponseEntity<String> catchException(Exception exception) {
+        LOG.error("Error:{}. REST API Exception", exception);
         LOG.error("Error:{}. REST Exception", exception.getMessage());
         LOG.trace("FAIL:", exception);
         new Log(this.getClass(), exception)
@@ -119,6 +122,7 @@ public class ExceptionCommonController {
     public
     @ResponseBody
     ResponseEntity<String> catchHttpMessageNotReadableException(HttpMessageNotReadableException exception) {
+        LOG.error("Error:{}. REST API Exception", exception);
         LOG.error("Error:{}. REST Wrong Input Body Exception", exception.getMessage());
         LOG.trace("FAIL:", exception);
         new Log(this.getClass(), exception)
