@@ -72,9 +72,10 @@ public class HistoryEventServiceImpl implements HistoryEventService {
     public String addServiceMessage(Map<String, String> mParam) throws Exception {
         String sURL = generalConfig.getSelfHostCentral() + URI_ADD_SERVICE_MESSAGE;
         LOG.info("(sURL={},mParam={})", sURL, mParam);
-        String soResponse = httpRequester.getInside(sURL, mParam);
-        LOG.info("(soResponse={})", soResponse);
-        return soResponse;
+        //String soResponse = httpRequester.getInside(sURL, mParam);
+        //LOG.info("(soResponse={})", soResponse);
+        //return soResponse;
+        return "";
     }
 
     private String doRemoteRequest(String sServiceContext, Map<String, String> mParam) throws Exception {
