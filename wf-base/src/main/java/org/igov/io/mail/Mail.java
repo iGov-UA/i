@@ -190,7 +190,7 @@ public class Mail extends Abstract_Mail {
             //oMultiPartEmail.addTo(sTo, "receiver");
             //oMultiPartEmail.addTo(getTo(), "receiver");
             //log.info("getTo()=" + getTo());
-            _From("noreply@mail.igov.org.ua");
+//            _From("noreply@mail.igov.org.ua");
             LOG_BIG.debug("(getFrom()={})", getFrom());            
             oMultiPartEmail.setFrom(getFrom(), getFrom());//"iGov"
             oMultiPartEmail.setSubject(getHead());
