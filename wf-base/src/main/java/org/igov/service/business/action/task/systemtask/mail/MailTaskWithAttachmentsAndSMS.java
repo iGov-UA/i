@@ -48,6 +48,7 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
         }
 
         try {
+            LOG.info("(sAttachmentsForSend...)");
             String sAttachmentsForSend = this.saAttachmentsForSend == null || "".equals(this.saAttachmentsForSend) ? "" : getStringFromFieldExpression(this.saAttachmentsForSend, oExecution);
             LOG.info("(sAttachmentsForSend={})", sAttachmentsForSend);
             List<Attachment> aAttachment = new ArrayList<>();
