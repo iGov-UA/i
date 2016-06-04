@@ -549,6 +549,7 @@ public class ActionEventController {
 		    		Integer nID_Server = historyEventService.getnID_Server();
 		            nID_Server = nID_Server == null ? 0 : nID_Server;
 	
+                                nID_Server = generalConfig.getServerId(nID_Server);
 			    	Optional<Server> oOptionalServer = serverDao.findById(new Long(nID_Server));
 		            if (!oOptionalServer.isPresent()) {
 		                throw new RecordNotFoundException("Server with nID_Server " + nID_Server + " wasn't found.");
