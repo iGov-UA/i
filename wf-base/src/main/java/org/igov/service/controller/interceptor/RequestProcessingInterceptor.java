@@ -216,9 +216,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 LOG.info("saveClosedTaskInfo block started");
                 saveClosedTaskInfo(sRequestBody, snTaskId);
             } else if (isUpdateTask(oRequest)) {
-                if (mRequestParam.get("taskId") == null && snTaskId != null) {
-                    mRequestParam.put("taskId", snTaskId);
-                }
                 saveUpdatedTaskInfo(sResponseBody, mRequestParam);
             }
         } catch (Exception ex) {
