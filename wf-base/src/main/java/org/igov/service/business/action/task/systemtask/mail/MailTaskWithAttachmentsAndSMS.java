@@ -35,7 +35,7 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
         try {
             System.setProperty("mail.mime.address.strict", "false");
 
-            //MultiPartEmail oMultiPartEmail = MultiPartEmail_BaseFromTask(oExecution);
+            MultiPartEmail oMultiPartEmail = MultiPartEmail_BaseFromTask(oExecution);
             Mail oMail = Mail_BaseFromTask(oExecution);
 
             String sPhone_SMS = getStringFromFieldExpression(this.sPhone_SMS, oExecution);

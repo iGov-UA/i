@@ -85,9 +85,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         long startTime = System.currentTimeMillis();
         LOG.info("(getMethod()={}, getRequestURL()={})", oRequest.getMethod().trim(), oRequest.getRequestURL().toString());
         LOG_BIG.info("(getMethod()={}, getRequestURL()={})", oRequest.getMethod().trim(), oRequest.getRequestURL().toString());
-        //+ ",nMS_Start=" + System.currentTimeMillis());
-        //LOG.debug("getRequestURL()=" + oRequest.getRequestURL().toString());
-        //oLogBig_Controller.info("getRequestURL()=" + oRequest.getRequestURL().toString());
         oRequest.setAttribute("startTime", startTime);
         protocolize(oRequest, response, false);
         return true;
@@ -104,22 +101,11 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             HttpServletResponse oResponse, Object handler, Exception ex)
             throws Exception {
         bFinish = true;
-        /*
-         LOG.info("(getMethod()={}, getRequestURL()={}, nElapsedMS={})", oRequest.getMethod().trim(), oRequest.getRequestURL().toString()
-         , (System.currentTimeMillis() - (Long) oRequest.getAttribute("startTime")));
-         LOG_BIG.info("(getMethod()={}, getRequestURL()={}, nElapsedMS={})", oRequest.getMethod().trim(), oRequest.getRequestURL().toString()
-         , (System.currentTimeMillis() - (Long) oRequest.getAttribute("startTime")));
-         */
         LOG.info("(nElapsedMS={})", System.currentTimeMillis() - (Long) oRequest.getAttribute("startTime"));
         LOG_BIG.info("(nElapsedMS={})", System.currentTimeMillis() - (Long) oRequest.getAttribute("startTime"));
-
-        //LOG.debug("(getRequestURL()={}, nElapsedMS={})", oRequest.getRequestURL().toString()
-        //        , System.currentTimeMillis() - (Long) oRequest.getAttribute("startTime"));
-        //oLogBig_Controller.info("getRequestURL()=" + oRequest.getRequestURL().toString()
-        //        + ",nElapsedMS=" + (System.currentTimeMillis() - (Long) oRequest.getAttribute("startTime")));
         oResponse = ((MultiReaderHttpServletResponse) oRequest.getAttribute("responseMultiRead") != null
                 ? (MultiReaderHttpServletResponse) oRequest.getAttribute("responseMultiRead") : oResponse);
-        protocolize(oRequest, oResponse, true);
+        //protocolize(oRequest, oResponse, true);
     }
 
     private void protocolize(HttpServletRequest oRequest, HttpServletResponse oResponse, boolean bSaveHistory)
@@ -215,7 +201,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             }
             if (isSaveTask(oRequest, sResponseBody)) {
                 LOG.info("saveNewTaskInfo block");
-                //saveNewTaskInfo(sRequestBody, sResponseBody, mRequestParam);
+                saveNewTaskInfo(sRequestBody, sResponseBody, mRequestParam);
             } else if (isCloseTask(oRequest, sResponseBody)) {
                 LOG.info("saveClosedTaskInfo block started");
                 saveClosedTaskInfo(sRequestBody, snTaskId);
