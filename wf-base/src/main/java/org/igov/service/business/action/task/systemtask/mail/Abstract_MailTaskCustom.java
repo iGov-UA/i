@@ -556,9 +556,9 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
     protected void saveServiceMessage(String sHead, String sTo, String sBody, String sID_Order){
     	Map<String, String> params = new HashMap<>();
     	params.put("sID_Order", sID_Order);
-        params.put("sHead", "Отправлено письмо");
-        params.put("sBody", "Отправлено письмо");
-        params.put("sMail", "Отправлено письмо body");
+        params.put("sHead","Отправлено письмо");
+        params.put("sBody", sHead);
+        params.put("sMail", sBody);
         params.put("nID_SubjectMessageType", "" + 10L);
         params.put("nID_Subject", "0");
         params.put("sContacts", "0");
