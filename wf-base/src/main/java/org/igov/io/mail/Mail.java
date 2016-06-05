@@ -156,49 +156,18 @@ public class Mail extends Abstract_Mail {
          }else{*/
         if (bUniSender) {
             try {
-                sendWithUniSender();
+                if (!sendWithUniSender()) {
+                    sendAlternativeWay();
+                }
             } catch (Exception oException) {
                 LOG.warn("Try send via alter channel! (getTo()={})", oException.getMessage(), getTo());
                 LOG.trace("FAIL:", oException);
-
-                StringBuffer sbBody = new StringBuffer(500);
-                sbBody.append("host: ");
-                sbBody.append(getHost());
-                sbBody.append(":");
-                sbBody.append(getPort());
-                sbBody.append("\nAuthUser:");
-                sbBody.append(getAuthUser());
-                sbBody.append("\nfrom:");
-                sbBody.append(getFrom());
-                sbBody.append("\nto:");
-                sbBody.append(getTo());
-                sbBody.append("\nhead:");
-                sbBody.append(getHead());
-//                    sbBody.append(getBody());
-
                 try {
-                    msgService.setEventSystem("WARNING", null, null, "sendWithUniSender", "Error send via UniSender", sbBody.toString(), oException.getMessage(), null);
+                    msgService.setEventSystem("WARNING", null, null, "sendWithUniSender", "Error send via UniSender", getBody(), oException.getMessage(), null);
                 } catch (Exception e) {
                     LOG.trace("Ошибка при регистрации сообщения в Сервисе Хранения Ошибок.", e);
                 }
-
-                try {
-                    sendOld();
-                } catch (Exception oException1) {
-                    LOG.warn("Final send trying fail: {} (getTo()={})", oException1.getMessage(), getTo());
-                    LOG.trace("FAIL:", oException);
-
-                    try {
-                        msgService.setEventSystem("WARNING", null, null, "sendOld", "Error send final", sbBody.toString(), oException.getMessage(), null);
-                    } catch (Exception e) {
-                        LOG.trace("Ошибка при регистрации сообщения в Сервисе Хранения Ошибок.", e);
-                    }
-
-                    /*
-                     throw oException1;
-                     */
-                    //sendOld();
-                }
+                sendAlternativeWay();
             }
         } else {
             sendOld();
@@ -375,8 +344,10 @@ public class Mail extends Abstract_Mail {
         return sMailNew;
     }
 
-    public void sendWithUniSender() throws EmailException {
+    //public void sendWithUniSender() throws EmailException {
+    public boolean sendWithUniSender() {
         LOG.info("Init...");
+        boolean result = true;
         Object oID_Message = null;
         try {
             String sKey_Sender = generalConfig.getKey_UniSender_Mail();
@@ -414,7 +385,7 @@ public class Mail extends Abstract_Mail {
                     .setSenderEmail(getFrom())
                     .setSubject(getHead())
                     .setBody(sBody)
-                    .setListId(String.valueOf("TEST"));
+                    .setListId("TEST");
 
             try {
                 int nAttachments = oMultiparts.getCount();
@@ -447,17 +418,54 @@ public class Mail extends Abstract_Mail {
 
                     UniResponse oUniResponse_CreateCampaign = oUniSender.createCampaign(oCreateCampaignRequest, getTo());
                     LOG.info("(oUniResponse_CreateCampaign={})", oUniResponse_CreateCampaign);
-
                 } else {
-                    throw new EmailException("error while email creation " + oUniResponse_CreateEmailMessage.getError());
+                    result = false;
+                    LOG.error("error while email creation " + oUniResponse_CreateEmailMessage.getError());
+                    //throw new EmailException("error while email creation " + oUniResponse_CreateEmailMessage.getError());
                 }
             }
         } catch (Exception oException) {
+            result = false;
             LOG.error("FAIL: {} (oID_Message()={},getTo()={})", oException.getMessage(), oID_Message, getTo());
             LOG.trace("FAIL:", oException);
-            throw new EmailException("Error happened when sending email (" + getTo() + ")(oID_Message=" + oID_Message + ")", oException);
+            //throw new EmailException("Error happened when sending email (" + getTo() + ")(oID_Message=" + oID_Message + ")", oException);
         }
         LOG.info("SUCCESS: sent!");
+        return result;
+    }
+
+    private void sendAlternativeWay() {
+        StringBuffer sbBody = new StringBuffer(500);
+        sbBody.append("host: ");
+        sbBody.append(getHost());
+        sbBody.append(":");
+        sbBody.append(getPort());
+        sbBody.append("\nAuthUser:");
+        sbBody.append(getAuthUser());
+        sbBody.append("\nfrom:");
+        sbBody.append(getFrom());
+        sbBody.append("\nto:");
+        sbBody.append(getTo());
+        sbBody.append("\nhead:");
+        sbBody.append(getHead());
+//                    sbBody.append(getBody());
+
+        try {
+            sendOld();
+        } catch (Exception oException1) {
+            LOG.warn("Final send trying fail: {} (getTo()={})", oException1.getMessage(), getTo());
+
+            try {
+                msgService.setEventSystem("WARNING", null, null, "sendOld", "Error send final", sbBody.toString(), oException1.getMessage(), null);
+            } catch (Exception e) {
+                LOG.trace("Ошибка при регистрации сообщения в Сервисе Хранения Ошибок.", e);
+            }
+
+            /*
+             throw oException1;
+             */
+            //sendOld();
+        }
     }
 
 }
