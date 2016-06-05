@@ -19,11 +19,11 @@ public class MailTaskWithoutAttachment extends Abstract_MailTaskCustom {
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
         try {
-            Logger LOG = LoggerFactory.getLogger(ManagerSMS.class); //временно для проверки записи логов
+            /*Logger LOG = LoggerFactory.getLogger(ManagerSMS.class); //временно для проверки записи логов
             LOG.info("MailTaskWithoutAttachment...");
             Mail oMail = Mail_BaseFromTask(oExecution);
             oMail.send();
-            LOG.info("MailTaskWithoutAttachment ok!");
+            LOG.info("MailTaskWithoutAttachment ok!");*/
         } catch (Exception ex) {
             LOG.error("MailTaskWithoutAttachment: ", ex);
         }
