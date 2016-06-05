@@ -32,7 +32,6 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
 
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
-        Logger LOG = LoggerFactory.getLogger(ManagerSMS.class); //временно для проверки записи логов
         try {
             System.setProperty("mail.mime.address.strict", "false");
 

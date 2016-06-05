@@ -409,9 +409,9 @@ public class Mail extends Abstract_Mail {
                     oBuilder.setAttachment(sFileName, oInputStream);
                 }
             } catch (IOException e) {
-                throw new EmailException("Error while getting attachment.", e);
+                throw new Exception("Error while getting attachment.", e);
             } catch (MessagingException e) {
-                throw new EmailException("Error while getting attachment.", e);
+                throw new Exception("Error while getting attachment.", e);
             }
 
             CreateEmailMessageRequest oCreateEmailMessageRequest = oBuilder.build();
