@@ -21,7 +21,7 @@ import java.util.List;
 @Component("MailTaskWithAttachmentsAndSMS")
 public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
 
-    private final static Logger LOG = LoggerFactory.getLogger(MailTaskWithAttachments.class);
+    //private final static Logger LOG = LoggerFactory.getLogger(MailTaskWithAttachments.class);
 
     private Expression saAttachmentsForSend;
 
@@ -112,7 +112,7 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
             LOG.info("email send ok!");
         } catch (Exception ex) {
             LOG.error("Eror!!!", ex);
-            //throw ex;
+            throw ex;
         }
     }
 
