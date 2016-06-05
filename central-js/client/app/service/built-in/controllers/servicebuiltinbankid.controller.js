@@ -62,8 +62,6 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
 
 
   if (!allowOrder) {
-
-    $location.path("/");
     var modalInstance = $modal.open({
       animation: true,
       size: 'md',

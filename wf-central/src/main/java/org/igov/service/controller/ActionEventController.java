@@ -237,15 +237,9 @@ public class ActionEventController {
      return oHistoryEvent_Service;
      }
 
-    @ApiOperation(value = "Определения числа заявок по определенной услуге в рамках места и в отношении определенного субьекта", notes =
-            "Возвращает:\\n\\n\"\n" +
-            "     + \"\\n```json\\n\"\n" +
-            "     + \"{\\n\"\n" +
-            "     + \"  \\\"nOpened\\\": \\\"количество открытых заявок\\\",\\n\"\n" +
-            "     + \"}\\n\"\n" +
-            "     + \"\\n```\\n\"")
+    @ApiOperation(value = "Определения числа заявок по определенной услуге в рамках места и в отношении определенного субьекта", notes = "Нет описания")
     @ApiResponses(value = {
-        @ApiResponse(code = 500, message = "Record not found")})
+            @ApiResponse(code = 500, message = "Record not found")})
     @RequestMapping(value = "/getCountOrders", method = RequestMethod.GET)
     public @ResponseBody
     String getCountOrders(
@@ -258,20 +252,16 @@ public class ActionEventController {
 
         Map<String, Long> m = new HashMap<>();
         Long nOpened = (long) 0;
-
-        List<HistoryEvent_Service> aHistoryEvent_Service = historyEventServiceDao.getOrdersHistory(nID_Subject, nID_Service, sID_UA);
-
+        List<HistoryEvent_Service> aHistoryEvent_Service = historyEventServiceDao.getOrdersHistory(nID_Subject, nID_Service, sID_UA, nLimit);
         for (HistoryEvent_Service oHistoryEvent_Service : aHistoryEvent_Service) {
             nOpened++;
-            if (bExcludeClosed && (oHistoryEvent_Service.getsID_StatusType().toLowerCase().startsWith("closed")
-                    || oHistoryEvent_Service.getsID_StatusType().toLowerCase().startsWith("removed"))
-                    ) {
+            if (bExcludeClosed || oHistoryEvent_Service.getsUserTaskName().startsWith("Заявка закрита")) {
                 nOpened--;
             }
         }
-
         m.put("nOpened", nOpened);
         return JSONValue.toJSONString(m);
+
     }
 
     //TODO: Сделать оограничение по строкам
