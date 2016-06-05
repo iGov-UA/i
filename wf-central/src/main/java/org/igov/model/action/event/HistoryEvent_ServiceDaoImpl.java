@@ -219,26 +219,31 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<HistoryEvent_Service> getOrdersHistory(Long nID_Subject, Long nID_Service, String sID_UA, int nLimit) {
+    public List<HistoryEvent_Service> getOrdersHistory(Long nID_Subject, Long nID_Service, String sID_UA) {
+        LOG.info(String.format("Start get orders history with parameters nID_Subject = %s, nID_Service = %s, sID_UA = %s", nID_Subject, nID_Service, sID_UA));
         Criteria oCriteria = getSession().createCriteria(HistoryEvent_Service.class);
-        oCriteria.add(Restrictions.eq("nID_Subject", nID_Subject));
-        oCriteria.add(Restrictions.eq("nID_Service", nID_Service));
-        //if(sID_UA!=null){
-        oCriteria.add(Restrictions.eq("sID_UA", sID_UA));
-        //}
-        //oCriteria.addOrder(Order.desc("id"));
-        //criteria.setMaxResults(1);
-        if(nLimit>0){
-            oCriteria.setMaxResults(nLimit);
+
+        if(nID_Subject == null && nID_Service == null && sID_UA == null){
+            return new LinkedList<>();
         }
+
+        if(nID_Subject != null){
+            oCriteria.add(Restrictions.eq("nID_Subject", nID_Subject));
+        }
+        if(nID_Service != null){
+            oCriteria.add(Restrictions.eq("nID_Service", nID_Service));
+        }
+        if(sID_UA != null && sID_UA != ""){
+            oCriteria.add(Restrictions.eq("sID_UA", sID_UA));
+        }
+
         List<HistoryEvent_Service> aHistoryEvent_Service = (List<HistoryEvent_Service>) oCriteria.list();
         if (aHistoryEvent_Service == null) {
+            LOG.warn("Result List<HistoryEvent_Service> is NULL");
             aHistoryEvent_Service = new LinkedList<>();
-            //if (aHistoryEvent_Service != null) {
-            //for(HistoryEvent_Service oHistoryEvent_Service : aHistoryEvent_Service){
-            //}
-            //aHistoryEvent_Service.setnID_Protected(ToolLuna.getProtectedNumber(aHistoryEvent_Service.getnID_Task()));
         }
+
+        LOG.info("Result List<HistoryEvent_Service> size = " + aHistoryEvent_Service.size());
         return aHistoryEvent_Service;
     }
 
