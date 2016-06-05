@@ -30,24 +30,24 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
 
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
-        System.setProperty("mail.mime.address.strict", "false");
-
-        //MultiPartEmail oMultiPartEmail = MultiPartEmail_BaseFromTask(oExecution);
-        Mail oMail = Mail_BaseFromTask(oExecution);
-
-        String sPhone_SMS = getStringFromFieldExpression(this.sPhone_SMS, oExecution);
-        if (sPhone_SMS != null) {
-            String sText_SMS = getStringFromFieldExpression(this.sText_SMS, oExecution);
-            if (sText_SMS != null) {
-                sText_SMS = replaceTags(sText_SMS, oExecution);
-                String sReturn;
-                sPhone_SMS = sPhone_SMS.replaceAll("\\ ", "");
-                sReturn = oManagerSMS.sendSMS(sPhone_SMS, sText_SMS);
-                LOG.info("(sReturn={})", sReturn);
-            }
-        }
 
         try {
+            System.setProperty("mail.mime.address.strict", "false");
+
+            //MultiPartEmail oMultiPartEmail = MultiPartEmail_BaseFromTask(oExecution);
+            Mail oMail = Mail_BaseFromTask(oExecution);
+
+            String sPhone_SMS = getStringFromFieldExpression(this.sPhone_SMS, oExecution);
+            if (sPhone_SMS != null) {
+                String sText_SMS = getStringFromFieldExpression(this.sText_SMS, oExecution);
+                if (sText_SMS != null) {
+                    sText_SMS = replaceTags(sText_SMS, oExecution);
+                    String sReturn;
+                    sPhone_SMS = sPhone_SMS.replaceAll("\\ ", "");
+                    sReturn = oManagerSMS.sendSMS(sPhone_SMS, sText_SMS);
+                    LOG.info("(sReturn={})", sReturn);
+                }
+            }
             LOG.info("sAttachmentsForSend...");
             String sAttachmentsForSend = this.saAttachmentsForSend == null || "".equals(this.saAttachmentsForSend) ? "" : getStringFromFieldExpression(this.saAttachmentsForSend, oExecution);
             LOG.info("(sAttachmentsForSend={})", sAttachmentsForSend);
@@ -112,7 +112,7 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
             LOG.info("email send ok!");
         } catch (Exception ex) {
             LOG.error("Eror!!!", ex);
-            throw ex;
+            //throw ex;
         }
     }
 
