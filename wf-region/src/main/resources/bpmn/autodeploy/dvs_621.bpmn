@@ -1,71 +1,71 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dvs_621" name="Р”РѕРІС–РґРєР° РїСЂРѕ РЅРµРѕС‚СЂРёРјР°РЅРЅСЏ Р°Р»С–РјРµРЅС‚С–РІ Р°Р±Рѕ СЂРѕР·РјС–СЂ Р°Р»С–РјРµРЅС‚С–РІ" isExecutable="true">
+  <process id="dvs_621" name="Довідка про неотримання аліментів або розмір аліментів" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="РћР±РµСЂС–С‚СЊ С‚РµСЂРёС‚РѕСЂС–Р°Р»СЊРЅРёР№ РѕСЂРіР°РЅ Р”Р’РЎ" type="select" default="0" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdlastName" name="РџСЂС–Р·РІРёС‰Рµ" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Р†Рј'СЏ" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="РџРѕ Р±Р°С‚СЊРєРѕРІС–" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdbirthDay" name="Р”Р°С‚Р° РЅР°СЂРѕРґР¶РµРЅРЅСЏ" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="Р РµС”СЃС‚СЂР°С†С–Р№РЅРёР№ РЅРѕРјРµСЂ РѕР±Р»С–РєРѕРІРѕС— РєР°СЂС‚РєРё РїР»Р°С‚РЅРёРєР° РїРѕРґР°С‚РєС–РІ" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="РџР°СЃРїРѕСЂС‚РЅС– РґР°РЅС–" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdAddressFactual" name="РђРґСЂРµСЃР° Р·Р°СЏРІРЅРёРєР°" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="РљРѕРЅС‚Р°РєС‚РЅРёР№ С‚РµР»РµС„РѕРЅ" type="string"  default="+380" required="true"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Р’Р°С€ e-mail" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asType" name="РџСЂРѕС€Сѓ РІРёРґР°С‚Рё РґРѕРІС–РґРєСѓ РїСЂРѕ" type="enum" required="true">
-          <activiti:value id="sEnumGet" name="РЅРµРѕС‚СЂРёРјР°РЅРЅСЏ Р°Р»С–РјРµРЅС‚С–РІ РІС–Рґ Р±РѕСЂР¶РЅРёРєР°"></activiti:value>
-          <activiti:value id="sEnumSize" name="РѕР±СЃСЏРі РѕС‚СЂРёРјР°РЅРёС… Р°Р»С–РјРµРЅС‚С–РІ РІС–Рґ Р±РѕСЂР¶РЅРёРєР°"></activiti:value>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть територіальний орган ДВС" type="select" default="0" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="Реєстраційний номер облікової картки платника податків" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса заявника" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Ваш e-mail" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asType" name="Прошу видати довідку про" type="enum" required="true">
+          <activiti:value id="sEnumGet" name="неотримання аліментів від боржника"></activiti:value>
+          <activiti:value id="sEnumSize" name="обсяг отриманих аліментів від боржника"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDebtorLastname" name="РџСЂС–Р·РІРёС‰Рµ Р±РѕСЂР¶РЅРёРєР°" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDebtorFirstname" name="Р†Рј'СЏ Р±РѕСЂР¶РЅРёРєР°" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDebtorMiddlename" name="РџРѕ Р±Р°С‚СЊРєРѕРІС– Р±РѕСЂР¶РЅРёРєР°" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sLabel1" name="РЅР° РјРѕСЋ РєРѕСЂРёСЃС‚СЊ, РЅР° СѓС‚СЂРёРјР°РЅРЅСЏ РґС–С‚РµР№" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="anAmount" name="Р’РєР°Р¶С–С‚СЊ РєС–Р»СЊРєС–СЃС‚СЊ РґС–С‚РµР№ РЅР° СѓС‚СЂРёРјР°РЅРЅС– Р±РѕСЂР¶РЅРёРєР°" type="enum" required="true">
+        <activiti:formProperty id="sDebtorLastname" name="Прізвище боржника" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDebtorFirstname" name="Ім'я боржника" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDebtorMiddlename" name="По батькові боржника" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sLabel1" name="на мою користь, на утримання дітей" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="anAmount" name="Вкажіть кількість дітей на утриманні боржника" type="enum" required="true">
           <activiti:value id="1" name="1"></activiti:value>
           <activiti:value id="2" name="2"></activiti:value>
           <activiti:value id="3" name="3"></activiti:value>
           <activiti:value id="4" name="4"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sChildName1" name="РџР†Р‘ РґРёС‚РёРЅРё (1)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sChildBirth1" name="Р”Р°С‚Р° РЅР°СЂРѕРґР¶РµРЅРЅСЏ РґРёС‚РёРЅРё (1)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sChildName2" name="РџР†Р‘ РґРёС‚РёРЅРё (2)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sChildBirth2" name="Р”Р°С‚Р° РЅР°СЂРѕРґР¶РµРЅРЅСЏ РґРёС‚РёРЅРё (2)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sChildName3" name="РџР†Р‘ РґРёС‚РёРЅРё (3)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sChildBirth3" name="Р”Р°С‚Р° РЅР°СЂРѕРґР¶РµРЅРЅСЏ РґРёС‚РёРЅРё (3)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sChildName4" name="РџР†Р‘ РґРёС‚РёРЅРё (4)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sChildBirth4" name="Р”Р°С‚Р° РЅР°СЂРѕРґР¶РµРЅРЅСЏ РґРёС‚РёРЅРё (4)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sLabel2" name="Р’ РїРµСЂС–РѕРґ" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="dStartDate" name="Р”Р°С‚Р° РїРѕС‡Р°С‚РєСѓ РїРµСЂС–РѕРґСѓ" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="dFinishDate" name="Р”Р°С‚Р° Р·Р°РєС–РЅС‡РµРЅРЅСЏ РїРµСЂС–РѕРґСѓ" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sLabel3" name="Р—РіС–РґРЅРѕ РґРѕ РІРёРєРѕРЅР°РІС‡РѕРіРѕ РґРѕРєСѓРјРµРЅС‚Р°" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sDocName" name="РќР°Р·РІР° РґРѕРєСѓРјРµРЅС‚Р°" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDocNumber" name="РќРѕРјРµСЂ С‚Р° РґР°С‚Р° РІРёРґР°С‡С–" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDocOrgan" name="РќР°Р№РјРµРЅСѓРІР°РЅРЅСЏ РѕСЂРіР°РЅСѓ, С‰Рѕ Р№РѕРіРѕ РІРёРґР°РІ" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sLabel4" name="Р’ РЅР°СЃС‚СѓРїРЅРѕРјСѓ СЂРѕР·РјС–СЂС–" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sMonth1" name="РќР°Р·РІР° РјС–СЃСЏС†СЏ" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sSum1" name="РЎСѓРјР° РІ РіСЂРЅ." type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sMonth2" name="РќР°Р·РІР° РјС–СЃСЏС†СЏ" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sSum2" name="РЎСѓРјР° РІ РіСЂРЅ." type="string"></activiti:formProperty>
-        <activiti:formProperty id="sMonth3" name="РќР°Р·РІР° РјС–СЃСЏС†СЏ" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sSum3" name="РЎСѓРјР° РІ РіСЂРЅ." type="string"></activiti:formProperty>
-        <activiti:formProperty id="sMonth4" name="РќР°Р·РІР° РјС–СЃСЏС†СЏ" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sSum4" name="РЎСѓРјР° РІ РіСЂРЅ." type="string"></activiti:formProperty>
-        <activiti:formProperty id="sMonth5" name="РќР°Р·РІР° РјС–СЃСЏС†СЏ" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sSum5" name="РЎСѓРјР° РІ РіСЂРЅ." type="string"></activiti:formProperty>
-        <activiti:formProperty id="sMonth6" name="РќР°Р·РІР° РјС–СЃСЏС†СЏ" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sSum6" name="РЎСѓРјР° РІ РіСЂРЅ." type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="РўРµР»РµС„РѕРЅ РґР»СЏ РґРѕРІС–РґРѕРє" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="РќР°Р·РІР° РѕСЂРіР°РЅР°" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="РђРґСЂРµСЃР°" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="Р§Р°СЃ СЂРѕР±РѕС‚Рё" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="РџРѕС€С‚Р° РґРµСЂР¶СЃР»СѓР¶Р±РѕРІС†СЏ" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers" name="Р“СЂРѕС€С–" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sChildName1&quot;,&quot;sChildBirth1&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;anAmount&quot;},&quot;sCondition&quot;:&quot;[sClient] == '1'&quot;},&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;sChildName1&quot;,&quot;sChildBirth1&quot;,&quot;sChildName2&quot;,&quot;sChildBirth2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;anAmount&quot;},&quot;sCondition&quot;:&quot;[sClient] == '2'&quot;},&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;sChildName1&quot;,&quot;sChildBirth1&quot;,&quot;sChildName2&quot;,&quot;sChildBirth2&quot;,&quot;sChildName3&quot;,&quot;sChildBirth3&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;anAmount&quot;},&quot;sCondition&quot;:&quot;[sClient] == '3'&quot;},&quot;ShowFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;sChildName1&quot;,&quot;sChildBirth1&quot;,&quot;sChildName2&quot;,&quot;sChildBirth2&quot;,&quot;sChildName3&quot;,&quot;sChildBirth3&quot;,&quot;sChildName4&quot;,&quot;sChildBirth4&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;anAmount&quot;},&quot;sCondition&quot;:&quot;[sClient] == '4'&quot;},&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;sLabel4&quot;,&quot;sMonth1&quot;,&quot;sSum1&quot;,&quot;sMonth2&quot;,&quot;sSum2&quot;,&quot;sMonth3&quot;,&quot;sSum3&quot;,&quot;sMonth4&quot;,&quot;sSum4&quot;,&quot;sMonth5&quot;,&quot;sSum5&quot;,&quot;sMonth6&quot;,&quot;sSum6&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asType&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumSize'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sChildName1" name="ПІБ дитини (1)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sChildBirth1" name="Дата народження дитини (1)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sChildName2" name="ПІБ дитини (2)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sChildBirth2" name="Дата народження дитини (2)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sChildName3" name="ПІБ дитини (3)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sChildBirth3" name="Дата народження дитини (3)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sChildName4" name="ПІБ дитини (4)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sChildBirth4" name="Дата народження дитини (4)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sLabel2" name="В період" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="dStartDate" name="Дата початку періоду" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="dFinishDate" name="Дата закінчення періоду" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sLabel3" name="Згідно до виконавчого документа" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sDocName" name="Назва документа" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDocNumber" name="Номер та дата видачі" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDocOrgan" name="Найменування органу, що його видав" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sLabel4" name="В наступному розмірі" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sMonth1" name="Назва місяця" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSum1" name="Сума в грн." type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sMonth2" name="Назва місяця" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSum2" name="Сума в грн." type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMonth3" name="Назва місяця" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSum3" name="Сума в грн." type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMonth4" name="Назва місяця" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSum4" name="Сума в грн." type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMonth5" name="Назва місяця" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSum5" name="Сума в грн." type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMonth6" name="Назва місяця" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSum6" name="Сума в грн." type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органа" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Час роботи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="markers" name="Гроші" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sChildName1&quot;,&quot;sChildBirth1&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;anAmount&quot;},&quot;sCondition&quot;:&quot;[sClient] == '1'&quot;},&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;sChildName1&quot;,&quot;sChildBirth1&quot;,&quot;sChildName2&quot;,&quot;sChildBirth2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;anAmount&quot;},&quot;sCondition&quot;:&quot;[sClient] == '2'&quot;},&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;sChildName1&quot;,&quot;sChildBirth1&quot;,&quot;sChildName2&quot;,&quot;sChildBirth2&quot;,&quot;sChildName3&quot;,&quot;sChildBirth3&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;anAmount&quot;},&quot;sCondition&quot;:&quot;[sClient] == '3'&quot;},&quot;ShowFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;sChildName1&quot;,&quot;sChildBirth1&quot;,&quot;sChildName2&quot;,&quot;sChildBirth2&quot;,&quot;sChildName3&quot;,&quot;sChildBirth3&quot;,&quot;sChildName4&quot;,&quot;sChildBirth4&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;anAmount&quot;},&quot;sCondition&quot;:&quot;[sClient] == '4'&quot;},&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;sLabel4&quot;,&quot;sMonth1&quot;,&quot;sSum1&quot;,&quot;sMonth2&quot;,&quot;sSum2&quot;,&quot;sMonth3&quot;,&quot;sSum3&quot;,&quot;sMonth4&quot;,&quot;sSum4&quot;,&quot;sMonth5&quot;,&quot;sSum5&quot;,&quot;sMonth6&quot;,&quot;sSum6&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asType&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumSize'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="validate" type="markers" default="${markerService.loadFromFile('dneprMVK/validator.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <serviceTask id="servicetask1" name="Р·Р°РІР°РЅС‚Р°Р¶РµРЅРЅСЏ РґРѕРєСѓРјРµРЅС‚С–РІ" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <serviceTask id="servicetask2" name="Р›РёСЃС‚ Р”РµСЂР¶СЃР»СѓР¶Р±РѕРІС†СЋ" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask1" name="завантаження документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <serviceTask id="servicetask2" name="Лист Держслужбовцю" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -74,180 +74,10 @@
           <activiti:expression>tanyazol@gmail.com</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[РќРѕРІРµ Р·РІРµСЂРЅРµРЅРЅСЏ. Р”РѕРІС–РґРєР° РїСЂРѕ РЅРµРѕС‚СЂРёРјР°РЅРЅСЏ Р°Р»С–РјРµРЅС‚С–РІ Р°Р±Рѕ СЂРѕР·РјС–СЂ Р°Р»С–РјРµРЅС‚С–РІ.]]></activiti:string>
+          <activiti:string><![CDATA[Нове звернення. Довідка про неотримання аліментів або розмір аліментів.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
-    <serviceTask id="servicetask3" name="Р›РёСЃС‚ РіСЂРѕРјР°РґСЏРЅРёРЅСѓ" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
-      <extensionElements>
-      <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
-        </activiti:field>
-        <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano</activiti:expression>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
-        </activiti:field>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:string><![CDATA[Р”РѕРІС–РґРєР° РїСЂРѕ РЅРµРѕС‚СЂРёРјР°РЅРЅСЏ Р°Р»С–РјРµРЅС‚С–РІ Р°Р±Рѕ СЂРѕР·РјС–СЂ Р°Р»С–РјРµРЅС‚С–РІ.]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-			&lt;b&gt;РЁР°РЅРѕРІРЅРёР№(-Р°) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-			&lt;p&gt; Р’Р°С€Рµ Р·РІРµСЂРЅРµРЅРЅСЏ в„–[sID_Order] С‰РѕРґРѕ Р”РѕРІС–РґРєРё РїСЂРѕ РЅРµРѕС‚СЂРёРјР°РЅРЅСЏ Р°Р»С–РјРµРЅС‚С–РІ Р°Р±Рѕ СЂРѕР·РјС–СЂ Р°Р»С–РјРµРЅС‚С–РІ Р±СѓР»Рѕ Р·Р°СЂРµС”СЃС‚СЂРѕРІР°РЅРѕ Сѓ СЃРёСЃС‚РµРјС–.&lt;br/&gt;
-			РџРѕРІС–РґРѕРјР»РµРЅРЅСЏ РїСЂРѕ СЂРµР·СѓР»СЊС‚Р°С‚ РїРѕСЃР»СѓРіРё Р±СѓРґРµ СЃРїСЂСЏРјРѕРІР°РЅРµ РЅР° Р’Р°С€ e-mail.&lt;/p&gt;
-			&lt;br /&gt;
-			${sPhoneOrgan}&lt;br /&gt;
-			[pattern/mail/_common_signature_start.html]
-			${sNameOrgan}&lt;br /&gt;
-			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]</activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
-    <userTask id="usertask1" name="РћР±СЂРѕР±РєР° РґР°РЅРёС…" activiti:candidateGroups="dvs_${sID_Public_SubjectOrganJoin}">
-      <extensionElements>
-        <activiti:formProperty id="sNameOrgan" name="РќР°Р·РІР° РѕСЂРіР°РЅР°" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="clFio" name="Р—Р°СЏРІРЅРёРє:" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdbirthDay" name="Р”Р°С‚Р° РЅР°СЂРѕРґР¶РµРЅРЅСЏ" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="Р РµС”СЃС‚СЂР°С†С–Р№РЅРёР№ РЅРѕРјРµСЂ РѕР±Р»С–РєРѕРІРѕС— РєР°СЂС‚РєРё РїР»Р°С‚РЅРёРєР° РїРѕРґР°С‚РєС–РІ" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="РџР°СЃРїРѕСЂС‚РЅС– РґР°РЅС–" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdAddressFactual" name="РђРґСЂРµСЃР° Р·Р°СЏРІРЅРёРєР°" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="РљРѕРЅС‚Р°РєС‚РЅРёР№ С‚РµР»РµС„РѕРЅ" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="email" name="e-mail" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asType" name="РџСЂРѕС€Сѓ РІРёРґР°С‚Рё РґРѕРІС–РґРєСѓ РїСЂРѕ" type="enum" writable="false">
-          <activiti:value id="sEnumGet" name="РЅРµРѕС‚СЂРёРјР°РЅРЅСЏ Р°Р»С–РјРµРЅС‚С–РІ РІС–Рґ Р±РѕСЂР¶РЅРёРєР°"></activiti:value>
-          <activiti:value id="sEnumSize" name="РѕР±СЃСЏРі РѕС‚СЂРёРјР°РЅРёС… Р°Р»С–РјРµРЅС‚С–РІ РІС–Рґ Р±РѕСЂР¶РЅРёРєР°"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sDebtorLastname" name="РџСЂС–Р·РІРёС‰Рµ Р±РѕСЂР¶РЅРёРєР°" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDebtorFirstname" name="Р†Рј'СЏ Р±РѕСЂР¶РЅРёРєР°" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDebtorMiddlename" name="РџРѕ Р±Р°С‚СЊРєРѕРІС– Р±РѕСЂР¶РЅРёРєР°" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sLabel1" name="РЅР° РјРѕСЋ РєРѕСЂРёСЃС‚СЊ, РЅР° СѓС‚СЂРёРјР°РЅРЅСЏ РґС–С‚РµР№" type="label"></activiti:formProperty>
-        <activiti:formProperty id="sChildName1" name="РџР†Р‘ РґРёС‚РёРЅРё (1)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sChildBirth1" name="Р”Р°С‚Р° РЅР°СЂРѕРґР¶РµРЅРЅСЏ РґРёС‚РёРЅРё (1)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sChildName2" name="РџР†Р‘ РґРёС‚РёРЅРё (2)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sChildBirth2" name="Р”Р°С‚Р° РЅР°СЂРѕРґР¶РµРЅРЅСЏ РґРёС‚РёРЅРё (2)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sChildName3" name="РџР†Р‘ РґРёС‚РёРЅРё (3)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sChildBirth3" name="Р”Р°С‚Р° РЅР°СЂРѕРґР¶РµРЅРЅСЏ РґРёС‚РёРЅРё (3)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sChildName4" name="РџР†Р‘ РґРёС‚РёРЅРё (4)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sChildBirth4" name="Р”Р°С‚Р° РЅР°СЂРѕРґР¶РµРЅРЅСЏ РґРёС‚РёРЅРё (4)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sLabel2" name="Р’ РїРµСЂС–РѕРґ" type="label"></activiti:formProperty>
-        <activiti:formProperty id="dStartDate" name="Р”Р°С‚Р° РїРѕС‡Р°С‚РєСѓ РїРµСЂС–РѕРґСѓ:" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dFinishDate" name="Р”Р°С‚Р° Р·Р°РєС–РЅС‡РµРЅРЅСЏ РїРµСЂС–РѕРґСѓ:" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sLabel3" name="Р—РіС–РґРЅРѕ РґРѕ РІРёРєРѕРЅР°РІС‡РѕРіРѕ РґРѕРєСѓРјРµРЅС‚Р°" type="label"></activiti:formProperty>
-        <activiti:formProperty id="sDocName" name="РќР°Р·РІР° РґРѕРєСѓРјРµРЅС‚Р°" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDocNumber" name="РќРѕРјРµСЂ С‚Р° РґР°С‚Р° РІРёРґР°С‡С–" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDocOrgan" name="РќР°Р№РјРµРЅСѓРІР°РЅРЅСЏ РѕСЂРіР°РЅСѓ, С‰Рѕ Р№РѕРіРѕ РІРёРґР°РІ" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sLabel4" name="Р’ РЅР°СЃС‚СѓРїРЅРѕРјСѓ СЂРѕР·РјС–СЂС–" type="label"></activiti:formProperty>
-        <activiti:formProperty id="sMonth1" name="РќР°Р·РІР° РјС–СЃСЏС†СЏ" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sSum1" name="РЎСѓРјР° РІ РіСЂРЅ." type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sMonth2" name="РќР°Р·РІР° РјС–СЃСЏС†СЏ" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sSum2" name="РЎСѓРјР° РІ РіСЂРЅ." type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sMonth3" name="РќР°Р·РІР° РјС–СЃСЏС†СЏ" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sSum3" name="РЎСѓРјР° РІ РіСЂРЅ." type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sMonth4" name="РќР°Р·РІР° РјС–СЃСЏС†СЏ" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sSum4" name="РЎСѓРјР° РІ РіСЂРЅ." type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sMonth5" name="РќР°Р·РІР° РјС–СЃСЏС†СЏ" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sSum5" name="РЎСѓРјР° РІ РіСЂРЅ." type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sMonth6" name="РќР°Р·РІР° РјС–СЃСЏС†СЏ" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sSum6" name="РЎСѓРјР° РІ РіСЂРЅ." type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asStatus" name="РЎС‚Р°С‚СѓСЃ РІРёСЃРЅРѕРІРєСѓ" type="enum" required="true">
-          <activiti:value id="sEnumAccept" name="Р”РѕРІС–РґРєР° РіРѕС‚РѕРІР°, Р·Р°РїСЂРѕСЃРёС‚Рё Р·Р°СЏРІРЅРёРєР°"></activiti:value>
-          <activiti:value id="sEnumDeny" name="Р’С–РґРјРѕРІР° Р·Р°СЏРІРЅРёРєСѓ Сѓ РІРёРґР°С‡С– РґРѕРІС–РґРєРё"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sComment" name="РЇРєС‰Рѕ РІРё РІС–РґРјРѕРІР»СЏС”С‚Рµ Р·Р°СЏРІРЅРёРєСѓ Сѓ РЅР°РґР°РЅРЅС– РїРѕСЃР»СѓРіРё, РѕР±РѕРІ'СЏР·РєРѕРІРѕ РІРєР°Р¶С–С‚СЊ РїС–РґСЃС‚Р°РІСѓ Сѓ С†СЊРѕРјСѓ РїРѕР»С–." type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="file1" name="Р—Р°РІР°РЅС‚Р°Р¶С‚Рµ СЃРєР°РЅРѕРІР°РЅСѓ РєРѕРїС–СЋ РґРѕРІС–РґРєРё, Р· РЅР°РєР»Р°РґРµРЅРёРј Р•Р¦Рџ (РµР»РµРєС‚СЂРѕРЅРЅРѕ-С†РёС„СЂРѕРІРёРј РїС–РґРїРёСЃРѕРј)" type="file"></activiti:formProperty>
-      </extensionElements>
-    </userTask>
-    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
-    <serviceTask id="servicetask4" name="Р›РёСЃС‚ Р· РІС–РґРјРѕРІРѕСЋ" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
-      <extensionElements>
-      <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
-        </activiti:field>
-        <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
-        </activiti:field>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:string><![CDATA[Р”РѕРІС–РґРєР° РїСЂРѕ РЅРµРѕС‚СЂРёРјР°РЅРЅСЏ Р°Р»С–РјРµРЅС‚С–РІ Р°Р±Рѕ СЂРѕР·РјС–СЂ Р°Р»С–РјРµРЅС‚С–РІ.]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-			&lt;b&gt;РЁР°РЅРѕРІРЅРёР№(-Р°) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-			РќР° Р¶Р°Р»СЊ, Р’Р°С€Рµ Р·РІРµСЂРЅРµРЅРЅСЏ С‰РѕРґРѕ Р”РѕРІС–РґРєРё РїСЂРѕ РЅРµРѕС‚СЂРёРјР°РЅРЅСЏ Р°Р»С–РјРµРЅС‚С–РІ Р°Р±Рѕ СЂРѕР·РјС–СЂ Р°Р»С–РјРµРЅС‚С–РІ - РІС–РґС…РёР»РµРЅРµ.&lt;/p&gt;
-			&lt;p&gt;РџСЂРёС‡РёРЅР° РІ РЅР°СЃС‚СѓРїРЅРѕРјСѓ:&lt;/p&gt;
-			&lt;p&gt;${sComment}&lt;/p&gt;
-			&lt;p&gt;Р—РІРµСЂС‚Р°С”РјРѕ СѓРІР°РіСѓ, Р’Рё РјРѕР¶РµС‚Рµ Р·Р°РїРѕРІРЅРёС‚Рё Р·Р°СЏРІРєСѓ РїРѕРІС‚РѕСЂРЅРѕ РЅР° РїРѕСЂС‚Р°Р»С– &lt;a href="https://igov.org.ua/ target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
-			&lt;br /&gt;
-			${sPhoneOrgan}&lt;br /&gt;
-			[pattern/mail/_common_signature_start.html]
-			${sNameOrgan}&lt;br /&gt;
-			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]</activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
-    <serviceTask id="servicetask5" name="Р›РёСЃС‚-Р·Р°РїСЂРѕС€РµРЅРЅСЏ" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
-      <extensionElements>
-      <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
-        </activiti:field>
-        <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
-        </activiti:field>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:string><![CDATA[Р”РѕРІС–РґРєР° РїСЂРѕ РЅРµРѕС‚СЂРёРјР°РЅРЅСЏ Р°Р»С–РјРµРЅС‚С–РІ Р°Р±Рѕ СЂРѕР·РјС–СЂ Р°Р»С–РјРµРЅС‚С–РІ.]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-			&lt;b&gt;РЁР°РЅРѕРІРЅРёР№(-Р°) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-			&lt;p&gt;
-			Р”РѕРІС–РґРєР° РїСЂРѕ РЅРµРѕС‚СЂРёРјР°РЅРЅСЏ Р°Р»С–РјРµРЅС‚С–РІ Р°Р±Рѕ СЂРѕР·РјС–СЂ Р°Р»С–РјРµРЅС‚С–РІ - РіРѕС‚РѕРІР°&lt;br /&gt;
-			&lt;/p&gt;
-			РЎРєР°РЅ-РєРѕРїС–СЋ РґРѕРІС–РґРєРё Р· РЅР°РєР»Р°РґРµРЅРёРј Р•Р¦Рџ (РµР»РµРєС‚СЂРѕРЅРЅРѕ-С†РёС„СЂРѕРІРёРј РїС–РґРїРёСЃРѕРј) РїСЂРёРєСЂС–РїР»РµРЅРѕ РґРѕ С†СЊРѕРіРѕ Р»РёСЃС‚Р°.&lt;br /&gt;
-			Р’Рё РјРѕР¶РµС‚Рµ РІРёРєРѕСЂРёСЃС‚Р°С‚Рё С—С— РґР»СЏ РїРѕРґР°РЅРЅСЏ РґРѕ РґРµСЂР¶Р°РІРЅРёС… РѕСЂРіР°РЅС–РІ СЃРѕС†С–Р°Р»СЊРЅРѕРіРѕ Р·Р°С…РёСЃС‚Сѓ РЅР°СЃРµР»РµРЅРЅСЏ.
-			&lt;p&gt;
-			РћСЂРёРіС–РЅР°Р» РґРѕРІС–РґРєРё РјРѕР¶РµС‚Рµ РѕС‚СЂРёРјР°С‚Рё Р·Р° Р°РґСЂРµСЃРѕСЋ:
-			&lt;br /&gt;
-			&lt;br /&gt;
-			${sAddress}&lt;br /&gt;
-			${sWorkTime}&lt;br /&gt;
-			&lt;br /&gt;
-			${sPhoneOrgan}&lt;br /&gt;
-			[pattern/mail/_common_signature_start.html]
-			${sNameOrgan}&lt;br /&gt;
-			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_feedback.html]
-			[pattern/mail/_common_footer.html]
-			</activiti:expression>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${file1}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -257,18 +87,8 @@
     </boundaryEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
-    <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
-    <sequenceFlow id="flow4" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
-    <sequenceFlow id="flow5" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
-    <sequenceFlow id="flow6" name="Deny" sourceRef="exclusivegateway1" targetRef="servicetask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asStatus=='sEnumDeny'}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow7" name="Accept" sourceRef="exclusivegateway1" targetRef="servicetask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asStatus=='sEnumAccept'}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow8" sourceRef="servicetask5" targetRef="endevent1"></sequenceFlow>
-    <sequenceFlow id="flow9" sourceRef="servicetask4" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow10" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow11" sourceRef="servicetask2" targetRef="endevent1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dvs_621">
     <bpmndi:BPMNPlane bpmnElement="dvs_621" id="BPMNPlane_dvs_621">
@@ -284,21 +104,6 @@
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="55.0" width="105.0" x="230.0" y="60.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
-        <omgdc:Bounds height="55.0" width="105.0" x="350.0" y="60.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="480.0" y="60.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
-        <omgdc:Bounds height="40.0" width="40.0" x="512.0" y="180.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
-        <omgdc:Bounds height="55.0" width="105.0" x="360.0" y="137.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
-        <omgdc:Bounds height="55.0" width="105.0" x="360.0" y="220.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="147.0" y="191.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -310,42 +115,12 @@
         <omgdi:waypoint x="215.0" y="87.0"></omgdi:waypoint>
         <omgdi:waypoint x="230.0" y="87.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="335.0" y="87.0"></omgdi:waypoint>
-        <omgdi:waypoint x="350.0" y="87.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
-        <omgdi:waypoint x="455.0" y="87.0"></omgdi:waypoint>
-        <omgdi:waypoint x="480.0" y="87.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
-        <omgdi:waypoint x="532.0" y="115.0"></omgdi:waypoint>
-        <omgdi:waypoint x="532.0" y="180.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
-        <omgdi:waypoint x="512.0" y="200.0"></omgdi:waypoint>
-        <omgdi:waypoint x="465.0" y="164.0"></omgdi:waypoint>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="25.0" x="473.0" y="174.0"></omgdc:Bounds>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
-        <omgdi:waypoint x="512.0" y="200.0"></omgdi:waypoint>
-        <omgdi:waypoint x="412.0" y="220.0"></omgdi:waypoint>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="35.0" x="473.0" y="217.0"></omgdc:Bounds>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
-        <omgdi:waypoint x="360.0" y="247.0"></omgdi:waypoint>
-        <omgdi:waypoint x="164.0" y="226.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
-        <omgdi:waypoint x="360.0" y="164.0"></omgdi:waypoint>
-        <omgdi:waypoint x="164.0" y="191.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
         <omgdi:waypoint x="165.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="164.0" y="191.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
+        <omgdi:waypoint x="282.0" y="115.0"></omgdi:waypoint>
         <omgdi:waypoint x="164.0" y="191.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
