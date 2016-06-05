@@ -313,5 +313,23 @@ public class DebugCentralController {
         return Long.valueOf(0+"");//subjectMessages
     }
 
+    @RequestMapping(value="/action/event/getEventInfoForTestingByOrderID", method = {RequestMethod.GET})
+    public @ResponseBody String getEventInfoByOrderID(@RequestParam(value = "sID_Order", required = true) String sID_Order) throws CRCInvalidException {
+
+        Map<String, Object> result = new HashMap<>();
+
+        HistoryEvent_Service obj = historyEventServiceDao.getOrgerByID(sID_Order);
+
+        result.put("sID_Order", obj.getsID_Order());
+        result.put("nID_Task", obj.getnID_Task());
+        result.put("nID_Service", obj.getnID_Service());
+        result.put("nID_Subject", obj.getnID_Subject());
+        result.put("sID_UA", obj.getsID_UA());
+        result.put("sUserTaskName", obj.getsUserTaskName());
+        result.put("sID_StatusType", obj.getsID_StatusType());
+
+        return JSONValue.toJSONString(result);
+    }
+
 
 }
