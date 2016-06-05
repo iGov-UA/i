@@ -155,19 +155,32 @@ public class Mail extends Abstract_Mail {
          LOG_BIG.warn("SKIPED!(getTo={})", getTo());
          }else{*/
         if (bUniSender) {
+            StringBuilder sbBody = new StringBuilder(500);
+            sbBody.append("host: ");
+            sbBody.append(getHost());
+            sbBody.append(":");
+            sbBody.append(getPort());
+            sbBody.append("\nAuthUser:");
+            sbBody.append(getAuthUser());
+            sbBody.append("\nfrom:");
+            sbBody.append(getFrom());
+            sbBody.append("\nto:");
+            sbBody.append(getTo());
+            sbBody.append("\nhead:");
+            sbBody.append(getHead());
             try {
                 if (!sendWithUniSender()) {
-                    sendAlternativeWay();
+                    sendAlternativeWay(sbBody.toString());
                 }
             } catch (Exception oException) {
                 LOG.warn("Try send via alter channel! (getTo()={})", oException.getMessage(), getTo());
                 LOG.trace("FAIL:", oException);
                 try {
-                    msgService.setEventSystem("WARNING", null, null, "sendWithUniSender", "Error send via UniSender", getBody(), oException.getMessage(), null);
+                    msgService.setEventSystem("WARNING", null, null, "sendWithUniSender", "Error send via UniSender", sbBody.toString(), oException.getMessage(), null);
                 } catch (Exception e) {
                     LOG.trace("Ошибка при регистрации сообщения в Сервисе Хранения Ошибок.", e);
                 }
-                sendAlternativeWay();
+                sendAlternativeWay(sbBody.toString());
             }
         } else {
             sendOld();
@@ -434,37 +447,16 @@ public class Mail extends Abstract_Mail {
         return result;
     }
 
-    private void sendAlternativeWay() {
-        StringBuffer sbBody = new StringBuffer(500);
-        sbBody.append("host: ");
-        sbBody.append(getHost());
-        sbBody.append(":");
-        sbBody.append(getPort());
-        sbBody.append("\nAuthUser:");
-        sbBody.append(getAuthUser());
-        sbBody.append("\nfrom:");
-        sbBody.append(getFrom());
-        sbBody.append("\nto:");
-        sbBody.append(getTo());
-        sbBody.append("\nhead:");
-        sbBody.append(getHead());
-//                    sbBody.append(getBody());
-
+    private void sendAlternativeWay(String sbBody) {
         try {
             sendOld();
         } catch (Exception oException1) {
             LOG.warn("Final send trying fail: {} (getTo()={})", oException1.getMessage(), getTo());
-
             try {
-                msgService.setEventSystem("WARNING", null, null, "sendOld", "Error send final", sbBody.toString(), oException1.getMessage(), null);
+                msgService.setEventSystem("WARNING", null, null, "sendOld", "Error send final", sbBody, oException1.getMessage(), null);
             } catch (Exception e) {
                 LOG.trace("Ошибка при регистрации сообщения в Сервисе Хранения Ошибок.", e);
             }
-
-            /*
-             throw oException1;
-             */
-            //sendOld();
         }
     }
 
