@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import groovy.json.StringEscapeUtils;
+
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -28,6 +30,7 @@ import javax.net.ssl.X509TrustManager;
 
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 
 import static org.igov.util.Tool.sCut;
 
@@ -184,7 +187,7 @@ public class HttpRequester {
             oConnection.setRequestProperty("authorization", "Basic " + sAuth);
             if (RequestMethod.POST.name().equals(requestMethod)){
             	for (Map.Entry<String, String> curr : mParam.entrySet()){
-            		oConnection.setRequestProperty(curr.getKey(), curr.getValue());
+            		oConnection.setRequestProperty(curr.getKey(), StringEscapeUtils.escapeJava(curr.getValue()));
             	}
             }
 
