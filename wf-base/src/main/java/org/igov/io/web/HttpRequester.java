@@ -16,7 +16,9 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
+import java.util.HashMap;
 import java.util.Map;
+
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -149,7 +151,12 @@ public class HttpRequester {
         	requestMethod = mParam.get("RequestMethod");
         	mParam.remove("RequestMethod");
         }
-        URL oURL = new URL(getFullURL(sURL, mParam));
+        URL oURL = null;
+        if (RequestMethod.GET.name().equals(requestMethod)){
+        	oURL = new URL(getFullURL(sURL, mParam));
+        } else {
+        	oURL = new URL(getFullURL(sURL, new HashMap<String, String>()));
+        }
         InputStream oInputStream;
         BufferedReader oBufferedReader_InputStream;
         HttpURLConnection oConnection;
@@ -175,6 +182,11 @@ public class HttpRequester {
             String sPassword = generalConfig.getAuthPassword();
             String sAuth = ToolWeb.base64_encode(sUser + ":" + sPassword);
             oConnection.setRequestProperty("authorization", "Basic " + sAuth);
+            if (RequestMethod.POST.name().equals(requestMethod)){
+            	for (Map.Entry<String, String> curr : mParam.entrySet()){
+            		oConnection.setRequestProperty(curr.getKey(), curr.getValue());
+            	}
+            }
 
             oConnection.setRequestMethod(requestMethod);
             oConnection.setDoInput(true);
