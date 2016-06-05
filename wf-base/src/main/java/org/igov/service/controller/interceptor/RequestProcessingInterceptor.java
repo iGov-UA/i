@@ -226,7 +226,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                 LOG.info("saveClosedTaskInfo block started");
                 saveClosedTaskInfo(sRequestBody, snTaskId);
             } else if (isUpdateTask(oRequest)) {
-                saveUpdatedTaskInfo(sResponseBody, mRequestParam);
+                //saveUpdatedTaskInfo(sResponseBody, mRequestParam);
             }
         } catch (Exception ex) {
             LOG.error("Can't save service-history record: {}", ex.getMessage());
