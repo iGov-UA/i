@@ -105,7 +105,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         LOG_BIG.info("(nElapsedMS={})", System.currentTimeMillis() - (Long) oRequest.getAttribute("startTime"));
         oResponse = ((MultiReaderHttpServletResponse) oRequest.getAttribute("responseMultiRead") != null
                 ? (MultiReaderHttpServletResponse) oRequest.getAttribute("responseMultiRead") : oResponse);
-        //protocolize(oRequest, oResponse, true);
+        protocolize(oRequest, oResponse, true);
     }
 
     private void protocolize(HttpServletRequest oRequest, HttpServletResponse oResponse, boolean bSaveHistory)
