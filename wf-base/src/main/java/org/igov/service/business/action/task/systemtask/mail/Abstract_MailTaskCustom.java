@@ -557,7 +557,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
     	Map<String, String> params = new HashMap<>();
     	params.put("sID_Order", sID_Order);
         params.put("sHead","Отправлено письмо");
-        params.put("sBody", sHead);
+        params.put("sBody", "Отправлено письмо");
         params.put("sMail", sBody);
         params.put("nID_SubjectMessageType", "" + 10L);
         params.put("nID_Subject ", "0");
