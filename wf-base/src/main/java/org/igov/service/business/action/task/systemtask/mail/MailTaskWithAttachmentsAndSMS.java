@@ -14,6 +14,7 @@ import javax.activation.DataSource;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import org.igov.io.sms.ManagerSMS;
 
 /**
  * @author BW
@@ -30,7 +31,7 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
 
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
-
+        Logger LOG = LoggerFactory.getLogger(ManagerSMS.class); //временно для проверки записи логов
         try {
             System.setProperty("mail.mime.address.strict", "false");
 
