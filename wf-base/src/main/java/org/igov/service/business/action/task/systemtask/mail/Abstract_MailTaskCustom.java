@@ -563,7 +563,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
         params.put("nID_Subject ", "0");
         params.put("sContacts", "0");
         params.put("sData", "0");
-        params.put("RequestMethod", RequestMethod.POST.name());
+        params.put("RequestMethod", RequestMethod.GET.name());
         LOG.info("try to save service message with params: (params={})", params);
         String jsonServiceMessage;
 		try {
