@@ -22,7 +22,7 @@ public class MailTaskWithoutAttachment extends Abstract_MailTaskCustom {
             Logger LOG = LoggerFactory.getLogger(ManagerSMS.class); //временно для проверки записи логов
             LOG.info("MailTaskWithoutAttachment...");
             Mail oMail = Mail_BaseFromTask(oExecution);
-            oMail.send();
+            //oMail.send();
             LOG.info("MailTaskWithoutAttachment ok!");
         } catch (Exception ex) {
             LOG.error("MailTaskWithoutAttachment: ", ex);
