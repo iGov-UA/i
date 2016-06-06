@@ -799,7 +799,7 @@ public class SubjectMessageController {
     @RequestMapping(value = "/getSubjectMessageData", method = { RequestMethod.GET })
     public
     @ResponseBody
-    String getSubjectMessageData(
+    void getSubjectMessageData(
             @ApiParam(value = "номер-ИД записи с сообщением", required = false) @RequestParam(value = "nID_SubjectMessage", required = true) String sID_SubjectMessage,
             @ApiParam(value = "Номер-ИД субьекта (хозяина заявки сообщения)", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject,
             @ApiParam(value = "булевский флаг, Включить авторизацию", required = false) @RequestParam(value = "bAuth", required = false, defaultValue = "false") Boolean bAuth,
@@ -826,6 +826,9 @@ public class SubjectMessageController {
 	    			res = new String(resBytes, Charset.forName("UTF-8"));
 	    			
 	    			LOG.info("Received {} bytes by key {} value {}", resBytes.length, message.getsID_DataLink(), res);	
+	    			
+	    			httpResponse.getWriter().print(res);
+	    			httpResponse.getWriter().close();
 	    		}
     		}catch(Exception e){
     			if(e instanceof CommonServiceException)
@@ -837,7 +840,6 @@ public class SubjectMessageController {
     	            throw new CommonServiceException(500, "Unknown exception: " + e.getMessage());
     			}
     		}
-    	return res;    	
     }
 
 }
