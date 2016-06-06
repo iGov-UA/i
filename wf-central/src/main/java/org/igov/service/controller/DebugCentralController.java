@@ -1,6 +1,7 @@
 package org.igov.service.controller;
 
 import io.swagger.annotations.*;
+import org.activiti.engine.HistoryService;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.hibernate.Criteria;
 import org.igov.io.GeneralConfig;
@@ -59,6 +60,8 @@ public class DebugCentralController {
     private BpService bpService;
     @Autowired
     private MsgService msgService;
+    @Autowired
+    private HistoryService oHistoryService;
 
     @Autowired
     private SubjectMessageService subjectMessageService;
@@ -327,6 +330,12 @@ public class DebugCentralController {
         result.put("sID_UA", obj.getsID_UA());
         result.put("sUserTaskName", obj.getsUserTaskName());
         result.put("sID_StatusType", obj.getsID_StatusType());
+
+        if(oHistoryService.createHistoricDetailQuery().taskId(obj.getnID_Task().toString()) == null){
+            result.put("Status", "HISTOIC");
+        } else {
+            result.put("Status", "ACTIVE");
+        }
 
         return JSONValue.toJSONString(result);
     }
