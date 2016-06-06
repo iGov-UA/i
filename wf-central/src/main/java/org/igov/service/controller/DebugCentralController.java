@@ -2,6 +2,7 @@ package org.igov.service.controller;
 
 import io.swagger.annotations.*;
 import org.activiti.engine.HistoryService;
+import org.activiti.engine.history.HistoricIdentityLink;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.hibernate.Criteria;
 import org.igov.io.GeneralConfig;
@@ -331,10 +332,12 @@ public class DebugCentralController {
         result.put("sUserTaskName", obj.getsUserTaskName());
         result.put("sID_StatusType", obj.getsID_StatusType());
 
-        if(oHistoryService.createHistoricDetailQuery().taskId(obj.getnID_Task().toString()).singleResult() == null){
-            result.put("sArchiveStatus", "Active");
-        } else {
+        List<HistoricIdentityLink> linkList = oHistoryService.getHistoricIdentityLinksForTask(obj.getnID_Task().toString());
+
+        if(linkList.size() > 0){
             result.put("sArchiveStatus", "Historic");
+        } else {
+            result.put("sArchiveStatus", "Active");
         }
 
         return JSONValue.toJSONString(result);
