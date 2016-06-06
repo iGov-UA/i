@@ -43,6 +43,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
@@ -446,7 +447,8 @@ public class SubjectMessageController {
             @ApiParam(value = "ИД-номер типа сообщения", required = true) @RequestParam(value = "nID_SubjectMessageType", required = true) Long nID_SubjectMessageType,
             @ApiParam(value = "Заголовок сообщения", required = false) @RequestParam(value = "sHead", required = false) String sHead,
             @ApiParam(value = "электронка, но которую отсылаем", required = false) @RequestParam(value = "sMail", required = false) String sMail,
-            @ApiParam(value = "указывать дату и время отправки письма", required = false) @RequestParam(value = "bAddDate", required = false, defaultValue = "false" ) Boolean bAddDate
+            @ApiParam(value = "указывать дату и время отправки письма", required = false) @RequestParam(value = "bAddDate", required = false, defaultValue = "false" ) Boolean bAddDate,
+            @ApiParam(value = "Ключ записи в Монго ДБ", required = false) @RequestParam(value = "sID_DataLink", required = false ) String sID_DataLink 
             //,//, defaultValue = "4"
     ) throws CommonServiceException {
 
@@ -515,6 +517,7 @@ public class SubjectMessageController {
             historyEventServiceDao.saveOrUpdate(oHistoryEvent_Service);
             oSubjectMessage = oSubjectMessageService.createSubjectMessage(sMessageHead(nID_SubjectMessageType,
                     sID_Order), sBody, nID_Subject, sMail != null ? sMail : "", "", sData, nID_SubjectMessageType);
+            oSubjectMessage.setsID_DataLink(sID_DataLink);
             if (bAddDate != null){
             	oSubjectMessage.setDate(new DateTime());
             }
@@ -797,8 +800,11 @@ public class SubjectMessageController {
     public
     @ResponseBody
     String getSubjectMessageData(
-            @ApiParam(value = "номер-ИД записи с сообщением", required = false) @RequestParam(value = "nID_SubjectMessage", required = true) String sID_SubjectMessage) throws CommonServiceException{
-    	
+            @ApiParam(value = "номер-ИД записи с сообщением", required = false) @RequestParam(value = "nID_SubjectMessage", required = true) String sID_SubjectMessage,
+            @ApiParam(value = "Номер-ИД субьекта (хозяина заявки сообщения)", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject,
+            @ApiParam(value = "булевский флаг, Включить авторизацию", required = false) @RequestParam(value = "bAuth", required = false, defaultValue = "false") Boolean bAuth,
+            HttpServletResponse httpResponse) throws CommonServiceException{
+    		
     		//content of the message file
     		String res = null;
     		try{
@@ -816,7 +822,10 @@ public class SubjectMessageController {
 	    	        
 	    			byte[] resBytes = durableBytesDataStorage.getData(message.getsID_DataLink());
 	    			
-	    			res = resBytes.toString();
+	    			LOG.info("Received {} bytes by key {}", resBytes.length, message.getsID_DataLink());	 
+	    			
+	    			httpResponse.setHeader("Content-Type", "application/html;charset=UTF-8");
+	    			res = new String(resBytes, Charset.forName("UTF-8"));
 	    		}
     		}catch(Exception e){
     			if(e instanceof CommonServiceException)

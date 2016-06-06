@@ -86,7 +86,11 @@ public class SubjectMessageService {
             {
                 LOG.info("(createSubjectMessage: nID_subject{}) ", nID_subject);
                 
-                subjectContact = syncMail(sMail, nID_subject);
+                try {
+                	subjectContact = syncMail(sMail, nID_subject);
+                } catch (Exception e){
+                	LOG.warn("Error occured while syncing mail {}", e.getMessage());
+                }
                 if(subjectContact != null)
                  LOG.info("(syncMail with nID_Subject after calling method: SubjectContact ID{},nID_Subject{}, ContactType{}, Date{}, sValue{})",
                     subjectContact.getId(), subjectContact.getSubject().getId(), subjectContact.getSubjectContactType().getsName_EN(),
