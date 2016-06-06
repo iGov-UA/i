@@ -340,12 +340,12 @@ public class DebugCentralController {
             result.put("sArchiveStatus", "Active");
         }*/
         try {
-            result.put("HistoricTaskInstanceQuery", oHistoryService.createHistoricTaskInstanceQuery().unfinished().orderByTaskId().list().toString());
+            result.put("HistoricTaskInstanceQuery", oHistoryService.createHistoricTaskInstanceQuery().unfinished().orderByTaskId().asc().list().toString());
         } catch (Exception e){
             result.put("HistoricTaskInstanceQuery", e.getMessage());
         }
         try {
-            result.put("HistoricTaskInstanceQueryList", oHistoryService.createHistoricTaskInstanceQuery().unfinished().list().toString());
+            result.put("HistoricTaskInstanceQueryList", oHistoryService.createHistoricTaskInstanceQuery().unfinished().list().get(0).getTaskDefinitionKey());
         } catch (Exception e){
             result.put("HistoricTaskInstanceQueryList", e.getMessage());
         }
@@ -354,6 +354,9 @@ public class DebugCentralController {
         } catch (Exception e){
             result.put("HistoricDetailQuery", e.getMessage());
         }
+
+        int ss = oHistoryService.createHistoricTaskInstanceQuery().unfinished().list().size();
+        result.put("sss", ss);
 
 
 
