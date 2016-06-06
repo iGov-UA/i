@@ -332,9 +332,9 @@ public class DebugCentralController {
         result.put("sID_StatusType", obj.getsID_StatusType());
 
         if(oHistoryService.createHistoricDetailQuery().taskId(obj.getnID_Task().toString()) == null){
-            result.put("Status", "HISTOIC");
+            result.put("sArchiveStatus", "Active");
         } else {
-            result.put("Status", "ACTIVE");
+            result.put("sArchiveStatus", "Historic");
         }
 
         return JSONValue.toJSONString(result);
