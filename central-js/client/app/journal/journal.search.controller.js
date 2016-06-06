@@ -131,7 +131,6 @@ console.log($scope)
         MessagesService.getServiceMessages(sID_Order, sToken).then(function (oResponse) {
           if (ErrorsFactory.bSuccessResponse(oResponse)) {
             if (bExist(oResponse.messages)) {
-              console.log(oResponse)
               $scope.aOrderMessages = oResponse.messages;
               if (events) {
                 $scope.aOrderMessages = $scope.aOrderMessages.concat(events);
@@ -315,6 +314,14 @@ console.log($scope)
 
   $scope.getFileUploadUrl = function () {
     return ActivitiService.getUploadFileURLByServer(order.nID_Server);
-  }
+  };
+
+  $scope.openLetter = function(nID) {
+    window.open(
+      location.protocol
+      + '/wf/service/subject/message/getSubjectMessageData?nID_SubjectMessage='
+      + nID,
+      "Лист", "width=800,height=500,left=350,top=200")
+  };
 
 });
