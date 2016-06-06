@@ -36,6 +36,8 @@
         <activiti:formProperty id="date_big" name="Початок ліцензії" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="date_end" name="Кінець ліцензії" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPosluga_name" name="назва послуги" type="invisible" default="Видача ліцензії на право роздрібної торгівлі тютюновими виробами"></activiti:formProperty>
+        <activiti:formProperty id="form_signed" name="Заява після старту" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm1" name="Заява після старту" type="invisible" default="pattern\print\nicolaev_dfs_593.html"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -90,7 +92,7 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression>${form_signed}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
