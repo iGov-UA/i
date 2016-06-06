@@ -30,10 +30,7 @@ import org.springframework.web.bind.annotation.*;
 import com.pb.ksv.msgcore.data.IMsgObjR;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
 
@@ -344,15 +341,30 @@ public class DebugCentralController {
         List<HistoricTaskInstance> htiList = oHistoryService.createHistoricTaskInstanceQuery().list();
         result.put("HistoricListSize", htiList.size());
         if(htiList.size() > 0){
+            List<Object> arr = new ArrayList<>();
             for(int i = 0; i < htiList.size(); i++){
-                if(htiList.get(i).getId().equals(obj.getnID_Task().toString())){
+                Map<String, Object> el = new HashMap<>();
+                el.put("Id", htiList.get(i).getId());
+                el.put("DeleteReason", htiList.get(i).getDeleteReason());
+                /*if(htiList.get(i).getId().equals(obj.getnID_Task().toString())){
                     result.put("DeleteReasonStatus", htiList.get(i).getDeleteReason());
                     break;
-                };
+                };*/
+                arr.add(el);
             }
+            result.put("DeleteReasonStatus", arr);
         } else {
             result.put("DeleteReasonStatus", "not found history status");
         }
+
+        HistoricTaskInstance historicTaskInstance = oHistoryService.createHistoricTaskInstanceQuery()
+                .taskId(obj.getnID_Task().toString()).singleResult();
+
+        historicTaskInstance.getDeleteReason();
+        result.put("TASK_HisoricTaskInstance", historicTaskInstance.getDeleteReason());
+
+
+        //oHistoryService.createHistoricProcessInstanceQuery().processInstanceId("").singleResult().getDeleteReason();
 
 
 
