@@ -12,6 +12,7 @@ import org.activiti.engine.impl.persistence.entity.ExecutionEntity;
 import org.activiti.engine.task.Task;
 import org.igov.service.controller.security.AuthenticationTokenSelector;
 import org.apache.commons.lang3.StringUtils;
+import org.igov.io.db.kv.statical.IBytesDataStorage;
 import org.igov.io.fs.FileSystemDictonary;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -130,6 +131,8 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
     
     @Autowired
     private HistoryEventService historyEventService;
+    @Autowired
+    private IBytesDataStorage durableBytesDataStorage;
 
     protected String replaceTags(String sTextSource, DelegateExecution execution)
             throws Exception {
@@ -558,12 +561,14 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
     	params.put("sID_Order", sID_Order);
         params.put("sHead","Отправлено письмо");
         params.put("sBody", sHead);
-        params.put("sMail", sBody);
+        params.put("sMail", sTo);
         params.put("nID_SubjectMessageType", "" + 10L);
         params.put("nID_Subject", "0");
         params.put("sContacts", "0");
         params.put("sData", "0");
-        params.put("RequestMethod", RequestMethod.POST.name());
+        params.put("RequestMethod", RequestMethod.GET.name());
+        String key = durableBytesDataStorage.saveData(sBody.getBytes());
+        params.put("sID_DataLink", key);
         LOG.info("try to save service message with params: (params={})", params);
         String jsonServiceMessage;
 		try {
