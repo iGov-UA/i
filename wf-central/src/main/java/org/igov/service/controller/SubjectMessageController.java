@@ -43,6 +43,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
@@ -824,7 +825,7 @@ public class SubjectMessageController {
 	    			LOG.info("Received {} bytes by key {}", resBytes.length, message.getsID_DataLink());	 
 	    			
 	    			httpResponse.setHeader("Content-Type", "application/html;charset=UTF-8");
-	    			res = new String(resBytes, "UTF-8");
+	    			res = new String(resBytes, Charset.forName("UTF-8"));
 	    		}
     		}catch(Exception e){
     			if(e instanceof CommonServiceException)
