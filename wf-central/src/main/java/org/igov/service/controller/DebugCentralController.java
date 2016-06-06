@@ -332,13 +332,30 @@ public class DebugCentralController {
         result.put("sUserTaskName", obj.getsUserTaskName());
         result.put("sID_StatusType", obj.getsID_StatusType());
 
-        List<HistoricIdentityLink> linkList = oHistoryService.getHistoricIdentityLinksForTask(obj.getnID_Task().toString());
+        /*List<HistoricIdentityLink> linkList = oHistoryService.getHistoricIdentityLinksForTask(obj.getnID_Task().toString());
 
         if(linkList.size() > 0){
             result.put("sArchiveStatus", "Historic");
         } else {
             result.put("sArchiveStatus", "Active");
+        }*/
+        try {
+            result.put("HistoricTaskInstanceQuery", oHistoryService.createHistoricTaskInstanceQuery().unfinished().orderByTaskId().list().toString());
+        } catch (Exception e){
+            result.put("HistoricTaskInstanceQuery", e.getMessage());
         }
+        try {
+            result.put("HistoricTaskInstanceQueryList", oHistoryService.createHistoricTaskInstanceQuery().unfinished().list().toString());
+        } catch (Exception e){
+            result.put("HistoricTaskInstanceQueryList", e.getMessage());
+        }
+        try {
+            result.put("HistoricDetailQuery", oHistoryService.createHistoricDetailQuery().taskId(obj.getnID_Task().toString()).list().toString());
+        } catch (Exception e){
+            result.put("HistoricDetailQuery", e.getMessage());
+        }
+
+
 
         return JSONValue.toJSONString(result);
     }
