@@ -302,8 +302,74 @@
 
       .test{ border: 1px solid red;}
     </style>
+    
+	<script type="text/javascript">
+    function loadPage() {
+      /*   ****************    парсим паспортные данные   ****************    */
+      // константные переменные для регулярных выражений
+      var regSeriaStr = "([Сс]ерия|СЕРИЯ|[Сс]ерія|СЕРІЯ)?";
+      var regPassoprt = "([Пп]аспорт|ПАСПОРТ)?";
+      var regNumberStr = "([Нн]омер|НОМЕР)?";
+
+      var regSeriaVal = "[ЄІЇҐА-ЯA-Z]{2}";
+      var regNumberVal = "[0-9]{6}";
+      var regFrom = "((від|от).\\D{0,4})?";
+      var regYearVal = "[0-9]{2}\\W[0-9]{2}\\W(19|20|21)?[0-9]{2}";
+
+      var patSerNum = new RegExp(regPassoprt + "\\D{0,4}" + regSeriaStr + "\\D{0,4}" + regSeriaVal + "\\D{0,4}" + regNumberStr + "\\D{0,4}" + regPassoprt + "\\D{0,4}" + regNumberVal + "\\s*");
+
+      var patDate = new RegExp(regFrom + "\\s*" + regYearVal +"\\s*");
+
+      var str0 = "[bankIdPassport]";
+
+      var strSerial = "";
+      var strNumber = "";
+      var strDate = "";
+      var strIssuedBy = "";
+
+      //находим серию и номер
+      var matSerNum = str0.match(patSerNum)[0];
+
+      //вырезаем серию и номер
+      str0 = str0.replace(matSerNum,"");
+
+      //удаляем лишние слова
+      matSerNum = matSerNum.replace(matSerNum.match(new RegExp("паспорт", "ig")).toString(),"");
+      matSerNum = matSerNum.replace(matSerNum.match(new RegExp("номер", "ig")).toString(),"");
+      matSerNum = matSerNum.replace(matSerNum.match(new RegExp("сер[иі]я", "ig")).toString(),"");
+
+      //выбираем Серию и Номер
+      strSerial = matSerNum.match(new RegExp(regSeriaVal)).toString();
+      strNumber = matSerNum.match(new RegExp(regNumberVal)).toString();
+
+      var matDate = str0.match(new RegExp(regFrom + regYearVal, "ig")).toString();
+
+      //выбираем дату
+      strDate = matDate.match(new RegExp(regYearVal))[0];
+      //вырезаем дату
+      str0 = str0.replace(matDate,"");
+
+      //Остаток, кто выдал
+      strIssuedBy = str0.toString().trim();
+
+      //вставить в текст
+      document.getElementById('spanPassportSeria').innerHTML = strSerial;
+      document.getElementById('spanPassportNumber').innerHTML = strNumber;
+      document.getElementById('spanPassportIssuedBy').innerHTML = strIssuedBy;
+      document.getElementById('spanPassportDate').innerHTML = strDate; //*/
+
+      // в случае не правильного парсинга
+      if(strSerial.length>0 && strNumber.length>0 && strIssuedBy.length>0 && strDate.length>0){
+        document.getElementById('spanDetailPassport').style.display = 'inline';
+        document.getElementById('spanTotalPassport').style.display = 'none';
+      }
+
+      //подчеркиваем
+      document.getElementById('spanCategory[sCompensationCategory]').parentElement.previousElementSibling.className = 'u';
+    }
+    </script>
   </head>
-  <body>
+  <body onload="loadPage()">
     <div class="PrintFormClaim">
 
       <!-- Приложение 1  ********  Для   -->
@@ -575,69 +641,7 @@
       </div>
       
       
-    <script type="text/javascript">
-      /*   ****************    парсим паспортные данные   ****************    */
-      // константные переменные для регулярных выражений
-      var regSeriaStr = "([Сс]ерия|СЕРИЯ|[Сс]ерія|СЕРІЯ)?";
-      var regPassoprt = "([Пп]аспорт|ПАСПОРТ)?";
-      var regNumberStr = "([Нн]омер|НОМЕР)?";
 
-      var regSeriaVal = "[ЄІЇҐА-ЯA-Z]{2}";
-      var regNumberVal = "[0-9]{6}";
-      var regFrom = "((від|от).\\D{0,4})?";
-      var regYearVal = "[0-9]{2}\\W[0-9]{2}\\W(19|20|21)?[0-9]{2}";
-
-      var patSerNum = new RegExp(regPassoprt + "\\D{0,4}" + regSeriaStr + "\\D{0,4}" + regSeriaVal + "\\D{0,4}" + regNumberStr + "\\D{0,4}" + regPassoprt + "\\D{0,4}" + regNumberVal + "\\s*");
-
-      var patDate = new RegExp(regFrom + "\\s*" + regYearVal +"\\s*");
-
-      var str0 = "[bankIdPassport]";
-
-      var strSerial = "";
-      var strNumber = "";
-      var strDate = "";
-      var strIssuedBy = "";
-
-      //находим серию и номер
-      var matSerNum = str0.match(patSerNum)[0];
-
-      //вырезаем серию и номер
-      str0 = str0.replace(matSerNum,"");
-
-      //удаляем лишние слова
-      matSerNum = matSerNum.replace(matSerNum.match(new RegExp("паспорт", "ig")).toString(),"");
-      matSerNum = matSerNum.replace(matSerNum.match(new RegExp("номер", "ig")).toString(),"");
-      matSerNum = matSerNum.replace(matSerNum.match(new RegExp("сер[иі]я", "ig")).toString(),"");
-
-      //выбираем Серию и Номер
-      strSerial = matSerNum.match(new RegExp(regSeriaVal)).toString();
-      strNumber = matSerNum.match(new RegExp(regNumberVal)).toString();
-
-      var matDate = str0.match(new RegExp(regFrom + regYearVal, "ig")).toString();
-
-      //выбираем дату
-      strDate = matDate.match(new RegExp(regYearVal))[0];
-      //вырезаем дату
-      str0 = str0.replace(matDate,"");
-
-      //Остаток, кто выдал
-      strIssuedBy = str0.toString().trim();
-
-      //вставить в текст
-      document.getElementById('spanPassportSeria').innerHTML = strSerial;
-      document.getElementById('spanPassportNumber').innerHTML = strNumber;
-      document.getElementById('spanPassportIssuedBy').innerHTML = strIssuedBy;
-      document.getElementById('spanPassportDate').innerHTML = strDate; //*/
-
-      // в случае не правильного парсинга
-      if(strSerial.length>0 && strNumber.length>0 && strIssuedBy.length>0 && strDate.length>0){
-        document.getElementById('spanDetailPassport').style.display = 'inline';
-        document.getElementById('spanTotalPassport').style.display = 'none';
-      }
-
-      //подчеркиваем
-      document.getElementById('spanCategory[sCompensationCategory]').parentElement.previousElementSibling.className = 'u';
-    </script>
 
       <div class="ta-j">
         <b>До заяви відповідно до законодавства додано <em>[nDocument]</em> 
