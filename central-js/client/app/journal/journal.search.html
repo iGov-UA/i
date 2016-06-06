@@ -54,6 +54,8 @@
             <time class="u33" datetime="{{oOrderMessage.sDate}}">{{oOrderMessage.sDate | date: 'dd.MM.yyyy HH:mm'}}</time>
             <span class="u53"></span>
             <p>{{oOrderMessage.sHead}}</p>
+            &nbsp;
+            <a ng-if="oOrderMessage.oSubjectMessageType && oOrderMessage.oSubjectMessageType.nID === 10" ng-click="openLetter(oOrderMessage.nID)">Лист</a>
             <p ng-bind-html="oOrderMessage.sMessage || oOrderMessage.sBody" class="hide-table"></p>
             <div ng-repeat="oFile in oOrderMessage.osData.aFile">
               Прикріплено файл: "{{::oFile.sFileName}}"
