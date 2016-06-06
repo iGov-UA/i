@@ -832,8 +832,6 @@ public class SubjectMessageController {
 	    			httpResponse.setHeader("Content-Type", "text/html;charset=UTF-8");
 	    			res = new String(resBytes, Charset.forName("UTF-8"));
 	    			
-	    			LOG.info("Received {} bytes by key {} value {}", resBytes.length, message.getsID_DataLink(), res);	
-	    			
 	    			httpResponse.getWriter().print(res);
 	    			httpResponse.getWriter().close();
 	    		}
