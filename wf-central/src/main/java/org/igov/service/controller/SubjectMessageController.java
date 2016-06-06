@@ -822,7 +822,9 @@ public class SubjectMessageController {
 	    	        
 	    			byte[] resBytes = durableBytesDataStorage.getData(message.getsID_DataLink());
 	    			
-	    			res = resBytes.toString();
+	    			LOG.info("Received {} bytes by key {}", resBytes.length, message.getsID_DataLink());	 
+	    			
+	    			res = new String(resBytes);
 	    		}
     		}catch(Exception e){
     			if(e instanceof CommonServiceException)
