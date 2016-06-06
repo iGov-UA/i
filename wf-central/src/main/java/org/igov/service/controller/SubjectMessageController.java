@@ -519,7 +519,9 @@ public class SubjectMessageController {
             	oSubjectMessage.setDate(new DateTime());
             }
             oSubjectMessage.setnID_HistoryEvent_Service(nID_HistoryEvent_Service);
-            subjectMessagesDao.setMessage(oSubjectMessage);            
+            subjectMessagesDao.setMessage(oSubjectMessage);           
+            
+            LOG.info("Successfully saved message with the ID {}", oSubjectMessage.getId());
 
         } catch (Exception e) {
             LOG.error("FAIL: {} (sID_Order={})", e.getMessage(), sID_Order);
