@@ -341,7 +341,7 @@ public class DebugCentralController {
             result.put("sArchiveStatus", "Active");
         }*/
 
-        List<HistoricTaskInstance> htiList = oHistoryService.createHistoricTaskInstanceQuery().finished().list();
+        List<HistoricTaskInstance> htiList = oHistoryService.createHistoricTaskInstanceQuery().list();
         result.put("HistoricListSize", htiList.size());
         if(htiList.size() > 0){
             for(int i = 0; i < htiList.size(); i++){
