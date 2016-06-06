@@ -241,7 +241,7 @@ public class Mail extends Abstract_Mail {
                 LOG.info("oMimeMessage.addRecipient (s={})", s);
                 //oMultiPartEmail.addTo(s, "receiver");
                 oMimeMessage.addRecipient(Message.RecipientType.TO,
-                        new InternetAddress(s, "recipient", DEFAULT_ENCODING));
+                        new InternetAddress(s, getToName(), DEFAULT_ENCODING));
             }
 
             //oMimeMessage.addRecipient(Message.RecipientType.TO,
