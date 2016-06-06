@@ -3,6 +3,7 @@ package org.igov.service.controller;
 import io.swagger.annotations.*;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.history.HistoricIdentityLink;
+import org.activiti.engine.history.HistoricTaskInstance;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.hibernate.Criteria;
 import org.igov.io.GeneralConfig;
@@ -339,24 +340,30 @@ public class DebugCentralController {
         } else {
             result.put("sArchiveStatus", "Active");
         }*/
-        try {
-            result.put("HistoricTaskInstanceQuery", oHistoryService.createHistoricTaskInstanceQuery().unfinished().orderByTaskId().asc().list().toString());
-        } catch (Exception e){
-            result.put("HistoricTaskInstanceQuery", e.getMessage());
-        }
-        try {
-            result.put("HistoricTaskInstanceQueryList", oHistoryService.createHistoricTaskInstanceQuery().unfinished().list().get(0).getTaskDefinitionKey());
-        } catch (Exception e){
-            result.put("HistoricTaskInstanceQueryList", e.getMessage());
-        }
-        try {
-            result.put("HistoricDetailQuery", oHistoryService.createHistoricDetailQuery().taskId(obj.getnID_Task().toString()).list().toString());
-        } catch (Exception e){
-            result.put("HistoricDetailQuery", e.getMessage());
+
+        List<HistoricTaskInstance> htiList = oHistoryService.createHistoricTaskInstanceQuery().list();
+        if(htiList.size() > 0){
+            for(int i = 0; i < htiList.size(); i++){
+                /*
+                Map<String, Object> oIns = new HashMap<>();
+                oIns.put("", htiList.get(i).getDeleteReason());
+                oIns.put("", htiList.get(i).getAssignee());
+                oIns.put("", htiList.get(i).getCategory());
+                oIns.put("", htiList.get(i).getDescription());
+                oIns.put("", htiList.get(i).getExecutionId());
+                oIns.put("", htiList.get(i).getFormKey());
+                oIns.put("", htiList.get(i).getFormKey());
+                oIns.put("", htiList.get(i).getId());
+                */
+                if(htiList.get(i).getId().equals(obj.getnID_Task().toString())){
+                    result.put("DeleteReasonStatus", htiList.get(i).getDeleteReason());
+                    break;
+                };
+            }
+        } else {
+            result.put("DeleteReasonStatus", "not found history status");
         }
 
-        int ss = oHistoryService.createHistoricTaskInstanceQuery().unfinished().list().size();
-        result.put("sss", ss);
 
 
 
