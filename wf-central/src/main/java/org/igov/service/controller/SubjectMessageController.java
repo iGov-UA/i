@@ -810,6 +810,13 @@ public class SubjectMessageController {
     		try{
     			Long nID_SubjectMessage = Long.valueOf(sID_SubjectMessage);
 	    		SubjectMessage message = subjectMessagesDao.getMessage(nID_SubjectMessage);
+	    		Long nID_HistoryEvent_Service = message.getnID_HistoryEvent_Service();
+
+	            Optional<HistoryEvent_Service> oHistoryEvent_Service = historyEventServiceDao.findById(nID_HistoryEvent_Service);
+
+	            if(bAuth && oHistoryEvent_Service.isPresent()){
+	                actionEventService.checkAuth(oHistoryEvent_Service.get(), nID_Subject, oHistoryEvent_Service.get().getsToken());
+	            }
 	    		if(message == null || StringUtils.isBlank(message.getsID_DataLink())){
 	        		LOG.info("Message is not found by nID_Message {}", nID_SubjectMessage);
 	    			CommonServiceException newErr = new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, "Record not found");                
