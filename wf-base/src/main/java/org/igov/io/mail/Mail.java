@@ -196,10 +196,14 @@ public class Mail extends Abstract_Mail {
             MultiPartEmail oMultiPartEmail = new MultiPartEmail();
             LOG.info("(getHost()={})", getHost());
             oMultiPartEmail.setHostName(getHost());
-            String[] asTo = getTo().split("\\,");//sTo
-            for (String s : asTo) {
-                LOG.info("oMultiPartEmail.addTo (s={})", s);
-                oMultiPartEmail.addTo(s, "receiver");
+            String[] asTo = {sMailOnly(getTo())};
+
+            if (getTo().contains("\\,")) {
+                asTo = getTo().split("\\,");//sTo
+                for (String s : asTo) {
+                    LOG.info("oMultiPartEmail.addTo (s={})", s);
+                    oMultiPartEmail.addTo(s, "receiver");
+                }
             }
             //oMultiPartEmail.addTo(sTo, "receiver");
             //oMultiPartEmail.addTo(getTo(), "receiver");
@@ -237,7 +241,7 @@ public class Mail extends Abstract_Mail {
                 LOG.info("oMimeMessage.addRecipient (s={})", s);
                 //oMultiPartEmail.addTo(s, "receiver");
                 oMimeMessage.addRecipient(Message.RecipientType.TO,
-                        new InternetAddress(s, "recipient", DEFAULT_ENCODING));
+                        new InternetAddress(s, getToName(), DEFAULT_ENCODING));
             }
 
             //oMimeMessage.addRecipient(Message.RecipientType.TO,
