@@ -341,20 +341,10 @@ public class DebugCentralController {
             result.put("sArchiveStatus", "Active");
         }*/
 
-        List<HistoricTaskInstance> htiList = oHistoryService.createHistoricTaskInstanceQuery().list();
+        List<HistoricTaskInstance> htiList = oHistoryService.createHistoricTaskInstanceQuery().finished().list();
+        result.put("HistoricListSize", htiList.size());
         if(htiList.size() > 0){
             for(int i = 0; i < htiList.size(); i++){
-                /*
-                Map<String, Object> oIns = new HashMap<>();
-                oIns.put("", htiList.get(i).getDeleteReason());
-                oIns.put("", htiList.get(i).getAssignee());
-                oIns.put("", htiList.get(i).getCategory());
-                oIns.put("", htiList.get(i).getDescription());
-                oIns.put("", htiList.get(i).getExecutionId());
-                oIns.put("", htiList.get(i).getFormKey());
-                oIns.put("", htiList.get(i).getFormKey());
-                oIns.put("", htiList.get(i).getId());
-                */
                 if(htiList.get(i).getId().equals(obj.getnID_Task().toString())){
                     result.put("DeleteReasonStatus", htiList.get(i).getDeleteReason());
                     break;
