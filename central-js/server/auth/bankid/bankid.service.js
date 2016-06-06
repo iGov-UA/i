@@ -122,14 +122,17 @@ module.exports.scansRequest = function (accessToken, callback) {
   }, bankidUtil.decryptCallback(callback));
 };
 
-module.exports.prepareScanContentRequest = function (documentScanLink, accessToken) {
-  var o = {
+module.exports.getScanContentRequestOptions = function (documentScanLink, accessToken) {
+  return {
     'url': documentScanLink,
     'headers': {
       'Authorization': bankidUtil.getAuth(accessToken)
     }
   };
-  return request.get(o);
+};
+
+module.exports.getScanContentRequest = function (documentScanLink, accessToken) {
+  return request.get(this.getScanContentRequestOptions(documentScanLink, accessToken));
 };
 
 module.exports.cacheCustomer = function (customer, callback) {

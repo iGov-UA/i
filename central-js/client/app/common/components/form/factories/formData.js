@@ -16,6 +16,18 @@ angular.module('app').factory('FormDataFactory', function (ParameterFactory, Dat
         fillAutoCompletes(property);
       }
     }
+    this.params.bReferent = new ParameterFactory;
+    angular.extend(this.params.bReferent, {
+      "id": "bReferent",
+      "name": "Referent",
+      "type": "invisible",
+      "value": false,
+      "readable": true,
+      "writable": true,
+      "required": false,
+      "datePattern":null,
+      "enumValues":[]
+    });
   };
 
   FormDataFactory.prototype.initialize = function (ActivitiForm, BankIDAccount, oServiceData) {
@@ -24,8 +36,10 @@ angular.module('app').factory('FormDataFactory', function (ParameterFactory, Dat
     setBankIDAccount(self, BankIDAccount);
 
     return $q.all([fillInCountryInformation(self),
-      uploadScansFromBankID(self, oServiceData)]).then(function(results){
-    });
+      uploadScansFromBankID(self, oServiceData)])
+      .then(function(results){
+        return self;
+      });
   };
 
   var initializeWithFactory = function (params, factories, property) {
