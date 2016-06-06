@@ -331,7 +331,7 @@ public class DebugCentralController {
         result.put("sUserTaskName", obj.getsUserTaskName());
         result.put("sID_StatusType", obj.getsID_StatusType());
 
-        if(oHistoryService.createHistoricDetailQuery().taskId(obj.getnID_Task().toString()) == null){
+        if(oHistoryService.createHistoricDetailQuery().taskId(obj.getnID_Task().toString()).singleResult() == null){
             result.put("sArchiveStatus", "Active");
         } else {
             result.put("sArchiveStatus", "Historic");
