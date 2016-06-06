@@ -30,10 +30,7 @@ import org.springframework.web.bind.annotation.*;
 import com.pb.ksv.msgcore.data.IMsgObjR;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
 
@@ -333,29 +330,65 @@ public class DebugCentralController {
         result.put("sUserTaskName", obj.getsUserTaskName());
         result.put("sID_StatusType", obj.getsID_StatusType());
 
-        /*List<HistoricIdentityLink> linkList = oHistoryService.getHistoricIdentityLinksForTask(obj.getnID_Task().toString());
+        try{
+            HistoricTaskInstance historicTaskInstance = oHistoryService.createHistoricTaskInstanceQuery()
+                    .taskId(obj.getnID_Task().toString()).singleResult();
 
-        if(linkList.size() > 0){
-            result.put("sArchiveStatus", "Historic");
-        } else {
-            result.put("sArchiveStatus", "Active");
-        }*/
-
-        List<HistoricTaskInstance> htiList = oHistoryService.createHistoricTaskInstanceQuery().list();
-        result.put("HistoricListSize", htiList.size());
-        if(htiList.size() > 0){
-            for(int i = 0; i < htiList.size(); i++){
-                if(htiList.get(i).getId().equals(obj.getnID_Task().toString())){
-                    result.put("DeleteReasonStatus", htiList.get(i).getDeleteReason());
-                    break;
-                };
-            }
-        } else {
-            result.put("DeleteReasonStatus", "not found history status");
+            historicTaskInstance.getDeleteReason();
+            result.put("TASK_HisoricTaskInstance", historicTaskInstance.getDeleteReason());
+        }catch (Exception e){
+            result.put("TASK_HisoricTaskInstance", "Exception " + e.getMessage());
         }
 
+        String processInstanceId = null;
 
+        try {
+            HistoricTaskInstance historicTaskInstanceQuery = oHistoryService
+                    .createHistoricTaskInstanceQuery().taskId(obj.getnID_Task().toString())
+                    .singleResult();
+            processInstanceId = historicTaskInstanceQuery
+                    .getProcessInstanceId();
 
+            result.put("ProcessInstanceId", processInstanceId);
+        } catch (Exception e){
+            result.put("ProcessInstanceId", "Exception " + e.getMessage());
+        }
+
+        try{
+
+            String deleeReason = oHistoryService.createProcessInstanceHistoryLogQuery(processInstanceId).singleResult().getDeleteReason();
+
+            result.put("TASK_ProcessInstanceHistoryLog", deleeReason);
+        }catch (Exception e){
+            result.put("TASK_ProcessInstanceHistoryLog", "Exception " + e.getMessage());
+        }
+
+        try{
+
+            Date oProcessInstanceEndDate = oHistoryService.createProcessInstanceHistoryLogQuery(processInstanceId).singleResult().getEndTime();
+            result.put("TASK_ProcessInstanceHistoryLog_EndDate", oProcessInstanceEndDate);
+
+        }catch (Exception e){
+            result.put("TASK_ProcessInstanceHistoryLog_EndDate", "Exception " + e.getMessage());
+        }
+
+        try{
+
+            String deleeReason = oHistoryService.createHistoricProcessInstanceQuery().processInstanceId(processInstanceId).singleResult().getDeleteReason();
+
+            result.put("TASK_HistoricProcessInstance", deleeReason);
+        }catch (Exception e){
+            result.put("TASK_HistoricProcessInstance", "Exception " + e.getMessage());
+        }
+
+        try{
+
+            Date oProcessInstanceEndDate = oHistoryService.createHistoricProcessInstanceQuery().processInstanceId(processInstanceId).singleResult().getEndTime();
+            result.put("TASK_HistoricProcessInstance_EndDate", oProcessInstanceEndDate);
+
+        }catch (Exception e){
+            result.put("TASK_HistoricProcessInstance_EndDate", "Exception " + e.getMessage());
+        }
 
         return JSONValue.toJSONString(result);
     }
