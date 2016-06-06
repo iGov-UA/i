@@ -37,7 +37,7 @@
         <activiti:formProperty id="date_end" name="Кінець ліцензії" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPosluga_name" name="назва послуги" type="invisible" default="Видача ліцензії на право роздрібної торгівлі тютюновими виробами"></activiti:formProperty>
         <activiti:formProperty id="form_signed" name="Заява після старту" type="file"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm1" name="Заява після старту" type="invisible" default="pattern\print\nicolaev_dfs_593.html"></activiti:formProperty>
+        <activiti:formProperty id="PrintFormAutoSign_1" name="Заява після старту" type="invisible" default="pattern\print\nicolaev_dfs_593.html"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -92,7 +92,7 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${form_signed}</activiti:expression>
+          <activiti:expression>${PrintFormAutoSign_1}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -328,18 +328,21 @@ yyyy2 = yyyy-(-1)
 if (ddd == '01')
   {
   mmm2=mmm-1
-  if (mmm2&lt;10){mmm2 = '0'+mmm2}
-    if(mmm =='05'||'07'||'08'||'10'||'12')
-      {ddd2='30'}
-    if(mmm =='06'||'09'||'11'||'04'||'02')
-      {ddd2='31'}
-    if(mmm =='03')
-      {ddd2='28'}
-  }
+  if (mmm2&lt;10)
+    {mmm2 = '0'+mmm2}
+
+  if(mmm =='06'||'09'||'11'||'04'||'02'||'08')
+    {ddd2='31'}
   else
+    {ddd2='30'}      
+      
+  if(mmm =='03')
+    {ddd2='28'}
+  }
+else
   {
-    mmm2=mmm
-    ddd2=ddd-1
+  mmm2=mmm
+  ddd2=ddd-1
   }
 if(mmm =='01'&amp;&amp;ddd=='01')
   {
