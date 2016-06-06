@@ -158,7 +158,11 @@ public class HttpRequester {
         if (RequestMethod.GET.name().equals(requestMethod)){
         	oURL = new URL(getFullURL(sURL, mParam));
         } else {
-        	oURL = new URL(getFullURL(sURL, new HashMap<String, String>()));
+        	Map<String, String> params = new HashMap<String, String>();
+        	params.put("sID_Order", mParam.remove("sID_Order"));
+        	params.put("nID_SubjectMessageType", mParam.remove("nID_SubjectMessageType"));
+        	params.put("sBody", mParam.remove("sBody"));
+        	oURL = new URL(getFullURL(sURL, params));
         }
         InputStream oInputStream;
         BufferedReader oBufferedReader_InputStream;
