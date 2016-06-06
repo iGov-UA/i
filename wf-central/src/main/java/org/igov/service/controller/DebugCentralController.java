@@ -330,44 +330,15 @@ public class DebugCentralController {
         result.put("sUserTaskName", obj.getsUserTaskName());
         result.put("sID_StatusType", obj.getsID_StatusType());
 
-        /*List<HistoricIdentityLink> linkList = oHistoryService.getHistoricIdentityLinksForTask(obj.getnID_Task().toString());
+        try{
+            HistoricTaskInstance historicTaskInstance = oHistoryService.createHistoricTaskInstanceQuery()
+                    .taskId(obj.getnID_Task().toString()).singleResult();
 
-        if(linkList.size() > 0){
-            result.put("sArchiveStatus", "Historic");
-        } else {
-            result.put("sArchiveStatus", "Active");
-        }*/
-
-        List<HistoricTaskInstance> htiList = oHistoryService.createHistoricTaskInstanceQuery().list();
-        result.put("HistoricListSize", htiList.size());
-        if(htiList.size() > 0){
-            List<Object> arr = new ArrayList<>();
-            for(int i = 0; i < htiList.size(); i++){
-                Map<String, Object> el = new HashMap<>();
-                el.put("Id", htiList.get(i).getId());
-                el.put("DeleteReason", htiList.get(i).getDeleteReason());
-                /*if(htiList.get(i).getId().equals(obj.getnID_Task().toString())){
-                    result.put("DeleteReasonStatus", htiList.get(i).getDeleteReason());
-                    break;
-                };*/
-                arr.add(el);
-            }
-            result.put("DeleteReasonStatus", arr);
-        } else {
-            result.put("DeleteReasonStatus", "not found history status");
+            historicTaskInstance.getDeleteReason();
+            result.put("TASK_HisoricTaskInstance", historicTaskInstance.getDeleteReason());
+        }catch (Exception e){
+            result.put("TASK_HisoricTaskInstance", e.getMessage());
         }
-
-        HistoricTaskInstance historicTaskInstance = oHistoryService.createHistoricTaskInstanceQuery()
-                .taskId(obj.getnID_Task().toString()).singleResult();
-
-        historicTaskInstance.getDeleteReason();
-        result.put("TASK_HisoricTaskInstance", historicTaskInstance.getDeleteReason());
-
-
-        //oHistoryService.createHistoricProcessInstanceQuery().processInstanceId("").singleResult().getDeleteReason();
-
-
-
 
         return JSONValue.toJSONString(result);
     }
