@@ -801,9 +801,8 @@ public class SubjectMessageController {
     String getSubjectMessageData(
             @ApiParam(value = "номер-ИД записи с сообщением", required = false) @RequestParam(value = "nID_SubjectMessage", required = true) String sID_SubjectMessage,
             @ApiParam(value = "Номер-ИД субьекта (хозяина заявки сообщения)", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject,
-            @ApiParam(value = "булевский флаг, Включить авторизацию", required = false) @RequestParam(value = "bAuth", required = false, defaultValue = "false") Boolean bAuth) throws CommonServiceException{
-    	
-
+            @ApiParam(value = "булевский флаг, Включить авторизацию", required = false) @RequestParam(value = "bAuth", required = false, defaultValue = "false") Boolean bAuth,
+            HttpServletResponse httpResponse) throws CommonServiceException{
     		
     		//content of the message file
     		String res = null;
@@ -824,7 +823,8 @@ public class SubjectMessageController {
 	    			
 	    			LOG.info("Received {} bytes by key {}", resBytes.length, message.getsID_DataLink());	 
 	    			
-	    			res = new String(resBytes);
+	    			httpResponse.setHeader("Content-Type", "application/html;charset=UTF-8");
+	    			res = new String(resBytes, "UTF-8");
 	    		}
     		}catch(Exception e){
     			if(e instanceof CommonServiceException)

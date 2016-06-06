@@ -29,6 +29,7 @@ import org.igov.io.mail.Mail;
 import org.igov.util.Tool;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -567,8 +568,14 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
         params.put("sContacts", "0");
         params.put("sData", "0");
         params.put("RequestMethod", RequestMethod.GET.name());
-        String key = durableBytesDataStorage.saveData(sBody.getBytes());
-        params.put("sID_DataLink", key);
+        String key;
+		try {
+			key = durableBytesDataStorage.saveData(sBody.getBytes(Charset.forName("UTF-8")));
+			params.put("sID_DataLink", key);
+		} catch (UnsupportedEncodingException e) {
+			LOG.error("Error occured while saving body of messsage to mongo DB {}", e.getMessage());
+		}
+        
         LOG.info("try to save service message with params: (params={})", params);
         String jsonServiceMessage;
 		try {
