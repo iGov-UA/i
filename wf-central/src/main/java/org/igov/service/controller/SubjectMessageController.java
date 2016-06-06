@@ -822,7 +822,7 @@ public class SubjectMessageController {
 	    	        
 	    			byte[] resBytes = durableBytesDataStorage.getData(message.getsID_DataLink());
 	    			
-	    			httpResponse.setHeader("Content-Type", "application/html;charset=UTF-8");
+	    			httpResponse.setHeader("Content-Type", "text/html;charset=UTF-8");
 	    			res = new String(resBytes, Charset.forName("UTF-8"));
 	    			
 	    			LOG.info("Received {} bytes by key {} value {}", resBytes.length, message.getsID_DataLink(), res);	
