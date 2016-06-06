@@ -346,9 +346,9 @@ public class Mail extends Abstract_Mail {
         String sMailNew = sMail;
         try {
             if (sMailNew.contains("<")) {
-                String[] asMail = sMailNew.split("\\<");
+                String[] asMail = sMailNew.split("<");
                 sMailNew = asMail[1];
-                asMail = sMailNew.split("\\>");
+                asMail = sMailNew.split(">");
                 sMailNew = asMail[0];
             }
         } catch (Exception oException) {
