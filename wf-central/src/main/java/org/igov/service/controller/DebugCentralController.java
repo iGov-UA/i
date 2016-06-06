@@ -340,6 +340,22 @@ public class DebugCentralController {
             result.put("TASK_HisoricTaskInstance", e.getMessage());
         }
 
+        try{
+            HistoricTaskInstance historicTaskInstanceQuery = oHistoryService
+                    .createHistoricTaskInstanceQuery().taskId(obj.getnID_Task().toString())
+                    .singleResult();
+            String processInstanceId = historicTaskInstanceQuery
+                    .getProcessInstanceId();
+            Date oProcessInstanceEndDate = oHistoryService.createProcessInstanceHistoryLogQuery(processInstanceId).singleResult().getEndTime();
+            result.put("TASK_HisoricProcessInstance_EndDate", oProcessInstanceEndDate);
+
+            String deleeReason = oHistoryService.createProcessInstanceHistoryLogQuery(processInstanceId).singleResult().getDeleteReason();
+
+            result.put("TASK_HisoricProcessInstance", deleeReason);
+        }catch (Exception e){
+            result.put("TASK_HisoricProcessInstance", e.getMessage());
+        }
+
         return JSONValue.toJSONString(result);
     }
 
