@@ -16,9 +16,18 @@
 <!--</tbody>-->
 <!--</table>-->
 <!--</div>-->
-<div class="col-md-2 col-xs-2">
+<div class="form-horizontal">
+  <div class="form-group">
+    <label class="col-sm-3 control-label" for="searchCtrl">Пошук користувача</label>
+    <div class="col-sm-5">
+      <input id="searchCtrl" class="form-control" type="text" ng-model="search">
+    </div>
+    <div class="col-sm-4"></div>
+  </div>
+</div>
+<div class="col-md-3 col-xs-3">
   <div class="list-group list-group-custom" ng-init="init()">
-    <a href="#" class="list-group-item list-group-item-custom" ng-repeat="user in getAll()" ng-click="markUserToAdd(user)">
+    <a href="#" class="list-group-item list-group-item-custom" ng-repeat="user in getAll() | filter: search" ng-click="markUserToAdd(user)">
       <strong>{{user.FirstName}} {{user.LastName}}</strong> {{user.Email}}
     </a>
   </div>
@@ -32,11 +41,10 @@
   </button>
 </div>
 
-<div class="col-md-2 col-xs-2">
+<div class="col-md-3 col-xs-3">
   <div class="list-group list-group-custom">
     <a href="#" class="list-group-item list-group-item-custom" ng-repeat="user in get()" ng-click="markUserToRemove(user)">
       <strong>{{user.FirstName}} {{user.LastName}}</strong> {{user.Email}}
     </a>
   </div>
 </div>
-

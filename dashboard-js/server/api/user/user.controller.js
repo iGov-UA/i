@@ -107,13 +107,16 @@ module.exports.setUser = function (req, res) {
   var callback = function (error, statusCode, result) {
     if (error) {
       res.send(error);
+    } else {
+      var jsonRes = result ? result : {
+        sLogin: req.query.sLogin,
+        sPassword: req.query.sPassword,
+        sName: req.query.sName,
+        sDescription: req.query.sDescription,
+        sEmail: req.query.sEmail
+      };
+      res.status(statusCode).json(jsonRes);
     }
-    var jsonRes = result ? result : {
-      sLogin: req.query.sLogin,
-      sName: req.query.sName,
-      sEmail: req.query.sEmail
-    };
-    res.status(statusCode).json(jsonRes);
   };
 
   service.setUser({
@@ -127,15 +130,16 @@ module.exports.setUser = function (req, res) {
 };
 
 
-module.exports.removeUser = function (req, res) {
+module.exports.deleteUser = function (req, res) {
   var callback = function (error, statusCode, result) {
     if (error) {
       res.send(error);
+    }else{
+      var jsonRes = result ? result : {
+        sLogin: req.query.sLogin
+      };
+      res.status(statusCode).json(jsonRes);
     }
-    var jsonRes = result ? result : {
-      sLogin: req.query.sLogin
-    };
-    res.status(statusCode).json(jsonRes);
   };
   service.removeUser(
     {sLogin: req.query.sLogin},

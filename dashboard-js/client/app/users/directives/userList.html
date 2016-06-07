@@ -1,16 +1,25 @@
-<button class="btn btn-primary" ng-click="add()">Додати користувача</button>
+<div class="form-horizontal">
+  <div class="form-group">
+    <label class="col-sm-1 control-label" for="searchCtrl">Пошук</label>
+    <div class="col-sm-5">
+      <input id="searchCtrl" class="form-control" type="text" ng-model="search">
+    </div>
+    <div class="col-sm-4"></div>
+    <button class="btn btn-primary pull-right col-sm-2" ng-click="add()">Додати користувача</button>
+  </div>
+</div>
 <table ng-init="init()"  class="table">
   <thead>
   <tr>
-    <th>Ім’я</th>
-    <th>Прізвище</th>
+    <th>Логін</th>
+    <th>Ім'я</th>
     <th>Email</th>
   </tr>
   </thead>
   <tbody>
-  <tr ng-repeat="user in get()">
-    <td>{{user.FirstName}}</td>
-    <td>{{user.LastName}}</td>
+  <tr ng-repeat="user in get() | filter: search">
+    <td>{{user.sLogin}}</td>
+    <td>{{user.FirstName}}  {{user.LastName}}</td>
     <td>{{user.Email}}</td>
     <td class="col-md-4 rulebuttons">
       <div class="btn-group">

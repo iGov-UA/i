@@ -68,7 +68,6 @@ angular.module('dashboardJsApp')
         url: url,
         data: {},
         params: {
-          sID_Group: sID_Group,
           sLogin: sLogin,
           sPassword: sPassword,
           sName: sName,
@@ -197,7 +196,7 @@ angular.module('dashboardJsApp')
         return removeUser('/api/users/removeUserGroup', sID_Group, sLogin, callback);
       },
       deleteUser: function(sLogin, callback){
-        return deleteUser('/api/users/removeUser', sLogin, callback);
+        return deleteUser('/api/users/deleteUser', sLogin, callback);
       }
-    }
+    };
   });

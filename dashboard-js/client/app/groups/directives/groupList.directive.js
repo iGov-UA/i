@@ -66,7 +66,7 @@ angular.module('dashboardJsApp')
               }
             }
             groups.unshift(createdGroup);
-          }, function (err) {});
+          }, function (err) {console.log('Edit Group Error');});
 
           if(editedData.usersToAdd.length){
             for(var i = 0; i<editedData.usersToAdd.length; i++){

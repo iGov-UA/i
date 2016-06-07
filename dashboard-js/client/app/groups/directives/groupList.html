@@ -1,4 +1,13 @@
-<button class="btn btn-primary" ng-click="add()">Додати групу</button>
+<div class="form-horizontal">
+  <div class="form-group">
+    <label class="col-sm-1 control-label" for="searchCtrl">Пошук</label>
+    <div class="col-sm-5">
+      <input id="searchCtrl" class="form-control" type="text" ng-model="search">
+    </div>
+    <div class="col-sm-4"></div>
+    <button class="btn btn-primary pull-right col-sm-2" ng-click="add()">Додати групу</button>
+  </div>
+</div>
 <table ng-init="init()"  class="table">
   <thead>
   <tr>
@@ -7,7 +16,7 @@
   </tr>
   </thead>
   <tbody>
-  <tr ng-repeat="group in get()">
+  <tr ng-repeat="group in get() | filter: search">
     <td>{{group.id}}</td>
     <td>{{group.name}}</td>
     <td class="col-md-4 rulebuttons">
