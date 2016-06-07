@@ -84,23 +84,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
       }
     });
   }
-
-  if ( !$scope.data.formData ) {
-    initializeFormData();
-    $scope.data.formData.params.bReferent = new ParameterFactory;
-    angular.extend($scope.data.formData.params.bReferent, {
-      "id": "bReferent",
-      "name": "Referent",
-      "type": "invisible",
-      "value": false,
-      "readable": true,
-      "writable": true,
-      "required": false,
-      "datePattern":null,
-      "enumValues":[]
-    });
-  }
-
+  
   $scope.bAdmin = AdminService.isAdmin();
   $scope.markers = ValidationService.getValidationMarkers();
   var aID_FieldPhoneUA = $scope.markers.validate.PhoneUA.aField_ID;
@@ -465,23 +449,23 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     });
   }
 
-    $scope.htmldecode = function(encodedhtml){
-    if(encodedhtml){
+  $scope.htmldecode = function (encodedhtml) {
+    if (encodedhtml) {
       var map = {
-        '&amp;'     :   '&',
-        '&gt;'      :   '>',
-        '&lt;'      :   '<',
-        '&quot;'    :   '"',
-        '&#39;'     :   "'"
+        '&amp;': '&',
+        '&gt;': '>',
+        '&lt;': '<',
+        '&quot;': '"',
+        '&#39;': "'"
       };
 
-     var result = angular.copy(encodedhtml);
-     angular.forEach(map, function(value, key){
-      while(result.indexOf(key) > -1)
-        result = result.replace(key, value);
+      var result = angular.copy(encodedhtml);
+      angular.forEach(map, function (value, key) {
+        while (result.indexOf(key) > -1)
+          result = result.replace(key, value);
       });
 
-    return result;
+      return result;
     } else {
       return encodedhtml;
     }
