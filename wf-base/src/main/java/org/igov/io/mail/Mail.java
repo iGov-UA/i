@@ -154,6 +154,8 @@ public class Mail extends Abstract_Mail {
          ){
          LOG_BIG.warn("SKIPED!(getTo={})", getTo());
          }else{*/
+
+        bUniSender = false; // for test, should be deleted
         if (bUniSender) {
             StringBuilder sbBody = new StringBuilder(500);
             sbBody.append("host: ");
@@ -236,15 +238,15 @@ public class Mail extends Abstract_Mail {
             //oMimeMessage.setFrom(new InternetAddress(getFrom(), "iGov", DEFAULT_ENCODING));
             oMimeMessage.setFrom(new InternetAddress(getFrom(), getFrom()));
             //oMimeMessage.addRecipient(Message.RecipientType.CC, new InternetAddress(sTo, sToName, DEFAULT_ENCODING));
-            String receiverName = "receiver";
+            String sReceiverName = "receiver";
             if (asTo.length == 1){
-                receiverName = getToName();
+                sReceiverName = getToName();
             }
             for (String s : asTo) {
                 LOG.info("oMimeMessage.addRecipient (s={})", s);
                 //oMultiPartEmail.addTo(s, "receiver");
                 oMimeMessage.addRecipient(Message.RecipientType.TO,
-                        new InternetAddress(s, receiverName, DEFAULT_ENCODING));
+                        new InternetAddress(s, sReceiverName, DEFAULT_ENCODING));
             }
 
             //oMimeMessage.addRecipient(Message.RecipientType.TO,
