@@ -20,6 +20,8 @@ router.post('/setUserGroup',controller.setUserGroup);
 router.delete('/removeUserGroup',controller.removeUserGroup);
 router.delete('/groups/deleteGroup', controller.deleteGroup);
 router.get('/getUsers', controller.getUsers);
+router.post('/setUser', controller.setUser);
+router.delete('/deleteUser', controller.deleteUser);
 
 
 

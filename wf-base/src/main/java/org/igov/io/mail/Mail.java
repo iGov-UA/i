@@ -191,7 +191,6 @@ public class Mail extends Abstract_Mail {
     }
 
     public void sendOld() throws EmailException {
-        Logger LOG = LoggerFactory.getLogger(SMS.class); //временно для теста
         LOG.info("init");
         try {
             MultiPartEmail oMultiPartEmail = new MultiPartEmail();
@@ -248,7 +247,7 @@ public class Mail extends Abstract_Mail {
             oMimeMessage.setSubject(getHead(), DEFAULT_ENCODING);
 
             _AttachBody(getBody());
-            LOG.info("(getBody()={})", getBody());
+            //LOG.info("(getBody()={})", getBody());
             oMimeMessage.setContent(oMultiparts);
 
             //            oMimeMessage.getRecipients(Message.RecipientType.CC);
