@@ -35,7 +35,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
 
   var currentState = $state.$current;
 
-  $scope.paramsBackup = null
+  $scope.paramsBackup = null;
 
   $scope.oServiceData = oServiceData;
   $scope.account = BankIDAccount; // FIXME потенційний хардкод
@@ -60,7 +60,9 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     return $scope.data.formData.initialize($scope.activitiForm, BankIDAccount, oServiceData);
   };
 
-  if (!allowOrder) {
+
+  if (!$scope.data.id && !allowOrder) {
+    $location.path("/");
     var modalInstance = $modal.open({
       animation: true,
       size: 'md',
@@ -74,31 +76,15 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
       },
       resolve: {
         message: function () {
-          return "Уже достигнуто число одновременно поданных и не закрытых заявок " +
-            "Вами по данной услуге для данного места. Вы можете перейти в закладку \"Статусы\" (например, https://igov.org.ua/order/search) " +
-            "где найдя одну из своих заявок - написать комментарий сотруднику по ней, для ее скорейшей отработке " +
-            "или закрытия.(чтоб разблокировать дельнейшую подачу)";
+          return "Вже досягнуто число одночасно поданих та не закритих заяв " +
+            "Вами по даній послузі для цієї місцевості. Ви можете перейти на вкладку \"Мій журнал\" (наприклад, https://igov.org.ua/order/search) " +
+            "де знайшовши одну зі своїх заяв - написати по ній комментар співробітнику, для її найшвидшого опрацювання " +
+            "або закриття (щоб розблокувати подальше подання).";
         }
       }
     });
   }
-
-  if ( !$scope.data.formData ) {
-    initializeFormData();
-    $scope.data.formData.params.bReferent = new ParameterFactory;
-    angular.extend($scope.data.formData.params.bReferent, {
-      "id": "bReferent",
-      "name": "Referent",
-      "type": "invisible",
-      "value": false,
-      "readable": true,
-      "writable": true,
-      "required": false,
-      "datePattern":null,
-      "enumValues":[]
-    });
-  }
-
+  
   $scope.bAdmin = AdminService.isAdmin();
   $scope.markers = ValidationService.getValidationMarkers();
   var aID_FieldPhoneUA = $scope.markers.validate.PhoneUA.aField_ID;
@@ -328,7 +314,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
             return;
         }
         if(!oReturn.id){
-            ErrorsFactory.logFail({sBody:"У поверненому об'єкти немае номера створеної заявки!",asParam:["soReturn: "+JSON.stringify(oReturn)]});
+            ErrorsFactory.logFail({sBody:"У поверненому об'єкті немає номера створеної заявки!",asParam:["soReturn: "+JSON.stringify(oReturn)]});
             return;
         }
 
@@ -463,23 +449,23 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     });
   }
 
-    $scope.htmldecode = function(encodedhtml){
-    if(encodedhtml){
+  $scope.htmldecode = function (encodedhtml) {
+    if (encodedhtml) {
       var map = {
-        '&amp;'     :   '&',
-        '&gt;'      :   '>',
-        '&lt;'      :   '<',
-        '&quot;'    :   '"',
-        '&#39;'     :   "'"
+        '&amp;': '&',
+        '&gt;': '>',
+        '&lt;': '<',
+        '&quot;': '"',
+        '&#39;': "'"
       };
 
-     var result = angular.copy(encodedhtml);
-     angular.forEach(map, function(value, key){
-      while(result.indexOf(key) > -1)
-        result = result.replace(key, value);
+      var result = angular.copy(encodedhtml);
+      angular.forEach(map, function (value, key) {
+        while (result.indexOf(key) > -1)
+          result = result.replace(key, value);
       });
 
-    return result;
+      return result;
     } else {
       return encodedhtml;
     }
@@ -509,6 +495,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
   };
 
   $scope.fillSelfPrevious = function () {
+
     $http.get('/api/order/getStartFormByTask', {
       params: {
         nID_Service: oService.nID,
@@ -574,9 +561,6 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
       }
   };
 
-  if($scope.selfOrdersCount.nOpened > 0){
-    $scope.fillSelfPrevious();
-  }
 
   // блокировка кнопок выбора файлов на время выполнения процесса загрузки ранее выбранного файла
   $rootScope.isFileProcessUploading = {

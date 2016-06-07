@@ -56,6 +56,7 @@ describe('ValidationService Tests', function() {
       ,'CodeKVED': 'CodeKVED'
       ,'CodeEDRPOU': 'CodeEDRPOU'
       ,'CodeMFO': 'CodeMFO'
+      ,'FieldNotEmptyAndNonZero': 'FieldNotEmptyAndNonZero'
     };
 
     function doValidate(validatorName, value, toBeOrNotToBe, options) {

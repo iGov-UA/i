@@ -11,6 +11,7 @@
       .state('tools.groups', {
         url: '/groups',
         templateUrl: 'app/groups/groups.html',
+        controller: 'GroupsCtrl',
         access: {
           requiresLogin: true
         }

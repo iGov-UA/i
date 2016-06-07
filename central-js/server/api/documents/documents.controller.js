@@ -1,5 +1,5 @@
 var request = require('request');
-var accountService = require('../../auth/bankid/bankid.service.js');
+var bankIDService = require('../../auth/bankid/bankid.service.js');
 var proxy = require('../../components/proxy');
 var _ = require('lodash');
 var FormData = require('form-data');
@@ -155,10 +155,6 @@ module.exports.initialUpload = function (req, res) {
 
   var options = getBankIDOptions(accessToken);
 
-  var optionsForScans = _.merge(options, {
-    path: '/ResourceService'
-  });
-
   var docTypesToBankIDDocTypes = {
     2: 'passport',
     3: 'zpassport'
@@ -186,35 +182,37 @@ module.exports.initialUpload = function (req, res) {
   });
 
   var uploadScan = function (documentScan, optionsForUploadContent, callback) {
-    var scanContentRequest = accountService.prepareScanContentRequest(
-      documentScan.link, accessToken
-    );
+    bankIDService.scanContentRequest(documentScan.scan.type, documentScan.scan.link, accessToken, function (error, buffer) {
+      if(error){
+        callback(error);
+      } else {
+        var form = new FormData();
+        form.append('oFile', buffer);
 
-    var form = new FormData();
-    form.append('oFile', scanContentRequest);
+        var requestOptionsForUploadContent =
+          _.merge(optionsForUploadContent.option, {
+            headers: form.getHeaders(),
+            'qs': {
+              'sFileExtension': documentScan.extension
+            }
+          });
+        var decoder = new StringDecoder('utf8');
+        var result = {};
 
-    var requestOptionsForUploadContent =
-      _.merge(optionsForUploadContent.option, {
-        headers: form.getHeaders(),
-        'qs': {
-          'sFileExtension': documentScan.extension
-        }
-      });
-
-    var decoder = new StringDecoder('utf8');
-    var result = {};
-    form.pipe(request.post(requestOptionsForUploadContent))
-      .on('response', function (response) {
-        result.statusCode = response.statusCode;
-      }).on('data', function (chunk) {
-        if (result.body) {
-          result.body += decoder.write(chunk);
-        } else {
-          result.body = decoder.write(chunk);
-        }
-      }).on('end', function () {
-        callback(result);
-      });
+        form.pipe(request.post(requestOptionsForUploadContent))
+          .on('response', function (response) {
+            result.statusCode = response.statusCode;
+          }).on('data', function (chunk) {
+          if (result.body) {
+            result.body += decoder.write(chunk);
+          } else {
+            result.body = decoder.write(chunk);
+          }
+        }).on('end', function () {
+          callback(result);
+        });
+      }
+    });
   };
 
   var doAsyncScansUpload = function (scans) {
@@ -253,7 +251,7 @@ module.exports.initialUpload = function (req, res) {
     }
   };
 
-  accountService.scansRequest(accessToken, scansCallback);
+  bankIDService.scansRequest(accessToken, scansCallback);
 };
 
 function buildGetRequest(req, apiURL, params) {

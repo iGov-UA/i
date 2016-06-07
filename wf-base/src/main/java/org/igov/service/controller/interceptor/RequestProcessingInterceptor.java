@@ -12,13 +12,14 @@ import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.task.Task;
-import org.igov.service.business.action.task.bp.handler.BpServiceHandler;
-import org.igov.service.business.escalation.EscalationHistoryService;
-import org.igov.service.business.action.event.HistoryEventService;
 import org.igov.io.GeneralConfig;
 import org.igov.io.mail.NotificationPatterns;
 import org.igov.io.web.HttpRequester;
+import org.igov.model.action.event.HistoryEvent_Service_StatusType;
 import org.igov.model.escalation.EscalationHistory;
+import org.igov.service.business.action.event.HistoryEventService;
+import org.igov.service.business.action.task.bp.handler.BpServiceHandler;
+import org.igov.service.business.escalation.EscalationHistoryService;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
@@ -37,8 +38,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
-
-import org.igov.model.action.event.HistoryEvent_Service_StatusType;
 
 import static org.igov.util.Tool.sCut;
 
@@ -86,9 +85,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         long startTime = System.currentTimeMillis();
         LOG.info("(getMethod()={}, getRequestURL()={})", oRequest.getMethod().trim(), oRequest.getRequestURL().toString());
         LOG_BIG.info("(getMethod()={}, getRequestURL()={})", oRequest.getMethod().trim(), oRequest.getRequestURL().toString());
-                //+ ",nMS_Start=" + System.currentTimeMillis());
-        //LOG.debug("getRequestURL()=" + oRequest.getRequestURL().toString());
-        //oLogBig_Controller.info("getRequestURL()=" + oRequest.getRequestURL().toString());
         oRequest.setAttribute("startTime", startTime);
         protocolize(oRequest, response, false);
         return true;
@@ -105,20 +101,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             HttpServletResponse oResponse, Object handler, Exception ex)
             throws Exception {
         bFinish = true;
-        /*
-        LOG.info("(getMethod()={}, getRequestURL()={}, nElapsedMS={})", oRequest.getMethod().trim(), oRequest.getRequestURL().toString()
-                , (System.currentTimeMillis() - (Long) oRequest.getAttribute("startTime")));
-        LOG_BIG.info("(getMethod()={}, getRequestURL()={}, nElapsedMS={})", oRequest.getMethod().trim(), oRequest.getRequestURL().toString()
-                , (System.currentTimeMillis() - (Long) oRequest.getAttribute("startTime")));
-        */
         LOG.info("(nElapsedMS={})", System.currentTimeMillis() - (Long) oRequest.getAttribute("startTime"));
         LOG_BIG.info("(nElapsedMS={})", System.currentTimeMillis() - (Long) oRequest.getAttribute("startTime"));
-
-        //LOG.debug("(getRequestURL()={}, nElapsedMS={})", oRequest.getRequestURL().toString()
-        //        , System.currentTimeMillis() - (Long) oRequest.getAttribute("startTime"));
-        //oLogBig_Controller.info("getRequestURL()=" + oRequest.getRequestURL().toString()
-        //        + ",nElapsedMS=" + (System.currentTimeMillis() - (Long) oRequest.getAttribute("startTime")));
-
         oResponse = ((MultiReaderHttpServletResponse) oRequest.getAttribute("responseMultiRead") != null
                 ? (MultiReaderHttpServletResponse) oRequest.getAttribute("responseMultiRead") : oResponse);
         protocolize(oRequest, oResponse, true);
@@ -135,10 +119,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             String sKey = (String) paramsName.nextElement();
             mRequestParam.put(sKey, oRequest.getParameter(sKey));
         }
-        if (!bFinish) {
-            LOG.info("(mRequestParam={})", mRequestParam);
-        }
-        //oLogBig_Interceptor.info("mRequestParam: " + mRequestParam);
 
         StringBuilder osRequestBody = new StringBuilder();
         BufferedReader oReader = oRequest.getReader();
@@ -158,13 +138,16 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             LOG.info("URL is like runtime/tasks/{taskId}, getting task id from url, task id is " + snTaskId);
         }
 
+        if (snTaskId != null && mRequestParam.get("taskId") == null) {
+            mRequestParam.put("taskId", snTaskId);
+        }
+
         String sRequestBody = osRequestBody.toString();
         if (!bFinish) {
+            LOG.info("(mRequestParam={})", mRequestParam);
             LOG.info("(sRequestBody={})", sCut(nLen, sRequestBody));
-            if (
-                    sURL.endsWith("/service/document/setDocumentFile")
-                            || sURL.contains("/service/object/file/")
-                    ) {
+            if (sURL.endsWith("/service/document/setDocumentFile")
+                    || sURL.contains("/service/object/file/")) {
             } else {
                 LOG_BIG.debug("(sRequestBody={})", sRequestBody);
             }
@@ -177,36 +160,33 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             LOG.info("(sResponseBody={})", sCut(nLen, sResponseBody));
             //LOG.debug("(sResponseBody: {})", sResponseBody);
             //https://region.igov.org.ua/wf/service/form/form-data
-            if (
-                    sURL.endsWith("/service/action/item/getService")
-                            || sURL.endsWith("/service/action/item/getServicesTree")
-                            || (sURL.endsWith("/service/form/form-data") && "GET"
-                            .equalsIgnoreCase(oRequest.getMethod().trim()))
-                            || sURL.endsWith("/service/repository/process-definitions")
-                            || sURL.endsWith("/service/action/task/getStartFormData")
-                            || sURL.endsWith("/service/action/task/getOrderMessages_Local")
-                            || sURL.endsWith("/service/action/flow/getFlowSlots_ServiceData")
-                            //|| sURL.endsWith("/runtime/tasks/9514334/attachments")
-                            //|| sURL.contains("/runtime/tasks/")
-                            || sURL.contains("/service/runtime/tasks")
-                            || sURL.endsWith("/service/history/historic-task-instances")
-                            || sURL.endsWith("/service/action/task/getLoginBPs")
-                            || sURL.endsWith("/service/subject/message/getMessages")
-                            || sURL.endsWith("/service/subject/message/getServiceMessages")
-                            || sURL.endsWith("/service/object/place/getPlacesTree")
-                            || sURL.endsWith("/service/action/event/getLastTaskHistory")
-                            || sURL.endsWith("/service/action/event/getLastTaskHistory")
-                            || sURL.endsWith("/service/action/event/getHistoryEventsService")
-                            || sURL.endsWith("/service/action/event/getHistoryEvents")
-                            || sURL.endsWith("/service/document/getDocumentContent")
-                            || sURL.endsWith("/service/document/getDocumentFile")
-                            || sURL.endsWith("/service/document/getDocumentAbstract")
-                            || sURL.endsWith("/service/document/getDocuments")
-                            || sURL.endsWith("/service/document/setDocumentFile")
-                            || sURL.contains("/service/object/file/")
-                            || sURL.contains("/service/document/getDocumentAbstract")
-
-                    ) {
+            if (sURL.endsWith("/service/action/item/getService")
+                    || sURL.endsWith("/service/action/item/getServicesTree")
+                    || (sURL.endsWith("/service/form/form-data") && "GET"
+                    .equalsIgnoreCase(oRequest.getMethod().trim()))
+                    || sURL.endsWith("/service/repository/process-definitions")
+                    || sURL.endsWith("/service/action/task/getStartFormData")
+                    || sURL.endsWith("/service/action/task/getOrderMessages_Local")
+                    || sURL.endsWith("/service/action/flow/getFlowSlots_ServiceData")
+                    //|| sURL.endsWith("/runtime/tasks/9514334/attachments")
+                    //|| sURL.contains("/runtime/tasks/")
+                    || sURL.contains("/service/runtime/tasks")
+                    || sURL.endsWith("/service/history/historic-task-instances")
+                    || sURL.endsWith("/service/action/task/getLoginBPs")
+                    || sURL.endsWith("/service/subject/message/getMessages")
+                    || sURL.endsWith("/service/subject/message/getServiceMessages")
+                    || sURL.endsWith("/service/object/place/getPlacesTree")
+                    || sURL.endsWith("/service/action/event/getLastTaskHistory")
+                    || sURL.endsWith("/service/action/event/getLastTaskHistory")
+                    || sURL.endsWith("/service/action/event/getHistoryEventsService")
+                    || sURL.endsWith("/service/action/event/getHistoryEvents")
+                    || sURL.endsWith("/service/document/getDocumentContent")
+                    || sURL.endsWith("/service/document/getDocumentFile")
+                    || sURL.endsWith("/service/document/getDocumentAbstract")
+                    || sURL.endsWith("/service/document/getDocuments")
+                    || sURL.endsWith("/service/document/setDocumentFile")
+                    || sURL.contains("/service/object/file/")
+                    || sURL.contains("/service/document/getDocumentAbstract")) {
             } else {
                 LOG_BIG.debug("(sResponseBody={})", sResponseBody);
             }
@@ -214,7 +194,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
         //LOG.debug("sResponseBody: " + (sResponseBody != null ? sResponseBody : "null"));
         //oLogBig_Controller.info("sResponseBody: " + (sResponseBody != null ? sResponseBody : "null"));
-
         try {
             if (!bSaveHistory || !(oResponse.getStatus() >= HttpStatus.OK.value()
                     && oResponse.getStatus() < HttpStatus.BAD_REQUEST.value())) {
@@ -294,8 +273,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             mParam.put("nID_ServiceData", nID_ServiceData + "");
         }
 
-        HistoricProcessInstance oHistoricProcessInstance =
-                historyService.createHistoricProcessInstanceQuery().processInstanceId(snID_Process).singleResult();
+        HistoricProcessInstance oHistoricProcessInstance
+                = historyService.createHistoricProcessInstanceQuery().processInstanceId(snID_Process).singleResult();
         ProcessDefinition oProcessDefinition = repositoryService.createProcessDefinitionQuery()
                 .processDefinitionId(oHistoricProcessInstance.getProcessDefinitionId()).singleResult();
         String sProcessName = oProcessDefinition.getName() != null ? oProcessDefinition.getName() : "";
@@ -308,9 +287,12 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
         String sMailTo = JsonRequestDataResolver.getEmail(omRequestBody);
         String sPhone = String.valueOf(JsonRequestDataResolver.getPhone(omRequestBody));
+        String bankIdFirstName = JsonRequestDataResolver.getBankIdFirstName(omRequestBody);
+        String bankIdLastName = JsonRequestDataResolver.getBankIdLastName(omRequestBody);
+
         if (sMailTo != null) {
             LOG.info("Send notification mail... (sMailTo={})", sMailTo);
-            oNotificationPatterns.sendTaskCreatedInfoEmail(sMailTo, sID_Order);
+            oNotificationPatterns.sendTaskCreatedInfoEmail(sMailTo, sID_Order, bankIdFirstName);
         }
 
         if (sMailTo != null || sPhone != null) {
@@ -348,7 +330,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             snID_Task = snClosedTaskId.trim();
             LOG.info("Task id from requestbody is null, so using task id from url - " + snID_Task);
         }
-        LOG.info("Task id is - "+snID_Task);
+        LOG.info("Task id is - " + snID_Task);
         if (snID_Task != null) {
             HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery()
                     .taskId(snID_Task).singleResult();
@@ -387,9 +369,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                     if (sProcessName.indexOf(BpServiceHandler.PROCESS_ESCALATION) == 0) {
                         //issue 981 -- save history
                         EscalationHistory escalationHistory = escalationHistoryService.updateStatus(nID_Process,
-                                bProcessClosed ?
-                                        EscalationHistoryService.STATUS_CLOSED :
-                                        EscalationHistoryService.STATUS_IN_WORK);
+                                bProcessClosed
+                                        ? EscalationHistoryService.STATUS_CLOSED
+                                        : EscalationHistoryService.STATUS_IN_WORK);
                         //                LOG.info("update escalation history: {}", escalationHistory);
                         //issue 1038 -- save message
                         //LOG.info("try to save service message for escalation process with (snID_Process={})", snID_Process);
@@ -403,9 +385,11 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                     LOG.error("Can't save service message for escalation: {}", e.getMessage());
                     LOG.trace("FAIL:", e);
                 }
-                historyEventService
-                        .updateHistoryEvent(sID_Order, sUserTaskName, false, HistoryEvent_Service_StatusType.CLOSED,
-                                mParam);//sID_Process
+                if (bProcessClosed){
+	                historyEventService
+	                        .updateHistoryEvent(sID_Order, sUserTaskName, false, HistoryEvent_Service_StatusType.CLOSED,
+	                                mParam);//sID_Process
+                }
             }
         }
         LOG.info("Method saveClosedTaskInfo finished");
@@ -429,11 +413,11 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
         LOG.info("(sID_Order={})", sID_Order);
 
         String sSubjectInfo = mRequestParam.get("sSubjectInfo");
-        if(sSubjectInfo != null){
-        mParam.put("sSubjectInfo", sSubjectInfo);
+        if (sSubjectInfo != null) {
+            mParam.put("sSubjectInfo", sSubjectInfo);
         }
-        if(mRequestParam.get("nID_Subject") != null){
-            String nID_Subject =  String.valueOf(mRequestParam.get("nID_Subject"));
+        if (mRequestParam.get("nID_Subject") != null) {
+            String nID_Subject = String.valueOf(mRequestParam.get("nID_Subject"));
             mParam.put("nID_Subject", nID_Subject);
         }
         //historyEventService.updateHistoryEvent(sID_Order, sUserTaskName, false, null);
@@ -465,8 +449,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
             long nMinutesDurationProcess = 0;
             //LOG.info(String.format("Found completed process with sID_Process=%s ", sID_Process));
             if (oHistoricProcessInstance != null) {
-                nMinutesDurationProcess =
-                        nMinutesDurationProcess + oHistoricProcessInstance.getDurationInMillis() / (1000 * 60);
+                nMinutesDurationProcess
+                        = nMinutesDurationProcess + oHistoricProcessInstance.getDurationInMillis() / (1000 * 60);
                 sReturn = Long.toString(nMinutesDurationProcess);
             }
             //LOG.info(String.format("Calculated time of execution of process sID_Process=%s and nMinutesDurationProcess=%s", sID_Process, nMinutesDurationProcess));
