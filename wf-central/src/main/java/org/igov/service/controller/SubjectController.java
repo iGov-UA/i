@@ -507,7 +507,7 @@ public class SubjectController {
     public @ResponseBody
     ResponseEntity getService(@ApiParam(value = "nID сервера", required = true) @RequestParam(value = "nID") Integer nID) throws RecordNotFoundException {
         nID = generalConfig.getServerId(nID);
-        Optional<Server> serverOpt = serverDao.findById(Long.valueOf(nID+""));
+        Optional<Server> serverOpt = serverDao.findById(Long.valueOf(nID));
         if (!serverOpt.isPresent()) {
             throw new RecordNotFoundException();
         }
