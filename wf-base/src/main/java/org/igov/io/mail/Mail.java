@@ -400,7 +400,7 @@ public class Mail extends Abstract_Mail {
                     .setSenderEmail(getFrom())
                     .setSubject(getHead())
                     .setBody(sBody)
-                    .setListId(nID_Sender);
+                    .setListId(String.valueOf(nID_Sender));
 
             try {
                 int nAttachments = oMultiparts.getCount();
