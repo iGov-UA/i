@@ -292,7 +292,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
 
         if (sMailTo != null) {
             LOG.info("Send notification mail... (sMailTo={})", sMailTo);
-            oNotificationPatterns.sendTaskCreatedInfoEmail(sMailTo, sID_Order, bankIdFirstName, bankIdLastName);
+            oNotificationPatterns.sendTaskCreatedInfoEmail(sMailTo, sID_Order, bankIdFirstName);
         }
 
         if (sMailTo != null || sPhone != null) {
@@ -385,9 +385,11 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                     LOG.error("Can't save service message for escalation: {}", e.getMessage());
                     LOG.trace("FAIL:", e);
                 }
-                historyEventService
-                        .updateHistoryEvent(sID_Order, sUserTaskName, false, HistoryEvent_Service_StatusType.CLOSED,
-                                mParam);//sID_Process
+                if (bProcessClosed){
+	                historyEventService
+	                        .updateHistoryEvent(sID_Order, sUserTaskName, false, HistoryEvent_Service_StatusType.CLOSED,
+	                                mParam);//sID_Process
+                }
             }
         }
         LOG.info("Method saveClosedTaskInfo finished");

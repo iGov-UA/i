@@ -29,6 +29,7 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Properties;
+import org.igov.io.sms.SMS;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -154,7 +155,6 @@ public class Mail extends Abstract_Mail {
          ){
          LOG_BIG.warn("SKIPED!(getTo={})", getTo());
          }else{*/
-
         if (bUniSender) {
             StringBuilder sbBody = new StringBuilder(500);
             sbBody.append("host: ");
@@ -191,30 +191,26 @@ public class Mail extends Abstract_Mail {
     }
 
     public void sendOld() throws EmailException {
-
+        Logger LOG = LoggerFactory.getLogger(SMS.class); //временно для теста
         LOG.info("init");
         try {
             MultiPartEmail oMultiPartEmail = new MultiPartEmail();
             LOG.info("(getHost()={})", getHost());
             oMultiPartEmail.setHostName(getHost());
-
-//            String[] asTo = {sMailOnly(getTo())};
             String[] asTo = getTo().split("\\,");//sTo
-            if (getTo().contains("\\,")) {
-                asTo = getTo().split("\\,");//sTo
-                for (String s : asTo) {
-                    LOG.info("oMultiPartEmail.addTo (s={})", s);
-                    oMultiPartEmail.addTo(s, "receiver");
-                }
+            for (String s : asTo) {
+                LOG.info("oMultiPartEmail.addTo (s={})", s);
+                oMultiPartEmail.addTo(s, "receiver");
             }
             //oMultiPartEmail.addTo(sTo, "receiver");
             //oMultiPartEmail.addTo(getTo(), "receiver");
             //log.info("getTo()=" + getTo());
 //            _From("noreply@mail.igov.org.ua");
+            LOG.info("(getFrom()={})", getFrom());
             LOG_BIG.debug("(getFrom()={})", getFrom());
             oMultiPartEmail.setFrom(getFrom(), getFrom());//"iGov"
             oMultiPartEmail.setSubject(getHead());
-
+            LOG.info("getHead()={}", getHead());
             String sLogin = getAuthUser();
             if (sLogin != null && !"".equals(sLogin.trim())) {
                 oMultiPartEmail.setAuthentication(sLogin, getAuthPassword());
@@ -238,10 +234,7 @@ public class Mail extends Abstract_Mail {
             //oMimeMessage.setFrom(new InternetAddress(getFrom(), "iGov", DEFAULT_ENCODING));
             oMimeMessage.setFrom(new InternetAddress(getFrom(), getFrom()));
             //oMimeMessage.addRecipient(Message.RecipientType.CC, new InternetAddress(sTo, sToName, DEFAULT_ENCODING));
-//            String sReceiverName = "receiver";
-//            if (asTo.length == 1){
-//                sReceiverName = getToName();
-//            }
+
             for (String s : asTo) {
                 LOG.info("oMimeMessage.addRecipient (s={})", s);
                 //oMultiPartEmail.addTo(s, "receiver");
@@ -255,13 +248,13 @@ public class Mail extends Abstract_Mail {
             oMimeMessage.setSubject(getHead(), DEFAULT_ENCODING);
 
             _AttachBody(getBody());
-
+            LOG.info("(getBody()={})", getBody());
             oMimeMessage.setContent(oMultiparts);
 
             //            oMimeMessage.getRecipients(Message.RecipientType.CC);
             //methodCallRunner.registrateMethod(Transport.class.getName(), "send", new Object[]{oMimeMessage});
             Transport.send(oMimeMessage);
-
+            LOG.info("Send " + getTo() + "!!!!!!!!!!!!!!!!!!!!!!!!");
         } catch (Exception oException) {
             LOG.error("FAIL: {} (getTo()={})", oException.getMessage(), getTo());
             LOG.trace("FAIL:", oException);
