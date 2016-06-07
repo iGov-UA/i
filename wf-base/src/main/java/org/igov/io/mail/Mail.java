@@ -154,6 +154,7 @@ public class Mail extends Abstract_Mail {
          ){
          LOG_BIG.warn("SKIPED!(getTo={})", getTo());
          }else{*/
+
         if (bUniSender) {
             StringBuilder sbBody = new StringBuilder(500);
             sbBody.append("host: ");
@@ -197,7 +198,8 @@ public class Mail extends Abstract_Mail {
             LOG.info("(getHost()={})", getHost());
             oMultiPartEmail.setHostName(getHost());
 
-            String[] asTo = {sMailOnly(getTo())};
+//            String[] asTo = {sMailOnly(getTo())};
+            String[] asTo = getTo().split("\\,");//sTo
             if (getTo().contains("\\,")) {
                 asTo = getTo().split("\\,");//sTo
                 for (String s : asTo) {
@@ -236,15 +238,15 @@ public class Mail extends Abstract_Mail {
             //oMimeMessage.setFrom(new InternetAddress(getFrom(), "iGov", DEFAULT_ENCODING));
             oMimeMessage.setFrom(new InternetAddress(getFrom(), getFrom()));
             //oMimeMessage.addRecipient(Message.RecipientType.CC, new InternetAddress(sTo, sToName, DEFAULT_ENCODING));
-            String receiverName = "receiver";
-            if (asTo.length == 1){
-                receiverName = getToName();
-            }
+//            String sReceiverName = "receiver";
+//            if (asTo.length == 1){
+//                sReceiverName = getToName();
+//            }
             for (String s : asTo) {
                 LOG.info("oMimeMessage.addRecipient (s={})", s);
                 //oMultiPartEmail.addTo(s, "receiver");
                 oMimeMessage.addRecipient(Message.RecipientType.TO,
-                        new InternetAddress(s, receiverName, DEFAULT_ENCODING));
+                        new InternetAddress(s, "recipient", DEFAULT_ENCODING));
             }
 
             //oMimeMessage.addRecipient(Message.RecipientType.TO,

@@ -1,8 +1,9 @@
 var url = require('url')
+  , StringDecoder = require('string_decoder').StringDecoder
   , request = require('request')
   , FormData = require('form-data')
   , config = require('../../config/environment')
-  //, config = require('../../config')
+//, config = require('../../config')
   , bankIDService = require('../../auth/bankid/bankid.service.js')
   , _ = require('lodash')
   , StringDecoder = require('string_decoder').StringDecoder
@@ -31,7 +32,7 @@ module.exports.submit = function (req, res) {
 
   var properties = [];
   for (var id in formData.params) {
-    if(formData.params.hasOwnProperty(id)){
+    if (formData.params.hasOwnProperty(id)) {
       var value = formData.params[id];
       if (id === 'nID_Subject') {
         value = nID_Subject;
@@ -85,14 +86,12 @@ module.exports.scanUpload = function (req, res) {
 
   var uploadResults = [];
   var uploadScan = function (documentScan, callback) {
-    var scanContentRequestOptions = bankIDService.getScanContentRequestOptions(documentScan.scan.link, accessToken);
-
-    console.log('----- scan options ' + JSON.stringify(scanContentRequestOptions));
-    request.get(scanContentRequestOptions, function(error, response, body){
-      if(!error && response.headers['content-type'].indexOf('application/octet-stream') > -1){
-        var scanContentRequest = bankIDService.getScanContentRequest(documentScan.scan.link, accessToken);
+    bankIDService.scanContentRequest(documentScan.scan.type, documentScan.scan.link, accessToken, function (error, buffer) {
+      if (error) {
+        callback(error);
+      } else {
         var form = new FormData();
-        form.append('file', scanContentRequest, {
+        form.append('file', buffer, {
           filename: documentScan.scan.type + '.' + documentScan.scan.extension
         });
 
@@ -103,18 +102,13 @@ module.exports.scanUpload = function (req, res) {
         };
 
         pipeFormDataToRequest(form, requestOptionsForUploadContent, function (result) {
+          console.log('[scanUpload]:scan redis id ' + result.data);
           uploadResults.push({
             fileID: result.data,
             scanField: documentScan
           });
           callback();
         });
-      } else if (!error &&
-        (response.headers['content-type'].indexOf('application/json') > -1
-        || response.headers['content-type'].indexOf('application/xml') > -1)){
-        callback(errors.createExternalServiceError('Can\'t get scan upload of ' + documentScan.scan.type, body));
-      } else if (error){
-        callback(errors.createExternalServiceError('Can\'t get scan upload of ' + documentScan.scan.type, error));
       }
     });
   };
@@ -122,7 +116,7 @@ module.exports.scanUpload = function (req, res) {
   async.forEach(documentScans, function (documentScan, callback) {
     uploadScan(documentScan, callback);
   }, function (error) {
-    if(error){
+    if (error) {
       res.status(500).send(error);
     } else {
       res.send(uploadResults);
@@ -288,7 +282,7 @@ module.exports.signFormCallback = function (req, res) {
   var oServiceDataNID = req.session.oServiceDataNID;
   var codeValue = req.query.code;
 
-  if(!codeValue){
+  if (!codeValue) {
     codeValue = req.query['amp;code'];
   }
 

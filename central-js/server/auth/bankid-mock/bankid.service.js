@@ -120,7 +120,7 @@ module.exports.scansRequest = function (accessToken, callback) {
   }, bankidUtil.decryptCallback(callback));
 };
 
-module.exports.prepareScanContentRequest = function (documentScanLink, accessToken) {
+module.exports.getScanContentRequest = function (documentScanLink, accessToken) {
   var o = {
     'url': documentScanLink,
     'headers': {
@@ -247,6 +247,6 @@ module.exports.signHtmlForm = function (accessToken, acceptKeyUrl, formToUpload,
  * @param codeValue
  */
 module.exports.prepareSignedContentRequest = function (accessToken, codeValue) {
-  return module.exports.prepareScanContentRequest(bankidUtil.getClientPdfClaim(codeValue), accessToken);
+  return module.exports.getScanContentRequest(bankidUtil.getClientPdfClaim(codeValue), accessToken);
 };
 

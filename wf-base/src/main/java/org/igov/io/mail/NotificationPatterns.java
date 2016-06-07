@@ -83,8 +83,9 @@ public class NotificationPatterns {
 
             Mail oMail = context.getBean(Mail.class);
 
-            oMail._To(sMailTo)._Head(sHead)._Body(sBody)._ToName(makeStringAsName(bankIdFirstName),
-                                                                 makeStringAsName(bankIdLastName));
+            oMail._To(sMailTo)._Head(sHead)._Body(sBody);
+//                                                        ._ToName(makeStringAsName(bankIdFirstName),
+//                                                                 makeStringAsName(bankIdLastName));
 
             oMail.send();
             LOG.info("Send email with sID_Order={} to the sMailTo={}", sID_Order, sMailTo);
@@ -177,7 +178,8 @@ public class NotificationPatterns {
 
             String sBody = osBody.toString();
             Mail oMail = context.getBean(Mail.class);
-            oMail._To(sMailTo)._Head(sHead)._Body(sBody)._ToName(sClientFIO);
+            oMail._To(sMailTo)._Head(sHead)._Body(sBody);
+//                    ._ToName(sClientFIO)
             oMail.send();
         } catch (Exception oException) {
             LOG.warn("FAIL: {} (sMailTo={},sToken={},nID_Process={},saField={})", oException.getMessage(), sMailTo,
