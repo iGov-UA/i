@@ -75,11 +75,11 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
     }
 
     angular.forEach(markers.validate, function (marker, markerName) {
+      //debugger;
 
       angular.forEach(form, function (formField) {
 
         self.setValidatorByMarker(marker, markerName, formField, immediateValidation);
-
       });
     });
   };
@@ -90,11 +90,9 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
     if (markerName.indexOf('FileExtensions_') == 0) {
       markerName = 'FileExtensions';
     }
-    /*
     if (markerName.indexOf('FieldNotEmptyAndNonZero_') == 0) {
       markerName = 'FieldNotEmptyAndNonZero';
     }
-    */
 
     var keyByMarkerName = self.validatorNameByMarkerName[markerName];
     var fieldNameIsListedInMarker = formField && formField.$name && _.indexOf(marker.aField_ID, formField.$name) !== -1;
