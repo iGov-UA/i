@@ -47,7 +47,7 @@ exports.setUser = function (params, callback) {
     json: true
   };
 
-  activiti.post(options, callback);
+  activiti.get(options, callback);
 };
 
 exports.removeUser = function (params, callback) {

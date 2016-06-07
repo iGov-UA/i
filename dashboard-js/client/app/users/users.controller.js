@@ -4,6 +4,10 @@
 angular.module('dashboardJsApp')
   .controller('UsersCtrl', function($scope, user){
     $scope.list = {
-      getFunc: user.getUsers
-    }
+      getFunc: user.getUsers,
+      setFunc: user.setUser,
+      deleteFunc: user.deleteUser,
+      addFunc: user.addUser,
+      removeFunc: user.removeUser
+    };
   });
