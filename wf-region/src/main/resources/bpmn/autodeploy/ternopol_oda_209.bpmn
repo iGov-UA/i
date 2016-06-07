@@ -141,7 +141,7 @@ ${sNameOrgan},&lt;br&gt;
     <sequenceFlow id="flow59" name="${asWorkerDecision=='accept'} " sourceRef="exclusivegateway2" targetRef="servicetask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asWorkerDecision=='accept'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask5" name="Звернення передане на розгляд" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask5" name="Звернення передане на розгляд" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
