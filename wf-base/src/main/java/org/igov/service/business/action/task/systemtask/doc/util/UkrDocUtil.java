@@ -40,9 +40,12 @@ public class UkrDocUtil {
                 + "<session><user auth='EXCL' login='" + login + "' password='" + password + "'/></session>";
 
         LOG.info("Sending request to SID generator. URL:{}, request:{}", uriSid, xml);
-
+        List<MediaType> mediaTypes = new ArrayList<>();
+        mediaTypes.add(MediaType.TEXT_XML);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setAccept(mediaTypes);
         String xmlResponse = new RestRequest().post(uriSid, xml, MediaType.TEXT_XML,
-                StandardCharsets.UTF_8, String.class, null);
+                StandardCharsets.UTF_8, String.class, httpHeaders);
 
         LOG.info("Response from SID generator: {}", xmlResponse);
 
