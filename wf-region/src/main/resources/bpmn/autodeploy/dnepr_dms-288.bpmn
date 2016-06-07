@@ -80,7 +80,7 @@ execution.setVariable('sNotification_day', timer)</script>
     </intermediateCatchEvent>
     <sequenceFlow id="flow31" sourceRef="timerintermediatecatchevent1" targetRef="exclusivegateway3"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow34" name="${sCancelInfo != 'Заявка актуальна'}" sourceRef="exclusivegateway3" targetRef="servicetask4">
+    <sequenceFlow id="flow34" name="${sCancelInfo != 'Заявка актуальна'}" sourceRef="exclusivegateway3" targetRef="endevent4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sCancelInfo != 'Заявка актуальна'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow33" name="${sCancelInfo == 'Заявка актуальна'}" sourceRef="exclusivegateway3" targetRef="servicetask6">
@@ -380,32 +380,7 @@ ${sNameOrgan},&lt;br&gt;
     <sequenceFlow id="flow6" sourceRef="exclusivegateway1" targetRef="endevent2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${finish=='attr2_missed'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask4" name="не прийшов вчасно" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
-      <extensionElements>
-        <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
-        </activiti:field>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Отримання паспорта громадянина України для виїзду за кордон для дитини]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-								  &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-                              		Вaша заявка була скасована.
-                              		&lt;/p&gt;
-                              		 [pattern/mail/_common_signature_start.html]
-									${sNameOrgan},&lt;br&gt;
-									[pattern/mail/_common_signature_end.html]   
-									[pattern/mail/_common_footer.html]</activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
     <endEvent id="endevent4" name="End"></endEvent>
-    <sequenceFlow id="flow37" sourceRef="servicetask4" targetRef="endevent4"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_dms-288">
     <bpmndi:BPMNPlane bpmnElement="dnepr_dms-288" id="BPMNPlane_dnepr_dms-288">
@@ -460,9 +435,6 @@ ${sNameOrgan},&lt;br&gt;
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="956.0" y="181.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
-        <omgdc:Bounds height="61.0" width="105.0" x="585.0" y="280.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent4" id="BPMNShape_endevent4">
         <omgdc:Bounds height="35.0" width="35.0" x="725.0" y="293.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -494,7 +466,7 @@ ${sNameOrgan},&lt;br&gt;
       <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
         <omgdi:waypoint x="490.0" y="237.0"></omgdi:waypoint>
         <omgdi:waypoint x="489.0" y="310.0"></omgdi:waypoint>
-        <omgdi:waypoint x="585.0" y="310.0"></omgdi:waypoint>
+        <omgdi:waypoint x="725.0" y="310.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="42.0" width="100.0" x="500.0" y="269.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
@@ -557,10 +529,6 @@ ${sNameOrgan},&lt;br&gt;
         <omgdi:waypoint x="821.0" y="154.0"></omgdi:waypoint>
         <omgdi:waypoint x="973.0" y="154.0"></omgdi:waypoint>
         <omgdi:waypoint x="973.0" y="181.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow37" id="BPMNEdge_flow37">
-        <omgdi:waypoint x="690.0" y="310.0"></omgdi:waypoint>
-        <omgdi:waypoint x="725.0" y="310.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

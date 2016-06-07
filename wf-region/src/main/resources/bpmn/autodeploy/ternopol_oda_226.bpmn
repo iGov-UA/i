@@ -21,7 +21,7 @@
         <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk226" name="електронна пошта" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок" type="invisible"></activiti:formProperty>
-        </extensionElements>
+      </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Загрузка файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <sequenceFlow id="flow5" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -43,8 +43,7 @@
           <activiti:expression>Звернення на тему: Запис на прийом до посадовця.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
-            [sID_Order]&lt;br&gt;
+          <activiti:expression>[sID_Order]&lt;br&gt;
             [pattern/mail/_common_header.html]
             &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
             &lt;p&gt;
@@ -101,7 +100,7 @@
           <activiti:value id="accept" name="Записати громадянина"></activiti:value>
           <activiti:value id="reject" name="Скасувати запис"></activiti:value>
         </activiti:formProperty>
-         <activiti:formProperty id="lable2" name="Важливо" type="label" default="Будь ласка, внесіть дату прийому у  поле &quot;Призначений день прийому&quot; у разі погодження. Якщо у прийомі відмовлено, у  полі &quot;Призначений день прийому&quot; треба зробити відмітку  &quot;Запис скасовано&quot; "></activiti:formProperty>
+        <activiti:formProperty id="lable2" name="Важливо" type="label" default="Будь ласка, внесіть дату прийому у  поле &quot;Призначений день прийому&quot; у разі погодження. Якщо у прийомі відмовлено, у  полі &quot;Призначений день прийому&quot; треба зробити відмітку  &quot;Запис скасовано&quot; "></activiti:formProperty>
         <activiti:formProperty id="visitDay1" name="Призначений день прийому" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="NumbPers" name="Номер особи в черзі" type="string"></activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо громадянину відмовлено, вкажіть причину у цьому полі або додайте коментар стосовно прийому при запрошенні громадянина" type="textArea" default=" "></activiti:formProperty>
@@ -112,7 +111,6 @@
     <sequenceFlow id="flow3" name="${proverka=='reject'}" sourceRef="exclusivegateway1" targetRef="servicetask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${proverka=='reject'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow11" sourceRef="servicetask4" targetRef="servicetask7"></sequenceFlow>
     <serviceTask id="servicetask4" name="Відмова у реєстрації звернення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
@@ -125,8 +123,7 @@
           <activiti:expression>Звернення на тему: Запис на прийом до посадовця.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
-            [pattern/mail/_common_header.html]
+          <activiti:expression>[pattern/mail/_common_header.html]
 	    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
             &lt;p&gt;
             &lt;p&gt;Ваше звернення, щодо запису на прийом до ${sPosadaVid} відхилене.
@@ -151,8 +148,6 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask7" name="Видалення тікета з черги" activiti:delegateExpression="#{releaseTicketsOfQueue}"></serviceTask>
-    <sequenceFlow id="flow18" sourceRef="servicetask7" targetRef="endevent2"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow4" name="${proverka=='accept'}" sourceRef="exclusivegateway1" targetRef="servicetask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${proverka=='accept'}]]></conditionExpression>
@@ -169,8 +164,7 @@
           <activiti:expression>Звернення на тему: Запис на прийом до посадовця.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
-            [pattern/mail/_common_header.html]
+          <activiti:expression>[pattern/mail/_common_header.html]
             &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
             &lt;p&gt;Ваше звернення, щодо запису на прийом до ${sPosadaVid} розглянуте.&lt;br&gt;
             День прийому:&lt;br&gt;
@@ -187,8 +181,7 @@
             [pattern/mail/_common_signature_start.html]
             ${sNameOrgan},&lt;br&gt;
             [pattern/mail/_common_signature_end.html]
-            [pattern/mail/_common_footer.html]
-           </activiti:expression>
+            [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
@@ -215,15 +208,15 @@
         <activiti:formProperty id="vizit" name="Результат розгляду" type="enum">
           <activiti:value id="ok" name="Вирішено позитивно"></activiti:value>
           <activiti:value id="ok1" name="Надано роз’яснення"></activiti:value>
-          <activiti:value id="nejav2" name="Відмовлено"></activiti:value> 
-          <activiti:value id="nejav" name="Громадянин не з'явився"></activiti:value>      
+          <activiti:value id="nejav2" name="Відмовлено"></activiti:value>
+          <activiti:value id="nejav" name="Громадянин не з'явився"></activiti:value>
         </activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow19" sourceRef="usertask2" targetRef="exclusivegateway2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow20" name="${vizit!='nejav'}" sourceRef="exclusivegateway2" targetRef="servicetask8">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${vizit=='ok'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${vizit!='nejav'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask8" name="Фідбек" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
@@ -237,8 +230,7 @@
           <activiti:expression>Звернення на тему: Запис на прийом до посадовця.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
-            [pattern/mail/_common_header.html]
+          <activiti:expression>[pattern/mail/_common_header.html]
             &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
             &lt;p&gt;
             Ви отримали послугу "Запис на прийом до посадовця".&lt;br&gt;
@@ -270,8 +262,7 @@
           <activiti:expression>Звернення на тему: Запис на прийом до посадовця.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
-             [pattern/mail/_common_header.html]
+          <activiti:expression>[pattern/mail/_common_header.html]
              &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
              &lt;p&gt;
              На жаль, Ви не з'явились на прийом до ${sPosadaVid} у призначений день і час.&lt;br&gt;
@@ -324,9 +315,6 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
         <omgdc:Bounds height="57.0" width="121.0" x="500.0" y="233.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
-        <omgdc:Bounds height="55.0" width="121.0" x="500.0" y="310.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="543.0" y="380.0"></omgdc:Bounds>
@@ -383,14 +371,6 @@
           <omgdc:Bounds height="42.0" width="91.0" x="460.0" y="195.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
-        <omgdi:waypoint x="560.0" y="290.0"></omgdi:waypoint>
-        <omgdi:waypoint x="560.0" y="310.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
-        <omgdi:waypoint x="560.0" y="365.0"></omgdi:waypoint>
-        <omgdi:waypoint x="560.0" y="380.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
         <omgdi:waypoint x="580.0" y="169.0"></omgdi:waypoint>
         <omgdi:waypoint x="620.0" y="169.0"></omgdi:waypoint>
@@ -412,7 +392,7 @@
         <omgdi:waypoint x="804.0" y="216.0"></omgdi:waypoint>
         <omgdi:waypoint x="805.0" y="243.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="60.0" x="767.0" y="200.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="100.0" x="767.0" y="200.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">

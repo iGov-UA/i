@@ -51,8 +51,7 @@
           <activiti:string><![CDATA[Звернення: Запит на отримання публічної інформації]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
-              [sID_Order]&lt;br&gt;
+          <activiti:expression>[sID_Order]&lt;br&gt;
               [pattern/mail/_common_header.html]
  &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 &lt;p&gt;
@@ -64,7 +63,7 @@ ${sNameOrgan},&lt;br&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
-         <activiti:field name="sPhone_SMS">
+        <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
@@ -125,7 +124,7 @@ ${sNameOrgan},&lt;br&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
-          <activiti:field name="sPhone_SMS">
+        <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
@@ -141,7 +140,7 @@ ${sNameOrgan},&lt;br&gt;
     <sequenceFlow id="flow59" name="${asWorkerDecision=='accept'} " sourceRef="exclusivegateway2" targetRef="servicetask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asWorkerDecision=='accept'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask5" name="Звернення передане на розгляд" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask5" name="Звернення передане на розгляд" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
@@ -172,7 +171,7 @@ ${sNameOrgan},&lt;br&gt;
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>" "</activiti:expression>
-          </activiti:field>
+        </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow60" sourceRef="servicetask5" targetRef="usertask2"></sequenceFlow>
@@ -229,7 +228,7 @@ ${sNameOrgan},&lt;br&gt;
 									[pattern/mail/_common_feedback.html]
 									[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
-         <activiti:field name="sPhone_SMS">
+        <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
@@ -279,7 +278,7 @@ ${sNameOrgan},&lt;br&gt;
           <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${docFile}</activiti:expression>
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -303,8 +302,7 @@ ${sNameOrgan},&lt;br&gt;
           							&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
                                         На жаль ми не можемо надати вам відповідь стосовно запиту на отримання публічної інформації&lt;br /&gt;
-                                    	Ви можете знайти офіційну відмову у додатках до листа.
-                                    &lt;/p&gt;
+                                        &lt;/p&gt;
 									&lt;p&gt;
 										Причина в наступному:&lt;br&gt;
 										${decisionComment1}
@@ -321,7 +319,7 @@ ${sNameOrgan},&lt;br&gt;
           <activiti:expression>Za Vashym zvernennyam  [sID_Order]  vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${docFile}</activiti:expression>
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
