@@ -75,7 +75,19 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
     }
 
     angular.forEach(markers.validate, function (marker, markerName) {
-      //debugger;
+      var isOrganJoinInclude = false;
+      var isOrganNoInclude = true;
+      for(var nFieldID = 0; nFieldID < marker.aField_ID.length; nFieldID++){
+        if (marker.aField_ID[nFieldID] === "sID_Public_SubjectOrganJoin"){
+          isOrganJoinInclude = true;
+        }
+        if (marker.aField_ID[nFieldID] === "organ"){
+          isOrganNoInclude = false;
+        }
+      }
+      if(isOrganJoinInclude && isOrganNoInclude){
+        marker.aField_ID.push("organ");
+      }
 
       angular.forEach(form, function (formField) {
 
@@ -742,7 +754,6 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
      */
     'FieldNotEmptyAndNonZero': function (sValue) {
       console.log("[FieldNotEmptyAndNonZero]sValue=" + sValue);
-
       if (!sValue) {
         return false;
       }
@@ -754,7 +765,6 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
       console.log("[FieldNotEmptyAndNonZero](2)bValid=" + bValid);
       bValid = bValid && (sValue!==null && sValue.trim() !== "0");
       console.log("[FieldNotEmptyAndNonZero](3)bValid=" + bValid);
- 
       return bValid;
     }
     
