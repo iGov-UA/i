@@ -756,22 +756,23 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
      Логика: Не ипустота и не ноль
      */
     'FieldNotEmptyAndNonZero': function (modelValue, viewValue, options) {
-      if(options.original){
-        modelValue = options.original.value;
-      }
       var sValue = modelValue;
-      console.log("[FieldNotEmptyAndNonZero]sValue=" + sValue);
+      if(options.original){
+        sValue = this.oFormDataParams.sID_Public_SubjectOrganJoin.value;
+      }
+      //debugger;
+      //console.log("[FieldNotEmptyAndNonZero]sValue=" + sValue);
       if (!sValue) {
         return false;
       }
 
       var bValid = true;
       bValid = bValid && (sValue !== null);
-      console.log("[FieldNotEmptyAndNonZero](1)bValid=" + bValid);
+      //console.log("[FieldNotEmptyAndNonZero](1)bValid=" + bValid);
       bValid = bValid && (sValue!==null && sValue.trim() !== "");
-      console.log("[FieldNotEmptyAndNonZero](2)bValid=" + bValid);
+      //console.log("[FieldNotEmptyAndNonZero](2)bValid=" + bValid);
       bValid = bValid && (sValue!==null && sValue.trim() !== "0");
-      console.log("[FieldNotEmptyAndNonZero](3)bValid=" + bValid);
+      //console.log("[FieldNotEmptyAndNonZero](3)bValid=" + bValid);
       return bValid;
     }
     
