@@ -29,7 +29,7 @@ public class NotificationPatterns {
     @Autowired
     private ActionTaskService oActionTaskService;
 
-    public void sendTaskCreatedInfoEmail(String sMailTo, String sID_Order, String bankIdFirstName, String bankIdLastName) throws EmailException {
+    public void sendTaskCreatedInfoEmail(String sMailTo, String sID_Order, String bankIdFirstName) throws EmailException {
 
       /*
       String sHead = String.format("Ви подали заяву №%s на послугу через портал %s", nID_Protected,
