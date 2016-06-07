@@ -12,18 +12,14 @@
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asSubekt" name="Оберіть суб'єкт підприємницької діяльності" type="enum" required="true">
-          <activiti:value id="fiz" name="фізична особа-підприємець"></activiti:value>
-          <activiti:value id="ur" name="юридична особа"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asSubekt_2" name="Звернення подаю" type="enum" required="true">
-          <activiti:value id="personally" name="особисто"></activiti:value>
-          <activiti:value id="confidant" name="довірена особа"></activiti:value>
+        <activiti:formProperty id="sSubekt" name="Назва структурного підрозділу, населенного пункту, який виступає заявником" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="asTypeApplication" name="Оберіть варіант подання звернення" type="enum" required="true">
+          <activiti:value id="type_1" name="заповнити поля заяви"></activiti:value>
+          <activiti:value id="type_2" name="прикріпити заяву сформовану на фірмовому бланку"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sNameObject" name="Назва пам'ятки" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sAdresObject" name="Адреса, за якою розташована пам'ятка" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sNameUr" name="У давальному відмінку повне найменування юридичної особи" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sSize" name="Укажіть розміри реклами або рекламного засобу; довжина(см) та ширина(см)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSize" name="Укажіть розміри реклами або рекламного засобу; довжина(см) та ширина(см)" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="asDozvil" name="Чи маєте чинний загальний дозвіл на розміщення реклами?" type="enum" required="true">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
@@ -31,8 +27,7 @@
         <activiti:formProperty id="sDocReklama" name="Дозвіл на розміщення зовнішньої реклами; з фотокарткою або комп'ютерним макетом місця с фрагментом місцевості, на якому планується розташування рекламного засобу" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocMaket" name="Фотокартка або комп'ютерний макет місця с фрагментом місцевості або архітектурної пам'ятки, на якій планується розташування рекламного засобу" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocEskiz" name="Ескіз реклами або рекламного засобу" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="сканована копія паспорту" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sDocConfidant" name="Довіреність на право представляти інтереси субʼєкта господарювання в органах місцевого самоврядування" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sDocApplication" name="Заява на фірмовому бланку" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок" type="invisible"></activiti:formProperty>
@@ -41,9 +36,9 @@
         <activiti:formProperty id="sMailClerk" name="пошта посадовця" type="invisible" default="darja.grek@gmail.com"></activiti:formProperty>
         <activiti:formProperty id="sArea" name="назва населеного пункту" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka628" name="шапка у принтформу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="Якщо юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sNameUr&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSubekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers2" name="Якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;sbankId_scan_passport&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSubekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz'&quot;}}}"></activiti:formProperty>  <activiti:formProperty id="markers3" name="маркер якщо довірена особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;sDocConfidant&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSubekt_2&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'confidant'&quot;}}}"></activiti:formProperty>
- 	    <activiti:formProperty id="markers4" name="маркер якщо має загальний дозвіл" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;sDocReklama&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asDozvil&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'&quot;}}}"></activiti:formProperty>
+		<activiti:formProperty id="markers1" name="Якщо буде заповнювати" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sSubekt&quot;,&quot;sNameObject&quot;,&quot;sAdresObject&quot;,&quot;sSize&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asTypeApplication&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'type_1'&quot;}}}"></activiti:formProperty>
+		<activiti:formProperty id="markers2" name="Якщо  хоче бланк" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;sDocApplication&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asTypeApplication&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'type_2'&quot;}}}"></activiti:formProperty>
+  		<activiti:formProperty id="markers4" name="маркер якщо має загальний дозвіл" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;sDocReklama&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asDozvil&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'&quot;}}}"></activiti:formProperty>
 		<activiti:formProperty id="markers5" name="маркер якщо не має загальний дозвіл" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;sDocMaket&quot;,&quot;sDocEskiz&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asDozvil&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'no'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -55,17 +50,14 @@
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asSubekt" name="Оберіть суб'єкт підприємницької діяльності; ;writable=false" type="enum">
-          <activiti:value id="fiz" name="фізична особа-підприємець"></activiti:value>
-          <activiti:value id="ur" name="юридична особа"></activiti:value>
+        <activiti:formProperty id="sSubekt" name="Назва структурного підрозділу, населенного пункту, який виступає заявником" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asTypeApplication" name="Оберіть варіант подання звернення" type="enum" writable="false">
+          <activiti:value id="type_1" name="заповнити поля заяви"></activiti:value>
+          <activiti:value id="type_2" name="прикріпити заяву сформовану на фірмовому бланку"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asSubekt_2" name="Звернення подаю; ;writable=false" type="enum">
-          <activiti:value id="personally" name="особисто"></activiti:value>
-          <activiti:value id="confidant" name="довірена особа"></activiti:value>
-        </activiti:formProperty>
+       
         <activiti:formProperty id="sNameObject" name="Назва пам'ятки; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdresObject" name="Адреса, за якою розташована пам'ятка; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNameUr" name="У давальному відмінку повне найменування юридичної особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSize" name="Укажіть розміри реклами або рекламного засобу; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asDozvil" name="Чи маєте чинний загальний дозвіл на розміщення реклами?; ;writable=false" type="enum">
           <activiti:value id="yes" name="так"></activiti:value>
@@ -88,7 +80,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${sDocConfidant},${sDocReklama},${sDocMaket},${sDocEskiz}</activiti:expression>
+            <activiti:expression>${bankId_scan_passport},${sDocReklama},${sDocMaket},${sDocEskiz},${sDocApplication}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -101,18 +93,14 @@
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asSubekt" name="Оберіть суб'єкт підприємницької діяльності; ;writable=false" type="enum" required="true">
-          <activiti:value id="fiz" name="фізична особа-підприємець"></activiti:value>
-          <activiti:value id="ur" name="юридична особа"></activiti:value>
+        <activiti:formProperty id="sSubekt" name="Назва структурного підрозділу, населенного пункту, який виступає заявником" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asTypeApplication" name="Оберіть варіант подання звернення" type="enum" writable="false">
+          <activiti:value id="type_1" name="заповнити поля заяви"></activiti:value>
+          <activiti:value id="type_2" name="прикріпити заяву сформовану на фірмовому бланку"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asSubekt_2" name="Звернення подаю; ;writable=false" type="enum" required="true">
-          <activiti:value id="personally" name="особисто"></activiti:value>
-          <activiti:value id="confidant" name="довірена особа"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sNameObject" name="Назва пам'ятки; ;writable=false" type="string"></activiti:formProperty>
+          <activiti:formProperty id="sNameObject" name="Назва пам'ятки; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdresObject" name="Адреса, за якою розташована пам'ятка; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdresFiz" name="Адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNameUr" name="У давальному відмінку повне найменування юридичної особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSize" name="Укажіть розміри реклами або рекламного засобу; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asDozvil" name="Чи маєте чинний загальний дозвіл на розміщення реклами?; ;writable=false" type="enum">
           <activiti:value id="yes" name="так"></activiti:value>
@@ -305,8 +293,8 @@ var per10 = "res2"
 if(execution.getVariable('sDocReklama') != null){
 per3 = "&lt;li&gt;Дозвіл на розміщення зовнішньої реклами з фотокарткою або комп'ютерним макетом місця с фрагментом місцевості, на якому планується розташування рекламного засобу.&lt;/li&gt;"
 }
-if(execution.getVariable('sDocConfidant') != null){
-per4 = "&lt;li&gt;Довіреність на право представляти інтереси субʼєкта господарювання в органах місцевого самоврядування.&lt;/li&gt;"
+if(execution.getVariable('sDocApplication') != null){
+per4 = "&lt;li&gt;Заява на фірмовому бланку.&lt;/li&gt;"
 }
 if(execution.getVariable('sDocMaket') != null){
 per5 = "&lt;li&gt;Фотокартка або комп'ютерний макет місця с фрагментом місцевості або архітектурної пам'ятки, на якій планується розташування рекламного засобу.&lt;/li&gt;"
