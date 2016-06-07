@@ -87,6 +87,9 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
       }
       if(isOrganJoinInclude && isOrganNoInclude){
         marker.aField_ID.push("organ");
+        if(self.oFormDataParams.sID_Public_SubjectOrganJoin){
+          marker.original = self.oFormDataParams.sID_Public_SubjectOrganJoin;
+        }
       }
 
       angular.forEach(form, function (formField) {
@@ -752,7 +755,11 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
     /**
      Логика: Не ипустота и не ноль
      */
-    'FieldNotEmptyAndNonZero': function (sValue) {
+    'FieldNotEmptyAndNonZero': function (modelValue, viewValue, options) {
+      if(options.original){
+        modelValue = options.original.value;
+      }
+      var sValue = modelValue;
       console.log("[FieldNotEmptyAndNonZero]sValue=" + sValue);
       if (!sValue) {
         return false;
