@@ -197,16 +197,21 @@ public class Mail extends Abstract_Mail {
             MultiPartEmail oMultiPartEmail = new MultiPartEmail();
             LOG.info("(getHost()={})", getHost());
             oMultiPartEmail.setHostName(getHost());
-
 //            String[] asTo = {sMailOnly(getTo())};
+//            String[] asTo = getTo().split("\\,");//sTo
+//            if (getTo().contains("\\,")) {
+//                asTo = getTo().split("\\,");//sTo
+//                for (String s : asTo) {
+//                    LOG.info("oMultiPartEmail.addTo (s={})", s);
+//                    oMultiPartEmail.addTo(s, "receiver");
+//                }
+//            }
             String[] asTo = getTo().split("\\,");//sTo
-            if (getTo().contains("\\,")) {
-                asTo = getTo().split("\\,");//sTo
-                for (String s : asTo) {
-                    LOG.info("oMultiPartEmail.addTo (s={})", s);
-                    oMultiPartEmail.addTo(s, "receiver");
-                }
+            for (String s : asTo) {
+                LOG.info("oMultiPartEmail.addTo (s={})", s);
+                oMultiPartEmail.addTo(s, "receiver");
             }
+
             //oMultiPartEmail.addTo(sTo, "receiver");
             //oMultiPartEmail.addTo(getTo(), "receiver");
             //log.info("getTo()=" + getTo());
