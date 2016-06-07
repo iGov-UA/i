@@ -179,7 +179,7 @@
         <activiti:formProperty id="sFalgNikolaevOda2" name="Флаг на заявление" type="invisible" default="normal"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="AreaName" name="назва органу" type="invisible" default=" "></activiti:formProperty>
         
@@ -281,36 +281,25 @@ execution.setVariable('AreaName', per2)
     <serviceTask id="servicetask2" name="Повідомлення чиновника про нову заявку" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
+          <activiti:expression><![CDATA[valery.stavitsky@gmail.com]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>       
+        </activiti:field>
         <activiti:field name="subject">
           <activiti:expression><![CDATA[Нове звернення громадян на тему:
           	Взяття на облік громадян, які потребують поліпшення житлових умов]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[
-          	Звернення № [sID_Order]<br>
-          	[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow22" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
-    <serviceTask id="servicetask3" name="Повідомлення про  подання звернення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask3" name="Повідомлення про  подання звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
-        </activiti:field>
-		<activiti:field name="sPhone_SMS">
-			<activiti:expression>${phone}</activiti:expression>
-		</activiti:field>
-		<activiti:field name="sText_SMS">
-			<activiti:expression>Vashe zvernennya [sID_Order] zareestrovano</activiti:expression>
-		</activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -322,7 +311,7 @@ execution.setVariable('AreaName', per2)
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<p>
-				Ваш запит № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> був успішно зареєстрований у нашій системі.
+				Ваш запит був успішно зареєстрований у нашій системі.
 			</p>
 			<br>
 			За наявності питань можете звернутись за наступними контактами<br>
@@ -441,7 +430,14 @@ execution.setVariable('AreaName', per2)
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-			<activiti:expression>${nFileCertificateOfEmploymentCenter0}, ${nFileCertificateOfEmployment0}, ${nFileBTI0}, ${nfile_Privilege}, ${nFileINN0}, ${nFilePassport1}, ${nFileCertificateOfEmploymentCenter1}, ${nFileCertificateOfEmployment1}, ${nFileBirthCertificate1}, ${nFileBTI1}, ${nFileINN1}, ${nFilePassport2}, ${nFileCertificateOfEmploymentCenter2}, ${nFileCertificateOfEmployment2}, ${nFileBirthCertificate2}, ${nFileBTI2}, ${nFileINN2}, ${nFilePassport3}, ${nFileCertificateOfEmploymentCenter3}, ${nFileCertificateOfEmployment3}, ${nFileBirthCertificate3}, ${nFileBTI3}, ${nFileINN3}, ${nFilePassport4}, ${nFileCertificateOfEmploymentCenter4}, ${nFileCertificateOfEmployment4}, ${nFileBirthCertificate4}, ${nFileBTI4}, ${nFileINN4}, ${nFilePassport5}, ${nFileCertificateOfEmploymentCenter5}, ${nFileCertificateOfEmployment5}, ${nFileBirthCertificate5}, ${nFileBTI5}, ${nFileINN5}, ${nFilePassport6}, ${nFileCertificateOfEmploymentCenter6}, ${nFileCertificateOfEmployment6}, ${nFileBirthCertificate6}, ${nFileBTI6}, ${nFileINN6}, ${nFileActAnaliz}, ${nFileFamily}</activiti:expression>
+            <activiti:expression>${nFileCertificateOfEmploymentCenter0}, ${nFileCertificateOfEmployment0}, ${nFileBTI0}, ${nfile_Privilege}, ${nFileINN0}, 
+            ${nFilePassport1}, ${nFileCertificateOfEmploymentCenter1}, ${nFileCertificateOfEmployment1}, ${nFileBirthCertificate1}, ${nFileBTI1}, ${nFileINN1},
+            ${nFilePassport2}, ${nFileCertificateOfEmploymentCenter2}, ${nFileCertificateOfEmployment2}, ${nFileBirthCertificate2}, ${nFileBTI2}, ${nFileINN2}, 
+            ${nFilePassport3}, ${nFileCertificateOfEmploymentCenter3}, ${nFileCertificateOfEmployment3}, ${nFileBirthCertificate3}, ${nFileBTI3}, ${nFileINN3}, 
+            ${nFilePassport4}, ${nFileCertificateOfEmploymentCenter4}, ${nFileCertificateOfEmployment4}, ${nFileBirthCertificate4}, ${nFileBTI4}, ${nFileINN4}, 
+            ${nFilePassport5}, ${nFileCertificateOfEmploymentCenter5}, ${nFileCertificateOfEmployment5}, ${nFileBirthCertificate5}, ${nFileBTI5}, ${nFileINN5}, 
+            ${nFilePassport6}, ${nFileCertificateOfEmploymentCenter6}, ${nFileCertificateOfEmployment6}, ${nFileBirthCertificate6}, ${nFileBTI6}, ${nFileINN6}, 
+            ${nFileActAnaliz}, ${nFileFamily}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -451,7 +447,7 @@ execution.setVariable('AreaName', per2)
     <sequenceFlow id="flow3" name="Документи не відповідають" sourceRef="exclusivegateway1" targetRef="servicetask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'reject'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask5" name="Відправлення листа про відмову громадянину" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask5" name="Відправлення листа про відмову громадянину" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
@@ -459,30 +455,20 @@ execution.setVariable('AreaName', per2)
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
-		<activiti:field name="sPhone_SMS">
-			<activiti:expression>${phone}</activiti:expression>
-		</activiti:field>
-		<activiti:field name="sText_SMS">
-			<activiti:expression>Za Vashym zvernennyam [sID_Order] vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
-		</activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
-        </activiti:field>
         <activiti:field name="subject">
           <activiti:expression><![CDATA[Взяття на облік громадян, які потребують поліпшення житлових умов]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>		    		    
+		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 		    <p>
-				Оброблено звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a>.<br>
 				На жаль Вам відмовлено в наданні послуги.
 			</p>
 		    	Причина в наступному:<br>
 				<b><i>${comment}</i></b>
 		    </p>
 		    <p>
-		    	Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/service/17/general">iGov.org.ua</a>
+		    	Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="#current-page">iGov.org.ua</a>.
 			</p>
 			<br />
 			За наявності питань можете звернутись за наступними контактами<br>
@@ -500,7 +486,7 @@ execution.setVariable('AreaName', per2)
     <sequenceFlow id="flow4" name="Документи в порядку" sourceRef="exclusivegateway1" targetRef="servicetask7">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'accept'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask7" name="Повідомлення громадянина, що документи пройшли первинну перевірку + надсилається заява" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask7" name="Повідомлення громадянина, що документи пройшли первинну перевірку + надсилається заява" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
@@ -508,20 +494,17 @@ execution.setVariable('AreaName', per2)
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
-		<activiti:field name="sPhone_SMS">
-			<activiti:expression>${phone}</activiti:expression>
-		</activiti:field>
-		<activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Status Vashoho zvernennya [sID_Order] zmineno "Vzyato v robotu".  Na Vash email pryyshov lyst z zayavoyu, rozdrukuyte ta pidpyshit']]></activiti:expression>
-		</activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression><![CDATA[Взяття на облік громадян, які потребують поліпшення житлових умов]]></activiti:expression>
+        </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[${PrintForm_1}]]></activiti:expression>
+          <activiti:expression><![CDATA["${PrintForm_1}"]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 			<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
 			<p> 
-				Ваше звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> було перевірено.<br>
+				Ваше звернення було перевірено.<br>
 				Будь-ласка роздрукуйте та підпишіть у всіх понолітніх членів вашої сім'ї, прикріплену до листа заяву.
 			</p>
 			<br>
@@ -638,9 +621,17 @@ execution.setVariable('AreaName', per2)
         <activiti:formProperty id="markers_For_Print_2" name="hide-show fields table" type="markers" default="${markerService.loadFromFile('mvk/nikolaev_mvk_408_hide-show_for_print_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers_For_Print_3" name="hide-show fields sFIO" type="markers" default="${markerService.loadFromFile('mvk/nikolaev_mvk_408_hide-show_for_print_3.json')}"></activiti:formProperty>
 
+
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-			<activiti:expression>${nFileCertificateOfEmploymentCenter0}, ${nFileCertificateOfEmployment0}, ${nFileBTI0}, ${nfile_Privilege}, ${nFileINN0}, ${nFilePassport1}, ${nFileCertificateOfEmploymentCenter1}, ${nFileCertificateOfEmployment1}, ${nFileBirthCertificate1}, ${nFileBTI1}, ${nFileINN1}, ${nFilePassport2}, ${nFileCertificateOfEmploymentCenter2}, ${nFileCertificateOfEmployment2}, ${nFileBirthCertificate2}, ${nFileBTI2}, ${nFileINN2}, ${nFilePassport3}, ${nFileCertificateOfEmploymentCenter3}, ${nFileCertificateOfEmployment3}, ${nFileBirthCertificate3}, ${nFileBTI3}, ${nFileINN3}, ${nFilePassport4}, ${nFileCertificateOfEmploymentCenter4}, ${nFileCertificateOfEmployment4}, ${nFileBirthCertificate4}, ${nFileBTI4}, ${nFileINN4}, ${nFilePassport5}, ${nFileCertificateOfEmploymentCenter5}, ${nFileCertificateOfEmployment5}, ${nFileBirthCertificate5}, ${nFileBTI5}, ${nFileINN5}, ${nFilePassport6}, ${nFileCertificateOfEmploymentCenter6}, ${nFileCertificateOfEmployment6}, ${nFileBirthCertificate6}, ${nFileBTI6}, ${nFileINN6}, ${nFileActAnaliz}, ${nFileFamily}</activiti:expression>
+            <activiti:expression>${nFileCertificateOfEmploymentCenter0}, ${nFileCertificateOfEmployment0}, ${nFileBTI0}, ${nfile_Privilege}, ${nFileINN0}, 
+            ${nFilePassport1}, ${nFileCertificateOfEmploymentCenter1}, ${nFileCertificateOfEmployment1}, ${nFileBirthCertificate1}, ${nFileBTI1}, ${nFileINN1},
+            ${nFilePassport2}, ${nFileCertificateOfEmploymentCenter2}, ${nFileCertificateOfEmployment2}, ${nFileBirthCertificate2}, ${nFileBTI2}, ${nFileINN2}, 
+            ${nFilePassport3}, ${nFileCertificateOfEmploymentCenter3}, ${nFileCertificateOfEmployment3}, ${nFileBirthCertificate3}, ${nFileBTI3}, ${nFileINN3}, 
+            ${nFilePassport4}, ${nFileCertificateOfEmploymentCenter4}, ${nFileCertificateOfEmployment4}, ${nFileBirthCertificate4}, ${nFileBTI4}, ${nFileINN4}, 
+            ${nFilePassport5}, ${nFileCertificateOfEmploymentCenter5}, ${nFileCertificateOfEmployment5}, ${nFileBirthCertificate5}, ${nFileBTI5}, ${nFileINN5}, 
+            ${nFilePassport6}, ${nFileCertificateOfEmploymentCenter6}, ${nFileCertificateOfEmployment6}, ${nFileBirthCertificate6}, ${nFileBTI6}, ${nFileINN6}, 
+            ${nFileActAnaliz}, ${nFileFamily}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -653,31 +644,25 @@ execution.setVariable('AreaName', per2)
     <sequenceFlow id="flow19" name="Заявка оброблена" sourceRef="exclusivegateway2" targetRef="servicetask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${regChanged == 'yes'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask4" name="Відправлення листа громадянину" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask4" name="Відправлення листа громадянину" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-		<activiti:field name="sPhone_SMS">
-			<activiti:expression>${phone}</activiti:expression>
-		</activiti:field>
-        <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Status Vashoho zvernennya [sID_Order] zmineno "Vukonano". Na Vash email pryyshov lyst z zayavoyu, rozdrukuyte ta pidpyshit']]></activiti:expression>
-        </activiti:field>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
         <activiti:field name="subject">
           <activiti:expression><![CDATA[Взяття на облік громадян, які потребують поліпшення житлових умов]]></activiti:expression>
-        </activiti:field>      
+        </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[${PrintForm_2}]]></activiti:expression>
+          <activiti:expression><![CDATA["${PrintForm_2}"]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 			<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
 			<p> 
-				Ваше звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> виконано.<br>
+				Ваше звернення виконано.<br>
 				Для отмання документу, будь-ласка не забудьте з собою взяти, підписану Вами та всіма понолітніми членами Вашої сім'ї, заяву.<br> 
 				Бланк прикріплений до листа.
 			</p>

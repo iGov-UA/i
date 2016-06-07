@@ -110,9 +110,10 @@
         <activiti:formProperty id="sPhoneOrgan" name="телефон для справок" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адрес органа" type="invisible"></activiti:formProperty>
 
-        <activiti:formProperty id="sMailClerk1" name="Пошта ЦНАП" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
         
-        <activiti:formProperty id="markers1" name="Дітям" type="markers" default="${markerService.loadFromFile('chernobyl/kalanchanska_rda_492_StartTask.json')}"></activiti:formProperty>
+        
+        <activiti:formProperty id="marker_StartTask" name="Дітям" type="markers" default="${markerService.loadFromFile('сhernobyl/kalanchanska_rda_492_StartTask.json')}"></activiti:formProperty>
 
       </extensionElements>
     </startEvent>
@@ -129,14 +130,13 @@
           <activiti:expression><![CDATA[noreply@igov.org.ua]]></activiti:expression>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${sMailClerk1}]]></activiti:expression>
+          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression><![CDATA[Нове звернення на порталі igov.org.ua на тему: Видача довідки громадянам, які постраждали внаслідок Чорнобильської катастрофи]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[Звернення № [sID_Order]<br>
-          	[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -159,13 +159,12 @@
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[iGov: Видача довідки громадянам, які постраждали внаслідок Чорнобильської катастрофи]]></activiti:expression>
+          <activiti:expression><![CDATA[Звернення на тему: Видача довідки громадянам, які постраждали внаслідок Чорнобильської катастрофи]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 			<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br><br>
 			<p> 
-				Звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a>.<br>
 				Ваші дані були передані для  подальшої обробки
 			</p>
 			<br>
@@ -190,7 +189,7 @@
 
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdAdressFactual" name="Адреса (місце реєстрації)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
         
         <activiti:formProperty id="asDocumentTarget" name="Довідка для посвідчення" type="enum" writable="false">
@@ -291,8 +290,8 @@
         
         <activiti:formProperty id="sAreaRod" name="адрес органа" type="invisible"></activiti:formProperty>
         
-        <activiti:formProperty id="sBody_1" name="[pattern/print/chernobyl/kalanchanska_rda_492_Print.html]" type="invisible" default="Довідка" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="marker_StartTask_Print" name="Під прінт форму" type="markers" default="${markerService.loadFromFile('chernobyl/kalanchanska_rda_492_StartTask_Print.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/сhernobyl/kalanchanska_rda_492_Print.html]" type="invisible" default="Довідка" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="marker_StartTask_Print" name="Під прінт форму" type="markers" default="${markerService.loadFromFile('сhernobyl/kalanchanska_rda_492_StartTask_Print.json')}"></activiti:formProperty>
         
         
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -318,7 +317,7 @@
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Za Vashym zvernennyam [sID_Order] vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>        
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>" "</activiti:expression>
@@ -327,21 +326,17 @@
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[iGov: Видача довідки громадянам, які постраждали внаслідок Чорнобильської катастрофи]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Видача довідки громадянам, які постраждали внаслідок Чорнобильської катастрофи]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<p>
-				Ваше звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> було оброблено.<br>
 				За даними держоргану Вам ВІДМОВЛЕНО у наданні довідки громадянам, які постраждали внаслідок Чорнобильської катастрофи.
 			</p>
 			<p>
 				Коментар Державного службовця:<br>
 				<b><i>${decisionComment}</i></b>
-			</p>
-			<p>
-		    	Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/service/760/general">iGov.org.ua</a>
 			</p>
 			<br>
 			За наявності питань можете звернутись за наступними контактами<br>
@@ -384,7 +379,6 @@
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<p>
-				Ваше звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> було оброблено.<br>
 				Вам НАДАНО довідку постраждалого внаслідок Чорнобильської катастрофи.
 			</p>
 			<p>
