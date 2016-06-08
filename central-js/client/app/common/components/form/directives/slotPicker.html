@@ -1,4 +1,5 @@
 <div class="slot-picker">
+  <div ng-show="slotsLoading || slotsData.aDay.length > 0">
     <div class="slot-day">
         <select class="form-control"
                 ng-model="selected.date"
@@ -11,4 +12,9 @@
                 ng-model="selected.slot"
                 ng-options="slot.sTime for slot in selected.date.aSlot"></select>
     </div>
+  </div>
+
+  <div ng-show="!slotsLoading && slotsData.aDay.length == 0">
+    Нажаль, в електронній черзі тимчасово відсутні вільні місця
+  </div>
 </div>
