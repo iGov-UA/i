@@ -46,7 +46,7 @@ public class ExceptionCommonController {
     ResponseEntity<String> catchCommonServiceException(CommonServiceException exception) {
         String sClass = exception.getStackTrace()[0].getClassName();
         String sFileName = exception.getStackTrace()[0].getFileName();
-        String sMethod = exception.getStackTrace()[0].getMethodName();//getCause().
+        String sMethod = exception.getStackTrace()[0].getMethodName();
         LOG.error("Error:{}. REST API Exception", exception.getMessage());
         LOG.trace("FAIL:", exception);
         new Log(this.getClass(), exception)

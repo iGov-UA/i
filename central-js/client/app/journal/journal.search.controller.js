@@ -30,7 +30,7 @@ angular.module('journal').controller('JournalSearchController', function (
   $scope.aField = [];
   $scope.sOrderCommentNew = '';
   $scope.sOrderAnswerCommentNew = '';
-
+console.log($scope)
   $scope.bAuth = UserService.isLoggedIn().then(function () {
     $scope.bAuth = true;
   }).catch(function () {
@@ -97,6 +97,7 @@ angular.module('journal').controller('JournalSearchController', function (
             //   }
             // })) {
             oOrder = oResponse;
+          console.log(oOrder)
             if (/*ErrorsFactory.bSuccess(oFuncNote)*/!oResponse.message || oResponse.message.indexOf('not found') === -1) {
               $scope.oOrder = oOrder;
               $scope.oOrder.sDate = new Date (oOrder.sDate.replace(' ', 'T'));
@@ -140,17 +141,20 @@ angular.module('journal').controller('JournalSearchController', function (
                     try {
                       var aField = JSON.parse(oOrderMessage.sData.replace(/'/g, '\''));
                       angular.forEach(aField, function (oField) {
-                        if (!bExist(oField.sID)) {
-                          oField.sID = oField.id;
-                          oField.sName = oField.id;
-                          oField.sType = oField.type;
-                          oField.sValue = oField.value;
-                          oField.sValueNew = oField.value;
-                          oField.sNotify = oField.value;
-                          oField.id = "";
-                          oField.type = "";
-                          oField.value = "";
-                        }
+                        // если выполяеться данное условие, то в объекте будет только "общий" коммент от чиновника
+                        // плюс тип - string, поэтому остальные поля в любом случае будут undefined, в этом мне кажется нет необходимости
+
+                        // if (!bExist(oField.sID)) {
+                        //   oField.sID = oField.id;
+                        //   oField.sName = oField.id;
+                        //   oField.sType = oField.type;
+                        //   oField.sValue = oField.value;
+                        //   oField.sValueNew = oField.value;
+                        //   oField.sNotify = oField.value;
+                        //   oField.id = "";
+                        //   oField.type = "";
+                        //   oField.value = "";
+                        // }
                         if (oField.sType === "date") {
                           oField.oFactory = DatepickerFactory.prototype.createFactory();
                           oField.oFactory.value = oField.sValueNew;
@@ -167,7 +171,6 @@ angular.module('journal').controller('JournalSearchController', function (
                     }
                   }
               });
-              console.log($scope.aOrderMessages);
             } else {
               ErrorsFactory.addFail({
                 sBody: 'Отриман пустий під-об`єкт!',
@@ -241,20 +244,20 @@ angular.module('journal').controller('JournalSearchController', function (
           if (sToken !== null) {
             oData = $.extend(oData, {sToken: sToken});
           }
-          if ($scope.aField) {
+          if ($scope.aOrderMessages[0].aData) {
             try {
-              angular.forEach($scope.aField, function (oField) {
+              angular.forEach($scope.aOrderMessages[0].aData, function (oField) {
                 if (oField.sType === "date") {
                   oField.sValueNew = oField.oFactory.value ? oField.oFactory.get() : oField.sValueNew;//.value
                   oField.oFactory = null;
                 }
               });
-              oData.saField = JSON.stringify($scope.aField);
+              oData.saField = JSON.stringify($scope.aOrderMessages[0].aData);
             } catch (sError) {
               ErrorsFactory.addFail({
                 sBody: 'Помилка сереалізації об`єкту з полями, у яких відповіді на зауваження!',
                 sError: sError,
-                asParam: ['oData.saField: ' + $scope.aField]
+                asParam: ['oData.saField: ' + $scope.aOrderMessages[0].aData]
               });
             }
           }
@@ -311,6 +314,14 @@ angular.module('journal').controller('JournalSearchController', function (
 
   $scope.getFileUploadUrl = function () {
     return ActivitiService.getUploadFileURLByServer(order.nID_Server);
-  }
+  };
+
+  $scope.openLetter = function(nID) {
+    window.open(
+      location.protocol
+      + '/wf/service/subject/message/getSubjectMessageData?nID_SubjectMessage='
+      + nID,
+      "Лист", "width=800,height=500,left=350,top=200")
+  };
 
 });

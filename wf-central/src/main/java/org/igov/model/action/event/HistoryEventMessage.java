@@ -23,12 +23,19 @@ public class HistoryEventMessage {
     private static final Logger LOG = LoggerFactory.getLogger(HistoryEventMessage.class);
 
     public static String createJournalMessage(HistoryEventType eventType, Map<String, String> values) {
+        LOG.info("Method createJournalMessage started");
         String eventMessage = "";
+        LOG.info("Method createJournalMessage map: "+values);
         try {
             eventMessage = eventType.getsTemplate();
+            LOG.info("Template: "+eventMessage);
+            LOG.info("Starting loop");
             for (String key : values.keySet()) {
+                LOG.info("Inside loop key: "+key+" value: "+values.get(key));
                 eventMessage = eventMessage.replaceAll(key, values.get(key));
+                LOG.info("Changed eventMessage: "+eventMessage);
             }
+            LOG.info("Loop ended");
         } catch (Exception e) {
             LOG.warn("error : {}", e.getMessage());
             LOG.trace("FAIL:", e);

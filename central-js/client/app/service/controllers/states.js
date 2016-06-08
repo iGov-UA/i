@@ -89,3 +89,127 @@ angular.module('app').controller('ServiceStatisticsController', function($scope,
       $scope.loaded = true;
     });
 });
+
+
+// контроллер для загрузки статистики во вкладке "О портале" https://github.com/e-government-ua/i/issues/1230
+angular.module('app').controller('ServiceHistoryReportController', ['$scope', 'ServiceService', 'AdminService', function($scope, ServiceService, AdminService) {
+
+  // поскольку статистика видна только админу, делаем проверку.
+  $scope.bAdmin = AdminService.isAdmin();
+
+  $scope.statisticDateBegin = {
+    value: new Date(2016, 0, 1, 0, 0)
+  };
+  $scope.statisticDateEnd = {
+    value: new Date(2016, 0, 1, 0, 0)
+  };
+
+
+  // сортировка по клику на заголовок в шапке
+  $scope.predicate = 'sID_Order';
+  $scope.reverse = true;
+  $scope.order = function(predicate) {
+    $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
+    $scope.predicate = predicate;
+  };
+
+  //проверка процесса загрузки таблицы. в процессе загрузки true, загружен - false
+  $scope.isStatisticLoading = {
+    bState : false
+  };
+
+  $scope.switchStatisticLoadingStatus = function () {
+    $scope.isStatisticLoading.bState = !$scope.isStatisticLoading.bState
+  };
+
+  var result;
+  var dateFrom;
+  var dateTo;
+  var exclude;
+
+  // конвертируем дату и время с datepicker'а в нужный для запроса формат YYYY-MM-DD hh:mm:ss
+  $scope.getTimeInterval = function (date) {
+    var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    var chosenDate = date.value.toString();
+    var dateSplited = chosenDate.split(' ');
+    var selectedTime = dateSplited[4];
+    var selectedDay = dateSplited[2];
+    var selectedYear = dateSplited[3];
+    var selectedMonth = '';
+
+    // меняем буквенное обозначение мес на числовое
+    if(dateSplited[1].indexOf(months)){
+      selectedMonth = months.indexOf(dateSplited[1])+1;
+      if(selectedMonth < 10){
+        selectedMonth = '0' + selectedMonth;
+      }
+    }
+    result = selectedYear + '-' + selectedMonth + '-' + selectedDay + ' ' + selectedTime;
+    return result
+
+  };
+
+  // загрузка статистики в формате .csv . проверка на корректность фильтра (если он есть),
+  // а также если он используеться - исключение отфильтрованных тасок с файла
+  $scope.downloadStatistic = function() {
+    var prot = location.protocol;
+    if($scope.statistics !== undefined) {
+      if ($scope.sanIDServiceExclude !== undefined) {
+        if ($scope.sanIDServiceExclude.match(/^(\d+,)*\d+$/)) {
+          window.open(prot + "/wf/service/action/event/getServiceHistoryReport?sDateAt=" + dateFrom + "&sDateTo=" + dateTo + '&sanID_Service_Exclude=' + exclude)
+          return
+        } else {
+          return false
+        }
+      }
+      window.open(prot + "/wf/service/action/event/getServiceHistoryReport?sDateAt=" + dateFrom + "&sDateTo=" + dateTo)
+    }
+  };
+
+  // загрузка и формирование таблицы
+  $scope.getStatisticTable = function () {
+    //блокируем возможность повторно нажатия "Завантажити" пока предыдущий запрос находиться в работе
+    $scope.switchStatisticLoadingStatus();
+
+    dateFrom = $scope.getTimeInterval($scope.statisticDateBegin);
+    dateTo = $scope.getTimeInterval($scope.statisticDateEnd);
+    exclude = $scope.sanIDServiceExclude;
+
+    ServiceService.getServiceHistoryReport(dateFrom, dateTo, exclude).then(function (res) {
+      var resp = res.data;
+      var responseSplited = resp.split(';');
+      var correct = responseSplited[12].split('\n');
+      responseSplited.splice(0, 13, correct[1]);
+
+      $scope.statistics = [];
+      var statistic = {};
+
+      for(var i=0; i<responseSplited.length; i++){
+        var n = 12*i;
+        if(n + 2 > responseSplited.length){
+          break
+        }
+        statistic = {
+          sID_Order : responseSplited[n],
+          nID_Server : Number(responseSplited[1 + n]),
+          nID_Service : Number(responseSplited[2 + n]),
+          sID_Place : Number(responseSplited[3 + n]),
+          nID_Subject : Number(responseSplited[4 + n]),
+          nRate : Number(responseSplited[5 + n]),
+          sTextFeedback : responseSplited[6 + n],
+          sUserTaskName : responseSplited[7 + n],
+          sHead : responseSplited[8 + n],
+          sBody : responseSplited[9 + n],
+          nTimeMinutes : Number(responseSplited[10 + n]),
+          sPhone : responseSplited[11 + n],
+          nID_ServiceData : ''
+        };
+
+        $scope.statistics.push(statistic);
+        statistic = {};
+      }
+      $scope.switchStatisticLoadingStatus();
+    });
+  }
+
+}]);
