@@ -4,6 +4,7 @@
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати послугу" type="select" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sRekv" name="Реквізити для оплати" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
@@ -35,8 +36,6 @@
         <activiti:formProperty id="sShapka" name="назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="date_big" name="Початок ліцензії" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="date_end" name="Кінець ліцензії" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sTimer0" name="sTimer0" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sTimer" name="sTimer" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPosluga_name" name="назва послуги" type="invisible" default="Видача ліцензії на право роздрібної торгівлі тютюновими виробами"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -61,7 +60,7 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <userTask id="usertask3" name="АвтоТаска для письма" activiti:candidateGroups="zzz_zzz">
+    <userTask id="usertask3" name="Таска для письма" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asOsoba" name="Тип особи" type="enum" writable="false">
@@ -85,17 +84,10 @@
         <activiti:formProperty id="date_end" name="Кінець ліцензії" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="print_marker1" name="ur_fiz_print" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_1&quot;:{&quot;aElement_ID&quot;:[&quot;sEnamUr&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asOsoba&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnamUr'||[sCond]=='Юридична особа'&quot;},&quot;ShowElementsOnTrue_2&quot;:{&quot;aElement_ID&quot;:[&quot;sEnamFiz&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asOsoba&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnamFiz'||[sCond]=='Фізична особа підприємець'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sTimer0" name="sTimer0" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTimer" name="sTimer" type="string"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/nicolaev_dfs_593.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/nicolaev_dfs_593.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
-    <boundaryEvent id="escalationTimer1" name="Timer" attachedToRef="usertask3" cancelActivity="true">
-      <timerEventDefinition>
-        <timeDate>${sTimer}</timeDate>
-      </timerEventDefinition>
-    </boundaryEvent>
     <serviceTask id="servicetask4" name="Лист заявнику" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
@@ -127,11 +119,10 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${PrintForm_1}</activiti:expression>
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow4" sourceRef="usertask3" targetRef="parallelgateway1"></sequenceFlow>
     <userTask id="usertask1" name="Обробка в податковій(1 етап)" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -171,7 +162,6 @@ ${sNameOrgan}.&lt;br /&gt;
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow5" sourceRef="servicetask4" targetRef="parallelgateway1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
     <serviceTask id="servicetask5" name="Відмова" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
@@ -388,45 +378,12 @@ if(mmm =='01'&amp;&amp;ddd=='01')
 timeE = ddd2+'-'+mmm2+'-'+yyyy2	
 execution.setVariable('date_big', timeB)
 execution.setVariable('date_end', timeE)
-
-
-var unixdate= Math.round((new Date()).getTime() / 1000);
-var unixdate=unixdate+180;
-var new_src = new Date(unixdate*1000);
-var d = new_src.getDate();
-if (d &lt; 10) d = "0"+d;
-var m = new_src.getMonth();
-var m = (+m + +1);
-if (m &lt; 10) m = "0"+m;
-var new_year = new_src.getFullYear();
-var new_hour = new_src.getHours();
-var new_minutes = new_src.getMinutes();
-var new_seconds = new_src.getSeconds();
-var timer = new_year+'-'+m+'-'+d+'T'+new_hour+':'+new_minutes+':00';
-
-var unixdate= Math.round((new Date()).getTime() / 1000);
-var unixdate = new Date(unixdate*1000);
-var d = unixdate.getDate();
-if (d &lt; 10) d = "0"+d;
-var m = unixdate.getMonth();
-var m = (+m + +1);
-if (m &lt; 10) m = "0"+m;
-var new_year = unixdate.getFullYear();
-var new_hour = unixdate.getHours();
-var new_minutes = unixdate.getMinutes();
-var new_seconds = unixdate.getSeconds();
-var unixdate = new_year+'-'+m+'-'+d+new_hour+':'+new_minutes+':00';
-
-
-execution.setVariable('sTimer0', unixdate)
-execution.setVariable('sTimer', timer)
       </script>
     </scriptTask>
     <sequenceFlow id="flow20" sourceRef="scripttask1" targetRef="servicetask3"></sequenceFlow>
     <sequenceFlow id="flow21" sourceRef="servicetask3" targetRef="usertask3"></sequenceFlow>
-    <sequenceFlow id="flow22" sourceRef="escalationTimer1" targetRef="servicetask4"></sequenceFlow>
-    <parallelGateway id="parallelgateway1" name="Parallel Gateway"></parallelGateway>
-    <sequenceFlow id="flow23" sourceRef="parallelgateway1" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow22" sourceRef="usertask3" targetRef="servicetask4"></sequenceFlow>
+    <sequenceFlow id="flow23" sourceRef="servicetask4" targetRef="usertask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_nicolaev_dfs_593">
     <bpmndi:BPMNPlane bpmnElement="nicolaev_dfs_593" id="BPMNPlane_nicolaev_dfs_593">
@@ -444,9 +401,6 @@ execution.setVariable('sTimer', timer)
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
         <omgdc:Bounds height="55.0" width="105.0" x="356.0" y="163.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="escalationTimer1" id="BPMNShape_escalationTimer1">
-        <omgdc:Bounds height="30.0" width="30.0" x="394.0" y="151.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
         <omgdc:Bounds height="55.0" width="105.0" x="470.0" y="90.0"></omgdc:Bounds>
@@ -484,22 +438,9 @@ execution.setVariable('sTimer', timer)
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
         <omgdc:Bounds height="55.0" width="105.0" x="194.0" y="20.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="parallelgateway1" id="BPMNShape_parallelgateway1">
-        <omgdc:Bounds height="40.0" width="40.0" x="502.0" y="170.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="85.0" y="117.0"></omgdi:waypoint>
         <omgdi:waypoint x="130.0" y="117.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
-        <omgdi:waypoint x="408.0" y="218.0"></omgdi:waypoint>
-        <omgdi:waypoint x="408.0" y="248.0"></omgdi:waypoint>
-        <omgdi:waypoint x="521.0" y="248.0"></omgdi:waypoint>
-        <omgdi:waypoint x="522.0" y="210.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
-        <omgdi:waypoint x="522.0" y="145.0"></omgdi:waypoint>
-        <omgdi:waypoint x="522.0" y="170.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
         <omgdi:waypoint x="719.0" y="117.0"></omgdi:waypoint>
@@ -572,13 +513,12 @@ execution.setVariable('sTimer', timer)
         <omgdi:waypoint x="408.0" y="163.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
-        <omgdi:waypoint x="409.0" y="151.0"></omgdi:waypoint>
-        <omgdi:waypoint x="408.0" y="117.0"></omgdi:waypoint>
-        <omgdi:waypoint x="470.0" y="117.0"></omgdi:waypoint>
+        <omgdi:waypoint x="408.0" y="163.0"></omgdi:waypoint>
+        <omgdi:waypoint x="522.0" y="145.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
-        <omgdi:waypoint x="522.0" y="170.0"></omgdi:waypoint>
-        <omgdi:waypoint x="666.0" y="145.0"></omgdi:waypoint>
+        <omgdi:waypoint x="575.0" y="117.0"></omgdi:waypoint>
+        <omgdi:waypoint x="614.0" y="117.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
