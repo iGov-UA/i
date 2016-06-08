@@ -10,11 +10,16 @@
 
 
     <beans>
-        <bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+        <bean id="dataSource" class="org.igov.util.logging.LoggingDriverDataSource">
+        <!--bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource"-->
             <property name="driverClass" value="${jdbc.driver}"/>
             <property name="url" value="${jdbc.url}"/>
             <property name="username" value="${jdbc.username}"/>
             <property name="password" value="${jdbc.password}"/>
+        </bean>
+
+        <bean class="org.igov.util.logging.LoggingBean">
+            <property name="message" value="dataSource: [url=${jdbc.url}, username=${jdbc.username}]"/>
         </bean>
 
         <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">

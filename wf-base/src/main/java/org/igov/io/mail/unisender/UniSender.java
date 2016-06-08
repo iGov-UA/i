@@ -31,6 +31,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import com.mongodb.util.JSON;
+import static org.igov.io.mail.Mail.sMailOnly;
 
 /**
  * Created by Dmytro Tsapko on 11/28/2015.
@@ -272,7 +273,15 @@ public class UniSender {
         mParam.add("format", "json");
         mParam.add("api_key", sAuthKey);
         mParam.add("message_id", oCreateCampaignRequest.getMessageId());
-        mParam.add("contacts", sToMail);
+        StringBuilder oToMailOnly = new StringBuilder("");
+        for(String s : sToMail.split("\\,")){
+            if(oToMailOnly.length()>0){
+                oToMailOnly.append(",");
+            }
+            oToMailOnly.append(sMailOnly(s));
+        }
+        mParam.add("contacts", oToMailOnly.toString());//sToMail
+        
         //LOG.info("RESULT osURL: {}", osURL.toString());
         //LOG.info("RESULT mParam: {}", mParam);
 

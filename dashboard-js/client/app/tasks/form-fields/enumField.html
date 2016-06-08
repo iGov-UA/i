@@ -6,9 +6,9 @@
                       ng-options="oEnumValue.id as oEnumValue.name for oEnumValue in item.enumValues"
                       ng-required="{{item.required}}"
                       ng-model="item.value"
-                      ng-class="{submitted:isTaskSubmitted()}"></select>
+                      ng-class="{submitted:item.required && isTaskSubmitted()}"></select>
 
-              <div class="validation-message" ng-messages="isTaskSubmitted() && form[item.id].$error">
+              <div class="validation-message" ng-messages="isTaskSubmitted() && item.required && form[item.id].$error">
                 <div ng-message="required">Необхідно заповнити.</div>
                 <div ng-message="pattern">Значення має бути числом.</div>
                 <div ng-message="email">Помилка в email.</div>

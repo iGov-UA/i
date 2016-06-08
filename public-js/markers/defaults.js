@@ -98,6 +98,9 @@ angular.module('iGovMarkers')
         saExtension: 'jpg,pdf,png',
         sMessage: 'Недопустимий формат файлу! Повинно бути: {saExtension}!'
       }
+      ,FieldNotEmptyAndNonZero: {
+        aField_ID: ['sFieldNotEmptyAndNonZero']
+      }
     },
     attributes: {
       Editable_1: {aField_ID:['sPhone_User1', 'sMail_User1', 'bankIdlastName1'], bValue: true}
