@@ -4,6 +4,7 @@
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати послугу" type="select" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sRekv" name="Реквізити" type="label"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
@@ -232,7 +233,7 @@ ${sWorkTime}.&lt;br /&gt;
         <activiti:formProperty id="sReestrat_date_vug5" name="Дата виготовлення" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sReestrat_N_posv5" name="Реєстраційний номер КОРО реєстратора розрахункових операцій" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sReestrat_jblic_dfs5" name="Дата початку обліку в органах ДФС" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody1" name="[pattern\print\nicolaev_dfs_592.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/nicolaev_dfs_592.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="супровідний текст" type="invisible" default="Якщо заявка прийнята, вона знов з'явиться в необроблених, візьміть ії в роботу і зробіть помітку чи видано на руки документ. У разі відмови робота по цій заявці завершена."></activiti:formProperty>
         <activiti:formProperty id="print_marker1" name="ur_fiz_print" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_1&quot;:{&quot;aElement_ID&quot;:[&quot;sEnamUr&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asOsoba&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnamUr'&quot;},&quot;ShowElementsOnTrue_2&quot;:{&quot;aElement_ID&quot;:[&quot;sEnamFiz&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asOsoba&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnamFiz'&quot;},&quot;ShowElementsOnTrue_3&quot;:{&quot;aElement_ID&quot;:[&quot;s2yes&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;print2&quot;},&quot;sCondition&quot;:&quot;[sCond]=='s2yes'&quot;},&quot;ShowElementsOnTrue_4&quot;:{&quot;aElement_ID&quot;:[&quot;s3yes&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;print3&quot;},&quot;sCondition&quot;:&quot;[sCond]=='s3yes'&quot;},&quot;ShowElementsOnTrue_5&quot;:{&quot;aElement_ID&quot;:[&quot;s4yes&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;print4&quot;},&quot;sCondition&quot;:&quot;[sCond]=='s4yes'&quot;},&quot;ShowElementsOnTrue_6&quot;:{&quot;aElement_ID&quot;:[&quot;s5yes&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;print5&quot;},&quot;sCondition&quot;:&quot;[sCond]=='s5yes'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -461,13 +462,16 @@ yyyy2 = yyyy-(-1)
 if (ddd == '01')
   {
   mmm2=mmm-1
-  if (mmm2&lt;10){mmm2 = '0'+mmm2}
-    if(mmm =='05'||'07'||'08'||'10'||'12')
-      {ddd2='30'}
-    if(mmm =='06'||'09'||'11'||'04'||'02')
-      {ddd2='31'}
-    if(mmm =='03')
-      {ddd2='28'}
+  if (mmm2&lt;10)
+    {mmm2 = '0'+mmm2}
+
+  if(mmm =='06'||'09'||'11'||'04'||'02'||'08')
+    {ddd2='31'}
+  else
+    {ddd2='30'}      
+      
+  if(mmm =='03')
+    {ddd2='28'}
   }
   else
   {

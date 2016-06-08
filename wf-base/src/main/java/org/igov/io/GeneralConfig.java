@@ -2,11 +2,12 @@ package org.igov.io;
 
 import java.util.HashMap;
 import java.util.Map;
-import static org.igov.util.ToolLuna.getProtectedNumber;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import static org.igov.util.ToolLuna.getProtectedNumber;
 
 /**
  * @author bw
@@ -64,12 +65,6 @@ public class GeneralConfig {
     private String snID_SendList_UniSender_Mail;
     @Value("${general.Mail.UniSender.sURL}")
     private String sURL_UniSender_Mail;
-    @Value("${general.Mail.UniSender.sContext_Subscribe}")
-    private String sContext_Subscribe_UniSender_Mail;
-    @Value("${general.Mail.UniSender.sContext_CreateMail}")
-    private String sContext_CreateMail_UniSender_Mail;
-    @Value("${general.Mail.UniSender.sContext_CreateCompain}")
-    private String sContext_CreateCompain_UniSender_Mail;
     
     @Value("${general.Auth.BankID.PB.sLogin}")
     private String sLogin_BankID_PB_Auth;
@@ -110,15 +105,18 @@ public class GeneralConfig {
     @Value("${general.OTP.sMerchantPassword}")
     private String sMerchantPassword_OTP;
     
-    @Value("${general.LiqPay.sURL_CheckOut}")
-    private String sURL_CheckOut_LiqPay;
-    
     @Value("${general.SMS.sURL_Send}")
     private String sURL_Send_SMS;
     @Value("${general.SMS.sMerchantId}")
     private String sMerchantId_SMS;
     @Value("${general.SMS.sMerchantPassword}")
     private String sMerchantPassword_SMS;
+
+    @Value("${general.LiqPay.sURL_CheckOut}")
+    private String sURL_CheckOut_LiqPay;
+
+    
+    
     
     
     @Value("${general.sHost}")
@@ -131,7 +129,7 @@ public class GeneralConfig {
     private String generalUsername;
     @Value("${general.auth.password}")
     private String generalPassword;
-
+    
     @Value("${general.sURL_DocumentKvitanciiForIgov}")
     private String general_sURL_DocumentKvitanciiForIgov;
     @Value("${general.sURL_DocumentKvitanciiForAccounts}")
@@ -192,6 +190,18 @@ public class GeneralConfig {
         }
         return b;
     }
+    public String getSelfHost() {
+        return sHost_Self;
+    }
+    public String getSelfHostCentral() {
+        return sHostCentral_Self;
+    }
+    public String getAuthLogin() {
+        return sLogin_Auth;
+    }
+    public String getAuthPassword() {
+        return sPassword_Auth;
+    }
     
     public String getURL_MSG_Monitor() {
         return sURL_MSG_Monitor;
@@ -226,19 +236,6 @@ public class GeneralConfig {
     }
     public String getURL_ResourceSignature_BankID_PB_Auth() {
         return sURL_ResourceSignature_BankID_PB_Auth != null ? sURL_ResourceSignature_BankID_PB_Auth : "https://bankid.privatbank.ua/ResourceService/checked/signatureData";
-    }
-    
-    public String getSelfHost() {
-        return sHost_Self;
-    }
-    public String getSelfHostCentral() {
-        return sHostCentral_Self;
-    }
-    public String getAuthLogin() {
-        return sLogin_Auth;
-    }
-    public String getAuthPassword() {
-        return sPassword_Auth;
     }
     
     public String getLogin_Auth_Receipt_PB_Bank() {
@@ -289,7 +286,7 @@ public class GeneralConfig {
     public String getMerchantPassword_OTP()  {
         return sMerchantPassword_OTP;
     }
-
+    
     public String getURL_Send_SMS()  {
         return sURL_Send_SMS;
     }
@@ -305,15 +302,6 @@ public class GeneralConfig {
     }
     public String getURL_UniSender_Mail() {
         return sURL_UniSender_Mail;
-    }
-    public String getContext_Subscribe_UniSender_Mail() {
-        return sContext_Subscribe_UniSender_Mail;
-    }
-    public String getContext_CreateMail_UniSender_Mail() {
-        return sContext_CreateMail_UniSender_Mail;
-    }
-    public String getContext_CreateCompain_UniSender_Mail() {
-        return sContext_CreateCompain_UniSender_Mail;
     }
     public String getKey_UniSender_Mail() {
         return sKey_UniSender_Mail;
@@ -407,6 +395,8 @@ public class GeneralConfig {
     public String getOrderId_ByProcess(Integer nID_Server, Long nID_Process) {
         return getOrderId_ByOrder(getSelfServerId(), getProtectedNumber(nID_Process));
     }    
+    
+    
     
     
     public String sLogin_BankID() {
