@@ -1,34 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="zhytomyr_mvk_families-2" name="Надання довідки про перебування в єдиному банку даних багатодітних сімей" isExecutable="true">
-    <documentation>https://github.com/e-government-ua/iBP/issues/321</documentation>
+  <process id="soc_815" name="Довідка про розмір державної соціальної допомоги малозабезпеченим сім’ям" isExecutable="true">
+    <documentation>Створення БП. 
+Аналітик: Ставицький В.Д, 
+07.06.16
+https://github.com/e-government-ua/iBP/issues/815</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати довідку" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації громадянина" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта громадянина України заявника; Сторінки 1, 2, 10, 11. При наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву чи pdf-файлі" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="surname" name="Прізвище родини в родовому відмінку;наприклад, &quot;Іванових&quot;" type="string" required="true"></activiti:formProperty>
 
+        <activiti:formProperty id="nArea" name="номер органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу" type="invisible" default=" "></activiti:formProperty>
-        
-        <activiti:formProperty id="sNameAreaPrusl" name="назва району міста" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sGolovaFYS" name="ФІО Начальнику управління у справах сім'ї, молоді та спорту" type="invisible" default=" "></activiti:formProperty>
-
-
-
-
-
         <activiti:formProperty id="sMailClerk1" name="Пошта" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
-
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -48,7 +42,7 @@
           <activiti:expression><![CDATA[${sMailClerk1}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове звернення. Надання довідки про перебування в єдиному банку даних багатодітних сімей]]></activiti:string>
+          <activiti:string><![CDATA[Нове звернення. Надання довідки про розмір державної соціальної допомоги малозабезпеченим сім’ям]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[Звернення № [sID_Order]<br>
@@ -62,28 +56,27 @@
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
-		<activiti:field name="sPhone_SMS">
-			<activiti:expression>${phone}</activiti:expression>
-		</activiti:field>
-		<activiti:field name="sText_SMS">
-			<activiti:expression>Vashe zvernennya [sID_Order] zareestrovano</activiti:expression>
-		</activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano]]></activiti:expression>
+        </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[iGov: Надання довідки про перебування в єдиному банку даних багатодітних сімей]]></activiti:expression>
+          <activiti:expression><![CDATA[iGov: Надання довідки про розмір державної соціальної допомоги малозабезпеченим сім’ям]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<p>
 				Ваше звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> 
-				щодо надання довідки про перебування в єдиному банку даних багатодітних сімей успішно зареєстроване.<br>
-				Спеціалісти управління у справах сім'ї, молоді та спорту нададуть відповідь найближчим часом.
+				щодо надання довідки про розмір державної соціальної допомоги малозабезпеченим сім’ям
 			</p>
 			[pattern/mail/_common_signature_start.html]
 			${sNameOrgan}.<br>
@@ -93,25 +86,20 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow5" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
-    <userTask id="usertask1" name="опрацювання звернення" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}_mvk_family">
+    <userTask id="usertask1" name="опрацювання звернення" activiti:candidateGroups="upszn${nArea}">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Орган обслуговування" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса громадянина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="surname" name="Прізвище родини в родовому відмінку; ;writable=false" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decision_2" name="прийняте рішення" type="enum" required="true">
-          <activiti:value id="accept" name="Довідка створена, запросити громадянина в ЦНАП для отримання"></activiti:value>
+          <activiti:value id="accept" name="Довідка створена, запросити громадянина для отримання"></activiti:value>
           <activiti:value id="reject" name="Відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment_1" name="Додаткова інформація громадянину у разі надання довідки АБО відхилення зверення" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/zhitomir/zhytomyr_mvk_families_2.html]" type="invisible" default="заява" writable="false"></activiti:formProperty>
-        
-        <activiti:formProperty id="sNameAreaPrusl" name="назва району міста" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sGolovaFYS" name="ФІО Начальнику управління у справах сім'ї, молоді та спорту" type="invisible"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
@@ -124,27 +112,27 @@
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
-		<activiti:field name="sPhone_SMS">
-			<activiti:expression>${phone}</activiti:expression>
-		</activiti:field>
-		<activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
-		</activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[iGov: Надання довідки про перебування в єдиному банку даних багатодітних сімей]]></activiti:string>
+          <activiti:string><![CDATA[iGov: Надання довідки про розмір державної соціальної допомоги малозабезпеченим сім’ям]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<p>
 			Ви подавали звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> 
-			щодо отримання довідки про перебування в єдиному банку даних багатодітних сімей.<br>
+			щодо отримання довідки про розмір державної соціальної допомоги малозабезпеченим сім’ям.<br>
 			</p>
 			<p>
 		    	Коментар чиновника:<br>
@@ -176,27 +164,27 @@
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
-		<activiti:field name="sPhone_SMS">
-			<activiti:expression>${phone}</activiti:expression>
-		</activiti:field>
-		<activiti:field name="sText_SMS">
-          <activiti:expression>Za Vashym zvernennyam [sID_Order] vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
-		</activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Za Vashym zvernennyam [sID_Order] vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[iGov: Надання довідки про перебування в єдиному банку даних багатодітних сімей]]></activiti:string>
+          <activiti:string><![CDATA[iGov: Надання довідки про про розмір державної соціальної допомоги малозабезпеченим сім’ям]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<p>
 				На жаль, Ваше звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a>
-				щодо надання довідки про перебування в єдиному банку даних багатодітних сімей, 
+				щодо надання довідки про розмір державної соціальної допомоги малозабезпеченим сім’ям, 
 				відхилено через недостатню або неправильну інформацію.
 			</p>
 			<p>
@@ -221,8 +209,8 @@
     </serviceTask>
     <sequenceFlow id="flow10" sourceRef="servicetask5" targetRef="endevent1"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_zhytomyr_mvk_families-2">
-    <bpmndi:BPMNPlane bpmnElement="zhytomyr_mvk_families-2" id="BPMNPlane_zhytomyr_mvk_families-2">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_soc_815">
+    <bpmndi:BPMNPlane bpmnElement="soc_815" id="BPMNPlane_soc_815">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="157.0" y="40.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -282,7 +270,7 @@
         <omgdi:waypoint x="598.0" y="153.0"></omgdi:waypoint>
         <omgdi:waypoint x="516.0" y="152.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="551.0" y="136.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="54.0" x="551.0" y="136.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
@@ -294,7 +282,7 @@
         <omgdi:waypoint x="598.0" y="261.0"></omgdi:waypoint>
         <omgdi:waypoint x="516.0" y="260.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="551.0" y="269.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="42.0" x="551.0" y="269.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
