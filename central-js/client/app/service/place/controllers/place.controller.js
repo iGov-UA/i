@@ -98,7 +98,7 @@ angular.module('app').controller('PlaceController',
           $state.go('index.service.general.place.built-in.bankid', getBuiltInBankIDStateParams()).finally(function () {
             isChangeInProcess = false;
           });
-        } else if (!isStayingOnCurrentState($state, stateToGo)) {
+        } else if (!isStayingOnCurrentState($state, stateToGo).isStaying) {
           isChangeInProcess = true;
           $state.go(stateToGo, {id: oService.nID}, {location: false}).finally(function () {
             isChangeInProcess = false;

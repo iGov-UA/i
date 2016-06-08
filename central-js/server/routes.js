@@ -17,6 +17,9 @@ module.exports = function (app) {
   // check api call for nID_Server and get region host
   app.all('/api/*', region.searchForHost());
 
+  //userMock
+  app.use('/api/user', require('./api/user-mock'));
+
   // routes
   app.use('/api/user', require('./api/user'));
   app.use('/api/documents', require('./api/documents'));

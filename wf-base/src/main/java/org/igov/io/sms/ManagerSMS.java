@@ -74,7 +74,8 @@ public class ManagerSMS {
 
 	String stringSmsReqest = oGson.toJson(smsReqest);
 
-	LOG.info("sURL={}, jsonObj:\n{}", sURL_Send, stringSmsReqest);
+	LOG.info("sURL={}", sURL_Send);
+	LOG.debug("Запрос:\n{}", stringSmsReqest);
 
 	URL oURL = new URL(sURL_Send);
 	HttpURLConnection oHttpURLConnection = (HttpURLConnection) oURL.openConnection();
@@ -82,39 +83,29 @@ public class ManagerSMS {
 	oHttpURLConnection.setRequestProperty("content-type", "application/json;charset=UTF-8");
 	oHttpURLConnection.setDoOutput(true);
 
-	DataOutputStream oDataOutputStream = new DataOutputStream(oHttpURLConnection.getOutputStream());
-	oDataOutputStream.writeBytes(stringSmsReqest);
-	oDataOutputStream.flush();
-	oDataOutputStream.close();
+	String ret = "";
 
-	BufferedReader oBufferedReader = new BufferedReader(new InputStreamReader(oHttpURLConnection.getInputStream()));
-	StringBuilder os = new StringBuilder();
-	String s;
-	while ((s = oBufferedReader.readLine()) != null) {
-	    os.append(s);
+	try (DataOutputStream oDataOutputStream = new DataOutputStream(oHttpURLConnection.getOutputStream())) {
+	    oDataOutputStream.writeBytes(stringSmsReqest);
+	    oDataOutputStream.flush();
+	    oDataOutputStream.close();
+
+	    try (BufferedReader oBufferedReader = new BufferedReader(
+		    new InputStreamReader(oHttpURLConnection.getInputStream()))) {
+		StringBuilder os = new StringBuilder();
+		String s;
+		while ((s = oBufferedReader.readLine()) != null) {
+		    os.append(s);
+		}
+		ret = os.toString();
+	    }
+	    
 	}
-	oBufferedReader.close();
-	
-	String ret = os.toString();
 
-	LOG.debug("Ответ:\n{}", ret);
+	LOG.info("Ответ:\n{}", ret);
+
 	return ret;
 
     }
-
-//    public static void main(String[] args) {
-//	 ManagerSMS managerSMS = new ManagerSMS();
-//	
-//	 managerSMS.init();
-//	 try {
-//	    String ret = managerSMS.sendSMS("+380923046007", "text test");
-//	    
-//	    System.out.println(ret);
-//	} catch (IllegalArgumentException e) {
-//	    e.printStackTrace();
-//	} catch (IOException e) {
-//	    e.printStackTrace();
-//	}
-//    }
 
 }

@@ -5,6 +5,11 @@
  */
 package org.igov.io;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import org.igov.service.business.msg.MsgService;
+import org.igov.service.business.msg.MsgType;
+
 import java.util.HashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -129,10 +134,27 @@ public class Log {
         send();
     }
     
+    private void sendToMSG(MsgType msgType){
+	String sStack = null;
+	if ( oException != null ) {
+	    StringWriter errors = new StringWriter();
+	    oException.printStackTrace(new PrintWriter(errors));
+	    sStack = errors.toString();
+	}
+	
+        try {
+            MsgService.setEventSystemWithParam(msgType.name(), null, null, oClass == null ? "NULL_CLASS_NAME" : oClass.getName(), sHead, sBody, sStack, mParam);
+	} catch (Exception e) {
+	    oLog_Error.error("Cann't send an error message to service MSG\n", e);
+	}
+        
+    }
+
     public Log send(){
         try{
             String sText = sText();
             if(oStatus==LogStatus.ERROR){
+        	sendToMSG(MsgType.INTERNAL_ERROR);
                 oLog_Alert.error(sText);
                 if(oException!=null){
                     oLog_Error.error(sText,oException);
@@ -148,6 +170,7 @@ public class Log {
                     }
                 }
             }else if(oStatus==LogStatus.WARN){
+        	sendToMSG(MsgType.WARNING);
                 oLog_Alert.warn(sText);
                 if(oException!=null){
                     oLog_Debug.warn(sText,oException);

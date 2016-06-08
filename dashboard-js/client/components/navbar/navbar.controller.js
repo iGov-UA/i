@@ -31,6 +31,16 @@
       return Auth.isLoggedIn();
     };
 
+    $scope.isVisibleInstrument = function(menuType){
+      if(menuType === 'tools.users'){
+        return Auth.isLoggedIn() && Auth.hasOneOfRoles('manager', 'admin', 'kermit', 'supervisor');
+      }
+      if(menuType === 'tools.groups'){
+        return Auth.isLoggedIn() && Auth.hasOneOfRoles('manager', 'admin', 'kermit', 'supervisor');
+      }
+      return Auth.isLoggedIn();
+    };
+
     $scope.getCurrentUserName = function() {
       var user = Auth.getCurrentUser();
       return user.firstName + ' ' + user.lastName;
