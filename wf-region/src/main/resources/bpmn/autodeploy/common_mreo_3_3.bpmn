@@ -6,7 +6,8 @@
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть сервісний центр, де Ви б бажали отримати послугу" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса МРЕВ" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWork_Time" name="Графік прийому громадян" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="visit" name="Зазначте бажану дату / час візиту до сервісного центра для отримання послуги; ця інформація допоможе співробітнику сервісного центра  зарезервувати для Вас зручний час візиту" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nID_Department_visitDate" name="Department" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="visitDate" name="Зазначте бажану дату / час візиту до сервісного центра для отримання послуги" type="queueData" required="true"></activiti:formProperty>
         <activiti:formProperty id="sMail_Employee" name="Відповідальна особа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sOKPO" name="Код отримувача" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBillMFO" name="МФО" type="label" default=" "></activiti:formProperty>
@@ -30,13 +31,14 @@
           <activiti:value id="attr2" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="renamed_doc" name="Документ, що підтверджує зміну прізвища; назва документу, серія, номер, дата видачі, орган ким видано" type="textArea"></activiti:formProperty>
-       
         <activiti:formProperty id="medical_scan1" name="Дійсна медична довідка форма 083/о (сторона 1)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="medical_scan2" name="Дійсна медична довідка форма 083/о (сторона 2)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="licence_scan" name="Копія посвідчення водія, що потребує заміни" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Ваш контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="marker1" name="show/hide fields" type="markers" default="${markerService.loadFromFile('mvd/dnepr_mreo_2_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="sMail_Signature" name="sMail_Signature" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Підтягування документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -64,15 +66,15 @@
           <activiti:value id="attr2" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="renamed_doc" name="Документ, що підтверджує зміну прізвища; назва документу, серія, номер, дата видачі, орган ким видано" writable="false"></activiti:formProperty>
-        
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="visit" name="Побажання громадянина щодо візиту для отримання послуги" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="visitDate" name="Побажання громадянина щодо візиту для отримання послуги" type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Рішення про надання послуги" type="enum" required="true">
-          <activiti:value id="accept" name="Зауваження відсутні. Надіслати громадянину дату / час візиту для отримання посвідчення"></activiti:value>
+          <activiti:value id="accept" name="Зауваження відсутні. "></activiti:value>
           <activiti:value id="reject" name="Відмовити громадянину в наданні послуги."></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="comment" name="Вкажіть дату візиту для отримання посвідчення або підставу для відмови в наданні послуги (Інформація буде спрямована громадянину на e-mail)" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="comment" name="Вкажіть номер віконця для отримання посвідчення або підставу для відмови в наданні послуги (Інформація буде спрямована громадянину на e-mail)" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCancelInfo" name="Коментар  заявника в разі скасування   свого звернення; ;writable=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -103,25 +105,24 @@
           <activiti:value id="attr2" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="renamed_doc" name="Документ, що підтверджує зміну прізвища; назва документу, серія, номер, дата видачі, орган ким видано" writable="false"></activiti:formProperty>
-        
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Рішення про надання послуги" type="enum" writable="false">
-          <activiti:value id="accept" name="Зауваження відсутні. Надіслати громадянину дату / час візиту для отримання посвідчення"></activiti:value>
+          <activiti:value id="accept" name="Зауваження відсутні. "></activiti:value>
           <activiti:value id="reject" name="Відмовити громадянину в наданні послуги."></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="visit" name="Побажання громадянина щодо візиту для отримання послуги" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="comment" name="Надіслана громадянину дата візиту для отримання посвідчення" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="visitDate" name="Побажання громадянина щодо візиту для отримання послуги" type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide2" name="Результат надання послуги" type="enum" required="true">
           <activiti:value id="accept2" name="Підтверджую, що громадянин отримав посвідчення"></activiti:value>
           <activiti:value id="reject2" name="Громадянин не з'являється для отримання посвядчення. Закрити заявку."></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sCancelInfo" name="Коментар  заявника в разі скасування   свого звернення; ;writable=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <endEvent id="endevent6" name="End"></endEvent>
     <sequenceFlow id="flow21" sourceRef="servicetask2" targetRef="usertask2"></sequenceFlow>
-    <serviceTask id="servicetask2" name="Повідомлення громадянина сплату послуги" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask2" name="Повідомлення громадянина сплату послуги" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -133,7 +134,7 @@
           <activiti:string><![CDATA[Поновлення або заміна водійського посвідчення]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header_with_payment.html]
+          <activiti:expression>[sID_Order]&lt;br&gt; [pattern/mail/_common_header_with_payment.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 &lt;p&gt; Для отримання послуги Вам необхідно сплатити державний збір і надати квитанцію про сплату під час візиту за адресою ${sAddress}.
 &lt;/p&gt;
@@ -142,8 +143,8 @@
 &lt;p&gt;
 Просимо Вас мати із собою:&lt;br /&gt;
 1. Громадянський паспорт&lt;br /&gt;
-2. Копію квитанції про сплату послуги&lt;br /&gt;
-3. ІПН &lt;br /&gt;
+2. Оригінал квитанції про сплату послуги з відміткою банку&lt;br /&gt;
+3. Індивідуальний Податковий Номер &lt;br /&gt;
 4. Медичну довідку (форма 083/о) &lt;br /&gt;
 5. Діюче посвідчення водія &lt;br /&gt;
 6. Копію документу, що підтверджує зміни особистих даних, завірену в установчому порядку &lt;br /&gt;
@@ -157,7 +158,7 @@
 Сума: ${sPrice0} &lt;br /&gt;
 Призначення платежу: ${sDescription0} &lt;br /&gt;
 
-Дата візиту: &lt;br /&gt;
+Примітка (номер віконця тощо): &lt;br /&gt;
 ${comment}&lt;br /&gt;
 &lt;p&gt;
 Графік прийому громадян:&lt;br /&gt;
@@ -165,16 +166,26 @@ ${comment}&lt;br /&gt;
 ${sWork_Time}
 &lt;/p&gt;
 
+&lt;br /&gt;  [cancelTask] &lt;br /&gt;
                                     
 [pattern/mail/_common_signature_start.html]
 ${sMail_Signature}&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer_with_payment.html]</activiti:expression>
         </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow27" sourceRef="servicetask9" targetRef="usertask1"></sequenceFlow>
-    <serviceTask id="servicetask6" name="Повідомлення про відмову в наданні послуги" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask6" name="Повідомлення про відмову в наданні послуги" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -186,10 +197,10 @@ ${sMail_Signature}&lt;br /&gt;
           <activiti:string><![CDATA[Поновлення або заміна водійського посвідчення]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt; [pattern/mail/_common_header.html]
 &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 &lt;br /&gt;
-На жаль, Вам відмовлено в реєстраціі авто.&lt;br /&gt;
+На жаль, Вам відмовлено в наданні послуги.&lt;br /&gt;
 Підстава: &lt;br /&gt;
 ${comment}&lt;br /&gt;
 
@@ -199,6 +210,15 @@ ${sMail_Signature},&lt;br /&gt;
  
 
 [pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -215,7 +235,7 @@ ${sMail_Signature},&lt;br /&gt;
           <activiti:string><![CDATA[Поновлення/заміна водійського посвідчення. Оцінювання якості наданя послуги.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt; [pattern/mail/_common_header.html]
  &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
 
 Дякуємо, Вам що скористались нашим сервісом!
@@ -246,7 +266,7 @@ ${sMail_Signature}&lt;br&gt;
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask10" name="Повідомлення громадянину про успішне подання заяви" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask10" name="Повідомлення громадянину про успішне подання заяви" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -258,13 +278,24 @@ ${sMail_Signature}&lt;br&gt;
           <activiti:string><![CDATA[Поновлення/заміна водійського посвідчення]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt; [pattern/mail/_common_header.html]
  &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
 Ваше звернення успішно зареєстровано. &lt;br /&gt;
 Результат обробки звернення будуть спрямовані на цей е-мейл. &lt;br /&gt;
+&lt;br /&gt;  [cancelTask] &lt;br /&gt;
+
 [pattern/mail/_common_signature.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
