@@ -1,7 +1,11 @@
 package org.igov.service.controller;
 
 import io.swagger.annotations.*;
+import org.activiti.engine.HistoryService;
+import org.activiti.engine.history.HistoricIdentityLink;
+import org.activiti.engine.history.HistoricTaskInstance;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.hibernate.Criteria;
 import org.igov.io.GeneralConfig;
 import org.igov.model.action.event.HistoryEvent_Service;
 import org.igov.model.action.event.HistoryEvent_ServiceDao;
@@ -12,8 +16,10 @@ import org.igov.service.business.msg.MsgSend;
 import org.igov.service.business.msg.MsgSendImpl;
 import org.igov.service.business.msg.MsgService;
 import org.igov.service.business.subject.SubjectMessageService;
+import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.util.JSON.JsonRestUtils;
+import org.json.simple.JSONValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +30,7 @@ import org.springframework.web.bind.annotation.*;
 import com.pb.ksv.msgcore.data.IMsgObjR;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
 
@@ -56,6 +59,8 @@ public class DebugCentralController {
     private BpService bpService;
     @Autowired
     private MsgService msgService;
+    @Autowired
+    private HistoryService oHistoryService;
 
     @Autowired
     private SubjectMessageService subjectMessageService;
@@ -308,7 +313,85 @@ public class DebugCentralController {
             );
         }
         return Long.valueOf(0+"");//subjectMessages
-    }        
-    
+    }
+
+    @RequestMapping(value="/action/event/getEventInfoForTestingByOrderID", method = {RequestMethod.GET})
+    public @ResponseBody String getEventInfoByOrderID(@RequestParam(value = "sID_Order", required = true) String sID_Order) throws CRCInvalidException {
+
+        Map<String, Object> result = new HashMap<>();
+
+        HistoryEvent_Service obj = historyEventServiceDao.getOrgerByID(sID_Order);
+
+        result.put("sID_Order", obj.getsID_Order());
+        result.put("nID_Task", obj.getnID_Task());
+        result.put("nID_Service", obj.getnID_Service());
+        result.put("nID_Subject", obj.getnID_Subject());
+        result.put("sID_UA", obj.getsID_UA());
+        result.put("sUserTaskName", obj.getsUserTaskName());
+        result.put("sID_StatusType", obj.getsID_StatusType());
+
+        try{
+            HistoricTaskInstance historicTaskInstance = oHistoryService.createHistoricTaskInstanceQuery()
+                    .taskId(obj.getnID_Task().toString()).singleResult();
+
+            historicTaskInstance.getDeleteReason();
+            result.put("TASK_HisoricTaskInstance", historicTaskInstance.getDeleteReason());
+        }catch (Exception e){
+            result.put("TASK_HisoricTaskInstance", "Exception " + e.getMessage());
+        }
+
+        String processInstanceId = null;
+
+        try {
+            HistoricTaskInstance historicTaskInstanceQuery = oHistoryService
+                    .createHistoricTaskInstanceQuery().taskId(obj.getnID_Task().toString())
+                    .singleResult();
+            processInstanceId = historicTaskInstanceQuery
+                    .getProcessInstanceId();
+
+            result.put("ProcessInstanceId", processInstanceId);
+        } catch (Exception e){
+            result.put("ProcessInstanceId", "Exception " + e.getMessage());
+        }
+
+        try{
+
+            String deleeReason = oHistoryService.createProcessInstanceHistoryLogQuery(processInstanceId).singleResult().getDeleteReason();
+
+            result.put("TASK_ProcessInstanceHistoryLog", deleeReason);
+        }catch (Exception e){
+            result.put("TASK_ProcessInstanceHistoryLog", "Exception " + e.getMessage());
+        }
+
+        try{
+
+            Date oProcessInstanceEndDate = oHistoryService.createProcessInstanceHistoryLogQuery(processInstanceId).singleResult().getEndTime();
+            result.put("TASK_ProcessInstanceHistoryLog_EndDate", oProcessInstanceEndDate);
+
+        }catch (Exception e){
+            result.put("TASK_ProcessInstanceHistoryLog_EndDate", "Exception " + e.getMessage());
+        }
+
+        try{
+
+            String deleeReason = oHistoryService.createHistoricProcessInstanceQuery().processInstanceId(processInstanceId).singleResult().getDeleteReason();
+
+            result.put("TASK_HistoricProcessInstance", deleeReason);
+        }catch (Exception e){
+            result.put("TASK_HistoricProcessInstance", "Exception " + e.getMessage());
+        }
+
+        try{
+
+            Date oProcessInstanceEndDate = oHistoryService.createHistoricProcessInstanceQuery().processInstanceId(processInstanceId).singleResult().getEndTime();
+            result.put("TASK_HistoricProcessInstance_EndDate", oProcessInstanceEndDate);
+
+        }catch (Exception e){
+            result.put("TASK_HistoricProcessInstance_EndDate", "Exception " + e.getMessage());
+        }
+
+        return JSONValue.toJSONString(result);
+    }
+
 
 }

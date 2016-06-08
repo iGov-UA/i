@@ -14,10 +14,6 @@
         <activiti:formProperty id="adress2" name="Адреса проживання" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
-        <activiti:formProperty id="paying_more" name="Бажаєте отримувати допомогу у підвищеному розмірі" type="enum" required="true">
-          <activiti:value id="attr_yes" name="Так"></activiti:value>
-          <activiti:value id="attr_no" name="Ні"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="transfer_type" name="Прошу в разі призначення допомоги кошти перераховувати; оберіть зручний для Вас спосіб перерахування коштів" type="enum" required="true">
           <activiti:value id="post" name="через національного оператора поштового зв'язку"></activiti:value>
           <activiti:value id="bank" name="на рахунок у банку"></activiti:value>
@@ -37,10 +33,9 @@
         <activiti:formProperty id="file6" name="Довідка про склад сім'ї" type="file"></activiti:formProperty>
         <activiti:formProperty id="file7" name="Довідки о доходах всіх членів сім'ї" type="file"></activiti:formProperty>
         <activiti:formProperty id="info_2" name="Заповніть декларацію" type="label" default="Завантажте &lt;a href=&quot;https://www.dropbox.com/s/jyrbb4d12dt9vui/blank-deklaratsiya-dopomogi.doc?dl=0&quot; target=&quot;_blank&quot;&gt;декларацію&lt;/a&gt;, роздрукуйте, заповніть, та додайте у наступному полі."></activiti:formProperty>
-        <activiti:formProperty id="file8" name="Декларація про доходи та майновий стан;(заповнюється на підставі довідок про доходи кожного члена сім'ї)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="file8" name="Декларація про доходи та майновий стан;(заповнюється на підставі довідок про доходи кожного члена сім'ї)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file9" name="Довідка про неотримання допомоги з іншого Управління праці та соціального захисту населення;(якщо заявник зареєстрований в іншому районі)" type="file"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Вибір отримання коштів" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;post_office&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;transfer_type&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'post'&quot;},&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;bank_name&quot;,&quot;mfo&quot;,&quot;edrpou&quot;,&quot;bank_account&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;transfer_type&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'bank'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers2" name="Підвищений розмір виплати" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;file6&quot;,&quot;file7&quot;,&quot;info_2&quot;,&quot;file8&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;paying_more&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'attr_yes'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="rName" name="номер р-на соцзащиты" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="area" name="название р-на соцзащиты" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="group" name="група" type="invisible"></activiti:formProperty>
@@ -67,12 +62,13 @@
         <activiti:formProperty id="mfo" name="МФО банку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="edrpou" name="ЄДРПОУ банку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bank_account" name="Номер рахунку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sRoomNumber" name="Номер кабінету, в який запросити громадянина" type="string"></activiti:formProperty>
         <activiti:formProperty id="decision_step1" name="Рішення етап 1" type="enum" required="true">
-          <activiti:value id="attr1_ok" name="Заповнені дані вірні, очікується оригінал Витягу"></activiti:value>
+          <activiti:value id="attr1_ok" name="Заповнені дані вірні, запросити громадянина з оригіналами документів"></activiti:value>
           <activiti:value id="attr2_bad" name="Дані заповнені неправильно, повідомити громадянина"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decision_comment" name="Якщо ви відмовляєте замовнику, обов'язково вкажіть підставу у цьому полі" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sBody" name="[pattern/print/dnepr_soc_help_157_print.html]" type="invisible" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern/print/UPSZN/dnepr_soc_help_157_print.html]" type="invisible" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -284,9 +280,8 @@
 [pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 &lt;p&gt;Ваше звернення щодо призначення допомоги на дітей одиноким матерям зареєстровано.&lt;/p&gt;
-&lt;p&gt;Вам необхідно принести оригінал Витягу з Державного реєстру актів цивільного стану громадян про державну реєстрацію народження дитини, або  довідка про народження, або документ про народження, виданий компетентним органом іноземної держави, в якому відсутні відомості про батька, за умови його легалізації в установленому законодавством порядку.&lt;/p&gt;&lt;br /&gt;
-&lt;p&gt;Коментар спеціаліста: ${decision_comment}&lt;/p&gt;
-&lt;p&gt;Чекаємо Вас за адресою:&lt;br /&gt;
+&lt;p&gt;Вам необхідно принести оригінали документів, які були завантажені під час заповнення фрорми.&lt;/p&gt;&lt;br /&gt;
+&lt;p&gt;Чекаємо Вас в кабінеті №${sRoomNumber} за адресою:&lt;br /&gt;
 [pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:3]
 &lt;/p&gt;
 &lt;br /&gt;
@@ -301,7 +296,7 @@
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression>Vashe zvernennya [sID_Order] v roboti ta potrebue oryginaliv dokumentiv. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>" "</activiti:expression>

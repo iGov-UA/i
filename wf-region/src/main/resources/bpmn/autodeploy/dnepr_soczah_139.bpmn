@@ -32,6 +32,8 @@
           <activiti:value id="case_2" name="Один з батьків знаходиться у місцях позбавлення волі, на примусовому лікуванні або перебування на строковій військовій службі"></activiti:value>
           <activiti:value id="case_3" name="Місце проживання (перебування) одного з батьків дитини не встановлено (виплата призначається на 6-ть місяців)"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="info_2" name="Заповніть декларацію" type="label" default="Завантажте &lt;a href=&quot;https://www.dropbox.com/s/jyrbb4d12dt9vui/blank-deklaratsiya-dopomogi.doc?dl=0&quot; target=&quot;_blank&quot;&gt;декларацію&lt;/a&gt;, роздрукуйте, заповніть, та додайте у наступному полі."></activiti:formProperty>
+        <activiti:formProperty id="file8" name="Декларація про доходи та майновий стан;(заповнюється на підставі довідок про доходи кожного члена сім'ї)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="scsvid" name="Копія свідоцтва про народження дитини" type="file"></activiti:formProperty>
         <activiti:formProperty id="reg_reb" name="Довідка про реєстрацію місця проживання (перебування) дитини" type="file"></activiti:formProperty>
         <activiti:formProperty id="reg_oder" name="Довідка про реєстрацію місця проживання (перебування) одержувача" type="file"></activiti:formProperty>
@@ -84,15 +86,15 @@
         <activiti:formProperty id="decision" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="attr4_finish" name="Заповнені дані вірні, інформація направлена на розгляд, очікується рішення"></activiti:value>
           <activiti:value id="attr2_doc_bad" name="Дані заповнені невірно, відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
-          <activiti:value id="attr5_doc_bad" name="Дані надані не в повному обсязі - направити громадянину повідомлення (обов'язково впишіть коментар нижче)"></activiti:value>
+          <activiti:value id="attr5_doc_bad" name="Запросити громадянина до управління з оригіналами документів"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sBody" name="[pattern/print/dnepr_soczah_139_zayava.html]" type="invisible" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_soczah_139_zayava1.html]" type="invisible" default="Форма заяви продовження" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern/print/UPSZN/dnepr_soczah_139_zayava.html]" type="invisible" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/UPSZN/dnepr_soczah_139_zayava1.html]" type="invisible" default="Форма заяви продовження" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${scsvid},${reg_reb},${reg_oder},${rish_sudu},${dov_vikon},${dov_provad},${dov_ovs},${rozmir_alim}</activiti:expression>
+            <activiti:expression>${scsvid},${reg_reb},${reg_oder},${rish_sudu},${dov_vikon},${dov_provad},${dov_ovs},${rozmir_alim},${file8}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -123,10 +125,10 @@
         <activiti:formProperty id="mfo" name="МФО банку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="edrpou" name="ЄДРПОУ банку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bank_account" name="Номер рахунку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="decision" name="Обробка заяви" type="enum" writable="false">
+        <activiti:formProperty id="decision" name="Обробка заяви (1-й крок)" type="enum" writable="false">
           <activiti:value id="attr4_finish" name="Заповнені дані вірні, інформація направлена на розгляд, очікується рішення"></activiti:value>
           <activiti:value id="attr2_doc_bad" name="Дані заповнені невірно, відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
-          <activiti:value id="attr5_doc_bad" name="Дані надані не в повному обсязі - направити громадянину повідомлення (обов'язково впишіть коментар нижче)"></activiti:value>
+          <activiti:value id="attr5_doc_bad" name="Очикуємо оригіналів документів"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decision2" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="attr4_finish2" name="Зауважень немає, державана допомога буде надана"></activiti:value>
@@ -303,9 +305,7 @@
           <activiti:expression>[sID_Order]&lt;br&gt;
 [pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;Ваше звернення щодо надання тимчасової державної допомоги дітям, батьки яких ухиляються від сплати аліментів в очикуванні недостатніх документів. Протягом трьох місяців Ви повині донести іх в  [pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:2] за адресою [pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:3] або заповнити заявку повторно на порталі &lt;a href="#current-page"&gt;iGov.org.ua&lt;/a&gt;, враховуючи коментар нижче.&lt;/p&gt;
-&lt;p&gt;Коментар спеціаліста: ${comment}&lt;/p&gt;
-&lt;br /&gt;
+&lt;p&gt;Вам необхідно принести оригінали документів, які були завантажені при заповненні форми в [pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:2] за адресою [pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:3] або заповнити заявку повторно на порталі &lt;a href="#current-page"&gt;iGov.org.ua&lt;/a&gt;.&lt;/p&gt;
 [pattern_dictonary:dnepr_soc_help.csv:value{[rName]}:5]
 &lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
@@ -317,7 +317,7 @@
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] potrebue dodatkovyh dokumentiv. Detali u Vashomu email</activiti:expression>
+          <activiti:expression>Vashe zvernennya [sID_Order] v roboti ta potrebue oryginaliv dokumentiv. Detali u Vashomu email</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>" "</activiti:expression>

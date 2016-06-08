@@ -1,6 +1,8 @@
 package org.igov.service.business.msg;
 
 import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -66,15 +68,16 @@ import com.pb.util.gsv.net.HTTPClient;
  *             Для задач igov мы приняли следующий шаблон формирования Кода СООБЩЕНИЯ:  АББРЕВИАТУРА_ТИПА_СООБЩЕНИЯ-ИМЯ_ФУНКЦИИ, 
  *         длина кода сообщения не более 30символов. При превышении этой длины название функции обрезается слева.
  *         Например при вызове MsgSendImpl("WARNING","org.igov.controller.getFunction"), Код СООБЩЕНИЯ будет: 
- *         WR-IGOV_CONTROLLER_GETFUNCTION  - здесь точки заменены на знак подчеркивания
+ *         WR-IGOV_CONTROLLER_GETFUNCTION  - здесь точки заменены на знак подчеркивания, скобки заменяются то-же.
  *         123456789012345678901234567890 
  * 
  *         
- *         Для гибкой настройки программы может использоваться файл параметров msg.properties, где:
+ *         Для гибкой настройки программы может использоваться файл параметров AS.properties, где:
  * 
- *         MsgURL=http://msg.igov.org.ua/MSG  	// url Сервиса Хранения Ошибок 
- *         BusId=TEST 				// иденификатор Бизнес процесса
- *         TemplateMsgId=HMXHVKM70002M0		// код пустого шаблона СООБЩЕНИЯ
+ *         general.Monitor.MSG.sLogin=login@gmail.com	// Логин которому разрешено добавлять сообщения
+ *         general.Monitor.MSG.sBusinessId=TEST			// иденификатор Бизнес процесса
+ *         general.Monitor.MSG.sTemplateId=HMXHVKM80002M0	// код пустого шаблона СООБЩЕНИЯ
+ *         general.Monitor.MSG.sURL=http://msg.igov.org.ua/MSG	// url Сервиса Хранения Ошибок
  *         
  */
 public class MsgSendImpl implements MsgSend {
@@ -258,6 +261,20 @@ public class MsgSendImpl implements MsgSend {
 	    }
 
 	}
+
+	return this;
+    }
+    
+    public MsgSend addasParam(HashMap<String, Object> mParam) {
+	if ( mParam != null ) {
+	    this.asParam = new LinkedList<String>();
+
+	    for ( String key : mParam.keySet())
+	    {
+		this.asParam.add(key + ": " + mParam.get(key).toString());
+	    }
+	}
+	LOG.debug("set asParam={}", this.asParam);
 
 	return this;
     }

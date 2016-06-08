@@ -30,9 +30,15 @@ public final class JsonRequestDataResolver {
     public static String getEmail(JSONObject requestJson) throws ParseException {
         return getProperties(requestJson).get("email");
     }
-    
-     public static String getPhone(JSONObject requestJson) throws ParseException
-    {
+
+    public static String getPhone(JSONObject requestJson) throws ParseException {
         return getProperties(requestJson).get("phone");
+    }
+    public static String getBankIdFirstName(JSONObject requestJson) throws ParseException {
+        return getProperties(requestJson).get("bankIdfirstName");
+    }
+
+    public static String getBankIdLastName(JSONObject requestJson) throws ParseException {
+        return getProperties(requestJson).get("bankIdlastName");
     }
 }

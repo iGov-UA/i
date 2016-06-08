@@ -12,11 +12,13 @@ import org.activiti.engine.impl.persistence.entity.ExecutionEntity;
 import org.activiti.engine.task.Task;
 import org.igov.service.controller.security.AuthenticationTokenSelector;
 import org.apache.commons.lang3.StringUtils;
+import org.igov.io.db.kv.statical.IBytesDataStorage;
 import org.igov.io.fs.FileSystemDictonary;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.igov.service.business.action.event.HistoryEventService;
 import org.igov.service.business.action.task.core.AbstractModelTask;
 import org.igov.service.business.finance.Currency;
 import org.igov.service.business.object.Language;
@@ -27,22 +29,30 @@ import org.igov.io.mail.Mail;
 import org.igov.util.Tool;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
+import java.nio.charset.Charset;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import org.activiti.engine.HistoryService;
 import org.igov.service.business.action.task.core.ActionTaskService;
 import org.igov.service.business.action.task.systemtask.misc.CancelTaskUtil;
+
 import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
+
 import org.igov.io.sms.ManagerOTP;
 import org.igov.io.sms.ManagerSMS;
 import org.igov.service.controller.security.AccessContract;
 import org.igov.util.JSON.JsonDateTimeSerializer;
+
 import static org.igov.util.ToolLuna.getProtectedNumber;
+
 import org.igov.util.ToolWeb;
 import org.joda.time.format.DateTimeFormatter;
 import org.springframework.context.ApplicationContext;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 
@@ -120,6 +130,11 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
     Liqpay liqBuy;
     @Autowired
     private CancelTaskUtil cancelTaskUtil;
+    
+    @Autowired
+    private HistoryEventService historyEventService;
+    @Autowired
+    private IBytesDataStorage durableBytesDataStorage;
 
     protected String replaceTags(String sTextSource, DelegateExecution execution)
             throws Exception {
@@ -510,6 +525,8 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
         String sHead = getStringFromFieldExpression(this.subject, oExecution);
         String sBodySource = getStringFromFieldExpression(this.text, oExecution);
         String sBody = replaceTags(sBodySource, oExecution);
+        
+        saveServiceMessage(sHead, saToMail, sBody, generalConfig.getOrderId_ByProcess(Long.valueOf(oExecution.getProcessInstanceId())));
 
         Mail oMail = context.getBean(Mail.class);
 
@@ -539,6 +556,32 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
+    }
+    
+    protected void saveServiceMessage(String sHead, String sTo, String sBody, String sID_Order){
+    	Map<String, String> params = new HashMap<>();
+    	params.put("sID_Order", sID_Order);
+        params.put("sHead","Отправлено письмо");
+        params.put("sBody", sHead);
+        params.put("sMail", sTo);
+        params.put("nID_SubjectMessageType", "" + 10L);
+        params.put("nID_Subject", "0");
+        params.put("sContacts", "0");
+        params.put("sData", "0");
+        params.put("RequestMethod", RequestMethod.GET.name());
+        String key;
+		key = durableBytesDataStorage.saveData(sBody.getBytes(Charset.forName("UTF-8")));
+		params.put("sID_DataLink", key);
+        
+        LOG.info("try to save service message with params: (params={})", params);
+        String jsonServiceMessage;
+		try {
+			jsonServiceMessage = historyEventService.addServiceMessage(params);
+			LOG.info("(jsonServiceMessage={})", jsonServiceMessage);
+		} catch (Exception e) {
+			LOG.error("(saveServiceMessage error={})", e.getMessage());
+		}
+        
     }
 
 }
