@@ -1,31 +1,28 @@
 package org.igov.model.document.access;
 
-import org.igov.io.sms.SmsTemplate;
-import org.igov.io.sms.OtpText;
-import org.igov.io.sms.OtpPassword;
-import org.igov.io.sms.OtpCreate;
-import org.igov.io.sms.OtpPass;
-import org.igov.io.sms.ManagerOTP;
 import com.google.common.collect.Iterables;
 import com.google.gson.Gson;
-import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
+import org.igov.io.GeneralConfig;
+import org.igov.io.mail.Mail;
+import org.igov.io.sms.*;
+import org.igov.model.core.GenericEntityDao;
+import org.igov.util.Tool;
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Repository;
-import org.igov.model.core.GenericEntityDao;
-import org.igov.io.GeneralConfig;
-import org.igov.io.mail.Mail;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
-import org.igov.util.Tool;
 
 @Repository
 public class DocumentAccessDaoImpl extends GenericEntityDao<Long, DocumentAccess> implements DocumentAccessDao {
@@ -99,6 +96,7 @@ public class DocumentAccessDaoImpl extends GenericEntityDao<Long, DocumentAccess
                     "команда порталу державних послу iGov";
             Mail oMail = context.getBean(Mail.class);
             oMail._To(saToMail)._Head(sHead)._Body(sBody);
+//                    ._ToName(sFIO)
             oMail.send();
         }
 

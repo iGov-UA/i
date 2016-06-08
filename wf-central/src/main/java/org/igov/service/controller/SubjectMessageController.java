@@ -1,7 +1,9 @@
 package org.igov.service.controller;
 
 import com.google.common.base.Optional;
+
 import io.swagger.annotations.*;
+
 import org.activiti.engine.ActivitiException;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
@@ -25,6 +27,7 @@ import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.FileServiceIOException;
 import org.igov.util.JSON.JsonRestUtils;
 import org.igov.util.MethodsCallRunnerUtil;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +41,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
@@ -439,12 +444,17 @@ public class SubjectMessageController {
             @ApiParam(value = "булевский флаг, Включить авторизацию", required = false) @RequestParam(value = "bAuth", required = false, defaultValue = "false") Boolean bAuth,
             @ApiParam(value = "строка-Ключ записи redis", required = false) @RequestParam(value = "sID_File", required = false) String sID_File,
             @ApiParam(value = "строка-Название файла", required = false) @RequestParam(value = "sFileName", required = false) String sFileName,
-            @ApiParam(value = "ИД-номер типа сообщения", required = true) @RequestParam(value = "nID_SubjectMessageType", required = true) Long nID_SubjectMessageType
+            @ApiParam(value = "ИД-номер типа сообщения", required = true) @RequestParam(value = "nID_SubjectMessageType", required = true) Long nID_SubjectMessageType,
+            @ApiParam(value = "Заголовок сообщения", required = false) @RequestParam(value = "sHead", required = false) String sHead,
+            @ApiParam(value = "электронка, но которую отсылаем", required = false) @RequestParam(value = "sMail", required = false) String sMail,
+            @ApiParam(value = "указывать дату и время отправки письма", required = false) @RequestParam(value = "bAddDate", required = false, defaultValue = "false" ) Boolean bAddDate,
+            @ApiParam(value = "Ключ записи в Монго ДБ", required = false) @RequestParam(value = "sID_DataLink", required = false ) String sID_DataLink 
             //,//, defaultValue = "4"
     ) throws CommonServiceException {
 
         Long nID_HistoryEvent_Service;
         SubjectMessage oSubjectMessage;
+        LOG.info("setServiceMessage started for the sID_Order {}", sID_Order);
         try {
             HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
             nID_HistoryEvent_Service = oHistoryEvent_Service.getId();
@@ -506,9 +516,15 @@ public class SubjectMessageController {
             
             historyEventServiceDao.saveOrUpdate(oHistoryEvent_Service);
             oSubjectMessage = oSubjectMessageService.createSubjectMessage(sMessageHead(nID_SubjectMessageType,
-                    sID_Order), sBody, nID_Subject, "", "", sData, nID_SubjectMessageType);
+                    sID_Order), sBody, nID_Subject, sMail != null ? sMail : "", "", sData, nID_SubjectMessageType);
+            oSubjectMessage.setsID_DataLink(sID_DataLink);
+            if (bAddDate != null){
+            	oSubjectMessage.setDate(new DateTime());
+            }
             oSubjectMessage.setnID_HistoryEvent_Service(nID_HistoryEvent_Service);
-            subjectMessagesDao.setMessage(oSubjectMessage);            
+            subjectMessagesDao.setMessage(oSubjectMessage);           
+            
+            LOG.info("Successfully saved message with the ID {}", oSubjectMessage.getId());
 
         } catch (Exception e) {
             LOG.error("FAIL: {} (sID_Order={})", e.getMessage(), sID_Order);
@@ -773,6 +789,62 @@ public class SubjectMessageController {
     			}
     		}
     	return aByte;    	
+    }
+    
+    @ApiOperation(value = " Возвращает содержимое отсылаемого сообщения, если такое существует.", notes = ""
+            + "Возвращает содержимое отсылаемого сообщения, если такое существует.:\n"
+            + "Если не найдена запись SubjectMessage по ID или у найденного сообщения пустое поле, указывающее на контект сообщения, то метод возвращает ошибку с текстом сообщения \"Record not found\"\n"
+            + "Пример:\n"
+            + "https://test.igov.org.ua/wf/service/subject/message/getSubjectMessageData?nID_SubjectMessage=111111")
+    @RequestMapping(value = "/getSubjectMessageData", method = { RequestMethod.GET })
+    public
+    @ResponseBody
+    void getSubjectMessageData(
+            @ApiParam(value = "номер-ИД записи с сообщением", required = false) @RequestParam(value = "nID_SubjectMessage", required = true) String sID_SubjectMessage,
+            @ApiParam(value = "Номер-ИД субьекта (хозяина заявки сообщения)", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject,
+            @ApiParam(value = "булевский флаг, Включить авторизацию", required = false) @RequestParam(value = "bAuth", required = false, defaultValue = "false") Boolean bAuth,
+            HttpServletResponse httpResponse) throws CommonServiceException{
+    		
+    		//content of the message file
+    		String res = null;
+    		try{
+    			Long nID_SubjectMessage = Long.valueOf(sID_SubjectMessage);
+	    		SubjectMessage message = subjectMessagesDao.getMessage(nID_SubjectMessage);
+	    		Long nID_HistoryEvent_Service = message.getnID_HistoryEvent_Service();
+
+	            Optional<HistoryEvent_Service> oHistoryEvent_Service = historyEventServiceDao.findById(nID_HistoryEvent_Service);
+
+	            if(bAuth && oHistoryEvent_Service.isPresent()){
+	                actionEventService.checkAuth(oHistoryEvent_Service.get(), nID_Subject, oHistoryEvent_Service.get().getsToken());
+	            }
+	    		if(message == null || StringUtils.isBlank(message.getsID_DataLink())){
+	        		LOG.info("Message is not found by nID_Message {}", nID_SubjectMessage);
+	    			CommonServiceException newErr = new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, "Record not found");                
+	                throw newErr;
+	    		}    	    	
+	    		LOG.info("Message is recieved by nID_Message {}", nID_SubjectMessage);    		
+	    		
+	    		if (StringUtils.isNotBlank(message.getsID_DataLink())){
+	    			LOG.info("Field sID_DataLink in message is not null");	    			
+	    	        
+	    			byte[] resBytes = durableBytesDataStorage.getData(message.getsID_DataLink());
+	    			
+	    			httpResponse.setHeader("Content-Type", "text/html;charset=UTF-8");
+	    			res = new String(resBytes, Charset.forName("UTF-8"));
+	    			
+	    			httpResponse.getWriter().print(res);
+	    			httpResponse.getWriter().close();
+	    		}
+    		}catch(Exception e){
+    			if(e instanceof CommonServiceException)
+    				throw (CommonServiceException)e;
+    			else
+    			{
+    				LOG.error("FAIL: {}", e.getMessage());
+    	            LOG.trace("FAIL:", e);
+    	            throw new CommonServiceException(500, "Unknown exception: " + e.getMessage());
+    			}
+    		}
     }
 
 }
