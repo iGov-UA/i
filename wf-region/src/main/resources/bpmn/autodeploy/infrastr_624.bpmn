@@ -4,8 +4,8 @@
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="lable1" name="Зверніть увагу" type="label" default="Особисті дані англійською краще вводити з закордонного паспорту або кваліфікаційного документу моряка"></activiti:formProperty>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="lastName" name="Прізвище англійською" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище/Last name" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="lastName" name="Прізвище англійською/Last name in english" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="firstName" name="Ім'я  англійською" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" required="true"></activiti:formProperty>
@@ -107,6 +107,7 @@
         <activiti:formProperty id="sMoz1" name="Машиносчитувальна зона верх" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMoz2" name="Машиносчитувальна зона низ" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('infrastr/sea_passp.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="validate" type="markers" default="${markerService.loadFromFile('infrastr/sea_passpValid.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow2" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -259,6 +260,18 @@ if (place=='sChernT'){
 place1='ЧЕРНІГІВ / CHERNIHIV'}
 }
 execution.setVariable('sPlace_of_birth', place1)
+var per1=""
+var src=execution.getVariable('lastName')
+for (var i = 0; i&lt;50; i++){
+var day=src.substr(i,1)
+if(day != "null" || day != ""){
+if(day != "-" || day != "`" || day != " " || day != "'"){
+per1 = per1+day}
+else {
+per1 = per1+"&lt;"}}
+else{
+break}}
+execution.setVariable('lastName', per1)
 	</script>
     </scriptTask>
     <sequenceFlow id="flow31" sourceRef="scripttask1" targetRef="servicetask4"></sequenceFlow>
@@ -294,7 +307,8 @@ execution.setVariable('sPlace_of_birth', place1)
           <activiti:expression>[pattern/mail/_common_header.html]
                                     &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
                                     &lt;p&gt;
-										Ваш запит був успішно зареєстрований у нашій системі [sID_Order]. 
+										Ваш запит був успішно зареєстрований у нашій системі №[sID_Order].&lt;br&gt;
+										Ви отримаєте відповідь протягом трьох робочіх днів. 
 								    &lt;/p&gt;
 									&lt;p&gt;
 										Спеціалісти ${sNameOrgan} оброблять Вашу заявку та надішлють Вам email з підтвердженням та інструкцією щодо подальших дій. 
