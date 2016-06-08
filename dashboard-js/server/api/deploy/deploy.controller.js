@@ -16,18 +16,19 @@ exports.getBP = function(req, res){
 exports.getListBP = function(req, res){
   var options = {
     path: 'action/task/getListBP',
-    query: req.query,
-    json: true
+    query: {
+      sID_BP: req.query.sID_BP,
+      sFieldType: req.query.sFieldType,
+      sID_Field: req.query.sID_Field
+    }
   };
 
-  activiti.get(options, function (error, statusCode, body) {
+  activiti.get(options, function (error, statusCode, result) {
     if (error) {
-      error = errors.createError(errors.codes.EXTERNAL_SERVICE_ERROR, 'Error while loading task data', error);
-      res.status(500).send(error);
-      return;
+      res.send(error);
+    } else {
+      res.status(statusCode).json(result);
     }
-
-    res.status(200).send(body);
   });
 };
 
