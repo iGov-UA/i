@@ -155,20 +155,21 @@ public class Mail extends Abstract_Mail {
          ){
          LOG_BIG.warn("SKIPED!(getTo={})", getTo());
          }else{*/
+        StringBuilder sbBody = new StringBuilder(500);
+        sbBody.append("host: ");
+        sbBody.append(getHost());
+        sbBody.append(":");
+        sbBody.append(getPort());
+        sbBody.append("\nAuthUser:");
+        sbBody.append(getAuthUser());
+        sbBody.append("\nfrom:");
+        sbBody.append(getFrom());
+        sbBody.append("\nto:");
+        sbBody.append(getTo());
+        sbBody.append("\nhead:");
+        sbBody.append(getHead());
+
         if (bUniSender) {
-            StringBuilder sbBody = new StringBuilder(500);
-            sbBody.append("host: ");
-            sbBody.append(getHost());
-            sbBody.append(":");
-            sbBody.append(getPort());
-            sbBody.append("\nAuthUser:");
-            sbBody.append(getAuthUser());
-            sbBody.append("\nfrom:");
-            sbBody.append(getFrom());
-            sbBody.append("\nto:");
-            sbBody.append(getTo());
-            sbBody.append("\nhead:");
-            sbBody.append(getHead());
             try {
                 if (!sendWithUniSender()) {
                     sendAlternativeWay(sbBody.toString());
@@ -184,7 +185,7 @@ public class Mail extends Abstract_Mail {
                 sendAlternativeWay(sbBody.toString());
             }
         } else {
-            sendOld();
+            sendAlternativeWay(sbBody.toString());
         }
 //        }
 
@@ -454,7 +455,7 @@ public class Mail extends Abstract_Mail {
         } catch (Exception oException1) {
             LOG.warn("Final send trying fail: {} (getTo()={})", oException1.getMessage(), getTo());
             try {
-                msgService.setEventSystem("WARNING", null, null, "sendOld", "Error send final", sbBody, oException1.getMessage(), null);
+                msgService.setEventSystem("WARNING", null, null, "sendAlternativeWay", "Error send final", sbBody, oException1.getMessage(), null);
             } catch (Exception e) {
                 LOG.trace("Ошибка при регистрации сообщения в Сервисе Хранения Ошибок.", e);
             }
