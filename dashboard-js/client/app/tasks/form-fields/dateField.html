@@ -6,7 +6,7 @@
     ng-required="{{item.required}}"
     ng-model="item.value"
     format="'DD/MM/YYYY'"
-    ng-class="{submitted:isTaskSubmitted()}"
+    ng-class="{submitted:item.required && isTaskSubmitted()}"
   />
   <!--     format="{{'dd/MM/yyyy'}}" -->
     <!--format="{{item.datePattern ? item.datePattern : 'DD.MM.YYYY'}}"-->
@@ -18,7 +18,7 @@
 
 </div>
 
-<div class="validation-message" ng-messages="isTaskSubmitted() && form[item.id].$error">
+<div class="validation-message" ng-messages="isTaskSubmitted() && item.required && form[item.id].$error">
   <div ng-message="required">Необхідно заповнити.</div>
   <div ng-message="pattern">Значення має бути числом.</div>
   <div ng-message="email">Помилка в email.</div>

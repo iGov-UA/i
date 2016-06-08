@@ -4,6 +4,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.mail.EmailException;
 import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
+import org.igov.io.mail.NotificationPatterns;
 import org.igov.model.access.*;
 import org.igov.model.access.vo.*;
 import org.igov.service.business.access.handler.AccessServiceLoginRightHandler;
@@ -20,8 +21,6 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import java.util.*;
 import java.util.stream.Collectors;
-
-import org.igov.io.mail.NotificationPatterns;
 
 /**
  * User: goodg_000

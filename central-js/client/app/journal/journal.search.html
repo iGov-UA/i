@@ -47,13 +47,15 @@
         </div>
 
         <dl class="col-md-10">
-          <dt ng-repeat-start="oOrderMessage in aOrderMessages | filter: {nID_HistoryEventType: '!9'} | orderBy: '-sDate'" class="u21" ng-class="{'my': oOrderMessage.oSubjectMessageType.nID == 4 || oOrderMessage.nID_HistoryEventType == 1}">
-            {{oOrderMessage.oSubjectMessageType.nID == 4 || oOrderMessage.nID_HistoryEventType == 1 ? 'Я' : 'iGov'}}
+          <dt ng-repeat-start="oOrderMessage in aOrderMessages | filter: {nID_HistoryEventType: '!9'} | orderBy: '-sDate'" class="u21" ng-class="{'my': oOrderMessage.oSubjectMessageType.nID == 4 || oOrderMessage.oSubjectMessageType.nID == 8 || oOrderMessage.nID_HistoryEventType == 1}">
+            {{oOrderMessage.oSubjectMessageType.nID == 4 || oOrderMessage.oSubjectMessageType.nID == 8 || oOrderMessage.nID_HistoryEventType == 1 ? 'Я' : 'iGov'}}
           </dt>
           <dd ng-repeat-end class="u31">
             <time class="u33" datetime="{{oOrderMessage.sDate}}">{{oOrderMessage.sDate | date: 'dd.MM.yyyy HH:mm'}}</time>
             <span class="u53"></span>
             <p>{{oOrderMessage.sHead}}</p>
+            &nbsp;
+            <a ng-if="oOrderMessage.oSubjectMessageType && oOrderMessage.oSubjectMessageType.nID === 10" ng-click="openLetter(oOrderMessage.nID)">Лист</a>
             <p ng-bind-html="oOrderMessage.sMessage || oOrderMessage.sBody" class="hide-table"></p>
             <div ng-repeat="oFile in oOrderMessage.osData.aFile">
               Прикріплено файл: "{{::oFile.sFileName}}"
@@ -61,7 +63,7 @@
             <div ng-if="!bOrderQuestion || $index !== 0 || sServerReturnOnAnswer" class="form-horizontal">
               <div class="form-group" ng-repeat="oField in oOrderMessage.aData track by oField.sID">
                 <label class="col-md-6 control-label" style="padding-right: 0; padding-top: 0">
-                  <div>{{oField.sName}}:</div>
+                  <div>{{oField.sName}} <span ng-hide="!oField.sName">:</span></div>
                   <div style="color: #CC0000">{{oField.sNotify}}</div>
                 </label>
                 <div class="col-md-6">
@@ -74,7 +76,8 @@
               <div class="form-group" ng-repeat="oField in oOrderMessage.aData track by oField.sID"
                    ng-switch on="oField.sType">
                     <label class="col-md-6 control-label" style="padding-right: 0; padding-top: 0">
-                      {{oField.sName}}:
+                      <span ng-if="oField.sName">{{oField.sName}} :</span>
+                      <!--<span ng-if="!oField.sName">{{oField.sGeneralComment}}</span>-->
                       <br /><span style="color: #CC0000" ng-if="oOrderMessage.oSubjectMessageType.nID !== 4">{{oField.sNotify}}</span>
                     </label>
                     <div class="col-md-6">

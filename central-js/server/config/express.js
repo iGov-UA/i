@@ -37,7 +37,7 @@ module.exports = function (app) {
   app.use(methodOverride());
   app.use(cookieParser());
 
-  if ('prod' === env || 'prod-backup' === env || 'test-alpha' === env || 'test-beta' === env || 'test-delta' === env || 'test-omega' === env) {
+  if (config.bCompile || 'prod' === env || 'prod-backup' === env || 'test-alpha' === env || 'test-beta' === env || 'test-delta' === env || 'test-omega' === env) {
     app.use(favicon(path.join(config.root, 'public', 'favicon.ico')));
     app.use(express.static(path.join(config.root, 'public')));
     app.set('appPath', config.root + '/public');
@@ -45,7 +45,6 @@ module.exports = function (app) {
   }
 
   if (!config.bCompile || 'local' === env || 'test' === env) {
-  //if (!config.bCompile) {
     app.use(require('connect-livereload')());
     app.use(express.static(path.join(config.root, '.tmp')));
     app.use(express.static(path.join(config.root, 'client')));

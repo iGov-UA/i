@@ -3,11 +3,13 @@ var request = require('request')
   , async = require('async')
   , _ = require('lodash')
   , config = require('../../config/environment')
-  //, config = require('../../config')
+//, config = require('../../config')
   , syncSubject = require('../../api/subject/subject.service.js')
   , Admin = require('../../components/admin/index')
   , url = require('url')
+  , StringDecoder = require('string_decoder').StringDecoder
   , bankidUtil = require('./bankid.util.js')
+  , errors = require('../../components/errors')
   , activiti = require('../../components/activiti');
 
 var createError = function (error, error_description, response) {
@@ -27,7 +29,7 @@ module.exports.index = function (accessToken, callback, disableDecryption) {
     console.log("--------------- enter admin callback !!!!");
     var innToCheck;
 
-    if(disableDecryption){
+    if (disableDecryption) {
       console.log("---------------  innToCheck before decryption !!!!" + body.customer.inn);
       innToCheck = bankidUtil.decryptField(body.customer.inn);
       console.log("---------------  innToCheck after decryption !!!!" + innToCheck);
@@ -53,7 +55,7 @@ module.exports.index = function (accessToken, callback, disableDecryption) {
 
   var resultCallback;
 
-  if(disableDecryption){
+  if (disableDecryption) {
     resultCallback = adminCheckCallback;
   } else {
     resultCallback = bankidUtil.decryptCallback(adminCheckCallback);
@@ -122,14 +124,41 @@ module.exports.scansRequest = function (accessToken, callback) {
   }, bankidUtil.decryptCallback(callback));
 };
 
-module.exports.prepareScanContentRequest = function (documentScanLink, accessToken) {
-  var o = {
-    'url': documentScanLink,
-    'headers': {
-      'Authorization': bankidUtil.getAuth(accessToken)
-    }
+module.exports.getScanContentRequestOptions = function (documentScanLink, accessToken) {
+  return {
+    url: documentScanLink,
+    headers: {
+      Authorization: bankidUtil.getAuth(accessToken)
+    },
+    encoding: null
   };
-  return request.get(o);
+};
+
+module.exports.getScanContentRequest = function (documentScanLink, accessToken) {
+  return request.get(this.getScanContentRequestOptions(documentScanLink, accessToken));
+};
+
+/**
+ * function downloads buffer with scan bytes
+ *
+ * @param documentScanLink link to scan from where we should download it
+ * @param accessToken access token from bankid authorization
+ * @param callback function(error, buffer)
+ */
+module.exports.scanContentRequest = function (documentScanType, documentScanLink, accessToken, callback) {
+  var scanContentRequestOptions = this.getScanContentRequestOptions(documentScanLink, accessToken);
+  request.get(scanContentRequestOptions, function (error, response, buffer) {
+    if (!error && response.headers['content-type'].indexOf('application/octet-stream') > -1) {
+      callback(null, buffer);
+    } else if (!error &&
+      (response.headers['content-type'].indexOf('application/json') > -1
+      || response.headers['content-type'].indexOf('application/xml') > -1)) {
+      var decoder = new StringDecoder('utf8');
+      callback(errors.createExternalServiceError('Can\'t get scan upload of ' + documentScanType, decoder.write(buffer)));
+    } else if (error) {
+      callback(errors.createExternalServiceError('Can\'t get scan upload of ' + documentScanType, error));
+    }
+  });
 };
 
 module.exports.cacheCustomer = function (customer, callback) {
@@ -166,23 +195,23 @@ module.exports.syncWithSubject = function (accessToken, done) {
       });
     },
 
-    function(result, callback){
-      self.cacheCustomer(result, function(error, reponse, body){
+    function (result, callback) {
+      self.cacheCustomer(result, function (error, reponse, body) {
         if (error || body.code) {
           callback(createError(body, 'error while caching data. ' + body.message, response), null);
         } else {
           result.usercacheid = body;
 
-          if(result.customer.inn){
+          if (result.customer.inn) {
             result.customer.inn = bankidUtil.decryptField(result.customer.inn);
           }
-          if(result.customer.firstName){
+          if (result.customer.firstName) {
             result.customer.firstName = bankidUtil.decryptField(result.customer.firstName);
           }
-          if(result.customer.middleName){
+          if (result.customer.middleName) {
             result.customer.middleName = bankidUtil.decryptField(result.customer.middleName);
           }
-          if(result.customer.lastName){
+          if (result.customer.lastName) {
             result.customer.lastName = bankidUtil.decryptField(result.customer.lastName);
           }
 
@@ -249,6 +278,6 @@ module.exports.signHtmlForm = function (accessToken, acceptKeyUrl, formToUpload,
  * @param codeValue
  */
 module.exports.prepareSignedContentRequest = function (accessToken, codeValue) {
-  return module.exports.prepareScanContentRequest(bankidUtil.getClientPdfClaim(codeValue), accessToken);
+  return module.exports.getScanContentRequest(bankidUtil.getClientPdfClaim(codeValue), accessToken);
 };
 

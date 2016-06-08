@@ -5,26 +5,27 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.igov.io.mail.Mail;
+import org.igov.io.sms.ManagerSMS;
 
 /**
  * @author BW
  */
 @Component("MailTaskWithoutAttachment")
 public class MailTaskWithoutAttachment extends Abstract_MailTaskCustom {
-
+    
     private final static Logger LOG = LoggerFactory.getLogger(MailTaskWithoutAttachment.class);
 
     //private Expression saAttachmentsForSend;
-
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
-
-        //MultiPartEmail oMultiPartEmail = MultiPartEmail_BaseFromTask(oExecution);
-        Mail oMail = Mail_BaseFromTask(oExecution);
-
-        // send the email
-        //oMultiPartEmail.send();
-        oMail.send();
+        try {
+            LOG.info("MailTaskWithoutAttachment...");
+            Mail oMail = Mail_BaseFromTask(oExecution);
+            oMail.send();
+            LOG.info("MailTaskWithoutAttachment ok!");
+        } catch (Exception ex) {
+            LOG.error("MailTaskWithoutAttachment: ", ex);
+        }
     }
-
+    
 }

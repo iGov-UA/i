@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import groovy.json.StringEscapeUtils;
+
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -16,7 +18,9 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
+import java.util.HashMap;
 import java.util.Map;
+
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -26,6 +30,7 @@ import javax.net.ssl.X509TrustManager;
 
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 
 import static org.igov.util.Tool.sCut;
 
@@ -144,7 +149,21 @@ public class HttpRequester {
         boolean bSkipValidationSSL = generalConfig.isSelfTest();
         simplifySSLConnection(bSkipValidationSSL);
         
-        URL oURL = new URL(getFullURL(sURL, mParam));
+        String requestMethod = RequestMethod.GET.name();
+        if (mParam.containsKey("RequestMethod")){
+        	requestMethod = mParam.get("RequestMethod");
+        	mParam.remove("RequestMethod");
+        }
+        URL oURL = null;
+        if (RequestMethod.GET.name().equals(requestMethod)){
+        	oURL = new URL(getFullURL(sURL, mParam));
+        } else {
+        	Map<String, String> params = new HashMap<String, String>();
+        	params.put("sID_Order", mParam.remove("sID_Order"));
+        	params.put("nID_SubjectMessageType", mParam.remove("nID_SubjectMessageType"));
+        	params.put("sBody", mParam.remove("sBody"));
+        	oURL = new URL(getFullURL(sURL, params));
+        }
         InputStream oInputStream;
         BufferedReader oBufferedReader_InputStream;
         HttpURLConnection oConnection;
@@ -170,8 +189,13 @@ public class HttpRequester {
             String sPassword = generalConfig.getAuthPassword();
             String sAuth = ToolWeb.base64_encode(sUser + ":" + sPassword);
             oConnection.setRequestProperty("authorization", "Basic " + sAuth);
+            if (RequestMethod.POST.name().equals(requestMethod)){
+            	for (Map.Entry<String, String> curr : mParam.entrySet()){
+            		oConnection.setRequestProperty(curr.getKey(), StringEscapeUtils.escapeJava(curr.getValue()));
+            	}
+            }
 
-            oConnection.setRequestMethod(RequestMethod.GET.name());
+            oConnection.setRequestMethod(requestMethod);
             oConnection.setDoInput(true);
             oConnection.setDoOutput(true);
             nStatus = oConnection.getResponseCode();//???
