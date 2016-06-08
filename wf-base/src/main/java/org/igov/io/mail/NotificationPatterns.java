@@ -1,21 +1,15 @@
 package org.igov.io.mail;
 
-import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.apache.commons.mail.EmailException;
-import org.igov.service.business.action.task.core.ActionTaskService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.igov.io.GeneralConfig;
-
-import static org.igov.service.business.action.task.core.ActionTaskService.createTable_TaskProperties;
-import static org.igov.service.business.action.task.core.ActionTaskService.createTable_TaskProperties_Notification;
-
+import org.igov.service.business.action.task.core.ActionTaskService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
-import java.util.HashMap;
-import java.util.Map;
+import static org.igov.service.business.action.task.core.ActionTaskService.createTable_TaskProperties_Notification;
 
 /**
  * User: goodg_000
@@ -35,7 +29,7 @@ public class NotificationPatterns {
     @Autowired
     private ActionTaskService oActionTaskService;
 
-    public void sendTaskCreatedInfoEmail(String sMailTo, String sID_Order) throws EmailException {
+    public void sendTaskCreatedInfoEmail(String sMailTo, String sID_Order, String bankIdFirstName) throws EmailException {
 
       /*
       String sHead = String.format("Ви подали заяву №%s на послугу через портал %s", nID_Protected,
@@ -48,9 +42,15 @@ public class NotificationPatterns {
               "При надходжені Вашої заявки у систему госоргану - Вам буде додатково направлено персональний лист - повідомленя.<br>";
       */
         try {
-            String sHead = String.format("Ваша заявка %s прийнята!", sID_Order);
+            String sHead;
+            if(bankIdFirstName == null || bankIdFirstName.equalsIgnoreCase("null")) {
+                sHead = String.format("Вітаємо, Ваша заявка %s прийнята!", sID_Order);
+            } else {
+                bankIdFirstName = makeStringAsName(bankIdFirstName);
+                sHead = String.format("Вітаємо %s, Ваша заявка %s прийнята!", bankIdFirstName, sID_Order);
+            }
 
-            String sBody = String.format("Ваша заявка %s прийнята!", sID_Order) +
+            String sBody = sHead +
                     "<br>Ви завжди зможете переглянути її поточний статус у розділі <a href=\"" + generalConfig
                     .getSelfHostCentral() + "/order/search?sID_Order=" + sID_Order
                     + "\">\"Мій журнал\"</a>. Також на кожному етапі Ви будете отримувати email-повідомлення."
@@ -61,7 +61,7 @@ public class NotificationPatterns {
             Long nID_Task = oActionTaskService.getTaskIDbyProcess(null, sID_Order, Boolean.FALSE);
             Map<String, Object> mContact = oActionTaskService.getStartFormData(nID_Task);
 
-            String sFirstName = (String) mContact.get("bankIdfirstName");
+            String sFirstName = (String) mContact.get("bankIdFirstName");
             LOG.info("sFirstName = {}", sFirstName);
             String sMiddleName = (String) mContact.get("bankIdmiddleName");
             LOG.info("sMiddleName = {}", sMiddleName);
@@ -84,6 +84,8 @@ public class NotificationPatterns {
             Mail oMail = context.getBean(Mail.class);
 
             oMail._To(sMailTo)._Head(sHead)._Body(sBody);
+//                                                        ._ToName(makeStringAsName(bankIdFirstName),
+//                                                                 makeStringAsName(bankIdLastName));
 
             oMail.send();
             LOG.info("Send email with sID_Order={} to the sMailTo={}", sID_Order, sMailTo);
@@ -91,6 +93,15 @@ public class NotificationPatterns {
             LOG.warn("Refused: {} (sMailTo={},sID_Order={})", oException.getMessage(), sMailTo, sID_Order);
             LOG.error("FAIL:", oException);
         }
+    }
+
+
+
+    private String makeStringAsName(String name) {
+        name.toLowerCase();
+        char[] chars = name.toCharArray();
+        chars[0] = Character.toUpperCase(chars[0]);
+        return String.valueOf(chars);
     }
 
     public void sendVerifyEmail(String sMailTo, String sToken) throws EmailException {
@@ -168,6 +179,7 @@ public class NotificationPatterns {
             String sBody = osBody.toString();
             Mail oMail = context.getBean(Mail.class);
             oMail._To(sMailTo)._Head(sHead)._Body(sBody);
+//                    ._ToName(sClientFIO)
             oMail.send();
         } catch (Exception oException) {
             LOG.warn("FAIL: {} (sMailTo={},sToken={},nID_Process={},saField={})", oException.getMessage(), sMailTo,

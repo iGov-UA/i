@@ -19,6 +19,7 @@ public abstract class Abstract_Mail {
     private String sFrom; //"noreplay@gmail.com";
     @Value("${general.Mail.sAddressNoreply}")
     private String saTo; //"noreplay@gmail.com";
+    private String sToName; //"Андрій Хветкевич";
     private String sHead = "Subject";
     private String sBody = "Text";
     @Value("${general.Mail.sUsername}")
@@ -46,6 +47,11 @@ public abstract class Abstract_Mail {
     }
 
     public String getTo() {
+//        String[] adress = saTo.split("\\,");
+//        if (adress.length == 1 && sToName != null && !"null".equalsIgnoreCase(sToName)) {
+//            return String.format("%s <%s>", sToName, saTo); // "John Dow <email@adress.com>"
+//        }
+
         return saTo;
     }
 
@@ -53,6 +59,21 @@ public abstract class Abstract_Mail {
         this.saTo = saTo;
         return this;
     }
+
+//    public String getToName() {
+//        return sToName;
+//    }
+
+//    public Abstract_Mail _ToName(String ... saToName){
+//        String fullName = saToName[0];
+//        if (saToName.length > 1) {
+//            for (int i = 1; i < saToName.length; i++) {
+//                fullName = fullName + " " + saToName[i];
+//            }
+//        }
+//        this.sToName = fullName;
+//        return this;
+//    }
 
     public String getHead() {
         return sHead;

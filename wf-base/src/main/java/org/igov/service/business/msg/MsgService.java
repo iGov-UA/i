@@ -1,5 +1,7 @@
 package org.igov.service.business.msg;
 
+import java.util.HashMap;
+
 import javax.annotation.PostConstruct;
 
 import org.igov.io.GeneralConfig;
@@ -23,26 +25,41 @@ public class MsgService {
     @Autowired
     GeneralConfig generalConfig;
 
-    private String sBusId;
-    private String sTemplateMsgId;
-    private String sMsgLogin;
-    private String sServiceURL;
+    private static String sBusId;
+    private static String sTemplateMsgId;
+    private static String sMsgLogin;
+    private static String sServiceURL;
+
+    // Признак готовности сервиса отсылать сообщения
+    private static boolean isReadySendMSG = false;
 
     @PostConstruct
-    public void initIt() throws Exception {
+    public void init() throws Exception {
 	sBusId = generalConfig.getBusinessId_MSG_Monitor();
 	sTemplateMsgId = generalConfig.getTemplateId_MSG_Monitor();
 	sMsgLogin = generalConfig.getLogin_MSG_Monitor();
-
 	sServiceURL = generalConfig.getURL_MSG_Monitor();
-	System.setProperty("MsgURL", sServiceURL);
 
 	LOG.debug("ServiceURL={}, BusID={}, sTemplateMsgId={}, sMsgLogin={}", sServiceURL, sBusId, sTemplateMsgId,
-		sMsgLogin);
+		sMsgLogin);	
+	
+	if (sBusId.startsWith("${") || sTemplateMsgId.startsWith("${") || sMsgLogin.startsWith("${") || sServiceURL.startsWith("${")) {
+	    LOG.warn("Сервис не готов к работе. Не заданы необходимые параметры");
+	    return;
+	}
+	
+	System.setProperty("MsgURL", sServiceURL);
+
+	LOG.info("Сервис готов к работе.");
+	isReadySendMSG = true;
     }
 
-    public IMsgObjR setEventSystem(String sType, Long nID_Subject, Long nID_Server, String sFunction, String sHead,
+    public static IMsgObjR setEventSystem(String sType, Long nID_Subject, Long nID_Server, String sFunction, String sHead,
 	    String sBody, String sError, String smData) throws Exception {
+	if (!isReadySendMSG) {
+	    LOG.warn("Сервис не готов к отсылке сообщений.");
+	    return null;
+	}
 
 	IMsgObjR msg = new MsgSendImpl(sServiceURL, sBusId, sType, sFunction, sTemplateMsgId, sMsgLogin)
 		.addnID_Server(nID_Server).addnID_Subject(nID_Subject).addsBody(sBody).addsError(sError).addsHead(sHead)
@@ -51,4 +68,18 @@ public class MsgService {
 	return msg;
     }
 
+    public static IMsgObjR setEventSystemWithParam(String sType, Long nID_Subject, Long nID_Server, String sFunction, String sHead,
+	    String sBody, String sError, HashMap<String, Object> mParam) throws Exception {
+	if (!isReadySendMSG) {
+	    LOG.warn("Сервис не готов к отсылке сообщений.");
+	    return null;
+	}
+
+	IMsgObjR msg = new MsgSendImpl(sServiceURL, sBusId, sType, sFunction, sTemplateMsgId, sMsgLogin)
+		.addnID_Server(nID_Server).addnID_Subject(nID_Subject).addsBody(sBody).addsError(sError).addsHead(sHead)
+		.addasParam(mParam).save();
+
+	return msg;
+    }
+    
 }
