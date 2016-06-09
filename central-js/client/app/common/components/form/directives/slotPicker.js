@@ -47,6 +47,7 @@ angular.module('app').directive('slotPicker', function($http, dialogs) {
       });
 
       scope.slotsData = {};
+      scope.slotsLoading = true;
 
       scope.loadList = function(nID_SubjectOrganDepartment){
         scope.slotsLoading = true;
@@ -59,7 +60,7 @@ angular.module('app').directive('slotPicker', function($http, dialogs) {
         {
           data.nID_SubjectOrganDepartment = nID_SubjectOrganDepartment;
         }
-        
+
         return $http.get('/api/service/flow/' + scope.serviceData.nID, {params:data}).then(function(response) {
           scope.slotsData = response.data;
           scope.slotsLoading = false;
