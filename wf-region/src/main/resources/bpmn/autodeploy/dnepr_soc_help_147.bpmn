@@ -44,7 +44,7 @@
         <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу" type="invisible" default=" "></activiti:formProperty>
 
-        <activiti:formProperty id="sCompensationCategory" name="Категорія компенсацій (галочка на формі)" type="invisible" default="15"></activiti:formProperty>
+        <activiti:formProperty id="sCompensationCategory" name="Категорія компенсацій (галочка на формі)" type="invisible" default="7"></activiti:formProperty>
 		<activiti:formProperty id="markersAdresStartTask" name="Маркер адреса стартТаски" type="markers" default="${markerService.loadFromFile('adress_start.json')}"></activiti:formProperty>
 
         <activiti:formProperty id="markers1" name="Вибір отримання коштів" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;post_office&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;transfer_type&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'post'&quot;},&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;bank_name&quot;,&quot;mfo&quot;,&quot;edrpou&quot;,&quot;bank_account&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;transfer_type&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'bank'&quot;}}}"></activiti:formProperty>
@@ -72,11 +72,13 @@
           <activiti:value id="post" name="через національного оператора поштового зв'язку"></activiti:value>
           <activiti:value id="bank" name="на рахунок у банку"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="post_office" name="№ відділення поштового зв'язку (індекс)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bank_name" name="Назва банку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="mfo" name="МФО банку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="edrpou" name="ЄДРПОУ банку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bank_account" name="Номер рахунку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="post_office" name="№ відділення поштового зв'язку (індекс); ;writable=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bank_name" name="Назва банку; ;writable=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="mfo" name="МФО банку; ;writable=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="edrpou" name="ЄДРПОУ банку; ;writable=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bank_account" name="Номер рахунку; ;writable=false" type="string" writable="false"></activiti:formProperty>
+
+        <activiti:formProperty id="nPage" name="Вкажіть загальну кількість сторінок відсканованих документів" type="string" default="4" required="true"></activiti:formProperty>
 
         <activiti:formProperty id="asNumberApplication" name="Це перше звернення?" type="enum" default="sFirst" required="true">
           <activiti:value id="sFirst" name="первинне"></activiti:value>
@@ -98,7 +100,6 @@
 
 
         <activiti:formProperty id="nDocument" name="количество документов" type="invisible" default="2"></activiti:formProperty>
-        <activiti:formProperty id="nPage" name="Вкажіть загальну кількість сторінок відсканованих документів" type="invisible" default="4" required="true"></activiti:formProperty>
         
 
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
