@@ -260,18 +260,6 @@ if (place=='sChernT'){
 place1='ЧЕРНІГІВ / CHERNIHIV'}
 }
 execution.setVariable('sPlace_of_birth', place1)
-var per1=""
-var src=execution.getVariable('lastName')
-for (var i = 0; i&lt;50; i++){
-var day=src.substr(i,1)
-if(day != "null" || day != ""){
-if(day != "-" || day != "`" || day != " " || day != "'"){
-per1 = per1+day}
-else {
-per1 = per1+"&lt;"}}
-else{
-break}}
-execution.setVariable('lastName', per1)
 	</script>
     </scriptTask>
     <sequenceFlow id="flow31" sourceRef="scripttask1" targetRef="servicetask4"></sequenceFlow>
@@ -433,7 +421,7 @@ execution.setVariable('lastName', per1)
 										&lt;/ul&gt;
 									&lt;/p&gt;
 									&lt;p&gt;
-										Реквізити для сплати доступні за посиланням...
+										Реквізити для сплати доступні за посиланням...&lt;br&gt;
 										Призначення платежу: сплата за видачу/обмін посвідчення особи моряка за заявкою №[sID_Order]
 									&lt;/p&gt;
 									&lt;p&gt;
@@ -589,6 +577,19 @@ var year1= year-(-5)
 var expiry=day+' '+month1+' '+year1
 execution.setVariable('sDate_of_issue', issue) 
 execution.setVariable('sDate_of_expiry', expiry)
+var per1=""
+var src=execution.getVariable('lastName')
+for (var i = 0; i&lt;50; i++){
+var day=src.substr(i,1)
+if(day != "null" || day != ""){
+if(day != "-" || day != "`" || day != " " || day != "'"){
+per1 = per1+day}
+else {
+per1 = per1+"&lt;"}}
+else{
+break}}
+execution.setVariable('lastName', per1)
+
        </script>            
    </scriptTask>
     <sequenceFlow id="flow41" sourceRef="scripttask3" targetRef="usertask2_red"></sequenceFlow>
