@@ -25,21 +25,21 @@
 		{
 			"sNote":		["For Show NOT GET HELP"],
 			"aField_ID":	["sLabelFailure"],
-			"asID_Field":	{""sClient":"asEnumExist_Flat","sReason":"asEnumExist_Deposit"},
-			"sCondition":	"[sClient] == 'sEnumElement_ExistFlat_Yes' || [sReason] == 'sEnumElement_ExistDeposit_Yes'"
+			"asID_Field":	{"sClient":"asEnumExist_Flat","sReason":"asEnumExist_Deposit","sGetHelp":"asEnumGet_Help"},
+			"sCondition":	"[sGetHelp] == 'sEnumElement_Yes' && ([sClient] == 'sEnumElement_ExistFlat_Yes' || [sReason] == 'sEnumElement_ExistDeposit_Yes')"
 		},
  		"ShowFieldsOnCondition_3":
 		{
 			"sNote":		["For Show uploud Files"],
 			"aField_ID":	["sLabelInfo_1","nFile_Zayava","nFile_SvodoztvoOdruzennya","nFile_SvodoztvoNarodzennya"],
-			"asID_Field":	{""sClient":"asEnumExist_Flat","sReason":"asEnumExist_Deposit"},
-			"sCondition":	"[sClient] == 'sEnumElement_ExistFlat_No' && [sReason] == 'sEnumElement_ExistDeposit_No'"
+			"asID_Field":	{"sClient":"asEnumExist_Flat","sReason":"asEnumExist_Deposit","sGetHelp":"asEnumGet_Help"},
+			"sCondition":	"[sGetHelp] == 'sEnumElement_Yes' && [sClient] == 'sEnumElement_ExistFlat_No' && [sReason] == 'sEnumElement_ExistDeposit_No'"
 		},
 		"RequiredFieldsOnCondition_3": 
 		{
 			"aField_ID":	["nFile_Zayava"],
-			"asID_Field":	{""sClient":"asEnumExist_Flat","sReason":"asEnumExist_Deposit"},
-			"sCondition":	"[sClient] == 'sEnumElement_ExistFlat_No' && [sReason] == 'sEnumElement_ExistDeposit_No'"
+			"asID_Field":	{"sClient":"asEnumExist_Flat","sReason":"asEnumExist_Deposit","sGetHelp":"asEnumGet_Help"},
+			"sCondition":	"[sGetHelp] == 'sEnumElement_Yes' && [sClient] == 'sEnumElement_ExistFlat_No' && [sReason] == 'sEnumElement_ExistDeposit_No'"
 		}
    	}
 }
