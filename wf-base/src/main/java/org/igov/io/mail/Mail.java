@@ -155,7 +155,6 @@ public class Mail extends Abstract_Mail {
          ){
          LOG_BIG.warn("SKIPED!(getTo={})", getTo());
          }else{*/
-
         StringBuilder sbBody = new StringBuilder(500);
         sbBody.append("host: ");
         sbBody.append(getHost());
