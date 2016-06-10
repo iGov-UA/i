@@ -10,16 +10,10 @@ exports.setBP = function(req, res){
 };
 
 exports.getBP = function(req, res){
-//todo загрузка файла БП
-};
-
-exports.getListBP = function(req, res){
   var options = {
-    path: 'action/task/getListBP',
+    path: 'action/task/getBP',
     query: {
-      sID_BP: req.query.sID_BP,
-      sFieldType: req.query.sFieldType,
-      sID_Field: req.query.sID_Field
+      sID: req.query.sID
     }
   };
 
@@ -32,6 +26,55 @@ exports.getListBP = function(req, res){
   });
 };
 
+exports.getListBP = function(req, res){
+  var options = {
+    path: 'action/task/getListBP',
+    query: {}
+  };
+
+  if(typeof req.query.sID_BP !== 'undefined' && req.query.sID_BP !== null && req.query.sID_BP !== ''){
+    options.query.sID_BP = req.query.sID_BP;
+  }
+  if(typeof req.query.sFieldType !== 'undefined' && req.query.sFieldType !== null && req.query.sFieldType !== ''){
+    options.query.sFieldType = req.query.sFieldType;
+  }
+  if(typeof req.query.sID_Field !== 'undefined' && req.query.sID_Field !== null && req.query.sID_Field !== ''){
+    options.query.sID_Field = req.query.sID_Field;
+  }
+
+  activiti.get(options, function (error, statusCode, result) {
+    if (error) {
+      res.send(error);
+    } else {
+      res.status(statusCode).json(result);
+    }
+  });
+};
+
 exports.removeListBP = function(req, res){
-//todo удаление списка БП
+  var options = {
+    path: 'action/task/removeListBP',
+    query: {}
+  };
+
+  if(typeof req.query.sID_BP !== 'undefined' && req.query.sID_BP !== null && req.query.sID_BP !== ''){
+    options.query.sID_BP = req.query.sID_BP;
+  }
+  if(typeof req.query.sFieldType !== 'undefined' && req.query.sFieldType !== null && req.query.sFieldType !== ''){
+    options.query.sFieldType = req.query.sFieldType;
+  }
+  if(typeof req.query.sID_Field !== 'undefined' && req.query.sID_Field !== null && req.query.sID_Field !== ''){
+    options.query.sID_Field = req.query.sID_Field;
+  }
+  if(typeof req.query.sVersion !== 'undefined' && req.query.sVersion !== null && req.query.sVersion !== ''){
+    options.query.sVersion = req.query.sVersion;
+  }
+
+  activiti.get(options, function (error, statusCode, result) {
+    if (error) {
+      res.send(error);
+    } else {
+      res.status(statusCode).json(result);
+    }
+  });
 };

@@ -3,93 +3,83 @@
  */
 angular.module('dashboardJsApp')
   .directive('bpList', function () {
-    var controller = function ($scope, $modal) {
-      var inProgress = false;
+    var controller = function ($scope, Modal) {
+      $scope.inProgress = false;
       var aBPs = [];
+
+      var uploadFunc = $scope.funcs.setBP;
+      var downloadFunc = $scope.funcs.getBP;
       var getFunc = $scope.funcs.getListBP;
       var deleteFunc = $scope.funcs.removeListBP;
 
-      var fillData = function () {
-        inProgress = true;
-        getFunc()
+      $scope.bViewFilterSetting = false;
+      $scope.bSettingDeleteFilter = false;
+      $scope.oFilter = {
+        sID_BP: '',
+        sFieldType: '',
+        sID_Field: '',
+        sVersion: ''
+      };
+
+      var fillData = function (filter) {
+        $scope.inProgress = true;
+        getFunc(filter)
           .then(function (list) {
             aBPs = list;
           })
           .finally(function () {
-            inProgress = false;
+            $scope.inProgress = false;
           });
       };
-/*
-      var openModal = function (user) {
-        var modalInstance = $modal.open({
-          animation: true,
-          templateUrl: 'app/users/modal/modal.html',
-          controller: 'UserModalController',
-          resolve: {
-            userToEdit: function () {
-              return angular.copy(user);
-            }
-          },
-          size: 'lg'
-        });
 
-        modalInstance.result.then(function (editedData) {
-          setFunc(editedData.userToSave.sLogin
-            , editedData.userToSave.sPassword || user.sPassword
-            , editedData.userToSave.sName
-            , editedData.userToSave.sDescription
-            , editedData.userToSave.sEmail).then(function (createdUser) {
-
-              var userToAdd = {
-                sLogin: createdUser.sLogin,
-                sPassword: createdUser.sPassword,
-                sName: createdUser.sName,
-                sDescription: createdUser.sDescription,
-                sEmail: createdUser.sEmail,
-                FirstName: createdUser.sName || users[i].FirstName,
-                LastName: createdUser.sDescription || users[i].LastName,
-                Email: createdUser.sEmail || users[i].Email,
-              };
-
-              for (var i = 0; i < users.length; i++) {
-                if (users[i].sLogin === userToAdd.sLogin) {
-                  users[i] = userToAdd;
-                  return;
-                }
-              }
-              console.log('!!!!!  userToAdd', userToAdd);
-              console.log(users[20]);
-
-              userToAdd ? users.unshift(userToAdd) : null;
-
-            }, function (err) {
-              console.log('Create/Edit User Error ', err)
-            });
-        });
+      $scope.openViewFilter = function(){
+        $scope.bViewFilterSetting = true;
+        $scope.bSettingDeleteFilter = false;
       };
-*/
+
+      $scope.openRemoveFilter = function(){
+        $scope.bViewFilterSetting = true;
+        $scope.bSettingDeleteFilter = true;
+      };
+
+      $scope.closeFilter = function(){
+        $scope.bViewFilterSetting = false;
+        $scope.bSettingDeleteFilter = false;
+      };
+
       $scope.get = function () {
         return aBPs;
       };
 
+      $scope.delete = function (filter) {
+        Modal.confirm.delete(function (event) {
+          deleteFunc(filter)
+            .then($scope.closeFilter());
+        })('кілька бізнес-процесів, які відповідають налаштуванню фільтра!');
+      };
+
+      $scope.init = function (filter) {
+        fillData(filter);
+      };
+
       $scope.add = function () {
-        openModal();
+
       };
 
-      $scope.edit = function (user) {
-        user.sName = user.sName || user.FirstName;
-        user.sDescription = user.sDescription || user.LastName;
-        openModal(user);
+      $scope.downloadItem = function(oBPinTable){
+        downloadFunc(oBPinTable.id);
       };
 
-      $scope.delete = function (user) {
-        deleteFunc(user.sLogin).then(fillData);
-      };
+      $scope.removeItem = function(oBPinTable){
+        var remObj = {
+          sID_BP: oBPinTable.id
+          };
+        Modal.confirm.delete(function (event) {
+          deleteFunc(remObj)
+            .then(fillData($scope.oFilter));
+        })('бізнес-процес "' + oBPinTable.name + '" (ID ' + oBPinTable.id + ')');
+      }
 
-      $scope.init = function () {
-        fillData();
-        debugger;
-      };
     };
     return {
       restrict: 'EA',

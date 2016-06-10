@@ -12,8 +12,10 @@
   function deployCtrl($scope, oDeployService){
 
     $scope.DeployFunctions = {
-      getListBP: oDeployService.getListBP(),
-      removeListBP: oDeployService.removeListBP()
+      setBP: oDeployService.setBP,
+      getBP: oDeployService.getBP,
+      getListBP: oDeployService.getListBP,
+      removeListBP: oDeployService.removeListBP
     };
 
   }
