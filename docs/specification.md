@@ -1,7 +1,7 @@
 # API - <b>Автоматически генерируемая документация:</b></br>
 
 <b>ОСНОВНАЯ:</b></br>
-- [wf-base ( igov )](https://jenkins-new.igov.org.ua/job/-Doc/ws/wf-base/target/generated-docs/base-igov.html) 
+- [wf-base ( igov )](https://jenkins.igov.org.ua/job/-Doc/ws/wf-base/target/generated-docs/base-igov.html) 
 - [wf-central ( igov )](https://jenkins-new.igov.org.ua/job/-Doc/ws/wf-central/target/generated-docs/central-igov.html)
 </br>
 
