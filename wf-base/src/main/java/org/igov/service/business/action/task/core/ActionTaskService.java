@@ -1109,7 +1109,7 @@ public class ActionTaskService {
                 try{
                     currRow.put(headers[i], values[i]);
                 }catch(Exception oException){
-                    LOG.warn("oException.getMessage()={} (currRow={},headers[i]={},values[i]={})", oException.getMessage(),currRow, headers[i], values[i]);
+                    LOG.warn("oException.getMessage()={} (i={},currRow={},headers={},values={})", oException.getMessage(),i,currRow, headers, values);
                 }
             }
             csvLines.add(currRow);
