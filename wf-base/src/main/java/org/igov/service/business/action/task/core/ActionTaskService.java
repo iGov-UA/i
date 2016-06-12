@@ -1106,7 +1106,11 @@ public class ActionTaskService {
             String[] values = currentRow.split(";");
             Map<String, Object> currRow = new HashMap<>();
             for (int i = 0; i < values.length; i++) {
-                currRow.put(headers[i], values[i]);
+                try{
+                    currRow.put(headers[i], values[i]);
+                }catch(Exception oException){
+                    LOG.warn("oException.getMessage()={} (currRow={},headers[i]={},values[i]={})", oException.getMessage(),currRow, headers[i], values[i]);
+                }
             }
             csvLines.add(currRow);
         }
