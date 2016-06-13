@@ -71,7 +71,7 @@ import org.igov.model.action.task.core.TaskAssigneeCover;
 import org.igov.model.action.task.core.entity.TaskAssigneeI;
 import org.igov.model.flow.FlowSlotTicket;
 import org.igov.model.flow.FlowSlotTicketDao;
-import org.igov.service.business.access.BankIDConfig;
+//import org.igov.service.business.access.BankIDConfig;
 import org.igov.service.business.action.event.HistoryEventService;
 import org.igov.service.business.action.task.form.QueueDataFormType;
 import org.igov.service.exception.CRCInvalidException;
@@ -115,8 +115,8 @@ public class ActionTaskService {
 	};
 
     private static final Logger LOG = LoggerFactory.getLogger(ActionTaskService.class);
-    @Autowired
-    private BankIDConfig oBankIDConfig;
+    //@Autowired
+    //private BankIDConfig oBankIDConfig;
     //@Autowired
     //private ExceptionCommonController exceptionController;
     //@Autowired
@@ -1266,7 +1266,7 @@ public class ActionTaskService {
     }    
  
     public String updateHistoryEvent_Service(HistoryEvent_Service_StatusType oHistoryEvent_Service_StatusType, String sID_Order,
-            String saField, String sBody, String sToken, String sUserTaskName
+            String saField, String sBody, String sToken, String sUserTaskName,String sSubjectInfo, Long nID_Subject
         ) throws Exception {
 
         Map<String, String> mParam = new HashMap<>();
@@ -1277,6 +1277,10 @@ public class ActionTaskService {
         //params.put("sHead", sHead);
         mParam.put("sBody", sBody);
         mParam.put("sToken", sToken);
+        mParam.put("sSubjectInfo",sSubjectInfo);
+        if(nID_Subject != null){
+        mParam.put("snID_Subject",nID_Subject+"");
+        }
         //params.put("sUserTaskName", sUserTaskName);
         return oHistoryEventService.updateHistoryEvent(sID_Order, sUserTaskName, true, oHistoryEvent_Service_StatusType, mParam);
     }
@@ -1626,7 +1630,7 @@ public class ActionTaskService {
         nID_Process = String.valueOf(ToolLuna.getValidatedOriginalNumber(nID_Order));
 
         //String sID_Order,
-        String sID_Order = oGeneralConfig.sID_Order_ByOrder(nID_Order);
+        String sID_Order = oGeneralConfig.getOrderId_ByOrder(nID_Order);
 
         HistoryEvent_Service_StatusType oHistoryEvent_Service_StatusType = HistoryEvent_Service_StatusType.REMOVED;
         String sUserTaskName = oHistoryEvent_Service_StatusType.getsName_UA();
@@ -1657,6 +1661,20 @@ public class ActionTaskService {
         success = true;
         return success;
     }
+    
+    
+    public boolean deleteProcessSimple(String snID_Process, String sLogin, String sReason) throws Exception{
+        boolean bOk = false;
+        LOG.info("Deleting process snID_Process={}, sLogin={}, sReason={}", snID_Process, sLogin, sReason);
+        try {
+            oRuntimeService.deleteProcessInstance(snID_Process, sReason);
+        } catch (ActivitiObjectNotFoundException e) {
+            LOG.info("Could not find process {} to delete: {}", snID_Process, e);
+            throw new RecordNotFoundException();
+        }
+        bOk = true;
+        return bOk;
+    }    
 
     /**
      * Загрузка задач из Activiti
@@ -1839,8 +1857,117 @@ public class ActionTaskService {
         return result;
     }
 
+
+    /**
+     * Ищет таску среди активных и архивных и возвращает ее имя или статус (поиск сначала происходит среди активных Тасок, если не удается найти - ищет в архивных)
+     * @param nID_Task - ИД таски
+     * @return - результат метода Таски getName()
+     * @throws RecordNotFoundException - в случая не возможности найти заданный ИД среди архивных тасок
+     */
+    public Map<String,String> getTaskData(Long nID_Task) throws RecordNotFoundException {
+        SimpleDateFormat oDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        Map<String,String> m = new HashMap();
+        //String result;
+        String snID_Task = nID_Task.toString();
+        try{
+            //result = oTaskService.createTaskQuery().taskId(snID_Task).singleResult().getName();
+            //m.put("sDateEnd", oActionTaskService.getsIDUserTaskByTaskId(nID_Task));
+            Task oTask=oTaskService.createTaskQuery().taskId(snID_Task).singleResult();
+            m.put("sLoginAssigned", oTask.getAssignee());
+            //m.put("sDateEnd", oDateFormat.format(oTask.getCreateTime()));
+        /*return oHistoryService.createHistoricTaskInstanceQuery()
+                .taskId(nID_Task.toString()).singleResult().getTaskDefinitionKey();
+        */
+		//taskInfo.put("createTime", oDateFormat.format(task.getCreateTime()));
+            
+        } catch (NullPointerException e){
+            LOG.info(String.format("Must search Task [id = '%s'] in history!!!", snID_Task));
+            try {
+                //oTask = oHistoryService.createHistoricTaskInstanceQuery().taskId(snID_Task).singleResult().getName();
+                HistoricTaskInstance oTask = oHistoryService.createHistoricTaskInstanceQuery().taskId(snID_Task).singleResult();
+                m.put("sLoginAssigned", oTask.getAssignee());
+                m.put("sDateEnd", oDateFormat.format(oTask.getCreateTime()));
+            } catch (NullPointerException e1){
+                throw new RecordNotFoundException(String.format("Task [id = '%s'] not faund", snID_Task));
+            }
+        }
+        LOG.info("Task id = " + nID_Task + "; m = " + m);
+        return m;
+    }
+    
+    
+        
+        
+    
+    
+    /*public static String parseEnumProperty(FormProperty property) {
+        Object oValues = property.getType().getInformation("values");
+        if (oValues instanceof Map) {
+            Map<String, String> mValue = (Map) oValues;
+            LOG.info("(m={})", mValue);
+            String sName = property.getValue();
+            LOG.info("(sName={})", sName);
+            String sValue = mValue.get(sName);
+            LOG.info("(sValue={})", sValue);
+            return parseEnumValue(sValue);
+        } else {
+            LOG.error("Cannot parse values for property - {}", property);
+            return "";
+        }
+    }*/
+    //public HashMap<String, Object> getFormPropertiesMapByTaskID(Long nID_Task) {
+    public List<Map<String,Object>> getFormPropertiesMapByTaskID(Long nID_Task) {
+        List<FormProperty> a = oFormService.getTaskFormData(nID_Task.toString()).getFormProperties();
+        List<Map<String,Object>> aReturn = new LinkedList();
+        Map<String,Object> mReturn;
+        //a.get(1).getType().getInformation()
+        for (FormProperty oProperty : a) {
+            mReturn=new HashMap();
+            //String sValue = "";
+            //String sValue = oProperty.getValue();
+            mReturn.put("sValue", oProperty.getValue());
+            String sType = oProperty.getType() != null ? oProperty.getType().getName() : "";
+            mReturn.put("sType", sType);
+            mReturn.put("sID", oProperty.getId());
+            mReturn.put("sName", oProperty.getName());
+            mReturn.put("bReadable", oProperty.isReadable());
+            mReturn.put("bWritable", oProperty.isWritable());
+            mReturn.put("bRequired", oProperty.isRequired());
+            if ("enum".equalsIgnoreCase(sType)) {
+                //sValue = oActionTaskService.parseEnumProperty(oProperty);
+                Object oEnums = oProperty.getType().getInformation("values");
+                if (oEnums instanceof Map) {
+                    Map<String, String> mEnum = (Map) oEnums;
+//                    LOG.info("(mEnum={})", mEnum);
+                    mReturn.put("mEnum", mEnum);
+//                    String sName = oProperty.getValue();
+//                    LOG.info("(sName={})", sName);
+//                    String sValue = mValue.get(sName);
+//                    LOG.info("(sValue={})", sValue);
+//                    return parseEnumValue(sValue);
+//                } else {
+//                    LOG.error("Cannot parse values for property - {}", property);
+//                    return "";
+                }
+            /*} else {
+                sValue = oProperty.getValue();*/
+            }
+//            LOG.info("(nID_Task={}, sType={}, propertyName={}, sValue={})", nID_Task, sType, oProperty.getName(), sValue);
+//            if (sValue != null) {
+                //if (sValue.toLowerCase().contains(searchTeam)) {
+                //    res.add(currTask.getId());
+                //}
+//            }
+//            LOG.info("(nID_Task={}, mReturn={})", nID_Task, mReturn);
+            aReturn.add(mReturn);
+        }        
+        return aReturn;
+    }
+    
     public List<FormProperty> getFormPropertiesByTaskID(Long nID_Task) {
-        return oFormService.getTaskFormData(nID_Task.toString()).getFormProperties();
+        List<FormProperty> a = oFormService.getTaskFormData(nID_Task.toString()).getFormProperties();
+        //a.get(1).getType().getInformation()
+        return a;
     }
 
     /**
@@ -1850,23 +1977,23 @@ public class ActionTaskService {
      * @throws RecordNotFoundException
      */
     public List<Map<String, String>> getHistoricFormPropertiesByTaskID(Long nID_Task) throws RecordNotFoundException {
-        List<Map<String, String>> result = new ArrayList<>();
-
+        List<Map<String, String>> aReturn = new ArrayList<>();
         List<HistoricDetail> aHistoricDetail = oHistoryService.createHistoricDetailQuery().taskId(nID_Task.toString()).formProperties().list();
-
         LOG.info("(aHistoricDetail={})", aHistoricDetail);
         if (aHistoricDetail == null) {
             throw new RecordNotFoundException("aHistoricDetail");
         }
         for (HistoricDetail oHistoricDetail : aHistoricDetail) {
-            Map<String, String> oHistoricFormPropertyCover = new HashMap<>();
-            HistoricFormProperty historicFormProperty = (HistoricFormProperty) oHistoricDetail;
-            oHistoricFormPropertyCover.put("id", historicFormProperty.getPropertyId());
-            oHistoricFormPropertyCover.put("value", historicFormProperty.getPropertyValue());
-            result.add(oHistoricFormPropertyCover);
+            Map<String, String> mReturn = new HashMap<>();
+            HistoricFormProperty oHistoricFormProperty = (HistoricFormProperty) oHistoricDetail;
+            //oHistoricFormPropertyCover.put("id", historicFormProperty.getPropertyId());
+            //oHistoricFormPropertyCover.put("value", historicFormProperty.getPropertyValue());
+            mReturn.put("sID", oHistoricFormProperty.getPropertyId());
+            mReturn.put("sValue", oHistoricFormProperty.getPropertyValue());
+            aReturn.add(mReturn);
         }
-        LOG.info("(List oHistoricFormPropertyCover = {})", result);
-        return result;
+//        LOG.info("(List oHistoricFormPropertyCover = {})", aReturn);
+        return aReturn;
     }
 
     /**
@@ -2192,7 +2319,7 @@ public class ActionTaskService {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 		Map<String, Object> taskInfo = new HashMap<String, Object>();
 		taskInfo.put("id", task.getId());
-		taskInfo.put("url", oGeneralConfig.sHost() + "/wf/service/runtime/tasks/" + task.getId());
+		taskInfo.put("url", oGeneralConfig.getSelfHost() + "/wf/service/runtime/tasks/" + task.getId());
 		taskInfo.put("owner", task.getOwner());
 		taskInfo.put("assignee", task.getAssignee());
 		taskInfo.put("delegationState", (task instanceof Task) ? ((Task)task).getDelegationState() : null);
@@ -2209,11 +2336,11 @@ public class ActionTaskService {
 		taskInfo.put("parentTaskId", task.getParentTaskId());
 		taskInfo.put("parentTaskUrl", "");
 		taskInfo.put("executionId", task.getExecutionId());
-		taskInfo.put("executionUrl", oGeneralConfig.sHost() + "/wf/service/runtime/executions/" + task.getExecutionId());
+		taskInfo.put("executionUrl", oGeneralConfig.getSelfHost() + "/wf/service/runtime/executions/" + task.getExecutionId());
 		taskInfo.put("processInstanceId", task.getProcessInstanceId());
-		taskInfo.put("processInstanceUrl", oGeneralConfig.sHost() + "/wf/service/runtime/process-instances/" + task.getProcessInstanceId());
+		taskInfo.put("processInstanceUrl", oGeneralConfig.getSelfHost() + "/wf/service/runtime/process-instances/" + task.getProcessInstanceId());
 		taskInfo.put("processDefinitionId", task.getProcessDefinitionId());
-		taskInfo.put("processDefinitionUrl", oGeneralConfig.sHost() + "/wf/service/repository/process-definitions/" + task.getProcessDefinitionId());
+		taskInfo.put("processDefinitionUrl", oGeneralConfig.getSelfHost() + "/wf/service/repository/process-definitions/" + task.getProcessDefinitionId());
 		taskInfo.put("variables", new LinkedList());
 		if (flowSlotTicket != null){
 			LOG.info("Populating flow slot ticket");
@@ -2303,3 +2430,4 @@ public class ActionTaskService {
     }
 
 }
+
