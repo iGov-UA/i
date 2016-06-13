@@ -82,6 +82,7 @@
           <activiti:value id="reject" name="відмовлено у призначенні допомоги"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відмови внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="nPage" name="Вкажіть загальну кількість сторінок відсканованих документів" type="string" default="4" required="true"></activiti:formProperty>
 
         <activiti:formProperty id="sBody_1" name="[pattern/print/UPSZN/dnepr_soc_help_148_print.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
 
@@ -91,8 +92,6 @@
 
 
         <activiti:formProperty id="nDocument" name="количество документов" type="invisible" default="2"></activiti:formProperty>
-        <activiti:formProperty id="nPage" name="Вкажіть загальну кількість сторінок відсканованих документів" type="invisible" default="4" required="true"></activiti:formProperty>
-        
 
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
