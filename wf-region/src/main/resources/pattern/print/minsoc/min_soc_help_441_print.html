@@ -334,7 +334,7 @@
         </div>
         <div class="ta-J">
           контактний телефон <em>[phone]</em>, паспорт:
-          <span id="spanDetailPassport" style="display:none;">
+          <span id="spanDetailPassport">
             <em id="spanPassportSeria"></em> серія № <em id="spanPassportNumber"></em>,
             виданий <em id="spanPassportIssuedBy"></em><em id="spanPassportDate"></em> 
           </span>
@@ -862,8 +862,8 @@
         </div>
       </div>
 	<script type="text/javascript">
-	/*
-	function loadPage() {
+	
+	//function loadPage() {
       //   ****************    парсим паспортные данные   **************** 
       // константные переменные для регулярных выражений
       var regSeriaStr = "([Сс]ерия|СЕРИЯ|[Сс]ерія|СЕРІЯ)?";
@@ -916,7 +916,8 @@
       document.getElementById('spanPassportNumber').innerHTML = strNumber;
       document.getElementById('spanPassportIssuedBy').innerHTML = strIssuedBy;
       document.getElementById('spanPassportDate').innerHTML = strDate; 
-
+      
+      /*
       // в случае не правильного парсинга
       if(strSerial.length>0 && strNumber.length>0 && strIssuedBy.length>0 && strDate.length>0){
         document.getElementById('spanDetailPassport').style.display = 'inline';
