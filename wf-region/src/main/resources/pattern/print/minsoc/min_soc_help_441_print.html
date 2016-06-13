@@ -893,13 +893,13 @@
       str0 = str0.replace(matSerNum,"");
 
       //удаляем лишние слова
-      matSerNum = matSerNum.replace(matSerNum.match(new RegExp("паспорт", "ig")).toString(),"");
-      matSerNum = matSerNum.replace(matSerNum.match(new RegExp("номер", "ig")).toString(),"");
-      matSerNum = matSerNum.replace(matSerNum.match(new RegExp("сер[иі]я", "ig")).toString(),"");
+      matSerNum = matSerNum.replace(matSerNum.match(new RegExp("паспорт", "ig")),"");
+      matSerNum = matSerNum.replace(matSerNum.match(new RegExp("номер", "ig")),"");
+      matSerNum = matSerNum.replace(matSerNum.match(new RegExp("сер[иі]я", "ig")),"");
 
       //выбираем Серию и Номер
-      strSerial = matSerNum.match(new RegExp(regSeriaVal)).toString();
-      strNumber = matSerNum.match(new RegExp(regNumberVal)).toString();
+      strSerial = matSerNum.match(new RegExp(regSeriaVal));
+      strNumber = matSerNum.match(new RegExp(regNumberVal));
 
       var matDate = str0.match(new RegExp(regFrom + regYearVal, "ig")).toString();
 
@@ -917,13 +917,13 @@
       document.getElementById('spanPassportIssuedBy').innerHTML = strIssuedBy;
       document.getElementById('spanPassportDate').innerHTML = strDate; 
       
-      /*
+      
       // в случае не правильного парсинга
       if(strSerial.length>0 && strNumber.length>0 && strIssuedBy.length>0 && strDate.length>0){
         document.getElementById('spanDetailPassport').style.display = 'inline';
         document.getElementById('spanTotalPassport').style.display = 'none';
       } 
-
+      /*
 
     }
 
