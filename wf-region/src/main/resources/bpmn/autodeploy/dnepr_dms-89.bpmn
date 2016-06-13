@@ -24,15 +24,15 @@
         <activiti:formProperty id="sNewAddress" name="Нова адреса реєстрації;Область, Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asRegistrationType" name="Реєстрація здійснюється Вами" type="enum" required="true">
           <activiti:value id="sOwner" name="до власного житлового приміщення"></activiti:value>
-          <activiti:value id="sZgoda" name="за згодою власника / співласника / наймача"></activiti:value>
+          <activiti:value id="sRent" name="до орендованого житла"></activiti:value>
           <activiti:value id="sSoc" name="до спеціалізованої соціальної установи"></activiti:value>
+          <activiti:value id="sZgoda" name="за згодою власника / співласника / наймача"></activiti:value>
           <activiti:value id="sMilit" name="за адресою військової частини"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asRegistrationDoc" name="Підставою для реєстрації нового місця проживання є" type="enum" default="sEpmty" required="true">
           <activiti:value id="sEpmty" name=" "></activiti:value>
           <activiti:value id="sOrder" name="Ордер"></activiti:value>
           <activiti:value id="sOwnDoc" name="Свідоцтво про право власності"></activiti:value>
-          <activiti:value id="sRentDoc" name="Договір найму / піднайму / оренди"></activiti:value>
           <activiti:value id="sOther" name="Інші документи"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDocRekv" name="Опис документу;Серія, номер свідоцтва, номер договору куплі продажу" type="string" default=" " required="true"></activiti:formProperty>
@@ -163,11 +163,17 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="sWhenCome" name="Дата зняття з реєстрації з попереднього місця проживання" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNewAddress" name="Нова адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sArea" name="Місто або район, до якого належить нове місце проживання громадянина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asRegistrationDoc" name="Підставою для реєстрації у власному житлі" type="enum" writable="false">
+        <activiti:formProperty id="asRegistrationType" name="Реєстрація здійснюється" type="enum" writable="false">
+          <activiti:value id="sOwner" name="до власного житлового приміщення"></activiti:value>
+          <activiti:value id="sRent" name="до орендованого житла"></activiti:value>
+          <activiti:value id="sSoc" name="до спеціалізованої соціальної установи"></activiti:value>
+          <activiti:value id="sZgoda" name="за згодою власника / співласника / наймача"></activiti:value>
+          <activiti:value id="sMilit" name="за адресою військової частини"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asRegistrationDoc" name="Підстава для реєстрації у власному житлі" type="enum" writable="false">
           <activiti:value id="sEpmty" name=" "></activiti:value>
           <activiti:value id="sOrder" name="Ордер"></activiti:value>
           <activiti:value id="sOwnDoc" name="Свідоцтво про право власності"></activiti:value>
-          <activiti:value id="sRentDoc" name="Договір найму / піднайму / оренди "></activiti:value>
           <activiti:value id="sOther" name="Інші документи"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDocRekv" name="Реквізити документа при реєстрації у власному житлі" type="string" writable="false"></activiti:formProperty>
@@ -415,11 +421,17 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="sWhenCome" name="Дата зняття з реєстрації з попереднього місця проживання" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNewAddress" name="Нова адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sArea" name="Місто або район, до якого належить нове місце проживання громадянина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asRegistrationDoc" name="Підстава для реєстрації у власному житлі" type="enum">
+         <activiti:formProperty id="asRegistrationType" name="Реєстрація здійснюється" type="enum" writable="false">
+          <activiti:value id="sOwner" name="до власного житлового приміщення"></activiti:value>
+          <activiti:value id="sRent" name="до орендованого житла"></activiti:value>
+          <activiti:value id="sSoc" name="до спеціалізованої соціальної установи"></activiti:value>
+          <activiti:value id="sZgoda" name="за згодою власника / співласника / наймача"></activiti:value>
+          <activiti:value id="sMilit" name="за адресою військової частини"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asRegistrationDoc" name="Підстава для реєстрації у власному житлі" type="enum" writable="false">
           <activiti:value id="sEpmty" name=" "></activiti:value>
           <activiti:value id="sOrder" name="Ордер"></activiti:value>
           <activiti:value id="sOwnDoc" name="Свідоцтво про право власності"></activiti:value>
-          <activiti:value id="sRentDoc" name="Договір найму / піднайму / оренди "></activiti:value>
           <activiti:value id="sOther" name="Інші документи"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDocRekv" name="Реквізити документа при реєстрації у власному житлі" type="string"></activiti:formProperty>
