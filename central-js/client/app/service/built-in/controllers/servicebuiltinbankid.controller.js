@@ -572,4 +572,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     console.log("Switch $rootScope.isFileProcessUploading to " + $rootScope.isFileProcessUploading.bState);
   };
 
+  if($scope.selfOrdersCount.nOpened > 0 && oServiceData.oPlace || oServiceData.oPlaceRoot){
+    $scope.fillSelfPrevious();
+  }
 });
