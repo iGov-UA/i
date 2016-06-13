@@ -63,7 +63,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="sDocNumber" name="Внесіть номер довідки" type="string"></activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відмови у наданні довідки внесіть, будь ласка, причину" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="rishen" name="Завантажте копію документа" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="rishen" name="Скан-копія довідки" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/ternopil/ternopol_rcnap_117_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/ternopol_rcnap_117_print.html]" type="invisible" default="Бланк довідки (Тернопіль)" writable="false"></activiti:formProperty>
       </extensionElements>
@@ -187,7 +187,6 @@ ${sNameUnit}&lt;br /&gt;
 Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;&lt;br /&gt;
 &lt;br /&gt;
 Ваше звернення щодо надання довідки про те, що посвідчення батьків та дитини з багатодітної сім'ї не видавалося - опрацьовано.&lt;br /&gt;
-Копія документу знаходиться у додатку до листа.&lt;br /&gt;
 &lt;br /&gt;
 Ви або уповноважена Вами особа (при наявності довіреності) можете отримати довідку собисто під підпис за адресою:${sAddress}&lt;br /&gt;&lt;br /&gt;
 Графік роботи:${sWorkTime}&lt;br /&gt;
@@ -200,18 +199,18 @@ ${sNameUnit}&lt;br /&gt;
         </activiti:field>
       </extensionElements>
     </serviceTask>
-       <scriptTask id="scripttask1" name="скриптяка" scriptFormat="javascript"  activiti:autoStoreVariables="false">
+       <scriptTask id="scripttask1" name="скриптяка" scriptFormat="javascript" activiti:autoStoreVariables="false">
          <script>
 var per1 = 'sNameArea'
 var per2 = 'sNameUnit'
 var per3 = 'sPost'
-var per4 = 'sWorkTime'
+var per4 = "sWorkTime"
 var per5 = 'sAddress'
 var per6 = 'sPhoneUnit'
 if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'Children_Tern_T'){
 per1 = 'Тернопільский район'
 per2 = 'Служба у справах дітей Тернопільського району'
-per3 = 'sofia.danylevych@gmail.com'
+per3 = 'ssntrda@gmail.com'
 per4 = 'Понеділок-четвер: 09.00-12.00&lt;br /&gt;Вихідний - Неділя&lt;br /&gt;'
 per5 = '46018, м.Тернопіль, майдан Перемоги, 1 каб.309'
 per6 = '(0352)43-24-62'
@@ -220,7 +219,7 @@ if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'cnap_rov_kuznT'){
 per1 = 'м.Кузнецовськ'
 per2 = 'Виконавчий комітет Кузнецовської міської ради'
 per3 = 'darja.grek@gmail.com'
-per4 = 'Понеділок, середа з 8.00 до 17.15&lt;br /&gt;Вівторок, четвер з 8.00 до 20.00&lt;br /&gt;П'ятниця, субота з 8.00 до 16.00&lt;br /&gt;Без перерви на обід&lt;br /&gt;;'
+per4 = "Понеділок, середа з 8.00 до 17.15&lt;br /&gt;Вівторок, четвер з 8.00 до 20.00&lt;br /&gt;П'ятниця, субота з 8.00 до 16.00&lt;br /&gt;Без перерви на обід&lt;br /&gt;"
 per5 = 'м.Кузнецовськ, майдан Незалежності 2, каб.№105-1'
 per6 = '(03636)2-23-73'
 }
@@ -228,7 +227,7 @@ if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'cnap_hmel_hmelT'){
 per1 = 'м.Хмельницький'
 per2 = 'ЦНАП м.Хмельницький'
 per3 = 'darja.grek@gmail.com'
-per4 = 'Понеділок, середа, п'ятниця: 09.00-16.00&lt;br /&gt;вівторок, четвер: 09.00-20.00&lt;br /&gt;, субота: 08.00-15.00&lt;br /&gt;Вихідний - Неділя&lt;br /&gt;'
+per4 = "Понеділок, середа, п'ятниця: 09.00-16.00&lt;br /&gt;вівторок, четвер: 09.00-20.00&lt;br /&gt;субота: 08.00-15.00&lt;br /&gt;Вихідний - Неділя&lt;br /&gt;"
 per5 = 'м. Хмельницький, вул. Соборна, 16'
 per6 = '(0382)76-58-61'
 }
@@ -236,14 +235,14 @@ if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'cnap_zhvodT'){
 per1 = 'м. Жовті Води'
 per2 = 'Служба у справах дітей Жовтоводської міської ради'
 per3 = 'darja.grek@gmail.com'
-per4 = 'Понеділок-п'ятниця: 08.00-17.15&lt;br /&gt;Вихідний - Неділя&lt;br /&gt;;'
+per4 = "Понеділок-п'ятниця: 08.00-17.15&lt;br /&gt;Вихідний - Неділя&lt;br /&gt;"
 per5 = 'м. Жовті Води,'
 per6 = ' '
 }
 execution.setVariable('sNameArea', per1)
 execution.setVariable('sNameUnit', per2)
 execution.setVariable('sPost', per3)
-execution.setVariable('sWorkTime', per4)
+execution.setVariable("sWorkTime", per4)
 execution.setVariable('sAddress', per5)
 execution.setVariable('sPhoneUnit', per6)
 	  </script>
