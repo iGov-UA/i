@@ -41,7 +41,7 @@
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sMailClerk1" name="Пошта" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу" type="invisible" default=" "></activiti:formProperty>
 
         <activiti:formProperty id="cc_7" name="Категорія компенсацій (галочка на формі)" type="invisible" default="true"></activiti:formProperty>
@@ -104,7 +104,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${file1},${file2},${file3},${file4},${file5},${bankId_scan_passport},${bankId_scan_inn}]]></activiti:expression>
+            <activiti:expression>${file1},${file2},${file3},${file4},${file5},${bankId_scan_passport},${bankId_scan_inn}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
