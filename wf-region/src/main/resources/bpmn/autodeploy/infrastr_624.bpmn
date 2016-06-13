@@ -4,12 +4,12 @@
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="lable1" name="Зверніть увагу" type="label" default="Особисті дані англійською краще вводити з закордонного паспорту або кваліфікаційного документу моряка"></activiti:formProperty>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="lastName" name="Прізвище англійською" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище/Last name" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="lastName" name="Прізвище англійською/Last name in english" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="firstName" name="Ім'я  англійською" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDate_of_birth" name="Дата народження;Формат ДД.ММ.PPPP" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDate_of_birth1" name="Дата народження;Формат ДД.ММ.PPPP" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asBirthInUkr" name="Ви народились в Україні" type="enum" required="true">
           <activiti:value id="sYes" name="Так"></activiti:value>
           <activiti:value id="sNo" name="Ні"></activiti:value>
@@ -100,6 +100,7 @@
         <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sArea" name="район/місто звернення" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPlace_of_birth" name="Місце народження" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sDate_of_birth" name="Дата народження" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sSex" name="Стать" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDate_of_issue" name="Дата видачі паспорту у форматі 12 ГРУ / DEC 2016" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDate_of_expiry" name="Дата закінчення терміну дії паспорту 12 ГРУ / DEC 2021" type="invisible"></activiti:formProperty>
@@ -107,6 +108,7 @@
         <activiti:formProperty id="sMoz1" name="Машиносчитувальна зона верх" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMoz2" name="Машиносчитувальна зона низ" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('infrastr/sea_passp.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="validate" type="markers" default="${markerService.loadFromFile('infrastr/sea_passpValid.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow2" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -118,7 +120,7 @@
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <scriptTask id="scripttask1" name="Скрипт для печати 1" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var src=execution.getVariable('sDate_of_birth')
+      <script>var src=execution.getVariable('sDate_of_birth1')
 var day=src.substr(0,2)
 var month=src.substr(3,2)
 var year=src.substr(6,4)
@@ -265,7 +267,7 @@ execution.setVariable('sPlace_of_birth', place1)
     <serviceTask id="servicetask4" name="Повідомлення про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>zhigan.roman@gmail.com</activiti:expression>
+          <activiti:expression><![CDATA[zhigan.roman@gmail.com]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -274,7 +276,7 @@ execution.setVariable('sPlace_of_birth', place1)
           <activiti:string><![CDATA[Нове звернення на тему: Видача/обмін посвідчення особи моряка]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -282,7 +284,7 @@ execution.setVariable('sPlace_of_birth', place1)
     <serviceTask id="servicetask3" name="E-Mail підтвердження отримання запиту" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -291,18 +293,19 @@ execution.setVariable('sPlace_of_birth', place1)
           <activiti:string><![CDATA[Звернення на тему: Видача/обмін посвідчення особи моряка]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-										Ваш запит був успішно зареєстрований у нашій системі [sID_Order]. 
-								    &lt;/p&gt;
-									&lt;p&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+                                    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+                                    <p>
+										Ваш запит був успішно зареєстрований у нашій системі №[sID_Order].<br>
+										Ви отримаєте відповідь протягом трьох робочіх днів. 
+								    </p>
+									<p>
 										Спеціалісти ${sNameOrgan} оброблять Вашу заявку та надішлють Вам email з підтвердженням та інструкцією щодо подальших дій. 
-									&lt;/p&gt;
+									</p>
                                     [pattern/mail/_common_signature_start.html]
-									Міністерство інфраструктури України,&lt;br&gt;
+									Міністерство інфраструктури України,<br>
 									[pattern/mail/_common_signature_end.html]   
-									[pattern/mail/_common_footer.html]</activiti:expression>
+									[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -350,7 +353,7 @@ execution.setVariable('sPlace_of_birth', place1)
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nDocEdu},${nDocDiplom},${nDocAnketa}</activiti:expression>
+            <activiti:expression><![CDATA[${nDocEdu},${nDocDiplom},${nDocAnketa}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -363,7 +366,7 @@ execution.setVariable('sPlace_of_birth', place1)
     <serviceTask id="servicetask5" name="E-Mail відмова в наданні послуги" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -372,22 +375,22 @@ execution.setVariable('sPlace_of_birth', place1)
           <activiti:string><![CDATA[Звернення на тему: Видача/обмін посвідчення особи моряка]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-										На жаль, Вам відмовлено у прийнятті особової справи.&lt;br&gt;
-                                        При необхідності видачі/обміну посвідчення особи моряка Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;
-									&lt;/p&gt;
-									&lt;p&gt;
-										Причина відмови: enum{[asDeclineReason]}&lt;br&gt;
-											&lt;b&gt;&lt;i&gt;${sDecisionComment}&lt;/i&gt;&lt;/b&gt;
-									&lt;/p&gt;
-									&lt;p&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+                                    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+                                    <p>
+										На жаль, Вам відмовлено у прийнятті особової справи.<br>
+                                        При необхідності видачі/обміну посвідчення особи моряка Ви можете подати ще одну заявку на порталі <a href="https://igov.org.ua/">iGov.org.ua</a>
+									</p>
+									<p>
+										Причина відмови: enum{[asDeclineReason]}<br>
+											<b><i>${sDecisionComment}</i></b>
+									</p>
+									<p>
 										При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
-									&lt;/p&gt;
+									</p>
 									[pattern/mail/_common_signature_start.html]
-                                    Міністерство інфраструктури України.&lt;/p&gt;
-                                    [pattern/mail/_common_footer.html]</activiti:expression>
+                                    Міністерство інфраструктури України.</p>
+                                    [pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -399,7 +402,7 @@ execution.setVariable('sPlace_of_birth', place1)
     <serviceTask id="servicetask6" name="E-Mail надсилання реквізитів" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -408,30 +411,30 @@ execution.setVariable('sPlace_of_birth', place1)
           <activiti:string><![CDATA[Звернення на тему: Видача/обмін посвідчення особи моряка]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-                                        Спеціалісти ${sNameOrgan} успішно опрацювли Вашу заяву.&lt;br&gt;
-										Для того щоб закінчити процедуру видачі/обміну посвідчення особи моряка необхідно:&lt;br&gt;
-										&lt;ul&gt;
-										&lt;li&gt;Протягом 5 робочіх днів сплатити усі необхідні платежі та отримати квитанцію про сплату.&lt;/li&gt;
-										&lt;li&gt;Після підтвердження від ${sNameOrgan} протягом двох тижнів відвідати його з оригіналами документів та отримати свій документ.&lt;/li&gt;
-										&lt;/ul&gt;
-									&lt;/p&gt;
-									&lt;p&gt;
-										Реквізити для сплати доступні за посиланням...
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+                                    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+                                    <p>
+                                        Спеціалісти ${sNameOrgan} успішно опрацювли Вашу заяву.<br>
+										Для того щоб закінчити процедуру видачі/обміну посвідчення особи моряка необхідно:<br>
+										<ul>
+										<li>Протягом 5 робочіх днів сплатити усі необхідні платежі та отримати квитанцію про сплату.</li>
+										<li>Після підтвердження від ${sNameOrgan} протягом двох тижнів відвідати його з оригіналами документів та отримати свій документ.</li>
+										</ul>
+									</p>
+									<p>
+										Реквізити для сплати доступні за посиланням...<br>
 										Призначення платежу: сплата за видачу/обмін посвідчення особи моряка за заявкою №[sID_Order]
-									&lt;/p&gt;
-									&lt;p&gt;
-										&lt;b&gt;&lt;i&gt;${sDecisionComment}&lt;/i&gt;&lt;/b&gt;
-									&lt;/p&gt;
-									&lt;p&gt;
+									</p>
+									<p>
+										<b><i>${sDecisionComment}</i></b>
+									</p>
+									<p>
 										При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
-									&lt;/p&gt;
+									</p>
                                     [pattern/mail/_common_signature_start.html]
-									Міністерство інфраструктури України,&lt;br&gt;
+									Міністерство інфраструктури України,<br>
 									[pattern/mail/_common_signature_end.html]   
-									[pattern/mail/_common_footer.html]</activiti:expression>
+									[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -443,6 +446,7 @@ execution.setVariable('sPlace_of_birth', place1)
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPayment" name="Ознака сплати" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNumber" name="Серія та номер бланку паспорту" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDate_of_issue" name="Дата видачі паспорту у форматі ДД.ММ.PPPP" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asPayment" name="Рішення про надходження сплати" type="enum" required="true">
           <activiti:value id="sPaymentOK" name="Cплата надійшла"></activiti:value>
           <activiti:value id="sPaymentNO" name="Громадянин не сплатив за послугу"></activiti:value>
@@ -457,7 +461,7 @@ execution.setVariable('sPlace_of_birth', place1)
     <serviceTask id="servicetask9" name="E-Mail відмова в наданні послуги" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -466,18 +470,18 @@ execution.setVariable('sPlace_of_birth', place1)
           <activiti:string><![CDATA[Звернення на тему: Видача/обмін посвідчення особи моряка]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-										На жаль Ви не сплатили за оформлення посвідчення особи моряка і Вам відмовлено у наданні послуги.&lt;br&gt;
-                                        При необхідності видачі/обміну посвідчення особи моряка Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;
-									&lt;/p&gt;
-									&lt;p&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+                                    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+                                    <p>
+										На жаль Ви не сплатили за оформлення посвідчення особи моряка і Вам відмовлено у наданні послуги.<br>
+                                        При необхідності видачі/обміну посвідчення особи моряка Ви можете подати ще одну заявку на порталі <a href="https://igov.org.ua/">iGov.org.ua</a>
+									</p>
+									<p>
 										При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
-									&lt;/p&gt;
+									</p>
 									[pattern/mail/_common_signature_start.html]
-                                    Міністерство інфраструктури України.&lt;/p&gt;
-                                    [pattern/mail/_common_footer.html]</activiti:expression>
+                                    Міністерство інфраструктури України.</p>
+                                    [pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -488,7 +492,7 @@ execution.setVariable('sPlace_of_birth', place1)
     <serviceTask id="servicetask8" name="E-Mail призначення візиту" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -497,44 +501,44 @@ execution.setVariable('sPlace_of_birth', place1)
           <activiti:string><![CDATA[Звернення на тему: Видача/обмін посвідчення особи моряка]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-                                        Сплата за посвідчення особи моряка була зарахована  .&lt;br&gt;
-										Для того щоб закінчити процедуру видачі/обміну посвідчення особи моряка необхідно:&lt;br&gt;
-										&lt;ul&gt;
-										&lt;li&gt;Прийти до ${sNameOrgan} за адресою: ${sAddress} з необхідними документами.&lt;/li&gt;
-										&lt;li&gt;Підписати необхідні документи та отримати посвідчення особи моряка.&lt;/li&gt;
-										&lt;/ul&gt;
-									&lt;/p&gt;
-									&lt;p&gt;
-									  &lt;b&gt;Необхідні документи, які треба принести до ${sNameOrgan} при видачі/обміну посвідчення особи моряка:&lt;/b&gt;&lt;br&gt;
-										&lt;ul&gt;
-										&lt;li&gt;заява-анкета;&lt;/li&gt;
-										&lt;li&gt;паспорт громадянина України та його копія;&lt;/li&gt;
-										&lt;li&gt;довідка про присвоєння ідентифікаційного податкового номеру та її копія;&lt;/li&gt;
-										&lt;li&gt;три фотокартки 35х45 мм на світлому фоні на матовому папері та без головного убору (чоловікам біла сорочка з краваткою);&lt;/li&gt;
-										&lt;li&gt;платіжний документ з відміткою про сплату послуги з видачі посвідчення (у разі сплати через касу банку);&lt;/li&gt;
-										&lt;li&gt;документ, що підтверджує отримання морської освіти, або довідка з морського навчального закладу про отримання такої освіти для заявників, які навчаються в українських морських навчальних закладах;&lt;/li&gt;
-										&lt;li&gt;оригінал ПОМ, що обмінюється (за наявності);&lt;/li&gt;
-										&lt;li&gt;громадянам інших держав:
-										&lt;ul&gt;
-											&lt;li&gt;документ, що посвідчує громадянство іншої держави та місце народження, в якому українською або англійською мовами зазначено викладену вище інформацію та його копія;&lt;/li&gt;
-											&lt;li&gt;документ, що підтверджує несення служби на борту судна, яке зареєстроване на території України, або який зареєстрований в Україні у службі зайнятості&lt;/li&gt; 
-										&lt;/ul&gt;
-										&lt;/ul&gt;
-									&lt;/p&gt;
-									&lt;p&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+                                    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+                                    <p>
+                                        Сплата за посвідчення особи моряка була зарахована  .<br>
+										Для того щоб закінчити процедуру видачі/обміну посвідчення особи моряка необхідно:<br>
+										<ul>
+										<li>Прийти до ${sNameOrgan} за адресою: ${sAddress} з необхідними документами.</li>
+										<li>Підписати необхідні документи та отримати посвідчення особи моряка.</li>
+										</ul>
+									</p>
+									<p>
+									  <b>Необхідні документи, які треба принести до ${sNameOrgan} при видачі/обміну посвідчення особи моряка:</b><br>
+										<ul>
+										<li>заява-анкета;</li>
+										<li>паспорт громадянина України та його копія;</li>
+										<li>довідка про присвоєння ідентифікаційного податкового номеру та її копія;</li>
+										<li>три фотокартки 35х45 мм на світлому фоні на матовому папері та без головного убору (чоловікам біла сорочка з краваткою);</li>
+										<li>платіжний документ з відміткою про сплату послуги з видачі посвідчення (у разі сплати через касу банку);</li>
+										<li>документ, що підтверджує отримання морської освіти, або довідка з морського навчального закладу про отримання такої освіти для заявників, які навчаються в українських морських навчальних закладах;</li>
+										<li>оригінал ПОМ, що обмінюється (за наявності);</li>
+										<li>громадянам інших держав:
+										<ul>
+											<li>документ, що посвідчує громадянство іншої держави та місце народження, в якому українською або англійською мовами зазначено викладену вище інформацію та його копія;</li>
+											<li>документ, що підтверджує несення служби на борту судна, яке зареєстроване на території України, або який зареєстрований в Україні у службі зайнятості</li> 
+										</ul>
+										</ul>
+									</p>
+									<p>
 										При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
-									&lt;/p&gt;
+									</p>
                                     [pattern/mail/_common_signature_start.html]
-									Міністерство інфраструктури України,&lt;br&gt;
+									Міністерство інфраструктури України,<br>
 									[pattern/mail/_common_signature_end.html]   
-									[pattern/mail/_common_footer.html]</activiti:expression>
+									[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow33" sourceRef="servicetask8" targetRef="scripttask2"></sequenceFlow>
+    <sequenceFlow id="flow33" sourceRef="servicetask8" targetRef="scripttask3"></sequenceFlow>
     <scriptTask id="scripttask2" name="Дата на паспорт" scriptFormat="groovy" activiti:autoStoreVariables="false">
       <script>
 execution.setVariable('sDate_of_issue', new Date().format("dd.MM.yyyy").toString())
@@ -543,6 +547,56 @@ execution.setVariable('sDate_of_issue', new Date().format("dd.MM.yyyy").toString
     <sequenceFlow id="flow34" sourceRef="scripttask2" targetRef="scripttask3"></sequenceFlow>
     <scriptTask id="scripttask3" name="Скрипт для печати 2" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
+var per1=""
+var src=execution.getVariable('lastName')
+for (var i = 0; i&lt;50; i++){
+var day=src.substr(i,1)
+if(day != "null" || day != ""){
+if(day != "-" || day != "`" || day != " " || day != "'"){
+per1 = per1+day}
+else {
+per1 = per1+"&lt;"}}
+else{
+break}}
+execution.setVariable('sMoz1', per1)
+var numb=execution.getVariable('sNumber')
+var ser=numb.substr(0,2)
+var num=numb.substr(2,6)
+var a1=Number(numb.substr(2,1))
+var a2=Number(numb.substr(3,1))
+var a3=Number(numb.substr(4,1))
+var a4=Number(numb.substr(5,1))
+var a5=Number(numb.substr(6,1))
+var a6=Number(numb.substr(7,1))
+var k1=(10*7+11*3+a1*7+a2*3+a3*1+a4*7+a5*3+a6*1)%10
+var src=execution.getVariable('sDate_of_birth1')
+var day1=src.substr(0,2)
+var month1=src.substr(3,2)
+var year1=src.substr(8,2)
+var b1=Number(year1.substr(0,1))
+var b2=Number(year1.substr(1,1))
+var b3=Number(month1.substr(0,1))
+var b4=Number(month1.substr(1,1))
+var b5=Number(day1.substr(0,1))
+var b6=Number(day1.substr(1,1))
+var k2=(b1*7+b2*3+b3*1+b4*7+b5*3+b6*1)%10
+var src=execution.getVariable('sSex')
+var sex=src.substr(4,1)
+var src=execution.getVariable('sDate_of_issue')
+var day2=src.substr(0,2)
+var month2=src.substr(3,2)
+var year2=src.substr(8,2)
+var year4=Number(year2)+5
+var year3='year4'
+var c1=Number(year3.substr(0,1))
+var c2=Number(year3[1])
+var c3=Number(month2.substr(0,1))
+var c4=Number(month2.substr(1,1))
+var c5=Number(day2.substr(0,1))
+var c6=Number(day2.substr(1,1))
+k3=(c1*7+c2*3+c3*1+c4*7+c5*3+c6*1)%10
+var moz2=ser+"&lt;"+num+k1+"UKR"+year1+month1+day1+k2+sex+year4+month2+day2+k3+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"+"&lt;"
+execution.setVariable('sMoz2', moz2)
 var src=execution.getVariable('sDate_of_issue')
 var day=src.substr(0,2)
 var month=src.substr(3,2)
@@ -575,8 +629,8 @@ var year1= year-(-5)
 var expiry=day+' '+month1+' '+year1
 execution.setVariable('sDate_of_issue', issue) 
 execution.setVariable('sDate_of_expiry', expiry)
-       </script>            
-   </scriptTask>
+       </script>
+    </scriptTask>
     <sequenceFlow id="flow41" sourceRef="scripttask3" targetRef="usertask2_red"></sequenceFlow>
     <userTask id="usertask2_red" name="Друк паспорту" activiti:candidateGroups="infrastr_624_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
@@ -610,7 +664,7 @@ execution.setVariable('sDate_of_expiry', expiry)
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nDocEdu},${nDocDiplom},${nDocAnketa}</activiti:expression>
+            <activiti:expression><![CDATA[${nDocEdu},${nDocDiplom},${nDocAnketa}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -626,7 +680,7 @@ execution.setVariable('sDate_of_expiry', expiry)
     <serviceTask id="servicetask7" name="Е-мейл відмови у наданні послуги" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -635,18 +689,18 @@ execution.setVariable('sDate_of_expiry', expiry)
           <activiti:string><![CDATA[Звернення на тему: Видача/обмін посвідчення особи моряка]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-                                        На жаль Ви не з'явились протягом двох тижнів за своїм посвідченням.&lt;br&gt;
-                                        При необхідності видачі або обміну посвідчення особи моряка Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;
-									&lt;/p&gt;
-									&lt;p&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+                                    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+                                    <p>
+                                        На жаль Ви не з'явились протягом двох тижнів за своїм посвідченням.<br>
+                                        При необхідності видачі або обміну посвідчення особи моряка Ви можете подати ще одну заявку на порталі <a href="https://igov.org.ua/">iGov.org.ua</a>
+									</p>
+									<p>
 										При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
-									&lt;/p&gt;
+									</p>
                                     [pattern/mail/_common_signature_start.html]
-									Міністерство інфраструктури України,&lt;/p&gt;
-									[pattern/mail/_common_footer.html]</activiti:expression>
+									Міністерство інфраструктури України,</p>
+									[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -655,7 +709,7 @@ execution.setVariable('sDate_of_expiry', expiry)
     <serviceTask id="servicetask2" name="Фідбек" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -664,18 +718,18 @@ execution.setVariable('sDate_of_expiry', expiry)
           <activiti:string><![CDATA[Звернення на тему: Видача/обмін посвідчення особи моряка]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-								  &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-                              		Ви отримали послугу "Видача/обмін посвідчення особи моряка".&lt;br&gt;
-                              		Будь ласка, оцініть якість надання цієї послуги за допомогою форми нижче.&lt;br&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+								  <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+                                    <p>
+                              		Ви отримали послугу "Видача/обмін посвідчення особи моряка".<br>
+                              		Будь ласка, оцініть якість надання цієї послуги за допомогою форми нижче.<br>
                               		Дякуємо.
-									&lt;/p&gt;
+									</p>
                                     [pattern/mail/_common_signature_start.html]
-									Міністерство інфраструктури України,&lt;br&gt;
+									Міністерство інфраструктури України,<br>
 									[pattern/mail/_common_signature_end.html]   
 									[pattern/mail/_common_feedback.html]
-									[pattern/mail/_common_footer.html]</activiti:expression>
+									[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -722,11 +776,20 @@ execution.setVariable('sDate_of_expiry', expiry)
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
         <omgdc:Bounds height="55.0" width="105.0" x="620.0" y="308.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
+        <omgdc:Bounds height="40.0" width="40.0" x="750.0" y="315.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask9" id="BPMNShape_servicetask9">
+        <omgdc:Bounds height="55.0" width="105.0" x="855.0" y="308.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
         <omgdc:Bounds height="55.0" width="105.0" x="718.0" y="383.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
         <omgdc:Bounds height="55.0" width="105.0" x="855.0" y="383.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask3" id="BPMNShape_scripttask3">
+        <omgdc:Bounds height="55.0" width="105.0" x="855.0" y="460.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2_red" id="BPMNShape_usertask2_red">
         <omgdc:Bounds height="55.0" width="131.0" x="975.0" y="460.0"></omgdc:Bounds>
@@ -742,15 +805,6 @@ execution.setVariable('sDate_of_expiry', expiry)
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="55.0" width="105.0" x="1196.0" y="460.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
-        <omgdc:Bounds height="40.0" width="40.0" x="750.0" y="315.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask9" id="BPMNShape_servicetask9">
-        <omgdc:Bounds height="55.0" width="105.0" x="855.0" y="308.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask3" id="BPMNShape_scripttask3">
-        <omgdc:Bounds height="55.0" width="105.0" x="855.0" y="460.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
         <omgdi:waypoint x="75.0" y="147.0"></omgdi:waypoint>
@@ -808,13 +862,29 @@ execution.setVariable('sDate_of_expiry', expiry)
         <omgdi:waypoint x="725.0" y="335.0"></omgdi:waypoint>
         <omgdi:waypoint x="750.0" y="335.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
+        <omgdi:waypoint x="790.0" y="335.0"></omgdi:waypoint>
+        <omgdi:waypoint x="855.0" y="335.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
+        <omgdi:waypoint x="907.0" y="308.0"></omgdi:waypoint>
+        <omgdi:waypoint x="907.0" y="165.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
+        <omgdi:waypoint x="770.0" y="355.0"></omgdi:waypoint>
+        <omgdi:waypoint x="770.0" y="383.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
-        <omgdi:waypoint x="823.0" y="410.0"></omgdi:waypoint>
-        <omgdi:waypoint x="855.0" y="410.0"></omgdi:waypoint>
+        <omgdi:waypoint x="770.0" y="438.0"></omgdi:waypoint>
+        <omgdi:waypoint x="907.0" y="460.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
         <omgdi:waypoint x="907.0" y="438.0"></omgdi:waypoint>
         <omgdi:waypoint x="907.0" y="460.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow41" id="BPMNEdge_flow41">
+        <omgdi:waypoint x="960.0" y="487.0"></omgdi:waypoint>
+        <omgdi:waypoint x="975.0" y="487.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
         <omgdi:waypoint x="1106.0" y="487.0"></omgdi:waypoint>
@@ -841,22 +911,6 @@ execution.setVariable('sDate_of_expiry', expiry)
       <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
         <omgdi:waypoint x="1248.0" y="515.0"></omgdi:waypoint>
         <omgdi:waypoint x="1248.0" y="589.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
-        <omgdi:waypoint x="770.0" y="355.0"></omgdi:waypoint>
-        <omgdi:waypoint x="770.0" y="383.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
-        <omgdi:waypoint x="790.0" y="335.0"></omgdi:waypoint>
-        <omgdi:waypoint x="855.0" y="335.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
-        <omgdi:waypoint x="907.0" y="308.0"></omgdi:waypoint>
-        <omgdi:waypoint x="907.0" y="165.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow41" id="BPMNEdge_flow41">
-        <omgdi:waypoint x="960.0" y="487.0"></omgdi:waypoint>
-        <omgdi:waypoint x="975.0" y="487.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
