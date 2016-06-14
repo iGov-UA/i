@@ -40,7 +40,6 @@
         <activiti:formProperty id="markers2" name="якщо фіз" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;sNameFiz&quot;,&quot;sAdres&quot;,&quot;sINNFiz&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sSubekt&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'fiz'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="якщо юр" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;sNameUr&quot;,&quot;sAdresUr&quot;,&quot;sINNUr&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sSubekt&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'ur'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="form_signed" name=" " type="file" required="true"></activiti:formProperty>
-      
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="прийняття рішення про реєстрацію документів" activiti:candidateGroups="Court_Of_Cassation">
@@ -73,10 +72,8 @@
           <activiti:value id="petition9" name="клопотання про видачу копії технічного запису"></activiti:value>
           <activiti:value id="petition10" name="заява про надання копій судових актів"></activiti:value>
         </activiti:formProperty>
-      
         <activiti:formProperty id="sESPNumber" name="Реєстарційний номер сертифікату ЄЦП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sESP" name="Ким видан сертифікат ЄЦП" type="invisible"></activiti:formProperty>
-        
         <activiti:formProperty id="sNumberAplication" name="Реєстраційний номер заяви" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="decision_1" name="Прийняття рішення" type="enum" required="true">
           <activiti:value id="accept" name="документ зарєєстровано"></activiti:value>
@@ -137,7 +134,7 @@
 [pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 Процесуальний документ ${sListDocumentsLetter}, що Ви подавали по справі ${sNumberCase} зареєстровано і передано на розгляд судді.&lt;br /&gt;
-Реєстраційний номер ${sNumberAplication}, дата та час реєстрації звернення ${sDateAplication}&lt;br /&gt;
+Реєстраційний номер ${sNumberAplication}&lt;br /&gt;
 Телефон для довідок:(044) 536-18-01 та (044) 536-18-23
 &lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
@@ -174,14 +171,14 @@
 &lt;b&gt;Шановний колего!&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 Співробітники канцелярії зареєстрували новий документ, який знаходиться у додатку до листа.&lt;br /&gt;
 Додаткові відомості щодо звернення:&lt;br /&gt;
-Заявник - &lt;b&gt; ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;/b&gt;&lt;br /&gt;
-Номер справи - &lt;b&gt;${sNumberCase}&lt;/b&gt;&lt;br /&gt;
-Паспортні дані заявника - ${bankIdPassport}&lt;br /&gt;
-ІПН заявника - ${bankIdinn}&lt;br /&gt;
-E-Mail адреса заявника - ${email}&lt;br /&gt;
-Учасник судового процесу, від імені якого подається документ - &lt;b&gt;${sSurname}&lt;/b&gt;&lt;br /&gt;
-Категорія процесуального документу - &lt;b&gt;enum{[sCategoryDoc1]} ${sOther1}&lt;/b&gt;&lt;br /&gt;
-Реєстраційний номер заяви -&lt;b&gt; ${sNumberAplication}&lt;/b&gt;
+Номер судової справи - &lt;b&gt;${sNumberCase}&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+Найменування та ідентифікаційний код (номер) учасника судового процесу, від якого надійшов документ - &lt;b&gt;${sNameUr} ${sNameFiz} ${sINNUr} ${sINNFiz}&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+Інформація про особу, яка внесла дані - &lt;b&gt;${fio}, ${sPositionAplicant}, ${phone}&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+Дата подання звернення &lt;b&gt;${sDateCreateProcess}&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+Дата та час отримання судом &lt;b&gt;${sDateCreate}&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+Інформація про сертифікат підписувача - &lt;b&gt;${sESPNumber} ${sESP}&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+Категорія процесуального документу  &lt;b&gt;${sCategoryDoc1}&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+Реєстраційний номер заяви  &lt;b&gt;${sNumberAplication}&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 [pattern/mail/_common_signature.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
