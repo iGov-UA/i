@@ -1147,7 +1147,7 @@
         <activiti:formProperty id="sID_Document_UkrDoc" name="Number UkrDoc" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEnumTop" name="Енам подтематика" type="invisible" default="В РАЗРАБОТКЕ"></activiti:formProperty>
         <activiti:formProperty id="sNameDepartment" name="Назва управлиння (департаменту)" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="asStatusOperator" name="Обробка звернення" type="enum">
+        <activiti:formProperty id="asStatusOperator" name="Обробка звернення" type="enum" required="true">
           <activiti:value id="sEnumSendEmail" name="Відправити швидку відповідь на е-mail"></activiti:value>
           <activiti:value id="sEnumSendInFrontOffice" name="Відправити до фронт-офісу для письмової відповіді"></activiti:value>
           <activiti:value id="sEnumSendInUkrDoc" name="Відправити супервайзеру в УкрДок"></activiti:value>
@@ -1193,7 +1193,7 @@
 [pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[${nFileAnswer}]]></activiti:expression>
+          <activiti:expression><![CDATA[${PrintForm_1}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -3113,7 +3113,7 @@ execution.setVariable('sAnswerEmail', res)</script>
         </activiti:formProperty>
         <activiti:formProperty id="sChannelApp" name="Канал звернення" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDocument_Body_UkrDoc" name="Відповідь на звернення" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="asStatusSuper" name="Обрати спеціаліста" type="enum">
+        <activiti:formProperty id="asStatusSuper" name="Обрати спеціаліста" type="enum" required="true">
           <activiti:value id="sOperator_1" name="Оператор 1"></activiti:value>
           <activiti:value id="sOperator_2" name="Оператор 2"></activiti:value>
           <activiti:value id="sOperator_3" name="Оператор 3"></activiti:value>
@@ -3265,7 +3265,7 @@ execution.setVariable('sAnswerEmail', res)</script>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow36" sourceRef="usertask5" targetRef="usertask6"></sequenceFlow>
-    <sequenceFlow id="flow37" name="asStatus=='sEnumAnswer'" sourceRef="exclusivegateway5" targetRef="usertask4">
+    <sequenceFlow id="flow37" name="asStatus=='sEnumAnswer'" sourceRef="exclusivegateway5" targetRef="exclusivegateway8">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asStatus=='sEnumAnswer'}]]></conditionExpression>
     </sequenceFlow>
     <userTask id="usertask7" name="Перевірка відповіді" activiti:candidateGroups="dnepr_gas_head">
@@ -3389,7 +3389,9 @@ execution.setVariable('sAnswerEmail', res)</script>
     <sequenceFlow id="flow41" name="asStatusOperator=='sEnumSendInDniprooblenergo'" sourceRef="exclusivegateway1" targetRef="usertask8">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asStatusOperator=='sEnumSendInDniprooblenergo'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow42" sourceRef="usertask8" targetRef="usertask4"></sequenceFlow>
+    <sequenceFlow id="flow42" name="asAnswerChannel=='sEnumAnsw1'||asAnswerChannel=='sEnumAnsw2'" sourceRef="exclusivegateway9" targetRef="usertask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asAnswerChannel=='sEnumAnsw1'||asAnswerChannel=='sEnumAnsw2'}]]></conditionExpression>
+    </sequenceFlow>
     <sequenceFlow id="flow43" name="sAnswerStatus=='Reject'||sAnswerStatus=='CantConnect'||sAnswerStatus=='InvalidConnect'" sourceRef="exclusivegateway4" targetRef="usertask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sAnswerStatus=='Reject'||sAnswerStatus=='CantConnect'||sAnswerStatus=='InvalidConnect'}]]></conditionExpression>
     </sequenceFlow>
@@ -3405,13 +3407,8 @@ var per1 = login[i]
 var per2 = departName[i]
 break}
     }
-if(execution.getVariable('nFileAnswer' == null)
-   {
-   var per3 = " "
-   }
 execution.setVariable('sLoginUkrDoc', per1)
-execution.setVariable('sNameDepartment', per2)
-execution.setVariable('nFileAnswer', per3)</script>
+execution.setVariable('sNameDepartment', per2)</script>
     </scriptTask>
     <sequenceFlow id="flow44" sourceRef="usertask1" targetRef="scripttask2"></sequenceFlow>
     <sequenceFlow id="flow46" sourceRef="scripttask2" targetRef="exclusivegateway1"></sequenceFlow>
@@ -4032,6 +4029,78 @@ execution.setVariable('sChannelApp', per1)</script>
     <sequenceFlow id="flow69" sourceRef="exclusivegateway7" targetRef="usertask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sStatusName_UkrDoc!='Исполнен'}]]></conditionExpression>
     </sequenceFlow>
+    <exclusiveGateway id="exclusivegateway8" name="Exclusive Gateway"></exclusiveGateway>
+    <serviceTask id="servicetask7" name="Повідомлення громадянину" activiti:delegateExpression="#{MailTaskWithAttachments}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення до Дніпропетровської міської ради.]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+Ваше звернення до Дніпропетровської міської ради - опрацьовано.</p>
+<p>Відповідь:<br>
+<i>${sDocument_Body_UkrDoc}</i>
+</p>
+<p>Якщо Ви бажаєте зберегти копію відповіді у письмовому вигляді, Вам необхідно роздрукувати електронний документ прикріплений до листа.</p>
+[pattern/mail/_common_signature_start.html]
+Дніпропетровська міська рада,<br />
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[${nFileAnswer}]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow70" name="asAnswerChannel=='sEnumAnsw3'" sourceRef="exclusivegateway8" targetRef="servicetask7">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asAnswerChannel=='sEnumAnsw3'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow71" name="asAnswerChannel=='sEnumAnsw1'||asAnswerChannel=='sEnumAnsw2'" sourceRef="exclusivegateway8" targetRef="usertask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asAnswerChannel=='sEnumAnsw1'||asAnswerChannel=='sEnumAnsw2'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow72" sourceRef="servicetask7" targetRef="usertask4"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway9" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow73" sourceRef="usertask8" targetRef="exclusivegateway9"></sequenceFlow>
+    <serviceTask id="servicetask8" name="Повідомлення громадянину" activiti:delegateExpression="#{MailTaskWithAttachments}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення до Дніпропетровської міської ради.]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+Ваше звернення до Дніпропетровської міської ради - опрацьовано.</p>
+<p>Відповідь:<br>
+<i>${sDocument_Body_UkrDoc}</i>
+</p>
+<p>Якщо Ви бажаєте зберегти копію відповіді у письмовому вигляді, Вам необхідно роздрукувати електронний документ прикріплений до листа.</p>
+[pattern/mail/_common_signature_start.html]
+Дніпропетровська міська рада,<br />
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[${nFileAnswer}]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow74" name="asAnswerChannel=='sEnumAnsw3'" sourceRef="exclusivegateway9" targetRef="servicetask8">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asAnswerChannel=='sEnumAnsw3'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow75" sourceRef="servicetask8" targetRef="usertask4"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_mvk_291_common">
     <bpmndi:BPMNPlane bpmnElement="dnepr_mvk_291_common" id="BPMNPlane_dnepr_mvk_291_common">
@@ -4131,6 +4200,18 @@ execution.setVariable('sChannelApp', per1)</script>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway7" id="BPMNShape_exclusivegateway7">
         <omgdc:Bounds height="40.0" width="40.0" x="1217.0" y="534.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway8" id="BPMNShape_exclusivegateway8">
+        <omgdc:Bounds height="40.0" width="40.0" x="1196.0" y="136.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
+        <omgdc:Bounds height="55.0" width="105.0" x="1053.0" y="61.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway9" id="BPMNShape_exclusivegateway9">
+        <omgdc:Bounds height="40.0" width="40.0" x="1400.0" y="420.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
+        <omgdc:Bounds height="55.0" width="105.0" x="1480.0" y="413.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="75.0" y="160.0"></omgdi:waypoint>
         <omgdi:waypoint x="120.0" y="160.0"></omgdi:waypoint>
@@ -4217,9 +4298,9 @@ execution.setVariable('sChannelApp', per1)</script>
       <bpmndi:BPMNEdge bpmnElement="flow37" id="BPMNEdge_flow37">
         <omgdi:waypoint x="1366.0" y="245.0"></omgdi:waypoint>
         <omgdi:waypoint x="1365.0" y="157.0"></omgdi:waypoint>
-        <omgdi:waypoint x="804.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1236.0" y="156.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="1081.0" y="137.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="1279.0" y="139.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
@@ -4247,11 +4328,13 @@ execution.setVariable('sChannelApp', per1)</script>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">
-        <omgdi:waypoint x="1011.0" y="440.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1424.0" y="440.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1424.0" y="102.0"></omgdi:waypoint>
-        <omgdi:waypoint x="887.0" y="102.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1420.0" y="420.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1419.0" y="21.0"></omgdi:waypoint>
+        <omgdi:waypoint x="856.0" y="21.0"></omgdi:waypoint>
         <omgdi:waypoint x="751.0" y="121.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="70.0" width="100.0" x="1401.0" y="193.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
         <omgdi:waypoint x="439.0" y="676.0"></omgdi:waypoint>
@@ -4356,6 +4439,43 @@ execution.setVariable('sChannelApp', per1)</script>
         <omgdi:waypoint x="1237.0" y="464.0"></omgdi:waypoint>
         <omgdi:waypoint x="1118.0" y="464.0"></omgdi:waypoint>
         <omgdi:waypoint x="1119.0" y="507.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow70" id="BPMNEdge_flow70">
+        <omgdi:waypoint x="1216.0" y="136.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1214.0" y="88.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1158.0" y="88.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="1189.0" y="69.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow71" id="BPMNEdge_flow71">
+        <omgdi:waypoint x="1196.0" y="156.0"></omgdi:waypoint>
+        <omgdi:waypoint x="804.0" y="157.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="70.0" width="100.0" x="910.0" y="122.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow72" id="BPMNEdge_flow72">
+        <omgdi:waypoint x="1053.0" y="88.0"></omgdi:waypoint>
+        <omgdi:waypoint x="847.0" y="88.0"></omgdi:waypoint>
+        <omgdi:waypoint x="751.0" y="121.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow73" id="BPMNEdge_flow73">
+        <omgdi:waypoint x="1011.0" y="440.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1400.0" y="440.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow74" id="BPMNEdge_flow74">
+        <omgdi:waypoint x="1440.0" y="440.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1480.0" y="440.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="1409.0" y="457.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow75" id="BPMNEdge_flow75">
+        <omgdi:waypoint x="1532.0" y="413.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1532.0" y="9.0"></omgdi:waypoint>
+        <omgdi:waypoint x="813.0" y="9.0"></omgdi:waypoint>
+        <omgdi:waypoint x="751.0" y="121.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
