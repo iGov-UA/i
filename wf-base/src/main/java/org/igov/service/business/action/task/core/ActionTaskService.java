@@ -1468,7 +1468,7 @@ public class ActionTaskService {
             List<HistoricDetail> aHistoricDetail = null;
             if(snID_Process != null){
                 aHistoricDetail = oHistoryService.createHistoricDetailQuery().formProperties()
-                        .executionId(snID_Process).list();
+                        .processInstanceId(snID_Process).list();
             }
             LOG.info("(aHistoricDetail={})", aHistoricDetail);
             if(aHistoricDetail == null){

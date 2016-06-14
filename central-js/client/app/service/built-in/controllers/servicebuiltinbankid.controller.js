@@ -84,7 +84,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
       }
     });
   }
-  
+
   $scope.bAdmin = AdminService.isAdmin();
   $scope.markers = ValidationService.getValidationMarkers();
   var aID_FieldPhoneUA = $scope.markers.validate.PhoneUA.aField_ID;
@@ -325,6 +325,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
         submitted.data.formData = $scope.data.formData;
         $scope.isSending = false;
         $scope.$root.data = $scope.data;
+        $rootScope.data.email = $scope.data.formData.params.email.value;
 
         try{
 //            ErrorsFactory.logInfoSendHide({sType:"success", sBody:"Створена заявка!",asParam:["sID_Order: "+sID_Order]});
@@ -572,4 +573,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', function(
     console.log("Switch $rootScope.isFileProcessUploading to " + $rootScope.isFileProcessUploading.bState);
   };
 
+  if($scope.selfOrdersCount.nOpened > 0 && oServiceData.oPlace || oServiceData.oPlaceRoot){
+    $scope.fillSelfPrevious();
+  }
 });
