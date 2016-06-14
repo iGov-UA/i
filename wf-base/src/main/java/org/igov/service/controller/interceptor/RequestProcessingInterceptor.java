@@ -20,6 +20,8 @@ import org.igov.model.escalation.EscalationHistory;
 import org.igov.service.business.action.event.HistoryEventService;
 import org.igov.service.business.action.task.bp.handler.BpServiceHandler;
 import org.igov.service.business.escalation.EscalationHistoryService;
+import org.igov.service.business.msg.MsgService;
+import org.igov.service.exception.CommonUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
@@ -214,6 +216,13 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter {
                     + sRequestBody + " sResponseBody: " + sResponseBody, ex);
             LOG_BIG.error("Can't save service-history record: {}", ex.getMessage());
             LOG_BIG.error("FAIL:", ex);
+            try {
+        	MsgService.setEventSystemWithParam("INTERNAL_ERROR", null, null, "Interceptor_protocolize", "Can't save service-history record",
+		    sResponseBody, CommonUtils.getStringStackTrace(ex), mRequestParam);
+            } catch (Exception e) {
+        	LOG.error("Cann't send an error message to service MSG\n", e);
+            }
+            
         }
         LOG.info("Method 'protocolize' finished");
     }

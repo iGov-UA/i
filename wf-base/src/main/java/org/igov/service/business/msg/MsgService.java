@@ -1,6 +1,7 @@
 package org.igov.service.business.msg;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
@@ -68,8 +69,22 @@ public class MsgService {
 	return msg;
     }
 
-    public static IMsgObjR setEventSystemWithParam(String sType, Long nID_Subject, Long nID_Server, String sFunction, String sHead,
-	    String sBody, String sError, HashMap<String, Object> mParam) throws Exception {
+    public static <T> IMsgObjR setEventSystemWithParam(String sType, Long nID_Subject, Long nID_Server, String sFunction, String sHead,
+	    String sBody, String sError, HashMap<String, T> mParam) throws Exception {
+	if (!isReadySendMSG) {
+	    LOG.warn("Сервис не готов к отсылке сообщений.");
+	    return null;
+	}
+
+	IMsgObjR msg = new MsgSendImpl(sServiceURL, sBusId, sType, sFunction, sTemplateMsgId, sMsgLogin)
+		.addnID_Server(nID_Server).addnID_Subject(nID_Subject).addsBody(sBody).addsError(sError).addsHead(sHead)
+		.addasParam(mParam).save();
+
+	return msg;
+    }
+
+    public static <T> IMsgObjR setEventSystemWithParam(String sType, Long nID_Subject, Long nID_Server, String sFunction, String sHead,
+	    String sBody, String sError, Map<String, T> mParam) throws Exception {
 	if (!isReadySendMSG) {
 	    LOG.warn("Сервис не готов к отсылке сообщений.");
 	    return null;
