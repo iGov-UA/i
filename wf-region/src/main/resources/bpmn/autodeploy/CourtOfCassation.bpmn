@@ -6,7 +6,7 @@
         <activiti:formProperty id="bankIdlastName" name="Прізвище заявника" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я заявника" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові заявника" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPositionAplicant" name="Посада заявника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPositionAplicant" name="Посада заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNumberCase" name="Номер судової справи" type="string" required="true"></activiti:formProperty>
@@ -34,24 +34,34 @@
           <activiti:value id="petition10" name="заява про надання копій судових актів"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDoc1" name="Завантажте документ;обов'язково тільки у форматі pdf" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sESPNumber" name="Реєстарційний номер сертифікату ЄЦП" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sESP" name="Ким видан сертифікат ЄЦП" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="тільки пдф" type="markers" default="{&quot;validate&quot;:{&quot;FileExtensions_1&quot;: {&quot;aField_ID&quot;: [&quot;sDoc1&quot;],&quot;saExtension&quot;:&quot;pdf&quot;,&quot;sMessage&quot;:&quot;будь ласка, завантажте файл у форматі pdf&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="якщо фіз" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;sNameFiz&quot;,&quot;sAdres&quot;,&quot;sINNFiz&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sSubekt&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'fiz'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="якщо юр" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;sNameUr&quot;,&quot;sAdresUr&quot;,&quot;sINNUr&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sSubekt&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'ur'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="form_signed" name=" " type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sESPNumber" name="Реєстарційний номер сертифікату ЄЦП" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sESP" name="Ким видан сертифікат ЄЦП" type="string" required="true"></activiti:formProperty>
+      
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="прийняття рішення про реєстрацію документів" activiti:candidateGroups="Court_Of_Cassation">
       <extensionElements>
         <activiti:formProperty id="fio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name=" ІПН" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sSurname" name="Учасник судового процесу, від імені якого подається документ; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPositionAplicant" name="Посада заявника; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Укажіть контактний номер телефону; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNumberCase" name="Номер судової справи; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sCategoryDoc1" name="Категорія процесуального документу" type="enum" writable="false">
+        <activiti:formProperty id="sSubekt" name="Учасник судового процесу, від імені якого подається документ" type="enum" writable="false">
+          <activiti:value id="fiz" name="фізична особа або фізична особа-підприємець"></activiti:value>
+          <activiti:value id="ur" name="юрідична особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sNameUr" name="У давальному відмінку повне найменування юридичної особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAdresUr" name="Юрідична адреса; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sINNUr" name="Ідентифікаційний код юридичної особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameFiz" name="Прізвище, ім'я, по батькові учасника судового процесу; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAdres" name="Адреса місцезнаходження або місця проживання учасника судового процесу; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sINNFiz" name="ІПН учасника судового процесу; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhone" name="Номер телефону учасника судового процесу; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCategoryDoc1" name="Оберіть категорію процесуального документу" type="enum" writable="false">
           <activiti:value id="petition1" name="відзив"></activiti:value>
           <activiti:value id="petition2" name="заява про ознайомлення з матеріалами справи"></activiti:value>
           <activiti:value id="petition3" name="письмові пояснення"></activiti:value>
@@ -62,15 +72,11 @@
           <activiti:value id="petition8" name="клопотання про відтворення технічного запису судового процесу"></activiti:value>
           <activiti:value id="petition9" name="клопотання про видачу копії технічного запису"></activiti:value>
           <activiti:value id="petition10" name="заява про надання копій судових актів"></activiti:value>
-          <activiti:value id="petition11" name="Клопотання про поновлення строку"></activiti:value>
-          <activiti:value id="petition12" name="Клопотання про роз'яснення судового рішення"></activiti:value>
-          <activiti:value id="petition13" name="Клопотання про виправлення помилки в судовому решенні"></activiti:value>
-          <activiti:value id="petition14" name="Клопотання про винесення додаткового рішення"></activiti:value>
-          <activiti:value id="petition15" name="Клопотання про видачу копії судового рішення"></activiti:value>
-          <activiti:value id="petition16" name="Клопотання про забезпечення позову (касаційної скарги)"></activiti:value>
-          <activiti:value id="other" name="інше"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sOther1" name="Індивідуальна назва процесуального документу №1" type="string" writable="false"></activiti:formProperty>
+      
+        <activiti:formProperty id="sESPNumber" name="Реєстарційний номер сертифікату ЄЦП" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sESP" name="Ким видан сертифікат ЄЦП" type="invisible"></activiti:formProperty>
+        
         <activiti:formProperty id="sNumberAplication" name="Реєстраційний номер заяви" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="decision_1" name="Прийняття рішення" type="enum" required="true">
           <activiti:value id="accept" name="документ зарєєстровано"></activiti:value>
