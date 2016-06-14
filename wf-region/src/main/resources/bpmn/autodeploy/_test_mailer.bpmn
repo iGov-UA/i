@@ -15,16 +15,14 @@
         <activiti:formProperty id="file6" name="6" type="file"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-
+    <sequenceFlow id="flow8" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <serviceTask id="servicetask1" name="подтягивание документов" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-
-
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>
     <sequenceFlow id="flow9" sourceRef="boundaryerror1" targetRef="endevent2"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
-
+    <sequenceFlow id="flow7" sourceRef="servicetask1" targetRef="servicetask0"></sequenceFlow>
     <serviceTask id="servicetask0" name="Лист-звернення до держслужбовця" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -41,13 +39,6 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-
-
-
-
-
-
-
     <sequenceFlow id="flow1" sourceRef="servicetask0" targetRef="usertask1"></sequenceFlow>
     <userTask id="usertask1" name="рассмотрение и загрузка" activiti:candidateGroups="sales">
       <extensionElements>
@@ -61,6 +52,7 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
+    <sequenceFlow id="flow4" sourceRef="usertask1" targetRef="servicetask2"></sequenceFlow>
     <serviceTask id="servicetask2" name="оповещение заявителя" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="from">
@@ -203,13 +195,8 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow4" sourceRef="usertask1" targetRef="servicetask2"></sequenceFlow>
-    <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow5" sourceRef="servicetask2" targetRef="endevent1"></sequenceFlow>
-    <sequenceFlow id="flow7" sourceRef="servicetask1" targetRef="servicetask0"></sequenceFlow>
-    <sequenceFlow id="flow8" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-
-
+    <endEvent id="endevent1" name="End"></endEvent>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__test_mailer">
     <bpmndi:BPMNPlane bpmnElement="_test_mailer" id="BPMNPlane__test_mailer">
