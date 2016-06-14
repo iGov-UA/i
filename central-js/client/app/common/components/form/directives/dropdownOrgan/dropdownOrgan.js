@@ -8,7 +8,8 @@ angular.module('app').directive('dropdownOrgan', function (OrganListFactory, $ht
       ngRequired: "=",
       formDataProperty: "=",
       activitiForm: "=",
-      formData: "="
+      formData: "=",
+      name: "="
     },
     link: function (scope) {
       // init organ list for organ select
