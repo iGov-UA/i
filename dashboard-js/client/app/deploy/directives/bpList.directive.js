@@ -29,17 +29,30 @@ angular.module('dashboardJsApp')
           })
           .finally(function () {
             $scope.inProgress = false;
+            $scope.bViewFilterSetting = false;
+            $scope.bSettingDeleteFilter = false;
           });
       };
 
       $scope.openViewFilter = function(){
-        $scope.bViewFilterSetting = true;
-        $scope.bSettingDeleteFilter = false;
+        if ($scope.bViewFilterSetting && $scope.bSettingDeleteFilter){
+          $scope.bSettingDeleteFilter = false;
+        } else {
+          $scope.bViewFilterSetting = !$scope.bViewFilterSetting;
+          $scope.bSettingDeleteFilter = false;
+        }
       };
 
       $scope.openRemoveFilter = function(){
-        $scope.bViewFilterSetting = true;
-        $scope.bSettingDeleteFilter = true;
+        if ($scope.bViewFilterSetting && !$scope.bSettingDeleteFilter){
+          $scope.bSettingDeleteFilter = true;
+        } else if($scope.bViewFilterSetting) {
+          $scope.bViewFilterSetting = false;
+          $scope.bSettingDeleteFilter = false;
+        } else {
+          $scope.bViewFilterSetting = true;
+          $scope.bSettingDeleteFilter = true;
+        }
       };
 
       $scope.closeFilter = function(){
@@ -65,6 +78,35 @@ angular.module('dashboardJsApp')
       $scope.add = function () {
 
       };
+
+      var fileUploadField = $("#file-field");
+
+      fileUploadField.bind('change', function(event) {
+        /*
+        scope.$apply(function() {
+          debugger;
+          scope.upload(event.target.files, attrs.name);
+        });
+        */
+        var targetFiles = event.target.files;
+        var sFileExt = targetFiles[0].name.split('.').pop().toLowerCase();
+        if (sFileExt === "bpmn"){
+          debugger;
+          uploadFunc(targetFiles, targetFiles[0].name);
+        } else {
+          alert("Не підтримуємий формат файлу");
+        }
+
+      });
+
+      fileUploadField.bind('click', function(e) {
+        e.stopPropagation();
+      });
+
+      $("#uploader").bind('click', function(e) {
+        e.preventDefault();
+        fileUploadField[0].click();
+      });
 
       $scope.downloadItem = function(oBPinTable){
         downloadFunc(oBPinTable.id);

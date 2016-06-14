@@ -3,13 +3,48 @@
  */
 'use strict';
 
-angular.module('dashboardJsApp').factory('deployService', function deployService($http, $q) {
+angular.module('dashboardJsApp').factory('deployService', function deployService($http, $q, $rootScope, uiUploader) {
+
+  var setBP = function (url, files){
+    var deferred = $q.defer();
+
+    var self = this;
+    var scope = $rootScope.$new(true, $rootScope);
+    uiUploader.removeAll();
+    uiUploader.addFiles(files);
+    uiUploader.startUpload({
+      url: url,
+      concurrency: 1,
+      onProgress: function(file) {
+        scope.$apply(function() {
+
+        });
+      },
+      onCompleted: function(file, response) {
+        scope.$apply(function() {
+          try {
+            deferred.resolve({
+              file: file,
+              response: JSON.parse(response)
+            });
+          } catch (e) {
+            deferred.reject({
+              err: response
+            });
+          }
+        });
+        //alert("load complete");
+      }
+    });
+
+    return deferred.promise;
+  };
 
   var getBP = function (url, sID, callback) {
     var cb = callback || angular.noop;
     var deferred = $q.defer();
 
-    var request = {
+    var req = {
       method: 'GET',
       url: url,
       params: {
@@ -17,17 +52,15 @@ angular.module('dashboardJsApp').factory('deployService', function deployService
       }
     };
 
-    $http(request)
-      .success(function(response){
-        var data = angular.fromJson(response);
-        deferred.resolve(data);
+    $http(req).then(
+      function(response) {
+        deferred.resolve(response.data);
         return cb();
-      }).
-      error(function (err) {
-        deferred.reject(err);
-        return cb(err);
+      },
+      function(response) {
+        deferred.reject(response);
+        return cb(response);
       }.bind(this));
-
     return deferred.promise;
   };
 
@@ -98,12 +131,12 @@ angular.module('dashboardJsApp').factory('deployService', function deployService
   };
 
   return {
-    setBP: function () {
-      //todo добавление файла БП
+    setBP: function (files, sFileName) {
+      return setBP('/api/deploy/setBP/' + sFileName, files);
     },
 
-    getBP: function (sID, callback) {
-      return getListBP('/api/deploy/getBP', sID, callback);
+    getBP: function(sID, callback) {
+      return getBP('/api/deploy/getBP', sID, callback);
     },
 
     getListBP: function (oFilter, callback) {

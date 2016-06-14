@@ -6,7 +6,16 @@
 var activiti = require('../../components/activiti');
 
 exports.setBP = function(req, res){
-//todo добавление файла БП
+  var options = {
+    url: activiti.getRequestURL({
+      path: 'action/task/setBP',
+      query: {
+        sFileName: req.params.sFileName
+      }
+    })
+  };
+
+  activiti.fileupload(req, res, options);
 };
 
 exports.getBP = function(req, res){
@@ -17,6 +26,7 @@ exports.getBP = function(req, res){
     }
   };
 
+  /*
   activiti.get(options, function (error, statusCode, result) {
     if (error) {
       res.send(error);
@@ -24,6 +34,8 @@ exports.getBP = function(req, res){
       res.status(statusCode).json(result);
     }
   });
+  */
+  activiti.filedownload(req, res, options);
 };
 
 exports.getListBP = function(req, res){
