@@ -171,14 +171,12 @@
 &lt;b&gt;Шановний колего!&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 Співробітники канцелярії зареєстрували новий документ, який знаходиться у додатку до листа.&lt;br /&gt;
 Додаткові відомості щодо звернення:&lt;br /&gt;
-Номер судової справи - &lt;b&gt;${sNumberCase}&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Найменування та ідентифікаційний код (номер) учасника судового процесу, від якого надійшов документ - &lt;b&gt;${sNameUr} ${sNameFiz} ${sINNUr} ${sINNFiz}&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Інформація про особу, яка внесла дані - &lt;b&gt;${fio}, ${sPositionAplicant}, ${phone}&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Дата подання звернення &lt;b&gt;${sDateCreateProcess}&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Дата та час отримання судом &lt;b&gt;${sDateCreate}&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Інформація про сертифікат підписувача - &lt;b&gt;${sESPNumber} ${sESP}&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Категорія процесуального документу  &lt;b&gt;${sCategoryDoc1}&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Реєстраційний номер заяви  &lt;b&gt;${sNumberAplication}&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+Номер судової справи - ${sNumberCase}&lt;br /&gt;
+Найменування та ідентифікаційний код (номер) учасника судового процесу, від якого надійшов документ - ${sNameUr} ${sNameFiz} ${sINNUr} ${sINNFiz}&lt;br /&gt;
+Інформація про особу, яка внесла дані - ${fio}, ${sPositionAplicant}, ${phone}&lt;br /&gt;
+Інформація про сертифікат підписувача - ${sESPNumber} ${sESP}&lt;br /&gt;
+Категорія процесуального документу  - enum{[sCategoryDoc1]}&lt;br /&gt;
+Реєстраційний номер заяви -${sNumberAplication}&lt;br /&gt;
 [pattern/mail/_common_signature.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -187,7 +185,7 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask3" name="повідомлення громадянина про відмову у реєстрації документів" activiti:expression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask3" name="повідомлення громадянина про відмову у реєстрації документів" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${email}</activiti:expression>
@@ -277,7 +275,9 @@ execution.setVariable('sListDocumentsLetter', per1)
     <sequenceFlow id="flow31" sourceRef="boundaryerror1" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow32" sourceRef="servicetask3" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow34" sourceRef="servicetask5" targetRef="servicetask2"></sequenceFlow>
-    <sequenceFlow id="flow35" sourceRef="exclusivegateway1" targetRef="servicetask5"></sequenceFlow>
+    <sequenceFlow id="flow35" sourceRef="exclusivegateway1" targetRef="servicetask5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_1=='accept'}]]></conditionExpression>
+    </sequenceFlow>
     <sequenceFlow id="flow36" sourceRef="servicetask5" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow37" sourceRef="servicetask2" targetRef="endevent1"></sequenceFlow>
   </process>
