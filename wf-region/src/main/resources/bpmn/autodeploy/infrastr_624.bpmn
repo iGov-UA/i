@@ -102,6 +102,7 @@
         <activiti:formProperty id="sPlace_of_birth" name="Місце народження" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDate_of_birth" name="Дата народження" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sSex" name="Стать" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sEyeColor" name="Колір очей" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDate_of_issue" name="Дата видачі паспорту у форматі 12 ГРУ / DEC 2016" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDate_of_expiry" name="Дата закінчення терміну дії паспорту 12 ГРУ / DEC 2021" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPort" name="Назва порту" type="invisible"></activiti:formProperty>
@@ -261,6 +262,15 @@ if (place=='sChernT'){
 place1='ЧЕРНІГІВ / CHERNIHIV'}
 }
 execution.setVariable('sPlace_of_birth', place1)
+var color=execution.getVariable('asEyeColor')
+var color1='Зелений / Green' 
+if (color=='sBlue'){
+color1='Блакитний / Blue'}
+if (color=='sGray'){
+color1='Сірий / Gray'}
+if (color=='sBrown'){
+color1='Карій / Brown'}
+execution.setVariable('sEyeColor', color1)
 	</script>
     </scriptTask>
     <sequenceFlow id="flow31" sourceRef="scripttask1" targetRef="servicetask4"></sequenceFlow>
@@ -327,12 +337,7 @@ execution.setVariable('sPlace_of_birth', place1)
         <activiti:formProperty id="sCountry" name="Громадянство" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSex" name="Стать" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sHeight" name="Зріст у см" type="long" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asEyeColor" name="Колір очей" type="enum" writable="false">
-          <activiti:value id="sGreen" name="Зелений"></activiti:value>
-          <activiti:value id="sBlue" name="Блакитний"></activiti:value>
-          <activiti:value id="sGray" name="Сірий"></activiti:value>
-          <activiti:value id="sBrown" name="Карій"></activiti:value>
-        </activiti:formProperty>
+        <activiti:formProperty id="sEyeColor" name="Колір очей"type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSpecialFeatures" name="Особливі прикмети" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSpecialFeaturesEng" name="Особливі прикмети англійською" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asHavePassport" name="Чи має громадянин посвідчення особи моряка?" type="enum" writable="false">
@@ -417,13 +422,17 @@ execution.setVariable('sPlace_of_birth', place1)
                                         Спеціалісти ${sNameOrgan} успішно опрацювли Вашу заяву.<br>
 										Для того щоб закінчити процедуру видачі/обміну посвідчення особи моряка необхідно:<br>
 										<ul>
+										<li>Перевірити достовірність даних заявника внесених в заявку на замовлення послуги, у заявці що додається.</li>
 										<li>Протягом 5 робочіх днів сплатити усі необхідні платежі та отримати квитанцію про сплату.</li>
-										<li>Після підтвердження від ${sNameOrgan} протягом двох тижнів відвідати його з оригіналами документів та отримати свій документ.</li>
+										<li>Після отримання листа-запрошення від ${sNameOrgan} відвідати його з оригіналами документів та отримати посвідчення.</li>
 										</ul>
 									</p>
 									<p>
 										Реквізити для сплати доступні за посиланням...<br>
 										Призначення платежу: сплата за видачу/обмін посвідчення особи моряка за заявкою №[sID_Order]
+									</p>
+									<p>
+										<b>Проведення оплати послугу, що замовляється, є одночасно підтвердженням достовірності даних внесених в Вашу заявку.</b>
 									</p>
 									<p>
 										<b><i>${sDecisionComment}</i></b>
@@ -445,8 +454,8 @@ execution.setVariable('sPlace_of_birth', place1)
         <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPayment" name="Ознака сплати" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNumber" name="Серія та номер бланку паспорту" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDate_of_issue" name="Дата видачі паспорту у форматі ДД.ММ.PPPP" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNumber" name="Серія та номер бланку посвідчення" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDate_of_issue" name="Дата видачі посвідчення у форматі ДД.ММ.PPPP" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asPayment" name="Рішення про надходження сплати" type="enum" required="true">
           <activiti:value id="sPaymentOK" name="Cплата надійшла"></activiti:value>
           <activiti:value id="sPaymentNO" name="Громадянин не сплатив за послугу"></activiti:value>
