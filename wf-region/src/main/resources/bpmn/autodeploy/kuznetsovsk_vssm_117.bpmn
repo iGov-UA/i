@@ -47,7 +47,7 @@
         <activiti:formProperty id="comment_1" name="У разі відмови у наданні довідки внесіть, будь ласка, причину" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="rishen" name="Завантажте копію документа" type="file" required="true"></activiti:formProperty>
         
-        <activiti:formProperty id="sBody_1" name="[pattern/print/zhitomir/zhytomyr_mvk_families_3.html]" type="invisible" default="заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/minsoc/kusnetsovsk_vssm_117_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         
         <activiti:formProperty id="sNameArea" name="назва населеного пункту" type="invisible"></activiti:formProperty>
         
@@ -113,7 +113,7 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask2" name="повідомлення громадянина о наданні довідки" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask2" name="повідомлення громадянина про наданні довідки" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[test_noreply@igov.org.ua]]></activiti:string>
@@ -154,7 +154,7 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask5" name="повідомлення громадянина про відмову у видачі довідки" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask5" name="повідомлення громадянина про відмову у видачі довідки" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
