@@ -10,10 +10,11 @@
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNumberCase" name="Номер судової справи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sSubekt" name="Учасник судового процесу, від імені якого подається документ" type="enum" required="true">
+        <activiti:formProperty id="sSubekt" name="Учасник судового процесу, від імені якого подається документ;процесуальний статус" type="enum" required="true">
           <activiti:value id="fiz" name="фізична особа або фізична особа-підприємець"></activiti:value>
           <activiti:value id="ur" name="юрідична особа"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sStatus" name="Процесуальний статус учасника судового процесу, від імені якого подається документ;" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameUr" name="У давальному відмінку повне найменування юридичної особи" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sAdresUr" name="Юрідична адреса" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sINNUr" name="Ідентифікаційний код юридичної особи" type="string" default=" "></activiti:formProperty>
@@ -21,7 +22,19 @@
         <activiti:formProperty id="sAdres" name="Адреса місцезнаходження або місця проживання учасника судового процесу;з обов'язковим зазначенням поштового індексу" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sINNFiz" name="ІПН учасника судового процесу" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sPhone" name="Номер телефону учасника судового процесу" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sCategoryDoc1" name="Оберіть категорію процесуального документу" type="enum" required="true">
+        <activiti:formProperty id="sCountDocs" name="Вкажіть кількість документів, що подаються" type="enum" required="true">
+          <activiti:value id="one" name="1"></activiti:value>
+          <activiti:value id="two" name="2"></activiti:value>
+          <activiti:value id="three" name="3"></activiti:value>
+          <activiti:value id="four" name="4"></activiti:value>
+          <activiti:value id="five" name="5"></activiti:value>
+          <activiti:value id="six" name="6"></activiti:value>
+          <activiti:value id="seven" name="7"></activiti:value>
+          <activiti:value id="eight" name="8"></activiti:value>
+          <activiti:value id="nine" name="9"></activiti:value>
+          <activiti:value id="ten" name="10"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sCategoryDoc1" name="Оберіть категорію процесуального документу №1" type="enum" required="true">
           <activiti:value id="petition1" name="відзив"></activiti:value>
           <activiti:value id="petition2" name="заява про ознайомлення з матеріалами справи"></activiti:value>
           <activiti:value id="petition3" name="письмові пояснення"></activiti:value>
@@ -33,12 +46,139 @@
           <activiti:value id="petition9" name="клопотання про видачу копії технічного запису"></activiti:value>
           <activiti:value id="petition10" name="заява про надання копій судових актів"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDoc1" name="Завантажте документ;обов'язково тільки у форматі pdf" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDoc1" name="Завантажте документ №1 засвідчений ЄЦП;обов'язково тільки у форматі pdf" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCategoryDoc2" name="Оберіть категорію процесуального документу №2" type="enum" required="true">
+          <activiti:value id="petition1" name="відзив"></activiti:value>
+          <activiti:value id="petition2" name="заява про ознайомлення з матеріалами справи"></activiti:value>
+          <activiti:value id="petition3" name="письмові пояснення"></activiti:value>
+          <activiti:value id="petition4" name="заперечення проти клопотань і доводів інших учасників судового процесу"></activiti:value>
+          <activiti:value id="petition5" name="клопотання про участь у судовому засіданні в режимі відеоконференції"></activiti:value>
+          <activiti:value id="petition6" name="клопотання про відкладення розгляду справи"></activiti:value>
+          <activiti:value id="petition7" name="клопотання про здійснення фіксації судового процесу з допомогою звукозаписувального технічного засобу"></activiti:value>
+          <activiti:value id="petition8" name="клопотання про відтворення технічного запису судового процесу"></activiti:value>
+          <activiti:value id="petition9" name="клопотання про видачу копії технічного запису"></activiti:value>
+          <activiti:value id="petition10" name="заява про надання копій судових актів"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDoc2" name="Завантажте документ №2 засвідчений ЄЦП;обов'язково тільки у форматі pdf" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCategoryDoc3" name="Оберіть категорію процесуального документу №3" type="enum" required="true">
+          <activiti:value id="petition1" name="відзив"></activiti:value>
+          <activiti:value id="petition2" name="заява про ознайомлення з матеріалами справи"></activiti:value>
+          <activiti:value id="petition3" name="письмові пояснення"></activiti:value>
+          <activiti:value id="petition4" name="заперечення проти клопотань і доводів інших учасників судового процесу"></activiti:value>
+          <activiti:value id="petition5" name="клопотання про участь у судовому засіданні в режимі відеоконференції"></activiti:value>
+          <activiti:value id="petition6" name="клопотання про відкладення розгляду справи"></activiti:value>
+          <activiti:value id="petition7" name="клопотання про здійснення фіксації судового процесу з допомогою звукозаписувального технічного засобу"></activiti:value>
+          <activiti:value id="petition8" name="клопотання про відтворення технічного запису судового процесу"></activiti:value>
+          <activiti:value id="petition9" name="клопотання про видачу копії технічного запису"></activiti:value>
+          <activiti:value id="petition10" name="заява про надання копій судових актів"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDoc3" name="Завантажте документ №3 засвідчений ЄЦП;обов'язково тільки у форматі pdf" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCategoryDoc4" name="Оберіть категорію процесуального документу №4" type="enum" required="true">
+          <activiti:value id="petition1" name="відзив"></activiti:value>
+          <activiti:value id="petition2" name="заява про ознайомлення з матеріалами справи"></activiti:value>
+          <activiti:value id="petition3" name="письмові пояснення"></activiti:value>
+          <activiti:value id="petition4" name="заперечення проти клопотань і доводів інших учасників судового процесу"></activiti:value>
+          <activiti:value id="petition5" name="клопотання про участь у судовому засіданні в режимі відеоконференції"></activiti:value>
+          <activiti:value id="petition6" name="клопотання про відкладення розгляду справи"></activiti:value>
+          <activiti:value id="petition7" name="клопотання про здійснення фіксації судового процесу з допомогою звукозаписувального технічного засобу"></activiti:value>
+          <activiti:value id="petition8" name="клопотання про відтворення технічного запису судового процесу"></activiti:value>
+          <activiti:value id="petition9" name="клопотання про видачу копії технічного запису"></activiti:value>
+          <activiti:value id="petition10" name="заява про надання копій судових актів"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDoc4" name="Завантажте документ №4 засвідчений ЄЦП;обов'язково тільки у форматі pdf" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCategoryDoc5" name="Оберіть категорію процесуального документу №5" type="enum" required="true">
+          <activiti:value id="petition1" name="відзив"></activiti:value>
+          <activiti:value id="petition2" name="заява про ознайомлення з матеріалами справи"></activiti:value>
+          <activiti:value id="petition3" name="письмові пояснення"></activiti:value>
+          <activiti:value id="petition4" name="заперечення проти клопотань і доводів інших учасників судового процесу"></activiti:value>
+          <activiti:value id="petition5" name="клопотання про участь у судовому засіданні в режимі відеоконференції"></activiti:value>
+          <activiti:value id="petition6" name="клопотання про відкладення розгляду справи"></activiti:value>
+          <activiti:value id="petition7" name="клопотання про здійснення фіксації судового процесу з допомогою звукозаписувального технічного засобу"></activiti:value>
+          <activiti:value id="petition8" name="клопотання про відтворення технічного запису судового процесу"></activiti:value>
+          <activiti:value id="petition9" name="клопотання про видачу копії технічного запису"></activiti:value>
+          <activiti:value id="petition10" name="заява про надання копій судових актів"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDoc5" name="Завантажте документ №5 засвідчений ЄЦП;обов'язково тільки у форматі pdf" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCategoryDoc6" name="Оберіть категорію процесуального документу №6" type="enum" required="true">
+          <activiti:value id="petition1" name="відзив"></activiti:value>
+          <activiti:value id="petition2" name="заява про ознайомлення з матеріалами справи"></activiti:value>
+          <activiti:value id="petition3" name="письмові пояснення"></activiti:value>
+          <activiti:value id="petition4" name="заперечення проти клопотань і доводів інших учасників судового процесу"></activiti:value>
+          <activiti:value id="petition5" name="клопотання про участь у судовому засіданні в режимі відеоконференції"></activiti:value>
+          <activiti:value id="petition6" name="клопотання про відкладення розгляду справи"></activiti:value>
+          <activiti:value id="petition7" name="клопотання про здійснення фіксації судового процесу з допомогою звукозаписувального технічного засобу"></activiti:value>
+          <activiti:value id="petition8" name="клопотання про відтворення технічного запису судового процесу"></activiti:value>
+          <activiti:value id="petition9" name="клопотання про видачу копії технічного запису"></activiti:value>
+          <activiti:value id="petition10" name="заява про надання копій судових актів"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDoc6" name="Завантажте документ №6 засвідчений ЄЦП;обов'язково тільки у форматі pdf" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCategoryDoc7" name="Оберіть категорію процесуального документу №7" type="enum" required="true">
+          <activiti:value id="petition1" name="відзив"></activiti:value>
+          <activiti:value id="petition2" name="заява про ознайомлення з матеріалами справи"></activiti:value>
+          <activiti:value id="petition3" name="письмові пояснення"></activiti:value>
+          <activiti:value id="petition4" name="заперечення проти клопотань і доводів інших учасників судового процесу"></activiti:value>
+          <activiti:value id="petition5" name="клопотання про участь у судовому засіданні в режимі відеоконференції"></activiti:value>
+          <activiti:value id="petition6" name="клопотання про відкладення розгляду справи"></activiti:value>
+          <activiti:value id="petition7" name="клопотання про здійснення фіксації судового процесу з допомогою звукозаписувального технічного засобу"></activiti:value>
+          <activiti:value id="petition8" name="клопотання про відтворення технічного запису судового процесу"></activiti:value>
+          <activiti:value id="petition9" name="клопотання про видачу копії технічного запису"></activiti:value>
+          <activiti:value id="petition10" name="заява про надання копій судових актів"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDoc7" name="Завантажте документ №7 засвідчений ЄЦП;обов'язково тільки у форматі pdf" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCategoryDoc8" name="Оберіть категорію процесуального документу №8" type="enum" required="true">
+          <activiti:value id="petition1" name="відзив"></activiti:value>
+          <activiti:value id="petition2" name="заява про ознайомлення з матеріалами справи"></activiti:value>
+          <activiti:value id="petition3" name="письмові пояснення"></activiti:value>
+          <activiti:value id="petition4" name="заперечення проти клопотань і доводів інших учасників судового процесу"></activiti:value>
+          <activiti:value id="petition5" name="клопотання про участь у судовому засіданні в режимі відеоконференції"></activiti:value>
+          <activiti:value id="petition6" name="клопотання про відкладення розгляду справи"></activiti:value>
+          <activiti:value id="petition7" name="клопотання про здійснення фіксації судового процесу з допомогою звукозаписувального технічного засобу"></activiti:value>
+          <activiti:value id="petition8" name="клопотання про відтворення технічного запису судового процесу"></activiti:value>
+          <activiti:value id="petition9" name="клопотання про видачу копії технічного запису"></activiti:value>
+          <activiti:value id="petition10" name="заява про надання копій судових актів"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDoc8" name="Завантажте документ №8 засвідчений ЄЦП;обов'язково тільки у форматі pdf" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCategoryDoc9" name="Оберіть категорію процесуального документу №9" type="enum" required="true">
+          <activiti:value id="petition1" name="відзив"></activiti:value>
+          <activiti:value id="petition2" name="заява про ознайомлення з матеріалами справи"></activiti:value>
+          <activiti:value id="petition3" name="письмові пояснення"></activiti:value>
+          <activiti:value id="petition4" name="заперечення проти клопотань і доводів інших учасників судового процесу"></activiti:value>
+          <activiti:value id="petition5" name="клопотання про участь у судовому засіданні в режимі відеоконференції"></activiti:value>
+          <activiti:value id="petition6" name="клопотання про відкладення розгляду справи"></activiti:value>
+          <activiti:value id="petition7" name="клопотання про здійснення фіксації судового процесу з допомогою звукозаписувального технічного засобу"></activiti:value>
+          <activiti:value id="petition8" name="клопотання про відтворення технічного запису судового процесу"></activiti:value>
+          <activiti:value id="petition9" name="клопотання про видачу копії технічного запису"></activiti:value>
+          <activiti:value id="petition10" name="заява про надання копій судових актів"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDoc9" name="Завантажте документ №9 засвідчений ЄЦП;обов'язково тільки у форматі pdf" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCategoryDoc10" name="Оберіть категорію процесуального документу №10" type="enum" required="true">
+          <activiti:value id="petition1" name="відзив"></activiti:value>
+          <activiti:value id="petition2" name="заява про ознайомлення з матеріалами справи"></activiti:value>
+          <activiti:value id="petition3" name="письмові пояснення"></activiti:value>
+          <activiti:value id="petition4" name="заперечення проти клопотань і доводів інших учасників судового процесу"></activiti:value>
+          <activiti:value id="petition5" name="клопотання про участь у судовому засіданні в режимі відеоконференції"></activiti:value>
+          <activiti:value id="petition6" name="клопотання про відкладення розгляду справи"></activiti:value>
+          <activiti:value id="petition7" name="клопотання про здійснення фіксації судового процесу з допомогою звукозаписувального технічного засобу"></activiti:value>
+          <activiti:value id="petition8" name="клопотання про відтворення технічного запису судового процесу"></activiti:value>
+          <activiti:value id="petition9" name="клопотання про видачу копії технічного запису"></activiti:value>
+          <activiti:value id="petition10" name="заява про надання копій судових актів"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDoc10" name="Завантажте документ №10 засвідчений ЄЦП;обов'язково тільки у форматі pdf" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sESPNumber" name="Реєстарційний номер сертифікату ЄЦП" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sESP" name="Ким видан сертифікат ЄЦП" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="тільки пдф" type="markers" default="{&quot;validate&quot;:{&quot;FileExtensions_1&quot;: {&quot;aField_ID&quot;: [&quot;sDoc1&quot;],&quot;saExtension&quot;:&quot;pdf&quot;,&quot;sMessage&quot;:&quot;будь ласка, завантажте файл у форматі pdf&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="тільки пдф" type="markers" default="{&quot;validate&quot;:{&quot;FileExtensions_1&quot;:{&quot;aField_ID&quot;:[&quot;sDoc1&quot;,&quot;sDoc2&quot;,&quot;sDoc3&quot;,&quot;sDoc4&quot;,&quot;sDoc5&quot;,&quot;sDoc6&quot;,&quot;sDoc7&quot;,&quot;sDoc8&quot;,&quot;sDoc9&quot;,&quot;sDoc10&quot;],&quot;saExtension&quot;:&quot;pdf&quot;,&quot;sMessage&quot;:&quot;будь ласка, завантажте файл у форматі pdf&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="якщо фіз" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;sNameFiz&quot;,&quot;sAdres&quot;,&quot;sINNFiz&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sSubekt&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'fiz'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="якщо юр" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;sNameUr&quot;,&quot;sAdresUr&quot;,&quot;sINNUr&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sSubekt&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'ur'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers4" name="1 документ" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc1&quot;,&quot;sDoc1&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountDocs&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'one'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers5" name="2 документи" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc1&quot;,&quot;sDoc1&quot;,&quot;sCategoryDoc2&quot;,&quot;sDoc2&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountDocs&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'two'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers6" name="3 документи" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_6&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc1&quot;,&quot;sDoc1&quot;,&quot;sCategoryDoc2&quot;,&quot;sDoc2&quot;,&quot;sCategoryDoc3&quot;,&quot;sDoc3&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountDocs&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'three'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers7" name="4 документи" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_7&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc1&quot;,&quot;sDoc1&quot;,&quot;sCategoryDoc2&quot;,&quot;sDoc2&quot;,&quot;sCategoryDoc3&quot;,&quot;sDoc3&quot;,&quot;sCategoryDoc4&quot;,&quot;sDoc4&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountDocs&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'four'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers8" name="5 документів" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_8&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc1&quot;,&quot;sDoc1&quot;,&quot;sCategoryDoc2&quot;,&quot;sDoc2&quot;,&quot;sCategoryDoc3&quot;,&quot;sDoc3&quot;,&quot;sCategoryDoc4&quot;,&quot;sDoc4&quot;,&quot;sCategoryDoc5&quot;,&quot;sDoc5&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountDocs&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'five'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers9" name="6 документів" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_9&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc1&quot;,&quot;sDoc1&quot;,&quot;sCategoryDoc2&quot;,&quot;sDoc2&quot;,&quot;sCategoryDoc3&quot;,&quot;sDoc3&quot;,&quot;sCategoryDoc4&quot;,&quot;sDoc4&quot;,&quot;sCategoryDoc5&quot;,&quot;sDoc5&quot;,&quot;sCategoryDoc6&quot;,&quot;sDoc6&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountDocs&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'six'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers10" name="7 документів" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_10&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc1&quot;,&quot;sDoc1&quot;,&quot;sCategoryDoc2&quot;,&quot;sDoc2&quot;,&quot;sCategoryDoc3&quot;,&quot;sDoc3&quot;,&quot;sCategoryDoc4&quot;,&quot;sDoc4&quot;,&quot;sCategoryDoc5&quot;,&quot;sDoc5&quot;,&quot;sCategoryDoc6&quot;,&quot;sDoc6&quot;,&quot;sCategoryDoc7&quot;,&quot;sDoc7&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountDocs&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'seven'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers11" name="8 документів" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_11&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc1&quot;,&quot;sDoc1&quot;,&quot;sCategoryDoc2&quot;,&quot;sDoc2&quot;,&quot;sCategoryDoc3&quot;,&quot;sDoc3&quot;,&quot;sCategoryDoc4&quot;,&quot;sDoc4&quot;,&quot;sCategoryDoc5&quot;,&quot;sDoc5&quot;,&quot;sCategoryDoc6&quot;,&quot;sDoc6&quot;,&quot;sCategoryDoc7&quot;,&quot;sDoc7&quot;,&quot;sCategoryDoc8&quot;,&quot;sDoc8&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountDocs&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'eight'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers12" name="9 документів" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_12&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc1&quot;,&quot;sDoc1&quot;,&quot;sCategoryDoc2&quot;,&quot;sDoc2&quot;,&quot;sCategoryDoc3&quot;,&quot;sDoc3&quot;,&quot;sCategoryDoc4&quot;,&quot;sDoc4&quot;,&quot;sCategoryDoc5&quot;,&quot;sDoc5&quot;,&quot;sCategoryDoc6&quot;,&quot;sDoc6&quot;,&quot;sCategoryDoc7&quot;,&quot;sDoc7&quot;,&quot;sCategoryDoc8&quot;,&quot;sDoc8&quot;,&quot;sCategoryDoc9&quot;,&quot;sDoc9&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountDocs&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'nine'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers13" name="10 документів" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_13&quot;:{&quot;aField_ID&quot;:[&quot;sCategoryDoc1&quot;,&quot;sDoc1&quot;,&quot;sCategoryDoc2&quot;,&quot;sDoc2&quot;,&quot;sCategoryDoc3&quot;,&quot;sDoc3&quot;,&quot;sCategoryDoc4&quot;,&quot;sDoc4&quot;,&quot;sCategoryDoc5&quot;,&quot;sDoc5&quot;,&quot;sCategoryDoc6&quot;,&quot;sDoc6&quot;,&quot;sCategoryDoc7&quot;,&quot;sDoc7&quot;,&quot;sCategoryDoc8&quot;,&quot;sDoc8&quot;,&quot;sCategoryDoc9&quot;,&quot;sDoc9&quot;,&quot;sCategoryDoc10&quot;,&quot;sDoc10&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCountDocs&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'ten'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="form_signed" name=" " type="file" required="true"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -53,6 +193,7 @@
           <activiti:value id="fiz" name="фізична особа або фізична особа-підприємець"></activiti:value>
           <activiti:value id="ur" name="юрідична особа"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sStatus" name="Процесуальний статус учасника судового процесу, від імені якого подається документ;" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameUr" name="У давальному відмінку повне найменування юридичної особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdresUr" name="Юрідична адреса; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sINNUr" name="Ідентифікаційний код юридичної особи; ;writable=false" type="string"></activiti:formProperty>
@@ -60,7 +201,127 @@
         <activiti:formProperty id="sAdres" name="Адреса місцезнаходження або місця проживання учасника судового процесу; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sINNFiz" name="ІПН учасника судового процесу; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhone" name="Номер телефону учасника судового процесу; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sCategoryDoc1" name="Оберіть категорію процесуального документу" type="enum" writable="false">
+        <activiti:formProperty id="sCountDocs" name="Вкажіть кількість документів, що подаються" type="enum" writable="false">
+          <activiti:value id="one" name="1"></activiti:value>
+          <activiti:value id="two" name="2"></activiti:value>
+          <activiti:value id="three" name="3"></activiti:value>
+          <activiti:value id="four" name="4"></activiti:value>
+          <activiti:value id="five" name="5"></activiti:value>
+          <activiti:value id="six" name="6"></activiti:value>
+          <activiti:value id="seven" name="7"></activiti:value>
+          <activiti:value id="eight" name="8"></activiti:value>
+          <activiti:value id="nine" name="9"></activiti:value>
+          <activiti:value id="ten" name="10"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sCategoryDoc1" name="Оберіть категорію процесуального документу №1" type="enum" writable="false">
+          <activiti:value id="petition1" name="відзив"></activiti:value>
+          <activiti:value id="petition2" name="заява про ознайомлення з матеріалами справи"></activiti:value>
+          <activiti:value id="petition3" name="письмові пояснення"></activiti:value>
+          <activiti:value id="petition4" name="заперечення проти клопотань і доводів інших учасників судового процесу"></activiti:value>
+          <activiti:value id="petition5" name="клопотання про участь у судовому засіданні в режимі відеоконференції"></activiti:value>
+          <activiti:value id="petition6" name="клопотання про відкладення розгляду справи"></activiti:value>
+          <activiti:value id="petition7" name="клопотання про здійснення фіксації судового процесу з допомогою звукозаписувального технічного засобу"></activiti:value>
+          <activiti:value id="petition8" name="клопотання про відтворення технічного запису судового процесу"></activiti:value>
+          <activiti:value id="petition9" name="клопотання про видачу копії технічного запису"></activiti:value>
+          <activiti:value id="petition10" name="заява про надання копій судових актів"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sCategoryDoc2" name="Оберіть категорію процесуального документу №2" type="enum" writable="false">
+          <activiti:value id="petition1" name="відзив"></activiti:value>
+          <activiti:value id="petition2" name="заява про ознайомлення з матеріалами справи"></activiti:value>
+          <activiti:value id="petition3" name="письмові пояснення"></activiti:value>
+          <activiti:value id="petition4" name="заперечення проти клопотань і доводів інших учасників судового процесу"></activiti:value>
+          <activiti:value id="petition5" name="клопотання про участь у судовому засіданні в режимі відеоконференції"></activiti:value>
+          <activiti:value id="petition6" name="клопотання про відкладення розгляду справи"></activiti:value>
+          <activiti:value id="petition7" name="клопотання про здійснення фіксації судового процесу з допомогою звукозаписувального технічного засобу"></activiti:value>
+          <activiti:value id="petition8" name="клопотання про відтворення технічного запису судового процесу"></activiti:value>
+          <activiti:value id="petition9" name="клопотання про видачу копії технічного запису"></activiti:value>
+          <activiti:value id="petition10" name="заява про надання копій судових актів"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sCategoryDoc3" name="Оберіть категорію процесуального документу №3" type="enum" writable="false">
+          <activiti:value id="petition1" name="відзив"></activiti:value>
+          <activiti:value id="petition2" name="заява про ознайомлення з матеріалами справи"></activiti:value>
+          <activiti:value id="petition3" name="письмові пояснення"></activiti:value>
+          <activiti:value id="petition4" name="заперечення проти клопотань і доводів інших учасників судового процесу"></activiti:value>
+          <activiti:value id="petition5" name="клопотання про участь у судовому засіданні в режимі відеоконференції"></activiti:value>
+          <activiti:value id="petition6" name="клопотання про відкладення розгляду справи"></activiti:value>
+          <activiti:value id="petition7" name="клопотання про здійснення фіксації судового процесу з допомогою звукозаписувального технічного засобу"></activiti:value>
+          <activiti:value id="petition8" name="клопотання про відтворення технічного запису судового процесу"></activiti:value>
+          <activiti:value id="petition9" name="клопотання про видачу копії технічного запису"></activiti:value>
+          <activiti:value id="petition10" name="заява про надання копій судових актів"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sCategoryDoc4" name="Оберіть категорію процесуального документу №4" type="enum" writable="false">
+          <activiti:value id="petition1" name="відзив"></activiti:value>
+          <activiti:value id="petition2" name="заява про ознайомлення з матеріалами справи"></activiti:value>
+          <activiti:value id="petition3" name="письмові пояснення"></activiti:value>
+          <activiti:value id="petition4" name="заперечення проти клопотань і доводів інших учасників судового процесу"></activiti:value>
+          <activiti:value id="petition5" name="клопотання про участь у судовому засіданні в режимі відеоконференції"></activiti:value>
+          <activiti:value id="petition6" name="клопотання про відкладення розгляду справи"></activiti:value>
+          <activiti:value id="petition7" name="клопотання про здійснення фіксації судового процесу з допомогою звукозаписувального технічного засобу"></activiti:value>
+          <activiti:value id="petition8" name="клопотання про відтворення технічного запису судового процесу"></activiti:value>
+          <activiti:value id="petition9" name="клопотання про видачу копії технічного запису"></activiti:value>
+          <activiti:value id="petition10" name="заява про надання копій судових актів"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sCategoryDoc5" name="Оберіть категорію процесуального документу №5" type="enum" writable="false">
+          <activiti:value id="petition1" name="відзив"></activiti:value>
+          <activiti:value id="petition2" name="заява про ознайомлення з матеріалами справи"></activiti:value>
+          <activiti:value id="petition3" name="письмові пояснення"></activiti:value>
+          <activiti:value id="petition4" name="заперечення проти клопотань і доводів інших учасників судового процесу"></activiti:value>
+          <activiti:value id="petition5" name="клопотання про участь у судовому засіданні в режимі відеоконференції"></activiti:value>
+          <activiti:value id="petition6" name="клопотання про відкладення розгляду справи"></activiti:value>
+          <activiti:value id="petition7" name="клопотання про здійснення фіксації судового процесу з допомогою звукозаписувального технічного засобу"></activiti:value>
+          <activiti:value id="petition8" name="клопотання про відтворення технічного запису судового процесу"></activiti:value>
+          <activiti:value id="petition9" name="клопотання про видачу копії технічного запису"></activiti:value>
+          <activiti:value id="petition10" name="заява про надання копій судових актів"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sCategoryDoc6" name="Оберіть категорію процесуального документу №6" type="enum" writable="false">
+          <activiti:value id="petition1" name="відзив"></activiti:value>
+          <activiti:value id="petition2" name="заява про ознайомлення з матеріалами справи"></activiti:value>
+          <activiti:value id="petition3" name="письмові пояснення"></activiti:value>
+          <activiti:value id="petition4" name="заперечення проти клопотань і доводів інших учасників судового процесу"></activiti:value>
+          <activiti:value id="petition5" name="клопотання про участь у судовому засіданні в режимі відеоконференції"></activiti:value>
+          <activiti:value id="petition6" name="клопотання про відкладення розгляду справи"></activiti:value>
+          <activiti:value id="petition7" name="клопотання про здійснення фіксації судового процесу з допомогою звукозаписувального технічного засобу"></activiti:value>
+          <activiti:value id="petition8" name="клопотання про відтворення технічного запису судового процесу"></activiti:value>
+          <activiti:value id="petition9" name="клопотання про видачу копії технічного запису"></activiti:value>
+          <activiti:value id="petition10" name="заява про надання копій судових актів"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sCategoryDoc7" name="Оберіть категорію процесуального документу №7" type="enum" writable="false">
+          <activiti:value id="petition1" name="відзив"></activiti:value>
+          <activiti:value id="petition2" name="заява про ознайомлення з матеріалами справи"></activiti:value>
+          <activiti:value id="petition3" name="письмові пояснення"></activiti:value>
+          <activiti:value id="petition4" name="заперечення проти клопотань і доводів інших учасників судового процесу"></activiti:value>
+          <activiti:value id="petition5" name="клопотання про участь у судовому засіданні в режимі відеоконференції"></activiti:value>
+          <activiti:value id="petition6" name="клопотання про відкладення розгляду справи"></activiti:value>
+          <activiti:value id="petition7" name="клопотання про здійснення фіксації судового процесу з допомогою звукозаписувального технічного засобу"></activiti:value>
+          <activiti:value id="petition8" name="клопотання про відтворення технічного запису судового процесу"></activiti:value>
+          <activiti:value id="petition9" name="клопотання про видачу копії технічного запису"></activiti:value>
+          <activiti:value id="petition10" name="заява про надання копій судових актів"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sCategoryDoc8" name="Оберіть категорію процесуального документу №8" type="enum" writable="false">
+          <activiti:value id="petition1" name="відзив"></activiti:value>
+          <activiti:value id="petition2" name="заява про ознайомлення з матеріалами справи"></activiti:value>
+          <activiti:value id="petition3" name="письмові пояснення"></activiti:value>
+          <activiti:value id="petition4" name="заперечення проти клопотань і доводів інших учасників судового процесу"></activiti:value>
+          <activiti:value id="petition5" name="клопотання про участь у судовому засіданні в режимі відеоконференції"></activiti:value>
+          <activiti:value id="petition6" name="клопотання про відкладення розгляду справи"></activiti:value>
+          <activiti:value id="petition7" name="клопотання про здійснення фіксації судового процесу з допомогою звукозаписувального технічного засобу"></activiti:value>
+          <activiti:value id="petition8" name="клопотання про відтворення технічного запису судового процесу"></activiti:value>
+          <activiti:value id="petition9" name="клопотання про видачу копії технічного запису"></activiti:value>
+          <activiti:value id="petition10" name="заява про надання копій судових актів"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sCategoryDoc9" name="Оберіть категорію процесуального документу №9" type="enum" writable="false">
+          <activiti:value id="petition1" name="відзив"></activiti:value>
+          <activiti:value id="petition2" name="заява про ознайомлення з матеріалами справи"></activiti:value>
+          <activiti:value id="petition3" name="письмові пояснення"></activiti:value>
+          <activiti:value id="petition4" name="заперечення проти клопотань і доводів інших учасників судового процесу"></activiti:value>
+          <activiti:value id="petition5" name="клопотання про участь у судовому засіданні в режимі відеоконференції"></activiti:value>
+          <activiti:value id="petition6" name="клопотання про відкладення розгляду справи"></activiti:value>
+          <activiti:value id="petition7" name="клопотання про здійснення фіксації судового процесу з допомогою звукозаписувального технічного засобу"></activiti:value>
+          <activiti:value id="petition8" name="клопотання про відтворення технічного запису судового процесу"></activiti:value>
+          <activiti:value id="petition9" name="клопотання про видачу копії технічного запису"></activiti:value>
+          <activiti:value id="petition10" name="заява про надання копій судових актів"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sCategoryDoc10" name="Оберіть категорію процесуального документу №10" type="enum" writable="false">
           <activiti:value id="petition1" name="відзив"></activiti:value>
           <activiti:value id="petition2" name="заява про ознайомлення з матеріалами справи"></activiti:value>
           <activiti:value id="petition3" name="письмові пояснення"></activiti:value>
@@ -89,7 +350,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${sDoc1}</activiti:expression>
+            <activiti:expression>${sDoc1},${sDoc2},${sDoc3},${sDoc4},${sDoc5},${sDoc6},${sDoc7},${sDoc8},${sDoc9},${sDoc10}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -97,7 +358,7 @@
     <serviceTask id="servicetask4" name="Повідомлення співробітника канцелярії суду" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:string><![CDATA[darja.grek@gmail.com]]></activiti:string>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -133,7 +394,8 @@
           <activiti:expression>[sID_Order]&lt;br&gt;
 [pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Процесуальний документ ${sListDocumentsLetter}, що Ви подавали по справі ${sNumberCase} зареєстровано і передано на розгляд судді.&lt;br /&gt;
+Процесуальні документи, що Ви подавали по справі ${sNumberCase} зареєстровані і передані на розгляд судді.&lt;br /&gt;
+Супроводний лист щодо отриманих документів знаходиться у додатку до листа.&lt;br /&gt;
 Реєстраційний номер ${sNumberAplication}&lt;br /&gt;
 Телефон для довідок:(044) 536-18-01 та (044) 536-18-23
 &lt;br /&gt;
@@ -154,37 +416,6 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask5" name="повідомлення-передача данних до суду" activiti:delegateExpression="#{MailTaskWithAttachments}">
-      <extensionElements>
-        <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
-        </activiti:field>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:string><![CDATA[Подання процесуальних документів для розгляду у відкритому апеляційному/касаційному провадженні]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression>[sID_Order]&lt;br&gt;
-[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний колего!&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Співробітники канцелярії зареєстрували новий документ, який знаходиться у додатку до листа.&lt;br /&gt;
-Додаткові відомості щодо звернення:&lt;br /&gt;
-Номер судової справи - ${sNumberCase}&lt;br /&gt;
-Найменування та ідентифікаційний код (номер) учасника судового процесу, від якого надійшов документ - ${sNameUr} ${sNameFiz} ${sINNUr} ${sINNFiz}&lt;br /&gt;
-Інформація про особу, яка внесла дані - ${fio}, ${sPositionAplicant}, ${phone}&lt;br /&gt;
-Інформація про сертифікат підписувача - ${sESPNumber} ${sESP}&lt;br /&gt;
-Категорія процесуального документу  - enum{[sCategoryDoc1]}&lt;br /&gt;
-Реєстраційний номер заяви -${sNumberAplication}&lt;br /&gt;
-[pattern/mail/_common_signature.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${PrintForm_1},${sDoc1}</activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
     <serviceTask id="servicetask3" name="повідомлення громадянина про відмову у реєстрації документів" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
@@ -200,8 +431,10 @@
           <activiti:expression>[sID_Order]&lt;br&gt;
 [pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-На жаль, Вам відмовлено у реєстрації процесуального документу ${sListDocumentsLetter}, що Ви подавали по справі ${sNumberCase}.&lt;br/&gt;
+На жаль, Вам відмовлено у реєстрації процесуальних документів:
+${sListDocumentsLetter}
 Причина: enum{[reject_1]}&lt;br/&gt;
+Номер справи ${sNumberCase}.&lt;br/&gt;
 Телефон для довідок:(044) 536-18-01 та (044) 536-18-23
 &lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
@@ -220,52 +453,331 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <scriptTask id="scripttask1" name="Скриптяка" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask1" name="Скриптяка" scriptFormat="groovy" activiti:autoStoreVariables="false">
       <script>
 var per1 = " "
-
+var per2 = " "
+var per3 = " "
+var per4 = " "
+var per5 = " "
+var per6 = " "
+var per7 = " "
+var per8 = " "
+var per9 = " "
+var per10 = " "
+var per11 = "res"
 if(execution.getVariable('sCategoryDoc1') == 'petition1'){
-per1 = "відзив"
+per1 = "&lt;li&gt;Відзив.&lt;/li&gt;"
 }
 if(execution.getVariable('sCategoryDoc1') == 'petition2'){
-per1 = "заява про ознайомлення з матеріалами справи"
+per1 = "&lt;li&gt;Заява про ознайомлення з матеріалами справи.&lt;/li&gt;"
 }
 if(execution.getVariable('sCategoryDoc1') == 'petition3'){
-per1 = "письмові пояснення"
+per1 = "&lt;li&gt;Письмові пояснення.&lt;/li&gt;"
 }
 if(execution.getVariable('sCategoryDoc1') == 'petition4'){
-per1 = "заперечення проти клопотань і доводів інших учасників судового процесу"
+per1 = "&lt;li&gt;Заява про ознайомлення з матеріалами справи.&lt;/li&gt;"
 }
 if(execution.getVariable('sCategoryDoc1') == 'petition5'){
-per1 = "клопотання про участь у судовому засіданні в режимі відеоконференції"
+per1 = "&lt;li&gt;Клопотання про участь у судовому засіданні в режимі відеоконференції.&lt;/li&gt;"
 }
 if(execution.getVariable('sCategoryDoc1') == 'petition6'){
-per1 = "клопотання про відкладення розгляду справи"
+per1 = "&lt;li&gt;Клопотання про відкладення розгляду справи.&lt;/li&gt;"
 }
 if(execution.getVariable('sCategoryDoc1') == 'petition7'){
-per1 = "клопотання про здійснення фіксації судового процесу з допомогою звукозаписувального технічного засобу"
+per1 = "&lt;li&gt;Клопотання про здійснення фіксації судового процесу з допомогою звукозаписувального технічного засобу.&lt;/li&gt;"
 }
 if(execution.getVariable('sCategoryDoc1') == 'petition8'){
-per1 = "клопотання про відтворення технічного запису судового процесу"
+per1 = "&lt;li&gt;Клопотання про відтворення технічного запису судового процесу.&lt;/li&gt;"
 }
 if(execution.getVariable('sCategoryDoc1') == 'petition9'){
-per1 = "клопотання про видачу копії технічного запису"
+per1 = "&lt;li&gt;Клопотання про видачу копії технічного запису.&lt;/li&gt;"
 }
 if(execution.getVariable('sCategoryDoc1') == 'petition10'){
-per1 = "заява про надання копій судових актів"
+per1 = "&lt;li&gt;Заява про надання копій судових актів.&lt;/li&gt;"
 }
-execution.setVariable('sListDocumentsLetter', per1)
+if(execution.getVariable('sCategoryDoc2') == 'petition1'){
+per2 = "&lt;li&gt;Відзив.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc2') == 'petition2'){
+per2 = "&lt;li&gt;Заява про ознайомлення з матеріалами справи.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc2') == 'petition3'){
+per2 = "&lt;li&gt;Письмові пояснення.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc2') == 'petition4'){
+per2 = "&lt;li&gt;Заява про ознайомлення з матеріалами справи.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc2') == 'petition5'){
+per2 = "&lt;li&gt;Клопотання про участь у судовому засіданні в режимі відеоконференції.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc2') == 'petition6'){
+per2 = "&lt;li&gt;Клопотання про відкладення розгляду справи.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc2') == 'petition7'){
+per2 = "&lt;li&gt;Клопотання про здійснення фіксації судового процесу з допомогою звукозаписувального технічного засобу.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc2') == 'petition8'){
+per2 = "&lt;li&gt;Клопотання про відтворення технічного запису судового процесу.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc2') == 'petition9'){
+per2 = "&lt;li&gt;Клопотання про видачу копії технічного запису.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc2') == 'petition10'){
+per2 = "&lt;li&gt;Заява про надання копій судових актів.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc3') == 'petition1'){
+per3 = "&lt;li&gt;Відзив.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc3') == 'petition2'){
+per3 = "&lt;li&gt;Заява про ознайомлення з матеріалами справи.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc3') == 'petition3'){
+per3 = "&lt;li&gt;Письмові пояснення.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc3') == 'petition4'){
+per3 = "&lt;li&gt;Заява про ознайомлення з матеріалами справи.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc3') == 'petition5'){
+per3 = "&lt;li&gt;Клопотання про участь у судовому засіданні в режимі відеоконференції.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc3') == 'petition6'){
+per3 = "&lt;li&gt;Клопотання про відкладення розгляду справи.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc3') == 'petition7'){
+per3 = "&lt;li&gt;Клопотання про здійснення фіксації судового процесу з допомогою звукозаписувального технічного засобу.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc3') == 'petition8'){
+per3 = "&lt;li&gt;Клопотання про відтворення технічного запису судового процесу.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc3') == 'petition9'){
+per3 = "&lt;li&gt;Клопотання про видачу копії технічного запису.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc3') == 'petition10'){
+per3 = "&lt;li&gt;Заява про надання копій судових актів.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc4') == 'petition1'){
+per4 = "&lt;li&gt;Відзив.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc4') == 'petition2'){
+per4 = "&lt;li&gt;Заява про ознайомлення з матеріалами справи.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc4') == 'petition3'){
+per4 = "&lt;li&gt;Письмові пояснення.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc4') == 'petition4'){
+per4 = "&lt;li&gt;Заява про ознайомлення з матеріалами справи.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc4') == 'petition5'){
+per4 = "&lt;li&gt;Клопотання про участь у судовому засіданні в режимі відеоконференції.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc4') == 'petition6'){
+per4 = "&lt;li&gt;Клопотання про відкладення розгляду справи.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc4') == 'petition7'){
+per4 = "&lt;li&gt;Клопотання про здійснення фіксації судового процесу з допомогою звукозаписувального технічного засобу.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc4') == 'petition8'){
+per4 = "&lt;li&gt;Клопотання про відтворення технічного запису судового процесу.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc4') == 'petition9'){
+per4 = "&lt;li&gt;Клопотання про видачу копії технічного запису.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc4') == 'petition10'){
+per4 = "&lt;li&gt;Заява про надання копій судових актів.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc5') == 'petition1'){
+per5 = "&lt;li&gt;Відзив.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc5') == 'petition2'){
+per5 = "&lt;li&gt;Заява про ознайомлення з матеріалами справи.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc5') == 'petition3'){
+per5 = "&lt;li&gt;Письмові пояснення.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc5') == 'petition4'){
+per5 = "&lt;li&gt;Заява про ознайомлення з матеріалами справи.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc5') == 'petition5'){
+per5 = "&lt;li&gt;Клопотання про участь у судовому засіданні в режимі відеоконференції.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc5') == 'petition6'){
+per5 = "&lt;li&gt;Клопотання про відкладення розгляду справи.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc5') == 'petition7'){
+per5 = "&lt;li&gt;Клопотання про здійснення фіксації судового процесу з допомогою звукозаписувального технічного засобу.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc5') == 'petition8'){
+per5 = "&lt;li&gt;Клопотання про відтворення технічного запису судового процесу.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc5') == 'petition9'){
+per5 = "&lt;li&gt;Клопотання про видачу копії технічного запису.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc5') == 'petition10'){
+per5 = "&lt;li&gt;Заява про надання копій судових актів.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc6') == 'petition1'){
+per6 = "&lt;li&gt;Відзив.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc6') == 'petition2'){
+per6 = "&lt;li&gt;Заява про ознайомлення з матеріалами справи.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc6') == 'petition3'){
+per6 = "&lt;li&gt;Письмові пояснення.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc6') == 'petition4'){
+per6 = "&lt;li&gt;Заява про ознайомлення з матеріалами справи.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc6') == 'petition5'){
+per6 = "&lt;li&gt;Клопотання про участь у судовому засіданні в режимі відеоконференції.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc6') == 'petition6'){
+per6 = "&lt;li&gt;Клопотання про відкладення розгляду справи.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc6') == 'petition7'){
+per6 = "&lt;li&gt;Клопотання про здійснення фіксації судового процесу з допомогою звукозаписувального технічного засобу.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc6') == 'petition8'){
+per6 = "&lt;li&gt;Клопотання про відтворення технічного запису судового процесу.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc6') == 'petition9'){
+per6 = "&lt;li&gt;Клопотання про видачу копії технічного запису.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc6') == 'petition10'){
+per6 = "&lt;li&gt;Заява про надання копій судових актів.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc7') == 'petition1'){
+per7 = "&lt;li&gt;Відзив.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc7') == 'petition2'){
+per7 = "&lt;li&gt;Заява про ознайомлення з матеріалами справи.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc7') == 'petition3'){
+per7 = "&lt;li&gt;Письмові пояснення.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc7') == 'petition4'){
+per7 = "&lt;li&gt;Заява про ознайомлення з матеріалами справи.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc7') == 'petition5'){
+per7 = "&lt;li&gt;Клопотання про участь у судовому засіданні в режимі відеоконференції.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc7') == 'petition6'){
+per7 = "&lt;li&gt;Клопотання про відкладення розгляду справи.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc7') == 'petition7'){
+per7 = "&lt;li&gt;Клопотання про здійснення фіксації судового процесу з допомогою звукозаписувального технічного засобу.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc7') == 'petition8'){
+per7 = "&lt;li&gt;Клопотання про відтворення технічного запису судового процесу.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc7') == 'petition9'){
+per7 = "&lt;li&gt;Клопотання про видачу копії технічного запису.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc7') == 'petition10'){
+per7 = "&lt;li&gt;Заява про надання копій судових актів.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc8') == 'petition1'){
+per8 = "&lt;li&gt;Відзив.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc8') == 'petition2'){
+per8 = "&lt;li&gt;Заява про ознайомлення з матеріалами справи.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc8') == 'petition3'){
+per8 = "&lt;li&gt;Письмові пояснення.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc8') == 'petition4'){
+per8 = "&lt;li&gt;Заява про ознайомлення з матеріалами справи.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc8') == 'petition5'){
+per8 = "&lt;li&gt;Клопотання про участь у судовому засіданні в режимі відеоконференції.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc8') == 'petition6'){
+per8 = "&lt;li&gt;Клопотання про відкладення розгляду справи.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc8') == 'petition7'){
+per8 = "&lt;li&gt;Клопотання про здійснення фіксації судового процесу з допомогою звукозаписувального технічного засобу.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc8') == 'petition8'){
+per8 = "&lt;li&gt;Клопотання про відтворення технічного запису судового процесу.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc8') == 'petition9'){
+per8 = "&lt;li&gt;Клопотання про видачу копії технічного запису.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc8') == 'petition10'){
+per8 = "&lt;li&gt;Заява про надання копій судових актів.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc9') == 'petition1'){
+per9 = "&lt;li&gt;Відзив.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc9') == 'petition2'){
+per9 = "&lt;li&gt;Заява про ознайомлення з матеріалами справи.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc9') == 'petition3'){
+per9 = "&lt;li&gt;Письмові пояснення.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc9') == 'petition4'){
+per9 = "&lt;li&gt;Заява про ознайомлення з матеріалами справи.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc9') == 'petition5'){
+per9 = "&lt;li&gt;Клопотання про участь у судовому засіданні в режимі відеоконференції.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc9') == 'petition6'){
+per9 = "&lt;li&gt;Клопотання про відкладення розгляду справи.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc9') == 'petition7'){
+per9 = "&lt;li&gt;Клопотання про здійснення фіксації судового процесу з допомогою звукозаписувального технічного засобу.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc9') == 'petition8'){
+per9 = "&lt;li&gt;Клопотання про відтворення технічного запису судового процесу.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc9') == 'petition9'){
+per9 = "&lt;li&gt;Клопотання про видачу копії технічного запису.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc9') == 'petition10'){
+per9 = "&lt;li&gt;Заява про надання копій судових актів.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc10') == 'petition1'){
+per10 = "&lt;li&gt;Відзив.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc10') == 'petition2'){
+per10 = "&lt;li&gt;Заява про ознайомлення з матеріалами справи.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc10') == 'petition3'){
+per10 = "&lt;li&gt;Письмові пояснення.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc10') == 'petition4'){
+per10 = "&lt;li&gt;Заява про ознайомлення з матеріалами справи.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc10') == 'petition5'){
+per10 = "&lt;li&gt;Клопотання про участь у судовому засіданні в режимі відеоконференції.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc10') == 'petition6'){
+per10 = "&lt;li&gt;Клопотання про відкладення розгляду справи.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc10') == 'petition7'){
+per10 = "&lt;li&gt;Клопотання про здійснення фіксації судового процесу з допомогою звукозаписувального технічного засобу.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc10') == 'petition8'){
+per10 = "&lt;li&gt;Клопотання про відтворення технічного запису судового процесу.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc10') == 'petition9'){
+per10 = "&lt;li&gt;Клопотання про видачу копії технічного запису.&lt;/li&gt;"
+}
+if(execution.getVariable('sCategoryDoc10') == 'petition10'){
+per10 = "&lt;li&gt;Заява про надання копій судових актів.&lt;/li&gt;"
+}
+res = '&lt;ol&gt;'+per1+per2+per3+per4+per5+per6+per7+per8+per9+per10+'&lt;/ol&gt;'
+execution.setVariable('sListDocumentsLetter', res)
 </script>
     </scriptTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow4" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
-    <endEvent id="endevent1" name="End"></endEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <sequenceFlow id="flow10" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>
-    <sequenceFlow id="flow21" sourceRef="exclusivegateway1" targetRef="servicetask3">
+    <sequenceFlow id="flow21" name="-" sourceRef="exclusivegateway1" targetRef="servicetask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_1=='reject'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow27" sourceRef="servicetask4" targetRef="usertask1"></sequenceFlow>
@@ -274,12 +786,10 @@ execution.setVariable('sListDocumentsLetter', per1)
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow31" sourceRef="boundaryerror1" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow32" sourceRef="servicetask3" targetRef="endevent2"></sequenceFlow>
-    <sequenceFlow id="flow34" sourceRef="servicetask5" targetRef="servicetask2"></sequenceFlow>
-    <sequenceFlow id="flow35" sourceRef="exclusivegateway1" targetRef="servicetask5">
+    <sequenceFlow id="flow33" sourceRef="servicetask2" targetRef="endevent2"></sequenceFlow>
+    <sequenceFlow id="flow34" name="+" sourceRef="exclusivegateway1" targetRef="servicetask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_1=='accept'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow36" sourceRef="servicetask5" targetRef="endevent1"></sequenceFlow>
-    <sequenceFlow id="flow37" sourceRef="servicetask2" targetRef="endevent1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_CourtOfCassation">
     <bpmndi:BPMNPlane bpmnElement="CourtOfCassation" id="BPMNPlane_CourtOfCassation">
@@ -293,22 +803,16 @@ execution.setVariable('sListDocumentsLetter', per1)
         <omgdc:Bounds height="55.0" width="161.0" x="420.0" y="30.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
-        <omgdc:Bounds height="55.0" width="150.0" x="280.0" y="271.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
-        <omgdc:Bounds height="55.0" width="149.0" x="280.0" y="189.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="150.0" x="290.0" y="200.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
-        <omgdc:Bounds height="57.0" width="161.0" x="127.0" y="111.0"></omgdc:Bounds>
+        <omgdc:Bounds height="57.0" width="105.0" x="200.0" y="111.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
         <omgdc:Bounds height="55.0" width="105.0" x="272.0" y="30.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
-        <omgdc:Bounds height="40.0" width="40.0" x="334.0" y="119.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="190.0" y="237.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="344.0" y="119.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
         <omgdc:Bounds height="55.0" width="108.0" x="131.0" y="30.0"></omgdc:Bounds>
@@ -317,19 +821,22 @@ execution.setVariable('sListDocumentsLetter', per1)
         <omgdc:Bounds height="30.0" width="30.0" x="130.0" y="57.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
-        <omgdc:Bounds height="35.0" width="35.0" x="61.0" y="122.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="127.0" y="210.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
         <omgdi:waypoint x="420.0" y="139.0"></omgdi:waypoint>
-        <omgdi:waypoint x="374.0" y="139.0"></omgdi:waypoint>
+        <omgdi:waypoint x="384.0" y="139.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
         <omgdi:waypoint x="96.0" y="57.0"></omgdi:waypoint>
         <omgdi:waypoint x="131.0" y="57.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
-        <omgdi:waypoint x="334.0" y="139.0"></omgdi:waypoint>
-        <omgdi:waypoint x="288.0" y="139.0"></omgdi:waypoint>
+        <omgdi:waypoint x="344.0" y="139.0"></omgdi:waypoint>
+        <omgdi:waypoint x="305.0" y="139.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="4.0" x="326.0" y="119.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
         <omgdi:waypoint x="500.0" y="85.0"></omgdi:waypoint>
@@ -345,31 +852,22 @@ execution.setVariable('sListDocumentsLetter', per1)
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
         <omgdi:waypoint x="145.0" y="87.0"></omgdi:waypoint>
-        <omgdi:waypoint x="78.0" y="122.0"></omgdi:waypoint>
+        <omgdi:waypoint x="144.0" y="210.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
-        <omgdi:waypoint x="127.0" y="139.0"></omgdi:waypoint>
-        <omgdi:waypoint x="96.0" y="139.0"></omgdi:waypoint>
+        <omgdi:waypoint x="252.0" y="168.0"></omgdi:waypoint>
+        <omgdi:waypoint x="144.0" y="210.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
+        <omgdi:waypoint x="290.0" y="227.0"></omgdi:waypoint>
+        <omgdi:waypoint x="162.0" y="227.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
-        <omgdi:waypoint x="354.0" y="244.0"></omgdi:waypoint>
-        <omgdi:waypoint x="355.0" y="271.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
-        <omgdi:waypoint x="354.0" y="159.0"></omgdi:waypoint>
-        <omgdi:waypoint x="354.0" y="189.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow36" id="BPMNEdge_flow36">
-        <omgdi:waypoint x="280.0" y="216.0"></omgdi:waypoint>
-        <omgdi:waypoint x="255.0" y="216.0"></omgdi:waypoint>
-        <omgdi:waypoint x="207.0" y="216.0"></omgdi:waypoint>
-        <omgdi:waypoint x="207.0" y="237.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow37" id="BPMNEdge_flow37">
-        <omgdi:waypoint x="280.0" y="298.0"></omgdi:waypoint>
-        <omgdi:waypoint x="255.0" y="298.0"></omgdi:waypoint>
-        <omgdi:waypoint x="207.0" y="298.0"></omgdi:waypoint>
-        <omgdi:waypoint x="207.0" y="272.0"></omgdi:waypoint>
+        <omgdi:waypoint x="364.0" y="159.0"></omgdi:waypoint>
+        <omgdi:waypoint x="365.0" y="200.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="100.0" x="374.0" y="159.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
