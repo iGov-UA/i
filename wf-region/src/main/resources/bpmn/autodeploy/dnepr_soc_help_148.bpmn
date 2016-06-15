@@ -10,7 +10,7 @@
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="ІПН" type="long"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Сканований паспорт громадянина" type="file" required="true"></activiti:formProperty>
 
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string" required="true"></activiti:formProperty>
@@ -40,7 +40,8 @@
         <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу" type="invisible" default=" "></activiti:formProperty>
 
-        <activiti:formProperty id="sCompensationCategory" name="Категорія компенсацій (галочка на формі)" type="invisible" default="15"></activiti:formProperty>
+        <activiti:formProperty id="cc_15" name="Категорія компенсацій (галочка на формі)" type="invisible" default="true"></activiti:formProperty>
+
 		<activiti:formProperty id="markersAdresStartTask" name="Маркер адреса стартТаски" type="markers" default="${markerService.loadFromFile('adress_start.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="Маркеры2" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;post_office&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;transfer_type&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'post'&quot;},&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;bank_name&quot;,&quot;mfo&quot;,&quot;edrpou&quot;,&quot;bank_account&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;transfer_type&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'bank'&quot;}}}"></activiti:formProperty>
       </extensionElements>
@@ -51,7 +52,7 @@
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="ІПН" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
 
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації; ;writable=false" type="string" writable="false"></activiti:formProperty>
 		<activiti:formProperty id="asAdress" name="Проживаєте за місцем реєстрації; ;writable=false" default="yes" type="enum" writable="false">
@@ -84,13 +85,10 @@
         <activiti:formProperty id="comment_1" name="У разі відмови внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="nPage" name="Вкажіть загальну кількість сторінок відсканованих документів" type="string" default="4" required="true"></activiti:formProperty>
 
-        <activiti:formProperty id="sBody_1" name="[pattern/print/UPSZN/dnepr_soc_help_148_print.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
-
         <activiti:formProperty id="sBody_2" name="[pattern/print/minsoc/min_soc_help_441_print.html]" type="invisible" default="заява громадянина (new)" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCompensationCategory" name="Категорія компенсацій (галочка на формі)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markersPrint1" name="Для прінтформи (new)" type="markers" default="${markerService.loadFromFile('soczah/min_soc_help_441_print.json')}"></activiti:formProperty>
 
-
+		<activiti:formProperty id="cc_15" name="Категорія компенсацій (галочка на формі)" type="invisible" default="true"></activiti:formProperty>
         <activiti:formProperty id="nDocument" name="количество документов" type="invisible" default="2"></activiti:formProperty>
 
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -120,11 +118,10 @@
           <activiti:string><![CDATA[Звернення на тему: Призначення одноразової винагороди жінкам, яким присвоєно почесне звання України "Мати-героїня"]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[sID_Order]<br>
-			[pattern/mail/_common_header.html]
-			<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br>
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<br>
-			Ви отримали схвалення щодо свого звернення - призначення одноразової винагороди жінкам, яким присвоєно почесне звання України "Мати-героїня".<br>
+			Ви отримали схвалення щодо свого звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> - призначення одноразової винагороди жінкам, яким присвоєно почесне звання України "Мати-героїня".<br>
 			<br>
 			${sAddress}<br>
 			${sWorkTime}<br>
@@ -165,15 +162,9 @@
           <activiti:string><![CDATA[Нове  звернення. Призначення одноразової винагороди жінкам, яким присвоєно почесне звання України "Мати-героїня"]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[sID_Order]<br>
-			[pattern/mail/_common_header.html]
-			<b>Шановний колего!</b><br /><br />
-			У черзі на обробку зареєстровано нове звернення.<br />
-			Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}<br />
-			Опрацюйте це звернення на <a href="http://region.igov.org.ua">порталі</a><br />
-			[pattern/mail/_common_signature.html]
-			[pattern/mail/_common_footer.html]]]>
-		  </activiti:expression>
+          <activiti:expression><![CDATA[
+          	Звернення № [sID_Order]<br>
+          	[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -190,11 +181,11 @@
           <activiti:string><![CDATA[Звернення на тему: Призначення одноразової винагороди жінкам, яким присвоєно почесне звання України "Мати-героїня"]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[sID_Order]<br>
-			[pattern/mail/_common_header.html]
-			<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br>
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<br>
 			<p>			
+				Ваше звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> було оброблене<br>
 				На жаль, Вам відмовлено у призначенні одноразової винагороди жінкам, яким присвоєно почесне звання України "Мати-героїня".<br> 
 			</p>
 			<p>

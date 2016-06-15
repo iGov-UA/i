@@ -3,7 +3,7 @@
   <head lang="ua">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Соц захист</title>
-    
+
     <style type="text/css">
 
       body div.PrintFormClaim {
@@ -233,10 +233,17 @@
 
       /* ширина в процентах */            
       .w1p {width: 1%;}      
-      .w4p {width: 4%;}      
-      .w60p {width: 60%;}
+      .w4p {width: 4%;}   
+      .w10p { width: 10%;}
+      .w20p { width: 20%;}
       .w30p { width: 30%;}
-      .w33p { width: 33%;}      
+      .w33p { width: 33%;} 
+      .w40p { width: 40%;}
+      .w50p { width: 50%;}   
+      .w60p { width: 60%;}   
+      .w70p { width: 70%;}   
+      .w80p { width: 80%;}   
+      .w90p { width: 90%;}     
       .w100p { width: 100%;}
 
       /* ширина */
@@ -302,8 +309,345 @@
 
       .test{ border: 1px solid red;}
     </style>
-    
 
+    <script type="text/javascript">
+
+      function ParsePassport() {
+        //   ****************    парсим паспортные данные   **************** 
+        // константные переменные для регулярных выражений
+        var regSeriaStr = "([Сс]ерия|СЕРИЯ|[Сс]ерія|СЕРІЯ)?";
+        var regPassoprt = "([Пп]аспорт|ПАСПОРТ)?";
+        var regNumberStr = "([Нн]омер|НОМЕР)?";
+
+        var regSeriaVal = "[ЄІЇҐА-ЯA-Z]{2}";
+        var regNumberVal = "[0-9]{6}";
+        var regFrom = "((від|от).\\D{0,4})?";
+        var regYearVal = "[0-9]{2}\\W[0-9]{2}\\W(19|20|21)?[0-9]{2}";
+
+        var patSerNum = new RegExp(regPassoprt + "\\D{0,4}" + regSeriaStr + "\\D{0,4}" + regSeriaVal + "\\D{0,4}" + regNumberStr + "\\D{0,4}" + regPassoprt + "\\D{0,4}" + regNumberVal + "\\s*");
+
+        var patDate = new RegExp(regFrom + "\\s*" + regYearVal +"\\s*");
+
+        var str0 = "[bankIdPassport]";
+
+        var strSerial = "";
+        var strNumber = "";
+        var strDate = "";
+        var strIssuedBy = "";
+
+        //находим серию и номер
+        var matSerNum = str0.match(patSerNum)[0];
+
+        //вырезаем серию и номер
+        str0 = str0.replace(matSerNum,"");
+
+        //удаляем лишние слова
+        matSerNum = matSerNum.replace(matSerNum.match(new RegExp("паспорт", "ig")),"");
+        matSerNum = matSerNum.replace(matSerNum.match(new RegExp("номер", "ig")),"");
+        matSerNum = matSerNum.replace(matSerNum.match(new RegExp("сер[иі]я", "ig")),"");
+
+        //выбираем Серию и Номер
+        strSerial = matSerNum.match(new RegExp(regSeriaVal));
+        strNumber = matSerNum.match(new RegExp(regNumberVal));
+
+        var matDate = str0.match(new RegExp(regFrom + regYearVal, "ig")).toString();
+
+        //выбираем дату
+        strDate = matDate.match(new RegExp(regYearVal))[0];
+        //вырезаем дату
+        str0 = str0.replace(matDate,"");
+
+        //Остаток, кто выдал
+        strIssuedBy = str0.toString().trim();
+
+        //вставить в текст
+        document.getElementById('spanPassportSeria').innerHTML = strSerial;
+        document.getElementById('spanPassportNumber').innerHTML = strNumber;
+        document.getElementById('spanPassportIssuedBy').innerHTML = strIssuedBy;
+        document.getElementById('spanPassportDate').innerHTML = strDate; 
+
+
+        // в случае не правильного парсинга
+        if(strSerial.length>0 && strNumber.length>0 && strIssuedBy.length>0 && strDate.length>0){
+          document.getElementById('spanDetailPassport').style.display = 'inline';
+          document.getElementById('spanTotalPassport').style.display = 'none';
+        }
+      }
+
+
+      function ChangeParagrath() {
+        //подчеркиваем
+        if("[cc_1_1]" == "true"){
+          var sp = document.getElementById('spanCategory1_1');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_1_2]" == "true"){
+          var sp = document.getElementById('spanCategory1_2');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_1_3]" == "true"){
+          var sp = document.getElementById('spanCategory1_3');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_1_4]" == "true"){
+          var sp = document.getElementById('spanCategory1_4');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_1_5]" == "true"){
+          var sp = document.getElementById('spanCategory1_5');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_1_6]" == "true"){
+          var sp = document.getElementById('spanCategory1_6');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_2]" == "true"){
+          var sp = document.getElementById('spanCategory2');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u b';
+        }
+
+        if("[cc_3_1]" == "true"){
+          var sp = document.getElementById('spanCategory3_1');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_3_2]" == "true"){
+          var sp = document.getElementById('spanCategory3_2');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_3_3]" == "true"){
+          var sp = document.getElementById('spanCategory3_3');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_3_4]" == "true"){
+          var sp = document.getElementById('spanCategory3_4');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_3_5]" == "true"){
+          var sp = document.getElementById('spanCategory3_5');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_3_6]" == "true"){
+          var sp = document.getElementById('spanCategory3_6');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_3_7]" == "true"){
+          var sp = document.getElementById('spanCategory3_7');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_3_8]" == "true"){
+          var sp = document.getElementById('spanCategory3_8');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_3_9]" == "true"){
+          var sp = document.getElementById('spanCategory3_9');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_4_1]" == "true"){
+          var sp = document.getElementById('spanCategory4_1');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_4_2]" == "true"){
+          var sp = document.getElementById('spanCategory4_2');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_4_3]" == "true"){
+          var sp = document.getElementById('spanCategory4_3');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_4_4]" == "true"){
+          var sp = document.getElementById('spanCategory4_4');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_4_5]" == "true"){
+          var sp = document.getElementById('spanCategory4_5');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_4_6]" == "true"){
+          var sp = document.getElementById('spanCategory4_6');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_4_7]" == "true"){
+          var sp = document.getElementById('spanCategory4_7');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_4_8]" == "true"){
+          var sp = document.getElementById('spanCategory4_8');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_4_9]" == "true"){
+          var sp = document.getElementById('spanCategory4_9');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_5_1]" == "true"){
+          var sp = document.getElementById('spanCategory5_1');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_5_2]" == "true"){
+          var sp = document.getElementById('spanCategory5_2');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_5_3]" == "true"){
+          var sp = document.getElementById('spanCategory5_3');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_5_4]" == "true"){
+          var sp = document.getElementById('spanCategory5_4');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_5_5]" == "true"){
+          var sp = document.getElementById('spanCategory5_5');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_5_6]" == "true"){
+          var sp = document.getElementById('spanCategory5_6');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_5_7]" == "true"){
+          var sp = document.getElementById('spanCategory5_7');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_5_8]" == "true"){
+          var sp = document.getElementById('spanCategory5_8');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u';
+        }
+
+        if("[cc_6]" == "true"){
+          var sp = document.getElementById('spanCategory6');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u b';
+        }
+
+        if("[cc_7]" == "true"){
+          var sp = document.getElementById('spanCategory7');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u b';
+        }
+
+        if("[cc_8]" == "true"){
+          var sp = document.getElementById('spanCategory8');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u b';
+        }
+
+        if("[cc_9]" == "true"){
+          var sp = document.getElementById('spanCategory9');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u b';
+        }
+
+        if("[cc_10]" == "true"){
+          var sp = document.getElementById('spanCategory10');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u b';
+        }
+
+        if("[cc_11]" == "true"){
+          var sp = document.getElementById('spanCategory11');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u b';
+        }
+
+        if("[cc_12]" == "true"){
+          var sp = document.getElementById('spanCategory12');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u b';
+        }
+
+        if("[cc_13]" == "true"){
+          var sp = document.getElementById('spanCategory13');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u b';
+        }
+
+        if("[cc_14]" == "true"){
+          var sp = document.getElementById('spanCategory14');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u b';
+        }
+
+        if("[cc_15]" == "true"){
+          var sp = document.getElementById('spanCategory15');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u b';
+        }
+
+        if("[cc_16]" == "true"){
+          var sp = document.getElementById('spanCategory16');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u b';
+        }
+
+        if("[cc_17]" == "true"){
+          var sp = document.getElementById('spanCategory17');
+          sp.innerHTML = "&#10004;";
+          sp.previousElementSibling.className = 'u b';
+        }
+      }
+    </script>
   </head>
   <body>
     <div class="PrintFormClaim">
@@ -323,18 +667,18 @@
           </div>
         </div>
         <div class="under_multifield">
-          <b>зареєстрований за адресою:</b><u>[bankIdAdressFactual]</u>
+          <b>зареєстрований за адресою:</b><u>[bankIdAddressFactual]</u>
         </div>
         <div class="under_multifield">
           <b>проживаю за адресою:</b>
           <u>
-          	<span id="spanAdressRegistr">[bankIdAddressFactual]</span>           
-          	<span id="spanAdressFactual">[sAddressFactual]</span>
+            <span id="spanAdressRegistr">[bankIdAddressFactual]</span>           
+            <span id="spanAdressFactual">[sAddressFactual]</span>
           </u>
         </div>
         <div class="ta-J">
           контактний телефон <em>[phone]</em>, паспорт:
-          <span id="spanDetailPassport">
+          <span id="spanDetailPassport" style="display:none">
             <em id="spanPassportSeria"></em> серія № <em id="spanPassportNumber"></em>,
             виданий <em id="spanPassportIssuedBy"></em><em id="spanPassportDate"></em> 
           </span>
@@ -373,27 +717,27 @@
           </tr>
           <tr>
             <td>допомогу у зв'язку з вагітністю та пологами</td>
-            <td class="ta-c"><span id="spanCategory1_1">&#10004;</span></td>
+            <td class="ta-c" id="spanCategory1_1">&#160;</td>
           </tr>
           <tr>
             <td>допомогу при народженні дитини</td>
-            <td class="ta-c"><span id="spanCategory1_2">&#10004;</span></td>
+            <td class="ta-c" id="spanCategory1_2">&#160;</td>
           </tr>
           <tr>
             <td>допомогу при усиновленні дитини</td>
-            <td class="ta-c"><span id="spanCategory1_3">&#10004;</span></td>
+            <td class="ta-c" id="spanCategory1_3">&#160;</td>
           </tr>
           <tr>
             <td>допомогу' на дітей, над якими встановлено опіку чи піклування</td>
-            <td class="ta-c"><span id="spanCategory1_4">&#10004;</span></td>
+            <td class="ta-c" id="spanCategory1_4">&#160;</td>
           </tr>
           <tr>
             <td>допомогу на дітей одиноким матерям</td>
-            <td class="ta-c"><span id="spanCategory1_5">&#10004;</span></td>
+            <td class="ta-c" id="spanCategory1_5">&#160;</td>
           </tr>          
           <tr>
             <td class="b">2. Державну соціальну допомогу малозабезпеченим сім'ям</td>
-            <td class="ta-c"><span id="spanCategory2">&#10004;</span></td>
+            <td class="ta-c" id="spanCategory2">&#160;</td>
           </tr>          
           <tr>
             <td class="b" colspan="2">3. Державну соціальну допомогу інвалідам 
@@ -401,40 +745,40 @@
           </tr>
           <tr>
             <td>допомогу інвалідам з дитинства І групи</td>
-            <td class="ta-c"><span id="spanCategory3_1">&#10004;</span></td>
+            <td class="ta-c" id="spanCategory3_1">&#160;</td>
           </tr>
           <tr>
             <td>допомогу інвалідам з дитинства II групи</td>
-            <td class="ta-c"><span id="spanCategory3_2">&#10004;</span></td>
+            <td class="ta-c" id="spanCategory3_2">&#160;</td>
           </tr>
           <tr>
             <td>допомогу інвалідам з дитинства III групи</td>
-            <td class="ta-c"><span id="spanCategory3_3">&#10004;</span></td>
+            <td class="ta-c" id="spanCategory3_3">&#160;</td>
           </tr>
           <tr>
             <td>допомогу' на дітей-інвалідів віком до 18 років</td>
-            <td class="ta-c"><span id="spanCategory3_4">&#10004;</span></td>
+            <td class="ta-c" id="spanCategory3_4">&#160;</td>
           </tr>
           <tr>
             <td>надбавку на догляд за інвалідом з дитинства підгрупи АІ групи</td>
-            <td class="ta-c"><span id="spanCategory3_5">&#10004;</span></td>
+            <td class="ta-c" id="spanCategory3_5">&#160;</td>
           </tr>
           <tr>
             <td>надбавку на догляд за інвалідом з дитинства підгрупи БІ групи</td>
-            <td class="ta-c"><span id="spanCategory3_6">&#10004;</span></td>
+            <td class="ta-c" id="spanCategory3_6">&#160;</td>
           </tr>
           <tr>
             <td>одиноким інвалідам з дитинства II і III груп, 
               які за висновком ЛКК закладу охорони здоров'я потребують постійного стороннього догляду</td>
-            <td class="ta-c"><span id="spanCategory3_7">&#10004;</span></td>
+            <td class="ta-c" id="spanCategory3_7">&#160;</td>
           </tr>
           <tr>
             <td>надбавку на догляд за дитиною-інвалідом віком до 6 років</td>
-            <td class="ta-c"><span id="spanCategory3_8">&#10004;</span></td>
+            <td class="ta-c" id="spanCategory3_8">&#160;</td>
           </tr>
           <tr>
             <td>надбавку на догляд за дитиною-інвалідом віком від 6 до 18 років</td>
-            <td class="ta-c"><span id="spanCategory3_9">&#10004;</span></td>
+            <td class="ta-c" id="spanCategory3_9">&#160;</td>
           </tr>
           <tr>
             <td class="b" colspan="2">4. Державну соціальну допомогу особам, 
@@ -442,41 +786,41 @@
           </tr>
           <tr>
             <td>допомогу інвалідам І групи</td>
-            <td class="ta-c"><span id="spanCategory4_1">&#10004;</span></td>
+            <td class="ta-c" id="spanCategory4_1">&#160;</td>
           </tr>
           <tr>
             <td>допомогу жінкам, яким присвоєно звання України "Мати-героїня"</td>
-            <td class="ta-c"><span id="spanCategory4_2">&#10004;</span></td>
+            <td class="ta-c" id="spanCategory4_2">&#160;</td>
           </tr>
           <tr>
             <td>допомогу інвалідам II групи</td>
-            <td class="ta-c"><span id="spanCategory4_3">&#10004;</span></td>
+            <td class="ta-c" id="spanCategory4_3">&#160;</td>
           </tr>
           <tr>
             <td>допомогу інвалідам III групи</td>
-            <td class="ta-c"><span id="spanCategory4_4">&#10004;</span></td>
+            <td class="ta-c" id="spanCategory4_4">&#160;</td>
           </tr>
           <tr>
             <td>допомогу священнослужителям, церковнослужителям</td>
-            <td class="ta-c"><span id="spanCategory4_5">&#10004;</span></td>
+            <td class="ta-c" id="spanCategory4_5">&#160;</td>
           </tr>
           <tr>
             <td>допомогу особам, які досягли віку, що дає право на призначення допомоги</td>
-            <td class="ta-c"><span id="spanCategory4_6">&#10004;</span></td>
+            <td class="ta-c" id="spanCategory4_6">&#160;</td>
           </tr>
           <tr>
             <td>допомогу на догляд одиноким малозабезпеченим особам, 
               які за висновком ЛКК закладу охорони здоров'я потребують постійного 
               стороннього догляду (крім інвалідів І групи)</td>
-            <td class="ta-c"><span id="spanCategory4_7">&#10004;</span></td>
+            <td class="ta-c" id="spanCategory4_7">&#160;</td>
           </tr>
           <tr>
             <td>допомогу на догляд малозабезпеченим інвалідам підгрупи АІ групи</td>
-            <td class="ta-c"><span id="spanCategory4_8">&#10004;</span></td>
+            <td class="ta-c" id="spanCategory4_8">&#160;</td>
           </tr>
           <tr>
             <td>допомогу на догляд малозабезпеченим інвалідам підгрупи БІ групи</td>
-            <td class="ta-c"><span id="spanCategory4_9">&#10004;</span></td>
+            <td class="ta-c" id="spanCategory4_9">&#160;</td>
           </tr>
           <tr>
             <td class="b" colspan="2">5. Компенсаційні виплати та допомоги громадянам, 
@@ -485,35 +829,35 @@
           <tr>
             <td>одноразову компенсацію учасникам ліквідації наслідків аварії на Чорнобильській АЕС, 
               які стали інвалідами внаслідок Чорнобильської катастрофи</td>
-            <td class="ta-c"><span id="spanCategory5_1">&#10004;</span></td>
+            <td class="ta-c" id="spanCategory5_1">&#160;</td>
           </tr>
           <tr>
             <td>одноразову компенсацію дітям, які стали інвалідами внаслідок Чорнобильської катастрофи</td>
-            <td class="ta-c"><span id="spanCategory5_2">&#10004;</span></td>
+            <td class="ta-c" id="spanCategory5_2">&#160;</td>
           </tr>
           <tr>
             <td>одноразову компенсацію сім'ям, які втратили годувальника із числа осіб, 
               віднесених до учасників ліквідації наслідків аварії на Чорнобильській АЕС 
               та смерть яких пов'язана з Чорнобильською катастрофою</td>
-            <td class="ta-c"><span id="spanCategory5_3">&#10004;</span></td>
+            <td class="ta-c" id="spanCategory5_3">&#160;</td>
           </tr>
           <tr>
             <td>щорічну допомогу на оздоровлення</td>
-            <td class="ta-c"><span id="spanCategory5_4">&#10004;</span></td>
+            <td class="ta-c" id="spanCategory5_4">&#160;</td>
           </tr>
           <tr>
             <td>компенсацію вартості самостійного санаторно-курортного лікування</td>
-            <td class="ta-c"><span id="spanCategory5_5">&#10004;</span></td>
+            <td class="ta-c" id="spanCategory5_5">&#160;</td>
           </tr>
           <tr>
             <td>компенсацію проїзду один раз на рік до будь-якого пункту України і назад автомобільним, або повітряним, 
               або залізничним, або водним транспортом особам, віднесеним до кат.1 та 2</td>
-            <td class="ta-c"><span id="spanCategory5_6">&#10004;</span></td>
+            <td class="ta-c" id="spanCategory5_6">&#160;</td>
           </tr>
           <tr>
             <td>компенсацію 50 (25) процентів вартості продуктів харчування за медичними (фізіологічними) нормами, 
               встановленими Міністерством охорони здоров’я України, громадянам, які віднесені до категорій 1 та 2</td>
-            <td class="ta-c"><span id="spanCategory5_7">&#10004;</span></td>
+            <td class="ta-c" id="spanCategory5_7">&#160;</td>
           </tr>
           <tr>
             <td>грошову компенсацію на дітей, які не харчуються в навчальних закладах, 
@@ -521,66 +865,66 @@
               та дітей, які с інвалідами внаслідок Чорнобильської катастрофи 
               і не харчуються в навчальних закладах, 
               а також за всі дні, коли вони не відвідували ці заклади</td>
-            <td class="ta-c"><span id="spanCategory5_8">&#10004;</span></td>
+            <td class="ta-c" id="spanCategory5_8">&#160;</td>
           </tr>
           <tr>
             <td class="b">6. Тимчасову державну допомогу дітям</td>
-            <td class="ta-c"><span id="spanCategory6">&#10004;</span></td>
+            <td class="ta-c" id="spanCategory6">&#160;</td>
           </tr>
           <tr>
             <td class="b">7. Соціальну допомогу на дітей-сиріт та дітей, 
               позбавлених батьківського піклування, грошове забезпечення 
               батькам-вихователям і прийомним батькам</td>
-            <td class="ta-c"><span id="spanCategory7">&#10004;</span></td>
+            <td class="ta-c" id="spanCategory7">&#160;</td>
           </tr>
           <tr>
             <td class="b">8 Допомогу на догляд (щомісячну грошову допомогу малозабезпеченій особі, 
               яка проживає разом з інвалідом І чи II групи внаслідок психічного розладу, 
               який за висновком лікарської комісії медичного закладу потребує постійного 
               стороннього догляду, на догляд за ним)</td>
-            <td class="ta-c"><span id="spanCategory8">&#10004;</span></td>
+            <td class="ta-c" id="spanCategory8">&#160;</td>
           </tr>
           <tr>
             <td class="b">9 Компенсацію як фізичній особі, яка надає соціальні послуги</td>
-            <td class="ta-c"><span id="spanCategory9">&#10004;</span></td>
+            <td class="ta-c" id="spanCategory9">&#160;</td>
           </tr>
           <tr>
             <td class="b">10 Компенсаційну виплату особі, 
               яка здійснює догляд за інвалідом І групи або особою, яка досягла 80 р.</td>
-            <td class="ta-c"><span id="spanCategory10">&#10004;</span></td>
+            <td class="ta-c" id="spanCategory10">&#160;</td>
           </tr>
           <tr>
             <td class="b">11. Грошову компенсацію замість санаторно-курортної путівки</td>
-            <td class="ta-c"><span id="spanCategory11">&#10004;</span></td>
+            <td class="ta-c" id="spanCategory11">&#160;</td>
           </tr>
           <tr>
             <td class="b">12. Компенсацію вартості самостійного санаторно-курортного лікування</td>
-            <td class="ta-c"><span id="spanCategory12">&#10004;</span></td>
+            <td class="ta-c" id="spanCategory12">&#160;</td>
           </tr>
           <tr>
             <td class="b">13 Пільгу на придбання твердого палива</td>
-            <td class="ta-c"><span id="spanCategory13">&#10004;</span></td>
+            <td class="ta-c" id="spanCategory13">&#160;</td>
           </tr>
           <tr>
             <td class="b">14. Пільгу на придбання скрапленого газу</td>
-            <td class="ta-c"><span id="spanCategory14">&#10004;</span></td>
+            <td class="ta-c" id="spanCategory14">&#160;</td>
           </tr>
           <tr>
             <td class="b">15. Одноразову винагороду жінці, якій присвоєно почесне звання України "Мати-героїня"</td>
-            <td class="ta-c"><span id="spanCategory15">&#10004;</span></td>
+            <td class="ta-c" id="spanCategory15">&#160;</td>
           </tr>
           <tr>
             <td class="b">16. Одноразову матеріальну допомогу особі, яка постраждала від торгівлі людьми</td>
-            <td class="ta-c"><span id="spanCategory16">&#10004;</span></td>
+            <td class="ta-c" id="spanCategory16">&#160;</td>
           </tr>
           <tr>
             <td class="b">17. Допомогу на поховання</td>
-            <td class="ta-c"><span id="spanCategory17">&#10004;</span></td>
+            <td class="ta-c" id="spanCategory17">&#160;</td>
           </tr>
         </table>
       </div>
-      
-      
+
+
 
 
       <div class="ta-j">
@@ -666,8 +1010,8 @@
             <span>(дата)</span>
           </div></div>
       </div>
-      <br> 
-
+      <br>
+      <div style="page-break-after:always"></div>
       <div class="ta-j b">
         Додаткова інформація, яка повідомляється одинокою матір'ю (підкреслити необхідне)
       </div>
@@ -806,7 +1150,7 @@
               <span>(прізвище та підпис відповідальної особи)</span>
             </div>
           </div>       
-          <div class=" w1p"></div>       
+          <div class=" w4p"></div>       
           <div class=" w60p">
             <div class="under_field w100p">
               <b>Ознайомився</b>
@@ -843,13 +1187,12 @@
           <div class="w100p">&#160;</div>
         </div>
         <div class="layout w100p">         
-          <div class=" w30p">
+          <div class=" w40p">
             <div class="under_field w100p">
               <b>Відповідальна особа</b>
               <span>(прізвище та підпис відповідальної особи)</span>
             </div>
-          </div>       
-          <div class=" w1p"></div>       
+          </div>            
           <div class=" w60p">
             <div class="under_field w100p">
               <b>Ознайомився</b>
@@ -861,78 +1204,11 @@
           </div>
         </div>
       </div>
-	<script type="text/javascript">
-	
-	//function loadPage() {
-      //   ****************    парсим паспортные данные   **************** 
-      // константные переменные для регулярных выражений
-      var regSeriaStr = "([Сс]ерия|СЕРИЯ|[Сс]ерія|СЕРІЯ)?";
-      var regPassoprt = "([Пп]аспорт|ПАСПОРТ)?";
-      var regNumberStr = "([Нн]омер|НОМЕР)?";
 
-      var regSeriaVal = "[ЄІЇҐА-ЯA-Z]{2}";
-      var regNumberVal = "[0-9]{6}";
-      var regFrom = "((від|от).\\D{0,4})?";
-      var regYearVal = "[0-9]{2}\\W[0-9]{2}\\W(19|20|21)?[0-9]{2}";
-
-      var patSerNum = new RegExp(regPassoprt + "\\D{0,4}" + regSeriaStr + "\\D{0,4}" + regSeriaVal + "\\D{0,4}" + regNumberStr + "\\D{0,4}" + regPassoprt + "\\D{0,4}" + regNumberVal + "\\s*");
-
-      var patDate = new RegExp(regFrom + "\\s*" + regYearVal +"\\s*");
-
-      var str0 = "[bankIdPassport]";
-
-      var strSerial = "";
-      var strNumber = "";
-      var strDate = "";
-      var strIssuedBy = "";
-
-      //находим серию и номер
-      var matSerNum = str0.match(patSerNum)[0];
-
-      //вырезаем серию и номер
-      str0 = str0.replace(matSerNum,"");
-
-      //удаляем лишние слова
-      matSerNum = matSerNum.replace(matSerNum.match(new RegExp("паспорт", "ig")).toString(),"");
-      matSerNum = matSerNum.replace(matSerNum.match(new RegExp("номер", "ig")).toString(),"");
-      matSerNum = matSerNum.replace(matSerNum.match(new RegExp("сер[иі]я", "ig")).toString(),"");
-
-      //выбираем Серию и Номер
-      strSerial = matSerNum.match(new RegExp(regSeriaVal)).toString();
-      strNumber = matSerNum.match(new RegExp(regNumberVal)).toString();
-
-      var matDate = str0.match(new RegExp(regFrom + regYearVal, "ig")).toString();
-
-      //выбираем дату
-      strDate = matDate.match(new RegExp(regYearVal))[0];
-      //вырезаем дату
-      str0 = str0.replace(matDate,"");
-
-      //Остаток, кто выдал
-      strIssuedBy = str0.toString().trim();
-
-      //вставить в текст
-      document.getElementById('spanPassportSeria').innerHTML = strSerial;
-      document.getElementById('spanPassportNumber').innerHTML = strNumber;
-      document.getElementById('spanPassportIssuedBy').innerHTML = strIssuedBy;
-      document.getElementById('spanPassportDate').innerHTML = strDate; 
-      
-      /*
-      // в случае не правильного парсинга
-      if(strSerial.length>0 && strNumber.length>0 && strIssuedBy.length>0 && strDate.length>0){
-        document.getElementById('spanDetailPassport').style.display = 'inline';
-        document.getElementById('spanTotalPassport').style.display = 'none';
-      } 
-
-
-    }
-
-    window.onload = function () {
-    	loadPage();
-    }//*/
-    //подчеркиваем
-    document.getElementById('spanCategory[sCompensationCategory]').parentElement.previousElementSibling.className = 'u';
-    </script>
+      <script type="text/javascript">
+        ChangeParagrath();
+        ParsePassport();
+      </script>
     </div>
   </body>
 </html>

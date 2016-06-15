@@ -46,7 +46,8 @@
         <activiti:formProperty id="asDozvil" name="що здійснюють виробництво харчових продуктів, підконтрольних ветеринарній службі, та для агропродовольчих ринків" type="invisible" default="що здійснюють виробництво харчових продуктів, підконтрольних ветеринарній службі, та для агропродовольчих ринків"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Якщо  юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sImya_ur&quot;,&quot;edrpou&quot;,&quot;sPib_ur&quot;, &quot;sAdres_1&quot;,&quot;sAdres_1&quot;,&quot;workPhone&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSubekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumUr'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers11" name="Якщо  фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_11&quot;:{&quot;aField_ID&quot;:[&quot;sAdres_0&quot;,&quot;sPib_fiz&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSubekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumFiz'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="marker3" name="Тернопольский р-н поля" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;bankIdlastName&quot;,&quot;bankIdfirstName&quot;,&quot;bankIdmiddleName&quot;,&quot;bankIdPassport&quot;,&quot;bankIdinn&quot;,&quot;bankId_scan_passport&quot;,&quot;phone&quot;,&quot;email&quot;,&quot;date_today&quot;,&quot;asSubekt&quot;,&quot;asSubekt_2&quot;,&quot;sObject&quot;,&quot;sAdres_2&quot;,&quot;sFood&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tern_tern'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker3" name="Тернопольский р-н поля" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;info&quot;,&quot;sFile1&quot;,&quot;sBuild_doc&quot;,&quot;sProtocols&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sClient] != 'tern_tern'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker4" name="Список документов" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;rdozvil&quot;],&quot;asID_Field_sValue&quot;:[&quot;&lt;ol&gt;&lt;li&gt;Перелік харчових продуктів, що виробляються, переробляються, або реалізуються&lt;/li&gt;&lt;li&gt;Копія документу, який підтверджує прийняття в експлуатацію закінченого об’єкта будівництва&lt;/li&gt;&lt;li&gt;Протоколи досліджень харчових продуктів, проведених акредитованими лабораторіями&lt;/li&gt;&lt;/ol&gt;&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sClient] != 'tern_tern'&quot;},&quot;ValuesFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;rdozvil&quot;],&quot;asID_Field_sValue&quot;:[&quot;&lt;ol&gt;&lt;li&gt;Перелік харчових продуктів, що виробляються, переробляються, або реалізуються&lt;/li&gt;&lt;/ol&gt;&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tern_tern'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow12" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -87,7 +88,7 @@
         <activiti:formProperty id="sPib_admin" name="Прізвище та ініціали адміністратора" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sShapkaVet" name="Начальнику управління ветеринарної медицини в " type="invisible"></activiti:formProperty>
         <activiti:formProperty id="asDozvil" name="що здійснюють виробництво харчових продуктів, підконтрольних ветеринарній службі, та для агропродовольчих ринків" type="invisible" default="що здійснюють виробництво харчових продуктів, підконтрольних ветеринарній службі, та для агропродовольчих ринків"></activiti:formProperty>
-        <activiti:formProperty id="rdozvil" name="назви документів" type="invisible" default="&lt;ol&gt;&lt;li&gt;Перелік харчових продуктів, що виробляються, переробляються, або реалізуються&lt;/li&gt;&lt;li&gt;Копія документу, який підтверджує прийняття в експлуатацію закінченого об’єкта будівництва&lt;/li&gt;&lt;li&gt;Протоколи досліджень харчових продуктів, проведених акредитованими лабораторіями&lt;/li&gt;&lt;/ol&gt;"></activiti:formProperty>
+        <activiti:formProperty id="rdozvil" name="назви документів" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="decision_1" name="Прийняття рішення про надання послуги" type="enum" required="true">
           <activiti:value id="accept" name="Заповнені дані вірні, інформація направлена на розгляд, очікується рішення"></activiti:value>
           <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
@@ -169,7 +170,8 @@
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano</activiti:expression>
+          <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno na Nadannya poslugy.
+Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>" "</activiti:expression>
@@ -333,7 +335,6 @@ execution.setVariable('sNameOrgan', per4)
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow54" sourceRef="usertask1" targetRef="exclusivegateway2"></sequenceFlow>
     <sequenceFlow id="flow55" sourceRef="boundaryerror2" targetRef="endevent2"></sequenceFlow>
-    <sequenceFlow id="flow57" sourceRef="servicetask7" targetRef="usertask1"></sequenceFlow>
     <sequenceFlow id="flow58" sourceRef="servicetask1" targetRef="servicetask7"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
     <serviceTask id="servicetask10" name="Лист до ветеринарної" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -522,6 +523,42 @@ execution.setVariable('sNameOrgan', per4)
     <sequenceFlow id="flow68" sourceRef="servicetask2" targetRef="usertask2"></sequenceFlow>
     <sequenceFlow id="flow69" sourceRef="servicetask10" targetRef="servicetask12"></sequenceFlow>
     <sequenceFlow id="flow70" sourceRef="servicetask12" targetRef="usertask3"></sequenceFlow>
+    <serviceTask id="servicetask13" name="Лист про замовлення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Експлуатаційний дозвіл для потужностей (об’єктів), що здійснюють виробництво харчових продуктів, підконтрольних ветеринарній службі.]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+&lt;p&gt; Ваше звернення №[sID_Order] щодо Експлуатаційного дозволу для потужностей (об’єктів), що здійснюють виробництво харчових продуктів, підконтрольних ветеринарній службі, зареєстроване у системі.&lt;br/&gt;
+Повідомлення про результат послуги буде спрямоване на Ваш e-mail.&lt;/p&gt;
+&lt;br /&gt;
+${sPhoneOrgan}&lt;br /&gt;
+[pattern/mail/_common_signature_start.html]
+${sNameOrgan}&lt;br /&gt;
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow71" sourceRef="servicetask7" targetRef="servicetask13"></sequenceFlow>
+    <sequenceFlow id="flow72" sourceRef="servicetask13" targetRef="usertask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_256">
     <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_256" id="BPMNPlane_dnepr_cnap_256">
@@ -529,7 +566,7 @@ execution.setVariable('sNameOrgan', per4)
         <omgdc:Bounds height="35.0" width="35.0" x="70.0" y="70.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="55.0" width="151.0" x="119.0" y="60.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="119.0" y="60.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="boundaryerror2" id="BPMNShape_boundaryerror2">
         <omgdc:Bounds height="30.0" width="30.0" x="120.0" y="87.0"></omgdc:Bounds>
@@ -538,13 +575,13 @@ execution.setVariable('sNameOrgan', per4)
         <omgdc:Bounds height="35.0" width="35.0" x="70.0" y="149.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
-        <omgdc:Bounds height="55.0" width="137.0" x="541.0" y="60.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="121.0" x="549.0" y="60.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
         <omgdc:Bounds height="55.0" width="141.0" x="205.0" y="243.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
-        <omgdc:Bounds height="55.0" width="141.0" x="296.0" y="60.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="113.0" x="261.0" y="60.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="55.0" width="141.0" x="402.0" y="243.0"></omgdc:Bounds>
@@ -579,6 +616,9 @@ execution.setVariable('sNameOrgan', per4)
       <bpmndi:BPMNShape bpmnElement="servicetask12" id="BPMNShape_servicetask12">
         <omgdc:Bounds height="72.0" width="105.0" x="420.0" y="354.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask13" id="BPMNShape_servicetask13">
+        <omgdc:Bounds height="55.0" width="123.0" x="402.0" y="60.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
         <omgdi:waypoint x="105.0" y="87.0"></omgdi:waypoint>
         <omgdi:waypoint x="119.0" y="87.0"></omgdi:waypoint>
@@ -610,13 +650,9 @@ execution.setVariable('sNameOrgan', per4)
         <omgdi:waypoint x="135.0" y="117.0"></omgdi:waypoint>
         <omgdi:waypoint x="87.0" y="149.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow57" id="BPMNEdge_flow57">
-        <omgdi:waypoint x="437.0" y="87.0"></omgdi:waypoint>
-        <omgdi:waypoint x="541.0" y="87.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow58" id="BPMNEdge_flow58">
-        <omgdi:waypoint x="270.0" y="87.0"></omgdi:waypoint>
-        <omgdi:waypoint x="296.0" y="87.0"></omgdi:waypoint>
+        <omgdi:waypoint x="224.0" y="87.0"></omgdi:waypoint>
+        <omgdi:waypoint x="261.0" y="87.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow61" id="BPMNEdge_flow61">
         <omgdi:waypoint x="609.0" y="290.0"></omgdi:waypoint>
@@ -656,6 +692,14 @@ execution.setVariable('sNameOrgan', per4)
       <bpmndi:BPMNEdge bpmnElement="flow70" id="BPMNEdge_flow70">
         <omgdi:waypoint x="420.0" y="390.0"></omgdi:waypoint>
         <omgdi:waypoint x="401.0" y="389.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow71" id="BPMNEdge_flow71">
+        <omgdi:waypoint x="374.0" y="87.0"></omgdi:waypoint>
+        <omgdi:waypoint x="402.0" y="87.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow72" id="BPMNEdge_flow72">
+        <omgdi:waypoint x="525.0" y="87.0"></omgdi:waypoint>
+        <omgdi:waypoint x="549.0" y="87.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
