@@ -51,6 +51,11 @@
         <activiti:formProperty id="map1" name="Посилання на карту для позначеня меж:" type="label" default="&lt;a href=&quot;http://mkk.kga.gov.ua&quot;&gt;Містобудівний кадастр Києва за цим посиланням&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="map2" name="Посилання на карту для позначеня меж:" type="label" default="&lt;a href=&quot;http://map.land.gov.ua/kadastrova-karta&quot;&gt;Публічна Кадастрова мапа за цим посиланням&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="sPosluga_name" name="назва послуги" type="invisible" default="Витяг з містобудівного кадастру"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва ЦНАП" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса ЦНАП" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП" type="invisible" default=" "></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаж. файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -188,8 +193,8 @@ ${sNameOrgan}.&lt;br /&gt;
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 Документи оформлені вірно, надано рішення видати Вам витяг.&lt;br /&gt;
 Витяг з накладеною ЕЦП у вкладенні до цього листа.&lt;br /&gt;
-${sAddress}.&lt;br /&gt;
-${sWorkTime}.&lt;br /&gt;
+Будь ласка оцініть якість наданої вам послуги. &lt;br /&gt;
+[pattern/mail/_common_feedback.html]
 ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}.&lt;br /&gt;
