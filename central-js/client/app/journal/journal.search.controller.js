@@ -317,11 +317,11 @@ console.log($scope)
   };
 
   $scope.openLetter = function(nID) {
-    window.open(
-      location.protocol
-      + '/wf/service/subject/message/getSubjectMessageData?nID_SubjectMessage='
-      + nID,
-      "Лист", "width=800,height=500,left=350,top=200")
+    MessagesService.getSubjectMessageData(nID).then(function (res) {
+        window.open(
+          res,
+          "Лист", "width=800,height=500,left=350,top=200")
+    })
   };
 
 });
