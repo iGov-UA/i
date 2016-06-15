@@ -108,7 +108,8 @@
           <activiti:value id="sEnumTopHead20" name="Інформаційна політика, діяльність ЗМІ"></activiti:value>
           <activiti:value id="sEnumTopHead21" name="Діяльність об'єднань громадян, релігія та міжконфесійні відносини"></activiti:value>
           <activiti:value id="sEnumTopHead22" name="Діяльність місцевого самоврядування"></activiti:value>
-          <activiti:value id="sEnumTopHead23" name="Інше"></activiti:value>
+          <activiti:value id="sEnumTopHead23" name="Питання надання адміністративних послуг"></activiti:value>
+          <activiti:value id="sEnumTopHead24" name="Інше"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asTop1" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum" required="true">
           <activiti:value id="sEnumTop10" name=" "></activiti:value>
@@ -524,6 +525,11 @@
           <activiti:value id="sEnumTop228" name="Формування місцевих бюджетів"></activiti:value>
           <activiti:value id="sEnumTop229" name="Інші питання "></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="asTop23" name="Оберіть підтему, яка найбільш стосується Вашого звернення" type="enum" required="true">
+          <activiti:value id="sEnumTop230" name=" "></activiti:value>
+          <activiti:value id="sEnumTop231" name="Скарги на надання адміністративних послуг"></activiti:value>
+          <activiti:value id="sEnumTop232" name="Інші питання"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sReason" name="Опишіть суть звернення" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdditionalInformation" name="Додаткова інформація" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sDateReglament" name="Кількість днів для вирішення питання (згідно регламенту)" type="long"></activiti:formProperty>
@@ -560,21 +566,21 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення до Дніпропетровської міської ради.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt; Ваше звернення до Дніпропетровської міської ради було зареєстровано у системі.&lt;br/&gt;
-Повідомлення про результат послуги буде спрямоване на Ваш e-mail.&lt;/p&gt;
-Телефон для довідок: 0-800-501-174&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p> Ваше звернення до Дніпропетровської міської ради було зареєстровано у системі.<br/>
+Повідомлення про результат послуги буде спрямоване на Ваш e-mail.</p>
+Телефон для довідок: 0-800-501-174<br />
 [pattern/mail/_common_signature_start.html]
-Дніпропетровська міська рада,&lt;br /&gt;
+Дніпропетровська міська рада,<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -586,7 +592,7 @@
     <userTask id="usertask1" name="Обробка звернення бек-офіс (оператор)" activiti:candidateGroups="dmr_${asStatusSuper}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="invisible" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
-	<activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhone" name="Контактний телефон" type="string"></activiti:formProperty>
@@ -690,7 +696,8 @@
           <activiti:value id="sEnumTopHead20" name="Інформаційна політика, діяльність ЗМІ"></activiti:value>
           <activiti:value id="sEnumTopHead21" name="Діяльність об'єднань громадян, релігія та міжконфесійні відносини"></activiti:value>
           <activiti:value id="sEnumTopHead22" name="Діяльність місцевого самоврядування"></activiti:value>
-          <activiti:value id="sEnumTopHead23" name="Інше"></activiti:value>
+          <activiti:value id="sEnumTopHead23" name="Питання надання адміністративних послуг"></activiti:value>
+          <activiti:value id="sEnumTopHead24" name="Інше"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asTop1" name="Підтематика. Житлове господарство" type="enum">
           <activiti:value id="sEnumTop10" name=" "></activiti:value>
@@ -1106,6 +1113,11 @@
           <activiti:value id="sEnumTop228" name="Формування місцевих бюджетів"></activiti:value>
           <activiti:value id="sEnumTop229" name="Інші питання "></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="asTop23" name="Підтематика. Питання надання адміністративних послуг" type="enum">
+          <activiti:value id="sEnumTop230" name=" "></activiti:value>
+          <activiti:value id="sEnumTop231" name="Скарги на надання адміністративних послуг"></activiti:value>
+          <activiti:value id="sEnumTop232" name="Інші питання"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sAdressProbl" name="Адреса за якої виникло питання" type="string"></activiti:formProperty>
         <activiti:formProperty id="sReason" name="Опишіть суть звернення" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sAdditionalInformation" name="Додаткова інформація" type="textArea"></activiti:formProperty>
@@ -1135,7 +1147,7 @@
         <activiti:formProperty id="sID_Document_UkrDoc" name="Number UkrDoc" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEnumTop" name="Енам подтематика" type="invisible" default="В РАЗРАБОТКЕ"></activiti:formProperty>
         <activiti:formProperty id="sNameDepartment" name="Назва управлиння (департаменту)" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="asStatusOperator" name="Обробка звернення" type="enum">
+        <activiti:formProperty id="asStatusOperator" name="Обробка звернення" type="enum" required="true">
           <activiti:value id="sEnumSendEmail" name="Відправити швидку відповідь на е-mail"></activiti:value>
           <activiti:value id="sEnumSendInFrontOffice" name="Відправити до фронт-офісу для письмової відповіді"></activiti:value>
           <activiti:value id="sEnumSendInUkrDoc" name="Відправити супервайзеру в УкрДок"></activiti:value>
@@ -1144,12 +1156,12 @@
           <activiti:value id="sEnumSendInCallCenter" name="Відправити для вихідного дзвінка"></activiti:value>
           <activiti:value id="sEnumClose" name="Дзвінок здійснений заявнику. Питання вирішено"></activiti:value>
         </activiti:formProperty>
-	<activiti:formProperty id="sBody1" name="[pattern/print/dneprMVK/dnepr_mvk_291_common_print.html]" type="invisible" default="Форма письмової відповіді" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/dneprMVK/dnepr_mvk_291_common_print.html]" type="invisible" default="Форма письмової відповіді" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprMVK/dnepr_mvk_291_common_print.html" type="file"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile1}</activiti:expression>
+            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -1162,26 +1174,26 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення до Дніпропетровської міської ради.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення до Дніпропетровської міської ради - опрацьовано.&lt;/p&gt;
-&lt;p&gt;Відповідь:&lt;br&gt;
-&lt;i&gt;${sDocument_Body_UkrDoc}&lt;/i&gt;
-&lt;/p&gt;
-&lt;p&gt;Якщо Ви бажаєте зберегти копію відповіді у письмовому вигляді, Вам необхідно роздрукувати електронний документ прикріплений до листа.&lt;/p&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+Ваше звернення до Дніпропетровської міської ради - опрацьовано.</p>
+<p>Відповідь:<br>
+<i>${sDocument_Body_UkrDoc}</i>
+</p>
+<p>Якщо Ви бажаєте зберегти копію відповіді у письмовому вигляді, Вам необхідно роздрукувати електронний документ прикріплений до листа.</p>
 [pattern/mail/_common_signature_start.html]
-Дніпропетровська міська рада,&lt;br /&gt;
+Дніпропетровська міська рада,<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${nFileAnswer}</activiti:expression>
+          <activiti:expression><![CDATA[${PrintForm_1}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -1295,7 +1307,8 @@
           <activiti:value id="sEnumTopHead20" name="Інформаційна політика, діяльність ЗМІ"></activiti:value>
           <activiti:value id="sEnumTopHead21" name="Діяльність об'єднань громадян, релігія та міжконфесійні відносини"></activiti:value>
           <activiti:value id="sEnumTopHead22" name="Діяльність місцевого самоврядування"></activiti:value>
-          <activiti:value id="sEnumTopHead23" name="Інше"></activiti:value>
+          <activiti:value id="sEnumTopHead23" name="Питання надання адміністративних послуг"></activiti:value>
+          <activiti:value id="sEnumTopHead24" name="Інше"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asTop1" name="Підтематика. Житлове господарство" type="enum">
           <activiti:value id="sEnumTop10" name=" "></activiti:value>
@@ -1711,6 +1724,11 @@
           <activiti:value id="sEnumTop228" name="Формування місцевих бюджетів"></activiti:value>
           <activiti:value id="sEnumTop229" name="Інші питання "></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="asTop23" name="Підтематика. Питання надання адміністративних послуг" type="enum">
+          <activiti:value id="sEnumTop230" name=" "></activiti:value>
+          <activiti:value id="sEnumTop231" name="Скарги на надання адміністративних послуг"></activiti:value>
+          <activiti:value id="sEnumTop232" name="Інші питання"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sAdressProbl" name="Адреса за якої виникло питання" type="string"></activiti:formProperty>
         <activiti:formProperty id="sReason" name="Опишіть суть звернення" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sAdditionalInformation" name="Додаткова інформація" type="textArea"></activiti:formProperty>
@@ -1735,28 +1753,28 @@
         <activiti:formProperty id="sChannelApp" name="Канал звернення" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameDepartment" name="Назва управлиння (департаменту)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sLoginUkrDoc" name="Логін працівника міськради" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sID_Document_UkrDoc" name="Number UkrDoc" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sStatusName_UkrDoc" name="Status UkrDoc" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Document_UkrDoc" name="Number UkrDoc" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sStatusName_UkrDoc" name="Status UkrDoc" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sHead_Document_UkrDoc" name="Заголовок UkrDoc" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDocument_Body_UkrDoc" name="Тело ответа UkrDoc" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nID_DocumentTemplate_UkrDoc" name="Шаблон ответного документа" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nID_DocumentTemplate_UkrDoc" name="Шаблон ответного документа" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${CreateDocument_UkrDoc}">
           <activiti:field name="sLoginAuthor">
-            <activiti:expression>EO180277SMV</activiti:expression>
+            <activiti:expression><![CDATA[EO180277SMV]]></activiti:expression>
           </activiti:field>
           <activiti:field name="nID_Pattern">
-            <activiti:expression>10677</activiti:expression>
+            <activiti:expression><![CDATA[10677]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sHead">
             <activiti:string><![CDATA[Нове звернення громадян.]]></activiti:string>
           </activiti:field>
           <activiti:field name="sBody">
-            <activiti:expression>&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;head lang="ru"&gt;
-    &lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /&gt;
-    &lt;title&gt;&lt;/title&gt;
-        &lt;style type="text/css"&gt;
+            <activiti:expression><![CDATA[<!DOCTYPE html>
+<html>
+<head lang="ru">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title></title>
+        <style type="text/css">
         html, body {margin: 0; padding: 0; height: 100%; font: 400 16px/16px 'Times New Roman';}
 
 .print_wrap {width: 705px; padding: 35px 25px 85px 35px; min-height: 100%; height: 100%; margin: 0 auto;}
@@ -1792,7 +1810,7 @@
 .b-r-0 {border-right: 0 !important;}
 .b-b-0 {border-bottom: 0 !important;}
 
-.hint-l-220 &gt; span {margin-left: 220px !important;}
+.hint-l-220 > span {margin-left: 220px !important;}
 
 .h10 {height: 12px;}
 
@@ -1818,22 +1836,22 @@
 
 .line_col {}
 .under_field {height: 20px; margin: 0 0 20px 0; border-bottom: 1px solid black; position: relative; display: inline-block; clear: both;}
-.under_field &gt; i {font-style: normal;}
-.under_field &gt; span {position: absolute; left: 0; right: 0; text-align: center; color: #606060; bottom: -20px; font-size: 12px;}
+.under_field > i {font-style: normal;}
+.under_field > span {position: absolute; left: 0; right: 0; text-align: center; color: #606060; bottom: -20px; font-size: 12px;}
 
 .under_field_line {height: 20px; margin: 0 0 15px 0; padding: 0 0 0 0; border-bottom: 1px solid black; position: relative; display: block;}
 .under_field_line.right_side {float: right;}
-.under_field_line &gt; i {height: 21px; padding: 0 5px 0 0; background: white; display: inline-block; position: relative; left: 0; font-style: normal;}
-.under_field_line &gt; span {position: absolute; left: 0; right: 0; text-align: center; color: #606060; bottom: -16px; font-size: 12px;}
+.under_field_line > i {height: 21px; padding: 0 5px 0 0; background: white; display: inline-block; position: relative; left: 0; font-style: normal;}
+.under_field_line > span {position: absolute; left: 0; right: 0; text-align: center; color: #606060; bottom: -16px; font-size: 12px;}
 
 .wub {min-height: 20px; height: auto; border: 0; margin: 5px 0 0 0;}
 
 .month-fl {width: 225px; float: right; height: 21px; padding: 0 5px 0 10px; background: white; text-align: right;}
 .month-fl.left {float: left; padding: 0 5px 0 0;}
-.month-fl &gt; span {height: 20px; margin: 0 5px 0 0; border-bottom: 1px solid black; display: inline-block;}
-.month-fl &gt; span:nth-child(1) {width: 35px;}
-.month-fl &gt; span:nth-child(2) {width: 120px;}
-.month-fl &gt; span:nth-child(3) {width: 40px;}
+.month-fl > span {height: 20px; margin: 0 5px 0 0; border-bottom: 1px solid black; display: inline-block;}
+.month-fl > span:nth-child(1) {width: 35px;}
+.month-fl > span:nth-child(2) {width: 120px;}
+.month-fl > span:nth-child(3) {width: 40px;}
 
 table.zit_v-form {border-top: 1px solid black; border-bottom: 1px solid black; border-collapse: collapse; margin: 15px 0;}
 table.zit_v-form tr td {border-bottom: 1px solid black; padding: 3px 6px;}
@@ -1849,72 +1867,72 @@ table.zit_v-form2 tr td {border: 1px solid black; padding: 3px 8px;}
 .date_subm { margin: 20px 0 25px 0;}
 .date_subm .month-fl-sm {float: left;}
 .date_subm.invert .month-fl-sm {float: right;}
-.date_subm .month-fl-sm &gt; span {height: 20px; margin: 0 5px 0 0; border-bottom: 1px solid black; display: inline-block;}
-.date_subm .month-fl-sm &gt; span:nth-child(1) {width: 45px;}
-.date_subm .month-fl-sm &gt; span:nth-child(2) {width: 120px;}
-.date_subm .month-fl-sm &gt; span:nth-child(3) {width: 20px;}
+.date_subm .month-fl-sm > span {height: 20px; margin: 0 5px 0 0; border-bottom: 1px solid black; display: inline-block;}
+.date_subm .month-fl-sm > span:nth-child(1) {width: 45px;}
+.date_subm .month-fl-sm > span:nth-child(2) {width: 120px;}
+.date_subm .month-fl-sm > span:nth-child(3) {width: 20px;}
 .date_subm .signature {width: 180px; height: 20px; float: right; border-bottom: 1px solid black; position: relative;}
 .date_subm.invert .signature {float: left;}
-.date_subm .signature &gt; span {position: absolute; left: 0; right: 0; text-align: center; color: #606060; bottom: -20px; font-size: 12px;}
+.date_subm .signature > span {position: absolute; left: 0; right: 0; text-align: center; color: #606060; bottom: -20px; font-size: 12px;}
 
 p {font-size: 14px;}
 
 .clear {clear: both;}
-&lt;/style&gt;
-&lt;/head&gt;
-&lt;body&gt;
-&lt;section class="print_wrap"&gt;
-    &lt;div class="w365 line_col ta-l p-right xs-font"&gt;
-        &lt;p&gt;&lt;b&gt;${sNameDepartment}&lt;/b&gt;&lt;/p&gt;
-        &lt;p&gt;&lt;b&gt;&lt;/b&gt;&lt;/p&gt;
-        &lt;p &gt;${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;/p&gt;
-        &lt;p&gt;&lt;b&gt;Який (яка) мешкає (зареєстровано) за адресою:&lt;/b&gt;&lt;/p&gt;
-        &lt;p&gt;${sAdress}&lt;/p&gt;
-        &lt;p&gt;телефон: ${sPhone}&lt;/p&gt;
-    &lt;/div&gt;
-    &lt;div class="clear"&gt;&lt;/div&gt;
-    &lt;div class="line_col ta-c m-t-25"&gt;
-        &lt;b&gt;Зверення&lt;/b&gt;
-        &lt;/div&gt;
-        &lt;div class="under_field_line wub ta-l"&gt;Суть звернення: ${sReason}.&lt;br&gt;
-        Додаткова інформація: ${sAdditionalInformation}.&lt;br&gt;
-		&lt;/div&gt;
-    &lt;div class="clear"&gt;&lt;/div&gt;
-&lt;/section&gt;
-&lt;/body&gt;
-&lt;/html&gt;</activiti:expression>
+</style>
+</head>
+<body>
+<section class="print_wrap">
+    <div class="w365 line_col ta-l p-right xs-font">
+        <p><b>${sNameDepartment}</b></p>
+        <p><b></b></p>
+        <p >${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}</p>
+        <p><b>Який (яка) мешкає (зареєстровано) за адресою:</b></p>
+        <p>${sAdress}</p>
+        <p>телефон: ${sPhone}</p>
+    </div>
+    <div class="clear"></div>
+    <div class="line_col ta-c m-t-25">
+        <b>Зверення</b>
+        </div>
+        <div class="under_field_line wub ta-l">Суть звернення: ${sReason}.<br>
+        Додаткова інформація: ${sAdditionalInformation}.<br>
+		</div>
+    <div class="clear"></div>
+</section>
+</body>
+</html>]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sID_Order_GovPublic">
             <activiti:string><![CDATA[В-0-00000/0]]></activiti:string>
           </activiti:field>
           <activiti:field name="sSourceChannel">
-            <activiti:expression>${sChannelApp}</activiti:expression>
+            <activiti:expression><![CDATA[${sChannelApp}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sID_Document">
-            <activiti:expression>${sID_Document_UkrDoc}</activiti:expression>
+            <activiti:expression><![CDATA[${sID_Document_UkrDoc}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="bankIdlastName">
-            <activiti:expression>${bankIdlastName}</activiti:expression>
+            <activiti:expression><![CDATA[${bankIdlastName}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="bankIdfirstName">
-            <activiti:expression>${bankIdfirstName}</activiti:expression>
+            <activiti:expression><![CDATA[${bankIdfirstName}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="bankIdmiddleName">
-            <activiti:expression>${bankIdmiddleName}</activiti:expression>
+            <activiti:expression><![CDATA[${bankIdmiddleName}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sDepartNameFull">
-            <activiti:expression>${sNameDepartment}</activiti:expression>
+            <activiti:expression><![CDATA[${sNameDepartment}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sSex">
-            <activiti:expression>${asSex}</activiti:expression>
+            <activiti:expression><![CDATA[${asSex}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sAddress">
-            <activiti:expression>${sAdress}</activiti:expression>
+            <activiti:expression><![CDATA[${sAdress}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
         <activiti:taskListener event="complete" delegateExpression="${GetDocument_UkrDoc}">
           <activiti:field name="sID_Document">
-            <activiti:expression>${sID_Document_UkrDoc}</activiti:expression>
+            <activiti:expression><![CDATA[${sID_Document_UkrDoc}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -1925,31 +1943,31 @@ p {font-size: 14px;}
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення до Дніпропетровської міської ради.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;
-Ваше звернення до Дніпропетровської міської ради - опрацьовано. &lt;br &gt;&lt;br&gt;
-Рішення міської ради: ${sDocument_Body_UkrDoc}&lt;br&gt;&lt;br&gt;
-Номер документа: ${sID_Document_UkrDoc}&lt;br&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p>
+Ваше звернення до Дніпропетровської міської ради - опрацьовано. <br ><br>
+Рішення міської ради: ${sDocument_Body_UkrDoc}<br><br>
+Номер документа: ${sID_Document_UkrDoc}<br>
 
 
-&lt;/p&gt;
-Телефон для довідок: 0-800-501-174&lt;br /&gt;
-&lt;br /&gt;
+</p>
+Телефон для довідок: 0-800-501-174<br />
+<br />
 [pattern/mail/_common_signature_start.html]
-Дніпропетровська міська рада,&lt;br /&gt;
+Дніпропетровська міська рада,<br />
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${anID_Attach_UkrDoc}</activiti:expression>
+          <activiti:expression><![CDATA[${anID_Attach_UkrDoc}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -2076,7 +2094,8 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sEnumTopHead20" name="Інформаційна політика, діяльність ЗМІ"></activiti:value>
           <activiti:value id="sEnumTopHead21" name="Діяльність об'єднань громадян, релігія та міжконфесійні відносини"></activiti:value>
           <activiti:value id="sEnumTopHead22" name="Діяльність місцевого самоврядування"></activiti:value>
-          <activiti:value id="sEnumTopHead23" name="Інше"></activiti:value>
+          <activiti:value id="sEnumTopHead23" name="Питання надання адміністративних послуг"></activiti:value>
+          <activiti:value id="sEnumTopHead24" name="Інше"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asTop1" name="Підтематика. Житлове господарство" type="enum">
           <activiti:value id="sEnumTop10" name=" "></activiti:value>
@@ -2492,6 +2511,11 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sEnumTop228" name="Формування місцевих бюджетів"></activiti:value>
           <activiti:value id="sEnumTop229" name="Інші питання "></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="asTop23" name="Підтематика. Питання надання адміністративних послуг" type="enum">
+          <activiti:value id="sEnumTop230" name=" "></activiti:value>
+          <activiti:value id="sEnumTop231" name="Скарги на надання адміністративних послуг"></activiti:value>
+          <activiti:value id="sEnumTop232" name="Інші питання"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sAdressProbl" name="Адреса за якої виникло питання" type="string"></activiti:formProperty>
         <activiti:formProperty id="sReason" name="Суть звернення" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sAdditionalInformation" name="Додаткова інформація" type="textArea"></activiti:formProperty>
@@ -2518,10 +2542,10 @@ execution.setVariable('sAnswerEmail', res)</script>
         <activiti:formProperty id="sDocument_Body_UkrDoc" name="Відповідь управління" type="textArea"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${SendObject_Corezoid}">
           <activiti:field name="soJSON">
-            <activiti:expression>{"sFIO_Subject_Client":"value{[clFio]}","sPhonePrivate_SubjectContact_Client":"value{[sPhone]}","sID_Order":"[sID_Order]","sDate_Order":"[sDateCreate]","sAddress":"value{[sAdressProbl]}","sCategory":"enum{[asKindTr]}","sType":"enum{[asTypeTr]}","sHead":"enum{[asTopHead]}","sHeadSub":"value{[sEnumTop]}","sBody":"value{[sReason]}","nDaysRemain":"value{[nDaysRemain]}","sAnswer_UkrDoc":"value{[sDocument_Body_UkrDoc]}","asAnonymousTr":"enum{[asAnonymousTr]}"}</activiti:expression>
+            <activiti:expression><![CDATA[{"sFIO_Subject_Client":"value{[clFio]}","sPhonePrivate_SubjectContact_Client":"value{[sPhone]}","sID_Order":"[sID_Order]","sDate_Order":"[sDateCreate]","sAddress":"value{[sAdressProbl]}","sCategory":"enum{[asKindTr]}","sType":"enum{[asTypeTr]}","sHead":"enum{[asTopHead]}","sHeadSub":"value{[sEnumTop]}","sBody":"value{[sReason]}","nDaysRemain":"value{[nDaysRemain]}","sAnswer_UkrDoc":"value{[sDocument_Body_UkrDoc]}","asAnonymousTr":"enum{[asAnonymousTr]}"}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sID_Conveyour">
-            <activiti:expression>93682</activiti:expression>
+            <activiti:expression><![CDATA[93682]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -2538,7 +2562,7 @@ execution.setVariable('sAnswerEmail', res)</script>
     <userTask id="usertask4" name="Обробка звернення супервайзером" activiti:candidateGroups="dmr_supervisor">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="invisible" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
-	<activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhone" name="Контактний телефон" type="string"></activiti:formProperty>
@@ -2642,7 +2666,8 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sEnumTopHead20" name="Інформаційна політика, діяльність ЗМІ"></activiti:value>
           <activiti:value id="sEnumTopHead21" name="Діяльність об'єднань громадян, релігія та міжконфесійні відносини"></activiti:value>
           <activiti:value id="sEnumTopHead22" name="Діяльність місцевого самоврядування"></activiti:value>
-          <activiti:value id="sEnumTopHead23" name="Інше"></activiti:value>
+          <activiti:value id="sEnumTopHead23" name="Питання надання адміністративних послуг"></activiti:value>
+          <activiti:value id="sEnumTopHead24" name="Інше"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asTop1" name="Підтематика. Житлове господарство" type="enum">
           <activiti:value id="sEnumTop10" name=" "></activiti:value>
@@ -3058,6 +3083,11 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sEnumTop228" name="Формування місцевих бюджетів"></activiti:value>
           <activiti:value id="sEnumTop229" name="Інші питання "></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="asTop23" name="Підтематика. Питання надання адміністративних послуг" type="enum">
+          <activiti:value id="sEnumTop230" name=" "></activiti:value>
+          <activiti:value id="sEnumTop231" name="Скарги на надання адміністративних послуг"></activiti:value>
+          <activiti:value id="sEnumTop232" name="Інші питання"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sAdressProbl" name="Адреса за якої виникло питання" type="string"></activiti:formProperty>
         <activiti:formProperty id="sReason" name="Суть звернення" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sAdditionalInformation" name="Додаткова інформація" type="textArea"></activiti:formProperty>
@@ -3083,7 +3113,7 @@ execution.setVariable('sAnswerEmail', res)</script>
         </activiti:formProperty>
         <activiti:formProperty id="sChannelApp" name="Канал звернення" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDocument_Body_UkrDoc" name="Відповідь на звернення" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="asStatusSuper" name="Обрати спеціаліста" type="enum">
+        <activiti:formProperty id="asStatusSuper" name="Обрати спеціаліста" type="enum" required="true">
           <activiti:value id="sOperator_1" name="Оператор 1"></activiti:value>
           <activiti:value id="sOperator_2" name="Оператор 2"></activiti:value>
           <activiti:value id="sOperator_3" name="Оператор 3"></activiti:value>
@@ -3113,7 +3143,7 @@ execution.setVariable('sAnswerEmail', res)</script>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile1},${nFileAnswer}</activiti:expression>
+            <activiti:expression><![CDATA[${nFile1},${nFileAnswer}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -3170,7 +3200,7 @@ execution.setVariable('sAnswerEmail', res)</script>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile1}</activiti:expression>
+            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -3229,21 +3259,19 @@ execution.setVariable('sAnswerEmail', res)</script>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile1}</activiti:expression>
+            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow36" sourceRef="usertask5" targetRef="usertask6">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asStatus=='sEnumDep1'||asStatus=='sEnumDep2'||asStatus=='sEnumDep3'||asStatus=='sEnumDep4'||asStatus=='sEnumDep5'||asStatus=='sEnumDep6'||asStatus=='sEnumDep7'||asStatus=='sEnumDep8'||asStatus=='sEnumDep9'}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow37" name="asStatus=='sEnumAnswer'" sourceRef="exclusivegateway5" targetRef="usertask4">
+    <sequenceFlow id="flow36" sourceRef="usertask5" targetRef="usertask6"></sequenceFlow>
+    <sequenceFlow id="flow37" name="asStatus=='sEnumAnswer'" sourceRef="exclusivegateway5" targetRef="exclusivegateway8">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asStatus=='sEnumAnswer'}]]></conditionExpression>
     </sequenceFlow>
     <userTask id="usertask7" name="Перевірка відповіді" activiti:candidateGroups="dnepr_gas_head">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPhone" name="Контактний телефон" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDataToday" name="Дата подачі звернення" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asDistrict" name="Район проживання" type="enum" writable="false">
@@ -3296,7 +3324,7 @@ execution.setVariable('sAnswerEmail', res)</script>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFileAnswer}</activiti:expression>
+            <activiti:expression><![CDATA[${nFileAnswer}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -3310,7 +3338,7 @@ execution.setVariable('sAnswerEmail', res)</script>
     <userTask id="usertask8" name="Обробка ИКЦ ТОВ Дніпрообленерго" activiti:candidateGroups="dnepr_dtek_head">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPhone" name="Контактний телефон" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDataToday" name="Дата подачі звернення" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asDistrict" name="Район Вашого проживання" type="enum" writable="false">
@@ -3324,7 +3352,7 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sEnumSamar" name="Самарський"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Адреса реєстрації заявника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asTop3" name="Тема звернення" type="enum">
+        <activiti:formProperty id="asTop3" name="Тема звернення" type="enum" writable="false">
           <activiti:value id="sEnumTop31" name="Відсутність електропостачання"></activiti:value>
           <activiti:value id="sEnumTop32" name="Загальна кількість звернень по службі"></activiti:value>
           <activiti:value id="sEnumTop33" name="Загальні питання електропостачання"></activiti:value>
@@ -3353,7 +3381,7 @@ execution.setVariable('sAnswerEmail', res)</script>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile1}</activiti:expression>
+            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -3361,15 +3389,17 @@ execution.setVariable('sAnswerEmail', res)</script>
     <sequenceFlow id="flow41" name="asStatusOperator=='sEnumSendInDniprooblenergo'" sourceRef="exclusivegateway1" targetRef="usertask8">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asStatusOperator=='sEnumSendInDniprooblenergo'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow42" sourceRef="usertask8" targetRef="usertask4"></sequenceFlow>
+    <sequenceFlow id="flow42" name="asAnswerChannel=='sEnumAnsw1'||asAnswerChannel=='sEnumAnsw2'" sourceRef="exclusivegateway9" targetRef="usertask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asAnswerChannel=='sEnumAnsw1'||asAnswerChannel=='sEnumAnsw2'}]]></conditionExpression>
+    </sequenceFlow>
     <sequenceFlow id="flow43" name="sAnswerStatus=='Reject'||sAnswerStatus=='CantConnect'||sAnswerStatus=='InvalidConnect'" sourceRef="exclusivegateway4" targetRef="usertask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sAnswerStatus=='Reject'||sAnswerStatus=='CantConnect'||sAnswerStatus=='InvalidConnect'}]]></conditionExpression>
     </sequenceFlow>
     <scriptTask id="scripttask2" name="Script автоадресація в відділ" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var depart = ["sEnumTopHead1","sEnumTopHead2","sEnumTopHead3","sEnumTopHead4","sEnumTopHead5","sEnumTopHead6","sEnumTopHead7","sEnumTopHead8","sEnumTopHead9","sEnumTopHead10","sEnumTopHead11","sEnumTopHead12","sEnumTopHead13","sEnumTopHead14","sEnumTopHead15","sEnumTopHead16","sEnumTopHead17","sEnumTopHead18","sEnumTopHead19","sEnumTopHead20","sEnumTopHead21","sEnumTopHead22"]
-var login = ["PA220867GVV", "EO180277SMV", "EO180277SMV", "PA060977LMO", "PA270366ZIV", "PA180683MII", "PA070486BKM1", "PA010464GOP", "PA110859SVV", "PA131157LAV", "PA311076GPV", "PA020177MRV", "PA010762GGV1", "PA080459CLM", "PA130678KEV", "PA310349BAS", "PA260776VDV", "PA130562SOA", "PA080778MVV3", "PA100471VJI", "PA281091KISF", "PA160180SOO"]
-var departName = ["Управління житлового господарства Дніпропетровської  міської ради", "Комунальне господарство. Дніпрогаз", "Комунальне господарство. Електропостачання", "Департамент комунального господарства  Дніпропетровської міської ради", "Департамент промисловості підприємництва та інвестицій Дніпропетровської міської ради", "Департамент транспорту та зв’язку Дніпропетровської міської ради", "Департаменту корпоративних прав та правового забезпечення  Дніпропетровської міської ради", "Департамент охорони здоров’я Дніпропетровської міської ради", "Управління праці та соціального захисту населення  Дніпропетровської міської рад", "Управління-служби у справах дітей  Дніпропетровської міської ради", "Управління охорони навколишнього природного середовища Дніпропетровської міської ради", "Департамент споживчого ринку та сфери послуг Дніпропетровської міської ради", "Управління у  справах молоді та спорту Дніпропетровської міської ради", "Управління освіти та науки Дніпропетровської міської ради", "Управління культури та мистецтв Дніпропетровської  міської ради", "Управління контролю за благоустроєм міста  Дніпропетровської  міської ради", "Управління архитектури та будівництва", "Департамент взаємодії з правоохоронними органами, мобілізаційної та оборонної роботи і з питань надзвичайних ситуацій Дніпропетровської міської ради", "Фінансово-економічний департамент Дніпропетровської міської ради", "Прес-служба Дніпропетровської міської ради", "Управління внутрішньої політики Дніпропетровської  міської ради", "Діяльність місцевого самоврядування"]
-for (var i=0; i&lt;22; i++)
+      <script>var depart = ["sEnumTopHead1","sEnumTopHead2","sEnumTopHead3","sEnumTopHead4","sEnumTopHead5","sEnumTopHead6","sEnumTopHead7","sEnumTopHead8","sEnumTopHead9","sEnumTopHead10","sEnumTopHead11","sEnumTopHead12","sEnumTopHead13","sEnumTopHead14","sEnumTopHead15","sEnumTopHead16","sEnumTopHead17","sEnumTopHead18","sEnumTopHead19","sEnumTopHead20","sEnumTopHead21","sEnumTopHead22","sEnumTopHead23","sEnumTopHead24"]
+var login = ["PA220867GVV", "EO180277SMV", "EO180277SMV", "PA060977LMO", "PA270366ZIV", "PA180683MII", "PA070486BKM1", "PA010464GOP", "PA110859SVV", "PA131157LAV", "PA311076GPV", "PA020177MRV", "PA010762GGV1", "PA080459CLM", "PA130678KEV", "PA310349BAS", "PA260776VDV", "PA130562SOA", "PA080778MVV3", "PA100471VJI", "PA281091KISF", "PA160180SOO", "EO180277SMV", "EO180277SMV"]
+var departName = ["Управління житлового господарства Дніпропетровської  міської ради", "Комунальне господарство. Дніпрогаз", "Комунальне господарство. Електропостачання", "Департамент комунального господарства  Дніпропетровської міської ради", "Департамент промисловості підприємництва та інвестицій Дніпропетровської міської ради", "Департамент транспорту та зв’язку Дніпропетровської міської ради", "Департаменту корпоративних прав та правового забезпечення  Дніпропетровської міської ради", "Департамент охорони здоров’я Дніпропетровської міської ради", "Управління праці та соціального захисту населення  Дніпропетровської міської рад", "Управління-служби у справах дітей  Дніпропетровської міської ради", "Управління охорони навколишнього природного середовища Дніпропетровської міської ради", "Департамент споживчого ринку та сфери послуг Дніпропетровської міської ради", "Управління у  справах молоді та спорту Дніпропетровської міської ради", "Управління освіти та науки Дніпропетровської міської ради", "Управління культури та мистецтв Дніпропетровської  міської ради", "Управління контролю за благоустроєм міста  Дніпропетровської  міської ради", "Управління архитектури та будівництва", "Департамент взаємодії з правоохоронними органами, мобілізаційної та оборонної роботи і з питань надзвичайних ситуацій Дніпропетровської міської ради", "Фінансово-економічний департамент Дніпропетровської міської ради", "Прес-служба Дніпропетровської міської ради", "Управління внутрішньої політики Дніпропетровської  міської ради", "Діяльність місцевого самоврядування", "Питання надання адміністративних послуг", "Інше питання"]
+for (var i=0; i&lt;23; i++)
     {
         var per = depart[i]
         if(execution.getVariable('asTopHead') == per){
@@ -3385,7 +3415,7 @@ execution.setVariable('sNameDepartment', per2)</script>
     <userTask id="usertask9" name="Формування письмової відповіді (Фронт офіс)" activiti:candidateGroups="dmr_front_office">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPhone" name="Контактний телефон" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdditionalPhone" name="Додатковий телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDataToday" name="Дата подачі звернення" type="date" writable="false"></activiti:formProperty>
@@ -3486,7 +3516,8 @@ execution.setVariable('sNameDepartment', per2)</script>
           <activiti:value id="sEnumTopHead20" name="Інформаційна політика, діяльність ЗМІ"></activiti:value>
           <activiti:value id="sEnumTopHead21" name="Діяльність об'єднань громадян, релігія та міжконфесійні відносини"></activiti:value>
           <activiti:value id="sEnumTopHead22" name="Діяльність місцевого самоврядування"></activiti:value>
-          <activiti:value id="sEnumTopHead23" name="Інше"></activiti:value>
+          <activiti:value id="sEnumTopHead23" name="Питання надання адміністративних послуг"></activiti:value>
+          <activiti:value id="sEnumTopHead24" name="Інше"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asTop1" name="Підтематика. Житлове господарство" type="enum">
           <activiti:value id="sEnumTop10" name=" "></activiti:value>
@@ -3902,6 +3933,11 @@ execution.setVariable('sNameDepartment', per2)</script>
           <activiti:value id="sEnumTop228" name="Формування місцевих бюджетів"></activiti:value>
           <activiti:value id="sEnumTop229" name="Інші питання "></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="asTop23" name="Підтематика. Питання надання адміністративних послуг" type="enum">
+          <activiti:value id="sEnumTop230" name=" "></activiti:value>
+          <activiti:value id="sEnumTop231" name="Скарги на надання адміністративних послуг"></activiti:value>
+          <activiti:value id="sEnumTop232" name="Інші питання"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sAdressProbl" name="Адреса за якої виникло питання" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sReason" name="Опишіть суть звернення" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdditionalInformation" name="Додаткова інформація" type="textArea"></activiti:formProperty>
@@ -3929,7 +3965,7 @@ execution.setVariable('sNameDepartment', per2)</script>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile1},${nFileAnswer},${anID_Attach_UkrDoc}</activiti:expression>
+            <activiti:expression><![CDATA[${nFile1},${nFileAnswer},${anID_Attach_UkrDoc}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -3993,6 +4029,78 @@ execution.setVariable('sChannelApp', per1)</script>
     <sequenceFlow id="flow69" sourceRef="exclusivegateway7" targetRef="usertask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sStatusName_UkrDoc!='Исполнен'}]]></conditionExpression>
     </sequenceFlow>
+    <exclusiveGateway id="exclusivegateway8" name="Exclusive Gateway"></exclusiveGateway>
+    <serviceTask id="servicetask7" name="Повідомлення громадянину" activiti:delegateExpression="#{MailTaskWithAttachments}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення до Дніпропетровської міської ради.]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+Ваше звернення до Дніпропетровської міської ради - опрацьовано.</p>
+<p>Відповідь:<br>
+<i>${sDocument_Body_UkrDoc}</i>
+</p>
+<p>Якщо Ви бажаєте зберегти копію відповіді у письмовому вигляді, Вам необхідно роздрукувати електронний документ прикріплений до листа.</p>
+[pattern/mail/_common_signature_start.html]
+Дніпропетровська міська рада,<br />
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[${nFileAnswer}]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow70" name="asAnswerChannel=='sEnumAnsw3'" sourceRef="exclusivegateway8" targetRef="servicetask7">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asAnswerChannel=='sEnumAnsw3'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow71" name="asAnswerChannel=='sEnumAnsw1'||asAnswerChannel=='sEnumAnsw2'" sourceRef="exclusivegateway8" targetRef="usertask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asAnswerChannel=='sEnumAnsw1'||asAnswerChannel=='sEnumAnsw2'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow72" sourceRef="servicetask7" targetRef="usertask4"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway9" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow73" sourceRef="usertask8" targetRef="exclusivegateway9"></sequenceFlow>
+    <serviceTask id="servicetask8" name="Повідомлення громадянину" activiti:delegateExpression="#{MailTaskWithAttachments}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Звернення до Дніпропетровської міської ради.]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+Ваше звернення до Дніпропетровської міської ради - опрацьовано.</p>
+<p>Відповідь:<br>
+<i>${sDocument_Body_UkrDoc}</i>
+</p>
+<p>Якщо Ви бажаєте зберегти копію відповіді у письмовому вигляді, Вам необхідно роздрукувати електронний документ прикріплений до листа.</p>
+[pattern/mail/_common_signature_start.html]
+Дніпропетровська міська рада,<br />
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[${nFileAnswer}]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow74" name="asAnswerChannel=='sEnumAnsw3'" sourceRef="exclusivegateway9" targetRef="servicetask8">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asAnswerChannel=='sEnumAnsw3'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow75" sourceRef="servicetask8" targetRef="usertask4"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__test_dnepr_mvk_291_common">
     <bpmndi:BPMNPlane bpmnElement="_test_dnepr_mvk_291_common" id="BPMNPlane__test_dnepr_mvk_291_common">
@@ -4092,6 +4200,18 @@ execution.setVariable('sChannelApp', per1)</script>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway7" id="BPMNShape_exclusivegateway7">
         <omgdc:Bounds height="40.0" width="40.0" x="1217.0" y="534.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway8" id="BPMNShape_exclusivegateway8">
+        <omgdc:Bounds height="40.0" width="40.0" x="1196.0" y="136.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
+        <omgdc:Bounds height="55.0" width="105.0" x="1053.0" y="61.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway9" id="BPMNShape_exclusivegateway9">
+        <omgdc:Bounds height="40.0" width="40.0" x="1400.0" y="420.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
+        <omgdc:Bounds height="55.0" width="105.0" x="1480.0" y="413.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="75.0" y="160.0"></omgdi:waypoint>
         <omgdi:waypoint x="120.0" y="160.0"></omgdi:waypoint>
@@ -4178,9 +4298,9 @@ execution.setVariable('sChannelApp', per1)</script>
       <bpmndi:BPMNEdge bpmnElement="flow37" id="BPMNEdge_flow37">
         <omgdi:waypoint x="1366.0" y="245.0"></omgdi:waypoint>
         <omgdi:waypoint x="1365.0" y="157.0"></omgdi:waypoint>
-        <omgdi:waypoint x="804.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1236.0" y="156.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="1081.0" y="137.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="1279.0" y="139.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
@@ -4208,11 +4328,13 @@ execution.setVariable('sChannelApp', per1)</script>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">
-        <omgdi:waypoint x="1011.0" y="440.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1424.0" y="440.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1424.0" y="102.0"></omgdi:waypoint>
-        <omgdi:waypoint x="887.0" y="102.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1420.0" y="420.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1419.0" y="21.0"></omgdi:waypoint>
+        <omgdi:waypoint x="856.0" y="21.0"></omgdi:waypoint>
         <omgdi:waypoint x="751.0" y="121.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="70.0" width="100.0" x="1401.0" y="193.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
         <omgdi:waypoint x="439.0" y="676.0"></omgdi:waypoint>
@@ -4317,6 +4439,43 @@ execution.setVariable('sChannelApp', per1)</script>
         <omgdi:waypoint x="1237.0" y="464.0"></omgdi:waypoint>
         <omgdi:waypoint x="1118.0" y="464.0"></omgdi:waypoint>
         <omgdi:waypoint x="1119.0" y="507.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow70" id="BPMNEdge_flow70">
+        <omgdi:waypoint x="1216.0" y="136.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1214.0" y="88.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1158.0" y="88.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="1189.0" y="69.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow71" id="BPMNEdge_flow71">
+        <omgdi:waypoint x="1196.0" y="156.0"></omgdi:waypoint>
+        <omgdi:waypoint x="804.0" y="157.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="70.0" width="100.0" x="910.0" y="122.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow72" id="BPMNEdge_flow72">
+        <omgdi:waypoint x="1053.0" y="88.0"></omgdi:waypoint>
+        <omgdi:waypoint x="847.0" y="88.0"></omgdi:waypoint>
+        <omgdi:waypoint x="751.0" y="121.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow73" id="BPMNEdge_flow73">
+        <omgdi:waypoint x="1011.0" y="440.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1400.0" y="440.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow74" id="BPMNEdge_flow74">
+        <omgdi:waypoint x="1440.0" y="440.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1480.0" y="440.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="1409.0" y="457.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow75" id="BPMNEdge_flow75">
+        <omgdi:waypoint x="1532.0" y="413.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1532.0" y="9.0"></omgdi:waypoint>
+        <omgdi:waypoint x="813.0" y="9.0"></omgdi:waypoint>
+        <omgdi:waypoint x="751.0" y="121.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
