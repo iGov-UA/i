@@ -408,6 +408,7 @@ public class ActionTaskService {
         HistoricProcessInstance processInstance = oHistoryService.createHistoricProcessInstanceQuery().processInstanceId(nID_Process).singleResult();
         FormData formData = oFormService.getStartFormData(processInstance.getProcessDefinitionId());
         List<String> asID_Field = AbstractModelTask.getListField_QueueDataFormType(formData);
+        LOG.info("asID_Field: " + asID_Field);
         List<String> queueDataList = AbstractModelTask.getVariableValues(oRuntimeService, nID_Process, asID_Field);
         LOG.info("queueDataList: " + queueDataList);
         if (queueDataList.isEmpty()) {
