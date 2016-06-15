@@ -319,8 +319,12 @@ console.log($scope)
   $scope.openLetter = function(nID) {
     MessagesService.getSubjectMessageData(nID).then(function (res) {
       var windowWithLetter = window.open("","letter", "width=800,height=500,left=350,top=200");
-      windowWithLetter.document.open();
-      windowWithLetter.document.write(res.data)
+      try{
+        windowWithLetter.document.open();
+        windowWithLetter.document.write(res.data)
+      } catch (e) {
+        ErrorsFactory.push({type:"warning", text: "На жаль, Ваш браузер заблокував спливаюче вікно з вмістом електронного листа. Будь ласка, ввімкніть відображення спливаючих вікон на порталі iGov в налаштуваннях браузера і спробуйте переглянути лист ще раз."});
+      }
     })
   };
 
