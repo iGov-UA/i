@@ -21,21 +21,13 @@ exports.setBP = function(req, res){
 exports.getBP = function(req, res){
   var options = {
     path: 'action/task/getBP',
+    contentType: "application/xml",
     query: {
-      sID: req.query.sID
+      sID: req.params.sID
     }
   };
 
-  /*
-  activiti.get(options, function (error, statusCode, result) {
-    if (error) {
-      res.send(error);
-    } else {
-      res.status(statusCode).json(result);
-    }
-  });
-  */
-  activiti.filedownload(req, res, options);
+  activiti.typedfiledownload(req, res, options);
 };
 
 exports.getListBP = function(req, res){
