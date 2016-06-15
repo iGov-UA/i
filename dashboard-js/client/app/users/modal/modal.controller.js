@@ -4,7 +4,7 @@
 'use strict';
 
 angular.module('dashboardJsApp')
-  .controller('UserModalController', function ($scope, $modalInstance, userToEdit) {
+  .controller('UserModalController', function ($scope, $modalInstance, userToEdit, userGroups, allGroups) {
 
     var parser = function () {
       return {
@@ -45,10 +45,10 @@ angular.module('dashboardJsApp')
 
     $scope.save = function () {
       var dataToSave = {
-        userToSave: $scope.data.user
+        userToSave: $scope.data.user,
+        groupsToAdd: $scope.data.groupsToAdd,
+        groupsToRemove: $scope.data.groupsToRemove
       };
-
-      console.log('!!!!!!!!!!!!!  modal save  ', dataToSave.userToSave);
 
       $modalInstance.close(dataToSave);
     };
@@ -66,7 +66,7 @@ angular.module('dashboardJsApp')
     };
 
     //  Init
-    $scope.data = {user: parser.parse(userToEdit), groupsList: []};
+    $scope.data = {user: parser.parse(userToEdit), groupsList: userGroups, allGroupsList: allGroups,  groupsToAdd: [], groupsToRemove: []};
     $scope.getGroups = {};
 
   });

@@ -3,25 +3,42 @@
  */
 angular.module('dashboardJsApp')
   .directive('userList', function () {
-    var controller = function ($scope, $modal) {
+    var controller = function ($scope, $modal, $q) {
       var inProgress = false;
       var users = [];
+      var groupsToUser = [];
+      var groups = [];
       var getFunc = $scope.funcs.getFunc;
+      var getGrFunc = $scope.funcs.getGrFunc;
       var setFunc = $scope.funcs.setFunc;
       var deleteFunc = $scope.funcs.deleteFunc;
+      var addToGroupFunc = $scope.funcs.addFunc;
+      var removeFromGroup = $scope.funcs.removeFunc;
+
+      $scope.model = { inProgress: false };
+
 
       var fillData = function () {
         inProgress = true;
-        getFunc()
-          .then(function (list) {
-            users = list;
-          })
-          .finally(function () {
+        $scope.model.inProgress = true;
+
+        $q.all([
+            getFunc()
+              .then(function (data) {
+                users = data;
+              }),
+            getGrFunc().then(function (data) {
+              groups = data;
+            })
+          ])
+          .then(function () {
             inProgress = false;
+            $scope.model.inProgress = false;
           });
+
       };
 
-      var openModal = function (user) {
+      var openModal = function (user, groups, allGroups) {
         var modalInstance = $modal.open({
           animation: true,
           templateUrl: 'app/users/modal/modal.html',
@@ -29,6 +46,12 @@ angular.module('dashboardJsApp')
           resolve: {
             userToEdit: function () {
               return angular.copy(user);
+            },
+            userGroups: function(){
+              return angular.copy(groups);
+            },
+            allGroups: function(){
+              return angular.copy(allGroups);
             }
           },
           size: 'lg'
@@ -52,15 +75,33 @@ angular.module('dashboardJsApp')
               Email: createdUser.sEmail || users[i].Email,
             };
 
+            //AddUserTo Group
+            if(editedData.groupsToAdd.length){
+              for(var i = 0; i<editedData.groupsToAdd.length; i++){
+                addToGroupFunc(editedData.groupsToAdd[i].id, userToAdd.sLogin).then(
+                  function(addedUser){
+
+                  }, function (err) {console.log('Add User To group Error');}
+                );
+              }
+            }
+
+            if(editedData.groupsToRemove.length){
+              for(var i = 0; i<editedData.groupsToRemove.length; i++){
+                removeFromGroup(editedData.groupsToRemove[i].id, userToAdd.sLogin).then(
+                  function(removedUser){
+
+                  }, function (err) {console.log('Remove User From group Error');}
+                );
+              }
+            }
+
             for (var i = 0; i < users.length; i++) {
               if (users[i].sLogin === userToAdd.sLogin) {
                 users[i] = userToAdd;
                 return;
               }
             }
-            console.log('!!!!!  userToAdd', userToAdd);
-            console.log(users[20]);
-
             userToAdd ? users.unshift(userToAdd) : null;
 
           }, function (err) {
@@ -80,7 +121,13 @@ angular.module('dashboardJsApp')
       $scope.edit = function (user) {
         user.sName = user.sName || user.FirstName;
         user.sDescription = user.sDescription || user.LastName;
-        openModal(user);
+
+        getGrFunc(user.sLogin).then(function (data) {
+          groupsToUser = data;
+        }).finally(function(){
+          openModal(user, groupsToUser, groups);
+        });
+
       };
 
       $scope.delete = function (user) {
