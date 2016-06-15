@@ -25,11 +25,11 @@ angular.module('app').service('MessagesService', function($http, $q) {
   };
 
   this.getSubjectMessageData = function (nID) {
-          return $http.get('./api/messages/getSubjectMessageData', {
-              params : {
-                nID : nID
-              }
-          })
+    return $http.get('./api/messages/getSubjectMessageData', {
+      params : {
+        nID : nID
+      }
+    })
   };
 
   this.postServiceMessage = function(sID_Order,sComment,sToken,file) {
