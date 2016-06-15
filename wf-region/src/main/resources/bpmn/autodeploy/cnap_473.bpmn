@@ -55,12 +55,13 @@
           <activiti:expression>msvidran@gmail.com</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове звернення. Видача листа-довідки на перевезення (перезахоронення) трупу, у тому числі в он-лайн сервісі.]]></activiti:string>
+          <activiti:string><![CDATA[Нове звернення. Видача листа-довідки на перевезення (перезахоронення) померлого (загиблого), у тому числі в он-лайн сервісі.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+              [pattern/mail/_common_header.html]
 &lt;strong&gt;Шановний(-а) колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-У Вас в черзі на обробку нове звернення щодо видачи листа-довідки на перевезення (перезахоронення) трупу.&lt;br /&gt;
+У Вас в черзі на обробку нове звернення щодо видачи листа-довідки на перевезення (перезахоронення) померлого (загиблого).&lt;br /&gt;
 Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
 Номер звернення: [sID_Order]&lt;br /&gt;
 Відпрацюйте це звернення на &lt;a href="https://region.igov.org.ua" target="_blank"&gt;порталі&lt;/a&gt;
@@ -69,7 +70,7 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask3" name="Повідомлення громадянину" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask3" name="Повідомлення громадянину" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -78,12 +79,13 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Видача листа-довідки на перевезення (перезахоронення) трупу, у тому числі в он-лайн сервісі.]]></activiti:string>
+          <activiti:string><![CDATA[Видача листа-довідки на перевезення (перезахоронення) померлого, у тому числі в он-лайн сервісі.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+              [pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;Ваше звернення щодо видачи листа-довідки на перевезення (перезахоронення) трупу зареєстровано у системі.&lt;br/&gt;
+&lt;p&gt;Ваше звернення щодо видачи листа-довідки на перевезення (перезахоронення) померлого (загиблого) зареєстровано у системі.&lt;br/&gt;
 Повідомлення про результат послуги буде спрямоване на Ваш e-mail.&lt;/p&gt;
 &lt;br /&gt;
 ${sPhoneOrgan}.&lt;br /&gt;
@@ -91,6 +93,15 @@ ${sPhoneOrgan}.&lt;br /&gt;
 ${sNameOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -149,7 +160,7 @@ ${sNameOrgan}.&lt;br /&gt;
     <sequenceFlow id="flow5" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
-    <serviceTask id="servicetask4" name="Повідомлення про відмову" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask4" name="Повідомлення про відмову" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -158,12 +169,13 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Видача листа-довідки на перевезення (перезахоронення) трупу, у тому числі в он-лайн сервісі.]]></activiti:string>
+          <activiti:string><![CDATA[Видача листа-довідки на перевезення (перезахоронення) померлого (загиблого), у тому числі в он-лайн сервісі.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+              [pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-На жаль, Ваше звернення щодо видачи листа-довідки на перевезення (перезахоронення) трупу - відхилине.&lt;/p&gt;
+На жаль, Ваше звернення щодо видачи листа-довідки на перевезення (перезахоронення) померлого (загиблого) - відхилине.&lt;/p&gt;
 &lt;p&gt;Причина в наступному:&lt;/p&gt;
 &lt;p&gt;${comment}&lt;/p&gt;
 &lt;p&gt;Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="#current-page"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
@@ -174,12 +186,21 @@ ${sNameOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] vidhileno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow7" name="decide=='reject'" sourceRef="exclusivegateway1" targetRef="servicetask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='reject'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask5" name="Повідомлення про реєстрацію" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask5" name="Повідомлення про реєстрацію" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -188,12 +209,13 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Видача листа-довідки на перевезення (перезахоронення) трупу, у тому числі в он-лайн сервісі.]]></activiti:string>
+          <activiti:string><![CDATA[Видача листа-довідки на перевезення (перезахоронення) померлого (загиблого), у тому числі в он-лайн сервісі.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+              [pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення щодо видачи листа-довідки на перевезення (перезахоронення) трупу - відправлене в головне управління Держсанепідслужби.&lt;br /&gt;
+Ваше звернення щодо видачи листа-довідки на перевезення (перезахоронення) померлого (загиблого) - відправлене в головне управління Держсанепідслужби.&lt;br /&gt;
 Спеціалісти з головного управління Держсанепідслужби повинні дати відповідь протягом 3-х календарних днів з дня реєстрації заяви.&lt;br /&gt; 
 &lt;p&gt;Номер Вашого замовлення: ${sExtensionNumber}&lt;/p&gt;&lt;br /&gt; 
 ${sPhoneOrgan}.&lt;br /&gt;
@@ -201,6 +223,15 @@ ${sPhoneOrgan}.&lt;br /&gt;
 ${sNameOrgan}.&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] naprvleno do vidpovidnoho viddilu. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -244,7 +275,7 @@ ${sNameOrgan}.&lt;br /&gt;
     <sequenceFlow id="flow10" sourceRef="servicetask5" targetRef="usertask2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow11" sourceRef="usertask2" targetRef="exclusivegateway2"></sequenceFlow>
-    <serviceTask id="servicetask6" name="Повідомлення про готовнисть рішення" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask6" name="Повідомлення про готовнисть рішення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -253,13 +284,14 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Видача листа-довідки на перевезення (перезахоронення) трупу, у тому числі в он-лайн сервісі.]]></activiti:string>
+          <activiti:string><![CDATA[Видача листа-довідки на перевезення (перезахоронення) померлого (загиблого), у тому числі в он-лайн сервісі.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+              [pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 &lt;p&gt;
-Ваше звернення щодо видачи листа-довідки на перевезення (перезахоронення) трупу - опрацьовано. &lt;br /&gt;
+Ваше звернення щодо видачи листа-довідки на перевезення (перезахоронення) померлого (загиблого) - опрацьовано. &lt;br /&gt;
 Ви або уповноважена Вами особа (при наявності довіреності) можете отримати лист-довідку особисто під підпис у ЦНАП.&lt;br/&gt; 
 При собі треба мати:&lt;br/&gt; 
 1. Документ, що посвідчує особу.&lt;br/&gt; 
@@ -278,9 +310,15 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>"${nReference}"</activiti:expression>
         </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+        </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask7" name="Повідомлення про негативне рішення" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask7" name="Повідомлення про негативне рішення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -289,13 +327,14 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Видача листа-довідки на перевезення (перезахоронення) трупу, у тому числі в он-лайн сервісі.]]></activiti:string>
+          <activiti:string><![CDATA[Видача листа-довідки на перевезення (перезахоронення) померлого (загиблого), у тому числі в он-лайн сервісі.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[sID_Order]&lt;br&gt;
+              [pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 &lt;p&gt;
-На жаль, Ваше звернення щодо видачи листа-довідки на перевезення (перезахоронення) трупу - відхилено.&lt;br /&gt;
+На жаль, Ваше звернення щодо видачи листа-довідки на перевезення (перезахоронення) померлого (загиблого) - відхилено.&lt;br /&gt;
 Вам надіслано в прикріпленому файлі рішення з вказаною причиною. &lt;br /&gt;
 &lt;/p&gt;
 &lt;br /&gt;
@@ -307,6 +346,12 @@ ${sNameOrgan}.&lt;br /&gt;
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>"${nReference}"</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
