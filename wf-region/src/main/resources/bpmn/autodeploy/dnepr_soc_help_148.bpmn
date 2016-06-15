@@ -118,11 +118,10 @@
           <activiti:string><![CDATA[Звернення на тему: Призначення одноразової винагороди жінкам, яким присвоєно почесне звання України "Мати-героїня"]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[sID_Order]<br>
-			[pattern/mail/_common_header.html]
-			<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br>
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<br>
-			Ви отримали схвалення щодо свого звернення - призначення одноразової винагороди жінкам, яким присвоєно почесне звання України "Мати-героїня".<br>
+			Ви отримали схвалення щодо свого звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> - призначення одноразової винагороди жінкам, яким присвоєно почесне звання України "Мати-героїня".<br>
 			<br>
 			${sAddress}<br>
 			${sWorkTime}<br>
@@ -163,15 +162,9 @@
           <activiti:string><![CDATA[Нове  звернення. Призначення одноразової винагороди жінкам, яким присвоєно почесне звання України "Мати-героїня"]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[sID_Order]<br>
-			[pattern/mail/_common_header.html]
-			<b>Шановний колего!</b><br /><br />
-			У черзі на обробку зареєстровано нове звернення.<br />
-			Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}<br />
-			Опрацюйте це звернення на <a href="http://region.igov.org.ua">порталі</a><br />
-			[pattern/mail/_common_signature.html]
-			[pattern/mail/_common_footer.html]]]>
-		  </activiti:expression>
+          <activiti:expression><![CDATA[
+          	Звернення № [sID_Order]<br>
+          	[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -188,11 +181,11 @@
           <activiti:string><![CDATA[Звернення на тему: Призначення одноразової винагороди жінкам, яким присвоєно почесне звання України "Мати-героїня"]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[sID_Order]<br>
-			[pattern/mail/_common_header.html]
-			<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br>
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<br>
 			<p>			
+				Ваше звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> було оброблене<br>
 				На жаль, Вам відмовлено у призначенні одноразової винагороди жінкам, яким присвоєно почесне звання України "Мати-героїня".<br> 
 			</p>
 			<p>
