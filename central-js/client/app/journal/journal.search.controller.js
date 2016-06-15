@@ -318,10 +318,10 @@ console.log($scope)
 
   $scope.openLetter = function(nID) {
     MessagesService.getSubjectMessageData(nID).then(function (res) {
-        window.open(
-          res,
-          "Лист", "width=800,height=500,left=350,top=200")
-    })
+      window.open(
+        res,
+        "Лист", "width=800,height=500,left=350,top=200")
+      })
   };
 
 });
