@@ -57,7 +57,7 @@
     <p class="text-center control-label">Інформація для відображення відсутня. Будь ласка, змініть налаштування фільтру</p>
   </div>
   <div ng-if="get().length > 0">
-    <table st-table="displayedCollection" st-safe-src="get()" class="table table-striped">
+    <table st-table="get()" class="table table-striped">
       <thead>
       <tr>
         <th class="col-md-3 col-xs-3 text-center" st-sort="key" style="cursor:pointer">Код</th>
@@ -71,19 +71,17 @@
       </tr>
       </thead>
       <tbody>
-      <tr ng-repeat="row in displayedCollection | orderBy:'id'">
-        <td class="col-md-3 col-xs-3" style="word-break: break-all">{{row.key}}</td>
-        <td class="col-md-1 col-xs-1 text-center">{{row.version}}</td>
-        <td class="col-md-1 col-xs-1 text-center">{{row.deploymentId}}</td>
-        <td class="col-md-5 col-xs-5">{{row.name}}</td>
+      <tr ng-repeat="oBP in get() | orderBy:'id'">
+        <td class="col-md-3 col-xs-3" style="word-break: break-all">{{oBP.key}}</td>
+        <td class="col-md-1 col-xs-1 text-center">{{oBP.version}}</td>
+        <td class="col-md-1 col-xs-1 text-center">{{oBP.deploymentId}}</td>
+        <td class="col-md-5 col-xs-5">{{oBP.name}}</td>
         <td class="col-md-2 col-xs-2 rulebuttons">
           <div class="btn-group">
-            <button type="button" class="btn btn-success" ng-click="downloadItem(row)" tooltip="Завантажити"
-                    tooltip-trigger="mouseenter" tooltip-placement="top"
-                    tooltip-append-to-body="true">
-              <i class="glyphicon glyphicon-download-alt"></i>
-            </button>
-            <button type="button" class="btn btn-danger" ng-click="removeItem(row)" tooltip="Видалити"
+            <a href="/api/deploy/getBP/{{oBP.id}}" class="btn btn-success" tooltip="Завантажити"
+               tooltip-trigger="mouseenter" tooltip-placement="top" tooltip-append-to-body="true"
+               target="_blank"><i class="glyphicon glyphicon-download-alt"></i></a>
+            <button type="button" class="btn btn-danger" ng-click="removeItem(oBP)" tooltip="Видалити"
                     tooltip-trigger="mouseenter" tooltip-placement="top"
                     tooltip-append-to-body="true">
               <i class="fa fa-trash-o"></i>

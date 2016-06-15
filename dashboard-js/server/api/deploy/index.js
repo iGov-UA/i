@@ -9,7 +9,7 @@ var controller = require('./deploy.controller');
 var router = express.Router();
 
 router.post('/setBP/:sFileName', controller.setBP);
-router.get('/getBP', controller.getBP);
+router.get('/getBP/:sID', controller.getBP);
 router.get('/getListBP', controller.getListBP);
 router.delete('/removeListBP', controller.removeListBP);
 
