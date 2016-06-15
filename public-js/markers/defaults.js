@@ -99,7 +99,7 @@ angular.module('iGovMarkers')
         sMessage: 'Недопустимий формат файлу! Повинно бути: {saExtension}!'
       }
       ,FieldNotEmptyAndNonZero: {
-        aField_ID: ['sFieldNotEmptyAndNonZero']
+        aField_ID: ['sFieldNotEmptyAndNonZero', 'sID_Public_SubjectOrganJoin']
       }
     },
     attributes: {
