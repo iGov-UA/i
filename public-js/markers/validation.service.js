@@ -75,6 +75,7 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
     }
 
     angular.forEach(markers.validate, function (marker, markerName) {
+      /*
       var isOrganJoinInclude = false;
       var isOrganNoInclude = true;
       for(var nFieldID = 0; nFieldID < marker.aField_ID.length; nFieldID++){
@@ -91,7 +92,7 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
           marker.original = self.oFormDataParams.sID_Public_SubjectOrganJoin;
         }
       }
-
+*/
       angular.forEach(form, function (formField) {
 
         self.setValidatorByMarker(marker, markerName, formField, immediateValidation);
@@ -105,9 +106,9 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
     if (markerName.indexOf('FileExtensions_') == 0) {
       markerName = 'FileExtensions';
     }
-    if (markerName.indexOf('FieldNotEmptyAndNonZero_') == 0) {
+    /*if (markerName.indexOf('FieldNotEmptyAndNonZero_') == 0) {
       markerName = 'FieldNotEmptyAndNonZero';
-    }
+    }*/
 
     var keyByMarkerName = self.validatorNameByMarkerName[markerName];
     var fieldNameIsListedInMarker = formField && formField.$name && _.indexOf(marker.aField_ID, formField.$name) !== -1;
@@ -755,24 +756,24 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
     /**
      Логика: Не ипустота и не ноль
      */
-    'FieldNotEmptyAndNonZero': function (modelValue, viewValue, options) {
+    'FieldNotEmptyAndNonZero': function (modelValue) {
       var sValue = modelValue;
-      if(options.original){
-        sValue = this.oFormDataParams.sID_Public_SubjectOrganJoin.value;
+      var oSubjectOrganJoin = this.oFormDataParams.sID_Public_SubjectOrganJoin;
+
+      // if(options.original){
+      sValue = oSubjectOrganJoin.value;
+
+      if(modelValue == null || modelValue == "" && !oSubjectOrganJoin.required){
+        return true
       }
-      //debugger;
-      //console.log("[FieldNotEmptyAndNonZero]sValue=" + sValue);
       if (!sValue) {
         return false;
       }
 
       var bValid = true;
       bValid = bValid && (sValue !== null);
-      //console.log("[FieldNotEmptyAndNonZero](1)bValid=" + bValid);
       bValid = bValid && (sValue!==null && sValue.trim() !== "");
-      //console.log("[FieldNotEmptyAndNonZero](2)bValid=" + bValid);
       bValid = bValid && (sValue!==null && sValue.trim() !== "0");
-      //console.log("[FieldNotEmptyAndNonZero](3)bValid=" + bValid);
       return bValid;
     }
     

@@ -8,19 +8,15 @@
     .module('dashboardJsApp')
     .controller('DeployCtrl', deployCtrl);
 
-  deployCtrl.$inject = ['$scope', '$log', 'deployService'];
-  function deployCtrl($scope, LOG, oDeployService){
+  deployCtrl.$inject = ['$scope', 'deployService'];
+  function deployCtrl($scope, oDeployService){
 
-    $scope.aListBPs = null;
-
-    $scope.loadListBP = function(){
-      LOG.info("Start load list");
-      oDeployService.getListBP().then(function(data){
-        LOG.info("End load list");
-        $scope.aListBPs = JSON.parse(data);
-        LOG.info("End parse list");
-      });
-    }
+    $scope.DeployFunctions = {
+      setBP: oDeployService.setBP,
+      getBP: oDeployService.getBP,
+      getListBP: oDeployService.getListBP,
+      removeListBP: oDeployService.removeListBP
+    };
 
   }
 })();

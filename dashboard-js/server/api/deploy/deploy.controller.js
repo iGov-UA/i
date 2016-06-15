@@ -6,31 +6,79 @@
 var activiti = require('../../components/activiti');
 
 exports.setBP = function(req, res){
-//todo добавление файла БП
+  var options = {
+    url: activiti.getRequestURL({
+      path: 'action/task/setBP',
+      query: {
+        sFileName: req.params.sFileName
+      }
+    })
+  };
+
+  activiti.fileupload(req, res, options);
 };
 
 exports.getBP = function(req, res){
-//todo загрузка файла БП
+  var options = {
+    path: 'action/task/getBP',
+    contentType: "application/xml",
+    query: {
+      sID: req.params.sID
+    }
+  };
+
+  activiti.typedfiledownload(req, res, options);
 };
 
 exports.getListBP = function(req, res){
   var options = {
     path: 'action/task/getListBP',
-    query: req.query,
-    json: true
+    query: {}
   };
 
-  activiti.get(options, function (error, statusCode, body) {
-    if (error) {
-      error = errors.createError(errors.codes.EXTERNAL_SERVICE_ERROR, 'Error while loading task data', error);
-      res.status(500).send(error);
-      return;
-    }
+  if(typeof req.query.sID_BP !== 'undefined' && req.query.sID_BP !== null && req.query.sID_BP !== ''){
+    options.query.sID_BP = req.query.sID_BP;
+  }
+  if(typeof req.query.sFieldType !== 'undefined' && req.query.sFieldType !== null && req.query.sFieldType !== ''){
+    options.query.sFieldType = req.query.sFieldType;
+  }
+  if(typeof req.query.sID_Field !== 'undefined' && req.query.sID_Field !== null && req.query.sID_Field !== ''){
+    options.query.sID_Field = req.query.sID_Field;
+  }
 
-    res.status(200).send(body);
+  activiti.get(options, function (error, statusCode, result) {
+    if (error) {
+      res.send(error);
+    } else {
+      res.status(statusCode).json(result);
+    }
   });
 };
 
 exports.removeListBP = function(req, res){
-//todo удаление списка БП
+  var options = {
+    path: 'action/task/removeListBP',
+    query: {}
+  };
+
+  if(typeof req.query.sID_BP !== 'undefined' && req.query.sID_BP !== null && req.query.sID_BP !== ''){
+    options.query.sID_BP = req.query.sID_BP;
+  }
+  if(typeof req.query.sFieldType !== 'undefined' && req.query.sFieldType !== null && req.query.sFieldType !== ''){
+    options.query.sFieldType = req.query.sFieldType;
+  }
+  if(typeof req.query.sID_Field !== 'undefined' && req.query.sID_Field !== null && req.query.sID_Field !== ''){
+    options.query.sID_Field = req.query.sID_Field;
+  }
+  if(typeof req.query.sVersion !== 'undefined' && req.query.sVersion !== null && req.query.sVersion !== ''){
+    options.query.sVersion = req.query.sVersion;
+  }
+
+  activiti.get(options, function (error, statusCode, result) {
+    if (error) {
+      res.send(error);
+    } else {
+      res.status(statusCode).json(result);
+    }
+  });
 };
