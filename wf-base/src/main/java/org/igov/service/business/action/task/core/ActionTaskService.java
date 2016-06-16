@@ -1082,35 +1082,43 @@ public class ActionTaskService {
 
     }
 
-    public void fillTheCSVMap(String sID_BP, Date dateAt, Date dateTo, List<Task> foundResults, SimpleDateFormat sDateCreateDF, List<Map<String, Object>> csvLines, String pattern, String saFieldsCalc, String[] headers) {
-        if (CollectionUtils.isEmpty(foundResults)) {
+    public void fillTheCSVMap(String sID_BP, Date dateAt, Date dateTo, List<Task> aTaskFound, SimpleDateFormat sDateCreateDF, List<Map<String, Object>> csvLines, String pattern, String saFieldsCalc, String[] asHeader) {
+        if (CollectionUtils.isEmpty(aTaskFound)) {
             LOG.info(String.format("No tasks found for business process %s for date period %s - %s", sID_BP, DATE_TIME_FORMAT.format(dateAt), DATE_TIME_FORMAT.format(dateTo)));
             return;
         }
-        LOG.info(String.format("Found %s tasks for business process %s for date period %s - %s", foundResults.size(), sID_BP, DATE_TIME_FORMAT.format(dateAt), DATE_TIME_FORMAT.format(dateTo)));
+        LOG.info(String.format("Found %s tasks for business process %s for date period %s - %s", aTaskFound.size(), sID_BP, DATE_TIME_FORMAT.format(dateAt), DATE_TIME_FORMAT.format(dateTo)));
         if (pattern != null) {
             LOG.info("List of fields to retrieve: }{", pattern);
         } else {
             LOG.info("Will retreive all fields from tasks");
         }
-        for (Task curTask : foundResults) {
-            String currentRow = pattern;
-            LOG.trace("Process task - {}", curTask);
-            TaskFormData data = oFormService.getTaskFormData(curTask.getId());
-            currentRow = replaceFormProperties(currentRow, data);
+        for (Task oTask : aTaskFound) {
+            String sRow = pattern;
+            LOG.trace("Process task - {}", oTask);
+            TaskFormData oTaskFormData = oFormService.getTaskFormData(oTask.getId());
+            sRow = replaceFormProperties(sRow, oTaskFormData);
             if (saFieldsCalc != null) {
-                currentRow = addCalculatedFields(saFieldsCalc, curTask, currentRow);
+                sRow = addCalculatedFields(saFieldsCalc, oTask, sRow);
             }
             if (pattern != null) {
-                currentRow = replaceReportFields(sDateCreateDF, curTask, currentRow);
-                currentRow = currentRow.replaceAll("\\$\\{.*?\\}", "");
+                sRow = replaceReportFields(sDateCreateDF, oTask, sRow);
+                sRow = sRow.replaceAll("\\$\\{.*?\\}", "");
             }
-            String[] values = currentRow.split(";");
-            Map<String, Object> currRow = new HashMap<>();
-            for (int i = 0; i < values.length; i++) {
-                currRow.put(headers[i], values[i]);
+            String[] asField = sRow.split(";");
+            Map<String, Object> mCell = new HashMap<>();
+            for (int i = 0; i < asField.length; i++) {
+                try{
+                    String sName = "Column_"+i;
+                    if(asHeader.length>i){
+                        sName = asHeader[i];
+                    }
+                    mCell.put(sName, asField[i]);
+                }catch(Exception oException){
+                    LOG.warn("oException.getMessage()={} (i={},mCell={},asHeader={},asField={})", oException.getMessage(),i,mCell, asHeader, asField);
+                }
             }
-            csvLines.add(currRow);
+            csvLines.add(mCell);
         }
     }
 
