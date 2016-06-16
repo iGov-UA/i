@@ -13,7 +13,7 @@
         <activiti:formProperty id="how_of_lost" name="Обставини викрадення паспорта; Опишіть стисло за яких обставин у Вас викрали паспорт" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="Date_of_birth" name="Дата народження; Формат - ДД.ММ.PPPP" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="Areabirth" name="Місце народження; Країна, область, район і населений пункт (так як записано у свідоцтві про народження)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть підрозділ ДМС або ЦНАП району (міста), до якого належить Ваше місце реєстрації" type="select" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть підрозділ ДМС або ЦНАП району (міста), до якого належить Ваше місце реєстрації" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="RegistrationAddress" name="Місце реєстрації;Область, Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="Sex" name="Стать" type="enum" required="true">
           <activiti:value id="man" name="Чоловіча"></activiti:value>
@@ -97,15 +97,15 @@ execution.setVariable('Registrationservice', per4)
           <activiti:string><![CDATA[Нове звернення на тему: Видача паспорта громадянина України замість викраденого]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow5" sourceRef="servicetask4" targetRef="servicetask3"></sequenceFlow>
-    <serviceTask id="servicetask3" name="E-Mail підтвердження отримання запиту" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask3" name="E-Mail підтвердження отримання запиту" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -114,19 +114,28 @@ execution.setVariable('Registrationservice', per4)
           <activiti:string><![CDATA[Звернення на тему: Видача паспорта громадянина України замість викраденого]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-										Ваш запит був успішно зареєстрований у нашій системі. 
-								    &lt;/p&gt;
-									&lt;p&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+                                    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+                                    <p>
+										Ваш запит був успішно зареєстрований у нашій системі [sID_Order]. 
+								    </p>
+									<p>
 										Спеціалісти ${sOrganType} оброблять Вашу заявку протягом 1-3 днів та надішлють Вам email з підтвердженням та запрошенням прийти до ${sOrganType} у обраний час. 
-									&lt;/p&gt;
-                                    &lt;p&gt;[cancelTask]&lt;/p&gt;
+									</p>
+                                    <p>[cancelTask]</p>
                                     [pattern/mail/_common_signature_start.html]
-									${sNameOrgan},&lt;br&gt;
+									${sNameOrgan},<br>
 									[pattern/mail/_common_signature_end.html]   
-									[pattern/mail/_common_footer.html]</activiti:expression>
+									[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -168,7 +177,7 @@ execution.setVariable('Registrationservice', per4)
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${svid1},${doksmen},${police}</activiti:expression>
+            <activiti:expression><![CDATA[${bankId_scan_passport},${svid1},${doksmen},${police}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -178,10 +187,10 @@ execution.setVariable('Registrationservice', per4)
     <sequenceFlow id="flow7" name="${workerDecision=='decline'}" sourceRef="exclusivegateway1" targetRef="servicetask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${workerDecision=='decline'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask5" name="E-Mail відмова в наданні послуги" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask5" name="E-Mail відмова в наданні послуги" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -190,23 +199,32 @@ execution.setVariable('Registrationservice', per4)
           <activiti:string><![CDATA[Звернення на тему: Видача паспорта громадянина України замість викраденого]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-										На жаль, Вам відмовлено у надані послуги.&lt;br&gt;
-                                        При необхідності видачі паспорта громадянина України замість викраденого Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;
-									&lt;/p&gt;
-									&lt;p&gt;
-										Коментар Державного службовця:&lt;br /&gt;
-											&lt;b&gt;&lt;i&gt;${decisionComment}&lt;/i&gt;&lt;/b&gt;
-									&lt;/p&gt;
-									&lt;p&gt;
-										При вниникненні питань Ви можете звернутися до чергового:&lt;br&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+                                    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+                                    <p>
+										На жаль, Вам відмовлено у надані послуги.<br>
+                                        При необхідності видачі паспорта громадянина України замість викраденого Ви можете подати ще одну заявку на порталі <a href="https://igov.org.ua/">iGov.org.ua</a>
+									</p>
+									<p>
+										Коментар Державного службовця:<br />
+											<b><i>${decisionComment}</i></b>
+									</p>
+									<p>
+										При вниникненні питань Ви можете звернутися до чергового:<br>
 										тел. ${sAddress}
-									&lt;/p&gt;
+									</p>
 									[pattern/mail/_common_signature_start.html]
-                                        ${sNameOrgan}.&lt;/p&gt;
-                                    [pattern/mail/_common_footer.html]</activiti:expression>
+                                        ${sNameOrgan}.</p>
+                                    [pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] vidhileno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -217,10 +235,10 @@ execution.setVariable('Registrationservice', per4)
     <sequenceFlow id="flow10" name="${workerDecision=='accept'}" sourceRef="exclusivegateway1" targetRef="servicetask6">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${workerDecision=='accept'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask6" name="E-Mail призначення візиту" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask6" name="E-Mail призначення візиту" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -229,47 +247,56 @@ execution.setVariable('Registrationservice', per4)
           <activiti:string><![CDATA[Звернення на тему: Видача паспорта громадянина України замість викраденого]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-                                        Спеціалісти ${sOrganType} успішно опрацювли Вашу заяву.&lt;br&gt;
-										Для того щоб закінчити процедуру подачі заяви про видачу паспорта громадянина України замість викраденого необхідно:&lt;br&gt;
-										&lt;ul&gt;
-										&lt;li&gt;У будь-якому банку сплатити Державне мито у розмірі 34 грн і отримати квитанцію про сплату.&lt;/li&gt;
-										&lt;li&gt;Прийти до ${sOrganType} за адресою: ${sAddress} з необхідними документами та звернутись до ${sKab205}.&lt;/li&gt;
-										&lt;li&gt;Заповнити та підписати заяву для видачі паспорту згідно зразка.&lt;/li&gt;
-										&lt;/ul&gt;
-									&lt;/p&gt;
-									&lt;p&gt;
-										&lt;b&gt;Реквізити для сплати:&lt;/b&gt;&lt;br&gt;
-										&lt;i&gt;${sRecviziti}&lt;br&gt;
-										Призначення платежу:Державне мито за оформлення та видачу викраденого паспорта громадянина України​&lt;/i&gt;
-									&lt;/p&gt;
-									&lt;p&gt;
-										&lt;b&gt;Деталі зустрічі:&lt;/b&gt;&lt;br&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+                                    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+                                    <p>
+                                        Спеціалісти ${sOrganType} успішно опрацювли Вашу заяву.<br>
+										Для того щоб закінчити процедуру подачі заяви про видачу паспорта громадянина України замість викраденого необхідно:<br>
+										<ul>
+										<li>У будь-якому банку сплатити Державне мито у розмірі 34 грн і отримати квитанцію про сплату.</li>
+										<li>Прийти до ${sOrganType} за адресою: ${sAddress} з необхідними документами та звернутись до ${sKab205}.</li>
+										<li>Заповнити та підписати заяву для видачі паспорту згідно зразка.</li>
+										</ul>
+									</p>
+									<p>
+										<b>Реквізити для сплати:</b><br>
+										<i>${sRecviziti}<br>
+										Призначення платежу:Державне мито за оформлення та видачу викраденого паспорта громадянина України​</i>
+									</p>
+									<p>
+										<b>Деталі зустрічі:</b><br>
 										День та час - ${date_of_visit}
-									&lt;/p&gt;
-									&lt;p&gt;
-										&lt;b&gt;Необхідні документи, які треба принести до ${sOrganType} для видачі паспорта громадянина України замість викраденого:&lt;/b&gt;&lt;br/&gt;
-										&lt;ul&gt;
-										&lt;li&gt;оригінали свідоцтва про шлюб (розлучення) та свідоцтва про народження (за наявності);&lt;/li&gt;
-										&lt;li&gt;оригінал довідки з поліції про викрадення паспорта;&lt;/li&gt;
-										&lt;li&gt;чотири фотокартки розміром 3,5 х 4,5 см (фотокартки, що подаються для оформлення паспорта, мають бути виконані з одного негатива, із зображенням обличчя виключно анфас, без головного убору, виготовленими на тонкому білому або кольоровому фотопапері без кутика; для громадян, які постійно носять окуляри, обов'язкове фотографування в окулярах);&lt;/li&gt;
-										&lt;/ul&gt;
-									&lt;/p&gt;
-									&lt;p&gt;
-										Коментар Державного службовця:&lt;br&gt;
-										&lt;b&gt;&lt;i&gt;${decisionComment}&lt;/i&gt;&lt;/b&gt;
-									&lt;/p&gt;
-									&lt;p&gt;
-										При вниникненні питань Ви можете звернутися до чергового:&lt;br&gt;
+									</p>
+									<p>
+										<b>Необхідні документи, які треба принести до ${sOrganType} для видачі паспорта громадянина України замість викраденого:</b><br/>
+										<ul>
+										<li>оригінали свідоцтва про шлюб (розлучення) та свідоцтва про народження (за наявності);</li>
+										<li>оригінал довідки з поліції про викрадення паспорта;</li>
+										<li>чотири фотокартки розміром 3,5 х 4,5 см (фотокартки, що подаються для оформлення паспорта, мають бути виконані з одного негатива, із зображенням обличчя виключно анфас, без головного убору, виготовленими на тонкому білому або кольоровому фотопапері без кутика; для громадян, які постійно носять окуляри, обов'язкове фотографування в окулярах);</li>
+										</ul>
+									</p>
+									<p>
+										Коментар Державного службовця:<br>
+										<b><i>${decisionComment}</i></b>
+									</p>
+									<p>
+										При вниникненні питань Ви можете звернутися до чергового:<br>
 										${sPhoneOrgan}
-									&lt;/p&gt;
-                                    &lt;p&gt;[cancelTask]&lt;/p&gt;
+									</p>
+                                    <p>[cancelTask]</p>
                                     [pattern/mail/_common_signature_start.html]
-									${sNameOrgan},&lt;br&gt;
+									${sNameOrgan},<br>
 									[pattern/mail/_common_signature_end.html]   
-									[pattern/mail/_common_footer.html]</activiti:expression>
+									[pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Ochikuemo vizit. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -322,7 +349,7 @@ execution.setVariable('Registrationservice', per4)
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${svid1},${doksmen},${police}</activiti:expression>
+            <activiti:expression><![CDATA[${bankId_scan_passport},${svid1},${doksmen},${police}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -332,45 +359,14 @@ execution.setVariable('Registrationservice', per4)
     <sequenceFlow id="flow17" name="${result=='reestr'}" sourceRef="exclusivegateway2" targetRef="servicetask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${result=='reestr'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow21" name="${result=='nejav'}" sourceRef="exclusivegateway2" targetRef="servicetask7">
+    <sequenceFlow id="flow21" name="${result=='nejav'}" sourceRef="exclusivegateway2" targetRef="endevent4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${result=='nejav'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask7" name="Е-мейл відмови у наданні послуги" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
-      <extensionElements>
-        <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
-        </activiti:field>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Видача паспорта громадянина України замість викраденого]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-                                        На жаль Ви не з'явились до ${sOrganType} у призначений день і час.&lt;br&gt;
-                                        При необхідності видачі паспорта громадянина України замість викраденого Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;
-									&lt;/p&gt;
-									&lt;p&gt;
-										При вниникненні питань Ви можете звернутися до чергового:&lt;br&gt;
-										${sPhoneOrgan}
-                                    &lt;/p&gt;
-                                    [pattern/mail/_common_signature_start.html]
-									${sNameOrgan},&lt;/p&gt;
-									[pattern/mail/_common_footer.html]</activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
-    <sequenceFlow id="flow25" sourceRef="servicetask7" targetRef="servicetask9"></sequenceFlow>
-    <serviceTask id="servicetask9" name="Видалення тікета з черги" activiti:delegateExpression="#{releaseTicketsOfQueue}"></serviceTask>
-    <sequenceFlow id="flow32" sourceRef="servicetask9" targetRef="endevent4"></sequenceFlow>
     <endEvent id="endevent4" name="End"></endEvent>
     <serviceTask id="servicetask2" name="Фідбек" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -379,21 +375,21 @@ execution.setVariable('Registrationservice', per4)
           <activiti:string><![CDATA[Звернення на тему: Видача паспорта громадянина України замість викраденого]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-								  &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-                              		Ви отримали послугу "Видача паспорта громадянина України замість викраденого".&lt;br&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+								  <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+                                    <p>
+                              		Ви отримали послугу "Видача паспорта громадянина України замість викраденого".<br>
                               		Якщо для замовлення послуги Ви використовували BankID, то після отримання паспорту завітайте у будь-яке відділення вашого банку та актуалізуйте свої дані. Це допоможе безперешкодно отримувати електронні послуги в майбутньому.
-                              		&lt;/p&gt;
-                              		&lt;p&gt;
-                              		Будь ласка, оцініть якість надання послуги за допомогою форми нижче.&lt;br&gt;
+                              		</p>
+                              		<p>
+                              		Будь ласка, оцініть якість надання послуги за допомогою форми нижче.<br>
                               		Дякуємо.
-									&lt;/p&gt;
+									</p>
                                     [pattern/mail/_common_signature_start.html]
-									${sNameOrgan},&lt;br&gt;
+									${sNameOrgan},<br>
 									[pattern/mail/_common_signature_end.html]   
 									[pattern/mail/_common_feedback.html]
-									[pattern/mail/_common_footer.html]</activiti:expression>
+									[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -445,12 +441,6 @@ execution.setVariable('Registrationservice', per4)
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
         <omgdc:Bounds height="40.0" width="40.0" x="696.0" y="416.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
-        <omgdc:Bounds height="61.0" width="105.0" x="663.0" y="527.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask9" id="BPMNShape_servicetask9">
-        <omgdc:Bounds height="55.0" width="105.0" x="782.0" y="530.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent4" id="BPMNShape_endevent4">
         <omgdc:Bounds height="35.0" width="35.0" x="817.0" y="477.0"></omgdc:Bounds>
@@ -526,19 +516,11 @@ execution.setVariable('Registrationservice', per4)
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
         <omgdi:waypoint x="716.0" y="456.0"></omgdi:waypoint>
-        <omgdi:waypoint x="716.0" y="505.0"></omgdi:waypoint>
-        <omgdi:waypoint x="715.0" y="527.0"></omgdi:waypoint>
+        <omgdi:waypoint x="716.0" y="494.0"></omgdi:waypoint>
+        <omgdi:waypoint x="817.0" y="494.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="83.0" x="725.0" y="487.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="83.0" x="728.0" y="476.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
-        <omgdi:waypoint x="768.0" y="557.0"></omgdi:waypoint>
-        <omgdi:waypoint x="782.0" y="557.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
-        <omgdi:waypoint x="834.0" y="530.0"></omgdi:waypoint>
-        <omgdi:waypoint x="834.0" y="512.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
         <omgdi:waypoint x="835.0" y="464.0"></omgdi:waypoint>
