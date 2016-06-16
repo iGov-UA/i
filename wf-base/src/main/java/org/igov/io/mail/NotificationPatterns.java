@@ -47,7 +47,7 @@ public class NotificationPatterns {
                 sHead = String.format("Вітаємо, Ваша заявка %s прийнята!", sID_Order);
             } else {
                 bankIdFirstName = makeStringAsName(bankIdFirstName);
-                sHead = String.format("Вітаємо %s, Ваша заявка %s прийнята!", bankIdFirstName, sID_Order);
+                sHead = String.format("Вітаємо, %s, Ваша заявка %s прийнята!", bankIdFirstName, sID_Order);
             }
 
             String sBody = sHead +
