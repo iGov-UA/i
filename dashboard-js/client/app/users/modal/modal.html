@@ -2,48 +2,58 @@
   <h3 class="modal-title">Користувач</h3>
 </div>
 <div class="modal-body group-modal-body">
-  <form class="form-horizontal">
+  <form name="formName" class="form-horizontal">
 
     <div class="col-md-12 col-xs-12">
-      <div class="form-group">
-        <label for="inputLogin" class="col-md-2 col-xs-2 control-label">Login:</label>
+      <div class="form-group"  ng-class="{ 'has-error': formName.inputLogin.$error.taken && data.editMode !== data.editModes.EDIT }">
+      <!--<div class="form-group">-->
+        <label for="inputLogin" class="col-md-2 col-xs-2 control-label">Логін:</label>
         <div class="col-md-10 col-xs-10">
-          <input class="form-control" id="inputLogin" ng-model="data.user.sLogin">
+          <input class="form-control"
+                 id="inputLogin"
+                 name="inputLogin"
+                 ng-model="data.user.sLogin"
+                 ui-validate=" {taken : 'loginHasNotBeenUsed($value)' } "
+                 ng-disabled="data.editMode === data.editModes.EDIT"
+                 required
+                 ng-model="inputModel"
+          >
+          <p class="help-block"  ng-show='formName.inputLogin.$error.taken && data.editMode !== data.editModes.EDIT'>Даний логін вже використовується.</p>
         </div>
       </div>
       <div class="form-group">
-        <label for="inputName" class="col-md-2 col-xs-2 control-label">sName:</label>
+        <label for="inputName" class="col-md-2 col-xs-2 control-label">Ім'я:</label>
         <div class="col-md-10 col-xs-10">
           <input class="form-control" id="inputName" ng-model="data.user.sName">
         </div>
       </div>
       <div class="form-group">
-        <label class="col-md-2 col-xs-2 control-label" for="inputDescription">sDescription:</label>
+        <label class="col-md-2 col-xs-2 control-label" for="inputDescription">Побатькові:</label>
         <div class="col-md-10 col-xs-10">
           <input class="form-control" id="inputDescription" ng-model="data.user.sDescription">
         </div>
       </div>
       <div class="form-group" ng-if="isNewUser()">
-        <label class="col-md-2 col-xs-2 control-label" for="inputPassword">sPassword:</label>
+        <label class="col-md-2 col-xs-2 control-label" for="inputPassword">Пароль:</label>
         <div class="col-md-10 col-xs-10">
           <input class="form-control" id="inputPassword" ng-model="data.user.sPassword">
         </div>
       </div>
       <div class="form-group">
-        <label class="col-md-2 col-xs-2 control-label" for="inputEmail">sEmail:</label>
+        <label class="col-md-2 col-xs-2 control-label" for="inputEmail">Email:</label>
         <div class="col-md-10 col-xs-10">
           <input class="form-control" id="inputEmail" ng-model="data.user.sEmail">
         </div>
       </div>
 
       <div class="form-group">
-        <label class="col-md-2 col-xs-2 control-label" for="FirstName">FirstName:</label>
+        <label class="col-md-2 col-xs-2 control-label" for="FirstName">Ім'я:</label>
         <div class="col-md-10 col-xs-10">
           <p class="form-control-static" id="FirstName">{{data.user.FirstName}}</p>
         </div>
       </div>
       <div class="form-group">
-        <label class="col-md-2 col-xs-2 control-label" for="LastName">LastName:</label>
+        <label class="col-md-2 col-xs-2 control-label" for="LastName">Побатькові:</label>
         <div class="col-md-10 col-xs-10">
           <p class="form-control-static" id="LastName">{{data.user.LastName}}</p>
         </div>
@@ -55,7 +65,7 @@
         </div>
       </div>
       <div class="form-group">
-        <label class="col-md-2 col-xs-2 control-label" for="Picture">Picture:</label>
+        <label class="col-md-2 col-xs-2 control-label" for="Picture">Фото:</label>
         <div class="col-md-10 col-xs-10">
           <p class="form-control-static" id="Picture">{{data.user.Picture}}</p>
         </div>
@@ -68,6 +78,8 @@
   </form>
 </div>
 <div class="modal-footer">
-  <button type="submit" class="btn btn-primary" ng-show="showSave()" ng-click="save()">Зберегти</button>
+  <button type="submit" class="btn btn-primary"
+          ng-disabled="formName.inputLogin.$error.taken && data.editMode === data.editModes.CREATE"
+          ng-click="save()">Зберегти</button>
   <button class="btn btn-warning" type="button" ng-click="cancel()">Відмінити</button>
 </div>

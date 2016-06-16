@@ -15,7 +15,12 @@ angular.module('dashboardJsApp')
       var addToGroupFunc = $scope.funcs.addFunc;
       var removeFromGroup = $scope.funcs.removeFunc;
 
-      $scope.model = { inProgress: false };
+      var editModes = {
+        CREATE: 1,
+        EDIT: 2
+      };
+
+      $scope.model = {inProgress: false};
 
 
       var fillData = function () {
@@ -38,7 +43,7 @@ angular.module('dashboardJsApp')
 
       };
 
-      var openModal = function (user, groups, allGroups) {
+      var openModal = function (user, groups, allGroups, editMode) {
         var modalInstance = $modal.open({
           animation: true,
           templateUrl: 'app/users/modal/modal.html',
@@ -47,11 +52,20 @@ angular.module('dashboardJsApp')
             userToEdit: function () {
               return angular.copy(user);
             },
-            userGroups: function(){
+            userGroups: function () {
               return angular.copy(groups);
             },
-            allGroups: function(){
+            allGroups: function () {
               return angular.copy(allGroups);
+            },
+            allUsers: function(){
+              return angular.copy(users);
+            },
+            editModes: function(){
+              return angular.copy(editModes);
+            },
+            editMode: function(){
+              return angular.copy(editMode);
             }
           },
           size: 'lg'
@@ -76,22 +90,26 @@ angular.module('dashboardJsApp')
             };
 
             //AddUserTo Group
-            if(editedData.groupsToAdd.length){
-              for(var i = 0; i<editedData.groupsToAdd.length; i++){
+            if (editedData.groupsToAdd.length) {
+              for (var i = 0; i < editedData.groupsToAdd.length; i++) {
                 addToGroupFunc(editedData.groupsToAdd[i].id, userToAdd.sLogin).then(
-                  function(addedUser){
+                  function (addedUser) {
 
-                  }, function (err) {console.log('Add User To group Error');}
+                  }, function (err) {
+                    console.log('Add User To group Error');
+                  }
                 );
               }
             }
 
-            if(editedData.groupsToRemove.length){
-              for(var i = 0; i<editedData.groupsToRemove.length; i++){
+            if (editedData.groupsToRemove.length) {
+              for (var i = 0; i < editedData.groupsToRemove.length; i++) {
                 removeFromGroup(editedData.groupsToRemove[i].id, userToAdd.sLogin).then(
-                  function(removedUser){
+                  function (removedUser) {
 
-                  }, function (err) {console.log('Remove User From group Error');}
+                  }, function (err) {
+                    console.log('Remove User From group Error');
+                  }
                 );
               }
             }
@@ -115,7 +133,7 @@ angular.module('dashboardJsApp')
       };
 
       $scope.add = function () {
-        openModal(null, null, groups);
+        openModal(null, null, groups, editModes.CREATE);
       };
 
       $scope.edit = function (user) {
@@ -124,8 +142,8 @@ angular.module('dashboardJsApp')
 
         getGrFunc(user.sLogin).then(function (data) {
           groupsToUser = data;
-        }).finally(function(){
-          openModal(user, groupsToUser, groups);
+        }).finally(function () {
+          openModal(user, groupsToUser, groups, editModes.EDIT);
         });
 
       };
