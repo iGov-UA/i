@@ -31,17 +31,13 @@ public class FlowSlotTicketDaoImpl extends GenericEntityDao<Long, FlowSlotTicket
 
         if (flowSlotTicket.getnID_Task_Activiti() == null) {
             LOG.info("Ticket is not bound to any task. Skip unbind operation. (id={})", flowSlotTicket.getId());
-
             return false;
         }
 
-        LOG.info("Ticket is unbound from Task. (id={})", flowSlotTicket.getId(),
-                flowSlotTicket.getnID_Task_Activiti());
-
+        LOG.info("Ticket is unbound from Task. (id={}, nID_Task_Activiti={}, dateStart={}, dateFinish={})", flowSlotTicket.getId(),
+                flowSlotTicket.getnID_Task_Activiti(), flowSlotTicket.getsDateStart(), flowSlotTicket.getsDateFinish());
         flowSlotTicket.setnID_Task_Activiti(null);
-        // flowSlotTicket.setsDateEdit(DateTime.now());  do we need this?
         saveOrUpdate(flowSlotTicket);
-
         return true;
     }
 }
