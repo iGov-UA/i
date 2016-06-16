@@ -115,7 +115,7 @@ angular.module('dashboardJsApp')
       };
 
       $scope.add = function () {
-        openModal();
+        openModal(null, null, groups);
       };
 
       $scope.edit = function (user) {

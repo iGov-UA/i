@@ -36,7 +36,7 @@ function DropdownGroupController() {
     setInitialCollection();
   }
 
-  vm.onSelectGroup = function (item){
+  vm.onSelectGroup = function (item) {
     vm.selected = item.name;
     groupToAdd = item;
   };
@@ -44,12 +44,14 @@ function DropdownGroupController() {
   function setInitialCollection() {
     groupsToAdd = vm.data.groupsToAdd;
     groupsToRemove = vm.data.groupsToRemove;
-    groups = vm.data.groupsList;
+    groups = vm.data.groupsList = vm.data.groupsList ? vm.data.groupsList : [];
 
-    vm.allGroups = vm.data.allGroupsList.filter(function(element){
-      for(var i = 0; i< groups.length; i++){
-        if(element.id === groups[i].id){
-          return false;
+    vm.allGroups = vm.data.allGroupsList.filter(function (element) {
+      if (Array.isArray(groups)) {
+        for (var i = 0; i < groups.length; i++) {
+          if (element.id === groups[i].id) {
+            return false;
+          }
         }
       }
       return true;
@@ -57,16 +59,17 @@ function DropdownGroupController() {
   }
 
   vm.addGroup = function () {
+
     if (groupToAdd) {
       var index = vm.allGroups.indexOf(groupToAdd);
 
-      if(!isGroupIsUsed(groupToAdd)){
+      if (!isGroupIsUsed(groupToAdd)) {
         addGroupToArr(groupsToAdd, groupToAdd);
       }
 
       groups.unshift(vm.allGroups.splice(index, 1)[0]);
       removeGroupFromArr(groupsToRemove, groupToAdd);
-      }
+    }
     groupToAdd = null;
     vm.selected = null;
   };
@@ -77,7 +80,7 @@ function DropdownGroupController() {
     if (groupToRemove) {
       var index = groups.indexOf(groupToRemove);
 
-      if(isGroupIsUsed(groupToRemove)){
+      if (isGroupIsUsed(groupToRemove)) {
         addGroupToArr(groupsToRemove, groupToRemove);
       }
 
@@ -88,19 +91,19 @@ function DropdownGroupController() {
     groupToRemove = null;
   };
 
-  function isGroupIsUsed(item){
-    return !(groups.indexOf(item) < 0);
+  function isGroupIsUsed(item) {
+    return !(Array.isArray(groups) ? (groups.indexOf(item) < 0) : false);
   }
 
-  function addGroupToArr(grArray, item){
-    if(grArray.indexOf(item) < 0){
+  function addGroupToArr(grArray, item) {
+    if (grArray.indexOf(item) < 0) {
       grArray.push(item);
     }
   }
 
-  function removeGroupFromArr(grArray, item){
+  function removeGroupFromArr(grArray, item) {
     var index = grArray.indexOf(item);
-    if(index >= 0){
+    if (index >= 0) {
       grArray.splice(index, 1);
     }
   }
