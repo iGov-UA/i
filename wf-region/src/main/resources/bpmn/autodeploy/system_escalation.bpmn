@@ -20,7 +20,9 @@
     </startEvent>
     <userTask id="usertask1" name="Обробка волонтером" activiti:candidateGroups="volont_escalation">
       <extensionElements>
-        <activiti:formProperty id="nID_Protected" name="Важливе поле" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nID_Protected" name="Номер первинного звернення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clFio" name="ПІБ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clFio2" name="ПІБ2" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові заявника" type="string" writable="false"></activiti:formProperty>
@@ -50,7 +52,7 @@
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var delta=execution.getVariable('nCountDays');
 var unixdate= Math.round((new Date()).getTime());
-var unixdate=unixdate+1440*1000*delta;
+var unixdate=unixdate+86400*1000*delta;
 var new_src = new Date(unixdate);
 var d = new_src.getDate();
 if (d &lt; 10) d = "0"+d;
@@ -62,7 +64,6 @@ var new_hour = new_src.getHours();
 var new_minutes = new_src.getMinutes();
 var timer = new_year+'-'+m+'-'+d+'T'+new_hour+':'+new_minutes+':00';
 execution.setVariable('sNotification_day', timer)
-
 </script>
     </scriptTask>
     <sequenceFlow id="flow7" name="перенос срока" sourceRef="exclusivegateway1" targetRef="scripttask1">
