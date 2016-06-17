@@ -397,9 +397,10 @@ public class MsgSendImpl implements MsgSend {
      */
     public IMsgObjR save() throws Exception {
 	IMsgObjR retMsg = doMsg();
-	LOG.debug("Ответ:\n{}", retMsg);
 
 	if ( retMsg != null ) {
+	    LOG.debug("Ответ:\n{}", retMsg);
+	    
 	    // Создать сообщение если его не было раньше
 	    if (retMsg.getMsgCode().equals(MSG_DEFAULT) && !sMsgCode.equals(MSG_DEFAULT)) {
 		LOG.warn("Сообщение с кодом {} не найдено, попытка его создания.", this.sMsgCode);
