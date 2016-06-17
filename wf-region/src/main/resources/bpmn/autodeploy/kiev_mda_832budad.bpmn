@@ -430,6 +430,10 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="sKved" name="Вид діяльності згідно з КВЕД" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sKadastrNumber" name="Кадастровий номер земельної ділянки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="commentSMK" name="Будівельна адреса яка присвоюється" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="decidedok" name="Повідомлення від ЦНАП в разі неотримання документів" type="enum" writable="false">
+          <activiti:value id="acceptdok" name="Так документи надійшли"></activiti:value>
+          <activiti:value id="rejectdok" name="Документи не надійшли, перевірте чи були вони відправлені"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="decide" name="Рішення про внесення інформації про будинок до реєстру адрес" type="enum" writable="false">
           <activiti:value id="accept" name="Підготувати наказ про присвоєння будівельної адреси"></activiti:value>
           <activiti:value id="reject" name="Відмовити у присвоєнні будівельної адреси"></activiti:value>
@@ -571,9 +575,9 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="sObject" name="Об'єкт, на який видається документ" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sObjectAdress" name="Місцезнаходження(адреса) об'єкта, на який видається документ" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="commentSMK" name="Будівельна адреса яка присвоюється" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="decide" name="Чи надійшли документи в паперовому вигляді для видачі?" type="enum" required="true">
-          <activiti:value id="accept" name="Так документи надійшли, направити лист заявнику про можливість їх отримання"></activiti:value>
-          <activiti:value id="reject" name="Документи не надійшли"></activiti:value>
+        <activiti:formProperty id="decidedok" name="Чи надійшли документи в паперовому вигляді для видачі?" type="enum" required="true">
+          <activiti:value id="acceptdok" name="Так документи надійшли, направити лист заявнику про можливість їх отримання"></activiti:value>
+          <activiti:value id="rejectdok" name="Документи не надійшли"></activiti:value>
         </activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -819,12 +823,12 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow46" name="${decide=='reject'}" sourceRef="exclusivegateway3" targetRef="servicetask22">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='reject'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decidedok=='rejectdok'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow47" sourceRef="servicetask22" targetRef="usertask4"></sequenceFlow>
     <parallelGateway id="parallelgateway4" name="Parallel Gateway"></parallelGateway>
     <sequenceFlow id="flow48" name="${decide=='accept'}" sourceRef="exclusivegateway3" targetRef="parallelgateway4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='accept'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decidedok=='acceptdok'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow49" sourceRef="parallelgateway4" targetRef="servicetask15"></sequenceFlow>
     <sequenceFlow id="flow50" sourceRef="parallelgateway4" targetRef="servicetask12"></sequenceFlow>
