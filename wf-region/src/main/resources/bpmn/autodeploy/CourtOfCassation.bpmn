@@ -344,6 +344,8 @@
           <activiti:value id="accept" name="документи отримані судом не доступні для прочитання"></activiti:value>
           <activiti:value id="reject" name="документи отримані судом адресовані не суду"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sAkt" name="Сканкопія акту Суду про те, що документи надіслані користувачем до суду не можуть бути визнані як такі, що надійшли до суду" type="file"></activiti:formProperty>
+      
         <activiti:formProperty id="sBody_1" name="[pattern/print/CourtOfCassation_print.html]" type="invisible" default="Супровідний лист" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/CourtOfCassation_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsLetter" name="перелік документів" type="invisible"></activiti:formProperty>
@@ -434,6 +436,7 @@
 На жаль, Вам відмовлено у реєстрації процесуальних документів:
 ${sListDocumentsLetter}
 Причина: enum{[reject_1]}&lt;br/&gt;
+Cканкопія відповідного акту Суду знаходиться у додатку до листа.&lt;br/&gt;
 Номер справи ${sNumberCase}.&lt;br/&gt;
 Телефон для довідок:(044) 536-18-01 та (044) 536-18-23
 &lt;br /&gt;
@@ -449,7 +452,7 @@ ${sListDocumentsLetter}
           <activiti:expression>Vashe zvernennya [sID_Order] vidhileno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression>"${sAkt}"</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
