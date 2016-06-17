@@ -56,43 +56,58 @@ public class MsgService {
     }
 
     public static IMsgObjR setEventSystem(String sType, Long nID_Subject, Long nID_Server, String sFunction, String sHead,
-	    String sBody, String sError, String smData) throws Exception {
+	    String sBody, String sError, String smData) {
 	if (!isReadySendMSG) {
 	    LOG.warn("Сервис не готов к отсылке сообщений.");
 	    return null;
 	}
 
-	IMsgObjR msg = new MsgSendImpl(sServiceURL, sBusId, sType, sFunction, sTemplateMsgId, sMsgLogin)
+	IMsgObjR msg = null;
+	try {
+	    msg = new MsgSendImpl(sServiceURL, sBusId, sType, sFunction, sTemplateMsgId, sMsgLogin)
 		.addnID_Server(nID_Server).addnID_Subject(nID_Subject).addsBody(sBody).addsError(sError).addsHead(sHead)
 		.addsmData(smData).save();
+	} catch (Exception e) {
+	    LOG.warn("Cann't send an error message to service MSG\n", e);
+	}
 
 	return msg;
     }
 
     public static <T> IMsgObjR setEventSystemWithParam(String sType, Long nID_Subject, Long nID_Server, String sFunction, String sHead,
-	    String sBody, String sError, HashMap<String, T> mParam) throws Exception {
+	    String sBody, String sError, HashMap<String, T> mParam) {
 	if (!isReadySendMSG) {
 	    LOG.warn("Сервис не готов к отсылке сообщений.");
 	    return null;
 	}
 
-	IMsgObjR msg = new MsgSendImpl(sServiceURL, sBusId, sType, sFunction, sTemplateMsgId, sMsgLogin)
+	IMsgObjR msg = null;
+	try {
+	    msg = new MsgSendImpl(sServiceURL, sBusId, sType, sFunction, sTemplateMsgId, sMsgLogin)
 		.addnID_Server(nID_Server).addnID_Subject(nID_Subject).addsBody(sBody).addsError(sError).addsHead(sHead)
 		.addasParam(mParam).save();
+	} catch (Exception e) {
+	    LOG.warn("Cann't send an error message to service MSG\n", e);
+	}
 
 	return msg;
     }
 
     public static <T> IMsgObjR setEventSystemWithParam(String sType, Long nID_Subject, Long nID_Server, String sFunction, String sHead,
-	    String sBody, String sError, Map<String, T> mParam) throws Exception {
+	    String sBody, String sError, Map<String, T> mParam) {
 	if (!isReadySendMSG) {
 	    LOG.warn("Сервис не готов к отсылке сообщений.");
 	    return null;
 	}
 
-	IMsgObjR msg = new MsgSendImpl(sServiceURL, sBusId, sType, sFunction, sTemplateMsgId, sMsgLogin)
+	IMsgObjR msg = null;
+	try {
+	    msg = new MsgSendImpl(sServiceURL, sBusId, sType, sFunction, sTemplateMsgId, sMsgLogin)
 		.addnID_Server(nID_Server).addnID_Subject(nID_Subject).addsBody(sBody).addsError(sError).addsHead(sHead)
 		.addasParam(mParam).save();
+	} catch (Exception e) {
+	    LOG.warn("Cann't send an error message to service MSG\n", e);
+	}
 
 	return msg;
     }
