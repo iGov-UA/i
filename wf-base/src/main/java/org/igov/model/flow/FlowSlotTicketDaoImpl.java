@@ -36,8 +36,9 @@ public class FlowSlotTicketDaoImpl extends GenericEntityDao<Long, FlowSlotTicket
 
         LOG.info("Ticket is unbound from Task. (id={}, nID_Task_Activiti={}, dateStart={}, dateFinish={})", flowSlotTicket.getId(),
                 flowSlotTicket.getnID_Task_Activiti(), flowSlotTicket.getsDateStart(), flowSlotTicket.getsDateFinish());
-        flowSlotTicket.setnID_Task_Activiti(null);
-        saveOrUpdate(flowSlotTicket);
+        //flowSlotTicket.setnID_Task_Activiti(null);
+        //saveOrUpdate(flowSlotTicket);
+        delete(flowSlotTicket);
         return true;
     }
 }
