@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="system_escalation" name="Відпрацювання ескалації" isExecutable="true">
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+       <activiti:formProperty id="nID_Protected" name="Важливе поле" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище заявника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я заявника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові заявника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="saField" name="Данные" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="processID" name="номер" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameProcess" name="Назва послуги" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sOrganName" name="Назва органу, який не обробив звернення" type="string"></activiti:formProperty>
+        <activiti:formProperty id="data" name="Дата подання звернення" type="string"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sEmployeeContacts" name="ПІБ та контактні телефони відповідальних посадовців" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processName" name="ID бізнес-процесу (системна інформація)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="organ" name="група органу (системна інформація)" type="string"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="usertask1"></sequenceFlow>
+    <userTask id="usertask1" name="Обробка волонтером" activiti:candidateGroups="volont_escalation">
+      <extensionElements>
+        <activiti:formProperty id="nID_Protected" name="Важливе поле" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище заявника" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я заявника" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові заявника" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="saField" name="Данные" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="processID" name="номер" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameProcess" name="Назва послуги" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sOrganName" name="Назва органу, який не обробив звернення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="data" name="Дата подання звернення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон громадянина" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sEmployeeContacts" name="ПІБ та контактні телефони відповідальних посадовців" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="processName" name="ID бізнес-процесу (системна інформація)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="organ" name="група органу (системна інформація)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_Indirectly" name="Коментар волонтера" type="textArea"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${assignGroup}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow2" sourceRef="usertask1" targetRef="endevent1"></sequenceFlow>
+    <endEvent id="endevent1" name="End"></endEvent>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_system_escalation">
+    <bpmndi:BPMNPlane bpmnElement="system_escalation" id="BPMNPlane_system_escalation">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="70.0" y="105.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="65.0" width="105.0" x="160.0" y="90.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="480.0" y="105.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="105.0" y="122.0"></omgdi:waypoint>
+        <omgdi:waypoint x="160.0" y="122.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="265.0" y="122.0"></omgdi:waypoint>
+        <omgdi:waypoint x="480.0" y="122.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

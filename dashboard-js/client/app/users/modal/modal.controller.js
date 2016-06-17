@@ -4,7 +4,7 @@
 'use strict';
 
 angular.module('dashboardJsApp')
-  .controller('UserModalController', function ($scope, $modalInstance, userToEdit) {
+  .controller('UserModalController',function ($scope, $modalInstance, userToEdit, userGroups, allGroups, allUsers, editModes, editMode) {
 
     var parser = function () {
       return {
@@ -45,10 +45,10 @@ angular.module('dashboardJsApp')
 
     $scope.save = function () {
       var dataToSave = {
-        userToSave: $scope.data.user
+        userToSave: $scope.data.user,
+        groupsToAdd: $scope.data.groupsToAdd,
+        groupsToRemove: $scope.data.groupsToRemove
       };
-
-      console.log('!!!!!!!!!!!!!  modal save  ', dataToSave.userToSave);
 
       $modalInstance.close(dataToSave);
     };
@@ -65,8 +65,29 @@ angular.module('dashboardJsApp')
       return $scope.data.user.isNew;
     };
 
+    function isLoginTaken(login) {
+      return !allUsers.some(function (user) {
+        return user.sLogin === login;
+      })
+    }
+    //$scope.doesNotExist = function (modelValue){
+    //  return true;
+    //};
+
+    $scope.loginHasNotBeenUsed = function( $value ) {
+      return isLoginTaken($value);
+    };
+
     //  Init
-    $scope.data = {user: parser.parse(userToEdit), groupsList: []};
+    $scope.data = {
+      user: parser.parse(userToEdit),
+      groupsList: userGroups,
+      allGroupsList: allGroups,
+      groupsToAdd: [],
+      groupsToRemove: [],
+      editMode: editMode,
+      editModes: editModes
+    };
     $scope.getGroups = {};
 
   });

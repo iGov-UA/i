@@ -776,8 +776,6 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
       bValid = bValid && (sValue!==null && sValue.trim() !== "0");
       return bValid;
     }
-    
-    
   };
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
