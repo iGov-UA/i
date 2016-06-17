@@ -581,7 +581,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 			
 			@Override
 			public void run() {
-				LOG.info("try to save service message with params: (params={})", params);
+				LOG.info("try to save service message with params with a delay: (params={})", params);
 		        String jsonServiceMessage;
 				try {
 					jsonServiceMessage = historyEventService.addServiceMessage(params);
@@ -594,7 +594,7 @@ public abstract class Abstract_MailTaskCustom implements JavaDelegate {
 		// run saving message in 10 seconds so history event will be in the database already by that time
 		executor.schedule(task, 10, TimeUnit.SECONDS);
 		executor.shutdown();
-		
+		LOG.debug("Configured thread to run in 10 seconds with params: (params={})", params);
     }
 
 }
