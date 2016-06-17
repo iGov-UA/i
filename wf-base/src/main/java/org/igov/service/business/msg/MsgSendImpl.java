@@ -399,14 +399,18 @@ public class MsgSendImpl implements MsgSend {
 	IMsgObjR retMsg = doMsg();
 	LOG.debug("Ответ:\n{}", retMsg);
 
-	// Создать сообщение если его не было раньше
-	if (retMsg.getMsgCode().equals(MSG_DEFAULT) && !sMsgCode.equals(MSG_DEFAULT)) {
-	    LOG.warn("Сообщение с кодом {} не найдено, попытка его создания.", this.sMsgCode);
-	    createMsg();
-	    LOG.info("Созданно сообщение с кодом : {}", this.sMsgCode);
+	if ( retMsg != null ) {
+	    // Создать сообщение если его не было раньше
+	    if (retMsg.getMsgCode().equals(MSG_DEFAULT) && !sMsgCode.equals(MSG_DEFAULT)) {
+		LOG.warn("Сообщение с кодом {} не найдено, попытка его создания.", this.sMsgCode);
+		createMsg();
+		LOG.info("Созданно сообщение с кодом : {}", this.sMsgCode);
 	    
-	    // Cохранить данные во вновь созданном СООБЩЕНИИ
-	    retMsg = doMsg();
+		// Cохранить данные во вновь созданном СООБЩЕНИИ
+		retMsg = doMsg();
+	    }
+	} else {
+	    LOG.warn("Ошибка работы с сервисом, сервис вернул ответ: null");
 	}
 
 	return retMsg;
