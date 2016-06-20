@@ -46,6 +46,8 @@
         <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sDecisionComment_7_1" name="Коментар для громадянина" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sDecisionComment_7_2" name="Коментар для співробітників" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="markers11" name="Розкриття атрібутів щодо специфіки вводу" type="markers" default="${markerService.loadFromFile('skv/kiev_mda_825_1.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -75,7 +77,7 @@
         <activiti:formProperty id="FunctionalPurpose" name="Функціональне призначення; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="RegNumberTopo" name="Реєстраційний номер топомоніторингу; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="CadastralNumber" name="Кадастровий номер земельної ділянки; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sLabel" name=" " type="label" default=" =========== Службова інформація ЦНАП ==========="></activiti:formProperty>
+        <activiti:formProperty id="sLabel" name=" " type="label" default=" =========== Службова інформація ==========="></activiti:formProperty>
         <activiti:formProperty id="sExtension_Number" name="Реєстраційний номер" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDate_Registrastion" name="Дата реєстрації" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFioAdmin" name="П.І.Б. посадової особи, яка прийняла заяву" type="string"></activiti:formProperty>
@@ -129,7 +131,7 @@
         <activiti:formProperty id="FunctionalPurpose" name="Функціональне призначення; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="RegNumberTopo" name="Реєстраційний номер топомоніторингу; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="CadastralNumber" name="Кадастровий номер земельної ділянки; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sLabel01" name=" " type="label" default=" =========== Службова інформація ЦНАП ==========="></activiti:formProperty>
+        <activiti:formProperty id="sLabel01" name=" " type="label" default=" =========== Службова інформація ==========="></activiti:formProperty>
         <activiti:formProperty id="sExtension_Number" name="Реєстраційний номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDate_Registrastion" name="Дата реєстрації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFioAdmin" name="П.І.Б. посадової особи, яка прийняла заяву" type="string" writable="false"></activiti:formProperty>
@@ -190,7 +192,7 @@
         <activiti:formProperty id="FunctionalPurpose" name="Функціональне призначення; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="RegNumberTopo" name="Реєстраційний номер топомоніторингу; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="CadastralNumber" name="Кадастровий номер земельної ділянки; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sLabel01" name=" " type="label" default=" =========== Службова інформація ЦНАП ==========="></activiti:formProperty>
+        <activiti:formProperty id="sLabel01" name=" " type="label" default=" =========== Службова інформація ==========="></activiti:formProperty>
         <activiti:formProperty id="sExtension_Number" name="Реєстраційний номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDate_Registrastion" name="Дата реєстрації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFioAdmin" name="П.І.Б. посадової особи, яка прийняла заяву" type="string" writable="false"></activiti:formProperty>
@@ -272,11 +274,13 @@
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_2_2" name="Коментар Служби містобудівного кадастру для громадянина" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_2_2_MistoBudivel" name="Коментар Служби містобудівного кадастру для співробітників на наступних етапах" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDecisionComment_7_1" name="Коментар для громадянина (Відділ правового забезпечення - відмовити в наданні послуги)" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDecisionComment_7_2" name="Коментар для співробітників (Відділ правового забезпечення - відмовити в наданні послуги)" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sLabel03" name=" " type="label" default=" =========== Опрацювання щодо підготування листа-відмови ==========="></activiti:formProperty>
         <activiti:formProperty id="asEnum_decision_3_1" name="Результат опрацювання відділом правового забезпечення" type="enum" required="true">
           <activiti:value id="accept_List_Vidmova" name="Лист-відмова підготовлений"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="nFileVidpovid" name="Копiя листа-відмови" type="file" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileVidpovid" name="Копiя листа-відмови" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть центр надання адмінпослуг" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адрес оргструктури (району)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для довідки оргструктури (району)" type="invisible"></activiti:formProperty>
@@ -347,7 +351,7 @@
         <activiti:formProperty id="asEnum_decision_3_1" name="Результат опрацювання Відділом правового забезпечення" type="enum" required="true">
           <activiti:value id="accept_Nakaz" name="Наказ підготовлено"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="nFileVidpovid" name="Копiя наказу про присвоєння поштової адреси" type="file" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileVidpovid" name="Копiя наказу про присвоєння поштової адреси" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть центр надання адмінпослуг" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адрес оргструктури (району)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для довідки оргструктури (району)" type="invisible"></activiti:formProperty>
@@ -416,7 +420,7 @@
         <activiti:formProperty id="sDecisionComment_2_2_MistoBudivel" name="Коментар Служби містобудівного кадастру для співробітників на наступних етапах" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sLabel04" name=" " type="label" default=" =========== Опрацювання щодо перевірки наявності підписаного документу ==========="></activiti:formProperty>
         <activiti:formProperty id="asEnum_decision_7_1" name="Результат опрацювання" type="enum" required="true">
-          <activiti:value id="accept" name="Документ підписано (витяг або лист-відмова)"></activiti:value>
+          <activiti:value id="accept" name="Документ підписано (наказ або лист-відмова)"></activiti:value>
           <activiti:value id="reject" name="Документ не підписано, відмовити в наданні послуги"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_7_1" name="У разі відмови внесіть, будь ласка, коментар для громадянина" type="textArea"></activiti:formProperty>
