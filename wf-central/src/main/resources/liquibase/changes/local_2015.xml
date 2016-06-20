@@ -1112,4 +1112,57 @@
             </column>
         </addColumn>
      </changeSet>
+
+    <changeSet id="issue-1289-1" author="brunneng">
+        <createTable tableName="ServiceTag">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="sName" type="varchar(1000)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="ServiceTagLink">
+            <column name="nID_Service" type="bigint">
+                <constraints nullable               ="false"
+                             foreignKeyName         ="FK_ServiceTagLink_Service"
+                             referencedTableName    ="Service"
+                             referencedColumnNames  ="nID"
+                             deleteCascade          ="true"/>
+            </column>
+            <column name="nID_ServiceTag" type="bigint">
+                <constraints nullable               ="false"
+                             foreignKeyName         ="FK_ServiceTagLink_ServiceTag"
+                             referencedTableName    ="ServiceTag"
+                             referencedColumnNames  ="nID"
+                             deleteCascade          ="true"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint columnNames="nID_Service, nID_ServiceTag"
+                             constraintName="ServiceTagLink_Unique"
+                             tableName="ServiceTagLink"/>
+
+        <createTable tableName="ServiceTagRelation">
+            <column name="nID_ServiceTag_Parent" type="bigint">
+                <constraints nullable               ="false"
+                             foreignKeyName         ="FK_ServiceTagRelation_P"
+                             referencedTableName    ="ServiceTag"
+                             referencedColumnNames  ="nID"
+                             deleteCascade          ="true"/>
+            </column>
+            <column name="nID_ServiceTag_Child" type="bigint">
+                <constraints nullable               ="false"
+                             foreignKeyName         ="FK_ServiceTagRelation_C"
+                             referencedTableName    ="ServiceTag"
+                             referencedColumnNames  ="nID"
+                             deleteCascade          ="true"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint columnNames="nID_ServiceTag_Parent, nID_ServiceTag_Child"
+                             constraintName="ServiceTagRelation_Unique"
+                             tableName="ServiceTagRelation"/>
+    </changeSet>
 </databaseChangeLog>

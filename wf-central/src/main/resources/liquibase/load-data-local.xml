@@ -15,6 +15,9 @@
             DELETE FROM "City";
             DELETE FROM "Category";
             DELETE FROM "Subcategory";
+            DELETE FROM "ServiceTagRelation";
+            DELETE FROM "ServiceTagLink";
+            DELETE FROM "ServiceTag";
             DELETE FROM "ServiceType";
             DELETE FROM "Service";
             DELETE FROM "ServiceData";
@@ -109,6 +112,23 @@
             <column name="sName" type="STRING"/>
             <column name="sNote" type="STRING"/>
         </loadUpdateData>
+
+        <!-- 3 связанные таблицы ServiceTag, ServiceTagLink, ServiceTagRelation  перезагружаются каждый раз -->
+        <delete tableName="ServiceTagRelation"/>
+        <delete tableName="ServiceTagLink"/>
+        <delete tableName="ServiceTag"/>
+        <loadData encoding="UTF-8" file="data/ServiceTag.csv" tableName="ServiceTag" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sName" type="STRING"/>
+        </loadData>
+        <loadData encoding="UTF-8" file="data/ServiceTagLink.csv" tableName="ServiceTagLink" separator=";">
+            <column name="nID_Service" type="NUMERIC"/>
+            <column name="nID_ServiceTag" type="NUMERIC"/>
+        </loadData>
+        <loadData encoding="UTF-8" file="data/ServiceTagLink.csv" tableName="ServiceTagLink" separator=";">
+            <column name="nID_ServiceTag_Parent" type="NUMERIC"/>
+            <column name="nID_ServiceTag_Child" type="NUMERIC"/>
+        </loadData>
 
         <!-- 2 связанные таблицы Service, ServiceData перезагружаются каждый раз -->
         <delete tableName="ServiceData"/>

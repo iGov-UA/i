@@ -19,6 +19,14 @@ var finishRequest = function (req, res, err, result, type) {
 
     var customer = userConvert.convertToCanonical(type, result.customer);
     var admin = result.admin;
+
+    // сохранение признака для отображения надписи о необходимости проверки регистрационных данных, переданых от BankID
+    if(type === 'bankid'){
+      customer.isAuthTypeFromBankID = true;
+    } else {
+      customer.isAuthTypeFromBankID = false;
+    }
+
     if (Admin.isAdminInn(customer.inn)) {
       admin = {
         inn: customer.inn,
