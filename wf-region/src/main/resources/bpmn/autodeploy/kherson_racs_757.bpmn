@@ -78,9 +78,8 @@
         <activiti:formProperty id="sSexChildPrint" name="стать дитини у принтформу" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    
-       <userTask id="usertask3" name="Формування шаблонів документів" activiti:candidateGroups="racs_${sID_Public_SubjectOrganJoin}">
-         <extensionElements>
+    <userTask id="usertask3" name="Формування шаблонів документів" activiti:candidateUsers="GrekD">
+      <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" writable="false"></activiti:formProperty>
@@ -140,7 +139,6 @@
         <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/kherson/kherson_racs_757_2_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_3" name="[pattern/print/kherson/kherson_racs_757_2_print.html]" type="invisible" default="заява" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_3" name="File label;File title;pattern/print/kherson/kherson_racs_757_3_print.html" type="file"></activiti:formProperty>
-      
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -148,8 +146,7 @@
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
-        </userTask>
-    
+    </userTask>
     <userTask id="usertask1" name="очікування візиту батьків" activiti:candidateGroups="racs_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="string" writable="false"></activiti:formProperty>
@@ -213,7 +210,6 @@
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/kherson/kherson_racs_757_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_3" name="[pattern/print/kherson/kherson_racs_757_2_print.html]" type="invisible" default="заява" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_3" name="File label;File title;pattern/print/kherson/kherson_racs_757_3_print.html" type="file"></activiti:formProperty>
-      
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -279,7 +275,7 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <serviceTask id="servicetask4" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask4" name="Повідомлення аналітика" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>darja.grek@gmail.com</activiti:expression>
@@ -294,9 +290,8 @@
           <activiti:expression>[sID_Order]&lt;br&gt;
 [pattern/mail/_common_header.html]
 &lt;strong&gt;Шановний(-а) колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-У Вас в черзі на обробку нове звернення.&lt;br /&gt;
-Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName} обрав дату та час візиту: ${date_of_visit}.&lt;br /&gt;
-У призначену дату та час запросіть, будь ласка, громадянина до кабінету для реєстрації.&lt;br /&gt;
+У Вас в черзі на обробку нове звернення, яке знаходиться на етапі формування шаблонів документів.&lt;br /&gt;
+Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName} &lt;br /&gt;
 [pattern/mail/_common_signature.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -512,7 +507,7 @@ ${sNameOrgan}&lt;br /&gt;
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <scriptTask id="scripttask1" name="Script Task" scriptFormat="groovy" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
 var per1 = "&lt;li&gt;Роздруковану заяву, яку ви подавали в електронному вигляді (знаходиться у додатку до листа), засвідчену особистим підписом (підписами).&lt;/li&gt;"
 var per2 = " "
@@ -537,25 +532,7 @@ if(execution.getVariable('sDocPregnancy') != null){
 per6 = "&lt;li&gt;Довідка про вагітність (видається закладами охорони здоров’я).&lt;/li&gt;"
 }
 res = '&lt;ol&gt;'+per1+per2+per3+per4+per5+per6+'&lt;/ol&gt;'
-execution.setVariable('sListDocumentsLetter', res)
-	  
-var delta='5';
-var unixdate= Math.round((new Date()).getTime() / 1000);
-
-var unixdate=unixdate+60*delta;
-var new_src = new Date(unixdate*1000);
-var d = new_src.getDate();
-if (d &lt; 10) d = "0"+d;
-var m = new_src.getMonth();
-var m = (+m + +1);
-if (m &lt; 10) m = "0"+m;
-
-var new_year = new_src.getFullYear();
-var new_hour = new_src.getHours();
-var new_minutes = new_src.getMinutes();
-var timer = new_year+'-'+m+'-'+d+'T'+new_hour+':'+new_minutes+':00';
-execution.setVariable('sEskalation', timer);
-</script>
+execution.setVariable('sListDocumentsLetter', res)</script>
     </scriptTask>
     <serviceTask id="servicetask8" name="отримання додаткових документiв" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <sequenceFlow id="flow38" sourceRef="startevent1" targetRef="servicetask8"></sequenceFlow>
@@ -587,7 +564,6 @@ execution.setVariable('sEskalation', timer);
     <sequenceFlow id="flow54" sourceRef="scripttask1" targetRef="servicetask4"></sequenceFlow>
     <sequenceFlow id="flow56" sourceRef="servicetask12" targetRef="usertask1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow57" sourceRef="boundarytimer1" targetRef="exclusivegateway4"></sequenceFlow>
     <sequenceFlow id="flow58" name="якщо одружені, але прізвища різні" sourceRef="exclusivegateway4" targetRef="servicetask12">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${saMarriage=='yes' && saSurname == "no"}]]></conditionExpression>
     </sequenceFlow>
@@ -598,18 +574,40 @@ execution.setVariable('sEskalation', timer);
     <sequenceFlow id="flow61" name="якщо дитина ще не народилась" sourceRef="exclusivegateway2" targetRef="servicetask13">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${saSituation == "noBornYet"}]]></conditionExpression>
     </sequenceFlow>
- 
     <sequenceFlow id="flow62" sourceRef="servicetask4" targetRef="usertask3"></sequenceFlow>
-    <boundaryEvent id="boundarytimer1" name="Timer" attachedToRef="usertask3" cancelActivity="true">
-      <timerEventDefinition>
-        <timeDate>${sEskalation}</timeDate>
-      </timerEventDefinition>
-    </boundaryEvent>
+    <serviceTask id="servicetask14" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression>darja.grek@gmail.com</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Нове звернення: Попередній запис на прийом щодо державної реєстрації народження]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[sID_Order]&lt;br&gt;
+[pattern/mail/_common_header.html]
+&lt;strong&gt;Шановний(-а) колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
+У Вас в черзі на обробку нове звернення.&lt;br /&gt;
+Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName} обрав дату та час візиту: ${date_of_visit}.&lt;br /&gt;
+У призначену дату та час запросіть, будь ласка, громадянина до кабінету для реєстрації.&lt;br /&gt;
+[pattern/mail/_common_signature.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow63" sourceRef="usertask3" targetRef="servicetask14"></sequenceFlow>
+    <sequenceFlow id="flow64" sourceRef="servicetask14" targetRef="exclusivegateway4"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_kherson_racs_757">
     <bpmndi:BPMNPlane bpmnElement="kherson_racs_757" id="BPMNPlane_kherson_racs_757">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="0.0" y="27.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
+        <omgdc:Bounds height="55.0" width="148.0" x="590.0" y="17.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="55.0" width="128.0" x="322.0" y="337.0"></omgdc:Bounds>
@@ -618,7 +616,7 @@ execution.setVariable('sEskalation', timer);
         <omgdc:Bounds height="55.0" width="116.0" x="492.0" y="337.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
-        <omgdc:Bounds height="57.0" width="148.0" x="397.0" y="16.0"></omgdc:Bounds>
+        <omgdc:Bounds height="57.0" width="144.0" x="397.0" y="16.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="55.0" width="128.0" x="322.0" y="264.0"></omgdc:Bounds>
@@ -659,11 +657,8 @@ execution.setVariable('sEskalation', timer);
       <bpmndi:BPMNShape bpmnElement="exclusivegateway4" id="BPMNShape_exclusivegateway4">
         <omgdc:Bounds height="40.0" width="40.0" x="450.0" y="100.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
-        <omgdc:Bounds height="55.0" width="105.0" x="590.0" y="17.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundarytimer1" id="BPMNShape_boundarytimer1">
-        <omgdc:Bounds height="30.0" width="30.0" x="620.0" y="47.0"></omgdc:Bounds>
+      <bpmndi:BPMNShape bpmnElement="servicetask14" id="BPMNShape_servicetask14">
+        <omgdc:Bounds height="57.0" width="148.0" x="590.0" y="92.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
         <omgdi:waypoint x="35.0" y="44.0"></omgdi:waypoint>
@@ -733,11 +728,6 @@ execution.setVariable('sEskalation', timer);
         <omgdi:waypoint x="133.0" y="364.0"></omgdi:waypoint>
         <omgdi:waypoint x="322.0" y="364.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow57" id="BPMNEdge_flow57">
-        <omgdi:waypoint x="635.0" y="77.0"></omgdi:waypoint>
-        <omgdi:waypoint x="634.0" y="119.0"></omgdi:waypoint>
-        <omgdi:waypoint x="490.0" y="120.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow58" id="BPMNEdge_flow58">
         <omgdi:waypoint x="450.0" y="120.0"></omgdi:waypoint>
         <omgdi:waypoint x="298.0" y="120.0"></omgdi:waypoint>
@@ -766,8 +756,16 @@ execution.setVariable('sEskalation', timer);
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow62" id="BPMNEdge_flow62">
-        <omgdi:waypoint x="545.0" y="44.0"></omgdi:waypoint>
+        <omgdi:waypoint x="541.0" y="44.0"></omgdi:waypoint>
         <omgdi:waypoint x="590.0" y="44.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow63" id="BPMNEdge_flow63">
+        <omgdi:waypoint x="664.0" y="72.0"></omgdi:waypoint>
+        <omgdi:waypoint x="664.0" y="92.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow64" id="BPMNEdge_flow64">
+        <omgdi:waypoint x="590.0" y="120.0"></omgdi:waypoint>
+        <omgdi:waypoint x="490.0" y="120.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
