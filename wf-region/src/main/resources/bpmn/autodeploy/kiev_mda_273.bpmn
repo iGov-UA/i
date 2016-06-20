@@ -118,12 +118,12 @@
           <activiti:value id="accept" name="Зауваження відсутні, підготувати дозвіл на переведення житлового приміщення в нежитлове"></activiti:value>
           <activiti:value id="reject" name="Відмовлено в наданні послуги, підготувати лист-відмову"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="reject_2" name="У разі відхилення звернення, оберіть причниу" type="enum">
+        <activiti:formProperty id="reject_2" name="У разі листа-відмови внесіть, оберіть причниу" type="enum">
           <activiti:value id="attr1" name="подання неповного пакету документів"></activiti:value>
           <activiti:value id="attr2" name="виявлення в документах недостовірних відомостей"></activiti:value>
           <activiti:value id="attr3" name="невідповідність поданих документів встановленим вимогам"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="comment_2" name="У разі листа-відмови внесіть, будь ласка, причину" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="comment_2" name="У разі листа-відмови внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік документів у заяву" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka273" name="шапка у принтформу" type="invisible"></activiti:formProperty>
@@ -467,7 +467,8 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:expression>[sID_Order]&lt;br&gt;
 [pattern/mail/_common_header.html]
 &lt;strong&gt;Шановний(-а) колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-По зверненню [sID_Order] підготовлена відповідь заявнику: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
+По зверненню [sID_Order] підготовлена відповідь.&lt;br /&gt;
+Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
 Вам передано оригінал документу.&lt;br /&gt;
 [pattern/mail/_common_signature.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
