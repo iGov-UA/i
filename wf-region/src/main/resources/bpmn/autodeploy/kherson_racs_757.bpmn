@@ -55,8 +55,8 @@
         <activiti:formProperty id="firstName_UA3" name="Ім'я дитини" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA3" name="По Батькові дитини" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="saSexChild" name="Стать дитини" type="enum" required="true">
-          <activiti:value id="women" name="жіноча"></activiti:value>
-          <activiti:value id="men" name="чоловіча"></activiti:value>
+          <activiti:value id="woman" name="жіноча"></activiti:value>
+          <activiti:value id="man" name="чоловіча"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDateChild" name="Дата народження дитини" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocPassportFather" name="Копія паспорту батька" type="file" required="true"></activiti:formProperty>
@@ -76,6 +76,7 @@
         <activiti:formProperty id="sMailClerk" name="пошта посадовця" type="invisible" default="darja.grek@gmail.com"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="шапка у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sSexChildPrint" name="стать дитини у принтформу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSexChildPrint2" name="стать дитини у принтформу" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask3" name="Формування шаблонів документів" activiti:candidateGroups="racs_${sID_Public_SubjectOrganJoin}">
@@ -83,7 +84,7 @@
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="saMarriage" name="Чи перебувають батьки дитини у зареєстрованому шлюбі?; ;writable=false" type="enum">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
@@ -123,14 +124,14 @@
         <activiti:formProperty id="firstName_UA3" name="Ім'я дитини; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA3" name="По Батькові дитини; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="saSexChild" name="Стать дитини; ;writable=false" type="enum">
-          <activiti:value id="women" name="жіноча"></activiti:value>
-          <activiti:value id="men" name="чоловіча"></activiti:value>
+          <activiti:value id="woman" name="жіноча"></activiti:value>
+          <activiti:value id="man" name="чоловіча"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDateChild" name="Дата народження дитини; ;writable=false" type="date"></activiti:formProperty>
-  		<activiti:formProperty id="visitDay" name="Дата та час візиту" type="queueData" writable="false"></activiti:formProperty>
-         
+        <activiti:formProperty id="visitDay" name="Дата та час візиту" type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="шапка у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sSexChildPrint" name="стать дитини у принтформу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSexChildPrint2" name="стать дитини у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік документів у заяву" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/kherson/kherson_racs_757_print.html]" type="invisible" default="заява" writable="false"></activiti:formProperty>
@@ -152,7 +153,7 @@
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для реєстрації народження?" type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="saMarriage" name="Чи перебувають батьки дитини у зареєстрованому шлюбі?; ;writable=false" type="enum">
           <activiti:value id="yes" name="так"></activiti:value>
@@ -193,8 +194,8 @@
         <activiti:formProperty id="firstName_UA3" name="Ім'я дитини; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA3" name="По Батькові дитини; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="saSexChild" name="Стать дитини; ;writable=false" type="enum">
-          <activiti:value id="women" name="жіноча"></activiti:value>
-          <activiti:value id="men" name="чоловіча"></activiti:value>
+          <activiti:value id="woman" name="жіноча"></activiti:value>
+          <activiti:value id="man" name="чоловіча"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDateChild" name="Дата народження дитини; ;writable=false" type="date"></activiti:formProperty>
         <activiti:formProperty id="decide" name="результат" type="enum" required="true">
@@ -204,6 +205,7 @@
         <activiti:formProperty id="sEskalation" name="sEskalation" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="шапка у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sSexChildPrint" name="стать дитини у принтформу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSexChildPrint2" name="стать дитини у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік документів у заяву" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/kherson/kherson_racs_757_print.html]" type="invisible" default="заява" writable="false"></activiti:formProperty>
@@ -223,7 +225,7 @@
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для реєстрації народження?" type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="saMarriage" name="Чи перебувають батьки дитини у зареєстрованому шлюбі?; ;writable=false" type="enum">
           <activiti:value id="yes" name="так"></activiti:value>
@@ -253,8 +255,8 @@
         <activiti:formProperty id="firstName_UA3" name="Ім'я дитини; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA3" name="По Батькові дитини; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="saSexChild" name="Стать дитини; ;writable=false" type="enum">
-          <activiti:value id="women" name="жіноча"></activiti:value>
-          <activiti:value id="men" name="чоловіча"></activiti:value>
+          <activiti:value id="woman" name="жіноча"></activiti:value>
+          <activiti:value id="man" name="чоловіча"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDateChild" name="Дата народження дитини; ;writable=false" type="date"></activiti:formProperty>
         <activiti:formProperty id="decide" name="результат" type="enum" required="true">
@@ -263,6 +265,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="sShapka" name="шапка у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sSexChildPrint" name="стать дитини у принтформу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSexChildPrint2" name="стать дитини у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік документів у заяву" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/kherson/kherson_racs_757_2_print.html]" type="invisible" default="заява" writable="false"></activiti:formProperty>
@@ -297,6 +300,31 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
+    
+     <serviceTask id="servicetask14" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression>darja.grek@gmail.com</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Нове звернення: Попередній запис на прийом щодо державної реєстрації народження]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[sID_Order]&lt;br&gt;
+[pattern/mail/_common_header.html]
+&lt;strong&gt;Шановний(-а) колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
+У Вас в черзі на обробку нове звернення.&lt;br /&gt;
+Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName} обрав дату та час візиту: ${date_of_visit}.&lt;br /&gt;
+У призначену дату та час запросіть, будь ласка, громадянина до кабінету для реєстрації.&lt;br /&gt;
+[pattern/mail/_common_signature.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    
     <serviceTask id="servicetask2" name="Лист-запрошення до візиту (both)" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
@@ -516,6 +544,8 @@ var per4 = " "
 var per5 = " "
 var per6 = " "
 var res = 'res'
+var per7 = " "
+var per8 = " "
 if(execution.getVariable('sDocMarriage') != null){
 per2 = '&lt;li&gt;Копія свідоцтва про шлюб.&lt;/li&gt;'
 }
@@ -531,8 +561,23 @@ per5 = '&lt;li&gt;Медичне свідоцтво про народження 
 if(execution.getVariable('sDocPregnancy') != null){
 per6 = "&lt;li&gt;Довідка про вагітність (видається закладами охорони здоров’я).&lt;/li&gt;"
 }
+if(execution.getVariable('saSexChild') == 'woman'){
+per7 = "що народилася"
+}
+if(execution.getVariable('saSexChild') == 'man'){
+per7 = "що народився"
+}
+if(execution.getVariable('saSexChild') == 'woman'){
+per8 = "її"
+}
+if(execution.getVariable('saSexChild') == 'man'){
+per8 = "його"
+}
 res = '&lt;ol&gt;'+per1+per2+per3+per4+per5+per6+'&lt;/ol&gt;'
-execution.setVariable('sListDocumentsLetter', res)</script>
+execution.setVariable('sListDocumentsLetter', res)
+execution.setVariable('sSexChildPrint', per7)
+execution.setVariable('sSexChildPrint2', per8)
+</script>
     </scriptTask>
     <serviceTask id="servicetask8" name="отримання додаткових документiв" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <sequenceFlow id="flow38" sourceRef="startevent1" targetRef="servicetask8"></sequenceFlow>
@@ -575,29 +620,7 @@ execution.setVariable('sListDocumentsLetter', res)</script>
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${saSituation == "noBornYet"}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow62" sourceRef="servicetask4" targetRef="usertask3"></sequenceFlow>
-    <serviceTask id="servicetask14" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
-      <extensionElements>
-        <activiti:field name="to">
-          <activiti:expression>darja.grek@gmail.com</activiti:expression>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове звернення: Попередній запис на прийом щодо державної реєстрації народження]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression>[sID_Order]&lt;br&gt;
-[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а) колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-У Вас в черзі на обробку нове звернення.&lt;br /&gt;
-Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName} обрав дату та час візиту: ${date_of_visit}.&lt;br /&gt;
-У призначену дату та час запросіть, будь ласка, громадянина до кабінету для реєстрації.&lt;br /&gt;
-[pattern/mail/_common_signature.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
+   
     <sequenceFlow id="flow63" sourceRef="usertask3" targetRef="servicetask14"></sequenceFlow>
     <sequenceFlow id="flow64" sourceRef="servicetask14" targetRef="exclusivegateway4"></sequenceFlow>
   </process>
